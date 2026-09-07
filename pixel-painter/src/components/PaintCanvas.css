@@ -1,0 +1,41 @@
+.canvas-frame {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  border-radius: 10px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 24px 60px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.paint-canvas {
+  display: block;
+  width: 1040px;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 1040 / 680;
+  background: #fff;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.canvas-frame[data-tool='fill'] .paint-canvas {
+  cursor: cell;
+}
+
+.brush-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1.5px solid #000;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-9999px, -9999px);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+.canvas-frame[data-tool='fill'] .brush-cursor {
+  display: none;
+}
