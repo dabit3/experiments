@@ -1,0 +1,368 @@
+@import '@fontsource/press-start-2p/400.css';
+
+:root {
+  --bg: #050a07;
+  --panel: #0b1a10;
+  --panel-border: rgba(57, 255, 20, 0.25);
+  --neon: #39ff14;
+  --neon-dim: rgba(57, 255, 20, 0.6);
+  --magenta: #ff3366;
+  --amber: #ffcc33;
+  --text: #d9ffd0;
+  --muted: #7fa87a;
+  --pixel: 'Press Start 2P', monospace;
+  --mono: 'IBM Plex Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  color-scheme: dark;
+  font-family: var(--mono);
+  color: var(--text);
+  background: var(--bg);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse at top, rgba(57, 255, 20, 0.08), transparent 55%),
+    radial-gradient(ellipse at bottom, rgba(255, 51, 102, 0.08), transparent 55%),
+    var(--bg);
+  overflow-x: hidden;
+}
+
+/* CRT scanlines over the whole page */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.18) 3px
+  );
+  mix-blend-mode: multiply;
+}
+
+kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  border: 1px solid var(--panel-border);
+  border-bottom-width: 3px;
+  border-radius: 4px;
+  background: #101f14;
+  font-family: var(--mono);
+  font-size: 0.85em;
+  color: var(--neon);
+}
+
+.arcade {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 40px;
+  gap: 24px;
+}
+
+/* Header */
+.marquee {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-badge {
+  font-family: var(--pixel);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #050a07;
+  background: var(--neon);
+  padding: 8px 12px;
+  border-radius: 4px;
+  box-shadow: 0 0 18px var(--neon-dim);
+}
+
+.brand-sub {
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--pixel);
+  font-size: clamp(22px, 4vw, 40px);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--neon);
+  text-shadow:
+    0 0 6px var(--neon),
+    0 0 24px var(--neon-dim),
+    4px 4px 0 rgba(255, 51, 102, 0.7);
+}
+
+/* Layout */
+.cabinet {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(57, 255, 20, 0.08);
+}
+
+.hud {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.hud-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hud-stat.is-right {
+  align-items: flex-end;
+}
+
+.hud-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hud-value {
+  font-family: var(--pixel);
+  font-size: 26px;
+  color: var(--amber);
+  text-shadow: 0 0 12px rgba(255, 204, 51, 0.6);
+}
+
+.board {
+  position: relative;
+  line-height: 0;
+}
+
+.game-canvas {
+  display: block;
+  border-radius: 8px;
+  background: #030805;
+}
+
+/* Overlays */
+.overlay {
+  position: absolute;
+  inset: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  line-height: 1.5;
+  text-align: center;
+  background: rgba(3, 8, 5, 0.8);
+  backdrop-filter: blur(1.5px);
+}
+
+.overlay-title {
+  margin: 0;
+  font-family: var(--pixel);
+  font-size: 34px;
+  color: var(--neon);
+  text-shadow: 0 0 18px var(--neon-dim);
+}
+
+.overlay-title.is-danger {
+  color: var(--magenta);
+  text-shadow: 0 0 18px rgba(255, 51, 102, 0.7);
+}
+
+.overlay-hint {
+  margin: 0;
+  font-size: 15px;
+}
+
+.overlay-score {
+  margin: 0;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.overlay-score strong {
+  font-family: var(--pixel);
+  font-size: 22px;
+  color: var(--amber);
+  margin-left: 8px;
+}
+
+.overlay-badge {
+  margin: 0;
+  font-family: var(--pixel);
+  font-size: 12px;
+  color: #050a07;
+  background: var(--amber);
+  padding: 8px 12px;
+  border-radius: 4px;
+  box-shadow: 0 0 18px rgba(255, 204, 51, 0.6);
+}
+
+.overlay-controls {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.blink {
+  animation: blink 1.4s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* Difficulty picker */
+.difficulty {
+  display: flex;
+  gap: 10px;
+}
+
+.difficulty-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 110px;
+  padding: 12px 10px;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  background: #0b1a10;
+  color: var(--text);
+  font-family: var(--pixel);
+  font-size: 11px;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    transform 0.15s;
+}
+
+.difficulty-option:hover {
+  border-color: var(--neon);
+  transform: translateY(-2px);
+}
+
+.difficulty-option.is-selected {
+  border-color: var(--neon);
+  box-shadow: 0 0 16px var(--neon-dim);
+  color: var(--neon);
+}
+
+.difficulty-key {
+  font-size: 9px;
+  color: var(--muted);
+}
+
+.difficulty-speed {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Telemetry panel */
+.telemetry {
+  width: 280px;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  font-size: 14px;
+}
+
+.panel-title {
+  margin: 0 0 12px;
+  font-family: var(--pixel);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--neon);
+}
+
+.panel-title + .panel-title,
+.telemetry dl + .panel-title {
+  margin-top: 22px;
+}
+
+.telemetry dl {
+  margin: 0;
+}
+
+.telemetry-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px dashed rgba(57, 255, 20, 0.12);
+}
+
+.telemetry-row dt {
+  color: var(--muted);
+}
+
+.telemetry-row dd {
+  margin: 0;
+  color: var(--text);
+}
+
+.controls {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.controls kbd + kbd {
+  margin-left: 3px;
+}
+
+@media (max-width: 640px) {
+  .telemetry {
+    width: 100%;
+    max-width: 604px;
+  }
+}
