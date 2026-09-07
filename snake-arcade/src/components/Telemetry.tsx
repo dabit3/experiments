@@ -25,7 +25,11 @@ export function Telemetry({ state }: { state: GameState }) {
         <Row label="Status" value={PHASE_LABELS[state.phase]} testId="telemetry-phase" />
         <Row label="Mode" value={DIFFICULTIES[state.difficulty].label} testId="telemetry-mode" />
         <Row label="Speed" value={`${state.cellsPerSecond.toFixed(1)} cells/s`} testId="telemetry-speed" />
-        <Row label="Speed up in" value={`${applesToSpeedUp} apples`} testId="telemetry-speed-up" />
+        <Row
+          label="Speed up in"
+          value={`${applesToSpeedUp} ${applesToSpeedUp === 1 ? 'apple' : 'apples'}`}
+          testId="telemetry-speed-up"
+        />
         <Row label="Length" value={`${state.snake.length} cells`} testId="telemetry-length" />
         <Row label="Head" value={`(${head.x}, ${head.y})`} testId="telemetry-head" />
         <Row
