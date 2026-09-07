@@ -1,0 +1,156 @@
+.confirm {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+  animation: rise 0.45s ease both;
+}
+
+.confirm__hero {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.confirm__hero h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.02em;
+  margin: 18px 0 8px;
+}
+
+.confirm__sub {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.confirm__sub strong {
+  color: var(--text);
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 1.05em;
+  background: var(--surface-2);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.confirm__check {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto;
+}
+
+.confirm__check svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--success);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.confirm__check circle {
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: draw 0.6s ease forwards;
+}
+
+.confirm__check path {
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: draw 0.4s ease 0.5s forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.confirm__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.confirm__side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.confirm__card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+}
+
+.confirm__card h3 {
+  margin: 0 0 14px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.confirm__card address {
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.confirm__card p {
+  margin: 0 0 6px;
+}
+
+.confirm__items {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+}
+
+.confirm__items li {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.confirm__thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.confirm__thumb svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.confirm__item-name {
+  font-weight: 600;
+}
+
+.confirm__item-price {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.confirm__eta {
+  margin-top: 14px !important;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.confirm__paid strong {
+  font-size: 1.2rem;
+}
+
+@media (max-width: 760px) {
+  .confirm__grid {
+    grid-template-columns: 1fr;
+  }
+}

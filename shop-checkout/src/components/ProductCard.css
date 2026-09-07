@@ -1,0 +1,138 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card__art {
+  aspect-ratio: 1;
+  background: var(--surface-2);
+}
+
+.card__art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.card__body {
+  padding: 18px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.card__heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.card__name {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.card__tagline {
+  margin: 3px 0 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.card__price {
+  font-weight: 650;
+  font-size: 1.05rem;
+  white-space: nowrap;
+}
+
+.card__variant {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.card__variant-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.card__variant-label strong {
+  color: var(--text);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.card__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  min-width: 40px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 550;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pill:hover {
+  border-color: var(--text);
+}
+
+.pill[aria-pressed='true'] {
+  background: var(--text);
+  border-color: var(--text);
+  color: #fff;
+}
+
+.swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1.5px var(--border);
+  cursor: pointer;
+  padding: 0;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.swatch:hover {
+  transform: scale(1.1);
+}
+
+.swatch[aria-pressed='true'] {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.card__add {
+  margin-top: auto;
+  width: 100%;
+}
+
+.card__add.is-added {
+  background: var(--success);
+  border-color: var(--success);
+}
