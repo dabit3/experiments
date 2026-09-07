@@ -1,0 +1,65 @@
+:root {
+  --bg: #f4f3ef;
+  --surface: #ffffff;
+  --text: #37352f;
+  --text-muted: #9b9a97;
+  --text-faint: #c9c8c4;
+  --border: #e6e4df;
+  --accent: #2383e2;
+  --accent-soft: rgba(35, 131, 226, 0.14);
+  --code-bg: #f1efe9;
+  --code-block-bg: #1e1e26;
+  --code-block-text: #e8e6f0;
+  --shadow-lg: 0 12px 32px rgba(15, 15, 15, 0.12), 0 2px 6px rgba(15, 15, 15, 0.08);
+  --shadow-sm: 0 1px 2px rgba(15, 15, 15, 0.06), 0 0 0 1px rgba(15, 15, 15, 0.04);
+  --radius: 8px;
+  --sans:
+    -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji';
+  --mono: 'SFMono-Regular', ui-monospace, Menlo, Consolas, 'Liberation Mono', monospace;
+
+  font-family: var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  line-height: 1.5;
+}
+
+body.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+kbd {
+  font-family: var(--sans);
+  font-size: 0.85em;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 0 var(--border);
+}
