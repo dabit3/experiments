@@ -38,18 +38,46 @@ The status bar shows the sum, average and count of the selected range.
 
 ## Computer-use showcase
 
-After building the app, Devin opened it in a real browser and drove it almost entirely with the
-keyboard:
+After building the app, Devin opened it in a maximized Chrome window and drove it with one mouse
+click (A1) and the keyboard for everything else. Recording (3m59s, 1600×1200, annotated):
 
-1. Clicked A1 and, using only typing plus Tab/Enter, entered a budget table: headers
-   `Item | Qty | Price | Total` in row 1 and five rows of items with quantities and prices.
-2. Typed `=B2*C2` in D2, selected D2:D6 with Shift+Down and pressed Ctrl+D to fill down; verified
-   that the formulas shifted (`D3 = B3*C3`, …) and evaluated to the right totals.
-3. Typed `=SUM(D2:D6)` in D7 and verified the value; changed a quantity in column B and watched D7
-   recalculate live.
-4. Selected a range with Shift+arrows and checked that the status bar sum matched.
-5. Copied a block with Ctrl+C, moved with the arrow keys, pasted with Ctrl+V and verified the
-   relative references shifted with the paste location.
-6. Bolded the header row with Ctrl+B, refreshed the page and verified everything persisted.
+- **[Watch the recording](https://app.devin.ai/attachments/83bc563a-b760-489d-a674-d914d11c3c84/mini-sheets-keyboard-showcase.mp4)**
+  (also committed at [`docs/mini-sheets-keyboard-showcase.mp4`](docs/mini-sheets-keyboard-showcase.mp4))
 
-_Screenshots and the recording link are added below once the run is complete._
+What Devin did, step by step, and what it asserted:
+
+1. **Typed the table.** Clicked A1, then typed `Item` Tab `Qty` Tab `Price` Tab `Total` Enter — the
+   Excel-style Enter jumped back to A2 — and five rows of items the same way
+   (Coffee 12 4.5, Bagels 6 2.25, Notebooks 3 8, Pens 20 1.2, Tea 10 3).
+   Asserted A1:C6 filled exactly as typed.
+
+   ![Budget table typed with Tab/Enter](docs/01-budget-table.png)
+
+2. **Fill down with relative references.** Arrowed to D2, typed `=B2*C2` Enter (54). Pressed Up,
+   then Shift+Down ×4 to select D2:D6, then Ctrl+D. Asserted D3:D6 = 13.5, 24, 24, 30 and that
+   the formula bar on D3 read `=B3*C3`.
+
+   ![Ctrl+D fill down adjusting references](docs/02-relative-fill.png)
+
+3. **Live recalculation.** Typed `=SUM(D2:D6)` in D7 → 145.5. Moved to B2 and typed `20` Enter;
+   asserted D2 became 90 and D7 recalculated to 181.5.
+
+   ![D7 recalculates when B2 changes](docs/03-live-recalculation.png)
+
+4. **Range statistics.** From B2 pressed Shift+Down ×4; asserted the status bar showed
+   `Sum: 59 · Average: 11.8 · Count: 5` and the header pill "5 cells selected". Extended with
+   Shift+Right ×2 to B2:D6 and asserted Sum 259.45.
+
+   ![Status bar sum/average/count for the selection](docs/04-selection-statistics.png)
+
+5. **Copy / paste with reference shifting.** With B2:D6 selected pressed Ctrl+C (dashed copy
+   outline), pressed Right ×5 to land on G2, pressed Ctrl+V. Asserted G2:I6 mirrored the block and
+   that I2's formula bar read `=G2*H2` (I3 `=G3*H3`, …) — references shifted five columns.
+
+   ![Pasted block with formulas shifted to =G2*H2](docs/05-relative-paste.png)
+
+6. **Bold + persistence.** Went to A1, Shift+Right ×3, Ctrl+B — headers turned bold. Pressed F5
+   and asserted the bold headers, all 40 filled cells, the pasted block and the raw formulas were
+   restored from localStorage.
+
+   ![After refresh: bold headers and everything persisted](docs/06-refresh-persistence.png)
