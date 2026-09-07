@@ -1,0 +1,69 @@
+:root {
+  --bg: #0b0d14;
+  --bg-elev: #121521;
+  --panel: #171b2a;
+  --panel-border: #252a3d;
+  --text: #e8eaf2;
+  --text-dim: #8b91a7;
+  --accent: #7c8cff;
+  --accent-2: #4ee6c1;
+  --accent-grad: linear-gradient(135deg, #7c8cff 0%, #4ee6c1 100%);
+  --danger: #ff6b81;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  font-family:
+    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(124, 140, 255, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 100% 110%, rgba(78, 230, 193, 0.14), transparent 60%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
