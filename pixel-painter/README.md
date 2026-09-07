@@ -37,7 +37,27 @@ the window, and performed the following scenario end to end while recording:
 5. Switched to the eraser and erased part of the drawing.
 6. Clicked **Download PNG** and confirmed `pixel-painter.png` landed in the downloads folder.
 
-<!-- SHOWCASE_MEDIA -->
+All six steps passed on the first recorded run; no app defects were found.
+
+### Finished drawing
+
+![Finished drawing after the eraser step and PNG export](docs/final-drawing.png)
+
+### Recording
+
+**[Watch the full recording (mp4, ~85s)](https://app.devin.ai/attachments/8fb40cf5-c7e3-4299-85cf-0f0b5443a8e2/pixel-painter-showcase-edited.mp4)**
+
+![Animated preview of the recording](docs/showcase.webp)
+
+### Key moments
+
+| House and sun after the fill tool | Freehand "DEVIN" lettering |
+|---|---|
+| ![House and sun filled](docs/house-and-sun-filled.png) | ![DEVIN written freehand](docs/devin-lettering.png) |
+
+| Stray stroke brought back by redo (removed again with Ctrl+Z right after) |
+|---|
+| ![Stray pink stroke restored by Ctrl+Shift+Z](docs/stray-stroke-redo.png) |
 
 ## Project layout
 
