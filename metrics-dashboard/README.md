@@ -54,10 +54,22 @@ recording on) and drove it like a human:
 6. **Theme + export** — toggled dark mode, then clicked **Export CSV** and confirmed
    the filtered table downloaded as a `.csv` file.
 
-### Screenshots
-
-_Screenshots and recording are added after the recorded browser run._
-
 ### Recording
 
-_Link added after the recorded browser run._
+[▶ Watch the full recording (mp4, ~65 s, annotated)](recording/metrics-dashboard-showcase.mp4)
+
+![Devin driving the dashboard: hover tooltips, drag-to-zoom, slider, filters, table, dark mode, CSV export](recording/metrics-dashboard-showcase.webp)
+
+### Screenshots
+
+| Hover tooltip + crosshair | Drag-to-zoom selection (mouse held) |
+|---|---|
+| ![Tooltip following the cursor over the revenue chart](screenshots/01-tooltip.png) | ![Shaded selection while dragging across the chart](screenshots/02-drag-preview.png) |
+
+| Zoomed to 31 days | Slider thumb held — KPIs update live |
+|---|---|
+| ![Chart zoomed to Oct 28 – Nov 27 with ZOOMED badge](screenshots/03-zoomed.png) | ![Range slider narrowed to 47 days, KPI cards recomputed](screenshots/04-slider-held.png) |
+
+| Region multi-select → 2 bars | Dark mode, sorted + searched table, page 2 |
+|---|---|
+| ![Region dropdown open with two regions unticked and two bars](screenshots/05-two-regions.png) | ![Dark theme with table sorted by revenue descending, filtered to Europe, page 2 of 5](screenshots/06-dark-table.png) |
