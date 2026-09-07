@@ -103,17 +103,18 @@ export function formatTimeRange(start: Date, end: Date): string {
     : `${startLabel} – ${endLabel}`
 }
 
+/** "Sep 6 – 12, 2026", "Sep 27 – Oct 3, 2026" or "Dec 27, 2026 – Jan 2, 2027" */
 export function formatWeekTitle(weekStart: Date): string {
   const weekEnd = addDays(weekStart, 6)
-  if (isSameMonth(weekStart, weekEnd)) {
-    return `${monthName(weekStart)} ${weekStart.getFullYear()}`
-  }
   const startMonth = monthName(weekStart).slice(0, 3)
   const endMonth = monthName(weekEnd).slice(0, 3)
-  if (weekStart.getFullYear() === weekEnd.getFullYear()) {
-    return `${startMonth} – ${endMonth} ${weekEnd.getFullYear()}`
+  if (isSameMonth(weekStart, weekEnd)) {
+    return `${startMonth} ${weekStart.getDate()} – ${weekEnd.getDate()}, ${weekEnd.getFullYear()}`
   }
-  return `${startMonth} ${weekStart.getFullYear()} – ${endMonth} ${weekEnd.getFullYear()}`
+  if (weekStart.getFullYear() === weekEnd.getFullYear()) {
+    return `${startMonth} ${weekStart.getDate()} – ${endMonth} ${weekEnd.getDate()}, ${weekEnd.getFullYear()}`
+  }
+  return `${startMonth} ${weekStart.getDate()}, ${weekStart.getFullYear()} – ${endMonth} ${weekEnd.getDate()}, ${weekEnd.getFullYear()}`
 }
 
 export function formatLongDate(d: Date): string {
