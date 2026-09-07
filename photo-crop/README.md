@@ -54,8 +54,18 @@ Scenario performed step by step:
 
 ### Recording
 
-RECORDING_PLACEHOLDER
+![Devin driving photo-crop in a real Chrome window](docs/showcase.webp)
+
+Full-resolution recording (MP4, ~61 s):
+[photo-crop-showcase-edited.mp4](https://app.devin.ai/attachments/663e37e8-c4cb-4f7e-a42a-291a75f7cdc8/photo-crop-showcase-edited.mp4)
 
 ### Screenshots
 
-SCREENSHOTS_PLACEHOLDER
+| | |
+|---|---|
+| ![Landing drop zone with sample images](docs/01-landing.png) | ![night-city.jpg uploaded via the OS file chooser, 1600 × 1000](docs/02-uploaded.png) |
+| Landing page: drop zone, file input and bundled samples | Uploaded through the native file dialog — `Image 1600 × 1000` |
+| ![1:1 preset applied, crop box is a 793 × 793 square](docs/03-square-crop.png) | ![Rotated 105°, flipped horizontally, brightness and saturation raised](docs/04-rotate-flip-filters.png) |
+| After dragging the SE handle and the box, then picking **1:1** — `Crop 793 × 793` | Applied crop → ⟳ 90° + Straighten 15° → Flip H → Brightness 130 % / Saturation 159 % |
+| ![Download PNG completed](docs/05-download.png) | ![The exported PNG re-opened in the editor](docs/06-reopened-export.png) |
+| `night-city-edited.png` saved to disk | Exported PNG re-uploaded through the file dialog to prove the round-trip |
