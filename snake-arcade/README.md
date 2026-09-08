@@ -82,3 +82,17 @@ the way to score 8.
 | Restarted run, 2 more apples |
 |---|
 | ![Restarted run at score 2 with high score 8 retained](docs/showcase/07-restart-score2.png) |
+
+### Bonus: 2-minute high-score run
+
+Devin then played one continuous two-minute run on Chill with the same live
+controller — no pauses, no deaths, real keyboard input — and reached **score 38**
+(length 41, speed ramped from 4.0 to 7.8 cells/s) before deliberately crashing
+after the clock ran out to bank the new record.
+
+**Recording (real time, unedited, 2:26):**
+[snake-highscore-realtime-annotated.mp4](https://app.devin.ai/attachments/d66bd4c1-8e8c-4d08-b2db-64acf9518dd3/snake-highscore-realtime-annotated.mp4)
+
+| Score 20 | Score 35 | Final: 38, new high score |
+|---|---|---|
+| ![Score 20 mid-run](docs/showcase/highscore-run0-score020.png) | ![Score 35 mid-run](docs/showcase/highscore-run0-score035.png) | ![Game over at 38 with new high score](docs/showcase/highscore-99-final-game-over.png) |
