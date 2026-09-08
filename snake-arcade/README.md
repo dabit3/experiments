@@ -96,3 +96,17 @@ after the clock ran out to bank the new record.
 | Score 20 | Score 35 | Final: 38, new high score |
 |---|---|---|
 | ![Score 20 mid-run](docs/showcase/highscore-run0-score020.png) | ![Score 35 mid-run](docs/showcase/highscore-run0-score035.png) | ![Game over at 38 with new high score](docs/showcase/highscore-99-final-game-over.png) |
+
+### Bonus: 10-minute high-score run — score 100
+
+A ten-minute continuous session on Chill, again live keyboard input with zero
+pauses. The first life ran ~6 minutes and reached **score 100** (length 103) at
+the 20 cells/s speed cap before dying; Devin restarted instantly and the second
+life reached 52 when the clock ran out. High score went 38 → 100.
+
+**Recording (real time, unedited, 10:28):**
+[snake-highscore-10min-realtime-annotated.mp4](https://app.devin.ai/attachments/86d5c3ff-8ff6-46df-a1fa-e8d34764c3d7/snake-highscore-10min-realtime-annotated.mp4)
+
+| Score 50 | Score 100, length 103, 20 cells/s | Final: high score 100 |
+|---|---|---|
+| ![Score 50 mid-run](docs/showcase/tenmin-video-score050.png) | ![Score 100 with a 103-cell snake](docs/showcase/tenmin-run0-score100.png) | ![Final game over with high score 100](docs/showcase/tenmin-99-final-game-over.png) |
