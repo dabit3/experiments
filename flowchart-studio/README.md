@@ -4,7 +4,7 @@ A self-contained flowchart editor built with hand-rolled SVG (no React Flow). Dr
 palette onto an infinite canvas, wire them together by dragging from one node's port to another,
 rename things inline, and export the result as SVG or JSON.
 
-**Recording:** https://app.devin.ai/attachments/a1d05e06-6f21-4110-960c-fc7e7fc42d14/flowchart-ci-full-rerun-edited.mp4
+**Recording:** https://app.devin.ai/attachments/8af4abce-c254-4217-ba74-1fd53c2b95da/flowchart-enterprise-showcase-edited.mp4
 
 ## Features
 
