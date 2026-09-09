@@ -59,4 +59,4 @@ fixing a validation error, clicking Generate PDF, and then checking the download
 
 ## Recording
 
-Recording: _TODO — link to the showcase recording will be added after the run._
+Recording: https://app.devin.ai/attachments/16ddfb12-2535-4ddb-8ec4-42bd51b52672/pdf-form-signer-fixed-showcase-edited.mp4
