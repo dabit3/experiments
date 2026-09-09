@@ -51,4 +51,8 @@ Run `npm run dev`, then in a maximised Chrome window:
 | 4 | Keep playing until a 512 tile appears | A gold "You reached 512!" banner covers the board with the final score, plus Keep going / New game buttons. |
 | 5 | Reload `?seed=99` and replay the same moves | Identical tiles spawn in identical places — the run is reproducible. |
 
-Recording: _placeholder — filled in after the showcase_
+Recording: https://app.devin.ai/attachments/18d992b6-2c3c-414c-9510-6b450a29c594/2048-arena-showcase-edited.mp4
+
+Result of the recorded run: 512 tile reached at move 280 with a final score of
+4,252 (seed 99, bottom-left corner strategy, one deliberate bad `→` move
+recovered with `Z`).
