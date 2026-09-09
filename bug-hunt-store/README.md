@@ -66,7 +66,12 @@ description). The scoreboard button in the header opens a per-bug checklist at a
 
 ### Recording
 
-**Recording (mp4): _placeholder — filled in after the showcase_**
+**Recording (mp4):** https://app.devin.ai/attachments/a11ae4ce-dea8-4c03-b776-b2da33034f61/bug-hunt-store-showcase.mp4
+
+![Bug Hunt showcase preview](https://app.devin.ai/attachments/53ab3ea4-7263-4899-af28-921042db7ec7/bug-hunt-store-preview.webp)
+
+Outcome of the recorded run: all 8 bugs were found and reported unaided (no `SPOILERS.md`
+needed), ending on the 8/8 QA-hero screen.
 
 ## Project layout
 
