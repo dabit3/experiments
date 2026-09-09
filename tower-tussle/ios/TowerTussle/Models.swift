@@ -99,6 +99,11 @@ final class Unit: Identifiable {
     var targetId: Int? = nil
     var laneX: Double = 3.5
     var hitFlash: Double = 0
+    var walkPhase: Double = 0
+    var facing: Double = 1
+    var moving = false
+    var attackAnim: Double = 0
+    var spawnAge: Double = 0
 
     init(id: Int, card: CardDef, side: Side, pos: Vec) {
         self.id = id
@@ -146,20 +151,113 @@ final class Tower: Identifiable {
     var alive: Bool { hp > 0 }
 }
 
+enum EffectKind {
+    case meteor
+    case volley
+    case towerFall
+    case deploy
+
+    /// Seconds after cast at which the spell lands and applies damage.
+    var impactDelay: Double {
+        switch self {
+        case .meteor: return 0.55
+        case .volley: return 0.4
+        case .towerFall, .deploy: return 0
+        }
+    }
+
+    var duration: Double {
+        switch self {
+        case .meteor: return 1.6
+        case .volley: return 1.3
+        case .towerFall: return 1.4
+        case .deploy: return 0.6
+        }
+    }
+}
+
 struct SpellEffect: Identifiable {
     let id: Int
+    let kind: EffectKind
     let pos: Vec
     let radius: Double
-    let color: Color
+    let side: Side
+    let damage: Double
     var ttl: Double
+    var resolved: Bool
+
+    init(id: Int, kind: EffectKind, pos: Vec, radius: Double, side: Side, damage: Double = 0) {
+        self.id = id
+        self.kind = kind
+        self.pos = pos
+        self.radius = radius
+        self.side = side
+        self.damage = damage
+        self.ttl = kind.duration
+        self.resolved = kind.impactDelay == 0
+    }
+
+    var age: Double { kind.duration - ttl }
+    var progress: Double { min(1, max(0, age / kind.duration)) }
+    var landed: Bool { age >= kind.impactDelay }
+}
+
+enum ProjectileKind {
+    case arrow
+    case bolt
+    case fireball
+    case cannon
 }
 
 struct Projectile: Identifiable {
     let id: Int
+    let kind: ProjectileKind
+    let start: Vec
     var pos: Vec
     let target: Vec
     let side: Side
     var ttl: Double
+
+    var progress: Double {
+        let total = start.distance(to: target)
+        return total < 0.001 ? 1 : min(1, start.distance(to: pos) / total)
+    }
+}
+
+enum ParticleKind {
+    case dust
+    case spark
+    case smoke
+    case ember
+    case debris
+    case bone
+    case leaf
+    case glow
+}
+
+struct Particle: Identifiable {
+    let id: Int
+    let kind: ParticleKind
+    var pos: Vec
+    var vel: Vec
+    var ttl: Double
+    let maxTtl: Double
+    let size: Double
+    let color: Color
+    var life: Double { max(0, min(1, ttl / maxTtl)) }
+}
+
+struct FloatingText: Identifiable {
+    let id: Int
+    var pos: Vec
+    var amount: Double
+    let side: Side
+    let color: Color
+    var ttl: Double
+    let maxTtl: Double
+    var text: String { "\(Int(amount))" }
+    var life: Double { max(0, min(1, ttl / maxTtl)) }
+    var age: Double { maxTtl - ttl }
 }
 
 enum MatchOutcome: String {

@@ -50,6 +50,8 @@ class BattleEngine(val deck: List<String>) {
     val towers = mutableListOf<Tower>()
     val effects = mutableListOf<SpellEffect>()
     val projectiles = mutableListOf<Projectile>()
+    val particles = mutableListOf<Particle>()
+    val floatingTexts = mutableListOf<FloatingText>()
     var elapsed = 0.0; private set
     var playerElixir = 5.0; private set
     var enemyElixir = 5.0; private set
@@ -71,7 +73,7 @@ class BattleEngine(val deck: List<String>) {
     init { reset() }
 
     fun reset() {
-        units.clear(); effects.clear(); projectiles.clear()
+        units.clear(); effects.clear(); projectiles.clear(); particles.clear(); floatingTexts.clear()
         elapsed = 0.0
         playerElixir = 5.0
         enemyElixir = 5.0
@@ -196,14 +198,44 @@ class BattleEngine(val deck: List<String>) {
         separateUnits()
         for (tower in towers) if (tower.alive) stepTower(tower, dt)
 
-        for (e in effects) e.ttl -= dt
+        for (e in effects) {
+            e.ttl -= dt
+            if (!e.resolved && e.landed) {
+                e.resolved = true
+                resolveSpell(e)
+            }
+        }
         effects.removeAll { it.ttl <= 0 }
         for (p in projectiles) {
             val dir = (p.target - p.pos).normalized
-            p.pos = p.pos + dir * (18 * dt)
+            val speed = when (p.kind) { ProjectileKind.CANNON -> 14.0; ProjectileKind.FIREBALL -> 12.0; else -> 18.0 }
+            p.pos = p.pos + dir * (speed * dt)
             p.ttl -= dt
+            if (p.kind == ProjectileKind.FIREBALL && rng.nextDouble() < 0.6) {
+                spawnParticle(ParticleKind.EMBER, p.pos, Vec(rng.nextDouble(-0.6, 0.6), rng.nextDouble(-0.4, 0.4)), 0.35, 0.1, Art.fire)
+            }
         }
-        projectiles.removeAll { it.ttl <= 0 || it.pos.distance(it.target) < 0.4 }
+        val arrived = projectiles.filter { it.ttl <= 0 || it.pos.distance(it.target) < 0.4 }
+        for (p in arrived) impact(p)
+        projectiles.removeAll { it in arrived }
+        for (p in particles) {
+            p.ttl -= dt
+            when (p.kind) {
+                ParticleKind.SMOKE -> p.vel = Vec(p.vel.x * 0.98, p.vel.y - 0.6 * dt)
+                ParticleKind.DEBRIS, ParticleKind.BONE -> p.vel = Vec(p.vel.x * 0.96, p.vel.y + 9 * dt)
+                ParticleKind.EMBER, ParticleKind.SPARK -> p.vel = Vec(p.vel.x * 0.93, p.vel.y * 0.93 + 2 * dt)
+                ParticleKind.DUST, ParticleKind.GLOW -> p.vel = p.vel * 0.9
+                ParticleKind.LEAF -> p.vel = Vec(p.vel.x + sin(elapsed * 6 + p.id) * dt, p.vel.y)
+            }
+            p.pos = p.pos + p.vel * dt
+        }
+        particles.removeAll { it.ttl <= 0 }
+        for (t in floatingTexts) {
+            t.ttl -= dt
+            t.pos = Vec(t.pos.x, t.pos.y - 1.2 * dt)
+        }
+        floatingTexts.removeAll { it.ttl <= 0 }
+        for (unit in units) if (!unit.alive) death(unit)
         units.removeAll { !it.alive }
 
         enemyDecisionTimer -= dt
@@ -241,14 +273,27 @@ class BattleEngine(val deck: List<String>) {
     private fun stepUnit(unit: Troop, dt: Double) {
         unit.hitFlash = max(0.0, unit.hitFlash - dt)
         unit.attackCooldown = max(0.0, unit.attackCooldown - dt)
+        unit.attackAnim = max(0.0, unit.attackAnim - dt * 3.5)
+        unit.spawnAge += dt
+        unit.moving = false
         val target = chooseTarget(unit) ?: return
         val dist = unit.pos.distance(target.pos)
         val attackRange = unit.card.range + target.radius
+        if (abs(target.pos.x - unit.pos.x) > 0.15) unit.facing = if (target.pos.x >= unit.pos.x) 1.0 else -1.0
         if (dist <= attackRange + 0.05) {
             if (unit.attackCooldown <= 0) {
                 unit.attackCooldown = unit.card.hitSpeed
+                unit.attackAnim = 1.0
                 if (unit.card.range > 1.2) {
-                    projectiles.add(Projectile(allocId(), unit.pos, target.pos, unit.side, 1.0))
+                    val kind = when (unit.card.id) {
+                        "whelp" -> ProjectileKind.FIREBALL
+                        "sharpshooter" -> ProjectileKind.BOLT
+                        else -> ProjectileKind.ARROW
+                    }
+                    val origin = Vec(unit.pos.x, unit.pos.y - (if (unit.card.flying) 1.4 else 0.9))
+                    projectiles.add(Projectile(allocId(), kind, origin, origin, target.pos, unit.side, 1.0))
+                } else {
+                    spawnParticle(ParticleKind.SPARK, Vec(target.pos.x, target.pos.y - 0.6), Vec(rng.nextDouble(-1.5, 1.5), rng.nextDouble(-2.0, -0.5)), 0.25, 0.08, Color.White)
                 }
                 target.unit?.let { damageUnit(it, unit.card.damage) }
                 target.tower?.let { damageTower(it, unit.card.damage) }
@@ -260,6 +305,12 @@ class BattleEngine(val deck: List<String>) {
         val stepLen = min(unit.card.speed * dt, unit.pos.distance(waypoint))
         val np = unit.pos + dir * stepLen
         unit.pos = Vec(np.x.coerceIn(0.4, Arena.WIDTH - 0.4), np.y.coerceIn(0.4, Arena.HEIGHT - 0.4))
+        unit.moving = stepLen > 0.0001
+        unit.walkPhase += dt * unit.card.speed * 4.5
+        if (abs(dir.x) > 0.2) unit.facing = if (dir.x >= 0) 1.0 else -1.0
+        if (unit.moving && !unit.card.flying && unit.card.id == "giant" && rng.nextDouble() < dt * 6) {
+            spawnParticle(ParticleKind.DUST, unit.pos, Vec(rng.nextDouble(-0.6, 0.6), -0.2), 0.5, 0.25, Color(0.6f, 0.52f, 0.36f))
+        }
     }
 
     private fun moveWaypoint(unit: Troop, target: Vec): Vec {
@@ -315,8 +366,44 @@ class BattleEngine(val deck: List<String>) {
         val target = best ?: return
         if (tower.attackCooldown <= 0) {
             tower.attackCooldown = tower.kind.hitSpeed
-            projectiles.add(Projectile(allocId(), tower.pos, target.pos, tower.side, 1.0))
+            val kind = if (tower.kind == TowerKind.KEEP) ProjectileKind.CANNON else ProjectileKind.ARROW
+            val origin = Vec(tower.pos.x, tower.pos.y - (if (tower.kind == TowerKind.KEEP) 2.2 else 1.8))
+            projectiles.add(Projectile(allocId(), kind, origin, origin, target.pos, tower.side, 1.0))
             damageUnit(target, tower.kind.damage)
+        }
+    }
+
+    private fun impact(p: Projectile) {
+        when (p.kind) {
+            ProjectileKind.ARROW, ProjectileKind.BOLT -> repeat(3) {
+                spawnParticle(ParticleKind.SPARK, p.target, Vec(rng.nextDouble(-1.2, 1.2), rng.nextDouble(-1.5, 0.0)), 0.2, 0.06, Color.White)
+            }
+            ProjectileKind.CANNON -> {
+                repeat(6) { spawnParticle(ParticleKind.SMOKE, p.target, Vec(rng.nextDouble(-1.0, 1.0), rng.nextDouble(-1.2, -0.2)), 0.5, 0.25, Color(0.5f, 0.5f, 0.52f)) }
+                repeat(4) { spawnParticle(ParticleKind.SPARK, p.target, Vec(rng.nextDouble(-2.0, 2.0), rng.nextDouble(-2.5, -0.5)), 0.3, 0.08, Art.fireCore) }
+            }
+            ProjectileKind.FIREBALL -> {
+                repeat(5) { spawnParticle(ParticleKind.EMBER, p.target, Vec(rng.nextDouble(-1.5, 1.5), rng.nextDouble(-1.5, 0.5)), 0.35, 0.1, Art.fire) }
+                spawnParticle(ParticleKind.GLOW, p.target, Vec(0.0, 0.0), 0.2, 0.5, Art.fireCore)
+            }
+        }
+    }
+
+    private fun spawnParticle(kind: ParticleKind, pos: Vec, vel: Vec, ttl: Double, size: Double, color: Color) {
+        if (particles.size > 400) return
+        particles.add(Particle(allocId(), kind, pos, vel, ttl, ttl, size, color))
+    }
+
+    private fun death(unit: Troop) {
+        val p = unit.pos
+        if (unit.card.id == "bones") {
+            repeat(4) { spawnParticle(ParticleKind.BONE, Vec(p.x, p.y - 0.6), Vec(rng.nextDouble(-2.5, 2.5), rng.nextDouble(-4.0, -1.5)), 0.7, 0.14, Art.bone) }
+        } else if (unit.card.id == "giant") {
+            repeat(8) { spawnParticle(ParticleKind.DEBRIS, Vec(p.x, p.y - 1.0), Vec(rng.nextDouble(-3.0, 3.0), rng.nextDouble(-5.0, -1.0)), 0.8, 0.22, Art.stone) }
+            repeat(6) { spawnParticle(ParticleKind.DUST, p, Vec(rng.nextDouble(-1.5, 1.5), rng.nextDouble(-0.8, 0.0)), 0.7, 0.4, Color(0.6f, 0.52f, 0.36f)) }
+        } else {
+            repeat(5) { spawnParticle(ParticleKind.DUST, p, Vec(rng.nextDouble(-1.2, 1.2), rng.nextDouble(-1.0, 0.0)), 0.5, 0.25, Color(0.85f, 0.85f, 0.85f)) }
+            spawnParticle(ParticleKind.GLOW, Vec(p.x, p.y - 0.8), Vec(0.0, -0.5), 0.35, 0.45, Art.team(unit.side))
         }
     }
 
@@ -324,6 +411,7 @@ class BattleEngine(val deck: List<String>) {
         if (!unit.alive) return
         unit.hp -= amount
         unit.hitFlash = 0.15
+        addDamageText(Vec(unit.pos.x, unit.pos.y - (if (unit.card.flying) 2.6 else 1.6)), amount, unit.side)
     }
 
     private fun damageTower(tower: Tower, amount: Double) {
@@ -331,26 +419,54 @@ class BattleEngine(val deck: List<String>) {
         tower.hp -= amount
         tower.hitFlash = 0.15
         tower.activated = true
+        addDamageText(Vec(tower.pos.x, tower.pos.y - 2.4), amount, tower.side)
         if (tower.hp <= 0) {
             tower.hp = 0.0
             for (t in towers) if (t.side == tower.side && t.kind == TowerKind.KEEP) t.activated = true
-            effects.add(SpellEffect(allocId(), tower.pos, 2.2, Theme.orange, 0.8))
+            effects.add(SpellEffect(allocId(), EffectKind.TOWER_FALL, tower.pos, 2.2, tower.side))
+            repeat(14) { spawnParticle(ParticleKind.DEBRIS, Vec(tower.pos.x, tower.pos.y - 1.0), Vec(rng.nextDouble(-4.0, 4.0), rng.nextDouble(-7.0, -1.0)), 1.1, 0.3, Art.stone) }
+            repeat(10) { spawnParticle(ParticleKind.SMOKE, tower.pos, Vec(rng.nextDouble(-1.5, 1.5), rng.nextDouble(-1.5, -0.3)), 1.3, 0.6, Color(0.55f, 0.52f, 0.5f)) }
             flash(if (tower.side == Side.PLAYER) "Your ${tower.kind.label} fell!" else "Enemy ${tower.kind.label} destroyed!")
+        }
+    }
+
+    /** Damage numbers landing near a fresh one for the same side are merged so clusters stay legible. */
+    private fun addDamageText(pos: Vec, amount: Double, victim: Side) {
+        val nearby = floatingTexts.lastOrNull { it.victim == victim && it.age < 0.25 && it.pos.distance(pos) < 1.2 }
+        if (nearby != null) {
+            nearby.amount += amount
+            nearby.ttl = nearby.maxTtl
+            return
+        }
+        if (floatingTexts.size > 24) return
+        val color = if (victim == Side.PLAYER) Color(1f, 0.45f, 0.4f) else Color(1f, 0.92f, 0.5f)
+        floatingTexts.add(FloatingText(allocId(), Vec(pos.x + rng.nextDouble(-0.3, 0.3), pos.y), amount, victim, color, 0.8, 0.8))
+    }
+
+    private fun resolveSpell(e: SpellEffect) {
+        val side = e.side
+        for (u in units) {
+            if (u.alive && u.side != side && u.pos.distance(e.pos) <= e.radius + u.radius) damageUnit(u, e.damage)
+        }
+        for (t in towers) {
+            if (t.alive && t.side != side && t.pos.distance(e.pos) <= e.radius + t.kind.radius) {
+                damageTower(t, e.damage * Arena.TOWER_SPELL_FACTOR)
+            }
+        }
+        if (e.kind == EffectKind.METEOR) {
+            repeat(12) { spawnParticle(ParticleKind.EMBER, e.pos, Vec(rng.nextDouble(-4.0, 4.0), rng.nextDouble(-5.0, -0.5)), 0.7, 0.14, Art.fire) }
+            repeat(8) { spawnParticle(ParticleKind.SMOKE, e.pos, Vec(rng.nextDouble(-1.5, 1.5), rng.nextDouble(-1.5, -0.5)), 1.0, 0.5, Color(0.3f, 0.25f, 0.22f)) }
+            repeat(6) { spawnParticle(ParticleKind.DEBRIS, e.pos, Vec(rng.nextDouble(-3.0, 3.0), rng.nextDouble(-5.0, -2.0)), 0.9, 0.2, Color(0.35f, 0.2f, 0.12f)) }
+        } else {
+            repeat(10) { spawnParticle(ParticleKind.SPARK, Vec(e.pos.x + rng.nextDouble(-e.radius, e.radius), e.pos.y + rng.nextDouble(-e.radius, e.radius) * 0.6), Vec(rng.nextDouble(-0.5, 0.5), rng.nextDouble(-1.0, 0.0)), 0.3, 0.06, Color.White) }
         }
     }
 
     fun play(card: CardDef, side: Side, pos: Vec) {
         when (card.kind) {
             CardKind.SPELL -> {
-                effects.add(SpellEffect(allocId(), pos, card.radius, if (card.id == "meteor") Theme.orange else Color.Cyan, 0.7))
-                for (u in units) {
-                    if (u.alive && u.side != side && u.pos.distance(pos) <= card.radius + u.radius) damageUnit(u, card.damage)
-                }
-                for (t in towers) {
-                    if (t.alive && t.side != side && t.pos.distance(pos) <= card.radius + t.kind.radius) {
-                        damageTower(t, card.damage * Arena.TOWER_SPELL_FACTOR)
-                    }
-                }
+                val kind = if (card.id == "meteor") EffectKind.METEOR else EffectKind.VOLLEY
+                effects.add(SpellEffect(allocId(), kind, pos, card.radius, side, card.damage))
             }
             CardKind.TROOP -> {
                 val n = card.count
@@ -360,8 +476,11 @@ class BattleEngine(val deck: List<String>) {
                     val p = Vec(pos.x + cos(angle) * spread, pos.y + sin(angle) * spread)
                     val unit = Troop(allocId(), card, side, p)
                     unit.laneX = Arena.laneX(pos.x)
+                    unit.facing = if (side == Side.PLAYER) 1.0 else -1.0
                     units.add(unit)
                 }
+                effects.add(SpellEffect(allocId(), EffectKind.DEPLOY, pos, 1.2 + n * 0.1, side))
+                repeat(6) { spawnParticle(ParticleKind.DUST, pos, Vec(rng.nextDouble(-1.5, 1.5), rng.nextDouble(-1.2, -0.2)), 0.5, 0.3, Color(0.9f, 0.9f, 0.9f)) }
             }
         }
     }

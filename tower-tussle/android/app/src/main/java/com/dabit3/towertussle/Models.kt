@@ -1,6 +1,8 @@
 package com.dabit3.towertussle
 
 import androidx.compose.ui.graphics.Color
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.sqrt
 
 enum class Side {
@@ -83,6 +85,11 @@ class Troop(val id: Int, val card: CardDef, val side: Side, var pos: Vec) {
     var attackCooldown: Double = 0.0
     var laneX: Double = 3.5
     var hitFlash: Double = 0.0
+    var walkPhase: Double = 0.0
+    var facing: Double = 1.0
+    var moving: Boolean = false
+    var attackAnim: Double = 0.0
+    var spawnAge: Double = 0.0
     val alive: Boolean get() = hp > 0
     val radius: Double get() = if (card.count > 1) 0.35 else 0.5
 }
@@ -100,9 +107,42 @@ class Tower(val id: Int, val kind: TowerKind, val side: Side, val pos: Vec) {
     val alive: Boolean get() = hp > 0
 }
 
-class SpellEffect(val id: Int, val pos: Vec, val radius: Double, val color: Color, var ttl: Double)
+enum class EffectKind(val impactDelay: Double, val duration: Double) {
+    METEOR(0.55, 1.6),
+    VOLLEY(0.4, 1.3),
+    TOWER_FALL(0.0, 1.4),
+    DEPLOY(0.0, 0.6),
+}
 
-class Projectile(val id: Int, var pos: Vec, val target: Vec, val side: Side, var ttl: Double)
+class SpellEffect(val id: Int, val kind: EffectKind, val pos: Vec, val radius: Double, val side: Side, val damage: Double = 0.0) {
+    var ttl: Double = kind.duration
+    var resolved: Boolean = kind.impactDelay == 0.0
+    val age: Double get() = kind.duration - ttl
+    val progress: Double get() = min(1.0, max(0.0, age / kind.duration))
+    val landed: Boolean get() = age >= kind.impactDelay
+}
+
+enum class ProjectileKind { ARROW, BOLT, FIREBALL, CANNON }
+
+class Projectile(val id: Int, val kind: ProjectileKind, val start: Vec, var pos: Vec, val target: Vec, val side: Side, var ttl: Double) {
+    val progress: Double
+        get() {
+            val total = start.distance(target)
+            return if (total < 0.001) 1.0 else min(1.0, start.distance(pos) / total)
+        }
+}
+
+enum class ParticleKind { DUST, SPARK, SMOKE, EMBER, DEBRIS, BONE, LEAF, GLOW }
+
+class Particle(val id: Int, val kind: ParticleKind, var pos: Vec, var vel: Vec, var ttl: Double, val maxTtl: Double, val size: Double, val color: Color) {
+    val life: Double get() = max(0.0, min(1.0, ttl / maxTtl))
+}
+
+class FloatingText(val id: Int, var pos: Vec, var amount: Double, val victim: Side, val color: Color, var ttl: Double, val maxTtl: Double) {
+    val text: String get() = amount.toInt().toString()
+    val life: Double get() = max(0.0, min(1.0, ttl / maxTtl))
+    val age: Double get() = maxTtl - ttl
+}
 
 enum class MatchOutcome(val title: String) { VICTORY("VICTORY"), DEFEAT("DEFEAT"), DRAW("DRAW") }
 

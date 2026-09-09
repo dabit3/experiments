@@ -71,4 +71,4 @@
   Supercell trademarks (Giant→Colossus, Mini P.E.K.K.A→Duelist, Musketeer→Sharpshooter,
   Goblins→Gremlins, Skeleton Army→Bone Brigade, Baby Dragon→Whelp, Fireball→Meteor, Arrows→Volley,
   Princess Tower→Guard Tower, King Tower→Keep). No Supercell assets, fonts or art are used;
-  all art is emoji/vector drawn at runtime.
+  all art is original vector graphics drawn at runtime (Canvas/DrawScope), no bitmap assets.

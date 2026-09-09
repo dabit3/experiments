@@ -6,106 +6,72 @@ struct HomeView: View {
     let onCards: () -> Void
 
     var body: some View {
-        VStack(spacing: 0) {
-            HStack(spacing: 12) {
-                StatPill(icon: "🏆", value: "\(profile.trophies)", label: "Trophies")
-                StatPill(icon: "🪙", value: "\(profile.gold)", label: "Gold")
-            }
-            .padding(.horizontal)
-            .padding(.top, 8)
-
-            Spacer()
-
-            VStack(spacing: 6) {
-                Text("🏰")
-                    .font(.system(size: 84))
-                    .shadow(color: .black.opacity(0.5), radius: 8, y: 6)
-                Text("TOWER")
-                    .font(.system(size: 52, weight: .black, design: .rounded))
-                    .foregroundStyle(Theme.accent)
-                    .shadow(color: .black.opacity(0.6), radius: 0, x: 3, y: 3)
-                Text("TUSSLE")
-                    .font(.system(size: 52, weight: .black, design: .rounded))
-                    .foregroundStyle(.white)
-                    .shadow(color: .black.opacity(0.6), radius: 0, x: 3, y: 3)
-                    .padding(.top, -18)
-                Text("Real-time tower defense duels")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.white.opacity(0.7))
-            }
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel("Tower Tussle")
-
-            Spacer()
-
-            VStack(spacing: 14) {
-                Button(action: onBattle) {
-                    HStack {
-                        Text("⚔️")
-                        Text("BATTLE")
-                    }
-                    .font(.system(size: 26, weight: .black, design: .rounded))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 18)
-                    .background(
-                        LinearGradient(colors: [Theme.accent, Color(red: 0.95, green: 0.5, blue: 0.1)],
-                                       startPoint: .top, endPoint: .bottom)
-                    )
-                    .foregroundStyle(Color(red: 0.25, green: 0.12, blue: 0.0))
-                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-                    .shadow(color: .black.opacity(0.4), radius: 6, y: 4)
+        ZStack {
+            SceneryBackdrop()
+            VStack(spacing: 0) {
+                HStack(spacing: 12) {
+                    StatPill(icon: .trophy, value: "\(profile.trophies)", label: "Trophies")
+                    StatPill(icon: .coin, value: "\(profile.gold)", label: "Gold")
                 }
-                .accessibilityIdentifier("battleButton")
+                .padding(.horizontal)
+                .padding(.top, 8)
 
-                Button(action: onCards) {
-                    HStack {
-                        Text("🃏")
-                        Text("CARDS")
-                    }
-                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(Theme.panel)
-                    .foregroundStyle(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(.white.opacity(0.15), lineWidth: 1))
+                Spacer()
+
+                VStack(spacing: -6) {
+                    LogoView()
+                        .frame(width: 190, height: 150)
+                        .padding(.bottom, 10)
+                    DisplayText(text: "TOWER", size: 58, fill: .goldText)
+                    DisplayText(text: "TUSSLE", size: 58, fill: .whiteText)
+                    Text("Real-time tower defense duels")
+                        .font(.system(.subheadline, design: .rounded).weight(.bold))
+                        .foregroundStyle(.white.opacity(0.85))
+                        .shadow(color: .black.opacity(0.8), radius: 0, x: 1, y: 1)
+                        .padding(.top, 14)
                 }
-                .accessibilityIdentifier("cardsButton")
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Tower Tussle")
 
-                Text("\(profile.wins)W · \(profile.losses)L · \(profile.draws)D")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.white.opacity(0.55))
-                    .padding(.top, 4)
+                Spacer()
+
+                VStack(spacing: 14) {
+                    ChunkyButton(title: "BATTLE", icon: .swords, style: .gold, height: 64, fontSize: 28, action: onBattle)
+                        .accessibilityIdentifier("battleButton")
+                    ChunkyButton(title: "CARDS", icon: .cards, style: .blue, height: 52, fontSize: 21, action: onCards)
+                        .accessibilityIdentifier("cardsButton")
+
+                    Text("\(profile.wins)W · \(profile.losses)L · \(profile.draws)D")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.white.opacity(0.75))
+                        .shadow(color: .black.opacity(0.8), radius: 0, x: 1, y: 1)
+                        .padding(.top, 4)
+                }
+                .padding(.horizontal, 28)
+                .padding(.bottom, 24)
             }
-            .padding(.horizontal, 28)
-            .padding(.bottom, 24)
         }
     }
 }
 
-struct StatPill: View {
-    let icon: String
-    let value: String
-    let label: String
-
+/// Hero illustration: the player's keep flanked by guard towers on a grassy mound.
+struct LogoView: View {
     var body: some View {
-        HStack(spacing: 8) {
-            Text(icon).font(.title3)
-            VStack(alignment: .leading, spacing: 0) {
-                Text(value)
-                    .font(.system(.headline, design: .rounded).weight(.bold))
-                    .monospacedDigit()
-                Text(label)
-                    .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.6))
-            }
-            Spacer(minLength: 0)
+        Canvas(rendersAsynchronously: false) { ctx, size in
+            let w = size.width, h = size.height
+            let unit = w / 6
+            // mound
+            ctx.fill(Art.ellipse(w / 2, h * 0.86, w * 0.5, h * 0.13), with: .color(.black.opacity(0.35)))
+            ctx.fill(Art.ellipse(w / 2, h * 0.82, w * 0.48, h * 0.12), with: .linearGradient(Gradient(colors: [Color(red: 0.4, green: 0.7, blue: 0.3), Color(red: 0.2, green: 0.45, blue: 0.2)]), startPoint: CGPoint(x: 0, y: h * 0.7), endPoint: CGPoint(x: 0, y: h * 0.95)))
+            Art.tower(&ctx, kind: .guardTower, side: .player, center: CGPoint(x: w * 0.2, y: h * 0.62), r: unit * 0.8, alive: true, activated: true, flash: false, time: 0)
+            Art.tower(&ctx, kind: .guardTower, side: .player, center: CGPoint(x: w * 0.8, y: h * 0.62), r: unit * 0.8, alive: true, activated: true, flash: false, time: 0.6)
+            Art.tower(&ctx, kind: .keep, side: .player, center: CGPoint(x: w * 0.5, y: h * 0.6), r: unit * 1.0, alive: true, activated: true, flash: false, time: 0)
+            var knight = Art.Pose(); knight.facing = 1; knight.phase = 0.5; knight.moving = true
+            var archer = Art.Pose(); archer.facing = -1
+            Art.character(&ctx, id: "knight", side: .player, foot: CGPoint(x: w * 0.36, y: h * 0.92), r: unit * 0.5, pose: knight)
+            Art.character(&ctx, id: "archers", side: .player, foot: CGPoint(x: w * 0.64, y: h * 0.92), r: unit * 0.45, pose: archer)
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(Theme.panel)
-        .clipShape(Capsule())
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(label): \(value)")
+        .shadow(color: .black.opacity(0.5), radius: 10, y: 8)
+        .accessibilityHidden(true)
     }
 }

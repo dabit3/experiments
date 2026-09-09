@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
@@ -69,46 +70,52 @@ fun BattleScreen(engine: BattleEngine, onFinished: (MatchResult) -> Unit, onQuit
 
     engine.version
 
-    Column(Modifier.fillMaxSize().padding(horizontal = 10.dp).padding(bottom = 6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Hud(engine, onQuitTapped = { showQuitConfirm = true })
+    Box(Modifier.fillMaxSize()) {
+        SceneryBackdrop(dim = 0.45f)
+        Column(Modifier.fillMaxSize().padding(horizontal = 10.dp).padding(bottom = 6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Hud(engine, onQuitTapped = { showQuitConfirm = true })
 
-        BoxWithConstraints(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
-            val density = LocalDensity.current
-            val widthPx = with(density) { maxWidth.toPx() }
-            val heightPx = with(density) { maxHeight.toPx() }
-            val scale = min(widthPx / Arena.WIDTH, heightPx / Arena.HEIGHT).toFloat()
-            val arenaW = with(density) { (Arena.WIDTH * scale).toFloat().toDp() }
-            val arenaH = with(density) { (Arena.HEIGHT * scale).toFloat().toDp() }
-            Box(
-                Modifier
-                    .size(arenaW, arenaH)
-                    .clip(RoundedCornerShape(12.dp))
-                    .border(2.dp, Color.White.copy(alpha = 0.15f), RoundedCornerShape(12.dp))
-                    .pointerInput(engine, scale) {
-                        detectTapGestures { p -> engine.deployAtTap(Vec(p.x / scale.toDouble(), p.y / scale.toDouble())) }
+            BoxWithConstraints(Modifier.fillMaxWidth().weight(1f), contentAlignment = Alignment.Center) {
+                val density = LocalDensity.current
+                val widthPx = with(density) { maxWidth.toPx() }
+                val heightPx = with(density) { maxHeight.toPx() }
+                val scale = min(widthPx / Arena.WIDTH, heightPx / Arena.HEIGHT).toFloat()
+                val arenaW = with(density) { (Arena.WIDTH * scale).toFloat().toDp() }
+                val arenaH = with(density) { (Arena.HEIGHT * scale).toFloat().toDp() }
+                Box(
+                    Modifier
+                        .size(arenaW, arenaH)
+                        .shadow(10.dp, RoundedCornerShape(12.dp), clip = false)
+                        .clip(RoundedCornerShape(12.dp))
+                        .border(2.5.dp, Art.outline.copy(alpha = 0.9f), RoundedCornerShape(12.dp))
+                        .pointerInput(engine, scale) {
+                            detectTapGestures { p -> engine.deployAtTap(Vec(p.x / scale.toDouble(), p.y / scale.toDouble())) }
+                        }
+                        .semantics { contentDescription = "Arena" }
+                        .testTag("arena"),
+                ) {
+                    ArenaCanvas(engine, scale, Modifier.fillMaxSize())
+                }
+                engine.announcement?.let { text ->
+                    DisplayText(
+                        text, 18.sp, color = Theme.accent,
+                        modifier = Modifier.panel(cornerRadius = 20.dp, tint = Color(0.2f, 0.12f, 0.3f))
+                            .padding(horizontal = 18.dp, vertical = 8.dp).testTag("announcement"),
+                    )
+                }
+                engine.result?.let { r ->
+                    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        IconView(if (r.outcome == MatchOutcome.VICTORY) IconKind.CROWN else IconKind.SWORDS, 64.dp)
+                        DisplayText(
+                            r.outcome.title, 56.sp,
+                            color = when (r.outcome) { MatchOutcome.VICTORY -> Theme.accent; MatchOutcome.DEFEAT -> Theme.enemy; MatchOutcome.DRAW -> Color.White },
+                        )
                     }
-                    .semantics { contentDescription = "Arena" }
-                    .testTag("arena"),
-            ) {
-                ArenaCanvas(engine, scale, Modifier.fillMaxSize())
+                }
             }
-            engine.announcement?.let { text ->
-                Text(
-                    text, color = Theme.accent, fontSize = 17.sp, fontWeight = FontWeight.Black,
-                    modifier = Modifier.clip(CircleShape).background(Color.Black.copy(alpha = 0.65f))
-                        .padding(horizontal = 16.dp, vertical = 8.dp).testTag("announcement"),
-                )
-            }
-            engine.result?.let { r ->
-                Text(
-                    r.outcome.title, fontSize = 54.sp, fontWeight = FontWeight.Black,
-                    color = when (r.outcome) { MatchOutcome.VICTORY -> Theme.accent; MatchOutcome.DEFEAT -> Theme.enemy; MatchOutcome.DRAW -> Color.White },
-                    style = androidx.compose.ui.text.TextStyle(shadow = androidx.compose.ui.graphics.Shadow(Color.Black, androidx.compose.ui.geometry.Offset(3f, 3f))),
-                )
-            }
-        }
 
-        HandBar(engine)
+            HandBar(engine)
+        }
     }
 
     if (showQuitConfirm) {
@@ -126,33 +133,32 @@ fun BattleScreen(engine: BattleEngine, onFinished: (MatchResult) -> Unit, onQuit
 private fun Hud(engine: BattleEngine, onQuitTapped: () -> Unit) {
     val s = engine.remainingSeconds
     Row(Modifier.fillMaxWidth().padding(top = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            "✕", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center,
-            modifier = Modifier.size(36.dp).clip(CircleShape).background(Theme.panel).clickable(onClick = onQuitTapped)
-                .semantics { contentDescription = "Quit battle"; role = Role.Button }.testTag("quitButton").padding(top = 6.dp),
-        )
+        Box(
+            Modifier.size(38.dp).panel(cornerRadius = 19.dp, tint = Color(0.5f, 0.12f, 0.16f)).clickable(onClick = onQuitTapped)
+                .semantics { contentDescription = "Quit battle"; role = Role.Button }.testTag("quitButton"),
+            contentAlignment = Alignment.Center,
+        ) {
+            DisplayText("✕", 16.sp)
+        }
         Spacer(Modifier.weight(1f))
-        Box(Modifier.testTag("enemyCrowns")) { CrownRow(engine.crowns(Side.ENEMY), Theme.enemy, 13.sp) }
-        Text(
-            String.format(Locale.US, "%d:%02d", s / 60, s % 60),
-            color = if (engine.isOvertime) Theme.enemy else if (engine.isDoubleElixir) Theme.elixir else Color.White,
-            fontSize = 22.sp, fontWeight = FontWeight.Black, textAlign = TextAlign.Center,
-            modifier = Modifier.width(84.dp).testTag("timer"),
-        )
-        Box(Modifier.testTag("playerCrowns")) { CrownRow(engine.crowns(Side.PLAYER), Theme.player, 13.sp) }
+        Row(
+            Modifier.panel(cornerRadius = 22.dp).padding(horizontal = 12.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Box(Modifier.testTag("enemyCrowns")) { CrownRow(engine.crowns(Side.ENEMY), Theme.enemy, 18.dp) }
+            DisplayText(
+                String.format(Locale.US, "%d:%02d", s / 60, s % 60),
+                24.sp,
+                color = if (engine.isOvertime) Theme.enemy else if (engine.isDoubleElixir) Color(0.95f, 0.6f, 1.0f) else Color.White,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.width(84.dp).testTag("timer"),
+            )
+            Box(Modifier.testTag("playerCrowns")) { CrownRow(engine.crowns(Side.PLAYER), Theme.player, 18.dp) }
+        }
         Spacer(Modifier.weight(1f))
-        Text(
-            if (engine.isOvertime) "OT" else if (engine.isDoubleElixir) "2×" else "",
-            color = Theme.elixir, fontSize = 12.sp, fontWeight = FontWeight.Black, modifier = Modifier.width(36.dp),
-        )
-    }
-}
-
-@Composable
-fun CrownRow(count: Int, color: Color, size: TextUnit) {
-    Row(Modifier.semantics { contentDescription = "$count crowns" }, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-        for (i in 0 until 3) {
-            Text("♛", fontSize = size, color = if (i < count) color else Color.White.copy(alpha = 0.2f))
+        Box(Modifier.width(38.dp), contentAlignment = Alignment.Center) {
+            val tag = if (engine.isOvertime) "OT" else if (engine.isDoubleElixir) "2×" else ""
+            if (tag.isNotEmpty()) DisplayText(tag, 13.sp, color = Color(0.95f, 0.6f, 1.0f), modifier = Modifier.panel(cornerRadius = 12.dp).padding(horizontal = 6.dp, vertical = 3.dp))
         }
     }
 }
@@ -160,12 +166,12 @@ fun CrownRow(count: Int, color: Color, size: TextUnit) {
 @Composable
 private fun HandBar(engine: BattleEngine) {
     Column(
-        Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(Theme.panel).padding(10.dp),
-        verticalArrangement = Arrangement.spacedBy(6.dp),
+        Modifier.fillMaxWidth().panel(cornerRadius = 18.dp).padding(10.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.Bottom) {
-            Column(Modifier.width(44.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                Text("Next", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = Color.White.copy(alpha = 0.6f))
+            Column(Modifier.width(48.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text("NEXT", fontSize = 9.sp, fontWeight = FontWeight.Black, color = Color.White.copy(alpha = 0.7f))
                 HandCard(Cards.byId(engine.nextCard), selected = false, affordable = true, small = true, modifier = Modifier.testTag("nextCard"))
             }
             for ((index, id) in engine.hand.withIndex()) {
@@ -186,48 +192,12 @@ private fun HandBar(engine: BattleEngine) {
 @Composable
 fun HandCard(card: CardDef, selected: Boolean, affordable: Boolean, small: Boolean, modifier: Modifier = Modifier, onClick: (() -> Unit)? = null) {
     val lift by animateDpAsState(if (selected) (-10).dp else 0.dp, label = "lift")
-    val saturation = if (affordable) 1f else 0.2f
     Box(
         modifier
             .offset(y = lift)
-            .aspectRatio(0.8f)
-            .alpha(if (affordable) 1f else 0.55f)
-            .clip(RoundedCornerShape(10.dp))
-            .background(cardGradient(card))
-            .border(if (selected) 3.dp else 1.dp, if (selected) Theme.accent else Color.White.copy(alpha = 0.2f), RoundedCornerShape(10.dp))
+            .padding(top = 6.dp, start = 4.dp)
             .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier),
     ) {
-        Column(Modifier.fillMaxSize().padding(horizontal = 2.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Text(card.emoji, fontSize = if (small) 18.sp else 30.sp, modifier = Modifier.alpha(saturation.coerceAtLeast(0.6f)))
-            if (!small) {
-                Text(card.name, color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-            }
-        }
-        ElixirBadge(card.cost, if (small) 16.dp else 22.dp, Modifier.offset((-3).dp, (-3).dp))
-    }
-}
-
-@Composable
-fun ElixirBar(value: Double, max: Double, modifier: Modifier = Modifier) {
-    val fraction = (value / max).toFloat().coerceIn(0f, 1f)
-    Box(
-        modifier.fillMaxWidth().height(20.dp).clip(RoundedCornerShape(8.dp)).background(Color.Black.copy(alpha = 0.5f))
-            .semantics { contentDescription = "Elixir ${value.toInt()} of ${max.toInt()}" },
-    ) {
-        Box(
-            Modifier.fillMaxHeight().fillMaxWidth(fraction).clip(RoundedCornerShape(8.dp))
-                .background(Brush.verticalGradient(listOf(Theme.elixir, Theme.elixirDark))),
-        )
-        Row(Modifier.fillMaxSize()) {
-            for (i in 1 until max.toInt()) {
-                Spacer(Modifier.weight(1f))
-                Box(Modifier.width(1.dp).fillMaxHeight().background(Color.Black.copy(alpha = 0.35f)))
-            }
-            Spacer(Modifier.weight(1f))
-        }
-        Text(
-            "${value.toInt()}", color = Color.White, fontSize = 13.sp, fontWeight = FontWeight.Black,
-            modifier = Modifier.align(Alignment.Center),
-        )
+        CardFrame(card, selected = selected, affordable = affordable, showName = !small, compact = small)
     }
 }

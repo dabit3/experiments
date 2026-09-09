@@ -9,20 +9,33 @@ struct CardsView: View {
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 10), count: 4)
 
     var body: some View {
-        VStack(spacing: 0) {
+        ZStack {
+            SceneryBackdrop(dim: 0.45)
+            VStack(spacing: 0) {
             HStack {
                 Button(action: onBack) {
                     Label("Home", systemImage: "chevron.left")
-                        .font(.headline.weight(.bold))
+                        .font(.system(.subheadline, design: .rounded).weight(.black))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 12)
+                        .frame(height: 36)
                 }
+                .buttonStyle(ChunkyButtonStyle(style: .slate))
                 .accessibilityIdentifier("backButton")
                 Spacer()
-                Text("CARDS")
-                    .font(.system(.title2, design: .rounded).weight(.black))
+                DisplayText(text: "CARDS", size: 30, fill: .goldText)
                 Spacer()
-                Button("Reset") { profile.resetDeck(); selectedDeckCard = nil }
-                    .font(.subheadline.weight(.semibold))
-                    .accessibilityIdentifier("resetDeckButton")
+                Button {
+                    profile.resetDeck(); selectedDeckCard = nil
+                } label: {
+                    Text("Reset")
+                        .font(.system(.subheadline, design: .rounded).weight(.black))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 12)
+                        .frame(height: 36)
+                }
+                .buttonStyle(ChunkyButtonStyle(style: .slate))
+                .accessibilityIdentifier("resetDeckButton")
             }
             .foregroundStyle(.white)
             .padding(.horizontal)
@@ -31,13 +44,20 @@ struct CardsView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
-                        Text("Battle Deck")
-                            .font(.headline.weight(.bold))
+                        Text("BATTLE DECK")
+                            .font(.system(.headline, design: .rounded).weight(.black))
+                            .shadow(color: .black.opacity(0.8), radius: 0, x: 1, y: 1)
                         Spacer()
-                        Text(String(format: "Avg elixir %.1f", profile.averageElixir))
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(Theme.elixir)
-                            .accessibilityIdentifier("avgElixir")
+                        HStack(spacing: 4) {
+                            IconView(kind: .elixir, size: 16)
+                            Text(String(format: "Avg %.1f", profile.averageElixir))
+                        }
+                        .font(.system(.caption, design: .rounded).weight(.black))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 4)
+                        .panel(cornerRadius: 14)
+                        .accessibilityIdentifier("avgElixir")
+                        .accessibilityLabel(String(format: "Avg elixir %.1f", profile.averageElixir))
                     }
                     .foregroundStyle(.white)
 
@@ -54,13 +74,15 @@ struct CardsView: View {
                     Text(selectedDeckCard == nil
                          ? "Tap a deck card, then a collection card to swap. Tap a selected card again for details."
                          : "Now tap a collection card to swap it into your deck.")
-                        .font(.caption)
-                        .foregroundStyle(.white.opacity(0.6))
+                        .font(.system(.caption, design: .rounded).weight(.semibold))
+                        .foregroundStyle(.white.opacity(0.8))
+                        .shadow(color: .black.opacity(0.8), radius: 0, x: 1, y: 1)
                         .padding(.top, 2)
 
-                    Text("Collection")
-                        .font(.headline.weight(.bold))
+                    Text("COLLECTION")
+                        .font(.system(.headline, design: .rounded).weight(.black))
                         .foregroundStyle(.white)
+                        .shadow(color: .black.opacity(0.8), radius: 0, x: 1, y: 1)
                         .padding(.top, 8)
 
                     LazyVGrid(columns: columns, spacing: 10) {
@@ -83,6 +105,7 @@ struct CardsView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 30)
             }
+            }
         }
         .sheet(item: $detailCard) { card in
             CardDetailSheet(card: card)
@@ -97,49 +120,15 @@ struct CardTile: View {
     let dimmed: Bool
 
     var body: some View {
-        VStack(spacing: 4) {
-            ZStack(alignment: .topLeading) {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(card.kind == .spell
-                          ? LinearGradient(colors: [Color(red: 0.55, green: 0.25, blue: 0.75), Color(red: 0.3, green: 0.1, blue: 0.5)], startPoint: .top, endPoint: .bottom)
-                          : LinearGradient(colors: [Color(red: 0.25, green: 0.45, blue: 0.85), Color(red: 0.12, green: 0.25, blue: 0.55)], startPoint: .top, endPoint: .bottom))
-                Text(card.emoji)
-                    .font(.system(size: 34))
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                ElixirBadge(cost: card.cost)
-                    .offset(x: -4, y: -4)
-            }
-            .aspectRatio(0.82, contentMode: .fit)
-            Text(card.name)
-                .font(.system(size: 11, weight: .bold, design: .rounded))
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
-                .foregroundStyle(.white)
-        }
-        .padding(4)
-        .background(RoundedRectangle(cornerRadius: 12).fill(Theme.panel))
-        .overlay(RoundedRectangle(cornerRadius: 12).stroke(selected ? Theme.accent : .white.opacity(0.1), lineWidth: selected ? 3 : 1))
-        .opacity(dimmed ? 0.75 : 1)
-        .scaleEffect(selected ? 1.05 : 1)
+        CardFrame(card: card, selected: selected)
+            .padding(.top, 6)
+            .padding(.leading, 6)
+            .opacity(dimmed ? 0.8 : 1)
+            .scaleEffect(selected ? 1.06 : 1)
         .animation(.spring(duration: 0.2), value: selected)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("\(card.name), \(card.cost) elixir")
         .accessibilityAddTraits(.isButton)
-    }
-}
-
-struct ElixirBadge: View {
-    let cost: Int
-    var size: CGFloat = 22
-
-    var body: some View {
-        Text("\(cost)")
-            .font(.system(size: size * 0.6, weight: .black, design: .rounded))
-            .foregroundStyle(.white)
-            .frame(width: size, height: size)
-            .background(Circle().fill(Theme.elixir))
-            .overlay(Circle().stroke(.white.opacity(0.8), lineWidth: 1.5))
-            .shadow(color: .black.opacity(0.4), radius: 2, y: 1)
     }
 }
 
@@ -149,9 +138,11 @@ struct CardDetailSheet: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack(spacing: 14) {
-                Text(card.emoji).font(.system(size: 56))
+                CardFrame(card: card, showName: false)
+                    .frame(width: 84)
+                    .padding(.leading, 8)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(card.name).font(.system(.title, design: .rounded).weight(.black))
+                    DisplayText(text: card.name, size: 28, fill: .goldText)
                     Text(card.kind == .spell ? "Spell" : (card.flying ? "Flying troop" : "Ground troop"))
                         .font(.subheadline)
                         .foregroundStyle(.white.opacity(0.7))
@@ -180,7 +171,7 @@ struct CardDetailSheet: View {
         .padding(24)
         .foregroundStyle(.white)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Theme.background)
+        .background(LinearGradient(colors: [Theme.panel, Theme.background], startPoint: .top, endPoint: .bottom))
     }
 
     private func statRow(_ label: String, _ value: String) -> some View {

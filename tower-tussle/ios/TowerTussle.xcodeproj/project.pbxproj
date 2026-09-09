@@ -13,7 +13,9 @@
 		3A5C22BC6DDB606BEBCE0FC1 /* TowerTussleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FEBBF900ED7DB6D62B6693 /* TowerTussleApp.swift */; };
 		3ABBA2C1888DB3F475787AA8 /* ArenaCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0549AB16D14A04B5DD6B7CFF /* ArenaCanvas.swift */; };
 		71E46855F9BFC59D54CE9EA3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7889A404A3E2B44F1EB316 /* HomeView.swift */; };
+		7DE3B65552966FC5807FF02C /* Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5AE561366DB08413E21B60B /* Art.swift */; };
 		7FA9E9A98F73A578ED6642EB /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83423F92FD9B215AC7A650CB /* Models.swift */; };
+		8C796C6B0AD7D16A46C8C7B4 /* Widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BE9B7F6661EDD19DD0B12B /* Widgets.swift */; };
 		D817FC13FC333F0FA479467F /* BattleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A93710C7922B6011CD4138 /* BattleEngine.swift */; };
 		E065000994F79E64980A5D14 /* CardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E1FC2EDB4AA7FE5F2E81A5 /* CardsView.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +32,8 @@
 		83E1FC2EDB4AA7FE5F2E81A5 /* CardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsView.swift; sourceTree = "<group>"; };
 		894E2BE2ACFDAFB24255FC82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		9AC2030658EC57AA2A3E0B6E /* BattleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleView.swift; sourceTree = "<group>"; };
+		A4BE9B7F6661EDD19DD0B12B /* Widgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widgets.swift; sourceTree = "<group>"; };
+		A5AE561366DB08413E21B60B /* Art.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Art.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -53,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				0549AB16D14A04B5DD6B7CFF /* ArenaCanvas.swift */,
+				A5AE561366DB08413E21B60B /* Art.swift */,
 				05A93710C7922B6011CD4138 /* BattleEngine.swift */,
 				9AC2030658EC57AA2A3E0B6E /* BattleView.swift */,
 				83E1FC2EDB4AA7FE5F2E81A5 /* CardsView.swift */,
@@ -62,6 +67,7 @@
 				607DCD603D702AE8BD2E8578 /* PlayerProfile.swift */,
 				0694B3A97C26CFF8C3BF5CAE /* ResultsView.swift */,
 				62FEBBF900ED7DB6D62B6693 /* TowerTussleApp.swift */,
+				A4BE9B7F6661EDD19DD0B12B /* Widgets.swift */,
 			);
 			path = TowerTussle;
 			sourceTree = "<group>";
@@ -122,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3ABBA2C1888DB3F475787AA8 /* ArenaCanvas.swift in Sources */,
+				7DE3B65552966FC5807FF02C /* Art.swift in Sources */,
 				D817FC13FC333F0FA479467F /* BattleEngine.swift in Sources */,
 				0524F3E686428DD22CC9AD4B /* BattleView.swift in Sources */,
 				E065000994F79E64980A5D14 /* CardsView.swift in Sources */,
@@ -130,6 +137,7 @@
 				1353F21EF619C0ACA25CD9FC /* PlayerProfile.swift in Sources */,
 				3500061FAB26440C3CABE109 /* ResultsView.swift in Sources */,
 				3A5C22BC6DDB606BEBCE0FC1 /* TowerTussleApp.swift in Sources */,
+				8C796C6B0AD7D16A46C8C7B4 /* Widgets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

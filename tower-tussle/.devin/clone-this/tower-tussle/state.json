@@ -4,8 +4,8 @@
   "clone_name": "Tower Tussle",
   "clone_root": "/Users/devin/repos/experiments/tower-tussle",
   "status": "blocked",
-  "iteration": 3,
-  "revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+  "iteration": 4,
+  "revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
   "frontier": [],
   "blockers": [
     {
@@ -30,7 +30,8 @@
     }
   ],
   "unverified_assumptions": [
-    "Card stats, tower HP, elixir rate and reward values are original tuning inferred from public gameplay knowledge, not measured from the reference."
+    "Card stats, tower HP, elixir rate and reward values are original tuning inferred from public gameplay knowledge, not measured from the reference.",
+    "Graphics were rebuilt as original runtime-drawn vector art (textured arena, shaded towers, animated troop sprites, spell/particle FX, framed card art). Visual quality relative to the reference was judged only by the clone's own captures; no side-by-side parity with Clash Royale was measured."
   ],
   "items": [
     {
@@ -38,10 +39,10 @@
       "kind": "route",
       "label": "Home: title, trophies, gold, Battle/Cards, W/L/D record",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
-        "evidence/ios/home-after-matches.png",
-        "evidence/ios/home-after-surrender.png"
+        "evidence/ios/home.png",
+        "evidence/ios/home-after-matches.png"
       ]
     },
     {
@@ -49,9 +50,9 @@
       "kind": "route",
       "label": "Cards: 8-card deck + collection, swap, reset, average elixir, details sheet",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
-        "evidence/ios/cards-default-deck.png",
+        "evidence/ios/cards.png",
         "evidence/ios/cards-swapped.png"
       ]
     },
@@ -60,11 +61,12 @@
       "kind": "route",
       "label": "Battle: arena, HUD timer/crowns, hand, next card, elixir bar, quit",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
-        "evidence/ios/battle-deploy-restriction.png",
-        "evidence/ios/battle-tower-projectile.png",
-        "evidence/ios/battle-rematch-fresh.png"
+        "evidence/ios/battle-early.png",
+        "evidence/ios/battle-combat.png",
+        "evidence/ios/battle-spell.png",
+        "evidence/ios/battle-deploy-restriction.png"
       ]
     },
     {
@@ -72,10 +74,9 @@
       "kind": "route",
       "label": "Results: outcome, crowns, trophy/gold delta, rematch/home",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
-        "evidence/ios/results-natural-defeat.png",
-        "evidence/ios/results-surrender-defeat.png"
+        "evidence/ios/results.png"
       ]
     },
     {
@@ -83,7 +84,7 @@
       "kind": "feature",
       "label": "Swap deck/collection cards, average elixir updates, reset restores default, persists",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/cards-swapped.png",
         "evidence/ios/cards-default-deck.png"
@@ -94,7 +95,7 @@
       "kind": "feature",
       "label": "Troops only on player half, spells anywhere, affordability gate with announcement",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/battle-deploy-restriction.png",
         "evidence/android/battle-engine-unit-tests.xml"
@@ -105,7 +106,7 @@
       "kind": "feature",
       "label": "4-card hand cycles next card on deploy; elixir spent, regenerates, caps at 10, double elixir at 2:00",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/battle-tower-projectile.png",
         "evidence/android/battle-engine-unit-tests.xml"
@@ -116,10 +117,11 @@
       "kind": "feature",
       "label": "Units path over bridges, towers fire projectiles, enemy AI deploys, crowns on tower destruction",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
-        "evidence/ios/battle-tower-projectile.png",
-        "evidence/checks/summary.md"
+        "evidence/ios/battle-combat.png",
+        "evidence/ios/battle-tower-destroyed.png",
+        "evidence/ios/battle-spell.png"
       ]
     },
     {
@@ -127,7 +129,7 @@
       "kind": "feature",
       "label": "Regulation/overtime timers, natural end, surrender = 3-crown defeat, rewards applied to profile",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/results-natural-defeat.png",
         "evidence/ios/results-surrender-defeat.png",
@@ -139,7 +141,7 @@
       "kind": "journey",
       "label": "Home \u2192 Battle \u2192 deploy \u2192 results \u2192 rematch \u2192 results \u2192 home with updated record",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/battle-rematch-fresh.png",
         "evidence/ios/home-after-matches.png"
@@ -150,7 +152,7 @@
       "kind": "journey",
       "label": "Home \u2192 Cards \u2192 swap \u2192 reset \u2192 back",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/cards-swapped.png",
         "evidence/ios/cards-default-deck.png"
@@ -161,7 +163,7 @@
       "kind": "journey",
       "label": "Battle \u2192 quit \u2192 confirm \u2192 DEFEAT results \u2192 home shows loss",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/results-surrender-defeat.png",
         "evidence/ios/home-after-surrender.png"
@@ -174,7 +176,7 @@
       "status": "blocked",
       "verified_revision": null,
       "evidence": [
-        "evidence/ios/home-after-matches.png"
+        "evidence/ios/home.png"
       ],
       "comparison": {
         "mode": "normalized",
@@ -191,7 +193,8 @@
       "status": "blocked",
       "verified_revision": null,
       "evidence": [
-        "evidence/ios/battle-tower-projectile.png"
+        "evidence/ios/battle-combat.png",
+        "evidence/ios/battle-spell.png"
       ],
       "comparison": {
         "mode": "normalized",
@@ -206,7 +209,7 @@
       "kind": "asset",
       "label": "All art is runtime-drawn vectors/emoji; app icons are original vector drawables",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/discovery/source-audit.md"
       ]
@@ -216,7 +219,7 @@
       "kind": "integration",
       "label": "No network, accounts, or third-party services",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/checks/summary.md"
       ]
@@ -234,18 +237,18 @@
     {
       "id": "navigation",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
-        "evidence/ios/home-after-matches.png",
-        "evidence/ios/cards-default-deck.png",
-        "evidence/ios/battle-rematch-fresh.png",
-        "evidence/ios/results-natural-defeat.png"
+        "evidence/ios/home.png",
+        "evidence/ios/cards.png",
+        "evidence/ios/battle-early.png",
+        "evidence/ios/results.png"
       ]
     },
     {
       "id": "roles",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/checks/summary.md"
       ]
@@ -253,7 +256,7 @@
     {
       "id": "states",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/battle-deploy-restriction.png",
         "evidence/ios/results-surrender-defeat.png",
@@ -263,15 +266,15 @@
     {
       "id": "responsive",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
-        "evidence/ios/battle-tower-projectile.png"
+        "evidence/ios/battle-combat.png"
       ]
     },
     {
       "id": "data",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/home-after-surrender.png",
         "evidence/android/battle-engine-unit-tests.xml"
@@ -280,7 +283,7 @@
     {
       "id": "assets",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/discovery/source-audit.md"
       ]
@@ -288,7 +291,7 @@
     {
       "id": "accessibility",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/checks/summary.md"
       ]
@@ -296,7 +299,7 @@
     {
       "id": "reliability",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/battle-rematch-fresh.png",
         "evidence/android/battle-engine-unit-tests.xml"
@@ -305,7 +308,7 @@
     {
       "id": "rebrand",
       "status": "verified",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/ios/home-after-matches.png",
         "evidence/discovery/source-audit.md"
@@ -316,7 +319,7 @@
     {
       "id": "functional",
       "status": "passed",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/checks/summary.md",
         "evidence/android/battle-engine-unit-tests.xml"
@@ -333,7 +336,7 @@
     {
       "id": "build",
       "status": "passed",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/checks/summary.md"
       ]
@@ -341,7 +344,7 @@
     {
       "id": "quality",
       "status": "passed",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/checks/android-lint-results.txt",
         "evidence/checks/skill-tests.log"
@@ -350,7 +353,7 @@
     {
       "id": "security",
       "status": "passed",
-      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
       "evidence": [
         "evidence/checks/summary.md"
       ]

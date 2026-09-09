@@ -36,6 +36,8 @@ final class BattleEngine: ObservableObject {
     private(set) var towers: [Tower] = []
     private(set) var effects: [SpellEffect] = []
     private(set) var projectiles: [Projectile] = []
+    private(set) var particles: [Particle] = []
+    private(set) var floatingTexts: [FloatingText] = []
     private(set) var elapsed: Double = 0
     private(set) var playerElixir: Double = 5
     private(set) var enemyElixir: Double = 5
@@ -65,6 +67,8 @@ final class BattleEngine: ObservableObject {
         units = []
         effects = []
         projectiles = []
+        particles = []
+        floatingTexts = []
         elapsed = 0
         playerElixir = 5
         enemyElixir = 5
@@ -197,16 +201,47 @@ final class BattleEngine: ObservableObject {
         separateUnits()
         for tower in towers where tower.alive { stepTower(tower, dt: dt) }
 
-        for i in effects.indices { effects[i].ttl -= dt }
+        for i in effects.indices {
+            effects[i].ttl -= dt
+            if !effects[i].resolved && effects[i].landed {
+                effects[i].resolved = true
+                resolveSpell(effects[i])
+            }
+        }
         effects.removeAll { $0.ttl <= 0 }
         for i in projectiles.indices {
             let p = projectiles[i]
             let dir = (p.target - p.pos).normalized
-            projectiles[i].pos = p.pos + dir * (18 * dt)
+            let speed: Double = p.kind == .fireball ? 12 : (p.kind == .cannon ? 14 : 18)
+            projectiles[i].pos = p.pos + dir * (speed * dt)
             projectiles[i].ttl -= dt
         }
+        for p in projectiles where p.ttl <= 0 || p.pos.distance(to: p.target) < 0.4 {
+            spawnImpact(p)
+        }
         projectiles.removeAll { $0.ttl <= 0 || $0.pos.distance(to: $0.target) < 0.4 }
+        for u in units where !u.alive { spawnDeath(u) }
         units.removeAll { !$0.alive }
+
+        for i in particles.indices {
+            var p = particles[i]
+            p.ttl -= dt
+            switch p.kind {
+            case .smoke: p.vel = Vec(x: p.vel.x * 0.98, y: p.vel.y - 0.6 * dt)
+            case .debris, .bone: p.vel = Vec(x: p.vel.x * 0.96, y: p.vel.y + 9 * dt)
+            case .ember, .spark: p.vel = Vec(x: p.vel.x * 0.93, y: p.vel.y * 0.93 + 2 * dt)
+            case .dust, .glow: p.vel = p.vel * 0.9
+            case .leaf: p.vel = Vec(x: p.vel.x + sin(elapsed * 6 + Double(p.id)) * dt, y: p.vel.y)
+            }
+            p.pos = p.pos + p.vel * dt
+            particles[i] = p
+        }
+        particles.removeAll { $0.ttl <= 0 }
+        for i in floatingTexts.indices {
+            floatingTexts[i].ttl -= dt
+            floatingTexts[i].pos.y -= 1.4 * dt
+        }
+        floatingTexts.removeAll { $0.ttl <= 0 }
 
         enemyDecisionTimer -= dt
         if enemyDecisionTimer <= 0 {
@@ -244,14 +279,22 @@ final class BattleEngine: ObservableObject {
     private func stepUnit(_ unit: Unit, dt: Double) {
         unit.hitFlash = max(0, unit.hitFlash - dt)
         unit.attackCooldown = max(0, unit.attackCooldown - dt)
+        unit.attackAnim = max(0, unit.attackAnim - dt)
+        unit.spawnAge += dt
+        unit.moving = false
         guard let target = chooseTarget(for: unit) else { return }
         let dist = unit.pos.distance(to: target.pos)
         let attackRange = unit.card.range + target.radius
+        if target.pos.x != unit.pos.x { unit.facing = target.pos.x > unit.pos.x ? 1 : -1 }
         if dist <= attackRange + 0.05 {
             if unit.attackCooldown <= 0 {
                 unit.attackCooldown = unit.card.hitSpeed
+                unit.attackAnim = 0.25
                 if unit.card.range > 1.2 {
-                    projectiles.append(Projectile(id: allocId(), pos: unit.pos, target: target.pos, side: unit.side, ttl: 1.0))
+                    let kind: ProjectileKind = unit.card.flying ? .fireball : .arrow
+                    projectiles.append(Projectile(id: allocId(), kind: kind, start: unit.pos, pos: unit.pos, target: target.pos, side: unit.side, ttl: 1.0))
+                } else {
+                    spawnParticles(at: target.pos, kind: .spark, count: 3, speed: 3, ttl: 0.25, size: 0.1, color: .white)
                 }
                 if let u = target.unitTarget { damage(unit: u, amount: unit.card.damage) }
                 if let t = target.towerTarget { damage(tower: t, amount: unit.card.damage) }
@@ -261,6 +304,9 @@ final class BattleEngine: ObservableObject {
         let waypoint = moveWaypoint(for: unit, toward: target.pos)
         let dir = (waypoint - unit.pos).normalized
         let stepLen = min(unit.card.speed * dt, unit.pos.distance(to: waypoint))
+        unit.moving = stepLen > 0.0001
+        unit.walkPhase += stepLen * 4
+        if abs(dir.x) > 0.15 { unit.facing = dir.x > 0 ? 1 : -1 }
         unit.pos = unit.pos + dir * stepLen
         unit.pos.x = min(max(unit.pos.x, 0.4), Arena.width - 0.4)
         unit.pos.y = min(max(unit.pos.y, 0.4), Arena.height - 0.4)
@@ -320,7 +366,9 @@ final class BattleEngine: ObservableObject {
         guard let target = best else { return }
         if tower.attackCooldown <= 0 {
             tower.attackCooldown = tower.kind.hitSpeed
-            projectiles.append(Projectile(id: allocId(), pos: tower.pos, target: target.pos, side: tower.side, ttl: 1.0))
+            let origin = Vec(x: tower.pos.x, y: tower.pos.y - tower.kind.radius * 0.9)
+            projectiles.append(Projectile(id: allocId(), kind: tower.kind == .keep ? .cannon : .bolt, start: origin, pos: origin,
+                                          target: target.pos, side: tower.side, ttl: 1.0))
             damage(unit: target, amount: tower.kind.damage)
         }
     }
@@ -329,6 +377,7 @@ final class BattleEngine: ObservableObject {
         guard unit.alive else { return }
         unit.hp -= amount
         unit.hitFlash = 0.15
+        addDamageText(at: Vec(x: unit.pos.x, y: unit.pos.y - unit.radius - 0.4), amount: amount, side: unit.side)
     }
 
     private func damage(tower: Tower, amount: Double) {
@@ -336,26 +385,97 @@ final class BattleEngine: ObservableObject {
         tower.hp -= amount
         tower.hitFlash = 0.15
         tower.activated = true
+        addDamageText(at: Vec(x: tower.pos.x, y: tower.pos.y - tower.kind.radius - 0.7), amount: amount, side: tower.side)
+        spawnParticles(at: tower.pos, kind: .debris, count: 3, speed: 4, ttl: 0.6, size: 0.14, color: Color(white: 0.55))
         if tower.hp <= 0 {
             tower.hp = 0
             for t in towers where t.side == tower.side && t.kind == .keep { t.activated = true }
-            effects.append(SpellEffect(id: allocId(), pos: tower.pos, radius: 2.2, color: .orange, ttl: 0.8))
+            effects.append(SpellEffect(id: allocId(), kind: .towerFall, pos: tower.pos, radius: tower.kind.radius * 2.0, side: tower.side))
+            spawnParticles(at: tower.pos, kind: .debris, count: 18, speed: 7, ttl: 1.1, size: 0.22, color: Color(white: 0.5))
+            spawnParticles(at: tower.pos, kind: .smoke, count: 14, speed: 1.6, ttl: 2.2, size: 0.9, color: Color(white: 0.35))
+            spawnParticles(at: tower.pos, kind: .ember, count: 16, speed: 6, ttl: 0.9, size: 0.12, color: .orange)
             flash(tower.side == .player ? "Your \(tower.kind.name) fell!" : "Enemy \(tower.kind.name) destroyed!")
+        }
+    }
+
+    /// Damage numbers landing near a fresh one for the same side are merged so clusters stay legible.
+    private func addDamageText(at pos: Vec, amount: Double, side: Side) {
+        if let i = floatingTexts.lastIndex(where: { $0.side == side && $0.age < 0.25 && $0.pos.distance(to: pos) < 1.2 }) {
+            floatingTexts[i].amount += amount
+            floatingTexts[i].ttl = floatingTexts[i].maxTtl
+            return
+        }
+        let jitter = Double(floatingTexts.count % 3 - 1) * 0.45
+        floatingTexts.append(FloatingText(id: allocId(), pos: Vec(x: pos.x + jitter, y: pos.y), amount: amount, side: side,
+                                          color: side == .player ? Color(red: 1.0, green: 0.45, blue: 0.4) : Color(red: 1.0, green: 0.92, blue: 0.5),
+                                          ttl: 0.7, maxTtl: 0.7))
+        if floatingTexts.count > 24 { floatingTexts.removeFirst(floatingTexts.count - 24) }
+    }
+
+    private func spawnParticles(at pos: Vec, kind: ParticleKind, count: Int, speed: Double, ttl: Double, size: Double, color: Color, upward: Bool = false) {
+        for _ in 0..<count {
+            let angle = Double.random(in: 0..<(2 * Double.pi), using: &rng)
+            let s = Double.random(in: 0.3...1.0, using: &rng) * speed
+            var vel = Vec(x: cos(angle) * s, y: sin(angle) * s)
+            if upward || kind == .debris || kind == .bone { vel.y = -abs(vel.y) - speed * 0.4 }
+            if kind == .smoke { vel.y = -abs(vel.y) * 0.6 - 0.4 }
+            let life = ttl * Double.random(in: 0.6...1.0, using: &rng)
+            particles.append(Particle(id: allocId(), kind: kind, pos: pos, vel: vel, ttl: life, maxTtl: life,
+                                      size: size * Double.random(in: 0.7...1.3, using: &rng), color: color))
+        }
+        if particles.count > 400 { particles.removeFirst(particles.count - 400) }
+    }
+
+    private func spawnImpact(_ p: Projectile) {
+        switch p.kind {
+        case .fireball:
+            spawnParticles(at: p.target, kind: .ember, count: 6, speed: 3, ttl: 0.35, size: 0.12, color: .orange)
+        case .cannon:
+            spawnParticles(at: p.target, kind: .dust, count: 6, speed: 2.5, ttl: 0.4, size: 0.3, color: Color(white: 0.8))
+        case .arrow, .bolt:
+            spawnParticles(at: p.target, kind: .spark, count: 3, speed: 2.5, ttl: 0.2, size: 0.08, color: .white)
+        }
+    }
+
+    private func spawnDeath(_ unit: Unit) {
+        let color = unit.side == .player ? Theme.player : Theme.enemy
+        if unit.card.id == "bones" {
+            spawnParticles(at: unit.pos, kind: .bone, count: 5, speed: 3.5, ttl: 0.7, size: 0.16, color: Color(white: 0.95))
+        } else if unit.card.id == "giant" {
+            spawnParticles(at: unit.pos, kind: .debris, count: 10, speed: 4, ttl: 0.8, size: 0.2, color: Color(white: 0.55))
+        }
+        spawnParticles(at: unit.pos, kind: .dust, count: 6, speed: 1.6, ttl: 0.6, size: 0.35, color: Color(white: 0.9))
+        spawnParticles(at: unit.pos, kind: .glow, count: 5, speed: 2.2, ttl: 0.45, size: 0.18, color: color)
+    }
+
+    private func resolveSpell(_ e: SpellEffect) {
+        guard e.damage > 0 else { return }
+        for u in units where u.alive && u.side != e.side && u.pos.distance(to: e.pos) <= e.radius + u.radius {
+            damage(unit: u, amount: e.damage)
+        }
+        for t in towers where t.alive && t.side != e.side && t.pos.distance(to: e.pos) <= e.radius + t.kind.radius {
+            damage(tower: t, amount: e.damage * Arena.towerSpellFactor)
+        }
+        switch e.kind {
+        case .meteor:
+            spawnParticles(at: e.pos, kind: .ember, count: 26, speed: 7, ttl: 0.9, size: 0.16, color: .orange)
+            spawnParticles(at: e.pos, kind: .smoke, count: 10, speed: 2.2, ttl: 1.4, size: 0.8, color: Color(white: 0.3))
+            spawnParticles(at: e.pos, kind: .debris, count: 8, speed: 6, ttl: 0.8, size: 0.16, color: Color(red: 0.35, green: 0.25, blue: 0.2))
+        case .volley:
+            spawnParticles(at: e.pos, kind: .dust, count: 14, speed: 3.5, ttl: 0.5, size: 0.3, color: Color(white: 0.85))
+        case .towerFall, .deploy:
+            break
         }
     }
 
     func play(_ card: CardDef, side: Side, at pos: Vec) {
         switch card.kind {
         case .spell:
-            effects.append(SpellEffect(id: allocId(), pos: pos, radius: card.radius,
-                                       color: card.id == "meteor" ? .orange : .cyan, ttl: 0.7))
-            for u in units where u.alive && u.side != side && u.pos.distance(to: pos) <= card.radius + u.radius {
-                damage(unit: u, amount: card.damage)
-            }
-            for t in towers where t.alive && t.side != side && t.pos.distance(to: pos) <= card.radius + t.kind.radius {
-                damage(tower: t, amount: card.damage * Arena.towerSpellFactor)
-            }
+            effects.append(SpellEffect(id: allocId(), kind: card.id == "meteor" ? .meteor : .volley, pos: pos,
+                                       radius: card.radius, side: side, damage: card.damage))
         case .troop:
+            effects.append(SpellEffect(id: allocId(), kind: .deploy, pos: pos, radius: card.count > 1 ? 1.1 : 0.8, side: side))
+            spawnParticles(at: pos, kind: .dust, count: 8, speed: 2.5, ttl: 0.5, size: 0.3, color: Color(white: 0.9))
             let n = card.count
             for i in 0..<n {
                 let angle = Double(i) / Double(max(n, 1)) * 2 * Double.pi
@@ -363,6 +483,7 @@ final class BattleEngine: ObservableObject {
                 let p = Vec(x: pos.x + cos(angle) * spread, y: pos.y + sin(angle) * spread)
                 let unit = Unit(id: allocId(), card: card, side: side, pos: p)
                 unit.laneX = Arena.laneX(for: pos.x)
+                unit.facing = side == .player ? 1 : -1
                 units.append(unit)
             }
         }

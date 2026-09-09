@@ -48,6 +48,21 @@ adb shell am start -n com.dabit3.towertussle/.MainActivity
 `app/src/test` holds JVM unit tests for the battle engine (hand cycling, elixir,
 deployment rules, timers, surrender, crowns).
 
+## Graphics
+
+All artwork is original and drawn at runtime as vector graphics; there are no bitmap
+assets. Each platform has the same three rendering layers:
+
+- `Art` (`ios/TowerTussle/Art.swift`, `android/.../Art.kt`): palette, shared shape
+  helpers, tower/character/icon painters and the per-card illustrations.
+- `ArenaCanvas`: textured grass, river with animated water, plank bridges, perimeter
+  walls and scenery; shaded towers with flags and keep dome; animated troop sprites
+  with shadows and hit flashes; typed projectiles (arrows, bolts, fireballs,
+  cannonballs); Meteor/Volley effects, particles and merged floating damage numbers,
+  all drawn in y-sorted order.
+- `Widgets`: painted scenery backdrop, beveled buttons, layered panels, framed card
+  art with elixir badges, vector crown/trophy/coin icons and the results emblem.
+
 ## Test identifiers
 
 Both apps expose the same identifiers (iOS `accessibilityIdentifier`, Android `testTag`):
