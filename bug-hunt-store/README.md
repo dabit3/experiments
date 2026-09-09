@@ -69,23 +69,28 @@ description). The scoreboard button in the header opens a per-bug checklist at a
 
 ### Recording
 
-**Recording (mp4):** https://app.devin.ai/attachments/b11b33e2-5cc5-4bf4-a6db-616c0b591f77/kestrel-bug-hunt-final.mp4
+**Recording (mp4):** https://app.devin.ai/attachments/816c9600-33b0-4f5e-bf0e-d53f344139aa/kestrel-blind-hunt-edited.mp4
 
-![Bug Hunt showcase preview](https://app.devin.ai/attachments/bc55b09e-154a-4ec7-a548-f1856780dd26/kestrel-bug-hunt-preview.webp)
+![Bug Hunt showcase preview](https://app.devin.ai/attachments/c00604fe-f957-43dc-b600-79d3fb302ddd/kestrel-blind-hunt-preview.webp)
 
-Outcome of the recorded run: a **blind** hunt by a fresh Devin session that was given no repro
-hints and was forbidden from reading `SPOILERS.md`, `README.md`, the source, `bugs.json`, the PR
-or git history. It found and reported **all 8 planted bugs unaided in ~21 minutes** of
-exploration; `SPOILERS.md` was never opened. One extra report (pressing Enter in the promo-code
-field placed the order instead of applying the code) was correctly rejected by the matcher as
-not planted — that was a genuine unintended defect and has since been fixed. The video is the
-recorder's edited cut of the session; the right-hand panel is a post-processed test-execution
-log rendered from the recording's real structured-annotation timestamps.
+Outcome of the recorded run: a **blind** hunt performed by Devin's built-in testing agent as a
+native test plan (Devin session `c510e4fb21f24ef09820f2e4fd6ca460`; the test plan and
+test-execution panel are viewable in the Devin web app). Neither the session nor the testing
+agent was allowed to read `SPOILERS.md`, `README.md`, the source, `bugs.json`, the PR or git
+history, and no repro hints were given. It found and reported **all 8 planted bugs unaided in
+~8.5 minutes** of exploration; `SPOILERS.md` was never opened. The mp4 is the native recording
+(no post-processing).
 
-Earlier recordings: guided run on the redesigned storefront
-(https://app.devin.ai/attachments/09a54feb-9053-46de-b635-d309c1afddf0/bug-hunt-store-v2-edited.mp4)
+Earlier recordings: a blind run by a fresh Devin session driving Chrome directly, all 8 unaided
+in ~21 min, with a post-processed test-execution panel
+(https://app.devin.ai/attachments/b11b33e2-5cc5-4bf4-a6db-616c0b591f77/kestrel-bug-hunt-final.mp4);
+a guided run on the redesigned storefront
+(https://app.devin.ai/attachments/09a54feb-9053-46de-b635-d309c1afddf0/bug-hunt-store-v2-edited.mp4);
 and the first blind run on the original visual design
 (https://app.devin.ai/attachments/a11ae4ce-dea8-4c03-b776-b2da33034f61/bug-hunt-store-showcase.mp4).
+The 21-minute run also surfaced one genuine unplanned defect (Enter in the promo-code field
+placed the order instead of applying the code), which the matcher correctly rejected as not
+planted and which has since been fixed.
 
 ## Project layout
 
