@@ -44,8 +44,22 @@ Reset state with **Reset demo** (or reload the page) so the seeded state is iden
 | 9 | Click **Pay $…** on each seat card, optionally pick a tip, **Charge**. | Each card flips to `Paid`; the header shows `4/4 paid`; **Close table** becomes enabled. |
 | 10 | Manually check: sum the four seat totals and compare to the table total. | They match to the cent (tax and gratuity are allocated with largest-remainder rounding). |
 | 11 | Click **Receipt** on a paid seat → **Print receipt**. | A thermal-style receipt shows items, modifiers, note, tax, gratuity, tip and amount charged; the print preview contains only the receipt. |
-| 12 | Click **Kitchen** in the top bar. | The fired course-1 ticket for Table 4 lists the fired items with seat numbers, modifiers and the custom note. |
+| 12 | Click **Kitchen** in the top bar. | The fired course-1 ticket for Table 4 lists the fired starters with seat numbers (modifiers and notes print on the ticket for the course they belong to). |
 
 ## Recording
 
-**Recording:** _(placeholder — filled in after the showcase run)_
+**Recording:** https://app.devin.ai/attachments/3c4476ce-3b5b-4d70-8e8e-4c4e71101d80/restaurant-pos-showcase.mp4
+
+![Animated preview](https://app.devin.ai/attachments/830e4bc9-5423-43a0-981e-36076ec3f176/restaurant-pos-preview.webp)
+
+Numbers from the recorded run (party of 6 at Table 4, 8 items ordered, 1 voided):
+
+| Seat | Subtotal | Tax 8.875% | Gratuity 18% | Total |
+|------|---------:|-----------:|-------------:|------:|
+| 1 — Ribeye (medium rare, grilled asparagus +$3), Burrata | $59.00 | $5.24 | $10.62 | $74.86 |
+| 2 — Ember Burger (medium, truffle fries +$4), Crispy Calamari | $35.00 | $3.10 | $6.30 | $44.40 |
+| 3 — Mushroom Risotto (note), Caesar Salad | $34.00 | $3.02 | $6.12 | $43.14 |
+| 4 — French Onion Soup | $10.00 | $0.89 | $1.80 | $12.69 |
+| **Table** | **$138.00** | **$12.25** | **$24.84** | **$175.09** |
+
+The four seat totals sum to $175.09, exactly the table total shown in the verification bar.
