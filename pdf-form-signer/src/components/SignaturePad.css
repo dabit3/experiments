@@ -1,0 +1,184 @@
+.sigpad {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 100%;
+}
+
+.sigpad__modes {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 4px;
+  gap: 4px;
+  background: var(--surface-2);
+  border-radius: 999px;
+}
+
+.sigpad__mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-muted);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.sigpad__mode:hover {
+  color: var(--text);
+}
+
+.sigpad__mode.is-active {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.sigpad__surface {
+  position: relative;
+  max-width: 100%;
+  background:
+    linear-gradient(0deg, rgba(27, 42, 74, 0.035), rgba(27, 42, 74, 0.035)),
+    repeating-linear-gradient(0deg, transparent 0 39px, rgba(27, 42, 74, 0.05) 39px 40px);
+  background-color: #fbfbf7;
+  border: 2px dashed var(--border-strong);
+  border-radius: 14px;
+  overflow: hidden;
+  touch-action: none;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.sigpad__surface:hover {
+  border-color: var(--accent);
+}
+
+.sigpad--invalid .sigpad__surface {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 4px var(--danger-ring);
+}
+
+.sigpad__canvas {
+  display: block;
+  cursor: crosshair;
+  position: relative;
+  z-index: 2;
+}
+
+.sigpad__adopted {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sigpad__typed-preview {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  font-size: clamp(28px, 9cqw, 64px);
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  animation: fade-in 200ms ease;
+}
+
+.sigpad__typed-empty {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+.sigpad__baseline {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 22%;
+  border-bottom: 1.5px solid rgba(27, 42, 74, 0.28);
+  pointer-events: none;
+}
+
+.sigpad--compact .sigpad__baseline {
+  bottom: 20%;
+}
+
+.sigpad__x {
+  position: absolute;
+  left: -2px;
+  bottom: 2px;
+  font-size: 20px;
+  line-height: 1;
+  color: rgba(27, 42, 74, 0.4);
+}
+
+.sigpad__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 12%;
+  color: var(--text-faint);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sigpad--compact .sigpad__placeholder {
+  font-size: 13px;
+}
+
+.sigpad__toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+}
+
+.sigpad__status {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.sigpad__spacer {
+  flex: 1;
+}
+
+.sigpad__typed-input {
+  flex: 1;
+  min-width: 0;
+  height: 40px;
+  padding: 0 14px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 10px;
+  background: var(--surface);
+  font: inherit;
+  font-size: 15px;
+  color: var(--text);
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.sigpad__typed-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-ring);
+}
