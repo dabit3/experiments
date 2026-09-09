@@ -70,7 +70,9 @@ export function Board({ board, state, stuckIds, maxWidth, maxHeight }: BoardProp
         className={`entity worker facing-${state.facing}`}
         style={{ transform: `translate(${state.player.x * tile}px, ${state.player.y * tile}px)` }}
       >
-        <WorkerSprite facing={state.facing} />
+        <span key={state.moves} className="worker-step">
+          <WorkerSprite facing={state.facing} />
+        </span>
       </div>
     </div>
   )

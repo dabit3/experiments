@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { crateAt, isTarget, parseLevel } from '../game/engine'
 import { LEVELS, type LevelDef } from '../game/levels'
 import { isUnlocked, type Progress } from '../game/progress'
-import { CrateIcon } from './Sprites'
+import { Emblem, Wordmark } from './Logo'
 import { Stars } from './Stars'
 
 interface LevelSelectProps {
@@ -53,25 +53,41 @@ export function LevelSelect({ progress, onPlay, onReset }: LevelSelectProps) {
 
   return (
     <section className="level-select">
-      <header className="ls-header">
-        <div>
-          <h2>Pick a warehouse</h2>
-          <p className="muted">
-            {completed} of {LEVELS.length} levels cleared · <strong className="accent">{earned}</strong> / {LEVELS.length * 3}{' '}
-            stars
+      <header className="hero">
+        <div className="hero-copy">
+          <h1 className="hero-title">
+            <Emblem className="hero-emblem" />
+            <Wordmark />
+          </h1>
+          <p className="hero-sub">
+            Eight warehouses, one forklift-free worker. Push every crate onto a target in as few moves as you can.
           </p>
         </div>
-        <button className="btn btn-ghost" onClick={onReset} disabled={completed === 0}>
-          Reset progress
-        </button>
+        <div className="hero-side">
+          <div className="shift-card" aria-label="Progress">
+            <span className="eyebrow">Cleared</span>
+            <span className="eyebrow">Stars</span>
+            <span className="shift-val">
+              {completed}
+              <small>/ {LEVELS.length}</small>
+            </span>
+            <span className="shift-val accent">
+              {earned}
+              <small>/ {LEVELS.length * 3}</small>
+            </span>
+          </div>
+          <button className="btn btn-ghost" onClick={onReset} disabled={completed === 0}>
+            Reset progress
+          </button>
+        </div>
       </header>
 
       <ul className="level-grid">
-        {LEVELS.map((level) => {
+        {LEVELS.map((level, i) => {
           const result = progress[level.id]
           const unlocked = isUnlocked(progress, level.id)
           return (
-            <li key={level.id}>
+            <li key={level.id} style={{ '--i': i } as React.CSSProperties}>
               <button
                 className={`level-card${unlocked ? '' : ' locked'}${result ? ' cleared' : ''}`}
                 onClick={() => unlocked && onPlay(level.id)}
@@ -99,15 +115,20 @@ export function LevelSelect({ progress, onPlay, onReset }: LevelSelectProps) {
                   </span>
                   {result && (
                     <span className="lc-badge">
-                      <CrateIcon className="lc-badge-icon" /> cleared
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 12.5 10 17.5 19 7" />
+                      </svg>
+                      cleared
                     </span>
                   )}
                 </div>
                 {!unlocked && (
                   <span className="lc-lock" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                      <path d="M7 10V8a5 5 0 0 1 10 0v2h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1zm2 0h6V8a3 3 0 0 0-6 0v2z" />
-                    </svg>
+                    <span className="lc-lock-icon">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M7 10V8a5 5 0 0 1 10 0v2h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1zm2 0h6V8a3 3 0 0 0-6 0v2z" />
+                      </svg>
+                    </span>
                     Clear level {level.id - 1} to unlock
                   </span>
                 )}

@@ -33,6 +33,28 @@ function Kbd({ children }: { children: React.ReactNode }) {
   return <kbd className="kbd">{children}</kbd>
 }
 
+const CONFETTI_COLORS = ['#ffb020', '#ffd166', '#34d399', '#ff7a2f', '#f1f3f8']
+
+function Confetti() {
+  return (
+    <span className="confetti" aria-hidden="true">
+      {Array.from({ length: 28 }, (_, i) => (
+        <i
+          key={i}
+          style={
+            {
+              '--x': `${(i * 37) % 100}%`,
+              '--d': `${(i % 7) * 90}ms`,
+              '--r': `${((i * 131) % 720) - 360}deg`,
+              '--c': CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+            } as React.CSSProperties
+          }
+        />
+      ))}
+    </span>
+  )
+}
+
 export function PlayScreen({ level, best, onSolved, onNext, onExit }: PlayScreenProps) {
   const { board, state, canUndo, solved, stuck, step, undo, restart } = useSokoban(level)
   const stuckIds = useMemo(() => new Set(stuck.map((c) => c.id)), [stuck])
@@ -96,6 +118,7 @@ export function PlayScreen({ level, best, onSolved, onNext, onExit }: PlayScreen
 
           {solved && stars && (
             <div className="win-overlay" role="dialog" aria-modal="true" aria-labelledby="win-title">
+              <Confetti />
               <div className="win-card">
                 <p className="win-eyebrow">Level {level.id} cleared</p>
                 <h2 id="win-title">{level.name}</h2>
@@ -155,15 +178,25 @@ export function PlayScreen({ level, best, onSolved, onNext, onExit }: PlayScreen
 
       <aside className="sidebar">
         <div className="panel">
-          <p className="eyebrow">Level {String(level.id).padStart(2, '0')} of {LEVELS.length}</p>
-          <h2 className="level-title">{level.name}</h2>
-          <p className="muted">
-            {cratesHome} / {state.crates.length} crates on target
-          </p>
+          <div className="level-head">
+            <span className="level-num">{String(level.id).padStart(2, '0')}</span>
+            <div>
+              <p className="eyebrow">Level {level.id} of {LEVELS.length}</p>
+              <h2 className="level-title">{level.name}</h2>
+            </div>
+          </div>
+          <div className="progress-row">
+            <span className="progress-bar">
+              <i style={{ width: `${(cratesHome / state.crates.length) * 100}%` }} />
+            </span>
+            <span>
+              {cratesHome} / {state.crates.length} crates
+            </span>
+          </div>
         </div>
 
         <div className="panel stats">
-          <div className="stat">
+          <div className={`stat${state.moves > level.par ? ' over' : ''}`}>
             <span className="stat-label">Moves</span>
             <span className="stat-value" data-testid="moves">
               {state.moves}
@@ -175,7 +208,7 @@ export function PlayScreen({ level, best, onSolved, onNext, onExit }: PlayScreen
               {state.pushes}
             </span>
           </div>
-          <div className="stat">
+          <div className="stat stat-par">
             <span className="stat-label">Par</span>
             <span className="stat-value">{level.par}</span>
           </div>
@@ -184,13 +217,13 @@ export function PlayScreen({ level, best, onSolved, onNext, onExit }: PlayScreen
         <div className="panel">
           <p className="eyebrow">Star thresholds</p>
           <ul className="thresholds">
-            <li>
+            <li className={state.moves <= level.par ? 'hit' : ''}>
               <Stars count={3} size="sm" /> <span>≤ {level.par} moves</span>
             </li>
-            <li>
+            <li className={state.moves <= Math.ceil(level.par * 1.5) ? 'hit' : ''}>
               <Stars count={2} size="sm" /> <span>≤ {Math.ceil(level.par * 1.5)} moves</span>
             </li>
-            <li>
+            <li className="hit">
               <Stars count={1} size="sm" /> <span>any finish</span>
             </li>
           </ul>

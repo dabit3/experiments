@@ -23,10 +23,10 @@ function Pixels({ pixels, viewBox = '0 0 16 16', className }: { pixels: Px[]; vi
   )
 }
 
-const MORTAR = '#252a38'
-const BRICK = '#4f586f'
-const BRICK_HI = '#66718c'
-const BRICK_LO = '#3c4457'
+const MORTAR = '#1c202b'
+const BRICK = '#4c5568'
+const BRICK_HI = '#646e85'
+const BRICK_LO = '#394152'
 
 function brickRow(y: number, offset: boolean): Px[] {
   const out: Px[] = []
@@ -55,11 +55,12 @@ export function WallTile() {
   return <Pixels pixels={WALL_PIXELS} className="sprite sprite-wall" />
 }
 
-const WOOD = '#c48a3f'
-const WOOD_HI = '#e0a95a'
-const WOOD_LO = '#8f5f27'
-const WOOD_EDGE = '#5c3a14'
-const NAIL = '#f2e6c9'
+const WOOD = '#cf9142'
+const WOOD_HI = '#e9b264'
+const WOOD_LO = '#96612a'
+const WOOD_EDGE = '#4a2c0f'
+const STEEL = '#b9c2d4'
+const STEEL_LO = '#6f7a90'
 
 const CRATE_PIXELS: Px[] = [
   { x: 1, y: 1, w: 14, h: 14, c: WOOD },
@@ -75,30 +76,42 @@ const CRATE_PIXELS: Px[] = [
   // plank seams
   { x: 3, y: 5, w: 10, h: 1, c: WOOD_LO },
   { x: 3, y: 10, w: 10, h: 1, c: WOOD_LO },
+  { x: 3, y: 6, w: 10, h: 1, c: WOOD_HI },
+  { x: 3, y: 11, w: 10, h: 1, c: WOOD_HI },
   // diagonal brace
   ...Array.from({ length: 10 }, (_, i) => ({ x: 3 + i, y: 3 + i, c: WOOD_EDGE })),
   ...Array.from({ length: 10 }, (_, i) => ({ x: 12 - i, y: 3 + i, c: WOOD_EDGE })),
-  // nails
-  { x: 3, y: 3, c: NAIL },
-  { x: 12, y: 3, c: NAIL },
-  { x: 3, y: 12, c: NAIL },
-  { x: 12, y: 12, c: NAIL },
+  // steel corner brackets
+  { x: 2, y: 2, w: 3, h: 1, c: STEEL },
+  { x: 2, y: 2, w: 1, h: 3, c: STEEL },
+  { x: 11, y: 2, w: 3, h: 1, c: STEEL },
+  { x: 13, y: 2, w: 1, h: 3, c: STEEL },
+  { x: 2, y: 13, w: 3, h: 1, c: STEEL_LO },
+  { x: 2, y: 11, w: 1, h: 3, c: STEEL_LO },
+  { x: 11, y: 13, w: 3, h: 1, c: STEEL_LO },
+  { x: 13, y: 11, w: 1, h: 3, c: STEEL_LO },
+  // rivets
+  { x: 3, y: 3, c: STEEL_LO },
+  { x: 12, y: 3, c: STEEL_LO },
+  { x: 3, y: 12, c: STEEL },
+  { x: 12, y: 12, c: STEEL },
 ]
 
 export function CrateSprite() {
   return <Pixels pixels={CRATE_PIXELS} className="sprite sprite-crate" />
 }
 
-const HAT = '#f7c325'
-const HAT_LO = '#d19a12'
+const HAT = '#ffb020'
+const HAT_LO = '#d18a0c'
 const SKIN = '#f3c48e'
 const SKIN_LO = '#d9a06a'
 const EYE = '#1d1a24'
-const VEST = '#ff7a1c'
+const VEST = '#ff7a2f'
 const VEST_LO = '#cf5d0d'
-const STRIPE = '#f4f4f4'
+const STRIPE = '#f7f7f7'
 const PANTS = '#2c3f75'
 const BOOT = '#3a2a1e'
+const GLOVE = '#ffd166'
 
 function workerPixels(facing: Dir): Px[] {
   const back = facing === 'up'
@@ -113,9 +126,11 @@ function workerPixels(facing: Dir): Px[] {
     { x: 4, y: 8, w: 8, h: 4, c: VEST },
     { x: 4, y: 9, w: 8, h: 1, c: STRIPE },
     { x: 4, y: 11, w: 8, h: 1, c: VEST_LO },
-    // arms
-    { x: 3, y: 8, w: 1, h: 3, c: SKIN },
-    { x: 12, y: 8, w: 1, h: 3, c: SKIN },
+    // arms & gloves
+    { x: 3, y: 8, w: 1, h: 2, c: SKIN },
+    { x: 12, y: 8, w: 1, h: 2, c: SKIN },
+    { x: 3, y: 10, c: GLOVE },
+    { x: 12, y: 10, c: GLOVE },
     // legs & boots
     { x: 5, y: 12, w: 2, h: 2, c: PANTS },
     { x: 9, y: 12, w: 2, h: 2, c: PANTS },
@@ -147,6 +162,3 @@ export function WorkerSprite({ facing }: { facing: Dir }) {
   return <Pixels pixels={WORKER_BY_DIR[facing]} className={`sprite sprite-worker facing-${facing}`} />
 }
 
-export function CrateIcon({ className }: { className?: string }) {
-  return <Pixels pixels={CRATE_PIXELS} className={className} />
-}

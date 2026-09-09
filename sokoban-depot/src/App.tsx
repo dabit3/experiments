@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import './App.css'
 import { LevelSelect } from './components/LevelSelect'
 import { PlayScreen } from './components/PlayScreen'
-import { CrateIcon } from './components/Sprites'
+import { Logo } from './components/Logo'
 import { LEVELS } from './game/levels'
 import { useProgress } from './game/progress'
 
@@ -32,11 +32,7 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <button className="brand" onClick={exit} aria-label="Sokoban Depot – back to level select">
-          <CrateIcon className="brand-icon" />
-          <span>
-            <span className="brand-name">Sokoban Depot</span>
-            <span className="brand-tag">push crates onto targets</span>
-          </span>
+          <Logo />
         </button>
         {level && (
           <nav className="crumbs" aria-label="Breadcrumb">
@@ -45,7 +41,8 @@ export default function App() {
             </button>
             <span className="crumb-sep">/</span>
             <span className="crumb-current">
-              {String(level.id).padStart(2, '0')} · {level.name}
+              <span className="crumb-num">{String(level.id).padStart(2, '0')}</span>
+              {level.name}
             </span>
           </nav>
         )}
