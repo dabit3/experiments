@@ -37,7 +37,7 @@ presentation driven by keyboard, and Chrome's native print dialog with
 
 ## Browser test scenario
 
-Recording: **RECORDING_URL_PLACEHOLDER**
+Recording: **https://app.devin.ai/attachments/a61b50c3-40bb-40d4-acd8-d88db73355a4/slide-forge-complete-showcase-edited.mp4**
 
 Start with `npm run dev`, open the app in a maximised Chrome window, then:
 
