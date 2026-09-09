@@ -8,7 +8,7 @@ somewhere in the room — you just have to notice the affordance that exposes it
 | # | Puzzle | Hidden affordance |
 |---|--------|-------------------|
 | 1 | **Brass lockbox** — four colour dials | Read the four stripes of the painting top-to-bottom (amber, teal, crimson, violet). |
-| 2 | **Desk lamp + typewriter** — a 3-letter word | The lamp blinks Morse (`− − −  · − −  · − · ·` → **OWL**); the wall chart decodes it. Timing must be observed. |
+| 2 | **Desk lamp + typewriter** — a 3-letter word | The lamp blinks Morse (`− − −  · − −  · − · ·` → **OWL**); the lamp's inspect view records the blinks on a paper-tape strip and the wall chart decodes them. |
 | 3 | **Corkboard note** — safe combination | The card is written in "lemon ink": the text only appears after hovering it for half a second. |
 | 4 | **Rug → key → drawer** | Drag the rug aside to reveal a brass key, then drag the key onto the locked desk drawer. |
 | 5 | **Embroidered sampler** — Caesar cipher | The drawer holds a shift dial; turn it to shift 7 to read `THE LETTER ON THE DESK NUMBERS THE BOOKS`. |
@@ -52,7 +52,7 @@ recording on, then:
 
 1. Click **Step inside**. *Expected:* overlay closes, timer starts at 00:00, footer reads "Puzzle 1 of 6 — The lockbox".
 2. Click the painting, read the four stripes, close it. Click the brass lockbox on the desk and turn the dials to **amber · teal · crimson · violet**, then **Turn the latch**. *Expected:* lockbox opens, the lamp lights and starts blinking, progress pip 2 becomes active.
-3. Click the lamp to open its inspect view and watch the blink pattern; open the Morse chart on the wall to decode `−−− ·−− ·−··` → **OWL**. Click the typewriter, type `OWL`, press Enter. *Expected:* the typed page mentions lemon ink; puzzle 3 active.
+3. Click the lamp to open its inspect view and watch a full cycle (~35 s) build up on the tape strip; open the Morse chart on the wall to decode `−−− ·−− ·−··` → **OWL**. Click the typewriter, type `OWL`, press Enter. *Expected:* the typed page mentions lemon ink; puzzle 3 active.
 4. Move the mouse over the card on the corkboard and hold still. *Expected:* after ~0.5 s the card warms and reads "The safe answers to 4 · 1 · 9."
 5. Click the wall safe, set the wheels to **4 1 9**, **Turn the handle**. *Expected:* the safe swings open showing a crowbar; the footer says the rug will move now.
 6. Press on the rug and drag it aside. *Expected:* a brass key is revealed on the floorboards.
@@ -67,4 +67,5 @@ starting state at any point.
 
 ## Recording
 
-Recording: _placeholder — replaced with the uploaded recording URL after the showcase run_
+Recording (Devin solving the room end-to-end in Chrome, 0 hints, escape time 05:25):
+https://app.devin.ai/attachments/50495ee2-4936-4305-8e50-4be4661507f2/escape-room-showcase.mp4
