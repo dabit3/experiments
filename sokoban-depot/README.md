@@ -65,9 +65,25 @@ maximised Chrome window and performed the following scenario end to end while re
 8. Pressed `Esc` to return to level select. **Expected:** levels 1–4 show *cleared* badges
    and their stars (2 + 3 + 3 + 3 = 11 / 24), level 5 is unlocked, levels 6–8 remain locked.
 
+All eight steps passed on the first recorded run; no app defects were found during the
+showcase (one layout tweak was made beforehand so the deadlock banner sits under the board
+instead of covering the bottom wall row).
+
 ### Recording
 
-**[Watch the full recording (mp4)](RECORDING_URL_PLACEHOLDER)**
+**[Watch the full recording (mp4, ~51s)](https://app.devin.ai/attachments/065bd180-32b8-4608-865b-c76bca5a86c3/sokoban-depot-showcase.mp4)**
+
+![Animated preview of the recording](docs/showcase.webp)
+
+### Key moments
+
+| Crate wedged in the corner on level 1 | Four undos later: back to move 1 |
+|---|---|
+| ![Corner deadlock banner](docs/level1-corner-deadlock.png) | ![Recovered via undo](docs/level1-after-undo.png) |
+
+| Level 1 cleared with 2 stars after the recovery | Level select after levels 1–4: 11 / 24 stars |
+|---|---|
+| ![Level 1 cleared](docs/level1-cleared-2-stars.png) | ![Level select with stars](docs/level-select-stars.png) |
 
 ## Project layout
 
