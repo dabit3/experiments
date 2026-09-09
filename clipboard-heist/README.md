@@ -78,7 +78,7 @@ Performed by Devin with real mouse and keyboard in a maximised Chrome window
    next; after the third the **Vault opened** overlay appears listing the three
    keys in order and the copy/paste/rejected stats.
 
-Recording: _to be added after the showcase run_
+Recording: https://app.devin.ai/attachments/281d079c-5496-4e13-816c-bcbe5ed32af3/clipboard-heist-showcase.mp4
 
 ## Project layout
 
