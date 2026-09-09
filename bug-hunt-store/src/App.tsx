@@ -64,25 +64,29 @@ export default function App() {
 
   return (
     <div className={cartOpen ? 'app cart-open' : 'app'}>
+      <div className="promo">
+        <span>Autumn edit — code <strong>SAVE10</strong> for 10% off at checkout</span>
+        <span className="promo-sep" aria-hidden="true" />
+        <span>Complimentary shipping over $100</span>
+      </div>
+
       <Header
         search={query.search}
+        category={query.category}
         cartCount={cartCount}
         bugsFound={found.length}
+        onCategory={(category) => updateQuery({ category })}
         onSearch={(search) => updateQuery({ search })}
         onOpenCart={() => setCartOpen(true)}
         onOpenScoreboard={() => setScoreboardOpen(true)}
       />
-
-      <div className="promo">
-        Autumn sale — use code <strong>SAVE10</strong> for 10% off your order at checkout · Free shipping over $100
-      </div>
 
       <main className="main">
         <Toolbar query={query} resultCount={results.length} onChange={updateQuery} />
 
         {visible.length === 0 ? (
           <div className="empty">
-            <h2>No products match “{query.search}”</h2>
+            <h2>No results for “{query.search}”</h2>
             <p className="muted">Try a different search or clear the filters.</p>
             <button type="button" className="btn btn-ghost" onClick={() => updateQuery(DEFAULT_QUERY)}>
               Clear everything
@@ -104,6 +108,40 @@ export default function App() {
 
         <Pagination page={currentPage} pages={pages} total={results.length} onChange={setPage} />
       </main>
+
+      <footer className="site-footer">
+        <div className="site-footer-cols">
+          <div>
+            <h3>Client services</h3>
+            <p>Shipping &amp; returns</p>
+            <p>Order tracking</p>
+            <p>Gift cards</p>
+          </div>
+          <div>
+            <h3>Company</h3>
+            <p>About Kestrel</p>
+            <p>Careers</p>
+            <p>Press</p>
+          </div>
+          <div>
+            <h3>Legal</h3>
+            <p>Privacy</p>
+            <p>Terms</p>
+            <p>Accessibility</p>
+          </div>
+          <div className="site-footer-note">
+            <h3>Bug Hunt</h3>
+            <p className="muted">
+              This storefront is a QA exercise. Eight defects are planted in the experience; report them with the
+              widget in the corner.
+            </p>
+          </div>
+        </div>
+        <div className="site-footer-base">
+          <span>© {new Date().getFullYear()} Kestrel Supply Co. All rights reserved.</span>
+          <span>United States · USD</span>
+        </div>
+      </footer>
 
       <CartDrawer
         open={cartOpen}

@@ -1,37 +1,63 @@
-import { TOTAL_BUGS } from '../types'
+import { CATEGORIES, TOTAL_BUGS, type Category } from '../types'
+import { Wordmark } from './Wordmark'
 
 interface Props {
   search: string
+  category: Category | 'All'
   cartCount: number
   bugsFound: number
+  onCategory: (category: Category | 'All') => void
   onSearch: (value: string) => void
   onOpenCart: () => void
   onOpenScoreboard: () => void
 }
 
-export function Header({ search, cartCount, bugsFound, onSearch, onOpenCart, onOpenScoreboard }: Props) {
+export function Header({
+  search,
+  category,
+  cartCount,
+  bugsFound,
+  onCategory,
+  onSearch,
+  onOpenCart,
+  onOpenScoreboard,
+}: Props) {
+  const categories: (Category | 'All')[] = ['All', ...CATEGORIES]
   return (
     <header className="header">
-      <a className="brand" href="#" onClick={(e) => e.preventDefault()}>
-        <span className="brand-mark" aria-hidden="true" />
-        Kestrel Supply
+      <nav className="nav" aria-label="Departments">
+        {categories.map((c) => (
+          <button
+            type="button"
+            key={c}
+            className={`nav-link ${category === c ? 'nav-link-active' : ''}`}
+            aria-pressed={category === c}
+            onClick={() => onCategory(c)}
+          >
+            {c === 'All' ? 'Everything' : c}
+          </button>
+        ))}
+      </nav>
+
+      <a className="brand" href="#" onClick={(e) => e.preventDefault()} aria-label="Kestrel home">
+        <Wordmark />
       </a>
-      <div className="search">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M10.5 3a7.5 7.5 0 0 1 5.96 12.05l4.25 4.24-1.42 1.42-4.24-4.25A7.5 7.5 0 1 1 10.5 3Zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11Z"
-            fill="currentColor"
-          />
-        </svg>
-        <input
-          type="search"
-          placeholder="Search products"
-          value={search}
-          onChange={(e) => onSearch(e.target.value)}
-          aria-label="Search products"
-        />
-      </div>
+
       <div className="header-actions">
+        <label className="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+            <path d="m15.5 15.5 5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          </svg>
+          <input
+            type="search"
+            placeholder="Search"
+            value={search}
+            onChange={(e) => onSearch(e.target.value)}
+            aria-label="Search products"
+          />
+        </label>
+
         <button type="button" className="scoreboard" onClick={onOpenScoreboard} aria-label="Open bug scoreboard">
           <span className="scoreboard-label">Bugs found</span>
           <span className="scoreboard-count">
@@ -43,15 +69,10 @@ export function Header({ search, cartCount, bugsFound, onSearch, onOpenCart, onO
             ))}
           </span>
         </button>
-        <button type="button" className="btn btn-cart" onClick={onOpenCart} aria-label={`Open cart, ${cartCount} items`}>
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path
-              d="M3 3h2.4l.6 3H21l-2.2 8H7.6l.4 2h10v2H6.4L4 5H3V3Zm5.2 10h9.1l1.1-4H7.4l.8 4ZM8 19a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm9 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"
-              fill="currentColor"
-            />
-          </svg>
-          Cart
-          {cartCount > 0 && <span className="badge">{cartCount}</span>}
+
+        <button type="button" className="cart-link" onClick={onOpenCart} aria-label={`Open shopping bag, ${cartCount} items`}>
+          Bag
+          <span className="cart-count">({cartCount})</span>
         </button>
       </div>
     </header>

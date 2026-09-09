@@ -1,4 +1,4 @@
-import { CATEGORIES, SORT_OPTIONS, type Category, type SortKey } from '../types'
+import { SORT_OPTIONS, type SortKey } from '../types'
 import type { CatalogQuery } from '../lib/catalog'
 import { plural } from '../lib/format'
 
@@ -8,35 +8,33 @@ interface Props {
   onChange: (patch: Partial<CatalogQuery>) => void
 }
 
+const HEADLINES: Record<CatalogQuery['category'], string> = {
+  All: 'Everything',
+  Audio: 'Audio',
+  Wearables: 'Wearables',
+  Home: 'Home',
+  Outdoor: 'Outdoor',
+}
+
 export function Toolbar({ query, resultCount, onChange }: Props) {
-  const categories: (Category | 'All')[] = ['All', ...CATEGORIES]
   return (
-    <div className="toolbar">
-      <div className="chips" role="group" aria-label="Category">
-        {categories.map((c) => (
-          <button
-            type="button"
-            key={c}
-            className={`chip chip-btn ${query.category === c ? 'chip-active' : ''}`}
-            aria-pressed={query.category === c}
-            onClick={() => onChange({ category: c })}
-          >
-            {c}
-          </button>
-        ))}
+    <div className="page-head">
+      <div className="page-title">
+        <h1>{query.search ? `“${query.search}”` : HEADLINES[query.category]}</h1>
+        <span className="page-count">{plural(resultCount, 'item')}</span>
+      </div>
+      <div className="toolbar" role="group" aria-label="Refine">
         <button
           type="button"
-          className={`chip chip-btn ${query.topRatedOnly ? 'chip-active' : ''}`}
+          className={`toggle ${query.topRatedOnly ? 'toggle-on' : ''}`}
           aria-pressed={query.topRatedOnly}
           onClick={() => onChange({ topRatedOnly: !query.topRatedOnly })}
         >
-          ★ 4 &amp; up
+          <span className="toggle-box" aria-hidden="true" />
+          Rated 4 &amp; up
         </button>
-      </div>
-      <div className="toolbar-right">
-        <span className="muted">{plural(resultCount, 'product')}</span>
-        <label className="select-wrap">
-          <span className="muted">Sort</span>
+        <label className="sort">
+          <span>Sort by</span>
           <select value={query.sort} onChange={(e) => onChange({ sort: e.target.value as SortKey })}>
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>

@@ -1,8 +1,10 @@
 # Bug Hunt: a storefront with 8 planted bugs and a scoreboard
 
-"Kestrel Supply" is a polished fake e-commerce store built with Vite + React + TypeScript: a
-24-product grid with search, category and rating filters, five sort orders, pagination (8 per
-page), a slide-in cart drawer with quantity steppers, and a checkout modal with a coupon field.
+"Kestrel" is a polished fake e-commerce store built with Vite + React + TypeScript, styled after
+editorial fashion retailers (black-on-white, hairline rules, uppercase tracking, bundled Inter and
+Archivo variable fonts, hand-drawn line illustrations for all 24 products): a 24-product grid with
+search, department navigation, a rating filter, five sort orders, pagination (8 per page), a
+slide-in shopping bag with quantity steppers, and a checkout modal with a promotion-code field.
 Exactly **eight realistic bugs** are planted in it (wrong maths, broken sorting, an invisible
 overlay, off-by-one paging…). A floating **Report a bug** widget lets a tester pick an area,
 describe what went wrong, and a hidden keyword matcher (defined in `src/data/bugs.json`) decides
@@ -40,21 +42,21 @@ Devin runs the app, maximizes Chrome, turns on screen recording and, **without r
 1. **Sort by price.** Switch Sort to "Price: Low to High". *Expected:* cheapest first ($9.50 Cable
    Kit). *Actual:* `$1,299.00` Vinyl Turntable leads and `$9.50` comes last — string ordering.
    Report it under *Sorting & filtering* → scoreboard 1/8.
-2. **Search casing.** Type `lamp` in the search box. *Expected:* Desk Lamp. *Actual:* "No products
-   match"; `Lamp` works. Report under *Search* → 2/8.
-3. **Paging.** Walk pages 1 → 2 → 3 with the pagination buttons. *Expected:* 24 distinct products.
-   *Actual:* page 3 repeats Camp Stove from page 2 and the 24th product (Hiking Backpack) never
-   shows even though the footer says "Showing 17–24 of 24". Report under *Pagination* → 3/8.
+2. **Search casing.** Type `lamp` in the search box. *Expected:* Desk Lamp. *Actual:* "No results for
+   “lamp”"; `Lamp` works. Report under *Search* → 2/8.
+3. **Paging.** Walk pages 01 → 02 → 03 with the pagination buttons. *Expected:* 24 distinct
+   products. *Actual:* page 3 repeats Camp Stove from page 2 and the 24th product (Hiking Backpack)
+   never shows even though the summary says "Showing 17–24 of 24". Report under *Pagination* → 3/8.
 4. **Stars.** On page 2, Sleep Ring (rating 5.0) shows **six** filled stars. Report under
    *Product card* → 4/8.
-5. **Blocked button.** On page 1, click "Add to cart" on the 5th card (Wireless Earbuds).
-   *Expected:* cart badge increments. *Actual:* nothing. Resize the window (un-maximize /
-   re-maximize) and a "Deal of the day" ribbon appears; now the button works. Report under
+5. **Blocked button.** On page 1, click "Add to bag" on the 5th card (Wireless Earbuds).
+   *Expected:* the Bag count increments. *Actual:* nothing. Resize the window (un-maximize /
+   re-maximize) and an "Editor's pick" tag appears; now the button works. Report under
    *Buttons & layout* → 5/8.
-6. **Quantity maths.** Add Studio Headphones, open the cart, press **+** twice. *Expected:* line
+6. **Quantity maths.** Add Studio Headphones, open the bag, press **+** twice. *Expected:* line
    `$747.00`. *Actual:* still `$249.00`; the subtotal does not move. Report under *Cart & totals*
    → 6/8.
-7. **Wrong line removed.** Add Desk Lamp ($49) and Canvas Tote ($49); in the cart click Remove
+7. **Wrong line removed.** Add Desk Lamp ($49) and Canvas Tote ($49); in the bag click Remove
    on the Canvas Tote. *Actual:* the Desk Lamp vanishes. Report under *Cart & totals* → 7/8.
 8. **Coupon.** Checkout, apply `SAVE10`. *Expected:* 10% off. *Actual:* a flat `−$10.00`.
    Report under *Coupons & checkout* → 8/8.
@@ -79,13 +81,15 @@ needed), ending on the 8/8 QA-hero screen.
 src/
   App.tsx                    state, filtering/sorting/paging wiring, overlays
   components/
-    Header.tsx               brand, search, scoreboard pill, cart button
-    Toolbar.tsx              category chips, rating filter, sort select
+    Header.tsx               department nav, KESTREL wordmark, search, scoreboard, Bag
+    Wordmark.tsx             text wordmark used in the header and hero
+    Toolbar.tsx              page heading, item count, rating filter, sort select
     ProductCard.tsx          card + the invisible "deal" overlay
+    ProductArt.tsx           24 deterministic inline SVG line illustrations
     Stars.tsx                star rating (one product renders six)
     Pagination.tsx           page buttons + "Showing a–b of n"
-    CartDrawer.tsx           slide-in cart, quantity steppers, remove
-    CheckoutModal.tsx        order summary, coupon field, fake payment form
+    CartDrawer.tsx           slide-in shopping bag, quantity steppers, remove
+    CheckoutModal.tsx        order summary, promotion code, fake payment form
     BugReporter.tsx          floating report widget
     Scoreboard.tsx           n/8 checklist, reset
     HeroScreen.tsx           8/8 celebration

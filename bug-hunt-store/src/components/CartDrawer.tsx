@@ -18,20 +18,24 @@ export function CartDrawer({ open, lines, onClose, onSetQty, onRemove, onCheckou
   return (
     <>
       <div className={`scrim ${open ? 'scrim-open' : ''}`} onClick={onClose} aria-hidden="true" />
-      <aside className={`drawer ${open ? 'drawer-open' : ''}`} aria-label="Shopping cart" aria-hidden={!open}>
+      <aside className={`drawer ${open ? 'drawer-open' : ''}`} aria-label="Shopping bag" aria-hidden={!open}>
         <header className="drawer-header">
-          <h2>Your cart</h2>
-          <span className="muted">{plural(itemCount(lines), 'item')}</span>
-          <button type="button" className="icon-btn" onClick={onClose} aria-label="Close cart">
-            ×
+          <h2>
+            Shopping bag <span className="muted">({plural(itemCount(lines), 'item')})</span>
+          </h2>
+          <button type="button" className="icon-btn" onClick={onClose} aria-label="Close bag">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 5l14 14M19 5 5 19" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
           </button>
         </header>
 
         {lines.length === 0 ? (
           <div className="drawer-empty">
-            <p>Your cart is empty.</p>
+            <p className="drawer-empty-title">Your bag is empty.</p>
+            <p className="muted">Complimentary shipping on orders over {money(FREE_SHIPPING_THRESHOLD)}.</p>
             <button type="button" className="btn btn-ghost" onClick={onClose}>
-              Keep shopping
+              Continue shopping
             </button>
           </div>
         ) : (
@@ -39,13 +43,14 @@ export function CartDrawer({ open, lines, onClose, onSetQty, onRemove, onCheckou
             <ul className="cart-lines">
               {lines.map((line) => (
                 <li key={line.product.id} className="cart-line" data-product-id={line.product.id}>
-                  <ProductArt category={line.product.category} hue={line.product.hue} size="thumb" />
+                  <ProductArt product={line.product} size="thumb" />
                   <div className="cart-line-info">
-                    <strong>{line.product.name}</strong>
+                    <span className="card-category">{line.product.category}</span>
+                    <strong className="cart-line-name">{line.product.name}</strong>
                     <span className="muted">
                       {money(line.product.price)} × {line.qty}
                     </span>
-                    <div className="qty">
+                    <div className="qty" aria-label={`Quantity of ${line.product.name}`}>
                       <button
                         type="button"
                         className="qty-btn"
@@ -85,17 +90,17 @@ export function CartDrawer({ open, lines, onClose, onSetQty, onRemove, onCheckou
                 </div>
                 <div className="totals-row">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : money(shipping)}</span>
+                  <span>{shipping === 0 ? 'Complimentary' : money(shipping)}</span>
                 </div>
                 {shipping > 0 && (
-                  <p className="muted small">Free shipping on orders over {money(FREE_SHIPPING_THRESHOLD)}.</p>
+                  <p className="muted small">Complimentary shipping on orders over {money(FREE_SHIPPING_THRESHOLD)}.</p>
                 )}
                 <div className="totals-row totals-grand">
                   <span>Total</span>
                   <span>{money(sub + shipping)}</span>
                 </div>
               </div>
-              <button type="button" className="btn btn-primary btn-block" onClick={onCheckout}>
+              <button type="button" className="btn btn-primary btn-block btn-lg" onClick={onCheckout}>
                 Checkout
               </button>
             </footer>

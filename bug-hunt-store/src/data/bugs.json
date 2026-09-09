@@ -64,7 +64,7 @@
   },
   {
     "id": "overlay-blocks-add-to-cart",
-    "title": "An invisible overlay blocks \"Add to cart\" on the Wireless Earbuds until the window is resized",
+    "title": "An invisible overlay blocks \"Add to bag\" on the Wireless Earbuds until the window is resized",
     "area": "Buttons & layout",
     "keywords": [
       ["add to cart", "add-to-cart", "add to bag", "button", "click", "overlay", "earbuds", "5th", "fifth", "layout"],

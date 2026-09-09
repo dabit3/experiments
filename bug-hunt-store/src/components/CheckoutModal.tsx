@@ -41,22 +41,27 @@ export function CheckoutModal({ lines, onClose, onPlaceOrder }: Props) {
     <div className="modal-scrim" onClick={onClose}>
       <div className="modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title" onClick={(e) => e.stopPropagation()}>
         <header className="modal-header">
-          <h2 id="checkout-title">{placedTotal !== null ? 'Order placed' : 'Checkout'}</h2>
+          <h2 id="checkout-title">{placedTotal !== null ? 'Order confirmed' : 'Checkout'}</h2>
           <button type="button" className="icon-btn" onClick={onClose} aria-label="Close checkout">
-            ×
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 5l14 14M19 5 5 19" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
           </button>
         </header>
 
         {placedTotal !== null ? (
           <div className="order-done">
             <div className="order-check" aria-hidden="true">
-              ✓
+              <svg viewBox="0 0 24 24">
+                <path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
-            <p>
-              Thanks! Your order of <strong>{money(placedTotal)}</strong> is on its way.
+            <p className="order-done-title">Thank you.</p>
+            <p className="muted">
+              Your order of <strong>{money(placedTotal)}</strong> is confirmed and will ship within two business days.
             </p>
             <button type="button" className="btn btn-primary" onClick={onClose}>
-              Back to the store
+              Continue shopping
             </button>
           </div>
         ) : (
@@ -76,10 +81,10 @@ export function CheckoutModal({ lines, onClose, onPlaceOrder }: Props) {
               <div className="coupon">
                 <input
                   type="text"
-                  placeholder="Coupon code"
+                  placeholder="Promotion code"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
-                  aria-label="Coupon code"
+                  aria-label="Promotion code"
                 />
                 <button type="button" className="btn btn-ghost" onClick={applyCoupon} disabled={!code.trim()}>
                   Apply
@@ -104,7 +109,7 @@ export function CheckoutModal({ lines, onClose, onPlaceOrder }: Props) {
                 )}
                 <div className="totals-row">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : money(shipping)}</span>
+                  <span>{shipping === 0 ? 'Complimentary' : money(shipping)}</span>
                 </div>
                 <div className="totals-row totals-grand">
                   <span>Total</span>
@@ -131,10 +136,10 @@ export function CheckoutModal({ lines, onClose, onPlaceOrder }: Props) {
                 Card number
                 <input type="text" required inputMode="numeric" defaultValue="4242 4242 4242 4242" autoComplete="cc-number" />
               </label>
-              <button type="submit" className="btn btn-primary btn-block" disabled={lines.length === 0}>
+              <button type="submit" className="btn btn-primary btn-block btn-lg" disabled={lines.length === 0}>
                 Place order · {money(total)}
               </button>
-              <p className="muted small">This is a demo store. Nothing is charged.</p>
+              <p className="muted small">This is a demonstration store. Nothing is charged.</p>
             </section>
           </form>
         )}

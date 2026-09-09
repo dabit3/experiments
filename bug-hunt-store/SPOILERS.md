@@ -13,7 +13,7 @@ bug" widget resolves it to.
 | 5 | **One product shows six stars.** Sleep Ring (rating 5.0, page 2) renders six filled stars; everything else renders five. | `src/components/Stars.tsx` (`rating >= 5 ? 6 : 5`) | `six-stars` |
 | 6 | **"Remove" removes the wrong cart line when two items share a price.** Add Desk Lamp ($49) then Canvas Tote ($49); click Remove on the Canvas Tote — the Desk Lamp disappears instead. | `src/lib/cart.ts` → `removeLine` (finds the line by `product.price`, not `product.id`) | `remove-wrong-line` |
 | 7 | **Cart total ignores quantity for Audio products.** Bump Studio Headphones to ×3: the line still shows `$249.00` and the subtotal does not move. Non-Audio items multiply correctly. | `src/lib/cart.ts` → `lineTotal` (returns the unit price when `category === 'Audio'`) | `cart-qty-ignored` |
-| 8 | **An invisible overlay blocks "Add to cart" on the 5th product until the window is resized.** Clicking Add to cart on Wireless Earbuds (5th card on page 1) does nothing; after any window resize a "Deal of the day" ribbon appears and the button works. | `src/components/ProductCard.tsx` (`.deal-overlay` is rendered over the footer while `!dealRevealed`) + `src/hooks/useWindowResized.ts` | `overlay-blocks-add-to-cart` |
+| 8 | **An invisible overlay blocks "Add to bag" on the 5th product until the window is resized.** Clicking Add to bag on Wireless Earbuds (5th card on page 1) does nothing; after any window resize an "Editor's pick" tag appears and the button works. | `src/components/ProductCard.tsx` (the `.deal` layer is rendered over the footer while `!dealRevealed`) + `src/hooks/useWindowResized.ts` | `overlay-blocks-add-to-cart` |
 
 ## How the matcher works
 
@@ -32,4 +32,4 @@ Example reports that resolve:
 - Product card — "Sleep Ring rating shows 6 stars" → bug 5
 - Cart & totals — "Remove on Canvas Tote deleted the Desk Lamp instead, same price" → bug 6
 - Cart & totals — "Increasing quantity of headphones to 3 leaves the line total unchanged" → bug 7
-- Buttons & layout — "Add to cart on Wireless Earbuds does nothing until the window is resized" → bug 8
+- Buttons & layout — "Add to bag on Wireless Earbuds does nothing until the window is resized" → bug 8
