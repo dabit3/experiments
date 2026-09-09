@@ -246,44 +246,33 @@ export default function App() {
   }
 
   const elapsed = (game.finishedAt ?? now) - game.startedAt
-  const solvedCount = game.stage - 1
+  const solvedCount = Math.min(6, game.stage - 1)
+  const hintsUsed = 3 - game.hintsLeft
+  const escaped = game.finishedAt !== null
+
+  const inventory: { id: string; name: string; have: boolean; spent: boolean }[] = [
+    { id: 'bulb', name: 'Bulb', have: game.stage >= 2, spent: game.stage >= 2 },
+    { id: 'page', name: 'Page', have: game.stage >= 3, spent: false },
+    { id: 'crowbar', name: 'Crowbar', have: game.stage >= 4, spent: game.stage >= 4 },
+    { id: 'key', name: 'Key', have: game.keyState !== 'hidden', spent: game.keyState === 'used' },
+    { id: 'dial', name: 'Dial', have: game.stage >= 5, spent: false },
+  ]
 
   return (
     <div className="app">
       <header className="topbar">
         <div className="brand">
           <span className="brand-mark" aria-hidden>
-            ✦
+            S
           </span>
-          <h1>Escape Room</h1>
-          <span className="brand-sub">The Study</span>
-        </div>
-        <ol className="progress" aria-label="Puzzle progress">
-          {([1, 2, 3, 4, 5, 6] as Stage[]).map((s) => (
-            <li
-              key={s}
-              className={s < game.stage ? 'done' : s === game.stage ? 'current' : ''}
-              title={STAGE_TITLES[s]}
-            >
-              <span>{s}</span>
-            </li>
-          ))}
-        </ol>
-        <div className="controls">
-          <div className={`timer ${game.finishedAt !== null ? 'stopped' : ''}`} aria-label="Elapsed time">
-            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
-              <circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" strokeWidth="2" />
-              <path d="M12 9v4l3 2M9 2h6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-            <span>{game.started ? formatTime(Math.max(0, elapsed)) : '00:00'}</span>
+          <div>
+            <h1>The Study</h1>
+            <span className="brand-sub">Escape room · six chained puzzles</span>
           </div>
-          <button className="btn btn-ghost" onClick={useHint} disabled={!game.started || game.hintsLeft === 0 || game.finishedAt !== null}>
-            Hint
-            <span className="pill">{game.hintsLeft}</span>
-          </button>
-          <button className="btn btn-ghost" onClick={reset} title="Reset the room and the timer">
-            Reset
-          </button>
+        </div>
+        <div className="top-status" aria-live="polite">
+          <span className={`dot ${!game.started ? 'idle' : escaped ? 'done' : ''}`} aria-hidden />
+          <span>{!game.started ? 'Waiting at the door' : escaped ? 'Escaped' : `${solvedCount} of 6 puzzles solved`}</span>
         </div>
       </header>
 
@@ -300,20 +289,79 @@ export default function App() {
         />
       </main>
 
-      <footer className="journal">
-        <div className="journal-stage">
-          <span className="journal-label">{solvedCount >= 6 ? 'Escape' : `Puzzle ${game.stage} of 6`}</span>
-          <strong>{STAGE_TITLES[game.stage]}</strong>
+      <aside className="casebook" aria-label="Casebook">
+        <div className="casebook-head">
+          <div>
+            <div className="casebook-title">Casebook</div>
+            <span className="casebook-sub">{escaped ? 'Case closed' : game.stage === 7 ? 'The door is unbolted' : `Puzzle ${game.stage} of 6`}</span>
+          </div>
+          <div className={`timer ${escaped ? 'stopped' : game.started ? 'running' : ''}`} aria-label="Elapsed time">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden>
+              <circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" strokeWidth="2" />
+              <path d="M12 9v4l3 2M9 2h6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            <span>{game.started ? formatTime(Math.max(0, elapsed)) : '00:00'}</span>
+          </div>
         </div>
-        <p className="journal-text" key={game.journal}>
-          {game.journal}
-        </p>
-        {game.hint && (
-          <p className="journal-hint">
-            <span>Hint</span> {game.hint}
+
+        <ol className="objectives" aria-label="Puzzles">
+          {([1, 2, 3, 4, 5, 6] as Stage[]).map((s) => {
+            const state = s < game.stage ? 'done' : s === game.stage ? 'current' : 'locked'
+            return (
+              <li key={s} className={state}>
+                <span className="obj-mark" aria-hidden>
+                  {state === 'done' ? '✓' : s}
+                </span>
+                <span className="obj-title">{state === 'locked' ? '· · ·' : STAGE_TITLES[s]}</span>
+                <span className="obj-tag">{state === 'done' ? 'Solved' : state === 'current' ? 'Now' : ''}</span>
+              </li>
+            )
+          })}
+        </ol>
+
+        <div className="journal" aria-live="polite">
+          <span className="journal-label">Journal</span>
+          <p className="journal-text" key={game.journal}>
+            {game.journal}
           </p>
-        )}
-      </footer>
+          {game.hint && (
+            <p className="journal-hint">
+              <strong>Hint</strong>
+              {game.hint}
+            </p>
+          )}
+        </div>
+
+        <div className="casebook-actions">
+          <button className="btn btn-ghost" onClick={useHint} disabled={!game.started || game.hintsLeft === 0 || escaped}>
+            Ask for a hint
+            <span className="hint-pips" aria-label={`${game.hintsLeft} hints left`}>
+              {[0, 1, 2].map((i) => (
+                <i key={i} className={i < game.hintsLeft ? '' : 'spent'} />
+              ))}
+            </span>
+          </button>
+          <button className="btn btn-ghost" onClick={reset} title="Reset the room and the timer">
+            Reset
+          </button>
+        </div>
+
+        <div className="inventory">
+          <span className="inventory-label">Found in the room</span>
+          <div className="inventory-grid">
+            {inventory.map((item) => (
+              <div
+                key={item.id}
+                className={`inv ${item.have ? 'have' : ''} ${item.spent ? 'spent' : ''}`}
+                data-name={item.have ? item.name : undefined}
+                aria-label={item.have ? `${item.name}${item.spent ? ' (used)' : ''}` : 'Not yet found'}
+              >
+                {item.have ? <InvIcon id={item.id} /> : <span aria-hidden>?</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </aside>
 
       {!game.started && (
         <div className="overlay intro">
@@ -324,9 +372,15 @@ export default function App() {
               Six puzzles, unlocked in order. Every answer is somewhere in the room — look closely, hover, drag,
               and listen with your eyes. The clock starts when you step inside.
             </p>
+            <div className="skills-row" aria-label="What the room will ask of you">
+              {['Look', 'Hover', 'Wait', 'Drag', 'Decode', 'Scroll'].map((s) => (
+                <span key={s}>{s}</span>
+              ))}
+            </div>
             <button className="btn btn-primary" onClick={start}>
               Step inside
             </button>
+            <p className="fine">Three hints are tucked into the casebook. Reset at any time.</p>
           </div>
         </div>
       )}
@@ -336,9 +390,20 @@ export default function App() {
           <div className="card">
             <p className="eyebrow">You escaped the study</p>
             <div className="big-time">{formatTime(Math.max(0, elapsed))}</div>
-            <p>
-              Six puzzles solved with {3 - game.hintsLeft} hint{3 - game.hintsLeft === 1 ? '' : 's'} used.
-            </p>
+            <div className="stats">
+              <div className="stat">
+                <b>6 / 6</b>
+                <span>Puzzles</span>
+              </div>
+              <div className="stat">
+                <b>{hintsUsed}</b>
+                <span>Hints used</span>
+              </div>
+              <div className="stat">
+                <b>{formatTime(Math.max(0, elapsed))}</b>
+                <span>Escape time</span>
+              </div>
+            </div>
             <button className="btn btn-primary" onClick={reset}>
               Play again
             </button>
@@ -347,50 +412,89 @@ export default function App() {
       )}
 
       {modal === 'painting' && (
-        <Modal title="Oil on canvas — “Dusk over the Marsh”" onClose={() => setModal(null)}>
+        <Modal kicker="Oil on canvas" title="Dusk over the Marsh" onClose={() => setModal(null)}>
           <PaintingView />
         </Modal>
       )}
       {modal === 'lockbox' && (
-        <Modal title="Brass lockbox" onClose={() => setModal(null)}>
+        <Modal kicker="Puzzle 1" title="Brass lockbox" onClose={() => setModal(null)}>
           <ColorLock dials={game.lockDials} solved={game.stage > 1} onCycle={cycleDial} onTry={tryLock} />
         </Modal>
       )}
       {modal === 'lamp' && (
-        <Modal title="Desk lamp" onClose={() => setModal(null)}>
+        <Modal kicker="Puzzle 2" title="Banker’s lamp" onClose={() => setModal(null)}>
           <LampView on={lampOn} tape={lamp.tape} stage={game.stage} />
         </Modal>
       )}
       {modal === 'typewriter' && (
-        <Modal title="Typewriter" onClose={() => setModal(null)}>
+        <Modal kicker="Puzzle 2" title="Typewriter" onClose={() => setModal(null)}>
           <Typewriter stage={game.stage} onSubmit={typeWord} />
         </Modal>
       )}
       {modal === 'poster' && (
-        <Modal title="Wall chart — International Morse Code" onClose={() => setModal(null)}>
+        <Modal kicker="Wall chart" title="International Morse Code" onClose={() => setModal(null)}>
           <PosterView />
         </Modal>
       )}
       {modal === 'safe' && (
-        <Modal title="Wall safe" onClose={() => setModal(null)}>
+        <Modal kicker="Puzzle 3" title="Wall safe" onClose={() => setModal(null)}>
           <Safe dials={game.safeDials} stage={game.stage} onSpin={spinSafe} onTry={trySafe} />
         </Modal>
       )}
       {modal === 'drawer' && (
-        <Modal title="Desk drawer" onClose={() => setModal(null)}>
+        <Modal kicker="Puzzle 4" title="Desk drawer" onClose={() => setModal(null)}>
           <DrawerView open={game.drawerOpen} />
         </Modal>
       )}
       {modal === 'sampler' && (
-        <Modal title="Embroidered sampler" onClose={() => setModal(null)}>
+        <Modal kicker="Puzzle 5" title="Embroidered sampler" onClose={() => setModal(null)}>
           <Sampler stage={game.stage} shift={game.shift} onShift={setShift} />
         </Modal>
       )}
       {modal === 'letter' && (
-        <Modal title="A letter, left on the desk" onClose={() => setModal(null)} wide>
+        <Modal kicker="Puzzle 6" title="A letter, left on the desk" onClose={() => setModal(null)} wide>
           <Letter stage={game.stage} />
         </Modal>
       )}
     </div>
   )
+}
+
+function InvIcon({ id }: { id: string }) {
+  switch (id) {
+    case 'bulb':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+          <path d="M9 18h6M10 21h4M8.5 14.5a6 6 0 1 1 7 0c-.9.7-1.5 1.5-1.5 2.5h-4c0-1-.6-1.8-1.5-2.5Z" />
+        </svg>
+      )
+    case 'page':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+          <path d="M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5" />
+        </svg>
+      )
+    case 'crowbar':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+          <path d="M5 8q0-3 3-3h11M17 5l3 3" />
+          <path d="M8 5 5 20" />
+        </svg>
+      )
+    case 'key':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+          <circle cx="8" cy="12" r="3.5" />
+          <path d="M11.5 12H21M18 12v3M15 12v2" />
+        </svg>
+      )
+    default:
+      return (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+          <circle cx="12" cy="12" r="8.5" />
+          <circle cx="12" cy="12" r="3" />
+          <path d="M12 3.5v3M12 17.5v3M3.5 12h3M17.5 12h3" />
+        </svg>
+      )
+  }
 }

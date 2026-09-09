@@ -2,12 +2,13 @@ import { useEffect, type ReactNode } from 'react'
 
 interface Props {
   title: string
+  kicker?: string
   onClose: () => void
   wide?: boolean
   children: ReactNode
 }
 
-export function Modal({ title, onClose, wide, children }: Props) {
+export function Modal({ title, kicker, onClose, wide, children }: Props) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose()
@@ -26,7 +27,10 @@ export function Modal({ title, onClose, wide, children }: Props) {
         onClick={(e) => e.stopPropagation()}
       >
         <header className="modal-head">
-          <h2>{title}</h2>
+          <h2>
+            {kicker && <span className="modal-kicker">{kicker}</span>}
+            {title}
+          </h2>
           <button className="btn btn-icon" onClick={onClose} aria-label="Close">
             ×
           </button>

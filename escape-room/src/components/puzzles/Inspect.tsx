@@ -1,17 +1,19 @@
-import { COLOR_HEX, MORSE, PAINTING, type Stage } from '../../game'
+import { MORSE, PAINTING, type Stage } from '../../game'
 import type { Pulse } from '../../hooks/useMorseLamp'
+import { PaintingArt } from '../Room'
 
 export function PaintingView() {
   return (
     <div className="puzzle painting-view">
       <div className="painting-big">
-        {PAINTING.map((c, i) => (
-          <div key={i} className="stripe" style={{ background: COLOR_HEX[c] }}>
-            <span className="stripe-label">{c}</span>
-          </div>
-        ))}
-        <div className="canvas-moon" />
-        <div className="canvas-reeds" />
+        <PaintingArt />
+        <div className="stripe-labels" aria-hidden>
+          {PAINTING.map((c, i) => (
+            <span key={i} className="stripe-label">
+              {c}
+            </span>
+          ))}
+        </div>
       </div>
       <p className="puzzle-lead">
         Four broad bands of colour laid one above the other, sky to water. The painter left a note on the back of the
