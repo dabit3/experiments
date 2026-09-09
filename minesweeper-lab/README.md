@@ -11,6 +11,12 @@ are stored in `localStorage`. Losing reveals every mine, highlights the one you 
 out any wrong flags. Winning flags every remaining mine so the counter reads `000`, freezes the
 timer and records the time.
 
+The UI is a dark, console-style layout: a glass masthead with the app icon, a segmented level
+switcher and the seed control; a game panel with LED counters, the face button, the board and a
+status/stat bar; and a sidebar with the **Test scenario** panel (the browser test script below,
+rendered as a live checklist that ticks itself off as you play), best times and a controls
+legend.
+
 ## Run it
 
 ```bash
@@ -31,7 +37,7 @@ and reports whether it can be cleared without guessing.
 
 Controls: **left click** reveal · **right click** flag → ? → clear · **middle click** or
 **left + right** chord · **face** restart the same seed · **Enter** / **F** reveal / flag the
-focused cell. The face button restarts the *same* seed; **Shuffle** picks a new random one.
+focused cell. The face button restarts the *same* seed; the shuffle button picks a new random one.
 
 ## Computer-use showcase
 
@@ -41,44 +47,54 @@ probabilistically about where the mines are. After building it, Devin opened
 `http://localhost:5173/?level=intermediate&seed=1234` in Chrome, maximized the window, and
 performed the following scenario end to end while recording:
 
-1. Confirmed the HUD shows `040` mines, a smiling face and a timer at `000`, and that the
-   Intermediate tab (16×16 · 40 mines) is active with seed `1234`.
+1. Confirmed the HUD shows `040` mines, a smiling face and a timer at `000`, that the
+   Intermediate tab (16×16 · 40 mines) is active with seed `1234`, and that the **Test scenario**
+   panel reads `READY` with step 1 already ticked.
 2. Left-clicked the centre cell (row 7, column 7, zero-indexed) to open the board. Because the
-   first click is safe, this always opens the same 15-cell pocket for seed 1234.
+   first click is safe, this always opens the same 15-cell pocket for seed 1234. The panel flips
+   to `RUNNING` and ticks step 2.
 3. Worked outwards from the opening by deduction: right-clicked to plant a flag on every cell
-   proven to be a mine, and middle-clicked satisfied numbers to chord-reveal their neighbours
-   (dozens of chord clicks in total, well over the required two).
-4. Continued until all 216 safe cells were revealed. The game flags the remaining mines itself.
+   proven to be a mine (step 3 counts `n/40`), and middle-clicked satisfied numbers to
+   chord-reveal their neighbours (step 4 counts chords; dozens in total, well over the required
+   two).
+4. Continued until all 216 safe cells were revealed (step 5 counts `n/216`). If a mine is hit the
+   panel turns `FAILED` and tells you to restart the same seed via the face button.
 5. Verified the win state: sunglasses face, mine counter `000`, timer frozen, status line
-   "Cleared! Every mine is flagged.", and the Intermediate best time saved in the sidebar.
+   "Board cleared. Every mine is flagged.", the scenario panel reading `PASSED · 6/6 steps`, and
+   the Intermediate best time saved in the sidebar.
 
-Expected results: no mine is ever hit; every one of the 40 mines ends up flagged; the timer stops
-on the winning click and the best-times panel shows that time for Intermediate with seed 1234.
-`scripts/solve.mjs` confirms this seed / first-click combination is solvable without guessing.
+Expected results: every one of the 40 mines ends up flagged; the timer stops on the winning click;
+the scenario panel shows `PASSED`; the best-times panel shows that time for Intermediate with seed
+1234. `scripts/solve.mjs` confirms this seed / first-click combination is solvable without
+guessing.
 
 ### Recording
 
-**[Watch the full recording (mp4)](https://app.devin.ai/attachments/ba4a1426-ecdd-4792-b1be-4dbe56d4429b/minesweeper-lab-showcase.mp4)**
+**[Watch the full recording (mp4)](https://app.devin.ai/attachments/674b2674-6ed7-41a8-94b5-bfb1751d5aaa/minesweeper-lab-showcase.mp4)**
 
-![Animated preview of the showcase run](https://app.devin.ai/attachments/db2e6e0e-25e9-48fa-b0ea-adecc358fbf8/minesweeper-lab-preview.webp)
+![Animated preview of the showcase run](https://app.devin.ai/attachments/1f380690-a5a5-49c9-b950-ebf42f2b7fa5/minesweeper-lab-preview.webp)
 
-Result: the recorded game was won with the timer stopping at 145 s and the mine counter at `000`.
-An earlier attempt on the same seed hit a mine; the loss state (all mines revealed, the hit mine
-highlighted, wrong flags crossed out) is captured in the PR screenshots, after which the board was
-restarted with the same seed and cleared.
+Result: the recorded game was won with the timer stopping at 92 s, the mine counter at `000`, all
+40 flags placed by hand and 44 chord reveals, with the scenario panel reading `PASSED`. The first
+attempt in the same recording mis-flagged a cell and chorded into a mine; the loss state (all
+mines revealed, the hit mine highlighted, the wrong flag crossed out, panel `FAILED`) is shown,
+after which the board was restarted with the same seed via the face button and cleared.
 
 ## Project layout
 
 ```
 src/
   App.tsx                 URL <-> level/seed sync, layout, HUD, sidebar
+  assets/app-icon.webp    app icon shown in the masthead (favicon in public/)
   components/
     Board.tsx             mouse protocol: left reveal, right flag, middle / both chord
     Cell.tsx              a single cell (numbers, flag, question, mine, wrong flag)
     Counter.tsx           three-digit LED read-out
     Face.tsx              smiley reset button with four moods
-  hooks/useGame.ts        reducer: reveal / chord / mark / reset, timer, best times
+    Scenario.tsx          the test scenario as a live checklist driven by game state
+  hooks/useGame.ts        reducer: reveal / chord / mark / reset, timer, chords, best times
   lib/board.ts            seeded mine placement, flood reveal, chord, win/loss checks
+  lib/scenario.ts         level / seed / min-chords of the showcase scenario
   lib/rng.ts              mulberry32 PRNG + seed parsing
   lib/bestTimes.ts        localStorage best-time table
 scripts/solve.mjs         prints a seeded board and checks it is solvable without guessing
