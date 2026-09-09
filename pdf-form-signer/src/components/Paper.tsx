@@ -41,8 +41,8 @@ export function Paper({ page, documentId, children, initials, initialsError, onI
           </div>
           <SignaturePad
             id={key}
-            width={200}
-            height={78}
+            width={240}
+            height={90}
             value={initials}
             onChange={onInitials}
             lineWidth={2.2}

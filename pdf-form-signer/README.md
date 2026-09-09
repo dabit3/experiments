@@ -47,7 +47,7 @@ fixing a validation error, clicking Generate PDF, and then checking the download
    optional updates box, type additional terms, and draw initials in the page-2 box.
 6. Click **Continue** to reach **Sign**. Draw a cursive signature with the mouse (several
    connected strokes), then pick the date signed.
-7. Click **Review agreement**. *Expected:* a green "All required items complete" banner,
+7. Click **Review agreement**. *Expected:* a green "Everything is complete" banner,
    summary cards showing every entered value, and previews of the signature and both
    initials. The progress bar in the header reads 18/18.
 8. Click **Generate PDF**. *Expected:* a `contractor-agreement-<name>.pdf` download starts,

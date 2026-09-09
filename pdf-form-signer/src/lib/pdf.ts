@@ -29,7 +29,16 @@ export function makeDocumentId(seed: string): string {
 }
 
 function withArticle(noun: string): string {
-  return `${/^[aeiou]/.test(noun) ? 'an' : 'a'} ${noun}`
+  return `${/^([aeiou]|hour)/.test(noun) ? 'an' : 'a'} ${noun}`
+}
+
+/** jsPDF's built-in fonts only cover WinAnsi; map common symbols and drop the rest. */
+function latin1(text: string): string {
+  return text
+    .replace(/\u2192/g, '->')
+    .replace(/\u2190/g, '<-')
+    .replace(/[\u2013\u2014]/g, '-')
+    .replace(/[^\u0020-\u007e\u00a0-\u00ff\u2018\u2019\u201c\u201d\u2022\u2026\u20ac]/g, '?')
 }
 
 class Layout {
@@ -69,7 +78,7 @@ class Layout {
 
   paragraph(text: string, size = 10, color = INK, style: 'normal' | 'bold' | 'italic' = 'normal') {
     this.doc.setFont('helvetica', style).setFontSize(size).setTextColor(color)
-    const lines = this.doc.splitTextToSize(text, CONTENT_W) as string[]
+    const lines = this.doc.splitTextToSize(latin1(text), CONTENT_W) as string[]
     const lh = size * 1.45
     this.ensure(lines.length * lh)
     this.doc.text(lines, MARGIN, this.y)
@@ -84,7 +93,7 @@ class Layout {
       this.doc.setFont('helvetica', 'normal').setFontSize(7.5).setTextColor(MUTED)
       this.doc.text(label.toUpperCase(), x, this.y)
       this.doc.setFont('helvetica', 'normal').setFontSize(11).setTextColor(INK)
-      this.doc.text(value || '—', x, this.y + 14)
+      this.doc.text(latin1(value) || '—', x, this.y + 14)
       this.doc.setDrawColor(RULE).setLineWidth(0.5).line(x, this.y + 19, x + colW - 14, this.y + 19)
     })
     this.y += 36
@@ -92,7 +101,7 @@ class Layout {
 
   checkbox(checked: boolean, text: string) {
     this.doc.setFont('helvetica', 'normal').setFontSize(10).setTextColor(INK)
-    const lines = this.doc.splitTextToSize(text, CONTENT_W - 20) as string[]
+    const lines = this.doc.splitTextToSize(latin1(text), CONTENT_W - 20) as string[]
     const lh = 14
     this.ensure(lines.length * lh + 4)
     this.doc.setDrawColor(INK).setLineWidth(0.8).rect(MARGIN, this.y - 8, 9, 9)
@@ -213,7 +222,7 @@ export function generateAgreementPdf(values: FormValues, signatures: Signatures,
   }
   doc.setDrawColor(INK).setLineWidth(0.8).line(MARGIN, sigTop + 78, MARGIN + colW, sigTop + 78)
   doc.setFont('helvetica', 'normal').setFontSize(10).setTextColor(INK)
-  doc.text(`Name: ${values.fullName || '—'}`, MARGIN, sigTop + 94)
+  doc.text(latin1(`Name: ${values.fullName || '—'}`), MARGIN, sigTop + 94)
   doc.text(`Date signed: ${values.signDate || '—'}${values.signDate ? ` (${formatLongDate(values.signDate)})` : ''}`, MARGIN, sigTop + 110)
   doc.setFontSize(8).setTextColor(MUTED)
   doc.text(
@@ -253,13 +262,13 @@ export function generateAgreementPdf(values: FormValues, signatures: Signatures,
   const timeW = 118
   for (const ev of audit) {
     doc.setFont('helvetica', 'normal').setFontSize(9).setTextColor(INK)
-    const lines = doc.splitTextToSize(ev.message, CONTENT_W - timeW) as string[]
-    L.ensure(lines.length * 12 + 4)
+    const lines = doc.splitTextToSize(latin1(ev.message), CONTENT_W - timeW) as string[]
+    L.ensure(lines.length * 12 + 1)
     doc.setFont('courier', 'normal').setFontSize(8.5).setTextColor(MUTED)
     doc.text(formatTimestamp(ev.time), MARGIN, L.y)
     doc.setFont('helvetica', 'normal').setFontSize(9).setTextColor(INK)
     doc.text(lines, MARGIN + timeW, L.y)
-    L.y += lines.length * 12 + 4
+    L.y += lines.length * 12 + 1
   }
   L.finish()
 

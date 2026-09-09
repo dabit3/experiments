@@ -170,7 +170,11 @@ export function SignaturePad({
   const showTypedPreview = mode === 'type'
 
   return (
-    <div className={`sigpad ${compact ? 'sigpad--compact' : ''} ${invalid ? 'sigpad--invalid' : ''}`} data-testid={id}>
+    <div
+      className={`sigpad ${compact ? 'sigpad--compact' : ''} ${invalid ? 'sigpad--invalid' : ''}`}
+      style={compact ? { width } : undefined}
+      data-testid={id}
+    >
       {allowTyped && (
         <div className="sigpad__modes" role="tablist" aria-label="Signature method">
           <button
@@ -257,7 +261,9 @@ export function SignaturePad({
                 ? `${value.strokes} stroke${value.strokes === 1 ? '' : 's'}`
                 : value?.mode === 'typed'
                   ? 'Typed signature adopted'
-                  : 'Draw with your mouse'}
+                  : compact
+                    ? 'Draw here'
+                    : 'Draw with your mouse'}
             </span>
             <span className="sigpad__spacer" />
             <button type="button" className="btn btn--ghost btn--sm" onClick={undo} disabled={!strokes.length} aria-label="Undo last stroke">

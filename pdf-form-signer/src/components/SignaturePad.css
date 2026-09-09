@@ -161,6 +161,14 @@
   flex: 1;
 }
 
+.sigpad--compact .sigpad__toolbar {
+  gap: 4px;
+}
+
+.sigpad--compact .sigpad__status {
+  white-space: nowrap;
+}
+
 .sigpad__typed-input {
   flex: 1;
   min-width: 0;
