@@ -76,16 +76,18 @@ middle (A+B or E+F). It exits non-zero on any failure, so the run cannot pass wi
 
 ### Recordings
 
-**[Watch the full recording (mp4)](https://app.devin.ai/attachments/24a00b87-f4fd-4b45-9c1e-653dc48701a3/airline-booking-v2-edited.mp4)**
+Latest run of the skill (all assertions passed):
+**[Watch the full recording (mp4)](https://app.devin.ai/attachments/f6b41ab9-ab24-4afe-8378-19bce031b3dd/airline-booking-e2e-edited.mp4)**
 
-![Animated preview of the recording](https://app.devin.ai/attachments/d464830e-74fd-4cf4-b3fe-c401002a0b44/airline-booking-v2-preview.webp)
+![Animated preview of the recording](https://app.devin.ai/attachments/74c25713-03db-496b-9307-01819059bba0/airline-booking-preview.webp)
 
 Recorded run: booking `UCEU2F` — outbound Silverwing SV660 (cheapest nonstop, $263 Basic /
-$326 Standard), return Northlight NL121 ($349 / $433), seats 10A+10B and 8A+8B, Visa ending
-4242, `contrail-UCEU2F.ics` with two `VEVENT`s and `TRIGGER:-PT3H` alarms.
+$326 Standard), return Northlight NL121 ($349 / $433), seats 10A+10B and 8A+8B (10B was taken
+on the return flight), Visa ending 4242, `contrail-UCEU2F.ics` passing `verify-ics.sh`.
 
-Earlier run on the first visual pass:
-[mp4](https://app.devin.ai/attachments/f54e05ce-02c6-4e53-959e-16db42cbdabf/airline-booking-showcase.mp4).
+Earlier runs, before the scenario was extracted into the skill:
+[redesign demo (mp4)](https://app.devin.ai/attachments/24a00b87-f4fd-4b45-9c1e-653dc48701a3/airline-booking-v2-edited.mp4),
+[first visual pass (mp4)](https://app.devin.ai/attachments/f54e05ce-02c6-4e53-959e-16db42cbdabf/airline-booking-showcase.mp4).
 
 ## Project layout
 

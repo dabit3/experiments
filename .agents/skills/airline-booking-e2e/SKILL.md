@@ -9,7 +9,8 @@ This is the integration test for `airline-booking/`. It is executed by an agent 
 computer-use environment, not by a script: every step is performed with the mouse and
 keyboard in Chrome, and every assertion is a visible UI state. **Never** use Playwright,
 CDP, `browser_console`, or DOM injection to perform or short-cut a step. The shell is only
-for setup and for verifying the downloaded calendar file.
+for setup, verifying the downloaded calendar file, and producing the artifacts (ffmpeg).
+Browser zoom (`ctrl+minus`) and scrolling are fine for inspecting long lists.
 
 Result contract: the run **passes** only if every assertion in the "Scenario" section is
 observed. If a step is impossible, mark its assertion `untested`/`failed` and report why —
@@ -42,34 +43,40 @@ whole scenario is re-run from step 0.
 ## Scenario
 
 Use `annotate_recording` with `test_start` at the beginning of each numbered block below and
-an `assertion` (passed/failed/untested) for each **Assert** line. Take a full-screen screenshot
-at each **Screenshot** marker (6–8 in total, uncropped) and save them under
-`~/showcase/airline-booking-e2e/`.
+an `assertion` (passed/failed/untested) for each **Assert** line. At each **Screenshot**
+marker take a screenshot of the whole desktop (not a full-page capture; uncropped) and copy
+it under `~/showcase/airline-booking-e2e/` with the given name (6–8 in total).
+
+Dates and expiries are relative to *today* so the scenario never rots: `D` = departure
+(+14 days), `R` = return (+21 days), `Y` = current year.
 
 ### 1. It should search SFO → JFK for 2 adults with dates 14 and 21 days out
 
 - Click **From**, type `SFO`, pick *San Francisco International* from the dropdown.
 - Click **To**, type `JFK`, pick *John F. Kennedy International*.
 - Click the **Dates** field. In the calendar popover:
-  - **Assert** every day before today is greyed out and does nothing when clicked (click one
-    to prove it).
+  - **Assert** the days before today in the current month are greyed out and one of them does
+    nothing when clicked (click it to prove it; **Previous month** is disabled). If today is
+    the 1st there is no past cell — mark this assertion `untested` with that reason.
   - Click the date 14 days from today (use **Next month** if it is in the following month),
     then the date 21 days from today.
   - **Assert** the Depart / Return fields show those two dates.
 - Click **+** next to *Adults* once so it reads **2**. Leave *Children* at 0.
 - **Screenshot** `01-search.png` (calendar or completed form).
 - Click **Search flights**.
-- **Assert** the Flights step opens, headed *Outbound* with `SFO → JFK` and the departure date.
+- **Assert** the Flights step opens with eyebrow *Step 2 · Outbound flight*, heading
+  *San Francisco → New York*, the departure date and *2 passengers*.
 
-### 2. It should sort by price, filter to nonstop and pick the cheapest fare on both legs
+### 2. It should sort by price, filter to nonstop and pick the cheapest nonstop flight on both legs
 
 - In **Sort by**, click **Price**. **Assert** the card prices are ascending top-to-bottom.
 - In **Stops**, click **Nonstop**. **Assert** every remaining card says *Nonstop* and the first
   card carries the **Cheapest** badge.
 - Click **Select** on the first card, then **Choose** the *Standard* fare (the "Most popular"
   card). Note the flight number and price.
-- **Assert** the page switches to *Return* (`JFK → SFO`, return date) and the sidebar **Your
-  trip** shows the outbound flight and fare.
+- **Assert** the page switches to *Return flight* (*New York → San Francisco*, return date),
+  an *Outbound selected* banner names the chosen flight, and the sidebar **Your trip** shows
+  the outbound flight and fare.
 - Repeat sort **Price** → **Nonstop** → first card **Select** → *Standard* on the return leg.
 - **Screenshot** `02-results.png` before choosing the return fare.
 - **Assert** the Passengers step opens with two passenger cards (*Passenger 1 · Adult*,
@@ -86,7 +93,7 @@ Fill both passengers by clicking each field and typing (Tab is fine between fiel
 | Date of birth | 1988-04-12 | 1990-09-30 |
 | Nationality | United States | United States |
 | Passport number | X1234567 | Y7654321 |
-| Passport expiry | **return date + 2 months** (deliberately invalid) | 2031-06-15 |
+| Passport expiry | **R + 2 months** (deliberately invalid) | `Y+5`-06-15 |
 
 Contact: email `avery@example.com`, phone `+1 415 555 0142`.
 
@@ -96,22 +103,24 @@ Contact: email `avery@example.com`, phone `+1 415 555 0142`.
   your last flight — expiry must be on or after &lt;return date + 6 months&gt;*. The field is
   focused/scrolled into view.
 - **Screenshot** `03-passport-error.png`.
-- Replace Passenger 1's expiry with `2030-11-20`. **Assert** the inline error clears.
+- Replace Passenger 1's expiry with `Y+4`-11-20. **Assert** the inline error clears.
 - Click **Continue to seats**. **Assert** the Seats step opens on the *Outbound* leg with a
   30-row, 3-3 map (aisle gap between C and D, EXIT markers at rows 14–15).
 
 ### 4. It should seat both passengers in adjacent window + middle seats on both legs
 
 - With *Passenger 1* active (highlighted in the Passengers panel), click seat **10A**. If 10A
-  or 10B is already taken (grey), use the lowest row ≥ 6 where both A and B are free.
+  or 10B is already taken (grey), use the lowest row ≥ 6 where both A and B are free and read
+  `NA`/`NB` below as that row.
 - **Assert** 10A takes Passenger 1's colour and the active passenger flips to *Passenger 2*.
 - Click **10B**. **Assert** 10A and 10B are shown side by side in two colours and the
   Passengers panel lists `10A` and `10B`.
 - **Screenshot** `04-seat-map.png`.
 - Click **Continue to return flight** (or the *Return* leg tab), then **Use the same seats as
   outbound**.
-  - If a notice says a seat is taken on the return flight, pick a replacement adjacent
-    window+middle pair (e.g. 8A + 8B) for both passengers.
+  - If a notice says a seat is taken on the return flight, only the free seat is copied: click
+    *Passenger 1* in the panel, then pick a replacement adjacent window+middle pair (e.g. 8A +
+    8B) for both passengers.
 - **Assert** both passengers have a window (A/F) and the neighbouring middle (B/E) seat on the
   return leg and the sidebar shows non-zero *Seat fees* only if a paid row was used.
 - Click **Continue to payment**.
@@ -122,10 +131,13 @@ Contact: email `avery@example.com`, phone `+1 415 555 0142`.
 - Card holder `Avery Nakamura`; card number `4242 4242 4242 4242`.
   - **Assert** the hint changes to *Visa detected*, the Visa badge lights up, the live card
     preview shows the number groups, and a green check appears at the end of the input.
-- Expiry `08/29`, CVV `314`, ZIP `94110`. **Screenshot** `05-payment.png`.
-- Click **Pay …** (the button shows the total). **Assert** a *Processing…* spinner appears,
-  then the Confirmation step: *Booking confirmed*, a 6-character **Booking reference**, and four
-  boarding passes (2 passengers × 2 flights) each with a rendered QR code, seat, gate and group.
+- Expiry `08/` + last two digits of `Y+3`, CVV `314`, ZIP `94110`. **Screenshot**
+  `05-payment.png`.
+- Click **Pay …** (the button shows the total). A *Processing…* spinner shows for about a
+  second (too brief for a screenshot; it is visible in the recording, not an assertion).
+  **Assert** the Confirmation step: *Booking confirmed*, a 6-character **Booking reference**,
+  and four boarding passes (2 passengers × 2 flights) each with a rendered QR code, seat, gate
+  and group (zoom out or scroll to see all four).
 - **Screenshot** `06-boarding-passes.png`. Note the booking reference `<REF>`.
 
 ### 6. It should download a valid .ics with both flights and 3-hour alarms
@@ -137,9 +149,10 @@ Contact: email `avery@example.com`, phone `+1 415 555 0142`.
   ```bash
   .agents/skills/airline-booking-e2e/verify-ics.sh "$HOME/Downloads/contrail-<REF>.ics" <REF>
   ```
-- **Assert** the script reports `PASS` (2 `VEVENT`s, 2 `TRIGGER:-PT3H`, reference, SFO/JFK and
-  both seat pairs present). Show the contents on screen (open the file in a large terminal
-  window and screenshot it) — **Screenshot** `07-ics.png`.
+- **Assert** the script exits 0 and reports `PASS` (2 `VEVENT`s, 2 `TRIGGER:-PT3H`, reference,
+  SFO/JFK and both seat pairs present). Then run the same command in a maximised terminal
+  window (shrink the font if needed so the whole calendar and the PASS line fit) —
+  **Screenshot** `07-ics.png`.
 
 ## Teardown and report
 
