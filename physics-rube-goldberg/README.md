@@ -69,4 +69,40 @@ Solve levels 1, 2 and 3, showing at least one failed run, an adjustment
 | 9 | Click **Next level →**. | Level 3 "Bounce House" loads with a hanging bell high on the right and a Ramp plus Trampoline in the tray. |
 | 10 | Place the Ramp at `30°` under the spawn and the Trampoline on the floor roughly under the bell's left, then Run. | The ball rolls off the ramp, hits the trampoline and is launched up into the bell. Levels 1–3 all show checks. |
 
-**Recording:** _placeholder — filled in after the showcase_
+## Showcase run
+
+Devin drove the app in a maximized Chrome window with real mouse and keyboard
+input (drags, wheel, `R`, button clicks — no scripted events). All three levels
+were solved as recorded, including the deliberate failed runs.
+
+**Recording:** [rube-goldberg-showcase-edited.mp4](https://app.devin.ai/attachments/3f08ab62-1468-4b05-b578-8d247b734964/rube-goldberg-showcase-edited.mp4) (46 s, annotated)
+
+1. **Level 1, flat ramp fails** — dragged the ramp under the spawn; the ghost
+   outline showed `0°`. Run: the ball landed on the plank and came to rest,
+   "No ring".
+
+   ![Ghost outline while dragging the ramp](docs/01-l1-ghost-drag.jpg)
+   ![Flat ramp: the ball came to rest](docs/02-l1-flat-ramp-fail.jpg)
+
+2. **Level 1, rotate and retry** — Reset, hovered the ramp and pressed `R`
+   twice (→ `30°`). Run: the ball rolled down and rang the bell in 2.75 s.
+
+   ![Level 1 bell rung](docs/03-l1-bell-rung.jpg)
+
+3. **Level 2, too shallow** — placed a ramp above the left ledge at `15°`
+   (rotated with `R` mid-drag). The trail shows the ball leaving the ledge too
+   slowly and dropping into the pit.
+
+   ![Level 2 ball in the pit](docs/04-l2-pit-fail.jpg)
+
+4. **Level 2, steeper** — Reset, one more `R` (→ `30°`). The ball cleared the
+   gap and rang the bell in 2.62 s.
+
+   ![Level 2 bell rung](docs/05-l2-bell-rung.jpg)
+
+5. **Level 3, ramp + trampoline** — rotated the ramp ghost with two wheel
+   clicks (→ `30°`), dropped the trampoline on the floor under the bell's left.
+   The ball bounced up into the hanging bell in 2.07 s; levels 1–3 show checks.
+
+   ![Level 3 wheel rotation ghost](docs/06-l3-wheel-rotate-ghost.jpg)
+   ![Level 3 bell rung](docs/07-l3-bell-rung.jpg)
