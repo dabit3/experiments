@@ -1,0 +1,87 @@
+.paste-field {
+  position: relative;
+  padding-top: 10px;
+}
+
+.paste-field__input {
+  width: 100%;
+  height: 64px;
+  padding: 0 18px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--input-bg);
+  color: var(--strong);
+  font-family: var(--mono);
+  font-size: 22px;
+  letter-spacing: 0.14em;
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.paste-field__input::placeholder {
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  font-size: 14px;
+  font-family: var(--sans);
+}
+
+.paste-field__input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-ring);
+}
+
+.paste-field__input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paste-field--ok .paste-field__input {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.paste-field--error .paste-field__input {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+  animation: shake 0.35s ease;
+}
+
+.paste-field__badge {
+  position: absolute;
+  right: 12px;
+  top: 0;
+  font-size: 10px;
+  line-height: 1;
+  z-index: 1;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 9px;
+  pointer-events: none;
+}
+
+.paste-field--locked .paste-field__badge {
+  color: var(--amber);
+}
+
+.paste-field__warning {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--amber-soft);
+  border: 1px solid var(--amber);
+  color: var(--amber);
+  font-size: 13px;
+  font-weight: 600;
+  animation: rise 0.18s ease;
+  z-index: 2;
+}

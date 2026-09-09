@@ -1,0 +1,127 @@
+.snippet-card {
+  border-radius: 12px;
+  border: 1px solid var(--border-strong);
+  background:
+    radial-gradient(120% 100% at 0% 0%, rgba(255, 181, 71, 0.08), transparent 55%),
+    var(--input-bg);
+  padding: 22px 22px 14px;
+}
+
+.snippet {
+  user-select: text;
+  cursor: text;
+}
+
+.snippet p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.snippet ::selection {
+  background: rgba(255, 181, 71, 0.45);
+  color: #fff;
+}
+
+.snippet-card__meta {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.snippet-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.snippet-actions .hint {
+  margin: 0;
+}
+
+.rich-editor {
+  min-height: 130px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--input-bg);
+  color: var(--strong);
+  font-size: 17px;
+  line-height: 1.6;
+  outline: none;
+  position: relative;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    background 0.15s ease;
+}
+
+.rich-editor:empty::before {
+  content: attr(data-placeholder);
+  color: var(--muted);
+  font-size: 15px;
+  pointer-events: none;
+}
+
+.rich-editor:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-ring);
+}
+
+.rich-editor--rejected {
+  border-color: var(--danger) !important;
+  background: var(--danger-soft);
+  animation: shake 0.35s ease;
+}
+
+.rich-editor--accepted {
+  border-color: var(--accent) !important;
+  background: var(--accent-soft);
+}
+
+.rich-editor--mismatch {
+  border-color: var(--amber) !important;
+}
+
+.scanner-legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.scanner-legend__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  font-size: 12.5px;
+  color: var(--muted);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.scanner-legend__keys {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+}
+
+.scanner-legend__item.is-hot {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.scanner-legend__item.is-ok {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
