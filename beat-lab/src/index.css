@@ -1,0 +1,94 @@
+:root {
+  --bg: #0e1013;
+  --bg-2: #13161b;
+  --surface: #181c22;
+  --surface-2: #1f242c;
+  --surface-3: #282e38;
+  --line: #2c333e;
+  --line-strong: #3a4250;
+  --text: #f1f3f6;
+  --muted: #8b94a3;
+  --faint: #5c6473;
+  --accent: #f5a524;
+  --accent-soft: rgba(245, 165, 36, 0.16);
+  --accent-ink: #1a1200;
+  --play: #3ad2c4;
+  --play-soft: rgba(58, 210, 196, 0.16);
+  --danger: #ff6b6b;
+  --ok: #63d68c;
+
+  --font-body: "Liberation Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 10px 30px rgba(0, 0, 0, 0.35);
+
+  --cell: 42px;
+  --cell-gap: 5px;
+  --beat-gap: 12px;
+
+  color-scheme: dark;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(1200px 500px at 50% -200px, rgba(245, 165, 36, 0.08), transparent 70%),
+    linear-gradient(180deg, var(--bg-2), var(--bg) 40%);
+  min-width: 360px;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--play);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
