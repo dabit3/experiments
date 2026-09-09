@@ -42,4 +42,4 @@ npm run build    # tsc -b && vite build
 
 ## Recording
 
-_Recording link: to be added after the showcase run._
+Recording: https://app.devin.ai/attachments/4ad52f6a-de18-4bbd-a961-9a842d1f49e2/sneaker-showcase-edited.mp4
