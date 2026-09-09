@@ -62,7 +62,9 @@ keyboard while recording:
    …"* under that field.
 6. Fix the expiry and submit again → the seat map opens.
 7. Pick two adjacent seats for the two passengers: a window seat and the middle seat next to it
-   (e.g. 12A + 12B) on the outbound flight, then the same on the return flight.
+   (e.g. 10A + 10B) on the outbound flight, then the same on the return flight. If a seat is
+   already taken on the other leg, "Use the same seats as outbound" says so and asks for a
+   replacement.
 8. On payment, enter `4242 4242 4242 4242` → the Visa badge and a green check appear; pay.
 9. The boarding passes render with QR codes for both passengers on both flights.
 10. Click **Download .ics** and inspect the file from the shell — it contains two `VEVENT`
@@ -74,9 +76,13 @@ downloads folder.
 
 ### Recording
 
-**[Watch the full recording (mp4)](RECORDING_URL_PLACEHOLDER)**
+**[Watch the full recording (mp4)](https://app.devin.ai/attachments/f54e05ce-02c6-4e53-959e-16db42cbdabf/airline-booking-showcase.mp4)**
 
-![Animated preview of the recording](docs/showcase.webp)
+![Animated preview of the recording](https://app.devin.ai/attachments/9c032140-eb60-4791-adb7-3e951fc509c7/airline-booking-preview.webp)
+
+Recorded run: booking `EMEE9R` — outbound Silverwing SV660 (cheapest nonstop, $263 Basic /
+$326 Standard), return Northlight NL121 ($349 / $433), seats 10A+10B and 8A+8B, Visa ending
+4242, `contrail-EMEE9R.ics` with two `VEVENT`s and `TRIGGER:-PT3H` alarms.
 
 ## Project layout
 
