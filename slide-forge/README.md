@@ -27,6 +27,15 @@ npm run build    # tsc -b && vite build
 No backend, no network calls, no external assets: everything is bundled and the
 deck persists in `localStorage` under `slide-forge:deck`.
 
+## Design
+
+Each theme is a small design system, not just a colour swap: a base colour plus
+a decorative layer (aurora glow, paper rule, sunset blobs, phosphor grid, ...)
+and its own heading face. Fonts are bundled variable fonts from Fontsource
+(Inter, Manrope, Fraunces, Space Grotesk, JetBrains Mono) and stickers are
+bundled Twemoji SVGs, so slides render identically in the editor, in fullscreen
+Present mode and in the exported PDF regardless of the OS font stack.
+
 ## Computer-use skill showcased
 
 **Rich WYSIWYG editing, drag-to-reorder thumbnails, fullscreen presenting, and
@@ -37,7 +46,7 @@ presentation driven by keyboard, and Chrome's native print dialog with
 
 ## Browser test scenario
 
-Recording: **https://app.devin.ai/attachments/a61b50c3-40bb-40d4-acd8-d88db73355a4/slide-forge-complete-showcase-edited.mp4**
+Recording: **https://app.devin.ai/attachments/908c167a-d144-4904-aedd-6e2d1643ca8f/slide-forge-redesigned-showcase-edited.mp4**
 
 Start with `npm run dev`, open the app in a maximised Chrome window, then:
 
