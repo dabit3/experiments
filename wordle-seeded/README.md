@@ -36,7 +36,7 @@ app rejects guesses that ignore one.
 
 ## Browser test scenario
 
-Recording: **RECORDING_URL_PLACEHOLDER**
+Recording: **https://app.devin.ai/attachments/571ff954-facb-4b35-84ef-c35e66fa5093/wordle-seeded-showcase.mp4**
 
 Start from a clean profile (no `wordle-seeded:*` keys in `localStorage`) with
 the dev server running.
