@@ -15,7 +15,8 @@ npm run lint
 npm run build
 ```
 
-No backend, no network calls; everything is bundled.
+No backend, no network calls; everything is bundled (including the Barlow
+Condensed / Inter / JetBrains Mono fonts and the SVG crest).
 
 ## How to play
 
@@ -68,6 +69,6 @@ Open `http://localhost:5173/?seed=8` in a maximised Chrome window.
    your same fleet are reused, the enemy layout is identical, and the game is
    played again to a final result.
 
-Recording: https://app.devin.ai/attachments/77f850c4-613b-4ca5-a3fa-ba92a7ff4a24/battleship-commander-showcase-edited.mp4
+Recording: https://app.devin.ai/attachments/ceed9b12-926e-442d-ba5c-afeb03c865ca/battleship-commander-redesign-showcase.mp4
 
-Result of the recorded run: victory in game 1 — 5/5 enemy ships sunk in 25 shots (68% accuracy) while the AI sank 1/5, so no rematch was needed.
+Result of the recorded run: victory in game 1 — 5/5 enemy ships sunk in 20 shots (85% accuracy) while the AI sank 2/5, so no rematch was needed.
