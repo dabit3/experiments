@@ -43,14 +43,17 @@ only the keyboard inside the terminal:
    capitalisation.
 4. `grep -ri vault var/log` → a dense page of matches across `auth.log`, `syslog`, `nginx/*` and
    `app/*`; the `app/worker.log` line reads `VAULT key copied to projects/archive/deep/deeper/key.b64`.
-5. `cat projects/archive/deep/deeper/key.b64` shows a base64 blob; `↑` recalls the command and
-   it is edited to `base64 -d projects/archive/deep/deeper/key.b64` → clue #4: the real file in
-   `~/projects/vault` is hidden.
-6. `cd ~/projects/vault && ls -a` → `.flag` appears next to the decoys `decoy.txt` and `README`.
+5. `cat projects/archive/deep/deeper/key.b64` shows a base64 blob;
+   `base64 -d projects/archive/deep/deeper/key.b64` → clue #4: the real file in `~/projects/vault`
+   is hidden.
+6. `cd ~/projects/vault`, then plain `ls` (only `decoy.txt` and `README`) and `ls -a` → `.flag`
+   appears next to the decoys.
 7. `cat .flag` → `FLAG{gr3p_th3_l0gs_d3c0de_th3_d0ts}`.
-8. `submit FLAG{n1ce_try_th1s_1s_a_dec0y}` (from `decoy.txt`) → red `✗ Wrong flag`.
-9. `submit FLAG{gr3p_th3_l0gs_d3c0de_th3_d0ts}` → ASCII fireworks, a **TREASURE FOUND!** banner,
-   the flag in a gold chip, the clue tracker in the title bar reads **SOLVED**.
+8. `cat decoy.txt`, then `submit FLAG{n1ce_try_th1s_1s_a_dec0y}` → red `✗ Wrong flag`.
+9. `↑` recalls the failed `submit` line; the decoy is backspaced away and replaced with the real
+   flag → `submit FLAG{gr3p_th3_l0gs_d3c0de_th3_d0ts}` → ASCII fireworks, a **TREASURE FOUND!**
+   banner, the flag in a gold chip, the clue tracker in the title bar reads **SOLVED**.
+10. `history` → the 13 commands that solved the hunt, numbered.
 
 Expected results: the clue tracker fills one pip per clue (5/5 before submission), every command
 above produces the output described, the wrong flag is rejected without ending the game, and the
@@ -58,9 +61,9 @@ right flag triggers the fireworks animation followed by the banner.
 
 ### Recording
 
-**[Watch the full recording (mp4)](RECORDING_URL_PLACEHOLDER)**
+**[Watch the full recording (mp4)](https://app.devin.ai/attachments/cd65a858-7688-47e7-bfa8-7d5d8b8c3db6/terminal-treasure-hunt-showcase-edited.mp4)**
 
-![Animated preview of the recording](docs/showcase.webp)
+![Animated preview of the recording](https://app.devin.ai/attachments/a468a2b3-9b32-4103-b750-df48db3fefae/terminal-treasure-hunt-preview.webp)
 
 ## Project layout
 
