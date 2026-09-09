@@ -67,7 +67,7 @@ minute the scenario is run; the structure is always the same.
 5. **Break #1.** Rule 10 wants a two-letter element. Append `Cd` → rule 10 turns green but
    rule 9 turns red (`C` is a Roman numeral, so `VIICd` reads as `VIIC` = 105 → product 525).
    Repair: replace `Cd` with `Ti` → rules 9 and 10 both green.
-6. **Break #2.** Rule 11 wants the time from the clock widget. Append it (e.g. `13:05`) →
+6. **Break #2.** Rule 11 wants the time from the clock widget. Append it (e.g. `13:14`) →
    rule 11 turns green but rule 5 turns red (the time's digits push the sum above 25).
    Repair: shrink the earlier digits (e.g. `99` → `9`) until the sum is 25 again.
 7. Rule 12 wants the Wordle answer: read the green row of the mini-board and append it.
@@ -76,11 +76,17 @@ minute the scenario is run; the structure is always the same.
 9. Rule 14 wants a prime length. Read the counter; if the length is not prime, append `!`
    until it is.
 10. Expected result: all 14 cards green, `14 / 14 rules passed`, the "Password accepted"
-    banner and confetti.
+    banner and confetti. In the recorded run the final password was
+    `pepsi7V!9mayVIITi13:14thornFe` (29 chars, prime).
+
+Failing cards always float to the top of the list and the progress line shows a red
+`N failing` count, so a rule broken by a later edit is never hidden below the fold.
 
 ### Recording
 
-**Recording (mp4): RECORDING_LINK_PLACEHOLDER**
+**Recording (mp4): https://app.devin.ai/attachments/1e9a8987-856d-45b9-ad61-49d68b360a42/password-game-showcase-v2-edited.mp4**
+
+![Password Game showcase preview](https://app.devin.ai/attachments/1161e9f8-3f65-4e80-94f8-fca41f3ce2ad/password-game-preview.webp)
 
 ## Project layout
 
