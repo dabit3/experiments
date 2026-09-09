@@ -18,7 +18,6 @@ export type IconName =
   | 'trash'
   | 'new'
   | 'duplicate'
-  | 'logo'
 
 const PATHS: Record<IconName, React.ReactNode> = {
   select: <path d="M5 3l14 8-6 1.5L9.5 19 5 3z" />,
@@ -81,13 +80,18 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3" />
     </>
   ),
-  logo: (
-    <>
-      <rect x="3" y="3" width="8" height="6" rx="1.5" />
-      <path d="M13 17l4-4 4 4-4 4z" />
-      <path d="M7 9v4a2 2 0 0 0 2 2h4" />
-    </>
-  ),
+}
+
+/** Brand mark: solid tile with a single-weight flow glyph (node → elbow → node). */
+export function Logo({ size = 28 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
+      <rect width="32" height="32" rx="8" fill="var(--brand)" />
+      <rect x="7" y="7" width="8" height="8" rx="2" fill="#fff" />
+      <path d="M11 15v6a2.5 2.5 0 0 0 2.5 2.5H19" fill="none" stroke="#fff" strokeWidth="2.6" strokeLinecap="round" />
+      <path d="M21 19l4.5 4.5L21 28l-4.5-4.5z" fill="#fff" />
+    </svg>
+  )
 }
 
 export function Icon({ name, size = 18 }: { name: IconName; size?: number }) {

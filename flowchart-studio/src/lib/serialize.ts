@@ -107,23 +107,23 @@ export function toSVG(diagram: Diagram, edgeStyle: EdgeStyle): string {
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${bounds.x} ${bounds.y} ${bounds.w} ${bounds.h}" width="${bounds.w}" height="${bounds.h}" font-family="${SVG_FONT}">`,
   )
   parts.push(`<title>Flowchart Studio export</title>`)
-  parts.push(`<rect x="${bounds.x}" y="${bounds.y}" width="${bounds.w}" height="${bounds.h}" fill="#0b0f19"/>`)
+  parts.push(`<rect x="${bounds.x}" y="${bounds.y}" width="${bounds.w}" height="${bounds.h}" fill="#ffffff"/>`)
 
-  parts.push('<g class="edges" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">')
+  parts.push('<g class="edges" fill="none" stroke="#5c667a" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">')
   for (const edge of diagram.edges) {
     const ends = edgeEndpoints(diagram, edge)
     if (!ends) continue
     const points = routeEdge(ends[0], edge.sourcePort, ends[1], edge.targetPort, edgeStyle)
     parts.push(`<path d="${polylinePath(trimForArrow(points))}"/>`)
-    parts.push(`<polygon points="${arrowHead(points)}" fill="#94a3b8" stroke="none"/>`)
+    parts.push(`<polygon points="${arrowHead(points)}" fill="#5c667a" stroke="none"/>`)
     if (edge.label) {
       const mid = polylineMidpoint(points)
       const w = edge.label.length * 7.5 + 16
       parts.push(
-        `<rect x="${mid.x - w / 2}" y="${mid.y - 11}" width="${w}" height="22" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1"/>`,
+        `<rect x="${mid.x - w / 2}" y="${mid.y - 11}" width="${w}" height="22" rx="6" fill="#ffffff" stroke="#c9cfd8" stroke-width="1"/>`,
       )
       parts.push(
-        `<text x="${mid.x}" y="${mid.y}" fill="#e2e8f0" stroke="none" font-size="12" font-weight="600" text-anchor="middle" dominant-baseline="central">${esc(edge.label)}</text>`,
+        `<text x="${mid.x}" y="${mid.y}" fill="#0f172a" stroke="none" font-size="12" font-weight="600" text-anchor="middle" dominant-baseline="central">${esc(edge.label)}</text>`,
       )
     }
   }
@@ -133,12 +133,12 @@ export function toSVG(diagram: Diagram, edgeStyle: EdgeStyle): string {
   for (const node of diagram.nodes) {
     const meta = kindMeta(node.kind)
     parts.push(`<g class="node node-${node.kind}" data-id="${esc(node.id)}">`)
-    parts.push(`<path d="${shapePath(node)}" fill="${meta.color}22" stroke="${meta.color}" stroke-width="2"/>`)
+    parts.push(`<path d="${shapePath(node)}" fill="${meta.color}14" stroke="${meta.color}" stroke-width="1.75"/>`)
     const lines = wrapLabel(node.label, node.kind === 'decision' ? 14 : 18)
     const lineH = 17
     const startY = node.y + node.h / 2 - ((lines.length - 1) * lineH) / 2
     parts.push(
-      `<text x="${node.x + node.w / 2}" y="${startY}" fill="#f1f5f9" font-size="14" font-weight="600" text-anchor="middle" dominant-baseline="central">`,
+      `<text x="${node.x + node.w / 2}" y="${startY}" fill="#0f172a" font-size="14" font-weight="600" text-anchor="middle" dominant-baseline="central">`,
     )
     lines.forEach((line, i) => {
       parts.push(`<tspan x="${node.x + node.w / 2}" dy="${i === 0 ? 0 : lineH}">${esc(line)}</tspan>`)

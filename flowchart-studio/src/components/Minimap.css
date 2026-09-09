@@ -6,9 +6,8 @@
   flex-direction: column;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: color-mix(in srgb, var(--panel) 88%, transparent);
-  backdrop-filter: blur(8px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  background: var(--panel);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
   user-select: none;
 }
@@ -16,10 +15,11 @@
 .minimap svg {
   display: block;
   cursor: pointer;
+  background: var(--canvas);
 }
 
 .minimap-view {
-  fill: color-mix(in srgb, var(--accent) 14%, transparent);
+  fill: color-mix(in srgb, var(--accent) 10%, transparent);
   stroke: var(--accent);
   stroke-width: 1.5;
 }
@@ -31,4 +31,5 @@
   color: var(--text-muted);
   font-family: var(--mono);
   text-align: center;
+  background: var(--panel);
 }

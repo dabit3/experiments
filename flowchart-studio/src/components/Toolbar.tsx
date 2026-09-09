@@ -1,5 +1,5 @@
 import type { EdgeStyle } from '../types'
-import { Icon } from './Icons'
+import { Icon, Logo } from './Icons'
 import type { IconName } from './Icons'
 import './Toolbar.css'
 
@@ -36,6 +36,7 @@ function ToolButton({
   title,
   active,
   disabled,
+  primary,
   onClick,
   testId,
 }: {
@@ -44,13 +45,14 @@ function ToolButton({
   title: string
   active?: boolean
   disabled?: boolean
+  primary?: boolean
   onClick: () => void
   testId: string
 }) {
   return (
     <button
       type="button"
-      className={`tb-btn${active ? ' is-active' : ''}${label ? ' has-label' : ''}`}
+      className={`tb-btn${active ? ' is-active' : ''}${label ? ' has-label' : ''}${primary ? ' is-primary' : ''}`}
       title={title}
       aria-label={title}
       aria-pressed={active}
@@ -68,10 +70,11 @@ export function Toolbar(p: ToolbarProps) {
   return (
     <header className="toolbar">
       <div className="brand">
-        <span className="brand-mark">
-          <Icon name="logo" size={20} />
+        <Logo size={30} />
+        <span className="brand-text">
+          <span className="brand-name">Flowchart Studio</span>
+          <span className="brand-sub">Diagram workspace</span>
         </span>
-        <span className="brand-name">Flowchart Studio</span>
       </div>
 
       <div className="tb-group" role="group" aria-label="Tools">
@@ -107,12 +110,12 @@ export function Toolbar(p: ToolbarProps) {
 
       <div className="tb-spacer" />
 
-      <div className="tb-group" role="group" aria-label="File">
+      <div className="tb-group tb-group-plain" role="group" aria-label="File">
         <ToolButton icon="new" label="New" title="Clear the canvas" onClick={p.onNew} testId="new" />
         <ToolButton icon="import" label="Import JSON" title="Import a diagram from JSON" onClick={p.onImport} testId="import-json" />
         <ToolButton icon="json" label="Export JSON" title="Download the diagram as JSON" onClick={p.onExportJSON} testId="export-json" />
-        <ToolButton icon="svg" label="Export SVG" title="Download the diagram as SVG" onClick={p.onExportSVG} testId="export-svg" />
       </div>
+      <ToolButton icon="svg" label="Export SVG" title="Download the diagram as SVG" primary onClick={p.onExportSVG} testId="export-svg" />
     </header>
   )
 }

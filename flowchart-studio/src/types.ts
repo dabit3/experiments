@@ -70,11 +70,11 @@ export interface NodeKindMeta {
 }
 
 export const NODE_KINDS: NodeKindMeta[] = [
-  { kind: 'start', name: 'Start', hint: 'Terminal pill', color: '#34d399', defaultLabel: 'Start', w: 140, h: 56 },
-  { kind: 'end', name: 'End', hint: 'Terminal pill', color: '#fb7185', defaultLabel: 'End', w: 140, h: 56 },
-  { kind: 'process', name: 'Process', hint: 'Rectangle', color: '#818cf8', defaultLabel: 'Process', w: 170, h: 68 },
-  { kind: 'decision', name: 'Decision', hint: 'Diamond', color: '#fbbf24', defaultLabel: 'Decision?', w: 180, h: 100 },
-  { kind: 'data', name: 'Data', hint: 'Parallelogram', color: '#22d3ee', defaultLabel: 'Data', w: 170, h: 64 },
+  { kind: 'start', name: 'Start', hint: 'Terminal pill', color: '#0f9a6d', defaultLabel: 'Start', w: 140, h: 56 },
+  { kind: 'end', name: 'End', hint: 'Terminal pill', color: '#d93a5c', defaultLabel: 'End', w: 140, h: 56 },
+  { kind: 'process', name: 'Process', hint: 'Rectangle', color: '#2f5fe3', defaultLabel: 'Process', w: 170, h: 68 },
+  { kind: 'decision', name: 'Decision', hint: 'Diamond', color: '#d98a12', defaultLabel: 'Decision?', w: 180, h: 100 },
+  { kind: 'data', name: 'Data', hint: 'Parallelogram', color: '#0e8fa8', defaultLabel: 'Data', w: 170, h: 64 },
 ]
 
 export function kindMeta(kind: NodeKind): NodeKindMeta {
