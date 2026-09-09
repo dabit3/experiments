@@ -1,0 +1,125 @@
+.board {
+  display: grid;
+  grid-template-rows: repeat(6, var(--tile));
+  gap: var(--tile-gap);
+  padding: 4px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(5, var(--tile));
+  gap: var(--tile-gap);
+}
+
+.row--shake {
+  animation: shake 600ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.tile {
+  position: relative;
+  width: var(--tile);
+  height: var(--tile);
+  font-size: calc(var(--tile) * 0.5);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1;
+  user-select: none;
+}
+
+.tile__flip {
+  position: absolute;
+  inset: 0;
+  perspective: 600px;
+  transform-style: preserve-3d;
+}
+
+.tile__inner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  color: var(--fg);
+}
+
+.tile__front {
+  border: 2px solid var(--tile-border);
+  background: transparent;
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+
+.tile--filled .tile__front {
+  border-color: var(--tile-border-filled);
+  animation: pop 110ms ease-out;
+}
+
+.tile__back {
+  transform: rotateX(180deg);
+  color: #fff;
+  border: 2px solid transparent;
+}
+
+.tile--correct .tile__back {
+  background: var(--correct);
+  border-color: var(--correct);
+}
+.tile--present .tile__back {
+  background: var(--present);
+  border-color: var(--present);
+}
+.tile--absent .tile__back {
+  background: var(--absent);
+  border-color: var(--absent);
+}
+
+.tile--reveal .tile__front {
+  animation: flip-front var(--flip-ms) ease-in-out forwards;
+  animation-delay: inherit;
+}
+.tile--reveal .tile__back {
+  animation: flip-back var(--flip-ms) ease-in-out forwards;
+  animation-delay: inherit;
+}
+
+.row--win .tile {
+  animation: bounce 900ms ease-in-out;
+  animation-delay: calc(var(--reveal-total-ms) + 60ms * var(--i, 0));
+}
+.row--win .tile:nth-child(1) { --i: 0; }
+.row--win .tile:nth-child(2) { --i: 1; }
+.row--win .tile:nth-child(3) { --i: 2; }
+.row--win .tile:nth-child(4) { --i: 3; }
+.row--win .tile:nth-child(5) { --i: 4; }
+
+@keyframes pop {
+  0% { transform: scale(0.9); }
+  60% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+@keyframes flip-front {
+  0% { transform: rotateX(0deg); }
+  100% { transform: rotateX(-180deg); }
+}
+@keyframes flip-back {
+  0% { transform: rotateX(180deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-2px); }
+  20%, 80% { transform: translateX(4px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+
+@keyframes bounce {
+  0%, 20% { transform: translateY(0); }
+  40% { transform: translateY(-26px); }
+  50% { transform: translateY(4px); }
+  60% { transform: translateY(-14px); }
+  80% { transform: translateY(2px); }
+  100% { transform: translateY(0); }
+}

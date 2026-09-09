@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect x="2" y="2" width="28" height="28" rx="5" fill="#57a35c"/>
+  <rect x="34" y="2" width="28" height="28" rx="5" fill="#c9a63a"/>
+  <rect x="2" y="34" width="28" height="28" rx="5" fill="#3a3d44"/>
+  <rect x="34" y="34" width="28" height="28" rx="5" fill="#57a35c"/>
+  <text x="16" y="23" font-family="system-ui, sans-serif" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">W</text>
+  <text x="48" y="55" font-family="system-ui, sans-serif" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">S</text>
+</svg>

@@ -1,0 +1,62 @@
+.seed__lead {
+  margin: 0 0 16px;
+  color: var(--fg-dim);
+  line-height: 1.5;
+}
+
+.seed__form {
+  display: flex;
+  gap: 10px;
+}
+
+.seed__field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  border-radius: 10px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  transition: border-color 120ms ease;
+}
+
+.seed__field:focus-within {
+  border-color: var(--focus);
+}
+
+.seed__hash {
+  font-weight: 800;
+  color: var(--fg-dim);
+  font-size: 1.3rem;
+}
+
+.seed__input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  font-size: 1.4rem;
+  font-weight: 800;
+  padding: 12px 0;
+  outline: none;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.seed__input::-webkit-inner-spin-button,
+.seed__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+.seed__shortcuts {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.seed__shortcuts .button {
+  flex: 1;
+}
