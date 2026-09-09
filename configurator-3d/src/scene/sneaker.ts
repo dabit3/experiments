@@ -58,26 +58,67 @@ function soleShape(): THREE.Shape {
   return shape
 }
 
-function stripeShape(): THREE.Shape {
-  const s = new THREE.Shape()
-  s.moveTo(-0.78, 0.6)
-  s.quadraticCurveTo(-0.1, 0.28, 0.95, 0.62)
-  s.quadraticCurveTo(0.86, 0.6, 0.62, 0.5)
-  s.quadraticCurveTo(0.0, 0.34, -0.7, 0.72)
-  s.lineTo(-0.78, 0.6)
-  return s
-}
+/**
+ * A swoosh-like ribbon between two 2D curves, tessellated finely enough to hug
+ * the upper's curved surface. It has a front skin, a back skin sunk into the
+ * upper and closed edges so the inverted-hull outline reads as a solid part.
+ */
+function stripeGeometry(): THREE.BufferGeometry {
+  const lower = new THREE.QuadraticBezierCurve(
+    new THREE.Vector2(-0.8, 0.56),
+    new THREE.Vector2(-0.05, 0.22),
+    new THREE.Vector2(0.98, 0.6),
+  )
+  const upperEdge = new THREE.QuadraticBezierCurve(
+    new THREE.Vector2(-0.68, 0.76),
+    new THREE.Vector2(0.0, 0.36),
+    new THREE.Vector2(0.98, 0.6),
+  )
+  const N = 48
+  const M = 3
+  const FRONT = 0.03
+  const BACK = -0.03
+  const rows = M + 1
+  const positions: number[] = []
+  const index: number[] = []
 
-function wrapStripeOnUpper(geom: THREE.ExtrudeGeometry, depth: number): void {
-  const pos = geom.getAttribute('position') as THREE.BufferAttribute
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i)
-    const y = pos.getY(i)
-    const outer = pos.getZ(i) > depth / 2
-    pos.setZ(i, upperSurfaceZ(x, y) + (outer ? 0.035 : -0.015))
+  const skin = (offset: number): number => {
+    const base = positions.length / 3
+    for (let i = 0; i <= N; i++) {
+      const a = lower.getPoint(i / N)
+      const b = upperEdge.getPoint(i / N)
+      for (let j = 0; j <= M; j++) {
+        const x = THREE.MathUtils.lerp(a.x, b.x, j / M)
+        const y = THREE.MathUtils.lerp(a.y, b.y, j / M)
+        positions.push(x, y, upperSurfaceZ(x, y) + offset)
+      }
+    }
+    return base
   }
-  pos.needsUpdate = true
+  const at = (base: number, i: number, j: number): number => base + i * rows + j
+  const quad = (a: number, b: number, c: number, d: number): void => {
+    index.push(a, b, d, a, d, c)
+  }
+
+  const front = skin(FRONT)
+  const back = skin(BACK)
+  for (let i = 0; i < N; i++) {
+    for (let j = 0; j < M; j++) {
+      quad(at(front, i, j), at(front, i + 1, j), at(front, i, j + 1), at(front, i + 1, j + 1))
+      quad(at(back, i, j), at(back, i, j + 1), at(back, i + 1, j), at(back, i + 1, j + 1))
+    }
+    quad(at(front, i, 0), at(back, i, 0), at(front, i + 1, 0), at(back, i + 1, 0))
+    quad(at(front, i, M), at(front, i + 1, M), at(back, i, M), at(back, i + 1, M))
+  }
+  for (let j = 0; j < M; j++) {
+    quad(at(front, 0, j), at(front, 0, j + 1), at(back, 0, j), at(back, 0, j + 1))
+  }
+
+  const geom = new THREE.BufferGeometry()
+  geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+  geom.setIndex(index)
   geom.computeVertexNormals()
+  return geom
 }
 
 export function buildSneaker(): SneakerModel {
@@ -203,14 +244,7 @@ export function buildSneaker(): SneakerModel {
   root.add(label)
 
   // --- Stripe (both sides) ---------------------------------------------------
-  const depth = 0.03
-  const stripeGeom = new THREE.ExtrudeGeometry(stripeShape(), {
-    depth,
-    bevelEnabled: false,
-    curveSegments: 32,
-  })
-  // Subdivide along the length so the wrap follows the curved surface smoothly.
-  wrapStripeOnUpper(stripeGeom, depth)
+  const stripeGeom = stripeGeometry()
   add('stripe', stripeGeom)
   const mirrored = add('stripe', stripeGeom)
   mirrored.scale.z = -1

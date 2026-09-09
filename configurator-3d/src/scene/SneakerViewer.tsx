@@ -76,10 +76,10 @@ function applyFinish(mat: THREE.MeshStandardMaterial, color: string, finish: Fin
       mat.envMap = null
       break
     case 'gloss':
-      mat.roughness = 0.12
+      mat.roughness = 0.2
       mat.metalness = 0.05
       mat.envMap = env
-      mat.envMapIntensity = 1.1
+      mat.envMapIntensity = 0.35
       break
     case 'metallic':
       mat.roughness = 0.3
@@ -204,16 +204,16 @@ function createRig(container: HTMLDivElement): Rig {
   controls.enablePan = false
   controls.autoRotateSpeed = 2.2
 
-  const key = new THREE.DirectionalLight(0xfff4e6, 2.8)
+  const key = new THREE.DirectionalLight(0xfff4e6, 2.0)
   key.position.set(3, 5, 2.5)
   scene.add(key)
-  const fill = new THREE.DirectionalLight(0xbfd6ff, 1.2)
+  const fill = new THREE.DirectionalLight(0xbfd6ff, 0.8)
   fill.position.set(-4, 2, -3)
   scene.add(fill)
-  const rim = new THREE.DirectionalLight(0xffffff, 0.8)
+  const rim = new THREE.DirectionalLight(0xffffff, 0.5)
   rim.position.set(0, 3, -5)
   scene.add(rim)
-  scene.add(new THREE.HemisphereLight(0xe6edff, 0x3a3f4d, 1.6))
+  scene.add(new THREE.HemisphereLight(0xe6edff, 0x3a3f4d, 1.1))
 
   scene.add(makeBlobShadow())
 
