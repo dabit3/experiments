@@ -1,0 +1,186 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 60px;
+  padding: 0 16px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  user-select: none;
+  flex: 0 0 auto;
+  overflow-x: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-right: 6px;
+  padding-right: 16px;
+  border-right: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--brand);
+  letter-spacing: -0.02em;
+}
+
+.brand-sub {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
+}
+
+.tb-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--control);
+}
+
+.tb-group-plain {
+  background: transparent;
+  padding: 0;
+  gap: 2px;
+}
+
+.tb-spacer {
+  flex: 1;
+}
+
+.tb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 34px;
+  min-width: 34px;
+  padding: 0 9px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 120ms ease,
+    color 120ms ease,
+    box-shadow 120ms ease,
+    transform 80ms ease;
+}
+
+.tb-btn.has-label {
+  padding: 0 12px 0 10px;
+}
+
+.tb-btn:hover:not(:disabled) {
+  background: var(--control-hover);
+  color: var(--text-strong);
+}
+
+.tb-group-plain .tb-btn:hover:not(:disabled) {
+  background: var(--control);
+}
+
+.tb-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.tb-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tb-btn.is-active {
+  background: var(--panel);
+  color: var(--brand);
+  box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--border);
+}
+
+.tb-btn.is-active:hover:not(:disabled) {
+  background: var(--panel);
+}
+
+.tb-btn.is-primary {
+  height: 38px;
+  padding: 0 16px 0 13px;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 9px;
+  box-shadow: 0 1px 2px rgba(11, 33, 64, 0.25);
+}
+
+.tb-btn.is-primary:hover:not(:disabled) {
+  background: var(--brand-hover);
+  color: #fff;
+}
+
+.tb-btn:focus-visible,
+.tb-zoom:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.tb-zoom {
+  height: 34px;
+  min-width: 56px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-strong);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.tb-zoom:hover {
+  background: var(--control-hover);
+}
+
+@media (max-width: 1750px) {
+  .tb-group[aria-label='Tools'] .tb-btn span,
+  .tb-group[aria-label='Edge style'] .tb-btn span {
+    display: none;
+  }
+
+  .tb-group[aria-label='Tools'] .tb-btn.has-label,
+  .tb-group[aria-label='Edge style'] .tb-btn.has-label {
+    padding: 0 9px;
+  }
+
+  .brand-sub {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .tb-btn:not(.is-primary) span {
+    display: none;
+  }
+
+  .tb-btn.has-label:not(.is-primary) {
+    padding: 0 9px;
+  }
+
+  .brand-name {
+    display: none;
+  }
+}
