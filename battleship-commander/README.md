@@ -69,6 +69,13 @@ Open `http://localhost:5173/?seed=8` in a maximised Chrome window.
    your same fleet are reused, the enemy layout is identical, and the game is
    played again to a final result.
 
+This scenario is also packaged as a computer-use regression test in
+`.agents/skills/battleship-commander-showcase/SKILL.md` (repo root): Devin's
+testing agent drives the real UI in maximised Chrome, records the run, and
+annotates it with setup / test_start / assertion markers, so the annotated
+video is the test artifact. A seed-8 oracle in the skill (fixed enemy layout,
+`D5` hit / `E5` miss) lets it check determinism without scripting the browser.
+
 Recording: https://app.devin.ai/attachments/ceed9b12-926e-442d-ba5c-afeb03c865ca/battleship-commander-redesign-showcase.mp4
 
 Result of the recorded run: victory in game 1 — 5/5 enemy ships sunk in 20 shots (85% accuracy) while the AI sank 2/5, so no rematch was needed.
