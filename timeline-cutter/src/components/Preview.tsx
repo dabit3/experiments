@@ -41,12 +41,14 @@ export function Preview({ project, time, speed }: Props) {
     <section className="panel preview" aria-label="Program monitor">
       <header className="panel-header">
         <h2>Program</h2>
-        <span className="panel-meta">1280×720 · 30 fps</span>
         {speed !== 0 && (
           <span className={`speed-badge ${speed < 0 ? 'rev' : ''}`}>
             {speed < 0 ? '◀' : '▶'} {Math.abs(speed)}×
           </span>
         )}
+        <span className="panel-meta">
+          <span className={`live-dot ${speed !== 0 ? 'on' : ''}`}>{speed !== 0 ? 'PLAYING' : 'PAUSED'}</span>
+        </span>
       </header>
       <div className="preview-stage">
         <canvas ref={ref} width={W} height={H} className="preview-canvas" />
@@ -63,8 +65,9 @@ export function Preview({ project, time, speed }: Props) {
           ) : (
             <span className="dim">—</span>
           )}
-          {title && <span className="title-chip">T · {title.text}</span>}
+          {title && <span className="title-chip">T1 · {title.text}</span>}
         </span>
+        <span className="dim mono">1280×720 · 30 fps</span>
       </footer>
     </section>
   )

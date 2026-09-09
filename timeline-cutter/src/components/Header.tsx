@@ -19,6 +19,16 @@ interface Props {
   onExport: (format: 'json' | 'csv') => void
 }
 
+function BrandMark() {
+  return (
+    <svg className="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
+      <rect width="28" height="28" rx="7" fill="#f4f4f5" />
+      <path d="M7 10h8.6l-2.6 8H7z" fill="#111114" />
+      <path d="M17.4 10H21v8h-6.2z" fill="#111114" />
+    </svg>
+  )
+}
+
 export function Header(p: Props) {
   const [menu, setMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -35,14 +45,12 @@ export function Header(p: Props) {
   return (
     <header className="app-header">
       <div className="brand">
-        <span className="brand-mark" aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </span>
-        <div>
-          <h1>Timeline Cutter</h1>
-          <p>Trim · split · ripple</p>
+        <BrandMark />
+        <h1>Timeline Cutter</h1>
+        <span className="brand-divider" aria-hidden="true" />
+        <div className="brand-project">
+          <span>Untitled Sequence</span>
+          <span className="mono">1280×720 · 30 fps</span>
         </div>
       </div>
 
@@ -58,8 +66,8 @@ export function Header(p: Props) {
           <Icon name="pause" size={20} />
           <kbd>K</kbd>
         </button>
-        <button className="play-btn" onClick={p.onTogglePlay} title="Play / pause (Space)" aria-label={p.isPlaying ? 'Pause' : 'Play'}>
-          <Icon name={p.isPlaying ? 'pause' : 'play'} size={24} />
+        <button className={`play-btn ${p.isPlaying ? 'playing' : ''}`} onClick={p.onTogglePlay} title="Play / pause (Space)" aria-label={p.isPlaying ? 'Pause' : 'Play'}>
+          <Icon name={p.isPlaying ? 'pause' : 'play'} size={20} />
         </button>
         <button className={`icon-btn ${p.speed > 0 ? 'active' : ''}`} onClick={() => p.onShuttle(1)} title="Shuttle forwards (L)" aria-label="Shuttle forwards">
           <Icon name="forward" size={20} />
@@ -88,11 +96,16 @@ export function Header(p: Props) {
           </button>
           {menu && (
             <div className="menu" role="menu">
+              <div className="menu-title">Edit decision list</div>
               <button role="menuitem" onClick={() => { setMenu(false); p.onExport('json') }} data-testid="export-json">
-                <strong>JSON</strong> <span>timeline-cutter-edl.json</span>
+                <span className="menu-icon">{'{ }'}</span>
+                <strong>JSON</strong>
+                <span>timeline-cutter-edl.json</span>
               </button>
               <button role="menuitem" onClick={() => { setMenu(false); p.onExport('csv') }} data-testid="export-csv">
-                <strong>CSV</strong> <span>timeline-cutter-edl.csv</span>
+                <span className="menu-icon">CSV</span>
+                <strong>CSV</strong>
+                <span>timeline-cutter-edl.csv</span>
               </button>
             </div>
           )}

@@ -58,7 +58,7 @@ export function Inspector({ project, selection, playhead, onSplit, onRippleDelet
         )}
         {!video && !title && (
           <p className="insp-empty">
-            Select a clip on the timeline to inspect it. Drag the yellow handles at either end of a clip to trim; drag a clip body to reorder it.
+            <strong>Nothing selected.</strong> Click a clip on the timeline to inspect it. Drag the handles at either end of a clip to trim, or drag the clip body to reorder it.
           </p>
         )}
       </div>
@@ -76,14 +76,14 @@ export function Inspector({ project, selection, playhead, onSplit, onRippleDelet
       </div>
 
       <div className="shortcuts">
-        <h3>Keys</h3>
+        <h3>Shortcuts</h3>
         <ul>
-          <li><kbd>Space</kbd> play / pause</li>
-          <li><kbd>J</kbd> <kbd>K</kbd> <kbd>L</kbd> shuttle back / stop / forward</li>
-          <li><kbd>←</kbd> <kbd>→</kbd> step one frame</li>
-          <li><kbd>V</kbd> select tool · <kbd>B</kbd> razor tool</li>
-          <li><kbd>N</kbd> toggle snapping</li>
-          <li><kbd>Ctrl</kbd>+<kbd>Z</kbd> undo · <kbd>Ctrl</kbd>+<kbd>⇧</kbd>+<kbd>Z</kbd> redo</li>
+          <li><span className="keys"><kbd>Space</kbd></span><span>Play / pause</span></li>
+          <li><span className="keys"><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></span><span>Shuttle back / stop / forward</span></li>
+          <li><span className="keys"><kbd>←</kbd><kbd>→</kbd></span><span>Step one frame</span></li>
+          <li><span className="keys"><kbd>V</kbd><kbd>B</kbd></span><span>Select tool / razor tool</span></li>
+          <li><span className="keys"><kbd>N</kbd></span><span>Toggle snapping</span></li>
+          <li><span className="keys"><kbd>Ctrl</kbd><kbd>Z</kbd></span><span>Undo · add <kbd>⇧</kbd> to redo</span></li>
         </ul>
       </div>
     </aside>

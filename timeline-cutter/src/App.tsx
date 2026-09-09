@@ -227,11 +227,6 @@ export default function App() {
         setPxPerSec={setPxPerSec}
         onSplitAt={split}
       />
-      {project.video.length === 0 && (
-        <div className="empty-hint" role="status">
-          Add clips from the media bin to start the sequence — the video track is magnetic, so clips butt up against each other and ripple when trimmed.
-        </div>
-      )}
       {toast && (
         <div className="toast" role="status">
           {toast}

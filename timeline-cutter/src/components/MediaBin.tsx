@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import type { MediaItem } from '../types'
 import { MEDIA } from '../lib/media'
 import { drawFrame } from '../lib/render'
-import { fmtSeconds } from '../lib/time'
+import { fmtSeconds, timecode } from '../lib/time'
 import { Icon } from './Icon'
 
 interface Props {
@@ -25,7 +25,9 @@ export function MediaBin({ onAdd, usage }: Props) {
           </li>
         ))}
       </ul>
-      <p className="panel-hint">Click <strong>+</strong> (or double-click a card) to append a clip to the video track.</p>
+      <p className="panel-hint">
+        <strong>Add</strong> or double-click a clip to append it to V1. Procedurally rendered — no media files.
+      </p>
     </aside>
   )
 }
@@ -40,12 +42,12 @@ function MediaCard({ media, onAdd, used }: { media: MediaItem; onAdd: () => void
           {media.name}
         </div>
         <div className="media-sub">
-          {fmtSeconds(media.duration)} · 720p · 30 fps
-          {used > 0 && <span className="media-used"> · in use ×{used}</span>}
+          {fmtSeconds(media.duration)} · {timecode(media.duration)}
+          {used > 0 && <span className="media-used"> · ×{used} on V1</span>}
         </div>
       </div>
       <button className="icon-btn add-btn" onClick={onAdd} title={`Add ${media.name} to timeline`} aria-label={`Add ${media.name} to timeline`}>
-        <Icon name="plus" size={20} />
+        <Icon name="plus" size={18} />
       </button>
     </div>
   )

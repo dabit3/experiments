@@ -21,6 +21,7 @@ const SNAP_PX = 10
 const DRAG_THRESHOLD_PX = 4
 export const ZOOM_MIN = 12
 export const ZOOM_MAX = 320
+const CLIP_H = 78
 
 interface Props {
   project: Project
@@ -351,6 +352,7 @@ export function Timeline(props: Props) {
   const placed = useMemo(() => placeVideo(displayProject.video), [displayProject])
 
   const ticks = useMemo(() => buildTicks(contentSeconds, pxPerSec), [contentSeconds, pxPerSec])
+  const gridPx = majorStep(pxPerSec) * pxPerSec
 
   const fit = () => {
     const target = Math.max(duration, 1)
@@ -382,7 +384,7 @@ export function Timeline(props: Props) {
           </button>
         </div>
         <button
-          className={`tool-btn ${snap ? 'active' : ''}`}
+          className={`tool-btn toggle ${snap ? 'active' : ''}`}
           onClick={() => props.setSnap(!snap)}
           title="Magnetic snapping to clip edges and the playhead (N)"
           aria-pressed={snap}
@@ -428,14 +430,16 @@ export function Timeline(props: Props) {
           </div>
           <div className="tl-header">
             <span className="track-badge title">T1</span> Titles
+            <span className="track-count">{project.titles.length}</span>
           </div>
           <div className="tl-header">
             <span className="track-badge video">V1</span> Video
+            <span className="track-count">{project.video.length}</span>
           </div>
         </div>
 
         <div className={`tl-scroll ${tool === 'razor' ? 'razor' : ''}`} ref={scrollRef}>
-          <div className="tl-content" ref={contentRef} style={{ width: contentWidth }}>
+          <div className="tl-content" ref={contentRef} style={{ width: contentWidth, ['--grid-px' as string]: `${gridPx}px` }}>
             <div className="tl-ruler" onPointerDown={startScrub} data-testid="ruler">
               {ticks.map((t) => (
                 <div key={t.time} className={`tick ${t.major ? 'major' : ''}`} style={{ left: xOf(t.time) }}>
@@ -461,6 +465,14 @@ export function Timeline(props: Props) {
             </div>
 
             <div className="tl-track video-track" onPointerDown={onTrackBackground}>
+              {placed.length === 0 && (
+                <div className="tl-empty" role="status">
+                  <Icon name="film" size={14} />
+                  <span>
+                    <strong>Empty sequence.</strong> Add clips from the media bin — V1 is magnetic, so clips butt together and ripple when trimmed.
+                  </span>
+                </div>
+              )}
               {placed.map((p) => {
                 const lifted = drag?.kind === 'move' && drag.id === p.clip.id
                 return (
@@ -514,9 +526,14 @@ interface Tick {
   major: boolean
 }
 
+const MAJOR_STEPS = [0.1, 0.25, 0.5, 1, 2, 5, 10, 15, 30, 60]
+
+function majorStep(pxPerSec: number) {
+  return MAJOR_STEPS.find((c) => c * pxPerSec >= 80) ?? 60
+}
+
 function buildTicks(seconds: number, pxPerSec: number): Tick[] {
-  const candidates = [0.1, 0.25, 0.5, 1, 2, 5, 10, 15, 30, 60]
-  const major = candidates.find((c) => c * pxPerSec >= 80) ?? 60
+  const major = majorStep(pxPerSec)
   const minor = major / (major >= 1 ? (major === 1 || major === 5 || major === 15 ? 5 : 4) : 5)
   const ticks: Tick[] = []
   const n = Math.ceil(seconds / minor)
@@ -555,15 +572,18 @@ function VideoClipView({ placed, x, width, selected, lifted, razor, onBody, onHe
       aria-label={`${media.name}, ${fmtSeconds(dur)}`}
     >
       <FilmStrip mediaId={media.id} inPoint={placed.clip.in} outPoint={placed.clip.out} width={width} />
+      <div className="clip-shade" />
       <div className="clip-label">
         <span className="clip-name">
           <span className="media-reel" style={{ background: media.primary }}>{media.id}</span>
           {media.name}
         </span>
-        <span className="clip-dur mono">{fmtSeconds(dur)}</span>
-      </div>
-      <div className="clip-src mono">
-        {timecode(placed.clip.in)} – {timecode(placed.clip.out)}
+        <span className="clip-meta">
+          <span className="clip-dur mono">{fmtSeconds(dur)}</span>
+          <span className="clip-src mono">
+            {timecode(placed.clip.in)} – {timecode(placed.clip.out)}
+          </span>
+        </span>
       </div>
       {!razor && (
         <>
@@ -599,7 +619,7 @@ function FilmStrip({ mediaId, inPoint, outPoint, width }: { mediaId: string; inP
       ctx.restore()
     }
   }, [mediaId, inPoint, outPoint, w])
-  return <canvas ref={ref} width={w} height={36} className="filmstrip" />
+  return <canvas ref={ref} width={w} height={CLIP_H} className="filmstrip" />
 }
 
 interface TitleClipViewProps {

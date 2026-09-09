@@ -219,7 +219,7 @@ function drawNoise(ctx: CanvasRenderingContext2D, m: MediaItem, t: number, w: nu
 function drawBurnIn(ctx: CanvasRenderingContext2D, m: MediaItem, t: number, w: number, h: number) {
   const fontSize = Math.max(12, Math.round(h * 0.07))
   ctx.save()
-  ctx.font = `600 ${fontSize}px "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace`
+  ctx.font = `600 ${fontSize}px "JetBrains Mono Variable", "JetBrains Mono", Menlo, Consolas, monospace`
   ctx.textAlign = 'left'
   ctx.textBaseline = 'middle'
   const tc = timecode(t)
@@ -235,7 +235,7 @@ function drawBurnIn(ctx: CanvasRenderingContext2D, m: MediaItem, t: number, w: n
   ctx.fillText(tc, x + padX, y + bh / 2)
 
   const label = `${m.id} · ${m.name}`
-  ctx.font = `600 ${Math.round(fontSize * 0.75)}px Inter, system-ui, sans-serif`
+  ctx.font = `600 ${Math.round(fontSize * 0.75)}px "Inter Variable", Inter, system-ui, sans-serif`
   const lw = ctx.measureText(label).width + padX * 2
   ctx.fillStyle = 'rgba(0,0,0,0.55)'
   roundRect(ctx, fontSize * 0.8, fontSize * 0.8, lw, bh * 0.8, fontSize * 0.3)
@@ -265,7 +265,7 @@ export function drawTitleOverlay(ctx: CanvasRenderingContext2D, text: string, pr
   ctx.save()
   ctx.globalAlpha = Math.max(0, alpha)
   const fontSize = Math.round(h * 0.11)
-  ctx.font = `800 ${fontSize}px Inter, system-ui, sans-serif`
+  ctx.font = `800 ${fontSize}px "Inter Variable", Inter, system-ui, sans-serif`
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   const tw = ctx.measureText(text).width
@@ -285,7 +285,7 @@ export function drawEmpty(ctx: CanvasRenderingContext2D, w: number, h: number) {
   ctx.fillStyle = '#000'
   ctx.fillRect(0, 0, w, h)
   ctx.fillStyle = 'rgba(255,255,255,0.35)'
-  ctx.font = `500 ${Math.round(h * 0.05)}px Inter, system-ui, sans-serif`
+  ctx.font = `500 ${Math.round(h * 0.05)}px "Inter Variable", Inter, system-ui, sans-serif`
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
   ctx.fillText('No clip at playhead', w / 2, h / 2)
