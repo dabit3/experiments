@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import QRCode from 'qrcode'
 import type { Flight, Passenger } from '../types'
 import { AIRPORT_BY_CODE } from '../data/airports'
@@ -49,8 +49,10 @@ export function BoardingPass({ passenger, index, flight, date, seat, reference, 
     }
   }, [payload])
 
+  const style = { '--airline': flight.airline.color } as CSSProperties
+
   return (
-    <article className="boarding-pass" aria-label={`Boarding pass for ${passengerFullName(passenger)}`}>
+    <article className="boarding-pass" style={style} aria-label={`Boarding pass for ${passengerFullName(passenger)}`}>
       <div className="bp-main">
         <header className="bp-head">
           <span className="bp-airline">
@@ -59,7 +61,9 @@ export function BoardingPass({ passenger, index, flight, date, seat, reference, 
             </span>
             {flight.airline.name}
           </span>
-          <span className="bp-title">Boarding pass</span>
+          <span className="bp-title">
+            Boarding pass{priority && <span className="bp-priority">Priority</span>}
+          </span>
         </header>
         <div className="bp-route">
           <div>

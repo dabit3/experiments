@@ -143,6 +143,12 @@ export default function App() {
 
   return (
     <div className="app">
+      <div className="backdrop" aria-hidden>
+        <span className="aurora aurora-1" />
+        <span className="aurora aurora-2" />
+        <span className="aurora aurora-3" />
+        <span className="grain" />
+      </div>
       <header className="topbar">
         <button className="brand" onClick={restart} title="Start over">
           <span className="brand-mark" aria-hidden>
@@ -156,13 +162,19 @@ export default function App() {
           <span className="brand-name">Contrail Air</span>
         </button>
         <Stepper current={step} onSelect={goTo} locked={Boolean(booking)} />
-        <button className="btn btn-ghost btn-sm" onClick={restart}>
-          Start over
-        </button>
+        <div className="topbar-right">
+          <span className="step-count">
+            Step {step + 1} <span className="muted">of {STEPS.length}</span>
+          </span>
+          <button className="btn btn-ghost btn-sm" onClick={restart}>
+            Start over
+          </button>
+        </div>
+        <span className="topbar-progress" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} aria-hidden />
       </header>
 
       <main className={`content ${showSummary ? 'with-summary' : ''} step-${STEPS[step].id}`}>
-        <section className="main-col">
+        <section className="main-col step-panel" key={step}>
           {step === 0 && <SearchStep initial={search} onSearch={onSearch} />}
           {step === 1 && (
             <ResultsStep

@@ -56,16 +56,19 @@ export function ConfirmationStep({ search, selections, passengers, contact, seat
       <div className="confirm-hero card">
         <span className="confirm-check" aria-hidden>
           <svg viewBox="0 0 24 24" width="30" height="30">
-            <path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+            <path className="check-path" d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
         <div className="confirm-copy">
           <p className="eyebrow">Step 6 · Booking confirmed</p>
           <h2>You're all set, {passengers[0]?.firstName || 'traveller'}.</h2>
           <p className="muted">
-            Booking reference <strong className="ref">{booking.reference}</strong> · {money(booking.total)} charged to card ending {booking.last4} · confirmation sent to{' '}
-            <strong>{contact.email}</strong>
+            {money(booking.total)} charged to card ending {booking.last4} · confirmation sent to <strong>{contact.email}</strong>
           </p>
+          <div className="confirm-ref">
+            <span className="confirm-ref-label">Booking reference</span>
+            <span className="ref">{booking.reference}</span>
+          </div>
         </div>
         <div className="confirm-actions">
           <button type="button" className="btn btn-primary" onClick={downloadIcs}>

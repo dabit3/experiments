@@ -42,9 +42,27 @@ export function SearchStep({ initial, onSearch }: Props) {
 
   return (
     <div className="search-hero">
+      <svg className="hero-art" viewBox="0 0 1200 420" aria-hidden preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="contrail" x1="0" x2="1">
+            <stop offset="0" stopColor="#7cc4ff" stopOpacity="0" />
+            <stop offset="0.55" stopColor="#7cc4ff" stopOpacity="0.55" />
+            <stop offset="1" stopColor="#ffd58a" stopOpacity="0.9" />
+          </linearGradient>
+        </defs>
+        <path className="hero-path" d="M-40 360 C 260 330, 520 120, 820 96 S 1180 70, 1260 40" fill="none" stroke="url(#contrail)" strokeWidth="2" strokeDasharray="6 10" />
+        <path className="hero-path hero-path-2" d="M-40 400 C 300 372, 560 200, 860 160 S 1180 118, 1260 92" fill="none" stroke="url(#contrail)" strokeWidth="1" opacity="0.5" />
+        <g className="hero-plane">
+          <path d="M0 0l-22 6 6-6-6-6z" fill="#ffd58a" />
+        </g>
+      </svg>
       <div className="hero-copy">
-        <p className="eyebrow">Fly with Contrail Air</p>
-        <h1>Where to next?</h1>
+        <p className="eyebrow">
+          <span className="eyebrow-dot" /> Fly with Contrail Air
+        </p>
+        <h1>
+          Where to <em>next?</em>
+        </h1>
         <p className="lede">Search 60 airports, pick your seats, and walk away with boarding passes — all in one flow.</p>
       </div>
 
@@ -148,16 +166,37 @@ export function SearchStep({ initial, onSearch }: Props) {
 
       <ul className="hero-perks">
         <li>
-          <strong>No hidden fees</strong>
-          <span>Taxes shown before you pay</span>
+          <span className="perk-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
+              <path d="M4 7h16v10H4zM4 11h16M8 15h3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+          <span className="perk-text">
+            <strong>No hidden fees</strong>
+            <span>Taxes shown before you pay</span>
+          </span>
         </li>
         <li>
-          <strong>Pick any seat</strong>
-          <span>Live seat map for every flight</span>
+          <span className="perk-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
+              <path d="M7 4h10v9H7zM5 13h14v4H5zM8 17v3M16 17v3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+          <span className="perk-text">
+            <strong>Pick any seat</strong>
+            <span>Live seat map for every flight</span>
+          </span>
         </li>
         <li>
-          <strong>Instant boarding passes</strong>
-          <span>QR codes and a calendar file</span>
+          <span className="perk-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
+              <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h3v3h-3zM17 17h3v3h-3zM17 13h3M13 20h3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+            </svg>
+          </span>
+          <span className="perk-text">
+            <strong>Instant boarding passes</strong>
+            <span>QR codes and a calendar file</span>
+          </span>
         </li>
       </ul>
     </div>

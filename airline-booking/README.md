@@ -1,7 +1,9 @@
 # Contrail Air — airline booking wizard
 
 A six-step flight booking flow built with Vite + React + TypeScript, styled as a real airline
-product ("Contrail Air"). Everything runs in the browser with no backend and no network calls:
+product ("Contrail Air"): a dark navy design system with self-hosted Manrope / Instrument Serif /
+JetBrains Mono type, animated step transitions, a live card preview and printable boarding
+passes. Everything runs in the browser with no backend and no network calls:
 the 60-airport list, the schedules, the taken seats and the booking references are all bundled
 and generated deterministically, so the same search always produces the same flights.
 
@@ -76,13 +78,16 @@ downloads folder.
 
 ### Recording
 
-**[Watch the full recording (mp4)](https://app.devin.ai/attachments/f54e05ce-02c6-4e53-959e-16db42cbdabf/airline-booking-showcase.mp4)**
+**[Watch the full recording (mp4)](https://app.devin.ai/attachments/24a00b87-f4fd-4b45-9c1e-653dc48701a3/airline-booking-v2-edited.mp4)**
 
-![Animated preview of the recording](https://app.devin.ai/attachments/9c032140-eb60-4791-adb7-3e951fc509c7/airline-booking-preview.webp)
+![Animated preview of the recording](https://app.devin.ai/attachments/d464830e-74fd-4cf4-b3fe-c401002a0b44/airline-booking-v2-preview.webp)
 
-Recorded run: booking `EMEE9R` — outbound Silverwing SV660 (cheapest nonstop, $263 Basic /
+Recorded run: booking `UCEU2F` — outbound Silverwing SV660 (cheapest nonstop, $263 Basic /
 $326 Standard), return Northlight NL121 ($349 / $433), seats 10A+10B and 8A+8B, Visa ending
-4242, `contrail-EMEE9R.ics` with two `VEVENT`s and `TRIGGER:-PT3H` alarms.
+4242, `contrail-UCEU2F.ics` with two `VEVENT`s and `TRIGGER:-PT3H` alarms.
+
+Earlier run on the first visual pass:
+[mp4](https://app.devin.ai/attachments/f54e05ce-02c6-4e53-959e-16db42cbdabf/airline-booking-showcase.mp4).
 
 ## Project layout
 

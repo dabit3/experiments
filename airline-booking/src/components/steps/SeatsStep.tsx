@@ -193,6 +193,11 @@ export function SeatsStep({ search, selections, passengers, initial, onDone, onB
           )}
           <div className="cabin">
             <div className="cabin-nose" aria-hidden />
+            <div className="cabin-wing left" aria-hidden />
+            <div className="cabin-wing right" aria-hidden />
+            <div className="cabin-front-label" aria-hidden>
+              Front of aircraft
+            </div>
             <div className="seat-grid" role="grid" aria-label="Seat map">
               <div className="seat-row seat-row-letters" aria-hidden>
                 <span className="row-num" />

@@ -228,6 +228,9 @@ export function ResultsStep({ search, initial, onChange, onDone, onBack }: Props
                       {f.via.map((v) => (
                         <span key={v} className="route-stop" title={`Stop in ${AIRPORT_BY_CODE[v]?.city ?? v}`} />
                       ))}
+                      <svg className="route-plane" viewBox="0 0 24 24" width="16" height="16" aria-hidden>
+                        <path d="M2 12l18-7-5 7 5 7z" fill="currentColor" />
+                      </svg>
                     </span>
                     <span className={`route-stops ${f.stops === 0 ? 'nonstop' : ''}`}>
                       {f.stops === 0 ? 'Nonstop' : `${f.stops} stop${f.stops > 1 ? 's' : ''} · ${f.via.join(', ')}`}
@@ -245,6 +248,7 @@ export function ResultsStep({ search, initial, onChange, onDone, onBack }: Props
                   {isCheapest && <span className="badge badge-green">Cheapest</span>}
                   <span className="price-from">from</span>
                   <strong className="price">{money(f.price)}</strong>
+                  <span className="price-per">per passenger</span>
                   <button
                     type="button"
                     className={`btn ${isExpanded ? 'btn-ghost' : 'btn-primary'}`}
@@ -259,6 +263,7 @@ export function ResultsStep({ search, initial, onChange, onDone, onBack }: Props
                 <div className="fare-grid">
                   {(Object.keys(FARES) as FareClass[]).map((fare) => (
                     <div key={fare} className={`fare-card fare-${fare}`}>
+                      {fare === 'standard' && <span className="fare-ribbon">Most popular</span>}
                       <div className="fare-head">
                         <span className="fare-name">{FARES[fare].label}</span>
                         <span className="fare-price">{money(farePrice(f, fare))}</span>

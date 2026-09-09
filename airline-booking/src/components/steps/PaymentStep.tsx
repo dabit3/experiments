@@ -139,6 +139,8 @@ export function PaymentStep({ search, selections, passengers, seats, extras, onE
             ))}
           </div>
         </div>
+        <div className="payment-body">
+        <CardPreview payment={payment} cardType={cardType} valid={numberComplete && !liveNumberError} />
         <div className="form-grid">
           <Field id="card-name" label="Name on card" error={errors.name} className="col-12">
             <input
@@ -219,6 +221,13 @@ export function PaymentStep({ search, selections, passengers, seats, extras, onE
             />
           </Field>
         </div>
+        </div>
+        <p className="secure-note">
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden>
+            <path d="M6 10V8a6 6 0 1 1 12 0v2m-13 0h14v10H5z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+          </svg>
+          Encrypted demo checkout · nothing is stored or charged
+        </p>
       </section>
 
       <div className="step-actions">
@@ -262,6 +271,41 @@ function ExtraToggle({ id, label, sublabel, checked, onChange }: ToggleProps) {
       <input id={id} type="checkbox" role="switch" checked={checked} onChange={(e) => onChange(e.target.checked)} />
       <span className="switch" aria-hidden />
     </label>
+  )
+}
+
+function CardPreview({ payment, cardType, valid }: { payment: PaymentDetails; cardType: CardType; valid: boolean }) {
+  const digits = payment.number.replace(/\D/g, '')
+  const groups = cardType === 'amex' ? [4, 6, 5] : [4, 4, 4, 4]
+  let cursor = 0
+  const shown = groups.map((len) => {
+    const part = digits.slice(cursor, cursor + len)
+    cursor += len
+    return part.padEnd(len, '•')
+  })
+  return (
+    <div className={`card-preview ${cardType} ${valid ? 'valid' : ''}`} aria-hidden>
+      <div className="cp-top">
+        <span className="cp-chip" />
+        <span className="cp-brand">{cardType === 'unknown' ? 'Contrail Pay' : CARD_LABEL[cardType]}</span>
+      </div>
+      <div className="cp-number">
+        {shown.map((g, i) => (
+          <span key={i}>{g}</span>
+        ))}
+      </div>
+      <div className="cp-bottom">
+        <span className="cp-field">
+          <small>Card holder</small>
+          <strong>{payment.name.trim() ? payment.name.toUpperCase() : 'YOUR NAME'}</strong>
+        </span>
+        <span className="cp-field">
+          <small>Expires</small>
+          <strong>{payment.expiry || 'MM/YY'}</strong>
+        </span>
+      </div>
+      <span className="cp-shine" />
+    </div>
   )
 }
 
