@@ -1,0 +1,889 @@
+{
+  "steps": [
+    "connect",
+    "room",
+    "play",
+    "reconnect",
+    "results",
+    "rematch",
+    "parity"
+  ],
+  "assertions": [
+    {
+      "label": "web client reports platform=web",
+      "passed": true
+    },
+    {
+      "label": "ios client reports platform=ios",
+      "passed": true
+    },
+    {
+      "label": "macos client reports platform=macos",
+      "passed": true
+    },
+    {
+      "label": "web starts in the lobby",
+      "passed": true,
+      "detail": "lobby"
+    },
+    {
+      "label": "ios starts in the lobby",
+      "passed": true,
+      "detail": "lobby"
+    },
+    {
+      "label": "macos starts in the lobby",
+      "passed": true,
+      "detail": "lobby"
+    },
+    {
+      "label": "room created with invite code JAB6F9",
+      "passed": true
+    },
+    {
+      "label": "web is waiting for an opponent",
+      "passed": true,
+      "detail": "waiting"
+    },
+    {
+      "label": "ios joined as black",
+      "passed": true,
+      "detail": {
+        "type": "ui_report",
+        "id": "1700000000000-292597327",
+        "ok": true,
+        "clientId": "ios-e2e",
+        "platform": "ios",
+        "view": {
+          "width": 402,
+          "height": 874,
+          "devicePixelRatio": 3,
+          "paddingTop": 62,
+          "paddingBottom": 34
+        },
+        "name": "iOS Bram",
+        "connection": "online",
+        "screen": "game",
+        "theme": "dark",
+        "roomCode": "JAB6F9",
+        "status": "playing",
+        "seq": 2,
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "liveFen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "moves": [],
+        "moveCount": 0,
+        "turn": "w",
+        "mySide": "b",
+        "isSpectator": false,
+        "orientation": "b",
+        "result": null,
+        "score": null,
+        "clocks": {
+          "whiteMs": 180000,
+          "blackMs": 180000,
+          "running": null,
+          "frozen": true
+        },
+        "white": "Web Ada",
+        "black": "iOS Bram",
+        "spectators": [],
+        "offers": {
+          "draw": null,
+          "takeback": null,
+          "rematch": null
+        },
+        "premove": null,
+        "queued": false,
+        "roomsListed": 0
+      }
+    },
+    {
+      "label": "macos joined JAB6F9 as spectator",
+      "passed": true,
+      "detail": {
+        "type": "ui_report",
+        "id": "1700000000000-526963089",
+        "ok": true,
+        "clientId": "macos-e2e",
+        "platform": "macos",
+        "view": {
+          "width": 1000,
+          "height": 488,
+          "devicePixelRatio": 1,
+          "paddingTop": 0,
+          "paddingBottom": 0
+        },
+        "name": "macOS Dov",
+        "connection": "online",
+        "screen": "game",
+        "theme": "dark",
+        "roomCode": "JAB6F9",
+        "status": "playing",
+        "seq": 3,
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "liveFen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "moves": [],
+        "moveCount": 0,
+        "turn": "w",
+        "mySide": null,
+        "isSpectator": true,
+        "orientation": "w",
+        "result": null,
+        "score": null,
+        "clocks": {
+          "whiteMs": 180000,
+          "blackMs": 180000,
+          "running": null,
+          "frozen": true
+        },
+        "white": "Web Ada",
+        "black": "iOS Bram",
+        "spectators": [
+          "macOS Dov"
+        ],
+        "offers": {
+          "draw": null,
+          "takeback": null,
+          "rematch": null
+        },
+        "premove": null,
+        "queued": false,
+        "roomsListed": 0
+      }
+    },
+    {
+      "label": "web sees the game as playing",
+      "passed": true,
+      "detail": "playing"
+    },
+    {
+      "label": "web is in room JAB6F9",
+      "passed": true
+    },
+    {
+      "label": "web shows the right seats",
+      "passed": true,
+      "detail": [
+        "Web Ada",
+        "iOS Bram"
+      ]
+    },
+    {
+      "label": "web lists 1 spectators",
+      "passed": true,
+      "detail": [
+        "macOS Dov"
+      ]
+    },
+    {
+      "label": "ios sees the game as playing",
+      "passed": true,
+      "detail": "playing"
+    },
+    {
+      "label": "ios is in room JAB6F9",
+      "passed": true
+    },
+    {
+      "label": "ios shows the right seats",
+      "passed": true,
+      "detail": [
+        "Web Ada",
+        "iOS Bram"
+      ]
+    },
+    {
+      "label": "ios lists 1 spectators",
+      "passed": true,
+      "detail": [
+        "macOS Dov"
+      ]
+    },
+    {
+      "label": "macos sees the game as playing",
+      "passed": true,
+      "detail": "playing"
+    },
+    {
+      "label": "macos is in room JAB6F9",
+      "passed": true
+    },
+    {
+      "label": "macos shows the right seats",
+      "passed": true,
+      "detail": [
+        "Web Ada",
+        "iOS Bram"
+      ]
+    },
+    {
+      "label": "macos lists 1 spectators",
+      "passed": true,
+      "detail": [
+        "macOS Dov"
+      ]
+    },
+    {
+      "label": "macos can browse history while the live move list stays intact",
+      "passed": true,
+      "detail": {
+        "viewPly": 4,
+        "fen": "rnbqkbnr/ppp2ppp/3p4/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 0 3"
+      }
+    },
+    {
+      "label": "macos resumed the same game",
+      "passed": true,
+      "detail": 33
+    },
+    {
+      "label": "web shows the game as finished",
+      "passed": true,
+      "detail": "finished"
+    },
+    {
+      "label": "web shows the results overlay",
+      "passed": true,
+      "detail": "results"
+    },
+    {
+      "label": "web final FEN matches",
+      "passed": true,
+      "detail": "1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17"
+    },
+    {
+      "label": "web move list matches",
+      "passed": true
+    },
+    {
+      "label": "web score is 1-0",
+      "passed": true,
+      "detail": "1-0"
+    },
+    {
+      "label": "web reason is checkmate",
+      "passed": true,
+      "detail": {
+        "outcome": "whiteWins",
+        "reason": "checkmate"
+      }
+    },
+    {
+      "label": "web clocks match web",
+      "passed": true,
+      "detail": [
+        {
+          "whiteMs": 212000,
+          "blackMs": 210000,
+          "running": null,
+          "frozen": true
+        },
+        {
+          "whiteMs": 212000,
+          "blackMs": 210000,
+          "running": null,
+          "frozen": true
+        }
+      ]
+    },
+    {
+      "label": "ios shows the game as finished",
+      "passed": true,
+      "detail": "finished"
+    },
+    {
+      "label": "ios shows the results overlay",
+      "passed": true,
+      "detail": "results"
+    },
+    {
+      "label": "ios final FEN matches",
+      "passed": true,
+      "detail": "1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17"
+    },
+    {
+      "label": "ios move list matches",
+      "passed": true
+    },
+    {
+      "label": "ios score is 1-0",
+      "passed": true,
+      "detail": "1-0"
+    },
+    {
+      "label": "ios reason is checkmate",
+      "passed": true,
+      "detail": {
+        "outcome": "whiteWins",
+        "reason": "checkmate"
+      }
+    },
+    {
+      "label": "ios clocks match web",
+      "passed": true,
+      "detail": [
+        {
+          "whiteMs": 212000,
+          "blackMs": 210000,
+          "running": null,
+          "frozen": true
+        },
+        {
+          "whiteMs": 212000,
+          "blackMs": 210000,
+          "running": null,
+          "frozen": true
+        }
+      ]
+    },
+    {
+      "label": "macos shows the game as finished",
+      "passed": true,
+      "detail": "finished"
+    },
+    {
+      "label": "macos shows the results overlay",
+      "passed": true,
+      "detail": "results"
+    },
+    {
+      "label": "macos final FEN matches",
+      "passed": true,
+      "detail": "1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17"
+    },
+    {
+      "label": "macos move list matches",
+      "passed": true
+    },
+    {
+      "label": "macos score is 1-0",
+      "passed": true,
+      "detail": "1-0"
+    },
+    {
+      "label": "macos reason is checkmate",
+      "passed": true,
+      "detail": {
+        "outcome": "whiteWins",
+        "reason": "checkmate"
+      }
+    },
+    {
+      "label": "macos clocks match web",
+      "passed": true,
+      "detail": [
+        {
+          "whiteMs": 212000,
+          "blackMs": 210000,
+          "running": null,
+          "frozen": true
+        },
+        {
+          "whiteMs": 212000,
+          "blackMs": 210000,
+          "running": null,
+          "frozen": true
+        }
+      ]
+    },
+    {
+      "label": "PGN movetext ends with mate and result",
+      "passed": true,
+      "detail": "1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7\n8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7\n14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0"
+    },
+    {
+      "label": "ios PGN matches web",
+      "passed": true
+    },
+    {
+      "label": "macos PGN matches web",
+      "passed": true
+    },
+    {
+      "label": "web sees the rematch offer",
+      "passed": true,
+      "detail": {
+        "draw": null,
+        "takeback": null,
+        "rematch": "b"
+      }
+    },
+    {
+      "label": "rematch swapped colours",
+      "passed": true
+    },
+    {
+      "label": "rematch starts from the initial position",
+      "passed": true
+    },
+    {
+      "label": "web is back in the lobby",
+      "passed": true,
+      "detail": {
+        "type": "ui_report",
+        "id": "1700000000000-1063179386",
+        "ok": true,
+        "clientId": "web-e2e",
+        "platform": "web",
+        "view": {
+          "width": 1000,
+          "height": 560,
+          "devicePixelRatio": 1,
+          "paddingTop": 0,
+          "paddingBottom": 0
+        },
+        "name": "Parity Pat",
+        "connection": "online",
+        "screen": "lobby",
+        "theme": "dark",
+        "roomCode": null,
+        "status": null,
+        "seq": null,
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "liveFen": null,
+        "moves": [],
+        "moveCount": 0,
+        "turn": "w",
+        "mySide": null,
+        "isSpectator": false,
+        "orientation": "w",
+        "result": null,
+        "score": null,
+        "clocks": null,
+        "white": null,
+        "black": null,
+        "spectators": null,
+        "offers": null,
+        "premove": null,
+        "queued": false,
+        "roomsListed": 0
+      }
+    },
+    {
+      "label": "ios is back in the lobby",
+      "passed": true,
+      "detail": {
+        "type": "ui_report",
+        "id": "1700000000000-198588812",
+        "ok": true,
+        "clientId": "ios-e2e",
+        "platform": "ios",
+        "view": {
+          "width": 402,
+          "height": 874,
+          "devicePixelRatio": 3,
+          "paddingTop": 62,
+          "paddingBottom": 34
+        },
+        "name": "Parity Pat",
+        "connection": "online",
+        "screen": "lobby",
+        "theme": "dark",
+        "roomCode": null,
+        "status": null,
+        "seq": null,
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "liveFen": null,
+        "moves": [],
+        "moveCount": 0,
+        "turn": "w",
+        "mySide": null,
+        "isSpectator": false,
+        "orientation": "w",
+        "result": null,
+        "score": null,
+        "clocks": null,
+        "white": null,
+        "black": null,
+        "spectators": null,
+        "offers": null,
+        "premove": null,
+        "queued": false,
+        "roomsListed": 0
+      }
+    },
+    {
+      "label": "macos is back in the lobby",
+      "passed": true,
+      "detail": {
+        "type": "ui_report",
+        "id": "1700000000000-788512359",
+        "ok": true,
+        "clientId": "macos-e2e",
+        "platform": "macos",
+        "view": {
+          "width": 1000,
+          "height": 488,
+          "devicePixelRatio": 1,
+          "paddingTop": 0,
+          "paddingBottom": 0
+        },
+        "name": "Parity Pat",
+        "connection": "online",
+        "screen": "lobby",
+        "theme": "dark",
+        "roomCode": null,
+        "status": null,
+        "seq": null,
+        "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+        "liveFen": null,
+        "moves": [],
+        "moveCount": 0,
+        "turn": "w",
+        "mySide": null,
+        "isSpectator": false,
+        "orientation": "w",
+        "result": null,
+        "score": null,
+        "clocks": null,
+        "white": null,
+        "black": null,
+        "spectators": null,
+        "offers": null,
+        "premove": null,
+        "queued": false,
+        "roomsListed": 0
+      }
+    },
+    {
+      "label": "visual parity lobby-ios (web reference vs ios)",
+      "passed": true,
+      "detail": "PASS lobby-ios: 0 differing blocks of 800; mean colour delta 1.11"
+    },
+    {
+      "label": "visual parity review-ios (web reference vs ios)",
+      "passed": true,
+      "detail": "PASS review-ios: 0 differing blocks of 800; mean colour delta 0.886"
+    },
+    {
+      "label": "visual parity lobby-macos (web reference vs macos)",
+      "passed": true,
+      "detail": "PASS lobby-macos: 0 differing blocks of 1200; mean colour delta 0.919"
+    },
+    {
+      "label": "visual parity review-macos (web reference vs macos)",
+      "passed": true,
+      "detail": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.463"
+    }
+  ],
+  "screenshots": [
+    {
+      "platform": "web",
+      "step": "lobby",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-lobby.png"
+    },
+    {
+      "platform": "ios",
+      "step": "lobby",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-lobby.png"
+    },
+    {
+      "platform": "macos",
+      "step": "lobby",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-lobby.png"
+    },
+    {
+      "platform": "web",
+      "step": "waiting",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-waiting.png"
+    },
+    {
+      "platform": "web",
+      "step": "start",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-start.png"
+    },
+    {
+      "platform": "ios",
+      "step": "start",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-start.png"
+    },
+    {
+      "platform": "macos",
+      "step": "start",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-start.png"
+    },
+    {
+      "platform": "web",
+      "step": "midgame",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-midgame.png"
+    },
+    {
+      "platform": "ios",
+      "step": "midgame",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-midgame.png"
+    },
+    {
+      "platform": "macos",
+      "step": "midgame",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-midgame.png"
+    },
+    {
+      "platform": "macos",
+      "step": "history",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-history.png"
+    },
+    {
+      "platform": "macos",
+      "step": "reconnecting",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-reconnecting.png"
+    },
+    {
+      "platform": "web",
+      "step": "results",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-results.png"
+    },
+    {
+      "platform": "ios",
+      "step": "results",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-results.png"
+    },
+    {
+      "platform": "macos",
+      "step": "results",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-results.png"
+    },
+    {
+      "platform": "web",
+      "step": "rematch",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-rematch.png"
+    },
+    {
+      "platform": "ios",
+      "step": "rematch",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-rematch.png"
+    },
+    {
+      "platform": "macos",
+      "step": "rematch",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-rematch.png"
+    },
+    {
+      "platform": "web",
+      "step": "light",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-light.png"
+    },
+    {
+      "platform": "ios",
+      "step": "light",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-light.png"
+    },
+    {
+      "platform": "macos",
+      "step": "light",
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-light.png"
+    }
+  ],
+  "parity": [
+    {
+      "platform": "ios",
+      "screen": "lobby",
+      "name": "lobby-ios",
+      "size": {
+        "width": 402,
+        "height": 812
+      },
+      "scale": 3,
+      "insetTop": 62,
+      "safeBottom": 34,
+      "summary": "PASS lobby-ios: 0 differing blocks of 800; mean colour delta 1.11",
+      "status": 0
+    },
+    {
+      "platform": "ios",
+      "screen": "review",
+      "name": "review-ios",
+      "size": {
+        "width": 402,
+        "height": 812
+      },
+      "scale": 3,
+      "insetTop": 62,
+      "safeBottom": 34,
+      "summary": "PASS review-ios: 0 differing blocks of 800; mean colour delta 0.886",
+      "status": 0
+    },
+    {
+      "platform": "macos",
+      "screen": "lobby",
+      "name": "lobby-macos",
+      "size": {
+        "width": 1000,
+        "height": 488
+      },
+      "scale": 1,
+      "insetTop": 32,
+      "safeBottom": 0,
+      "summary": "PASS lobby-macos: 0 differing blocks of 1200; mean colour delta 0.919",
+      "status": 0
+    },
+    {
+      "platform": "macos",
+      "screen": "review",
+      "name": "review-macos",
+      "size": {
+        "width": 1000,
+        "height": 488
+      },
+      "scale": 1,
+      "insetTop": 32,
+      "safeBottom": 0,
+      "summary": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.463",
+      "status": 0
+    }
+  ],
+  "roomCode": "JAB6F9",
+  "final": {
+    "web": {
+      "fen": "1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17",
+      "moves": [
+        "e4",
+        "e5",
+        "Nf3",
+        "d6",
+        "d4",
+        "Bg4",
+        "dxe5",
+        "Bxf3",
+        "Qxf3",
+        "dxe5",
+        "Bc4",
+        "Nf6",
+        "Qb3",
+        "Qe7",
+        "Nc3",
+        "c6",
+        "Bg5",
+        "b5",
+        "Nxb5",
+        "cxb5",
+        "Bxb5+",
+        "Nbd7",
+        "O-O-O",
+        "Rd8",
+        "Rxd7",
+        "Rxd7",
+        "Rd1",
+        "Qe6",
+        "Bxd7+",
+        "Nxd7",
+        "Qb8+",
+        "Nxb8",
+        "Rd8#"
+      ],
+      "score": "1-0",
+      "result": {
+        "outcome": "whiteWins",
+        "reason": "checkmate"
+      },
+      "clocks": {
+        "whiteMs": 212000,
+        "blackMs": 210000,
+        "running": null,
+        "frozen": true
+      },
+      "seq": 38
+    },
+    "ios": {
+      "fen": "1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17",
+      "moves": [
+        "e4",
+        "e5",
+        "Nf3",
+        "d6",
+        "d4",
+        "Bg4",
+        "dxe5",
+        "Bxf3",
+        "Qxf3",
+        "dxe5",
+        "Bc4",
+        "Nf6",
+        "Qb3",
+        "Qe7",
+        "Nc3",
+        "c6",
+        "Bg5",
+        "b5",
+        "Nxb5",
+        "cxb5",
+        "Bxb5+",
+        "Nbd7",
+        "O-O-O",
+        "Rd8",
+        "Rxd7",
+        "Rxd7",
+        "Rd1",
+        "Qe6",
+        "Bxd7+",
+        "Nxd7",
+        "Qb8+",
+        "Nxb8",
+        "Rd8#"
+      ],
+      "score": "1-0",
+      "result": {
+        "outcome": "whiteWins",
+        "reason": "checkmate"
+      },
+      "clocks": {
+        "whiteMs": 212000,
+        "blackMs": 210000,
+        "running": null,
+        "frozen": true
+      },
+      "seq": 38
+    },
+    "macos": {
+      "fen": "1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17",
+      "moves": [
+        "e4",
+        "e5",
+        "Nf3",
+        "d6",
+        "d4",
+        "Bg4",
+        "dxe5",
+        "Bxf3",
+        "Qxf3",
+        "dxe5",
+        "Bc4",
+        "Nf6",
+        "Qb3",
+        "Qe7",
+        "Nc3",
+        "c6",
+        "Bg5",
+        "b5",
+        "Nxb5",
+        "cxb5",
+        "Bxb5+",
+        "Nbd7",
+        "O-O-O",
+        "Rd8",
+        "Rxd7",
+        "Rxd7",
+        "Rd1",
+        "Qe6",
+        "Bxd7+",
+        "Nxd7",
+        "Qb8+",
+        "Nxb8",
+        "Rd8#"
+      ],
+      "score": "1-0",
+      "result": {
+        "outcome": "whiteWins",
+        "reason": "checkmate"
+      },
+      "clocks": {
+        "whiteMs": 212000,
+        "blackMs": 210000,
+        "running": null,
+        "frozen": true
+      },
+      "seq": 38
+    }
+  },
+  "pgn": "[Event \"Gambit Court · Blitz\"]\n[Site \"Gambit Court (web)\"]\n[Date \"????.??.??\"]\n[Round \"JAB6F9\"]\n[White \"Web Ada\"]\n[Black \"iOS Bram\"]\n[Result \"1-0\"]\n[TimeControl \"180+2\"]\n[Termination \"by checkmate\"]\n\n1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7\n8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7\n14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0\n",
+  "passed": true
+}
