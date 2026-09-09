@@ -3,6 +3,7 @@ import { lineTotal } from '../lib/calc'
 import { fmt, fmtDelta } from '../lib/money'
 import { fmtDate, fmtTime } from '../lib/time'
 import type { Check, Table } from '../types'
+import { LogoMark } from './Logo'
 import { Modal } from './Modal'
 import './ReceiptModal.css'
 
@@ -38,7 +39,7 @@ export function ReceiptModal({ table, check, split, onClose }: Props) {
     >
       <div className="receipt-paper" role="document" aria-label={`Receipt for ${split.label}`}>
         <div className="rc-brand">
-          <div className="rc-logo">E</div>
+          <LogoMark size={40} tone="ink" className="rc-logo" />
           <h2>Ember</h2>
           <p>
             221 Mercer Street · New York, NY 10012
@@ -53,7 +54,7 @@ export function ReceiptModal({ table, check, split, onClose }: Props) {
           <span>Table {table.number}</span>
           <span>{fmtTime(stamp)}</span>
           <span>Party of {check.partySize}</span>
-          <span>Server: Jordan M.</span>
+          <span>Server: Jordan Miles</span>
           <span className="rc-meta-wide">
             {split.label}
             {split.share ? ` · ${split.share} share` : ''}

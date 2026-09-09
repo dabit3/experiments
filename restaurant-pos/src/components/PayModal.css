@@ -25,7 +25,8 @@
 .custom-tip input {
   padding-left: 30px;
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 600;
+  font-family: var(--mono);
 }
 
 .method-picker {
@@ -40,8 +41,9 @@
 .pay-summary {
   margin-top: 20px;
   padding: 14px 16px;
-  border-radius: 14px;
-  background: var(--bg-elev);
+  border-radius: var(--radius);
+  background: var(--bg);
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -56,9 +58,15 @@
 
 .pay-summary-total {
   margin-top: 6px;
-  padding-top: 8px;
-  border-top: 1px dashed var(--border-strong);
-  font-size: 22px;
-  font-weight: 800;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-strong);
+  font-size: 15px;
+  font-weight: 600;
   color: var(--text-strong);
+  align-items: baseline;
+}
+
+.pay-summary-total .mono {
+  font-size: 24px;
+  letter-spacing: -0.02em;
 }

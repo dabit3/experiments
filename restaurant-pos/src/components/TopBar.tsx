@@ -1,3 +1,4 @@
+import { Logo } from './Logo'
 import './TopBar.css'
 
 export type NavView = 'floor' | 'kitchen'
@@ -15,25 +16,35 @@ interface Props {
 export function TopBar({ view, onNavigate, openTickets, editLayout, onToggleEdit, onReset, showEdit }: Props) {
   return (
     <header className="topbar">
-      <div className="brand">
-        <span className="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22">
-            <path
-              d="M12 2c1.5 3.2 4.5 5 4.5 9.2A4.5 4.5 0 0 1 12 15.7a4.5 4.5 0 0 1-4.5-4.5C7.5 8.4 9 6.6 9.6 4.6 10.5 6 11.2 6.7 12 7c0-1.7 0-3.3 0-5Z"
-              fill="currentColor"
-            />
-            <path d="M5 19h14M7 22h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
-        </span>
-        <span className="brand-name">Ember</span>
-        <span className="brand-sub">POS</span>
+      <div className="topbar-left">
+        <Logo />
+        <span className="topbar-divider" aria-hidden="true" />
+        <div className="location">
+          <span className="location-name">Mercer Street</span>
+          <span className="location-meta">Dinner service · Section A</span>
+        </div>
       </div>
 
       <nav className="segmented nav" aria-label="Views">
         <button type="button" className={view === 'floor' ? 'active' : ''} onClick={() => onNavigate('floor')}>
+          <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <rect x="9.5" y="1.5" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <rect x="1.5" y="9.5" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <rect x="9.5" y="9.5" width="5" height="5" rx="1.2" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
           Floor plan
         </button>
         <button type="button" className={view === 'kitchen' ? 'active' : ''} onClick={() => onNavigate('kitchen')}>
+          <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+            <path
+              d="M3 2.5h10a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+            />
+            <path d="M5 6h6M5 9h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
           Kitchen
           {openTickets > 0 && <span className="nav-badge">{openTickets}</span>}
         </button>
@@ -48,12 +59,12 @@ export function TopBar({ view, onNavigate, openTickets, editLayout, onToggleEdit
         <button type="button" className="btn-ghost" onClick={onReset}>
           Reset demo
         </button>
+        <span className="topbar-divider" aria-hidden="true" />
         <div className="server">
           <span className="server-avatar">JM</span>
-          <span>
-            <strong>Jordan M.</strong>
-            <br />
-            <span className="muted">Dinner · Section A</span>
+          <span className="server-text">
+            <strong>Jordan Miles</strong>
+            <span className="muted">Server</span>
           </span>
         </div>
       </div>

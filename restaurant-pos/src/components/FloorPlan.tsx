@@ -88,28 +88,53 @@ export function FloorPlan({ tables, checks, editLayout, onOpenTable, onMoveTable
     [drag, onMoveTable],
   )
 
-  const seated = tables.filter((t) => t.checkId).length
+  const openChecks = tables.flatMap((t) => (t.checkId && checks[t.checkId] ? [checks[t.checkId]] : []))
+  const seated = openChecks.length
+  const guests = openChecks.reduce((s, c) => s + c.partySize, 0)
+  const openSales = openChecks.reduce((s, c) => s + checkTotals(c).total, 0)
+  const paying = openChecks.filter((c) => c.payments.length > 0 || c.splitMode !== 'none').length
 
   return (
     <div className="floor-page">
       <div className="floor-header">
-        <div>
+        <div className="floor-heading">
+          <span className="eyebrow">Dining room</span>
           <h1>Floor plan</h1>
           <p className="muted">
-            {seated} of {tables.length} tables seated ·{' '}
-            {editLayout ? 'Drag tables to rearrange the room, then press Done editing.' : 'Tap a table to seat guests or open its check.'}
+            {editLayout ? 'Drag tables to rearrange the room, then press Done editing.' : 'Select a table to seat guests or open its check.'}
           </p>
+          <div className="legend">
+            <span>
+              <i className="dot dot-open" /> Open
+            </span>
+            <span>
+              <i className="dot dot-seated" /> Seated
+            </span>
+            <span>
+              <i className="dot dot-paying" /> Paying
+            </span>
+          </div>
         </div>
-        <div className="legend">
-          <span>
-            <i className="dot dot-open" /> Open
-          </span>
-          <span>
-            <i className="dot dot-seated" /> Seated
-          </span>
-          <span>
-            <i className="dot dot-paying" /> Paying
-          </span>
+        <div className="kpis" aria-label="Service summary">
+          <div className="kpi">
+            <span className="kpi-label">Tables seated</span>
+            <span className="kpi-value">
+              {seated}
+              <small>/ {tables.length}</small>
+            </span>
+          </div>
+          <div className="kpi">
+            <span className="kpi-label">Guests</span>
+            <span className="kpi-value">{guests}</span>
+          </div>
+          <div className="kpi">
+            <span className="kpi-label">Open sales</span>
+            <span className="kpi-value num">{fmt(openSales)}</span>
+          </div>
+          <div className="kpi">
+            <span className="kpi-label">Paying</span>
+            <span className="kpi-value">{paying}</span>
+          </div>
         </div>
       </div>
 
@@ -120,7 +145,9 @@ export function FloorPlan({ tables, checks, editLayout, onOpenTable, onMoveTable
           aria-label="Restaurant floor plan"
         >
           <div className="zone zone-kitchen">Kitchen pass</div>
-          <div className="zone zone-bar">Bar</div>
+          <div className="zone zone-bar">
+            <span>Bar</span>
+          </div>
           <div className="zone zone-entrance">Entrance</div>
 
           {tables.map((table) => {
@@ -146,14 +173,15 @@ export function FloorPlan({ tables, checks, editLayout, onOpenTable, onMoveTable
                 }}
                 aria-label={`Table ${table.number}, ${check ? `party of ${check.partySize}` : 'open'}`}
               >
+                <span className="table-label">Table</span>
                 <span className="table-number">{table.number}</span>
                 <span className="table-caption">
                   {check ? (
                     <>
                       <span className="table-party">
-                        {check.partySize} guests · {fmtTime(check.openedAt)}
+                        {check.partySize} guests<span className="table-time"> · {fmtTime(check.openedAt)}</span>
                       </span>
-                      <span className="table-total">{fmt(totals!.total)}</span>
+                      <span className="table-total num">{fmt(totals!.total)}</span>
                     </>
                   ) : (
                     <span className="table-party">{table.capacity} seats</span>

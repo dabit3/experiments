@@ -26,23 +26,25 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--panel);
+  background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 4px 6px 4px 14px;
+  border-radius: 11px;
+  padding: 3px 3px 3px 14px;
 }
 
 .stepper button {
-  width: 40px;
-  min-height: 40px;
+  width: 38px;
+  min-height: 38px;
   padding: 0;
-  font-size: 20px;
+  font-size: 18px;
+  border-radius: 8px;
 }
 
 .stepper strong {
   min-width: 24px;
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
+  font-family: var(--mono);
   color: var(--text-strong);
 }
 
@@ -87,9 +89,10 @@
   justify-content: space-between;
   gap: 10px;
   padding: 10px 12px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   background: var(--panel);
   border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm), var(--highlight);
 }
 
 .assign-main {
@@ -113,13 +116,14 @@
   width: 36px;
   min-height: 36px;
   padding: 0;
-  font-weight: 800;
-  border-radius: 9px;
+  font-weight: 600;
+  border-radius: 8px;
+  font-family: var(--mono);
 }
 
 .assign-chip.active {
-  background: var(--accent);
-  color: var(--accent-text);
+  background: var(--text-strong);
+  color: var(--bg);
 }
 
 .splits-grid {
@@ -134,16 +138,20 @@
 .split-card {
   display: flex;
   flex-direction: column;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--border-strong);
   background: var(--panel);
   overflow: hidden;
-  animation: pop-in 180ms ease;
+  box-shadow: var(--shadow-sm), var(--highlight);
+  animation: pop-in 200ms var(--ease);
+  transition:
+    border-color 200ms var(--ease),
+    box-shadow 200ms var(--ease);
 }
 
 .split-card.paid {
-  border-color: rgba(74, 210, 149, 0.6);
-  background: linear-gradient(180deg, rgba(74, 210, 149, 0.08), transparent 40%), var(--panel);
+  border-color: rgba(62, 207, 142, 0.55);
+  background: linear-gradient(180deg, rgba(62, 207, 142, 0.1), transparent 45%), var(--panel);
 }
 
 .split-head {
@@ -151,11 +159,12 @@
   justify-content: space-between;
   align-items: flex-start;
   padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
 }
 
 .split-head h3 {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   color: var(--text-strong);
 }
 
@@ -166,7 +175,7 @@
 .split-lines {
   list-style: none;
   margin: 0;
-  padding: 0 16px 10px;
+  padding: 12px 16px 10px;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -201,11 +210,17 @@
 
 .split-totals .split-total {
   margin-top: 4px;
-  padding-top: 6px;
-  border-top: 1px solid var(--border);
-  font-size: 18px;
-  font-weight: 800;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-strong);
+  font-size: 14px;
+  font-weight: 600;
   color: var(--text-strong);
+  align-items: baseline;
+}
+
+.split-totals .split-total .mono {
+  font-size: 20px;
+  letter-spacing: -0.02em;
 }
 
 .split-totals .tip {
@@ -213,7 +228,7 @@
 }
 
 .split-totals .charged {
-  font-weight: 800;
+  font-weight: 600;
   color: var(--green);
 }
 
@@ -235,9 +250,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 12px 24px;
-  border-top: 2px solid var(--green);
-  background: rgba(74, 210, 149, 0.08);
+  padding: 14px 24px;
+  border-top: 1px solid rgba(62, 207, 142, 0.4);
+  background: linear-gradient(180deg, rgba(62, 207, 142, 0.1), rgba(62, 207, 142, 0.04));
 }
 
 .verify-bar.bad {
@@ -254,7 +269,8 @@
 
 .verify-sum .op {
   color: var(--text-muted);
-  font-weight: 700;
+  font-weight: 500;
+  font-size: 18px;
   margin: 0 4px;
 }
 
@@ -265,16 +281,19 @@
 }
 
 .term small {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--text-muted);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
 }
 
 .term b {
   font-size: 16px;
+  font-weight: 550;
   color: var(--text-strong);
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
 }
 
 .verify-table {
@@ -285,10 +304,13 @@
 }
 
 .verify-table .term b {
-  font-size: 22px;
+  font-size: 24px;
+  letter-spacing: -0.02em;
 }
 
 .verify-chip {
-  font-size: 14px;
+  font-size: 13px;
   padding: 8px 14px;
+  border: 1px solid currentColor;
+  background: transparent;
 }

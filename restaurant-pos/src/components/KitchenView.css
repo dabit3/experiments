@@ -26,24 +26,26 @@
 .ticket {
   display: flex;
   flex-direction: column;
-  background: #fbf6ea;
+  background: #fbf7ee;
   color: #1f1a14;
-  border-radius: 6px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  border-radius: 8px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.35) inset,
+    0 14px 30px rgba(0, 0, 0, 0.45);
   font-family: var(--mono);
   position: relative;
-  animation: pop-in 180ms ease;
+  animation: pop-in 200ms var(--ease);
 }
 
 .ticket::before {
   content: '';
-  height: 8px;
-  border-radius: 6px 6px 0 0;
-  background: repeating-linear-gradient(90deg, var(--amber) 0 12px, transparent 12px 18px);
+  height: 6px;
+  border-radius: 8px 8px 0 0;
+  background: var(--amber);
 }
 
 .ticket.focus::before {
-  background: var(--accent);
+  background: var(--brand);
 }
 
 .ticket.bumped {
@@ -60,8 +62,9 @@
 
 .ticket-table {
   display: block;
-  font-size: 22px;
-  font-weight: 900;
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
   font-family: var(--sans);
 }
 
@@ -101,16 +104,16 @@
   height: 26px;
   border-radius: 6px;
   background: #1f1a14;
-  color: #fbf6ea;
-  font-weight: 800;
+  color: #fbf7ee;
+  font-weight: 600;
   font-size: 12px;
   display: grid;
   place-items: center;
 }
 
 .ticket-item {
-  font-weight: 800;
-  font-size: 15px;
+  font-weight: 700;
+  font-size: 14.5px;
 }
 
 .ticket-mods {
@@ -121,8 +124,8 @@
 .ticket-note {
   margin-top: 2px;
   font-size: 12.5px;
-  color: #a2400e;
-  font-weight: 700;
+  color: #b0431a;
+  font-weight: 600;
 }
 
 .ticket .bump {

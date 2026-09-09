@@ -7,11 +7,13 @@
 
 .party-btn {
   min-height: 72px;
-  font-size: 26px;
-  font-weight: 800;
-  border-radius: 14px;
-  background: var(--bg-elev);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  border-radius: var(--radius);
+  background: var(--bg);
   border: 1px solid var(--border-strong);
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,7 +23,7 @@
 
 .party-btn small {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -40,10 +42,13 @@
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-text);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 6px 18px rgba(255, 106, 58, 0.25);
 }
 
 .party-btn.selected small {
-  color: var(--accent-text);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .seat-hint {
