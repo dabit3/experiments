@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AuditTrail } from './components/AuditTrail'
+import { BrandMark } from './components/BrandMark'
 import { formatMoney, paymentLabel, engagementLabel, stateName } from './lib/format'
 import type { FormApi, SignatureReason } from './lib/formApi'
 import { downloadBlob, generateAgreementPdf, makeDocumentId } from './lib/pdf'
@@ -220,25 +221,30 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <span className="brand__mark" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
-              <path d="M14 3v6h6" />
-              <path d="M8 16c1.5-2.5 2.5-2.5 3.5 0s2-2.5 3.5 0" />
-            </svg>
+          <BrandMark className="brand__mark" size={32} />
+          <span className="brand__name">
+            PDF Form Signer
+            <span className="brand__tag">Agreements</span>
           </span>
-          PDF Form Signer
-          <span className="brand__sub">Contractor Agreement · {documentId}</span>
+        </div>
+        <div className="topbar__divider" aria-hidden="true" />
+        <div className="doc-chip">
+          <span className="doc-chip__label">Document</span>
+          <span className="doc-chip__value">Contractor Agreement</span>
+          <span className="doc-chip__id">{documentId}</span>
         </div>
         <div className="topbar__spacer" />
         <div className="progress" aria-label={`${completed} of ${REQUIRED_COUNT} required items complete`}>
-          <span>
-            {completed}/{REQUIRED_COUNT} required
+          <span className="progress__text">
+            <strong>{completed}</strong>/{REQUIRED_COUNT} required
           </span>
           <div className="progress__bar">
             <div className={`progress__fill ${progress === 100 ? 'is-complete' : ''}`} style={{ width: `${progress}%` }} />
           </div>
         </div>
+        <span className={`status-pill ${result ? 'is-signed' : progress === 100 ? 'is-ready' : ''}`}>
+          {result ? 'Signed' : progress === 100 ? 'Ready to sign' : 'In progress'}
+        </span>
       </header>
 
       <main className="layout">
@@ -253,7 +259,12 @@ export default function App() {
                 onClick={() => goTo(s.id, 'Opened step')}
                 data-step={s.id}
               >
-                <span className="step__num">{i + 1}</span>
+                <span className="step__num">
+                  <span className="step__digit">{i + 1}</span>
+                  <svg className="step__check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M5 12.5l4.5 4.5L19 7" />
+                  </svg>
+                </span>
                 <span className="step__text">
                   <span className="step__label">{s.label}</span>
                   <span className="step__caption">{s.caption}</span>

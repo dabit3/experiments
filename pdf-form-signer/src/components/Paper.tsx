@@ -16,15 +16,18 @@ export function Paper({ page, documentId, children, initials, initialsError, onI
   const key = page === 1 ? 'initialsPage1' : 'initialsPage2'
   return (
     <article className="paper" aria-label={`Contractor Agreement page ${page} of 2`}>
+      <div className="paper__letterhead">
+        <span className="paper__client">{CLIENT.name}</span>
+        <span className="paper__address">{CLIENT.address}</span>
+      </div>
       <header className="paper__head">
         <div>
           <h1 className="paper__title">Contractor Agreement</h1>
-          <p className="paper__subtitle">Independent contractor services agreement · {CLIENT.name}</p>
+          <p className="paper__subtitle">Independent contractor services agreement</p>
         </div>
         <div className="paper__meta">
           <strong>Document</strong>
-          {documentId}
-          <br />
+          <span className="paper__docid">{documentId}</span>
           Page {page} of 2
         </div>
       </header>
