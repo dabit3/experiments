@@ -42,41 +42,39 @@ npm run dev
 Open the printed `http://localhost:5173` URL. `npm run build` type-checks (strict) and bundles to
 `dist/`; `npm run lint` runs oxlint.
 
-Test card: `4242 4242 4242 4242`, any future expiry, any 3-digit CVV.
+Any Luhn-valid card number is accepted (e.g. Stripe's `4242 4242 4242 4242` test Visa), with
+any future expiry and a 3-digit CVV (4 for Amex).
 
-## Computer-use showcase
+## Computer-use test
 
 This app exists to demonstrate Devin working through a **long multi-step form with calendar
-widgets, autocomplete, a seat map and validation recovery** in a real browser. After building it,
-Devin opened the app in a maximised Chrome window and performed this scenario with the mouse and
-keyboard while recording:
+widgets, autocomplete, a seat map and validation recovery** in a real browser. The scenario is
+not part of the app — it lives in the repo as an agent skill that runs in Devin's computer-use
+environment:
 
-1. Type `SFO` in **From** and pick San Francisco from the autocomplete; type `JFK` in **To** and
-   pick John F. Kennedy.
-2. Open the date picker and choose a departure 14 days from today and a return 21 days from
-   today (past dates are greyed out and unclickable).
-3. Increase **Adults** to 2 and search.
-4. On the outbound results, sort by **Price**, filter to **Nonstop**, and choose the fare on the
-   cheapest remaining flight (marked "Cheapest"). Repeat for the return leg.
-5. Fill in both passengers and the contact details, but give passenger 1 a passport expiry that
-   is less than six months after the return date. Submit → the form refuses to continue and shows
-   *"Passport must be valid for 6 months after your last flight — expiry must be on or after
-   …"* under that field.
-6. Fix the expiry and submit again → the seat map opens.
-7. Pick two adjacent seats for the two passengers: a window seat and the middle seat next to it
-   (e.g. 10A + 10B) on the outbound flight, then the same on the return flight. If a seat is
-   already taken on the other leg, "Use the same seats as outbound" says so and asks for a
-   replacement.
-8. On payment, enter `4242 4242 4242 4242` → the Visa badge and a green check appear; pay.
-9. The boarding passes render with QR codes for both passengers on both flights.
-10. Click **Download .ics** and inspect the file from the shell — it contains two `VEVENT`
-    blocks with the flights' UTC times, seats and booking reference.
+```
+.agents/skills/airline-booking-e2e/
+  SKILL.md        the test: setup, 6 "It should…" blocks with assertions, teardown/report
+  verify-ics.sh   shell oracle for the downloaded calendar file
+```
 
-Expected result: every step succeeds, the validation error is shown once and cleared after the
-fix, the seat map shows seats 1 and 2 side by side, and `contrail-<REF>.ics` lands in the
-downloads folder.
+Invoke it with `/airline-booking-e2e` (Devin also picks it up automatically for changes under
+`airline-booking/`). The skill drives the wizard with mouse and keyboard only — no
+Playwright, CDP or DOM injection — in a maximised Chrome window, with screen recording and
+structured `test_start` / `assertion` annotations, and takes 6–8 full-screen screenshots.
+In short it books SFO → JFK for 2 adults departing 14 and returning 21 days from today, sorts
+by price, filters to nonstop and takes the cheapest fare on both legs, fills both passengers
+(triggering and then fixing the passport-expiry rule), seats them in adjacent window + middle
+seats on both flights, pays with `4242 4242 4242 4242` (Visa detected, Luhn OK), reaches the
+four QR boarding passes and downloads the `.ics`.
 
-### Recording
+`verify-ics.sh <file> [REF]` unfolds the RFC 5545 file and checks: exactly two `VEVENT`s, two
+`TRIGGER:-PT3H` display alarms, the booking reference in both UIDs and descriptions,
+SFO → JFK / JFK → SFO summaries and locations, nonstop flights, UTC start < end, chronological
+order, future dates, and that both legs seat the two passengers in the same row as window +
+middle (A+B or E+F). It exits non-zero on any failure, so the run cannot pass with a bad file.
+
+### Recordings
 
 **[Watch the full recording (mp4)](https://app.devin.ai/attachments/24a00b87-f4fd-4b45-9c1e-653dc48701a3/airline-booking-v2-edited.mp4)**
 

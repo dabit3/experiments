@@ -156,7 +156,7 @@ export function PaymentStep({ search, selections, passengers, seats, extras, onE
             id="card-number"
             label="Card number"
             error={errors.number ?? liveNumberError}
-            hint={cardType !== 'unknown' ? `${CARD_LABEL[cardType]} detected` : 'Try 4242 4242 4242 4242'}
+            hint={cardType !== 'unknown' ? `${CARD_LABEL[cardType]} detected` : 'Visa, Mastercard, Amex or Discover'}
             className="col-12"
           >
             <div className={`card-input ${cardType}`}>
