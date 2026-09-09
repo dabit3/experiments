@@ -48,18 +48,18 @@ Reset state with **Reset demo** (or reload the page) so the seeded state is iden
 
 ## Recording
 
-**Recording:** https://app.devin.ai/attachments/3c4476ce-3b5b-4d70-8e8e-4c4e71101d80/restaurant-pos-showcase.mp4
+**Recording:** https://app.devin.ai/attachments/fc952764-d2d6-49d4-8a4b-3b9abcfb2cec/restaurant-pos-showcase.mp4
 
-![Animated preview](https://app.devin.ai/attachments/830e4bc9-5423-43a0-981e-36076ec3f176/restaurant-pos-preview.webp)
+![Animated preview](https://app.devin.ai/attachments/fffda5ec-9c69-4909-9755-dd50c62d324e/restaurant-pos-preview.webp)
 
 Numbers from the recorded run (party of 6 at Table 4, 8 items ordered, 1 voided):
 
 | Seat | Subtotal | Tax 8.875% | Gratuity 18% | Total |
 |------|---------:|-----------:|-------------:|------:|
-| 1 — Ribeye (medium rare, grilled asparagus +$3), Burrata | $59.00 | $5.24 | $10.62 | $74.86 |
-| 2 — Ember Burger (medium, truffle fries +$4), Crispy Calamari | $35.00 | $3.10 | $6.30 | $44.40 |
-| 3 — Mushroom Risotto (note), Caesar Salad | $34.00 | $3.02 | $6.12 | $43.14 |
-| 4 — French Onion Soup | $10.00 | $0.89 | $1.80 | $12.69 |
-| **Table** | **$138.00** | **$12.25** | **$24.84** | **$175.09** |
+| 1 — Ribeye (medium rare, hand-cut fries, note), Craft IPA | $50.00 | $4.44 | $9.00 | $63.44 |
+| 2 — Ember Burger (medium, truffle fries +$4), Old Fashioned | $37.00 | $3.28 | $6.66 | $46.94 |
+| 3 — Cedar Plank Salmon, Sparkling Water (Pappardelle voided) | $33.00 | $2.93 | $5.94 | $41.87 |
+| 4 — Crispy Calamari | $13.00 | $1.15 | $2.34 | $16.49 |
+| **Table** | **$133.00** | **$11.80** | **$23.94** | **$168.74** |
 
-The four seat totals sum to $175.09, exactly the table total shown in the verification bar.
+The four seat totals sum to $168.74, exactly the table total shown in the verification bar. Seat 1 added a 20% tip ($10.00) and was charged $73.44.
