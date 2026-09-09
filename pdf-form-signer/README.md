@@ -11,7 +11,8 @@ images, plus a certificate page with the audit trail. A live **Audit trail** pan
 timestamped event for every navigation, field commit, initials/signature stroke, validation
 failure and PDF event, and can be exported as JSON.
 
-Everything runs in the browser: no backend, no network calls at runtime, all assets bundled.
+Everything runs in the browser: no backend, no network calls at runtime, all assets bundled
+(including the Inter, Source Serif 4 and Dancing Script typefaces, see `src/fonts/FONTS.md`).
 
 ## Run it
 
@@ -59,4 +60,4 @@ fixing a validation error, clicking Generate PDF, and then checking the download
 
 ## Recording
 
-Recording: https://app.devin.ai/attachments/16ddfb12-2535-4ddb-8ec4-42bd51b52672/pdf-form-signer-fixed-showcase-edited.mp4
+Recording: https://app.devin.ai/attachments/ba11739f-14a1-48f4-a223-37e969f81eb9/pdf-form-signer-redesign-e30d294-edited.mp4
