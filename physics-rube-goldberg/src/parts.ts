@@ -19,7 +19,7 @@ export const PART_DEFS: Record<PartType, PartDef> = {
     w: 170,
     h: 14,
     rotatable: true,
-    color: '#f59e0b',
+    color: '#3b82f6',
   },
   domino: {
     type: 'domino',

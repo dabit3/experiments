@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { LEVELS, SCENE_H, SCENE_W, type Level } from './levels.ts'
 import { PART_DEFS, PART_ORDER, ROTATION_STEP, snapAngle, type PartType, type PlacedPart } from './parts.ts'
+import { ArrowRightIcon, CheckIcon, ClearIcon, LogoMark, PlayIcon, ResetIcon } from './icons.tsx'
 import { Sim, type SimStatus } from './physics/sim.ts'
 import type { Ghost, RenderState } from './render.ts'
 import { Scene } from './Scene.tsx'
@@ -338,38 +339,39 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <span className="brand-icon" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="26" height="26">
-              <path d="M16 4c-5 0-8 4-8 10v6h16v-6c0-6-3-10-8-10z" fill="#fbbf24" />
-              <rect x="6" y="20" width="20" height="3" rx="1.5" fill="#b45309" />
-              <circle cx="16" cy="26" r="3" fill="#f43f5e" />
-            </svg>
+          <LogoMark size={30} className="brand-mark" />
+          <span className="brand-name">
+            Rube Goldberg <span className="brand-name-light">Lab</span>
           </span>
-          <div>
-            <div className="brand-title">Rube Goldberg Lab</div>
-            <div className="brand-sub">Place parts so the ball rings the bell</div>
-          </div>
         </div>
         <nav className="levels" aria-label="Levels">
-          {LEVELS.map((l, i) => (
-            <button
-              key={l.id}
-              type="button"
-              className={`level-tab${i === levelIdx ? ' active' : ''}${solved.includes(l.id) ? ' solved' : ''}`}
-              onClick={() => gotoLevel(i)}
-              aria-current={i === levelIdx ? 'page' : undefined}
-              title={l.name}
-            >
-              <span className="level-tab-num">{l.id}</span>
-              <span className="level-tab-name">{l.name}</span>
-              {solved.includes(l.id) && (
-                <span className="level-tab-check" aria-label="solved">
-                  ✓
+          {LEVELS.map((l, i) => {
+            const isSolved = solved.includes(l.id)
+            return (
+              <button
+                key={l.id}
+                type="button"
+                className={`level-tab${i === levelIdx ? ' active' : ''}${isSolved ? ' solved' : ''}`}
+                onClick={() => gotoLevel(i)}
+                aria-current={i === levelIdx ? 'page' : undefined}
+                title={l.name}
+              >
+                <span className="level-tab-num" aria-label={isSolved ? 'solved' : undefined}>
+                  {isSolved ? <CheckIcon size={13} /> : l.id}
                 </span>
-              )}
-            </button>
-          ))}
+                <span className="level-tab-name">{l.name}</span>
+              </button>
+            )
+          })}
         </nav>
+        <div className="progress" aria-label={`${solved.length} of ${LEVELS.length} levels solved`}>
+          <span className="progress-track" aria-hidden="true">
+            <span className="progress-fill" style={{ width: `${(solved.length / LEVELS.length) * 100}%` }} />
+          </span>
+          <span className="progress-text">
+            {solved.length}/{LEVELS.length} solved
+          </span>
+        </div>
       </header>
 
       <main className="workspace">
@@ -377,7 +379,7 @@ export default function App() {
 
         <section className="stage">
           <div className="level-head">
-            <div className="level-kicker">Level {level.id} of {LEVELS.length}</div>
+            <div className="level-kicker">Level {String(level.id).padStart(2, '0')}</div>
             <h1 className="level-name">{level.name}</h1>
             <p className="level-objective">{level.objective}</p>
           </div>
@@ -394,24 +396,24 @@ export default function App() {
             {status.mode === 'won' && (
               <div className="overlay win" role="status">
                 <div className="overlay-card">
-                  <div className="overlay-bell" aria-hidden="true">
-                    <svg viewBox="0 0 32 32" width="48" height="48">
-                      <path d="M16 4c-5 0-8 4-8 10v6h16v-6c0-6-3-10-8-10z" fill="#fbbf24" />
-                      <rect x="6" y="20" width="20" height="3" rx="1.5" fill="#b45309" />
-                      <circle cx="16" cy="26" r="3" fill="#f43f5e" />
-                    </svg>
+                  <div className="overlay-check" aria-hidden="true">
+                    <CheckIcon size={22} />
                   </div>
-                  <h2>Bell rung!</h2>
-                  <p>
-                    Level {level.id} complete in {(status.steps / 60).toFixed(2)} s.
-                  </p>
+                  <div className="overlay-kicker">Bell rung</div>
+                  <h2>Level {level.id} complete</h2>
+                  <div className="overlay-metric">
+                    <span className="overlay-metric-value">{(status.steps / 60).toFixed(2)}</span>
+                    <span className="overlay-metric-unit">seconds</span>
+                  </div>
                   <div className="overlay-actions">
-                    <button type="button" className="btn ghost-btn" onClick={handleReset}>
+                    <button type="button" className="btn" onClick={handleReset}>
+                      <ResetIcon />
                       Replay
                     </button>
                     {canGoNext && (
                       <button type="button" className="btn primary" onClick={() => gotoLevel(levelIdx + 1)} autoFocus>
-                        Next level →
+                        Next level
+                        <ArrowRightIcon />
                       </button>
                     )}
                   </div>
@@ -421,8 +423,11 @@ export default function App() {
             {status.mode === 'failed' && (
               <div className="overlay fail" role="status">
                 <div className="fail-toast">
-                  <strong>No ring.</strong> {FAIL_TEXT[status.reason ?? 'rest']} Reset, then move or rotate a part.
+                  <span className="fail-toast-text">
+                    <strong>No ring.</strong> {FAIL_TEXT[status.reason ?? 'rest']} Reset, then move or rotate a part.
+                  </span>
                   <button type="button" className="btn small" onClick={handleReset}>
+                    <ResetIcon size={14} />
                     Reset
                   </button>
                 </div>
@@ -438,9 +443,7 @@ export default function App() {
                 onClick={handleRun}
                 disabled={status.mode === 'running' || status.mode === 'won'}
               >
-                <span className="btn-icon" aria-hidden="true">
-                  ▶
-                </span>
+                <PlayIcon />
                 Run
               </button>
               <button
@@ -449,15 +452,11 @@ export default function App() {
                 onClick={handleReset}
                 disabled={status.mode === 'edit' && placedCount === 0}
               >
-                <span className="btn-icon" aria-hidden="true">
-                  ↺
-                </span>
+                <ResetIcon />
                 Reset
               </button>
               <button type="button" className="btn big danger" onClick={handleClear} disabled={placedCount === 0}>
-                <span className="btn-icon" aria-hidden="true">
-                  ✕
-                </span>
+                <ClearIcon />
                 Clear
               </button>
             </div>

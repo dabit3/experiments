@@ -25,21 +25,22 @@ export interface RenderState {
 }
 
 const COLORS = {
-  bgTop: '#0f172a',
-  bgBottom: '#111a2e',
-  grid: 'rgba(148, 163, 184, 0.06)',
-  obstacle: '#334155',
-  obstacleEdge: '#475569',
-  obstacleTop: 'rgba(255,255,255,0.10)',
+  bgTop: '#0f1a2e',
+  bgBottom: '#0b1220',
+  grid: 'rgba(148, 163, 184, 0.07)',
+  gridMajor: 'rgba(148, 163, 184, 0.13)',
+  obstacle: '#2b3a4f',
+  obstacleEdge: '#3f5168',
+  obstacleTop: 'rgba(255,255,255,0.12)',
   ball: '#f43f5e',
   ballShine: 'rgba(255,255,255,0.55)',
   trail: 'rgba(244, 63, 94, 0.35)',
-  bell: '#fbbf24',
-  bellDark: '#b45309',
-  bellRope: '#94a3b8',
-  ghost: 'rgba(226, 232, 240, 0.85)',
+  bell: '#f5b301',
+  bellDark: '#9a5b04',
+  bellRope: '#8b98ab',
+  ghost: 'rgba(226, 232, 240, 0.9)',
   ghostBad: 'rgba(248, 113, 113, 0.9)',
-  select: '#facc15',
+  select: '#60a5fa',
 }
 
 export function drawScene(ctx: CanvasRenderingContext2D, s: RenderState) {
@@ -63,18 +64,23 @@ function drawBackground(ctx: CanvasRenderingContext2D) {
   g.addColorStop(1, COLORS.bgBottom)
   ctx.fillStyle = g
   ctx.fillRect(0, 0, SCENE_W, SCENE_H)
-  ctx.strokeStyle = COLORS.grid
   ctx.lineWidth = 1
-  ctx.beginPath()
-  for (let x = 40; x < SCENE_W; x += 40) {
-    ctx.moveTo(x + 0.5, 0)
-    ctx.lineTo(x + 0.5, SCENE_H)
+  for (const [step, color] of [
+    [40, COLORS.grid],
+    [200, COLORS.gridMajor],
+  ] as const) {
+    ctx.strokeStyle = color
+    ctx.beginPath()
+    for (let x = step; x < SCENE_W; x += step) {
+      ctx.moveTo(x + 0.5, 0)
+      ctx.lineTo(x + 0.5, SCENE_H)
+    }
+    for (let y = step; y < SCENE_H; y += step) {
+      ctx.moveTo(0, y + 0.5)
+      ctx.lineTo(SCENE_W, y + 0.5)
+    }
+    ctx.stroke()
   }
-  for (let y = 40; y < SCENE_H; y += 40) {
-    ctx.moveTo(0, y + 0.5)
-    ctx.lineTo(SCENE_W, y + 0.5)
-  }
-  ctx.stroke()
 }
 
 function drawObstacles(ctx: CanvasRenderingContext2D, level: Level) {
@@ -265,10 +271,18 @@ function drawGhost(ctx: CanvasRenderingContext2D, g: Ghost) {
   ctx.restore()
   if (def.rotatable) {
     ctx.save()
+    const label = `${g.angle}°`
+    const ly = g.y - def.h / 2 - Math.abs(Math.sin(degToRad(g.angle))) * (def.w / 2) - 22
     ctx.font = '600 12px Inter, system-ui, sans-serif'
     ctx.textAlign = 'center'
-    ctx.fillStyle = g.valid ? COLORS.ghost : COLORS.ghostBad
-    ctx.fillText(`${g.angle}°`, g.x, g.y - def.h / 2 - Math.abs(Math.sin(degToRad(g.angle))) * (def.w / 2) - 14)
+    ctx.textBaseline = 'middle'
+    const tw = ctx.measureText(label).width + 16
+    ctx.fillStyle = g.valid ? 'rgba(11, 18, 32, 0.85)' : 'rgba(127, 29, 29, 0.85)'
+    ctx.beginPath()
+    ctx.roundRect(g.x - tw / 2, ly - 11, tw, 22, 6)
+    ctx.fill()
+    ctx.fillStyle = g.valid ? '#fff' : '#fecaca'
+    ctx.fillText(label, g.x, ly + 0.5)
     ctx.restore()
   }
 }
@@ -303,14 +317,14 @@ function drawPart(
   switch (type) {
     case 'ramp': {
       const g = ctx.createLinearGradient(0, -def.h / 2, 0, def.h / 2)
-      g.addColorStop(0, '#fcd34d')
-      g.addColorStop(1, '#d97706')
+      g.addColorStop(0, '#60a5fa')
+      g.addColorStop(1, '#1d4ed8')
       ctx.fillStyle = g
       ctx.beginPath()
       ctx.roundRect(-def.w / 2, -def.h / 2, def.w, def.h, 4)
       ctx.fill()
-      ctx.fillStyle = 'rgba(120, 53, 15, 0.45)'
-      for (let i = -def.w / 2 + 14; i < def.w / 2 - 8; i += 22) ctx.fillRect(i, -2, 8, 2)
+      ctx.fillStyle = 'rgba(191, 219, 254, 0.55)'
+      for (let i = -def.w / 2 + 14; i < def.w / 2 - 8; i += 22) ctx.fillRect(i, -1, 8, 2)
       break
     }
     case 'domino': {
@@ -334,19 +348,19 @@ function drawPart(
       break
     }
     case 'trampoline': {
-      ctx.fillStyle = '#1e1b4b'
+      ctx.fillStyle = '#3b1f7a'
       ctx.beginPath()
       ctx.roundRect(-def.w / 2, -def.h / 2, def.w, def.h, 6)
       ctx.fill()
       const g = ctx.createLinearGradient(-def.w / 2, 0, def.w / 2, 0)
-      g.addColorStop(0, '#a855f7')
-      g.addColorStop(0.5, '#e879f9')
-      g.addColorStop(1, '#a855f7')
+      g.addColorStop(0, '#a78bfa')
+      g.addColorStop(0.5, '#c4b5fd')
+      g.addColorStop(1, '#a78bfa')
       ctx.fillStyle = g
       ctx.beginPath()
       ctx.roundRect(-def.w / 2 + 4, -def.h / 2 + 2, def.w - 8, def.h / 2, 4)
       ctx.fill()
-      ctx.strokeStyle = '#c084fc'
+      ctx.strokeStyle = '#ddd6fe'
       ctx.lineWidth = 2
       ctx.beginPath()
       for (let i = -def.w / 2 + 10; i < def.w / 2 - 6; i += 12) {
@@ -395,7 +409,7 @@ function drawPart(
       ctx.save()
       ctx.translate(x, y)
       ctx.globalAlpha = alpha
-      ctx.fillStyle = '#475569'
+      ctx.fillStyle = '#4b5b72'
       ctx.beginPath()
       ctx.moveTo(-28, 47)
       ctx.lineTo(28, 47)
@@ -405,8 +419,8 @@ function drawPart(
       ctx.fill()
       ctx.rotate(angle)
       const g = ctx.createLinearGradient(0, -def.h / 2, 0, def.h / 2)
-      g.addColorStop(0, '#86efac')
-      g.addColorStop(1, '#16a34a')
+      g.addColorStop(0, '#6ee7b7')
+      g.addColorStop(1, '#059669')
       ctx.fillStyle = g
       ctx.beginPath()
       ctx.roundRect(-def.w / 2, -def.h / 2, def.w, def.h, 3)
