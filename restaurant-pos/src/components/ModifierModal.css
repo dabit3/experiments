@@ -1,0 +1,65 @@
+.modifier-layout {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: 24px;
+}
+
+.modifier-groups {
+  min-width: 0;
+}
+
+.quick-notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.modifier-side {
+  border-left: 1px solid var(--border);
+  padding-left: 24px;
+}
+
+.seat-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.seat-picker .option {
+  justify-content: center;
+  font-weight: 700;
+  font-size: 17px;
+  padding: 0;
+}
+
+.course-picker {
+  display: grid;
+  gap: 8px;
+}
+
+.course-picker .option {
+  justify-content: center;
+}
+
+.price-preview {
+  margin-top: 24px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--bg-elev);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.price-preview strong {
+  font-size: 22px;
+  color: var(--text-strong);
+}
+
+.modifier-missing {
+  align-self: center;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}

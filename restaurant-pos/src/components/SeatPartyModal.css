@@ -1,0 +1,52 @@
+.party-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  padding: 6px 0 8px;
+}
+
+.party-btn {
+  min-height: 72px;
+  font-size: 26px;
+  font-weight: 800;
+  border-radius: 14px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border-strong);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.party-btn small {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.party-btn.over {
+  color: var(--text-muted);
+}
+
+.party-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--panel-2);
+}
+
+.party-btn.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.party-btn.selected small {
+  color: var(--accent-text);
+}
+
+.seat-hint {
+  font-size: 13px;
+  align-self: center;
+}
