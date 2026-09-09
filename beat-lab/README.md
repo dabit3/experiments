@@ -71,7 +71,16 @@ Performed by Devin with mouse and keyboard in a maximised Chrome window with scr
 
 ### Recording
 
-**Recording (mp4):** _pending re-record after redesign_
+**Recording (mp4):** https://app.devin.ai/attachments/8d76bb37-6fe6-49b8-8c75-933c1cc165b4/beat-lab-run2.mp4
+
+![Beat Lab showcase preview](https://app.devin.ai/attachments/ed803741-9abc-49b6-b337-d567fbaa8a14/beat-lab-preview.webp)
+
+| | |
+| --- | --- |
+| ![Perfect match](https://app.devin.ai/attachments/08d9fb67-7e61-4b17-8782-b3831ca795c8/01-perfect-match.png) Boom Bap reproduced — Compare reports 0 differences | ![92 BPM / 15% swing](https://app.devin.ai/attachments/63670e8b-b85c-48f8-b60b-b4c77c118e7e/02-tempo-92-swing-15.png) Faders set to 92 BPM and 15% swing |
+| ![Bass line](https://app.devin.ai/attachments/0c73780a-b51a-4144-899f-104b5582bdf7/03-bass-line-4-notes.png) Four-note bass line in the piano roll | ![Playhead](https://app.devin.ai/attachments/7c9dd32f-704b-4e91-8fed-422956db1203/04-playhead-moving.png) Teal playhead column mid-playback |
+| ![Saved](https://app.devin.ai/attachments/f6cdc5e0-a0ee-4bee-8ae1-7b4b2128cda5/05-saved-json.png) `beat-lab-pattern.json` downloaded | ![Cleared](https://app.devin.ai/attachments/4b769312-212a-41a9-bc6d-4378ef1cfd88/06-cleared.png) Grid cleared (Drums 0, Bass 0) |
+| ![Reloaded](https://app.devin.ai/attachments/e96233ae-c284-4585-ae73-7f5ad1a84dc8/07-reloaded-drums.png) Upload restores all 21 steps | ![Round-trip verified](https://app.devin.ai/attachments/ebeb9232-ac40-4a7d-b855-ba72bdc03951/08-reloaded-bass-perfect-match.png) Bass notes back and Compare still reports 0 differences |
 
 ## Project layout
 
