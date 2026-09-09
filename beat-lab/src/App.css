@@ -729,14 +729,19 @@ input[type='range']::-moz-range-thumb {
   border-color: var(--line-strong);
 }
 
-.note.is-on {
+.roll-row .note.is-on {
   background: var(--accent);
   border-color: #ffc866;
   box-shadow: 0 0 12px rgba(245, 165, 36, 0.55);
 }
 
-.note.is-on:hover {
+.roll-row .note.is-on:hover {
   background: #ffb640;
+}
+
+.roll-row .note.is-now {
+  box-shadow: 0 0 0 2px var(--play) inset;
+  background: color-mix(in srgb, var(--play) 14%, var(--surface-2));
 }
 
 .roll-row.is-c .note {
