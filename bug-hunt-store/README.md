@@ -43,8 +43,8 @@ Devin runs the app, maximizes Chrome, turns on screen recording and, **without r
    Kit). *Actual:* `$109`, `$119`, `$129`, then `$1,299.00` Vinyl Turntable ahead of `$145` —
    prices are ordered as text. Report it under *Sorting & filtering* → scoreboard 1/8.
 2. **Search casing.** Type `lamp` in the search box. *Expected:* Desk Lamp and Headlamp.
-   *Actual:* only Headlamp; `desk lamp` returns "No results" while `Desk Lamp` finds it. Report
-   under *Search* → 2/8.
+   *Actual:* only Headlamp, while `Lamp` returns only Desk Lamp and `desk lamp` returns
+   "No results". Report under *Search* → 2/8.
 3. **Paging.** Walk pages 01 → 02 → 03 with the pagination buttons. *Expected:* 24 distinct
    products. *Actual:* page 3 repeats Camp Stove from page 2 and the 24th product (Hiking Backpack)
    never shows even though the summary says "Showing 17–24 of 24". Report under *Pagination* → 3/8.
@@ -69,16 +69,23 @@ description). The scoreboard button in the header opens a per-bug checklist at a
 
 ### Recording
 
-**Recording (mp4):** https://app.devin.ai/attachments/09a54feb-9053-46de-b635-d309c1afddf0/bug-hunt-store-v2-edited.mp4
+**Recording (mp4):** https://app.devin.ai/attachments/b11b33e2-5cc5-4bf4-a6db-616c0b591f77/kestrel-bug-hunt-final.mp4
 
-![Bug Hunt showcase preview](https://app.devin.ai/attachments/4cb91d06-a5cc-4cc0-b403-bb7db91823b3/bug-hunt-store-preview.webp)
+![Bug Hunt showcase preview](https://app.devin.ai/attachments/bc55b09e-154a-4ec7-a548-f1856780dd26/kestrel-bug-hunt-preview.webp)
 
-Outcome of the recorded run (redesigned storefront): all 8 bugs were reproduced, reported and
-accepted by the matcher, ending on the 8/8 QA-hero screen. The right-hand panel in the video is
-the live test-execution log driven by the recording's structured annotations.
+Outcome of the recorded run: a **blind** hunt by a fresh Devin session that was given no repro
+hints and was forbidden from reading `SPOILERS.md`, `README.md`, the source, `bugs.json`, the PR
+or git history. It found and reported **all 8 planted bugs unaided in ~21 minutes** of
+exploration; `SPOILERS.md` was never opened. One extra report (pressing Enter in the promo-code
+field placed the order instead of applying the code) was correctly rejected by the matcher as
+not planted — that was a genuine unintended defect and has since been fixed. The video is the
+recorder's edited cut of the session; the right-hand panel is a post-processed test-execution
+log rendered from the recording's real structured-annotation timestamps.
 
-Earlier run on the first visual design (all 8 found unaided, no `SPOILERS.md` needed):
-https://app.devin.ai/attachments/a11ae4ce-dea8-4c03-b776-b2da33034f61/bug-hunt-store-showcase.mp4
+Earlier recordings: guided run on the redesigned storefront
+(https://app.devin.ai/attachments/09a54feb-9053-46de-b635-d309c1afddf0/bug-hunt-store-v2-edited.mp4)
+and the first blind run on the original visual design
+(https://app.devin.ai/attachments/a11ae4ce-dea8-4c03-b776-b2da33034f61/bug-hunt-store-showcase.mp4).
 
 ## Project layout
 

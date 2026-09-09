@@ -84,6 +84,12 @@ export function CheckoutModal({ lines, onClose, onPlaceOrder }: Props) {
                   placeholder="Promotion code"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      if (code.trim()) applyCoupon()
+                    }
+                  }}
                   aria-label="Promotion code"
                 />
                 <button type="button" className="btn btn-ghost" onClick={applyCoupon} disabled={!code.trim()}>
