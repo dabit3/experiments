@@ -158,11 +158,21 @@ Contact: email `avery@example.com`, phone `+1 415 555 0142`.
 
 1. `recording_stop` with a title like *Contrail Air booking E2E* and a summary that leads with
    pass/fail.
-2. Build the animated preview (≤ 15 MB) from the edited recording:
+2. Render the test video — the edited recording on the left and a live test-flow panel on the
+   right (the six "It should…" tests, their assertions and pass/fail state, appearing at the
+   moment each annotation was made). The panel is generated from the recording's annotation
+   JSON, so it only ever shows what was actually asserted:
    ```bash
-   ffmpeg -y -i <recording>.mp4 -vf "setpts=PTS/2.5,fps=10,scale=720:-2" -loop 0 \
-     -c:v libwebp -lossless 0 -q:v 55 -preset picture -an airline-booking-preview.webp
+   pip install --user pillow fonttools brotli   # once
+   .agents/skills/airline-booking-e2e/compose-test-video.py \
+     <recording>-edited.mp4 <recording>-annotations.json airline-booking-e2e-devin-test.mp4
    ```
-3. Report: verdict, the booking reference, the recording path, the webp path, the screenshot
-   paths, and the `verify-ics.sh` output. List any assertion that was not `passed` with the
-   reason and, if a bug was fixed during the run, what changed.
+   Never ship the bare screen capture as the deliverable — the composed video is the artifact.
+3. Build the animated preview (≤ 15 MB) from the composed video:
+   ```bash
+   ffmpeg -y -i airline-booking-e2e-devin-test.mp4 -vf "setpts=PTS/2.5,fps=10,scale=1000:-2" \
+     -loop 0 -c:v libwebp -lossless 0 -q:v 55 -preset picture -an airline-booking-preview.webp
+   ```
+4. Report: verdict, the booking reference, the composed video path, the webp path, the
+   screenshot paths, and the `verify-ics.sh` output. List any assertion that was not `passed`
+   with the reason and, if a bug was fixed during the run, what changed.
