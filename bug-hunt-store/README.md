@@ -40,10 +40,11 @@ Devin runs the app, maximizes Chrome, turns on screen recording and, **without r
 `SPOILERS.md`**, explores the store as a QA tester:
 
 1. **Sort by price.** Switch Sort to "Price: Low to High". *Expected:* cheapest first ($9.50 Cable
-   Kit). *Actual:* `$1,299.00` Vinyl Turntable leads and `$9.50` comes last — string ordering.
-   Report it under *Sorting & filtering* → scoreboard 1/8.
-2. **Search casing.** Type `lamp` in the search box. *Expected:* Desk Lamp. *Actual:* "No results for
-   “lamp”"; `Lamp` works. Report under *Search* → 2/8.
+   Kit). *Actual:* `$109`, `$119`, `$129`, then `$1,299.00` Vinyl Turntable ahead of `$145` —
+   prices are ordered as text. Report it under *Sorting & filtering* → scoreboard 1/8.
+2. **Search casing.** Type `lamp` in the search box. *Expected:* Desk Lamp and Headlamp.
+   *Actual:* only Headlamp; `desk lamp` returns "No results" while `Desk Lamp` finds it. Report
+   under *Search* → 2/8.
 3. **Paging.** Walk pages 01 → 02 → 03 with the pagination buttons. *Expected:* 24 distinct
    products. *Actual:* page 3 repeats Camp Stove from page 2 and the 24th product (Hiking Backpack)
    never shows even though the summary says "Showing 17–24 of 24". Report under *Pagination* → 3/8.
@@ -68,12 +69,16 @@ description). The scoreboard button in the header opens a per-bug checklist at a
 
 ### Recording
 
-**Recording (mp4):** https://app.devin.ai/attachments/a11ae4ce-dea8-4c03-b776-b2da33034f61/bug-hunt-store-showcase.mp4
+**Recording (mp4):** https://app.devin.ai/attachments/09a54feb-9053-46de-b635-d309c1afddf0/bug-hunt-store-v2-edited.mp4
 
-![Bug Hunt showcase preview](https://app.devin.ai/attachments/53ab3ea4-7263-4899-af28-921042db7ec7/bug-hunt-store-preview.webp)
+![Bug Hunt showcase preview](https://app.devin.ai/attachments/4cb91d06-a5cc-4cc0-b403-bb7db91823b3/bug-hunt-store-preview.webp)
 
-Outcome of the recorded run: all 8 bugs were found and reported unaided (no `SPOILERS.md`
-needed), ending on the 8/8 QA-hero screen.
+Outcome of the recorded run (redesigned storefront): all 8 bugs were reproduced, reported and
+accepted by the matcher, ending on the 8/8 QA-hero screen. The right-hand panel in the video is
+the live test-execution log driven by the recording's structured annotations.
+
+Earlier run on the first visual design (all 8 found unaided, no `SPOILERS.md` needed):
+https://app.devin.ai/attachments/a11ae4ce-dea8-4c03-b776-b2da33034f61/bug-hunt-store-showcase.mp4
 
 ## Project layout
 
