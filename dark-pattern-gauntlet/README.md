@@ -54,9 +54,37 @@ Wrong choices (the fake ×, the ad, a wrong look-alike, uppercase `CANCEL`, Cont
 box still ticked…) never end the run — they increment the trap counter and show a red toast, so
 the run can always be completed.
 
+### Showcase result
+
+Devin ran the scenario above in a maximised Chrome window while recording. All ten patterns were
+defeated in one run with **0 traps triggered**; the success screen read
+"Subscription cancelled. Dark patterns defeated: 10/10" at 5:25 (the elapsed time includes
+narration pauses in the recording). No app defects were found during the recorded run; one
+pre-recording fix was made so that the dodging button's normal dodges no longer count as traps.
+
 ### Recording
 
-**Recording:** _placeholder — filled in after the showcase_
+**[Watch the full recording (mp4, ~67s)](https://app.devin.ai/attachments/a04f0ce0-1705-4605-97ac-50e62e4b63d6/dark-pattern-gauntlet-showcase-edited.mp4)**
+
+![Animated preview of the recording](docs/showcase.webp)
+
+### Key moments
+
+| 1 · Fake × — the real exit is the tiny grey link | 2 · Continue has dodged twice and now stays put |
+|---|---|
+| ![Fake close screen](docs/01-fake-close.png) | ![Dodging button](docs/02-dodging-button.png) |
+
+| 3 · Confirmshaming — real option in low-contrast grey | 5 · Pre-checked "keep my subscription" box below the fold |
+|---|---|
+| ![Confirmshaming](docs/03-confirmshaming.png) | ![Hidden checkbox](docs/04-hidden-checkbox.png) |
+
+| 7 · Disguised advert styled as the primary button | 9 · Hover hint reveals the lowercase requirement |
+|---|---|
+| ![Disguised ad](docs/05-disguised-ad.png) | ![Case trap hint](docs/07-case-trap-hint.png) |
+
+| 10 · Tooltip exposes the one real Cancel button | Success — 10/10 defeated, 0 traps |
+|---|---|
+| ![Look-alike tooltip](docs/08-lookalikes-tooltip.png) | ![Success screen](docs/09-success.png) |
 
 ## Project layout
 
