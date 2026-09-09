@@ -1,0 +1,95 @@
+.tiles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.tiles__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 104px);
+  gap: 10px;
+  padding: 10px;
+  background: var(--well);
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.tile {
+  position: relative;
+  width: 104px;
+  height: 104px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #000;
+  box-shadow: 0 0 0 0 transparent;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.tile svg {
+  display: block;
+  transition: transform 160ms ease;
+}
+
+.tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px -8px rgba(0, 0, 0, 0.9), 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+.tile:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.tile.is-selected {
+  box-shadow: 0 0 0 3px var(--accent), 0 0 24px -4px var(--accent);
+}
+
+.tile.is-selected svg {
+  transform: scale(0.86);
+}
+
+.tile.is-correct {
+  box-shadow: 0 0 0 3px #4ade80, 0 0 24px -4px #4ade80;
+}
+
+.tile__check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.tile.is-selected .tile__check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.tile.is-correct .tile__check {
+  background: #4ade80;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.tile:disabled {
+  cursor: default;
+}
+
+.tiles__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 476px;
+}

@@ -1,0 +1,30 @@
+.rotate {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.rotate__svg {
+  display: block;
+  touch-action: none;
+  cursor: grab;
+  overflow: visible;
+}
+
+.rotate__svg.is-dragging {
+  cursor: grabbing;
+}
+
+.rotate__svg.is-locked {
+  cursor: default;
+}
+
+.rotate__knob {
+  filter: drop-shadow(0 4px 10px rgba(34, 211, 238, 0.6));
+  transition: r 120ms ease;
+}
+
+.rotate__svg:hover .rotate__knob {
+  r: 22;
+}
