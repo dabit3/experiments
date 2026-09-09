@@ -1,0 +1,126 @@
+:root {
+  color-scheme: dark;
+  --bg: #090d17;
+  --bg-2: #0f1524;
+  --panel: #121a2d;
+  --panel-2: #182238;
+  --panel-3: #1f2b47;
+  --border: #253453;
+  --border-strong: #35487a;
+  --text: #e8edf8;
+  --text-dim: #a4afc9;
+  --muted: #6c7a9c;
+  --accent: #5eead4;
+  --accent-strong: #2dd4bf;
+  --accent-ink: #042f2e;
+  --focus: #fbbf24;
+  --focus-glow: rgba(251, 191, 36, 0.22);
+  --success: #4ade80;
+  --danger: #fb7185;
+  --danger-ink: #4c0519;
+  --font: 'Inter', 'SF Pro Text', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'SFMono-Regular', ui-monospace, Menlo, Consolas, monospace;
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(45, 212, 191, 0.14), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(251, 191, 36, 0.1), transparent 55%),
+    var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- The mouse is disabled ------------------------------------------- */
+html,
+body,
+* {
+  cursor: none !important;
+}
+
+body {
+  pointer-events: none;
+}
+
+/* --- Focus rings: always visible, always loud ------------------------ */
+:focus,
+[role='treeitem']:focus > .tree-row {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 7px var(--focus-glow);
+}
+
+[role='treeitem']:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+kbd {
+  font-family: var(--mono);
+  font-size: 0.78em;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--panel-3);
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 2px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+mark {
+  background: rgba(94, 234, 212, 0.22);
+  color: var(--accent);
+  border-radius: 3px;
+  padding: 0 1px;
+}
+
+::selection {
+  background: rgba(94, 234, 212, 0.35);
+}
+
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
