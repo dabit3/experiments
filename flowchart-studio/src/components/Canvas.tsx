@@ -68,6 +68,7 @@ type Interaction =
     }
 
 const IDLE: Interaction = { type: 'idle' }
+const DOUBLE_CLICK_MS = 450
 
 export function Canvas(props: CanvasProps) {
   const {
@@ -90,6 +91,7 @@ export function Canvas(props: CanvasProps) {
   const wrapRef = useRef<HTMLDivElement>(null)
   const [interaction, setInteractionState] = useState<Interaction>(IDLE)
   const interactionRef = useRef<Interaction>(IDLE)
+  const lastTapRef = useRef<{ id: string; time: number } | null>(null)
   const setInteraction = useCallback((next: Interaction) => {
     interactionRef.current = next
     setInteractionState(next)
@@ -169,6 +171,20 @@ export function Canvas(props: CanvasProps) {
     const portEl = target.closest<SVGElement>('[data-port]')
     const nodeEl = target.closest<SVGElement>('[data-node-id]')
     const edgeEl = target.closest<SVGElement>('[data-edge-id]')
+
+    // Pointer capture retargets the native dblclick to the <svg>, so detect double-clicks here instead.
+    const tapId = portEl ? null : nodeEl ? `node:${nodeEl.dataset.nodeId}` : edgeEl ? `edge:${edgeEl.dataset.edgeId}` : null
+    const last = lastTapRef.current
+    lastTapRef.current = tapId ? { id: tapId, time: e.timeStamp } : null
+    if (tapId && last && last.id === tapId && e.timeStamp - last.time < DOUBLE_CLICK_MS) {
+      lastTapRef.current = null
+      // Cancelling pointerdown suppresses the compat mousedown, which would otherwise steal focus from the editor.
+      e.preventDefault()
+      svg.releasePointerCapture(e.pointerId)
+      const [type, id] = tapId.split(':') as ['node' | 'edge', string]
+      onEditingChange({ type, id })
+      return
+    }
 
     if (portEl && nodeEl) {
       const sourceId = nodeEl.dataset.nodeId as string
@@ -310,17 +326,6 @@ export function Canvas(props: CanvasProps) {
     }
   }
 
-  const onDoubleClick = (e: React.MouseEvent<SVGSVGElement>) => {
-    const target = e.target as Element
-    const nodeEl = target.closest<SVGElement>('[data-node-id]')
-    const edgeEl = target.closest<SVGElement>('[data-edge-id]')
-    if (nodeEl) {
-      onEditingChange({ type: 'node', id: nodeEl.dataset.nodeId as string })
-    } else if (edgeEl) {
-      onEditingChange({ type: 'edge', id: edgeEl.dataset.edgeId as string })
-    }
-  }
-
   const cursorClass =
     interaction.type === 'pan'
       ? 'is-panning'
@@ -363,7 +368,6 @@ export function Canvas(props: CanvasProps) {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        onDoubleClick={onDoubleClick}
         onContextMenu={(e) => e.preventDefault()}
       >
         <defs>
