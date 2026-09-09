@@ -85,7 +85,7 @@ export function SlideRail({ slides, theme, currentId, onSelect, onReorder, onCon
                 title={`Slide ${i + 1}`}
               >
                 <span className="rail-number">{i + 1}</span>
-                <SlideView slide={slide} theme={theme} width={THUMB_W} className="thumb" />
+                <SlideView slide={slide} theme={theme} width={THUMB_W} className="thumb" placeholders />
               </div>
             </div>
           )
@@ -98,7 +98,7 @@ export function SlideRail({ slides, theme, currentId, onSelect, onReorder, onCon
       </div>
       {dragging && (
         <div className="rail-ghost" style={{ top: dragging.pointerY - 40 }}>
-          <SlideView slide={slides[dragging.index]} theme={theme} width={THUMB_W} className="thumb" />
+          <SlideView slide={slides[dragging.index]} theme={theme} width={THUMB_W} className="thumb" placeholders />
         </div>
       )}
       <button type="button" className="btn rail-add" onClick={onAddSlide}>

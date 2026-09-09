@@ -30,18 +30,20 @@ interface Props {
   /** Rendered width in CSS px; the 960×540 slide is scaled to fit. */
   width: number
   className?: string
+  /** Show editor placeholders for empty text boxes (thumbnails only). */
+  placeholders?: boolean
   children?: ReactNode
 }
 
 /** Static, non-interactive rendering of a slide (thumbnails, presenter, print). */
-export function SlideView({ slide, theme, width, className, children }: Props) {
+export function SlideView({ slide, theme, width, className, placeholders = false, children }: Props) {
   const scale = width / SLIDE_W
   return (
     <div className={`slide-frame ${className ?? ''}`} style={{ width, height: width * (SLIDE_H / SLIDE_W) }}>
       <div className="slide-surface" style={{ ...themeVars(theme), transform: `scale(${scale})` }}>
         {slide.elements.map((el) => (
           <div key={el.id} className={`slide-el kind-${el.kind}`} style={elementStyle(el)}>
-            <ElementBody el={el} />
+            <ElementBody el={el} placeholders={placeholders} />
           </div>
         ))}
         {children}

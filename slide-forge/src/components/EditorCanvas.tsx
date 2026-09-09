@@ -177,6 +177,7 @@ export function EditorCanvas({
                 <ElementBody
                   el={el}
                   editing={editing}
+                  placeholders
                   onCommitText={(v, h) => onCommitText(el.id, v, h)}
                   onCancelEdit={onStopEdit}
                 />

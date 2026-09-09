@@ -61,9 +61,9 @@ function EditableText({ value, onCommit, onCancel, style, className }: EditableP
   )
 }
 
-function TextLines({ el }: { el: TextElement }) {
+function TextLines({ el, placeholders }: { el: TextElement; placeholders: boolean }) {
   if (!el.text) {
-    return <div className="text-placeholder">{el.placeholder ?? ''}</div>
+    return placeholders ? <div className="text-placeholder">{el.placeholder ?? ''}</div> : null
   }
   const lines = el.text.split('\n')
   if (el.bullets) {
@@ -100,11 +100,13 @@ function ArrowSvg({ el }: { el: ShapeElement }) {
 interface Props {
   el: SlideElement
   editing?: boolean
+  /** Show placeholder text for empty text boxes (editor only; hidden when presenting/printing). */
+  placeholders?: boolean
   onCommitText?: (value: string, contentHeight: number) => void
   onCancelEdit?: () => void
 }
 
-export function ElementBody({ el, editing = false, onCommitText, onCancelEdit }: Props) {
+export function ElementBody({ el, editing = false, placeholders = false, onCommitText, onCancelEdit }: Props) {
   if (el.kind === 'text') {
     const style: CSSProperties = {
       fontSize: el.fontSize,
@@ -118,7 +120,7 @@ export function ElementBody({ el, editing = false, onCommitText, onCancelEdit }:
         {editing && onCommitText && onCancelEdit ? (
           <EditableText value={el.text} onCommit={onCommitText} onCancel={onCancelEdit} />
         ) : (
-          <TextLines el={el} />
+          <TextLines el={el} placeholders={placeholders} />
         )}
       </div>
     )
