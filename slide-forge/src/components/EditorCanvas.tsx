@@ -88,7 +88,6 @@ export function EditorCanvas({
     if (e.button !== 0) return
     if (editingId === el.id) return
     e.stopPropagation()
-    if (editingId) onStopEdit()
     onSelect(el.id)
     const p = toLogical(e.clientX, e.clientY)
     beginDrag(e, { mode: 'move', id: el.id, startX: p.x, startY: p.y, box: { x: el.x, y: el.y, w: el.w, h: el.h }, moved: false })
@@ -142,7 +141,6 @@ export function EditorCanvas({
 
   const onSurfacePointerDown = (e: ReactPointerEvent) => {
     if (e.button !== 0) return
-    if (editingId) onStopEdit()
     onSelect(null)
   }
 

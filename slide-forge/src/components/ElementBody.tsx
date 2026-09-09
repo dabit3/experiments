@@ -1,4 +1,4 @@
-import { useEffect, useRef, type CSSProperties, type KeyboardEvent } from 'react'
+import { useLayoutEffect, useRef, type CSSProperties, type KeyboardEvent } from 'react'
 import type { ShapeElement, SlideElement, StickerElement, TextElement } from '../types'
 import { contrastText } from '../lib/themes'
 
@@ -10,10 +10,21 @@ interface EditableProps {
   className?: string
 }
 
-/** Plain-text contentEditable that commits on blur / Escape. */
+/** Plain-text contentEditable that commits on blur; Escape cancels. */
 function EditableText({ value, onCommit, onCancel, style, className }: EditableProps) {
   const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
+  const doneRef = useRef(false)
+
+  const commit = () => {
+    if (doneRef.current) return
+    doneRef.current = true
+    const node = ref.current
+    const box = node?.parentElement
+    const padding = box ? parseFloat(getComputedStyle(box).paddingTop) + parseFloat(getComputedStyle(box).paddingBottom) : 0
+    onCommit(node?.innerText.replace(/\n$/, '') ?? '', (node?.scrollHeight ?? 0) + padding)
+  }
+
+  useLayoutEffect(() => {
     const node = ref.current
     if (!node) return
     node.innerText = value
@@ -29,6 +40,7 @@ function EditableText({ value, onCommit, onCancel, style, className }: EditableP
     e.stopPropagation()
     if (e.key === 'Escape') {
       e.preventDefault()
+      doneRef.current = true
       onCancel()
     }
   }
@@ -42,12 +54,7 @@ function EditableText({ value, onCommit, onCancel, style, className }: EditableP
       spellCheck={false}
       style={style}
       onKeyDown={onKeyDown}
-      onBlur={() => {
-        const node = ref.current
-        const box = node?.parentElement
-        const padding = box ? parseFloat(getComputedStyle(box).paddingTop) + parseFloat(getComputedStyle(box).paddingBottom) : 0
-        onCommit(node?.innerText.replace(/\n$/, '') ?? '', (node?.scrollHeight ?? 0) + padding)
-      }}
+      onBlur={commit}
       onPointerDown={(e) => e.stopPropagation()}
       onDoubleClick={(e) => e.stopPropagation()}
     />
