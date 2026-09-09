@@ -4,11 +4,9 @@ import appIcon from './assets/app-icon.webp'
 import { Board } from './components/Board'
 import { Counter } from './components/Counter'
 import { Face } from './components/Face'
-import { Scenario } from './components/Scenario'
 import { useGame } from './hooks/useGame'
 import { LEVELS, LEVEL_ORDER, isLevel, type Level } from './lib/board'
 import { parseSeed, randomSeed } from './lib/rng'
-import { SCENARIO } from './lib/scenario'
 
 function readUrl(): { level: Level; seed: number } {
   const params = new URLSearchParams(window.location.search)
@@ -80,7 +78,6 @@ export default function App() {
   )
 
   const shuffle = useCallback(() => game.reset(state.level, randomSeed()), [game, state.level])
-  const loadScenario = useCallback(() => game.reset(SCENARIO.level, SCENARIO.seed), [game])
 
   const spec = LEVELS[state.level]
   const revealed = state.board.cells.filter((c) => c.revealed && !c.mine).length
@@ -202,8 +199,6 @@ export default function App() {
         </section>
 
         <aside className="sidebar">
-          <Scenario state={state} minesLeft={minesLeft} seconds={seconds} onLoad={loadScenario} />
-
           <section className="panel" aria-labelledby="best-heading">
             <h2 id="best-heading">Best times</h2>
             <ul className="best-list" data-testid="best-times">
