@@ -13,8 +13,7 @@ timer and records the time.
 
 The UI is a dark, console-style layout: a glass masthead with the app icon, a segmented level
 switcher and the seed control; a game panel with LED counters, the face button, the board and a
-status/stat bar; and a sidebar with the **Test scenario** panel (the browser test script below,
-rendered as a live checklist that ticks itself off as you play), best times and a controls
+status bar with safe-cell / chord / seed stats; and a sidebar with best times and a controls
 legend.
 
 ## Run it
@@ -47,38 +46,34 @@ probabilistically about where the mines are. After building it, Devin opened
 `http://localhost:5173/?level=intermediate&seed=1234` in Chrome, maximized the window, and
 performed the following scenario end to end while recording:
 
-1. Confirmed the HUD shows `040` mines, a smiling face and a timer at `000`, that the
-   Intermediate tab (16×16 · 40 mines) is active with seed `1234`, and that the **Test scenario**
-   panel reads `READY` with step 1 already ticked.
+1. Confirmed the HUD shows `040` mines, a smiling face and a timer at `000`, and that the
+   Intermediate tab (16×16 · 40 mines) is active with seed `1234`.
 2. Left-clicked the centre cell (row 7, column 7, zero-indexed) to open the board. Because the
-   first click is safe, this always opens the same 15-cell pocket for seed 1234. The panel flips
-   to `RUNNING` and ticks step 2.
+   first click is safe, this always opens the same 15-cell pocket for seed 1234; the timer starts.
 3. Worked outwards from the opening by deduction: right-clicked to plant a flag on every cell
-   proven to be a mine (step 3 counts `n/40`), and middle-clicked satisfied numbers to
-   chord-reveal their neighbours (step 4 counts chords; dozens in total, well over the required
-   two).
-4. Continued until all 216 safe cells were revealed (step 5 counts `n/216`). If a mine is hit the
-   panel turns `FAILED` and tells you to restart the same seed via the face button.
+   proven to be a mine (the counter decrements per flag), and middle-clicked satisfied numbers to
+   chord-reveal their neighbours (the `Chords` stat counts them; dozens in total, well over the
+   required two).
+4. Continued until all 40 flags were placed (counter `000`) and all 216 safe cells revealed. If a
+   mine is hit, the face is clicked to restart the same seed and the run continues.
 5. Verified the win state: sunglasses face, mine counter `000`, timer frozen, status line
-   "Board cleared. Every mine is flagged.", the scenario panel reading `PASSED · 6/6 steps`, and
-   the Intermediate best time saved in the sidebar.
+   "Board cleared. Every mine is flagged.", and the Intermediate best time saved in the sidebar.
+
+Each step is marked in the recording with a structured annotation (setup / test start /
+assertion), so the test script is visible in the video overlay rather than in the app.
 
 Expected results: every one of the 40 mines ends up flagged; the timer stops on the winning click;
-the scenario panel shows `PASSED`; the best-times panel shows that time for Intermediate with seed
-1234. `scripts/solve.mjs` confirms this seed / first-click combination is solvable without
-guessing.
+the best-times panel shows that time for Intermediate with seed 1234. `scripts/solve.mjs`
+confirms this seed / first-click combination is solvable without guessing.
 
 ### Recording
 
-**[Watch the full recording (mp4)](https://app.devin.ai/attachments/674b2674-6ed7-41a8-94b5-bfb1751d5aaa/minesweeper-lab-showcase.mp4)**
+**[Watch the full recording (mp4)](https://app.devin.ai/attachments/22c82815-fa6d-4cbb-993e-f88f17e7873f/minesweeper-lab-showcase.mp4)**
 
-![Animated preview of the showcase run](https://app.devin.ai/attachments/1f380690-a5a5-49c9-b950-ebf42f2b7fa5/minesweeper-lab-preview.webp)
+![Animated preview of the showcase run](https://app.devin.ai/attachments/96496d48-ee01-4aa7-8aa8-57f2269127b2/minesweeper-lab-preview.webp)
 
-Result: the recorded game was won with the timer stopping at 92 s, the mine counter at `000`, all
-40 flags placed by hand and 44 chord reveals, with the scenario panel reading `PASSED`. The first
-attempt in the same recording mis-flagged a cell and chorded into a mine; the loss state (all
-mines revealed, the hit mine highlighted, the wrong flag crossed out, panel `FAILED`) is shown,
-after which the board was restarted with the same seed via the face button and cleared.
+Result: the recorded game was won on the first attempt with the timer stopping at 204 s, the mine
+counter at `000`, all 40 flags placed by hand before the final reveal, and 42 chord reveals.
 
 ## Project layout
 
@@ -91,10 +86,8 @@ src/
     Cell.tsx              a single cell (numbers, flag, question, mine, wrong flag)
     Counter.tsx           three-digit LED read-out
     Face.tsx              smiley reset button with four moods
-    Scenario.tsx          the test scenario as a live checklist driven by game state
-  hooks/useGame.ts        reducer: reveal / chord / mark / reset, timer, chords, best times
+  hooks/useGame.ts        reducer: reveal / chord / mark / reset, timer, chord count, best times
   lib/board.ts            seeded mine placement, flood reveal, chord, win/loss checks
-  lib/scenario.ts         level / seed / min-chords of the showcase scenario
   lib/rng.ts              mulberry32 PRNG + seed parsing
   lib/bestTimes.ts        localStorage best-time table
 scripts/solve.mjs         prints a seeded board and checks it is solvable without guessing
