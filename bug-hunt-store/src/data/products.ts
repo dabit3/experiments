@@ -1,0 +1,28 @@
+import type { Product } from '../types'
+
+export const PRODUCTS: Product[] = [
+  { id: 1, name: 'Studio Headphones', category: 'Audio', price: 249, rating: 4.7, reviews: 1284, tagline: 'Closed-back, 40 mm drivers, all-day comfort', hue: 262 },
+  { id: 2, name: 'Trail Watch', category: 'Wearables', price: 349, rating: 4.5, reviews: 642, tagline: 'GPS, 14-day battery, sapphire glass', hue: 200 },
+  { id: 3, name: 'Desk Lamp', category: 'Home', price: 49, rating: 4.3, reviews: 918, tagline: 'Warm-to-cool dimmable LED, USB-C', hue: 36 },
+  { id: 4, name: 'Canvas Tote', category: 'Outdoor', price: 49, rating: 4.1, reviews: 377, tagline: 'Waxed 18 oz canvas, brass rivets', hue: 150 },
+  { id: 5, name: 'Wireless Earbuds', category: 'Audio', price: 129, rating: 4.4, reviews: 2210, tagline: 'Active noise cancelling, 8 h playback', hue: 280, featured: true },
+  { id: 6, name: 'Fitness Band', category: 'Wearables', price: 59, rating: 3.9, reviews: 1533, tagline: 'Heart rate, sleep and step tracking', hue: 190 },
+  { id: 7, name: 'Ceramic Kettle', category: 'Home', price: 119, rating: 4.6, reviews: 455, tagline: 'Gooseneck pour, 1 °C temperature hold', hue: 20 },
+  { id: 8, name: 'Insulated Bottle', category: 'Outdoor', price: 35, rating: 4.8, reviews: 3102, tagline: '750 ml, cold for 24 h, hot for 12 h', hue: 165 },
+  { id: 9, name: 'Pocket Speaker', category: 'Audio', price: 89, rating: 4.2, reviews: 871, tagline: 'IP67, 12 h battery, stereo pairing', hue: 250 },
+  { id: 10, name: 'Sleep Ring', category: 'Wearables', price: 299, rating: 5, reviews: 214, tagline: 'Titanium, readiness score, 7-day battery', hue: 215 },
+  { id: 11, name: 'Air Purifier', category: 'Home', price: 199, rating: 4.4, reviews: 690, tagline: 'HEPA H13, whisper-quiet night mode', hue: 45 },
+  { id: 12, name: 'Trail Tent', category: 'Outdoor', price: 429, rating: 4.6, reviews: 288, tagline: '2-person, 1.4 kg, freestanding', hue: 140 },
+  { id: 13, name: 'Vinyl Turntable', category: 'Audio', price: 1299, rating: 4.9, reviews: 96, tagline: 'Belt drive, carbon tonearm, walnut plinth', hue: 300 },
+  { id: 14, name: 'Smart Glasses', category: 'Wearables', price: 499, rating: 3.6, reviews: 158, tagline: 'Open-ear audio, photochromic lenses', hue: 230 },
+  { id: 15, name: 'Wool Throw', category: 'Home', price: 95, rating: 4.7, reviews: 522, tagline: 'Merino lambswool, 130 × 180 cm', hue: 10 },
+  { id: 16, name: 'Camp Stove', category: 'Outdoor', price: 109, rating: 4.5, reviews: 412, tagline: 'Boils 1 L in 3 min, piezo ignition', hue: 130 },
+  { id: 17, name: 'Desk Microphone', category: 'Audio', price: 159, rating: 4.3, reviews: 739, tagline: 'USB-C condenser, tap-to-mute', hue: 270 },
+  { id: 18, name: 'Running Belt', category: 'Wearables', price: 24.99, rating: 4, reviews: 1921, tagline: 'Bounce-free, fits any phone', hue: 205 },
+  { id: 19, name: 'Scented Candle', category: 'Home', price: 32, rating: 4.5, reviews: 1104, tagline: 'Cedar & fig, 60 h burn time', hue: 30 },
+  { id: 20, name: 'Headlamp', category: 'Outdoor', price: 42, rating: 4.4, reviews: 803, tagline: '400 lm, red night mode, rechargeable', hue: 175 },
+  { id: 21, name: 'Cable Kit', category: 'Audio', price: 9.5, rating: 3.8, reviews: 2604, tagline: 'Braided USB-C, 3.5 mm and adapters', hue: 290 },
+  { id: 22, name: 'Heart Monitor', category: 'Wearables', price: 79, rating: 4.2, reviews: 366, tagline: 'Chest strap, ANT+ and Bluetooth', hue: 220 },
+  { id: 23, name: 'Coffee Grinder', category: 'Home', price: 145, rating: 4.8, reviews: 947, tagline: '40 mm steel burrs, 60 grind settings', hue: 25 },
+  { id: 24, name: 'Hiking Backpack', category: 'Outdoor', price: 189, rating: 4.7, reviews: 511, tagline: '38 L, ventilated back panel, rain cover', hue: 155 },
+]

@@ -1,0 +1,87 @@
+@import '@fontsource-variable/inter/index.css';
+@import '@fontsource-variable/archivo/wdth.css';
+
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f4f4f2;
+  --surface-3: #ebebe8;
+  --line: #e4e4e1;
+  --line-strong: #111111;
+  --ink: #111111;
+  --ink-2: #3c3c3c;
+  --muted: #767676;
+  --danger: #b3261e;
+  --danger-soft: #fbeeed;
+  --star: #111111;
+  --star-empty: #cfcfcc;
+  --shadow-lg: 0 32px 80px rgba(0, 0, 0, 0.18);
+  --sans: 'Inter Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --display: 'Archivo Variable', 'Inter Variable', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--bg);
+  color-scheme: light;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'cv11', 'ss01', 'tnum';
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 500;
+}
+
+::selection {
+  background: var(--ink);
+  color: #fff;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 12px;
+}
+
+.caps {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}

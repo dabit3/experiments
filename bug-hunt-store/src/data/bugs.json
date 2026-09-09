@@ -1,0 +1,74 @@
+[
+  {
+    "id": "sort-price-strings",
+    "title": "\"Sort by price\" orders prices as text, not numbers",
+    "area": "Sorting & filtering",
+    "keywords": [
+      ["sort", "order", "ordering", "low to high", "high to low"],
+      ["price", "cheap", "expensive", "$", "string", "text", "alphabet", "lexicograph", "1,299", "1299", "24.99", "9.50"]
+    ]
+  },
+  {
+    "id": "search-case-sensitive",
+    "title": "Search is case-sensitive",
+    "area": "Search",
+    "keywords": [
+      ["search", "query", "find", "look up", "looking up", "typed", "typing"],
+      ["case", "lowercase", "lower-case", "lower case", "uppercase", "upper-case", "upper case", "capital", "no results", "nothing", "0 results", "zero results", "empty", "no match", "not find", "doesn't find", "does not find", "can't find", "cannot find"]
+    ]
+  },
+  {
+    "id": "pagination-off-by-one",
+    "title": "Page 3 repeats an item from page 2 and drops the last product",
+    "area": "Pagination",
+    "keywords": [
+      ["page", "paging", "paginat", "next"],
+      ["repeat", "duplicate", "dupli", "twice", "again", "same item", "same product", "already", "missing", "drop", "skip", "24th", "last item", "last product", "off by one", "off-by-one", "only 23", "23 ", "backpack"]
+    ]
+  },
+  {
+    "id": "coupon-flat-ten",
+    "title": "Coupon SAVE10 takes $10 off instead of 10%",
+    "area": "Coupons & checkout",
+    "keywords": [
+      ["coupon", "save10", "promo", "discount", "code", "voucher"],
+      ["$10", "10 dollars", "ten dollars", "10.00", "percent", "%", "flat", "instead", "wrong", "incorrect", "should", "only", "not 10"]
+    ]
+  },
+  {
+    "id": "six-stars",
+    "title": "One product shows six stars",
+    "area": "Product card",
+    "keywords": [
+      ["star", "rating", "review"],
+      ["6 star", "six star", "6star", "6 filled", "six filled", "6 icons", "sixth", "extra star", "too many", "more than 5", "more than five", "6/5", "6 out of", "six out of", "shows 6", "showing 6", "renders 6", "displays 6", "has 6", "have 6", "6 of them", "6 gold", "6 yellow"]
+    ]
+  },
+  {
+    "id": "remove-wrong-line",
+    "title": "\"Remove\" deletes the wrong cart line when two items share a price",
+    "area": "Cart & totals",
+    "keywords": [
+      ["remove", "delete", "trash", "removing", "deleting", "x button", "bin"],
+      ["wrong", "different", "other", "instead", "another", "incorrect", "same price", "not the", "unexpected", "swapped", "mixed up", "mix up", "disappeared", "vanished", "gone"]
+    ]
+  },
+  {
+    "id": "cart-qty-ignored",
+    "title": "Cart total ignores quantity for Audio products",
+    "area": "Cart & totals",
+    "keywords": [
+      ["quantity", "qty", "increase", "increment", "×", "x2", "x 2", "x3", "x 3", "multiple units", "stepper", "plus button", "bump", "more than one", "2 units", "3 units", "doubled", "double"],
+      ["total", "subtotal", "price", "amount", "charge", "cost", "sum", "multipl", "counted once", "same", "unchanged", "doesn't change", "does not change", "didn't change", "not update", "doesn't update", "stays", "stayed", "still"]
+    ]
+  },
+  {
+    "id": "overlay-blocks-add-to-cart",
+    "title": "An invisible overlay blocks \"Add to bag\" on the Wireless Earbuds until the window is resized",
+    "area": "Buttons & layout",
+    "keywords": [
+      ["add to cart", "add-to-cart", "add to bag", "button", "click", "overlay", "earbuds", "5th", "fifth", "layout"],
+      ["nothing", "doesn't", "does not", "didn't", "did not", "not work", "not working", "unresponsive", "block", "dead", "no response", "ignored", "won't", "wont", "resize", "overlay", "invisible", "can't", "cannot", "unclickable", "not clickable", "no effect", "not respond", "never", "fails", "broken", "stuck", "hover", "impossible", "covered", "on top"]
+    ]
+  }
+]
