@@ -70,4 +70,4 @@ Goal: assemble a 20-second sequence and export a correct EDL.
 
 ## Recording
 
-Recording of Devin performing the scenario in Chrome: https://app.devin.ai/attachments/9ad24747-4ad6-49e3-8e1f-5e90ce7549c7/timeline-cutter-showcase-edited.mp4
+Recording of Devin performing the scenario in Chrome: https://app.devin.ai/attachments/8f791da6-e9f3-4601-a7e2-c7c35d507289/timeline-cutter-redesign-edited.mp4
