@@ -1,31 +1,81 @@
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('./fonts/Inter-var.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./fonts/BarlowCondensed-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./fonts/BarlowCondensed-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('./fonts/BarlowCondensed-800.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./fonts/JetBrainsMono-500.woff2') format('woff2');
+}
+
 :root {
-  --bg: #08111f;
-  --bg-2: #0d1a30;
-  --panel: #101f3a;
-  --panel-2: #152848;
-  --line: rgba(148, 178, 222, 0.16);
-  --line-strong: rgba(148, 178, 222, 0.32);
-  --text: #e6eefc;
-  --text-dim: #93a6c7;
-  --text-faint: #5f7398;
-  --water: #123059;
-  --water-hover: #1b4680;
-  --ship: #9fb3c8;
-  --ship-dark: #6f8399;
-  --hit: #ff5a3c;
-  --hit-dark: #b8321c;
-  --miss: #7cc4ff;
-  --sunk: #7a1f14;
-  --heat-rgb: 255, 176, 32;
-  --accent: #ffb020;
-  --accent-ink: #1a1200;
-  --good: #34d399;
-  --bad: #fb7185;
-  --radius: 14px;
-  --cell: clamp(30px, 3.15vw, 54px);
+  --bg: #05080f;
+  --bg-2: #0a1120;
+  --panel: #0c1526;
+  --panel-2: #111d33;
+  --panel-3: #16243d;
+  --line: rgba(146, 172, 214, 0.14);
+  --line-strong: rgba(146, 172, 214, 0.3);
+  --text: #e9eff9;
+  --text-dim: #93a4c2;
+  --text-faint: #56688a;
+  --water: #0e213d;
+  --water-2: #10284a;
+  --water-hover: #17406f;
+  --ship: #b6c3d3;
+  --ship-dark: #6b7d94;
+  --hit: #ff5436;
+  --hit-dark: #a8281a;
+  --miss: #6fc6ff;
+  --sunk: #5f1a12;
+  --heat-rgb: 255, 170, 40;
+  --accent: #f0b73f;
+  --accent-2: #ffd97a;
+  --accent-deep: #9a6410;
+  --accent-ink: #1a1100;
+  --teal: #4fd8c8;
+  --teal-rgb: 79, 216, 200;
+  --good: #3ddc97;
+  --bad: #ff6b7a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --cell: clamp(30px, 3.2vw, 56px);
   --gap: 3px;
   --sans: 'Inter', 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  --display: 'Barlow Condensed', 'Inter', 'Segoe UI', system-ui, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --shadow-lg: 0 30px 60px -30px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.4);
+  --gold-gradient: linear-gradient(180deg, #ffe39a 0%, #f0b73f 45%, #c98a1c 100%);
 
   font-family: var(--sans);
   font-size: 15px;
@@ -34,6 +84,7 @@
   color-scheme: dark;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  font-feature-settings: 'cv11', 'ss01';
 }
 
 *,
@@ -49,11 +100,40 @@ body {
 }
 
 body {
+  position: relative;
   background:
-    radial-gradient(1200px 600px at 15% -10%, rgba(45, 105, 190, 0.28), transparent 60%),
-    radial-gradient(900px 500px at 100% 0%, rgba(255, 176, 32, 0.1), transparent 55%),
-    var(--bg);
+    radial-gradient(1100px 620px at 50% -12%, rgba(31, 84, 156, 0.42), transparent 62%),
+    radial-gradient(800px 480px at 100% 104%, rgba(240, 183, 63, 0.09), transparent 60%),
+    radial-gradient(700px 420px at 0% 100%, rgba(79, 216, 200, 0.07), transparent 60%),
+    linear-gradient(180deg, #070c17 0%, var(--bg) 100%);
   overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(146, 172, 214, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(146, 172, 214, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at 50% 30%, rgba(0, 0, 0, 0.9), transparent 75%);
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 button {
@@ -71,5 +151,14 @@ button:focus-visible,
 }
 
 ::selection {
-  background: rgba(255, 176, 32, 0.35);
+  background: rgba(240, 183, 63, 0.35);
+}
+
+.eyebrow {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
 }

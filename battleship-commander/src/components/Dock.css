@@ -2,7 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  min-height: 330px;
+  min-height: calc(5 * (var(--cell) * 0.82 + 52px) + 56px);
   gap: 14px 18px;
 }
 
@@ -13,9 +13,9 @@
   color: var(--text-dim);
   font-size: 14px;
   padding: 12px 14px;
-  border-radius: 10px;
-  background: rgba(52, 211, 153, 0.08);
-  border: 1px dashed rgba(52, 211, 153, 0.4);
+  border-radius: var(--radius-sm);
+  background: rgba(61, 220, 151, 0.07);
+  border: 1px dashed rgba(61, 220, 151, 0.4);
 }
 
 .dock--empty p {
@@ -27,7 +27,7 @@
   flex-direction: column;
   gap: 6px;
   padding: 8px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
   border: 1px solid transparent;
   transition:
     border-color 0.15s ease,
@@ -35,8 +35,8 @@
 }
 
 .dock-ship--focus {
-  border-color: var(--line-strong);
-  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(240, 183, 63, 0.4);
+  background: rgba(240, 183, 63, 0.05);
 }
 
 .dock-ship--dragging {
@@ -51,7 +51,11 @@
 }
 
 .dock-ship__name {
-  font-weight: 600;
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .dock-ship__size {
@@ -66,10 +70,10 @@
   width: 28px;
   height: 28px;
   margin-left: auto;
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--text-dim);
   background: var(--panel-2);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   transition:
     color 0.15s ease,
     background-color 0.15s ease,
@@ -77,8 +81,9 @@
 }
 
 .dock-ship__rotate:hover {
-  color: var(--accent);
-  background: rgba(255, 176, 32, 0.12);
+  color: var(--accent-2);
+  background: rgba(240, 183, 63, 0.12);
+  border-color: rgba(240, 183, 63, 0.5);
   transform: rotate(90deg);
 }
 
@@ -103,9 +108,12 @@
   width: calc(var(--cell) * 0.82);
   height: calc(var(--cell) * 0.82);
   border-radius: 3px;
-  background: linear-gradient(180deg, #b5c6d8, var(--ship));
-  border: 1px solid var(--ship-dark);
-  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.18);
+  background: linear-gradient(180deg, #d6e0eb 0%, var(--ship) 45%, #8d9fb3 100%);
+  border: 1px solid #56687f;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.22),
+    0 4px 10px -4px rgba(0, 0, 0, 0.7);
   position: relative;
 }
 
@@ -113,9 +121,10 @@
 .ghost__seg::before {
   content: '';
   position: absolute;
-  inset: 34%;
+  inset: 33%;
   border-radius: 50%;
-  background: rgba(20, 35, 55, 0.35);
+  background: radial-gradient(circle at 40% 35%, #4a5c74, #1f2c3f 75%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .dock-ship--h .dock-ship__seg:first-child,

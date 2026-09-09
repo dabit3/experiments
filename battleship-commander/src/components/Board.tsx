@@ -30,6 +30,7 @@ interface BoardProps {
   boardRef?: Ref<HTMLDivElement>
   dimmed?: boolean
   badge?: string
+  tone?: 'own' | 'enemy'
 }
 
 interface SegmentInfo {
@@ -51,6 +52,7 @@ export function Board({
   boardRef,
   dimmed = false,
   badge,
+  tone = 'own',
 }: BoardProps) {
   const segments = new Map<string, SegmentInfo>()
   for (const ship of ships) {
@@ -145,15 +147,19 @@ export function Board({
   }
 
   return (
-    <section className={`board${dimmed ? ' board--dimmed' : ''}`} aria-label={title}>
+    <section className={`board board--${tone}${dimmed ? ' board--dimmed' : ''}`} aria-label={title}>
       <header className="board__header">
-        <div>
+        <div className="board__heading">
           <h2 className="board__title">{title}</h2>
           {subtitle ? <p className="board__subtitle">{subtitle}</p> : null}
         </div>
         {badge ? <span className="board__badge">{badge}</span> : null}
       </header>
       <div className="board__frame">
+        <span className="board__rivet board__rivet--tl" aria-hidden="true" />
+        <span className="board__rivet board__rivet--tr" aria-hidden="true" />
+        <span className="board__rivet board__rivet--bl" aria-hidden="true" />
+        <span className="board__rivet board__rivet--br" aria-hidden="true" />
         <div className="board__corner" />
         <div className="board__cols">
           {Array.from({ length: BOARD_SIZE }, (_, i) => (

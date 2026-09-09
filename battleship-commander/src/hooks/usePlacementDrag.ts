@@ -130,6 +130,7 @@ export function usePlacementDrag({ ships, setShips, enabled }: Options) {
   useEffect(() => {
     if (!enabled) return
     const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return
       if (e.key === 'r' || e.key === 'R') {
         e.preventDefault()
         rotate()

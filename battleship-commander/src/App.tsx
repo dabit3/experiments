@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'r
 import './App.css'
 import { Board } from './components/Board'
 import { Dock, DragGhost } from './components/Dock'
+import { Logo } from './components/Logo'
 import { EndScreen, FleetStatus, HeatmapControl, ShotLog, Toast } from './components/Panels'
 import { chooseShot } from './game/ai'
 import { computeHeatmap } from './game/heatmap'
@@ -87,31 +88,27 @@ export default function App() {
     <div className={`app app--${state.phase}`}>
       <header className="topbar">
         <div className="brand">
-          <span className="brand__mark" aria-hidden="true">
-            <svg viewBox="0 0 32 32" width="26" height="26">
-              <path
-                d="M4 20h24l-3 5H7l-3-5Zm4-4h16v3H8v-3Zm4-8h8v7h-8V8Zm2-3h4v3h-4V5Z"
-                fill="currentColor"
-              />
-            </svg>
-          </span>
-          <div>
-            <h1 className="brand__title">Battleship Commander</h1>
-            <p className="brand__sub">vs a hunt-and-target AI</p>
+          <Logo size={46} className="brand__mark" />
+          <div className="brand__text">
+            <h1 className="brand__title">Battleship</h1>
+            <p className="brand__sub">Commander</p>
           </div>
+          <span className="brand__tag">vs hunt-and-target AI</span>
         </div>
 
         <div className={`status status--${state.turn}${state.phase === 'battle' && state.turn === 'enemy' ? ' status--thinking' : ''}`} role="status">
           <span className="status__dot" />
-          {status}
+          <span className="status__text">{status}</span>
         </div>
 
         <div className="topbar__right">
-          <span className="chip" title="Deterministic seed — same seed, same enemy fleet and AI shots">
-            seed <b>{state.seed}</b>
+          <span className="readout" title="Deterministic seed — same seed, same enemy fleet and AI shots">
+            <span className="readout__label">Seed</span>
+            <b className="readout__value">{state.seed}</b>
           </span>
-          <span className="chip">
-            game <b>{state.round}</b>
+          <span className="readout">
+            <span className="readout__label">Game</span>
+            <b className="readout__value">{String(state.round).padStart(2, '0')}</b>
           </span>
           <button type="button" className="btn btn--ghost" onClick={newSeed}>
             New seed
@@ -133,6 +130,7 @@ export default function App() {
           lastShot={lastEnemy}
           onShipPointerDown={placing ? drag.beginFromBoard : undefined}
           badge={placing ? `${state.playerShips.length}/${FLEET.length} placed` : undefined}
+          tone="own"
         />
 
         <Board
@@ -151,6 +149,7 @@ export default function App() {
           lastShot={lastPlayer}
           dimmed={placing}
           badge={placing ? 'locked' : `${yourStats.sunk}/${FLEET.length} sunk`}
+          tone="enemy"
         />
 
         <aside className="side">

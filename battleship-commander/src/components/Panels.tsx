@@ -11,6 +11,7 @@ import {
   type Shot,
   type Side,
 } from '../game/types'
+import { Logo } from './Logo'
 import './Panels.css'
 
 /* ------------------------------------------------------------------ */
@@ -187,7 +188,10 @@ export function EndScreen({
   return (
     <div className="end" role="dialog" aria-modal="true" aria-labelledby="end-title">
       <div className={`end__card end__card--${won ? 'win' : 'lose'}`}>
-        <p className="end__eyebrow">Game {round} · seed {seed}</p>
+        <Logo size={64} className="end__emblem" />
+        <p className="end__eyebrow">
+          Mission report · Game {String(round).padStart(2, '0')} · Seed {seed}
+        </p>
         <h2 id="end-title" className="end__title">
           {won ? 'Victory' : 'Defeat'}
         </h2>
@@ -201,7 +205,7 @@ export function EndScreen({
             <tr>
               <th />
               <th>You</th>
-              <th>AI</th>
+              <th>Enemy AI</th>
             </tr>
           </thead>
           <tbody>
