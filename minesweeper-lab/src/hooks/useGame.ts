@@ -31,6 +31,8 @@ export interface GameState {
   bestTimes: BestTimes
   /** True when the current win set a new best time. */
   newRecord: boolean
+  /** Number of chord reveals that changed the board this game. */
+  chords: number
 }
 
 type Action =
@@ -57,6 +59,7 @@ function fresh(level: Level, seed: number, generation: number, bestTimes: BestTi
     endedAt: null,
     bestTimes,
     newRecord: false,
+    chords: 0,
   }
 }
 
@@ -89,7 +92,7 @@ function reducer(state: GameState, action: Action): GameState {
       if (state.status !== 'playing') return state
       const result = chord(state.board, action.index)
       if (result === null || !result.changed) return state
-      return finish(state, result.board, result.exploded, action.now)
+      return finish({ ...state, chords: state.chords + 1 }, result.board, result.exploded, action.now)
     }
     case 'mark': {
       if (state.status === 'won' || state.status === 'lost') return state
