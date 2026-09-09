@@ -1,0 +1,235 @@
+.canvas-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--canvas);
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  user-select: none;
+  cursor: default;
+}
+
+.canvas-wrap.can-pan .canvas {
+  cursor: grab;
+}
+
+.canvas-wrap.is-panning .canvas {
+  cursor: grabbing;
+}
+
+.canvas-wrap.is-connecting .canvas,
+.canvas-wrap.is-marquee .canvas {
+  cursor: crosshair;
+}
+
+.grid-dot {
+  fill: var(--grid-dot);
+}
+
+/* Nodes */
+
+.node {
+  --node-color: var(--accent);
+}
+
+.node-shape {
+  fill: color-mix(in srgb, var(--node-color) 16%, var(--canvas));
+  stroke: var(--node-color);
+  stroke-width: 2;
+  transition:
+    fill 120ms ease,
+    filter 120ms ease;
+  cursor: move;
+}
+
+.node:hover .node-shape {
+  fill: color-mix(in srgb, var(--node-color) 26%, var(--canvas));
+}
+
+.node.is-selected .node-shape {
+  stroke-width: 2.5;
+  filter: url(#node-glow);
+}
+
+.node-selection {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+  pointer-events: none;
+  animation: march 1.2s linear infinite;
+}
+
+@keyframes march {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+.node-label {
+  fill: var(--text-strong);
+  font-size: 14px;
+  font-weight: 600;
+  pointer-events: none;
+  letter-spacing: -0.005em;
+}
+
+.port-hit {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.port-dot {
+  fill: var(--canvas);
+  stroke: var(--node-color);
+  stroke-width: 2;
+  opacity: 0.45;
+  pointer-events: none;
+  transition:
+    opacity 120ms ease,
+    r 120ms ease,
+    fill 120ms ease;
+}
+
+.node:hover .port-dot,
+.node.is-selected .port-dot,
+.node.is-connecting .port-dot {
+  opacity: 1;
+}
+
+.port:hover .port-dot {
+  fill: var(--node-color);
+  r: 7.5;
+}
+
+.port.is-target .port-dot {
+  fill: var(--accent);
+  stroke: var(--text-strong);
+  opacity: 1;
+}
+
+.node.is-target .node-shape {
+  stroke: var(--accent);
+  fill: color-mix(in srgb, var(--accent) 22%, var(--canvas));
+}
+
+/* Edges */
+
+.edge-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 18;
+  cursor: pointer;
+}
+
+.edge-line {
+  fill: none;
+  stroke: var(--edge);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+  transition: stroke 120ms ease;
+}
+
+.edge-arrow {
+  fill: var(--edge);
+  stroke: none;
+  pointer-events: none;
+  transition: fill 120ms ease;
+}
+
+.edge:hover .edge-line,
+.edge.is-selected .edge-line {
+  stroke: var(--accent-text);
+  stroke-width: 2.5;
+}
+
+.edge:hover .edge-arrow,
+.edge.is-selected .edge-arrow {
+  fill: var(--accent-text);
+}
+
+.edge-preview .edge-line {
+  stroke: var(--accent-text);
+  stroke-dasharray: 6 5;
+}
+
+.edge-preview .edge-arrow {
+  fill: var(--accent-text);
+}
+
+.edge-label rect {
+  fill: var(--panel);
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  cursor: text;
+}
+
+.edge-label text {
+  fill: var(--text-strong);
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.edge.is-selected .edge-label rect {
+  stroke: var(--accent);
+}
+
+.edge-label-empty rect {
+  stroke-dasharray: 3 3;
+  fill: color-mix(in srgb, var(--panel) 80%, transparent);
+}
+
+.edge-label-empty text {
+  fill: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Marquee */
+
+.marquee {
+  fill: color-mix(in srgb, var(--accent) 14%, transparent);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+  pointer-events: none;
+}
+
+/* Inline label editor */
+
+.label-editor {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.label-editor input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 2px solid var(--accent);
+  background: var(--panel);
+  color: var(--text-strong);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  outline: none;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.45),
+    0 0 0 4px var(--accent-soft);
+}
+
+.label-editor-edge input {
+  font-size: 12.5px;
+  padding: 6px 10px;
+}
