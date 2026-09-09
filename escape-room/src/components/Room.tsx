@@ -76,6 +76,7 @@ export function Room({ game, lampOn, onInspect, onMoveRug, onDropKeyOnDrawer, on
   }
   const onNoteLeave = () => {
     window.clearTimeout(noteTimer.current)
+    setNoteWarm(false)
   }
 
   const revealNote = game.stage >= 3 && noteWarm

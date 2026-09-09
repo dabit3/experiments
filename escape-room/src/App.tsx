@@ -76,8 +76,8 @@ export default function App() {
   const [now, setNow] = useState(() => Date.now())
   const [escapedShown, setEscapedShown] = useState(false)
 
-  const lampBlink = useMorseLamp(MORSE_WORD, game.started && game.stage === 2)
-  const lampOn = lampBlink || (game.started && game.stage >= 3)
+  const lamp = useMorseLamp(MORSE_WORD, game.started && game.stage === 2)
+  const lampOn = lamp.on || (game.started && game.stage >= 3)
 
   useEffect(() => {
     if (!game.started || game.finishedAt !== null) return
@@ -358,7 +358,7 @@ export default function App() {
       )}
       {modal === 'lamp' && (
         <Modal title="Desk lamp" onClose={() => setModal(null)}>
-          <LampView on={lampOn} stage={game.stage} />
+          <LampView on={lampOn} tape={lamp.tape} stage={game.stage} />
         </Modal>
       )}
       {modal === 'typewriter' && (

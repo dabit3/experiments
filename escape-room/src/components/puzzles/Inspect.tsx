@@ -1,4 +1,5 @@
 import { COLOR_HEX, MORSE, PAINTING, type Stage } from '../../game'
+import type { Pulse } from '../../hooks/useMorseLamp'
 
 export function PaintingView() {
   return (
@@ -37,7 +38,7 @@ export function PosterView() {
   )
 }
 
-export function LampView({ on, stage }: { on: boolean; stage: Stage }) {
+export function LampView({ on, tape, stage }: { on: boolean; tape: Pulse[]; stage: Stage }) {
   return (
     <div className="puzzle lamp-view">
       <div className={`lamp-big ${on ? 'on' : ''}`}>
@@ -45,10 +46,23 @@ export function LampView({ on, stage }: { on: boolean; stage: Stage }) {
       </div>
       {stage < 2 && <p className="puzzle-lead">A green-shaded desk lamp. The socket is empty — no bulb.</p>}
       {stage === 2 && (
-        <p className="puzzle-lead">
-          The new bulb flickers in a pattern that repeats: short blinks and long blinks with pauses between letters.
-          Watch a full cycle, then take the word to the typewriter.
-        </p>
+        <>
+          <p className="puzzle-lead">
+            The new bulb flickers in a pattern that repeats: short blinks and long blinks with pauses between letters.
+            Watch a full cycle, then take the word to the typewriter.
+          </p>
+          <div className="lamp-tape" aria-label="Recorded blink pattern" role="img">
+            {tape.length === 0 && <span className="lamp-tape-empty">watching…</span>}
+            {tape.map((pulse, i) => (
+              <span
+                key={i}
+                className={`lamp-tape-seg ${pulse.on ? 'lit' : ''}`}
+                style={{ flexBasis: `${pulse.units * 0.7}rem` }}
+              />
+            ))}
+          </div>
+          <p className="puzzle-note">The strip above records each phase as it happens: lit bars are blinks, dark gaps are pauses. A long lit bar is a dash; a short one is a dot.</p>
+        </>
       )}
       {stage > 2 && <p className="puzzle-lead">The lamp burns steadily now. Its message has been received.</p>}
     </div>

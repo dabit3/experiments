@@ -1,9 +1,22 @@
 import { useEffect, useState } from 'react'
-import { morseFrames } from '../game'
+import { MORSE_UNIT, morseFrames } from '../game'
 
-/** Blinks `word` in Morse on a loop while `active`; returns whether the lamp is currently lit. */
-export function useMorseLamp(word: string, active: boolean): boolean {
-  const [on, setOn] = useState(false)
+export interface Pulse {
+  on: boolean
+  units: number
+}
+
+export interface LampSignal {
+  on: boolean
+  /** The phases emitted so far (most recent last), so a full cycle can be read back like a paper tape. */
+  tape: Pulse[]
+}
+
+const TAPE_LENGTH = 40
+
+/** Blinks `word` in Morse on a loop while `active`. */
+export function useMorseLamp(word: string, active: boolean): LampSignal {
+  const [signal, setSignal] = useState<LampSignal>({ on: false, tape: [] })
 
   useEffect(() => {
     if (!active) return
@@ -12,16 +25,19 @@ export function useMorseLamp(word: string, active: boolean): boolean {
     let timer = 0
     const step = () => {
       const frame = frames[index]
-      setOn(frame.on)
+      setSignal((prev) => ({
+        on: frame.on,
+        tape: [...prev.tape, { on: frame.on, units: Math.round(frame.ms / MORSE_UNIT) }].slice(-TAPE_LENGTH),
+      }))
       index = (index + 1) % frames.length
       timer = window.setTimeout(step, frame.ms)
     }
     timer = window.setTimeout(step, 1200)
     return () => {
       window.clearTimeout(timer)
-      setOn(false)
+      setSignal({ on: false, tape: [] })
     }
   }, [word, active])
 
-  return active && on
+  return active ? signal : { on: false, tape: [] }
 }
