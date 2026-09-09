@@ -2,16 +2,9 @@ import 'package:nitro_core/nitro_core.dart';
 import 'package:test/test.dart';
 
 List<Racer> botField(int n) => [
-      for (var i = 0; i < n; i++)
-        Racer(
-          slot: i,
-          playerId: '',
-          name: 'Bot $i',
-          characterId: characters[i % characters.length].id,
-          kartId: karts[i % karts.length].id,
-          isBot: true,
-        ),
-    ];
+  for (var i = 0; i < n; i++)
+    Racer(slot: i, playerId: '', name: 'Bot $i', characterId: characters[i % characters.length].id, kartId: karts[i % karts.length].id, isBot: true),
+];
 
 RaceSim runRace(String trackId, int seed, {int laps = 3, GameMode mode = GameMode.race, int maxTicks = 30 * 60 * 6}) {
   final track = trackById(trackId);

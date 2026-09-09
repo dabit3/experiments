@@ -275,23 +275,12 @@ class Track {
     boundsMin = V2(minX, minY);
     boundsMax = V2(maxX, maxY);
 
-    boostPads = [
-      for (final b in def.boostPads)
-        PlacedBoostPad(pointAt(tOf(b.t), b.offset), sampleAt(tOf(b.t)).tangent.angle, b.length, b.width),
-    ];
+    boostPads = [for (final b in def.boostPads) PlacedBoostPad(pointAt(tOf(b.t), b.offset), sampleAt(tOf(b.t)).tangent.angle, b.length, b.width)];
     jumps = [
       for (final j in def.jumps)
-        PlacedJump(
-          pointAt(tOf(j.t), j.offset),
-          sampleAt(tOf(j.t)).tangent.angle,
-          j.length,
-          j.width == 0 ? sampleAt(tOf(j.t)).width : j.width,
-        ),
+        PlacedJump(pointAt(tOf(j.t), j.offset), sampleAt(tOf(j.t)).tangent.angle, j.length, j.width == 0 ? sampleAt(tOf(j.t)).width : j.width),
     ];
-    hazards = [
-      for (final h in def.hazards)
-        PlacedHazard(h.kind, pointAt(tOf(h.t), h.offset), sampleAt(tOf(h.t)).tangent.angle, h.range),
-    ];
+    hazards = [for (final h in def.hazards) PlacedHazard(h.kind, pointAt(tOf(h.t), h.offset), sampleAt(tOf(h.t)).tangent.angle, h.range)];
     var idx = 0;
     itemBoxes = [
       for (final row in def.itemBoxes)

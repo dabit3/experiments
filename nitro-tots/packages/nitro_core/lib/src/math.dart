@@ -32,12 +32,10 @@ class V2 {
 
   V2 lerp(V2 o, double t) => V2(x + (o.x - x) * t, y + (o.y - y) * t);
 
-  static V2 fromAngle(double a, [double len = 1]) =>
-      V2(math.cos(a) * len, math.sin(a) * len);
+  static V2 fromAngle(double a, [double len = 1]) => V2(math.cos(a) * len, math.sin(a) * len);
 
   Map<String, num> toJson() => {'x': _r(x), 'y': _r(y)};
-  static V2 fromJson(Map<String, dynamic> j) =>
-      V2((j['x'] as num).toDouble(), (j['y'] as num).toDouble());
+  static V2 fromJson(Map<String, dynamic> j) => V2((j['x'] as num).toDouble(), (j['y'] as num).toDouble());
 
   @override
   String toString() => 'V2(${x.toStringAsFixed(2)}, ${y.toStringAsFixed(2)})';
@@ -72,8 +70,7 @@ bool pointInPolygon(V2 p, List<V2> poly) {
   for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
     final a = poly[i];
     final b = poly[j];
-    if ((a.y > p.y) != (b.y > p.y) &&
-        p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x) {
+    if ((a.y > p.y) != (b.y > p.y) && p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x) {
       inside = !inside;
     }
   }
@@ -85,16 +82,8 @@ V2 catmullRom(V2 p0, V2 p1, V2 p2, V2 p3, double t) {
   final t2 = t * t;
   final t3 = t2 * t;
   return V2(
-    0.5 *
-        ((2 * p1.x) +
-            (-p0.x + p2.x) * t +
-            (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 +
-            (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3),
-    0.5 *
-        ((2 * p1.y) +
-            (-p0.y + p2.y) * t +
-            (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 +
-            (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3),
+    0.5 * ((2 * p1.x) + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3),
+    0.5 * ((2 * p1.y) + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3),
   );
 }
 

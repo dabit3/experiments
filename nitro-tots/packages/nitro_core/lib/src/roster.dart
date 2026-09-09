@@ -25,25 +25,25 @@ class Character {
 
   /// Stat deltas applied on top of the kart stats (each -1..1).
   double get speedBonus => switch (weight) {
-        WeightClass.light => -0.4,
-        WeightClass.medium => 0,
-        WeightClass.heavy => 0.5,
-      };
+    WeightClass.light => -0.4,
+    WeightClass.medium => 0,
+    WeightClass.heavy => 0.5,
+  };
   double get accelBonus => switch (weight) {
-        WeightClass.light => 0.6,
-        WeightClass.medium => 0.1,
-        WeightClass.heavy => -0.5,
-      };
+    WeightClass.light => 0.6,
+    WeightClass.medium => 0.1,
+    WeightClass.heavy => -0.5,
+  };
   double get handlingBonus => switch (weight) {
-        WeightClass.light => 0.5,
-        WeightClass.medium => 0.1,
-        WeightClass.heavy => -0.4,
-      };
+    WeightClass.light => 0.5,
+    WeightClass.medium => 0.1,
+    WeightClass.heavy => -0.4,
+  };
   double get massBonus => switch (weight) {
-        WeightClass.light => -0.5,
-        WeightClass.medium => 0,
-        WeightClass.heavy => 0.7,
-      };
+    WeightClass.light => -0.5,
+    WeightClass.medium => 0,
+    WeightClass.heavy => 0.7,
+  };
 }
 
 class Kart {
@@ -144,75 +144,25 @@ const characters = <Character>[
 ];
 
 const karts = <Kart>[
-  Kart(
-    id: 'jellybean',
-    name: 'Jellybean',
-    speed: 3,
-    accel: 4,
-    handling: 4,
-    weight: 2,
-    bodyColor: 0xFFFF5D8F,
-  ),
-  Kart(
-    id: 'tincan',
-    name: 'Tin Can',
-    speed: 2.5,
-    accel: 5,
-    handling: 4.5,
-    weight: 1.5,
-    bodyColor: 0xFFB0BEC5,
-  ),
-  Kart(
-    id: 'bubble',
-    name: 'Bubble Buggy',
-    speed: 3.5,
-    accel: 3.5,
-    handling: 3.5,
-    weight: 3,
-    bodyColor: 0xFF4CC9F0,
-  ),
-  Kart(
-    id: 'pinewood',
-    name: 'Pinewood Racer',
-    speed: 4,
-    accel: 3,
-    handling: 3,
-    weight: 3.5,
-    bodyColor: 0xFFC97B4B,
-  ),
-  Kart(
-    id: 'rocketscoot',
-    name: 'Rocket Scoot',
-    speed: 4.5,
-    accel: 2.5,
-    handling: 2.5,
-    weight: 4,
-    bodyColor: 0xFFF72585,
-  ),
-  Kart(
-    id: 'bigwheel',
-    name: 'Big Wheel',
-    speed: 5,
-    accel: 2,
-    handling: 2,
-    weight: 5,
-    bodyColor: 0xFF3D405B,
-  ),
+  Kart(id: 'jellybean', name: 'Jellybean', speed: 3, accel: 4, handling: 4, weight: 2, bodyColor: 0xFFFF5D8F),
+  Kart(id: 'tincan', name: 'Tin Can', speed: 2.5, accel: 5, handling: 4.5, weight: 1.5, bodyColor: 0xFFB0BEC5),
+  Kart(id: 'bubble', name: 'Bubble Buggy', speed: 3.5, accel: 3.5, handling: 3.5, weight: 3, bodyColor: 0xFF4CC9F0),
+  Kart(id: 'pinewood', name: 'Pinewood Racer', speed: 4, accel: 3, handling: 3, weight: 3.5, bodyColor: 0xFFC97B4B),
+  Kart(id: 'rocketscoot', name: 'Rocket Scoot', speed: 4.5, accel: 2.5, handling: 2.5, weight: 4, bodyColor: 0xFFF72585),
+  Kart(id: 'bigwheel', name: 'Big Wheel', speed: 5, accel: 2, handling: 2, weight: 5, bodyColor: 0xFF3D405B),
 ];
 
-Character characterById(String id) =>
-    characters.firstWhere((c) => c.id == id, orElse: () => characters.first);
+Character characterById(String id) => characters.firstWhere((c) => c.id == id, orElse: () => characters.first);
 
-Kart kartById(String id) =>
-    karts.firstWhere((k) => k.id == id, orElse: () => karts.first);
+Kart kartById(String id) => karts.firstWhere((k) => k.id == id, orElse: () => karts.first);
 
 /// Combined stats normalised for the physics step.
 class RacerStats {
   RacerStats(Character c, Kart k)
-      : speed = ((k.speed + c.speedBonus).clamp(1, 5.5)) / 5,
-        accel = ((k.accel + c.accelBonus).clamp(1, 5.5)) / 5,
-        handling = ((k.handling + c.handlingBonus).clamp(1, 5.5)) / 5,
-        mass = ((k.weight + c.massBonus).clamp(1, 5.5)) / 5;
+    : speed = ((k.speed + c.speedBonus).clamp(1, 5.5)) / 5,
+      accel = ((k.accel + c.accelBonus).clamp(1, 5.5)) / 5,
+      handling = ((k.handling + c.handlingBonus).clamp(1, 5.5)) / 5,
+      mass = ((k.weight + c.massBonus).clamp(1, 5.5)) / 5;
 
   final double speed;
   final double accel;

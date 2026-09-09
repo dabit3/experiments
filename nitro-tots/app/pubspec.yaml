@@ -1,5 +1,5 @@
 name: nitro_tots
-description: "A new Flutter project."
+description: "Nitro Tots - an original cross-platform arcade kart racer."
 publish_to: 'none'
 version: 0.1.0+1
 
@@ -24,3 +24,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/audio/
+  fonts:
+    - family: Fredoka
+      fonts:
+        - asset: assets/fonts/Fredoka.ttf
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito.ttf
+

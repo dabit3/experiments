@@ -21,16 +21,13 @@ const hitImmunityTicks = 90;
 
 enum RacePhase { countdown, racing, finished }
 
+/// Mini-turbo tier for an accumulated drift charge (ticks).
+int driftTierFor(int charge) => charge >= 110 ? 3 : (charge >= 60 ? 2 : (charge >= 24 ? 1 : 0));
+
 enum GameMode { race, timeTrial, battle }
 
 class KartInput {
-  const KartInput({
-    this.throttle = 0,
-    this.steer = 0,
-    this.drift = false,
-    this.item = false,
-    this.lookBack = false,
-  });
+  const KartInput({this.throttle = 0, this.steer = 0, this.drift = false, this.item = false, this.lookBack = false});
 
   static const idle = KartInput();
 
@@ -47,29 +44,23 @@ class KartInput {
   /// Throw dropped items forward instead of backward (or fire rockets back).
   final bool lookBack;
 
-  Map<String, dynamic> toJson() => {
-        't': round2(throttle),
-        's': round2(steer),
-        if (drift) 'd': 1,
-        if (item) 'i': 1,
-        if (lookBack) 'b': 1,
-      };
+  Map<String, dynamic> toJson() => {'t': round2(throttle), 's': round2(steer), if (drift) 'd': 1, if (item) 'i': 1, if (lookBack) 'b': 1};
 
   static KartInput fromJson(Map<String, dynamic> j) => KartInput(
-        throttle: (j['t'] as num? ?? 0).toDouble(),
-        steer: (j['s'] as num? ?? 0).toDouble(),
-        drift: j['d'] == 1,
-        item: j['i'] == 1,
-        lookBack: j['b'] == 1,
-      );
+    throttle: (j['t'] as num? ?? 0).toDouble(),
+    steer: (j['s'] as num? ?? 0).toDouble(),
+    drift: j['d'] == 1,
+    item: j['i'] == 1,
+    lookBack: j['b'] == 1,
+  );
 
   KartInput copyWith({double? throttle, double? steer, bool? drift, bool? item, bool? lookBack}) => KartInput(
-        throttle: throttle ?? this.throttle,
-        steer: steer ?? this.steer,
-        drift: drift ?? this.drift,
-        item: item ?? this.item,
-        lookBack: lookBack ?? this.lookBack,
-      );
+    throttle: throttle ?? this.throttle,
+    steer: steer ?? this.steer,
+    drift: drift ?? this.drift,
+    item: item ?? this.item,
+    lookBack: lookBack ?? this.lookBack,
+  );
 }
 
 /// Full mutable state for one kart.
@@ -136,6 +127,9 @@ class Racer {
   int bumpCooldown = 0;
 
   bool get isDrifting => driftDir != 0;
+
+  /// Mini-turbo tier the current drift would release (0 = none yet).
+  int get driftTierPreview => isDrifting ? driftTierFor(driftCharge) : 0;
   bool get isAirborne => airTicks > 0;
   bool get isSpinning => spinTicks > 0;
   bool get hasShield => shieldTicks > 0;
@@ -143,8 +137,13 @@ class Racer {
   bool get isRolling => rouletteTicks > 0;
   bool get controllable => !finished && spinTicks == 0 && stallTicks == 0 && cometTicks == 0 && respawnTicks == 0;
 
-  /// Lap fraction plus completed laps, used for ordering.
-  double progress(Track track) => lap + track.progressOf(nearest);
+  /// Laps plus fractional distance around the track, used for ordering. A
+  /// racer whose sector is far ahead of its last checkpoint is behind the
+  /// start line (grid or wrong way), so it counts against the previous lap.
+  double progress(Track track) {
+    final behindLine = track.checkpointOf(nearest) > checkpoint + 2;
+    return (behindLine ? lap - 1 : lap) + track.progressOf(nearest);
+  }
 
   double get maxSpeed => 74 + 38 * stats.speed;
 }
@@ -199,20 +198,20 @@ class SimEvent {
   final ItemKind? item;
 
   Map<String, dynamic> toJson() => {
-        'e': type,
-        if (slot >= 0) 'r': slot,
-        if (other >= 0) 'o': other,
-        if (value != 0) 'v': value,
-        if (item != null) 'k': item!.wire,
-      };
+    'e': type,
+    if (slot >= 0) 'r': slot,
+    if (other >= 0) 'o': other,
+    if (value != 0) 'v': value,
+    if (item != null) 'k': item!.wire,
+  };
 
   static SimEvent fromJson(Map<String, dynamic> j) => SimEvent(
-        j['e'] as String,
-        slot: (j['r'] as int?) ?? -1,
-        other: (j['o'] as int?) ?? -1,
-        value: (j['v'] as int?) ?? 0,
-        item: ItemKindInfo.fromWire(j['k'] as String?),
-      );
+    j['e'] as String,
+    slot: (j['r'] as int?) ?? -1,
+    other: (j['o'] as int?) ?? -1,
+    value: (j['v'] as int?) ?? 0,
+    item: ItemKindInfo.fromWire(j['k'] as String?),
+  );
 }
 
 class RaceResult {
@@ -243,32 +242,32 @@ class RaceResult {
   final int score;
 
   Map<String, dynamic> toJson() => {
-        'slot': slot,
-        'name': name,
-        'character': characterId,
-        'kart': kartId,
-        'bot': isBot,
-        'platform': platform,
-        'place': place,
-        'finishTick': finishTick,
-        'lapTicks': lapTicks,
-        'points': points,
-        'score': score,
-      };
+    'slot': slot,
+    'name': name,
+    'character': characterId,
+    'kart': kartId,
+    'bot': isBot,
+    'platform': platform,
+    'place': place,
+    'finishTick': finishTick,
+    'lapTicks': lapTicks,
+    'points': points,
+    'score': score,
+  };
 
   static RaceResult fromJson(Map<String, dynamic> j) => RaceResult(
-        slot: j['slot'] as int,
-        name: j['name'] as String,
-        characterId: j['character'] as String,
-        kartId: j['kart'] as String,
-        isBot: j['bot'] as bool,
-        platform: (j['platform'] as String?) ?? '',
-        place: j['place'] as int,
-        finishTick: j['finishTick'] as int,
-        lapTicks: (j['lapTicks'] as List).cast<int>(),
-        points: j['points'] as int,
-        score: (j['score'] as int?) ?? 0,
-      );
+    slot: j['slot'] as int,
+    name: j['name'] as String,
+    characterId: j['character'] as String,
+    kartId: j['kart'] as String,
+    isBot: j['bot'] as bool,
+    platform: (j['platform'] as String?) ?? '',
+    place: j['place'] as int,
+    finishTick: j['finishTick'] as int,
+    lapTicks: (j['lapTicks'] as List).cast<int>(),
+    points: j['points'] as int,
+    score: (j['score'] as int?) ?? 0,
+  );
 }
 
 /// Points awarded by finishing place (index 0 = first).
@@ -279,19 +278,13 @@ int pointsForPlace(int place) => place >= 1 && place <= pointsTable.length ? poi
 /// Deterministic race simulation shared by the server (authority), the
 /// offline modes and client-side prediction.
 class RaceSim {
-  RaceSim({
-    required this.track,
-    required this.racers,
-    required int seed,
-    this.laps = 3,
-    this.mode = GameMode.race,
-    this.battleSeconds = 120,
-  }) : rng = Rng(seed) {
+  RaceSim({required this.track, required this.racers, required int seed, this.laps = 3, this.mode = GameMode.race, this.battleSeconds = 120})
+    : rng = Rng(seed) {
     for (final r in racers) {
       final gridIndex = r.slot % track.startGrid.length;
       r.pos = track.startGrid[gridIndex];
-      r.heading = track.startHeading;
       r.nearest = track.nearestIndex(r.pos);
+      r.heading = track.samples[r.nearest].tangent.angle;
       if (track.isArena) {
         // Spread battle racers around the ring.
         final s = track.sampleAt(r.slot / racers.length);
@@ -364,9 +357,7 @@ class RaceSim {
     }
 
     for (final r in racers) {
-      final input = r.isBot || r.playerId.isEmpty
-          ? botInput(this, r)
-          : (inputs[r.slot] ?? KartInput.idle);
+      final input = r.isBot || r.playerId.isEmpty ? botInput(this, r) : (inputs[r.slot] ?? KartInput.idle);
       _stepRacer(r, input);
     }
     _resolveKartCollisions();
@@ -668,7 +659,7 @@ class RaceSim {
     _updateLapProgress(r);
   }
 
-  int _tierFor(int charge) => charge >= 110 ? 3 : (charge >= 60 ? 2 : (charge >= 24 ? 1 : 0));
+  int _tierFor(int charge) => driftTierFor(charge);
 
   void _releaseDrift(Racer r) {
     final tier = _tierFor(r.driftCharge);
@@ -697,14 +688,21 @@ class RaceSim {
     final lat = track.lateral(r.pos, r.nearest);
     final limit = s.width / 2 + (track.isArena ? 0 : track.def.grassMargin) - 0.5;
     final side = lat > 0 ? 1.0 : -1.0;
-    r.pos = s.pos + s.normal * (limit * side);
-    // Reflect heading a little toward the track direction.
-    final tangentAngle = s.tangent.angle;
-    r.heading = turnToward(r.heading, tangentAngle, 0.6);
-    if (r.speed > 20) {
+    r.pos = r.pos + s.normal * ((limit - 1.5) * side - lat);
+    // How directly the kart is driving into the wall: 0 = sliding along it,
+    // 1 = head on. Glancing contact only straightens the heading so that
+    // steering away from the wall on the next tick is not fought.
+    final outward = s.normal * side;
+    final into = V2.fromAngle(r.heading, 1).dot(outward).clamp(0.0, 1.0);
+    if (into > 0) {
+      final dir = V2.fromAngle(r.heading, 1);
+      final along = dir.dot(s.tangent) >= 0 ? s.tangent : s.tangent * -1;
+      r.heading = turnToward(r.heading, along.angle, math.asin(into) + 0.02);
+    }
+    if (into > 0.3 && r.speed > 20) {
       events.add(SimEvent('wall', slot: r.slot));
     }
-    r.speed *= 0.45;
+    r.speed *= 1 - 0.6 * into;
     r.driftDir = 0;
     r.driftCharge = 0;
   }
@@ -723,13 +721,20 @@ class RaceSim {
     r.speed *= 0.4;
     r.lastHitTick = tick;
     if (r.rouletteTicks > 0) r.rouletteTicks = 0;
-    events.add(SimEvent('hit', slot: r.slot, other: bySlot, item: cause == 'rocket'
-        ? ItemKind.rocket
-        : cause == 'orb'
+    events.add(
+      SimEvent(
+        'hit',
+        slot: r.slot,
+        other: bySlot,
+        item: cause == 'rocket'
+            ? ItemKind.rocket
+            : cause == 'orb'
             ? ItemKind.orb
             : cause == 'zap'
-                ? ItemKind.zap
-                : ItemKind.slick));
+            ? ItemKind.zap
+            : ItemKind.slick,
+      ),
+    );
     if (isBattle && r.balloons > 0) {
       r.balloons--;
       final attacker = bySlot >= 0 ? racerBySlot(bySlot) : null;
@@ -809,26 +814,24 @@ class RaceSim {
       case ItemKind.rocket:
         final target = lookBack ? _racerBehind(r) : _racerAhead(r);
         final dir = lookBack ? r.heading + math.pi : r.heading;
-        projectiles.add(Projectile(
-          id: _nextId++,
-          kind: kind,
-          ownerSlot: r.slot,
-          pos: r.pos + V2.fromAngle(dir, 8),
-          heading: dir,
-          speed: r.maxSpeed * 1.55,
-          targetSlot: target?.slot,
-        )..nearest = r.nearest);
+        projectiles.add(
+          Projectile(
+            id: _nextId++,
+            kind: kind,
+            ownerSlot: r.slot,
+            pos: r.pos + V2.fromAngle(dir, 8),
+            heading: dir,
+            speed: r.maxSpeed * 1.55,
+            targetSlot: target?.slot,
+          )..nearest = r.nearest,
+        );
         r.item = null;
       case ItemKind.orb:
         final dir = lookBack ? r.heading + math.pi : r.heading;
-        projectiles.add(Projectile(
-          id: _nextId++,
-          kind: kind,
-          ownerSlot: r.slot,
-          pos: r.pos + V2.fromAngle(dir, 8),
-          heading: dir,
-          speed: r.maxSpeed * 1.4,
-        )..nearest = r.nearest);
+        projectiles.add(
+          Projectile(id: _nextId++, kind: kind, ownerSlot: r.slot, pos: r.pos + V2.fromAngle(dir, 8), heading: dir, speed: r.maxSpeed * 1.4)
+            ..nearest = r.nearest,
+        );
         r.item = null;
       case ItemKind.slick:
         final dir = lookBack ? r.heading : r.heading + math.pi;

@@ -57,8 +57,8 @@ class Session {
 
 class NitroServer {
   NitroServer(this.config)
-      : _rng = Rng(config.seed ?? DateTime.now().millisecondsSinceEpoch & 0x7fffffff),
-        _seed = config.seed ?? DateTime.now().millisecondsSinceEpoch & 0x7fffffff;
+    : _rng = Rng(config.seed ?? DateTime.now().millisecondsSinceEpoch & 0x7fffffff),
+      _seed = config.seed ?? DateTime.now().millisecondsSinceEpoch & 0x7fffffff;
 
   final ServerConfig config;
   final Rng _rng;
@@ -86,7 +86,12 @@ class NitroServer {
     final router = Router()
       ..get('/', (Request r) => _json({'name': 'Nitro Tots server', 'protocol': protocolVersion, 'rooms': rooms.length}))
       ..get('/health', (Request r) => _json({'ok': true, 'uptimeMs': DateTime.now().difference(_startedAt).inMilliseconds}))
-      ..get('/rooms', (Request r) => _json({'rooms': [for (final room in rooms.values) room.inspectJson()]}))
+      ..get(
+        '/rooms',
+        (Request r) => _json({
+          'rooms': [for (final room in rooms.values) room.inspectJson()],
+        }),
+      )
       ..get('/rooms/<code>', (Request r, String code) {
         final room = rooms[code.toUpperCase()];
         if (room == null) return Response.notFound(jsonEncode({'error': 'no_such_room'}), headers: _jsonHeaders);
@@ -112,7 +117,8 @@ class NitroServer {
 
   Response _json(Object body) => Response.ok(jsonEncode(body), headers: _jsonHeaders);
 
-  Middleware _cors() => (inner) => (req) async {
+  Middleware _cors() =>
+      (inner) => (req) async {
         if (req.method == 'OPTIONS') {
           return Response.ok('', headers: _corsHeaders);
         }
@@ -256,15 +262,15 @@ class NitroServer {
   }
 
   String _describe(String code) => switch (code) {
-        'not_host' => 'Only the host can do that.',
-        'already_racing' => 'A race is already running.',
-        'room_full' => 'That room is full.',
-        'match_in_progress' => 'That room is mid-match. Try again after the race.',
-        'no_such_room' => 'No room with that code.',
-        'no_room' => 'You are not in a room.',
-        'not_in_results' => 'No results to skip.',
-        _ => code,
-      };
+    'not_host' => 'Only the host can do that.',
+    'already_racing' => 'A race is already running.',
+    'room_full' => 'That room is full.',
+    'match_in_progress' => 'That room is mid-match. Try again after the race.',
+    'no_such_room' => 'No room with that code.',
+    'no_room' => 'You are not in a room.',
+    'not_in_results' => 'No results to skip.',
+    _ => code,
+  };
 
   String _cleanName(String raw) {
     final t = raw.trim().replaceAll(RegExp(r'\s+'), ' ');

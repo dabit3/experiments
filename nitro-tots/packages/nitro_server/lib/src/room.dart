@@ -36,16 +36,16 @@ class Player {
   void Function(Map<String, dynamic>) send;
 
   PlayerInfo info({required bool isHost, int slot = -1}) => PlayerInfo(
-        id: id,
-        name: name,
-        characterId: characterId,
-        kartId: kartId,
-        platform: platform,
-        ready: ready,
-        connected: connected,
-        isHost: isHost,
-        slot: slot,
-      );
+    id: id,
+    name: name,
+    characterId: characterId,
+    kartId: kartId,
+    platform: platform,
+    ready: ready,
+    connected: connected,
+    isHost: isHost,
+    slot: slot,
+  );
 }
 
 /// Result of a completed race, retained for Grand Prix standings.
@@ -57,14 +57,7 @@ class RoomRace {
 
 /// One lobby + match. Owns the authoritative [RaceSim] while racing.
 class Room {
-  Room({
-    required this.code,
-    required this.seed,
-    required this.settings,
-    required this.now,
-    this.onEmpty,
-    this.resultsDelayMs = 9000,
-  });
+  Room({required this.code, required this.seed, required this.settings, required this.now, this.onEmpty, this.resultsDelayMs = 9000});
 
   final String code;
   final int seed;
@@ -95,7 +88,7 @@ class Room {
 
   /// Track ids for this match (cup order or the single selected track).
   List<String> get trackList {
-    if (settings.mode == GameMode.battle) return [settings.trackId.isEmpty ? 'bumper' : settings.trackId];
+    if (settings.mode == GameMode.battle) return [settings.trackId.isEmpty ? 'bowl' : settings.trackId];
     if (settings.grandPrix) {
       final cup = cups.where((c) => c.id == settings.cupId).firstOrNull ?? cups.first;
       return cup.trackIds;
@@ -181,23 +174,23 @@ class Room {
   }
 
   void _maybeAutoStart() {
-    if (status != RoomStatus.lobby) return;
+    if (status != RoomStatus.lobby && status != RoomStatus.matchOver) return;
     if (players.length >= 2 && players.every((p) => p.ready && p.connected)) {
       startMatch(hostId!);
     }
   }
 
   Map<String, dynamic> roomStateJson() => {
-        'type': Msg.roomState,
-        'code': code,
-        'hostId': hostId,
-        'status': status.name,
-        'settings': settings.toJson(),
-        'players': [for (final p in players) p.info(isHost: p.id == hostId, slot: playerToSlot[p.id] ?? -1).toJson()],
-        'raceIndex': raceIndex,
-        'totalRaces': totalRaces,
-        'standings': [for (final s in standings()) s.toJson()],
-      };
+    'type': Msg.roomState,
+    'code': code,
+    'hostId': hostId,
+    'status': status.name,
+    'settings': settings.toJson(),
+    'players': [for (final p in players) p.info(isHost: p.id == hostId, slot: playerToSlot[p.id] ?? -1).toJson()],
+    'raceIndex': raceIndex,
+    'totalRaces': totalRaces,
+    'standings': [for (final s in standings()) s.toJson()],
+  };
 
   void broadcastRoomState() => broadcast(roomStateJson());
 
@@ -239,15 +232,7 @@ class Room {
       p.ready = false;
       p.lastInputTick = -1;
       p.latestInput = KartInput.idle;
-      racers.add(Racer(
-        slot: slot,
-        playerId: p.id,
-        name: p.name,
-        characterId: p.characterId,
-        kartId: p.kartId,
-        isBot: !p.connected,
-        platform: p.platform,
-      ));
+      racers.add(Racer(slot: slot, playerId: p.id, name: p.name, characterId: p.characterId, kartId: p.kartId, isBot: !p.connected, platform: p.platform));
       slotToPlayer[slot] = p.id;
       playerToSlot[p.id] = slot;
       slot++;
@@ -259,15 +244,7 @@ class Room {
     while (slot < fieldSize) {
       final c = pool.isEmpty ? characters[rng.nextInt(characters.length)] : pool.removeAt(rng.nextInt(pool.length));
       final k = karts[rng.nextInt(karts.length)];
-      racers.add(Racer(
-        slot: slot,
-        playerId: '',
-        name: botNames[botIdx % botNames.length],
-        characterId: c.id,
-        kartId: k.id,
-        isBot: true,
-        platform: 'bot',
-      ));
+      racers.add(Racer(slot: slot, playerId: '', name: botNames[botIdx % botNames.length], characterId: c.id, kartId: k.id, isBot: true, platform: 'bot'));
       bots[slot] = BotDriver(slot: slot, seed: raceSeed, skill: (settings.botSkill - 0.15 + 0.3 * rng.nextDouble()).clamp(0.2, 1.0));
       botIdx++;
       slot++;
@@ -277,14 +254,7 @@ class Room {
       bots.putIfAbsent(r.slot, () => BotDriver(slot: r.slot, seed: raceSeed, skill: settings.botSkill));
     }
 
-    sim = RaceSim(
-      track: track,
-      racers: racers,
-      seed: raceSeed,
-      laps: settings.laps,
-      mode: settings.mode,
-      battleSeconds: settings.battleSeconds,
-    );
+    sim = RaceSim(track: track, racers: racers, seed: raceSeed, laps: settings.laps, mode: settings.mode, battleSeconds: settings.battleSeconds);
     status = RoomStatus.racing;
     _snapshotCounter = 0;
     _pendingEvents.clear();
@@ -292,29 +262,21 @@ class Room {
   }
 
   Map<String, dynamic> matchStartJson() => {
-        'type': Msg.matchStart,
-        'code': code,
-        'raceIndex': raceIndex,
-        'totalRaces': totalRaces,
-        'trackId': trackList[raceIndex],
-        'seed': _raceSeed,
-        'laps': settings.laps,
-        'mode': settings.mode.name,
-        'battleSeconds': settings.battleSeconds,
-        'tick': sim!.tick,
-        'racers': [
-          for (final r in sim!.racers)
-            {
-              'slot': r.slot,
-              'playerId': r.playerId,
-              'name': r.name,
-              'character': r.characterId,
-              'kart': r.kartId,
-              'bot': r.isBot,
-              'platform': r.platform,
-            },
-        ],
-      };
+    'type': Msg.matchStart,
+    'code': code,
+    'raceIndex': raceIndex,
+    'totalRaces': totalRaces,
+    'trackId': trackList[raceIndex],
+    'seed': _raceSeed,
+    'laps': settings.laps,
+    'mode': settings.mode.name,
+    'battleSeconds': settings.battleSeconds,
+    'tick': sim!.tick,
+    'racers': [
+      for (final r in sim!.racers)
+        {'slot': r.slot, 'playerId': r.playerId, 'name': r.name, 'character': r.characterId, 'kart': r.kartId, 'bot': r.isBot, 'platform': r.platform},
+    ],
+  };
 
   void handleInput(String playerId, Map<String, dynamic> j) {
     final p = playerById(playerId);
@@ -351,10 +313,13 @@ class Room {
         s.events
           ..clear()
           ..addAll(_pendingEvents);
-        final snap = snapshotToWire(s, acks: {
-          for (final p in players)
-            if (playerToSlot[p.id] != null) playerToSlot[p.id]!: p.lastInputTick,
-        });
+        final snap = snapshotToWire(
+          s,
+          acks: {
+            for (final p in players)
+              if (playerToSlot[p.id] != null) playerToSlot[p.id]!: p.lastInputTick,
+          },
+        );
         s.events
           ..clear()
           ..addAll(saved);
@@ -407,12 +372,14 @@ class Room {
         'standings': [for (final st in standings()) st.toJson()],
         'races': [
           for (final r in races)
-            {'trackId': r.trackId, 'results': [for (final x in r.results) x.toJson()]},
+            {
+              'trackId': r.trackId,
+              'results': [for (final x in r.results) x.toJson()],
+            },
         ],
         'hash': resultHash(),
       });
       sim = null;
-      status = RoomStatus.lobby;
       raceIndex = 0;
       for (final p in players) {
         p.ready = false;
@@ -448,27 +415,26 @@ class Room {
   }
 
   Map<String, dynamic> inspectJson() => {
-        'code': code,
-        'status': status.name,
-        'seed': seed,
-        'settings': settings.toJson(),
-        'players': [
-          for (final p in players)
-            {
-              ...p.info(isHost: p.id == hostId, slot: playerToSlot[p.id] ?? -1).toJson(),
-              'lastInputTick': p.lastInputTick,
-              'testReport': p.testReport,
-            },
-        ],
-        'raceIndex': raceIndex,
-        'totalRaces': totalRaces,
-        'tick': sim?.tick,
-        'phase': sim?.phase.name,
-        'races': [
-          for (final r in races)
-            {'trackId': r.trackId, 'results': [for (final x in r.results) x.toJson()]},
-        ],
-        'standings': [for (final s in standings()) s.toJson()],
-        'hash': races.isEmpty ? null : resultHash(),
-      };
+    'code': code,
+    'status': status.name,
+    'seed': seed,
+    'settings': settings.toJson(),
+    'players': [
+      for (final p in players)
+        {...p.info(isHost: p.id == hostId, slot: playerToSlot[p.id] ?? -1).toJson(), 'lastInputTick': p.lastInputTick, 'testReport': p.testReport},
+    ],
+    'raceIndex': raceIndex,
+    'totalRaces': totalRaces,
+    'tick': sim?.tick,
+    'phase': sim?.phase.name,
+    'races': [
+      for (final r in races)
+        {
+          'trackId': r.trackId,
+          'results': [for (final x in r.results) x.toJson()],
+        },
+    ],
+    'standings': [for (final s in standings()) s.toJson()],
+    'hash': races.isEmpty ? null : resultHash(),
+  };
 }

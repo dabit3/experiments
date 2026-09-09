@@ -28,26 +28,26 @@ enum ItemKind {
 
 extension ItemKindInfo on ItemKind {
   String get label => switch (this) {
-        ItemKind.turbo => 'Turbo Can',
-        ItemKind.tripleTurbo => 'Triple Turbo',
-        ItemKind.rocket => 'Homing Rocket',
-        ItemKind.orb => 'Bouncy Orb',
-        ItemKind.slick => 'Syrup Slick',
-        ItemKind.shield => 'Bubble Shield',
-        ItemKind.zap => 'Thunder Zap',
-        ItemKind.comet => 'Comet Ride',
-      };
+    ItemKind.turbo => 'Turbo Can',
+    ItemKind.tripleTurbo => 'Triple Turbo',
+    ItemKind.rocket => 'Homing Rocket',
+    ItemKind.orb => 'Bouncy Orb',
+    ItemKind.slick => 'Syrup Slick',
+    ItemKind.shield => 'Bubble Shield',
+    ItemKind.zap => 'Thunder Zap',
+    ItemKind.comet => 'Comet Ride',
+  };
 
   String get description => switch (this) {
-        ItemKind.turbo => 'A quick burst of speed.',
-        ItemKind.tripleTurbo => 'Three bursts of speed. Use them wisely.',
-        ItemKind.rocket => 'Chases the racer ahead and spins them out.',
-        ItemKind.orb => 'Flies straight and bounces off walls.',
-        ItemKind.slick => 'Drop it behind you; anyone who hits it spins.',
-        ItemKind.shield => 'Blocks one incoming hit for eight seconds.',
-        ItemKind.zap => 'Everyone else spins and shrinks for a moment.',
-        ItemKind.comet => 'Ride a comet down the racing line at full tilt.',
-      };
+    ItemKind.turbo => 'A quick burst of speed.',
+    ItemKind.tripleTurbo => 'Three bursts of speed. Use them wisely.',
+    ItemKind.rocket => 'Chases the racer ahead and spins them out.',
+    ItemKind.orb => 'Flies straight and bounces off walls.',
+    ItemKind.slick => 'Drop it behind you; anyone who hits it spins.',
+    ItemKind.shield => 'Blocks one incoming hit for eight seconds.',
+    ItemKind.zap => 'Everyone else spins and shrinks for a moment.',
+    ItemKind.comet => 'Ride a comet down the racing line at full tilt.',
+  };
 
   String get wire => name;
 

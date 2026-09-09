@@ -60,28 +60,28 @@ class RoomSettings {
   final int battleSeconds;
 
   Map<String, dynamic> toJson() => {
-        'mode': mode.name,
-        'cupId': cupId,
-        'trackId': trackId,
-        'laps': laps,
-        'maxPlayers': maxPlayers,
-        'fillBots': fillBots,
-        'botSkill': botSkill,
-        'grandPrix': grandPrix,
-        'battleSeconds': battleSeconds,
-      };
+    'mode': mode.name,
+    'cupId': cupId,
+    'trackId': trackId,
+    'laps': laps,
+    'maxPlayers': maxPlayers,
+    'fillBots': fillBots,
+    'botSkill': botSkill,
+    'grandPrix': grandPrix,
+    'battleSeconds': battleSeconds,
+  };
 
   static RoomSettings fromJson(Map<String, dynamic> j) => RoomSettings(
-        mode: GameMode.values.firstWhere((m) => m.name == j['mode'], orElse: () => GameMode.race),
-        cupId: (j['cupId'] as String?) ?? 'sugar',
-        trackId: (j['trackId'] as String?) ?? 'sprinkle',
-        laps: ((j['laps'] as num?) ?? 3).toInt().clamp(1, 5),
-        maxPlayers: ((j['maxPlayers'] as num?) ?? 8).toInt().clamp(2, 8),
-        fillBots: (j['fillBots'] as bool?) ?? true,
-        botSkill: ((j['botSkill'] as num?) ?? 0.7).toDouble().clamp(0.0, 1.0),
-        grandPrix: (j['grandPrix'] as bool?) ?? true,
-        battleSeconds: ((j['battleSeconds'] as num?) ?? 120).toInt().clamp(30, 300),
-      );
+    mode: GameMode.values.firstWhere((m) => m.name == j['mode'], orElse: () => GameMode.race),
+    cupId: (j['cupId'] as String?) ?? 'sugar',
+    trackId: (j['trackId'] as String?) ?? 'sprinkle',
+    laps: ((j['laps'] as num?) ?? 3).toInt().clamp(1, 5),
+    maxPlayers: ((j['maxPlayers'] as num?) ?? 8).toInt().clamp(2, 8),
+    fillBots: (j['fillBots'] as bool?) ?? true,
+    botSkill: ((j['botSkill'] as num?) ?? 0.7).toDouble().clamp(0.0, 1.0),
+    grandPrix: (j['grandPrix'] as bool?) ?? true,
+    battleSeconds: ((j['battleSeconds'] as num?) ?? 120).toInt().clamp(30, 300),
+  );
 
   RoomSettings copyWith({
     GameMode? mode,
@@ -93,18 +93,17 @@ class RoomSettings {
     double? botSkill,
     bool? grandPrix,
     int? battleSeconds,
-  }) =>
-      RoomSettings(
-        mode: mode ?? this.mode,
-        cupId: cupId ?? this.cupId,
-        trackId: trackId ?? this.trackId,
-        laps: laps ?? this.laps,
-        maxPlayers: maxPlayers ?? this.maxPlayers,
-        fillBots: fillBots ?? this.fillBots,
-        botSkill: botSkill ?? this.botSkill,
-        grandPrix: grandPrix ?? this.grandPrix,
-        battleSeconds: battleSeconds ?? this.battleSeconds,
-      );
+  }) => RoomSettings(
+    mode: mode ?? this.mode,
+    cupId: cupId ?? this.cupId,
+    trackId: trackId ?? this.trackId,
+    laps: laps ?? this.laps,
+    maxPlayers: maxPlayers ?? this.maxPlayers,
+    fillBots: fillBots ?? this.fillBots,
+    botSkill: botSkill ?? this.botSkill,
+    grandPrix: grandPrix ?? this.grandPrix,
+    battleSeconds: battleSeconds ?? this.battleSeconds,
+  );
 }
 
 class PlayerInfo {
@@ -133,70 +132,70 @@ class PlayerInfo {
   final bool isBot;
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'character': characterId,
-        'kart': kartId,
-        'platform': platform,
-        'ready': ready,
-        'connected': connected,
-        'host': isHost,
-        'slot': slot,
-        'bot': isBot,
-      };
+    'id': id,
+    'name': name,
+    'character': characterId,
+    'kart': kartId,
+    'platform': platform,
+    'ready': ready,
+    'connected': connected,
+    'host': isHost,
+    'slot': slot,
+    'bot': isBot,
+  };
 
   static PlayerInfo fromJson(Map<String, dynamic> j) => PlayerInfo(
-        id: j['id'] as String,
-        name: j['name'] as String,
-        characterId: j['character'] as String,
-        kartId: j['kart'] as String,
-        platform: (j['platform'] as String?) ?? '',
-        ready: (j['ready'] as bool?) ?? false,
-        connected: (j['connected'] as bool?) ?? true,
-        isHost: (j['host'] as bool?) ?? false,
-        slot: (j['slot'] as int?) ?? -1,
-        isBot: (j['bot'] as bool?) ?? false,
-      );
+    id: j['id'] as String,
+    name: j['name'] as String,
+    characterId: j['character'] as String,
+    kartId: j['kart'] as String,
+    platform: (j['platform'] as String?) ?? '',
+    ready: (j['ready'] as bool?) ?? false,
+    connected: (j['connected'] as bool?) ?? true,
+    isHost: (j['host'] as bool?) ?? false,
+    slot: (j['slot'] as int?) ?? -1,
+    isBot: (j['bot'] as bool?) ?? false,
+  );
 }
 
 /// Compact per-racer snapshot record.
 Map<String, dynamic> racerToWire(Racer r) => {
-      's': r.slot,
-      'x': round2(r.pos.x),
-      'y': round2(r.pos.y),
-      'h': round2(r.heading),
-      'v': round2(r.speed),
-      'l': r.lap,
-      'c': r.checkpoint,
-      'n': r.nearest,
-      'p': r.position,
-      'd': r.driftDir,
-      'dc': r.driftCharge,
-      'b': r.boostTicks,
-      'bt': r.boostTier,
-      'a': r.airTicks,
-      'sp': r.spinTicks,
-      'sh': r.shieldTicks,
-      'z': r.zapTicks,
-      'cm': r.cometTicks,
-      'st': r.stallTicks,
-      'hp': r.hopTicks,
-      if (r.item != null) 'i': r.item!.wire,
-      'ic': r.itemCharges,
-      'ro': r.rouletteTicks,
-      'f': r.finished ? 1 : 0,
-      'ft': r.finishTick,
-      'lt': r.lapTicks,
-      'ls': r.lapStartTick,
-      'ww': r.wrongWayTicks,
-      'bl': r.balloons,
-      'sc': r.score,
-      'rs': r.respawnTicks,
-      'su': r.surface.index,
-      'pi': r.prevItemButton ? 1 : 0,
-      'pd': r.prevDrift ? 1 : 0,
-      'th': r.throttleHeldTicks,
-    };
+  's': r.slot,
+  'x': round2(r.pos.x),
+  'y': round2(r.pos.y),
+  'h': round2(r.heading),
+  'v': round2(r.speed),
+  'l': r.lap,
+  'c': r.checkpoint,
+  'n': r.nearest,
+  'p': r.position,
+  'd': r.driftDir,
+  'dc': r.driftCharge,
+  'b': r.boostTicks,
+  'bt': r.boostTier,
+  'a': r.airTicks,
+  'sp': r.spinTicks,
+  'sh': r.shieldTicks,
+  'z': r.zapTicks,
+  'cm': r.cometTicks,
+  'st': r.stallTicks,
+  'hp': r.hopTicks,
+  if (r.item != null) 'i': r.item!.wire,
+  'ic': r.itemCharges,
+  'ro': r.rouletteTicks,
+  'f': r.finished ? 1 : 0,
+  'ft': r.finishTick,
+  'lt': r.lapTicks,
+  'ls': r.lapStartTick,
+  'ww': r.wrongWayTicks,
+  'bl': r.balloons,
+  'sc': r.score,
+  'rs': r.respawnTicks,
+  'su': r.surface.index,
+  'pi': r.prevItemButton ? 1 : 0,
+  'pd': r.prevDrift ? 1 : 0,
+  'th': r.throttleHeldTicks,
+};
 
 void applyRacerWire(Racer r, Map<String, dynamic> j) {
   r.pos = V2((j['x'] as num).toDouble(), (j['y'] as num).toDouble());
@@ -210,7 +209,13 @@ void applyRacerWire(Racer r, Map<String, dynamic> j) {
   r.driftCharge = j['dc'] as int;
   r.boostTicks = j['b'] as int;
   r.boostTier = j['bt'] as int;
-  r.boostMult = switch (r.boostTier) { 0 => 1.0, 1 => 1.24, 2 => 1.3, 3 => 1.38, _ => 1.75 };
+  r.boostMult = switch (r.boostTier) {
+    0 => 1.0,
+    1 => 1.24,
+    2 => 1.3,
+    3 => 1.38,
+    _ => 1.75,
+  };
   r.airTicks = j['a'] as int;
   r.spinTicks = j['sp'] as int;
   r.shieldTicks = j['sh'] as int;
@@ -236,35 +241,27 @@ void applyRacerWire(Racer r, Map<String, dynamic> j) {
 }
 
 Map<String, dynamic> snapshotToWire(RaceSim sim, {Map<int, int> acks = const {}}) => {
-      'type': Msg.snapshot,
-      'tick': sim.tick,
-      'phase': sim.phase.name,
-      'racers': [for (final r in sim.racers) racerToWire(r)],
-      'proj': [
-        for (final p in sim.projectiles)
-          {
-            'id': p.id,
-            'k': p.kind.wire,
-            'o': p.ownerSlot,
-            'x': round2(p.pos.x),
-            'y': round2(p.pos.y),
-            'h': round2(p.heading),
-          },
-      ],
-      'drop': [
-        for (final d in sim.dropped) {'id': d.id, 'x': round2(d.pos.x), 'y': round2(d.pos.y), 'o': d.ownerSlot},
-      ],
-      'boxes': [
-        for (var i = 0; i < sim.itemBoxRespawn.length; i++)
-          if (sim.itemBoxRespawn[i] > 0) i,
-      ],
-      'mov': [
-        for (final m in sim.movingHazards) {'x': round2(m.pos.x), 'y': round2(m.pos.y)},
-      ],
-      'events': [for (final e in sim.events) e.toJson()],
-      'ack': {for (final e in acks.entries) '${e.key}': e.value},
-      'left': sim.battleTicksLeft,
-    };
+  'type': Msg.snapshot,
+  'tick': sim.tick,
+  'phase': sim.phase.name,
+  'racers': [for (final r in sim.racers) racerToWire(r)],
+  'proj': [
+    for (final p in sim.projectiles) {'id': p.id, 'k': p.kind.wire, 'o': p.ownerSlot, 'x': round2(p.pos.x), 'y': round2(p.pos.y), 'h': round2(p.heading)},
+  ],
+  'drop': [
+    for (final d in sim.dropped) {'id': d.id, 'x': round2(d.pos.x), 'y': round2(d.pos.y), 'o': d.ownerSlot},
+  ],
+  'boxes': [
+    for (var i = 0; i < sim.itemBoxRespawn.length; i++)
+      if (sim.itemBoxRespawn[i] > 0) i,
+  ],
+  'mov': [
+    for (final m in sim.movingHazards) {'x': round2(m.pos.x), 'y': round2(m.pos.y)},
+  ],
+  'events': [for (final e in sim.events) e.toJson()],
+  'ack': {for (final e in acks.entries) '${e.key}': e.value},
+  'left': sim.battleTicksLeft,
+};
 
 /// Applies a snapshot onto an existing sim (whose racers/track match).
 void applySnapshot(RaceSim sim, Map<String, dynamic> j) {
@@ -291,11 +288,7 @@ void applySnapshot(RaceSim sim, Map<String, dynamic> j) {
     ..clear()
     ..addAll([
       for (final dj in (j['drop'] as List).cast<Map<String, dynamic>>())
-        DroppedHazard(
-          id: dj['id'] as int,
-          pos: V2((dj['x'] as num).toDouble(), (dj['y'] as num).toDouble()),
-          ownerSlot: dj['o'] as int,
-        ),
+        DroppedHazard(id: dj['id'] as int, pos: V2((dj['x'] as num).toDouble(), (dj['y'] as num).toDouble()), ownerSlot: dj['o'] as int),
     ]);
   final gone = ((j['boxes'] as List?) ?? const []).cast<int>().toSet();
   for (var i = 0; i < sim.itemBoxRespawn.length; i++) {
@@ -333,26 +326,26 @@ class Standing {
   final List<int> places;
 
   Map<String, dynamic> toJson() => {
-        'slot': slot,
-        'name': name,
-        'character': characterId,
-        'kart': kartId,
-        'bot': isBot,
-        'platform': platform,
-        'points': points,
-        'places': places,
-      };
+    'slot': slot,
+    'name': name,
+    'character': characterId,
+    'kart': kartId,
+    'bot': isBot,
+    'platform': platform,
+    'points': points,
+    'places': places,
+  };
 
   static Standing fromJson(Map<String, dynamic> j) => Standing(
-        slot: j['slot'] as int,
-        name: j['name'] as String,
-        characterId: j['character'] as String,
-        kartId: j['kart'] as String,
-        isBot: j['bot'] as bool,
-        platform: (j['platform'] as String?) ?? '',
-        points: j['points'] as int,
-        places: (j['places'] as List).cast<int>(),
-      );
+    slot: j['slot'] as int,
+    name: j['name'] as String,
+    characterId: j['character'] as String,
+    kartId: j['kart'] as String,
+    isBot: j['bot'] as bool,
+    platform: (j['platform'] as String?) ?? '',
+    points: j['points'] as int,
+    places: (j['places'] as List).cast<int>(),
+  );
 }
 
 /// Accumulates Grand Prix points over a cup. Ties are broken by best place,

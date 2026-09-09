@@ -15,12 +15,14 @@ Future<void> main(List<String> args) async {
     stdout.writeln('Nitro Tots server\n\n${parser.usage}');
     return;
   }
-  final server = NitroServer(ServerConfig(
-    host: opts['host'] as String,
-    port: int.parse(opts['port'] as String),
-    seed: opts['seed'] == null ? null : int.parse(opts['seed'] as String),
-    verbose: opts['verbose'] as bool,
-  ));
+  final server = NitroServer(
+    ServerConfig(
+      host: opts['host'] as String,
+      port: int.parse(opts['port'] as String),
+      seed: opts['seed'] == null ? null : int.parse(opts['seed'] as String),
+      verbose: opts['verbose'] as bool,
+    ),
+  );
   await server.start();
   ProcessSignal.sigint.watch().listen((_) async {
     await server.stop();

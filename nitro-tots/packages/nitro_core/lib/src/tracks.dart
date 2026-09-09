@@ -8,17 +8,7 @@ const sprinkleSpeedway = TrackDef(
   name: 'Sprinkle Speedway',
   location: 'Candy Coast',
   description: 'A friendly opener: wide sweepers, one tight chicane and a frosting shortcut.',
-  controlPoints: [
-    V2(220, 220),
-    V2(900, 150),
-    V2(1420, 230),
-    V2(1640, 520),
-    V2(1460, 820),
-    V2(1020, 760),
-    V2(720, 920),
-    V2(300, 840),
-    V2(140, 520),
-  ],
+  controlPoints: [V2(220, 220), V2(900, 150), V2(1420, 230), V2(1640, 520), V2(1460, 820), V2(1020, 760), V2(720, 920), V2(300, 840), V2(140, 520)],
   widths: [50, 50, 48, 46, 46, 42, 46, 50, 50],
   theme: TrackTheme(
     ground: 0xFFF6D6E4,
@@ -36,16 +26,8 @@ const sprinkleSpeedway = TrackDef(
     ItemBoxDef(4.5, [-12, 12]),
     ItemBoxDef(7.3, [-14, 0, 14]),
   ],
-  boostPads: [
-    BoostPadDef(2.6, -10),
-    BoostPadDef(2.6, 10),
-    BoostPadDef(6.5, 0),
-  ],
-  hazards: [
-    HazardDef(HazardKind.oilSlick, 3.5, 8),
-    HazardDef(HazardKind.oilSlick, 5.6, -10),
-    HazardDef(HazardKind.pillar, 8.5, 0),
-  ],
+  boostPads: [BoostPadDef(2.6, -10), BoostPadDef(2.6, 10), BoostPadDef(6.5, 0)],
+  hazards: [HazardDef(HazardKind.oilSlick, 3.5, 8), HazardDef(HazardKind.oilSlick, 5.6, -10), HazardDef(HazardKind.pillar, 8.5, 0)],
   jumps: [JumpDef(0.5, length: 22)],
   shortcuts: [
     ShortcutDef(
@@ -95,11 +77,7 @@ const mossyHollow = TrackDef(
     ItemBoxDef(9.4, [-12, 0, 12]),
     ItemBoxDef(11.6, [-10, 10]),
   ],
-  boostPads: [
-    BoostPadDef(3.4, 0),
-    BoostPadDef(8.5, -8),
-    BoostPadDef(8.5, 8),
-  ],
+  boostPads: [BoostPadDef(3.4, 0), BoostPadDef(8.5, -8), BoostPadDef(8.5, 8)],
   hazards: [
     HazardDef(HazardKind.oilSlick, 2.5, -8),
     HazardDef(HazardKind.oilSlick, 4.4, 6),
@@ -108,12 +86,7 @@ const mossyHollow = TrackDef(
   ],
   jumps: [JumpDef(4.7, length: 22)],
   shortcuts: [
-    ShortcutDef(
-      'Creek bed',
-      [V2(1268, 690), V2(1340, 690), V2(1350, 1060), V2(1262, 1060)],
-      entryT: 6.1,
-      exitT: 7.9,
-    ),
+    ShortcutDef('Creek bed', [V2(1268, 690), V2(1340, 690), V2(1350, 1060), V2(1262, 1060)], entryT: 6.1, exitT: 7.9),
   ],
 );
 
@@ -154,11 +127,7 @@ const tinCityLoop = TrackDef(
     ItemBoxDef(8.5, [-10, 10]),
     ItemBoxDef(10.6, [-14, 0, 14]),
   ],
-  boostPads: [
-    BoostPadDef(2.4, 0, length: 30),
-    BoostPadDef(6.6, -8),
-    BoostPadDef(6.6, 8),
-  ],
+  boostPads: [BoostPadDef(2.4, 0, length: 30), BoostPadDef(6.6, -8), BoostPadDef(6.6, 8)],
   hazards: [
     HazardDef(HazardKind.roller, 1.4, 0, range: 16),
     HazardDef(HazardKind.roller, 1.7, 0, range: 16),
@@ -167,12 +136,7 @@ const tinCityLoop = TrackDef(
   ],
   jumps: [JumpDef(3.5, length: 26)],
   shortcuts: [
-    ShortcutDef(
-      'Alley',
-      [V2(560, 740), V2(640, 740), V2(640, 970), V2(560, 970)],
-      entryT: 8.0,
-      exitT: 9.0,
-    ),
+    ShortcutDef('Alley', [V2(560, 740), V2(640, 740), V2(640, 970), V2(560, 970)], entryT: 8.0, exitT: 9.0),
   ],
 );
 
@@ -212,12 +176,7 @@ const frostbitePass = TrackDef(
     ItemBoxDef(6.4, [-10, 10]),
     ItemBoxDef(9.5, [-14, 0, 14]),
   ],
-  boostPads: [
-    BoostPadDef(2.5, 0, length: 30),
-    BoostPadDef(5.4, -8),
-    BoostPadDef(5.4, 8),
-    BoostPadDef(8.6, 0),
-  ],
+  boostPads: [BoostPadDef(2.5, 0, length: 30), BoostPadDef(5.4, -8), BoostPadDef(5.4, 8), BoostPadDef(8.6, 0)],
   hazards: [
     HazardDef(HazardKind.oilSlick, 3.3, 6),
     HazardDef(HazardKind.oilSlick, 3.6, -8),
@@ -226,12 +185,7 @@ const frostbitePass = TrackDef(
   ],
   jumps: [JumpDef(4.6, length: 26)],
   shortcuts: [
-    ShortcutDef(
-      'Ice slide',
-      [V2(1680, 260), V2(1760, 300), V2(1800, 560), V2(1720, 640), V2(1640, 600), V2(1690, 420)],
-      entryT: 3.1,
-      exitT: 4.9,
-    ),
+    ShortcutDef('Ice slide', [V2(1680, 260), V2(1760, 300), V2(1800, 560), V2(1720, 640), V2(1640, 600), V2(1690, 420)], entryT: 3.1, exitT: 4.9),
   ],
 );
 
@@ -241,16 +195,7 @@ const bumperBowl = TrackDef(
   location: 'Battle Arena',
   description: 'A round arena with a fountain in the middle. Pop balloons, score points.',
   isArena: true,
-  controlPoints: [
-    V2(1060, 600),
-    V2(984, 784),
-    V2(800, 860),
-    V2(616, 784),
-    V2(540, 600),
-    V2(616, 416),
-    V2(800, 340),
-    V2(984, 416),
-  ],
+  controlPoints: [V2(1060, 600), V2(984, 784), V2(800, 860), V2(616, 784), V2(540, 600), V2(616, 416), V2(800, 340), V2(984, 416)],
   widths: [400],
   grassMargin: 0,
   theme: TrackTheme(
@@ -274,12 +219,7 @@ const bumperBowl = TrackDef(
     ItemBoxDef(5.0, [0]),
     ItemBoxDef(7.0, [0]),
   ],
-  boostPads: [
-    BoostPadDef(0.5, -140),
-    BoostPadDef(2.5, 140),
-    BoostPadDef(4.5, -140),
-    BoostPadDef(6.5, 140),
-  ],
+  boostPads: [BoostPadDef(0.5, -140), BoostPadDef(2.5, 140), BoostPadDef(4.5, -140), BoostPadDef(6.5, 140)],
   hazards: [
     HazardDef(HazardKind.pillar, 1.5, 60),
     HazardDef(HazardKind.pillar, 3.5, 60),
@@ -292,8 +232,7 @@ const raceTrackDefs = <TrackDef>[sprinkleSpeedway, mossyHollow, tinCityLoop, fro
 const arenaDefs = <TrackDef>[bumperBowl];
 const allTrackDefs = <TrackDef>[...raceTrackDefs, ...arenaDefs];
 
-TrackDef trackDefById(String id) =>
-    allTrackDefs.firstWhere((t) => t.id == id, orElse: () => sprinkleSpeedway);
+TrackDef trackDefById(String id) => allTrackDefs.firstWhere((t) => t.id == id, orElse: () => sprinkleSpeedway);
 
 final Map<String, Track> _trackCache = {};
 
@@ -310,18 +249,8 @@ class Cup {
 }
 
 const cups = <Cup>[
-  Cup(
-    id: 'sugar',
-    name: 'Sugar Cup',
-    trackIds: ['sprinkle', 'mossy', 'tincity', 'frostbite'],
-    color: 0xFFFF6B9D,
-  ),
-  Cup(
-    id: 'nitro',
-    name: 'Nitro Cup',
-    trackIds: ['frostbite', 'tincity', 'mossy', 'sprinkle'],
-    color: 0xFF00E5FF,
-  ),
+  Cup(id: 'sugar', name: 'Sugar Cup', trackIds: ['sprinkle', 'mossy', 'tincity', 'frostbite'], color: 0xFFFF6B9D),
+  Cup(id: 'nitro', name: 'Nitro Cup', trackIds: ['frostbite', 'tincity', 'mossy', 'sprinkle'], color: 0xFF00E5FF),
 ];
 
 Cup cupById(String id) => cups.firstWhere((c) => c.id == id, orElse: () => cups.first);
