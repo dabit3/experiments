@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
+import { Logo } from './components/Logo'
 import { PianoRoll } from './components/PianoRoll'
 import { ReferencePanel } from './components/ReferencePanel'
 import { StepGrid } from './components/StepGrid'
@@ -166,16 +167,10 @@ export default function App() {
     <div className="app">
       <header className="masthead">
         <div className="brand">
-          <span className="brand-mark" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
-          </span>
-          <div>
-            <h1>Beat Lab</h1>
-            <p>Step sequencer &amp; piano roll</p>
-          </div>
+          <Logo size={34} />
+          <h1>Beat Lab</h1>
+          <span className="brand-sep" aria-hidden="true" />
+          <p>Step Sequencer</p>
         </div>
         <Transport
           playing={playing}
@@ -184,6 +179,7 @@ export default function App() {
           editing={editing}
           chain={song.chain}
           nowPlaying={playing && position ? position.pattern : null}
+          currentStep={playing && position ? position.step : null}
           onTogglePlay={togglePlay}
           onBpm={(bpm) => setSong((s) => ({ ...s, bpm }))}
           onSwing={(swing) => setSong((s) => ({ ...s, swing }))}
@@ -250,6 +246,17 @@ export default function App() {
           onCompare={onCompare}
         />
       </main>
+
+      <footer className="statusbar">
+        <span>
+          <i className={`status-led ${playing ? 'is-on' : ''}`} aria-hidden="true" />
+          {playing ? `Playing pattern ${position?.pattern ?? editing}` : 'Stopped'}
+        </span>
+        <span className="mono">
+          {song.bpm} BPM · {song.swing}% swing · {activeHits} hits · {activeNotes} notes
+        </span>
+        <span className="mono">Web Audio · 8 synth voices · 16 steps</span>
+      </footer>
 
       {toast && (
         <div key={toast.id} className={`toast is-${toast.kind}`} role="status">

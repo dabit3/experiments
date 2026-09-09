@@ -20,7 +20,19 @@ npm run dev
 
 Then open the printed `http://localhost:5173` URL. `npm run build` type-checks and produces a
 static bundle in `dist/`; `npm run lint` runs oxlint. The app has no backend and makes no network
-calls at runtime.
+calls at runtime (Inter and JetBrains Mono are bundled via `@fontsource-variable`).
+
+### Automated test
+
+```bash
+npx playwright install chromium   # first time only
+npm run test:e2e
+```
+
+`e2e/showcase.spec.ts` is a Playwright script that replays the full browser scenario below
+(reproduce Boom Bap → Compare = 0 differences → 92 BPM / 15 % swing → 4-note bass line → play and
+assert the playhead advances → Save JSON → Clear → upload the saved file → assert everything is
+restored). It starts the Vite dev server itself on port 5174.
 
 Controls: left-click a cell to toggle a step · right-click to cycle velocity · `Space` play/stop ·
 tempo and swing sliders also respond to arrow keys and have −/+ buttons for exact values ·
@@ -59,24 +71,18 @@ Performed by Devin with mouse and keyboard in a maximised Chrome window with scr
 
 ### Recording
 
-**Recording (mp4):** https://app.devin.ai/attachments/29367945-f5be-4fb6-9073-021d2b3d321f/beat-lab-showcase.mp4
-
-![Beat Lab showcase preview](https://app.devin.ai/attachments/a52b4f58-8dc2-4f9b-b981-1ec67bb5c969/beat-lab-preview.webp)
-
-| | |
-| --- | --- |
-| ![Perfect match](https://app.devin.ai/attachments/b19b9c2b-be3a-4ffe-a4a0-f0d091042761/01-perfect-match.png) Boom Bap reproduced — Compare reports 0 differences | ![92 BPM / 15% swing](https://app.devin.ai/attachments/208f047e-8f5e-43ff-b99f-96d31581f302/02-tempo-92-swing-15.png) Sliders set to 92 BPM and 15% swing |
-| ![Bass line](https://app.devin.ai/attachments/32d884a7-9d31-4142-9ebe-145902a9bd38/03-bass-line-4-notes.png) Four-note bass line in the piano roll | ![Playhead](https://app.devin.ai/attachments/328d1191-01ce-4203-92ea-f8ee8c4f5821/04-playhead-step-9.png) Playhead column highlighted mid-playback |
-| ![Saved](https://app.devin.ai/attachments/c70eee95-d423-4b7c-bbc3-90e932848768/05-saved-json.png) `beat-lab-pattern.json` downloaded | ![Cleared](https://app.devin.ai/attachments/49e7807d-0707-41d0-a130-0edb84dc8b27/06-cleared.png) Grid cleared (Drums 0, Bass 0) |
-| ![Reloaded](https://app.devin.ai/attachments/097b9065-08c5-4a3e-800f-567e70657039/07-reloaded-drums.png) Upload restores all 21 steps | ![Round-trip verified](https://app.devin.ai/attachments/bfe6a6ed-1131-4a95-a9c6-9f1490ef0a14/08-reloaded-bass-perfect-match.png) Bass notes back and Compare still reports 0 differences |
+**Recording (mp4):** _pending re-record after redesign_
 
 ## Project layout
 
 ```
+e2e/
+  showcase.spec.ts           Playwright replay of the browser scenario (npm run test:e2e)
 src/
-  App.tsx                    song state, sequencer wiring, compare / save / load, toasts
+  App.tsx                    song state, sequencer wiring, compare / save / load, toasts, status bar
   components/
-    Transport.tsx            play/stop, tempo + swing sliders, pattern A/B, chain, file actions
+    Logo.tsx                 knob-mark logo (also public/favicon.svg)
+    Transport.tsx            play/stop, beat LEDs, tempo + swing faders, pattern A/B, chain, file actions
     StepGrid.tsx             8×16 drum grid with velocity cells, mute/solo, playhead column
     PianoRoll.tsx            25×16 C2–C4 note grid, one note per step
     ReferencePanel.tsx       read-only target grid + compare results
