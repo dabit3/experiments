@@ -7,7 +7,7 @@ checkmate, stalemate and the draw rules) come from
 Vite + React + TypeScript single-page app with no backend and no runtime
 network calls (piece SVGs are bundled).
 
-**Showcase recording:** _(link added after the showcase run)_
+**Showcase recording:** https://app.devin.ai/attachments/94a3bbf8-7d5c-401d-a431-de2ca909a4a9/chess-arena-showcase.mp4
 
 ## Features
 
