@@ -154,6 +154,11 @@
   color: var(--muted);
 }
 
+.progress__fail {
+  color: var(--fail);
+  font-weight: 600;
+}
+
 /* ---------- win ---------- */
 
 .win {

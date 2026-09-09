@@ -36,7 +36,7 @@ export default function App() {
   const passed = states.filter((s) => s.result.pass).length
   const won = revealed === RULES.length && passed === RULES.length
   const newest = states[states.length - 1]?.rule.id
-  const ordered = [...states].reverse()
+  const ordered = [...states].reverse().sort((a, b) => Number(a.result.pass) - Number(b.result.pass))
 
   return (
     <div className={`app${won ? ' app--won' : ''}`}>
@@ -75,6 +75,9 @@ export default function App() {
             </div>
             <span className="progress__text">
               <strong>{passed}</strong> / {RULES.length} rules passed
+              {states.length - passed > 0 && (
+                <span className="progress__fail"> · {states.length - passed} failing</span>
+              )}
               {revealed < RULES.length && <span className="progress__hint"> · {RULES.length - revealed} still hidden</span>}
             </span>
           </div>
