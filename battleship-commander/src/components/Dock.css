@@ -1,0 +1,171 @@
+.dock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  min-height: 330px;
+  gap: 14px 18px;
+}
+
+.dock--empty {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px dashed rgba(52, 211, 153, 0.4);
+}
+
+.dock--empty p {
+  margin: 0;
+}
+
+.dock-ship {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.dock-ship--focus {
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.dock-ship--dragging {
+  opacity: 0.35;
+}
+
+.dock-ship__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.dock-ship__name {
+  font-weight: 600;
+}
+
+.dock-ship__size {
+  color: var(--text-faint);
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+
+.dock-ship__rotate {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-left: auto;
+  border-radius: 8px;
+  color: var(--text-dim);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.dock-ship__rotate:hover {
+  color: var(--accent);
+  background: rgba(255, 176, 32, 0.12);
+  transform: rotate(90deg);
+}
+
+.dock-ship__hull {
+  display: flex;
+  gap: var(--gap);
+  cursor: grab;
+  width: max-content;
+}
+
+.dock-ship--v .dock-ship__hull {
+  flex-direction: column;
+}
+
+.dock-ship__hull:active {
+  cursor: grabbing;
+}
+
+.dock-ship__seg,
+.ghost__seg {
+  display: block;
+  width: calc(var(--cell) * 0.82);
+  height: calc(var(--cell) * 0.82);
+  border-radius: 3px;
+  background: linear-gradient(180deg, #b5c6d8, var(--ship));
+  border: 1px solid var(--ship-dark);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+
+.dock-ship__seg::before,
+.ghost__seg::before {
+  content: '';
+  position: absolute;
+  inset: 34%;
+  border-radius: 50%;
+  background: rgba(20, 35, 55, 0.35);
+}
+
+.dock-ship--h .dock-ship__seg:first-child,
+.ghost--h .ghost__seg:first-child {
+  border-radius: 50% 3px 3px 50%;
+}
+.dock-ship--h .dock-ship__seg:last-child,
+.ghost--h .ghost__seg:last-child {
+  border-radius: 3px 50% 50% 3px;
+}
+.dock-ship--v .dock-ship__seg:first-child,
+.ghost--v .ghost__seg:first-child {
+  border-radius: 50% 50% 3px 3px;
+}
+.dock-ship--v .dock-ship__seg:last-child,
+.ghost--v .ghost__seg:last-child {
+  border-radius: 3px 3px 50% 50%;
+}
+
+.dock-ship__hull:hover .dock-ship__seg {
+  filter: brightness(1.12);
+}
+
+/* ---- floating ghost that follows the pointer ---- */
+
+.ghost {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  gap: var(--gap);
+  pointer-events: none;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
+  transform: translate(
+    calc(var(--gx) - var(--cell) / 2 - var(--grab) * (var(--cell) + var(--gap))),
+    calc(var(--gy) - var(--cell) / 2)
+  );
+  left: 0;
+  top: 0;
+}
+
+.ghost--v {
+  flex-direction: column;
+  transform: translate(
+    calc(var(--gx) - var(--cell) / 2),
+    calc(var(--gy) - var(--cell) / 2 - var(--grab) * (var(--cell) + var(--gap)))
+  );
+}
+
+.ghost__seg {
+  width: var(--cell);
+  height: var(--cell);
+  opacity: 0.92;
+}
