@@ -1,0 +1,16 @@
+# Dart / Flutter
+.dart_tool/
+build/
+*.iml
+.idea/
+.flutter-plugins-dependencies
+
+# Clone-this evidence: keep manifests, drop large binaries
+.devin/clone-this/**/*.png
+.devin/clone-this/**/*.mp4
+.devin/clone-this/**/*.mov
+.devin/clone-this/**/*.webm
+.devin/clone-this/**/*.gif
+
+# Test run scratch
+test/.run/
