@@ -56,6 +56,8 @@ export interface Deck {
 export interface Theme {
   id: ThemeId
   name: string
+  tagline: string
+  /** Base colour; the `theme-<id>` class layers gradients/decor on top of it. */
   background: string
   text: string
   muted: string

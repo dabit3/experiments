@@ -18,12 +18,6 @@ export function uid(prefix: string): string {
   return `${prefix}-${Date.now().toString(36)}-${counter.toString(36)}`
 }
 
-export const STICKERS = [
-  '🚀', '✅', '🔥', '💡', '🎯', '🤖', '🧪', '🐛',
-  '⚡', '🏆', '📈', '🛠️', '🔒', '🎉', '👀', '❤️',
-  '⭐', '☁️', '🧠', '📦', '⏱️', '💬', '🧭', '🍕',
-]
-
 function textEl(partial: Partial<TextElement> & Pick<TextElement, 'x' | 'y' | 'w' | 'h'>): TextElement {
   return {
     id: uid('el'),
@@ -42,13 +36,13 @@ export function createSlide(layout: SlideLayout): Slide {
   const elements: SlideElement[] = []
   if (layout === 'title') {
     elements.push(
-      textEl({ x: 60, y: 130, w: 840, h: 160, fontSize: 56, bold: true, align: 'center', placeholder: 'Presentation title' }),
-      textEl({ x: 140, y: 320, w: 680, h: 70, fontSize: 28, align: 'center', placeholder: 'Subtitle or presenter name' }),
+      textEl({ x: 60, y: 140, w: 840, h: 170, fontSize: 64, bold: true, align: 'center', placeholder: 'Presentation title' }),
+      textEl({ x: 140, y: 330, w: 680, h: 70, fontSize: 26, align: 'center', placeholder: 'Subtitle or presenter name' }),
     )
   } else if (layout === 'bullets') {
     elements.push(
-      textEl({ x: 60, y: 44, w: 840, h: 84, fontSize: 44, bold: true, placeholder: 'Slide title' }),
-      textEl({ x: 60, y: 150, w: 840, h: 340, fontSize: 28, bullets: true, placeholder: 'Add your bullet points' }),
+      textEl({ x: 60, y: 56, w: 840, h: 90, fontSize: 46, bold: true, placeholder: 'Slide title' }),
+      textEl({ x: 60, y: 168, w: 840, h: 320, fontSize: 28, bullets: true, placeholder: 'Add your bullet points' }),
     )
   }
   return { id: uid('slide'), elements, notes: '' }

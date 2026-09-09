@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, type CSSProperties, type KeyboardEvent } from 'react'
 import type { ShapeElement, SlideElement, StickerElement, TextElement } from '../types'
 import { contrastText } from '../lib/themes'
+import { stickerArt } from '../lib/stickers'
 
 interface EditableProps {
   value: string
@@ -116,7 +117,7 @@ export function ElementBody({ el, editing = false, placeholders = false, onCommi
       background: el.fill,
     }
     return (
-      <div className={`el-text ${el.bullets ? 'is-bullets' : ''}`} style={style}>
+      <div className={`el-text ${el.bullets ? 'is-bullets' : ''} ${el.bold ? 'is-heading' : ''}`} style={style}>
         {editing && onCommitText && onCancelEdit ? (
           <EditableText value={el.text} onCommit={onCommitText} onCancel={onCancelEdit} />
         ) : (
@@ -127,9 +128,10 @@ export function ElementBody({ el, editing = false, placeholders = false, onCommi
   }
   if (el.kind === 'sticker') {
     const s: StickerElement = el
+    const art = stickerArt(s.emoji)
     return (
       <div className="el-sticker" style={{ fontSize: Math.min(s.w, s.h) * 0.78 }}>
-        {s.emoji}
+        {art ? <img src={art} alt={s.emoji} draggable={false} /> : s.emoji}
       </div>
     )
   }

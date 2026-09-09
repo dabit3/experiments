@@ -40,7 +40,8 @@ export function SlideView({ slide, theme, width, className, placeholders = false
   const scale = width / SLIDE_W
   return (
     <div className={`slide-frame ${className ?? ''}`} style={{ width, height: width * (SLIDE_H / SLIDE_W) }}>
-      <div className="slide-surface" style={{ ...themeVars(theme), transform: `scale(${scale})` }}>
+      <div className={`slide-surface theme-${theme.id}`} style={{ ...themeVars(theme), transform: `scale(${scale})` }}>
+        <div className="slide-decor" aria-hidden="true" />
         {slide.elements.map((el) => (
           <div key={el.id} className={`slide-el kind-${el.kind}`} style={elementStyle(el)}>
             <ElementBody el={el} placeholders={placeholders} />

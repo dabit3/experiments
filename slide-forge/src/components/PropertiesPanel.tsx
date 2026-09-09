@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import type { SlideElement, TextAlign, Theme, ThemeId } from '../types'
 import { THEMES } from '../lib/themes'
-import { STICKERS } from '../lib/deck'
+import { STICKERS, stickerArt } from '../lib/stickers'
 import { Icon } from './Icons'
 
 interface Props {
@@ -69,12 +69,16 @@ export function PropertiesPanel({ element, theme, onThemeChange, onPatch, onDele
               onClick={() => onThemeChange(t.id)}
               title={t.name}
             >
-              <div className="theme-preview" style={{ background: t.background, color: t.text, fontFamily: t.headingFont }}>
+              <div className={`theme-preview theme-${t.id}`} style={{ color: t.text, fontFamily: t.headingFont }}>
+                <div className="slide-decor" aria-hidden="true" />
                 <span className="theme-preview-title">Aa</span>
                 <span className="theme-preview-bar" style={{ background: t.accent }} />
               </div>
               <span className="theme-name">
-                {t.name}
+                <span>
+                  {t.name}
+                  <small>{t.tagline}</small>
+                </span>
                 {t.id === theme.id && <Icon name="check" size={14} />}
               </span>
             </button>
@@ -106,7 +110,12 @@ export function PropertiesPanel({ element, theme, onThemeChange, onPatch, onDele
 
   return (
     <aside className="props" aria-label="Element properties">
-      <h2 className="props-title">{kindLabel[element.kind]}</h2>
+      <div className="props-heading">
+        <span className="props-kind">
+          <Icon name={element.kind === 'sticker' ? 'sticker' : element.kind} size={16} />
+        </span>
+        <h2 className="props-title">{kindLabel[element.kind]}</h2>
+      </div>
 
       {element.kind === 'text' && (
         <>
@@ -196,7 +205,7 @@ export function PropertiesPanel({ element, theme, onThemeChange, onPatch, onDele
           <div className="emoji-grid">
             {STICKERS.map((e) => (
               <button key={e} type="button" className={`emoji-btn ${element.emoji === e ? 'is-active' : ''}`} onClick={() => onPatch({ emoji: e } as Partial<SlideElement>)}>
-                {e}
+                <img src={stickerArt(e)} alt={e} draggable={false} />
               </button>
             ))}
           </div>

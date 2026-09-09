@@ -1,75 +1,87 @@
 import type { Theme, ThemeId } from '../types'
 
-const SANS = "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
-const SERIF = "Georgia, 'Times New Roman', 'DejaVu Serif', serif"
-const MONO = "ui-monospace, 'SF Mono', Menlo, Consolas, 'DejaVu Sans Mono', monospace"
+export const UI_SANS = "'Inter Variable', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+const DISPLAY = "'Manrope Variable', Manrope, 'Inter Variable', system-ui, sans-serif"
+const GROTESK = "'Space Grotesk Variable', 'Space Grotesk', 'Inter Variable', system-ui, sans-serif"
+const SERIF = "'Fraunces Variable', Fraunces, Georgia, 'Times New Roman', serif"
+const MONO = "'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
 
+/**
+ * Each theme sets the slide's colour system and fonts; the matching `theme-<id>` class on the
+ * slide surface adds a decorative background layer (glows, grain, grids) in App.css.
+ */
 export const THEMES: Theme[] = [
   {
     id: 'midnight',
     name: 'Midnight',
-    background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%)',
-    text: '#f8fafc',
-    muted: '#a5b4fc',
-    accent: '#818cf8',
-    headingFont: SANS,
-    bodyFont: SANS,
-    palette: ['#818cf8', '#38bdf8', '#f472b6', '#fbbf24', '#34d399', '#f8fafc'],
+    tagline: 'Aurora on navy',
+    background: '#0b1020',
+    text: '#f4f6ff',
+    muted: '#9aa6d6',
+    accent: '#8b8cff',
+    headingFont: DISPLAY,
+    bodyFont: UI_SANS,
+    palette: ['#8b8cff', '#49c6ff', '#ff6fae', '#ffc857', '#3fe0a8', '#f4f6ff'],
   },
   {
     id: 'paper',
     name: 'Paper',
-    background: '#fbf7ef',
-    text: '#1c1917',
-    muted: '#78716c',
+    tagline: 'Editorial serif',
+    background: '#f7f1e6',
+    text: '#1f1a17',
+    muted: '#7a6f66',
     accent: '#c2410c',
     headingFont: SERIF,
-    bodyFont: SANS,
-    palette: ['#c2410c', '#0f766e', '#b45309', '#1d4ed8', '#7e22ce', '#1c1917'],
+    bodyFont: UI_SANS,
+    palette: ['#c2410c', '#0f766e', '#a16207', '#1d4ed8', '#7e22ce', '#1f1a17'],
   },
   {
     id: 'coral',
     name: 'Coral',
-    background: 'linear-gradient(160deg, #ff6b6b 0%, #f06595 55%, #cc5de8 100%)',
+    tagline: 'Sunset gradient',
+    background: '#ff6b6b',
     text: '#ffffff',
-    muted: '#ffe3e3',
+    muted: '#ffe1e1',
     accent: '#ffe066',
-    headingFont: SANS,
-    bodyFont: SANS,
-    palette: ['#ffe066', '#ffffff', '#212529', '#74c0fc', '#8ce99a', '#ffa94d'],
+    headingFont: GROTESK,
+    bodyFont: UI_SANS,
+    palette: ['#ffe066', '#ffffff', '#1f1233', '#7cd4ff', '#a3f7bf', '#ffb26b'],
   },
   {
     id: 'forest',
     name: 'Forest',
-    background: 'linear-gradient(180deg, #052e16 0%, #14532d 100%)',
-    text: '#ecfdf5',
-    muted: '#86efac',
-    accent: '#4ade80',
+    tagline: 'Evergreen & brass',
+    background: '#06251a',
+    text: '#eefbf3',
+    muted: '#8fd4ac',
+    accent: '#e2b857',
     headingFont: SERIF,
-    bodyFont: SANS,
-    palette: ['#4ade80', '#fde047', '#fb923c', '#ecfdf5', '#38bdf8', '#f472b6'],
+    bodyFont: UI_SANS,
+    palette: ['#e2b857', '#4ade80', '#fb923c', '#eefbf3', '#5fd3f3', '#f6a5c0'],
   },
   {
     id: 'slate',
     name: 'Slate',
-    background: '#f1f5f9',
+    tagline: 'Bright & clean',
+    background: '#f4f6fa',
     text: '#0f172a',
-    muted: '#475569',
+    muted: '#5b6b85',
     accent: '#2563eb',
-    headingFont: SANS,
-    bodyFont: SANS,
-    palette: ['#2563eb', '#0f172a', '#16a34a', '#dc2626', '#9333ea', '#f59e0b'],
+    headingFont: DISPLAY,
+    bodyFont: UI_SANS,
+    palette: ['#2563eb', '#0f172a', '#059669', '#dc2626', '#7c3aed', '#f59e0b'],
   },
   {
     id: 'terminal',
     name: 'Terminal',
-    background: '#0a0f0a',
-    text: '#d9f99d',
-    muted: '#65a30d',
-    accent: '#22c55e',
+    tagline: 'Phosphor green',
+    background: '#060a07',
+    text: '#d7ffb0',
+    muted: '#6fae4c',
+    accent: '#38e07b',
     headingFont: MONO,
     bodyFont: MONO,
-    palette: ['#22c55e', '#d9f99d', '#f97316', '#38bdf8', '#e879f9', '#ffffff'],
+    palette: ['#38e07b', '#d7ffb0', '#ff9f43', '#4cc9f0', '#f072ff', '#ffffff'],
   },
 ]
 

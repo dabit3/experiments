@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ElementKind, SlideLayout } from '../types'
-import { STICKERS } from '../lib/deck'
+import { STICKERS, stickerArt } from '../lib/stickers'
 import { Icon } from './Icons'
 
 interface Props {
@@ -134,7 +134,7 @@ export function TopBar({ title, onTitleChange, canUndo, canRedo, onUndo, onRedo,
                     setPopover(null)
                   }}
                 >
-                  {e}
+                  <img src={stickerArt(e)} alt={e} draggable={false} />
                 </button>
               ))}
             </div>
@@ -149,7 +149,7 @@ export function TopBar({ title, onTitleChange, canUndo, canRedo, onUndo, onRedo,
         {savedAt ? 'Saved' : 'Saving…'}
       </span>
 
-      <button type="button" className="btn" onClick={onExportPdf} title="Export PDF (opens the print dialog)">
+      <button type="button" className="btn btn-outline" onClick={onExportPdf} title="Export PDF (opens the print dialog)">
         <Icon name="pdf" /> Export PDF
       </button>
       <button type="button" className="btn btn-primary" onClick={onPresent} title="Present (F5)">

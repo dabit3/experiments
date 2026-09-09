@@ -151,13 +151,14 @@ export function EditorCanvas({
       <div className="slide-frame editor-frame" style={{ width: SLIDE_W * scale, height: SLIDE_H * scale }}>
         <div
           ref={surfaceRef}
-          className="slide-surface"
+          className={`slide-surface theme-${theme.id}`}
           style={{ ...themeVars(theme), transform: `scale(${scale})` }}
           onPointerDown={onSurfacePointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
           onPointerCancel={onPointerUp}
         >
+          <div className="slide-decor" aria-hidden="true" />
           {slide.elements.map((el) => {
             const selected = el.id === selectedId
             const editing = el.id === editingId

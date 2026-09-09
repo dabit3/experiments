@@ -113,7 +113,11 @@ export function Presenter({ deck, theme, startIndex, onExit }: Props) {
           )}
           <div className="pv-label">Notes</div>
           <div className="pv-notes">{slide.notes || <span className="pv-muted">No notes for this slide.</span>}</div>
-          <div className="pv-help">← → navigate · P toggle presenter view · Esc exit</div>
+          <div className="pv-help">
+            <span><kbd>←</kbd> <kbd>→</kbd> navigate</span>
+            <span><kbd>P</kbd> audience view</span>
+            <span><kbd>Esc</kbd> exit</span>
+          </div>
         </div>
       </div>
     )
@@ -128,6 +132,9 @@ export function Presenter({ deck, theme, startIndex, onExit }: Props) {
       </div>
       <div className="present-counter">
         {index + 1} / {count}
+      </div>
+      <div className="present-progress" aria-hidden="true">
+        <i style={{ width: `${((index + 1) / count) * 100}%` }} />
       </div>
     </div>
   )
