@@ -1,0 +1,361 @@
+{
+  "schema_version": 1,
+  "source": "Clash Royale (Supercell mobile game, closed-source; reference via public gameplay knowledge only)",
+  "clone_name": "Tower Tussle",
+  "clone_root": "/Users/devin/repos/experiments/tower-tussle",
+  "status": "blocked",
+  "iteration": 3,
+  "revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+  "frontier": [],
+  "blockers": [
+    {
+      "id": "no-reference",
+      "summary": "No authorized Clash Royale source, binary or screenshots available; visual pixel-parity check and source audit cannot be verified. Design is intentionally original (Tower Tussle).",
+      "affects": [
+        "checks.visual",
+        "audits.source",
+        "items.visual-*"
+      ],
+      "resume_condition": "User supplies an authorized reference build/screenshots or confirms the original design is the intended target."
+    },
+    {
+      "id": "android-emulator",
+      "summary": "Android emulator cannot boot on this host (kern.hv_support=0, HVF unsupported, arm64 emulator has no TCG fallback). Android verified by build, lint and 10 JVM engine unit tests only.",
+      "affects": [
+        "checks.functional (android runtime)",
+        "audits.responsive (android)",
+        "audits.reliability (android)"
+      ],
+      "resume_condition": "Run on a hypervisor-capable host or physical device: adb install -r android/app/build/outputs/apk/debug/app-debug.apk"
+    }
+  ],
+  "unverified_assumptions": [
+    "Card stats, tower HP, elixir rate and reward values are original tuning inferred from public gameplay knowledge, not measured from the reference."
+  ],
+  "items": [
+    {
+      "id": "route-home",
+      "kind": "route",
+      "label": "Home: title, trophies, gold, Battle/Cards, W/L/D record",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/home-after-matches.png",
+        "evidence/ios/home-after-surrender.png"
+      ]
+    },
+    {
+      "id": "route-cards",
+      "kind": "route",
+      "label": "Cards: 8-card deck + collection, swap, reset, average elixir, details sheet",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/cards-default-deck.png",
+        "evidence/ios/cards-swapped.png"
+      ]
+    },
+    {
+      "id": "route-battle",
+      "kind": "route",
+      "label": "Battle: arena, HUD timer/crowns, hand, next card, elixir bar, quit",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/battle-deploy-restriction.png",
+        "evidence/ios/battle-tower-projectile.png",
+        "evidence/ios/battle-rematch-fresh.png"
+      ]
+    },
+    {
+      "id": "route-results",
+      "kind": "route",
+      "label": "Results: outcome, crowns, trophy/gold delta, rematch/home",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/results-natural-defeat.png",
+        "evidence/ios/results-surrender-defeat.png"
+      ]
+    },
+    {
+      "id": "feature-deck-editing",
+      "kind": "feature",
+      "label": "Swap deck/collection cards, average elixir updates, reset restores default, persists",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/cards-swapped.png",
+        "evidence/ios/cards-default-deck.png"
+      ]
+    },
+    {
+      "id": "feature-deploy-rules",
+      "kind": "feature",
+      "label": "Troops only on player half, spells anywhere, affordability gate with announcement",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/battle-deploy-restriction.png",
+        "evidence/android/battle-engine-unit-tests.xml"
+      ]
+    },
+    {
+      "id": "feature-hand-cycle-elixir",
+      "kind": "feature",
+      "label": "4-card hand cycles next card on deploy; elixir spent, regenerates, caps at 10, double elixir at 2:00",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/battle-tower-projectile.png",
+        "evidence/android/battle-engine-unit-tests.xml"
+      ]
+    },
+    {
+      "id": "feature-combat",
+      "kind": "feature",
+      "label": "Units path over bridges, towers fire projectiles, enemy AI deploys, crowns on tower destruction",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/battle-tower-projectile.png",
+        "evidence/checks/summary.md"
+      ]
+    },
+    {
+      "id": "feature-match-end",
+      "kind": "feature",
+      "label": "Regulation/overtime timers, natural end, surrender = 3-crown defeat, rewards applied to profile",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/results-natural-defeat.png",
+        "evidence/ios/results-surrender-defeat.png",
+        "evidence/android/battle-engine-unit-tests.xml"
+      ]
+    },
+    {
+      "id": "journey-play-match",
+      "kind": "journey",
+      "label": "Home \u2192 Battle \u2192 deploy \u2192 results \u2192 rematch \u2192 results \u2192 home with updated record",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/battle-rematch-fresh.png",
+        "evidence/ios/home-after-matches.png"
+      ]
+    },
+    {
+      "id": "journey-edit-deck",
+      "kind": "journey",
+      "label": "Home \u2192 Cards \u2192 swap \u2192 reset \u2192 back",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/cards-swapped.png",
+        "evidence/ios/cards-default-deck.png"
+      ]
+    },
+    {
+      "id": "journey-surrender",
+      "kind": "journey",
+      "label": "Battle \u2192 quit \u2192 confirm \u2192 DEFEAT results \u2192 home shows loss",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/results-surrender-defeat.png",
+        "evidence/ios/home-after-surrender.png"
+      ]
+    },
+    {
+      "id": "visual-home",
+      "kind": "visual",
+      "label": "Home screen visual parity with reference",
+      "status": "blocked",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/ios/home-after-matches.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "actual": "evidence/ios/home-after-matches.png",
+        "reference": null,
+        "diff": null,
+        "note": "No authorized reference capture available (blocker no-reference)."
+      }
+    },
+    {
+      "id": "visual-battle",
+      "kind": "visual",
+      "label": "Battle arena visual parity with reference",
+      "status": "blocked",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/ios/battle-tower-projectile.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "actual": "evidence/ios/battle-tower-projectile.png",
+        "reference": null,
+        "diff": null,
+        "note": "No authorized reference capture available (blocker no-reference)."
+      }
+    },
+    {
+      "id": "asset-runtime-art",
+      "kind": "asset",
+      "label": "All art is runtime-drawn vectors/emoji; app icons are original vector drawables",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/discovery/source-audit.md"
+      ]
+    },
+    {
+      "id": "integration-none",
+      "kind": "integration",
+      "label": "No network, accounts, or third-party services",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/checks/summary.md"
+      ]
+    }
+  ],
+  "audits": [
+    {
+      "id": "source",
+      "status": "blocked",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/source-audit.md"
+      ]
+    },
+    {
+      "id": "navigation",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/home-after-matches.png",
+        "evidence/ios/cards-default-deck.png",
+        "evidence/ios/battle-rematch-fresh.png",
+        "evidence/ios/results-natural-defeat.png"
+      ]
+    },
+    {
+      "id": "roles",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/checks/summary.md"
+      ]
+    },
+    {
+      "id": "states",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/battle-deploy-restriction.png",
+        "evidence/ios/results-surrender-defeat.png",
+        "evidence/ios/results-natural-defeat.png"
+      ]
+    },
+    {
+      "id": "responsive",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/battle-tower-projectile.png"
+      ]
+    },
+    {
+      "id": "data",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/home-after-surrender.png",
+        "evidence/android/battle-engine-unit-tests.xml"
+      ]
+    },
+    {
+      "id": "assets",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/discovery/source-audit.md"
+      ]
+    },
+    {
+      "id": "accessibility",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/checks/summary.md"
+      ]
+    },
+    {
+      "id": "reliability",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/battle-rematch-fresh.png",
+        "evidence/android/battle-engine-unit-tests.xml"
+      ]
+    },
+    {
+      "id": "rebrand",
+      "status": "verified",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/ios/home-after-matches.png",
+        "evidence/discovery/source-audit.md"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "functional",
+      "status": "passed",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/checks/summary.md",
+        "evidence/android/battle-engine-unit-tests.xml"
+      ]
+    },
+    {
+      "id": "visual",
+      "status": "blocked",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/checks/summary.md"
+      ]
+    },
+    {
+      "id": "build",
+      "status": "passed",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/checks/summary.md"
+      ]
+    },
+    {
+      "id": "quality",
+      "status": "passed",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/checks/android-lint-results.txt",
+        "evidence/checks/skill-tests.log"
+      ]
+    },
+    {
+      "id": "security",
+      "status": "passed",
+      "verified_revision": "sha256:cc7d28309a9d04dbda2f556a0956f510a146f86053c0633aa9eb372da8f15b76",
+      "evidence": [
+        "evidence/checks/summary.md"
+      ]
+    }
+  ],
+  "sweeps": [],
+  "next_action": "Blocked: obtain an authorized reference for visual parity and a hypervisor-capable host (or device) for Android runtime testing; then run the two closing discovery sweeps."
+}

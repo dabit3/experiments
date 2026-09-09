@@ -1,0 +1,326 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0524F3E686428DD22CC9AD4B /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC2030658EC57AA2A3E0B6E /* BattleView.swift */; };
+		1353F21EF619C0ACA25CD9FC /* PlayerProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607DCD603D702AE8BD2E8578 /* PlayerProfile.swift */; };
+		3500061FAB26440C3CABE109 /* ResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0694B3A97C26CFF8C3BF5CAE /* ResultsView.swift */; };
+		3A5C22BC6DDB606BEBCE0FC1 /* TowerTussleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FEBBF900ED7DB6D62B6693 /* TowerTussleApp.swift */; };
+		3ABBA2C1888DB3F475787AA8 /* ArenaCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0549AB16D14A04B5DD6B7CFF /* ArenaCanvas.swift */; };
+		71E46855F9BFC59D54CE9EA3 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7889A404A3E2B44F1EB316 /* HomeView.swift */; };
+		7FA9E9A98F73A578ED6642EB /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83423F92FD9B215AC7A650CB /* Models.swift */; };
+		D817FC13FC333F0FA479467F /* BattleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05A93710C7922B6011CD4138 /* BattleEngine.swift */; };
+		E065000994F79E64980A5D14 /* CardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E1FC2EDB4AA7FE5F2E81A5 /* CardsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0549AB16D14A04B5DD6B7CFF /* ArenaCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaCanvas.swift; sourceTree = "<group>"; };
+		05A93710C7922B6011CD4138 /* BattleEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleEngine.swift; sourceTree = "<group>"; };
+		0694B3A97C26CFF8C3BF5CAE /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
+		2FF924965D5B13ED0A900DBE /* TowerTussle.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TowerTussle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E7889A404A3E2B44F1EB316 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		607DCD603D702AE8BD2E8578 /* PlayerProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerProfile.swift; sourceTree = "<group>"; };
+		62FEBBF900ED7DB6D62B6693 /* TowerTussleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TowerTussleApp.swift; sourceTree = "<group>"; };
+		83423F92FD9B215AC7A650CB /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		83E1FC2EDB4AA7FE5F2E81A5 /* CardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsView.swift; sourceTree = "<group>"; };
+		894E2BE2ACFDAFB24255FC82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		9AC2030658EC57AA2A3E0B6E /* BattleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		8FA49A25C43BA439B1291367 = {
+			isa = PBXGroup;
+			children = (
+				E8D2E18B568835A3FD740E35 /* TowerTussle */,
+				D09A7F8A7AFFC29E8E3B60E7 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D09A7F8A7AFFC29E8E3B60E7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2FF924965D5B13ED0A900DBE /* TowerTussle.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E8D2E18B568835A3FD740E35 /* TowerTussle */ = {
+			isa = PBXGroup;
+			children = (
+				0549AB16D14A04B5DD6B7CFF /* ArenaCanvas.swift */,
+				05A93710C7922B6011CD4138 /* BattleEngine.swift */,
+				9AC2030658EC57AA2A3E0B6E /* BattleView.swift */,
+				83E1FC2EDB4AA7FE5F2E81A5 /* CardsView.swift */,
+				5E7889A404A3E2B44F1EB316 /* HomeView.swift */,
+				894E2BE2ACFDAFB24255FC82 /* Info.plist */,
+				83423F92FD9B215AC7A650CB /* Models.swift */,
+				607DCD603D702AE8BD2E8578 /* PlayerProfile.swift */,
+				0694B3A97C26CFF8C3BF5CAE /* ResultsView.swift */,
+				62FEBBF900ED7DB6D62B6693 /* TowerTussleApp.swift */,
+			);
+			path = TowerTussle;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D6362ED06AF1C89DA671F83 /* TowerTussle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40DF78BA8854426A06A29307 /* Build configuration list for PBXNativeTarget "TowerTussle" */;
+			buildPhases = (
+				4B558E5E4B29076A9B087CE6 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TowerTussle;
+			packageProductDependencies = (
+			);
+			productName = TowerTussle;
+			productReference = 2FF924965D5B13ED0A900DBE /* TowerTussle.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7A7466C07897E9EA7FB6CFE9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 5A7A8977BFD82F1A97A5651A /* Build configuration list for PBXProject "TowerTussle" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 8FA49A25C43BA439B1291367;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = D09A7F8A7AFFC29E8E3B60E7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D6362ED06AF1C89DA671F83 /* TowerTussle */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4B558E5E4B29076A9B087CE6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3ABBA2C1888DB3F475787AA8 /* ArenaCanvas.swift in Sources */,
+				D817FC13FC333F0FA479467F /* BattleEngine.swift in Sources */,
+				0524F3E686428DD22CC9AD4B /* BattleView.swift in Sources */,
+				E065000994F79E64980A5D14 /* CardsView.swift in Sources */,
+				71E46855F9BFC59D54CE9EA3 /* HomeView.swift in Sources */,
+				7FA9E9A98F73A578ED6642EB /* Models.swift in Sources */,
+				1353F21EF619C0ACA25CD9FC /* PlayerProfile.swift in Sources */,
+				3500061FAB26440C3CABE109 /* ResultsView.swift in Sources */,
+				3A5C22BC6DDB606BEBCE0FC1 /* TowerTussleApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		262839319C331C7AD808CA80 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TowerTussle/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit3.towertussle;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		40087E43A12A74E2B9FBE203 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		5594718BB96D91E19DAE952F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		F379FDAF536CED9EA08C1931 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TowerTussle/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit3.towertussle;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		40DF78BA8854426A06A29307 /* Build configuration list for PBXNativeTarget "TowerTussle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F379FDAF536CED9EA08C1931 /* Debug */,
+				262839319C331C7AD808CA80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5A7A8977BFD82F1A97A5651A /* Build configuration list for PBXProject "TowerTussle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5594718BB96D91E19DAE952F /* Debug */,
+				40087E43A12A74E2B9FBE203 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7A7466C07897E9EA7FB6CFE9 /* Project object */;
+}
