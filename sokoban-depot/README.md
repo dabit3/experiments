@@ -6,7 +6,9 @@ set), arrow-key / WASD movement, unlimited undo (`Z`), restart (`R`), move and p
 a par move count per level with a 1–3 star rating, a level-select screen with minimaps and
 sequential unlocking, and progress persisted in `localStorage`. All tiles — brick walls,
 wooden crates, the yellow-hard-hat worker, dashed targets — are pixel art drawn with inline
-SVG and CSS; there are no external assets and no network calls at runtime.
+SVG and CSS. The brand mark (crate-in-a-badge emblem + chunky wordmark) is also inline SVG /
+CSS, and the two typefaces (Lilita One for display, Nunito for UI) are bundled from
+`@fontsource` packages; there are no external assets and no network calls at runtime.
 
 ## Run it
 
@@ -42,6 +44,10 @@ result per level is kept.
   solver; the `par` in `src/game/levels.ts` is the optimal move count it reports.
 - **Levels unlock sequentially** and progress lives under the `sokoban-depot:progress:v1`
   key, with a *Reset progress* button on the level-select screen.
+- **Dark, warehouse-flavoured design system.** Charcoal panels, an amber/orange accent with
+  hazard-stripe details, a display typeface for the wordmark, level numbers and stats, and
+  restrained motion (worker step bounce, crate settle, confetti on clear). All of it lives in
+  `src/index.css` (tokens) and `src/App.css` (components).
 
 ## Computer-use showcase
 
@@ -52,32 +58,33 @@ maximised Chrome window and performed the following scenario end to end while re
 
 1. Opened the level-select screen (fresh progress: 0 of 8 cleared, levels 2–8 locked) and
    clicked **01 · Loading Dock**.
-2. Deliberately made a mistake: pushed the lower crate down against the bottom wall and then
-   left into the corner. **Expected:** the crate is outlined red and the "Crate wedged in a
-   corner" banner appears.
-3. Pressed `Z` four times to rewind past the bad pushes. **Expected:** banner disappears,
-   crate returns to its starting cell, move counter drops back to 1.
-4. Finished level 1 with the arrow keys. **Expected:** "Level 1 cleared" overlay with
-   moves/pushes/par and a star rating (12 moves vs par 10 → 2 stars).
-5. Pressed `Enter` to go to level 2 (Two-Bay) and solved it in par (16 moves → 3 stars).
-6. Pressed `Enter`, solved level 3 (Corner Store) in par (33 moves → 3 stars).
+2. Deliberately made a mistake: pushed the upper crate up against the top wall and then left
+   into the top-left corner. **Expected:** the crate is outlined red and the "Crate wedged in
+   a corner" banner appears under the board (7 moves, 3 pushes).
+3. Pressed `Z` five times to rewind past the bad pushes. **Expected:** banner disappears,
+   crate returns to its starting cell, move counter drops back to 2, pushes to 0.
+4. Finished level 1 with the arrow keys. **Expected:** "Level 1 cleared" card with
+   moves/pushes/par, confetti and a star rating (14 moves vs par 10 → 2 stars).
+5. Pressed `Enter` to go to level 2 (Two-Bay) and solved it with `WASD` in par
+   (16 moves → 3 stars).
+6. Pressed `Enter`, solved level 3 (Corner Store) with the arrow keys in par (33 moves → 3 stars).
 7. Pressed `Enter`, solved level 4 (Long Haul) in par (23 moves → 3 stars).
-8. Pressed `Esc` to return to level select. **Expected:** levels 1–4 show *cleared* badges
-   and their stars (2 + 3 + 3 + 3 = 11 / 24), level 5 is unlocked, levels 6–8 remain locked.
+8. Clicked **Levels** on the win card. **Expected:** levels 1–4 show *cleared* badges and
+   their stars (2 + 3 + 3 + 3 = 11 / 24), level 5 is unlocked, levels 6–8 remain locked.
+9. Reloaded the page. **Expected:** the same 4 / 8 cleared and 11 / 24 stars are restored
+   from `localStorage`.
 
-All eight steps passed on the first recorded run; no app defects were found during the
-showcase (one layout tweak was made beforehand so the deadlock banner sits under the board
-instead of covering the bottom wall row).
+All nine steps passed on the recorded run; no app defects were found during the showcase.
 
 ### Recording
 
-**[Watch the full recording (mp4, ~51s)](https://app.devin.ai/attachments/065bd180-32b8-4608-865b-c76bca5a86c3/sokoban-depot-showcase.mp4)**
+**[Watch the full recording (mp4, ~73s)](https://app.devin.ai/attachments/7513829d-9141-401c-81a4-5cb768a3f200/sokoban-depot-showcase-v2-edited.mp4)**
 
 ![Animated preview of the recording](docs/showcase.webp)
 
 ### Key moments
 
-| Crate wedged in the corner on level 1 | Four undos later: back to move 1 |
+| Crate wedged in the corner on level 1 | Five undos later: back to move 2 |
 |---|---|
 | ![Corner deadlock banner](docs/level1-corner-deadlock.png) | ![Recovered via undo](docs/level1-after-undo.png) |
 
@@ -91,6 +98,7 @@ instead of covering the bottom wall row).
 src/
   App.tsx                    screen routing (select ⇄ play), progress wiring
   components/
+    Logo.tsx                 emblem + wordmark brand mark (inline SVG)
     LevelSelect.tsx          level cards with minimaps, stars, lock state
     PlayScreen.tsx           board + sidebar, keyboard handling, win overlay
     Board.tsx                absolutely positioned tiles and animated entities
