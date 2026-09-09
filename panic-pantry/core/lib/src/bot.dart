@@ -507,13 +507,14 @@ class Bot {
     }
     if (dirtyReturn == null && cleanPlates < 2) {
       final dirty = nearest((x, y, t) => t.item is PlateStack && (t.item as PlateStack).dirty && !onHatch(x, y));
-      if (dirty != null)
+      if (dirty != null) {
         return goal(
           dirty.$3.type == TileType.sink ? 'wash' : 'pick',
           dirty.$1,
           dirty.$2,
           hold: dirty.$3.type == TileType.sink,
         );
+      }
     }
     return null;
   }

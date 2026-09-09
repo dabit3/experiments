@@ -61,6 +61,7 @@ class PanicPantryServer {
         return _json({
           ...room.toJson(),
           'reports': {for (final p in room.players.values) p.id: p.lastReport},
+          'results': room.lastResults,
           'state': room.state?.toSnapshot(includeEvents: false),
         });
       })
