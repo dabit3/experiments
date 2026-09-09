@@ -82,9 +82,32 @@ Run with `npm run dev`, open `http://localhost:5173/?seed=5` in a maximized Chro
 9. Click **Printable certificate**.
    *Expected:* the certificate switches to a white paper layout with **Print** / **Back**.
 
+All nine steps passed on the first recorded run (the only rejection was the deliberate one in
+step 2); no app defects were found.
+
 ### Recording
 
-**Recording link:** _to be added after the showcase run_
+**[Watch the full recording (mp4, ~47s)](https://app.devin.ai/attachments/28591f56-6b0c-44d3-935d-c8855e7908c0/prove-youre-a-robot-showcase-edited.mp4)**
+
+![Animated preview of the recording](docs/showcase.webp)
+
+### Key moments
+
+| Deliberate miss: piece released 164 px short, attempt 2 | Retry: piece.x = 425, Slide verified |
+|---|---|
+| ![Slide rejected](docs/slide-rejected.png) | ![Slide verified](docs/slide-verified.png) |
+
+| Dial dragged to +58°, robot upright | Four cone tiles selected, barrel left alone |
+|---|---|
+| ![Rotate verified](docs/rotate-verified.png) | ![Tiles selected](docs/tiles-selected.png) |
+
+| Jigsaw piece seated at exactly (123, 42) | Corridor traced 100 % without a breach |
+|---|---|
+| ![Jigsaw seated](docs/jigsaw-seated.png) | ![Trace verified](docs/trace-verified.png) |
+
+| Certified Robot #5 — 6 attempts, 1 retry | Printable certificate view |
+|---|---|
+| ![Certificate](docs/certificate.png) | ![Printable certificate](docs/printable.png) |
 
 ## Project layout
 
