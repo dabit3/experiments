@@ -26,13 +26,13 @@ interface Props {
   apiRef: RefObject<ViewerApi | null>
 }
 
-const TARGET = new THREE.Vector3(0, 0.05, 0)
+const TARGET = new THREE.Vector3(0.05, 0.02, 0)
 
 const VIEW_POSITIONS: Record<ViewId, THREE.Vector3> = {
-  hero: new THREE.Vector3(3.1, 1.7, 3.3),
-  side: new THREE.Vector3(0.1, 0.55, 4.7),
-  heel: new THREE.Vector3(-4.5, 1.2, 0.5),
-  top: new THREE.Vector3(0.05, 4.7, 0.6),
+  hero: new THREE.Vector3(3.0, 1.5, 3.4),
+  side: new THREE.Vector3(0.05, 0.5, 4.8),
+  heel: new THREE.Vector3(-4.6, 1.1, 0.7),
+  top: new THREE.Vector3(0.05, 4.8, 0.5),
 }
 
 // Software/low-end GPUs: draw at reduced resolution while the camera moves,
@@ -40,8 +40,8 @@ const VIEW_POSITIONS: Record<ViewId, THREE.Vector3> = {
 const MOTION_SCALE = 0.5
 const IDLE_SCALE = 1
 
-const SELECT_COLOR = new THREE.Color('#4de3ff')
-const HOVER_COLOR = new THREE.Color('#ffffff')
+const SELECT_COLOR = new THREE.Color('#ff5a1f')
+const HOVER_COLOR = new THREE.Color('#111111')
 
 interface Rig {
   renderer: THREE.WebGLRenderer
@@ -71,21 +71,21 @@ function applyFinish(mat: THREE.MeshStandardMaterial, color: string, finish: Fin
   mat.color.set(color)
   switch (finish) {
     case 'matte':
-      mat.roughness = 0.9
+      mat.roughness = 0.62
       mat.metalness = 0
       mat.envMap = null
       break
     case 'gloss':
-      mat.roughness = 0.2
+      mat.roughness = 0.18
       mat.metalness = 0.05
       mat.envMap = env
-      mat.envMapIntensity = 0.35
+      mat.envMapIntensity = 0.4
       break
     case 'metallic':
-      mat.roughness = 0.3
+      mat.roughness = 0.28
       mat.metalness = 1
       mat.envMap = env
-      mat.envMapIntensity = 1.5
+      mat.envMapIntensity = 1.4
       break
   }
   mat.needsUpdate = true
@@ -111,19 +111,19 @@ function makeBlobShadow(): THREE.Mesh {
   const ctx = canvas.getContext('2d')
   if (ctx) {
     const g = ctx.createRadialGradient(size / 2, size / 2, size * 0.1, size / 2, size / 2, size / 2)
-    g.addColorStop(0, 'rgba(0,0,0,0.55)')
-    g.addColorStop(0.6, 'rgba(0,0,0,0.22)')
+    g.addColorStop(0, 'rgba(0,0,0,0.34)')
+    g.addColorStop(0.55, 'rgba(0,0,0,0.12)')
     g.addColorStop(1, 'rgba(0,0,0,0)')
     ctx.fillStyle = g
     ctx.fillRect(0, 0, size, size)
   }
   const tex = new THREE.CanvasTexture(canvas)
   const mesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(4.2, 2.4),
+    new THREE.PlaneGeometry(4.6, 2.2),
     new THREE.MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false }),
   )
   mesh.rotation.x = -Math.PI / 2
-  mesh.position.y = -0.44
+  mesh.position.set(0.05, -0.615, 0)
   mesh.renderOrder = -1
   return mesh
 }
@@ -137,7 +137,7 @@ function makeHullMaterial(): THREE.MeshBasicMaterial {
   mat.onBeforeCompile = (shader) => {
     shader.vertexShader = shader.vertexShader.replace(
       '#include <begin_vertex>',
-      'vec3 transformed = position + normal * 0.022;',
+      'vec3 transformed = position + normal * 0.018;',
     )
   }
   return mat
@@ -182,7 +182,7 @@ function createRig(container: HTMLDivElement): Rig {
   const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' })
   renderer.setClearColor(0x000000, 0)
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.05
+  renderer.toneMappingExposure = 1.0
   container.appendChild(renderer.domElement)
 
   const scene = new THREE.Scene()
@@ -198,22 +198,23 @@ function createRig(container: HTMLDivElement): Rig {
   controls.target.copy(TARGET)
   controls.enableDamping = true
   controls.dampingFactor = 0.1
-  controls.minDistance = 2.2
+  controls.minDistance = 2.4
   controls.maxDistance = 9
   controls.maxPolarAngle = Math.PI * 0.52
   controls.enablePan = false
   controls.autoRotateSpeed = 2.2
 
-  const key = new THREE.DirectionalLight(0xfff4e6, 2.0)
-  key.position.set(3, 5, 2.5)
+  // Studio three-point setup: warm key from the front-right, cool fill, and a top rim.
+  const key = new THREE.DirectionalLight(0xfff6ea, 2.1)
+  key.position.set(3.5, 4.5, 3)
   scene.add(key)
-  const fill = new THREE.DirectionalLight(0xbfd6ff, 0.8)
-  fill.position.set(-4, 2, -3)
+  const fill = new THREE.DirectionalLight(0xdfe8ff, 0.9)
+  fill.position.set(-4, 2, -2.5)
   scene.add(fill)
-  const rim = new THREE.DirectionalLight(0xffffff, 0.5)
-  rim.position.set(0, 3, -5)
+  const rim = new THREE.DirectionalLight(0xffffff, 0.7)
+  rim.position.set(-1, 4, -5)
   scene.add(rim)
-  scene.add(new THREE.HemisphereLight(0xe6edff, 0x3a3f4d, 1.1))
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xb9b4ad, 0.9))
 
   scene.add(makeBlobShadow())
 

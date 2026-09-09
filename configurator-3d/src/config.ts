@@ -1,13 +1,26 @@
-export const PART_IDS = ['sole', 'upper', 'laces', 'tongue', 'heel', 'stripe'] as const
+export const PART_IDS = ['upper', 'overlays', 'stripe', 'laces', 'tongue', 'heel', 'sole', 'outsole'] as const
 export type PartId = (typeof PART_IDS)[number]
 
 export const PART_LABELS: Record<PartId, string> = {
-  sole: 'Sole',
-  upper: 'Upper',
+  upper: 'Base',
+  overlays: 'Overlays',
+  stripe: 'Swoosh',
   laces: 'Laces',
   tongue: 'Tongue',
   heel: 'Heel tab',
-  stripe: 'Stripe',
+  sole: 'Midsole',
+  outsole: 'Outsole',
+}
+
+export const PART_HINTS: Record<PartId, string> = {
+  upper: 'Quarter, vamp & collar',
+  overlays: 'Toe cap, mudguard, eyestay & heel',
+  stripe: 'Both sides',
+  laces: 'Flat laces & tips',
+  tongue: 'Padded tongue',
+  heel: 'Engraved pull tab',
+  sole: 'Cupsole wall',
+  outsole: 'Rubber base',
 }
 
 export const FINISHES = ['matte', 'gloss', 'metallic'] as const
@@ -44,32 +57,34 @@ export interface SneakerConfig {
 export const MAX_TEXT = 8
 
 export const PALETTE: { hex: string; name: string }[] = [
-  { hex: '#f5f2eb', name: 'Chalk' },
-  { hex: '#111111', name: 'Onyx' },
-  { hex: '#1b2a49', name: 'Navy' },
-  { hex: '#8d99ae', name: 'Slate' },
-  { hex: '#d62828', name: 'Crimson' },
-  { hex: '#f77f00', name: 'Tangerine' },
-  { hex: '#fcbf49', name: 'Saffron' },
-  { hex: '#c9a227', name: 'Gold' },
-  { hex: '#2a9d8f', name: 'Jade' },
-  { hex: '#b8f2e6', name: 'Mint' },
-  { hex: '#3ec1d3', name: 'Aqua' },
-  { hex: '#3a86ff', name: 'Cobalt' },
-  { hex: '#7b2cbf', name: 'Violet' },
-  { hex: '#ff5d8f', name: 'Bubblegum' },
-  { hex: '#7f5539', name: 'Cocoa' },
-  { hex: '#e0c097', name: 'Sand' },
+  { hex: '#f4f4f2', name: 'White' },
+  { hex: '#e8e2d2', name: 'Sail' },
+  { hex: '#111111', name: 'Black' },
+  { hex: '#8b8f96', name: 'Wolf Grey' },
+  { hex: '#1c2841', name: 'Obsidian' },
+  { hex: '#1f4bd8', name: 'Royal' },
+  { hex: '#3cc4d4', name: 'Aqua' },
+  { hex: '#1f6b4a', name: 'Gorge Green' },
+  { hex: '#ceff00', name: 'Volt' },
+  { hex: '#f2c230', name: 'Team Gold' },
+  { hex: '#f26a1b', name: 'Orange' },
+  { hex: '#c8102e', name: 'University Red' },
+  { hex: '#f5b6cd', name: 'Pink Foam' },
+  { hex: '#5b2a86', name: 'Court Purple' },
+  { hex: '#6b4a2b', name: 'Baroque Brown' },
+  { hex: '#c98d5a', name: 'Gum' },
 ]
 
 export const DEFAULT_CONFIG: SneakerConfig = {
   parts: {
-    sole: { color: '#f5f2eb', finish: 'matte' },
-    upper: { color: '#1b2a49', finish: 'matte' },
-    laces: { color: '#f5f2eb', finish: 'matte' },
-    tongue: { color: '#8d99ae', finish: 'matte' },
+    upper: { color: '#f4f4f2', finish: 'matte' },
+    overlays: { color: '#f4f4f2', finish: 'matte' },
+    stripe: { color: '#111111', finish: 'gloss' },
+    laces: { color: '#f4f4f2', finish: 'matte' },
+    tongue: { color: '#f4f4f2', finish: 'matte' },
     heel: { color: '#111111', finish: 'matte' },
-    stripe: { color: '#f77f00', finish: 'gloss' },
+    sole: { color: '#f4f4f2', finish: 'matte' },
+    outsole: { color: '#c98d5a', finish: 'matte' },
   },
   text: '',
   view: 'hero',
@@ -98,7 +113,7 @@ function isView(v: string): v is ViewId {
   return (VIEWS as readonly string[]).includes(v)
 }
 
-/** Serialise a config to a URL hash such as `#sole=f5f2eb.matte&upper=...&text=DEVIN&view=hero&spin=1`. */
+/** Serialise a config to a URL hash such as `#upper=f4f4f2.matte&stripe=...&text=DEVIN&view=hero&spin=1`. */
 export function encodeConfig(config: SneakerConfig): string {
   const params = new URLSearchParams()
   for (const id of PART_IDS) {
@@ -158,9 +173,27 @@ export function mulberry32(seed: number): () => number {
 export function randomConfig(seed: number, base: SneakerConfig): SneakerConfig {
   const rand = mulberry32(seed)
   const pick = <T,>(arr: readonly T[]): T => arr[Math.floor(rand() * arr.length)]
-  const parts = {} as Record<PartId, PartStyle>
-  for (const id of PART_IDS) {
-    parts[id] = { color: pick(PALETTE).hex, finish: pick(FINISHES) }
+  // Curated colourways: a base, one or two accents and a neutral sole rather than eight dice rolls.
+  const neutrals = PALETTE.slice(0, 5)
+  const accents = PALETTE.slice(5)
+  const finishFor = (): Finish => {
+    const r = rand()
+    return r < 0.7 ? 'matte' : r < 0.9 ? 'gloss' : 'metallic'
+  }
+  const baseColor = pick(rand() < 0.5 ? neutrals : accents).hex
+  const accent = pick(accents).hex
+  const accent2 = pick(accents).hex
+  const neutral = pick(neutrals).hex
+  const soleColor = pick([...neutrals.slice(0, 3), PALETTE[PALETTE.length - 1]]).hex
+  const parts: Record<PartId, PartStyle> = {
+    upper: { color: baseColor, finish: finishFor() },
+    overlays: { color: rand() < 0.5 ? baseColor : accent2, finish: finishFor() },
+    stripe: { color: accent, finish: finishFor() },
+    laces: { color: rand() < 0.6 ? neutral : accent, finish: 'matte' },
+    tongue: { color: rand() < 0.6 ? baseColor : neutral, finish: 'matte' },
+    heel: { color: rand() < 0.5 ? accent : neutral, finish: finishFor() },
+    sole: { color: rand() < 0.75 ? soleColor : accent2, finish: 'matte' },
+    outsole: { color: soleColor, finish: 'matte' },
   }
   return { ...base, parts }
 }

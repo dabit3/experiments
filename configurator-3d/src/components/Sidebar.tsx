@@ -4,6 +4,7 @@ import {
   FINISH_LABELS,
   MAX_TEXT,
   PALETTE,
+  PART_HINTS,
   PART_IDS,
   PART_LABELS,
   normalizeHex,
@@ -42,8 +43,9 @@ export function Sidebar({ config, selected, onSelect, onUpdatePart, onText, shar
     <aside className="sidebar">
       <section className="panel">
         <header className="panel-head">
+          <span className="panel-index">01</span>
           <h2>Parts</h2>
-          <span className="panel-sub">Click on the shoe or in the list</span>
+          <span className="panel-sub">Click the shoe or pick from the list</span>
         </header>
         <ul className="part-list">
           {PART_IDS.map((id) => {
@@ -58,8 +60,14 @@ export function Sidebar({ config, selected, onSelect, onUpdatePart, onText, shar
                   onClick={() => onSelect(active ? null : id)}
                   data-testid={`part-${id}`}
                 >
-                  <span className="part-swatch" style={{ background: style.color }} />
-                  <span className="part-name">{PART_LABELS[id]}</span>
+                  <span
+                    className={`part-swatch finish-${style.finish} ${relativeLuminance(style.color) > 0.75 ? 'is-light' : ''}`}
+                    style={{ background: style.color }}
+                  />
+                  <span className="part-text">
+                    <span className="part-name">{PART_LABELS[id]}</span>
+                    <span className="part-hint">{PART_HINTS[id]}</span>
+                  </span>
                   <span className="part-meta">
                     <code>{style.color.toUpperCase()}</code>
                     <span className={`chip chip-${style.finish}`}>{FINISH_LABELS[style.finish]}</span>
@@ -73,6 +81,7 @@ export function Sidebar({ config, selected, onSelect, onUpdatePart, onText, shar
 
       <section className={`panel ${current ? '' : 'is-disabled'}`} aria-disabled={!current}>
         <header className="panel-head">
+          <span className="panel-index">02</span>
           <h2>{selected ? `${PART_LABELS[selected]} colour` : 'Colour'}</h2>
           <span className="panel-sub">{current ? 'Pick a swatch or type a hex' : 'Select a part first'}</span>
         </header>
@@ -85,7 +94,7 @@ export function Sidebar({ config, selected, onSelect, onUpdatePart, onText, shar
                 type="button"
                 role="option"
                 aria-selected={active}
-                className={`swatch ${active ? 'is-active' : ''} ${relativeLuminance(p.hex) > 0.6 ? 'is-light' : ''}`}
+                className={`swatch ${active ? 'is-active' : ''} ${relativeLuminance(p.hex) > 0.75 ? 'is-light' : ''}`}
                 style={{ background: p.hex }}
                 title={`${p.name} ${p.hex.toUpperCase()}`}
                 disabled={!current}
@@ -127,6 +136,7 @@ export function Sidebar({ config, selected, onSelect, onUpdatePart, onText, shar
 
       <section className={`panel ${current ? '' : 'is-disabled'}`} aria-disabled={!current}>
         <header className="panel-head">
+          <span className="panel-index">03</span>
           <h2>Finish</h2>
           <span className="panel-sub">{current ? `Applied to the ${PART_LABELS[selected!].toLowerCase()}` : 'Select a part first'}</span>
         </header>
@@ -150,6 +160,7 @@ export function Sidebar({ config, selected, onSelect, onUpdatePart, onText, shar
 
       <section className="panel">
         <header className="panel-head">
+          <span className="panel-index">04</span>
           <h2>Engraving</h2>
           <span className="panel-sub">Stitched onto the heel tab</span>
         </header>
@@ -174,6 +185,7 @@ export function Sidebar({ config, selected, onSelect, onUpdatePart, onText, shar
 
       <section className="panel">
         <header className="panel-head">
+          <span className="panel-index">05</span>
           <h2>Share</h2>
           <span className="panel-sub">The URL encodes the whole design</span>
         </header>
@@ -198,8 +210,9 @@ export function Sidebar({ config, selected, onSelect, onUpdatePart, onText, shar
 
       <div className="sidebar-footer">
         <button type="button" className="btn primary large" onClick={onDownload} data-testid="download-png">
-          <span aria-hidden="true">⤓</span> Download PNG
+          Download PNG <span aria-hidden="true">⤓</span>
         </button>
+        <span className="footer-note">Transparent PNG of the current camera view</span>
       </div>
     </aside>
   )
