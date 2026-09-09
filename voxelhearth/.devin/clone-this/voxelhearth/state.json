@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "source": "Minecraft",
+  "clone_name": "Voxelhearth",
+  "clone_root": "/Users/devin/repos/experiments/voxelhearth",
+  "status": "active",
+  "iteration": 0,
+  "revision": "sha256:c644667f73616de96f711a6b5c97000cc8516fc051be6cec4690be2a4fda2bc0",
+  "frontier": [],
+  "blockers": [],
+  "unverified_assumptions": [],
+  "items": [],
+  "audits": [
+    {
+      "id": "source",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "navigation",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "roles",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "states",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "responsive",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "data",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "assets",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "accessibility",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "reliability",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "rebrand",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "functional",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "visual",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "build",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "quality",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "security",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    }
+  ],
+  "sweeps": [],
+  "next_action": "Inspect the source entry point and record the first routes and discovery branches."
+}

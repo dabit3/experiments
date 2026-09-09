@@ -1,0 +1,21 @@
+# Node (test harness)
+test/node_modules/
+
+# Dart / Flutter build output
+**/.dart_tool/
+**/build/
+app/.flutter-plugins-dependencies
+app/*.iml
+server/.packages
+
+# Local server saves and scratch
+server/saves/
+*.log
+
+# Large binary evidence is attached to the PR, not committed
+.devin/clone-this/**/*.png
+.devin/clone-this/**/*.jpg
+.devin/clone-this/**/*.mp4
+.devin/clone-this/**/*.mov
+.devin/clone-this/**/*.webm
+.devin/clone-this/**/*.zip
