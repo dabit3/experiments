@@ -176,13 +176,15 @@ the four-way run on a host with virtualization.
 ```sh
 (cd packages/gambit_court_core && dart test && dart analyze && dart format --set-exit-if-changed .)
 (cd server && dart test && dart analyze && dart format --set-exit-if-changed .)
-(cd app && flutter analyze && dart format --set-exit-if-changed lib)
+(cd app && flutter test && flutter analyze && dart format --set-exit-if-changed lib test)
+shellcheck test/multiplayer-e2e.sh && node --check test/e2e/run.mjs
 ```
 
 The core tests cover perft-style move counts, every special rule, SAN and PGN
 round trips and engine determinism; the server tests run real WebSocket
 clients through rooms, clocks, timeouts, takebacks, spectators, reconnection
-and bots.
+and bots; the app widget tests cover board rendering, hit-testing in both
+orientations and layout in both themes.
 
 ## Screenshots and recording
 
