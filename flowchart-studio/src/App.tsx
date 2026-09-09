@@ -452,7 +452,14 @@ export default function App() {
               {hasSelection && (
                 <>
                   {' '}
-                  · <b>{selection.nodes.length + selection.edges.length}</b> selected
+                  · <b>{selection.nodes.length}</b> {selection.nodes.length === 1 ? 'node' : 'nodes'}
+                  {selection.edges.length > 0 && (
+                    <>
+                      {' '}
+                      + <b>{selection.edges.length}</b> {selection.edges.length === 1 ? 'edge' : 'edges'}
+                    </>
+                  )}{' '}
+                  selected
                 </>
               )}
             </span>
