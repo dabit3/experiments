@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gambit_court_core/gambit_court_core.dart';
@@ -321,7 +322,7 @@ class _ClockDisplayState extends State<ClockDisplay> {
     if (!running || !widget.active) return base;
     final elapsed =
         DateTime.now().millisecondsSinceEpoch - widget.receivedLocalMs;
-    return (base - elapsed).clamp(0, 1 << 40);
+    return max(0, base - elapsed);
   }
 
   @override
