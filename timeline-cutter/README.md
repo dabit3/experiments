@@ -63,11 +63,11 @@ Goal: assemble a 20-second sequence and export a correct EDL.
 | 2 | Drag the right (tail) trim handle of Sunrise Gradient left by ~2 s | Clip A ≈ 4.0 s, later clips ripple left, sequence ≈ 24 s |
 | 3 | Scrub the playhead to 00:00:13:00 (inside Neon Grid) and press `S` | Neon Grid splits into two 4 s halves; V1 has 5 clips |
 | 4 | Click the second half of Neon Grid and press `Delete` | Ripple delete: Forest Bokeh slides left, sequence = 20.00 s |
-| 5 | Drag Forest Bokeh left until it snaps to the start of Ocean Waves and release | Order becomes A, D, B, C — no gaps |
-| 6 | Park the playhead over a clip and press `T` | A 4 s "Timeline Cutter" title appears on T1 and is composited in the monitor |
-| 7 | Drag the playhead back and forth across the Ocean Waves → Neon Grid cut | Monitor switches between the blue waves and the neon grid in real time |
-| 8 | **Export EDL → JSON**, then inspect `~/Downloads/timeline-cutter-edl.json` | 4 video events (A 4 s, D 7 s, B 5 s, C 4 s), `sequenceDuration` 20, one title event |
+| 5 | Drag Forest Bokeh left until it snaps to the end of Ocean Waves and release | Order becomes A, B, D, C — no gaps |
+| 6 | Park the playhead over a clip, press `T`, rename the title in the inspector | A 4 s title (e.g. "Morning Cut") appears on T1 and is composited in the monitor |
+| 7 | Drag the playhead across the Ocean Waves → Forest Bokeh cut at ~00:00:09:01 | Monitor switches from the blue waves to the green bokeh in real time |
+| 8 | **Export EDL → JSON**, then inspect `~/Downloads/timeline-cutter-edl.json` | 4 video events (A ≈4.02 s, B 5 s, D 7 s, C ≈4.01 s), `sequenceDuration` ≈20.03, one title event |
 
 ## Recording
 
-Recording of Devin performing the scenario in Chrome: _pending — link added after the showcase run_.
+Recording of Devin performing the scenario in Chrome: https://app.devin.ai/attachments/9ad24747-4ad6-49e3-8e1f-5e90ce7549c7/timeline-cutter-showcase-edited.mp4
