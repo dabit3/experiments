@@ -49,8 +49,8 @@ npm run lint     # oxlint
 
 ## Recording
 
-- Recording (mp4): _recording link placeholder_
-- Animated preview (webp): _preview link placeholder_
+- Recording (mp4): https://app.devin.ai/attachments/7d5adc83-9b01-4d7c-b535-bcee98bd7ebd/keyboard-only-gauntlet-showcase.mp4
+- Animated preview (webp): https://app.devin.ai/attachments/f22d9dad-d809-40bf-b17c-d68ba9567153/keyboard-only-gauntlet-preview.webp
 
 ## Project layout
 
