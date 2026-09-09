@@ -44,10 +44,10 @@ performed the following scenario end to end while recording:
 1. Confirmed the HUD shows `040` mines, a smiling face and a timer at `000`, and that the
    Intermediate tab (16×16 · 40 mines) is active with seed `1234`.
 2. Left-clicked the centre cell (row 7, column 7, zero-indexed) to open the board. Because the
-   first click is safe, this always opens the same 12-cell pocket for seed 1234.
+   first click is safe, this always opens the same 15-cell pocket for seed 1234.
 3. Worked outwards from the opening by deduction: right-clicked to plant a flag on every cell
    proven to be a mine, and middle-clicked satisfied numbers to chord-reveal their neighbours
-   (chord clicks are used many times, well over the required two).
+   (dozens of chord clicks in total, well over the required two).
 4. Continued until all 216 safe cells were revealed. The game flags the remaining mines itself.
 5. Verified the win state: sunglasses face, mine counter `000`, timer frozen, status line
    "Cleared! Every mine is flagged.", and the Intermediate best time saved in the sidebar.
@@ -58,7 +58,14 @@ on the winning click and the best-times panel shows that time for Intermediate w
 
 ### Recording
 
-**[Watch the full recording (mp4)](RECORDING_URL_PLACEHOLDER)**
+**[Watch the full recording (mp4)](https://app.devin.ai/attachments/ba4a1426-ecdd-4792-b1be-4dbe56d4429b/minesweeper-lab-showcase.mp4)**
+
+![Animated preview of the showcase run](https://app.devin.ai/attachments/db2e6e0e-25e9-48fa-b0ea-adecc358fbf8/minesweeper-lab-preview.webp)
+
+Result: the recorded game was won with the timer stopping at 145 s and the mine counter at `000`.
+An earlier attempt on the same seed hit a mine; the loss state (all mines revealed, the hit mine
+highlighted, wrong flags crossed out) is captured in the PR screenshots, after which the board was
+restarted with the same seed and cleared.
 
 ## Project layout
 
