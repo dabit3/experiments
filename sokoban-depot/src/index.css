@@ -1,0 +1,80 @@
+:root {
+  --bg: #12141b;
+  --bg-2: #181b24;
+  --panel: #1f2330;
+  --panel-2: #262b3a;
+  --border: #2f3547;
+  --border-hi: #3d4560;
+  --text: #e6e9f2;
+  --text-2: #a4acc2;
+  --text-3: #6f788f;
+  --accent: #f7c325;
+  --accent-2: #ffd75e;
+  --accent-ink: #2a2005;
+  --danger: #ff6b57;
+  --success: #4fd18b;
+  --shadow: 0 18px 40px -20px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --sans:
+    'Inter', 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--text);
+  background-color: var(--bg);
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 20% -10%, rgba(247, 195, 37, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(79, 209, 139, 0.05), transparent 60%),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.012) 0 14px,
+      transparent 14px 28px
+    ),
+    var(--bg);
+  background-attachment: fixed;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
