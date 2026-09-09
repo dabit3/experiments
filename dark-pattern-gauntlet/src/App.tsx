@@ -125,7 +125,8 @@ export default function App() {
             </svg>
             {traps.length} {traps.length === 1 ? 'trap' : 'traps'}
           </span>
-          <span className="stat stat-timer" title="Elapsed time">
+          <span className={`stat stat-timer ${finished ? 'stat-frozen' : ''}`} title="Elapsed time">
+            <span className="stat-dot" aria-hidden="true" />
             <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
               <path
                 d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm-1 3v6l4.5 2.7 1-1.7-3.5-2.1V7h-2z"
@@ -137,7 +138,14 @@ export default function App() {
         </div>
       </header>
 
-      <div className="progress" role="progressbar" aria-valuemin={0} aria-valuemax={TOTAL_STEPS} aria-valuenow={step - 1}>
+      <div
+        className="progress"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={TOTAL_STEPS}
+        aria-valuenow={step - 1}
+        aria-label="Dark patterns defeated"
+      >
         {PATTERNS.map((p) => (
           <span
             key={p.id}
@@ -147,15 +155,55 @@ export default function App() {
         ))}
       </div>
 
-      <main className="stage">
-        {Screen ? (
-          <div className="card" key={`${run}-${step}`}>
-            <Screen onDefeat={onDefeat} onTrap={onTrap} />
+      <div className="layout">
+        <aside className="dossier" aria-label="Pattern dossier">
+          <div className="dossier-head">
+            <span className="dossier-kicker">Dossier</span>
+            <span className="dossier-count mono">
+              {Math.min(step - 1, TOTAL_STEPS)}/{TOTAL_STEPS}
+            </span>
           </div>
-        ) : (
-          <Success key={`success-${run}`} elapsedMs={elapsed} traps={traps} onRestart={restart} />
-        )}
-      </main>
+          <ol className="dossier-list">
+            {PATTERNS.map((p) => {
+              const state = p.id < step ? 'done' : p.id === step ? 'active' : 'locked'
+              return (
+                <li key={p.id} className={`dossier-item ${state}`}>
+                  <span className="dossier-pip" aria-hidden="true">
+                    {state === 'done' ? (
+                      <svg viewBox="0 0 24 24" width="12" height="12">
+                        <path
+                          d="M5 12.5l4.5 4.5L19 7.5"
+                          stroke="currentColor"
+                          strokeWidth="3.2"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    ) : (
+                      p.id
+                    )}
+                  </span>
+                  <span className="dossier-text">
+                    <strong>{state === 'locked' ? 'Classified' : state === 'active' ? 'Pattern in play' : p.name}</strong>
+                    <small>{state === 'done' ? p.trick : state === 'active' ? 'Spot the trick to reveal it.' : 'Unlocks after the previous screen.'}</small>
+                  </span>
+                </li>
+              )
+            })}
+          </ol>
+        </aside>
+
+        <main className="stage">
+          {Screen ? (
+            <div className="card" key={`${run}-${step}`}>
+              <Screen onDefeat={onDefeat} onTrap={onTrap} />
+            </div>
+          ) : (
+            <Success key={`success-${run}`} elapsedMs={elapsed} traps={traps} onRestart={restart} />
+          )}
+        </main>
+      </div>
 
       <div className="toasts" aria-live="polite">
         {toasts.map((t) => (
@@ -163,7 +211,7 @@ export default function App() {
             <span className="toast-icon" aria-hidden="true">
               {t.kind === 'defeat' ? '✓' : '!'}
             </span>
-            {t.text}
+            <span className="toast-text">{t.text}</span>
           </div>
         ))}
       </div>

@@ -8,9 +8,37 @@ interface SuccessProps {
   onRestart: () => void
 }
 
+const CONFETTI_COLOURS = ['#7c5cff', '#c46bff', '#5ee1ff', '#34e59a', '#ffb547', '#ff5d73']
+
+const CONFETTI = Array.from({ length: 36 }, (_, i) => ({
+  x: `${(i * 37) % 100}%`,
+  size: `${8 + ((i * 7) % 8)}px`,
+  colour: CONFETTI_COLOURS[i % CONFETTI_COLOURS.length],
+  duration: `${2.6 + ((i * 13) % 10) / 10}s`,
+  delay: `${((i * 11) % 14) / 10}s`,
+  drift: `${((i * 23) % 120) - 60}px`,
+  rotation: `${((i * 71) % 720) - 360}deg`,
+}))
+
 export function Success({ elapsedMs, traps, onRestart }: SuccessProps) {
   return (
     <div className="card success">
+      <div className="confetti" aria-hidden="true">
+        {CONFETTI.map((c, i) => (
+          <i
+            key={i}
+            style={{
+              ['--x' as string]: c.x,
+              ['--s' as string]: c.size,
+              ['--c' as string]: c.colour,
+              ['--d' as string]: c.duration,
+              ['--delay' as string]: c.delay,
+              ['--drift' as string]: c.drift,
+              ['--rot' as string]: c.rotation,
+            }}
+          />
+        ))}
+      </div>
       <div className="success-badge" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="40" height="40">
           <path
@@ -45,8 +73,8 @@ export function Success({ elapsedMs, traps, onRestart }: SuccessProps) {
       </div>
 
       <ol className="defeated-list">
-        {PATTERNS.map((p) => (
-          <li key={p.id}>
+        {PATTERNS.map((p, i) => (
+          <li key={p.id} style={{ ['--i' as string]: i }}>
             <span className="defeated-check" aria-hidden="true">
               ✓
             </span>
