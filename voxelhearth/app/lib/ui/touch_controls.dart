@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../game/game_controller.dart';
 import 'game_screen.dart';
-import 'theme.dart';
+import 'pixel.dart';
 
 /// Virtual joystick (bottom-left) and action buttons (bottom-right) for
 /// phones and tablets. The world layer beneath handles look / break.
@@ -58,7 +58,7 @@ class _TouchControlsState extends State<TouchControls> {
     final g = widget.game;
     final size = MediaQuery.sizeOf(context);
     final compact = size.shortestSide < 500;
-    final btn = compact ? 54.0 : 64.0;
+    final btn = compact ? 60.0 : 64.0;
     return SafeArea(
       child: Stack(
         children: [
@@ -86,7 +86,7 @@ class _TouchControlsState extends State<TouchControls> {
           ),
           // Action cluster
           Positioned(
-            right: VhSpace.md,
+            right: 12,
             bottom: compact ? 84 : 112,
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -96,7 +96,7 @@ class _TouchControlsState extends State<TouchControls> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     _Btn(icon: Icons.add_box_outlined, label: 'Place', size: btn, onTap: g.use),
-                    const SizedBox(width: VhSpace.sm),
+                    const SizedBox(width: 8),
                     _HoldBtn(
                       icon: g.flying ? Icons.arrow_upward_rounded : Icons.keyboard_double_arrow_up_rounded,
                       label: g.flying ? 'Up' : 'Jump',
@@ -106,13 +106,13 @@ class _TouchControlsState extends State<TouchControls> {
                     ),
                   ],
                 ),
-                const SizedBox(height: VhSpace.sm),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (g.isCreative)
                       Padding(
-                        padding: const EdgeInsets.only(right: VhSpace.sm),
+                        padding: const EdgeInsets.only(right: 8),
                         child: _Btn(
                           icon: Icons.flight_rounded,
                           label: 'Fly',
@@ -150,43 +150,34 @@ class _StickPainter extends CustomPainter {
   void paint(Canvas c, Size s) {
     final ctr = center ?? rest;
     final active = center != null;
-    c.drawCircle(ctr, radius, Paint()..color = Colors.black.withValues(alpha: active ? 0.35 : 0.22));
-    c.drawCircle(
-      ctr,
-      radius,
-      Paint()
-        ..color = Colors.white.withValues(alpha: active ? 0.5 : 0.25)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5,
-    );
-    // sprint ring hint
-    c.drawCircle(
-      ctr,
-      radius * 0.92,
-      Paint()
-        ..color = VhColors.gold.withValues(alpha: knob.distance > radius * 0.9 ? 0.8 : 0.0)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 2,
-    );
+    // Square d-pad: three arms around a centre, like the classic touch layout.
+    final arm = radius * 0.62;
+    final fill = Paint()..color = Colors.black.withValues(alpha: active ? 0.4 : 0.3);
+    final line = Paint()
+      ..color = Colors.white.withValues(alpha: active ? 0.9 : 0.6)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2;
+    final cells = [Offset(0, -arm), Offset(-arm, 0), Offset(arm, 0), Offset(0, arm), Offset.zero];
+    for (final o in cells) {
+      final r = Rect.fromCenter(center: ctr + o, width: arm, height: arm);
+      c.drawRect(r, fill);
+      c.drawRect(r, line);
+    }
+    final sprinting = knob.distance > radius * 0.9;
     final k = ctr + knob;
-    c.drawCircle(k, radius * 0.42, Paint()..color = Colors.white.withValues(alpha: active ? 0.85 : 0.45));
-    c.drawCircle(
-      k,
-      radius * 0.42,
-      Paint()
-        ..color = Colors.black.withValues(alpha: 0.25)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1,
+    c.drawRect(
+      Rect.fromCenter(center: k, width: arm * 0.8, height: arm * 0.8),
+      Paint()..color = (sprinting ? Px.yellow : Colors.white).withValues(alpha: active ? 0.9 : 0.5),
     );
     if (!active) {
-      final p = Paint()..color = Colors.white.withValues(alpha: 0.5);
+      final p = Paint()..color = Colors.white.withValues(alpha: 0.85);
       for (final a in [0.0, math.pi / 2, math.pi, 3 * math.pi / 2]) {
         final d = Offset(math.cos(a), math.sin(a));
-        final tip = ctr + d * (radius * 0.72);
+        final tip = ctr + d * arm;
         final path = Path()
-          ..moveTo(tip.dx + d.dx * 5, tip.dy + d.dy * 5)
-          ..lineTo(tip.dx - d.dy * 4, tip.dy + d.dx * 4)
-          ..lineTo(tip.dx + d.dy * 4, tip.dy - d.dx * 4)
+          ..moveTo(tip.dx + d.dx * 6, tip.dy + d.dy * 6)
+          ..lineTo(tip.dx - d.dy * 5, tip.dy + d.dx * 5)
+          ..lineTo(tip.dx + d.dy * 5, tip.dy - d.dx * 5)
           ..close();
         c.drawPath(path, p);
       }
@@ -271,30 +262,25 @@ class _Round extends StatelessWidget {
   final bool pressed;
 
   @override
-  Widget build(BuildContext context) => AnimatedContainer(
-    duration: const Duration(milliseconds: 90),
-    width: size,
-    height: size,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: pressed ? VhColors.gold.withValues(alpha: 0.75) : Colors.black.withValues(alpha: 0.38),
-      border: Border.all(color: Colors.white.withValues(alpha: pressed ? 0.9 : 0.35), width: 1.5),
-      boxShadow: pressed ? [BoxShadow(color: VhColors.gold.withValues(alpha: 0.4), blurRadius: 16)] : null,
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: Colors.white, size: size * 0.42),
-        Text(
-          label,
-          style: TextStyle(
-            color: Colors.white.withValues(alpha: 0.85),
-            fontSize: size * 0.16,
-            fontFamily: 'Outfit',
-            fontWeight: FontWeight.w600,
-          ),
+  Widget build(BuildContext context) {
+    final gs = Gui.of(context);
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: pressed ? Colors.white.withValues(alpha: 0.55) : Colors.black.withValues(alpha: 0.35),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: pressed ? 1 : 0.6),
+          width: gs.toDouble(),
         ),
-      ],
-    ),
-  );
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: pressed ? Colors.black : Colors.white, size: size * (size >= 30.0 * gs ? 0.42 : 0.55)),
+          if (size >= 30.0 * gs) PxText(label, color: pressed ? Colors.black : Px.white, shadow: !pressed),
+        ],
+      ),
+    );
+  }
 }

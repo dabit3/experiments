@@ -49,6 +49,16 @@ See `.devin/clone-this/voxelhearth/` for the run manifest and evidence.
   players rendered with name tags, synchronized block edits, chat, per-player
   inventories, reconnection with the same identity (a dropped host keeps the
   role for 30 s so a quick rejoin keeps control).
+* **Pixel GUI** — every screen (home, create/join, lobby, pause, options,
+  results, inventory, crafting, kiln, chest, HUD) is laid out on an integer
+  GUI-pixel grid (`app/lib/ui/pixel.dart`): scale 2–4 chosen from the window,
+  an original pixel typeface (Pixelify Sans, OFL), dirt-tile and dimmed
+  backgrounds, bevelled buttons/fields/list boxes, 18×18 item slots in
+  176-GUI-px-wide panels, a 182×22 hotbar with 10-heart/10-food rows and an XP
+  bar above it, drop-shadowed text and a light-grey crosshair. Mobile runs
+  landscape-only with a square d-pad and squared action buttons. Proportions
+  follow the publicly documented conventions of the genre; textures, icons,
+  names and typography are original.
 * **Feedback** — original procedurally generated sound cues (UI, dig, place,
   break, craft, eat, hurt, chat, match start/end; `tools/gen_audio.py`),
   haptics on touch platforms, both toggleable in settings.
@@ -163,20 +173,30 @@ Android emulator, starts a fresh `--test-mode --seed 1234` server, then runs
    counts, world/chat fingerprints) is identical on every client;
 8. captures `home`, `lobby`, `gameplay`, `structure`, `chat` and `results`
    screenshots per platform and composes the per-platform frame captures into
-   `four-way-recording.mp4` (plus the raw Playwright `web-recording.webm`).
+   `four-way-recording.mp4` (plus the raw Playwright `web-recording.webm`);
+9. cuts an **edited review video** (`review-video.mp4`) from the same frames:
+   the run's chapter markers (lobby, gameplay, structure, breaking & chat,
+   reconnect, verification, results, visual fixtures) become title/chapter
+   cards, side-by-side web | iOS footage with platform labels, captions, a
+   chapter timeline and a closing check summary. The editor is
+   `test/tools/review-video.mjs` (`node review-video.mjs script.json out.mp4`;
+   Playwright renders the pixel-font overlays, FFmpeg composites them), driven
+   by the `review-script.json` the e2e writes next to it.
 
 Output lands in
 `.devin/clone-this/voxelhearth/evidence/tests/e2e-<timestamp>/` with
 `report.md`, `report.json`, `e2e.log`, `server.log`, per-platform logs, the
-screenshots and the recording. PNG/MP4 files are git-ignored and attached to
-the PR instead.
+screenshots, the raw recording and the edited review video. PNG/MP4 files are
+git-ignored and attached to the PR instead.
 
 ### Latest evidence
 
 `.devin/clone-this/voxelhearth/evidence/tests/` — see `report.md` in the
-newest run. The verified run covers **web + iOS Simulator + macOS**: identical
-world hash, chat hash, structure region and scoreboard across the server and
-all three clients. The Android APK builds and installs, but the Android
+newest run. The verified runs cover **web + iOS Simulator + macOS**
+(`e2e-20260909-*`) and, after the pixel-GUI design pass, a focused **web +
+iOS Simulator in parallel** run (`e2e-20260910-*`, with `review-video.mp4`):
+identical world hash, chat hash, structure region and scoreboard across the
+server and every client. The Android APK builds and installs, but the Android
 emulator on the build machine could not reach `sys.boot_completed` (nested
 virtualization — `HVF error: HV_UNSUPPORTED`, software rendering never
 finished booting), so Android has **not** been exercised in the live match.

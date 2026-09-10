@@ -329,6 +329,24 @@ class AtlasData {
     return c.future;
   }
 
+  /// A standalone 16x16 image of one tile, usable as a repeating shader.
+  Future<ui.Image> tileImage(int tile) {
+    final buf = Uint8List(Tiles.size * Tiles.size * 4);
+    for (var y = 0; y < Tiles.size; y++) {
+      for (var x = 0; x < Tiles.size; x++) {
+        final c = pixel(tile, x, y);
+        final o = (y * Tiles.size + x) * 4;
+        buf[o] = (c >> 16) & 0xff;
+        buf[o + 1] = (c >> 8) & 0xff;
+        buf[o + 2] = c & 0xff;
+        buf[o + 3] = (c >> 24) & 0xff;
+      }
+    }
+    final c = Completer<ui.Image>();
+    ui.decodeImageFromPixels(buf, Tiles.size, Tiles.size, ui.PixelFormat.rgba8888, c.complete);
+    return c.future;
+  }
+
   /// 256x2 lookup. Row 0: r=top tile, g=side tile, b=bottom tile. Row 1:
   /// r=render flag. Alpha stays opaque so premultiplication never touches
   /// the payload channels.

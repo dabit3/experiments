@@ -297,31 +297,3 @@ ThemeData buildTheme(Brightness brightness) {
     ),
   );
 }
-
-/// Platform badge colours used in rosters and results.
-Color platformColor(String platform) => switch (platform) {
-  'web' => VhColors.sky,
-  'ios' => const Color(0xffb28cff),
-  'android' => VhColors.moss,
-  'macos' => VhColors.gold,
-  'bot' => VhColors.slate300,
-  _ => VhColors.slate500,
-};
-
-IconData platformIcon(String platform) => switch (platform) {
-  'web' => Icons.language_rounded,
-  'ios' => Icons.phone_iphone_rounded,
-  'android' => Icons.android_rounded,
-  'macos' => Icons.laptop_mac_rounded,
-  'bot' => Icons.smart_toy_rounded,
-  _ => Icons.devices_other_rounded,
-};
-
-String platformLabel(String platform) => switch (platform) {
-  'web' => 'Web',
-  'ios' => 'iOS',
-  'android' => 'Android',
-  'macos' => 'macOS',
-  'bot' => 'Bot',
-  _ => platform,
-};

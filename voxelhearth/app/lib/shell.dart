@@ -10,9 +10,8 @@ import 'net/game_client.dart';
 import 'ui/game_screen.dart';
 import 'ui/home_screen.dart';
 import 'ui/lobby_screen.dart';
+import 'ui/pixel.dart';
 import 'ui/results_screen.dart';
-import 'ui/theme.dart';
-import 'ui/widgets.dart';
 
 /// Owns the network client and render assets and routes between the
 /// home, lobby, gameplay and results screens.
@@ -313,7 +312,7 @@ class _AppShellState extends State<AppShell> {
         ..resultsChatHash = 'c4a7f1x7';
     }
     client.showFixture(s);
-    await Future<void>.delayed(VhMotion.slow);
+    await Future<void>.delayed(const Duration(milliseconds: 350));
     return {'ok': true, 'screen': screen};
   }
 
@@ -362,11 +361,18 @@ class _AppShellState extends State<AppShell> {
     if (assetError != null) {
       key = 'error';
       child = Scaffold(
-        body: Center(
-          child: StateBlock(
-            icon: Icons.broken_image_outlined,
-            title: 'Could not load renderer',
-            message: '$assetError',
+        backgroundColor: Colors.black,
+        body: DirtBackground(
+          dirt: null,
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const PxText('Could not load renderer', color: Px.red),
+                const SizedBox(height: 8),
+                PxText('$assetError', color: Px.gray, maxLines: 6, align: TextAlign.center),
+              ],
+            ),
           ),
         ),
       );
@@ -384,17 +390,14 @@ class _AppShellState extends State<AppShell> {
       child = GameScreen(client: client, game: game!, settings: widget.settings, assets: a);
     } else {
       key = 'loading';
-      child = const Scaffold(body: Center(child: CircularProgressIndicator()));
+      child = Scaffold(
+        backgroundColor: Colors.black,
+        body: DirtBackground(
+          dirt: a.dirt,
+          child: const Center(child: PxText('Loading world...')),
+        ),
+      );
     }
-    return AnimatedSwitcher(
-      duration: VhMotion.slow,
-      switchInCurve: VhMotion.curve,
-      switchOutCurve: VhMotion.curve,
-      transitionBuilder: (child, anim) => FadeTransition(
-        opacity: anim,
-        child: ScaleTransition(scale: Tween(begin: 1.02, end: 1.0).animate(anim), child: child),
-      ),
-      child: KeyedSubtree(key: ValueKey(key), child: child),
-    );
+    return KeyedSubtree(key: ValueKey(key), child: child);
   }
 }

@@ -10,7 +10,7 @@
 //      VH_WEB=http://localhost:8787  VH_ANDROID_WS=ws://10.0.2.2:8787/ws
 import { chromium } from 'playwright';
 import { spawn, execFileSync, execSync } from 'node:child_process';
-import { mkdirSync, writeFileSync, readdirSync, existsSync, rmSync, appendFileSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readdirSync, existsSync, rmSync, appendFileSync, readFileSync, renameSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Director, sleep } from './lib/director.mjs';
@@ -94,11 +94,20 @@ const winid = () => {
   if (id) macWin = id;
   return macWin;
 };
+// Phone framebuffers are captured in the device's natural (portrait) orientation
+// while the app runs landscape-only, so a portrait PNG holds a 90° CW-rotated
+// scene: rotate it back so frames read upright.
+const upright = (file) => {
+  const fd = readFileSync(file);
+  if (fd.readUInt32BE(20) <= fd.readUInt32BE(16)) return;
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file, '-vf', 'transpose=2', `${file}.rot.png`]);
+  renameSync(`${file}.rot.png`, file);
+};
 const shot = {
   web: (file) => page.screenshot({ path: file }),
   macos: async (file) => { const id = winid(); if (id) sh(`screencapture -x -o -l ${id} "${file}"`); },
-  ios: async (file) => sh(`xcrun simctl io booted screenshot "${file}"`),
-  android: async (file) => execSync(`adb -s ${androidSerial} exec-out screencap -p > "${file}"`, { timeout: 120000 }),
+  ios: async (file) => { sh(`xcrun simctl io booted screenshot "${file}"`); upright(file); },
+  android: async (file) => { execSync(`adb -s ${androidSerial} exec-out screencap -p > "${file}"`, { timeout: 120000 }); upright(file); },
 };
 const snapAll = async (phase) => {
   for (const p of platforms) {
@@ -120,7 +129,14 @@ const frame = async () => {
   }));
   framing = false;
 };
-const startRecording = () => { frameTimer = setInterval(frame, 1500); };
+const startRecording = () => { frameTimer = setInterval(frame, 1200); };
+// Chapter markers (frame index at the moment of the call) feed the edited review video.
+const markers = [];
+const mark = async (title, caption, ...notes) => {
+  while (framing) await sleep(50);
+  markers.push({ frame: frameNo, title, caption, notes });
+  log('chapter', title);
+};
 const stopRecording = async () => {
   clearInterval(frameTimer);
   while (framing) await sleep(50);
@@ -142,6 +158,33 @@ const stopRecording = async () => {
   const mp4 = join(out, 'four-way-recording.mp4');
   const cmd = `ffmpeg -y -loglevel error ${inputs.join(' ')} -filter_complex "${filters.join(';')};${layout}" -map "[out]" -r 4 -pix_fmt yuv420p -shortest "${mp4}"`;
   try { sh(cmd, { timeout: 600000 }); log('recording', mp4); return mp4; } catch (e) { log('ffmpeg failed', e.message.split('\n')[0]); return null; }
+};
+// Edited review video (tools/review-video.mjs): title card, chapter cards from the
+// markers above, captioned side-by-side frames of the first two platforms, check summary.
+const LABEL = { web: 'Web (Chrome via Playwright)', ios: 'iOS Simulator', android: 'Android emulator', macos: 'macOS (native)' };
+const editReview = async () => {
+  if (process.env.VH_REVIEW === '0') return null;
+  const recorded = platforms.filter((p) => existsSync(join(out, 'frames', p)) && readdirSync(join(out, 'frames', p)).length > 0);
+  if (!recorded.length || !markers.length) return null;
+  const shown = recorded.includes('web') && recorded.includes('ios') ? ['web', 'ios'] : recorded.slice(0, 2);
+  const chapters = markers.map((m, i) => ({ title: m.title, caption: m.caption, notes: m.notes, from: m.frame, to: i + 1 < markers.length ? markers[i + 1].frame : frameNo }))
+    .filter((c) => c.to > c.from);
+  const scriptFile = join(out, 'review-script.json');
+  writeFileSync(scriptFile, JSON.stringify({
+    title: `Voxelhearth · ${shown.map((p) => NAME[p]).join(' × ')} multiplayer`,
+    subtitle: `Automated e2e · room ${ROOM} · seed ${SEED} · ${report.startedAt.slice(0, 19).replace('T', ' ')}Z`,
+    footer: `${report.failures.length ? 'FAILED' : 'PASSED'} · ${report.checks.filter((c) => c.ok).length}/${report.checks.length} checks · evidence ${out.split('/').slice(-1)[0]}`,
+    fps: 1 / 1.2,
+    sources: Object.fromEntries(shown.map((p) => [p, { frames: join(out, 'frames', p), label: LABEL[p] }])),
+    chapters,
+    checks: report.checks.map((c) => ({ name: c.name, ok: c.ok })),
+  }, null, 2));
+  const mp4 = join(out, 'review-video.mp4');
+  try {
+    execFileSync('node', [join(here, 'tools/review-video.mjs'), scriptFile, mp4], { stdio: ['ignore', 'pipe', 'pipe'], timeout: 900000 });
+    log('review video', mp4);
+    return mp4;
+  } catch (e) { log('review video failed', String(e.stderr ?? e.message).split('\n').slice(-3).join(' ')); return null; }
 };
 
 // ----------------------------------------------------------------- helpers
@@ -193,6 +236,7 @@ try {
   for (const p of platforms) await step(`connect ${NAME[p]}`, () => waitConnected(NAME[p], p === 'android' ? 600000 : 120000));
   startRecording();
   await snapAll('home');
+  await mark('Join & Lobby', 'Every client joins the same room by code and readies up', `room ${ROOM} · seed ${SEED}`, ...platforms.map((p) => `${NAME[p]} on ${p}`));
 
   const host = players[0];
   await step('create room', () => d.must(host, { t: 'create_room', code: ROOM, name: 'Hearth e2e', seed: SEED, bots: 1, freezeTime: true, startTime: 6000, spawnMobs: false }));
@@ -207,6 +251,7 @@ try {
 
   await step('start match', () => d.must(host, { t: 'start_match' }));
   await step('all in game', () => d.all(players, { t: 'wait_game', timeout: 180 }, { timeout: 200000 }));
+  await mark('Gameplay', 'Match starts: frozen noon, deterministic world, one server bot', 'lobby → playing on every client');
   await sleep(3000);
   await snapAll('gameplay');
 
@@ -232,6 +277,7 @@ try {
   await step('give blocks', () => d.all(players, { t: 'give', id: STONE, count: 8, slot: 3 }));
   await step('give picks', () => d.all(players, { t: 'give', id: STONE_PICK, count: 1, slot: 4 }));
   await step('select blocks', () => d.all(players, { t: 'select_slot', slot: 3 }));
+  await mark('Shared structure', 'Each client places two stone blocks in one shared row', `cells ${JSON.stringify(cells)}`, 'placed on the server, echoed to every client');
   await sleep(600);
   for (let i = 0; i < players.length; i++) {
     const [x, y, z] = cells[i];
@@ -255,6 +301,7 @@ try {
   await sleep(600);
   // Each player breaks the upper block placed by the next player round-robin.
   await step('select picks', () => d.all(players, { t: 'select_slot', slot: 4 }));
+  await mark('Breaking & chat', 'Each client breaks the block placed by the next one, then chats', 'round-robin break', 'chat history compared on every client');
   await sleep(300);
   for (let i = 0; i < players.length; i++) {
     const [x, y, z] = upper[(i + 1) % players.length];
@@ -274,6 +321,7 @@ try {
   // ---- reconnect: the first client drops its socket mid-match and must rejoin
   // the same room via its session token, then converge to the same state as
   // everyone else (verified by the hash checks below).
+  await mark('Reconnect', `${players[0]} drops its socket mid-match and rejoins with its session token`, 'same room, same identity, converged state');
   const rc = await step(`${players[0]} drops connection and rejoins`, () => d.drive(players[0], { t: 'drop_connection', timeout: 30 }, { timeout: 40000 }));
   check('dropped client rejoined the same room', rc?.ok === true && rc.room === ROOM && rc.phase === 'playing', JSON.stringify(rc));
   await step('rejoined client is in-match again', () => d.must(players[0], { t: 'wait_game', timeout: 20 }, { timeout: 25000 }));
@@ -282,6 +330,7 @@ try {
   // ---- verification while playing
   const xs = cells.map((c) => c[0]);
   const region = [Math.min(...xs), by, bz + 3, Math.max(...xs), by + 1, bz + 3];
+  await mark('Verification', 'World, chat and structure hashes compared across clients and server', 'director hash request → every client answers');
   const h = await step('hashes', () => d.hashes(ROOM, region));
   check('every client answered the hash request', !h.timedOut && h.missing.length === 0, `missing=${JSON.stringify(h.missing)}`);
   const clientWorld = players.map((n) => h.clients[n]?.world);
@@ -301,6 +350,7 @@ try {
   report.gameplayState = Object.fromEntries(players.map((n, i) => [n, states[i]]));
 
   // ---- results
+  await mark('Results', 'Host ends the match: identical scoreboard and fingerprints everywhere');
   await step('end match', () => d.must(host, { t: 'end_match' }));
   await step('all on results', () => d.all(players, { t: 'wait_screen', screen: 'results', timeout: 60 }, { timeout: 70000 }));
   await sleep(2500);
@@ -312,6 +362,7 @@ try {
   const humanRows = results[0].results.filter((r) => !r.bot);
   check('scoreboard credits 2 placed + 1 broken per player', humanRows.length === players.length && humanRows.every((r) => r.placed === 2 && r.broken === 1), JSON.stringify(humanRows.map((r) => [r.name, r.platform, r.score, r.placed, r.broken])));
   report.results = results[0];
+  await mark('Visual parity fixtures', 'Every client renders identical fixture data; web is the layout baseline', 'lobby, results, home fixtures', 'text/icon nodes compared within 2 logical px');
 
   // ---- visual matrix: every client renders identical fixture data; web is the baseline.
   // Raw screenshots are rasterizer-dependent (font AA and glyph advances differ per
@@ -370,6 +421,8 @@ try {
 } finally {
   recording = await stopRecording();
   report.recording = recording;
+  report.markers = markers;
+  report.reviewVideo = await editReview();
   report.finishedAt = new Date().toISOString();
   report.passed = report.failures.length === 0;
   writeFileSync(join(out, 'report.json'), JSON.stringify(report, null, 2));
@@ -391,6 +444,7 @@ try {
     ] : []),
     `Screenshots: \`${join(out, 'screenshots')}\``,
     recording ? `Recording: \`${recording}\`` : 'Recording: (not produced)',
+    report.reviewVideo ? `Edited review video: \`${report.reviewVideo}\` (chapters in \`review-script.json\`)` : 'Edited review video: (not produced)',
     report.failures.length ? `\nFailures:\n${report.failures.map((f) => `- ${f}`).join('\n')}` : '',
   ].join('\n');
   writeFileSync(join(out, 'report.md'), md);

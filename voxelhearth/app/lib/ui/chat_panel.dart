@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:voxelhearth_core/voxelhearth_core.dart';
 
 import '../net/game_client.dart';
-import 'theme.dart';
+import 'pixel.dart';
 
-/// Chat history + composer. Used in the lobby card and the in-game overlay.
+/// Chat history + composer. Used in the lobby panel and the in-game overlay.
+/// In-game ([transparent]) it mirrors the classic layout: translucent
+/// history lines above a full-width black input line.
 class ChatPanel extends StatefulWidget {
   const ChatPanel({
     super.key,
@@ -51,7 +53,11 @@ class _ChatPanelState extends State<ChatPanel> {
       _lastLen = widget.session.chat.length;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (_scroll.hasClients) {
-          _scroll.animateTo(_scroll.position.maxScrollExtent, duration: VhMotion.base, curve: VhMotion.curve);
+          _scroll.animateTo(
+            _scroll.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOut,
+          );
         }
       });
     }
@@ -81,88 +87,57 @@ class _ChatPanelState extends State<ChatPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context);
+    final s = Gui.of(context);
     final chat = widget.session.chat;
-    final onDark = widget.transparent;
-    final bodyStyle = (widget.dense ? t.textTheme.bodyMedium : t.textTheme.bodyMedium)?.copyWith(
-      color: onDark ? Colors.white : null,
-    );
+    final lines = chat.isEmpty
+        ? Align(
+            alignment: widget.transparent ? Alignment.bottomLeft : Alignment.center,
+            child: Padding(
+              padding: EdgeInsets.all(2.0 * s),
+              child: const PxText('Say hello to the hearth.', color: Px.gray),
+            ),
+          )
+        : ListView.builder(
+            controller: _scroll,
+            shrinkWrap: widget.transparent,
+            padding: EdgeInsets.symmetric(horizontal: 2.0 * s, vertical: 1.0 * s),
+            itemCount: chat.length,
+            itemBuilder: (context, i) => _ChatLine(entry: chat[i], mine: chat[i].from == widget.client.playerName),
+          );
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (!widget.transparent)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(VhSpace.xl, VhSpace.lg, VhSpace.lg, VhSpace.sm),
-            child: Row(
-              children: [
-                Expanded(child: Text('Chat', style: t.textTheme.headlineSmall)),
-                if (widget.onClose != null)
-                  IconButton(onPressed: widget.onClose, icon: const Icon(Icons.close_rounded)),
-              ],
-            ),
-          ),
         Expanded(
-          child: chat.isEmpty
-              ? Center(
-                  child: Text(
-                    'Say hello to the hearth.',
-                    style: t.textTheme.bodySmall?.copyWith(color: onDark ? Colors.white70 : null),
+          child: widget.transparent
+              ? Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Container(
+                    width: double.infinity,
+                    color: chat.isEmpty ? Colors.transparent : const Color(0x80000000),
+                    child: lines,
                   ),
                 )
-              : ShaderMask(
-                  // Fade the top edge so older, partially scrolled lines taper out.
-                  shaderCallback: (r) => const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, Colors.black],
-                    stops: [0, 0.12],
-                  ).createShader(r),
-                  blendMode: BlendMode.dstIn,
-                  child: ListView.builder(
-                    controller: _scroll,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: widget.transparent ? VhSpace.sm : VhSpace.xl,
-                      vertical: VhSpace.md,
-                    ),
-                    itemCount: chat.length,
-                    itemBuilder: (context, i) => _ChatLine(
-                      entry: chat[i],
-                      style: bodyStyle!,
-                      onDark: onDark,
-                      mine: chat[i].from == widget.client.playerName,
-                    ),
-                  ),
-                ),
+              : lines,
         ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(
-            widget.transparent ? 0 : VhSpace.lg,
-            VhSpace.sm,
-            widget.transparent ? 0 : VhSpace.lg,
-            widget.transparent ? 0 : VhSpace.lg,
-          ),
-          child: TextField(
-            controller: _ctl,
-            focusNode: _focus,
-            autofocus: widget.autofocus,
-            maxLength: 200,
-            style: onDark ? const TextStyle(color: Colors.white) : null,
-            decoration: InputDecoration(
-              hintText: 'Message everyone…',
-              counterText: '',
-              isDense: true,
-              filled: true,
-              fillColor: onDark ? Colors.black.withValues(alpha: 0.45) : null,
-              hintStyle: onDark ? const TextStyle(color: Colors.white54) : null,
-              suffixIcon: IconButton(
-                onPressed: _send,
-                icon: const Icon(Icons.send_rounded),
-                color: onDark ? Colors.white : null,
+        SizedBox(height: widget.transparent ? 2.0 * s : 4.0 * s),
+        Row(
+          children: [
+            Expanded(
+              child: PxField(
+                controller: _ctl,
+                focusNode: _focus,
+                hint: 'Message everyone...',
+                width: double.infinity,
+                height: 14,
+                maxLength: 200,
+                autofocus: widget.autofocus,
+                textInputAction: TextInputAction.send,
+                onSubmitted: (_) => _send(),
               ),
             ),
-            textInputAction: TextInputAction.send,
-            onSubmitted: (_) => _send(),
-          ),
+            SizedBox(width: 2.0 * s),
+            PxButton('Send', width: 40, height: 14, onPressed: _send),
+          ],
         ),
       ],
     );
@@ -170,63 +145,43 @@ class _ChatPanelState extends State<ChatPanel> {
 }
 
 class _ChatLine extends StatelessWidget {
-  const _ChatLine({required this.entry, required this.style, required this.onDark, required this.mine});
+  const _ChatLine({required this.entry, required this.mine});
   final ChatEntry entry;
-  final TextStyle style;
-  final bool onDark;
   final bool mine;
 
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context);
-    if (entry.system) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 3),
-        child: Row(
-          children: [
-            Icon(Icons.local_fire_department_rounded, size: 13, color: VhColors.gold.withValues(alpha: 0.9)),
-            const SizedBox(width: 6),
-            Expanded(
-              child: Text(
-                entry.text,
-                style: style.copyWith(
-                  fontStyle: FontStyle.italic,
-                  color: onDark ? Colors.white70 : t.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-    final nameColor = mine ? VhColors.gold : chatColorFor(entry.from);
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 3),
-      child: RichText(
-        text: TextSpan(
-          style: style,
-          children: [
+    final s = Gui.of(context);
+    final style = pxStyle(s, color: entry.system ? Px.gray : Px.white);
+    return Text.rich(
+      TextSpan(
+        style: style,
+        children: [
+          if (!entry.system)
             TextSpan(
-              text: '${entry.from}  ',
-              style: style.copyWith(fontWeight: FontWeight.w700, color: nameColor),
+              text: '<${entry.from}> ',
+              style: style.copyWith(color: mine ? Px.yellow : chatColorFor(entry.from)),
             ),
-            TextSpan(text: entry.text),
-          ],
-        ),
+          TextSpan(text: entry.text),
+        ],
       ),
+      softWrap: true,
     );
   }
 }
 
-/// Stable per-name accent color for chat and name tags.
+/// Stable per-name accent colour for chat and name tags, drawn from the
+/// classic 16-colour text palette.
 Color chatColorFor(String name) {
   const palette = [
-    VhColors.sky,
-    VhColors.moss,
-    Color(0xffc987e8),
-    Color(0xffe88a5c),
-    Color(0xff5ccfc0),
-    Color(0xffe0c25c),
+    Px.aqua,
+    Px.green,
+    Color(0xffff55ff),
+    Px.gold,
+    Color(0xff5555ff),
+    Color(0xff00aaaa),
+    Color(0xffaa00aa),
+    Color(0xff55ff55),
   ];
   var h = 0;
   for (final c in name.codeUnits) {

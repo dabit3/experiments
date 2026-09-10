@@ -10,8 +10,7 @@ import '../game/renderer.dart';
 import '../net/game_client.dart';
 import 'chat_panel.dart';
 import 'game_screen.dart';
-import 'theme.dart';
-import 'widgets.dart';
+import 'pixel.dart';
 
 /// Post-match scoreboard. The frozen world keeps rendering behind it so the
 /// shared structure everyone built is visible.
@@ -67,14 +66,44 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     final s = widget.game.session;
-    final t = Theme.of(context);
+    final gs = Gui.of(context);
+    final gui = Gui.guiSize(context);
     final results = s.results.isEmpty ? s.roster : s.results;
     final sorted = results.toList()..sort((a, b) => b.score.compareTo(a.score));
     final you = sorted.where((p) => p.id == s.youId).firstOrNull;
     final rank = you == null ? 0 : sorted.indexOf(you) + 1;
     final isHost = s.hostId == s.youId;
-    final ff = formFactorOf(context);
-    final wide = MediaQuery.sizeOf(context).width > 820;
+    final wide = gui.width >= 420;
+    final short = gui.height < 260;
+    final worldHash = s.resultsWorldHash ?? s.world.editsHash();
+    final chatHash = s.resultsChatHash ?? '-';
+
+    final board = _Scoreboard(
+      sorted: sorted,
+      youId: s.youId,
+      worldHash: worldHash,
+      chatHash: chatHash,
+      client: widget.client,
+    );
+    final chat = Container(
+      color: const Color(0x60000000),
+      padding: EdgeInsets.all(2.0 * gs),
+      child: ChatPanel(client: widget.client, session: s, transparent: true),
+    );
+    final footer = Padding(
+      padding: EdgeInsets.fromLTRB(0, 4.0 * gs, 0, 8.0 * gs),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (isHost)
+            PxButton('Back to Lobby', width: 120, onPressed: () => widget.client.send({'t': Msg.backToLobby}))
+          else
+            const PxButton('Waiting for host...', width: 120),
+          SizedBox(width: 4.0 * gs),
+          PxButton('Leave World', width: 120, sound: 'ui_back', onPressed: widget.client.leaveRoom),
+        ],
+      ),
+    );
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -84,120 +113,55 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
           IgnorePointer(
             child: VoxelCanvas(game: widget.game, assets: widget.assets, frame: frame),
           ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.black.withValues(alpha: 0.55), Colors.black.withValues(alpha: 0.78)],
-              ),
-            ),
-          ),
-          SafeArea(
-            child: Center(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(ff == FormFactor.phone ? VhSpace.md : VhSpace.xl),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 1040),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Reveal(
-                        child: Column(
-                          children: [
-                            const Wordmark(size: 22, subtitle: 'Match complete', onDark: true, center: true),
-                            const SizedBox(height: VhSpace.md),
-                            Text(
-                              rank == 1
-                                  ? 'You lit the hearth brightest'
-                                  : (rank == 0 ? 'Match complete' : 'You placed #$rank'),
-                              textAlign: TextAlign.center,
-                              style: t.textTheme.displaySmall?.copyWith(
-                                color: Colors.white,
-                                fontFamily: 'Fraunces',
-                                fontSize: ff == FormFactor.phone ? 30 : 40,
-                              ),
-                            ),
-                            const SizedBox(height: VhSpace.xs),
-                            Text(
-                              '${s.roomName.isEmpty ? s.code : s.roomName} · ${s.mode == GameMode.creative ? 'Creative' : 'Survival'} · seed ${s.seed}',
-                              style: t.textTheme.bodyMedium?.copyWith(color: Colors.white60),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: VhSpace.xl),
-                      if (wide)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: _Scoreboard(sorted: sorted, youId: s.youId),
-                            ),
-                            const SizedBox(width: VhSpace.lg),
-                            Expanded(
-                              flex: 2,
-                              child: _Side(s: s, client: widget.client),
-                            ),
-                          ],
-                        )
-                      else ...[
-                        _Scoreboard(sorted: sorted, youId: s.youId),
-                        const SizedBox(height: VhSpace.lg),
-                        _Side(s: s, client: widget.client),
-                      ],
-                      const SizedBox(height: VhSpace.xl),
-                      Reveal(
-                        delay: const Duration(milliseconds: 300),
-                        child: Wrap(
-                          spacing: VhSpace.sm,
-                          runSpacing: VhSpace.sm,
-                          alignment: WrapAlignment.center,
-                          children: [
-                            if (isHost)
-                              FilledButton.icon(
-                                onPressed: () => widget.client.send({'t': Msg.backToLobby}),
-                                icon: const Icon(Icons.replay_rounded),
-                                label: const Text('Back to lobby'),
+          PxScreen(
+            background: const DimBackground(),
+            footer: footer,
+            child: Column(
+              children: [
+                SizedBox(height: (short ? 4.0 : 10.0) * gs),
+                PxText(
+                  rank == 1 ? 'You lit the hearth brightest!' : (rank == 0 ? 'Match Complete' : 'You placed #$rank'),
+                  size: short ? 1 : 2,
+                  color: rank == 1 ? Px.yellow : Px.white,
+                  align: TextAlign.center,
+                ),
+                SizedBox(height: 2.0 * gs),
+                PxText(
+                  '${s.roomName.isEmpty ? s.code : s.roomName}  ·  ${s.mode == GameMode.creative ? 'Creative' : 'Survival'}  ·  seed ${s.seed}',
+                  color: Px.gray,
+                  align: TextAlign.center,
+                  maxLines: 1,
+                ),
+                SizedBox(height: (short ? 4.0 : 8.0) * gs),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0 * gs),
+                    child: Center(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 480.0 * gs),
+                        child: short
+                            ? SingleChildScrollView(child: board)
+                            : wide
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Expanded(flex: 3, child: SingleChildScrollView(child: board)),
+                                  SizedBox(width: 6.0 * gs),
+                                  Expanded(flex: 1, child: chat),
+                                ],
                               )
-                            else
-                              Container(
-                                height: 48,
-                                padding: const EdgeInsets.symmetric(horizontal: VhSpace.lg),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.08),
-                                  borderRadius: BorderRadius.circular(VhRadius.md),
-                                  border: Border.all(color: Colors.white.withValues(alpha: 0.18)),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const SizedBox(
-                                      width: 14,
-                                      height: 14,
-                                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white70),
-                                    ),
-                                    const SizedBox(width: VhSpace.sm),
-                                    Text(
-                                      'Waiting for host',
-                                      style: t.textTheme.labelLarge?.copyWith(color: Colors.white70),
-                                    ),
-                                  ],
-                                ),
+                            : Column(
+                                children: [
+                                  Expanded(child: SingleChildScrollView(child: board)),
+                                  SizedBox(height: 4.0 * gs),
+                                  SizedBox(height: 60.0 * gs, child: chat),
+                                ],
                               ),
-                            OutlinedButton.icon(
-                              onPressed: widget.client.leaveRoom,
-                              icon: const Icon(Icons.logout_rounded),
-                              label: const Text('Leave world'),
-                            ),
-                          ],
-                        ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ],
@@ -207,237 +171,124 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
 }
 
 class _Scoreboard extends StatelessWidget {
-  const _Scoreboard({required this.sorted, required this.youId});
+  const _Scoreboard({
+    required this.sorted,
+    required this.youId,
+    required this.worldHash,
+    required this.chatHash,
+    required this.client,
+  });
   final List<PlayerInfo> sorted;
   final String youId;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = Theme.of(context);
-    final top = sorted.isEmpty ? 1 : math.max(1, sorted.first.score);
-    return Reveal(
-      delay: const Duration(milliseconds: 120),
-      child: GlassPanel(
-        tint: Colors.black.withValues(alpha: 0.45),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Text(
-                  'Scoreboard',
-                  style: t.textTheme.titleLarge?.copyWith(color: Colors.white, fontFamily: 'Fraunces'),
-                ),
-                const Spacer(),
-                Text(
-                  'placed + broken + crafted×3 + kills×5',
-                  style: t.textTheme.labelSmall?.copyWith(color: Colors.white38),
-                ),
-              ],
-            ),
-            const SizedBox(height: VhSpace.md),
-            for (var i = 0; i < sorted.length; i++)
-              Reveal(
-                delay: Duration(milliseconds: 160 + i * 70),
-                child: _Row(p: sorted[i], rank: i + 1, you: sorted[i].id == youId, fraction: sorted[i].score / top),
-              ),
-            if (sorted.isEmpty) const StateBlock(icon: Icons.people_outline_rounded, title: 'No players scored'),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Row extends StatelessWidget {
-  const _Row({required this.p, required this.rank, required this.you, required this.fraction});
-  final PlayerInfo p;
-  final int rank;
-  final bool you;
-  final double fraction;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = Theme.of(context);
-    final medal = switch (rank) {
-      1 => VhColors.gold,
-      2 => const Color(0xffc8ccd6),
-      3 => const Color(0xffcd8a5a),
-      _ => Colors.white24,
-    };
-    return Container(
-      margin: const EdgeInsets.only(bottom: VhSpace.sm),
-      padding: const EdgeInsets.symmetric(horizontal: VhSpace.md, vertical: VhSpace.sm),
-      decoration: BoxDecoration(
-        color: you ? VhColors.gold.withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.04),
-        borderRadius: BorderRadius.circular(VhRadius.md),
-        border: Border.all(color: you ? VhColors.gold.withValues(alpha: 0.6) : Colors.white12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Container(
-                width: 30,
-                height: 30,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: medal.withValues(alpha: rank <= 3 ? 0.95 : 0.2),
-                ),
-                child: Text(
-                  '$rank',
-                  style: TextStyle(
-                    color: rank <= 3 ? Colors.black : Colors.white,
-                    fontWeight: FontWeight.w800,
-                    fontFamily: 'Outfit',
-                  ),
-                ),
-              ),
-              const SizedBox(width: VhSpace.sm),
-              PlatformBadge(p.platform, compact: true),
-              const SizedBox(width: VhSpace.sm),
-              Expanded(
-                child: Text(
-                  p.name + (you ? '  (you)' : '') + (p.bot ? '  · bot' : ''),
-                  style: t.textTheme.titleMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: you ? FontWeight.w800 : FontWeight.w600,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              Text(
-                '${p.score}',
-                style: t.textTheme.headlineSmall?.copyWith(
-                  color: VhColors.gold,
-                  fontWeight: FontWeight.w800,
-                  fontFamily: 'Outfit',
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(3),
-            child: TweenAnimationBuilder<double>(
-              tween: Tween(begin: 0, end: fraction.clamp(0.0, 1.0)),
-              duration: const Duration(milliseconds: 900),
-              curve: Curves.easeOutCubic,
-              builder: (context, v, _) => LinearProgressIndicator(
-                value: v,
-                minHeight: 5,
-                color: medal == Colors.white24 ? VhColors.sky : medal,
-                backgroundColor: Colors.white10,
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: VhSpace.md,
-            children: [
-              _stat(Icons.add_box_outlined, 'placed', p.placed),
-              _stat(Icons.remove_circle_outline_rounded, 'broken', p.broken),
-              _stat(Icons.handyman_outlined, 'crafted', p.crafted),
-              _stat(Icons.bolt_rounded, 'kills', p.kills),
-              _stat(Icons.heart_broken_outlined, 'deaths', p.deaths),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _stat(IconData icon, String label, int v) => Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Icon(icon, size: 13, color: Colors.white38),
-      const SizedBox(width: 4),
-      Text(
-        '$v $label',
-        style: const TextStyle(color: Colors.white60, fontSize: 12, fontFamily: 'Outfit'),
-      ),
-    ],
-  );
-}
-
-class _Side extends StatelessWidget {
-  const _Side({required this.s, required this.client});
-  final RoomSession s;
+  final String worldHash, chatHash;
   final GameClient client;
 
   @override
-  Widget build(BuildContext context) {
-    final t = Theme.of(context);
+  Widget build(BuildContext context) => LayoutBuilder(builder: _build);
+
+  Widget _build(BuildContext context, BoxConstraints box) {
+    final gs = Gui.of(context);
+    final narrow = box.maxWidth / gs < 260;
+    final cw = narrow ? const [12.0, 26.0, 26.0, 30.0, 22.0, 32.0] : const [12.0, 38.0, 38.0, 44.0, 30.0, 34.0];
+    final labels = narrow
+        ? const ['Plc', 'Brk', 'Crf', 'Kil', 'Score']
+        : const ['Placed', 'Broken', 'Crafted', 'Kills', 'Score'];
+    Widget cell(String t, double w, {Color color = Px.white, TextAlign align = TextAlign.right}) => SizedBox(
+      width: w * gs,
+      child: PxText(t, color: color, align: align, maxLines: 1),
+    );
+    Widget row(List<Widget> cells, {Color? bg}) => Container(
+      color: bg ?? const Color(0x60000000),
+      padding: EdgeInsets.symmetric(horizontal: 3.0 * gs, vertical: 2.0 * gs),
+      child: Row(children: cells),
+    );
+    final header = row([
+      cell('#', cw[0], color: Px.gray, align: TextAlign.left),
+      const Expanded(child: PxText('Player', color: Px.gray)),
+      for (var i = 0; i < labels.length; i++) cell(labels[i], cw[i + 1], color: Px.gray),
+    ], bg: const Color(0x90000000));
+    String short(String h) => h.length > 12 ? h.substring(0, 12) : h;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Reveal(
-          delay: const Duration(milliseconds: 200),
-          child: GlassPanel(
-            tint: Colors.black.withValues(alpha: 0.45),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Shared world',
-                  style: t.textTheme.titleMedium?.copyWith(color: Colors.white, fontFamily: 'Fraunces'),
-                ),
-                const SizedBox(height: VhSpace.sm),
-                _hash(context, 'World edits', s.resultsWorldHash ?? s.world.editsHash()),
-                const SizedBox(height: 6),
-                _hash(context, 'Chat history', s.resultsChatHash ?? '—'),
-                const SizedBox(height: VhSpace.sm),
-                Text(
-                  'Every client that shows the same fingerprints saw the same world and the same chat.',
-                  style: t.textTheme.bodySmall?.copyWith(color: Colors.white54),
-                ),
-              ],
+        Container(
+          color: const Color(0x90000000),
+          padding: EdgeInsets.symmetric(horizontal: 3.0 * gs, vertical: 2.0 * gs),
+          child: const PxText('Scoreboard', color: Px.yellow, align: TextAlign.center),
+        ),
+        header,
+        for (var i = 0; i < sorted.length; i++)
+          row([
+            cell(
+              '${i + 1}',
+              cw[0],
+              color: switch (i) {
+                0 => Px.gold,
+                1 => const Color(0xffc8ccd6),
+                2 => const Color(0xffcd8a5a),
+                _ => Px.gray,
+              },
+              align: TextAlign.left,
+            ),
+            Expanded(
+              child: Row(
+                children: [
+                  Flexible(
+                    child: PxText(sorted[i].name, color: sorted[i].id == youId ? Px.yellow : Px.white, maxLines: 1),
+                  ),
+                  if (!narrow)
+                    PxText(
+                      '  ${sorted[i].bot ? 'Bot' : platformLabel(sorted[i].platform)}',
+                      color: platformColor(sorted[i].bot ? 'bot' : sorted[i].platform),
+                    ),
+                ],
+              ),
+            ),
+            cell('${sorted[i].placed}', cw[1]),
+            cell('${sorted[i].broken}', cw[2]),
+            cell('${sorted[i].crafted}', cw[3]),
+            cell('${sorted[i].kills}', cw[4]),
+            cell('${sorted[i].score}', cw[5], color: Px.red),
+          ], bg: sorted[i].id == youId ? const Color(0x80303010) : null),
+        if (sorted.isEmpty) row([const Expanded(child: PxText('No players scored', color: Px.gray))]),
+        SizedBox(height: 4.0 * gs),
+        row([
+          const Expanded(child: PxText('Score = placed + broken + crafted x3 + kills x5', color: Px.gray, maxLines: 1)),
+        ], bg: const Color(0x40000000)),
+        SizedBox(height: 4.0 * gs),
+        _hashRow(context, 'World edits', worldHash, short(worldHash)),
+        _hashRow(context, 'Chat history', chatHash, short(chatHash)),
+        row([
+          const Expanded(
+            child: PxText(
+              'Clients showing the same fingerprints saw the same world and chat.',
+              color: Px.gray,
+              maxLines: 2,
             ),
           ),
-        ),
-        const SizedBox(height: VhSpace.lg),
-        Reveal(
-          delay: const Duration(milliseconds: 260),
-          child: GlassPanel(
-            tint: Colors.black.withValues(alpha: 0.45),
-            padding: const EdgeInsets.all(VhSpace.sm),
-            child: SizedBox(
-              height: 260,
-              child: ChatPanel(client: client, session: s, transparent: true),
-            ),
-          ),
-        ),
+        ], bg: const Color(0x40000000)),
       ],
     );
   }
 
-  Widget _hash(BuildContext context, String label, String value) {
-    final short = value.length > 16 ? value.substring(0, 16) : value;
-    return Row(
-      children: [
-        Expanded(
-          child: Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white60)),
+  Widget _hashRow(BuildContext context, String label, String full, String short) {
+    final gs = Gui.of(context);
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        Clipboard.setData(ClipboardData(text: full));
+        client.toast('Fingerprint copied');
+      },
+      child: Container(
+        color: const Color(0x40000000),
+        padding: EdgeInsets.symmetric(horizontal: 3.0 * gs, vertical: 2.0 * gs),
+        child: Row(
+          children: [
+            Expanded(child: PxText(label, color: Px.gray)),
+            PxText(short, color: Px.aqua),
+          ],
         ),
-        InkWell(
-          borderRadius: BorderRadius.circular(6),
-          onTap: () {
-            Clipboard.setData(ClipboardData(text: value));
-            client.toast('Fingerprint copied');
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Text(
-              short,
-              style: const TextStyle(fontFamily: 'monospace', fontSize: 12, color: Colors.white, letterSpacing: 0.5),
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

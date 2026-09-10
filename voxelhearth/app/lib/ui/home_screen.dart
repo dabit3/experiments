@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,10 +8,14 @@ import 'package:voxelhearth_core/voxelhearth_core.dart';
 import '../app_state.dart';
 import '../game/renderer.dart';
 import '../net/game_client.dart';
+import 'pixel.dart';
 import 'settings_sheet.dart';
-import 'theme.dart';
-import 'widgets.dart';
 
+enum _Page { title, play, create, name }
+
+/// Title screen and its sub-screens (world list, create world, player name).
+/// Sub-screens are local pages, not routes, so the shell can swap to the
+/// lobby the moment the server puts us in a room.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key, required this.client, required this.settings, required this.config, this.assets});
   final GameClient client;
@@ -26,9 +31,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   late final TextEditingController _name = TextEditingController(text: widget.client.playerName);
   late final TextEditingController _server = TextEditingController(text: widget.client.serverUrl);
   final TextEditingController _code = TextEditingController();
-  late final AnimationController _bg = AnimationController(vsync: this, duration: const Duration(seconds: 40))
+  late final AnimationController _bg = AnimationController(vsync: this, duration: const Duration(seconds: 60))
     ..repeat();
-  bool _advanced = false;
+  _Page _page = _Page.title;
+  int? _selectedRoom;
+  String? _notice;
 
   @override
   void initState() {
@@ -64,298 +71,382 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     if (changed || c.state == ConnState.failed) await c.connect();
   }
 
-  Future<void> _create() async {
-    await _commitIdentity();
-    if (!mounted) return;
-    showDialog<void>(
-      context: context,
-      builder: (_) => _CreateDialog(client: widget.client),
-    );
-  }
+  void _go(_Page p) => setState(() {
+    _page = p;
+    _notice = null;
+  });
 
-  Future<void> _join() async {
+  Future<void> _joinCode() async {
     await _commitIdentity();
     if (!mounted) return;
     final code = _code.text.trim().toUpperCase();
     if (code.length < 4) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Enter a 5-letter room code')));
+      setState(() => _notice = 'Enter a 5-letter room code');
       return;
     }
     widget.client.joinRoom(code);
   }
 
+  Future<void> _joinSelected() async {
+    final i = _selectedRoom;
+    final c = widget.client;
+    if (i == null || i >= c.rooms.length) return;
+    await _commitIdentity();
+    if (!mounted) return;
+    c.joinRoom(c.rooms[i].code);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ff = formFactorOf(context);
-    final t = Theme.of(context);
-    final content = ff == FormFactor.desktop
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(flex: 5, child: _left(context)),
-              const SizedBox(width: VhSpace.xxl),
-              Expanded(flex: 6, child: _right(context)),
-            ],
-          )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _left(context),
-              const SizedBox(height: VhSpace.xl),
-              _right(context),
-            ],
-          );
+    final bg = _Panorama(animation: _bg);
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: _Backdrop(animation: _bg)),
-          SafeArea(
-            child: Column(
-              children: [
-                _TopBar(client: widget.client, settings: widget.settings),
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: ff == FormFactor.phone ? VhSpace.lg : VhSpace.xxxl,
-                      vertical: VhSpace.lg,
-                    ),
-                    child: Center(
-                      child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 1180), child: content),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: VhSpace.sm),
-                  child: Text(
-                    'An original voxel sandbox. Not affiliated with any other game.',
-                    style: t.textTheme.bodySmall,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+      backgroundColor: Colors.black,
+      body: switch (_page) {
+        _Page.title => _title(context, bg),
+        _Page.play => _play(context),
+        _Page.create => _CreateScreen(
+          client: widget.client,
+          dirt: widget.assets?.dirt,
+          onBack: () => _go(_Page.title),
+          beforeCreate: _commitIdentity,
+        ),
+        _Page.name => _namePage(context),
+      },
     );
   }
 
-  Widget _left(BuildContext context) {
-    final t = Theme.of(context);
-    final ff = formFactorOf(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  // ---------------------------------------------------------------- title
+
+  Widget _title(BuildContext context, Widget bg) {
+    final s = Gui.of(context);
+    final gui = Gui.guiSize(context);
+    final c = widget.client;
+    final logoScale = gui.width < 330 ? 2.2 : 3.0;
+    final btnY = (gui.height / 4 + 40).floorToDouble();
+    final status = switch (c.state) {
+      ConnState.connected => 'Connected · ${c.pingMs} ms',
+      ConnState.connecting || ConnState.idle => 'Connecting...',
+      ConnState.reconnecting => 'Reconnecting (${c.reconnectAttempt})...',
+      ConnState.failed => 'Server offline',
+    };
+    final statusColor = switch (c.state) {
+      ConnState.connected => Px.green,
+      ConnState.failed => Px.red,
+      _ => Px.yellow,
+    };
+    return Stack(
+      fit: StackFit.expand,
       children: [
-        Reveal(
-          child: Wordmark(
-            size: ff == FormFactor.phone ? 34 : 48,
-            subtitle: 'Gather. Build. Keep the hearth lit through the night — together, on any device.',
-          ),
-        ),
-        const SizedBox(height: VhSpace.xl),
-        Reveal(
-          delay: const Duration(milliseconds: 80),
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(VhSpace.xl),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const SectionLabel('Your name'),
-                  TextField(
-                    controller: _name,
-                    maxLength: 16,
-                    decoration: const InputDecoration(
-                      hintText: 'Wanderer',
-                      counterText: '',
-                      prefixIcon: Icon(Icons.person_outline_rounded),
-                    ),
-                    textInputAction: TextInputAction.done,
-                    onSubmitted: (_) => _commitIdentity(),
-                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9 _\-]'))],
-                  ),
-                  const SizedBox(height: VhSpace.lg),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: FilledButton.icon(
-                          onPressed: _create,
-                          icon: const Icon(Icons.add_home_work_outlined),
-                          label: const Text('Create a world'),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: VhSpace.lg),
-                  const SectionLabel('Join with a code'),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _code,
-                          textCapitalization: TextCapitalization.characters,
-                          maxLength: 5,
-                          style: t.textTheme.titleMedium?.copyWith(letterSpacing: 3, fontWeight: FontWeight.w700),
-                          decoration: const InputDecoration(
-                            hintText: 'ABCDE',
-                            counterText: '',
-                            prefixIcon: Icon(Icons.key_rounded),
-                          ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9]')),
-                            UpperCaseTextFormatter(),
-                          ],
-                          onSubmitted: (_) => _join(),
-                        ),
-                      ),
-                      const SizedBox(width: VhSpace.sm),
-                      OutlinedButton(onPressed: widget.client.joiningRoom ? null : _join, child: const Text('Join')),
-                    ],
-                  ),
-                  const SizedBox(height: VhSpace.md),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(VhRadius.sm),
-                    onTap: () => setState(() => _advanced = !_advanced),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      child: Row(
-                        children: [
-                          Icon(
-                            _advanced ? Icons.expand_less_rounded : Icons.expand_more_rounded,
-                            size: 18,
-                            color: t.colorScheme.onSurfaceVariant,
-                          ),
-                          const SizedBox(width: 4),
-                          Text('Server', style: t.textTheme.labelMedium),
-                          const Spacer(),
-                          _ConnDot(client: widget.client),
-                        ],
-                      ),
-                    ),
-                  ),
-                  AnimatedSize(
-                    duration: VhMotion.base,
-                    curve: VhMotion.curve,
-                    alignment: Alignment.topCenter,
-                    child: _advanced
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: VhSpace.sm),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextField(
-                                    controller: _server,
-                                    decoration: const InputDecoration(
-                                      hintText: 'ws://host:8787/ws',
-                                      prefixIcon: Icon(Icons.dns_outlined),
-                                    ),
-                                    onSubmitted: (_) => _commitIdentity(),
-                                  ),
-                                ),
-                                const SizedBox(width: VhSpace.sm),
-                                IconButton.filledTonal(
-                                  onPressed: _commitIdentity,
-                                  icon: const Icon(Icons.refresh_rounded),
-                                  tooltip: 'Reconnect',
-                                ),
-                              ],
-                            ),
-                          )
-                        : const SizedBox(width: double.infinity),
-                  ),
-                ],
+        bg,
+        SafeArea(
+          child: Stack(
+            children: [
+              Positioned(
+                top: 28.0 * s,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: [
+                    PxWordmark(size: logoScale),
+                    SizedBox(height: 2.0 * s),
+                    const PxText('An original voxel sandbox', color: Px.gray, align: TextAlign.center),
+                  ],
+                ),
               ),
-            ),
+              Positioned(
+                top: 28.0 * s + Px.lineHeight * s * logoScale * 1.1 - 6.0 * s,
+                left: gui.width / 2 * s + (gui.width < 330 ? 44.0 : 62.0) * s * logoScale / 3,
+                child: Transform.rotate(
+                  angle: -math.pi / 9,
+                  child: _Splash(animation: _bg),
+                ),
+              ),
+              Positioned(
+                top: btnY * s,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: [
+                    PxButton('Play Online', onPressed: () => _go(_Page.play)),
+                    SizedBox(height: 4.0 * s),
+                    PxButton('Create World', onPressed: () => _go(_Page.create)),
+                    SizedBox(height: 4.0 * s),
+                    PxButton('Player Name: ${c.playerName}', onPressed: () => _go(_Page.name)),
+                    SizedBox(height: 16.0 * s),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        PxButton(
+                          'Options...',
+                          width: 98,
+                          onPressed: () => showOptionsScreen(
+                            context,
+                            widget.settings,
+                            background: DirtBackground(dirt: widget.assets?.dirt),
+                          ),
+                        ),
+                        SizedBox(width: 4.0 * s),
+                        PxButton('How to Play', width: 98, onPressed: () => _showHowToPlay(context)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                left: 2.0 * s,
+                bottom: 2.0 * s,
+                child: Row(
+                  children: [
+                    PxText('Voxelhearth 1.0 · ${platformLabel(c.platform)}'),
+                    SizedBox(width: 6.0 * s),
+                    PxText(status, color: statusColor),
+                  ],
+                ),
+              ),
+              Positioned(
+                right: 2.0 * s,
+                bottom: 2.0 * s,
+                child: const PxText('Original game & art. Not affiliated with any other title.'),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: VhSpace.lg),
-        Reveal(delay: const Duration(milliseconds: 160), child: _HowToPlay()),
       ],
     );
   }
 
-  Widget _right(BuildContext context) {
-    final c = widget.client;
-    final t = Theme.of(context);
-    return Reveal(
-      delay: const Duration(milliseconds: 120),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(VhSpace.xl),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
+  Future<void> _showHowToPlay(BuildContext context) => Navigator.of(context).push(
+    PageRouteBuilder<void>(
+      opaque: false,
+      transitionDuration: Duration.zero,
+      reverseTransitionDuration: Duration.zero,
+      pageBuilder: (context, _, _) {
+        final s = Gui.of(context);
+        const tips = [
+          ('Look', 'Move the mouse / drag on touch'),
+          ('Move', 'WASD or arrows · joystick on touch'),
+          ('Jump / Sneak', 'Space · Shift'),
+          ('Break', 'Hold left click / tap'),
+          ('Place', 'Right click / long-press'),
+          ('Inventory', 'E · build a Workbench for more recipes'),
+          ('Chat', 'T · Tab shows everyone in the room'),
+          ('Night', 'Hollows and Cinderlings hunt after dusk'),
+        ];
+        return PxScreen(
+          background: DirtBackground(dirt: widget.assets?.dirt),
+          title: 'How to Play',
+          footer: Padding(
+            padding: EdgeInsets.only(bottom: 8.0 * s),
+            child: PxButton('Done', sound: 'ui_back', onPressed: () => Navigator.of(context).pop()),
+          ),
+          child: Center(
+            child: SizedBox(
+              width: 260.0 * s,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(child: Text('Open worlds', style: t.textTheme.headlineSmall)),
-                  IconButton(
-                    onPressed: c.state == ConnState.connected ? c.refreshRooms : null,
-                    icon: const Icon(Icons.refresh_rounded),
-                    tooltip: 'Refresh',
-                  ),
+                  for (final t in tips)
+                    Padding(
+                      padding: EdgeInsets.symmetric(vertical: 2.0 * s),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 80.0 * s,
+                            child: PxText(t.$1, color: Px.yellow),
+                          ),
+                          Expanded(child: PxText(t.$2, color: Px.gray)),
+                        ],
+                      ),
+                    ),
                 ],
               ),
-              const SizedBox(height: VhSpace.sm),
-              _roomsBody(context),
-            ],
+            ),
           ),
+        );
+      },
+    ),
+  );
+
+  // ---------------------------------------------------------------- play online
+
+  Widget _play(BuildContext context) {
+    final s = Gui.of(context);
+    final gui = Gui.guiSize(context);
+    final c = widget.client;
+    final wide = gui.width >= 320;
+    final sel = _selectedRoom != null && _selectedRoom! < c.rooms.length;
+    return PxScreen(
+      background: DirtBackground(dirt: widget.assets?.dirt),
+      title: 'Play Online',
+      titleY: 8,
+      footer: Padding(
+        padding: EdgeInsets.fromLTRB(0, 4.0 * s, 0, 6.0 * s),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                PxField(
+                  controller: _code,
+                  hint: 'Room code',
+                  width: wide ? 100 : 96,
+                  maxLength: 5,
+                  textCapitalization: TextCapitalization.characters,
+                  inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9]')), UpperCaseTextFormatter()],
+                  onSubmitted: (_) => _joinCode(),
+                ),
+                SizedBox(width: 4.0 * s),
+                PxButton('Join Code', width: 100, onPressed: c.joiningRoom ? null : _joinCode),
+                if (wide) ...[
+                  SizedBox(width: 4.0 * s),
+                  PxButton('Refresh', width: 100, onPressed: c.state == ConnState.connected ? c.refreshRooms : null),
+                ],
+              ],
+            ),
+            SizedBox(height: 4.0 * s),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                PxButton('Join World', width: 100, onPressed: sel && !c.joiningRoom ? _joinSelected : null),
+                SizedBox(width: 4.0 * s),
+                PxButton('Create World', width: 100, onPressed: () => _go(_Page.create)),
+                SizedBox(width: 4.0 * s),
+                PxButton('Cancel', width: wide ? 100 : 96, sound: 'ui_back', onPressed: () => _go(_Page.title)),
+              ],
+            ),
+            if (_notice != null) ...[SizedBox(height: 3.0 * s), PxText(_notice!, color: Px.red)],
+          ],
         ),
       ),
+      child: PxListBox(dirt: widget.assets?.dirt, child: _roomsBody(context)),
     );
   }
 
   Widget _roomsBody(BuildContext context) {
+    final s = Gui.of(context);
     final c = widget.client;
+    Widget centered(String title, String msg, {Widget? action}) => Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          PxText(title, align: TextAlign.center),
+          SizedBox(height: 2.0 * s),
+          PxText(msg, color: Px.gray, align: TextAlign.center, maxLines: 3),
+          if (action != null) ...[SizedBox(height: 8.0 * s), action],
+        ],
+      ),
+    );
     switch (c.state) {
       case ConnState.idle:
       case ConnState.connecting:
-        return const StateBlock(
-          icon: Icons.wifi_tethering,
-          title: 'Connecting to the hearth…',
-          message: 'Looking for the Voxelhearth server.',
-          loading: true,
-        );
+        return centered('Connecting to the hearth...', 'Looking for the Voxelhearth server.');
       case ConnState.reconnecting:
-        return StateBlock(
-          icon: Icons.wifi_off_rounded,
-          title: 'Connection lost',
-          message: 'Reconnecting (attempt ${c.reconnectAttempt})…',
-          loading: true,
-          action: OutlinedButton(onPressed: c.retryNow, child: const Text('Retry now')),
+        return centered(
+          'Connection lost',
+          'Reconnecting (attempt ${c.reconnectAttempt})...',
+          action: PxButton('Retry Now', width: 100, onPressed: c.retryNow),
         );
       case ConnState.failed:
-        return StateBlock(
-          icon: Icons.cloud_off_rounded,
-          title: 'Server unreachable',
-          message:
-              c.lastError ??
-              'Could not reach ${c.serverUrl}. Start the server with `dart run bin/server.dart` and retry.',
-          action: FilledButton.tonal(onPressed: c.connect, child: const Text('Try again')),
+        return centered(
+          'Server unreachable',
+          c.lastError ?? 'Could not reach ${c.serverUrl}.',
+          action: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              PxField(
+                controller: _server,
+                hint: 'ws://host:8787/ws',
+                width: 200,
+                onSubmitted: (_) => _commitIdentity(),
+              ),
+              SizedBox(height: 4.0 * s),
+              PxButton('Try Again', width: 100, onPressed: _commitIdentity),
+            ],
+          ),
         );
       case ConnState.connected:
         if (c.rooms.isEmpty) {
-          return StateBlock(
-            icon: Icons.landscape_outlined,
-            title: 'No worlds yet',
-            message: 'Be the first to light a hearth. Create a world and share its code.',
-            action: FilledButton.tonal(onPressed: _create, child: const Text('Create a world')),
-          );
+          return centered('No worlds yet', 'Be the first to light a hearth.');
         }
-        return Column(
-          children: [
-            for (var i = 0; i < c.rooms.length; i++)
-              Reveal(
-                delay: Duration(milliseconds: 40 * i),
-                child: _RoomTile(
-                  room: c.rooms[i],
-                  onJoin: () {
-                    _commitIdentity();
-                    c.joinRoom(c.rooms[i].code);
-                  },
-                ),
-              ),
-          ],
+        return ListView.builder(
+          padding: EdgeInsets.symmetric(vertical: 4.0 * s),
+          itemCount: c.rooms.length,
+          itemBuilder: (context, i) => Center(
+            child: PxListEntry(
+              width: math.min(Gui.guiSize(context).width - 20, 300),
+              selected: _selectedRoom == i,
+              onTap: () => setState(() {
+                if (_selectedRoom == i) {
+                  _joinSelected();
+                } else {
+                  _selectedRoom = i;
+                }
+              }),
+              child: _RoomRow(room: c.rooms[i]),
+            ),
+          ),
         );
     }
+  }
+
+  // ---------------------------------------------------------------- name
+
+  Widget _namePage(BuildContext context) {
+    final s = Gui.of(context);
+    return PxScreen(
+      background: DirtBackground(dirt: widget.assets?.dirt),
+      title: 'Player Name',
+      titleY: 20,
+      footer: Padding(
+        padding: EdgeInsets.only(bottom: 8.0 * s),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            PxButton(
+              'Done',
+              width: 98,
+              onPressed: () async {
+                await _commitIdentity();
+                _go(_Page.title);
+              },
+            ),
+            SizedBox(width: 4.0 * s),
+            PxButton('Cancel', width: 98, sound: 'ui_back', onPressed: () => _go(_Page.title)),
+          ],
+        ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 200.0 * s,
+              child: const PxText('Name', color: Px.gray),
+            ),
+            SizedBox(height: 2.0 * s),
+            PxField(
+              controller: _name,
+              hint: 'Wanderer',
+              autofocus: true,
+              maxLength: 16,
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[A-Za-z0-9 _\-]'))],
+              onSubmitted: (_) async {
+                await _commitIdentity();
+                _go(_Page.title);
+              },
+            ),
+            SizedBox(height: 10.0 * s),
+            SizedBox(
+              width: 200.0 * s,
+              child: const PxText('Server Address', color: Px.gray),
+            ),
+            SizedBox(height: 2.0 * s),
+            PxField(controller: _server, hint: 'ws://host:8787/ws', onSubmitted: (_) => _commitIdentity()),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -365,186 +456,187 @@ class UpperCaseTextFormatter extends TextInputFormatter {
       newValue.copyWith(text: newValue.text.toUpperCase(), selection: newValue.selection);
 }
 
-class _TopBar extends StatelessWidget {
-  const _TopBar({required this.client, required this.settings});
-  final GameClient client;
-  final Settings settings;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(VhSpace.lg, VhSpace.sm, VhSpace.sm, 0),
-    child: Row(
-      children: [
-        PlatformBadge(client.platform),
-        const Spacer(),
-        IconButton(
-          tooltip: 'Theme',
-          onPressed: () {
-            final m = settings.themeMode;
-            settings.themeMode = m == ThemeMode.dark
-                ? ThemeMode.light
-                : (m == ThemeMode.light ? ThemeMode.system : ThemeMode.dark);
-          },
-          icon: Icon(switch (settings.themeMode) {
-            ThemeMode.dark => Icons.dark_mode_rounded,
-            ThemeMode.light => Icons.light_mode_rounded,
-            ThemeMode.system => Icons.brightness_auto_rounded,
-          }),
-        ),
-        IconButton(
-          tooltip: 'Settings',
-          onPressed: () => showSettingsSheet(context, settings, null),
-          icon: const Icon(Icons.tune_rounded),
-        ),
-      ],
-    ),
-  );
-}
-
-class _ConnDot extends StatelessWidget {
-  const _ConnDot({required this.client});
-  final GameClient client;
+class _RoomRow extends StatelessWidget {
+  const _RoomRow({required this.room});
+  final RoomSummary room;
 
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context);
-    final (color, label) = switch (client.state) {
-      ConnState.connected => (VhColors.moss, 'Connected · ${client.pingMs} ms'),
-      ConnState.connecting || ConnState.idle => (VhColors.gold, 'Connecting'),
-      ConnState.reconnecting => (VhColors.gold, 'Reconnecting'),
-      ConnState.failed => (VhColors.danger, 'Offline'),
+    final s = Gui.of(context);
+    final phase = switch (room.phase) {
+      Phase.playing => ('In match', Px.green),
+      Phase.results => ('Results', Px.gold),
+      _ => ('Lobby', Px.aqua),
     };
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        AnimatedContainer(
-          duration: VhMotion.base,
-          width: 8,
-          height: 8,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-            boxShadow: [BoxShadow(color: color.withValues(alpha: 0.6), blurRadius: 6)],
+        Container(
+          width: 32.0 * s,
+          height: 32.0 * s,
+          color: room.mode == GameMode.creative ? const Color(0xff5b8ad6) : const Color(0xff6a9b3a),
+          alignment: Alignment.center,
+          child: PxText(room.mode == GameMode.creative ? 'C' : 'S', size: 2),
+        ),
+        SizedBox(width: 3.0 * s),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PxText(room.name, maxLines: 1),
+              PxText(
+                '${room.code} · ${room.mode == GameMode.creative ? 'Creative' : 'Survival'} · ${room.players} ${room.players == 1 ? 'player' : 'players'}',
+                color: Px.gray,
+                maxLines: 1,
+              ),
+              PxText(phase.$1, color: phase.$2),
+            ],
           ),
         ),
-        const SizedBox(width: 6),
-        Text(label, style: t.textTheme.labelSmall),
       ],
     );
   }
 }
 
-class _RoomTile extends StatelessWidget {
-  const _RoomTile({required this.room, required this.onJoin});
-  final RoomSummary room;
-  final VoidCallback onJoin;
+/// Create World screen: name, mode, seed, bots, creatures.
+class _CreateScreen extends StatefulWidget {
+  const _CreateScreen({required this.client, required this.dirt, required this.onBack, required this.beforeCreate});
+  final GameClient client;
+  final ui.Image? dirt;
+  final VoidCallback onBack;
+  final Future<void> Function() beforeCreate;
 
   @override
-  Widget build(BuildContext context) {
-    final t = Theme.of(context);
-    final playing = room.phase == Phase.playing;
-    return Padding(
-      padding: const EdgeInsets.only(bottom: VhSpace.sm),
-      child: Material(
-        color: t.colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(VhRadius.md),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(VhRadius.md),
-          onTap: onJoin,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: VhSpace.lg, vertical: VhSpace.md),
-            child: Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [VhColors.ember.withValues(alpha: 0.9), VhColors.gold.withValues(alpha: 0.9)],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(VhRadius.sm),
-                  ),
-                  alignment: Alignment.center,
-                  child: Icon(
-                    room.mode == GameMode.creative ? Icons.brush_rounded : Icons.shield_moon_rounded,
-                    color: const Color(0xff1a0c04),
-                  ),
-                ),
-                const SizedBox(width: VhSpace.md),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(room.name, style: t.textTheme.titleMedium, maxLines: 1, overflow: TextOverflow.ellipsis),
-                      const SizedBox(height: 2),
-                      Text(
-                        '${room.code} · ${room.mode == GameMode.creative ? 'Creative' : 'Survival'} · ${room.players} ${room.players == 1 ? 'player' : 'players'}',
-                        style: t.textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: (playing ? VhColors.moss : VhColors.sky).withValues(alpha: 0.18),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                  child: Text(
-                    playing ? 'In match' : (room.phase == Phase.results ? 'Results' : 'Lobby'),
-                    style: t.textTheme.labelSmall?.copyWith(color: playing ? VhColors.moss : VhColors.sky),
-                  ),
-                ),
-                const SizedBox(width: VhSpace.sm),
-                Icon(Icons.chevron_right_rounded, color: t.colorScheme.onSurfaceVariant),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  State<_CreateScreen> createState() => _CreateScreenState();
 }
 
-class _HowToPlay extends StatelessWidget {
+class _CreateScreenState extends State<_CreateScreen> {
+  late final TextEditingController _name = TextEditingController(text: '${widget.client.playerName}\'s world');
+  final TextEditingController _seed = TextEditingController();
+  String _mode = GameMode.survival;
+  bool _mobs = true;
+  int _bots = 0;
+  bool _busy = false;
+
+  @override
+  void dispose() {
+    _name.dispose();
+    _seed.dispose();
+    super.dispose();
+  }
+
+  Future<void> _create() async {
+    setState(() => _busy = true);
+    await widget.beforeCreate();
+    if (!mounted) return;
+    final seedText = _seed.text.trim();
+    widget.client.createRoom(
+      name: _name.text.trim().isEmpty ? 'Untitled world' : _name.text.trim(),
+      mode: _mode,
+      seed: seedText.isEmpty ? null : int.tryParse(seedText),
+      spawnMobs: _mobs,
+      bots: _bots,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final t = Theme.of(context);
-    final tips = [
-      (Icons.mouse_outlined, 'Look around', 'Drag or move the mouse · touch-drag on phones'),
-      (Icons.keyboard_alt_outlined, 'Move', 'WASD / arrows · joystick on touch · Space to jump · Shift to sneak'),
-      (Icons.handyman_outlined, 'Build', 'Hold left click / tap to break · right click / long-press to place'),
-      (Icons.inventory_2_outlined, 'Craft', 'E opens your pack · build a Workbench for bigger recipes'),
-    ];
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(VhSpace.xl),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    final s = Gui.of(context);
+    final gui = Gui.guiSize(context);
+    final twoCol = gui.width >= 320;
+    Widget label(String t) => SizedBox(
+      width: (twoCol ? 304.0 : 200.0) * s,
+      child: PxText(t, color: Px.gray),
+    );
+    final modeBtn = PxButton(
+      'Game Mode: ${_mode == GameMode.creative ? 'Creative' : 'Survival'}',
+      width: twoCol ? 150 : 200,
+      onPressed: () => setState(() => _mode = _mode == GameMode.creative ? GameMode.survival : GameMode.creative),
+    );
+    final mobsBtn = PxButton(
+      'Creatures: ${_mobs ? 'ON' : 'OFF'}',
+      width: twoCol ? 150 : 200,
+      onPressed: () => setState(() => _mobs = !_mobs),
+    );
+    final botsBtn = PxButton(
+      'Bots: $_bots',
+      width: twoCol ? 150 : 200,
+      onPressed: () => setState(() => _bots = (_bots + 1) % 7),
+    );
+    final connected = widget.client.state == ConnState.connected;
+    return PxScreen(
+      background: DirtBackground(dirt: widget.dirt),
+      title: 'Create New World',
+      titleY: 12,
+      footer: Padding(
+        padding: EdgeInsets.only(bottom: 8.0 * s),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            const SectionLabel('How to play'),
-            for (final tip in tips)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(tip.$1, size: 20, color: t.colorScheme.primary),
-                    const SizedBox(width: VhSpace.md),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(tip.$2, style: t.textTheme.titleSmall),
-                          Text(tip.$3, style: t.textTheme.bodySmall),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+            PxButton('Create New World', width: 150, onPressed: connected && !_busy ? _create : null),
+            SizedBox(width: 4.0 * s),
+            PxButton('Cancel', width: 150, sound: 'ui_back', onPressed: widget.onBack),
+          ],
+        ),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 8.0 * s),
+            label('World Name'),
+            SizedBox(height: 2.0 * s),
+            PxField(controller: _name, hint: 'Untitled world', maxLength: 24, width: twoCol ? 304 : 200),
+            SizedBox(height: 4.0 * s),
+            label('Seed for the world generator (leave blank for random)'),
+            SizedBox(height: 2.0 * s),
+            PxField(
+              controller: _seed,
+              hint: 'Random',
+              width: twoCol ? 304 : 200,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            ),
+            SizedBox(height: 10.0 * s),
+            if (twoCol) ...[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  modeBtn,
+                  SizedBox(width: 4.0 * s),
+                  mobsBtn,
+                ],
               ),
+              SizedBox(height: 4.0 * s),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  botsBtn,
+                  SizedBox(width: 4.0 * s),
+                  SizedBox(width: 150.0 * s),
+                ],
+              ),
+            ] else ...[
+              modeBtn,
+              SizedBox(height: 4.0 * s),
+              mobsBtn,
+              SizedBox(height: 4.0 * s),
+              botsBtn,
+            ],
+            SizedBox(height: 6.0 * s),
+            SizedBox(
+              width: (twoCol ? 304.0 : 200.0) * s,
+              child: PxText(
+                _mode == GameMode.creative
+                    ? 'Unlimited blocks, flight and no hunger. Build freely.'
+                    : 'Gather resources, craft tools and survive the night. Mossbacks roam by day; Hollows and Cinderlings hunt after dusk.',
+                color: Px.gray,
+                maxLines: 3,
+              ),
+            ),
+            if (!connected) ...[
+              SizedBox(height: 6.0 * s),
+              const PxText('Waiting for the server connection...', color: Px.yellow),
+            ],
           ],
         ),
       ),
@@ -552,217 +644,98 @@ class _HowToPlay extends StatelessWidget {
   }
 }
 
-class _CreateDialog extends StatefulWidget {
-  const _CreateDialog({required this.client});
-  final GameClient client;
+/// Rotating yellow splash line beside the wordmark.
+class _Splash extends StatelessWidget {
+  const _Splash({required this.animation});
+  final Animation<double> animation;
+
+  static const _lines = [
+    'Keep the hearth lit!',
+    'Also on iOS, Android, macOS & web!',
+    'Now with Mossbacks!',
+    'Multiplayer across every device!',
+    'Bots welcome!',
+    'Deterministic!',
+    'Hollows hunt at night!',
+    'Craft a Workbench first!',
+  ];
 
   @override
-  State<_CreateDialog> createState() => _CreateDialogState();
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: animation,
+    builder: (context, _) {
+      final t = animation.value;
+      final i = (t * _lines.length).floor() % _lines.length;
+      final pulse = 1 + 0.06 * math.sin(t * 2 * math.pi * 60);
+      return Transform.scale(
+        scale: pulse,
+        child: PxText(_lines[i], color: Px.yellow),
+      );
+    },
+  );
 }
 
-class _CreateDialogState extends State<_CreateDialog> {
-  late final TextEditingController _name = TextEditingController(text: '${widget.client.playerName}\'s world');
-  final TextEditingController _seed = TextEditingController();
-  String _mode = GameMode.survival;
-  bool _mobs = true;
-  int _bots = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = Theme.of(context);
-    return Dialog(
-      insetPadding: const EdgeInsets.all(VhSpace.lg),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 460),
-        child: Padding(
-          padding: const EdgeInsets.all(VhSpace.xl),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text('Create a world', style: t.textTheme.headlineSmall),
-              const SizedBox(height: VhSpace.xs),
-              Text(
-                'You will be the host. Share the room code with friends on any device.',
-                style: t.textTheme.bodySmall,
-              ),
-              const SizedBox(height: VhSpace.xl),
-              TextField(
-                controller: _name,
-                maxLength: 24,
-                decoration: const InputDecoration(labelText: 'World name', counterText: ''),
-              ),
-              const SizedBox(height: VhSpace.lg),
-              const SectionLabel('Mode'),
-              SegmentedButton<String>(
-                segments: const [
-                  ButtonSegment(
-                    value: GameMode.survival,
-                    label: Text('Survival'),
-                    icon: Icon(Icons.shield_moon_rounded),
-                  ),
-                  ButtonSegment(value: GameMode.creative, label: Text('Creative'), icon: Icon(Icons.brush_rounded)),
-                ],
-                selected: {_mode},
-                onSelectionChanged: (s) => setState(() => _mode = s.first),
-                showSelectedIcon: false,
-              ),
-              const SizedBox(height: VhSpace.lg),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _seed,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      decoration: const InputDecoration(labelText: 'Seed (optional)', hintText: 'random'),
-                    ),
-                  ),
-                  const SizedBox(width: VhSpace.md),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Bots', style: t.textTheme.labelMedium),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: _bots > 0 ? () => setState(() => _bots--) : null,
-                            icon: const Icon(Icons.remove_circle_outline),
-                          ),
-                          Text('$_bots', style: t.textTheme.titleMedium),
-                          IconButton(
-                            onPressed: _bots < 6 ? () => setState(() => _bots++) : null,
-                            icon: const Icon(Icons.add_circle_outline),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SwitchListTile.adaptive(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Creatures roam the world'),
-                subtitle: const Text('Mossbacks by day, Hollows and Cinderlings at night'),
-                value: _mobs,
-                onChanged: (v) => setState(() => _mobs = v),
-              ),
-              const SizedBox(height: VhSpace.lg),
-              Row(
-                children: [
-                  TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
-                  const Spacer(),
-                  FilledButton.icon(
-                    onPressed: () {
-                      final seedText = _seed.text.trim();
-                      widget.client.createRoom(
-                        name: _name.text.trim().isEmpty ? 'Untitled world' : _name.text.trim(),
-                        mode: _mode,
-                        seed: seedText.isEmpty ? null : int.tryParse(seedText),
-                        spawnMobs: _mobs,
-                        bots: _bots,
-                      );
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.local_fire_department_rounded),
-                    label: const Text('Light the hearth'),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// Slow drifting voxel silhouettes behind the home screen.
-class _Backdrop extends StatelessWidget {
-  const _Backdrop({required this.animation});
+/// Slowly drifting voxel skyline behind the title screen.
+class _Panorama extends StatelessWidget {
+  const _Panorama({required this.animation});
   final Animation<double> animation;
 
   @override
-  Widget build(BuildContext context) {
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    return AnimatedBuilder(
-      animation: animation,
-      builder: (context, _) => CustomPaint(painter: _BackdropPainter(animation.value, dark)),
-    );
-  }
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: animation,
+    builder: (context, _) => CustomPaint(painter: _PanoramaPainter(animation.value, Gui.of(context))),
+  );
 }
 
-class _BackdropPainter extends CustomPainter {
-  _BackdropPainter(this.t, this.dark);
+class _PanoramaPainter extends CustomPainter {
+  _PanoramaPainter(this.t, this.s);
   final double t;
-  final bool dark;
+  final int s;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final bg = Paint()
-      ..shader = LinearGradient(
+    final sky = Paint()
+      ..shader = const LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: dark
-            ? const [Color(0xff0b0f17), Color(0xff141b2b), Color(0xff1a1410)]
-            : const [Color(0xfffdf8f0), Color(0xfff3ebdc), Color(0xffe9dcc6)],
-        stops: const [0, 0.55, 1],
+        colors: [Color(0xff0a1a3a), Color(0xff284d8f), Color(0xff6f9fd8)],
+        stops: [0, 0.55, 1],
       ).createShader(Offset.zero & size);
-    canvas.drawRect(Offset.zero & size, bg);
-    // Ember glow at the bottom
-    final glow = Paint()
-      ..shader = RadialGradient(
-        colors: [
-          VhColors.ember.withValues(alpha: dark ? 0.28 : 0.22),
-          VhColors.ember.withValues(alpha: 0),
-        ],
-      ).createShader(Rect.fromCircle(center: Offset(size.width * 0.5, size.height * 1.05), radius: size.width * 0.6));
-    canvas.drawRect(Offset.zero & size, glow);
-    // Drifting cubes
-    final rnd = math.Random(3);
-    for (var i = 0; i < 26; i++) {
-      final bx = rnd.nextDouble(), by = rnd.nextDouble(), s = 14 + rnd.nextDouble() * 34, sp = 0.3 + rnd.nextDouble();
-      final x = ((bx + t * sp * 0.15) % 1.2 - 0.1) * size.width;
-      final y = ((by + math.sin(t * math.pi * 2 * sp + i) * 0.01) % 1) * size.height;
-      final a = (dark ? 0.06 : 0.08) + rnd.nextDouble() * 0.05;
-      _cube(canvas, Offset(x, y), s, a);
+    canvas.drawRect(Offset.zero & size, sky);
+    final rnd = math.Random(11);
+    final cell = 6.0 * s;
+    final cols = (size.width / cell).ceil() + 2;
+    final scroll = t * cols * cell;
+    // Distant ridge
+    for (var i = -1; i < cols + 1; i++) {
+      final x = ((i * cell - scroll) % (cols * cell) + cols * cell) % (cols * cell) - cell;
+      final h = (0.30 + 0.12 * math.sin(i * 0.6) + 0.06 * math.sin(i * 1.7)) * size.height;
+      canvas.drawRect(Rect.fromLTWH(x, size.height - h, cell, h), Paint()..color = const Color(0xff2f4d6f));
     }
-  }
-
-  void _cube(Canvas c, Offset o, double s, double alpha) {
-    final top = Paint()..color = (dark ? Colors.white : VhColors.bark).withValues(alpha: alpha * 1.4);
-    final left = Paint()..color = (dark ? Colors.white : VhColors.bark).withValues(alpha: alpha * 0.8);
-    final right = Paint()..color = (dark ? Colors.white : VhColors.bark).withValues(alpha: alpha);
-    final h = s * 0.5;
-    c.drawPath(
-      Path()
-        ..moveTo(o.dx, o.dy)
-        ..lineTo(o.dx + s, o.dy - h)
-        ..lineTo(o.dx + 2 * s, o.dy)
-        ..lineTo(o.dx + s, o.dy + h)
-        ..close(),
-      top,
-    );
-    c.drawPath(
-      Path()
-        ..moveTo(o.dx, o.dy)
-        ..lineTo(o.dx + s, o.dy + h)
-        ..lineTo(o.dx + s, o.dy + h + s)
-        ..lineTo(o.dx, o.dy + s)
-        ..close(),
-      left,
-    );
-    c.drawPath(
-      Path()
-        ..moveTo(o.dx + 2 * s, o.dy)
-        ..lineTo(o.dx + s, o.dy + h)
-        ..lineTo(o.dx + s, o.dy + h + s)
-        ..lineTo(o.dx + 2 * s, o.dy + s)
-        ..close(),
-      right,
-    );
+    // Near hills with grass tops and dirt
+    for (var i = -1; i < cols + 1; i++) {
+      final x = ((i * cell - scroll * 1.6) % (cols * cell) + cols * cell) % (cols * cell) - cell;
+      final h = (0.16 + 0.07 * math.sin(i * 0.9 + 2) + 0.03 * math.sin(i * 2.3)) * size.height;
+      final top = size.height - h;
+      canvas.drawRect(Rect.fromLTWH(x, top, cell, cell), Paint()..color = const Color(0xff5f9a34));
+      canvas.drawRect(Rect.fromLTWH(x, top + cell, cell, h), Paint()..color = const Color(0xff6b4a2c));
+      if (rnd.nextInt(7) == 0) {
+        canvas.drawRect(Rect.fromLTWH(x, top - cell * 3, cell, cell * 3), Paint()..color = const Color(0xff4b3320));
+        canvas.drawRect(
+          Rect.fromLTWH(x - cell, top - cell * 5, cell * 3, cell * 3),
+          Paint()..color = const Color(0xff3f7a2a),
+        );
+      }
+    }
+    // Stars
+    final star = Paint()..color = const Color(0x90ffffff);
+    for (var i = 0; i < 40; i++) {
+      final x = rnd.nextDouble() * size.width, y = rnd.nextDouble() * size.height * 0.4;
+      canvas.drawRect(Rect.fromLTWH(x, y, s.toDouble(), s.toDouble()), star);
+    }
+    canvas.drawRect(Offset.zero & size, Paint()..color = const Color(0x30000000));
   }
 
   @override
-  bool shouldRepaint(covariant _BackdropPainter old) => old.t != t || old.dark != dark;
+  bool shouldRepaint(covariant _PanoramaPainter old) => old.t != t || old.s != s;
 }

@@ -9,19 +9,23 @@ import 'voxel_view.dart';
 
 /// GPU-side assets shared by every frame.
 class RenderAssets {
-  RenderAssets._(this.program, this.atlas, this.atlasImage, this.tileMap);
+  RenderAssets._(this.program, this.atlas, this.atlasImage, this.tileMap, this.dirt);
 
   final ui.FragmentProgram program;
   final AtlasData atlas;
   final ui.Image atlasImage;
   final ui.Image tileMap;
 
+  /// 16x16 dirt tile used for repeating menu backgrounds.
+  final ui.Image dirt;
+
   static Future<RenderAssets> load() async {
     final program = await ui.FragmentProgram.fromAsset('shaders/voxel.frag');
     final atlas = buildAtlas();
     final img = await atlas.toImage();
     final tiles = await atlas.tileMapImage();
-    return RenderAssets._(program, atlas, img, tiles);
+    final dirt = await atlas.tileImage(Tiles.dirt);
+    return RenderAssets._(program, atlas, img, tiles, dirt);
   }
 }
 

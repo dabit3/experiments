@@ -14,10 +14,9 @@ import '../net/game_client.dart';
 import 'chat_panel.dart';
 import 'hud.dart';
 import 'inventory_ui.dart';
+import 'pixel.dart';
 import 'settings_sheet.dart';
-import 'theme.dart';
 import 'touch_controls.dart';
-import 'widgets.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key, required this.client, required this.game, required this.settings, required this.assets});
@@ -171,7 +170,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final s = g.session;
-    final ff = formFactorOf(context);
+    final gs = Gui.of(context);
     final showTouch = _touchUi && !g.inputBlocked;
     return Scaffold(
       backgroundColor: Colors.black,
@@ -199,45 +198,35 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
             ),
             // Particles + name tags + crosshair
             IgnorePointer(
-              child: RepaintBoundary(
-                child: CustomPaint(painter: OverlayPainter(g, frame, Theme.of(context)), isComplex: false),
-              ),
+              child: RepaintBoundary(child: CustomPaint(painter: OverlayPainter(g, frame, gs), isComplex: false)),
             ),
             if (_showCaptureHint)
               IgnorePointer(
                 child: Align(
-                  alignment: const Alignment(0, 0.35),
-                  child: GlassPanel(
-                    padding: const EdgeInsets.symmetric(horizontal: VhSpace.md, vertical: VhSpace.sm),
-                    tint: Colors.black.withValues(alpha: 0.45),
-                    child: Text(
-                      'Click to look around  ·  Esc to pause',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
-                    ),
+                  alignment: const Alignment(0, -0.8),
+                  child: Container(
+                    color: const Color(0x80000000),
+                    padding: EdgeInsets.symmetric(horizontal: 4.0 * gs, vertical: 1.0 * gs),
+                    child: const PxText('Click to look around  ·  Esc to pause'),
                   ),
                 ),
               ),
             // HUD
             if (s.phase == Phase.playing) ...[
               IgnorePointer(
-                child: Hud(game: g, assets: widget.assets, frame: frame, settings: widget.settings, formFactor: ff),
+                child: Hud(
+                  game: g,
+                  assets: widget.assets,
+                  frame: frame,
+                  settings: widget.settings,
+                  client: widget.client,
+                ),
               ),
               if (showTouch) TouchControls(game: g, frame: frame),
-              HudButtons(
-                game: g,
-                client: widget.client,
-                settings: widget.settings,
-                touch: _touchUi,
-                onSettings: () => _openSettings(context),
-              ),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: Hotbar(game: g, assets: widget.assets, frame: frame, formFactor: ff, interactive: true),
-              ),
+              HudButtons(game: g, touch: _touchUi),
+              if (!g.inputBlocked) Hotbar(game: g),
             ],
-            // Chat overlay (bottom-left) or full chat when open
+            // Chat: history above a full-width input line along the bottom.
             if (g.chatOpen)
               Positioned.fill(
                 child: GestureDetector(
@@ -246,22 +235,17 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                   child: Align(
                     alignment: Alignment.bottomLeft,
                     child: SafeArea(
-                      child: Container(
-                        width: math.min(520, MediaQuery.sizeOf(context).width - 24),
-                        height: math.min(320, MediaQuery.sizeOf(context).height * 0.5),
-                        margin: const EdgeInsets.all(VhSpace.md),
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: GlassPanel(
-                            padding: const EdgeInsets.all(VhSpace.sm),
-                            tint: Colors.black.withValues(alpha: 0.35),
-                            child: ChatPanel(
-                              client: widget.client,
-                              session: s,
-                              autofocus: true,
-                              transparent: true,
-                              onClose: () => g.setChatOpen(false),
-                            ),
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: SizedBox(
+                          width: math.min(324.0 * gs, MediaQuery.sizeOf(context).width),
+                          height: math.min(180.0 * gs, MediaQuery.sizeOf(context).height * 0.6),
+                          child: ChatPanel(
+                            client: widget.client,
+                            session: s,
+                            autofocus: true,
+                            transparent: true,
+                            onClose: () => g.setChatOpen(false),
                           ),
                         ),
                       ),
@@ -287,8 +271,8 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                 onSettings: () => _openSettings(context),
               ),
             if (widget.client.state != ConnState.connected) ReconnectOverlay(client: widget.client),
-            if (!g.loaded) LoadingOverlay(game: g, frame: frame),
-            ToastLayer(client: widget.client),
+            if (!g.loaded) LoadingOverlay(game: g, frame: frame, assets: widget.assets),
+            if (s.phase != Phase.playing) ToastLayer(client: widget.client),
           ],
         ),
       ),
@@ -296,10 +280,8 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   }
 
   Future<void> _openSettings(BuildContext context) async {
-    final wasPaused = g.paused;
     g.setPaused(true);
-    await showSettingsSheet(context, widget.settings, g);
-    g.setPaused(wasPaused);
+    await showOptionsScreen(context, widget.settings, game: g, background: const DimBackground());
     _focus.requestFocus();
   }
 }
@@ -330,10 +312,10 @@ class VoxelCanvas extends StatelessWidget {
 
 /// Draws crosshair, particles and remote name tags above the shader output.
 class OverlayPainter extends CustomPainter {
-  OverlayPainter(this.g, this.frame, this.theme) : super(repaint: frame);
+  OverlayPainter(this.g, this.frame, this.s) : super(repaint: frame);
   final GameController g;
   final FrameNotifier frame;
-  final ThemeData theme;
+  final int s;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -343,31 +325,17 @@ class OverlayPainter extends CustomPainter {
     if (!g.inputBlocked) _crosshair(canvas, size);
   }
 
-  void _crosshair(Canvas c, Size s) {
-    final cx = s.width / 2, cy = s.height / 2;
+  /// 9x9 inverted plus, plus a thin progress bar under it while breaking.
+  void _crosshair(Canvas c, Size size) {
+    final cx = (size.width / 2 / s).floorToDouble(), cy = (size.height / 2 / s).floorToDouble();
     final p = Paint()
-      ..color = Colors.white.withValues(alpha: 0.9)
-      ..strokeWidth = 2
-      ..strokeCap = StrokeCap.round
+      ..color = const Color(0xffe0e0e0)
       ..blendMode = BlendMode.difference;
-    const r = 7.0, gap = 2.5;
-    c.drawLine(Offset(cx - r, cy), Offset(cx - gap, cy), p);
-    c.drawLine(Offset(cx + gap, cy), Offset(cx + r, cy), p);
-    c.drawLine(Offset(cx, cy - r), Offset(cx, cy - gap), p);
-    c.drawLine(Offset(cx, cy + gap), Offset(cx, cy + r), p);
+    c.drawRect(Rect.fromLTWH((cx - 4) * s, cy * s, 9.0 * s, 1.0 * s), p);
+    c.drawRect(Rect.fromLTWH(cx * s, (cy - 4) * s, 1.0 * s, 9.0 * s), p);
     if (g.breaking && g.breakProgress > 0) {
-      final ring = Paint()
-        ..color = VhColors.gold
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 3
-        ..strokeCap = StrokeCap.round;
-      c.drawArc(
-        Rect.fromCircle(center: Offset(cx, cy), radius: 16),
-        -math.pi / 2,
-        math.pi * 2 * g.breakProgress,
-        false,
-        ring,
-      );
+      pxRect(c, s, cx - 9, cy + 7, 19, 3, const Color(0x80000000));
+      pxRect(c, s, cx - 8, cy + 8, (17 * g.breakProgress).clamp(0, 17), 1, Px.white);
     }
   }
 
@@ -384,37 +352,20 @@ class OverlayPainter extends CustomPainter {
     }
   }
 
-  void _nameTags(Canvas c, Size s) {
+  void _nameTags(Canvas c, Size size) {
     for (final p in g.session.players.values) {
       if (p.id == g.session.youId) continue;
-      final o = g.project(p.rx, p.ry + 2.15, p.rz, s);
+      final o = g.project(p.rx, p.ry + 2.15, p.rz, size);
       if (o == null) continue;
       final d = g.camera.distanceTo(p.rx, p.ry, p.rz);
       if (d > 48) continue;
       final scale = (1.1 - d / 60).clamp(0.6, 1.0);
-      final tp = TextPainter(
-        text: TextSpan(
-          text: p.name,
-          style: TextStyle(
-            fontFamily: 'Outfit',
-            fontSize: 13 * scale,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        textDirection: TextDirection.ltr,
-      )..layout();
-      final rect = Rect.fromCenter(center: o, width: tp.width + 14, height: tp.height + 8);
-      c.drawRRect(
-        RRect.fromRectAndRadius(rect, const Radius.circular(6)),
-        Paint()..color = Colors.black.withValues(alpha: 0.45),
-      );
-      final hpW = (rect.width - 8) * (p.hp / 20).clamp(0, 1);
-      c.drawRRect(
-        RRect.fromRectAndRadius(Rect.fromLTWH(rect.left + 4, rect.bottom - 3, hpW, 2), const Radius.circular(1)),
-        Paint()..color = VhColors.danger,
-      );
-      tp.paint(c, Offset(rect.left + 7, rect.top + 3));
+      final tp = pxPainter(p.name, s, size: scale, shadow: false);
+      final rect = Rect.fromCenter(center: o, width: tp.width + 4 * s, height: tp.height + 2 * s);
+      c.drawRect(rect, Paint()..color = const Color(0x40000000));
+      final hpW = (rect.width - 2 * s) * (p.hp / 20).clamp(0, 1);
+      c.drawRect(Rect.fromLTWH(rect.left + s, rect.bottom - s, hpW, s * 1.0), Paint()..color = Px.red);
+      tp.paint(c, Offset(rect.left + 2 * s, rect.top + s));
     }
   }
 
@@ -428,32 +379,32 @@ class ReconnectOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = Gui.of(context);
     final failed = client.state == ConnState.failed;
     return Positioned.fill(
-      child: Container(
-        color: Colors.black.withValues(alpha: 0.55),
-        alignment: Alignment.center,
-        child: GlassPanel(
-          child: SizedBox(
-            width: 360,
-            child: StateBlock(
-              icon: failed ? Icons.cloud_off_rounded : Icons.wifi_off_rounded,
-              title: failed ? 'Lost the server' : 'Reconnecting…',
-              message: failed
-                  ? (client.lastError ?? 'The server is unreachable.')
-                  : 'Your place in the world is saved. Attempt ${client.reconnectAttempt}.',
-              loading: !failed,
-              action: failed
-                  ? Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        OutlinedButton(onPressed: client.leaveRoomLocal, child: const Text('Back to menu')),
-                        const SizedBox(width: VhSpace.sm),
-                        FilledButton(onPressed: client.retryNow, child: const Text('Retry')),
-                      ],
-                    )
-                  : OutlinedButton(onPressed: client.retryNow, child: const Text('Retry now')),
-            ),
+      child: DimBackground(
+        child: SafeArea(
+          child: Column(
+            children: [
+              SizedBox(height: 50.0 * s),
+              PxText(failed ? 'Connection Lost' : 'Reconnecting...'),
+              SizedBox(height: 10.0 * s),
+              PxText(
+                failed
+                    ? (client.lastError ?? 'The server is unreachable.')
+                    : 'Your place in the world is saved. Attempt ${client.reconnectAttempt}.',
+                color: Px.gray,
+                align: TextAlign.center,
+                maxLines: 3,
+              ),
+              if (!failed) ...[SizedBox(height: 10.0 * s), _LoadingDots()],
+              SizedBox(height: 20.0 * s),
+              PxButton(failed ? 'Retry' : 'Retry Now', onPressed: client.retryNow),
+              if (failed) ...[
+                SizedBox(height: 4.0 * s),
+                PxButton('Back to Title Screen', onPressed: client.leaveRoomLocal, sound: 'ui_back'),
+              ],
+            ],
           ),
         ),
       ),
@@ -461,45 +412,84 @@ class ReconnectOverlay extends StatelessWidget {
   }
 }
 
-class LoadingOverlay extends StatelessWidget {
-  const LoadingOverlay({super.key, required this.game, required this.frame});
-  final GameController game;
-  final FrameNotifier frame;
+class _LoadingDots extends StatefulWidget {
+  @override
+  State<_LoadingDots> createState() => _LoadingDotsState();
+}
+
+class _LoadingDotsState extends State<_LoadingDots> with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1200))
+    ..repeat();
 
   @override
-  Widget build(BuildContext context) => Positioned.fill(
-    child: ListenableBuilder(
-      listenable: frame,
-      builder: (context, _) {
-        final n = game.session.chunksReceived.length;
-        final p = (n / 25).clamp(0.0, 1.0);
-        return Container(
-          color: const Color(0xff0b0f17),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const EmberGlyph(size: 56),
-              const SizedBox(height: VhSpace.lg),
-              Text(
-                'Kindling the world…',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.white),
-              ),
-              const SizedBox(height: VhSpace.xs),
-              Text('$n chunks received', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white60)),
-              const SizedBox(height: VhSpace.lg),
-              SizedBox(
-                width: 220,
-                child: LinearProgressIndicator(value: p, minHeight: 4, borderRadius: BorderRadius.circular(2)),
-              ),
-            ],
-          ),
-        );
-      },
-    ),
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: _c,
+    builder: (context, _) {
+      final n = (_c.value * 4).floor() % 4;
+      return PxText('${'o' * n}${' ' * (3 - n)}', color: Px.gray);
+    },
   );
 }
 
+/// Dirt-backed loading screen with a classic thin progress bar.
+class LoadingOverlay extends StatelessWidget {
+  const LoadingOverlay({super.key, required this.game, required this.frame, required this.assets});
+  final GameController game;
+  final FrameNotifier frame;
+  final RenderAssets assets;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = Gui.of(context);
+    return Positioned.fill(
+      child: DirtBackground(
+        dirt: assets.dirt,
+        child: ListenableBuilder(
+          listenable: frame,
+          builder: (context, _) {
+            final n = game.session.chunksReceived.length;
+            final p = (n / 25).clamp(0.0, 1.0);
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const PxText('Loading world'),
+                SizedBox(height: 4.0 * s),
+                PxText('Building terrain · $n chunks', color: Px.gray),
+                SizedBox(height: 12.0 * s),
+                CustomPaint(size: Size(100.0 * s, 4.0 * s), painter: _BarPainter(s, p)),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _BarPainter extends CustomPainter {
+  _BarPainter(this.s, this.p);
+  final int s;
+  final double p;
+
+  @override
+  void paint(Canvas c, Size size) {
+    final w = size.width / s;
+    pxRect(c, s, 0, 0, w, 4, const Color(0xff808080));
+    pxRect(c, s, 1, 1, (w - 2) * p, 2, Px.green);
+  }
+
+  @override
+  bool shouldRepaint(covariant _BarPainter old) => old.p != p;
+}
+
+/// Transient messages shown along the top outside gameplay (in game they
+/// go to the action bar above the hotbar).
 class ToastLayer extends StatelessWidget {
   const ToastLayer({super.key, required this.client});
   final GameClient client;
@@ -507,6 +497,7 @@ class ToastLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (client.toasts.isEmpty) return const SizedBox.shrink();
+    final s = Gui.of(context);
     return Positioned(
       top: 0,
       left: 0,
@@ -515,23 +506,14 @@ class ToastLayer extends StatelessWidget {
         child: IgnorePointer(
           child: Column(
             children: [
-              const SizedBox(height: 56),
+              SizedBox(height: 4.0 * s),
               for (final t in client.toasts)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 6),
-                  child: Reveal(
-                    key: ValueKey(t.at),
-                    offset: -10,
-                    child: GlassPanel(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                      radius: 999,
-                      tint: (t.kind == 'error' ? VhColors.danger : Colors.black).withValues(alpha: 0.5),
-                      child: Text(
-                        t.text,
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                  ),
+                Container(
+                  key: ValueKey(t.at),
+                  margin: EdgeInsets.only(bottom: 1.0 * s),
+                  padding: EdgeInsets.symmetric(horizontal: 3.0 * s),
+                  color: const Color(0x80000000),
+                  child: PxText(t.text, color: t.kind == 'error' ? Px.red : Px.yellow),
                 ),
             ],
           ),

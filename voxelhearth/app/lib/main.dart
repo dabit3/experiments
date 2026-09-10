@@ -17,11 +17,7 @@ Future<void> main() async {
   final query = kIsWeb ? Uri.base.queryParameters : const <String, String>{};
   final config = LaunchConfig.detect(query: query, overrides: await LaunchConfig.hostOverrides());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android)) {
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.portraitUp,
-    ]);
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   }
   runApp(VoxelhearthApp(settings: settings, config: config));

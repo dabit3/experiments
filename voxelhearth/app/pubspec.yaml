@@ -35,3 +35,6 @@ flutter:
     - family: Outfit
       fonts:
         - asset: assets/fonts/Outfit-Variable.ttf
+    - family: Pixelify
+      fonts:
+        - asset: assets/fonts/PixelifySans-Variable.ttf
