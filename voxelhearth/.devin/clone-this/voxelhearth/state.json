@@ -3,107 +3,696 @@
   "source": "Minecraft",
   "clone_name": "Voxelhearth",
   "clone_root": "/Users/devin/repos/experiments/voxelhearth",
-  "status": "active",
-  "iteration": 0,
-  "revision": "sha256:c644667f73616de96f711a6b5c97000cc8516fc051be6cec4690be2a4fda2bc0",
+  "status": "blocked",
+  "iteration": 4,
+  "revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
   "frontier": [],
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "android-emulator-hvf",
+      "affected": [
+        "journey-e2e-android",
+        "visual-android-lobby"
+      ],
+      "missing": "Hardware virtualization for the Android emulator (host is an Apple M4 *virtual* macOS guest, kern.hv_support=0).",
+      "attempted": "HVF, TCG (-accel off), headless, reduced RAM/skin, wipe-data, direct qemu, fresh AVD; none reach sys.boot_completed.",
+      "evidence": [
+        "evidence/tests/android-blocker/BLOCKER.md",
+        "evidence/tests/android-blocker/emulator-boot.log",
+        "evidence/tests/android-blocker/accel-check.txt"
+      ],
+      "resume_condition": "Run VH_PLATFORMS=web,ios,android,macos ./test/multiplayer-e2e.sh on a host whose emulator reaches sys.boot_completed=1."
+    },
+    {
+      "id": "no-hardware-gpu",
+      "affected": [
+        "feature-60fps"
+      ],
+      "missing": "Hardware GPU on the build host; measured 20 (web) / 22 (iOS sim) / 41 (macOS) fps.",
+      "evidence": [
+        "evidence/tests/checks/fps.md"
+      ],
+      "resume_condition": "Re-run the harness on a machine with a hardware GPU and record >= 60 fps in report.json."
+    }
+  ],
   "unverified_assumptions": [],
-  "items": [],
+  "items": [
+    {
+      "id": "route-home",
+      "kind": "route",
+      "label": "Home: name, create world, join by code, server status, how-to-play (S-01, S-11)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/screenshots/web-home.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/ios-home.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/macos-home.png",
+        "evidence/tests/e2e-20260909-182954/report.md"
+      ]
+    },
+    {
+      "id": "route-lobby",
+      "kind": "route",
+      "label": "Lobby: roster with platform/ready state, world rules (mode, match length, bots), chat, host start (S-07, S-11)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/screenshots/web-lobby.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/ios-lobby.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/macos-lobby.png",
+        "evidence/tests/e2e-20260909-182954/report.md"
+      ]
+    },
+    {
+      "id": "route-game",
+      "kind": "route",
+      "label": "Gameplay: first-person voxel view, HUD (hotbar, crosshair, hearts, food, air), touch controls on phones (S-08, S-12)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/screenshots/web-gameplay.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/ios-gameplay.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/macos-gameplay.png",
+        "evidence/tests/e2e-20260909-182954/report.md"
+      ]
+    },
+    {
+      "id": "route-results",
+      "kind": "route",
+      "label": "Results: shared scoreboard with placed/broken/crafted/kills and world/chat fingerprints",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/screenshots/web-results.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/ios-results.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/macos-results.png",
+        "evidence/tests/e2e-20260909-182954/report.md"
+      ]
+    },
+    {
+      "id": "route-inventory",
+      "kind": "route",
+      "label": "Inventory + 2x2 / 3x3 crafting + container overlays (S-02, S-03)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/tests/checks/core.txt",
+        "evidence/reference/source-audit.md"
+      ]
+    },
+    {
+      "id": "route-pause-settings",
+      "kind": "route",
+      "label": "Pause / settings sheet: look sensitivity, FOV, render quality, touch controls, theme (S-09 Esc)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/tests/e2e-20260909-182954/report.json"
+      ]
+    },
+    {
+      "id": "feature-worldgen",
+      "kind": "feature",
+      "label": "Deterministic chunked world with biomes, height, caves, trees, ores; same seed -> identical chunks on every peer (S-01)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/core.txt",
+        "evidence/tests/e2e-20260909-182954/report.md"
+      ]
+    },
+    {
+      "id": "feature-movement",
+      "kind": "feature",
+      "label": "Walk, sprint, jump, sneak, swim with air meter; keyboard/mouse on desktop & web, joystick + buttons on touch (S-09)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/report.json",
+        "evidence/tests/e2e-20260909-182954/screenshots/ios-gameplay.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/web-gameplay.png"
+      ]
+    },
+    {
+      "id": "feature-block-edit",
+      "kind": "feature",
+      "label": "Break with tool-appropriate speed and tier gating; place with support-face targeting; server validates and broadcasts",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/core.txt",
+        "evidence/tests/e2e-20260909-182954/report.md",
+        "evidence/tests/e2e-20260909-182954/screenshots/web-structure.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/ios-structure.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/macos-structure.png"
+      ]
+    },
+    {
+      "id": "feature-inventory",
+      "kind": "feature",
+      "label": "27 + 9 hotbar slots, stacks of 64, tools do not stack, per-player server-side inventories (S-02)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/core.txt",
+        "evidence/tests/e2e-20260909-182954/report.json"
+      ]
+    },
+    {
+      "id": "feature-crafting",
+      "kind": "feature",
+      "label": "Recipe table: planks, sticks, tools (tiers), torches, chest, kiln, bed, crafting bench; shaped/shapeless, offset-tolerant (S-03)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/core.txt"
+      ]
+    },
+    {
+      "id": "feature-smelting",
+      "kind": "feature",
+      "label": "Kiln consumes fuel to smelt ore into ingots, persistent per world (S-04)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/core.txt"
+      ]
+    },
+    {
+      "id": "feature-day-night",
+      "kind": "feature",
+      "label": "Day/night cycle with sky + block light; beds set spawn and skip the night (S-06)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/core.txt",
+        "evidence/tests/e2e-20260909-182954/report.json",
+        "evidence/discovery/sweep-001.json"
+      ]
+    },
+    {
+      "id": "feature-survival-vitals",
+      "kind": "feature",
+      "label": "Health, hunger, drowning; respawn at spawn; creative hides vitals and allows flight (S-07)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/screenshots/ios-gameplay.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/web-gameplay.png",
+        "evidence/discovery/sweep-001.json"
+      ]
+    },
+    {
+      "id": "feature-mobs",
+      "kind": "feature",
+      "label": "Original creatures: passive by day, hostile at night, deterministic spawn/despawn radius (S-05)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/core.txt",
+        "evidence/discovery/sweep-001.json"
+      ]
+    },
+    {
+      "id": "feature-persistence",
+      "kind": "feature",
+      "label": "Server saves world edits, containers, kilns, inventories and chat per room; reload restores them",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/saves/HEARTH.json",
+        "evidence/tests/e2e-20260909-182954/report.json"
+      ]
+    },
+    {
+      "id": "feature-multiplayer-sync",
+      "kind": "feature",
+      "label": "Authoritative server: players visible with names, synchronized block edits, identical world hash across all clients (S-11)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/report.md",
+        "evidence/tests/e2e-20260909-182954/report.json",
+        "evidence/tests/e2e-20260909-182954/server.log"
+      ]
+    },
+    {
+      "id": "feature-chat",
+      "kind": "feature",
+      "label": "Room chat with identical history/hash on every client",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/report.md",
+        "evidence/tests/e2e-20260909-182954/screenshots/web-chat.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/ios-chat.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/macos-chat.png"
+      ]
+    },
+    {
+      "id": "feature-rooms",
+      "kind": "feature",
+      "label": "Rooms with 5-letter join codes, host controls, reconnection with session token, lobby -> match -> results",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/report.md",
+        "evidence/tests/e2e-20260909-182954/e2e.log"
+      ]
+    },
+    {
+      "id": "feature-bots",
+      "kind": "feature",
+      "label": "Server-side deterministic bots fill a match and stay clear of human work areas",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/core.txt",
+        "evidence/tests/e2e-20260909-182954/report.md"
+      ]
+    },
+    {
+      "id": "feature-test-mode",
+      "kind": "feature",
+      "label": "Fixed seed, frozen clock, deterministic ids, director channel for automation",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/report.json",
+        "evidence/tests/e2e-20260909-182954/e2e.log",
+        "evidence/tests/checks/security.md"
+      ]
+    },
+    {
+      "id": "feature-60fps",
+      "kind": "feature",
+      "label": "60 fps gameplay on all platforms",
+      "status": "blocked",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/checks/fps.md",
+        "evidence/tests/e2e-20260909-182954/report.json"
+      ],
+      "blocker": "Host VM has no hardware GPU; measured 20/22/41 fps. Needs a machine with a hardware GPU to demonstrate."
+    },
+    {
+      "id": "journey-e2e-web",
+      "kind": "journey",
+      "label": "Web (Playwright) creates room, plays the scripted match, verifies identical state, reaches results",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/report.md",
+        "evidence/tests/e2e-20260909-182954/e2e.log",
+        "evidence/tests/e2e-20260909-182954/web-recording.webm"
+      ]
+    },
+    {
+      "id": "journey-e2e-ios",
+      "kind": "journey",
+      "label": "iOS Simulator joins the same room via simctl launch args and completes the match",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/report.md",
+        "evidence/tests/e2e-20260909-182954/e2e.log",
+        "evidence/tests/e2e-20260909-182954/four-way-recording.mp4"
+      ]
+    },
+    {
+      "id": "journey-e2e-macos",
+      "kind": "journey",
+      "label": "Native macOS app joins the same room and completes the match",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/report.md",
+        "evidence/tests/e2e-20260909-182954/e2e.log",
+        "evidence/tests/e2e-20260909-182954/macos.log"
+      ]
+    },
+    {
+      "id": "journey-e2e-android",
+      "kind": "journey",
+      "label": "Android emulator joins the same room and completes the match",
+      "status": "blocked",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/android-blocker/BLOCKER.md",
+        "evidence/tests/android-blocker/emulator-boot.log",
+        "evidence/tests/android-blocker/accel-check.txt"
+      ],
+      "blocker": "Android emulator cannot boot on this host (kern.hv_support=0, HVF unsupported). APK builds."
+    },
+    {
+      "id": "journey-reconnect",
+      "kind": "journey",
+      "label": "Client loses the socket mid-match and rejoins the same room/player with its token",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/e2e.log",
+        "evidence/tests/e2e-20260909-182954/report.json"
+      ]
+    },
+    {
+      "id": "visual-lobby-macos",
+      "kind": "visual",
+      "label": "Lobby screen: native macOS matches the web baseline structurally (every node within 2 logical px) and the normalized layout maps are pixel-identical",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/visual/macos-lobby.nodes.json",
+        "evidence/tests/e2e-20260909-182954/visual/NORMALIZATION.md",
+        "evidence/tests/e2e-20260909-182954/report.md"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/tests/e2e-20260909-182954/visual/web-lobby.layout.png",
+        "actual": "evidence/tests/e2e-20260909-182954/visual/macos-lobby.layout.normalized.png",
+        "diff": "evidence/tests/e2e-20260909-182954/visual/macos-lobby.layout.diff.png",
+        "different_pixels": 0,
+        "total_pixels": 1024000,
+        "normalization_evidence": "evidence/tests/e2e-20260909-182954/visual/NORMALIZATION.md",
+        "nodes_matched": "110/110",
+        "raw_screenshot_diff_pixels_recorded_only": 35778,
+        "raw_screenshots": [
+          "evidence/tests/e2e-20260909-182954/visual/web-lobby.png",
+          "evidence/tests/e2e-20260909-182954/visual/macos-lobby.png"
+        ]
+      }
+    },
+    {
+      "id": "visual-results-macos",
+      "kind": "visual",
+      "label": "Results screen: native macOS matches the web baseline structurally (every node within 2 logical px) and the normalized layout maps are pixel-identical",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/visual/macos-results.nodes.json",
+        "evidence/tests/e2e-20260909-182954/visual/NORMALIZATION.md",
+        "evidence/tests/e2e-20260909-182954/report.md"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/tests/e2e-20260909-182954/visual/web-results.layout.png",
+        "actual": "evidence/tests/e2e-20260909-182954/visual/macos-results.layout.normalized.png",
+        "diff": "evidence/tests/e2e-20260909-182954/visual/macos-results.layout.diff.png",
+        "different_pixels": 0,
+        "total_pixels": 1024000,
+        "normalization_evidence": "evidence/tests/e2e-20260909-182954/visual/NORMALIZATION.md",
+        "nodes_matched": "158/158",
+        "raw_screenshot_diff_pixels_recorded_only": 963688,
+        "raw_screenshots": [
+          "evidence/tests/e2e-20260909-182954/visual/web-results.png",
+          "evidence/tests/e2e-20260909-182954/visual/macos-results.png"
+        ]
+      }
+    },
+    {
+      "id": "visual-android-lobby",
+      "kind": "visual",
+      "label": "Android lobby vs web baseline (phone family)",
+      "status": "blocked",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/android-blocker/BLOCKER.md",
+        "evidence/tests/android-blocker/emulator-boot.log",
+        "evidence/tests/android-blocker/accel-check.txt"
+      ],
+      "blocker": "No Android capture possible on this host."
+    },
+    {
+      "id": "asset-fonts",
+      "kind": "asset",
+      "label": "Fraunces + Outfit variable fonts (OFL, licenses included)",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json"
+      ]
+    },
+    {
+      "id": "asset-textures",
+      "kind": "asset",
+      "label": "Original procedural block atlas and creature sprites",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/tests/e2e-20260909-182954/screenshots/web-gameplay.png"
+      ]
+    },
+    {
+      "id": "asset-icons",
+      "kind": "asset",
+      "label": "Original app icon set for iOS/macOS/Android/web generated by tools/gen_icons.py",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/tests/e2e-20260909-182954/screenshots/ios-home.png"
+      ]
+    },
+    {
+      "id": "asset-audio",
+      "kind": "asset",
+      "label": "Original procedural UI/gameplay audio cues",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json"
+      ]
+    },
+    {
+      "id": "integration-server",
+      "kind": "integration",
+      "label": "Dart shelf WebSocket server, JSON protocol per PROTOCOL.md",
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/server.log",
+        "evidence/tests/e2e-20260909-182954/report.md",
+        "evidence/tests/checks/server.txt"
+      ]
+    }
+  ],
   "audits": [
     {
       "id": "source",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/reference/source-audit.md",
+        "evidence/discovery/sweep-001.json"
+      ]
     },
     {
       "id": "navigation",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/tests/e2e-20260909-182954/report.md"
+      ]
     },
     {
       "id": "roles",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/tests/checks/security.md"
+      ]
     },
     {
       "id": "states",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/tests/e2e-20260909-182954/e2e.log"
+      ]
     },
     {
       "id": "responsive",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/tests/e2e-20260909-182954/visual/NORMALIZATION.md",
+        "evidence/tests/e2e-20260909-182954/screenshots/ios-lobby.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/macos-lobby.png",
+        "evidence/tests/e2e-20260909-182954/screenshots/web-lobby.png"
+      ]
     },
     {
       "id": "data",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/tests/e2e-20260909-182954/saves/HEARTH.json",
+        "evidence/tests/e2e-20260909-182954/report.md"
+      ]
     },
     {
       "id": "assets",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json"
+      ]
     },
     {
       "id": "accessibility",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json"
+      ]
     },
     {
       "id": "reliability",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/tests/checks/fingerprint-list.txt",
+        "evidence/tests/checks/clean-checkout-build.txt",
+        "evidence/tests/ios-simulator-metal-crash/SimMetalHost-2026-09-09-174725.ips"
+      ]
     },
     {
       "id": "rebrand",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/discovery/sweep-001.json",
+        "evidence/reference/source-audit.md"
+      ]
     }
   ],
   "checks": [
     {
       "id": "functional",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/report.md",
+        "evidence/tests/e2e-20260909-182954/report.json",
+        "evidence/tests/checks/core.txt"
+      ],
+      "command": "VH_PLATFORMS=web,ios,macos ./test/multiplayer-e2e.sh",
+      "note": "Android excluded: see blockers."
     },
     {
       "id": "visual",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/e2e-20260909-182954/report.md",
+        "evidence/tests/e2e-20260909-182954/visual/NORMALIZATION.md"
+      ],
+      "note": "web baseline vs native macOS, normalized; iOS phone layout recorded only; Android blocked."
     },
     {
       "id": "build",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/clean-checkout-build.txt",
+        "evidence/tests/checks/build-android.txt"
+      ],
+      "command": "flutter build web|macos|ios --simulator|apk from a fresh clone"
     },
     {
       "id": "quality",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/core.txt",
+        "evidence/tests/checks/server.txt",
+        "evidence/tests/checks/app.txt"
+      ],
+      "command": "dart format --set-exit-if-changed; dart analyze; dart test; flutter analyze"
     },
     {
       "id": "security",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "evidence": [
+        "evidence/tests/checks/security.md"
+      ]
     }
   ],
-  "sweeps": [],
-  "next_action": "Inspect the source entry point and record the first routes and discovery branches."
+  "sweeps": [
+    {
+      "revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "new_items": 0,
+      "frontier_empty": true,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-001.json"
+      ]
+    },
+    {
+      "revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
+      "new_items": 0,
+      "frontier_empty": true,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-002.json"
+      ]
+    }
+  ],
+  "next_action": "Run the four-platform E2E on a host with hardware virtualization + GPU, then re-verify journey-e2e-android, visual-android-lobby and feature-60fps and clear the blockers.",
+  "reference_access": {
+    "runnable_original": false,
+    "reference": "public documentation (minecraft.wiki Gameplay/Controls/HUD/Crafting pages)",
+    "visual_parity_meaning": "normalized parity between the clone's own clients; web build is the baseline. No literal pixel parity with the original is claimed."
+  },
+  "intentional_differences": [
+    {
+      "id": "intentional-renderer",
+      "note": "Packed voxel volume ray-marched in a fragment shader instead of greedy-meshed chunk geometry; documented in README."
+    },
+    {
+      "id": "intentional-match-model",
+      "note": "Lobby -> timed match -> results with a score, added so a cross-platform match can be verified; free play remains."
+    },
+    {
+      "id": "intentional-world-height",
+      "note": "64-block world height to fit the mobile/web GPU budget."
+    },
+    {
+      "id": "intentional-rebrand",
+      "note": "All names, art, creatures, audio and iconography are original Voxelhearth work."
+    }
+  ],
+  "updated_at": "2026-09-10T01:37:35.859767+00:00"
 }
