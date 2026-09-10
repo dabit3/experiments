@@ -32,6 +32,7 @@ class Hud extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = Gui.of(context);
+    final pad = MediaQuery.paddingOf(context);
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -45,6 +46,7 @@ class Hud extends StatelessWidget {
               s,
               touch: settings.touchControls,
               showFps: settings.showFps,
+              safe: EdgeInsets.only(left: pad.left, right: pad.right),
             ),
           ),
         ),
@@ -172,18 +174,29 @@ void _glyph(Canvas c, int s, List<String> rows, double x, double y, {Color? tint
 // ---------------------------------------------------------------- painter
 
 class HudPainter extends CustomPainter {
-  HudPainter(this.g, this.assets, this.frame, this.client, this.s, {required this.touch, required this.showFps})
-    : super(repaint: frame);
+  HudPainter(
+    this.g,
+    this.assets,
+    this.frame,
+    this.client,
+    this.s, {
+    required this.touch,
+    required this.showFps,
+    this.safe = EdgeInsets.zero,
+  }) : super(repaint: frame);
   final GameController g;
   final RenderAssets assets;
   final FrameNotifier frame;
   final GameClient client;
   final int s;
   final bool touch, showFps;
+  final EdgeInsets safe;
 
   @override
   void paint(Canvas c, Size size) {
-    final w = size.width / s, h = size.height / s;
+    // Keep the whole HUD inside the horizontal safe area (notch / island).
+    c.translate((safe.left / s).floorToDouble() * s, 0);
+    final w = ((size.width - safe.horizontal) / s).floorToDouble(), h = size.height / s;
     final sess = g.session;
     final cx = (w / 2).floorToDouble();
     final survival = !g.isCreative;
@@ -197,8 +210,9 @@ class HudPainter extends CustomPainter {
     }
     _heldName(c, cx, h, sess, survival);
     _actionbar(c, cx, h, survival);
+    _rosterRight = 0;
+    if (w >= 300 && !(touch && g.chatOpen)) _sidebar(c, w, h, sess);
     _chatFeed(c, w, h, sess);
-    if (w >= 300) _sidebar(c, w, h, sess);
     if (showFps) _debug(c, sess);
     _targetLabel(c, cx, h);
   }
@@ -315,14 +329,17 @@ class HudPainter extends CustomPainter {
     final lines = sess.chat.where((e) => now.difference(e.receivedAt).inMilliseconds < 10000).toList();
     if (lines.isEmpty) return;
     final shown = lines.length > 10 ? lines.sublist(lines.length - 10) : lines;
-    final maxW = math.min(320.0, w - 4);
-    var y = touch ? 4.0 + shown.length * Px.lineHeight : h - 40;
+    // Touch layouts anchor the feed to the top, beside the roster and clear of
+    // the top-right menu buttons; desktop keeps it bottom-left above the hotbar.
+    final x0 = touch ? _rosterRight : 0.0;
+    final maxW = math.min(320.0, w - x0 - (touch ? 84 : 4));
+    var y = touch ? 2.0 + shown.length * Px.lineHeight : h - 40;
     for (var i = shown.length - 1; i >= 0; i--) {
       final e = shown[i];
       final age = now.difference(e.receivedAt).inMilliseconds;
       final a = ((10000 - age) / 1000).clamp(0.0, 1.0);
       y -= Px.lineHeight;
-      pxRect(c, s, 0, y, maxW + 4, Px.lineHeight, Color.fromRGBO(0, 0, 0, 0.5 * a));
+      pxRect(c, s, x0, y, maxW + 4, Px.lineHeight, Color.fromRGBO(0, 0, 0, 0.5 * a));
       final name = e.system ? '' : '<${e.from}> ';
       final tp = TextPainter(
         text: TextSpan(
@@ -340,9 +357,11 @@ class HudPainter extends CustomPainter {
         maxLines: 1,
         ellipsis: '…',
       )..layout(maxWidth: maxW * s);
-      tp.paint(c, Offset(2.0 * s, y * s));
+      tp.paint(c, Offset((x0 + 2) * s, y * s));
     }
   }
+
+  double _rosterRight = 0;
 
   void _sidebar(Canvas c, double w, double h, RoomSession sess) {
     final list = sess.roster.toList()..sort((a, b) => b.score.compareTo(a.score));
@@ -364,9 +383,10 @@ class HudPainter extends CustomPainter {
     width = (width + 4).ceilToDouble();
     final lh = Px.lineHeight;
     final total = (rows.length + info.length) * lh + lh;
-    // Touch layouts keep the right edge for the action cluster, so the roster
-    // tucks under the top-right buttons instead of centring vertically.
-    final x = w - width - 2, y0 = touch ? 30.0 : (h / 2 - total / 2).floorToDouble();
+    // Touch layouts keep the right edge for the action cluster and the
+    // top-right for the menu buttons, so the roster sits top-left instead.
+    final x = touch ? 2.0 : w - width - 2, y0 = touch ? 2.0 : (h / 2 - total / 2).floorToDouble();
+    if (touch) _rosterRight = x + width + 2;
     pxRect(c, s, x, y0, width, lh, const Color(0x60000000));
     final tt = pxPainter(title, s, color: Px.yellow);
     tt.paint(c, Offset((x + width / 2) * s - tt.width / 2, y0 * s));
@@ -393,11 +413,12 @@ class HudPainter extends CustomPainter {
       'XYZ: ${g.body.x.toStringAsFixed(1)} / ${g.body.y.toStringAsFixed(1)} / ${g.body.z.toStringAsFixed(1)}',
       'Tick ${sess.tick}  ping ${client.pingMs} ms  players ${sess.players.length}',
     ];
+    final x0 = touch ? _rosterRight : 0.0;
     var y = 2.0;
     for (final l in lines) {
       final tp = pxPainter(l, s, shadow: false);
-      pxRect(c, s, 1, y - 1, tp.width / s + 2, Px.lineHeight, const Color(0x90505050));
-      tp.paint(c, Offset(2.0 * s, y * s));
+      pxRect(c, s, x0 + 1, y - 1, tp.width / s + 2, Px.lineHeight, const Color(0x90505050));
+      tp.paint(c, Offset((x0 + 2) * s, y * s));
       y += Px.lineHeight;
     }
   }
