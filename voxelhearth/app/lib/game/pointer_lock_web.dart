@@ -37,7 +37,10 @@ class PointerLock {
   static Future<void> request() async {
     _install();
     if (locked) return;
-    web.document.documentElement?.requestPointerLock();
+    // While locked, the browser targets every mouse event at the locked
+    // element, so lock Flutter's own view host to keep receiving clicks.
+    final target = web.document.querySelector('flutter-view') ?? web.document.documentElement;
+    target?.requestPointerLock();
   }
 
   static void release() {
