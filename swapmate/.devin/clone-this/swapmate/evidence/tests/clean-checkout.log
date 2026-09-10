@@ -1,0 +1,13 @@
+# clean-checkout reproducibility (161 to-be-committed files copied to /tmp/swapmate-clean/swapmate)
+00:01 +22: All tests passed!
+Analyzing server...
+No issues found!
+00:01 +10: All tests passed!
+Analyzing app...                                                
+No issues found! (ran in 1.4s)
+00:00 +2: All tests passed!
+✓ Built build/web
+✓ Built build/macos/Build/Products/Release/Swapmate.app (45.4MB)
+✓ Built build/ios/iphonesimulator/Runner.app
+✓ Built build/app/outputs/flutter-apk/app-release.apk (52.1MB)
+npm install + node --check: ok

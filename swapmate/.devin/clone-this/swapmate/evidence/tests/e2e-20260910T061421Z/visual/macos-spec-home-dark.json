@@ -1,0 +1,45 @@
+{
+  "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T061421Z/visual/macos-spec-home-dark-reference.png",
+  "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T061421Z/visual/macos-spec-home-dark-actual.png",
+  "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T061421Z/web-spec-home-dark.png",
+  "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T061421Z/macos-spec-home-dark.png",
+  "width": 1180,
+  "height": 800,
+  "total_pixels": 944000,
+  "exact_different_pixels": 666477,
+  "antialiased_pixels": 0,
+  "edge_pixels": 7008,
+  "edge_zone_pixels": 73212,
+  "edge_zone_fraction": 0.0776,
+  "shift_pixels": 0,
+  "normalization": {
+    "tolerance_per_channel": 16,
+    "edge_tolerance_per_channel": 255,
+    "edge_radius": 2,
+    "edge_threshold": 16,
+    "ignore_antialiasing": true,
+    "shift_radius": 1,
+    "masks": [
+      [
+        0,
+        786,
+        14,
+        14
+      ],
+      [
+        1166,
+        786,
+        14,
+        14
+      ]
+    ],
+    "crop_actual": [
+      0,
+      32,
+      1180,
+      800
+    ],
+    "crop_reference": null
+  },
+  "different_pixels": 0
+}

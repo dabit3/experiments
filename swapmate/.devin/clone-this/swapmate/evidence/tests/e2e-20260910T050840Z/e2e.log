@@ -1,0 +1,12 @@
+== Swapmate multiplayer e2e  20260910T050840Z
+   out=/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T050840Z server=ws://172.16.5.2:8787/ws seed=42 room=SWAP platforms=web,ios,android,macos
+[0s] starting server
+[1s] recording screen -> recording.mov
+[1s] launching macOS app
+[1s] launching web client (Playwright Chromium)
+[1s] installing + launching iOS app on 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[13s] waiting for Android boot (up to 3000s)
+[28s] installing + launching Android app
+[643s] waiting for 4 test clients to register
+FAIL: clients registered: [ios,macos,web], wanted [web ios android macos]
+[1244s] cleanup

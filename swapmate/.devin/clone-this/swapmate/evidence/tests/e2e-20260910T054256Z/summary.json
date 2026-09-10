@@ -1,0 +1,85 @@
+{
+  "platforms": [
+    "web",
+    "ios",
+    "android",
+    "macos"
+  ],
+  "room": "SWAP",
+  "players": [
+    {
+      "name": "Web player",
+      "seat": "aw",
+      "platform": "web",
+      "bot": false
+    },
+    {
+      "name": "iPhone player",
+      "seat": "ab",
+      "platform": "ios",
+      "bot": false
+    },
+    {
+      "name": "Android player",
+      "seat": "bw",
+      "platform": "android",
+      "bot": false
+    },
+    {
+      "name": "Mac player",
+      "seat": "bb",
+      "platform": "macos",
+      "bot": false
+    }
+  ],
+  "final": {
+    "fenA": "r1bqkbnr/pppp1ppp/2n5/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR[Pp] b KQkq - 0 3",
+    "fenB": "rnb1kbnr/ppp1pppp/8/3q4/8/8/PPPP1PPP/RNBQKBNR[] w KQkq - 0 3",
+    "moves": 9,
+    "moveText": "1A. e4 1a. e5 1B. e4 1b. d5 2A. Qh5 2a. Nc6 2B. exd5 2b. Qxd5 3A. Bc4",
+    "score": "1-0",
+    "result": {
+      "winner": "1",
+      "reason": "timeout",
+      "board": "b",
+      "loser": "bw"
+    },
+    "over": true,
+    "gameId": "SWAP-1"
+  },
+  "bpgn": "[Event \"Swapmate match\"]\n[Site \"Swapmate\"]\n[Date \"2026.09.09\"]\n[WhiteA \"Web player\"]\n[BlackA \"iPhone player\"]\n[WhiteB \"Android player\"]\n[BlackB \"Mac player\"]\n[TimeControl \"300+0\"]\n[Variant \"bughouse\"]\n[Result \"1-0\"]\n\n1A. e4 {257.374} 1a. e5 {299.675} 1B. e4 {253.11} 1b. d5 {298.244}\n2A. Qh5 {251.354} 2a. Nc6 {299.335} 2B. exd5 {250.87} 2b. Qxd5 {296.532}\n3A. Bc4 {247.743} {WB forfeits on time} 1-0\n",
+  "perClient": {
+    "web": {
+      "screen": "results",
+      "platform": "web",
+      "name": "Web player",
+      "seat": "aw",
+      "chats": 1
+    },
+    "ios": {
+      "screen": "results",
+      "platform": "ios",
+      "name": "iPhone player",
+      "seat": "ab",
+      "chats": 0
+    },
+    "android": {
+      "screen": "results",
+      "platform": "android",
+      "name": "Android player",
+      "seat": "bw",
+      "chats": 0
+    },
+    "macos": {
+      "screen": "results",
+      "platform": "macos",
+      "name": "Mac player",
+      "seat": "bb",
+      "chats": 1
+    }
+  },
+  "passed": false,
+  "problems": [
+    "expected checkmate, got {'winner': '1', 'reason': 'timeout', 'board': 'b', 'loser': 'bw'}"
+  ]
+}

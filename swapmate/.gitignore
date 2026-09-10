@@ -1,0 +1,7 @@
+# clone-this run: the manifest (state.json, events.jsonl) and text evidence are
+# tracked; captured pages, screenshots, diffs and recordings are attached to the
+# PR instead of being committed.
+.devin/clone-this/swapmate/evidence/reference/
+.devin/clone-this/swapmate/evidence/**/*.png
+.devin/clone-this/swapmate/evidence/**/*.mov
+.devin/clone-this/swapmate/evidence/**/*.pid

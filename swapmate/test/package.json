@@ -1,0 +1,12 @@
+{
+  "name": "swapmate-e2e",
+  "private": true,
+  "type": "module",
+  "description": "Cross-platform multiplayer end-to-end harness for Swapmate.",
+  "scripts": {
+    "e2e": "./multiplayer-e2e.sh"
+  },
+  "devDependencies": {
+    "playwright": "1.58.2"
+  }
+}

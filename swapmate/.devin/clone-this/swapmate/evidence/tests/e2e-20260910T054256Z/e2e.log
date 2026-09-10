@@ -1,0 +1,62 @@
+== Swapmate multiplayer e2e  20260910T054256Z
+   out=/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z server=ws://172.16.5.2:8787/ws seed=42 room=SWAP platforms=web,ios,android,macos
+[0s] starting server
+[0s] recording screen -> recording.mov
+[0s] launching macOS app
+[1s] launching web client (Playwright Chromium)
+[1s] installing + launching iOS app on 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[9s] waiting for Android boot (up to 3000s)
+[13s] installing + launching Android app
+[226s] waiting for 4 test clients to register
+[226s] registered: android,ios,macos,web
+[226s] web creates room SWAP (5+0, no bots)
+[229s] launching desktop spectators for visual parity
+[235s] registered: android,ios,macos,macos-spec,web,web-spec
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/web-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/ios-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/android-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/macos-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/web-spec-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/macos-spec-lobby.png
+[300s] match started
+[300s]   web plays e2e4
+[300s]   ios plays e7e5
+[301s]   android plays e2e4
+[306s]   macos plays d7d5
+[306s]   web plays d1h5
+[307s]   ios plays b8c6
+[307s]   android plays e4d5
+[310s]   macos plays d8d5
+[310s]   web plays f1c4
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/web-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/ios-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/android-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/macos-game.png
+[574s]   ios plays P@h6
+[619s]   android plays b1c3
+[799s]   web plays h5f7
+[844s] match over
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/web-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/ios-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/android-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/macos-results.png
+[856s] collecting final state from every client
+{
+  "fenA": "r1bqkbnr/pppp1ppp/2n5/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR[Pp] b KQkq - 0 3",
+  "fenB": "rnb1kbnr/ppp1pppp/8/3q4/8/8/PPPP1PPP/RNBQKBNR[] w KQkq - 0 3",
+  "moves": 9,
+  "score": "1-0",
+  "result": {
+    "winner": "1",
+    "reason": "timeout",
+    "board": "b",
+    "loser": "bw"
+  }
+}
+  web      screen=results seat=aw moves=9 score=1-0
+  ios      screen=results seat=ab moves=9 score=1-0
+  android  screen=results seat=bw moves=9 score=1-0
+  macos    screen=results seat=bb moves=9 score=1-0
+PROBLEMS:
+  - expected checkmate, got {'winner': '1', 'reason': 'timeout', 'board': 'b', 'loser': 'bw'}
+[856s] cleanup
