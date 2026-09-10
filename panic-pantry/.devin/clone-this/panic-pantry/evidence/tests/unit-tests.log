@@ -1,0 +1,25 @@
+# 2026-09-10T02:37:10Z unit tests
+## core dart test
+00:00 +0: loading test/simulation_test.dart
+00:00 +0: test/simulation_test.dart: levels parse and have spawns for four chefs
+00:00 +1: test/simulation_test.dart: snapshot round-trips
+00:00 +2: test/simulation_test.dart: bot rounds are deterministic and score
+training: score=392 stars=3 served=8 expired=0 burnt=0 wrong=0 tick=3733
+corner-cafe: score=334 stars=1 served=10 expired=0 burnt=0 wrong=0 tick=3061
+conveyor-canteen: score=235 stars=1 served=8 expired=2 burnt=0 wrong=0 tick=3061
+split-shift: score=304 stars=1 served=10 expired=1 burnt=0 wrong=0 tick=3260
+drift-deck: score=120 stars=0 served=6 expired=5 burnt=0 wrong=0 tick=3260
+00:06 +3: test/simulation_test.dart: gimmick levels: bots ship across belts, hatches and ferries
+00:08 +4: test/simulation_test.dart: moving platform tiles are walkable at both ends of travel
+00:08 +5: test/simulation_test.dart: scoring tiers
+00:08 +6: All tests passed!
+exit=0
+## server dart test
+00:00 +0: loading test/server_test.dart
+00:00 +0: test/server_test.dart: hello, create, join, ready, start, results and rematch
+00:18 +1: test/server_test.dart: reconnect with token resumes seat mid-match
+00:18 +2: test/server_test.dart: test harness: fixed code/seed room, server-side scripted input, client test channel
+00:23 +3: test/server_test.dart: test harness reaches connected clients outside a room
+00:23 +4: test/server_test.dart: test harness routes are absent unless enabled
+00:23 +5: All tests passed!
+exit=0

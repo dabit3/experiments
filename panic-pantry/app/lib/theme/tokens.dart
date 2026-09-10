@@ -98,29 +98,23 @@ abstract final class PPElevation {
 
 /// Type scale. One display face (rounded, heavy) and one text face.
 abstract final class PPType {
-  static const _display = TextStyle(
-    fontFamily: 'Arial Rounded MT Bold',
-    fontFamilyFallback: ['Avenir Next', 'Roboto', 'sans-serif'],
-  );
+  static const family = 'Nunito';
+  static const monoFamily = 'JetBrains Mono';
+  static const _display = TextStyle(fontFamily: family);
   static TextStyle display(Color c) =>
       _display.copyWith(fontSize: 44, fontWeight: FontWeight.w900, height: 1.0, letterSpacing: -1.2, color: c);
   static TextStyle h1(Color c) =>
       _display.copyWith(fontSize: 30, fontWeight: FontWeight.w800, height: 1.1, letterSpacing: -0.6, color: c);
   static TextStyle h2(Color c) =>
       _display.copyWith(fontSize: 22, fontWeight: FontWeight.w800, height: 1.15, letterSpacing: -0.3, color: c);
-  static TextStyle h3(Color c) =>
-      const TextStyle(fontSize: 17, fontWeight: FontWeight.w700, height: 1.2, color: Colors.black).copyWith(color: c);
-  static TextStyle body(Color c) => TextStyle(fontSize: 15, fontWeight: FontWeight.w500, height: 1.4, color: c);
-  static TextStyle small(Color c) => TextStyle(fontSize: 13, fontWeight: FontWeight.w600, height: 1.3, color: c);
+  static TextStyle h3(Color c) => _display.copyWith(fontSize: 17, fontWeight: FontWeight.w700, height: 1.2, color: c);
+  static TextStyle body(Color c) => _display.copyWith(fontSize: 15, fontWeight: FontWeight.w600, height: 1.4, color: c);
+  static TextStyle small(Color c) =>
+      _display.copyWith(fontSize: 13, fontWeight: FontWeight.w700, height: 1.3, color: c);
   static TextStyle caption(Color c) =>
-      TextStyle(fontSize: 11.5, fontWeight: FontWeight.w700, height: 1.2, letterSpacing: 0.6, color: c);
-  static TextStyle mono(Color c) => TextStyle(
-    fontFamily: 'Menlo',
-    fontFamilyFallback: const ['Courier New', 'monospace'],
-    fontSize: 15,
-    fontWeight: FontWeight.w700,
-    color: c,
-  );
+      _display.copyWith(fontSize: 11.5, fontWeight: FontWeight.w800, height: 1.2, letterSpacing: 0.6, color: c);
+  static TextStyle mono(Color c) =>
+      TextStyle(fontFamily: monoFamily, fontSize: 15, fontWeight: FontWeight.w500, color: c);
   static TextStyle numeric(Color c, {double size = 28}) => _display.copyWith(
     fontSize: size,
     fontWeight: FontWeight.w900,
@@ -206,8 +200,12 @@ ThemeData buildTheme(Brightness brightness) {
     scaffoldBackgroundColor: s.bg,
     extensions: [s],
     splashFactory: InkSparkle.splashFactory,
-    fontFamily: 'Avenir Next',
-    fontFamilyFallback: const ['Roboto', 'Helvetica Neue', 'sans-serif'],
+    // Same control metrics on every platform (the adaptive defaults are
+    // compact density / shrink-wrapped tap targets on desktop and web,
+    // standard density / 48px padded tap targets on phones).
+    visualDensity: VisualDensity.standard,
+    materialTapTargetSize: MaterialTapTargetSize.padded,
+    fontFamily: PPType.family,
     textTheme: TextTheme(
       displayLarge: PPType.display(s.text),
       headlineLarge: PPType.h1(s.text),

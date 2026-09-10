@@ -103,9 +103,12 @@ hello ──► welcome ──► room.create / room.join ──► room.state (
 
 ## Automation / test channel (HTTP)
 
-The server also exposes a small JSON HTTP API used by
-`test/multiplayer-e2e.sh`. It is served on the same port and is intended for
-local automation only.
+The server can also expose a small JSON HTTP API used by
+`test/multiplayer-e2e.sh` and `test/visual-parity.sh`. It is served on the
+same port, is unauthenticated, and is therefore **off by default**: start the
+server with `--test-harness` (or `PP_TEST_HARNESS=1`) to mount the `/test/*`
+routes. Without the flag they answer 404. `/health` and `/levels` are always
+available.
 
 | Method & path | Body | Purpose |
 | --- | --- | --- |
@@ -119,10 +122,15 @@ local automation only.
 | `POST /test/rooms/<code>/players/<id>/input` | `{via, steps[]}` | Scripted inputs. Each step is an `input` payload plus `ticks` (repeat count). `via: "client"` (default) forwards them as `test.input` so the client feeds them through its own input pipeline; `via: "server"` applies them on consecutive ticks server-side. |
 | `POST /test/rooms/<code>/players/<id>/command` | `{cmd, …}` | Forward a `test.command` to one player, or to everyone with `id = *` |
 | `DELETE /test/rooms/<code>` | | Remove a room |
+| `GET /test/clients` | | Every open socket: player `id`, `name`, `platform`, current `room` code (or null) and last `report` — reaches clients that are connected but not seated |
+| `POST /test/clients/<id>/command` | `{cmd, …}` | Forward a `test.command` to one connection regardless of room membership |
 
-Supported `test.command` values: `report`, `ready {ready}`, `start`,
-`rematch`, `addBot`, `setLevel {level}`, `emote {index}`, `clearInput`.
-Anything else is surfaced to the app through `GameClient.commands`.
+Supported `test.command` values handled by `GameClient`: `report`,
+`ready {ready}`, `start`, `rematch`, `addBot`, `setLevel {level}`,
+`emote {index}`, `clearInput`. The app layer additionally handles
+`theme {mode: light|dark|system}`, `join {code}`, `host {level?}`, `leave`,
+`howto` (opens the How-to-play sheet) and `dismiss` (pops it). Anything else
+is surfaced through `GameClient.commands`.
 
 `server/bin/plan.dart` runs the shared simulation headlessly with the core
 bots on every seat, records the inputs of the seats that will be driven by

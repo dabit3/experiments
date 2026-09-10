@@ -4,12 +4,14 @@ import 'package:panic_pantry_core/panic_pantry_core.dart';
 
 import '../net/client.dart';
 import '../theme/tokens.dart';
+import '../widgets/platform_mark.dart';
 import '../widgets/ui.dart';
 
 /// Post-match results: stars, score count-up, stats, rematch.
 class ResultsScreen extends StatefulWidget {
-  const ResultsScreen({super.key, required this.client});
+  const ResultsScreen({super.key, required this.client, required this.results});
   final GameClient client;
+  final Map<String, dynamic> results;
 
   @override
   State<ResultsScreen> createState() => _ResultsScreenState();
@@ -51,7 +53,7 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
   Widget build(BuildContext context) {
     final s = PPScheme.of(context);
     final c = widget.client;
-    final r = c.results!;
+    final r = widget.results;
     final score = (r['score'] as num).toInt();
     final stars = (r['stars'] as num).toInt();
     final th = (r['thresholds'] as List).cast<num>().map((e) => e.toInt()).toList();
@@ -109,7 +111,10 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
               padding: const EdgeInsets.only(bottom: PPSpace.x2),
               child: Row(
                 children: [
-                  Text('★' * (i + 1), style: PPType.h3(i < stars ? PPColor.butter : s.text3)),
+                  SizedBox(
+                    width: 60,
+                    child: StarRow(lit: i < stars ? i + 1 : 0, count: i + 1, size: 18, dimColor: s.text3),
+                  ),
                   const SizedBox(width: PPSpace.x3),
                   Expanded(
                     child: ClipRRect(
@@ -198,7 +203,13 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
                     ),
                     const SizedBox(width: PPSpace.x2),
                     Expanded(child: Text(p['name'] as String, style: PPType.body(s.text))),
-                    Text(p['bot'] == true ? 'bot' : (p['platform'] as String), style: PPType.small(s.text3)),
+                    if (p['id'] == c.playerId)
+                      PlatformMark(
+                        id: 'results-device',
+                        child: Text(p['platform'] as String, style: PPType.small(s.text3)),
+                      )
+                    else
+                      Text(p['bot'] == true ? 'bot' : (p['platform'] as String), style: PPType.small(s.text3)),
                   ],
                 ),
               ),

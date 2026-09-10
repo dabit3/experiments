@@ -125,10 +125,13 @@ class PPCard extends StatelessWidget {
 }
 
 class PPChip extends StatelessWidget {
-  const PPChip({super.key, required this.label, this.color, this.icon, this.filled = false});
+  const PPChip({super.key, required this.label, this.color, this.icon, this.iconCount = 1, this.filled = false});
   final String label;
   final Color? color;
   final IconData? icon;
+
+  /// Repeats [icon], e.g. three stars for a threshold chip.
+  final int iconCount;
   final bool filled;
 
   @override
@@ -141,10 +144,41 @@ class PPChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) ...[Icon(icon, size: 13, color: filled ? Colors.white : c), const SizedBox(width: 4)],
+          if (icon != null) ...[
+            for (var i = 0; i < iconCount; i++) Icon(icon, size: 13, color: filled ? Colors.white : c),
+            const SizedBox(width: 4),
+          ],
           Text(label.toUpperCase(), style: PPType.caption(filled ? Colors.white : c)),
         ],
       ),
+    );
+  }
+}
+
+/// A row of [count] star icons, [lit] of them highlighted. Uses icon glyphs so
+/// every platform draws the same shape (the ★ character falls back to a
+/// different system font per platform).
+class StarRow extends StatelessWidget {
+  const StarRow({super.key, required this.lit, this.count = 3, this.size = 16, this.color, this.dimColor});
+  final int lit;
+  final int count;
+  final double size;
+  final Color? color;
+  final Color? dimColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final s = PPScheme.of(context);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (var i = 0; i < count; i++)
+          Icon(
+            i < lit ? Icons.star_rounded : Icons.star_outline_rounded,
+            size: size,
+            color: i < lit ? (color ?? PPColor.butter) : (dimColor ?? s.text3),
+          ),
+      ],
     );
   }
 }

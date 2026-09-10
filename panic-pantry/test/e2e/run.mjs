@@ -10,22 +10,22 @@
 //
 // Configuration is taken from the environment (see multiplayer-e2e.sh).
 
-import { spawn, spawnSync } from 'node:child_process';
-import { createServer } from 'node:http';
-import { createReadStream, existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs';
-import { extname, join, resolve } from 'node:path';
+import { spawn } from 'node:child_process';
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { env, makeHttp, placeWindow as moveWindow, serveWeb, sh, sleep, stamp, waitFor, windowBounds } from '../lib/common.mjs';
 
 const here = fileURLToPath(new URL('.', import.meta.url));
 const root = resolve(here, '..', '..');
 const appDir = join(root, 'app');
 const serverDir = join(root, 'server');
 
-const env = (k, d) => (process.env[k] && process.env[k].length ? process.env[k] : d);
 const PLATFORMS = env('PP_PLATFORMS', 'web ios android macos').split(/\s+/).filter(Boolean);
 const OPTIONAL = new Set(env('PP_OPTIONAL_PLATFORMS', '').split(/\s+/).filter(Boolean));
 const ROOM = env('PP_ROOM', 'E2E4').toUpperCase();
-const SEED = Number(env('PP_SEED', '4242'));
+const SEED = Number(env('PP_SEED', '23'));
 const LEVEL = env('PP_LEVEL', 'corner-cafe');
 const SPEED = Number(env('PP_SPEED', '1'));
 const PORT = Number(env('PP_PORT', '8787'));
@@ -35,6 +35,7 @@ const IOS_UDID = env('PP_IOS_UDID', '');
 const ANDROID_AVD = env('PP_ANDROID_AVD', 'panic_pantry');
 const ANDROID_SERIAL = env('PP_ANDROID_SERIAL', '');
 const ANDROID_SERVER = env('PP_ANDROID_SERVER', `ws://10.0.2.2:${env('PP_PORT', '8787')}/ws`);
+const ANDROID_WINDOW = env('PP_ANDROID_WINDOW', 'qemu-system-aarch64');
 const ANDROID_SDK = env('ANDROID_SDK_ROOT', env('ANDROID_HOME', join(process.env.HOME, 'Library', 'Android', 'sdk')));
 const ADB = join(ANDROID_SDK, 'platform-tools', 'adb');
 const EMULATOR = join(ANDROID_SDK, 'emulator', 'emulator');
@@ -55,45 +56,7 @@ function log(msg) {
   console.log(line);
   writeFileSync(logFile, lines.join('\n') + '\n');
 }
-function stamp() {
-  return new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-}
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-function sh(cmd, args, opts = {}) {
-  const r = spawnSync(cmd, args, { encoding: 'utf8', ...opts });
-  if (r.error) throw r.error;
-  return r;
-}
-async function http(method, path, body) {
-  const res = await fetch(`http://localhost:${PORT}${path}`, {
-    method,
-    headers: { 'content-type': 'application/json' },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  const text = await res.text();
-  let json;
-  try {
-    json = JSON.parse(text);
-  } catch {
-    json = { raw: text };
-  }
-  if (!res.ok) throw new Error(`${method} ${path} -> ${res.status} ${text}`);
-  return json;
-}
-async function waitFor(desc, fn, timeoutMs, everyMs = 500) {
-  const end = Date.now() + timeoutMs;
-  let last;
-  while (Date.now() < end) {
-    try {
-      last = await fn();
-      if (last) return last;
-    } catch (e) {
-      last = e;
-    }
-    await sleep(everyMs);
-  }
-  throw new Error(`timed out waiting for ${desc}${last instanceof Error ? `: ${last.message}` : ''}`);
-}
+const http = makeHttp(PORT);
 
 const children = [];
 function child(name, cmd, args, opts = {}) {
@@ -108,41 +71,6 @@ function child(name, cmd, args, opts = {}) {
   p.on('exit', (code) => log(`${name} exited (${code})`));
   children.push({ name, p });
   return p;
-}
-
-// --- Static web server for build/web --------------------------------------
-const MIME = {
-  '.html': 'text/html',
-  '.js': 'application/javascript',
-  '.mjs': 'application/javascript',
-  '.wasm': 'application/wasm',
-  '.json': 'application/json',
-  '.css': 'text/css',
-  '.png': 'image/png',
-  '.ico': 'image/x-icon',
-  '.svg': 'image/svg+xml',
-  '.ttf': 'font/ttf',
-  '.otf': 'font/otf',
-  '.woff2': 'font/woff2',
-  '.frag': 'application/octet-stream',
-  '.symbols': 'text/plain',
-};
-function serveWeb(dir) {
-  return new Promise((ok, fail) => {
-    const srv = createServer((req, res) => {
-      const url = new URL(req.url, 'http://x');
-      let file = join(dir, decodeURIComponent(url.pathname));
-      if (!existsSync(file) || statSync(file).isDirectory()) file = join(file, 'index.html');
-      if (!existsSync(file)) {
-        res.writeHead(404).end();
-        return;
-      }
-      res.writeHead(200, { 'content-type': MIME[extname(file)] ?? 'application/octet-stream', 'cache-control': 'no-store' });
-      createReadStream(file).pipe(res);
-    });
-    srv.on('error', fail);
-    srv.listen(WEB_PORT, '127.0.0.1', () => ok(srv));
-  });
 }
 
 // --- Platform launchers -----------------------------------------------------
@@ -176,21 +104,10 @@ async function screenshot(platform, phase) {
     log(`screenshot ${platform}/${phase} FAILED: ${e.message}`);
   }
 }
-function osascript(script) {
-  return sh('osascript', ['-e', script]).stdout.trim();
-}
-function macWindowBounds() {
-  const s = osascript('tell application "System Events" to tell process "Panic Pantry" to get {position, size} of window 1');
-  const [x, y, w, h] = s.split(',').map((n) => Number(n.trim()));
-  return { x, y, w, h };
-}
+const macWindowBounds = () => windowBounds('Panic Pantry');
 function placeWindow(processName, x, y, w, h) {
   try {
-    osascript(
-      `tell application "System Events" to tell process "${processName}"\n set position of window 1 to {${x}, ${y}}\n` +
-        (w ? ` set size of window 1 to {${w}, ${h}}\n` : '') +
-        'end tell',
-    );
+    moveWindow(processName, x, y, w, h);
   } catch (e) {
     log(`could not place ${processName} window: ${e.message}`);
   }
@@ -244,8 +161,9 @@ async function launchIos() {
 const android = {};
 const adbTarget = () => (ANDROID_SERIAL ? ['-s', ANDROID_SERIAL] : []);
 async function launchAndroid() {
-  const apk = join(appDir, 'build', 'app', 'outputs', 'flutter-apk', 'app-debug.apk');
-  if (!existsSync(apk)) throw new Error(`missing Android build at ${apk}`);
+  const apkDir = join(appDir, 'build', 'app', 'outputs', 'flutter-apk');
+  const apk = ['app-release.apk', 'app-debug.apk'].map((f) => join(apkDir, f)).find(existsSync);
+  if (!apk) throw new Error(`missing Android build in ${apkDir}`);
   if (!existsSync(ADB)) throw new Error(`adb not found at ${ADB}`);
   const devices = () =>
     sh(ADB, ['devices'])
@@ -270,12 +188,14 @@ async function launchAndroid() {
   const inst = sh(ADB, [...adbTarget(), 'install', '-r', apk]);
   if (inst.status !== 0) throw new Error(`adb install failed: ${inst.stderr || inst.stdout}`);
   sh(ADB, [...adbTarget(), 'shell', 'am', 'force-stop', ANDROID_PKG]);
+  sh(ADB, [...adbTarget(), 'shell', 'input', 'keyevent', 'KEYCODE_WAKEUP']);
+  sh(ADB, [...adbTarget(), 'shell', 'wm', 'dismiss-keyguard']);
   // MainActivity forwards PP_* intent extras to Dart through the `panic_pantry/launch` channel.
   const extras = Object.entries({ ...clientEnv(NAMES.android), PP_SERVER: ANDROID_SERVER }).flatMap(([k, v]) => ['--es', k, v]);
   const r = sh(ADB, [...adbTarget(), 'shell', 'am', 'start', '-W', '-n', `${ANDROID_PKG}/.MainActivity`, ...extras]);
   if (r.status !== 0) throw new Error(`am start failed: ${r.stderr || r.stdout}`);
   log('android client launched');
-  placeWindow('qemu-system-aarch64', 470, 560);
+  placeWindow(ANDROID_WINDOW, 470, 560);
 }
 
 const mac = {};
@@ -286,7 +206,8 @@ async function launchMac() {
   await sleep(300);
   mac.proc = child('macos', bin, [], { env: { ...process.env, ...clientEnv(NAMES.macos) } });
   await waitFor('macOS window', () => macWindowBounds().w > 0, 30000, 500);
-  placeWindow('Panic Pantry', 800, 0, 800, 560);
+  // Right-middle keeps the window clear of notification banners and the Dock.
+  placeWindow('Panic Pantry', 800, 560, 800, 540);
   log('macos client launched');
 }
 
@@ -329,7 +250,7 @@ async function cleanup() {
     await web.browser?.close();
   } catch {}
   if (ios.udid) sh('xcrun', ['simctl', 'terminate', ios.udid, IOS_BUNDLE]);
-  if (existsSync(ADB)) sh(ADB, ['shell', 'am', 'force-stop', ANDROID_PKG]);
+  if (existsSync(ADB)) sh(ADB, [...adbTarget(), 'shell', 'am', 'force-stop', ANDROID_PKG]);
   for (const { p } of children.reverse()) {
     try {
       p.kill('SIGINT');
@@ -346,11 +267,11 @@ process.on('SIGINT', async () => {
 
 try {
   // 1. Server + web hosting.
-  child('server', 'dart', ['run', 'bin/server.dart', '--port', String(PORT)], { cwd: serverDir });
+  child('server', 'dart', ['run', 'bin/server.dart', '--port', String(PORT), '--test-harness'], { cwd: serverDir });
   await waitFor('server /health', async () => (await http('GET', '/health')).ok, 60000);
   log(`server ready on :${PORT}`);
   if (PLATFORMS.includes('web')) {
-    webServer = await serveWeb(join(appDir, 'build', 'web'));
+    webServer = await serveWeb(join(appDir, 'build', 'web'), WEB_PORT);
     log(`web build served on :${WEB_PORT}`);
   }
 
@@ -388,6 +309,18 @@ try {
   const humans = room.players.filter((p) => !p.bot);
   summary.joined = humans.map((p) => ({ platform: p.platform, name: p.name, slot: p.slot, id: p.id }));
   log(`lobby: ${humans.map((p) => `${p.name}(${p.platform}, slot ${p.slot})`).join(', ')}`);
+  // Every client must answer a report before the match starts so that slow
+  // (software-emulated) devices have finished their first frame.
+  await http('POST', `/test/rooms/${ROOM}/players/*/command`, { cmd: 'report' });
+  await waitFor(
+    'lobby reports from every client',
+    async () => {
+      const r = await http('GET', `/test/rooms/${ROOM}`);
+      return humans.every((p) => r.reports[p.id]?.phase === 'lobby') ? r : null;
+    },
+    JOIN_TIMEOUT,
+    1000,
+  );
   await sleep(1500);
   for (const p of humans) await screenshot(p.platform, 'lobby');
 
@@ -423,8 +356,15 @@ try {
   await sleep(Math.min(20000, roundSeconds * 1000 * 0.3));
   for (const p of humans) await screenshot(p.platform, 'gameplay');
   await http('POST', `/test/rooms/${ROOM}/players/*/command`, { cmd: 'report' });
-  await sleep(1500);
-  const mid = await http('GET', `/test/rooms/${ROOM}`);
+  const mid = await waitFor(
+    'mid-match reports from every client',
+    async () => {
+      const r = await http('GET', `/test/rooms/${ROOM}`);
+      return humans.every((p) => r.reports[p.id]?.phase === 'playing') ? r : null;
+    },
+    30000,
+    1000,
+  );
   summary.midMatch = Object.fromEntries(humans.map((p) => [p.platform, mid.reports[p.id]]));
   for (const p of humans) {
     const rep = mid.reports[p.id];
@@ -459,6 +399,7 @@ try {
     const k = key(rep.results);
     log(`${p.platform.padEnd(7)} final: score=${rep.results.score} stars=${rep.results.stars} served=${rep.results.served} tips=${rep.results.tips} combo=${rep.results.bestCombo} screen=${rep.screen}`);
     if (k !== expectedKey) problems.push(`${p.platform} results ${k} != expected ${expectedKey}`);
+    if (rep.screen !== 'results') problems.push(`${p.platform} is showing '${rep.screen}' instead of the results screen`);
   }
   if (serverKey !== expectedKey) problems.push(`server results ${serverKey} != expected ${expectedKey}`);
   const distinct = new Set(humans.map((p) => key(reports[p.id].results)));

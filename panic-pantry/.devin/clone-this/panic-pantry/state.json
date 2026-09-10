@@ -3,107 +3,1116 @@
   "source": "Overcooked",
   "clone_name": "Panic Pantry",
   "clone_root": "/Users/devin/repos/experiments/panic-pantry",
-  "status": "active",
-  "iteration": 0,
-  "revision": "sha256:c644667f73616de96f711a6b5c97000cc8516fc051be6cec4690be2a4fda2bc0",
+  "status": "complete",
+  "iteration": 7,
+  "revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+  "reference_access": {
+    "class": "inaccessible-commercial-title",
+    "statement": "The source is a commercial game that was neither run nor purchased. Requirements come from public documentation only (evidence/discovery/reference-overcooked.md). Items needing the running original are classified inferred. No proprietary asset, name, logo, character or audio was copied. Visual parity means normalized parity among Panic Pantry's own four clients with the web build as the reference; no literal parity with the original is claimed."
+  },
+  "stack": {
+    "clients": "Flutter 3.47.3 + Flame (one Dart codebase: web, iOS Simulator, Android, macOS native)",
+    "server": "Dart shelf + web_socket_channel, authoritative 20 Hz simulation shared with clients via core/",
+    "tests": "Node 24 + Playwright 1.55 harnesses (E2E, visual parity, ui smoke); dart test",
+    "deviation_from_recommended_stack": null
+  },
   "frontier": [],
   "blockers": [],
   "unverified_assumptions": [],
-  "items": [],
+  "items": [
+    {
+      "id": "route-home",
+      "kind": "route",
+      "label": "Home: host, join by code, how to play, server, theme, connection chip",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/ui-smoke/summary.json",
+        "evidence/tests/ui-smoke/02-home-light.png",
+        "evidence/tests/ui-smoke/06-home-dark.png",
+        "evidence/diffs/visual-parity.json"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "route-joining",
+      "kind": "route",
+      "label": "Auto-join busy panel (PP_AUTO / ?auto=1) that resolves into the lobby",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/diffs/visual-parity.log",
+        "evidence/e2e/2026-09-10T02-38-43/e2e.log"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "route-how-to-play",
+      "kind": "route",
+      "label": "How to play sheet (stations, actions, rules, per-platform controls)",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/ui-smoke/summary.json",
+        "evidence/tests/ui-smoke/03-how-to-play.png",
+        "evidence/tests/ui-smoke/07-how-to-play-dark.png",
+        "evidence/tests/ui-smoke/04-home-after-dismiss.png"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "route-lobby",
+      "kind": "route",
+      "label": "Lobby: roster, bots, level select, join code, ready/start, leave",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/web-lobby.png",
+        "evidence/e2e/2026-09-10T02-38-43/ios-lobby.png",
+        "evidence/e2e/2026-09-10T02-38-43/android-lobby.png",
+        "evidence/e2e/2026-09-10T02-38-43/macos-lobby.png",
+        "evidence/tests/unit-tests.log"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "route-game",
+      "kind": "route",
+      "label": "Gameplay: kitchen canvas, HUD, ticket rail, touch/keyboard controls, overtime",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/web-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/ios-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/android-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/macos-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/web-gameplay-late.png",
+        "evidence/e2e/2026-09-10T02-38-43/ios-gameplay-late.png",
+        "evidence/e2e/2026-09-10T02-38-43/android-gameplay-late.png",
+        "evidence/e2e/2026-09-10T02-38-43/macos-gameplay-late.png"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "route-results",
+      "kind": "route",
+      "label": "Results: score count-up, stars, stat tiles, rematch/leave",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/web-results.png",
+        "evidence/e2e/2026-09-10T02-38-43/ios-results.png",
+        "evidence/e2e/2026-09-10T02-38-43/android-results.png",
+        "evidence/e2e/2026-09-10T02-38-43/macos-results.png"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-orders",
+      "kind": "feature",
+      "label": "Ticket rail with timed orders, two queued at start, expiry penalty",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/ios-gameplay.png"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-score",
+      "kind": "feature",
+      "label": "+20 base, time-scaled tip, -10 expired, combo up to x4",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/plan.json"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-stars",
+      "kind": "feature",
+      "label": "Three-star thresholds scaling with player count",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/web-results.png"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-chop",
+      "kind": "feature",
+      "label": "Chopping at boards with progress",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-cook",
+      "kind": "feature",
+      "label": "Pots cook, then burn and ignite when neglected",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-fire",
+      "kind": "feature",
+      "label": "Fire spreads; extinguisher puts it out",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/discovery/inventory.md"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-plates",
+      "kind": "feature",
+      "label": "Plating, serving at the pass, dirty plate return, sink",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-wrong-serve",
+      "kind": "feature",
+      "label": "Serving an unordered dish is refused and counted",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/discovery/inventory.md"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-floor",
+      "kind": "feature",
+      "label": "Free floor drops",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/discovery/inventory.md"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-dash",
+      "kind": "feature",
+      "label": "Dash impulse (F/L key, Dash button)",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/ios-gameplay.png"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-emote",
+      "kind": "feature",
+      "label": "Six quick emotes via keys, sheet or test command",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/discovery/inventory.md"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-levels",
+      "kind": "feature",
+      "label": "Five hand-designed kitchens with distinct gimmicks",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/discovery/inventory.md",
+        "evidence/tests/ui-smoke/08-lobby-dark.png"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-level-select",
+      "kind": "feature",
+      "label": "Host-only level grid with live previews",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/tests/ui-smoke/summary.json",
+        "evidence/tests/ui-smoke/08-lobby-dark.png"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-modes",
+      "kind": "feature",
+      "label": "1-4 chefs, bots fill seats",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-timer",
+      "kind": "feature",
+      "label": "Round timer, overtime grace, results",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/e2e.log",
+        "evidence/e2e/2026-09-10T02-38-43/web-gameplay-late.png",
+        "evidence/e2e/2026-09-10T02-38-43/ios-gameplay-late.png",
+        "evidence/e2e/2026-09-10T02-38-43/android-gameplay-late.png",
+        "evidence/e2e/2026-09-10T02-38-43/macos-gameplay-late.png"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-lobby",
+      "kind": "feature",
+      "label": "Rooms, four-letter join codes, ready/start/rematch",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/e2e.log",
+        "evidence/tests/ui-smoke/summary.json"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-reconnect",
+      "kind": "feature",
+      "label": "Token resume keeps seat and score",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-lag-comp",
+      "kind": "feature",
+      "label": "Inputs carry the intended facing tile",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-themes",
+      "kind": "feature",
+      "label": "Light and dark themes on every screen",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/ui-smoke/summary.json",
+        "evidence/tests/ui-smoke/06-home-dark.png",
+        "evidence/tests/ui-smoke/02-home-light.png",
+        "evidence/diffs/visual-parity.log"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-input",
+      "kind": "feature",
+      "label": "Keyboard, touch and mouse per platform",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/e2e/2026-09-10T02-38-43/ios-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/android-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/macos-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/web-gameplay.png"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-tutorial",
+      "kind": "feature",
+      "label": "Training Kitchen level plus How to play sheet",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/ui-smoke/summary.json",
+        "evidence/tests/ui-smoke/03-how-to-play.png",
+        "evidence/tests/unit-tests.log"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "feature-bots",
+      "kind": "feature",
+      "label": "Deterministic server bots and offline planner",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/plan.json",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "feature-test-channel",
+      "kind": "feature",
+      "label": "Automation HTTP/WebSocket channel, opt-in only",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/e2e.log",
+        "evidence/tests/ui-smoke/smoke.log"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "journey-four-platform-match",
+      "kind": "journey",
+      "label": "web + iOS + Android + macOS join one room and finish a match with identical results",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/e2e.log",
+        "evidence/e2e/2026-09-10T02-38-43/plan.json",
+        "evidence/e2e/2026-09-10T02-38-43/web-lobby.png",
+        "evidence/e2e/2026-09-10T02-38-43/web-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/web-gameplay-late.png",
+        "evidence/e2e/2026-09-10T02-38-43/web-results.png",
+        "evidence/e2e/2026-09-10T02-38-43/ios-lobby.png",
+        "evidence/e2e/2026-09-10T02-38-43/ios-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/ios-gameplay-late.png",
+        "evidence/e2e/2026-09-10T02-38-43/ios-results.png",
+        "evidence/e2e/2026-09-10T02-38-43/android-lobby.png",
+        "evidence/e2e/2026-09-10T02-38-43/android-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/android-gameplay-late.png",
+        "evidence/e2e/2026-09-10T02-38-43/android-results.png",
+        "evidence/e2e/2026-09-10T02-38-43/macos-lobby.png",
+        "evidence/e2e/2026-09-10T02-38-43/macos-gameplay.png",
+        "evidence/e2e/2026-09-10T02-38-43/macos-gameplay-late.png",
+        "evidence/e2e/2026-09-10T02-38-43/macos-results.png",
+        "evidence/e2e/2026-09-10T02-38-43/four-way-match.mov"
+      ],
+      "access": "observed",
+      "result": {
+        "score": 426,
+        "stars": 1,
+        "served": 11,
+        "tips": 216,
+        "expired": 1,
+        "bestCombo": 4,
+        "wrongServes": 0,
+        "burntPots": 0,
+        "tick": 3061
+      },
+      "clients": [
+        "ios",
+        "web",
+        "android",
+        "macos"
+      ]
+    },
+    {
+      "id": "journey-rematch",
+      "kind": "journey",
+      "label": "results -> host rematch -> lobby -> second match",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/tests/unit-tests.log",
+        "evidence/discovery/inventory.md"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "journey-reconnect",
+      "kind": "journey",
+      "label": "socket drop mid-match, token resume",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/tests/unit-tests.log",
+        "evidence/discovery/inventory.md"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "journey-home-loop",
+      "kind": "journey",
+      "label": "leave -> home -> how to play -> bad/full join -> theme -> host on chosen level -> leave",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/tests/ui-smoke/summary.json",
+        "evidence/tests/ui-smoke/smoke.log",
+        "evidence/tests/ui-smoke/web-console.log",
+        "evidence/tests/ui-smoke/01-lobby-light.png",
+        "evidence/tests/ui-smoke/02-home-light.png",
+        "evidence/tests/ui-smoke/03-how-to-play.png",
+        "evidence/tests/ui-smoke/04-home-after-dismiss.png",
+        "evidence/tests/ui-smoke/05-join-error-toast.png",
+        "evidence/tests/ui-smoke/06-home-dark.png",
+        "evidence/tests/ui-smoke/07-how-to-play-dark.png",
+        "evidence/tests/ui-smoke/08-lobby-dark.png"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "journey-solo-with-bots",
+      "kind": "journey",
+      "label": "one client hosts, adds bots, readies, starts, reaches results",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/tests/unit-tests.log",
+        "evidence/discovery/inventory.md"
+      ],
+      "access": "observed"
+    },
+    {
+      "id": "visual-lobby-ios",
+      "kind": "visual",
+      "label": "lobby screen: ios client vs web reference at 402x874@3x",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/diffs/visual-parity.json",
+        "evidence/diffs/visual-parity.log",
+        "evidence/diffs/visual-selftest.log",
+        "evidence/reference/lobby-web-for-ios.png",
+        "evidence/clone/lobby-ios.png",
+        "evidence/diffs/lobby-ios.png",
+        "evidence/diffs/lobby-ios.core.png"
+      ],
+      "access": "observed",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/reference/lobby-web-for-ios.normalized.png",
+        "actual": "evidence/clone/lobby-ios.normalized.png",
+        "diff": "evidence/diffs/lobby-ios.normalized.png",
+        "different_pixels": 0,
+        "total_pixels": 78189,
+        "compared_pixels": 77925,
+        "masked_regions": 2,
+        "core_pass_surviving_pixels": 0,
+        "core_pass_limit": 2,
+        "raw_differing_pixels": 1141,
+        "raw_total_pixels": 2814804,
+        "normalization_evidence": "evidence/diffs/visual-parity.json"
+      }
+    },
+    {
+      "id": "visual-results-ios",
+      "kind": "visual",
+      "label": "results screen: ios client vs web reference at 402x874@3x",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/diffs/visual-parity.json",
+        "evidence/diffs/visual-parity.log",
+        "evidence/diffs/visual-selftest.log",
+        "evidence/reference/results-web-for-ios.png",
+        "evidence/clone/results-ios.png",
+        "evidence/diffs/results-ios.png",
+        "evidence/diffs/results-ios.core.png"
+      ],
+      "access": "observed",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/reference/results-web-for-ios.normalized.png",
+        "actual": "evidence/clone/results-ios.normalized.png",
+        "diff": "evidence/diffs/results-ios.normalized.png",
+        "different_pixels": 0,
+        "total_pixels": 78189,
+        "compared_pixels": 78189,
+        "masked_regions": 2,
+        "core_pass_surviving_pixels": 0,
+        "core_pass_limit": 2,
+        "raw_differing_pixels": 1721,
+        "raw_total_pixels": 2814804,
+        "normalization_evidence": "evidence/diffs/visual-parity.json"
+      }
+    },
+    {
+      "id": "visual-home-ios",
+      "kind": "visual",
+      "label": "home screen: ios client vs web reference at 402x874@3x",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/diffs/visual-parity.json",
+        "evidence/diffs/visual-parity.log",
+        "evidence/diffs/visual-selftest.log",
+        "evidence/reference/home-web-for-ios.png",
+        "evidence/clone/home-ios.png",
+        "evidence/diffs/home-ios.png",
+        "evidence/diffs/home-ios.core.png"
+      ],
+      "access": "observed",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/reference/home-web-for-ios.normalized.png",
+        "actual": "evidence/clone/home-ios.normalized.png",
+        "diff": "evidence/diffs/home-ios.normalized.png",
+        "different_pixels": 0,
+        "total_pixels": 78189,
+        "compared_pixels": 78189,
+        "masked_regions": 0,
+        "core_pass_surviving_pixels": 0,
+        "core_pass_limit": 2,
+        "raw_differing_pixels": 1538,
+        "raw_total_pixels": 2814804,
+        "normalization_evidence": "evidence/diffs/visual-parity.json"
+      }
+    },
+    {
+      "id": "visual-lobby-android",
+      "kind": "visual",
+      "label": "lobby screen: android client vs web reference at 1024x720@1x",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/diffs/visual-parity.json",
+        "evidence/diffs/visual-parity.log",
+        "evidence/diffs/visual-selftest.log",
+        "evidence/reference/lobby-web-for-android.png",
+        "evidence/clone/lobby-android.png",
+        "evidence/diffs/lobby-android.png",
+        "evidence/diffs/lobby-android.core.png"
+      ],
+      "access": "observed",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/reference/lobby-web-for-android.normalized.png",
+        "actual": "evidence/clone/lobby-android.normalized.png",
+        "diff": "evidence/diffs/lobby-android.normalized.png",
+        "different_pixels": 0,
+        "total_pixels": 178176,
+        "compared_pixels": 177791,
+        "masked_regions": 2,
+        "core_pass_surviving_pixels": 0,
+        "core_pass_limit": 2,
+        "raw_differing_pixels": 669,
+        "raw_total_pixels": 712704,
+        "normalization_evidence": "evidence/diffs/visual-parity.json"
+      }
+    },
+    {
+      "id": "visual-results-android",
+      "kind": "visual",
+      "label": "results screen: android client vs web reference at 1024x720@1x",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/diffs/visual-parity.json",
+        "evidence/diffs/visual-parity.log",
+        "evidence/diffs/visual-selftest.log",
+        "evidence/reference/results-web-for-android.png",
+        "evidence/clone/results-android.png",
+        "evidence/diffs/results-android.png",
+        "evidence/diffs/results-android.core.png"
+      ],
+      "access": "observed",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/reference/results-web-for-android.normalized.png",
+        "actual": "evidence/clone/results-android.normalized.png",
+        "diff": "evidence/diffs/results-android.normalized.png",
+        "different_pixels": 0,
+        "total_pixels": 178176,
+        "compared_pixels": 177879,
+        "masked_regions": 2,
+        "core_pass_surviving_pixels": 0,
+        "core_pass_limit": 2,
+        "raw_differing_pixels": 63,
+        "raw_total_pixels": 712704,
+        "normalization_evidence": "evidence/diffs/visual-parity.json"
+      }
+    },
+    {
+      "id": "visual-home-android",
+      "kind": "visual",
+      "label": "home screen: android client vs web reference at 1024x720@1x",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/diffs/visual-parity.json",
+        "evidence/diffs/visual-parity.log",
+        "evidence/diffs/visual-selftest.log",
+        "evidence/reference/home-web-for-android.png",
+        "evidence/clone/home-android.png",
+        "evidence/diffs/home-android.png",
+        "evidence/diffs/home-android.core.png"
+      ],
+      "access": "observed",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/reference/home-web-for-android.normalized.png",
+        "actual": "evidence/clone/home-android.normalized.png",
+        "diff": "evidence/diffs/home-android.normalized.png",
+        "different_pixels": 0,
+        "total_pixels": 178176,
+        "compared_pixels": 178176,
+        "masked_regions": 0,
+        "core_pass_surviving_pixels": 0,
+        "core_pass_limit": 2,
+        "raw_differing_pixels": 1161,
+        "raw_total_pixels": 712704,
+        "normalization_evidence": "evidence/diffs/visual-parity.json"
+      }
+    },
+    {
+      "id": "visual-lobby-macos",
+      "kind": "visual",
+      "label": "lobby screen: macos client vs web reference at 960x608@1x",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/diffs/visual-parity.json",
+        "evidence/diffs/visual-parity.log",
+        "evidence/diffs/visual-selftest.log",
+        "evidence/reference/lobby-web-for-macos.png",
+        "evidence/clone/lobby-macos.png",
+        "evidence/diffs/lobby-macos.png",
+        "evidence/diffs/lobby-macos.core.png"
+      ],
+      "access": "observed",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/reference/lobby-web-for-macos.normalized.png",
+        "actual": "evidence/clone/lobby-macos.normalized.png",
+        "diff": "evidence/diffs/lobby-macos.normalized.png",
+        "different_pixels": 0,
+        "total_pixels": 145920,
+        "compared_pixels": 145179,
+        "masked_regions": 6,
+        "core_pass_surviving_pixels": 0,
+        "core_pass_limit": 2,
+        "raw_differing_pixels": 746,
+        "raw_total_pixels": 583680,
+        "normalization_evidence": "evidence/diffs/visual-parity.json"
+      }
+    },
+    {
+      "id": "visual-results-macos",
+      "kind": "visual",
+      "label": "results screen: macos client vs web reference at 960x608@1x",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/diffs/visual-parity.json",
+        "evidence/diffs/visual-parity.log",
+        "evidence/diffs/visual-selftest.log",
+        "evidence/reference/results-web-for-macos.png",
+        "evidence/clone/results-macos.png",
+        "evidence/diffs/results-macos.png",
+        "evidence/diffs/results-macos.core.png"
+      ],
+      "access": "observed",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/reference/results-web-for-macos.normalized.png",
+        "actual": "evidence/clone/results-macos.normalized.png",
+        "diff": "evidence/diffs/results-macos.normalized.png",
+        "different_pixels": 0,
+        "total_pixels": 145920,
+        "compared_pixels": 145267,
+        "masked_regions": 6,
+        "core_pass_surviving_pixels": 2,
+        "core_pass_limit": 2,
+        "raw_differing_pixels": 1442,
+        "raw_total_pixels": 583680,
+        "normalization_evidence": "evidence/diffs/visual-parity.json"
+      }
+    },
+    {
+      "id": "visual-home-macos",
+      "kind": "visual",
+      "label": "home screen: macos client vs web reference at 960x608@1x",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/diffs/visual-parity.json",
+        "evidence/diffs/visual-parity.log",
+        "evidence/diffs/visual-selftest.log",
+        "evidence/reference/home-web-for-macos.png",
+        "evidence/clone/home-macos.png",
+        "evidence/diffs/home-macos.png",
+        "evidence/diffs/home-macos.core.png"
+      ],
+      "access": "observed",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/reference/home-web-for-macos.normalized.png",
+        "actual": "evidence/clone/home-macos.normalized.png",
+        "diff": "evidence/diffs/home-macos.normalized.png",
+        "different_pixels": 0,
+        "total_pixels": 145920,
+        "compared_pixels": 145520,
+        "masked_regions": 4,
+        "core_pass_surviving_pixels": 0,
+        "core_pass_limit": 2,
+        "raw_differing_pixels": 2099,
+        "raw_total_pixels": 583680,
+        "normalization_evidence": "evidence/diffs/visual-parity.json"
+      }
+    },
+    {
+      "id": "asset-fonts",
+      "kind": "asset",
+      "label": "Nunito + JetBrains Mono (SIL OFL)",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/build.log",
+        "evidence/discovery/audit-assets.md"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "asset-sprites",
+      "kind": "asset",
+      "label": "Procedural original sprites and particles",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/discovery/audit-assets.md",
+        "evidence/e2e/2026-09-10T02-38-43/ios-gameplay.png"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "asset-icons",
+      "kind": "asset",
+      "label": "Material Symbols UI icons",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/discovery/audit-assets.md",
+        "evidence/tests/quality.log"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "asset-copy",
+      "kind": "asset",
+      "label": "Original product, dish, chef and level names",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/discovery/audit-rebrand.md"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "asset-launcher-icons",
+      "kind": "asset",
+      "label": "Generated launcher icons and web manifest identity",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/discovery/audit-rebrand.md",
+        "evidence/tests/quality.log",
+        "evidence/tests/build.log"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "integration-server-ws",
+      "kind": "integration",
+      "label": "JSON-over-WebSocket protocol v1",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/e2e/2026-09-10T02-38-43/e2e.log"
+      ],
+      "access": "inferred"
+    },
+    {
+      "id": "integration-test-http",
+      "kind": "integration",
+      "label": "HTTP health/levels always; /test/* only with --test-harness",
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/inventory.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/tests/ui-smoke/smoke.log"
+      ],
+      "access": "inferred"
+    }
+  ],
   "audits": [
     {
       "id": "source",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/audit-source.md",
+        "evidence/discovery/reference-overcooked.md",
+        "evidence/discovery/inventory.md"
+      ]
     },
     {
       "id": "navigation",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/audit-navigation.md",
+        "evidence/tests/ui-smoke/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/e2e.log"
+      ]
     },
     {
       "id": "roles",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/audit-roles.md",
+        "evidence/tests/unit-tests.log"
+      ]
     },
     {
       "id": "states",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/audit-states.md",
+        "evidence/tests/ui-smoke/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json"
+      ]
     },
     {
       "id": "responsive",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/audit-responsive.md",
+        "evidence/diffs/visual-parity.json",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json"
+      ]
     },
     {
       "id": "data",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/audit-data.md",
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/tests/unit-tests.log"
+      ]
     },
     {
       "id": "assets",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/audit-assets.md",
+        "evidence/tests/build.log"
+      ]
     },
     {
       "id": "accessibility",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/audit-accessibility.md",
+        "evidence/tests/quality.log"
+      ]
     },
     {
       "id": "reliability",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/audit-reliability.md",
+        "evidence/tests/unit-tests.log",
+        "evidence/tests/ui-smoke/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/e2e.log"
+      ]
     },
     {
       "id": "rebrand",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/discovery/audit-rebrand.md",
+        "evidence/tests/quality.log"
+      ]
     }
   ],
   "checks": [
     {
       "id": "functional",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/e2e/2026-09-10T02-38-43/summary.json",
+        "evidence/e2e/2026-09-10T02-38-43/e2e.log",
+        "evidence/tests/unit-tests.log",
+        "evidence/tests/ui-smoke/summary.json"
+      ]
     },
     {
       "id": "visual",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/diffs/visual-parity.json",
+        "evidence/diffs/visual-parity.log",
+        "evidence/diffs/visual-selftest.log"
+      ]
     },
     {
       "id": "build",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/tests/build.log"
+      ]
     },
     {
       "id": "quality",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/tests/quality.log"
+      ]
     },
     {
       "id": "security",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "evidence": [
+        "evidence/tests/security.log",
+        "evidence/tests/unit-tests.log"
+      ]
     }
   ],
-  "sweeps": [],
-  "next_action": "Inspect the source entry point and record the first routes and discovery branches."
+  "sweeps": [
+    {
+      "iteration": 6,
+      "revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "new_items": 0,
+      "frontier_empty": true,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "method": "Reference-document walk: every behaviour row in reference-overcooked.md re-checked against inventory.md items and their evidence.",
+      "evidence": [
+        "evidence/discovery/sweep-1-reference-walk.md"
+      ]
+    },
+    {
+      "iteration": 7,
+      "revision": "sha256:0807242b71fd2e1281015590bade700b839ceb1e357fa6e20973ceb7ebf8b746",
+      "new_items": 0,
+      "frontier_empty": true,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "method": "Clone walk: every screen, widget, protocol message, test route and shipped asset enumerated from the code and matched back to an inventory item.",
+      "evidence": [
+        "evidence/discovery/sweep-2-clone-walk.md"
+      ]
+    }
+  ],
+  "known_limitations": [
+    "No audio track shipped (documented in README).",
+    "Reduced-motion and 200% text scaling are not verified (audit-accessibility.md).",
+    "Pause overlay and reconnect banner are not screenshot-verified; covered by analysis and server tests respectively.",
+    "Android emulator runs with software rendering on this host (no hardware virtualization); harnesses wait for painted frames."
+  ],
+  "next_action": "Run complete: open the PR from branch devin/1788988158-panic-pantry containing only panic-pantry/ and attach the ignored PNG/MOV evidence to the report."
 }

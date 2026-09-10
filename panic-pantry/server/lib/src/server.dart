@@ -34,9 +34,12 @@ class _Conn {
 /// Authoritative Panic Pantry server: rooms, lobbies, bots, tick loop and the
 /// HTTP test harness used by the cross-platform automated match.
 class PanicPantryServer {
-  PanicPantryServer({int? seed, this.log = _defaultLog}) : _rng = math.Random(seed);
+  PanicPantryServer({int? seed, this.testHarness = false, this.log = _defaultLog}) : _rng = math.Random(seed);
 
   final math.Random _rng;
+
+  /// Serve the `/test/*` automation routes. Off unless the operator asks.
+  final bool testHarness;
   final void Function(String) log;
   final Map<String, Room> rooms = {};
   final Set<_Conn> _conns = {};
@@ -52,7 +55,20 @@ class PanicPantryServer {
     final router = Router()
       ..get('/health', (Request r) => _json({'ok': true, 'rooms': rooms.length, 'protocol': kProtocolVersion}))
       ..get('/levels', (Request r) => _json({'levels': kLevels.map(_levelJson).toList()}))
-      ..get('/ws', webSocketHandler(_onSocket))
+      ..get('/ws', webSocketHandler(_onSocket));
+    if (testHarness) _mountTestHarness(router);
+
+    final handler = const Pipeline()
+        .addMiddleware(_cors())
+        .addMiddleware(logRequests(logger: (m, _) {}))
+        .addHandler(router.call);
+    _http = await shelf_io.serve(handler, address ?? InternetAddress.anyIPv4, port);
+    log('listening on ws://${_http!.address.host}:${_http!.port}/ws${testHarness ? ' (test harness enabled)' : ''}');
+    return _http!;
+  }
+
+  void _mountTestHarness(Router router) {
+    router
       ..get('/test/rooms', (Request r) => _json({'rooms': rooms.values.map((x) => x.toJson()).toList()}))
       ..post('/test/rooms', _testCreateRoom)
       ..get('/test/rooms/<code>', (Request r, String code) {
@@ -135,15 +151,18 @@ class PanicPantryServer {
         final room = rooms.remove(code.toUpperCase());
         room?.dispose();
         return _json({'removed': room != null});
+      })
+      // Connection-level view: reaches clients that are connected but not
+      // seated in a room (home screen), which the room routes cannot.
+      ..get('/test/clients', (Request r) => _json({'clients': _conns.map(_connJson).toList()}))
+      ..post('/test/clients/<id>/command', (Request r, String id) async {
+        final conn = _conns.where((c) => c.player?.id == id).firstOrNull;
+        if (conn == null) return _json({'error': 'no such client'}, 404);
+        final body = await _body(r);
+        conn.player!.lastReport = null;
+        conn.send({'type': Msg.testCommand, ...body});
+        return _json({'forwarded': 1});
       });
-
-    final handler = const Pipeline()
-        .addMiddleware(_cors())
-        .addMiddleware(logRequests(logger: (m, _) {}))
-        .addHandler(router.call);
-    _http = await shelf_io.serve(handler, address ?? InternetAddress.anyIPv4, port);
-    log('listening on ws://${_http!.address.host}:${_http!.port}/ws');
-    return _http!;
   }
 
   Future<void> close() async {
@@ -171,6 +190,14 @@ class PanicPantryServer {
 
   static Response _json(Object body, [int status = 200]) =>
       Response(status, body: jsonEncode(body), headers: {'content-type': 'application/json'});
+
+  static Map<String, dynamic> _connJson(_Conn c) => {
+    'id': c.player?.id,
+    'name': c.player?.name,
+    'platform': c.player?.platform,
+    'room': c.room?.code,
+    'report': c.player?.lastReport,
+  };
 
   static Future<Map<String, dynamic>> _body(Request r) async {
     final text = await r.readAsString();
@@ -355,7 +382,7 @@ class PanicPantryServer {
       case Msg.input:
         _requireRoom(conn, (room, p) => room.input(p.id, ChefInput.fromJson(msg)));
       case Msg.testReport:
-        _requireRoom(conn, (room, p) => p.lastReport = {...msg, 'receivedAt': DateTime.now().toIso8601String()});
+        conn.player?.lastReport = {...msg, 'receivedAt': DateTime.now().toIso8601String()};
       default:
         conn.error('unknown_type', 'Unknown message type "$type"');
     }

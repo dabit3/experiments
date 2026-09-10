@@ -1,12 +1,12 @@
 {
-    "name": "panic_pantry",
-    "short_name": "panic_pantry",
+    "name": "Panic Pantry",
+    "short_name": "Panic Pantry",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#FFF8EC",
+    "theme_color": "#E6533C",
+    "description": "A cooperative kitchen-chaos game for up to four chefs.",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {

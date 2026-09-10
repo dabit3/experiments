@@ -1,0 +1,29 @@
+2026-09-10T02:35:42.147Z server: [server] listening on ws://0.0.0.0:8791/ws (test harness enabled)
+2026-09-10T02:35:44.998Z server: [server] room XUQL created (seed 327445271, level training)
+2026-09-10T02:35:45.000Z server: [server] Smoke joined XUQL (1/4)
+2026-09-10T02:35:45.086Z web client id p3g9xjw
+2026-09-10T02:35:47.745Z PASS auto-host lands in lobby — room XUQL
+2026-09-10T02:35:48.386Z screenshot 01-lobby-light.png
+2026-09-10T02:35:48.390Z server: [server] Smoke left XUQL
+2026-09-10T02:35:48.390Z server: [server] room XUQL closed
+2026-09-10T02:35:51.026Z PASS leave returns to home
+2026-09-10T02:35:51.030Z PASS empty room is closed on leave — 0 room(s) left
+2026-09-10T02:35:51.090Z screenshot 02-home-light.png
+2026-09-10T02:35:52.627Z screenshot 03-how-to-play.png
+2026-09-10T02:35:53.037Z PASS how-to-play sheet keeps the home route underneath
+2026-09-10T02:35:53.989Z screenshot 04-home-after-dismiss.png
+2026-09-10T02:35:54.404Z PASS joining a missing room stays on home with an error — No kitchen with code ZZZZ
+2026-09-10T02:35:54.758Z screenshot 05-join-error-toast.png
+2026-09-10T02:35:54.759Z server: [server] room FULL created (seed 3, level training)
+2026-09-10T02:35:55.171Z PASS joining a full room is rejected — That kitchen is full
+2026-09-10T02:35:56.142Z screenshot 06-home-dark.png
+2026-09-10T02:35:57.673Z screenshot 07-how-to-play-dark.png
+2026-09-10T02:35:58.281Z server: [server] room DWHQ created (seed 273680600, level drift-deck)
+[server] Smoke joined DWHQ (1/4)
+2026-09-10T02:36:00.913Z PASS host from home opens a lobby on the requested level — level drift-deck
+2026-09-10T02:36:00.966Z screenshot 08-lobby-dark.png
+2026-09-10T02:36:00.986Z server: [server] Smoke left DWHQ
+[server] room DWHQ closed
+2026-09-10T02:36:03.610Z PASS second leave returns to home
+2026-09-10T02:36:03.610Z PASS web console has no errors
+2026-09-10T02:36:03.611Z PASS: 9/9 smoke checks passed

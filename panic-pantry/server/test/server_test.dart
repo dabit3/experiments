@@ -58,7 +58,7 @@ void main() {
   late int port;
 
   setUp(() async {
-    server = PanicPantryServer(seed: 1);
+    server = PanicPantryServer(seed: 1, testHarness: true);
     final http = await server.serve(address: InternetAddress.loopbackIPv4, port: 0);
     port = http.port;
   });
@@ -233,5 +233,44 @@ void main() {
     expect((view['reports'] as Map)[w['playerId']]['phase'], 'lobby');
     expect(view['phase'], 'playing');
     await a.close();
+  });
+
+  test('test harness reaches connected clients outside a room', () async {
+    final base = 'http://127.0.0.1:$port';
+    final a = await TestClient.connect(port);
+    a.send({'type': Msg.hello, 'protocol': kProtocolVersion, 'name': 'Solo', 'platform': 'test'});
+    final welcome = await a.nextType(Msg.welcome);
+    final id = welcome['playerId'] as String;
+
+    final listed = jsonDecode((await http.get(Uri.parse('$base/test/clients'))).body) as Map<String, dynamic>;
+    final me = (listed['clients'] as List).cast<Map<String, dynamic>>().firstWhere((c) => c['id'] == id);
+    expect(me['room'], isNull);
+    expect(me['platform'], 'test');
+
+    await http.post(Uri.parse('$base/test/clients/$id/command'), body: jsonEncode({'cmd': 'report'}));
+    final cmd = await a.nextType(Msg.testCommand);
+    expect(cmd['cmd'], 'report');
+    a.send({'type': Msg.testReport, 'screen': 'home'});
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    final again = jsonDecode((await http.get(Uri.parse('$base/test/clients'))).body) as Map<String, dynamic>;
+    final rep = (again['clients'] as List).cast<Map<String, dynamic>>().firstWhere((c) => c['id'] == id)['report'];
+    expect(rep['screen'], 'home');
+    expect(a.received.where((m) => m['type'] == Msg.error), isEmpty);
+
+    expect((await http.post(Uri.parse('$base/test/clients/nope/command'), body: '{}')).statusCode, 404);
+    await a.close();
+  });
+
+  test('test harness routes are absent unless enabled', () async {
+    final plain = PanicPantryServer(seed: 2);
+    final bound = await plain.serve(address: InternetAddress.loopbackIPv4, port: 0);
+    try {
+      final base = 'http://127.0.0.1:${bound.port}';
+      expect((await http.get(Uri.parse('$base/health'))).statusCode, 200);
+      expect((await http.get(Uri.parse('$base/test/rooms'))).statusCode, 404);
+      expect((await http.post(Uri.parse('$base/test/rooms'), body: '{}')).statusCode, 404);
+    } finally {
+      await plain.close();
+    }
   });
 }

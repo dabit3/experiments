@@ -5,6 +5,7 @@ import 'package:panic_pantry_core/panic_pantry_core.dart';
 import '../net/client.dart';
 import '../theme/tokens.dart';
 import '../widgets/level_preview.dart';
+import '../widgets/platform_mark.dart';
 import '../widgets/ui.dart';
 import 'how_to_play.dart';
 
@@ -19,14 +20,14 @@ IconData platformIcon(String p) => switch (p) {
 
 /// Room lobby: code, seats, level select (world map), ready/start.
 class LobbyScreen extends StatelessWidget {
-  const LobbyScreen({super.key, required this.client, required this.onToggleTheme});
+  const LobbyScreen({super.key, required this.client, required this.room, required this.onToggleTheme});
   final GameClient client;
+  final RoomInfo room;
   final VoidCallback onToggleTheme;
 
   @override
   Widget build(BuildContext context) {
     final s = PPScheme.of(context);
-    final room = client.room!;
     final me = room.players.where((p) => p['id'] == client.playerId).firstOrNull;
     final ready = me?['ready'] == true;
     final humans = room.players.where((p) => p['bot'] != true).toList();
@@ -293,6 +294,8 @@ class _Seat extends StatelessWidget {
   final bool isMe;
   final bool isHost;
 
+  Widget _maybeMark(Widget child) => isMe ? PlatformMark(id: 'lobby-device', child: child) : child;
+
   @override
   Widget build(BuildContext context) {
     final s = PPScheme.of(context);
@@ -350,15 +353,20 @@ class _Seat extends StatelessWidget {
                           ],
                         ],
                       ),
-                      Row(
-                        children: [
-                          Icon(platformIcon(p['platform'] as String), size: 13, color: s.text3),
-                          const SizedBox(width: 4),
-                          Text(
-                            p['bot'] == true ? 'Server bot' : (connected ? (p['platform'] as String) : 'reconnecting…'),
-                            style: PPType.small(connected ? s.text3 : PPColor.paprika),
-                          ),
-                        ],
+                      _maybeMark(
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(platformIcon(p['platform'] as String), size: 13, color: s.text3),
+                            const SizedBox(width: 4),
+                            Text(
+                              p['bot'] == true
+                                  ? 'Server bot'
+                                  : (connected ? (p['platform'] as String) : 'reconnecting…'),
+                              style: PPType.small(connected ? s.text3 : PPColor.paprika),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -548,7 +556,8 @@ class _LevelDetails extends StatelessWidget {
             children: [
               for (final d in level.menu)
                 PPChip(label: d.label, icon: d.cooked ? Icons.soup_kitchen_rounded : Icons.eco_rounded, color: s.text2),
-              for (var i = 0; i < th.length; i++) PPChip(label: '${'★' * (i + 1)} ${th[i]}', color: PPColor.butter),
+              for (var i = 0; i < th.length; i++)
+                PPChip(label: '${th[i]}', icon: Icons.star_rounded, iconCount: i + 1, color: PPColor.butter),
             ],
           ),
         ],

@@ -22,6 +22,8 @@
 #   PP_ANDROID_AVD          AVD to boot when no device is attached (default: panic_pantry)
 #   PP_ANDROID_SERIAL       use an already attached device/emulator (e.g. emulator-5554, 127.0.0.1:5555)
 #   PP_ANDROID_SERVER       server URL as seen from the Android device (default: ws://10.0.2.2:$PP_PORT/ws)
+#   PP_ANDROID_WINDOW       macOS process owning the emulator window, for tiling (default: qemu-system-aarch64)
+#   PP_JOIN_TIMEOUT         seconds to wait for every client to join/answer (default: 150)
 #   PP_RECORD=0             disable the screen recording
 set -euo pipefail
 
@@ -49,7 +51,8 @@ if [[ "${PP_SKIP_BUILD:-0}" != "1" ]]; then
   has ios && flutter build ios --simulator --debug
   has macos && flutter build macos --debug
   # iOS/Android receive PP_* at launch time (simctl environment / intent extras).
-  has android && flutter build apk --debug
+  # Release APK: AOT code keeps software-emulated (TCG) Android devices usable.
+  has android && flutter build apk --release
   popd >/dev/null
 fi
 

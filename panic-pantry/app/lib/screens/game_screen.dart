@@ -307,7 +307,12 @@ class _Hud extends StatelessWidget {
         if (g.combo > 1)
           _Stat(label: 'Combo', value: 'x${g.combo}', accent: PPColor.plum)
         else
-          _Stat(label: 'Stars', value: '★' * g.stars + '☆' * (3 - g.stars), accent: PPColor.butter),
+          _Stat(
+            label: 'Stars',
+            value: '${g.stars}',
+            accent: PPColor.butter,
+            child: StarRow(lit: g.stars, size: 20),
+          ),
         const SizedBox(width: PPSpace.x2),
         _Stat(
           label: g.phase == Phase.overtime ? 'Overtime' : 'Time',
@@ -352,6 +357,7 @@ class _Stat extends StatelessWidget {
     this.big = false,
     this.pulse = false,
     this.animate = true,
+    this.child,
   });
   final String label;
   final String value;
@@ -359,6 +365,9 @@ class _Stat extends StatelessWidget {
   final bool big;
   final bool pulse;
   final bool animate;
+
+  /// Rendered instead of [value] text; [value] still keys the animation.
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -382,14 +391,13 @@ class _Stat extends StatelessWidget {
               transitionBuilder: (c, a) => ScaleTransition(scale: Tween(begin: 1.25, end: 1.0).animate(a), child: c),
               layoutBuilder: (current, previous) =>
                   Stack(alignment: Alignment.centerLeft, children: [...previous, ?current]),
-              child: Text(
-                value,
+              child: KeyedSubtree(
                 key: ValueKey(value),
-                style: PPType.numeric(accent, size: big ? 24 : 20),
+                child: child ?? Text(value, style: PPType.numeric(accent, size: big ? 24 : 20)),
               ),
             )
           else
-            Text(value, style: PPType.numeric(accent, size: big ? 24 : 20)),
+            child ?? Text(value, style: PPType.numeric(accent, size: big ? 24 : 20)),
         ],
       ),
     );

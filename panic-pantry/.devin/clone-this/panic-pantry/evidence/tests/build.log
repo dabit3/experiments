@@ -1,0 +1,95 @@
+# 2026-09-10T02:50:04Z clean build of all four targets (flutter clean first)
+# flutter clean
+Cleaning Xcode workspace...                                         5.3s
+Cleaning Xcode workspace...                                         4.4s
+Deleting build...                                                  610ms
+Deleting .dart_tool...                                               5ms
+Deleting ephemeral...                                                1ms
+Deleting Generated.xcconfig...                                       0ms
+Deleting flutter_export_environment.sh...                            0ms
+Deleting ephemeral...                                                1ms
+exit=0
+# flutter pub get
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+exit=0
+# flutter build web --release
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Compiling lib/main.dart for the Web...                          
+Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+Use --no-wasm-dry-run to disable these warnings.
+Expected to find fonts for (MaterialIcons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 15932 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Compiling lib/main.dart for the Web...                             19.1s
+✓ Built build/web
+exit=0
+# flutter build macos --debug
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Building macOS application...                                   
+warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
+✓ Built build/macos/Build/Products/Debug/Panic Pantry.app
+exit=0
+# flutter build ios --simulator --debug
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Building dev.panicpantry.panicPantry for simulator (ios)...
+Running Xcode build...                                          
+Xcode build done.                                           20.8s
+✓ Built build/ios/iphonesimulator/Runner.app
+exit=0
+# flutter build apk --release
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleRelease'...                        
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 9536 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Running Gradle task 'assembleRelease'...                           23.4s
+✓ Built build/app/outputs/flutter-apk/app-release.apk (51.4MB)
+exit=0
+# artefacts
+-rw-r--r--  1 devin  staff  51375080 Sep  9 19:51 build/app/outputs/flutter-apk/app-release.apk
+-rw-r--r--  1 devin  staff      1993 Sep  9 19:51 build/ios/iphonesimulator/Runner.app/Info.plist
+-rw-r--r--  1 devin  staff      1558 Sep  9 19:50 build/web/index.html
+
+build/macos/Build/Products/Debug/Panic Pantry.app/Contents/MacOS:
+total 448
+drwxr-xr-x  5 devin  staff     160 Sep  9 19:50 .
+drwxr-xr-x  8 devin  staff     256 Sep  9 19:50 ..
+-rwxr-xr-x  1 devin  staff   59104 Sep  9 19:50 Panic Pantry
+-rwxr-xr-x  1 devin  staff  129888 Sep  9 19:50 Panic Pantry.debug.dylib
+-rwxr-xr-x  1 devin  staff   34800 Sep  9 19:50 __preview.dylib

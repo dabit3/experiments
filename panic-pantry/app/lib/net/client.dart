@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/painting.dart' show EdgeInsets, Size;
 import 'package:panic_pantry_core/panic_pantry_core.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+
+import '../widgets/platform_mark.dart';
 
 enum ConnState { idle, connecting, connected, reconnecting, failed }
 
@@ -83,6 +86,9 @@ class GameClient extends ChangeNotifier {
   ChefInput _held = ChefInput.none;
   bool _heldDirty = false;
   String _screen = 'home';
+  DateTime _screenSince = DateTime.now();
+  int _framesSinceScreen = 0;
+  Map<String, dynamic> _view = const {};
 
   bool get isHost => room != null && room!.hostId == playerId;
   bool get inRoom => room != null;
@@ -90,15 +96,42 @@ class GameClient extends ChangeNotifier {
 
   /// The UI reports which screen it's showing so test reports can include it.
   void setScreen(String s) {
+    if (s == _screen) return;
     _screen = s;
+    _screenSince = DateTime.now();
+    _framesSinceScreen = 0;
   }
 
-  Future<void> connect(String url, {String? withName}) async {
+  /// Called once per rendered frame; together with [setScreen] this lets the
+  /// harness tell a screen that has actually been drawn from one that was
+  /// merely built (software-rendered emulators lag several frames behind).
+  void noteFrame() {
+    _framesSinceScreen++;
+  }
+
+  /// Logical viewport, pixel ratio and safe-area padding, so the visual-parity
+  /// harness can size the web reference to match this device exactly.
+  void setViewport(Size size, double dpr, EdgeInsets padding) {
+    _view = {
+      'width': size.width,
+      'height': size.height,
+      'dpr': dpr,
+      'padding': {'top': padding.top, 'bottom': padding.bottom, 'left': padding.left, 'right': padding.right},
+    };
+  }
+
+  /// Opens the connection. [retries] extra attempts are made when the first
+  /// handshake fails (used by automated launches on slow devices).
+  Future<void> connect(String url, {String? withName, int retries = 0}) async {
     _closedByUser = false;
     serverUrl = url;
     if (withName != null) name = withName;
     _reconnectTimer?.cancel();
-    await _open(reconnect: false);
+    for (var attempt = 0; ; attempt++) {
+      await _open(reconnect: false);
+      if (conn != ConnState.failed || attempt >= retries || _closedByUser) return;
+      await Future<void>.delayed(const Duration(seconds: 2));
+    }
   }
 
   Future<void> _open({required bool reconnect}) async {
@@ -107,12 +140,13 @@ class GameClient extends ChangeNotifier {
     notifyListeners();
     try {
       final ch = WebSocketChannel.connect(Uri.parse(serverUrl!));
-      await ch.ready.timeout(const Duration(seconds: 6));
+      await ch.ready.timeout(const Duration(seconds: 15));
       _ch = ch;
       _sub = ch.stream.listen(_onMessage, onDone: _onClosed, onError: (Object e) => _onClosed());
       _send({'type': Msg.hello, 'name': name, 'platform': platform, if (token != null) 'token': token});
     } catch (e) {
       lastError = 'Could not reach $serverUrl';
+      debugPrint('panic_pantry: connect failed: $e');
       conn = reconnect ? ConnState.reconnecting : ConnState.failed;
       notifyListeners();
       if (reconnect) _scheduleReconnect();
@@ -305,6 +339,10 @@ class GameClient extends ChangeNotifier {
           'type': Msg.testReport,
           'platform': platform,
           'screen': _screen,
+          'screenAgeMs': DateTime.now().difference(_screenSince).inMilliseconds,
+          'framesSinceScreen': _framesSinceScreen,
+          'view': _view,
+          'platformRegions': PlatformMark.toJson(),
           if (room != null) 'code': room!.code,
           'phase': game?.phase.name ?? room?.phase ?? 'none',
           'tick': game?.tick,
@@ -312,6 +350,7 @@ class GameClient extends ChangeNotifier {
           'stars': game?.stars,
           'results': results,
           'resultsMatch': resultsMatch,
+          'lastError': lastError,
           'rtt': rttMs,
           'automated': automated,
         });

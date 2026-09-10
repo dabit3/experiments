@@ -1,0 +1,55 @@
+{
+  "finishedAt": "2026-09-10T02:36:03.610Z",
+  "viewport": {
+    "width": 800,
+    "height": 520
+  },
+  "checks": [
+    {
+      "name": "auto-host lands in lobby",
+      "ok": true,
+      "detail": "room XUQL"
+    },
+    {
+      "name": "leave returns to home",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "empty room is closed on leave",
+      "ok": true,
+      "detail": "0 room(s) left"
+    },
+    {
+      "name": "how-to-play sheet keeps the home route underneath",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "joining a missing room stays on home with an error",
+      "ok": true,
+      "detail": "No kitchen with code ZZZZ"
+    },
+    {
+      "name": "joining a full room is rejected",
+      "ok": true,
+      "detail": "That kitchen is full"
+    },
+    {
+      "name": "host from home opens a lobby on the requested level",
+      "ok": true,
+      "detail": "level drift-deck"
+    },
+    {
+      "name": "second leave returns to home",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "web console has no errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "passed": true
+}

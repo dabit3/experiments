@@ -277,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
             bottom: MediaQuery.paddingOf(context).bottom + PPSpace.x3,
             left: 0,
             right: 0,
-            child: Center(child: Text('Panic Pantry · ${AppConfig.platformLabel}', style: PPType.caption(s.text3))),
+            child: Center(child: Text('Panic Pantry · co-op kitchen chaos', style: PPType.caption(s.text3))),
           ),
         ],
       ),
