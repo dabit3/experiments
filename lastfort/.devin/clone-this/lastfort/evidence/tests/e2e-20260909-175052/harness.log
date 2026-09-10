@@ -1,0 +1,77 @@
+[17:50:53] starting server on :8790
+Monitoring boot status for iPhone 17 (113E2F1A-A37A-4546-A7AE-8A9CA23C7F89).
+Device already booted, nothing to do.
+
+[17:50:55] ios simulator ready: 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[17:50:55] starting 3-way screen recording
+[17:50:56] launching web client
+[["Web", "web"]]
+[17:50:58] launching ios client
+com.lastfort.lastfort: 30146
+[17:50:59] launching macos client
+[17:51:05] waiting for 3 humans in room LFE2E
+[["Web", "web"], ["Mac", "macos"], ["Ios", "ios"]]
+[17:51:06] screenshots: lobby
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: FF334E65-34EA-453A-BDED-68DE380CE0F3 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/ios-lobby.png
+[17:51:06] waiting for the match to start
+bus
+[17:51:15] screenshots: bus
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: FF334E65-34EA-453A-BDED-68DE380CE0F3 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/ios-bus.png
+playing
+[17:51:32] screenshots: gameplay
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: FF334E65-34EA-453A-BDED-68DE380CE0F3 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/ios-gameplay.png
+[17:51:57] screenshots: midgame
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: FF334E65-34EA-453A-BDED-68DE380CE0F3 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/ios-midgame.png
+[17:51:57] waiting for all 3 clients to report the final summary
+ios,macos,web
+[17:53:09] screenshots: matchover
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: FF334E65-34EA-453A-BDED-68DE380CE0F3 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/ios-matchover.png
+[17:53:15] screenshots: results
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: FF334E65-34EA-453A-BDED-68DE380CE0F3 (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/ios-results.png
+[17:53:16] visual comparison web -> macos
+{"mode": "exact", "reference": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/web-lobby.png", "actual": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/macos-lobby.png", "diff": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/diff-web-macos-lobby.png", "different_pixels": 234246, "total_pixels": 364210, "masked_pixels": 0, "tolerance": 0, "max_delta": 249, "region": {"width": 770, "height": 473, "ref_offset": [0, 0], "act_offset": [0, 28]}}
+{"mode": "exact", "reference": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/web-results.png", "actual": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/macos-results.png", "diff": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/diff-web-macos-results.png", "different_pixels": 293042, "total_pixels": 364210, "masked_pixels": 0, "tolerance": 0, "max_delta": 223, "region": {"width": 770, "height": 473, "ref_offset": [0, 0], "act_offset": [0, 28]}}
+{"mode": "exact", "reference": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/web-matchover.png", "actual": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/macos-matchover.png", "diff": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/diff-web-macos-matchover.png", "different_pixels": 361388, "total_pixels": 364210, "masked_pixels": 0, "tolerance": 0, "max_delta": 233, "region": {"width": 770, "height": 473, "ref_offset": [0, 0], "act_offset": [0, 28]}}
+{"mode": "normalized", "reference": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/web-results.png", "actual": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/macos-results.png", "diff": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052/diff-web-macos-results-tol32.png", "different_pixels": 26220, "total_pixels": 364210, "masked_pixels": 0, "tolerance": 32, "max_delta": 223, "region": {"width": 770, "height": 473, "ref_offset": [0, 0], "act_offset": [0, 28]}}
+# Lastfort four-way multiplayer match
+
+Room `LFE2E` — PASS
+
+| platform | player | digest | snapshots |
+|---|---|---|---|
+| web | Web (#1) | `CA0FF4A2` | 2332 |
+| ios | Ios (#3) | `CA0FF4A2` | 2332 |
+| macos | Mac (#2) | `CA0FF4A2` | 2332 |
+
+| placement | name | platform | team | elims | dmg | harvested | built | chests | survived s |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | Juniper | bot | 1 | 3 | 306 | 164 | 14 | 3 | 117 |
+| 1 | Gale | bot | 1 | 0 | 0 | 236 | 8 | 1 | 117 |
+| 1 | Rook | bot | 1 | 1 | 55 | 204 | 10 | 1 | 117 |
+| 1 | Ashfall | bot | 1 | 4 | 480 | 262 | 12 | 1 | 117 |
+| 2 | Web | web | 0 | 0 | 0 | 250 | 7 | 0 | 110 |
+| 2 | Mac | macos | 0 | 0 | 0 | 98 | 2 | 1 | 117 |
+| 2 | Ios | ios | 0 | 1 | 150 | 271 | 9 | 1 | 105 |
+| 2 | Marrow | bot | 0 | 0 | 0 | 87 | 2 | 1 | 115 |
+| 3 | Tarn | bot | 2 | 1 | 189 | 79 | 3 | 0 | 36 |
+| 3 | Ivory | bot | 2 | 0 | 12 | 89 | 3 | 0 | 38 |
+| 3 | Hollow | bot | 2 | 0 | 72 | 0 | 6 | 1 | 41 |
+| 3 | Ember | bot | 2 | 0 | 0 | 151 | 4 | 0 | 59 |
+| 4 | Sable | bot | 3 | 0 | 0 | 186 | 4 | 0 | 51 |
+| 4 | Pike | bot | 3 | 0 | 125 | 0 | 0 | 0 | 13 |
+| 4 | Nettle | bot | 3 | 0 | 0 | 100 | 2 | 0 | 38 |
+| 4 | Flint | bot | 3 | 0 | 0 | 16 | 0 | 0 | 15 |
+[17:53:20] PASS (PARTIAL: web,ios,macos only) — evidence in /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260909-175052
+[17:53:20] cleaning up

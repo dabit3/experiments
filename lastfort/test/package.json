@@ -1,0 +1,13 @@
+{
+  "name": "lastfort-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cross-platform multiplayer end-to-end harness for Lastfort",
+  "type": "module",
+  "scripts": {
+    "e2e": "./multiplayer-e2e.sh"
+  },
+  "dependencies": {
+    "playwright": "1.62.1"
+  }
+}

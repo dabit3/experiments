@@ -1,0 +1,352 @@
+{
+  "schema_version": 1,
+  "source": "Fortnite",
+  "clone_name": "Lastfort",
+  "clone_root": "/Users/devin/repos/experiments/lastfort",
+  "status": "active",
+  "iteration": 1,
+  "revision": "sha256:b43211873d9bd70140b59ba78c29af682fe62f9b7daa47ffcb98f8edb3396630",
+  "frontier": [
+    "Client screens not yet inspected: lobby, locker, pass, match HUD, results on each platform"
+  ],
+  "blockers": [],
+  "unverified_assumptions": [],
+  "items": [
+    {
+      "id": "route-lobby",
+      "kind": "route",
+      "label": "Lobby: play button, mode select (solo/duo/squads), room code create/join, player name, navigation to locker and pass",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "route-locker",
+      "kind": "route",
+      "label": "Locker: browse and equip original cosmetics (outfits, pickaxes, gliders, banners); locked items show unlock level",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "route-pass",
+      "kind": "route",
+      "label": "Progression: XP bar, level, battle-pass-style unlock track with claimed/locked cosmetics and career stats",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "route-match",
+      "kind": "route",
+      "label": "Match screen: bus phase, drop, gameplay HUD, build mode, spectating and reconnect overlay",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "route-results",
+      "kind": "route",
+      "label": "Results: victory banner or placement, eliminations, damage, XP gained, per-squad summary, return to lobby",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-rooms",
+      "kind": "feature",
+      "label": "Rooms with join codes: create, join by code, ready state, host-only start, bots fill to 16",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-bus-drop",
+      "kind": "feature",
+      "label": "Battle bus along a seeded line; jump action; forced drop at path end; glide to landing",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-storm",
+      "kind": "feature",
+      "label": "Shrinking storm ring with phased wait/shrink timers and escalating damage; storm timer and next-circle on minimap",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-health-shield",
+      "kind": "feature",
+      "label": "100 HP + 100 shield; small/big shield, bandage, medkit with documented caps and use times",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-loot",
+      "kind": "feature",
+      "label": "Floor loot and chests with rarity tiers (common..legendary), ammo types, materials; pickup/swap/drop",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-harvest",
+      "kind": "feature",
+      "label": "Harvest wood/stone/metal from seeded nodes with the pickaxe up to 500 each",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-building",
+      "kind": "feature",
+      "label": "Build walls/floors/ramps/roofs from selected material, placement preview, structures grow to full HP, edit door/window",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-combat",
+      "kind": "feature",
+      "label": "Server-authoritative hitscan weapons (Scrapper, Hornet, Ridgeline, Boomstick, Longshot) with reload, spread, damage falloff",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-squads",
+      "kind": "feature",
+      "label": "Solo/duo/squad modes; friendly fire off; teammates listed on HUD; team-aware win condition",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-bots",
+      "kind": "feature",
+      "label": "Deterministic seeded bots harvest, loot, fight, build and avoid the storm",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-hud",
+      "kind": "feature",
+      "label": "HUD: health/shield bars, hotbar, materials, minimap + compass, storm timer, elimination feed, players-left, squad panel",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-spectate",
+      "kind": "feature",
+      "label": "After elimination spectate a living teammate or the eliminator; cycle targets",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-progression",
+      "kind": "feature",
+      "label": "XP awarded per match (survival, elims, placement) persisted locally; levels unlock cosmetics",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-input",
+      "kind": "feature",
+      "label": "Keyboard+mouse on web/macOS, touch joysticks and buttons on iOS/Android, trackpad on macOS",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-reconnect",
+      "kind": "feature",
+      "label": "Client reconnects with its token and resumes the same player within the grace window; overlay shown meanwhile",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-prediction",
+      "kind": "feature",
+      "label": "Client-side movement prediction reconciled against server snapshots; interest-managed replication",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "feature-themes",
+      "kind": "feature",
+      "label": "Dark and light themes with a shared design system (type scale, color tokens, spacing, motion)",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "journey-four-platform-match",
+      "kind": "journey",
+      "label": "Web, iOS, Android and macOS clients join one room as a squad, play a full deterministic match and receive identical summaries",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "journey-solo-with-bots",
+      "kind": "journey",
+      "label": "A single human creates a room, starts a solo match filled with bots and reaches the results screen",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "journey-elimination-spectate",
+      "kind": "journey",
+      "label": "An eliminated player spectates until the match ends and sees the results screen",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "visual-lobby-parity",
+      "kind": "visual",
+      "label": "Lobby renders identically across the four clients at the shared reference size (web baseline)",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "visual-hud-parity",
+      "kind": "visual",
+      "label": "Gameplay HUD renders identically across the four clients at the shared reference size (web baseline)",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "visual-results-parity",
+      "kind": "visual",
+      "label": "Results screen renders identically across the four clients at the shared reference size (web baseline)",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "asset-original-art",
+      "kind": "asset",
+      "label": "All art, icons, cosmetics names and audio are original Lastfort creations (no proprietary Fortnite assets)",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "integration-server-protocol",
+      "kind": "integration",
+      "label": "JSON-over-WebSocket protocol between clients and the Dart server, documented in PROTOCOL.md",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    }
+  ],
+  "audits": [
+    {
+      "id": "source",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "navigation",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "roles",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "states",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "responsive",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "data",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "assets",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "accessibility",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "reliability",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "rebrand",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    }
+  ],
+  "checks": [
+    {
+      "id": "functional",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "visual",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "build",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "quality",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    },
+    {
+      "id": "security",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": []
+    }
+  ],
+  "sweeps": [],
+  "next_action": "Build the Flutter client (lobby, locker, HUD, gameplay, results) against the server protocol."
+}
