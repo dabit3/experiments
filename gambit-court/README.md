@@ -107,8 +107,9 @@ launches Chromium (Playwright), the iOS Simulator, the Android emulator and the
 native macOS app, and drives all four through the server's test-control bridge
 (`PROTOCOL.md` → *Test-automation bridge*):
 
-1. web creates a 3+2 room as White; iOS joins as Black; Android and macOS join
-   the same room as spectators;
+1. the native macOS app creates a 3+2 room as White; web joins as Black; iOS
+   and Android join the same room as spectators (`WHITE`/`BLACK` pick other
+   seats);
 2. the two players play a fixed 33-ply game ending in `Rd8#`; after every ply
    the harness asserts that all four clients render the identical FEN, move
    list and clocks;
@@ -125,7 +126,7 @@ cd gambit-court
 ./test/multiplayer-e2e.sh                   # build everything and run
 ./test/multiplayer-e2e.sh --skip-build      # reuse existing builds
 PLATFORMS=web,ios,macos ./test/multiplayer-e2e.sh   # degraded run without Android
-WHITE=macos BLACK=android ./test/multiplayer-e2e.sh  # choose who plays
+WHITE=web BLACK=android ./test/multiplayer-e2e.sh  # choose who plays (default macos vs web)
 RECORD=0 ./test/multiplayer-e2e.sh          # skip the screen recording
 ```
 
@@ -168,8 +169,9 @@ verification host: it has no hardware virtualization (`sysctl kern.hv_support`
 = 0, `emulator -accel-check` fails) and arm64 system images require it. The
 delivered evidence therefore comes from `PLATFORMS=web,ios,macos`; the Android
 client is the same Flutter code with the same automation bridge, and
-`WHITE=web BLACK=android ./test/multiplayer-e2e.sh` is the command to complete
-the four-way run on a host with virtualization.
+`./test/multiplayer-e2e.sh` (Android spectating) or
+`WHITE=macos BLACK=android ./test/multiplayer-e2e.sh` (Android playing)
+completes the four-way run on a host with virtualization.
 
 ## Unit tests, analysis and formatting
 

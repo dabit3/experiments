@@ -357,31 +357,42 @@ class ResultsOverlay extends StatelessWidget {
                   ),
                 const SizedBox(height: GcSpace.sm),
               ],
-              Row(
-                children: [
-                  Expanded(
-                    child: GcButton(
-                      label: 'Review',
-                      expand: true,
-                      icon: Icons.grid_view_rounded,
-                      onPressed: controller.dismissResults,
-                    ),
-                  ),
-                  const SizedBox(width: GcSpace.sm),
-                  Expanded(
-                    child: GcButton(
-                      label: 'Copy PGN',
-                      expand: true,
-                      icon: Icons.copy_rounded,
-                      onPressed: () async {
-                        await Clipboard.setData(
-                          ClipboardData(text: controller.exportPgn()),
-                        );
-                        controller.showNotice('PGN copied to clipboard.');
-                      },
-                    ),
-                  ),
-                ],
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final review = GcButton(
+                    label: 'Review',
+                    expand: true,
+                    icon: Icons.grid_view_rounded,
+                    onPressed: controller.dismissResults,
+                  );
+                  final copy = GcButton(
+                    label: 'Copy PGN',
+                    expand: true,
+                    icon: Icons.copy_rounded,
+                    onPressed: () async {
+                      await Clipboard.setData(
+                        ClipboardData(text: controller.exportPgn()),
+                      );
+                      controller.showNotice('PGN copied to clipboard.');
+                    },
+                  );
+                  if (constraints.maxWidth < 320) {
+                    return Column(
+                      children: [
+                        review,
+                        const SizedBox(height: GcSpace.sm),
+                        copy,
+                      ],
+                    );
+                  }
+                  return Row(
+                    children: [
+                      Expanded(child: review),
+                      const SizedBox(width: GcSpace.sm),
+                      Expanded(child: copy),
+                    ],
+                  );
+                },
               ),
               const SizedBox(height: GcSpace.sm),
               GcButton(

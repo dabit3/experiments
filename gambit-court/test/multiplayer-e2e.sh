@@ -14,7 +14,7 @@
 #
 # Environment:
 #   PLATFORMS   comma list of clients (default web,ios,android,macos)
-#   WHITE/BLACK which platforms sit as players (default web / ios)
+#   WHITE/BLACK which platforms sit as players (default macos / web)
 #   EVIDENCE    output directory (default .devin/clone-this/gambit-court/evidence/tests/e2e)
 #   IOS_DEVICE  simulator name (default "iPhone 17")
 #   AVD         Android virtual device name (default gambit)
@@ -25,8 +25,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP="$ROOT/app"
 E2E="$ROOT/test/e2e"
 PLATFORMS="${PLATFORMS:-web,ios,android,macos}"
-WHITE="${WHITE:-web}"
-BLACK="${BLACK:-ios}"
+WHITE="${WHITE:-macos}"
+BLACK="${BLACK:-web}"
 EVIDENCE="${EVIDENCE:-$ROOT/.devin/clone-this/gambit-court/evidence/tests/e2e}"
 IOS_DEVICE="${IOS_DEVICE:-iPhone 17}"
 AVD="${AVD:-gambit}"
