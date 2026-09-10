@@ -117,12 +117,35 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   // ---------------------------------------------------------------- title
 
-  Widget _title(BuildContext context, Widget bg) {
+  Widget _title(BuildContext context, Widget bg) => Stack(
+    fit: StackFit.expand,
+    children: [
+      bg,
+      SafeArea(
+        // Lay the menu out against the safe-area box, not the full screen, so
+        // notch/home-indicator insets do not push the footer into the buttons.
+        child: LayoutBuilder(builder: (context, bc) => _titleMenu(context, bc.biggest)),
+      ),
+    ],
+  );
+
+  Widget _titleMenu(BuildContext context, Size box) {
     final s = Gui.of(context);
-    final gui = Gui.guiSize(context);
+    final gui = Size(box.width / s, box.height / s);
     final c = widget.client;
-    final logoScale = gui.width < 330 ? 2.2 : 3.0;
-    final btnY = (gui.height / 4 + 40).floorToDouble();
+    final short = gui.height < 230;
+    final logoScale = gui.width < 330 || short ? 2.2 : 3.0;
+    final logoTop = short ? 14.0 : 28.0;
+    final menuGap = short ? 8.0 : 16.0;
+    // Footer text sits on one line when the screen is wide enough for both
+    // strings, otherwise the legal line stacks above the status line.
+    final footerRows = gui.width >= 600 ? 1 : 2;
+    final menuHeight = 3 * 20 + 2 * 4 + menuGap + 20;
+    final taglineBottom = logoTop + Px.lineHeight * logoScale * 1.1 + 2 + Px.lineHeight;
+    final btnY = math.max(
+      taglineBottom + 6,
+      math.min((gui.height / 4 + 40).floorToDouble(), gui.height - menuHeight - footerRows * Px.lineHeight - 6),
+    );
     final status = switch (c.state) {
       ConnState.connected => 'Connected · ${c.pingMs} ms',
       ConnState.connecting || ConnState.idle => 'Connecting...',
@@ -135,81 +158,73 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       _ => Px.yellow,
     };
     return Stack(
-      fit: StackFit.expand,
       children: [
-        bg,
-        SafeArea(
-          child: Stack(
+        Positioned(
+          top: logoTop * s,
+          left: 0,
+          right: 0,
+          child: Column(
             children: [
-              Positioned(
-                top: 28.0 * s,
-                left: 0,
-                right: 0,
-                child: Column(
-                  children: [
-                    PxWordmark(size: logoScale),
-                    SizedBox(height: 2.0 * s),
-                    const PxText('An original voxel sandbox', color: Px.gray, align: TextAlign.center),
-                  ],
-                ),
-              ),
-              Positioned(
-                top: 28.0 * s + Px.lineHeight * s * logoScale * 1.1 - 6.0 * s,
-                left: gui.width / 2 * s + (gui.width < 330 ? 44.0 : 62.0) * s * logoScale / 3,
-                child: Transform.rotate(
-                  angle: -math.pi / 9,
-                  child: _Splash(animation: _bg),
-                ),
-              ),
-              Positioned(
-                top: btnY * s,
-                left: 0,
-                right: 0,
-                child: Column(
-                  children: [
-                    PxButton('Play Online', onPressed: () => _go(_Page.play)),
-                    SizedBox(height: 4.0 * s),
-                    PxButton('Create World', onPressed: () => _go(_Page.create)),
-                    SizedBox(height: 4.0 * s),
-                    PxButton('Player Name: ${c.playerName}', onPressed: () => _go(_Page.name)),
-                    SizedBox(height: 16.0 * s),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        PxButton(
-                          'Options...',
-                          width: 98,
-                          onPressed: () => showOptionsScreen(
-                            context,
-                            widget.settings,
-                            background: DirtBackground(dirt: widget.assets?.dirt),
-                          ),
-                        ),
-                        SizedBox(width: 4.0 * s),
-                        PxButton('How to Play', width: 98, onPressed: () => _showHowToPlay(context)),
-                      ],
+              PxWordmark(size: logoScale),
+              SizedBox(height: 2.0 * s),
+              const PxText('An original voxel sandbox', color: Px.gray, align: TextAlign.center),
+            ],
+          ),
+        ),
+        Positioned(
+          top: logoTop * s + Px.lineHeight * s * logoScale * 1.1 - 6.0 * s,
+          left: gui.width / 2 * s + (gui.width < 330 ? 44.0 : 62.0) * s * logoScale / 3,
+          child: Transform.rotate(
+            angle: -math.pi / 9,
+            child: _Splash(animation: _bg),
+          ),
+        ),
+        Positioned(
+          top: btnY * s,
+          left: 0,
+          right: 0,
+          child: Column(
+            children: [
+              PxButton('Play Online', onPressed: () => _go(_Page.play)),
+              SizedBox(height: 4.0 * s),
+              PxButton('Create World', onPressed: () => _go(_Page.create)),
+              SizedBox(height: 4.0 * s),
+              PxButton('Player Name: ${c.playerName}', onPressed: () => _go(_Page.name)),
+              SizedBox(height: menuGap * s),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  PxButton(
+                    'Options...',
+                    width: 98,
+                    onPressed: () => showOptionsScreen(
+                      context,
+                      widget.settings,
+                      background: DirtBackground(dirt: widget.assets?.dirt),
                     ),
-                  ],
-                ),
-              ),
-              Positioned(
-                left: 2.0 * s,
-                bottom: 2.0 * s,
-                child: Row(
-                  children: [
-                    PxText('Voxelhearth 1.0 · ${platformLabel(c.platform)}'),
-                    SizedBox(width: 6.0 * s),
-                    PxText(status, color: statusColor),
-                  ],
-                ),
-              ),
-              Positioned(
-                right: 2.0 * s,
-                bottom: 2.0 * s,
-                child: const PxText('Original game & art. Not affiliated with any other title.'),
+                  ),
+                  SizedBox(width: 4.0 * s),
+                  PxButton('How to Play', width: 98, onPressed: () => _showHowToPlay(context)),
+                ],
               ),
             ],
           ),
+        ),
+        Positioned(
+          left: 2.0 * s,
+          bottom: 2.0 * s,
+          child: Row(
+            children: [
+              PxText('Voxelhearth 1.0 · ${platformLabel(c.platform)}'),
+              SizedBox(width: 6.0 * s),
+              PxText(status, color: statusColor),
+            ],
+          ),
+        ),
+        Positioned(
+          right: 2.0 * s,
+          bottom: (footerRows == 1 ? 2.0 : 2.0 + Px.lineHeight) * s,
+          child: const PxText('Original game & art. Not affiliated with any other title.'),
         ),
       ],
     );

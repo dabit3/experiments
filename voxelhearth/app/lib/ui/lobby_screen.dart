@@ -182,10 +182,14 @@ class _LobbyScreenState extends State<LobbyScreen> {
           );
     final me = you;
     final ready = me?.ready ?? false;
+    // Phone landscape: keep the host's five buttons on one row so the chat
+    // box above keeps its height.
+    final compact = gui.width < 480;
+    final primaryW = compact ? 100.0 : 120.0, sideW = compact ? 60.0 : 70.0, leaveW = compact ? 50.0 : 60.0;
     final primary = isHost
         ? PxButton(
             'Start Match',
-            width: 120,
+            width: primaryW,
             onPressed: () {
               HapticFeedback.mediumImpact();
               Sfx.play('ui_confirm');
@@ -194,7 +198,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
           )
         : PxButton(
             ready ? 'Ready!' : 'Ready Up',
-            width: 120,
+            width: primaryW,
             textColor: ready ? Px.green : null,
             sound: ready ? 'ui_back' : 'ready',
             onPressed: () => widget.client.send({'t': 'ready', 'ready': !ready}),
@@ -221,22 +225,22 @@ class _LobbyScreenState extends State<LobbyScreen> {
               if (isHost) ...[
                 PxButton(
                   'Add Bot',
-                  width: 70,
+                  width: sideW,
                   onPressed: s.roster.length < 12 ? () => widget.client.send({'t': Msg.addBot}) : null,
                 ),
                 PxButton(
                   'Remove Bot',
-                  width: 70,
+                  width: sideW,
                   onPressed: s.roster.any((p) => p.bot) ? () => widget.client.send({'t': Msg.removeBot}) : null,
                 ),
               ],
               PxButton(
                 'Options...',
-                width: 70,
+                width: sideW,
                 onPressed: () =>
                     showOptionsScreen(context, widget.settings, background: DirtBackground(dirt: widget.assets?.dirt)),
               ),
-              PxButton('Leave', width: 60, sound: 'ui_back', onPressed: widget.client.leaveRoom),
+              PxButton('Leave', width: leaveW, sound: 'ui_back', onPressed: widget.client.leaveRoom),
             ],
           ),
         ],

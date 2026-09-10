@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
@@ -40,7 +41,9 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   Offset _lookStart = Offset.zero;
   bool _lookMoved = false;
   bool _holdBreak = false;
+  bool _optionsOpen = false;
   DateTime _downAt = DateTime.now();
+  Timer? _holdTimer;
 
   GameController get g => widget.game;
 
@@ -89,6 +92,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     PointerLock.release();
     PointerLock.onMove = null;
     PointerLock.onChange = null;
+    _holdTimer?.cancel();
     _ticker.dispose();
     g.removeListener(_onGame);
     widget.client.removeListener(_onGame);
@@ -120,12 +124,19 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     _lookStart = e.localPosition;
     _lookMoved = false;
     _downAt = DateTime.now();
-    if (e.kind == PointerDeviceKind.mouse) {
+    if (e.kind == PointerDeviceKind.mouse || !_touchUi) {
       _holdBreak = true;
       g.startBreak();
-    } else if (!_touchUi) {
-      _holdBreak = true;
-      g.startBreak();
+    } else {
+      // A still finger held on the world starts breaking after a short delay;
+      // moving it first turns the gesture into a look-drag instead.
+      _holdTimer?.cancel();
+      _holdTimer = Timer(const Duration(milliseconds: 220), () {
+        if (_lookPointer == e.pointer && !_holdBreak && !_lookMoved && !g.inputBlocked) {
+          _holdBreak = true;
+          g.startBreak();
+        }
+      });
     }
   }
 
@@ -136,7 +147,6 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     final scale = e.kind == PointerDeviceKind.mouse ? 1.0 : 1.6;
     if (!(PointerLock.locked && e.kind == PointerDeviceKind.mouse)) g.look(e.delta.dx * scale, e.delta.dy * scale);
     if (_touchUi && e.kind != PointerDeviceKind.mouse && !_holdBreak && !_lookMoved) {
-      // long-press without movement starts breaking
       if (DateTime.now().difference(_downAt).inMilliseconds > 220) {
         _holdBreak = true;
         g.startBreak();
@@ -147,6 +157,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
   void _pointerUp(PointerEvent e) {
     if (e.pointer != _lookPointer) return;
     _lookPointer = null;
+    _holdTimer?.cancel();
     final short = DateTime.now().difference(_downAt).inMilliseconds < 220;
     if (_holdBreak) {
       g.stopBreak();
@@ -201,13 +212,18 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
               child: RepaintBoundary(child: CustomPaint(painter: OverlayPainter(g, frame, gs), isComplex: false)),
             ),
             if (_showCaptureHint)
-              IgnorePointer(
-                child: Align(
-                  alignment: const Alignment(0, -0.8),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 46.0 * gs,
+                child: IgnorePointer(
                   child: Container(
-                    color: const Color(0x80000000),
-                    padding: EdgeInsets.symmetric(horizontal: 4.0 * gs, vertical: 1.0 * gs),
-                    child: const PxText('Click to look around  ·  Esc to pause'),
+                    alignment: Alignment.center,
+                    child: Container(
+                      color: const Color(0x80000000),
+                      padding: EdgeInsets.symmetric(horizontal: 4.0 * gs, vertical: 1.0 * gs),
+                      child: const PxText('Click to look around  ·  Esc to pause'),
+                    ),
                   ),
                 ),
               ),
@@ -263,7 +279,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                 onClose: g.closeOverlay,
               ),
             if (g.dead) DeathOverlay(game: g, client: widget.client),
-            if (g.paused)
+            if (g.paused && !_optionsOpen)
               PauseOverlay(
                 game: g,
                 client: widget.client,
@@ -281,7 +297,9 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
 
   Future<void> _openSettings(BuildContext context) async {
     g.setPaused(true);
+    setState(() => _optionsOpen = true);
     await showOptionsScreen(context, widget.settings, game: g, background: const DimBackground());
+    if (mounted) setState(() => _optionsOpen = false);
     _focus.requestFocus();
   }
 }

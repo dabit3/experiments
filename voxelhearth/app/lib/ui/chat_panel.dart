@@ -104,7 +104,7 @@ class _ChatPanelState extends State<ChatPanel> {
             itemCount: chat.length,
             itemBuilder: (context, i) => _ChatLine(entry: chat[i], mine: chat[i].from == widget.client.playerName),
           );
-    return Column(
+    final column = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
@@ -140,6 +140,15 @@ class _ChatPanelState extends State<ChatPanel> {
           ],
         ),
       ],
+    );
+    // Never squeeze below the composer row: clip the history instead.
+    final minH = (widget.transparent ? 16.0 : 22.0) * s;
+    return LayoutBuilder(
+      builder: (context, bc) => bc.maxHeight >= minH
+          ? column
+          : ClipRect(
+              child: OverflowBox(alignment: Alignment.bottomCenter, minHeight: minH, maxHeight: minH, child: column),
+            ),
     );
   }
 }

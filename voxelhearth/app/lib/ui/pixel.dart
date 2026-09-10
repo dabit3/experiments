@@ -941,21 +941,31 @@ class PxScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = Gui.of(context);
+    final column = Column(
+      children: [
+        if (title != null) ...[
+          SizedBox(height: titleY * s),
+          PxText(title!, align: TextAlign.center),
+          SizedBox(height: 10.0 * s),
+        ],
+        Expanded(child: child),
+        ?footer,
+      ],
+    );
+    // When the on-screen keyboard shrinks the viewport below the screen's
+    // natural height, scroll instead of overflowing.
+    final minHeight = 170.0 * s;
     return Stack(
       fit: StackFit.expand,
       children: [
         background,
         SafeArea(
-          child: Column(
-            children: [
-              if (title != null) ...[
-                SizedBox(height: titleY * s),
-                PxText(title!, align: TextAlign.center),
-                SizedBox(height: 10.0 * s),
-              ],
-              Expanded(child: child),
-              ?footer,
-            ],
+          child: LayoutBuilder(
+            builder: (context, bc) => bc.maxHeight >= minHeight
+                ? column
+                : SingleChildScrollView(
+                    child: SizedBox(height: minHeight, child: column),
+                  ),
           ),
         ),
       ],

@@ -124,11 +124,16 @@ class OptionsScreen extends StatelessWidget {
         } else {
           rows.addAll(controls);
         }
+        // Phone landscape: tighten the vertical rhythm so every row and the
+        // helper line fit above Done without scrolling.
+        final short = gui.height < 230;
+        final rowGap = short ? 2.0 : 4.0;
         return PxScreen(
           background: background,
           title: 'Options',
+          titleY: short ? 6 : 15,
           footer: Padding(
-            padding: EdgeInsets.only(bottom: 8.0 * s),
+            padding: EdgeInsets.only(bottom: (short ? 4.0 : 8.0) * s),
             child: PxButton('Done', sound: 'ui_back', onPressed: () => Navigator.of(context).pop()),
           ),
           child: SingleChildScrollView(
@@ -136,10 +141,10 @@ class OptionsScreen extends StatelessWidget {
               children: [
                 for (final r in rows)
                   Padding(
-                    padding: EdgeInsets.only(bottom: 4.0 * s),
+                    padding: EdgeInsets.only(bottom: rowGap * s),
                     child: r,
                   ),
-                SizedBox(height: 4.0 * s),
+                SizedBox(height: (short ? 2.0 : 4.0) * s),
                 SizedBox(
                   width: (twoCol ? 304.0 : 200.0) * s,
                   child: const PxText(
