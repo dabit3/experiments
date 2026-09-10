@@ -1,0 +1,37 @@
+{
+  "level": "corner-cafe",
+  "seed": 23,
+  "match": 1,
+  "matchSeed": 7942,
+  "players": 4,
+  "scripted": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "ticks": 3061,
+  "expected": {
+    "levelId": "corner-cafe",
+    "score": 180,
+    "stars": 0,
+    "thresholds": [
+      240,
+      480,
+      760
+    ],
+    "served": 6,
+    "expired": 2,
+    "tips": 80,
+    "bestCombo": 4,
+    "wrongServes": 0,
+    "burntPots": 0,
+    "servedByDish": {
+      "tomatoSoup": 3,
+      "onionSoup": 1,
+      "mushroomSoup": 2
+    },
+    "players": 4,
+    "tick": 3061
+  }
+}

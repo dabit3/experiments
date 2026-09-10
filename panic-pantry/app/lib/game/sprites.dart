@@ -52,13 +52,26 @@ class Sprites {
     final even = (x + y) % 2 == 0;
     final a = isDark ? const Color(0xFF4D4A5A) : PPColor.floorA;
     final b = isDark ? const Color(0xFF45424F) : PPColor.floorB;
-    c.drawRect(r, _fill(even ? a : b));
+    final grout = isDark ? const Color(0xFF3A3846) : PPColor.grout;
+    c.drawRect(r, _fill(grout));
+    // Four glazed tiles per cell with thin grout lines.
+    final g = cell * 0.025;
+    final half = cell / 2;
+    for (var i = 0; i < 2; i++) {
+      for (var j = 0; j < 2; j++) {
+        final tile = Rect.fromLTWH(r.left + i * half + g, r.top + j * half + g, half - g * 2, half - g * 2);
+        c.drawRRect(_rr(tile, cell * 0.03), _fill(even == ((i + j) % 2 == 0) ? a : b));
+      }
+    }
   }
 
-  void pit(Rect r, int x, int y) {
+  void pitBase(Rect r) {
     final base = isDark ? const Color(0xFF14202B) : const Color(0xFF2B6E9E);
     c.drawRect(r, _fill(base));
-    // Gentle water ripple.
+  }
+
+  /// Gentle animated water ripple over [pitBase].
+  void pitRipple(Rect r, int x, int y) {
     final wave = math.sin(t * 1.6 + x * 0.9 + y * 1.7);
     final ry = r.top + r.height * (0.5 + 0.18 * wave);
     final path = Path()..moveTo(r.left, ry);
@@ -100,105 +113,163 @@ class Sprites {
 
   // ---------------------------------------------------------------- stations
 
-  void _counterBase(Rect r, {Color? top, Color? side}) {
+  /// Depth of a counter's front face, as a fraction of a cell.
+  static const double lip = 0.3;
+
+  /// Chunky counter module: rounded top slab with a visible front face and a
+  /// darker foot so the kitchen reads as blocks seen from a raised camera.
+  void _counterBase(Rect r, {Color? top, Color? side, Color? edge, bool drawer = true}) {
     final topC = top ?? (isDark ? const Color(0xFF8E7A5C) : PPColor.counterTop);
     final sideC = side ?? (isDark ? const Color(0xFF5A4A34) : PPColor.counterSide);
-    final body = r.deflate(cell * 0.03);
-    // Front face (3D edge).
-    c.drawRRect(
-      _rr(Rect.fromLTRB(body.left, body.top + cell * 0.18, body.right, body.bottom), cell * 0.12),
-      _fill(sideC),
-    );
-    // Top.
-    c.drawRRect(
-      _rr(Rect.fromLTRB(body.left, body.top, body.right, body.bottom - cell * 0.16), cell * 0.12),
-      _fill(topC),
-    );
-    // Highlight.
+    final edgeC = edge ?? (isDark ? const Color(0xFF6E5B42) : PPColor.counterEdge);
+    final body = r.deflate(cell * 0.015);
+    // Ground shadow.
     c.drawRRect(
       _rr(
         Rect.fromLTRB(
-          body.left + cell * 0.08,
-          body.top + cell * 0.06,
-          body.right - cell * 0.08,
-          body.top + cell * 0.14,
+          body.left + cell * 0.04,
+          body.bottom - cell * 0.08,
+          body.right + cell * 0.03,
+          body.bottom + cell * 0.05,
         ),
-        cell * 0.05,
+        cell * 0.1,
       ),
-      _fill(const Color(0xFFFFFFFF).withValues(alpha: 0.25)),
+      _fill(const Color(0x30000000)),
+    );
+    // Front face.
+    c.drawRRect(
+      _rr(Rect.fromLTRB(body.left, body.top + cell * (1 - lip) - cell * 0.1, body.right, body.bottom), cell * 0.1),
+      _fill(sideC),
+    );
+    // Foot line.
+    c.drawRect(
+      Rect.fromLTRB(
+        body.left + cell * 0.04,
+        body.bottom - cell * 0.06,
+        body.right - cell * 0.04,
+        body.bottom - cell * 0.02,
+      ),
+      _fill(isDark ? const Color(0xFF3A2E1F) : PPColor.counterFoot),
+    );
+    if (drawer) {
+      // Drawer handle on the front face.
+      c.drawRRect(
+        _rr(
+          Rect.fromCenter(
+            center: Offset(body.center.dx, body.bottom - cell * 0.15),
+            width: cell * 0.26,
+            height: cell * 0.05,
+          ),
+          cell * 0.03,
+        ),
+        _fill(const Color(0x55000000)),
+      );
+    }
+    // Top slab with a lighter rim.
+    final slab = Rect.fromLTRB(body.left, body.top, body.right, body.bottom - cell * lip);
+    c.drawRRect(_rr(slab, cell * 0.1), _fill(edgeC));
+    c.drawRRect(_rr(slab.deflate(cell * 0.045), cell * 0.07), _fill(topC));
+  }
+
+  /// Steel-topped module (stove, sink, pass, return chute) with a red or grey body.
+  void _applianceBase(Rect r, {required Color body, required Color bodyDark, Color? top}) {
+    _counterBase(
+      r,
+      top: top ?? (isDark ? const Color(0xFF6D6F78) : PPColor.steel),
+      edge: top != null
+          ? Color.lerp(top, const Color(0xFF000000), 0.2)
+          : (isDark ? const Color(0xFF474952) : PPColor.steelDark),
+      side: body,
+      drawer: false,
+    );
+    c.drawRect(
+      Rect.fromLTRB(r.left + cell * 0.06, r.bottom - cell * 0.075, r.right - cell * 0.06, r.bottom - cell * 0.035),
+      _fill(bodyDark),
     );
   }
 
   void station(Rect r, Tile tile) {
     switch (tile.type) {
       case TileType.wall:
-        c.drawRRect(
-          _rr(r.deflate(cell * 0.02), cell * 0.08),
-          _fill(isDark ? const Color(0xFF2C2A36) : const Color(0xFF8B7A63)),
-        );
+        _brick(r);
       case TileType.counter:
         _counterBase(r);
       case TileType.crate:
         _counterBase(
           r,
-          top: isDark ? const Color(0xFF7A5A3C) : const Color(0xFFC2905E),
-          side: isDark ? const Color(0xFF4F3A26) : const Color(0xFF8C5A34),
+          top: isDark ? const Color(0xFF7A5A3C) : const Color(0xFFC79463),
+          edge: isDark ? const Color(0xFF5A4028) : const Color(0xFFA5733F),
+          side: isDark ? const Color(0xFF4F3A26) : PPColor.wood,
+          drawer: false,
         );
-        final inner = Rect.fromLTRB(
-          r.left + cell * 0.16,
-          r.top + cell * 0.14,
-          r.right - cell * 0.16,
-          r.bottom - cell * 0.32,
-        );
-        c.drawRRect(_rr(inner, cell * 0.08), _fill(const Color(0xFF3F2A18).withValues(alpha: 0.55)));
-        // Ingredient heap.
-        final ing = tile.crate!;
-        for (var i = 0; i < 3; i++) {
-          final cx = inner.left + inner.width * (0.25 + 0.25 * i);
-          final cy = inner.center.dy + (i == 1 ? -cell * 0.06 : cell * 0.02);
-          ingredient(Offset(cx, cy), ing, chopped: false, scale: 0.55);
+        // Wooden crate: slat lines on the front, picture label on top.
+        final slat = Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = cell * 0.025
+          ..color = const Color(0x55000000);
+        for (var i = 1; i <= 2; i++) {
+          final y = r.bottom - cell * lip + cell * (lip - 0.06) * i / 3;
+          c.drawLine(Offset(r.left + cell * 0.08, y), Offset(r.right - cell * 0.08, y), slat);
         }
+        final label = Rect.fromLTRB(
+          r.left + cell * 0.17,
+          r.top + cell * 0.1,
+          r.right - cell * 0.17,
+          r.bottom - cell * lip - cell * 0.09,
+        );
+        c.drawRRect(_rr(label, cell * 0.06), _fill(const Color(0xFFFFF6E3)));
+        c.drawRRect(
+          _rr(label, cell * 0.06),
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = cell * 0.03
+            ..color = const Color(0xFF7A5230).withValues(alpha: 0.6),
+        );
+        ingredient(label.center + Offset(0, cell * 0.03), tile.crate!, chopped: false, scale: 0.72);
       case TileType.board:
         _counterBase(r);
         final board = Rect.fromLTRB(
-          r.left + cell * 0.14,
-          r.top + cell * 0.12,
-          r.right - cell * 0.14,
-          r.bottom - cell * 0.34,
+          r.left + cell * 0.12,
+          r.top + cell * 0.1,
+          r.right - cell * 0.12,
+          r.bottom - cell * lip - cell * 0.07,
         );
-        c.drawRRect(_rr(board, cell * 0.06), _fill(isDark ? const Color(0xFFB9925F) : const Color(0xFFE2B77E)));
+        c.drawRRect(_rr(board.shift(Offset(0, cell * 0.03)), cell * 0.06), _fill(const Color(0x33000000)));
+        c.drawRRect(_rr(board, cell * 0.06), _fill(isDark ? const Color(0xFFB9925F) : const Color(0xFFE6BE84)));
         c.drawRRect(
-          _rr(board.deflate(cell * 0.03), cell * 0.05),
+          _rr(board.deflate(cell * 0.04), cell * 0.05),
           Paint()
             ..style = PaintingStyle.stroke
             ..strokeWidth = cell * 0.02
-            ..color = const Color(0xFF7A5230).withValues(alpha: 0.5),
+            ..color = const Color(0xFF7A5230).withValues(alpha: 0.45),
         );
-        // Knife.
-        final k = Offset(r.right - cell * 0.22, r.top + cell * 0.22);
+        // Knife resting diagonally on the board.
+        c.save();
+        c.translate(r.right - cell * 0.26, r.top + cell * 0.2);
+        c.rotate(0.6);
         c.drawRRect(
-          _rr(Rect.fromCenter(center: k, width: cell * 0.1, height: cell * 0.34), cell * 0.03),
+          _rr(Rect.fromCenter(center: Offset.zero, width: cell * 0.1, height: cell * 0.36), cell * 0.04),
           _fill(PPColor.steel),
         );
         c.drawRRect(
-          _rr(
-            Rect.fromCenter(center: k + Offset(0, cell * 0.22), width: cell * 0.09, height: cell * 0.12),
-            cell * 0.02,
-          ),
+          _rr(Rect.fromCenter(center: Offset(0, cell * 0.24), width: cell * 0.09, height: cell * 0.14), cell * 0.02),
           _fill(PPColor.ink),
         );
+        c.restore();
       case TileType.stove:
-        _counterBase(
+        _applianceBase(
           r,
-          top: isDark ? const Color(0xFF6D6F78) : PPColor.steel,
-          side: isDark ? const Color(0xFF474952) : PPColor.steelDark,
+          body: isDark ? const Color(0xFF8A3A2E) : PPColor.stove,
+          bodyDark: isDark ? const Color(0xFF5E2620) : PPColor.stoveDark,
+          top: isDark ? const Color(0xFFB04A3B) : const Color(0xFFE2584A),
         );
+        // Black burner plate with a glowing ring while cooking.
         final ring = Offset(r.center.dx, r.top + cell * 0.36);
-        c.drawCircle(ring, cell * 0.3, _fill(const Color(0xFF2B2B33)));
+        c.drawCircle(ring, cell * 0.32, _fill(const Color(0xFF23222B)));
         final hot = tile.item is Pot && (tile.item as Pot).contents.isNotEmpty && !(tile.item as Pot).burnt;
         c.drawCircle(
           ring,
-          cell * 0.22,
+          cell * 0.23,
           Paint()
             ..style = PaintingStyle.stroke
             ..strokeWidth = cell * 0.05
@@ -206,64 +277,118 @@ class Sprites {
                 ? Color.lerp(const Color(0xFFE8563F), const Color(0xFFFFB347), 0.5 + 0.5 * math.sin(t * 8))!
                 : const Color(0xFF4A4A55),
         );
+        for (var i = 0; i < 4; i++) {
+          final a = i * math.pi / 2 + math.pi / 4;
+          c.drawCircle(
+            ring + Offset(math.cos(a), math.sin(a)) * cell * 0.13,
+            cell * 0.025,
+            _fill(const Color(0xFF6A6A75)),
+          );
+        }
+        // Dials on the front.
+        for (final dx in [-0.16, 0.16]) {
+          c.drawCircle(
+            Offset(r.center.dx + cell * dx, r.bottom - cell * 0.16),
+            cell * 0.045,
+            _fill(const Color(0xFF23222B)),
+          );
+        }
       case TileType.sink:
-        _counterBase(
+        _applianceBase(
           r,
-          top: isDark ? const Color(0xFF6D6F78) : PPColor.steel,
-          side: isDark ? const Color(0xFF474952) : PPColor.steelDark,
+          body: isDark ? const Color(0xFF474952) : PPColor.steelDark,
+          bodyDark: isDark ? const Color(0xFF2E3037) : const Color(0xFF5E6A74),
         );
         final basin = Rect.fromLTRB(
-          r.left + cell * 0.14,
-          r.top + cell * 0.12,
-          r.right - cell * 0.14,
-          r.bottom - cell * 0.36,
+          r.left + cell * 0.13,
+          r.top + cell * 0.14,
+          r.right - cell * 0.13,
+          r.bottom - cell * lip - cell * 0.07,
         );
         c.drawRRect(_rr(basin, cell * 0.1), _fill(const Color(0xFF3E4650)));
         c.drawRRect(_rr(basin.deflate(cell * 0.05), cell * 0.08), _fill(PPColor.water.withValues(alpha: 0.85)));
+        c.drawOval(
+          Rect.fromCenter(
+            center: basin.center + Offset(-cell * 0.08, -cell * 0.04),
+            width: cell * 0.2,
+            height: cell * 0.07,
+          ),
+          _fill(const Color(0x66FFFFFF)),
+        );
         // Tap.
         c.drawRRect(
-          _rr(Rect.fromLTWH(r.center.dx - cell * 0.04, r.top + cell * 0.02, cell * 0.08, cell * 0.16), cell * 0.03),
+          _rr(Rect.fromLTWH(r.center.dx - cell * 0.04, r.top + cell * 0.01, cell * 0.08, cell * 0.17), cell * 0.03),
+          _fill(PPColor.steelDark),
+        );
+        c.drawRRect(
+          _rr(Rect.fromLTWH(r.center.dx - cell * 0.04, r.top + cell * 0.01, cell * 0.2, cell * 0.06), cell * 0.03),
           _fill(PPColor.steelDark),
         );
       case TileType.rack:
         _counterBase(r);
       case TileType.plateReturn:
-        _counterBase(
+        _applianceBase(
           r,
-          top: isDark ? const Color(0xFF6D6F78) : PPColor.steel,
-          side: isDark ? const Color(0xFF474952) : PPColor.steelDark,
+          body: isDark ? const Color(0xFF474952) : PPColor.steelDark,
+          bodyDark: isDark ? const Color(0xFF2E3037) : const Color(0xFF5E6A74),
         );
+        // Dark chute lit green: dirty plates come back through here.
         final slot = Rect.fromLTRB(
-          r.left + cell * 0.18,
-          r.top + cell * 0.16,
-          r.right - cell * 0.18,
-          r.top + cell * 0.36,
+          r.left + cell * 0.16,
+          r.top + cell * 0.1,
+          r.right - cell * 0.16,
+          r.bottom - cell * lip - cell * 0.07,
         );
-        c.drawRRect(_rr(slot, cell * 0.05), _fill(const Color(0xFF2B2B33)));
+        c.drawRRect(_rr(slot, cell * 0.06), _fill(const Color(0xFF23222B)));
+        final glow = 0.55 + 0.25 * math.sin(t * 2.5);
+        c.drawRRect(_rr(slot.deflate(cell * 0.06), cell * 0.04), _fill(PPColor.basil.withValues(alpha: glow)));
+        c.drawRRect(
+          _rr(slot.deflate(cell * 0.06), cell * 0.04),
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = cell * 0.025
+            ..color = const Color(0xFFB7F5CC).withValues(alpha: glow),
+        );
       case TileType.pass:
-        _counterBase(
+        _applianceBase(
           r,
-          top: isDark ? const Color(0xFF3F7FE8) : const Color(0xFF5B95F0),
-          side: isDark ? const Color(0xFF2A56A3) : const Color(0xFF2F63C4),
+          body: isDark ? const Color(0xFF474952) : PPColor.steelDark,
+          bodyDark: isDark ? const Color(0xFF2E3037) : const Color(0xFF5E6A74),
+          top: isDark ? const Color(0xFF7A828C) : const Color(0xFFCFD6DC),
         );
-        // Bell.
-        final b = Offset(r.center.dx, r.top + cell * 0.34);
-        final bob = math.sin(t * 3) * cell * 0.01;
-        c.drawCircle(b + Offset(0, bob), cell * 0.17, _fill(PPColor.butter));
-        c.drawRect(
-          Rect.fromCenter(center: b + Offset(0, cell * 0.17 + bob), width: cell * 0.4, height: cell * 0.06),
-          _fill(PPColor.butter),
+        // Serving hatch: dark mat with two white chevrons pointing out.
+        final mat = Rect.fromLTRB(
+          r.left + cell * 0.12,
+          r.top + cell * 0.09,
+          r.right - cell * 0.12,
+          r.bottom - cell * lip - cell * 0.06,
         );
-        c.drawCircle(b + Offset(0, -cell * 0.17 + bob), cell * 0.04, _fill(PPColor.ink));
+        c.drawRRect(_rr(mat, cell * 0.06), _fill(const Color(0xFF3A3F47)));
+        final chev = Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = cell * 0.07
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round
+          ..color = const Color(0xFFFFFFFF).withValues(alpha: 0.75 + 0.25 * math.sin(t * 3));
+        for (var i = 0; i < 2; i++) {
+          final cy = mat.center.dy + cell * (0.12 - i * 0.17);
+          final w = cell * 0.17;
+          final path = Path()
+            ..moveTo(mat.center.dx - w, cy + cell * 0.08)
+            ..lineTo(mat.center.dx, cy - cell * 0.04)
+            ..lineTo(mat.center.dx + w, cy + cell * 0.08);
+          c.drawPath(path, chev);
+        }
       case TileType.trash:
         _counterBase(r);
         final bin = Rect.fromLTRB(
-          r.left + cell * 0.22,
-          r.top + cell * 0.08,
-          r.right - cell * 0.22,
-          r.bottom - cell * 0.3,
+          r.left + cell * 0.2,
+          r.top + cell * 0.06,
+          r.right - cell * 0.2,
+          r.bottom - cell * lip - cell * 0.04,
         );
-        c.drawRRect(_rr(bin, cell * 0.06), _fill(const Color(0xFF4B5563)));
+        c.drawRRect(_rr(bin, cell * 0.06), _fill(const Color(0xFF3F4752)));
+        c.drawRRect(_rr(bin.deflate(cell * 0.06), cell * 0.04), _fill(const Color(0xFF23222B)));
         c.drawRRect(
           _rr(
             Rect.fromLTWH(bin.left - cell * 0.04, bin.top - cell * 0.02, bin.width + cell * 0.08, cell * 0.1),
@@ -308,10 +433,73 @@ class Sprites {
     }
   }
 
-  /// Items, fire and progress bars on top of a tile.
+  /// Low brick wall framing the whole kitchen, with a soft ground shadow.
+  void frame(Rect board) {
+    final wall = board.inflate(cell * 0.22);
+    final mortar = isDark ? const Color(0xFF2C2A36) : PPColor.brickDark;
+    final brick = isDark ? const Color(0xFF3B3847) : PPColor.brick;
+    c.drawRRect(
+      _rr(wall.inflate(cell * 0.04).shift(Offset(0, cell * 0.16)), cell * 0.3),
+      _fill(const Color(0x00000000).withValues(alpha: isDark ? 0.5 : 0.22)),
+    );
+    c.drawRRect(_rr(wall, cell * 0.26), _fill(mortar));
+    // Brick courses along the wall band, clipped to the band itself.
+    c.save();
+    c.clipPath(
+      Path()
+        ..fillType = PathFillType.evenOdd
+        ..addRRect(_rr(wall, cell * 0.26))
+        ..addRRect(_rr(board, cell * 0.08)),
+    );
+    final bw = cell * 0.5;
+    final bh = cell * 0.22;
+    var row = 0;
+    for (var y = wall.top; y < wall.bottom; y += bh, row++) {
+      final off = row.isOdd ? bw / 2 : 0.0;
+      for (var x = wall.left - bw + off; x < wall.right; x += bw) {
+        c.drawRRect(
+          _rr(Rect.fromLTWH(x + cell * 0.02, y + cell * 0.02, bw - cell * 0.04, bh - cell * 0.04), cell * 0.03),
+          _fill(brick),
+        );
+      }
+    }
+    c.restore();
+    c.drawRRect(
+      _rr(wall, cell * 0.26),
+      Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = cell * 0.04
+        ..color = const Color(0x33FFFFFF),
+    );
+  }
+
+  /// Brick wall block: mortar background, staggered bricks, a lighter cap.
+  void _brick(Rect r) {
+    final mortar = isDark ? const Color(0xFF2C2A36) : PPColor.brickDark;
+    final brick = isDark ? const Color(0xFF3B3847) : PPColor.brick;
+    c.drawRRect(_rr(r.deflate(cell * 0.01), cell * 0.06), _fill(mortar));
+    final rows = 3;
+    final bh = r.height / rows;
+    for (var i = 0; i < rows; i++) {
+      final y = r.top + bh * i;
+      final offset = i.isOdd ? r.width / 4 : 0.0;
+      for (var j = -1; j < 2; j++) {
+        final x = r.left + offset + j * (r.width / 2);
+        final b = Rect.fromLTWH(x + cell * 0.03, y + cell * 0.03, r.width / 2 - cell * 0.06, bh - cell * 0.06);
+        final clipped = b.intersect(r.deflate(cell * 0.03));
+        if (clipped.width > 0 && clipped.height > 0) c.drawRRect(_rr(clipped, cell * 0.03), _fill(brick));
+      }
+    }
+    c.drawRect(
+      Rect.fromLTWH(r.left + cell * 0.02, r.top + cell * 0.02, r.width - cell * 0.04, cell * 0.05),
+      _fill(const Color(0x33FFFFFF)),
+    );
+  }
+
+  /// Items, fire and progress bubbles on top of a tile.
   void tileContents(Rect r, Tile tile) {
     final it = tile.item;
-    final top = Offset(r.center.dx, r.top + cell * 0.36);
+    final top = Offset(r.center.dx, r.top + cell * 0.34);
     if (it != null) {
       if (tile.type == TileType.conveyor) {
         final d = tile.conveyorDir!;
@@ -321,32 +509,79 @@ class Sprites {
         item(top, it, scale: tile.type == TileType.stove || tile.type == TileType.board ? 1 : 0.92);
       }
     }
+    final bubbleAt = Offset(r.center.dx, r.top - cell * 0.2);
     if (tile.progress > 0 && (tile.type == TileType.board || tile.type == TileType.sink)) {
-      progressBar(Offset(r.center.dx, r.bottom - cell * 0.2), tile.progress, PPColor.basil);
+      progressBubble(bubbleAt, tile.progress, tile.type == TileType.sink ? PPColor.water : PPColor.basil);
     }
     if (it is Pot && it.contents.isNotEmpty && !it.burnt) {
       if (it.cook < 1) {
-        progressBar(Offset(r.center.dx, r.bottom - cell * 0.2), it.cook, PPColor.butter);
+        progressBubble(bubbleAt, it.cook, PPColor.basil);
       } else {
-        final warn = it.burn > 0.5 && (t * 6).floor().isEven;
-        progressBar(
-          Offset(r.center.dx, r.bottom - cell * 0.2),
-          it.burn,
-          warn ? PPColor.paprikaDark : PPColor.paprika,
-          track: PPColor.basil,
-        );
+        // Cooked: the bubble turns into a flashing warning as it heads for burnt.
+        warningBubble(bubbleAt, it.burn);
       }
     }
     if (tile.onFire) fire(Offset(r.center.dx, r.center.dy), tile.fire);
   }
 
-  void progressBar(Offset center, double f, Color color, {Color? track}) {
-    final w = cell * 0.66;
-    final h = cell * 0.12;
-    final r = Rect.fromCenter(center: center, width: w, height: h);
-    c.drawRRect(_rr(r.inflate(cell * 0.02), h), _fill(const Color(0xAA000000)));
-    c.drawRRect(_rr(r, h), _fill(track ?? const Color(0xFF3A3846)));
-    c.drawRRect(_rr(Rect.fromLTWH(r.left, r.top, w * f.clamp(0, 1), h), h), _fill(color));
+  /// White speech bubble hanging over a station with a chunky progress bar.
+  void progressBubble(Offset center, double f, Color color) {
+    final w = cell * 0.78;
+    final h = cell * 0.3;
+    final box = Rect.fromCenter(center: center, width: w, height: h);
+    _bubbleBox(box);
+    final bar = Rect.fromLTWH(box.left + cell * 0.07, box.center.dy - cell * 0.06, w - cell * 0.14, cell * 0.12);
+    c.drawRRect(_rr(bar, cell * 0.06), _fill(const Color(0xFFD8D3C8)));
+    c.drawRRect(
+      _rr(Rect.fromLTWH(bar.left, bar.top, bar.width * f.clamp(0, 1), bar.height), cell * 0.06),
+      _fill(color),
+    );
+  }
+
+  /// Cooked-and-waiting indicator: a check that turns into a flashing flame.
+  void warningBubble(Offset center, double burn) {
+    final danger = burn > 0.5;
+    final flash = danger && (t * (burn > 0.8 ? 10 : 5)).floor().isEven;
+    final s = cell * 0.17;
+    final box = Rect.fromCenter(center: center, width: cell * 0.46, height: cell * 0.4);
+    _bubbleBox(box, fill: flash ? PPColor.paprika : const Color(0xFFFFFFFF));
+    if (!danger) {
+      final tick = Path()
+        ..moveTo(center.dx - s * 0.6, center.dy)
+        ..lineTo(center.dx - s * 0.15, center.dy + s * 0.45)
+        ..lineTo(center.dx + s * 0.65, center.dy - s * 0.5);
+      c.drawPath(
+        tick,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = cell * 0.07
+          ..strokeCap = StrokeCap.round
+          ..strokeJoin = StrokeJoin.round
+          ..color = PPColor.basil,
+      );
+      return;
+    }
+    final col = flash ? const Color(0xFFFFFFFF) : PPColor.paprika;
+    final flame = Path()
+      ..moveTo(center.dx - s * 0.6, center.dy + s * 0.55)
+      ..quadraticBezierTo(center.dx - s * 0.85, center.dy - s * 0.2, center.dx - s * 0.1, center.dy - s * 0.85)
+      ..quadraticBezierTo(center.dx + s * 0.05, center.dy - s * 0.3, center.dx + s * 0.35, center.dy - s * 0.55)
+      ..quadraticBezierTo(center.dx + s * 0.9, center.dy, center.dx + s * 0.6, center.dy + s * 0.55)
+      ..close();
+    c.drawPath(flame, _fill(col));
+    c.drawCircle(center + Offset(0, s * 0.3), s * 0.28, _fill(flash ? PPColor.paprika : PPColor.butter));
+  }
+
+  void _bubbleBox(Rect box, {Color fill = const Color(0xFFFFFFFF)}) {
+    final rad = cell * 0.1;
+    c.drawRRect(_rr(box.shift(Offset(0, cell * 0.03)), rad), _fill(const Color(0x3A000000)));
+    c.drawRRect(_rr(box, rad), _fill(fill));
+    final tail = Path()
+      ..moveTo(box.center.dx - cell * 0.07, box.bottom - 1)
+      ..lineTo(box.center.dx, box.bottom + cell * 0.09)
+      ..lineTo(box.center.dx + cell * 0.07, box.bottom - 1)
+      ..close();
+    c.drawPath(tail, _fill(fill));
   }
 
   void fire(Offset at, double intensity) {
@@ -437,34 +672,39 @@ class Sprites {
 
   void pot(Offset at, Pot p, {double scale = 1}) {
     final s = cell * 0.36 * scale;
+    const steel = Color(0xFF8FA3B8);
+    const steelD = Color(0xFF5C7084);
+    const steelL = Color(0xFFC3D2E0);
     c.drawOval(
-      Rect.fromCenter(center: at + Offset(0, s * 0.5), width: s * 2.3, height: s * 0.9),
+      Rect.fromCenter(center: at + Offset(0, s * 0.55), width: s * 2.4, height: s * 0.9),
       _fill(const Color(0x44000000)),
     );
-    final body = Rect.fromCenter(center: at + Offset(0, s * 0.15), width: s * 2.1, height: s * 1.5);
-    c.drawRRect(_rr(body, s * 0.35), _fill(const Color(0xFF3E4650)));
+    final body = Rect.fromCenter(center: at + Offset(0, s * 0.15), width: s * 2.1, height: s * 1.55);
+    c.drawRRect(_rr(body, s * 0.35), _fill(steel));
+    c.drawRRect(
+      _rr(Rect.fromLTRB(body.left, body.top + s * 0.9, body.right, body.bottom), s * 0.35),
+      _fill(steelD.withValues(alpha: 0.5)),
+    );
     // Handles.
-    c.drawRRect(
-      _rr(Rect.fromCenter(center: at + Offset(-s * 1.2, s * 0.05), width: s * 0.5, height: s * 0.25), s * 0.1),
-      _fill(const Color(0xFF6B7280)),
-    );
-    c.drawRRect(
-      _rr(Rect.fromCenter(center: at + Offset(s * 1.2, s * 0.05), width: s * 0.5, height: s * 0.25), s * 0.1),
-      _fill(const Color(0xFF6B7280)),
-    );
-    // Contents.
-    final rim = Rect.fromCenter(center: at + Offset(0, -s * 0.5), width: s * 2.0, height: s * 0.9);
+    for (final dx in [-1.25, 1.25]) {
+      c.drawRRect(
+        _rr(Rect.fromCenter(center: at + Offset(s * dx, -s * 0.15), width: s * 0.55, height: s * 0.28), s * 0.14),
+        _fill(steelD),
+      );
+    }
+    // Rolled rim + contents.
+    final rim = Rect.fromCenter(center: at + Offset(0, -s * 0.5), width: s * 2.15, height: s * 0.95);
     Color liquid;
     if (p.burnt) {
       liquid = const Color(0xFF2A211B);
     } else if (p.contents.isEmpty) {
-      liquid = const Color(0xFF5B6470);
+      liquid = steelD;
     } else {
       final d = Dish.match(p.contents, cooked: true);
       final base = d != null ? dishColor(d) : ingredientColor(p.contents.first);
       liquid = Color.lerp(base.withValues(alpha: 0.9), base, p.cook.clamp(0, 1))!;
     }
-    c.drawOval(rim, _fill(const Color(0xFF6B7280)));
+    c.drawOval(rim, _fill(steelL));
     c.drawOval(rim.deflate(s * 0.14), _fill(liquid));
     if (!p.burnt && p.contents.isNotEmpty && p.cook < 1) {
       for (var i = 0; i < p.contents.length; i++) {
@@ -564,105 +804,160 @@ class Sprites {
 
   void chef(Offset at, Chef ch, {Item? held, required bool isMe, required bool moving}) {
     final col = PPColor.chefs[ch.slot % 4];
-    final s = cell * 0.36;
+    final dark = Color.lerp(col, const Color(0xFF000000), 0.25)!;
+    final s = cell * 0.4;
     final bob = moving ? math.sin(t * 16) * s * 0.08 : 0.0;
-    final body = at + Offset(0, -s * 0.3 + bob);
+    final body = at + Offset(0, -s * 0.35 + bob);
+    final fd = Offset(ch.facing.dx * 1.0, ch.facing.dy * 1.0);
+    final side = fd.dx; // -1 left, 1 right, 0 facing up/down
 
-    // Shadow.
+    // Shadow + local-player ring.
     c.drawOval(
       Rect.fromCenter(center: at + Offset(0, s * 0.85), width: s * 1.9, height: s * 0.7),
       _fill(const Color(0x44000000)),
     );
     if (ch.dash > 0) {
-      c.drawCircle(body, s * 1.35, _fill(col.withValues(alpha: 0.25)));
+      c.drawCircle(body, s * 1.4, _fill(col.withValues(alpha: 0.25)));
     }
     if (isMe) {
-      c.drawCircle(
-        at + Offset(0, s * 0.85),
-        s * 1.15,
+      c.drawOval(
+        Rect.fromCenter(center: at + Offset(0, s * 0.85), width: s * 2.3, height: s * 0.95),
         Paint()
           ..style = PaintingStyle.stroke
-          ..strokeWidth = cell * 0.05
-          ..color = col.withValues(alpha: 0.9),
+          ..strokeWidth = cell * 0.055
+          ..color = const Color(0xFFFFFFFF).withValues(alpha: 0.95),
       );
     }
-    // Apron + body.
+    // Feet.
+    final step = moving ? math.sin(t * 16) * s * 0.18 : 0.0;
+    for (final dx in [-0.42, 0.42]) {
+      c.drawOval(
+        Rect.fromCenter(
+          center: body + Offset(dx * s, s * 1.05 + (dx < 0 ? step : -step) * 0.3),
+          width: s * 0.5,
+          height: s * 0.3,
+        ),
+        _fill(PPColor.ink),
+      );
+    }
+    // Round body in the chef's colour, white double-breasted front.
+    final torso = Rect.fromCenter(center: body + Offset(0, s * 0.45), width: s * 1.75, height: s * 1.45);
+    c.drawRRect(_rr(torso, s * 0.6), _fill(col));
     c.drawRRect(
-      _rr(Rect.fromCenter(center: body + Offset(0, s * 0.35), width: s * 1.6, height: s * 1.5), s * 0.5),
-      _fill(col),
+      _rr(Rect.fromLTRB(torso.left, torso.top + s * 0.9, torso.right, torso.bottom), s * 0.55),
+      _fill(dark.withValues(alpha: 0.35)),
     );
-    c.drawRRect(
-      _rr(Rect.fromCenter(center: body + Offset(0, s * 0.55), width: s * 1.0, height: s * 1.0), s * 0.3),
-      _fill(const Color(0xFFFFFFFF).withValues(alpha: 0.92)),
-    );
-    // Head.
+    if (fd.dy >= 0) {
+      final front = Rect.fromCenter(center: body + Offset(side * s * 0.15, s * 0.5), width: s * 0.95, height: s * 1.1);
+      c.drawRRect(_rr(front, s * 0.3), _fill(const Color(0xFFFFFFFF)));
+      for (final dy in [0.25, 0.55, 0.85]) {
+        c.drawCircle(front.topCenter + Offset(0, front.height * dy), s * 0.06, _fill(dark));
+      }
+    } else {
+      // Back view: apron strings.
+      c.drawRRect(
+        _rr(Rect.fromCenter(center: body + Offset(0, s * 0.35), width: s * 0.9, height: s * 0.12), s * 0.06),
+        _fill(const Color(0xFFFFFFFF)),
+      );
+    }
+    // Arms (mitts) swing toward the facing side.
+    for (final dx in [-1.0, 1.0]) {
+      final ax = body.dx + dx * s * 0.95 + fd.dx * s * 0.15;
+      final ay = body.dy + s * 0.5 + fd.dy * s * 0.1;
+      c.drawCircle(Offset(ax, ay), s * 0.26, _fill(col));
+      c.drawCircle(
+        Offset(ax, ay + s * 0.12),
+        s * 0.18,
+        _fill(ch.bot ? const Color(0xFFCFD4DA) : const Color(0xFFF6C9A0)),
+      );
+    }
+    // Big round head.
     final skin = ch.bot ? const Color(0xFFCFD4DA) : const Color(0xFFF6C9A0);
-    c.drawCircle(body + Offset(0, -s * 0.5), s * 0.72, _fill(skin));
-    // Face direction.
-    final fd = Offset(ch.facing.dx * 1.0, ch.facing.dy * 1.0);
+    final head = body + Offset(side * s * 0.05, -s * 0.55);
+    c.drawCircle(head, s * 0.82, _fill(skin));
     if (ch.facing != Dir.up) {
-      final eyeY = body.dy - s * 0.55 + fd.dy * s * 0.15;
-      final ex = body.dx + fd.dx * s * 0.25;
-      c.drawCircle(Offset(ex - s * 0.22, eyeY), s * 0.09, _fill(PPColor.ink));
-      c.drawCircle(Offset(ex + s * 0.22, eyeY), s * 0.09, _fill(PPColor.ink));
+      final eyeY = head.dy + s * 0.05 + fd.dy * s * 0.12;
+      final ex = head.dx + fd.dx * s * 0.3;
+      final gap = fd.dx == 0 ? 0.26 : 0.2;
+      c.drawOval(
+        Rect.fromCenter(center: Offset(ex - s * gap, eyeY), width: s * 0.2, height: s * 0.26),
+        _fill(PPColor.ink),
+      );
+      c.drawOval(
+        Rect.fromCenter(center: Offset(ex + s * gap, eyeY), width: s * 0.2, height: s * 0.26),
+        _fill(PPColor.ink),
+      );
+      c.drawCircle(Offset(ex - s * gap - s * 0.04, eyeY - s * 0.06), s * 0.05, _fill(const Color(0xFFFFFFFF)));
+      c.drawCircle(Offset(ex + s * gap - s * 0.04, eyeY - s * 0.06), s * 0.05, _fill(const Color(0xFFFFFFFF)));
+      // Cheeks.
+      c.drawCircle(Offset(ex - s * 0.42, eyeY + s * 0.22), s * 0.1, _fill(const Color(0x33E8563F)));
+      c.drawCircle(Offset(ex + s * 0.42, eyeY + s * 0.22), s * 0.1, _fill(const Color(0x33E8563F)));
       if (ch.bot) {
-        c.drawRect(
-          Rect.fromCenter(center: Offset(ex, eyeY + s * 0.28), width: s * 0.36, height: s * 0.07),
+        c.drawRRect(
+          _rr(Rect.fromCenter(center: Offset(ex, eyeY + s * 0.36), width: s * 0.4, height: s * 0.09), s * 0.04),
           _fill(PPColor.ink),
         );
       } else {
         c.drawArc(
-          Rect.fromCenter(center: Offset(ex, eyeY + s * 0.18), width: s * 0.36, height: s * 0.24),
-          0.2,
-          math.pi - 0.4,
+          Rect.fromCenter(center: Offset(ex, eyeY + s * 0.22), width: s * 0.42, height: s * 0.3),
+          0.25,
+          math.pi - 0.5,
           false,
           Paint()
             ..style = PaintingStyle.stroke
-            ..strokeWidth = s * 0.07
+            ..strokeWidth = s * 0.08
+            ..strokeCap = StrokeCap.round
             ..color = PPColor.ink,
         );
       }
+    } else {
+      // Hair tuft at the back of the head.
+      c.drawOval(
+        Rect.fromCenter(center: head + Offset(0, s * 0.35), width: s * 1.2, height: s * 0.6),
+        _fill(dark.withValues(alpha: 0.55)),
+      );
     }
-    // Hat.
-    final hatTop = body + Offset(0, -s * 1.25);
+    // Tall puffy toque: band + three lobes.
+    final white = const Color(0xFFFFFFFF);
+    final shade = const Color(0xFFE4E2EA);
+    final bandC = head + Offset(0, -s * 0.62);
+    c.drawRRect(_rr(Rect.fromCenter(center: bandC, width: s * 1.5, height: s * 0.42), s * 0.14), _fill(white));
     c.drawRRect(
-      _rr(Rect.fromCenter(center: body + Offset(0, -s * 1.05), width: s * 1.3, height: s * 0.4), s * 0.1),
-      _fill(const Color(0xFFFFFFFF)),
+      _rr(Rect.fromCenter(center: bandC + Offset(0, s * 0.12), width: s * 1.5, height: s * 0.16), s * 0.08),
+      _fill(col.withValues(alpha: 0.7)),
     );
-    c.drawOval(Rect.fromCenter(center: hatTop, width: s * 1.45, height: s * 0.9), _fill(const Color(0xFFFFFFFF)));
-    c.drawOval(
-      Rect.fromCenter(center: hatTop + Offset(0, s * 0.05), width: s * 1.45, height: s * 0.9),
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = s * 0.06
-        ..color = col.withValues(alpha: 0.6),
-    );
+    final puff = bandC + Offset(0, -s * 0.55);
+    c.drawCircle(puff + Offset(-s * 0.5, s * 0.1), s * 0.5, _fill(shade));
+    c.drawCircle(puff + Offset(s * 0.5, s * 0.1), s * 0.5, _fill(shade));
+    c.drawCircle(puff + Offset(0, -s * 0.15), s * 0.62, _fill(white));
+    c.drawCircle(puff + Offset(-s * 0.45, s * 0.02), s * 0.4, _fill(white));
+    c.drawCircle(puff + Offset(s * 0.45, s * 0.02), s * 0.4, _fill(white));
     if (ch.bot) {
       // Antenna marks a server bot.
       c.drawLine(
-        hatTop + Offset(0, -s * 0.4),
-        hatTop + Offset(0, -s * 0.85),
+        puff + Offset(0, -s * 0.7),
+        puff + Offset(0, -s * 1.15),
         Paint()
           ..strokeWidth = s * 0.08
           ..color = PPColor.steelDark,
       );
-      c.drawCircle(hatTop + Offset(0, -s * 0.9), s * 0.12, _fill(col));
+      c.drawCircle(puff + Offset(0, -s * 1.2), s * 0.13, _fill(col));
     }
-    // Held item floats in front.
+    // Held item floats in front of the mitts.
     if (held != null) {
-      final hp = body + Offset(fd.dx * s * 0.9, s * 0.6 + fd.dy * s * 0.5);
-      item(hp, held, scale: 0.72);
+      final hp = body + Offset(fd.dx * s * 1.05, s * 0.7 + fd.dy * s * 0.55);
+      item(hp, held, scale: 0.8);
     }
     // Working sparkle.
     if (ch.working) {
       final a = t * 12;
-      final o = body + Offset(fd.dx * s * 1.4, fd.dy * s * 1.2 + s * 0.4);
+      final o = body + Offset(fd.dx * s * 1.5, fd.dy * s * 1.3 + s * 0.4);
       c.drawCircle(o + Offset(math.cos(a), math.sin(a)) * s * 0.3, s * 0.1, _fill(PPColor.butter));
       c.drawCircle(o - Offset(math.cos(a), math.sin(a)) * s * 0.3, s * 0.08, _fill(const Color(0xFFFFFFFF)));
     }
     // Name tag.
     _label(
-      at + Offset(0, s * 1.45),
+      at + Offset(0, s * 1.5),
       ch.name,
       const Color(0xFFFFFFFF),
       bg: col.withValues(alpha: ch.connected ? 0.95 : 0.45),
@@ -670,7 +965,7 @@ class Sprites {
     );
     if (!ch.connected) {
       _label(
-        at + Offset(0, -s * 2.6),
+        at + Offset(0, -s * 3.0),
         'offline',
         const Color(0xFFFFFFFF),
         bg: PPColor.ink.withValues(alpha: 0.8),
@@ -679,7 +974,7 @@ class Sprites {
     }
     // Emote bubble.
     if (ch.emote != null && ch.emote! >= 0 && ch.emote! < kEmotes.length) {
-      _bubble(body + Offset(s * 1.1, -s * 2.2), kEmotes[ch.emote!], col);
+      _bubble(body + Offset(s * 1.2, -s * 2.5), kEmotes[ch.emote!], col);
     }
   }
 

@@ -1,0 +1,213 @@
+{
+  "room": "E2E4",
+  "seed": 23,
+  "level": "corner-cafe",
+  "speed": 1,
+  "requested": [
+    "web",
+    "ios",
+    "android",
+    "macos"
+  ],
+  "joined": [
+    {
+      "platform": "web",
+      "name": "Webby",
+      "slot": 0,
+      "id": "p9j5zrb"
+    },
+    {
+      "platform": "ios",
+      "name": "Pip",
+      "slot": 1,
+      "id": "phbp0i0"
+    },
+    {
+      "platform": "android",
+      "name": "Andi",
+      "slot": 2,
+      "id": "p3kf3ib"
+    },
+    {
+      "platform": "macos",
+      "name": "Mac",
+      "slot": 3,
+      "id": "p7lxnxr"
+    }
+  ],
+  "missing": {},
+  "screenshots": {
+    "web": {
+      "lobby": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/web-lobby.png",
+      "gameplay": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/web-gameplay.png",
+      "gameplay-late": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/web-gameplay-late.png",
+      "results": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/web-results.png"
+    },
+    "ios": {
+      "lobby": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/ios-lobby.png",
+      "gameplay": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/ios-gameplay.png",
+      "gameplay-late": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/ios-gameplay-late.png",
+      "results": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/ios-results.png"
+    },
+    "android": {
+      "lobby": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/android-lobby.png",
+      "gameplay": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/android-gameplay.png",
+      "gameplay-late": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/android-gameplay-late.png",
+      "results": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/android-results.png"
+    },
+    "macos": {
+      "lobby": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/macos-lobby.png",
+      "gameplay": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/macos-gameplay.png",
+      "gameplay-late": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/macos-gameplay-late.png",
+      "results": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/macos-results.png"
+    }
+  },
+  "evidenceDir": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25",
+  "startedAt": "2026-09-10T14:31:25.132Z",
+  "expected": {
+    "levelId": "corner-cafe",
+    "score": 180,
+    "stars": 0,
+    "thresholds": [
+      240,
+      480,
+      760
+    ],
+    "served": 6,
+    "expired": 2,
+    "tips": 80,
+    "bestCombo": 4,
+    "wrongServes": 0,
+    "burntPots": 0,
+    "servedByDish": {
+      "tomatoSoup": 3,
+      "onionSoup": 1,
+      "mushroomSoup": 2
+    },
+    "players": 4,
+    "tick": 3061
+  },
+  "midMatch": {
+    "web": {
+      "type": "test.report",
+      "platform": "web",
+      "screen": "game",
+      "screenAgeMs": 25929,
+      "framesSinceScreen": 508,
+      "view": {
+        "width": 800,
+        "height": 520,
+        "dpr": 1,
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "platformRegions": {},
+      "code": "E2E4",
+      "phase": "playing",
+      "tick": 519,
+      "score": 36,
+      "stars": 0,
+      "results": null,
+      "resultsMatch": -1,
+      "lastError": null,
+      "rtt": 1,
+      "automated": false,
+      "receivedAt": "2026-09-10T07:32:31.482358"
+    },
+    "ios": {
+      "type": "test.report",
+      "platform": "ios",
+      "screen": "game",
+      "screenAgeMs": 25936,
+      "framesSinceScreen": 1455,
+      "view": {
+        "width": 402,
+        "height": 874,
+        "dpr": 3,
+        "padding": {
+          "top": 62,
+          "bottom": 34,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "platformRegions": {},
+      "code": "E2E4",
+      "phase": "playing",
+      "tick": 519,
+      "score": 36,
+      "stars": 0,
+      "results": null,
+      "resultsMatch": -1,
+      "lastError": null,
+      "rtt": 1,
+      "automated": false,
+      "receivedAt": "2026-09-10T07:32:31.482459"
+    },
+    "android": {
+      "type": "test.report",
+      "platform": "android",
+      "screen": "game",
+      "screenAgeMs": 24420,
+      "framesSinceScreen": 18,
+      "view": {
+        "width": 1024,
+        "height": 720,
+        "dpr": 1,
+        "padding": {
+          "top": 24,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "platformRegions": {},
+      "code": "E2E4",
+      "phase": "playing",
+      "tick": 519,
+      "score": 36,
+      "stars": 0,
+      "results": null,
+      "resultsMatch": -1,
+      "lastError": null,
+      "rtt": 3,
+      "automated": false,
+      "receivedAt": "2026-09-10T07:32:31.488320"
+    },
+    "macos": {
+      "type": "test.report",
+      "platform": "macos",
+      "screen": "game",
+      "screenAgeMs": 25936,
+      "framesSinceScreen": 1524,
+      "view": {
+        "width": 800,
+        "height": 508,
+        "dpr": 1,
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "platformRegions": {},
+      "code": "E2E4",
+      "phase": "playing",
+      "tick": 519,
+      "score": 36,
+      "stars": 0,
+      "results": null,
+      "resultsMatch": -1,
+      "lastError": null,
+      "rtt": 1,
+      "automated": false,
+      "receivedAt": "2026-09-10T07:32:31.482498"
+    }
+  },
+  "error": "timed out waiting for results reports from every client"
+}

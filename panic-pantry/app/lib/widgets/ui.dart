@@ -183,6 +183,68 @@ class StarRow extends StatelessWidget {
   }
 }
 
+/// Chunky game text: white fill with a thick coloured outline and a drop
+/// shadow, the look used for HUD numerals and the countdown banners.
+class OutlinedText extends StatelessWidget {
+  const OutlinedText(
+    this.text, {
+    super.key,
+    required this.style,
+    this.fill = Colors.white,
+    this.outline = PPColor.hudInk,
+    this.stroke = 4,
+    this.shadow = true,
+    this.textAlign,
+  });
+
+  final String text;
+  final TextStyle style;
+  final Color fill;
+  final Color outline;
+  final double stroke;
+  final bool shadow;
+  final TextAlign? textAlign;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        if (shadow)
+          Transform.translate(
+            offset: Offset(0, stroke * 0.75),
+            child: Text(
+              text,
+              textAlign: textAlign,
+              style: style.copyWith(
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = stroke * 2
+                  ..strokeJoin = StrokeJoin.round
+                  ..color = Colors.black.withValues(alpha: 0.28),
+              ),
+            ),
+          ),
+        Text(
+          text,
+          textAlign: textAlign,
+          style: style.copyWith(
+            foreground: Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = stroke * 2
+              ..strokeJoin = StrokeJoin.round
+              ..color = outline,
+          ),
+        ),
+        Text(
+          text,
+          textAlign: textAlign,
+          style: style.copyWith(color: fill),
+        ),
+      ],
+    );
+  }
+}
+
 class SectionLabel extends StatelessWidget {
   const SectionLabel(this.text, {super.key, this.trailing});
   final String text;

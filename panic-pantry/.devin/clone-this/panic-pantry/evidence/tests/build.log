@@ -1,10 +1,10 @@
-# 2026-09-10T03:45:24Z clean build of all four targets (flutter clean first)
+# 2026-09-10T15:05:43Z clean build of all four targets (flutter clean first)
 # flutter clean
-Cleaning Xcode workspace...                                         4.3s
-Cleaning Xcode workspace...                                         4.5s
-Deleting build...                                                  606ms
-Deleting .dart_tool...                                              10ms
-Deleting ephemeral...                                                1ms
+Cleaning Xcode workspace...                                      2,693ms
+Cleaning Xcode workspace...                                      2,684ms
+Deleting build...                                                  153ms
+Deleting .dart_tool...                                               7ms
+Deleting ephemeral...                                                0ms
 Deleting Generated.xcconfig...                                       0ms
 Deleting flutter_export_environment.sh...                            0ms
 Deleting ephemeral...                                                1ms
@@ -34,8 +34,8 @@ Compiling lib/main.dart for the Web...
 Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
 Use --no-wasm-dry-run to disable these warnings.
 Expected to find fonts for (MaterialIcons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
-Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 15932 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Compiling lib/main.dart for the Web...                             21.8s
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 16064 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Compiling lib/main.dart for the Web...                             16.9s
 ✓ Built build/web
 exit=0
 # flutter build macos --debug
@@ -64,7 +64,7 @@ Got dependencies!
 Try `flutter pub outdated` for more information.
 Building dev.panicpantry.panicPantry for simulator (ios)...
 Running Xcode build...                                          
-Xcode build done.                                           19.9s
+Xcode build done.                                           15.8s
 ✓ Built build/ios/iphonesimulator/Runner.app
 exit=0
 # flutter build apk --release
@@ -78,19 +78,19 @@ Got dependencies!
 4 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
 Running Gradle task 'assembleRelease'...                        
-Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 9536 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Running Gradle task 'assembleRelease'...                           32.8s
-✓ Built build/app/outputs/flutter-apk/app-release.apk (51.4MB)
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 9668 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Running Gradle task 'assembleRelease'...                           20.7s
+✓ Built build/app/outputs/flutter-apk/app-release.apk (51.6MB)
 exit=0
 # artefacts
--rw-r--r--  1 devin  staff  51375080 Sep  9 20:47 build/app/outputs/flutter-apk/app-release.apk
--rw-r--r--  1 devin  staff      1993 Sep  9 20:46 build/ios/iphonesimulator/Runner.app/Info.plist
--rw-r--r--  1 devin  staff      1558 Sep  9 20:45 build/web/index.html
+-rw-r--r--  1 devin  staff  51571780 Sep 10 08:07 build/app/outputs/flutter-apk/app-release.apk
+-rw-r--r--  1 devin  staff      1993 Sep 10 08:06 build/ios/iphonesimulator/Runner.app/Info.plist
+-rw-r--r--  1 devin  staff      1558 Sep 10 08:05 build/web/index.html
 
 build/macos/Build/Products/Debug/Panic Pantry.app/Contents/MacOS:
 total 448
-drwxr-xr-x  5 devin  staff     160 Sep  9 20:46 .
-drwxr-xr-x  8 devin  staff     256 Sep  9 20:46 ..
--rwxr-xr-x  1 devin  staff   59104 Sep  9 20:46 Panic Pantry
--rwxr-xr-x  1 devin  staff  129888 Sep  9 20:46 Panic Pantry.debug.dylib
--rwxr-xr-x  1 devin  staff   34800 Sep  9 20:46 __preview.dylib
+drwxr-xr-x  5 devin  staff     160 Sep 10 08:06 .
+drwxr-xr-x  8 devin  staff     256 Sep 10 08:06 ..
+-rwxr-xr-x  1 devin  staff   59104 Sep 10 08:06 Panic Pantry
+-rwxr-xr-x  1 devin  staff  129888 Sep 10 08:06 Panic Pantry.debug.dylib
+-rwxr-xr-x  1 devin  staff   34800 Sep 10 08:06 __preview.dylib

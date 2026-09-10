@@ -10,7 +10,7 @@
 // Usage: node test/ui/smoke.mjs   (expects app/build/web to exist; see test/ui-smoke.sh)
 
 import { spawn } from 'node:child_process';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -33,6 +33,7 @@ const checks = [];
 const children = [];
 let browser;
 let webServer;
+let videoStartedAt = null;
 
 function log(msg) {
   const line = `${new Date().toISOString()} ${msg}`;
@@ -101,7 +102,14 @@ async function main() {
 
   const { chromium } = await import('playwright');
   browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage({ viewport: VIEWPORT });
+  // Playwright records the whole browser session; test/review-video cuts it
+  // into the edited review reel using the timestamps in smoke.log.
+  const videoDir = join(OUT, 'video');
+  rmSync(videoDir, { recursive: true, force: true });
+  const context = await browser.newContext({ viewport: VIEWPORT, recordVideo: { dir: videoDir, size: VIEWPORT } });
+  const page = await context.newPage();
+  videoStartedAt = new Date().toISOString();
+  log(`browser recording started -> ${join(OUT, 'browser-smoke.webm')}`);
   const consoleLog = [];
   page.on('console', (m) => {
     consoleLog.push(`[${m.type()}] ${m.text()}`);
@@ -175,6 +183,8 @@ async function main() {
   const summary = {
     finishedAt: new Date().toISOString(),
     viewport: VIEWPORT,
+    videoStartedAt,
+    video: 'browser-smoke.webm',
     checks,
     passed: failed.length === 0,
   };
@@ -187,6 +197,12 @@ async function main() {
 async function cleanup() {
   try {
     await browser?.close();
+    const videoDir = join(OUT, 'video');
+    const webm = existsSync(videoDir) ? readdirSync(videoDir).find((f) => f.endsWith('.webm')) : null;
+    if (webm) {
+      renameSync(join(videoDir, webm), join(OUT, 'browser-smoke.webm'));
+      rmSync(videoDir, { recursive: true, force: true });
+    }
   } catch {}
   webServer?.close();
   for (const c of children) c.kill('SIGTERM');

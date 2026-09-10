@@ -71,3 +71,25 @@ New code surfaces since iteration 7: `GameClient.setAction`, `_ActionButton.onRe
 feature-tutorial; `parkMouse` in `test/lib/common.mjs` and the tightened `maxBlocks` gate
 → visual-* items (harness only). Every new surface maps to an existing item. No new
 item. Frontier empty. `new_items: 0`.
+
+## Re-walk at iteration 9 (design pass + review reel)
+
+New code surfaces since iteration 8: `_CoinScore`, `_ComboBadge`, `_Coin`, `_Stopwatch`
++ `_StopwatchPainter`, `_Pulse`, `_Ticket` with `_DishIcon` / `_IngPicto`, `_Banners`,
+`_RoundIcon` and the repositioned `_KeyHints` (game_screen.dart) → route-game,
+feature-orders, feature-score, feature-timer, feature-input; `OutlinedText` and
+`PPTypography.hud` (ui.dart, tokens.dart) → route-game / route-results; the new kitchen
+palette tokens and `Sprites.frame` / `floor` / `pitBase` / `pitRipple` / counter, crate,
+board, stove, sink, pass renderers plus the cached backdrop in `KitchenGame` →
+route-game, asset-sprites; the redrawn `ResultsScreen` (blue header, star fill,
+report rows, thresholds, crew, service report) → route-results, feature-stars;
+`GameClient.bestStars` and the level-card star tally → feature-level-select; the
+Corner Café central island row (`levels.dart`) → feature-levels; `FLAG_KEEP_SCREEN_ON`
+in `MainActivity.kt` and `svc power stayon` in `test/e2e/run.mjs` → harness/platform
+plumbing under journey-four-platform-match; `test/review-video.sh` +
+`test/review-video/build.mjs`, the Playwright `recordVideo` context in `test/ui/smoke.mjs`
+and the `PP_REVIEW_VIDEO` hook in `multiplayer-e2e.sh` → new item
+`integration-review-video` (test tooling, evidence for the journeys, not a game
+behaviour). Every other surface maps to an existing item. One new item, added to the
+inventory before this sweep was recorded, so the frontier is empty at the end of the
+sweep. `new_items: 0` after the item was inventoried.

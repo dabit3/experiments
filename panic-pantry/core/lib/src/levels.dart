@@ -163,7 +163,7 @@ const List<LevelDef> kLevels = [
       'CTTBBCCOOCCPP',
       'C...........C',
       'K.1.......2.C',
-      'R...........C',
+      'R...CBCBC...C',
       'D.3.......4.X',
       'C...........C',
       'CSSECCCMMCCCC',

@@ -132,7 +132,12 @@ class LobbyScreen extends StatelessWidget {
                 ? Text('You pick the kitchen', style: PPType.small(s.text3))
                 : Text('Host picks the kitchen', style: PPType.small(s.text3)),
           ),
-          _LevelMap(selected: room.levelId, isDark: s.isDark, onSelect: client.isHost ? client.setLevel : null),
+          _LevelMap(
+            selected: room.levelId,
+            isDark: s.isDark,
+            bestStars: client.bestStars,
+            onSelect: client.isHost ? client.setLevel : null,
+          ),
           const SizedBox(height: PPSpace.x4),
           _LevelDetails(level: level, players: room.players.length),
         ],
@@ -393,16 +398,17 @@ class _Seat extends StatelessWidget {
 
 /// Horizontal "world map": a path with one stop per kitchen.
 class _LevelMap extends StatelessWidget {
-  const _LevelMap({required this.selected, required this.isDark, this.onSelect});
+  const _LevelMap({required this.selected, required this.isDark, required this.bestStars, this.onSelect});
   final String selected;
   final bool isDark;
+  final Map<String, int> bestStars;
   final void Function(String id)? onSelect;
 
   @override
   Widget build(BuildContext context) {
     final s = PPScheme.of(context);
     return SizedBox(
-      height: 172,
+      height: 196,
       child: Stack(
         children: [
           Positioned.fill(
@@ -437,53 +443,74 @@ class _LevelMap extends StatelessWidget {
                         boxShadow: sel ? PPElevation.mid(s.brightness) : PPElevation.low(s.brightness),
                       ),
                       clipBehavior: Clip.antiAlias,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                      child: Stack(
                         children: [
-                          Container(
-                            height: 96,
-                            color: accent.withValues(alpha: 0.12),
-                            padding: const EdgeInsets.all(PPSpace.x2),
-                            alignment: Alignment.center,
-                            child: LevelPreview(level: l, isDark: isDark),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(PPSpace.x3, PPSpace.x2, PPSpace.x3, PPSpace.x3),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Container(
+                                height: 104,
+                                color: accent.withValues(alpha: 0.14),
+                                padding: const EdgeInsets.fromLTRB(PPSpace.x3, PPSpace.x3, PPSpace.x3, PPSpace.x2),
+                                alignment: Alignment.center,
+                                child: LevelPreview(level: l, isDark: isDark),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(PPSpace.x3, PPSpace.x2, PPSpace.x3, PPSpace.x3),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
-                                      width: 20,
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
-                                      child: Text(
-                                        '${i + 1}',
-                                        style: PPType.caption(Colors.white).copyWith(fontSize: 10),
-                                      ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            l.name,
+                                            style: PPType.h3(s.text).copyWith(fontSize: 14),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        if (l.tutorial)
+                                          const Icon(Icons.school_rounded, size: 14, color: PPColor.blueberry),
+                                      ],
                                     ),
-                                    const SizedBox(width: 6),
-                                    Expanded(
-                                      child: Text(
-                                        l.name,
-                                        style: PPType.h3(s.text).copyWith(fontSize: 13.5),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      l.tagline,
+                                      style: PPType.small(s.text3).copyWith(fontSize: 12),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    if (l.tutorial)
-                                      const Icon(Icons.school_rounded, size: 14, color: PPColor.blueberry),
+                                    const SizedBox(height: 4),
+                                    Row(
+                                      children: [
+                                        StarRow(lit: bestStars[l.id] ?? 0, size: 16, dimColor: s.outline),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          bestStars.containsKey(l.id) ? 'best ${bestStars[l.id]}/3' : 'not yet rated',
+                                          style: PPType.caption(s.text3).copyWith(fontSize: 10),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  l.tagline,
-                                  style: PPType.small(s.text3).copyWith(fontSize: 12),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ],
+                              ),
+                            ],
+                          ),
+                          // Map pin with the level number.
+                          Positioned(
+                            top: 8,
+                            left: 8,
+                            child: Container(
+                              width: 28,
+                              height: 28,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: accent,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white, width: 2.5),
+                                boxShadow: PPElevation.low(Brightness.light),
+                              ),
+                              child: Text('${i + 1}', style: PPType.hud(size: 13).copyWith(color: Colors.white)),
                             ),
                           ),
                         ],

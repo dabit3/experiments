@@ -19,7 +19,7 @@ below); all art, names, level designs and code are original.
 | `core/` | Dart package `panic_pantry_core` | Deterministic fixed-step kitchen simulation, levels, scoring, protocol constants and the bot planner. Shared verbatim by the server and every client. |
 | `server/` | Dart (`shelf`, `shelf_web_socket`) | Authoritative multiplayer server: rooms with 4-letter join codes, ready/start/rematch, reconnection, server-side bots, snapshots/results broadcast at 20 Hz, plus an opt-in HTTP test channel. |
 | `app/` | Flutter + Flame | The single client codebase that produces the web build and the native iOS, Android and macOS applications (no WebView wrappers). |
-| `test/` | Bash + Node/Playwright | `multiplayer-e2e.sh`: the automated four-platform match. `visual-parity.sh`: normalized cross-platform visual parity gate. `ui-smoke.sh`: home / how-to-play / join-error / theme navigation smoke. |
+| `test/` | Bash + Node/Playwright | `multiplayer-e2e.sh`: the automated four-platform match. `visual-parity.sh`: normalized cross-platform visual parity gate. `ui-smoke.sh`: home / how-to-play / join-error / theme navigation smoke (records the browser). `review-video.sh`: cuts the E2E and smoke footage into an edited review reel. |
 | `PROTOCOL.md` | | JSON-over-WebSocket protocol and the HTTP test API. |
 | `.devin/clone-this/panic-pantry/` | | clone-this run manifest (`state.json`, `events.jsonl`) and evidence. |
 
@@ -130,6 +130,8 @@ What it does (`test/e2e/run.mjs`):
    serves and burnt pots. It writes `summary.json`, `e2e.log`, per-process
    logs, screenshots and the recording to
    `.devin/clone-this/panic-pantry/evidence/e2e/<timestamp>/`.
+7. Hands the run directory to `test/review-video.sh` (below), so even a
+   failed run leaves an edited reel next to its raw evidence.
 
 Determinism: the simulation is a fixed 20 Hz step with an explicit RNG
 (`seed + match × 7919`), bots are pure functions of the state, and scripted
@@ -158,6 +160,25 @@ element, text strip moved 3 px, recolour) and fails unless every one is
 caught. Output: `evidence/{reference,clone,diffs}/` and
 `evidence/diffs/visual-parity.{json,log}`.
 
+## Edited review video
+
+```sh
+panic-pantry/test/review-video.sh                          # newest E2E run + ui-smoke
+test/review-video.sh --e2e .devin/clone-this/panic-pantry/evidence/e2e/<timestamp> --no-gif
+```
+
+`test/review-video/build.mjs` is a programmatic editor, not a screen grab: it
+reads `summary.json`, `e2e.log`, `plan.json`, the per-platform screenshots,
+the four-way `.mov` and the UI smoke `summary.json` + Playwright `.webm`, and
+renders (with Playwright for the cards and FFmpeg for the cut) a 1280×720
+H.264 reel: title card → chapter cards (server & plan, lobby, match, results,
+browser smoke) → labelled four-platform screenshot boards → the recording
+with log-derived captions and a live tick/score ticker → the smoke recording
+with its per-check pass cards → the cross-platform results table and a verdict
+card. Every caption is generated from the test logs, nothing is typed by hand.
+Output next to the run: `review-video.mp4`, `review-video.gif` (4× preview),
+`review-video.json` (segment list with sources) and `review-video.log`.
+
 ## Navigation / state smoke test
 
 ```sh
@@ -170,8 +191,9 @@ match never visits — leave → home, the How-to-play sheet in both themes, a
 missing and a full join code (error toast, still on home), hosting from home
 on a chosen level — via the same `test.command` channel, asserts each state
 through the client's reports and the server's room list, and fails on any
-browser console error. Output: `evidence/tests/ui-smoke/` (`summary.json`,
-`smoke.log`, screenshots).
+browser console error. Playwright records the browser context while it runs.
+Output: `evidence/tests/ui-smoke/` (`summary.json`, `smoke.log`, screenshots,
+`browser-smoke.webm`).
 
 ## Evidence
 
@@ -195,7 +217,14 @@ core loop, modes, HUD and scoring; anything that would have needed the
 running original is marked *inferred* or *inaccessible* in the manifest.
 "Visual parity" in this project means **normalized parity between the four
 Panic Pantry clients** (the web build is the baseline the native apps are
-compared against), never pixel parity with the original. No proprietary
+compared against), never pixel parity with the original. The layout follows
+the genre's publicly documented conventions — orders on a ticket rail across
+the top with recipe pictograms and urgency bars, a coin score bottom-left, a
+stopwatch bottom-right, a walled top-down kitchen with counters ringing a tiled
+floor and a prep island in the middle, chunky outlined headline type, a
+blue-and-cream report card for results — but every sprite, tile, icon, name
+and layout here is drawn from scratch; it does not and cannot reproduce the
+original pixel for pixel. No proprietary
 assets, names, logos, characters or trademarked content are used: all
 sprites are drawn procedurally in `app/lib/game/sprites.dart`, the level
 layouts, dish names and chef names are original, the design tokens live in

@@ -145,25 +145,37 @@ class _GameScreenState extends State<GameScreen> {
               Positioned.fill(
                 child: Padding(
                   padding: EdgeInsets.only(
-                    top: MediaQuery.paddingOf(context).top + (compact ? 96 : 84),
-                    bottom: MediaQuery.paddingOf(context).bottom + (_showTouch ? 150 : 44),
+                    top: MediaQuery.paddingOf(context).top + _Hud.railHeight + 6,
+                    bottom: MediaQuery.paddingOf(context).bottom + (_showTouch ? 150 : (compact ? 76 : 64)),
                     left: 8,
                     right: 8,
                   ),
                   child: RepaintBoundary(child: GameWidget(game: _game)),
                 ),
               ),
-              // HUD.
+              // HUD: ticket rail hangs from the top edge; score and clock sit
+              // in the bottom corners like a console kitchen game.
               Positioned(
-                top: MediaQuery.paddingOf(context).top + PPSpace.x2,
+                top: MediaQuery.paddingOf(context).top,
                 left: PPSpace.x3,
-                right: PPSpace.x3,
+                right: 132,
                 child: _Hud(game: g, client: c, compact: compact),
               ),
-              // Bottom bar: hints / controls.
               Positioned(
-                left: 0,
-                right: 0,
+                left: PPSpace.x4,
+                bottom: MediaQuery.paddingOf(context).bottom + (_showTouch ? 150 : 10),
+                child: _CoinScore(game: g, compact: compact),
+              ),
+              Positioned(
+                right: PPSpace.x4,
+                bottom: MediaQuery.paddingOf(context).bottom + (_showTouch ? 150 : 10),
+                child: _Stopwatch(game: g, compact: compact),
+              ),
+              // Bottom bar: hints / controls. Key hints sit between the coin
+              // score and the stopwatch so neither corner is covered.
+              Positioned(
+                left: _showTouch ? 0 : (compact ? 240 : 300),
+                right: _showTouch ? 0 : (compact ? 96 : 116),
                 bottom: MediaQuery.paddingOf(context).bottom,
                 child: _showTouch
                     ? _TouchControls(
@@ -270,197 +282,361 @@ class _RoundIcon extends StatelessWidget {
 
 // ---------------------------------------------------------------------- HUD
 
+/// Ticket rail: recipe cards clipped to the top edge of the screen, first
+/// ticket flagged, each with an illustrated plate, ingredient pictograms and
+/// a thick urgency bar along its bottom.
 class _Hud extends StatelessWidget {
   const _Hud({required this.game, required this.client, required this.compact});
   final GameState game;
   final GameClient client;
   final bool compact;
 
+  static const double railHeight = 92;
+
   @override
   Widget build(BuildContext context) {
     final g = game;
-    final total = g.phase == Phase.overtime ? g.overtimeLeft : g.timeLeft;
-    final mm = (total ~/ 60).toString();
-    final ss = (total % 60).floor().toString().padLeft(2, '0');
-    final urgent = g.phase == Phase.overtime || (g.running && g.timeLeft < 30);
-    final rail = SizedBox(
-      height: 78,
+    return SizedBox(
+      height: railHeight,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.zero,
         itemCount: g.orders.length,
         separatorBuilder: (_, _) => const SizedBox(width: PPSpace.x2),
-        itemBuilder: (context, i) => _Ticket(order: g.orders[i], first: i == 0),
+        itemBuilder: (context, i) => _Ticket(order: g.orders[i], first: i == 0, compact: compact),
       ),
     );
-    final stats = Row(
-      mainAxisSize: MainAxisSize.min,
+  }
+}
+
+/// Score in a coin badge: "$ 426", with the combo multiplier riding on top.
+class _CoinScore extends StatelessWidget {
+  const _CoinScore({required this.game, required this.compact});
+  final GameState game;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    final g = game;
+    final size = compact ? 30.0 : 38.0;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _Stat(label: 'Score', value: '${g.score}', accent: PPColor.butter, big: true),
-        const SizedBox(width: PPSpace.x2),
-        if (g.combo > 1)
-          _Stat(label: 'Combo', value: 'x${g.combo}', accent: PPColor.plum)
-        else
-          _Stat(
-            label: 'Stars',
-            value: '${g.stars}',
-            accent: PPColor.butter,
-            child: StarRow(lit: g.stars, size: 20),
+        _Coin(size: compact ? 34 : 44),
+        const SizedBox(width: 6),
+        AnimatedSwitcher(
+          duration: PPMotion.fast,
+          transitionBuilder: (c, a) => ScaleTransition(scale: Tween(begin: 1.25, end: 1.0).animate(a), child: c),
+          layoutBuilder: (current, previous) =>
+              Stack(alignment: Alignment.centerLeft, children: [...previous, ?current]),
+          child: KeyedSubtree(
+            key: ValueKey(g.score),
+            child: OutlinedText(
+              '${g.score}',
+              style: PPType.hud(size: size),
+              fill: PPColor.butter,
+              stroke: 3.5,
+            ),
           ),
-        const SizedBox(width: PPSpace.x2),
-        _Stat(
-          label: g.phase == Phase.overtime ? 'Overtime' : 'Time',
-          value: '$mm:$ss',
-          accent: urgent ? PPColor.paprika : PPColor.blueberry,
-          pulse: urgent,
-          animate: false,
+        ),
+        if (g.combo > 1) ...[const SizedBox(width: PPSpace.x2), _ComboBadge(combo: g.combo)],
+        const SizedBox(width: PPSpace.x3),
+        StarRow(lit: g.stars, size: compact ? 16 : 20, dimColor: Colors.black.withValues(alpha: 0.25)),
+      ],
+    );
+  }
+}
+
+class _ComboBadge extends StatelessWidget {
+  const _ComboBadge({required this.combo});
+  final int combo;
+
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      key: ValueKey(combo),
+      tween: Tween(begin: 0, end: 1),
+      duration: PPMotion.slow,
+      curve: PPMotion.bounce,
+      builder: (context, v, child) => Transform.scale(scale: 0.6 + 0.4 * v, child: child),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: PPColor.plum,
+          borderRadius: PPRadius.chip,
+          border: Border.all(color: Colors.white, width: 2),
+          boxShadow: PPElevation.low(Brightness.light),
+        ),
+        child: Text('x$combo TIP', style: PPType.caption(Colors.white).copyWith(fontSize: 12)),
+      ),
+    );
+  }
+}
+
+/// Gold coin with a tomato-red band and a "$" — the tips currency.
+class _Coin extends StatelessWidget {
+  const _Coin({required this.size});
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: PPColor.coin,
+        border: Border.all(color: PPColor.coinDark, width: size * 0.09),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.25), offset: const Offset(0, 3), blurRadius: 4)],
+      ),
+      child: Center(
+        child: Text(
+          '\$',
+          style: PPType.hud(size: size * 0.6).copyWith(color: PPColor.coinDark),
+        ),
+      ),
+    );
+  }
+}
+
+/// Round stopwatch: blue rim, sweeping remaining-time arc, big numerals. Goes
+/// red and pulses in the last 30 seconds and through overtime.
+class _Stopwatch extends StatelessWidget {
+  const _Stopwatch({required this.game, required this.compact});
+  final GameState game;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    final g = game;
+    final overtime = g.phase == Phase.overtime;
+    final total = overtime ? g.overtimeLeft : g.timeLeft;
+    final frac = overtime
+        ? total / Rules.overtimeSeconds
+        : (g.level.roundSeconds == 0 ? 1.0 : total / g.level.roundSeconds);
+    final mm = (total ~/ 60).toString();
+    final ss = (total % 60).floor().toString().padLeft(2, '0');
+    final urgent = overtime || (g.running && g.timeLeft < 30);
+    final size = compact ? 56.0 : 72.0;
+    final accent = urgent ? PPColor.paprika : PPColor.blueberry;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        if (overtime)
+          Padding(
+            padding: const EdgeInsets.only(right: PPSpace.x2),
+            child: OutlinedText(
+              'OVERTIME',
+              style: PPType.hud(size: compact ? 14 : 18),
+              fill: PPColor.butter,
+              outline: PPColor.paprikaDark,
+              stroke: 3,
+            ),
+          ),
+        _Pulse(
+          active: urgent,
+          child: SizedBox(
+            width: size,
+            height: size,
+            child: CustomPaint(
+              painter: _StopwatchPainter(fraction: frac.clamp(0, 1), accent: accent),
+              child: Center(
+                child: OutlinedText(
+                  '$mm:$ss',
+                  style: PPType.hud(size: size * 0.32),
+                  fill: Colors.white,
+                  outline: urgent ? PPColor.paprikaDark : PPColor.hudInk,
+                  stroke: 2.5,
+                  shadow: false,
+                ),
+              ),
+            ),
+          ),
         ),
       ],
     );
-    if (compact) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              Expanded(child: stats),
-              const SizedBox(width: 120),
-            ],
-          ),
-          const SizedBox(height: 6),
-          rail,
-        ],
-      );
-    }
-    return Row(
-      children: [
-        Expanded(child: rail),
-        const SizedBox(width: PPSpace.x3),
-        stats,
-        const SizedBox(width: 132),
-      ],
-    );
   }
 }
 
-class _Stat extends StatelessWidget {
-  const _Stat({
-    required this.label,
-    required this.value,
-    required this.accent,
-    this.big = false,
-    this.pulse = false,
-    this.animate = true,
-    this.child,
-  });
-  final String label;
-  final String value;
+class _StopwatchPainter extends CustomPainter {
+  _StopwatchPainter({required this.fraction, required this.accent});
+  final double fraction;
   final Color accent;
-  final bool big;
-  final bool pulse;
-  final bool animate;
-
-  /// Rendered instead of [value] text; [value] still keys the animation.
-  final Widget? child;
 
   @override
-  Widget build(BuildContext context) {
-    final s = PPScheme.of(context);
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: PPSpace.x3, vertical: 6),
-      decoration: BoxDecoration(
-        color: s.surface.withValues(alpha: 0.92),
-        borderRadius: PPRadius.button,
-        border: Border.all(color: pulse ? accent : s.outline, width: pulse ? 2 : 1),
-        boxShadow: PPElevation.low(s.brightness),
+  void paint(Canvas canvas, Size size) {
+    final c = size.center(Offset.zero);
+    final r = size.width / 2;
+    // Crown + button.
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromCenter(center: c + Offset(0, -r * 0.92), width: r * 0.34, height: r * 0.3),
+        Radius.circular(r * 0.08),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(label.toUpperCase(), style: PPType.caption(s.text3).copyWith(fontSize: 10)),
-          if (animate)
-            AnimatedSwitcher(
-              duration: PPMotion.fast,
-              transitionBuilder: (c, a) => ScaleTransition(scale: Tween(begin: 1.25, end: 1.0).animate(a), child: c),
-              layoutBuilder: (current, previous) =>
-                  Stack(alignment: Alignment.centerLeft, children: [...previous, ?current]),
-              child: KeyedSubtree(
-                key: ValueKey(value),
-                child: child ?? Text(value, style: PPType.numeric(accent, size: big ? 24 : 20)),
-              ),
-            )
-          else
-            child ?? Text(value, style: PPType.numeric(accent, size: big ? 24 : 20)),
-        ],
-      ),
+      Paint()..color = PPColor.hudInk,
     );
+    canvas.drawCircle(c + Offset(0, r * 0.03), r, Paint()..color = Colors.black.withValues(alpha: 0.25));
+    canvas.drawCircle(c, r * 0.97, Paint()..color = PPColor.hudInk);
+    canvas.drawCircle(c, r * 0.82, Paint()..color = Colors.white);
+    // Remaining-time wedge.
+    canvas.drawArc(
+      Rect.fromCircle(center: c, radius: r * 0.82),
+      -math.pi / 2,
+      -2 * math.pi * fraction,
+      true,
+      Paint()..color = accent.withValues(alpha: 0.85),
+    );
+    canvas.drawCircle(c, r * 0.6, Paint()..color = Colors.white);
+    // Tick marks.
+    final tick = Paint()
+      ..color = PPColor.hudInk
+      ..strokeWidth = r * 0.06
+      ..strokeCap = StrokeCap.round;
+    for (var i = 0; i < 12; i++) {
+      final a = i * math.pi / 6;
+      canvas.drawLine(
+        c + Offset(math.cos(a), math.sin(a)) * r * 0.66,
+        c + Offset(math.cos(a), math.sin(a)) * r * 0.74,
+        tick,
+      );
+    }
   }
+
+  @override
+  bool shouldRepaint(covariant _StopwatchPainter old) => old.fraction != fraction || old.accent != accent;
+}
+
+class _Pulse extends StatefulWidget {
+  const _Pulse({required this.active, required this.child});
+  final bool active;
+  final Widget child;
+
+  @override
+  State<_Pulse> createState() => _PulseState();
+}
+
+class _PulseState extends State<_Pulse> with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 700));
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.active) _c.repeat(reverse: true);
+  }
+
+  @override
+  void didUpdateWidget(covariant _Pulse old) {
+    super.didUpdateWidget(old);
+    if (widget.active && !_c.isAnimating) _c.repeat(reverse: true);
+    if (!widget.active && _c.isAnimating) _c.stop();
+  }
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: _c,
+    builder: (context, child) => Transform.scale(scale: widget.active ? 1 + 0.08 * _c.value : 1, child: child),
+    child: widget.child,
+  );
 }
 
 class _Ticket extends StatelessWidget {
-  const _Ticket({required this.order, required this.first});
+  const _Ticket({required this.order, required this.first, required this.compact});
   final Order order;
   final bool first;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
-    final s = PPScheme.of(context);
     final f = order.fraction;
     final col = f > 0.5 ? PPColor.basil : (f > 0.25 ? PPColor.butter : PPColor.paprika);
     final urgent = f <= 0.25;
+    final width = compact ? 118.0 : 138.0;
+    final barH = 10.0;
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: PPMotion.slow,
       curve: PPMotion.bounce,
-      builder: (context, v, child) => Transform.scale(
-        scale: 0.8 + 0.2 * v,
-        alignment: Alignment.centerLeft,
-        child: Opacity(opacity: v.clamp(0, 1), child: child),
-      ),
+      builder: (context, v, child) => Transform.translate(offset: Offset(0, -_Hud.railHeight * (1 - v)), child: child),
       child: Container(
-        width: 150,
-        padding: const EdgeInsets.fromLTRB(PPSpace.x2, PPSpace.x2, PPSpace.x2, PPSpace.x2),
+        width: width,
+        height: _Hud.railHeight,
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          color: s.surface.withValues(alpha: 0.95),
-          borderRadius: PPRadius.button,
-          border: Border.all(
-            color: first ? PPColor.butter : (urgent ? PPColor.paprika : s.outline),
-            width: first || urgent ? 2 : 1,
+          color: const Color(0xFFFFFBF2),
+          borderRadius: const BorderRadius.vertical(bottom: PPRadius.md),
+          border: Border(
+            left: BorderSide(color: first ? PPColor.butter : PPColor.cream3, width: 3),
+            right: BorderSide(color: first ? PPColor.butter : PPColor.cream3, width: 3),
+            bottom: BorderSide(color: first ? PPColor.butter : PPColor.cream3, width: 3),
           ),
-          boxShadow: PPElevation.low(s.brightness),
+          boxShadow: PPElevation.mid(Brightness.light),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              children: [
-                _DishIcon(dish: order.dish, size: 26),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    order.dish.label,
-                    style: PPType.small(s.text),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+            // Header strip with the dish name (first ticket flagged).
+            Container(
+              height: 20,
+              color: first ? PPColor.butter : PPColor.cream2,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      order.dish.label.toUpperCase(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: PPType.caption(first ? PPColor.ink : PPColor.mute)
+                          .copyWith(fontSize: 10, letterSpacing: 0.4),
+                    ),
                   ),
+                  if (first) const Icon(Icons.bolt_rounded, size: 12, color: PPColor.ink),
+                ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+                child: Row(
+                  children: [
+                    _DishIcon(dish: order.dish, size: compact ? 40 : 46),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Wrap(
+                        spacing: 3,
+                        runSpacing: 3,
+                        alignment: WrapAlignment.start,
+                        children: [for (final ing in order.dish.ingredients) _IngPicto(ing, size: compact ? 16 : 18)],
+                      ),
+                    ),
+                    Text(
+                      '${order.remaining.ceil()}',
+                      style: PPType.hud(size: compact ? 14 : 16)
+                          .copyWith(color: urgent ? PPColor.paprika : PPColor.ink),
+                    ),
+                  ],
                 ),
-                if (first) const Icon(Icons.bolt_rounded, size: 14, color: PPColor.butter),
-              ],
+              ),
             ),
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                for (final ing in order.dish.ingredients)
-                  Padding(padding: const EdgeInsets.only(right: 3), child: _IngDot(ing)),
-                const Spacer(),
-                Text('${order.remaining.ceil()}s', style: PPType.caption(col)),
-              ],
-            ),
-            const SizedBox(height: 5),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(value: f, minHeight: 5, backgroundColor: s.outline, color: col),
+            // Thick urgency bar along the bottom.
+            SizedBox(
+              height: barH,
+              child: Stack(
+                children: [
+                  Container(color: PPColor.cream3),
+                  AnimatedFractionallySizedBox(
+                    duration: const Duration(milliseconds: 250),
+                    alignment: Alignment.centerLeft,
+                    widthFactor: f.clamp(0, 1),
+                    child: Container(color: col),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -469,20 +645,37 @@ class _Ticket extends StatelessWidget {
   }
 }
 
-class _IngDot extends StatelessWidget {
-  const _IngDot(this.ing);
+/// Ingredient pictogram drawn with the in-game sprite so tickets and crates match.
+class _IngPicto extends StatelessWidget {
+  const _IngPicto(this.ing, {required this.size});
   final Ingredient ing;
+  final double size;
 
   @override
   Widget build(BuildContext context) => Container(
-    width: 10,
-    height: 10,
+    width: size,
+    height: size,
     decoration: BoxDecoration(
-      color: ingredientColor(ing),
+      color: PPColor.cream2,
       shape: BoxShape.circle,
-      border: Border.all(color: Colors.black.withValues(alpha: 0.15)),
+      border: Border.all(color: PPColor.cream3),
     ),
+    child: CustomPaint(painter: _IngPainter(ing)),
   );
+}
+
+class _IngPainter extends CustomPainter {
+  _IngPainter(this.ing);
+  final Ingredient ing;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final sp = Sprites(canvas, size.width * 1.9, 0, isDark: false);
+    sp.ingredient(Offset(size.width / 2, size.height / 2), ing, chopped: false, scale: 0.75);
+  }
+
+  @override
+  bool shouldRepaint(covariant _IngPainter old) => old.ing != ing;
 }
 
 class _DishIcon extends StatelessWidget {
@@ -518,6 +711,8 @@ class _DishPainter extends CustomPainter {
 
 // -------------------------------------------------------------------- banners
 
+/// Countdown / "COOK!" / "OVERTIME!" / "TIME'S UP!" as huge outlined text
+/// that slams in and settles, no card behind it.
 class _Banners extends StatelessWidget {
   const _Banners({required this.game});
   final GameState game;
@@ -526,21 +721,25 @@ class _Banners extends StatelessWidget {
   Widget build(BuildContext context) {
     final g = game;
     String? text;
-    Color color = PPColor.paprika;
+    Color fill = Colors.white;
+    Color outline = PPColor.hudInk;
     if (g.phase == Phase.countdown) {
       final n = g.countdown.ceil();
       text = n <= 0 ? 'COOK!' : '$n';
+      fill = PPColor.butter;
     } else if (g.phase == Phase.playing && g.time < 1.2) {
       text = 'COOK!';
-      color = PPColor.basil;
+      fill = PPColor.basil;
     } else if (g.phase == Phase.overtime && g.overtimeLeft > Rules.overtimeSeconds - 1.5) {
       text = 'OVERTIME!';
-      color = PPColor.butter;
+      fill = PPColor.butter;
+      outline = PPColor.paprikaDark;
     } else if (g.phase == Phase.finished) {
-      text = "TIME'S UP";
-      color = PPColor.blueberry;
+      text = "TIME'S UP!";
+      fill = PPColor.paprika;
     }
     if (text == null) return const SizedBox.shrink();
+    final compact = MediaQuery.sizeOf(context).width < 700;
     return Center(
       child: TweenAnimationBuilder<double>(
         key: ValueKey(text),
@@ -548,17 +747,18 @@ class _Banners extends StatelessWidget {
         duration: PPMotion.slow,
         curve: PPMotion.bounce,
         builder: (context, v, child) => Transform.scale(
-          scale: 0.6 + 0.4 * v,
+          scale: 0.4 + 0.6 * v,
           child: Opacity(opacity: v.clamp(0, 1), child: child),
         ),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: PPSpace.x8, vertical: PPSpace.x3),
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: PPRadius.card,
-            boxShadow: PPElevation.high(Brightness.light),
+        child: Transform.rotate(
+          angle: -0.04,
+          child: OutlinedText(
+            text,
+            style: PPType.hud(size: compact ? 64 : 96).copyWith(letterSpacing: -2),
+            fill: fill,
+            outline: outline,
+            stroke: compact ? 5 : 7,
           ),
-          child: Text(text, style: PPType.display(Colors.white).copyWith(fontSize: 56)),
         ),
       ),
     );

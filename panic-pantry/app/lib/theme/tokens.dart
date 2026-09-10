@@ -29,15 +29,27 @@ abstract final class PPColor {
   static const mute = Color(0xFF8B8797);
 
   // Kitchen surfaces (shared by both themes for cross-client parity).
-  static const floorA = Color(0xFFF3E4C8);
-  static const floorB = Color(0xFFEBD8B6);
-  static const counterTop = Color(0xFFD9C3A0);
-  static const counterSide = Color(0xFFA98B62);
+  static const floorA = Color(0xFFF2D9A6);
+  static const floorB = Color(0xFFEACE96);
+  static const grout = Color(0xFFD5B478);
+  static const counterTop = Color(0xFFEBD9B4);
+  static const counterEdge = Color(0xFFD2B98A);
+  static const counterSide = Color(0xFFB08E5C);
+  static const counterFoot = Color(0xFF8A6B42);
+  static const brick = Color(0xFFB5643E);
+  static const brickDark = Color(0xFF8E4A2C);
   static const steel = Color(0xFFB9C4CE);
   static const steelDark = Color(0xFF7E8B96);
+  static const stove = Color(0xFFD94A3A);
+  static const stoveDark = Color(0xFF9E2F25);
   static const water = Color(0xFF3F9FE8);
   static const wood = Color(0xFF8C5A34);
   static const pit = Color(0xFF16222E);
+
+  // HUD chrome (stopwatch / coin badge / outlined display text).
+  static const hudInk = Color(0xFF244A7A);
+  static const coin = Color(0xFFF2B531);
+  static const coinDark = Color(0xFFC98A12);
 }
 
 abstract final class PPSpace {
@@ -120,6 +132,15 @@ abstract final class PPType {
     fontWeight: FontWeight.w900,
     height: 1,
     color: c,
+    fontFeatures: const [FontFeature.tabularFigures()],
+  );
+
+  /// Chunky HUD numerals / banners: black weight, tight tracking, tabular.
+  static TextStyle hud({double size = 32}) => _display.copyWith(
+    fontSize: size,
+    fontWeight: FontWeight.w900,
+    height: 1,
+    letterSpacing: -0.5,
     fontFeatures: const [FontFeature.tabularFigures()],
   );
 }

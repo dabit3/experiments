@@ -1,9 +1,11 @@
 {
-  "finishedAt": "2026-09-10T03:28:20.015Z",
+  "finishedAt": "2026-09-10T14:52:36.930Z",
   "viewport": {
     "width": 800,
     "height": 520
   },
+  "videoStartedAt": "2026-09-10T14:52:18.491Z",
+  "video": "browser-smoke.webm",
   "checks": [
     {
       "name": "auto-host lands in lobby",

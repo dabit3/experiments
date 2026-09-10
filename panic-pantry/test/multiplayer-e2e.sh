@@ -25,6 +25,7 @@
 #   PP_ANDROID_WINDOW       macOS process owning the emulator window, for tiling (default: qemu-system-aarch64)
 #   PP_JOIN_TIMEOUT         seconds to wait for every client to join/answer (default: 150)
 #   PP_RECORD=0             disable the screen recording
+#   PP_REVIEW_VIDEO=0       skip cutting the edited review video after the run (test/review-video.sh)
 set -euo pipefail
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -56,4 +57,15 @@ if [[ "${PP_SKIP_BUILD:-0}" != "1" ]]; then
   popd >/dev/null
 fi
 
-exec node "$here/e2e/run.mjs"
+# The reel is cut even for a failing run so the failure can be reviewed.
+status=0
+node "$here/e2e/run.mjs" || status=$?
+
+if [[ "${PP_REVIEW_VIDEO:-1}" == "1" ]]; then
+  if command -v ffmpeg >/dev/null; then
+    "$here/review-video.sh" ${PP_EVIDENCE_DIR:+--e2e "$PP_EVIDENCE_DIR"} || echo "review-video: failed to build the edited reel" >&2
+  else
+    echo "review-video: ffmpeg not found, skipping the edited reel" >&2
+  fi
+fi
+exit "$status"

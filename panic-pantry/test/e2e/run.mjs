@@ -191,6 +191,7 @@ async function launchAndroid() {
   sh(ADB, [...adbTarget(), 'shell', 'am', 'force-stop', ANDROID_PKG]);
   sh(ADB, [...adbTarget(), 'shell', 'input', 'keyevent', 'KEYCODE_WAKEUP']);
   sh(ADB, [...adbTarget(), 'shell', 'wm', 'dismiss-keyguard']);
+  sh(ADB, [...adbTarget(), 'shell', 'svc', 'power', 'stayon', 'true']);
   // MainActivity forwards PP_* intent extras to Dart through the `panic_pantry/launch` channel.
   const extras = Object.entries({ ...clientEnv(NAMES.android), PP_SERVER: ANDROID_SERVER }).flatMap(([k, v]) => ['--es', k, v]);
   const r = sh(ADB, [...adbTarget(), 'shell', 'am', 'start', '-W', '-n', `${ANDROID_PKG}/.MainActivity`, ...extras]);

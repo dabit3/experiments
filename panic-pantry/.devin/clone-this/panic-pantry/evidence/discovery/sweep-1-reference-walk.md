@@ -42,3 +42,14 @@ contrast). The only reference rows touched are "hold to chop / wash / extinguish
 documented source behaviour more closely) and "disconnect handling" (feature-reconnect).
 Both already had owning items; their labels and evidence were refreshed. No new item.
 `new_items: 0`.
+
+## Re-walk at iteration 9 (design pass + review reel)
+
+Every behaviour row in `reference-overcooked.md` was re-checked against the inventory,
+plus the new *Visual language* table added for the design pass. Each convention row
+(ticket rail, coin score, stopwatch, walled kitchen with island, station feedback,
+outlined headlines, results report card, level cards with star tallies) lands on an
+existing item: feature-orders, feature-score, feature-timer, feature-levels,
+feature-cook/feature-chop, route-game, route-results, feature-level-select (the lobby now
+shows the session's best stars per level via `GameClient.bestStars`, still the same
+item). No behaviour row lacks an item. No new item. Frontier empty. `new_items: 0`.

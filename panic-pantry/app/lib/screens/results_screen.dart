@@ -68,153 +68,201 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
       1 => 'Kitchen survived.',
       _ => 'Well… nobody got hurt.',
     };
+    final served = (r['served'] as num).toInt();
+    final tips = (r['tips'] as num).toInt();
+    final expired = (r['expired'] as num).toInt();
+    final orders = served * Scoring.basePoints;
+    final penalty = expired * Scoring.expiredPenalty;
 
-    final headline = AnimatedBuilder(
+    // Report card: ink header with the verdict, stars hanging over its edge.
+    final header = Container(
+      padding: EdgeInsets.fromLTRB(PPSpace.x6, PPSpace.x5, PPSpace.x6, wide ? 56 : 44),
+      decoration: const BoxDecoration(
+        color: PPColor.hudInk,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
+      ),
+      child: Column(
+        children: [
+          Text(level.name.toUpperCase(), style: PPType.caption(Colors.white.withValues(alpha: 0.7))),
+          const SizedBox(height: PPSpace.x2),
+          Transform.rotate(
+            angle: -0.03,
+            child: OutlinedText(
+              "TIME'S UP!",
+              style: PPType.hud(size: wide ? 60 : 44).copyWith(letterSpacing: -1.5),
+              fill: PPColor.butter,
+              outline: PPColor.ink,
+              stroke: wide ? 5 : 4,
+            ),
+          ),
+        ],
+      ),
+    );
+
+    final starBand = AnimatedBuilder(
+      animation: _ctl,
+      builder: (context, _) => Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          for (var i = 0; i < 3; i++)
+            Transform.translate(
+              offset: Offset(0, i == 1 ? -10 : 0),
+              child: _Star(lit: i < stars && _ctl.value >= 0.55 + i * 0.15, size: wide ? 96 : 72, delayed: i),
+            ),
+        ],
+      ),
+    );
+
+    Widget tallyRow(String label, String value, {Color? color, bool total = false, IconData? icon}) => Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          if (icon != null) ...[Icon(icon, size: 18, color: color ?? s.text2), const SizedBox(width: PPSpace.x2)],
+          Text(label, style: total ? PPType.h3(s.text) : PPType.body(s.text2)),
+          const SizedBox(width: PPSpace.x2),
+          Expanded(
+            child: CustomPaint(painter: _DotsPainter(s.outline), child: const SizedBox(height: 2)),
+          ),
+          const SizedBox(width: PPSpace.x2),
+          Text(value, style: PPType.numeric(color ?? s.text, size: total ? 30 : 20)),
+        ],
+      ),
+    );
+
+    final tally = AnimatedBuilder(
       animation: _ctl,
       builder: (context, _) {
         final t = Curves.easeOutCubic.transform(_ctl.value.clamp(0, 1));
-        final shownScore = (score * (t / 0.55).clamp(0.0, 1.0)).round();
+        final k = (t / 0.55).clamp(0.0, 1.0);
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(level.name.toUpperCase(), style: PPType.caption(s.text3)),
-            const SizedBox(height: PPSpace.x2),
-            Text("TIME'S UP", style: PPType.display(s.text).copyWith(fontSize: wide ? 52 : 40)),
-            const SizedBox(height: PPSpace.x4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (var i = 0; i < 3; i++)
-                  _Star(lit: i < stars && _ctl.value >= 0.55 + i * 0.15, size: wide ? 84 : 64, delayed: i),
-              ],
-            ),
-            const SizedBox(height: PPSpace.x3),
-            Text('$shownScore', style: PPType.numeric(PPColor.butter, size: wide ? 72 : 56)),
-            Text('points', style: PPType.caption(s.text3)),
+            tallyRow('Orders served', '$served', icon: Icons.room_service_rounded, color: PPColor.basil),
+            tallyRow('Order points', '${(orders * k).round()}', icon: Icons.restaurant_menu_rounded),
+            tallyRow('Tips', '+${(tips * k).round()}', icon: Icons.paid_rounded, color: PPColor.coinDark),
+            if (penalty > 0)
+              tallyRow(
+                'Expired orders',
+                '-${(penalty * k).round()}',
+                icon: Icons.timer_off_rounded,
+                color: PPColor.paprika,
+              ),
+            Divider(color: s.outline, height: PPSpace.x5),
+            tallyRow('Total', '${(score * k).round()}', total: true, color: PPColor.coinDark),
             const SizedBox(height: PPSpace.x2),
             AnimatedOpacity(
               opacity: _ctl.value > 0.9 ? 1 : 0,
               duration: PPMotion.base,
-              child: Text(verdict, style: PPType.h2(s.text2)),
+              child: Text(verdict, style: PPType.h2(s.text2), textAlign: TextAlign.center),
             ),
           ],
         );
       },
     );
 
-    final ladder = PPCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SectionLabel('Star thresholds'),
-          for (var i = 0; i < th.length; i++)
+    final ladder = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SectionLabel('Star thresholds'),
+        for (var i = 0; i < th.length; i++)
+          Padding(
+            padding: const EdgeInsets.only(bottom: PPSpace.x2),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 60,
+                  child: StarRow(lit: i < stars ? i + 1 : 0, count: i + 1, size: 18, dimColor: s.text3),
+                ),
+                const SizedBox(width: PPSpace.x3),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: LinearProgressIndicator(
+                      value: (score / th[i]).clamp(0.0, 1.0),
+                      minHeight: 10,
+                      backgroundColor: s.outline,
+                      color: i < stars ? PPColor.butter : s.text3,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: PPSpace.x3),
+                SizedBox(
+                  width: 44,
+                  child: Text(
+                    '${th[i]}',
+                    style: PPType.mono(s.text2).copyWith(fontSize: 13),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ],
+            ),
+          ),
+      ],
+    );
+
+    final extras = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SectionLabel('Service report'),
+        Wrap(
+          spacing: PPSpace.x2,
+          runSpacing: PPSpace.x2,
+          children: [
+            _Tile(
+              label: 'Best combo',
+              value: 'x${r['bestCombo']}',
+              icon: Icons.local_fire_department_rounded,
+              color: PPColor.plum,
+            ),
+            _Tile(label: 'Burnt', value: '${r['burntPots']}', icon: Icons.whatshot_rounded, color: PPColor.paprikaDark),
+            _Tile(label: 'Wrong', value: '${r['wrongServes']}', icon: Icons.block_rounded, color: s.text3),
+          ],
+        ),
+        if (byDish.isNotEmpty) ...[
+          const SizedBox(height: PPSpace.x3),
+          Wrap(
+            spacing: PPSpace.x2,
+            runSpacing: PPSpace.x2,
+            children: [
+              for (final e in byDish.entries) PPChip(label: '${Dish.parse(e.key).label} × ${e.value}', color: s.text2),
+            ],
+          ),
+        ],
+      ],
+    );
+
+    final crew = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SectionLabel('Crew'),
+        if (room != null)
+          for (final p in room.players)
             Padding(
               padding: const EdgeInsets.only(bottom: PPSpace.x2),
               child: Row(
                 children: [
-                  SizedBox(
-                    width: 60,
-                    child: StarRow(lit: i < stars ? i + 1 : 0, count: i + 1, size: 18, dimColor: s.text3),
-                  ),
-                  const SizedBox(width: PPSpace.x3),
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: LinearProgressIndicator(
-                        value: (score / th[i]).clamp(0.0, 1.0),
-                        minHeight: 10,
-                        backgroundColor: s.outline,
-                        color: i < stars ? PPColor.butter : s.text3,
-                      ),
+                  Container(
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      color: PPColor.chefs[(p['slot'] as int) % 4],
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 2),
                     ),
                   ),
-                  const SizedBox(width: PPSpace.x3),
-                  SizedBox(
-                    width: 44,
-                    child: Text(
-                      '${th[i]}',
-                      style: PPType.mono(s.text2).copyWith(fontSize: 13),
-                      textAlign: TextAlign.right,
-                    ),
-                  ),
+                  const SizedBox(width: PPSpace.x2),
+                  Expanded(child: Text(p['name'] as String, style: PPType.body(s.text))),
+                  if (p['id'] == c.playerId)
+                    PlatformMark(
+                      id: 'results-device',
+                      child: Text(p['platform'] as String, style: PPType.small(s.text3)),
+                    )
+                  else
+                    Text(p['bot'] == true ? 'bot' : (p['platform'] as String), style: PPType.small(s.text3)),
                 ],
               ),
             ),
-        ],
-      ),
-    );
-
-    final stats = PPCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SectionLabel('Service report'),
-          Wrap(
-            spacing: PPSpace.x3,
-            runSpacing: PPSpace.x3,
-            children: [
-              _Tile(label: 'Served', value: '${r['served']}', icon: Icons.room_service_rounded, color: PPColor.basil),
-              _Tile(label: 'Tips', value: '+${r['tips']}', icon: Icons.paid_rounded, color: PPColor.butter),
-              _Tile(
-                label: 'Best combo',
-                value: 'x${r['bestCombo']}',
-                icon: Icons.local_fire_department_rounded,
-                color: PPColor.plum,
-              ),
-              _Tile(label: 'Expired', value: '${r['expired']}', icon: Icons.timer_off_rounded, color: PPColor.paprika),
-              _Tile(
-                label: 'Burnt',
-                value: '${r['burntPots']}',
-                icon: Icons.whatshot_rounded,
-                color: PPColor.paprikaDark,
-              ),
-              _Tile(label: 'Wrong', value: '${r['wrongServes']}', icon: Icons.block_rounded, color: s.text3),
-            ],
-          ),
-          if (byDish.isNotEmpty) ...[
-            const SizedBox(height: PPSpace.x4),
-            Wrap(
-              spacing: PPSpace.x2,
-              runSpacing: PPSpace.x2,
-              children: [
-                for (final e in byDish.entries)
-                  PPChip(label: '${Dish.parse(e.key).label} × ${e.value}', color: s.text2),
-              ],
-            ),
-          ],
-        ],
-      ),
-    );
-
-    final crew = PPCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          const SectionLabel('Crew'),
-          if (room != null)
-            for (final p in room.players)
-              Padding(
-                padding: const EdgeInsets.only(bottom: PPSpace.x2),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 14,
-                      height: 14,
-                      decoration: BoxDecoration(color: PPColor.chefs[(p['slot'] as int) % 4], shape: BoxShape.circle),
-                    ),
-                    const SizedBox(width: PPSpace.x2),
-                    Expanded(child: Text(p['name'] as String, style: PPType.body(s.text))),
-                    if (p['id'] == c.playerId)
-                      PlatformMark(
-                        id: 'results-device',
-                        child: Text(p['platform'] as String, style: PPType.small(s.text3)),
-                      )
-                    else
-                      Text(p['bot'] == true ? 'bot' : (p['platform'] as String), style: PPType.small(s.text3)),
-                  ],
-                ),
-              ),
-        ],
-      ),
+      ],
     );
 
     final actions = Column(
@@ -249,62 +297,104 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
       ],
     );
 
+    final body = Padding(
+      padding: EdgeInsets.fromLTRB(PPSpace.x6, wide ? 56 : 44, PPSpace.x6, PPSpace.x6),
+      child: wide
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Enter(index: 2, child: tally),
+                      const SizedBox(height: PPSpace.x6),
+                      Enter(index: 3, child: ladder),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: PPSpace.x8),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Enter(index: 3, child: crew),
+                      const SizedBox(height: PPSpace.x4),
+                      Enter(index: 4, child: extras),
+                      const SizedBox(height: PPSpace.x6),
+                      Enter(index: 5, child: actions),
+                    ],
+                  ),
+                ),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Enter(index: 2, child: tally),
+                const SizedBox(height: PPSpace.x6),
+                Enter(index: 3, child: ladder),
+                const SizedBox(height: PPSpace.x4),
+                Enter(index: 4, child: crew),
+                const SizedBox(height: PPSpace.x4),
+                Enter(index: 5, child: extras),
+                const SizedBox(height: PPSpace.x6),
+                Enter(index: 6, child: actions),
+              ],
+            ),
+    );
+
+    final card = Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: s.surface,
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(color: PPColor.hudInk, width: 4),
+            boxShadow: PPElevation.high(s.brightness),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [header, body]),
+        ),
+        // Stars straddle the header / body seam.
+        Positioned(left: 0, right: 0, top: wide ? 108 : 86, child: starBand),
+      ],
+    );
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(PPSpace.x6),
           child: Center(
             child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 980),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Enter(child: headline),
-                  const SizedBox(height: PPSpace.x8),
-                  if (wide)
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          flex: 5,
-                          child: Column(
-                            children: [
-                              Enter(index: 2, child: stats),
-                              const SizedBox(height: PPSpace.x4),
-                              Enter(index: 3, child: ladder),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: PPSpace.x4),
-                        Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
-                              Enter(index: 3, child: crew),
-                              const SizedBox(height: PPSpace.x4),
-                              Enter(index: 4, child: actions),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )
-                  else ...[
-                    Enter(index: 2, child: stats),
-                    const SizedBox(height: PPSpace.x4),
-                    Enter(index: 3, child: ladder),
-                    const SizedBox(height: PPSpace.x4),
-                    Enter(index: 4, child: crew),
-                    const SizedBox(height: PPSpace.x4),
-                    Enter(index: 5, child: actions),
-                  ],
-                ],
-              ),
+              constraints: const BoxConstraints(maxWidth: 900),
+              child: Enter(child: card),
             ),
           ),
         ),
       ),
     );
   }
+}
+
+/// Dotted leader between a tally label and its value.
+class _DotsPainter extends CustomPainter {
+  _DotsPainter(this.color);
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final p = Paint()..color = color;
+    for (var x = 0.0; x < size.width; x += 6) {
+      canvas.drawCircle(Offset(x, size.height / 2), 1.2, p);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _DotsPainter old) => old.color != color;
 }
 
 class _Star extends StatelessWidget {
@@ -322,11 +412,17 @@ class _Star extends StatelessWidget {
         scale: lit ? 1 : 0.85,
         duration: PPMotion.slow,
         curve: PPMotion.bounce,
-        child: Icon(
-          Icons.star_rounded,
-          size: size,
-          color: lit ? PPColor.butter : s.outline,
-          shadows: lit ? [const Shadow(color: Color(0x66E8A000), blurRadius: 18)] : null,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Icon(Icons.star_rounded, size: size * 1.16, color: lit ? PPColor.coinDark : s.outline),
+            Icon(
+              Icons.star_rounded,
+              size: size,
+              color: lit ? PPColor.butter : s.surface2,
+              shadows: lit ? [const Shadow(color: Color(0x66E8A000), blurRadius: 18)] : null,
+            ),
+          ],
         ),
       ),
     );

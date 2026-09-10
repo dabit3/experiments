@@ -34,7 +34,8 @@ class _Painter extends CustomPainter {
         final tile = state.baseTile(x, y)!;
         final r = Rect.fromLTWH(x * cell, y * cell, cell, cell);
         if (tile.type == TileType.pit) {
-          sp.pit(r, x, y);
+          sp.pitBase(r);
+          sp.pitRipple(r, x, y);
         } else {
           sp.floor(r, x, y);
         }

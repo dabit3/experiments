@@ -51,6 +51,28 @@ Consequences:
 | feature-timer | Fixed round timer per kitchen; results screen with coins and stars | wikipedia | observed (docs) |
 | feature-online | Online multiplayer exists only in OC2 / All You Can Eat | wikipedia | observed (docs) |
 
+## Visual language (documented conventions used by the design pass, iteration 9)
+
+The second design pass ("follow the original as closely as possible") was driven by the
+publicly documented, widely described HUD and kitchen conventions below. These are layout
+and proportion conventions, not assets: every sprite, tile, icon, font and name in Panic
+Pantry is original and the original was never run, so nothing here is a pixel measurement.
+
+| Convention | Public description | Panic Pantry realisation |
+| --- | --- | --- |
+| Ticket rail | Orders as cards across the top-left, newest on the right, each with the dish picture, its ingredient pictograms and a draining bar under the card that turns from green to red | `game_screen.dart` `_Hud` / `_Ticket` (`_DishIcon`, `_IngPicto`): card with recipe picture, ingredient row, urgency bar and points badge |
+| Score | Coin/money total bottom-left with a coin badge, tip pops next to it | `_CoinScore` + `_ComboBadge`: coin disc + total, tip/combo badge to its right |
+| Timer | Round clock bottom-right, circular, turns red in the last stretch, "overtime" once the round is over | `_Stopwatch`: circular dial with sweep, red under 15 s |
+| Kitchen | Top-down walled room: counters ring a tiled floor, stations (crates, boards, stoves, sink, pass, plate return) sit on the ring, often an island of boards/stoves in the middle, chefs are round-headed with hats | `levels.dart` layouts (`Corner Café` ring + central prep island), `sprites.dart` counters, brick frame, tiled floor, chef silhouettes |
+| Station feedback | Progress bubbles above boards/pots, steam and smoke, a burning pot flashes | `kitchen_game.dart` progress bubbles, particles |
+| Headlines | Chunky rounded outlined display type for "Time's up!" / countdown | `ui.dart` `OutlinedText` (Nunito Black, dark outline + shadow) |
+| Results | Blue header with stars filling in, then a report card with served / tips / total and thresholds | `results_screen.dart` |
+| Level select | World-map style level cards with star tallies and a lock/tutorial mark | `lobby_screen.dart` level grid + `level_preview.dart` |
+
+Sources: the same public pages listed above (trueachievements, superjump, familygamesquad,
+mejoress, fandom wiki, Wikipedia) plus press screenshots described in reviews; none were
+copied into the repository.
+
 ## Inaccessible (recorded, not claimed)
 
 - Exact sprite art, fonts, animation timings, level names, and audio -> original assets used.

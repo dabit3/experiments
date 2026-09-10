@@ -55,6 +55,9 @@ class GameClient extends ChangeNotifier {
   RoomInfo? room;
   GameState? game;
   Map<String, dynamic>? results;
+
+  /// Best star rating per level id this session, shown on the level map.
+  final Map<String, int> bestStars = {};
   int resultsMatch = -1;
 
   /// Positions from the previous snapshot for render interpolation.
@@ -243,6 +246,9 @@ class GameClient extends ChangeNotifier {
       case Msg.results:
         results = m['results'] as Map<String, dynamic>;
         resultsMatch = (m['match'] as num).toInt();
+        final lv = results!['levelId'] as String;
+        final st = (results!['stars'] as num).toInt();
+        if (st > (bestStars[lv] ?? 0)) bestStars[lv] = st;
       case Msg.error:
         lastError = m['message'] as String? ?? 'Something went wrong';
         toasts.add(lastError!);

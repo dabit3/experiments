@@ -1,0 +1,12 @@
+2026-09-10T14:35:07.543Z e2e run: .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25 (FAIL), smoke: .devin/clone-this/panic-pantry/evidence/tests/ui-smoke, recording: .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/four-way-match.mov
+2026-09-10T14:35:07.905Z segment seg-001.mp4 title 4s — Title
+2026-09-10T14:35:08.252Z segment seg-002.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/four-way-match.mov @31.4s +6.0s — 4 clients joined room E2E4
+2026-09-10T14:35:08.512Z segment seg-003.mp4 board 4s — Lobby board
+2026-09-10T14:35:08.948Z segment seg-004.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/four-way-match.mov @38.3s +7.0s — Match started — countdown, then the scripted shift
+2026-09-10T14:35:09.369Z segment seg-005.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/four-way-match.mov @60.3s +6.0s — Mid-match: every client at tick 519, score 36
+2026-09-10T14:35:09.636Z segment seg-006.mp4 board 4s — Gameplay board
+2026-09-10T14:35:10.064Z segment seg-007.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/four-way-match.mov @91.7s +6.0s — Late shift — combos, tips and expiring tickets
+2026-09-10T14:35:10.557Z segment seg-008.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/four-way-match.mov @191.5s +7.0s — Time's up — results on all four clients
+2026-09-10T14:35:10.830Z segment seg-009.mp4 board 4s — Results board
+2026-09-10T14:35:10.831Z FAILED: TypeError: Cannot read properties of undefined (reading 'length')
+    at main (file:///Users/devin/repos/experiments/panic-pantry/test/review-video/build.mjs:337:144)

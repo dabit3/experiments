@@ -1,0 +1,40 @@
+[   1.1s] server ready on :8787
+[   1.1s] web build served on :8080
+[   1.1s] room E2E4 created (seed 23, level corner-cafe, speed 1)
+[   1.1s] screen recording -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/four-way-match.mov
+[   2.9s] web client opened
+[   4.2s] ios client launched on 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89: dev.panicpantry.panicPantry: 7691
+[  31.1s] android client launched
+[  34.5s] macos client launched
+[  34.5s] lobby: Webby(web, slot 0), Pip(ios, slot 1), Andi(android, slot 2), Mac(macos, slot 3)
+[  37.0s] screenshot web/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/web-lobby.png
+[  37.3s] screenshot ios/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/ios-lobby.png
+[  38.2s] screenshot android/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/android-lobby.png
+[  38.4s] screenshot macos/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/macos-lobby.png
+[  39.9s] plan: 3061 ticks, expected score 180, 0 star(s)
+[  39.9s] queued 3061 scripted ticks for Webby
+[  39.9s] queued 3061 scripted ticks for Pip
+[  39.9s] queued 3061 scripted ticks for Andi
+[  39.9s] queued 3061 scripted ticks for Mac
+[  40.4s] match started
+[  64.4s] screenshot web/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/web-gameplay.png
+[  64.7s] screenshot ios/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/ios-gameplay.png
+[  66.1s] screenshot android/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/android-gameplay.png
+[  66.3s] screenshot macos/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/macos-gameplay.png
+[  67.4s] mid-match web: phase=playing tick=519 score=36 rtt=1ms
+[  67.4s] mid-match ios: phase=playing tick=519 score=36 rtt=1ms
+[  67.4s] mid-match android: phase=playing tick=519 score=36 rtt=3ms
+[  67.4s] mid-match macos: phase=playing tick=519 score=36 rtt=1ms
+[  92.8s] screenshot web/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/web-gameplay-late.png
+[  93.0s] screenshot ios/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/ios-gameplay-late.png
+[  94.3s] screenshot android/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/android-gameplay-late.png
+[  94.6s] screenshot macos/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/macos-gameplay-late.png
+[ 127.6s] macos exited (null)
+[ 197.6s] screenshot web/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/web-results.png
+[ 197.9s] screenshot ios/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/ios-results.png
+[ 198.4s] screenshot android/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/android-results.png
+[ 200.0s] screenshot macos/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25/macos-results.png
+[ 220.1s] FAILED: Error: timed out waiting for results reports from every client
+    at waitFor (file:///Users/devin/repos/experiments/panic-pantry/test/lib/common.mjs:54:9)
+    at async file:///Users/devin/repos/experiments/panic-pantry/test/e2e/run.mjs:386:19
+[ 220.9s] evidence: /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T14-31-25

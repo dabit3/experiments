@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart' show Colors;
-import 'package:flutter/painting.dart';
 import 'package:panic_pantry_core/panic_pantry_core.dart';
 
 import '../net/client.dart';
@@ -34,6 +33,46 @@ class KitchenGame extends FlameGame {
 
   double cell = 48;
   Offset origin = Offset.zero;
+
+  /// Static backdrop (brick frame, floor tiles, pit water) rasterised once per
+  /// layout/theme so each frame draws it as a single texture instead of
+  /// ~1.5k primitives.
+  Image? _backdrop;
+  String _backdropKey = '';
+
+  @override
+  void onRemove() {
+    _backdrop?.dispose();
+    _backdrop = null;
+    super.onRemove();
+  }
+
+  Image _backdropFor(GameState g, Size size, double dpr) {
+    final key = '${g.level.id}|$cell|${origin.dx},${origin.dy}|${size.width}x${size.height}|$dpr|$isDark';
+    final cached = _backdrop;
+    if (cached != null && key == _backdropKey) return cached;
+    cached?.dispose();
+    final recorder = PictureRecorder();
+    final canvas = Canvas(recorder)..scale(dpr);
+    final sp = Sprites(canvas, cell, 0, isDark: isDark);
+    sp.frame(Rect.fromLTWH(origin.dx, origin.dy, cell * g.width, cell * g.height));
+    for (var y = 0; y < g.height; y++) {
+      for (var x = 0; x < g.width; x++) {
+        final r = Rect.fromLTWH(origin.dx + x * cell, origin.dy + y * cell, cell, cell);
+        if (g.baseTile(x, y)!.type == TileType.pit) {
+          sp.pitBase(r);
+        } else {
+          sp.floor(r, x, y);
+        }
+      }
+    }
+    final picture = recorder.endRecording();
+    final image = picture.toImageSync((size.width * dpr).ceil(), (size.height * dpr).ceil());
+    picture.dispose();
+    _backdrop = image;
+    _backdropKey = key;
+    return image;
+  }
 
   @override
   Color backgroundColor() => const Color(0x00000000);
@@ -134,13 +173,12 @@ class KitchenGame extends FlameGame {
   }
 
   void _layout(Size size, GameState g) {
-    final pad = 12.0;
-    final availW = size.width - pad * 2;
-    final availH = size.height - pad * 2;
-    cell = math.min(availW / g.width, availH / (g.height + 0.5)).floorToDouble();
+    // Leave room for the wall band (0.22 cell) and hanging progress bubbles.
+    const wallX = 0.6, wallY = 0.9;
+    cell = math.min(size.width / (g.width + wallX), size.height / (g.height + wallY)).floorToDouble();
     final w = cell * g.width;
     final h = cell * g.height;
-    origin = Offset((size.width - w) / 2, (size.height - h) / 2 + cell * 0.2);
+    origin = Offset((size.width - w) / 2, (size.height - h) / 2 + cell * 0.1);
   }
 
   Offset _px(double x, double y) => Offset(origin.dx + x * cell, origin.dy + y * cell);
@@ -150,30 +188,24 @@ class KitchenGame extends FlameGame {
     super.render(canvas);
     final g = client.game;
     if (g == null) return;
-    _layout(size.toSize(), g);
+    final viewport = size.toSize();
+    _layout(viewport, g);
     final sp = Sprites(canvas, cell, t, isDark: isDark);
 
-    // Kitchen shadow / plinth.
-    final board = Rect.fromLTWH(origin.dx, origin.dy, cell * g.width, cell * g.height);
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(board.inflate(cell * 0.18).shift(Offset(0, cell * 0.12)), Radius.circular(cell * 0.4)),
-      Paint()..color = Colors.black.withValues(alpha: isDark ? 0.5 : 0.18),
+    // Pass 1: brick frame, floors and pit water from the cached backdrop, then
+    // the animated pit ripples on top.
+    final dpr = PlatformDispatcher.instance.implicitView?.devicePixelRatio ?? 1.0;
+    final backdrop = _backdropFor(g, viewport, dpr);
+    canvas.drawImageRect(
+      backdrop,
+      Rect.fromLTWH(0, 0, backdrop.width.toDouble(), backdrop.height.toDouble()),
+      Rect.fromLTWH(0, 0, viewport.width, viewport.height),
+      Paint()..filterQuality = FilterQuality.low,
     );
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(board.inflate(cell * 0.18), Radius.circular(cell * 0.4)),
-      Paint()..color = isDark ? const Color(0xFF34313F) : const Color(0xFFCBB79A),
-    );
-
-    // Pass 1: floors, pits, base tiles (non-mover).
     for (var y = 0; y < g.height; y++) {
       for (var x = 0; x < g.width; x++) {
-        final tile = g.baseTile(x, y)!;
-        final r = Rect.fromLTWH(origin.dx + x * cell, origin.dy + y * cell, cell, cell);
-        if (tile.type == TileType.pit) {
-          sp.pit(r, x, y);
-        } else {
-          sp.floor(r, x, y);
-        }
+        if (g.baseTile(x, y)!.type != TileType.pit) continue;
+        sp.pitRipple(Rect.fromLTWH(origin.dx + x * cell, origin.dy + y * cell, cell, cell), x, y);
       }
     }
     // Pass 2: mover platforms (continuous offsets).
