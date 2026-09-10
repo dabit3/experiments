@@ -1,6 +1,6 @@
 {
-  "revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
-  "timestamp": "2026-09-10T00:17:24Z",
+  "revision": "sha256:c0981af2ad3b96f6b293518092fb514456651a2af7365bf678b41423ae6d43ca",
+  "timestamp": "2026-09-10T01:26:51Z",
   "method": "Enumerate every protocol message/error code in packages/gambit_court_core/lib/src/protocol.dart and every README feature group, map each to an inventory item.",
   "enumerated": {
     "protocol_messages": [

@@ -41,27 +41,27 @@
       "passed": true
     },
     {
-      "label": "web is waiting for an opponent",
+      "label": "macos is waiting for an opponent",
       "passed": true,
       "detail": "waiting"
     },
     {
-      "label": "ios joined as black",
+      "label": "web joined as black",
       "passed": true,
       "detail": {
         "type": "ui_report",
         "id": "1700000000000-304968145",
         "ok": true,
-        "clientId": "ios-e2e",
-        "platform": "ios",
+        "clientId": "web-e2e",
+        "platform": "web",
         "view": {
-          "width": 402,
-          "height": 874,
-          "devicePixelRatio": 3,
-          "paddingTop": 62,
-          "paddingBottom": 34
+          "width": 1000,
+          "height": 560,
+          "devicePixelRatio": 1,
+          "paddingTop": 0,
+          "paddingBottom": 0
         },
-        "name": "iOS Bram",
+        "name": "Web Ada",
         "connection": "online",
         "screen": "game",
         "theme": "dark",
@@ -84,8 +84,8 @@
           "running": null,
           "frozen": true
         },
-        "white": "Web Ada",
-        "black": "iOS Bram",
+        "white": "macOS Dov",
+        "black": "Web Ada",
         "spectators": [],
         "offers": {
           "draw": null,
@@ -98,22 +98,22 @@
       }
     },
     {
-      "label": "macos joined 2FENTE as spectator",
+      "label": "ios joined 2FENTE as spectator",
       "passed": true,
       "detail": {
         "type": "ui_report",
         "id": "1700000000000-163442366",
         "ok": true,
-        "clientId": "macos-e2e",
-        "platform": "macos",
+        "clientId": "ios-e2e",
+        "platform": "ios",
         "view": {
-          "width": 1000,
-          "height": 488,
-          "devicePixelRatio": 1,
-          "paddingTop": 0,
-          "paddingBottom": 0
+          "width": 402,
+          "height": 874,
+          "devicePixelRatio": 3,
+          "paddingTop": 62,
+          "paddingBottom": 34
         },
-        "name": "macOS Dov",
+        "name": "iOS Bram",
         "connection": "online",
         "screen": "game",
         "theme": "dark",
@@ -136,10 +136,10 @@
           "running": null,
           "frozen": true
         },
-        "white": "Web Ada",
-        "black": "iOS Bram",
+        "white": "macOS Dov",
+        "black": "Web Ada",
         "spectators": [
-          "macOS Dov"
+          "iOS Bram"
         ],
         "offers": {
           "draw": null,
@@ -164,15 +164,15 @@
       "label": "web shows the right seats",
       "passed": true,
       "detail": [
-        "Web Ada",
-        "iOS Bram"
+        "macOS Dov",
+        "Web Ada"
       ]
     },
     {
       "label": "web lists 1 spectators",
       "passed": true,
       "detail": [
-        "macOS Dov"
+        "iOS Bram"
       ]
     },
     {
@@ -188,15 +188,15 @@
       "label": "ios shows the right seats",
       "passed": true,
       "detail": [
-        "Web Ada",
-        "iOS Bram"
+        "macOS Dov",
+        "Web Ada"
       ]
     },
     {
       "label": "ios lists 1 spectators",
       "passed": true,
       "detail": [
-        "macOS Dov"
+        "iOS Bram"
       ]
     },
     {
@@ -212,19 +212,19 @@
       "label": "macos shows the right seats",
       "passed": true,
       "detail": [
-        "Web Ada",
-        "iOS Bram"
+        "macOS Dov",
+        "Web Ada"
       ]
     },
     {
       "label": "macos lists 1 spectators",
       "passed": true,
       "detail": [
-        "macOS Dov"
+        "iOS Bram"
       ]
     },
     {
-      "label": "macos can browse history while the live move list stays intact",
+      "label": "ios can browse history while the live move list stays intact",
       "passed": true,
       "detail": {
         "viewPly": 4,
@@ -232,7 +232,7 @@
       }
     },
     {
-      "label": "macos resumed the same game",
+      "label": "ios resumed the same game",
       "passed": true,
       "detail": 33
     },
@@ -400,7 +400,7 @@
       "passed": true
     },
     {
-      "label": "web sees the rematch offer",
+      "label": "macos sees the rematch offer",
       "passed": true,
       "detail": {
         "draw": null,
@@ -553,7 +553,7 @@
     {
       "label": "visual parity review-ios (web reference vs ios)",
       "passed": true,
-      "detail": "PASS review-ios: 0 differing blocks of 800; mean colour delta 0.886"
+      "detail": "PASS review-ios: 0 differing blocks of 800; mean colour delta 0.895"
     },
     {
       "label": "visual parity lobby-macos (web reference vs macos)",
@@ -563,7 +563,7 @@
     {
       "label": "visual parity review-macos (web reference vs macos)",
       "passed": true,
-      "detail": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.463"
+      "detail": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.467"
     }
   ],
   "screenshots": [
@@ -583,9 +583,9 @@
       "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-lobby.png"
     },
     {
-      "platform": "web",
+      "platform": "macos",
       "step": "waiting",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-waiting.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-waiting.png"
     },
     {
       "platform": "web",
@@ -618,14 +618,14 @@
       "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-midgame.png"
     },
     {
-      "platform": "macos",
+      "platform": "ios",
       "step": "history",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-history.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-history.png"
     },
     {
-      "platform": "macos",
+      "platform": "ios",
       "step": "reconnecting",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-reconnecting.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-reconnecting.png"
     },
     {
       "platform": "web",
@@ -699,7 +699,7 @@
       "scale": 3,
       "insetTop": 62,
       "safeBottom": 34,
-      "summary": "PASS review-ios: 0 differing blocks of 800; mean colour delta 0.886",
+      "summary": "PASS review-ios: 0 differing blocks of 800; mean colour delta 0.895",
       "status": 0
     },
     {
@@ -727,7 +727,7 @@
       "scale": 1,
       "insetTop": 32,
       "safeBottom": 0,
-      "summary": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.463",
+      "summary": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.467",
       "status": 0
     }
   ],
@@ -884,6 +884,6 @@
       "seq": 38
     }
   },
-  "pgn": "[Event \"Gambit Court · Blitz\"]\n[Site \"Gambit Court (web)\"]\n[Date \"????.??.??\"]\n[Round \"2FENTE\"]\n[White \"Web Ada\"]\n[Black \"iOS Bram\"]\n[Result \"1-0\"]\n[TimeControl \"180+2\"]\n[Termination \"by checkmate\"]\n\n1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7\n8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7\n14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0\n",
+  "pgn": "[Event \"Gambit Court · Blitz\"]\n[Site \"Gambit Court (web)\"]\n[Date \"????.??.??\"]\n[Round \"2FENTE\"]\n[White \"macOS Dov\"]\n[Black \"Web Ada\"]\n[Result \"1-0\"]\n[TimeControl \"180+2\"]\n[Termination \"by checkmate\"]\n\n1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7\n8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7\n14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0\n",
   "passed": true
 }

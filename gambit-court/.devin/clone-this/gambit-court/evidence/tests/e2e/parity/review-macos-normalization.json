@@ -19,8 +19,8 @@
     13
   ],
   "content_blocks": {
-    "reference": 757,
-    "actual": 765
+    "reference": 758,
+    "actual": 766
   },
   "tolerances": {
     "coverage": 0.25,
@@ -33,7 +33,7 @@
     "max_block_delta": 0.0575
   },
   "raw_colour": {
-    "mean_block_channel_delta": 0.463,
+    "mean_block_channel_delta": 0.467,
     "max_block_channel_delta": 10.482,
     "blocks_with_delta_over_16": 0
   }

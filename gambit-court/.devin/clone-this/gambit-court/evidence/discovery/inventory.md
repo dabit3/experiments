@@ -1,6 +1,6 @@
 # Inventory
 
-Revision sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b (git 53810c2c982a68119fc9dd8300cfed34a4893bd8), 2026-09-10T00:17:24Z
+Revision sha256:c0981af2ad3b96f6b293518092fb514456651a2af7365bf678b41423ae6d43ca (git 041883c71ad0f5a09e63c3655feb763a45c80ffb), 2026-09-10T01:26:51Z
 
 - `route-lobby` [route] verified: Lobby screen: identity, theme, quick-pair, create/join by invite code, open tables, bot level
 - `route-game` [route] verified: Game screen: board, player cards, clocks, move list, offers, history browsing

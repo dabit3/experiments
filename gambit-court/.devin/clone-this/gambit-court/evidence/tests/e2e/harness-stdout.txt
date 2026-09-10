@@ -9,99 +9,99 @@ Use --no-wasm-dry-run to disable these warnings.
 [1;36m[e2e][0m launching macOS app
 [1;36m[e2e][0m recording screen
 [1;36m[e2e][0m running orchestrator
-00:15:31.305 players: web (white) vs ios (black); spectators: macos
-00:15:33.089 opening http://127.0.0.1:8770/?client=web-e2e&name=Web+Ada&automation=1&theme=dark&server=ws%3A%2F%2F127.0.0.1%3A8765%2Fws
-00:15:33.441   waiting for web
-00:15:35.449   ok web client reports platform=web
-00:15:35.449   ok ios client reports platform=ios
-00:15:35.449   ok macos client reports platform=macos
-00:15:35.469   ok web starts in the lobby
-00:15:35.469   ok ios starts in the lobby
-00:15:35.469   ok macos starts in the lobby
-00:15:36.827   ok room created with invite code 2FENTE
-00:15:36.827   ok web is waiting for an opponent
-00:15:37.373   ok ios joined as black
-00:15:37.845   ok macos joined 2FENTE as spectator
-00:15:37.853   ok web sees the game as playing
-00:15:37.853   ok web is in room 2FENTE
-00:15:37.853   ok web shows the right seats
-00:15:37.853   ok web lists 1 spectators
-00:15:37.854   ok ios sees the game as playing
-00:15:37.854   ok ios is in room 2FENTE
-00:15:37.854   ok ios shows the right seats
-00:15:37.854   ok ios lists 1 spectators
-00:15:37.854   ok macos sees the game as playing
-00:15:37.854   ok macos is in room 2FENTE
-00:15:37.854   ok macos shows the right seats
-00:15:37.854   ok macos lists 1 spectators
-00:15:40.066   ply  1 web     e4     seq=4
-00:15:41.036   ply  2 ios     e5     seq=5
-00:15:41.988   ply  3 web     Nf3    seq=6
-00:15:42.939   ply  4 ios     d6     seq=7
-00:15:43.904   ply  5 web     d4     seq=8
-00:15:44.901   ply  6 ios     Bg4    seq=9
-00:15:45.852   ply  7 web     dxe5   seq=10
-00:15:46.803   ply  8 ios     Bxf3   seq=11
-00:15:47.768   ply  9 web     Qxf3   seq=12
-00:15:48.717   ply 10 ios     dxe5   seq=13
-00:15:49.723   ply 11 web     Bc4    seq=14
-00:15:50.699   ply 12 ios     Nf6    seq=15
-00:15:52.925   ply 13 web     Qb3    seq=16
-00:15:53.882   ply 14 ios     Qe7    seq=17
-00:15:54.847   ply 15 web     Nc3    seq=18
-00:15:55.798   ply 16 ios     c6     seq=19
-00:15:56.753   ply 17 web     Bg5    seq=20
-00:15:57.706   ply 18 ios     b5     seq=21
-00:15:58.675   ply 19 web     Nxb5   seq=22
-00:15:59.639   ply 20 ios     cxb5   seq=23
-00:16:00.692   ply 21 web     Bxb5+  seq=24
-00:16:01.645   ply 22 ios     Nbd7   seq=25
-00:16:02.592   ply 23 web     O-O-O  seq=26
-00:16:03.063   ok macos can browse history while the live move list stays intact
-00:16:04.621   ply 24 ios     Rd8    seq=27
-00:16:05.590   ply 25 web     Rxd7   seq=28
-00:16:06.538   ply 26 ios     Rxd7   seq=29
-00:16:07.487   ply 27 web     Rd1    seq=30
-00:16:08.434   ply 28 ios     Qe6    seq=31
-00:16:09.408   ply 29 web     Bxd7+  seq=32
-00:16:10.358   ply 30 ios     Nxd7   seq=33
-00:16:11.323   ply 31 web     Qb8+   seq=34
-00:16:12.270   ply 32 ios     Nxb8   seq=35
-00:16:13.240   ply 33 web     Rd8#   seq=36
-00:16:14.184   ok macos resumed the same game
-00:16:14.191   ok web shows the game as finished
-00:16:14.191   ok web shows the results overlay
-00:16:14.191   ok web final FEN matches
-00:16:14.191   ok web move list matches
-00:16:14.191   ok web score is 1-0
-00:16:14.191   ok web reason is checkmate
-00:16:14.191   ok web clocks match web
-00:16:14.191   ok ios shows the game as finished
-00:16:14.191   ok ios shows the results overlay
-00:16:14.191   ok ios final FEN matches
-00:16:14.191   ok ios move list matches
-00:16:14.191   ok ios score is 1-0
-00:16:14.191   ok ios reason is checkmate
-00:16:14.191   ok ios clocks match web
-00:16:14.191   ok macos shows the game as finished
-00:16:14.191   ok macos shows the results overlay
-00:16:14.191   ok macos final FEN matches
-00:16:14.191   ok macos move list matches
-00:16:14.191   ok macos score is 1-0
-00:16:14.191   ok macos reason is checkmate
-00:16:14.191   ok macos clocks match web
-00:16:15.066   ok PGN movetext ends with mate and result
-00:16:15.066   ok ios PGN matches web
-00:16:15.066   ok macos PGN matches web
-00:16:15.116   ok web sees the rematch offer
-00:16:15.630   ok rematch swapped colours
-00:16:15.630   ok rematch starts from the initial position
-00:16:19.185   ok web is back in the lobby
-00:16:19.185   ok ios is back in the lobby
-00:16:19.185   ok macos is back in the lobby
-00:16:23.542   ok visual parity lobby-ios (web reference vs ios)
-00:16:28.328   ok visual parity review-ios (web reference vs ios)
-00:16:32.538   ok visual parity lobby-macos (web reference vs macos)
-00:16:37.235   ok visual parity review-macos (web reference vs macos)
-00:16:37.278 all assertions passed
+01:24:48.447 players: macos (white) vs web (black); spectators: ios
+01:24:50.665 opening http://127.0.0.1:8770/?client=web-e2e&name=Web+Ada&automation=1&theme=dark&server=ws%3A%2F%2F127.0.0.1%3A8765%2Fws
+01:24:51.102   waiting for web
+01:24:53.107   ok web client reports platform=web
+01:24:53.107   ok ios client reports platform=ios
+01:24:53.107   ok macos client reports platform=macos
+01:24:53.125   ok web starts in the lobby
+01:24:53.125   ok ios starts in the lobby
+01:24:53.125   ok macos starts in the lobby
+01:24:54.663   ok room created with invite code 2FENTE
+01:24:54.663   ok macos is waiting for an opponent
+01:24:55.211   ok web joined as black
+01:24:55.709   ok ios joined 2FENTE as spectator
+01:24:55.722   ok web sees the game as playing
+01:24:55.722   ok web is in room 2FENTE
+01:24:55.722   ok web shows the right seats
+01:24:55.722   ok web lists 1 spectators
+01:24:55.722   ok ios sees the game as playing
+01:24:55.722   ok ios is in room 2FENTE
+01:24:55.722   ok ios shows the right seats
+01:24:55.722   ok ios lists 1 spectators
+01:24:55.722   ok macos sees the game as playing
+01:24:55.722   ok macos is in room 2FENTE
+01:24:55.722   ok macos shows the right seats
+01:24:55.722   ok macos lists 1 spectators
+01:24:58.137   ply  1 macos   e4     seq=4
+01:24:59.096   ply  2 web     e5     seq=5
+01:25:00.048   ply  3 macos   Nf3    seq=6
+01:25:01.035   ply  4 web     d6     seq=7
+01:25:01.986   ply  5 macos   d4     seq=8
+01:25:02.937   ply  6 web     Bg4    seq=9
+01:25:03.897   ply  7 macos   dxe5   seq=10
+01:25:04.862   ply  8 web     Bxf3   seq=11
+01:25:05.822   ply  9 macos   Qxf3   seq=12
+01:25:06.784   ply 10 web     dxe5   seq=13
+01:25:07.736   ply 11 macos   Bc4    seq=14
+01:25:08.698   ply 12 web     Nf6    seq=15
+01:25:11.064   ply 13 macos   Qb3    seq=16
+01:25:12.024   ply 14 web     Qe7    seq=17
+01:25:12.976   ply 15 macos   Nc3    seq=18
+01:25:13.962   ply 16 web     c6     seq=19
+01:25:14.942   ply 17 macos   Bg5    seq=20
+01:25:15.912   ply 18 web     b5     seq=21
+01:25:16.860   ply 19 macos   Nxb5   seq=22
+01:25:17.812   ply 20 web     cxb5   seq=23
+01:25:18.769   ply 21 macos   Bxb5+  seq=24
+01:25:19.717   ply 22 web     Nbd7   seq=25
+01:25:20.681   ply 23 macos   O-O-O  seq=26
+01:25:21.160   ok ios can browse history while the live move list stays intact
+01:25:22.836   ply 24 web     Rd8    seq=27
+01:25:23.790   ply 25 macos   Rxd7   seq=28
+01:25:24.747   ply 26 web     Rxd7   seq=29
+01:25:25.699   ply 27 macos   Rd1    seq=30
+01:25:26.647   ply 28 web     Qe6    seq=31
+01:25:27.603   ply 29 macos   Bxd7+  seq=32
+01:25:28.588   ply 30 web     Nxd7   seq=33
+01:25:29.579   ply 31 macos   Qb8+   seq=34
+01:25:30.544   ply 32 web     Nxb8   seq=35
+01:25:31.552   ply 33 macos   Rd8#   seq=36
+01:25:32.142   ok ios resumed the same game
+01:25:32.149   ok web shows the game as finished
+01:25:32.149   ok web shows the results overlay
+01:25:32.149   ok web final FEN matches
+01:25:32.150   ok web move list matches
+01:25:32.150   ok web score is 1-0
+01:25:32.150   ok web reason is checkmate
+01:25:32.150   ok web clocks match web
+01:25:32.150   ok ios shows the game as finished
+01:25:32.150   ok ios shows the results overlay
+01:25:32.150   ok ios final FEN matches
+01:25:32.150   ok ios move list matches
+01:25:32.150   ok ios score is 1-0
+01:25:32.150   ok ios reason is checkmate
+01:25:32.150   ok ios clocks match web
+01:25:32.150   ok macos shows the game as finished
+01:25:32.150   ok macos shows the results overlay
+01:25:32.150   ok macos final FEN matches
+01:25:32.150   ok macos move list matches
+01:25:32.150   ok macos score is 1-0
+01:25:32.150   ok macos reason is checkmate
+01:25:32.150   ok macos clocks match web
+01:25:33.346   ok PGN movetext ends with mate and result
+01:25:33.346   ok ios PGN matches web
+01:25:33.346   ok macos PGN matches web
+01:25:33.450   ok macos sees the rematch offer
+01:25:33.970   ok rematch swapped colours
+01:25:33.970   ok rematch starts from the initial position
+01:25:38.029   ok web is back in the lobby
+01:25:38.029   ok ios is back in the lobby
+01:25:38.029   ok macos is back in the lobby
+01:25:42.343   ok visual parity lobby-ios (web reference vs ios)
+01:25:46.816   ok visual parity review-ios (web reference vs ios)
+01:25:51.232   ok visual parity lobby-macos (web reference vs macos)
+01:25:55.920   ok visual parity review-macos (web reference vs macos)
+01:25:55.946 all assertions passed
 [1;36m[e2e][0m PASS — evidence in /Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e

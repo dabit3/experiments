@@ -19,8 +19,8 @@
     20
   ],
   "content_blocks": {
-    "reference": 514,
-    "actual": 514
+    "reference": 515,
+    "actual": 515
   },
   "tolerances": {
     "coverage": 0.25,
@@ -29,12 +29,12 @@
   "differing_blocks": 0,
   "differing_block_coords": [],
   "coverage": {
-    "mean_block_delta": 0.0021,
-    "max_block_delta": 0.05
+    "mean_block_delta": 0.0022,
+    "max_block_delta": 0.0525
   },
   "raw_colour": {
-    "mean_block_channel_delta": 0.886,
-    "max_block_channel_delta": 13.892,
+    "mean_block_channel_delta": 0.895,
+    "max_block_channel_delta": 12.112,
     "blocks_with_delta_over_16": 0
   }
 }
