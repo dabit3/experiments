@@ -706,7 +706,7 @@ class _GameScreenState extends State<GameScreen>
     final partner = mainBoard.other;
     return Column(
       children: [
-        SizedBox(height: 104, child: _miniBoardRow(context, partner)),
+        _miniBoardRow(context, partner),
         const SizedBox(height: Space.sm),
         Expanded(
           child: _boardColumn(context, mainBoard, primary: true, dense: true),
@@ -720,42 +720,46 @@ class _GameScreenState extends State<GameScreen>
   }
 
   /// Partner board shown small next to its clocks and reserves (phones).
+  /// The row takes the height of the two player bars; the board fits it.
   Widget _miniBoardRow(BuildContext context, BoardId b) {
     final snap = game.boards[b]!;
     final pos = snap.position;
     final orient = orientationFor(b);
     final top = Seat.at(b, orient.opposite);
     final bottom = Seat.at(b, orient);
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AspectRatio(
-          aspectRatio: 1,
-          child: _framedBoard(
-            b,
-            BoardView(
-              key: _boardKeys[b],
-              position: pos,
-              orientation: orient,
-              boardId: b,
-              lastMove: snap.lastMove,
-              inCheck: snap.inCheck,
-              showCoordinates: false,
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AspectRatio(
+            aspectRatio: 1,
+            child: _framedBoard(
+              b,
+              BoardView(
+                key: _boardKeys[b],
+                position: pos,
+                orientation: orient,
+                boardId: b,
+                lastMove: snap.lastMove,
+                inCheck: snap.inCheck,
+                showCoordinates: false,
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: Space.sm),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(child: _playerBar(context, top, snap, compact: true)),
-              const SizedBox(height: Space.xs),
-              Expanded(child: _playerBar(context, bottom, snap, compact: true)),
-            ],
+          const SizedBox(width: Space.sm),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _playerBar(context, top, snap, compact: true),
+                const SizedBox(height: Space.xs),
+                _playerBar(context, bottom, snap, compact: true),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

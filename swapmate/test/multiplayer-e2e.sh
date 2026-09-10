@@ -20,7 +20,7 @@
 #        create it with tool/android-avd.sh)
 #        ANDROID_HOME (~/Library/Android/sdk) E2E_TIMEOUT (600s)
 #        ANDROID_BOOT_TIMEOUT (900s; 3000s when the host lacks a hypervisor)
-#        TC_TIMEOUT_MS (30000; 240000 when the host lacks a hypervisor)
+#        TC_TIMEOUT_MS (30000; 600000 when the host lacks a hypervisor)
 #        CLOCK_MS (300000 = 5+0; 1800000 when the host lacks a hypervisor)
 set -euo pipefail
 
@@ -53,7 +53,7 @@ BUNDLE_ID="dev.swapmate.swapmate"
 ANDROID_TCG=0
 [[ "$(sysctl -n kern.hv_support 2>/dev/null || echo 1)" == "0" ]] && ANDROID_TCG=1
 CLOCK_MS="${CLOCK_MS:-$(( ANDROID_TCG == 1 ? 1800000 : 300000 ))}"
-TC_TIMEOUT_MS="${TC_TIMEOUT_MS:-$(( ANDROID_TCG == 1 ? 240000 : 30000 ))}"
+TC_TIMEOUT_MS="${TC_TIMEOUT_MS:-$(( ANDROID_TCG == 1 ? 600000 : 30000 ))}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -233,6 +233,23 @@ if has android; then
         ip route add default via 10.0.2.2 dev wlan0 table wlan0;
         ip route add default via 10.0.2.2 dev wlan0" >/dev/null 2>&1 || true
     fi
+  fi
+  # Under software emulation the virtio Wi-Fi association watchdog fires
+  # before DHCPv4 completes, so wlan0 keeps dropping its IPv4 address. The
+  # image still has the classic SLIRP NIC (eth0, 10.0.2.15 -> host 10.0.2.2);
+  # bring it up statically in the tables consulted when no ConnectivityService
+  # network is up (legacy_system / legacy_network). A connected Wi-Fi network
+  # still takes precedence through its own fwmark rules.
+  if [[ $ANDROID_TCG -eq 1 ]] ||
+     [[ -z "$("$ADB" shell "ip -4 -o addr show wlan0" 2>/dev/null | tr -d '\r')" ]]; then
+    mark "bringing up eth0 (SLIRP) as the Android fallback uplink"
+    "$ADB" root >/dev/null 2>&1 || true
+    "$ADB" wait-for-device
+    "$ADB" shell "ip link set eth0 up; ip addr add 10.0.2.15/24 dev eth0;
+      for t in legacy_network legacy_system; do
+        ip route add 10.0.2.0/24 dev eth0 table \$t;
+        ip route add default via 10.0.2.2 dev eth0 table \$t;
+      done" >/dev/null 2>&1 || true
   fi
   # `adb shell` re-splits its arguments on the device, so quote for the remote shell.
   "$ADB" shell "am start -W -n $BUNDLE_ID/.MainActivity \

@@ -23,3 +23,16 @@ Verified captures: web 1280x860 (Playwright), iPhone 17 simulator (portrait,
 notch safe area), Android 540x1200 @ 240 dpi, macOS 1180x800 window — see the
 final run's `*-lobby.png`, `*-game.png`, `*-results.png` and the cropped
 phone comparisons in `visual/`.
+
+## Re-audit after the compact partner-row fix (final revision)
+
+A live iPhone + web session showed the phone layout's partner-board row
+(`_miniBoardRow`) overflowing by ~12 px once both compact player bars held
+reserve pieces: the row was pinned to a fixed 104 px. The row now sizes
+itself (`IntrinsicHeight`, player bars `mainAxisSize: min`) and the square
+partner board fits that height; the main board keeps the remaining
+`Expanded` space. Re-verified on the iPhone 17 simulator in run
+`e2e-20260910T152718Z` (`ios-game.png`: no overflow banner, partner board,
+both bars with reserves and clocks fully visible). The phone-landscape and
+desktop layouts are untouched; their captures in the same run are unchanged
+in geometry.

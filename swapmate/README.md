@@ -157,7 +157,10 @@ with this without changing the game: it keeps the device awake, whitelists the
 app in Android 15's background network firewall
 (`cmd connectivity set-background-networking-enabled-for-uid`), installs the
 IPv4 default route that the emulated Wi-Fi's DHCP sometimes leaves out (the
-symptom is `connect: Network is unreachable` for `10.0.2.2`),
+symptom is `connect: Network is unreachable` for `10.0.2.2`), and brings up
+the classic SLIRP NIC (`eth0`, `10.0.2.15`) as a static fallback uplink
+because under TCG the virtio Wi-Fi association watchdog fires before DHCPv4
+finishes and `wlan0` keeps losing its IPv4 address,
 raises the test-command timeout (`TC_TIMEOUT_MS`), and when a host
 screenshot comes back uniformly black it asks the client to rasterize its own
 frame (test command `capture`, a `RepaintBoundary.toImage` of the whole app).

@@ -1,26 +1,26 @@
-# quality checks @ sha256:8bf8e288b2e47c5190c833d9e8bb211fa168c8fb9a26b9c5986edc2e49fa427f
+# quality checks @ sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19
 ## packages/swapmate_core
 Formatted 11 files (0 changed) in 0.03 seconds.
 Analyzing swapmate_core...
 No issues found!
 00:00 +0: loading test/position_test.dart
 00:00 +0: test/position_test.dart: Position initial position has 20 legal moves and standard FEN
-00:00 +1: test/position_test.dart: Position FEN round trip
-00:00 +2: test/position_test.dart: Position scholar's mate is checkmate
+00:00 +1: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +2: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
 00:00 +3: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
 00:00 +4: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
 00:00 +5: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
-00:00 +6: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
-00:00 +7: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
-00:00 +8: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
-00:00 +9: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
-00:00 +10: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
-00:00 +11: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
-00:00 +12: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
-00:00 +13: test/match_test.dart: BughouseMatch turn enforcement
-00:00 +14: test/match_test.dart: BughouseMatch clocks run independently and increment applies
-00:00 +15: test/match_test.dart: BughouseMatch flag fall ends the match for the other team
-00:00 +16: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +6: test/position_test.dart: Position drops can give checkmate
+00:00 +7: test/position_test.dart: Position drops can give checkmate
+00:00 +8: test/match_test.dart: BughouseMatch clocks run independently and increment applies
+00:00 +9: test/position_test.dart: Position drop consumes reserve and SAN uses @
+00:00 +10: test/position_test.dart: Position drop consumes reserve and SAN uses @
+00:00 +11: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +12: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +13: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +14: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +15: test/position_test.dart: Position moveFromSan parses drops and moves
+00:00 +16: test/match_test.dart: BughouseMatch BPGN export lists both boards chronologically
 00:00 +17: test/match_test.dart: BughouseMatch BPGN export lists both boards chronologically
 00:00 +18: test/match_test.dart: BughouseMatch snapshot json round trip
 00:00 +19: test/match_test.dart: Bot is deterministic for a given seed
@@ -44,9 +44,9 @@ No issues found!
 00:01 +9: test/server_test.dart: healthz and rooms endpoints answer over HTTP
 00:01 +10: All tests passed!
 ## app
-Formatted 19 files (0 changed) in 0.09 seconds.
+Formatted 19 files (0 changed) in 0.10 seconds.
 Analyzing app...                                                
-No issues found! (ran in 1.4s)
+No issues found! (ran in 4.7s)
 00:00 +0: loading /Users/devin/repos/experiments/swapmate/app/test/home_screen_test.dart
 00:00 +0: home screen shows the brand, entry points and join form
 00:00 +1: joining without a room code explains the 4-letter code
