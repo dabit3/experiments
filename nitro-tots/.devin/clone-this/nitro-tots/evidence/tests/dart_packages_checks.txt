@@ -1,0 +1,32 @@
+# 2026-09-10T01:06:52Z dart format / analyze / test for nitro_core, nitro_server, app
+
+## packages/nitro_core
+Formatted 10 files (0 changed) in 0.06 seconds.
+format: clean
+Analyzing nitro_core...
+No issues found!
+00:00 +8: test/sim_test.dart: snapshot round-trips through wire format
+00:00 +9: test/sim_test.dart: grand prix standings accumulate points
+00:00 +10: All tests passed!
+exit=0
+
+## packages/nitro_server
+Formatted 5 files (0 changed) in 0.02 seconds.
+format: clean
+Analyzing nitro_server...
+No issues found!
+00:25 +2: test/server_test.dart: a player can resume after disconnecting mid-lobby
+Nitro Tots server listening on ws://127.0.0.1:60227/ws (seed=1234)
+00:26 +3: All tests passed!
+exit=0
+
+## app
+Formatted 24 files (0 changed) in 0.09 seconds.
+format: clean
+Try `flutter pub outdated` for more information.
+Analyzing app...                                                
+No issues found! (ran in 2.0s)
+00:01 +30: desktop lobby
+00:01 +31: desktop podium
+00:01 +32: All tests passed!
+exit=0

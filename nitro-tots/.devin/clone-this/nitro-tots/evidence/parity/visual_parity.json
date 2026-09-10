@@ -1,0 +1,138 @@
+{
+  "baseline": "web",
+  "compared": "macos",
+  "declared_only": [
+    "ios"
+  ],
+  "viewport": [
+    800,
+    532
+  ],
+  "device_pixel_ratio": 1,
+  "profile": {
+    "name": "Racer",
+    "character": "pip",
+    "kart": "jellybean",
+    "theme": "light"
+  },
+  "normalization": {
+    "corner_mask_px": 16,
+    "downscale": 8,
+    "channel_tolerance": 64,
+    "reason": "macOS rounds the bottom window corners (masked); Chromium/CanvasKit and Impeller/Metal rasterize glyph edges differently, so captures are box-downscaled 8x and a pixel only counts as different when a channel differs by more than 64/255. Layout, geometry, colour tokens and copy remain comparable.",
+    "self_check": {
+      "shift_4px_differing_pixels": {
+        "title": 99,
+        "garage": 73,
+        "track": 134,
+        "settings": 24,
+        "online": 44
+      },
+      "cross_screen_differing_pixels": {
+        "title_vs_garage": 855,
+        "garage_vs_track": 1327,
+        "track_vs_settings": 1541,
+        "settings_vs_online": 701,
+        "online_vs_title": 873
+      },
+      "passed": true
+    }
+  },
+  "results": [
+    {
+      "screen": "title",
+      "mode": "normalized",
+      "reference": "reference/web_title.normalized.png",
+      "actual": "clone/macos_title.normalized.png",
+      "diff": "diffs/title.diff.png",
+      "raw_reference": "reference/web_title.png",
+      "raw_actual": "clone/macos_title.png",
+      "raw_size": [
+        800,
+        532
+      ],
+      "normalized_size": [
+        100,
+        66
+      ],
+      "different_pixels": 0,
+      "total_pixels": 6600
+    },
+    {
+      "screen": "garage",
+      "mode": "normalized",
+      "reference": "reference/web_garage.normalized.png",
+      "actual": "clone/macos_garage.normalized.png",
+      "diff": "diffs/garage.diff.png",
+      "raw_reference": "reference/web_garage.png",
+      "raw_actual": "clone/macos_garage.png",
+      "raw_size": [
+        800,
+        532
+      ],
+      "normalized_size": [
+        100,
+        66
+      ],
+      "different_pixels": 0,
+      "total_pixels": 6600
+    },
+    {
+      "screen": "track",
+      "mode": "normalized",
+      "reference": "reference/web_track.normalized.png",
+      "actual": "clone/macos_track.normalized.png",
+      "diff": "diffs/track.diff.png",
+      "raw_reference": "reference/web_track.png",
+      "raw_actual": "clone/macos_track.png",
+      "raw_size": [
+        800,
+        532
+      ],
+      "normalized_size": [
+        100,
+        66
+      ],
+      "different_pixels": 0,
+      "total_pixels": 6600
+    },
+    {
+      "screen": "settings",
+      "mode": "normalized",
+      "reference": "reference/web_settings.normalized.png",
+      "actual": "clone/macos_settings.normalized.png",
+      "diff": "diffs/settings.diff.png",
+      "raw_reference": "reference/web_settings.png",
+      "raw_actual": "clone/macos_settings.png",
+      "raw_size": [
+        800,
+        532
+      ],
+      "normalized_size": [
+        100,
+        66
+      ],
+      "different_pixels": 0,
+      "total_pixels": 6600
+    },
+    {
+      "screen": "online",
+      "mode": "normalized",
+      "reference": "reference/web_online.normalized.png",
+      "actual": "clone/macos_online.normalized.png",
+      "diff": "diffs/online.diff.png",
+      "raw_reference": "reference/web_online.png",
+      "raw_actual": "clone/macos_online.png",
+      "raw_size": [
+        800,
+        532
+      ],
+      "normalized_size": [
+        100,
+        66
+      ],
+      "different_pixels": 0,
+      "total_pixels": 6600
+    }
+  ]
+}

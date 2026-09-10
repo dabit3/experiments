@@ -1,0 +1,9 @@
+# clone-this skill self-tests (run from the installed plugin copy, /Users/devin/.devin/plugins/cache/github.com_dabit3_clone-this-727e92ea/0.1.0)
+----------------------------------------------------------------------
+Ran 92 tests in 5.819s
+
+OK
+
+# devin skills list --trigger user
+bash: line 1: devin: command not found
+exit=127 — the 'devin' CLI is not installed on this VM; skill discovery could not be verified with this command. The skill was loaded from the plugin cache and its SKILL.md followed directly.
