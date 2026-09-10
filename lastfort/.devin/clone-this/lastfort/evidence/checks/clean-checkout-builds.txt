@@ -1,0 +1,107 @@
+clean checkout: 5f87b217ade0be65eca1ba6a9d56ee2165075ace at /Users/devin/tmp/lf-clean/lastfort 2026-09-10T00:57:55Z
+Resolving dependencies...
+Downloading packages...
+  lints 5.1.1 (6.1.0 available)
+Got dependencies!
+1 package has newer versions incompatible with dependency constraints.
+Try `dart pub outdated` for more information.
+00:00 +0: loading test/sim_test.dart
+00:00 +0: test/sim_test.dart: snapshots replicate structures, storm and players to a client replica
+00:00 +1: test/sim_test.dart: world generation is deterministic
+00:00 +2: test/sim_test.dart: a full bot match is deterministic and ends with a winner
+ended at tick 2334 (116.7s), winner 0
+{id: 1, name: Bot 0, team: 0, bot: true, platform: server, placement: 1, kills: 1, damage: 228, harvested: 233, built: 7, chests: 1, survived: 117, xp: 370}
+{id: 2, name: Bot 1, team: 0, bot: true, platform: server, placement: 1, kills: 1, damage: 141, harvested: 72, built: 7, chests: 1, survived: 98, xp: 342}
+{id: 3, name: Bot 2, team: 0, bot: true, platform: server, placement: 1, kills: 3, damage: 382, harvested: 124, built: 14, chests: 1, survived: 117, xp: 508}
+{id: 4, name: Bot 3, team: 0, bot: true, platform: server, placement: 1, kills: 2, damage: 196, harvested: 175, built: 7, chests: 0, survived: 117, xp: 412}
+{id: 5, name: Bot 4, team: 1, bot: true, platform: server, placement: 2, kills: 2, damage: 264, harvested: 195, built: 5, chests: 1, survived: 57, xp: 309}
+{id: 6, name: Bot 5, team: 1, bot: true, platform: server, placement: 2, kills: 1, damage: 192, harvested: 24, built: 4, chests: 2, survived: 117, xp: 261}
+{id: 7, name: Bot 6, team: 1, bot: true, platform: server, placement: 2, kills: 0, damage: 0, harvested: 74, built: 1, chests: 0, survived: 14, xp: 129}
+{id: 8, name: Bot 7, team: 1, bot: true, platform: server, placement: 2, kills: 0, damage: 0, harvested: 0, built: 0, chests: 0, survived: 11, xp: 127}
+{id: 9, name: Bot 8, team: 2, bot: true, platform: server, placement: 3, kills: 0, damage: 0, harvested: 0, built: 0, chests: 0, survived: 25, xp: 133}
+{id: 10, name: Bot 9, team: 2, bot: true, platform: server, placement: 3, kills: 1, damage: 168, harvested: 262, built: 13, chests: 0, survived: 109, xp: 253}
+{id: 11, name: Bot 10, team: 2, bot: true, platform: server, placement: 3, kills: 2, damage: 330, harvested: 100, built: 5, chests: 0, survived: 44, xp: 321}
+{id: 12, name: Bot 11, team: 2, bot: true, platform: server, placement: 3, kills: 0, damage: 0, harvested: 30, built: 1, chests: 0, survived: 44, xp: 139}
+{id: 13, name: Bot 12, team: 3, bot: true, platform: server, placement: 4, kills: 0, damage: 0, harvested: 290, built: 5, chests: 0, survived: 49, xp: 41}
+{id: 14, name: Bot 13, team: 3, bot: true, platform: server, placement: 4, kills: 0, damage: 0, harvested: 290, built: 6, chests: 0, survived: 55, xp: 43}
+{id: 15, name: Bot 14, team: 3, bot: true, platform: server, placement: 4, kills: 0, damage: 0, harvested: 70, built: 2, chests: 1, survived: 23, xp: 31}
+{id: 16, name: Bot 15, team: 3, bot: true, platform: server, placement: 4, kills: 0, damage: 0, harvested: 80, built: 2, chests: 0, survived: 27, xp: 33}
+00:02 +3: test/sim_test.dart: building costs materials and blocks movement
+00:02 +4: All tests passed!
+Resolving dependencies...
+Downloading packages...
+  lints 5.1.1 (6.1.0 available)
+Got dependencies!
+1 package has newer versions incompatible with dependency constraints.
+Try `dart pub outdated` for more information.
+00:00 +0: loading test/server_test.dart
+00:00 +0: test/server_test.dart: rooms: create, join by code, errors, host start with bots
+00:00 +1: test/server_test.dart: four platforms in one squad finish a match with identical summaries
+00:03 +2: test/server_test.dart: bots complete a partial human squad before forming their own
+00:03 +3: test/server_test.dart: reconnect resumes the same player mid-match
+00:04 +4: test/server_test.dart: disconnected players time out and the match still ends
+00:04 +5: All tests passed!
+Generated: /Users/devin/tmp/lf-clean/lastfort/server/build/lastfort_server
+-rwxr-xr-x  1 devin  staff  7325072 Sep  9 17:58 build/lastfort_server
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Compiling lib/main.dart for the Web...                          
+Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+Use --no-wasm-dry-run to disable these warnings.
+Font asset "CupertinoIcons.ttf" was tree-shaken, reducing it from 257628 to 1472 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 16692 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Compiling lib/main.dart for the Web...                             24.3s
+✓ Built build/web
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Building com.lastfort.lastfort for simulator (ios)...
+Running Xcode build...                                          
+Xcode build done.                                           31.2s
+✓ Built build/ios/iphonesimulator/Runner.app
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleDebug'...                             21.8s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Building macOS application...                                   
+warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
+✓ Built build/macos/Build/Products/Release/Lastfort.app (46.5MB)
+CLEAN-BUILDS-OK

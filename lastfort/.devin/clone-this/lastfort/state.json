@@ -5,348 +5,665 @@
   "clone_root": "/Users/devin/repos/experiments/lastfort",
   "status": "active",
   "iteration": 1,
-  "revision": "sha256:b43211873d9bd70140b59ba78c29af682fe62f9b7daa47ffcb98f8edb3396630",
+  "revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
   "frontier": [
-    "Client screens not yet inspected: lobby, locker, pass, match HUD, results on each platform"
+    "Android runtime leg of journey-four-platform-match (blocked: no virtualization on this host)",
+    "Renderer-independent visual capture so visual-*-parity can reach zero differing pixels"
   ],
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "android-runtime",
+      "affected": [
+        "journey-four-platform-match"
+      ],
+      "missing": "An Android emulator or device. The macOS VM exposes no nested virtualization (kern.hv_support=0); the arm64 Android emulator requires Hypervisor.framework and has no software fallback.",
+      "attempted": [
+        "emulator -avd lastfort (HVF) \u2192 HVF error: HV_UNSUPPORTED",
+        "-accel off / -no-accel and -gpu swiftshader_indirect \u2192 same HVF failure (arm64 emulator has no TCG)",
+        "flutter build apk --debug \u2192 succeeds (evidence/checks/clean-checkout-builds.txt, native-artifacts.txt)"
+      ],
+      "resume_condition": "Run LF_PLATFORMS=web,ios,android,macos ./test/multiplayer-e2e.sh on a host with a bootable AVD or an attached device (adb).",
+      "evidence": [
+        "evidence/blockers/android-emulator-accel-check.txt",
+        "evidence/blockers/android-emulator-boot-attempt.log"
+      ]
+    }
+  ],
   "unverified_assumptions": [],
   "items": [
     {
       "id": "route-lobby",
       "kind": "route",
-      "label": "Lobby: play button, mode select (solo/duo/squads), room code create/join, player name, navigation to locker and pass",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Hub \u2192 Play: create/join room, mode chips, ready-up, host start, member list on every platform",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/tests/e2e-20260909-175052/all-lobby.png",
+        "evidence/tests/e2e-20260909-175052/web-lobby.png",
+        "evidence/tests/e2e-20260909-175052/ios-lobby.png",
+        "evidence/tests/e2e-20260909-175052/macos-lobby.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "route-locker",
       "kind": "route",
-      "label": "Locker: browse and equip original cosmetics (outfits, pickaxes, gliders, banners); locked items show unlock level",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Locker: equipped outfit/tool/glider/banner, rarity chips, tier-locked originals",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/screens/web-desktop-light-locker.png",
+        "evidence/screens/web-desktop-dark-locker.png",
+        "evidence/screens/web-phone-light-locker.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "route-pass",
       "kind": "route",
-      "label": "Progression: XP bar, level, battle-pass-style unlock track with claimed/locked cosmetics and career stats",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Season pass: XP bar, reward track with tier locks, claimable badge, career stats",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/screens/web-desktop-light-pass.png",
+        "evidence/screens/web-desktop-dark-pass.png",
+        "evidence/screens/web-phone-dark-pass.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "route-match",
       "kind": "route",
-      "label": "Match screen: bus phase, drop, gameplay HUD, build mode, spectating and reconnect overlay",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Match screen: bus, drop, HUD, building, storm, spectate, match-over overlay",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/tests/e2e-20260909-175052/all-bus.png",
+        "evidence/tests/e2e-20260909-175052/all-gameplay.png",
+        "evidence/tests/e2e-20260909-175052/all-midgame.png",
+        "evidence/tests/e2e-20260909-175052/all-matchover.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "route-results",
       "kind": "route",
-      "label": "Results: victory banner or placement, eliminations, damage, XP gained, per-squad summary, return to lobby",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Results: placement, personal stats, XP gain/tier, scoreboard, continue to lobby",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/tests/e2e-20260909-175052/all-results.png",
+        "evidence/tests/e2e-20260909-175052/web-results.png",
+        "evidence/tests/e2e-20260909-175052/ios-results.png",
+        "evidence/tests/e2e-20260909-175052/macos-results.png"
+      ],
+      "provenance": "inferred"
+    },
+    {
+      "id": "route-settings",
+      "kind": "route",
+      "label": "Settings: profile name, theme (system/dark/light), reduce motion, haptics, server URL, controls reference",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/screens/web-desktop-light-settings.png",
+        "evidence/screens/web-phone-light-settings.png",
+        "evidence/screens/web-phone-dark-settings.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-rooms",
       "kind": "feature",
-      "label": "Rooms with join codes: create, join by code, ready state, host-only start, bots fill to 16",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Rooms with 5-letter join codes, host controls, lobby \u2192 match \u2192 results lifecycle",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/tests/e2e-20260909-175052/server.log",
+        "evidence/tests/e2e-20260909-175052/server-summary.json",
+        "evidence/checks/static-checks.txt"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-bus-drop",
       "kind": "feature",
-      "label": "Battle bus along a seeded line; jump action; forced drop at path end; glide to landing",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Battle bus along a seeded line, jump/forced drop, glide to ground",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/all-bus.png",
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-storm",
       "kind": "feature",
-      "label": "Shrinking storm ring with phased wait/shrink timers and escalating damage; storm timer and next-circle on minimap",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Shrinking storm with timed phases and growing damage; timer and next-circle on minimap",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/all-midgame.png",
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/checks/static-checks.txt"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-health-shield",
       "kind": "feature",
-      "label": "100 HP + 100 shield; small/big shield, bandage, medkit with documented caps and use times",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "100 HP + 100 shield, potions/bandages/medkits with caps",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-loot",
       "kind": "feature",
-      "label": "Floor loot and chests with rarity tiers (common..legendary), ammo types, materials; pickup/swap/drop",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Chests and floor loot with rarity tiers, ammo and materials",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/tests/e2e-20260909-175052/server-summary.json"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-harvest",
       "kind": "feature",
-      "label": "Harvest wood/stone/metal from seeded nodes with the pickaxe up to 500 each",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Harvest wood/stone/metal from seeded nodes, 500 cap each",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/tests/e2e-20260909-175052/server-summary.json"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-building",
       "kind": "feature",
-      "label": "Build walls/floors/ramps/roofs from selected material, placement preview, structures grow to full HP, edit door/window",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Walls/floors/ramps/roofs cost 10 materials, block movement, editable (door/window), server-validated",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-combat",
       "kind": "feature",
-      "label": "Server-authoritative hitscan weapons (Scrapper, Hornet, Ridgeline, Boomstick, Longshot) with reload, spread, damage falloff",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Server-authoritative hit detection, weapons per rarity, elimination feed",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-squads",
       "kind": "feature",
-      "label": "Solo/duo/squad modes; friendly fire off; teammates listed on HUD; team-aware win condition",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Solo/Duos/Squads; humans share one squad in tests; bots complete partial squads",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-bots",
       "kind": "feature",
-      "label": "Deterministic seeded bots harvest, loot, fight, build and avoid the storm",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Deterministic seeded bots fill open slots and play the full loop",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/checks/clean-checkout-builds.txt"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-hud",
       "kind": "feature",
-      "label": "HUD: health/shield bars, hotbar, materials, minimap + compass, storm timer, elimination feed, players-left, squad panel",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "HUD: health/shield, hotbar, materials, minimap+compass, storm timer, feed, players left, squad panel",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/all-gameplay.png",
+        "evidence/tests/e2e-20260909-175052/all-midgame.png",
+        "evidence/tests/e2e-20260909-175052/all-matchover.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-spectate",
       "kind": "feature",
-      "label": "After elimination spectate a living teammate or the eliminator; cycle targets",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Eliminated players spectate teammates; interest focus follows the spectated player",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/tests/e2e-20260909-175052/all-matchover.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-progression",
       "kind": "feature",
-      "label": "XP awarded per match (survival, elims, placement) persisted locally; levels unlock cosmetics",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "XP from placement/elims/damage/survival \u2192 tiers \u2192 cosmetic unlocks; persisted profile",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/all-results.png",
+        "evidence/screens/web-desktop-light-pass.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-input",
       "kind": "feature",
-      "label": "Keyboard+mouse on web/macOS, touch joysticks and buttons on iOS/Android, trackpad on macOS",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Keyboard+mouse (web/macOS), touch controls (iOS/Android), deterministic autopilot for tests",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/screens/web-desktop-light-settings.png",
+        "evidence/tests/e2e-20260909-175052/ios-gameplay.png",
+        "evidence/tests/e2e-20260909-175052/harness.log"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-reconnect",
       "kind": "feature",
-      "label": "Client reconnects with its token and resumes the same player within the grace window; overlay shown meanwhile",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Session token reconnect within 60 s grace; reconnecting banner; timeout removes player",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/screens/state-reconnecting-banner.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-prediction",
       "kind": "feature",
-      "label": "Client-side movement prediction reconciled against server snapshots; interest-managed replication",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Client movement prediction with server reconciliation; interest-managed snapshots (r=90)",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/tests/e2e-20260909-175052/harness.log",
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "feature-themes",
       "kind": "feature",
-      "label": "Dark and light themes with a shared design system (type scale, color tokens, spacing, motion)",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Light and dark themes from one token set, system-following, reduced motion",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/screens/web-desktop-dark-play.png",
+        "evidence/screens/web-desktop-light-play.png",
+        "evidence/screens/web-phone-dark-play.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "journey-four-platform-match",
       "kind": "journey",
-      "label": "Web, iOS, Android and macOS clients join one room as a squad, play a full deterministic match and receive identical summaries",
-      "status": "pending",
+      "label": "Web + iOS + Android + macOS join one room as one squad, play a full scripted match, and report identical summaries",
+      "status": "blocked",
       "verified_revision": null,
-      "evidence": []
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/tests/e2e-20260909-175052/harness.log",
+        "evidence/blockers/android-emulator-boot-attempt.log",
+        "evidence/blockers/android-emulator-accel-check.txt"
+      ],
+      "provenance": "inferred",
+      "note": "web/ios/macos verified with identical digest CA0FF4A2; the Android leg builds but cannot run: the host VM has no nested virtualization (kern.hv_support=0, HVF HV_UNSUPPORTED)."
     },
     {
       "id": "journey-solo-with-bots",
       "kind": "journey",
-      "label": "A single human creates a room, starts a solo match filled with bots and reaches the results screen",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "A single human starts a match that is filled with bots and reaches results",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/checks/clean-checkout-builds.txt"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "journey-elimination-spectate",
       "kind": "journey",
-      "label": "An eliminated player spectates until the match ends and sees the results screen",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Eliminated human spectates, match ends, results show placement and scoreboard",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/tests/e2e-20260909-175052/all-matchover.png",
+        "evidence/tests/e2e-20260909-175052/all-results.png"
+      ],
+      "provenance": "inferred"
     },
     {
-      "id": "visual-lobby-parity",
-      "kind": "visual",
-      "label": "Lobby renders identically across the four clients at the shared reference size (web baseline)",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
-    },
-    {
-      "id": "visual-hud-parity",
-      "kind": "visual",
-      "label": "Gameplay HUD renders identically across the four clients at the shared reference size (web baseline)",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
-    },
-    {
-      "id": "visual-results-parity",
-      "kind": "visual",
-      "label": "Results screen renders identically across the four clients at the shared reference size (web baseline)",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "id": "journey-ui-polish",
+      "kind": "journey",
+      "label": "Every platform screenshot reviewed for alignment, contrast, overlap and unfinished states after each polish pass",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/all-lobby.png",
+        "evidence/tests/e2e-20260909-175052/all-results.png",
+        "evidence/tests/e2e-20260909-175052/all-matchover.png",
+        "evidence/screens/web-phone-light-play.png",
+        "evidence/screens/web-desktop-dark-locker.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "asset-original-art",
       "kind": "asset",
-      "label": "All art, icons, cosmetics names and audio are original Lastfort creations (no proprietary Fortnite assets)",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "label": "Original wordmark, avatars, cosmetics, bot names; OFL font; no proprietary assets",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/assets.md",
+        "evidence/screens/web-desktop-light-locker.png"
+      ],
+      "provenance": "inferred"
     },
     {
       "id": "integration-server-protocol",
       "kind": "integration",
-      "label": "JSON-over-WebSocket protocol between clients and the Dart server, documented in PROTOCOL.md",
+      "label": "JSON-over-WebSocket protocol documented in PROTOCOL.md and exercised by all clients",
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt",
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/tests/e2e-20260909-175052/server.log",
+        "evidence/tests/e2e-20260909-175052/server-summary.json"
+      ],
+      "provenance": "inferred"
+    },
+    {
+      "id": "visual-lobby-parity",
+      "kind": "visual",
+      "label": "Lobby renders pixel-identically on web (baseline) and macOS in the shared 770x473 region",
       "status": "pending",
       "verified_revision": null,
-      "evidence": []
+      "evidence": [
+        "evidence/visual/web-vs-macos.jsonl",
+        "evidence/visual/README.md",
+        "evidence/tests/e2e-20260909-175052/visual.jsonl"
+      ],
+      "provenance": "inferred",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/visual/web-lobby-ref.png",
+        "actual": "evidence/visual/macos-lobby-act.png",
+        "diff": "evidence/visual/diff-web-macos-lobby.png",
+        "different_pixels": 234246,
+        "total_pixels": 364210,
+        "normalization_evidence": "evidence/visual/README.md"
+      }
+    },
+    {
+      "id": "visual-hud-parity",
+      "kind": "visual",
+      "label": "Match-over HUD renders pixel-identically on web (baseline) and macOS",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/visual/web-vs-macos.jsonl",
+        "evidence/visual/README.md",
+        "evidence/tests/e2e-20260909-175052/visual.jsonl"
+      ],
+      "provenance": "inferred",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/visual/web-matchover-ref.png",
+        "actual": "evidence/visual/macos-matchover-act.png",
+        "diff": "evidence/visual/diff-web-macos-matchover.png",
+        "different_pixels": 361388,
+        "total_pixels": 364210,
+        "normalization_evidence": "evidence/visual/README.md"
+      }
+    },
+    {
+      "id": "visual-results-parity",
+      "kind": "visual",
+      "label": "Results screen renders pixel-identically on web (baseline) and macOS",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/visual/web-vs-macos.jsonl",
+        "evidence/visual/README.md",
+        "evidence/tests/e2e-20260909-175052/visual.jsonl"
+      ],
+      "provenance": "inferred",
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/visual/web-results-ref.png",
+        "actual": "evidence/visual/macos-results-act.png",
+        "diff": "evidence/visual/diff-web-macos-results.png",
+        "different_pixels": 293042,
+        "total_pixels": 364210,
+        "normalization_evidence": "evidence/visual/README.md"
+      }
     }
   ],
   "audits": [
     {
       "id": "source",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/source.md"
+      ]
     },
     {
       "id": "navigation",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/navigation.md"
+      ]
     },
     {
       "id": "roles",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/roles.md"
+      ]
     },
     {
       "id": "states",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/states.md"
+      ]
     },
     {
       "id": "responsive",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/responsive.md"
+      ]
     },
     {
       "id": "data",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/data.md"
+      ]
     },
     {
       "id": "assets",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/assets.md"
+      ]
     },
     {
       "id": "accessibility",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/accessibility.md"
+      ]
     },
     {
       "id": "reliability",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/reliability.md"
+      ]
     },
     {
       "id": "rebrand",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "verified",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/audits/rebrand.md"
+      ]
     }
   ],
   "checks": [
     {
       "id": "functional",
-      "status": "pending",
+      "status": "failed",
       "verified_revision": null,
-      "evidence": []
+      "evidence": [
+        "evidence/tests/e2e-20260909-175052/report.md",
+        "evidence/tests/e2e-20260909-175052/result.json",
+        "evidence/checks/static-checks.txt",
+        "evidence/blockers/android-emulator-boot-attempt.log"
+      ],
+      "note": "Unit/integration suites pass and the web+iOS+macOS journey passes with identical digests; the required four-platform journey cannot run without an Android runtime."
     },
     {
       "id": "visual",
-      "status": "pending",
+      "status": "failed",
       "verified_revision": null,
-      "evidence": []
+      "evidence": [
+        "evidence/visual/README.md",
+        "evidence/visual/web-vs-macos.jsonl",
+        "evidence/tests/e2e-20260909-175052/visual.jsonl"
+      ],
+      "note": "Layout geometry matches; renderer rasterisation (CanvasKit vs Impeller) leaves non-zero pixel differences that are disclosed, not thresholded away. Android/iOS have no same-size pair."
     },
     {
       "id": "build",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/clean-checkout-builds.txt",
+        "evidence/checks/native-artifacts.txt"
+      ]
     },
     {
       "id": "quality",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/static-checks.txt"
+      ]
     },
     {
       "id": "security",
-      "status": "pending",
-      "verified_revision": null,
-      "evidence": []
+      "status": "passed",
+      "verified_revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "evidence": [
+        "evidence/checks/security.txt"
+      ]
     }
   ],
-  "sweeps": [],
-  "next_action": "Build the Flutter client (lobby, locker, HUD, gameplay, results) against the server protocol."
+  "sweeps": [
+    {
+      "revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "new_items": 0,
+      "frontier_empty": false,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-001.json"
+      ]
+    },
+    {
+      "revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+      "new_items": 0,
+      "frontier_empty": false,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-002.json"
+      ]
+    }
+  ],
+  "next_action": "Resume on a host with Android virtualization: run the full four-platform harness, then repeat the final suite, audits and sweeps."
 }
