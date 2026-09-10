@@ -337,6 +337,8 @@ async function main() {
     assert(lobby[p].screen === 'lobby', `${p} starts in the lobby`, lobby[p].screen);
   }
   await shootAll('lobby');
+  // Hold the "every client idle in its own window" frame for the recording.
+  if (!HEADLESS) await new Promise((r) => setTimeout(r, 3_000));
 
   // 3. Create room, seat the second player, spectators join by code.
   results.steps.push('room');

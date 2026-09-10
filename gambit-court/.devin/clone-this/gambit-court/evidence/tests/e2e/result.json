@@ -37,7 +37,7 @@
       "detail": "lobby"
     },
     {
-      "label": "room created with invite code 2FENTE",
+      "label": "room created with invite code U8LZ5W",
       "passed": true
     },
     {
@@ -50,7 +50,7 @@
       "passed": true,
       "detail": {
         "type": "ui_report",
-        "id": "1700000000000-304968145",
+        "id": "1700000000000-726444151",
         "ok": true,
         "clientId": "web-e2e",
         "platform": "web",
@@ -65,7 +65,7 @@
         "connection": "online",
         "screen": "game",
         "theme": "dark",
-        "roomCode": "2FENTE",
+        "roomCode": "U8LZ5W",
         "status": "playing",
         "seq": 2,
         "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -98,11 +98,11 @@
       }
     },
     {
-      "label": "ios joined 2FENTE as spectator",
+      "label": "ios joined U8LZ5W as spectator",
       "passed": true,
       "detail": {
         "type": "ui_report",
-        "id": "1700000000000-163442366",
+        "id": "1700000000000-484016822",
         "ok": true,
         "clientId": "ios-e2e",
         "platform": "ios",
@@ -117,7 +117,7 @@
         "connection": "online",
         "screen": "game",
         "theme": "dark",
-        "roomCode": "2FENTE",
+        "roomCode": "U8LZ5W",
         "status": "playing",
         "seq": 3,
         "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -157,7 +157,7 @@
       "detail": "playing"
     },
     {
-      "label": "web is in room 2FENTE",
+      "label": "web is in room U8LZ5W",
       "passed": true
     },
     {
@@ -181,7 +181,7 @@
       "detail": "playing"
     },
     {
-      "label": "ios is in room 2FENTE",
+      "label": "ios is in room U8LZ5W",
       "passed": true
     },
     {
@@ -205,7 +205,7 @@
       "detail": "playing"
     },
     {
-      "label": "macos is in room 2FENTE",
+      "label": "macos is in room U8LZ5W",
       "passed": true
     },
     {
@@ -421,7 +421,7 @@
       "passed": true,
       "detail": {
         "type": "ui_report",
-        "id": "1700000000000-799248449",
+        "id": "1700000000000-156694715",
         "ok": true,
         "clientId": "web-e2e",
         "platform": "web",
@@ -464,7 +464,7 @@
       "passed": true,
       "detail": {
         "type": "ui_report",
-        "id": "1700000000000-819498687",
+        "id": "1700000000000-606782479",
         "ok": true,
         "clientId": "ios-e2e",
         "platform": "ios",
@@ -507,7 +507,7 @@
       "passed": true,
       "detail": {
         "type": "ui_report",
-        "id": "1700000000000-209796152",
+        "id": "1700000000000-611384738",
         "ok": true,
         "clientId": "macos-e2e",
         "platform": "macos",
@@ -558,12 +558,12 @@
     {
       "label": "visual parity lobby-macos (web reference vs macos)",
       "passed": true,
-      "detail": "PASS lobby-macos: 0 differing blocks of 1200; mean colour delta 0.919"
+      "detail": "PASS lobby-macos: 0 differing blocks of 1200; mean colour delta 0.822"
     },
     {
       "label": "visual parity review-macos (web reference vs macos)",
       "passed": true,
-      "detail": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.467"
+      "detail": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.502"
     }
   ],
   "screenshots": [
@@ -713,7 +713,7 @@
       "scale": 1,
       "insetTop": 32,
       "safeBottom": 0,
-      "summary": "PASS lobby-macos: 0 differing blocks of 1200; mean colour delta 0.919",
+      "summary": "PASS lobby-macos: 0 differing blocks of 1200; mean colour delta 0.822",
       "status": 0
     },
     {
@@ -727,11 +727,11 @@
       "scale": 1,
       "insetTop": 32,
       "safeBottom": 0,
-      "summary": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.467",
+      "summary": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.502",
       "status": 0
     }
   ],
-  "roomCode": "2FENTE",
+  "roomCode": "U8LZ5W",
   "final": {
     "web": {
       "fen": "1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17",
@@ -884,6 +884,6 @@
       "seq": 38
     }
   },
-  "pgn": "[Event \"Gambit Court · Blitz\"]\n[Site \"Gambit Court (web)\"]\n[Date \"????.??.??\"]\n[Round \"2FENTE\"]\n[White \"macOS Dov\"]\n[Black \"Web Ada\"]\n[Result \"1-0\"]\n[TimeControl \"180+2\"]\n[Termination \"by checkmate\"]\n\n1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7\n8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7\n14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0\n",
+  "pgn": "[Event \"Gambit Court · Blitz\"]\n[Site \"Gambit Court (web)\"]\n[Date \"????.??.??\"]\n[Round \"U8LZ5W\"]\n[White \"macOS Dov\"]\n[Black \"Web Ada\"]\n[Result \"1-0\"]\n[TimeControl \"180+2\"]\n[Termination \"by checkmate\"]\n\n1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7\n8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7\n14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0\n",
   "passed": true
 }

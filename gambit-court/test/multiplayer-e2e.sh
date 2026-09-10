@@ -147,29 +147,47 @@ if [[ "$RECORD" == "1" ]]; then
     defaults write com.apple.dock autohide -bool true && killall Dock && DOCK_HIDDEN=1
   fi
 fi
-sleep 3
-osascript >/dev/null 2>&1 <<'EOF' || true
+# Wait for every native window to exist before arranging; a cold debug launch
+# of the macOS app can take several seconds.
+window_ready() {
+  osascript -e "tell application \"System Events\" to if exists process \"$1\" then return (count of windows of process \"$1\") > 0" 2>/dev/null | grep -q true
+}
+for _ in $(seq 1 60); do
+  ready=1
+  has macos && ! window_ready "Gambit Court" && ready=0
+  has ios && ! window_ready "Simulator" && ready=0
+  has android && ! window_ready "qemu-system-aarch64" && ready=0
+  [[ $ready == 1 ]] && break
+  sleep 0.5
+done
+# Simulator.app ignores AppleScript window sizes; its Window menu offers fixed
+# scales instead. Alone on the right it gets "Fit Screen"; next to the Android
+# emulator both phones must share the column, so it drops to "Physical Size".
+SIM_SCALE="Fit Screen"; has android && SIM_SCALE="Physical Size"
+osascript >/dev/null 2>&1 <<EOF || true
 tell application "System Events"
   if exists process "Gambit Court" then
     tell process "Gambit Court"
-      set position of window 1 to {0, 690}
+      set position of window 1 to {0, 685}
       set size of window 1 to {1000, 510}
     end tell
   end if
   if exists process "Simulator" then
     tell process "Simulator"
-      set position of window 1 to {1010, 30}
-      set size of window 1 to {290, 640}
+      click menu item "$SIM_SCALE" of menu "Window" of menu bar 1
+      delay 0.5
+      set position of window 1 to {1050, 50}
     end tell
   end if
   if exists process "qemu-system-aarch64" then
     tell process "qemu-system-aarch64"
-      set position of window 1 to {1310, 30}
       set size of window 1 to {290, 640}
+      set position of window 1 to {1300, 50}
     end tell
   end if
 end tell
 EOF
+sleep 1
 
 # ----------------------------------------------------------------- record
 if [[ "$RECORD" == "1" ]]; then

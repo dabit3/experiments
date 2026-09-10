@@ -29,12 +29,12 @@
   "differing_blocks": 0,
   "differing_block_coords": [],
   "coverage": {
-    "mean_block_delta": 0.0015,
-    "max_block_delta": 0.0575
+    "mean_block_delta": 0.0044,
+    "max_block_delta": 0.0925
   },
   "raw_colour": {
-    "mean_block_channel_delta": 0.467,
-    "max_block_channel_delta": 10.482,
+    "mean_block_channel_delta": 0.502,
+    "max_block_channel_delta": 10.515,
     "blocks_with_delta_over_16": 0
   }
 }
