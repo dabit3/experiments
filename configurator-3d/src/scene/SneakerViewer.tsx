@@ -64,28 +64,27 @@ interface Rig {
 }
 
 /**
- * Matte parts are lit by the analytic lights only; the (comparatively expensive) environment map
- * is sampled just by gloss/metallic parts, which keeps software WebGL interactive.
+ * Matte reads as full-grain leather: a broad, dim environment sheen. Gloss is patent leather;
+ * metallic is a brushed foil with the environment doing most of the work.
  */
 function applyFinish(mat: THREE.MeshStandardMaterial, color: string, finish: Finish, env: THREE.Texture): void {
   mat.color.set(color)
+  mat.envMap = env
   switch (finish) {
     case 'matte':
-      mat.roughness = 0.62
+      mat.roughness = 0.58
       mat.metalness = 0
-      mat.envMap = null
+      mat.envMapIntensity = 0.35
       break
     case 'gloss':
-      mat.roughness = 0.18
-      mat.metalness = 0.05
-      mat.envMap = env
-      mat.envMapIntensity = 0.4
+      mat.roughness = 0.2
+      mat.metalness = 0
+      mat.envMapIntensity = 0.55
       break
     case 'metallic':
-      mat.roughness = 0.28
-      mat.metalness = 1
-      mat.envMap = env
-      mat.envMapIntensity = 1.4
+      mat.roughness = 0.34
+      mat.metalness = 0.9
+      mat.envMapIntensity = 1.1
       break
   }
   mat.needsUpdate = true
@@ -148,7 +147,7 @@ function buildHulls(model: SneakerModel, material: THREE.MeshBasicMaterial): Rec
   const hull = {} as Record<PartId, THREE.Mesh[]>
   for (const id of PART_IDS) {
     hull[id] = model.partMeshes[id]
-      .filter((m) => !(m.geometry instanceof THREE.PlaneGeometry))
+      .filter((m) => m.userData.decal !== true)
       .map((m) => {
         let geom = smoothed.get(m.geometry)
         if (!geom) {
@@ -179,7 +178,7 @@ function refreshHulls(rig: Rig): void {
 }
 
 function createRig(container: HTMLDivElement): Rig {
-  const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' })
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' })
   renderer.setClearColor(0x000000, 0)
   renderer.toneMapping = THREE.ACESFilmicToneMapping
   renderer.toneMappingExposure = 1.0
@@ -204,17 +203,21 @@ function createRig(container: HTMLDivElement): Rig {
   controls.enablePan = false
   controls.autoRotateSpeed = 2.2
 
-  // Studio three-point setup: warm key from the front-right, cool fill, and a top rim.
-  const key = new THREE.DirectionalLight(0xfff6ea, 2.1)
-  key.position.set(3.5, 4.5, 3)
+  // Studio setup: large soft key high front-right, cool fill from the back-left, a low rim
+  // grazing the heel, and a bright hemisphere so shadows stay open like a product shoot.
+  const key = new THREE.DirectionalLight(0xfff4e6, 1.7)
+  key.position.set(3, 5.5, 3.5)
   scene.add(key)
-  const fill = new THREE.DirectionalLight(0xdfe8ff, 0.9)
-  fill.position.set(-4, 2, -2.5)
+  const fill = new THREE.DirectionalLight(0xdde6ff, 0.75)
+  fill.position.set(-4, 2.5, -3)
   scene.add(fill)
-  const rim = new THREE.DirectionalLight(0xffffff, 0.7)
-  rim.position.set(-1, 4, -5)
+  const rim = new THREE.DirectionalLight(0xffffff, 0.55)
+  rim.position.set(-3, 1.2, 4)
   scene.add(rim)
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xb9b4ad, 0.9))
+  const top = new THREE.DirectionalLight(0xffffff, 0.45)
+  top.position.set(0, 6, -1)
+  scene.add(top)
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xcfc9c0, 1.05))
 
   scene.add(makeBlobShadow())
 

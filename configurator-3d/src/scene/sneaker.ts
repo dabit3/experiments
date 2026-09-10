@@ -14,7 +14,7 @@ export interface SneakerModel {
   partMeshes: Record<PartId, THREE.Mesh[]>
   /** One shared material per part. */
   materials: Record<PartId, THREE.MeshStandardMaterial>
-  /** The plane on the heel tab that carries the engraving texture. */
+  /** The decal skin on the heel label that carries the engraving texture. */
   engravingMaterial: THREE.MeshStandardMaterial
 }
 
@@ -86,8 +86,10 @@ const HEIGHT = profile([
   [0.3, 0.53],
   [0.6, 0.45],
   [0.9, 0.37],
-  [1.15, 0.28],
-  [1.35, 0.15],
+  [1.15, 0.29],
+  [1.3, 0.23],
+  [1.4, 0.15],
+  [1.44, 0.08],
   [1.45, 0.03],
 ])
 
@@ -105,8 +107,10 @@ const WIDTH = profile([
   [0.2, 0.49],
   [0.6, 0.53],
   [0.95, 0.5],
-  [1.2, 0.4],
-  [1.38, 0.2],
+  [1.2, 0.42],
+  [1.32, 0.34],
+  [1.4, 0.24],
+  [1.44, 0.13],
   [1.45, 0.03],
 ])
 
@@ -171,6 +175,7 @@ const _a = new THREE.Vector3()
 const _b = new THREE.Vector3()
 const _c = new THREE.Vector3()
 const _d = new THREE.Vector3()
+const _e = new THREE.Vector3()
 
 function normalAt(u: number, theta: number, out: THREE.Vector3): THREE.Vector3 {
   const eu = 0.002
@@ -183,7 +188,12 @@ function normalAt(u: number, theta: number, out: THREE.Vector3): THREE.Vector3 {
   _c.sub(_d)
   out.crossVectors(_a, _c)
   if (out.lengthSq() < 1e-10) return out.set(u > 0.5 ? 1 : -1, 0, 0)
-  return out.normalize()
+  out.normalize()
+  // The last pinches to a line at both ends; ease the normal onto the axis there so
+  // panels meeting at the seam are offset the same way from either side.
+  const axial = sstep(0.03, 0, u) + sstep(0.97, 1, u)
+  if (axial > 0) out.lerp(_e.set(u > 0.5 ? 1 : -1, 0, 0), axial).normalize()
+  return out
 }
 
 /**
@@ -205,7 +215,12 @@ type PointFn = (i: number, j: number, out: THREE.Vector3) => THREE.Vector3
 
 interface GridBuild {
   positions: number[]
+  uvs: number[]
   index: number[]
+}
+
+function newBuild(): GridBuild {
+  return { positions: [], uvs: [], index: [] }
 }
 
 function quad(index: number[], a: number, b: number, c: number, d: number): void {
@@ -220,6 +235,7 @@ function skin(build: GridBuild, n: number, m: number, at: PointFn, flip = false)
     for (let j = 0; j <= m; j++) {
       at(i, j, v)
       build.positions.push(v.x, v.y, v.z)
+      build.uvs.push(i / n, j / m)
     }
   }
   const id = (i: number, j: number): number => base + i * (m + 1) + j
@@ -232,9 +248,20 @@ function skin(build: GridBuild, n: number, m: number, at: PointFn, flip = false)
   return base
 }
 
+function flipWinding(index: number[]): void {
+  for (let k = 0; k < index.length; k += 3) {
+    const tmp = index[k + 1]
+    index[k + 1] = index[k + 2]
+    index[k + 2] = tmp
+  }
+}
+
 function finishGeometry(build: GridBuild): THREE.BufferGeometry {
   const geom = new THREE.BufferGeometry()
   geom.setAttribute('position', new THREE.Float32BufferAttribute(build.positions, 3))
+  if (build.uvs.length * 3 === build.positions.length * 2) {
+    geom.setAttribute('uv', new THREE.Float32BufferAttribute(build.uvs, 2))
+  }
   geom.setIndex(build.index)
   geom.computeVertexNormals()
   return geom
@@ -242,7 +269,7 @@ function finishGeometry(build: GridBuild): THREE.BufferGeometry {
 
 /** Surface on the last over the full (u, θ) domain, capped at the heel and toe ends. */
 function lastSurface(n: number, m: number): THREE.BufferGeometry {
-  const build: GridBuild = { positions: [], index: [] }
+  const build = newBuild()
   skin(build, n, m, (i, j, out) => surface(i / n, (j / m) * Math.PI, out))
   const v = new THREE.Vector3()
   for (const [u, flip] of [
@@ -253,10 +280,12 @@ function lastSurface(n: number, m: number): THREE.BufferGeometry {
     for (let j = 0; j <= m; j++) {
       surface(u, (j / m) * Math.PI, v)
       build.positions.push(v.x, v.y, v.z)
+      build.uvs.push(u, j / m)
     }
     const centre = build.positions.length / 3
     surface(u, 0, v)
     build.positions.push(v.x, baseY(xAt(u)) - DIP, 0)
+    build.uvs.push(u, 0.5)
     for (let j = 0; j < m; j++) {
       if (flip) build.index.push(centre, ring + j + 1, ring + j)
       else build.index.push(centre, ring + j, ring + j + 1)
@@ -270,26 +299,83 @@ interface PatchSpec {
   domain: (s: number, t: number) => [number, number]
   n: number
   m: number
-  /** Outward offset of the visible face. */
+  /** Outward offset of the visible face at the centre of the panel. */
   raise: number
+  /** Uniform outward offset added everywhere (lets a panel sit on top of another panel). */
+  base?: number
   /** How deep the shell sinks below the surface (hides the seam). */
   sink?: number
+  /**
+   * Width, in (s, t) units, of the rounded roll-off along each edge so the panel reads as
+   * padded leather rather than a plate. Order: [s = 0, s = 1, t = 0, t = 1]; 0 = square edge.
+   */
+  bevel?: [number, number, number, number]
 }
 
-/** A closed shell that hugs the last: raised front skin, sunken back skin and four edge walls. */
-function patch({ domain, n, m, raise, sink = 0.02 }: PatchSpec): THREE.BufferGeometry {
-  const build: GridBuild = { positions: [], index: [] }
+/** Quarter-circle roll-off: 1 in the middle of the panel, 0 at a bevelled edge. */
+function crown(s: number, t: number, bevel: [number, number, number, number]): number {
+  const roll = (d: number, w: number): number => (w <= 0 ? 1 : Math.sqrt(1 - (1 - Math.min(1, d / w)) ** 2))
+  return roll(s, bevel[0]) * roll(1 - s, bevel[1]) * roll(t, bevel[2]) * roll(1 - t, bevel[3])
+}
+
+/** Front-skin offset of a patch at (s, t). */
+function patchOffset(spec: PatchSpec, s: number, t: number): number {
+  const bevel = spec.bevel ?? [0.12, 0.12, 0.12, 0.12]
+  // A small floor keeps bevelled edges clear of the upper so the outline is the panel's own
+  // (smooth) mesh edge rather than a jagged intersection of two tessellated surfaces.
+  return (spec.base ?? 0.004) + spec.raise * crown(s, t, bevel)
+}
+
+/**
+ * Mirrored domains (θ decreasing with t) turn a shell inside out; flip the winding so the
+ * front skin always faces along the surface normal.
+ */
+function fixWinding(build: GridBuild, { domain, n, m }: PatchSpec): void {
+  const nrm = new THREE.Vector3()
+  const [u0, t0] = domain(0.5, 0.5)
+  const [u1, t1] = domain(0.5 + 0.5 / n, 0.5)
+  const [u2, t2] = domain(0.5, 0.5 + 0.5 / m)
+  normalAt(u0, t0, nrm)
+  surface(u0, t0, _a)
+  surface(u1, t1, _b).sub(_a)
+  surface(u2, t2, _c).sub(_a)
+  if (_b.cross(_c).dot(nrm) < 0) flipWinding(build.index)
+}
+
+/** Only the visible skin of a patch (with UVs), lifted `extra` above it — used for decals. */
+function patchSkin(spec: PatchSpec, extra: number): THREE.BufferGeometry {
+  const build = newBuild()
+  const nrm = new THREE.Vector3()
+  const { n, m, domain } = spec
+  skin(build, n, m, (i, j, out) => {
+    const s = i / n
+    const t = j / m
+    const [u, theta] = domain(s, t)
+    surface(u, theta, out)
+    normalAt(u, theta, nrm)
+    return out.addScaledVector(nrm, patchOffset(spec, s, t) + extra)
+  })
+  fixWinding(build, spec)
+  return finishGeometry(build)
+}
+
+/** A closed shell that hugs the last: crowned front skin, sunken back skin and four edge walls. */
+function patch(spec: PatchSpec): THREE.BufferGeometry {
+  const { domain, n, m, sink = 0.02 } = spec
+  const build = newBuild()
   const nrm = new THREE.Vector3()
   const pointAt =
-    (offset: number): PointFn =>
+    (offset: (s: number, t: number) => number): PointFn =>
     (i, j, out) => {
-      const [u, theta] = domain(i / n, j / m)
+      const s = i / n
+      const t = j / m
+      const [u, theta] = domain(s, t)
       surface(u, theta, out)
       normalAt(u, theta, nrm)
-      return out.addScaledVector(nrm, offset)
+      return out.addScaledVector(nrm, offset(s, t))
     }
-  const front = skin(build, n, m, pointAt(raise))
-  const back = skin(build, n, m, pointAt(-sink), true)
+  const front = skin(build, n, m, pointAt((s, t) => patchOffset(spec, s, t)))
+  const back = skin(build, n, m, pointAt(() => -sink), true)
   const f = (i: number, j: number): number => front + i * (m + 1) + j
   const b = (i: number, j: number): number => back + i * (m + 1) + j
   for (let i = 0; i < n; i++) {
@@ -300,28 +386,13 @@ function patch({ domain, n, m, raise, sink = 0.02 }: PatchSpec): THREE.BufferGeo
     quad(build.index, f(0, j), f(0, j + 1), b(0, j), b(0, j + 1))
     quad(build.index, f(n, j), b(n, j), f(n, j + 1), b(n, j + 1))
   }
-  // Mirrored domains (θ decreasing with t) turn the shell inside out; flip the winding
-  // so the front skin always faces along the surface normal.
-  const [u0, t0] = domain(0.5, 0.5)
-  const [u1, t1] = domain(0.5 + 0.5 / n, 0.5)
-  const [u2, t2] = domain(0.5, 0.5 + 0.5 / m)
-  normalAt(u0, t0, nrm)
-  surface(u0, t0, _a)
-  surface(u1, t1, _b).sub(_a)
-  surface(u2, t2, _c).sub(_a)
-  if (_b.cross(_c).dot(nrm) < 0) {
-    for (let k = 0; k < build.index.length; k += 3) {
-      const tmp = build.index[k + 1]
-      build.index[k + 1] = build.index[k + 2]
-      build.index[k + 2] = tmp
-    }
-  }
+  fixWinding(build, spec)
   return finishGeometry(build)
 }
 
 /** A flat lace: a rectangular section swept along `curve`, kept level with `up`. */
 function ribbon(curve: THREE.Curve<THREE.Vector3>, up: THREE.Vector3, width: number, thick: number): THREE.BufferGeometry {
-  const build: GridBuild = { positions: [], index: [] }
+  const build = newBuild()
   const p = new THREE.Vector3()
   const tan = new THREE.Vector3()
   const side = new THREE.Vector3()
@@ -348,45 +419,119 @@ function ribbon(curve: THREE.Curve<THREE.Vector3>, up: THREE.Vector3, width: num
   return finishGeometry(build)
 }
 
-/** Footprint of the sole: the last's width plus a lip, as a closed spline. */
-function soleShape(margin: number): THREE.Shape {
-  const pts: THREE.Vector2[] = []
-  const N = 30
-  for (let i = 0; i <= N; i++) {
-    const x = THREE.MathUtils.lerp(X0 - margin * 0.4, X1 + margin * 0.4, i / N)
-    const xi = THREE.MathUtils.clamp(x, X0, X1)
-    const w = WIDTH(xi) + margin
-    pts.push(new THREE.Vector2(x, w))
-  }
-  const back = pts.map((p) => new THREE.Vector2(p.x, -p.y)).reverse()
-  const shape = new THREE.Shape()
-  shape.moveTo(pts[0].x, pts[0].y)
-  shape.splineThru(pts.slice(1))
-  shape.splineThru(back)
-  shape.closePath()
-  return shape
+/**
+ * Half-width of the sole footprint at x: the last's width plus a lip, with the heel and toe
+ * finished as broad elliptical ends (the raw last pinches to a point at both ends).
+ */
+function footprint(x: number, margin: number): number {
+  const heelR = 0.34
+  const toeR = 0.26
+  const xh = X0 - margin + heelR
+  const xt = X1 + margin - toeR
+  const wh = WIDTH(xh) + margin
+  const wt = WIDTH(xt) + margin
+  if (x < xh) return wh * Math.sqrt(Math.max(0, 1 - ((xh - x) / heelR) ** 2))
+  if (x > xt) return wt * Math.sqrt(Math.max(0, 1 - ((x - xt) / toeR) ** 2))
+  // Ease the straight-ish sides into the flat-tangent ends so the outline has no kinks.
+  const w = WIDTH(x) + margin
+  return THREE.MathUtils.lerp(
+    THREE.MathUtils.lerp(w, wh, sstep(xh + 0.16, xh, x)),
+    wt,
+    sstep(xt - 0.16, xt, x),
+  )
 }
 
-/** Extrudes a flat sole slab (y from `y0` upwards) and bends it with the toe spring. */
-function soleSlab(margin: number, y0: number, depth: number, bevel: number): THREE.BufferGeometry {
-  const geom = new THREE.ExtrudeGeometry(soleShape(margin), {
-    depth,
-    bevelEnabled: bevel > 0,
-    bevelThickness: bevel,
-    bevelSize: bevel * 0.8,
-    bevelSegments: 3,
-    curveSegments: 12,
-  })
-  // Extrude runs along +z; lay it flat so the bevelled cap faces up.
-  geom.rotateX(-Math.PI / 2)
-  geom.translate(0, y0 + bevel, 0)
-  const pos = geom.attributes.position
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i)
-    pos.setY(i, pos.getY(i) + lift(THREE.MathUtils.clamp(x, X0, X1)))
+interface SoleSpec {
+  margin: number
+  /** Bottom of the shell (before toe spring). */
+  y0: number
+  height: number
+  /** Radius of the rounded bottom and top edges. */
+  rBottom: number
+  rTop: number
+  /** How far the wall leans inward from bottom to top. */
+  taper?: number
+  /** Extra bulge of the wall at mid-height (a moulded cupsole belly). */
+  belly?: number
+}
+
+/**
+ * A sole shell swept around the footprint: rounded bottom edge, (optionally bellied) wall,
+ * rounded top edge and flat caps, all following the toe spring. Unlike an extrusion the
+ * surface is one smooth grid, so highlights sweep around it without polygonal steps.
+ */
+function soleShell({ margin, y0, height, rBottom, rTop, taper = 0, belly = 0 }: SoleSpec): THREE.BufferGeometry {
+  const N = 120 // points along one side of the footprint
+  const Q = 5 // segments per rounded edge
+  const outline: THREE.Vector2[] = []
+  const xmin = X0 - margin
+  const xmax = X1 + margin
+  for (let i = 0; i <= N; i++) {
+    const x = xmin + ((xmax - xmin) * (1 - Math.cos(Math.PI * (i / N)))) / 2
+    outline.push(new THREE.Vector2(x, footprint(x, margin)))
   }
-  pos.needsUpdate = true
-  geom.computeVertexNormals()
+  for (let i = N - 1; i > 0; i--) outline.push(new THREE.Vector2(outline[i].x, -outline[i].y))
+  const L = outline.length
+  const normals = outline.map((p, i) => {
+    const prev = outline[(i - 1 + L) % L]
+    const next = outline[(i + 1) % L]
+    const n = new THREE.Vector2(next.y - prev.y, -(next.x - prev.x)).normalize()
+    return n.dot(p) < 0 ? n.negate() : n
+  })
+
+  // Wall profile from the bottom edge to the top edge as (inset, height) pairs.
+  const prof: [number, number][] = []
+  for (let q = 0; q <= Q; q++) {
+    const a = (q / Q) * (Math.PI / 2)
+    prof.push([rBottom * (1 - Math.sin(a)), rBottom * (1 - Math.cos(a))])
+  }
+  const wallSegs = 6
+  for (let k = 1; k < wallSegs; k++) {
+    const f = k / wallSegs
+    const y = THREE.MathUtils.lerp(rBottom, height - rTop, f)
+    prof.push([taper * f - belly * Math.sin(Math.PI * f), y])
+  }
+  for (let q = 0; q <= Q; q++) {
+    const a = (q / Q) * (Math.PI / 2)
+    prof.push([taper + rTop * (1 - Math.cos(a)), height - rTop + rTop * Math.sin(a)])
+  }
+
+  const build = newBuild()
+  const P = prof.length - 1
+  skin(build, L, P, (i, j, out) => {
+    const k = i % L
+    const [inset, y] = prof[j]
+    const p = outline[k]
+    const n = normals[k]
+    const x = p.x - n.x * inset
+    return out.set(x, y0 + y + lift(THREE.MathUtils.clamp(x, X0, X1)), p.y - n.y * inset)
+  })
+  // Caps: ruled strips between the +z and −z sides so they follow the toe spring.
+  const capInset = prof[P][0]
+  const cap = (y: number, inset: number, flip: boolean) =>
+    skin(
+      build,
+      N,
+      8,
+      (i, j, out) => {
+        const p = outline[i]
+        const n = normals[i]
+        const x = p.x - n.x * inset
+        const z = (p.y - n.y * inset) * (1 - (2 * j) / 8)
+        return out.set(x, y0 + y + lift(THREE.MathUtils.clamp(x, X0, X1)), z)
+      },
+      flip,
+    )
+  cap(height, capInset, false)
+  cap(0, rBottom, true)
+
+  const geom = finishGeometry(build)
+  // Orient outward: a wall vertex halfway along the +z side must have a +z normal.
+  const probe = Math.floor(N / 2) * (P + 1) + Math.floor(P / 2)
+  if (geom.attributes.normal.getZ(probe) < 0) {
+    flipWinding(build.index)
+    return finishGeometry(build)
+  }
   return geom
 }
 
@@ -410,9 +555,10 @@ const EYELET_HEIGHT = 0.9
 
 function toeCap(): THREE.BufferGeometry {
   return patch({
-    n: 14,
-    m: 36,
+    n: 18,
+    m: 48,
     raise: 0.024,
+    bevel: [0.2, 0, 0, 0],
     domain: (s, t) => {
       const theta = t * Math.PI
       // Rear edge bows back over the top of the foot.
@@ -424,11 +570,13 @@ function toeCap(): THREE.BufferGeometry {
 
 function mudguard(side: 1 | -1): THREE.BufferGeometry {
   const xA = -0.5
-  const xB = TOE_CAP_X - 0.03
+  // Runs on under the toe cap, which is stitched over it.
+  const xB = TOE_CAP_X + 0.14
   return patch({
-    n: 22,
-    m: 6,
+    n: 30,
+    m: 10,
     raise: 0.018,
+    bevel: [0.1, 0, 0, 0.28],
     domain: (s, t) => {
       // Rounded rear end: the corners are pulled forward, the middle of the edge stays.
       const rear = xA + 0.14 * (1 - Math.sin(Math.PI * t)) ** 2
@@ -442,11 +590,12 @@ function mudguard(side: 1 | -1): THREE.BufferGeometry {
 
 function eyestay(side: 1 | -1): THREE.BufferGeometry {
   const xA = -0.42
-  const xB = TOE_CAP_X - 0.03
+  const xB = TOE_CAP_X + 0.1
   return patch({
-    n: 20,
-    m: 5,
+    n: 28,
+    m: 10,
     raise: 0.02,
+    bevel: [0.1, 0, 0.3, 0.3],
     domain: (s, t) => {
       const x = THREE.MathUtils.lerp(xA, xB, s)
       const u = uAt(x)
@@ -456,18 +605,22 @@ function eyestay(side: 1 | -1): THREE.BufferGeometry {
   })
 }
 
-function heelCounter(side: 1 | -1): THREE.BufferGeometry {
+/** One panel wrapping around the heel: s runs lateral front → back → medial front. */
+function heelCounter(): THREE.BufferGeometry {
   return patch({
-    n: 16,
-    m: 14,
+    n: 80,
+    m: 20,
     raise: 0.018,
     sink: 0.006,
+    bevel: [0.12, 0.12, 0, 0.16],
     domain: (s, t) => {
+      const side: 1 | -1 = s < 0.5 ? 1 : -1
+      const k = Math.abs(2 * s - 1)
       // Front edge sweeps back as it rises so the top-front corner is a soft curve.
-      const x = THREE.MathUtils.lerp(X0, -0.7 - 0.2 * t * t, s)
+      const x = THREE.MathUtils.lerp(X0, -0.7 - 0.2 * t * t, k)
       const u = uAt(x)
       // Top edge at an absolute height (tallest at the back) rather than a fraction of the profile.
-      const top = Math.min(1, THREE.MathUtils.lerp(0.52, 0.3, s * s) / HEIGHT(x))
+      const top = Math.min(1, THREE.MathUtils.lerp(0.52, 0.3, k * k) / HEIGHT(x))
       return [u, thetaAtHeight(u, t * top, side)]
     },
   })
@@ -486,10 +639,12 @@ function swoosh(side: 1 | -1): THREE.BufferGeometry {
     return 0.15 * cap * (1 - s) ** 0.9
   }
   return patch({
-    n: 56,
-    m: 6,
-    raise: 0.03,
+    n: 64,
+    m: 10,
+    base: 0.01,
+    raise: 0.022,
     sink: 0.012,
+    bevel: [0.04, 0.08, 0.3, 0.3],
     domain: (s0, t) => {
       const s = s0 ** 1.6
       const c = centre.getPoint(s)
@@ -498,6 +653,24 @@ function swoosh(side: 1 | -1): THREE.BufferGeometry {
       return [u, thetaAtHeight(u, f, side)]
     },
   })
+}
+
+/**
+ * The heel label wraps around the centre-back seam: s runs from the −z side, through the
+ * seam (u = 0) to the +z side; t runs up the back between two height fractions.
+ */
+const HEEL_LABEL: PatchSpec = {
+  n: 28,
+  m: 12,
+  base: 0.022,
+  raise: 0.012,
+  sink: 0.004,
+  bevel: [0.1, 0.1, 0.2, 0.2],
+  domain: (s, t) => {
+    const side: 1 | -1 = s >= 0.5 ? 1 : -1
+    const u = Math.abs(2 * s - 1) * uAt(-1.262)
+    return [u, thetaAtHeight(u, THREE.MathUtils.lerp(0.36, 0.62, t), side)]
+  },
 }
 
 // ---------------------------------------------------------------------------
@@ -530,17 +703,13 @@ export function buildSneaker(): SneakerModel {
   }
 
   // --- Sole unit -------------------------------------------------------------
-  add('outsole', soleSlab(0.075, 0, 0.07, 0.01))
-  add('sole', soleSlab(0.085, 0.05, 0.15, 0.035))
-  // Stitch line where the upper meets the midsole.
-  root.add(new THREE.Mesh(soleSlab(0.03, BASE_Y - 0.012, 0.01, 0), trim))
-  // Grooves around the midsole wall give the cupsole its moulded look.
-  for (const y of [0.12, 0.19]) {
-    root.add(new THREE.Mesh(soleSlab(0.088, y, 0.008, 0), trim))
-  }
+  add('outsole', soleShell({ margin: 0.07, y0: 0, height: 0.075, rBottom: 0.035, rTop: 0.008 }))
+  add('sole', soleShell({ margin: 0.085, y0: 0.06, height: 0.17, rBottom: 0.012, rTop: 0.045, taper: 0.012, belly: 0.01 }))
+  // Foxing lip: the cupsole wraps up over the bottom edge of the upper.
+  add('sole', soleShell({ margin: 0.04, y0: BASE_Y - 0.03, height: 0.046, rBottom: 0.004, rTop: 0.012 }))
 
   // --- Upper (base) -----------------------------------------------------------
-  add('upper', lastSurface(96, 48))
+  add('upper', lastSurface(160, 72))
 
   // Padded collar ringing the foot opening, and the dark lining inside it.
   const deckY = baseY(OPEN_X) + HEIGHT(OPEN_X)
@@ -559,7 +728,7 @@ export function buildSneaker(): SneakerModel {
 
   // --- Overlays ---------------------------------------------------------------
   add('overlays', toeCap())
-  addMirrored('overlays', heelCounter)
+  add('overlays', heelCounter())
   addMirrored('overlays', mudguard)
   addMirrored('overlays', eyestay)
   addMirrored('stripe', swoosh)
@@ -605,15 +774,15 @@ export function buildSneaker(): SneakerModel {
   const throatDir = throatB.clone().sub(throatA)
   const tongueLen = throatDir.length() + 0.06
   const tongueTilt = Math.atan2(throatDir.y, throatDir.x) - 0.14
-  const tongueThick = 0.13
+  const tongueThick = 0.1
   const tongue = new THREE.Group()
   tongue.position.copy(throatA).lerp(throatB, 0.5)
   tongue.position.y += 0.075
   tongue.rotation.z = tongueTilt
   root.add(tongue)
-  add('tongue', new RoundedBoxGeometry(tongueLen, tongueThick, 0.44, 4, 0.05), tongue)
-  const label = new THREE.Mesh(new RoundedBoxGeometry(0.22, 0.016, 0.24, 2, 0.008), trim)
-  label.position.set(-tongueLen / 2 + 0.2, tongueThick / 2, 0)
+  add('tongue', new RoundedBoxGeometry(tongueLen, tongueThick, 0.46, 6, 0.046), tongue)
+  const label = new THREE.Mesh(new RoundedBoxGeometry(0.2, 0.01, 0.2, 2, 0.005), trim)
+  label.position.set(-tongueLen / 2 + 0.19, tongueThick / 2, 0)
   tongue.add(label)
 
   // --- Laces ------------------------------------------------------------------
@@ -639,27 +808,23 @@ export function buildSneaker(): SneakerModel {
   // Straight bar across the top pair of eyelets.
   add('laces', lace(eyelets[0][0], eyelets[1][0], 0.002))
 
-  // --- Heel tab ---------------------------------------------------------------
-  const heelTopY = baseY(X0) + HEIGHT(X0)
-  const tab = add('heel', new RoundedBoxGeometry(0.05, 0.16, 0.24, 3, 0.02))
-  tab.position.set(X0 - 0.028, heelTopY + 0.005, 0)
-  tab.rotation.z = 0.12
-
+  // --- Heel label -------------------------------------------------------------
+  // A stitched leather label on the back of the heel counter that carries the engraving.
+  add('heel', patch(HEEL_LABEL))
   const engravingMaterial = new THREE.MeshStandardMaterial({
     transparent: true,
     depthWrite: false,
     polygonOffset: true,
     polygonOffsetFactor: -2,
     polygonOffsetUnits: -2,
-    roughness: 0.7,
+    roughness: 0.75,
     metalness: 0,
   })
-  const engraving = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.12), engravingMaterial)
-  engraving.rotation.y = -Math.PI / 2
-  engraving.position.set(-0.0255, 0, 0)
+  const engraving = new THREE.Mesh(patchSkin(HEEL_LABEL, 0.0015), engravingMaterial)
   engraving.userData.partId = 'heel'
+  engraving.userData.decal = true
   partMeshes.heel.push(engraving)
-  tab.add(engraving)
+  root.add(engraving)
 
   root.position.y = -0.62
   return { root, partMeshes, materials, engravingMaterial }
