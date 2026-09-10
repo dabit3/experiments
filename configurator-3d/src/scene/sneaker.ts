@@ -533,7 +533,7 @@ export function buildSneaker(): SneakerModel {
   add('outsole', soleSlab(0.075, 0, 0.07, 0.01))
   add('sole', soleSlab(0.085, 0.05, 0.15, 0.035))
   // Stitch line where the upper meets the midsole.
-  root.add(new THREE.Mesh(soleSlab(0.05, BASE_Y + 0.002, 0.012, 0), trim))
+  root.add(new THREE.Mesh(soleSlab(0.03, BASE_Y - 0.012, 0.01, 0), trim))
   // Grooves around the midsole wall give the cupsole its moulded look.
   for (const y of [0.12, 0.19]) {
     root.add(new THREE.Mesh(soleSlab(0.088, y, 0.008, 0), trim))
