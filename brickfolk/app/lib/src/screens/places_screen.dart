@@ -82,20 +82,35 @@ class _PlacesScreenState extends State<PlacesScreen> {
                 final cols = c.maxWidth >= 900
                     ? 3
                     : (c.maxWidth >= 560 ? 2 : 1);
-                final gap = Space.lg;
-                final w = (c.maxWidth - gap * (cols - 1)) / cols;
-                return Wrap(
-                  spacing: gap,
-                  runSpacing: gap,
+                const gap = Space.lg;
+                // Cards in a row share the tallest card's height so their
+                // Play buttons line up whatever their description length.
+                return Column(
                   children: [
-                    for (var i = 0; i < listings.length; i++)
-                      SizedBox(
-                        width: w,
-                        child: Entrance(
-                          delay: Duration(milliseconds: 60 * i),
-                          child: PlaceCard(listings[i], party: party),
+                    for (var r = 0; r < listings.length; r += cols) ...[
+                      if (r > 0) const SizedBox(height: gap),
+                      IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            for (var i = r; i < r + cols; i++) ...[
+                              if (i > r) const SizedBox(width: gap),
+                              Expanded(
+                                child: i < listings.length
+                                    ? Entrance(
+                                        delay: Duration(milliseconds: 60 * i),
+                                        child: PlaceCard(
+                                          listings[i],
+                                          party: party,
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
+                    ],
                   ],
                 );
               },
@@ -249,67 +264,68 @@ class _PlaceCardState extends State<PlaceCard> {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(Space.lg),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          experienceIcon(info.kind),
-                          size: 18,
-                          color: accent,
-                        ),
-                        const SizedBox(width: Space.sm),
-                        Expanded(
-                          child: Text(
-                            info.name,
-                            style: context.text.titleLarge,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(Space.lg),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            experienceIcon(info.kind),
+                            size: 18,
+                            color: accent,
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: Space.xs),
-                    Text(
-                      info.tagline,
-                      style: context.text.bodyMedium?.copyWith(
-                        color: p.textSecondary,
-                      ),
-                    ),
-                    const SizedBox(height: Space.md),
-                    Text(
-                      info.description,
-                      style: context.text.bodySmall?.copyWith(
-                        color: p.textTertiary,
-                      ),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: Space.lg),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: FilledButton.icon(
-                            style: FilledButton.styleFrom(
-                              backgroundColor: accent,
-                            ),
-                            onPressed: canLaunch ? play : null,
-                            icon: const Icon(Icons.play_arrow_rounded),
-                            label: Text(
-                              party != null && party.members.length > 1
-                                  ? 'Launch for party'
-                                  : 'Play',
-                            ),
-                          ),
-                        ),
-                        if (widget.listing.rooms.isNotEmpty) ...[
                           const SizedBox(width: Space.sm),
-                          _RoomsMenu(widget.listing.rooms),
+                          Expanded(
+                            child: Text(
+                              info.name,
+                              style: context.text.titleLarge,
+                            ),
+                          ),
                         ],
-                      ],
-                    ),
-                  ],
+                      ),
+                      const SizedBox(height: Space.xs),
+                      Text(
+                        info.tagline,
+                        style: context.text.bodyMedium?.copyWith(
+                          color: p.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: Space.md),
+                      Text(
+                        info.description,
+                        style: context.text.bodySmall?.copyWith(
+                          color: p.textTertiary,
+                        ),
+                      ),
+                      const Spacer(),
+                      const SizedBox(height: Space.lg),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: FilledButton.icon(
+                              style: FilledButton.styleFrom(
+                                backgroundColor: accent,
+                              ),
+                              onPressed: canLaunch ? play : null,
+                              icon: const Icon(Icons.play_arrow_rounded),
+                              label: Text(
+                                party != null && party.members.length > 1
+                                    ? 'Launch for party'
+                                    : 'Play',
+                              ),
+                            ),
+                          ),
+                          if (widget.listing.rooms.isNotEmpty) ...[
+                            const SizedBox(width: Space.sm),
+                            _RoomsMenu(widget.listing.rooms),
+                          ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

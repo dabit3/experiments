@@ -4,8 +4,8 @@
   "clone_name": "Brickfolk",
   "clone_root": "/Users/devin/repos/experiments/brickfolk",
   "status": "complete",
-  "iteration": 3,
-  "revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+  "iteration": 5,
+  "revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
   "frontier": [],
   "blockers": [],
   "unverified_assumptions": [],
@@ -15,9 +15,9 @@
       "kind": "route",
       "label": "Sign-in screen: name entry, theme toggle, brand wordmark",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-signin.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-signin.png",
         "evidence/audits/navigation.md"
       ]
     },
@@ -26,11 +26,11 @@
       "kind": "route",
       "label": "Hub / Play tab: experience browser with thumbnails, live player counts, party banner",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-hub.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub-dark.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-hub.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub-dark.png"
       ]
     },
     {
@@ -38,11 +38,11 @@
       "kind": "route",
       "label": "Hub / Avatar tab: avatar editor and shop",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-avatar.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-avatar.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-avatar-dark.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-avatar.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-avatar.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-avatar-dark.png"
       ]
     },
     {
@@ -50,10 +50,10 @@
       "kind": "route",
       "label": "Hub / Social tab: friends list, requests, party controls and join code",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-social.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-social.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-social.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-social.png"
       ]
     },
     {
@@ -61,10 +61,10 @@
       "kind": "route",
       "label": "Hub / Chat tab: global chat with filtered text",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-chat.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-chat.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-chat.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-chat.png"
       ]
     },
     {
@@ -72,10 +72,10 @@
       "kind": "route",
       "label": "Hub / Profile tab: player card, stats, badges, settings",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-profile.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-profile.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-profile.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-profile.png"
       ]
     },
     {
@@ -83,10 +83,10 @@
       "kind": "route",
       "label": "Daily reward sheet: 7-day streak calendar and claim action",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-daily.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-daily.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-daily.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-daily.png"
       ]
     },
     {
@@ -94,12 +94,12 @@
       "kind": "route",
       "label": "Room lobby: seats, ready state, join code, countdown",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/ios-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/android-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/macos-lobby.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/ios-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/android-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/macos-lobby.png"
       ]
     },
     {
@@ -107,12 +107,12 @@
       "kind": "route",
       "label": "Room gameplay: Flame canvas, HUD pills, timer, mini leaderboard, controls",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-gameplay.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/ios-gameplay.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/android-gameplay.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/macos-gameplay.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/ios-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/android-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/macos-gameplay.png"
       ]
     },
     {
@@ -120,12 +120,12 @@
       "kind": "route",
       "label": "Room results: podium, ranked rows, rewards, play-again / leave",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-results.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/ios-results.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/android-results.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/macos-results.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-results.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/ios-results.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/android-results.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/macos-results.png"
       ]
     },
     {
@@ -133,10 +133,10 @@
       "kind": "feature",
       "label": "Browse experiences (places) with thumbnails, descriptions and live player counts",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/server-state.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/server-state.json",
         "evidence/reference/public-docs-experience-badge-chat-party-friends.txt"
       ]
     },
@@ -145,10 +145,10 @@
       "kind": "feature",
       "label": "Obstacle course with 12 checkpoints, respawn at last checkpoint, finish pad, timed leaderboard",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/summary.md",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/summary.md",
         "evidence/quality/shared-test.log",
         "evidence/reference/public-docs-roblox-wikipedia-obby-tycoon-avatar-home.txt"
       ]
@@ -158,10 +158,10 @@
       "kind": "feature",
       "label": "Tycoon: place bricks on a personal plot, buy upgrades, income per second, richest builder wins",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-26-01/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-26-01/summary.md",
+        "evidence/tests/multiplayer-2026-09-10T12-48-51/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-48-51/summary.md",
         "evidence/quality/shared-test.log",
         "evidence/quality/server-test.log"
       ]
@@ -171,10 +171,10 @@
       "kind": "feature",
       "label": "Round-based freeze tag: tagger freezes runners, teammates thaw, three rounds per match",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-27-58/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-27-58/summary.md",
+        "evidence/tests/multiplayer-2026-09-10T12-50-59/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-50-59/summary.md",
         "evidence/quality/shared-test.log",
         "evidence/quality/server-test.log"
       ]
@@ -184,10 +184,10 @@
       "kind": "feature",
       "label": "Avatar editor: body colours, hats, faces and accessories (original art), live preview",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-avatar.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-avatar.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-avatar.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-avatar.png",
         "evidence/quality/server-test.log"
       ]
     },
@@ -196,9 +196,9 @@
       "kind": "feature",
       "label": "Shared currency (pips) and inventory: buy items once, owned items equip anywhere",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-avatar.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-avatar.png",
         "evidence/quality/server-test.log",
         "evidence/audits/data.md"
       ]
@@ -208,9 +208,9 @@
       "kind": "feature",
       "label": "Daily reward loop: streak calendar, once-per-day claim, cooldown error",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-daily.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-daily.png",
         "evidence/quality/server-test.log"
       ]
     },
@@ -219,9 +219,9 @@
       "kind": "feature",
       "label": "Friends: request, accept, decline, remove; social badge on first friend",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-social.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-social.png",
         "evidence/quality/server-test.log"
       ]
     },
@@ -230,14 +230,14 @@
       "kind": "feature",
       "label": "Parties with 4-letter join codes; leader launches the whole party into one room across platforms",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/server-state.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/ios-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/android-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/macos-lobby.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/server-state.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/ios-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/android-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/macos-lobby.png"
       ]
     },
     {
@@ -245,9 +245,9 @@
       "kind": "feature",
       "label": "Text chat (global, party, room) with profanity masking, URL/number stripping and rate limits",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-chat.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-chat.png",
         "evidence/quality/server-test.log"
       ]
     },
@@ -256,9 +256,9 @@
       "kind": "feature",
       "label": "Player profiles with stats and earned badges (original badge set)",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-profile.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-profile.png",
         "evidence/quality/server-test.log"
       ]
     },
@@ -267,10 +267,10 @@
       "kind": "feature",
       "label": "Server-authoritative rooms per experience, up to 8 seats, seeded simulation at 30 ticks/s",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/server-state.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/server.log",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/server-state.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/server.log",
         "evidence/audits/data.md"
       ]
     },
@@ -279,11 +279,11 @@
       "kind": "feature",
       "label": "Deterministic server-side bots fill empty seats and appear on the leaderboard",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-26-01/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-27-58/report.json"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-48-51/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-50-59/report.json"
       ]
     },
     {
@@ -291,7 +291,7 @@
       "kind": "feature",
       "label": "Token resume and reconnect within the grace period keep the seat and re-send room state",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/quality/server-test.log",
         "evidence/audits/reliability.md"
@@ -302,9 +302,9 @@
       "kind": "feature",
       "label": "SQLite persistence of players, avatars, inventory, badges, friends, plots and results",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/brickfolk-test.db",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/brickfolk-test.db",
         "evidence/quality/server-test.log",
         "evidence/audits/data.md"
       ]
@@ -314,21 +314,21 @@
       "kind": "feature",
       "label": "Lobby -> countdown -> gameplay -> results lifecycle with play-again",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/ios-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/android-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/macos-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-gameplay.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/ios-gameplay.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/android-gameplay.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/macos-gameplay.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-results.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/ios-results.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/android-results.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/macos-results.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/ios-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/android-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/macos-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/ios-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/android-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/macos-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-results.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/ios-results.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/android-results.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/macos-results.png"
       ]
     },
     {
@@ -336,10 +336,10 @@
       "kind": "feature",
       "label": "Test mode: fixed seed and clock, deterministic autopilots, /test/state and /test/control",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/summary.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/summary.json",
         "evidence/quality/app-test.log"
       ]
     },
@@ -348,10 +348,10 @@
       "kind": "feature",
       "label": "Light and dark themes with shared Inter type scale",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub-dark.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub-dark.png",
         "evidence/quality/app-test.log"
       ]
     },
@@ -360,12 +360,12 @@
       "kind": "feature",
       "label": "Keyboard (web/macOS) and touch joystick/jump (iOS/Android) controls for the same simulation",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-gameplay.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/ios-gameplay.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/android-gameplay.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/macos-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/ios-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/android-gameplay.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/macos-gameplay.png",
         "evidence/audits/accessibility.md"
       ]
     },
@@ -374,15 +374,15 @@
       "kind": "journey",
       "label": "Web, iOS, Android and macOS join party BRIK, enter one obby room, finish, identical results and checksum",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/summary.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/recording-four-way.mp4",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-results.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/ios-results.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/android-results.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/macos-results.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/summary.md",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/recording-four-way.mp4",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-results.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/ios-results.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/android-results.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/macos-results.png"
       ]
     },
     {
@@ -390,10 +390,10 @@
       "kind": "journey",
       "label": "Web and macOS play a full tycoon match with bots to identical results",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-26-01/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-26-01/summary.md"
+        "evidence/tests/multiplayer-2026-09-10T12-48-51/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-48-51/summary.md"
       ]
     },
     {
@@ -401,10 +401,10 @@
       "kind": "journey",
       "label": "Web and macOS play a full three-round tag match with bots to identical results",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-27-58/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-27-58/summary.md"
+        "evidence/tests/multiplayer-2026-09-10T12-50-59/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-50-59/summary.md"
       ]
     },
     {
@@ -412,12 +412,12 @@
       "kind": "journey",
       "label": "First run: sign-in screen, choose a name, land in the hub, open every tab and the daily reward",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-signin.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-daily.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/harness.log"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-signin.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-daily.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/harness.log"
       ]
     },
     {
@@ -425,10 +425,10 @@
       "kind": "asset",
       "label": "Inter type family bundled under its OFL licence (weights 400-800)",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/assets.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub.png"
       ]
     },
     {
@@ -436,10 +436,10 @@
       "kind": "asset",
       "label": "Procedurally painted blocky avatars, hats, faces and accessories (no third-party art)",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/assets.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-avatar.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-avatar.png"
       ]
     },
     {
@@ -447,10 +447,10 @@
       "kind": "asset",
       "label": "Procedural place thumbnails per experience",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/assets.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub.png"
       ]
     },
     {
@@ -458,10 +458,10 @@
       "kind": "asset",
       "label": "Brickfolk wordmark and brick logo painted in code",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/rebrand.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-signin.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-signin.png"
       ]
     },
     {
@@ -469,10 +469,10 @@
       "kind": "integration",
       "label": "JSON-over-WebSocket protocol v1 (/ws) shared by all four clients",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/server.log",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/server.log",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/report.json",
         "evidence/audits/data.md"
       ]
     },
@@ -481,9 +481,9 @@
       "kind": "integration",
       "label": "sqlite3 store on the server (file per deployment)",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/brickfolk-test.db",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/brickfolk-test.db",
         "evidence/audits/data.md"
       ]
     },
@@ -492,10 +492,10 @@
       "kind": "integration",
       "label": "/health, /test/state and /test/control HTTP endpoints used by the harness",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/harness.log",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/server-state.json"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/harness.log",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/server-state.json"
       ]
     },
     {
@@ -503,25 +503,25 @@
       "kind": "visual",
       "label": "Hub 'hub' screen: web (reference) vs native macOS, normalised comparison",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/hub/hub-hub-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/summary.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-hub.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/hub/hub-hub-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/summary.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-hub.png"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/hub/hub-hub-reference.png",
-        "actual": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/hub/hub-hub-actual.png",
-        "diff": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/hub/hub-hub-diff.png",
+        "reference": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/hub/hub-hub-reference.png",
+        "actual": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/hub/hub-hub-actual.png",
+        "diff": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/hub/hub-hub-diff.png",
         "different_pixels": 0,
         "total_pixels": 56050,
-        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/hub/hub-hub-metrics.json"
+        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/hub/hub-hub-metrics.json"
       },
       "raw_captures": {
-        "web": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png",
-        "macos": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-hub.png"
+        "web": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub.png",
+        "macos": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-hub.png"
       }
     },
     {
@@ -529,25 +529,25 @@
       "kind": "visual",
       "label": "Hub 'avatar' screen: web (reference) vs native macOS, normalised comparison",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/avatar/hub-avatar-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/summary.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-avatar.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-avatar.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/avatar/hub-avatar-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/summary.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-avatar.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-avatar.png"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/avatar/hub-avatar-reference.png",
-        "actual": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/avatar/hub-avatar-actual.png",
-        "diff": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/avatar/hub-avatar-diff.png",
+        "reference": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/avatar/hub-avatar-reference.png",
+        "actual": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/avatar/hub-avatar-actual.png",
+        "diff": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/avatar/hub-avatar-diff.png",
         "different_pixels": 0,
         "total_pixels": 56050,
-        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/avatar/hub-avatar-metrics.json"
+        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/avatar/hub-avatar-metrics.json"
       },
       "raw_captures": {
-        "web": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-avatar.png",
-        "macos": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-avatar.png"
+        "web": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-avatar.png",
+        "macos": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-avatar.png"
       }
     },
     {
@@ -555,25 +555,25 @@
       "kind": "visual",
       "label": "Hub 'social' screen: web (reference) vs native macOS, normalised comparison",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/social/hub-social-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/summary.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-social.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-social.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/social/hub-social-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/summary.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-social.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-social.png"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/social/hub-social-reference.png",
-        "actual": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/social/hub-social-actual.png",
-        "diff": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/social/hub-social-diff.png",
+        "reference": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/social/hub-social-reference.png",
+        "actual": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/social/hub-social-actual.png",
+        "diff": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/social/hub-social-diff.png",
         "different_pixels": 0,
         "total_pixels": 56050,
-        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/social/hub-social-metrics.json"
+        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/social/hub-social-metrics.json"
       },
       "raw_captures": {
-        "web": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-social.png",
-        "macos": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-social.png"
+        "web": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-social.png",
+        "macos": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-social.png"
       }
     },
     {
@@ -581,25 +581,25 @@
       "kind": "visual",
       "label": "Hub 'chat' screen: web (reference) vs native macOS, normalised comparison",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/chat/hub-chat-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/summary.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-chat.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-chat.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/chat/hub-chat-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/summary.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-chat.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-chat.png"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/chat/hub-chat-reference.png",
-        "actual": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/chat/hub-chat-actual.png",
-        "diff": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/chat/hub-chat-diff.png",
+        "reference": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/chat/hub-chat-reference.png",
+        "actual": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/chat/hub-chat-actual.png",
+        "diff": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/chat/hub-chat-diff.png",
         "different_pixels": 0,
         "total_pixels": 56050,
-        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/chat/hub-chat-metrics.json"
+        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/chat/hub-chat-metrics.json"
       },
       "raw_captures": {
-        "web": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-chat.png",
-        "macos": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-chat.png"
+        "web": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-chat.png",
+        "macos": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-chat.png"
       }
     },
     {
@@ -607,25 +607,25 @@
       "kind": "visual",
       "label": "Hub 'profile' screen: web (reference) vs native macOS, normalised comparison",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/profile/hub-profile-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/summary.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-profile.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-profile.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/profile/hub-profile-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/summary.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-profile.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-profile.png"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/profile/hub-profile-reference.png",
-        "actual": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/profile/hub-profile-actual.png",
-        "diff": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/profile/hub-profile-diff.png",
+        "reference": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/profile/hub-profile-reference.png",
+        "actual": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/profile/hub-profile-actual.png",
+        "diff": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/profile/hub-profile-diff.png",
         "different_pixels": 0,
         "total_pixels": 56050,
-        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/profile/hub-profile-metrics.json"
+        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/profile/hub-profile-metrics.json"
       },
       "raw_captures": {
-        "web": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-profile.png",
-        "macos": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-profile.png"
+        "web": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-profile.png",
+        "macos": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-profile.png"
       }
     },
     {
@@ -633,25 +633,25 @@
       "kind": "visual",
       "label": "Hub 'daily' screen: web (reference) vs native macOS, normalised comparison",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/daily/hub-daily-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/summary.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-daily.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-daily.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/daily/hub-daily-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/summary.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-daily.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-daily.png"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/daily/hub-daily-reference.png",
-        "actual": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/daily/hub-daily-actual.png",
-        "diff": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/daily/hub-daily-diff.png",
+        "reference": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/daily/hub-daily-reference.png",
+        "actual": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/daily/hub-daily-actual.png",
+        "diff": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/daily/hub-daily-diff.png",
         "different_pixels": 0,
         "total_pixels": 56050,
-        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/daily/hub-daily-metrics.json"
+        "normalization_evidence": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/daily/hub-daily-metrics.json"
       },
       "raw_captures": {
-        "web": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-daily.png",
-        "macos": "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/macos-daily.png"
+        "web": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-daily.png",
+        "macos": "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/macos-daily.png"
       }
     }
   ],
@@ -659,7 +659,7 @@
     {
       "id": "source",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/source.md",
         "evidence/reference/public-docs-roblox-wikipedia-obby-tycoon-avatar-home.txt",
@@ -669,61 +669,61 @@
     {
       "id": "navigation",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/navigation.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-signin.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-results.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-signin.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/web-hub.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-results.png"
       ]
     },
     {
       "id": "roles",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/roles.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/server-state.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/report.json"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/server-state.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/report.json"
       ]
     },
     {
       "id": "states",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/states.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/harness.log",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/harness.log",
         "evidence/quality/server-test.log"
       ]
     },
     {
       "id": "responsive",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/responsive.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/ios-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/android-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/macos-lobby.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/web-lobby.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/ios-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/android-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/macos-lobby.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/web-lobby.png"
       ]
     },
     {
       "id": "data",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/data.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/brickfolk-test.db",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/brickfolk-test.db",
         "evidence/quality/server-test.log"
       ]
     },
     {
       "id": "assets",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/assets.md",
         "evidence/quality/asset-inventory.txt"
@@ -732,7 +732,7 @@
     {
       "id": "accessibility",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/accessibility.md",
         "evidence/quality/app-test.log"
@@ -741,20 +741,20 @@
     {
       "id": "reliability",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/reliability.md",
         "evidence/quality/fingerprint-list.txt",
         "evidence/quality/server-test.log",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-26-01/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-27-58/report.json"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-48-51/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-50-59/report.json"
       ]
     },
     {
       "id": "rebrand",
       "status": "verified",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/rebrand.md",
         "evidence/quality/rebrand-scan.txt"
@@ -765,11 +765,11 @@
     {
       "id": "functional",
       "status": "passed",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-26-01/report.json",
-        "evidence/tests/multiplayer-2026-09-10T11-27-58/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-48-51/report.json",
+        "evidence/tests/multiplayer-2026-09-10T12-50-59/report.json",
         "evidence/quality/app-test.log",
         "evidence/quality/server-test.log",
         "evidence/quality/shared-test.log"
@@ -778,28 +778,28 @@
     {
       "id": "visual",
       "status": "passed",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/summary.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/summary.md",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/hub/hub-hub-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/avatar/hub-avatar-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/social/hub-social-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/chat/hub-chat-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/profile/hub-profile-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/daily/hub-daily-metrics.json",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/hub/hub-hub-diff.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/avatar/hub-avatar-diff.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/social/hub-social-diff.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/chat/hub-chat-diff.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/profile/hub-profile-diff.png",
-        "evidence/tests/multiplayer-2026-09-10T11-18-13/visual/daily/hub-daily-diff.png"
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/summary.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/summary.md",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/hub/hub-hub-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/avatar/hub-avatar-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/social/hub-social-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/chat/hub-chat-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/profile/hub-profile-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/daily/hub-daily-metrics.json",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/hub/hub-hub-diff.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/avatar/hub-avatar-diff.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/social/hub-social-diff.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/chat/hub-chat-diff.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/profile/hub-profile-diff.png",
+        "evidence/tests/multiplayer-2026-09-10T12-39-48/visual/daily/hub-daily-diff.png"
       ]
     },
     {
       "id": "build",
       "status": "passed",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/quality/clean-checkout.log",
         "evidence/quality/build-web.log",
@@ -811,7 +811,7 @@
     {
       "id": "quality",
       "status": "passed",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/quality/format.log",
         "evidence/quality/analyze.log",
@@ -822,7 +822,7 @@
     {
       "id": "security",
       "status": "passed",
-      "verified_revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "verified_revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "evidence": [
         "evidence/audits/security.md",
         "evidence/quality/secret-scan.txt",
@@ -832,7 +832,7 @@
   ],
   "sweeps": [
     {
-      "revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "new_items": 0,
       "frontier_empty": true,
       "audit_ids": [
@@ -853,7 +853,7 @@
       "method": "source"
     },
     {
-      "revision": "sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede",
+      "revision": "sha256:82f3712c21f4a3b1e3a63aa6a9e4f1a643ee74396506a690dc2abbe07a3c004c",
       "new_items": 0,
       "frontier_empty": true,
       "audit_ids": [
@@ -874,14 +874,14 @@
       "method": "reference"
     }
   ],
-  "next_action": "Complete: open the pull request and attach the evidence.",
+  "next_action": "Push the follow-up commit to PR #45 and attach the new evidence.",
   "reference_access": {
     "mode": "public-documentation",
     "note": "The source is a commercial platform that was not run or purchased. The reference is its publicly documented design (rules, modes, social systems, visual language) captured under evidence/reference/. Visual parity is measured between Brickfolk's own clients (web is the reference for native macOS), never against the original."
   },
   "evidence_runs": {
-    "obby": "evidence/tests/multiplayer-2026-09-10T11-18-13",
-    "tycoon": "evidence/tests/multiplayer-2026-09-10T11-26-01",
-    "tag": "evidence/tests/multiplayer-2026-09-10T11-27-58"
+    "obby": "evidence/tests/multiplayer-2026-09-10T12-39-48",
+    "tycoon": "evidence/tests/multiplayer-2026-09-10T12-48-51",
+    "tag": "evidence/tests/multiplayer-2026-09-10T12-50-59"
   }
 }

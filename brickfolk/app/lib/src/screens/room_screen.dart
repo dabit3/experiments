@@ -1058,7 +1058,7 @@ class _StatusStrip extends StatelessWidget {
             _stat(
               context,
               Icons.flag_rounded,
-              'Stage ${s.checkpoint}/${ObbyCourse.instance.checkpoints.length}',
+              'Stage ${s.checkpoint + 1}/${ObbyCourse.instance.checkpoints.length}',
               BrickColors.mint,
             ),
             _stat(

@@ -250,6 +250,12 @@ class BrickfolkClient extends ChangeNotifier {
           msg['message'] as String? ?? 'Something went wrong.',
           msg['inReplyTo'] as String?,
         );
+        if (lastError!.inReplyTo == MsgType.hello &&
+            lastError!.code == ErrorCode.unauthenticated) {
+          // The saved token no longer resolves to a player (e.g. the server
+          // database was reset): forget it so the sign-in form takes over.
+          token = null;
+        }
         _errors.add(lastError!);
       case MsgType.playerUpdated:
         me = PlayerProfile.fromJson((msg['player'] as Map).cast());

@@ -573,7 +573,7 @@ class _PaletteRow extends StatelessWidget {
                         style: context.text.bodySmall?.copyWith(
                           color: p.textTertiary,
                         ),
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],

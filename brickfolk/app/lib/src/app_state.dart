@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:brickfolk_shared/brickfolk_shared.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,6 +59,10 @@ class AppState extends ChangeNotifier {
     final name = client.me?.summary.name;
     if (token != null && token != savedToken) {
       _prefs.setString(_tokenKey, token);
+    } else if (token == null &&
+        savedToken != null &&
+        client.lastError?.code == ErrorCode.unauthenticated) {
+      _prefs.remove(_tokenKey);
     }
     if (name != null && name != savedName) {
       _prefs.setString(_nameKey, name);

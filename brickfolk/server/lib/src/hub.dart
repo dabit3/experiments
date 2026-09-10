@@ -143,6 +143,7 @@ class Hub implements RoomHost {
       rooms[s.roomCode]?.markDisconnected(p.id);
       _broadcastPartyState(partyOf[p.id]);
       _notifyFriendsPresence(p.id);
+      _broadcastPlaces();
     }
   }
 
@@ -246,6 +247,14 @@ class Hub implements RoomHost {
     PlayerRecord? record;
     if (token != null) record = store.byToken(token);
     if (record == null) {
+      if (token != null && name == null) {
+        s.error(
+          ErrorCode.unauthenticated,
+          'Your saved session is no longer valid. Sign in with a name.',
+          inReplyTo: MsgType.hello,
+        );
+        return;
+      }
       if (name == null || !playerNamePattern.hasMatch(name)) {
         s.error(
           ErrorCode.invalidName,
@@ -304,7 +313,7 @@ class Hub implements RoomHost {
       'roomCode': s.roomCode,
       'partyCode': partyOf[record.id],
     });
-    _sendPlaces(s);
+    _broadcastPlaces();
     _sendFriends(s, record);
     _notifyFriendsPresence(record.id);
     final party = parties[partyOf[record.id]];

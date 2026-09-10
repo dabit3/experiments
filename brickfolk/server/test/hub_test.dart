@@ -77,6 +77,33 @@ void main() {
     expect(p['owned'], contains('hat_cap'));
   });
 
+  test('unknown token without a name is rejected as unauthenticated', () {
+    final hub = makeHub();
+    final a = FakeClient(hub, 'macos')
+      ..send({
+        'type': MsgType.hello,
+        'protocolVersion': protocolVersion,
+        'token': 'stale-token-from-an-older-database',
+        'platform': 'macos',
+      });
+    expect(a.last[MsgType.welcome], isNull);
+    expect(a.last[MsgType.error]?['code'], ErrorCode.unauthenticated);
+    expect(a.last[MsgType.error]?['inReplyTo'], MsgType.hello);
+    a.hello('MacMia', token: 'stale-token-from-an-older-database');
+    expect(a.last[MsgType.welcome], isNotNull);
+  });
+
+  test('online count is pushed to everyone on sign-in and disconnect', () {
+    final hub = makeHub();
+    final a = FakeClient(hub, 'web')..hello('Alice');
+    expect(a.last[MsgType.places]?['online'], 1);
+    final b = FakeClient(hub, 'ios')..hello('Bobby');
+    expect(a.last[MsgType.places]?['online'], 2);
+    expect(b.last[MsgType.places]?['online'], 2);
+    hub.disconnect(b.session);
+    expect(a.last[MsgType.places]?['online'], 1);
+  });
+
   test('daily reward claims once and reports cooldown', () {
     final hub = makeHub();
     final a = FakeClient(hub, 'web')..hello('Alice');

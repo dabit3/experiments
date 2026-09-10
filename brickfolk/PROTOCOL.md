@@ -32,7 +32,10 @@ with `error{code:"unauthenticated"}`.
 - `platform` is a free-form label (`web`, `ios`, `android`, `macos`) shown to
   other players and used by the test harness.
 - `name` must match `^[A-Za-z][A-Za-z0-9_]{2,15}$`. Names are unique.
-- `token` resumes a persisted player. When present, `name` is ignored.
+- `token` resumes a persisted player. When it resolves, `name` is ignored. A
+  token the server no longer knows (e.g. after a database reset) falls back to
+  `name`; with no `name` the reply is `error{code:"unauthenticated",
+  inReplyTo:"hello"}` and the client should discard the token.
 - Signing in from a second client replaces the previous session (the old
   socket receives `error` "Signed in from another client." and is closed).
   A player who reconnects while still seated in a room re-enters it.

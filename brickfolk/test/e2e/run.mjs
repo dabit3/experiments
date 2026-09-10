@@ -401,6 +401,8 @@ function getBrowser() {
 }
 
 const webViewport = { width: 1180, height: 760 };
+// The native window is pinned to the web viewport so captures line up.
+const macWindowEnv = { BRICKFOLK_WINDOW: `${webViewport.width}x${webViewport.height}` };
 
 async function serveWebBuild() {
   const webRoot = path.join(appDir, 'build', 'web');
@@ -1152,7 +1154,7 @@ async function startMacos() {
   await run('pkill', ['-f', exe]).catch(() => {});
   await sleep(500);
   const child = spawnLogged('macos', exe, [], {
-    env: { ...process.env, ...clientConfig('macos') },
+    env: { ...process.env, ...macWindowEnv, ...clientConfig('macos') },
   });
   onCleanup(() => child.kill('SIGTERM'));
   const owner = path.basename(exe);
@@ -1516,6 +1518,7 @@ async function openMacTour(dir) {
     stdio: ['ignore', 'pipe', 'pipe'],
     env: {
       ...process.env,
+      ...macWindowEnv,
       BRICKFOLK_TOUR: 'true',
       BRICKFOLK_NAME: tourName,
       BRICKFOLK_SERVER: `ws://localhost:${serverPort}/ws`,
