@@ -167,15 +167,16 @@ class LastfortServer {
       },
       onDone: () {
         final c = client;
-        if (c == null) return;
-        if (c.channel == ws) c.channel = null;
+        if (c == null || c.channel != ws) return;
+        c.channel = null;
         c.room?.leave(c, graceful: false);
         _log('disconnected ${c.name} (${c.token.substring(0, 6)})');
       },
       onError: (Object e) {
         final c = client;
-        if (c != null && c.channel == ws) c.channel = null;
-        c?.room?.leave(c, graceful: false);
+        if (c == null || c.channel != ws) return;
+        c.channel = null;
+        c.room?.leave(c, graceful: false);
       },
     );
   }
@@ -186,8 +187,17 @@ class LastfortServer {
     Client c;
     if (requested != null && clients.containsKey(requested)) {
       c = clients[requested]!;
-      c.channel?.sink.close();
+      final old = c.channel;
+      if (old != null) {
+        c.error(
+          ProtocolError.superseded,
+          'This session was resumed from another connection',
+        );
+      }
+      // Rebind before closing: the old socket's onDone may fire synchronously
+      // and must see that it no longer owns this client.
       c.channel = ws;
+      old?.sink.close();
     } else {
       final token =
           requested != null && requested.length >= 8 ? requested : _newToken();

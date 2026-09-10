@@ -36,6 +36,9 @@ class _Peer {
 
   final Map<String, int> _cursors = {};
 
+  /// Marks every already-received message of [type] as consumed.
+  void drain(String type) => _cursors[type] = inbox.length;
+
   /// Returns the next message of [type] that has not been consumed by an
   /// earlier [waitFor] call.
   Future<Map<String, Object?>> waitFor(String type,
@@ -247,6 +250,80 @@ void main() {
     final you = await b.waitFor('you');
     expect(you['id'], myId);
     expect(room.sim!.players[myId]!.connected, isTrue);
+    await b.channel.sink.close();
+  });
+
+  test('a room can play a second match after the first ends', () async {
+    final a = await connect('macos');
+    a.send({
+      't': Protocol.createRoom,
+      'mode': 'solo',
+      'fast': true,
+      'seed': 9,
+      'code': 'AGAIN'
+    });
+    await a.waitFor(Protocol.roomState);
+    final room = server.rooms['AGAIN']!;
+    for (var round = 0; round < 2; round++) {
+      a.send({'t': Protocol.startMatch, 'fill': 3, 'countdownMs': 0});
+      await a.waitFor(Protocol.roomState); // countdown announcement
+      final start = await a.waitFor(Protocol.matchStart);
+      a.drain(Protocol.snapshot);
+      expect((start['players'] as List<Object?>).length, 3);
+      expect(start['seed'], room.sim!.seed);
+      await a.waitFor('you');
+      // The live tick loop must advance a fresh match from tick zero without
+      // waiting out the ticks the previous match already consumed.
+      final snap = await a.waitFor(Protocol.snapshot,
+          timeout: const Duration(milliseconds: 700));
+      expect((snap['tick'] as num).toInt(), lessThan(10));
+      // A client restarts its input sequence for every match; frames left
+      // over from the previous match must not shadow the new ones.
+      a.send({
+        't': Protocol.input,
+        'f': {'seq': 1, 'mx': 1, 'my': 0}
+      });
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+      expect(room.sim!.players[a.id!]!.lastInputSeq, 1);
+      // Let the real-time loop run for a while, then fast-forward the rest.
+      await Future<void>.delayed(const Duration(milliseconds: 1200));
+      for (var i = 0; i < 20000 && !room.ended; i++) {
+        room.stepOnce(emit: false);
+      }
+      expect(room.ended, isTrue);
+      await a.waitFor(Protocol.matchEnd);
+      // Queue a stale high-sequence frame that the finished match never
+      // consumes.
+      a.send({
+        't': Protocol.input,
+        'f': {'seq': 5000, 'mx': 0, 'my': 1}
+      });
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      a.send({'t': 'returnToLobby'});
+      await a.waitFor(Protocol.roomState);
+      expect(room.inLobby, isTrue);
+    }
+    await a.channel.sink.close();
+  });
+
+  test('a second connection with the same token supersedes the first',
+      () async {
+    final a = await connect('web');
+    a.send({'t': Protocol.createRoom, 'mode': 'solo', 'code': 'TWICE'});
+    await a.waitFor(Protocol.roomState);
+
+    final b = await connect('web', token: a.token);
+    expect(b.token, a.token);
+    final err = await a.waitFor(Protocol.error);
+    expect(err['code'], ProtocolError.superseded);
+    // The new socket inherits the lobby seat.
+    final rs = await b.waitFor(Protocol.roomState);
+    expect(rs['code'], 'TWICE');
+    expect((rs['players'] as List<Object?>).length, 1);
+    await Future<void>.delayed(const Duration(milliseconds: 200));
+    // The stale socket closing must not remove the player from the lobby.
+    expect(server.rooms['TWICE'], isNotNull);
+    expect(server.rooms['TWICE']!.members.length, 1);
     await b.channel.sink.close();
   });
 

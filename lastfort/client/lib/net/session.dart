@@ -153,13 +153,14 @@ class Session extends ChangeNotifier {
 
   // ------------------------------------------------------------- lobby ops
 
-  void createRoom({required SquadMode mode, bool fast = false, int? seed}) {
+  void createRoom({required SquadMode mode, bool? fast, int? seed}) {
     notice = null;
     connection.send({
       't': Protocol.createRoom,
       'mode': mode.name,
-      'fast': fast,
-      'seed': ?seed,
+      // Omitted unless requested so the server's own default applies.
+      if (fast ?? config.fast) 'fast': true,
+      'seed': ?(seed ?? config.seed),
     });
   }
 
@@ -268,6 +269,15 @@ class Session extends ChangeNotifier {
         if (errorCode == 'room_not_found' && config.auto && room == null) {
           // The create raced another client; join instead.
           connection.send({'t': Protocol.joinRoom, 'code': config.roomCode});
+        }
+        if (errorCode == ProtocolError.superseded) {
+          // Our player now lives on another connection; this client starts
+          // over as a new identity when it reconnects.
+          _resultsTimer?.cancel();
+          room = null;
+          match = null;
+          phase = SessionPhase.idle;
+          myId = 0;
         }
         notifyListeners();
     }

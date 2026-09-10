@@ -86,6 +86,7 @@ class Room {
   void join(Client c) {
     members[c.token] = c;
     c.room = this;
+    c.pendingInputs.clear();
     caches[c.token] = ViewerCache();
     idFor(c.token);
     _cleanup?.cancel();
@@ -322,12 +323,14 @@ class Room {
     s.start();
     for (final token in humans) {
       caches[token] = ViewerCache();
+      // Frames queued for an earlier match carry stale sequence numbers.
+      members[token]!.pendingInputs.clear();
       if (autopilot[token] == true) _enablePilot(token);
     }
     broadcast({
       't': Protocol.matchStart,
       'code': code,
-      'seed': seed,
+      'seed': s.seed,
       'mode': mode.name,
       'rules': rules.toJson(),
       'tick': s.tick,
@@ -341,6 +344,8 @@ class Room {
     _clock
       ..reset()
       ..start();
+    _ticksDone = 0;
+    _behind = 0;
     _timer = Timer.periodic(
         Duration(microseconds: (1e6 / rules.tickRate).round()),
         (_) => _frame());
@@ -349,7 +354,7 @@ class Room {
   Map<String, Object?> matchStartJsonFor(String token) => {
         't': Protocol.matchStart,
         'code': code,
-        'seed': seed,
+        'seed': sim!.seed,
         'mode': mode.name,
         'rules': rules.toJson(),
         'tick': sim!.tick,

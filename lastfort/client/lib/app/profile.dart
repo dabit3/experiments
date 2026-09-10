@@ -24,8 +24,19 @@ class Profile extends ChangeNotifier {
     seenIntro = _prefs.getBool('seenIntro') ?? false;
   }
 
-  static Future<Profile> load({String? forcedName}) async {
+  /// Loads the persisted profile. When [isolationKey] is given the profile
+  /// lives in its own preference namespace and starts empty, so automated
+  /// runs never inherit (or disturb) the player's real theme, stats or
+  /// session token.
+  static Future<Profile> load({
+    String? forcedName,
+    String? isolationKey,
+  }) async {
+    if (isolationKey != null) {
+      SharedPreferences.setPrefix('lastfort_test_$isolationKey.');
+    }
     final prefs = await SharedPreferences.getInstance();
+    if (isolationKey != null) await prefs.clear();
     return Profile(prefs, forcedName: forcedName);
   }
 

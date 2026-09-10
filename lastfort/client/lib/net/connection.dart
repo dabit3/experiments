@@ -141,6 +141,9 @@ class Connection extends ChangeNotifier {
       c?.complete(decoded);
     } else if (t == Protocol.error) {
       lastError = decoded['message'] as String? ?? decoded['code'] as String?;
+      // Another connection (e.g. a second browser tab) took over this token;
+      // reconnect as a fresh identity instead of fighting over it.
+      if (decoded['code'] == ProtocolError.superseded) token = null;
       notifyListeners();
     }
     _messages.add(decoded);

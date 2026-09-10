@@ -97,6 +97,7 @@ when it reconnects.
 | Hotbar | 1-6, Tab | hotbar |
 | Reload / drop | R / G | Reload |
 | Spectate next, emote, thank | Tab, B, T | buttons |
+| Match menu (leave) | Esc | menu button |
 
 ## Automated four-platform multiplayer test
 
@@ -115,7 +116,10 @@ clients play a full fast match: bus, drop, harvest, build, loot, storm phases,
 eliminations. At the end every client reports the summary it displayed; the
 harness asserts that all reports are byte-identical to each other and to the
 server's own summary, that the humans shared one team, that a winner exists,
-that harvesting and building happened, and that the storm progressed. It also
+that harvesting and building happened, and that the storm progressed. Test
+builds pin the light theme and load a fresh, namespaced profile
+(`LASTFORT_TEST=<id>`), so a run never inherits or disturbs the real profile,
+theme or session token on the device. It also
 captures lobby / bus / gameplay / midgame / matchover / results screenshots per platform
 plus a screen recording of all clients at once.
 

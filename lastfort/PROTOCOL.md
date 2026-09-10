@@ -44,6 +44,11 @@ client's room is mid-match, the server replays `matchStart` (with
 stays in the match for `Rules.reconnectGrace` seconds (60 by default) before
 being eliminated with cause `timeout`.
 
+If the token's previous socket is still open (for example a second browser tab
+sharing the same local storage), the server sends that socket an `error` with
+code `superseded` and closes it; the new socket takes over the seat. A client
+that receives `superseded` drops its token and reconnects as a new identity.
+
 ## Client -> server messages
 
 | `t`             | Fields                                                    | Notes |
@@ -89,7 +94,7 @@ being eliminated with cause `timeout`.
 | `t`          | Fields | Notes |
 |--------------|--------|-------|
 | `welcome`    | `v`, `token`, `name`, `serverTime`, `warning?` | |
-| `error`      | `code`, `message` | Codes: `bad_message`, `room_not_found`, `room_full`, `match_in_progress`, `not_host`, `not_in_room`, `bad_token`, `version_mismatch`. |
+| `error`      | `code`, `message` | Codes: `bad_message`, `room_not_found`, `room_full`, `match_in_progress`, `not_host`, `not_in_room`, `bad_token`, `version_mismatch`, `superseded`. |
 | `pong`       | `c`, `serverTime`, `tick?` | |
 | `roomState`  | `you`, `code`, `mode`, `fast`, `seed`, `maxPlayers`, `players[]`, `phase`, `countdownMs?` | `players[]`: `{id, name, platform, ready, connected, host, ld, team}`. |
 | `matchStart` | `code`, `seed`, `mode`, `rules`, `tick`, `players[]`, `resume?` | `rules` is `Rules.toJson()`; clients build their local world from `seed` + `rules`. |

@@ -13,7 +13,10 @@ import 'screens/match_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final config = AppConfig.instance;
-  final profile = await Profile.load(forcedName: config.playerName);
+  final profile = await Profile.load(
+    forcedName: config.playerName,
+    isolationKey: config.testId.isEmpty ? null : config.testId,
+  );
   if (config.themeMode != 'system') {
     await profile.setThemeMode(config.themeMode);
   }

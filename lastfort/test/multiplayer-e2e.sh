@@ -110,6 +110,7 @@ common_defines=(
   "--dart-define=LASTFORT_SEED=$SEED"
   "--dart-define=LASTFORT_FAST=1"
   "--dart-define=LASTFORT_MODE=squads"
+  "--dart-define=LASTFORT_THEME=light"
   "--dart-define=LASTFORT_TEST=$TEST_ID"
 )
 WEB_DIR="$CLIENT/build/web"
@@ -204,7 +205,7 @@ sleep 1
 # The web client creates the room (host) and starts the match once 4 humans
 # are in; the others join by code. Every client runs in test mode with the
 # deterministic server-side autopilot and reports its final summary back.
-WEB_URL="http://127.0.0.1:$PORT/?server=ws://127.0.0.1:$PORT/ws&room=$ROOM&auto=1&autostart=$HUMANS&seed=$SEED&fast=1&mode=squads&name=Web&test=$TEST_ID"
+WEB_URL="http://127.0.0.1:$PORT/?server=ws://127.0.0.1:$PORT/ws&room=$ROOM&auto=1&autostart=$HUMANS&seed=$SEED&fast=1&mode=squads&theme=light&name=Web&test=$TEST_ID"
 if has web; then
   log "launching web client"
   (cd "$TEST" && node web_client.mjs "$WEB_URL" "$CTL" "810,40,770,560" >"$OUT/web.log" 2>&1) &

@@ -37,4 +37,5 @@ class ProtocolError {
   static const notInRoom = 'not_in_room';
   static const badToken = 'bad_token';
   static const versionMismatch = 'version_mismatch';
+  static const superseded = 'superseded';
 }

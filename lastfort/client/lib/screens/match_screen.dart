@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Material;
+import 'package:flutter/services.dart';
 import 'package:lastfort_core/lastfort_core.dart';
 
 import '../app/scope.dart';
@@ -74,9 +75,15 @@ class _MatchScreenState extends State<MatchScreen>
       body: Focus(
         focusNode: focus,
         autofocus: true,
-        onKeyEvent: (_, e) => controls.handleKey(e)
-            ? KeyEventResult.handled
-            : KeyEventResult.ignored,
+        onKeyEvent: (_, e) {
+          if (e is KeyDownEvent && e.logicalKey == LogicalKeyboardKey.escape) {
+            _MenuButton.open(context, onLeave: session.leaveMatch);
+            return KeyEventResult.handled;
+          }
+          return controls.handleKey(e)
+              ? KeyEventResult.handled
+              : KeyEventResult.ignored;
+        },
         child: Listener(
           behavior: HitTestBehavior.translucent,
           onPointerHover: (e) => controls.pointer = e.localPosition,
@@ -182,14 +189,18 @@ class _Hud extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, box) {
-        final compassWidth = compact ? 200.0 : 300.0;
-        // Side columns are ~220px wide; drop the compass below them when the
-        // viewport cannot fit all three across.
+        final compassWidth = compact ? 180.0 : 300.0;
+        // Side columns are ~220px wide; when the viewport cannot fit all three
+        // across, the compass joins the top-left column under the timers.
         final sideWidth = pad.left + inset + 48 + 230;
         final compassFits = box.maxWidth - 2 * sideWidth >= compassWidth;
-        final compassTop = compassFits
-            ? pad.top + inset
-            : pad.top + inset + (compact ? 92 : 104);
+        // Vitals and the hotbar share the bottom edge only when both fit;
+        // otherwise the vitals stack above the hotbar column.
+        final vitalsWidth = compact ? 180.0 : 260.0;
+        final hotbarWidth = compact ? 280.0 : 360.0;
+        final bottomFits =
+            box.maxWidth - pad.horizontal - 3 * inset >=
+            vitalsWidth + hotbarWidth;
         // On narrow screens the minimap and feed own the upper-right, so the
         // prompt drops toward the middle instead of overlapping them.
         final promptTop = compassFits
@@ -245,14 +256,18 @@ class _Hud extends StatelessWidget {
                   StormPanel(client: client, compact: compact),
                   const SizedBox(height: 6),
                   PlayersLeftPanel(client: client),
+                  if (!busPhase && !compassFits) ...[
+                    const SizedBox(height: 6),
+                    CompassStrip(client: client, width: compassWidth),
+                  ],
                 ],
               ),
             ),
 
             // Top-center compass.
-            if (!busPhase)
+            if (!busPhase && compassFits)
               Positioned(
-                top: compassTop,
+                top: pad.top + inset,
                 left: 0,
                 right: 0,
                 child: Center(
@@ -279,25 +294,34 @@ class _Hud extends StatelessWidget {
             if (!compact || layout != LfLayout.phone)
               Positioned(
                 left: pad.left + inset,
-                top: pad.top + inset + 118,
+                top: pad.top + inset + (compassFits ? 118 : 150),
                 child: SquadPanel(client: client),
               ),
 
             // Bottom-left vitals.
-            Positioned(
-              left: pad.left + inset,
-              bottom: pad.bottom + inset,
-              child: VitalsPanel(client: client, compact: compact),
-            ),
+            if (bottomFits)
+              Positioned(
+                left: pad.left + inset,
+                bottom: pad.bottom + inset,
+                child: VitalsPanel(client: client, compact: compact),
+              ),
 
             // Bottom-right: materials above the hotbar.
             Positioned(
+              left: pad.left + inset,
               right: pad.right + inset,
               bottom: pad.bottom + inset,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  if (!bottomFits) ...[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: VitalsPanel(client: client, compact: compact),
+                    ),
+                    const SizedBox(height: 6),
+                  ],
                   MaterialsPanel(
                     client: client,
                     controls: controls,
@@ -570,7 +594,7 @@ class _MenuButton extends StatelessWidget {
     button: true,
     label: 'Match menu',
     child: GestureDetector(
-      onTap: () => _open(context),
+      onTap: () => open(context, onLeave: onLeave),
       child: const HudPanel(
         padding: EdgeInsets.all(10),
         child: Icon(Icons.menu_rounded, color: hudText, size: 20),
@@ -578,7 +602,14 @@ class _MenuButton extends StatelessWidget {
     ),
   );
 
-  Future<void> _open(BuildContext context) async {
+  static bool _showing = false;
+
+  static Future<void> open(
+    BuildContext context, {
+    required VoidCallback onLeave,
+  }) async {
+    if (_showing) return;
+    _showing = true;
     final leave = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -599,6 +630,7 @@ class _MenuButton extends StatelessWidget {
         ],
       ),
     );
+    _showing = false;
     if (leave == true) onLeave();
   }
 }
