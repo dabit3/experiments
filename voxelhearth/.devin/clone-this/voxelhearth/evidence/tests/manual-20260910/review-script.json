@@ -1,0 +1,455 @@
+{
+ "title": "Voxelhearth \u00b7 Web \u00d7 iOS computer-use review",
+ "subtitle": "Real UI on Chrome + iPhone 17 Simulator, one room \u00b7 2026-09-10",
+ "footer": "27/30 checks passed across 3 rounds \u00b7 2 untested \u00b7 manual-20260910",
+ "sources": {
+  "both": {
+   "video": "/Users/devin/vh-review/computer-use-all.mp4",
+   "label": "Web (left) \u00b7 iOS Simulator (right) \u2014 same room"
+  }
+ },
+ "chapters": [
+  {
+   "title": "Home and Web identity",
+   "caption": "Connected title screens; inspect pixel layout and set Web name",
+   "notes": [
+    "platform: both",
+    "raw t=4.9s"
+   ],
+   "from": 4.88,
+   "to": 13.88
+  },
+  {
+   "title": "iOS joins Web host",
+   "caption": "Web host created Survival seed 1234; code 8HCJ8",
+   "notes": [
+    "platform: web",
+    "raw t=50.4s"
+   ],
+   "from": 50.39,
+   "to": 59.39
+  },
+  {
+   "title": "iOS name with keyboard",
+   "caption": "Name page shows bottom overflow strip and keyboard obscures server field",
+   "notes": [
+    "platform: ios",
+    "raw t=69.7s"
+   ],
+   "from": 69.69,
+   "to": 78.69
+  },
+  {
+   "title": "Start shared match",
+   "caption": "Both lobbies show two players ready in 8HCJ8; start Web host",
+   "notes": [
+    "platform: both",
+    "raw t=117.9s"
+   ],
+   "from": 117.9,
+   "to": 126.9
+  },
+  {
+   "title": "Gameplay controls and shared edits",
+   "caption": "Both clients loaded same world; test Web capture, slots, block edits then iOS",
+   "notes": [
+    "platform: both",
+    "raw t=160.1s"
+   ],
+   "from": 160.14,
+   "to": 169.14
+  },
+  {
+   "title": "Web placed shared torch",
+   "caption": "Web torch count 8 to 7; same torch appears immediately on iOS",
+   "notes": [
+    "platform: both",
+    "raw t=183.2s"
+   ],
+   "from": 183.21,
+   "to": 192.21
+  },
+  {
+   "title": "iOS observes Web hole",
+   "caption": "Web held break made dirt hole beside torch; iOS look-drag reveals same hole",
+   "notes": [
+    "platform: both",
+    "raw t=206.8s"
+   ],
+   "from": 206.79,
+   "to": 215.79
+  },
+  {
+   "title": "iOS touch breaking workaround",
+   "caption": "Stationary hold failed; tiny movement while holding breaks log, leaving stump and floating upper log",
+   "notes": [
+    "platform: ios",
+    "raw t=261.6s"
+   ],
+   "from": 261.57,
+   "to": 270.57
+  },
+  {
+   "title": "iOS placement",
+   "caption": "Tap hotbar selected torch; Place built torch on chopped stump, count 8 to 7",
+   "notes": [
+    "platform: ios",
+    "raw t=279.2s"
+   ],
+   "from": 279.24,
+   "to": 288.24
+  },
+  {
+   "title": "Web observes iOS stump and torch",
+   "caption": "Web sees missing middle log and torch on stump beside iOS player; both edits synchronized",
+   "notes": [
+    "platform: both",
+    "raw t=343.3s"
+   ],
+   "from": 343.26,
+   "to": 352.26
+  },
+  {
+   "title": "Bidirectional chat",
+   "caption": "Send Web pixel hello and iOS pixel hello and compare visible feeds",
+   "notes": [
+    "platform: both",
+    "raw t=357.3s"
+   ],
+   "from": 357.33,
+   "to": 366.33
+  },
+  {
+   "title": "Both feeds confirmed",
+   "caption": "Both expanded feeds contain Web pixel hello and iOS pixel hello",
+   "notes": [
+    "platform: both",
+    "raw t=442.4s"
+   ],
+   "from": 442.41,
+   "to": 451.41
+  },
+  {
+   "title": "Pixel inventory and crafting",
+   "caption": "Open inventory each; move an item; obtain log and craft planks if possible",
+   "notes": [
+    "platform: both",
+    "raw t=453.8s"
+   ],
+   "from": 453.76,
+   "to": 462.76
+  },
+  {
+   "title": "Web inventory tap move",
+   "caption": "Dirt moved from hotbar slot 4 to inventory top-left and persisted on reopen",
+   "notes": [
+    "platform: web",
+    "raw t=484.3s"
+   ],
+   "from": 484.28,
+   "to": 493.28
+  },
+  {
+   "title": "iOS crafted four planks",
+   "caption": "Tap-moved log then clicked recipe output: log consumed, Planks x4 in hotbar",
+   "notes": [
+    "platform: both",
+    "raw t=538.2s"
+   ],
+   "from": 538.2,
+   "to": 547.2
+  },
+  {
+   "title": "Pause and Options",
+   "caption": "Verify sliders, toggles, persistence and safe-area layouts on both clients",
+   "notes": [
+    "platform: both",
+    "raw t=556.9s"
+   ],
+   "from": 556.91,
+   "to": 565.91
+  },
+  {
+   "title": "iOS slider during drag",
+   "caption": "Sensitivity changed from 100 to 186 percent while finger remained held",
+   "notes": [
+    "platform: ios",
+    "raw t=593.5s"
+   ],
+   "from": 593.48,
+   "to": 602.48
+  },
+  {
+   "title": "Web slider during drag",
+   "caption": "Sensitivity 100 to 179 percent while held; underlying pause menu remains visible through Options",
+   "notes": [
+    "platform: web",
+    "raw t=639.5s"
+   ],
+   "from": 639.55,
+   "to": 648.55
+  },
+  {
+   "title": "Web Tab roster",
+   "caption": "Tab opened two-player roster with Web host and iOS in 8HCJ8",
+   "notes": [
+    "platform: web",
+    "raw t=664.7s"
+   ],
+   "from": 664.73,
+   "to": 673.73
+  },
+  {
+   "title": "Web reload recovery",
+   "caption": "Before reload: room 8HCJ8, Web score 2, Torch x7, Apples x3, Dirt moved to inventory",
+   "notes": [
+    "platform: both",
+    "raw t=692.5s"
+   ],
+   "from": 692.51,
+   "to": 701.51
+  },
+  {
+   "title": "Reload restored same game",
+   "caption": "Same name, room, location, score and hotbar; no Home screen or rejoin input required",
+   "notes": [
+    "platform: both",
+    "raw t=705.2s"
+   ],
+   "from": 705.18,
+   "to": 714.18
+  },
+  {
+   "title": "Roster after reload",
+   "caption": "Exactly two players, but capture hint overlaps the roster footer when not locked",
+   "notes": [
+    "platform: web",
+    "raw t=736.4s"
+   ],
+   "from": 736.37,
+   "to": 745.37
+  },
+  {
+   "title": "End match and compare results",
+   "caption": "Web host ends match; compare scores and hashes on both clients",
+   "notes": [
+    "platform: both",
+    "raw t=748.5s"
+   ],
+   "from": 748.48,
+   "to": 757.48
+  },
+  {
+   "title": "Identical final results",
+   "caption": "Both tables: iOS placed1 broken1 crafted1 kills0 score5; Web placed1 broken1 crafted0 kills0 score2",
+   "notes": [
+    "platform: both",
+    "raw t=765.0s"
+   ],
+   "from": 764.95,
+   "to": 773.95
+  },
+  {
+   "title": "Back to original lobby",
+   "caption": "Host Back to Lobby returned both to 8HCJ8, same two-player roster",
+   "notes": [
+    "platform: both",
+    "raw t=782.9s"
+   ],
+   "from": 782.91,
+   "to": 791.91
+  },
+  {
+   "title": "Fix round 1: separate title menus and footer text on both cl",
+   "caption": "FAILED \u2014 Web footer fixed; iOS legal text still intersects Options/How to Play edges",
+   "notes": [
+    "Fix round 1",
+    "real UI, no director channel"
+   ],
+   "from": 798.27,
+   "to": 804.48
+  },
+  {
+   "title": "Fix round 1: scroll the iOS name form above the keyboard",
+   "caption": "PASSED \u2014 No overflow; scroll reveals Server Address and Done/Cancel; Done returns Home",
+   "notes": [
+    "Fix round 1",
+    "real UI, no director channel"
+   ],
+   "from": 804.48,
+   "to": 822.48
+  },
+  {
+   "title": "Fix round 1: break an iOS block with a completely still held",
+   "caption": "PASSED \u2014 No pointer movement: cracks appeared, log broke, log entered hotbar",
+   "notes": [
+    "Fix round 1",
+    "real UI, no director channel"
+   ],
+   "from": 830.63,
+   "to": 848.63
+  },
+  {
+   "title": "Fix round 1: separate Web roster and capture hint and hide p",
+   "caption": "PASSED \u2014 Both Options hide pause title/buttons; Done restores Game Menu on both",
+   "notes": [
+    "Fix round 1",
+    "real UI, no director channel"
+   ],
+   "from": 850.54,
+   "to": 865.62
+  },
+  {
+   "title": "Fix round 2: keep iOS Home footer clear of menu buttons",
+   "caption": "PASSED \u2014 Legal text is below button edges; status is on its own separate line",
+   "notes": [
+    "Fix round 2",
+    "real UI, no director channel"
+   ],
+   "from": 866.35,
+   "to": 874.8
+  },
+  {
+   "title": "Fix round 2: fit the iOS host lobby and Options helper text",
+   "caption": "PASSED \u2014 Entire Auto graphics helper visible above Done without scrolling; Done returns",
+   "notes": [
+    "Fix round 2",
+    "real UI, no director channel"
+   ],
+   "from": 874.8,
+   "to": 885.82
+  },
+  {
+   "title": "Fix round 2: still join Web and iOS into the same lobby (Reg",
+   "caption": "PASSED \u2014 Both show Y9XE7 with ios host + web; iOS chat/footer remain overflow-free",
+   "notes": [
+    "Fix round 2",
+    "real UI, no director channel"
+   ],
+   "from": 885.82,
+   "to": 896.04
+  }
+ ],
+ "checks": [
+  {
+   "name": "Home name entry and Web Create World",
+   "ok": true
+  },
+  {
+   "name": "iOS Join, two rosters, Ready, Web Start",
+   "ok": true
+  },
+  {
+   "name": "Web click capture, no-drag look, Esc release",
+   "ok": true
+  },
+  {
+   "name": "Web movement",
+   "ok": true
+  },
+  {
+   "name": "Web left-hold break and right-click place",
+   "ok": true
+  },
+  {
+   "name": "Web wheel hotbar",
+   "ok": true
+  },
+  {
+   "name": "iOS joystick and look-drag",
+   "ok": true
+  },
+  {
+   "name": "iOS hotbar tap and Place",
+   "ok": true
+  },
+  {
+   "name": "iOS stationary hold-to-break",
+   "ok": false
+  },
+  {
+   "name": "Shared edits in both directions",
+   "ok": true
+  },
+  {
+   "name": "In-game chat both directions",
+   "ok": true
+  },
+  {
+   "name": "Web E and iOS inventory button",
+   "ok": true
+  },
+  {
+   "name": "Inventory tap-move and persistence",
+   "ok": true
+  },
+  {
+   "name": "Craft planks",
+   "ok": true
+  },
+  {
+   "name": "Pause, Options, slider, toggle, Back",
+   "ok": true
+  },
+  {
+   "name": "Web Tab roster",
+   "ok": true
+  },
+  {
+   "name": "Full Web reload/session token",
+   "ok": true
+  },
+  {
+   "name": "End Match / results",
+   "ok": true
+  },
+  {
+   "name": "Back to Lobby",
+   "ok": true
+  },
+  {
+   "name": "Pixel GUI visual completeness",
+   "ok": false
+  },
+  {
+   "name": "Fix 1 \u00b7 iOS stationary hold breaks",
+   "ok": true
+  },
+  {
+   "name": "Fix 1 \u00b7 iOS Home overlap",
+   "ok": false
+  },
+  {
+   "name": "Fix 1 \u00b7 Web Home at side-by-side width",
+   "ok": true
+  },
+  {
+   "name": "Fix 1 \u00b7 iOS keyboard form scroll",
+   "ok": true
+  },
+  {
+   "name": "Fix 1 \u00b7 Web hint vs Tab roster",
+   "ok": true
+  },
+  {
+   "name": "Fix 1 \u00b7 Pause hidden behind Options, both clients",
+   "ok": true
+  },
+  {
+   "name": "Fix 2 \u00b7 iOS Home SafeArea footer",
+   "ok": true
+  },
+  {
+   "name": "Fix 2 \u00b7 iOS host lobby compact footer/chat",
+   "ok": true
+  },
+  {
+   "name": "Fix 2 \u00b7 iOS Options helper",
+   "ok": true
+  },
+  {
+   "name": "Fix 2 \u00b7 Regression: Web+iOS join",
+   "ok": true
+  }
+ ]
+}

@@ -37,3 +37,8 @@ resolution but the web client cannot reach 60 fps on a software rasterizer.
 Status: **not demonstrated on every platform** on this host (web 20–54 across
 runs; Android never ran). The 60 fps requirement stays open until the same
 harness is run on a machine with a hardware GPU. It is *not* marked verified.
+
+Iteration 7 (after the computer-use fixes): web 30 / iOS 60 in the web+iOS pair
+run `e2e-20260910-092503`; web 21 / iOS 26 / macOS 59 in the three-way run
+`e2e-20260910-093258` (recorded while a clean-checkout build was running on the
+same host). Same conclusion: host-dependent, not demonstrated universally.

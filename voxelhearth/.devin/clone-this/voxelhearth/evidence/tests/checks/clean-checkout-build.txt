@@ -1,48 +1,33 @@
-# fresh clone of branch devin/1788988153-voxelhearth at 37c2beb, 2026-09-10T15:36:37Z
-== core
-Resolving dependencies...
-Downloading packages...
-Got dependencies!
-Formatted 14 files (0 changed) in 0.04 seconds.
-Analyzing voxelhearth_core...
+# clean checkout build — commit c6b8ad9 (iteration 7 source; README-only edit follows)
+
+clean checkout c6b8ad96718124ea1e133a1be86a7c77390c62ab 2026-09-10T16:32:35Z
+== packages/voxelhearth_core: pub get / format / analyze
+format OK
 No issues found!
-00:00 +17: test/core_test.dart: room simulation bots act deterministically for a given seed
-00:00 +18: test/core_test.dart: room simulation kiln smelts with fuel
+== server: pub get / format / analyze
+format OK
+No issues found!
+== app: pub get / format / analyze
+format OK
+No issues found!
+== packages/voxelhearth_core: dart test
 00:00 +19: All tests passed!
-== server
-Resolving dependencies...
-Downloading packages...
-Got dependencies!
-Formatted 2 files (0 changed) in 0.01 seconds.
-Analyzing server...
-No issues found!
-== app
-Formatted 23 files (0 changed) in 0.12 seconds.
-Resolving dependencies...
-Downloading packages...
-  code_assets 1.2.1 (2.0.0 available)
-  hooks 2.0.2 (2.2.0 available)
-  material_color_utilities 0.13.0 (0.13.1 available)
-  meta 1.18.3 (1.19.0 available)
-  objective_c 9.5.0 (9.6.0 available)
-  record_use 0.6.0 (1.1.1 available)
-  test_api 0.7.12 (0.7.14 available)
-  vector_math 2.4.0 (2.4.2 available)
-Got dependencies!
-8 packages have newer versions incompatible with dependency constraints.
-Try `flutter pub outdated` for more information.
-Analyzing app...                                                
-No issues found! (ran in 1.4s)
+== server: dart test (no test dir; server covered by core tests + e2e)
+                                      (auto-detected by default)
 == flutter build web --release
-Compiling lib/main.dart for the Web...                             24.8s
+Compiling lib/main.dart for the Web...                             23.2s
 ✓ Built build/web
-== flutter build macos
+BUILD OK: web --release
+== flutter build macos --release
 warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
 ✓ Built build/macos/Build/Products/Release/Voxelhearth.app (46.0MB)
+BUILD OK: macos --release
 == flutter build ios --simulator
-Xcode build done.                                           34.4s
+Xcode build done.                                           49.5s
 ✓ Built build/ios/iphonesimulator/Runner.app
-== flutter build apk
-Running Gradle task 'assembleRelease'...                           43.1s
+BUILD OK: ios --simulator
+== flutter build apk --release
+Running Gradle task 'assembleRelease'...                           57.1s
 ✓ Built build/app/outputs/flutter-apk/app-release.apk (52.9MB)
-EXIT=0
+BUILD OK: apk --release
+done 2026-09-10T16:36:09Z

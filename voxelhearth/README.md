@@ -204,6 +204,20 @@ The harness fully supports it (`VH_PLATFORMS=web,ios,android,macos`) on a host
 with a working emulator. This is recorded as an external blocker in
 `.devin/clone-this/voxelhearth/state.json`.
 
+A separate **real-UI (computer-use) pass** drove Chrome and the iPhone 17
+Simulator side by side through the actual menus, HUD and touch controls —
+create/join, ready/start, shared edits, chat, inventory/crafting, pause/options,
+reload/reconnect, results — without the director channel. Its reports,
+`markers.json` and screenshots are in `evidence/tests/manual-20260910/`; the
+same `review-video.mjs` editor cuts its raw screen recording plus the two
+fix-round recordings into `manual-20260910/review-video.mp4` (the script is
+generated from the markers, the fix-round annotations and the PASS/FAIL tables
+of the reports). The first pass found five UI defects (iOS stationary
+hold-to-break, iOS/web home footer collisions, keyboard overflow on the name
+form, capture hint over the Tab roster, pause menu visible behind Options)
+plus two follow-ups (iOS host-lobby overflow, clipped Options helper); all
+are fixed and re-verified in the fix rounds.
+
 The run also records a **visual matrix**: every client renders identical
 fixture data for the lobby, results and home screens; the web capture is the
 baseline and the native macOS window (pinned to the same 1280×800 logical
