@@ -1,0 +1,6 @@
+# flutter build ios --simulator --debug (2026-09-10T11:29:40Z)
+Building dev.brickfolk.brickfolkApp for simulator (ios)...
+Running Xcode build...                                          
+Xcode build done.                                           10.0s
+✓ Built build/ios/iphonesimulator/Runner.app
+exit=0

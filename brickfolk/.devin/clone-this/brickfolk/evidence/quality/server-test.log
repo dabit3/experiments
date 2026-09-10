@@ -1,0 +1,13 @@
+Running build hooks...Running build hooks...00:00 +0: loading test/hub_test.dart
+00:00 +0: test/hub_test.dart: rejects bad names and duplicate names
+00:00 +1: test/hub_test.dart: token resumes the same player and profile persists
+00:00 +2: test/hub_test.dart: daily reward claims once and reports cooldown
+00:00 +3: test/hub_test.dart: chat is filtered and rate limited
+00:00 +4: test/hub_test.dart: friends request/accept flow awards social badge
+00:00 +5: test/hub_test.dart: four platforms party up, play an obby match, identical results
+00:00 +6: test/hub_test.dart: reconnect within grace keeps the seat and re-sends room state
+00:00 +7: test/hub_test.dart: an obby plan applies each entry at its tick and does not expire
+00:00 +8: test/hub_test.dart: a held obby input expires when the client stops refreshing it
+00:00 +9: test/hub_test.dart: tycoon and tag matches complete with bots and persist the plot
+00:00 +10: All tests passed!
+exit=0

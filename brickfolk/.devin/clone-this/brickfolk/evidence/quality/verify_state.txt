@@ -1,0 +1,5 @@
+Manifest gate passed for revision sha256:6a650cadb46c1f95c85ec26810068d37ecdc73dbf5a41b92bf2fd9f62debbede.
+- items: 46 verified (route 10, feature 19, journey 4, visual 6, asset 4, integration 3)
+- audits: 10 verified; checks: 5 passed; sweeps: 2
+This does not prove application parity.
+Inspect the referenced evidence before claiming completion.

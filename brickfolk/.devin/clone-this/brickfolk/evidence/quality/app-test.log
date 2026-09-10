@@ -1,0 +1,14 @@
+00:00 +0: loading /Users/devin/repos/experiments/brickfolk/app/test/app_test.dart
+00:00 +0: AppConfig query parameters override defines
+00:00 +1: AppConfig defaults are sane
+00:00 +2: theme light and dark themes share the Inter type family
+00:00 +3: AvatarView paints every catalog hat/face/accessory without errors
+00:00 +4: BrickfolkApp shows the sign-in screen when signed out
+00:00 +5: BrickfolkApp rejects an invalid name locally
+00:00 +6: BrickfolkApp lays out on a compact 320px phone without overflow
+00:00 +7: BrickfolkApp signed-in hub lays out on phone without errors
+00:00 +8: BrickfolkApp signed-in hub lays out on tablet without errors
+00:00 +9: BrickfolkApp signed-in hub lays out on desktop without errors
+00:00 +10: BrickfolkApp forced dark theme applies
+00:00 +11: All tests passed!
+exit=0

@@ -1,0 +1,40 @@
+{
+  "id": "hub-shifted",
+  "mode": "normalized",
+  "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png",
+  "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T11-18-13/visual/web-hub.png",
+  "reference_crop": [
+    0,
+    0,
+    1172,
+    760
+  ],
+  "actual_crop": [
+    8,
+    0,
+    1172,
+    760
+  ],
+  "scale": 4,
+  "tolerance": 48,
+  "shift": 1,
+  "edge_tolerance": 24,
+  "max_edge_cells_allowed": 56,
+  "max_cluster_allowed": 4,
+  "masks": [],
+  "mask_note": "sensitivity check: web hub against itself shifted 8px; must not pass",
+  "normalized_size": [
+    293,
+    190
+  ],
+  "total_pixels": 55670,
+  "masked_pixels": 0,
+  "different_pixels": 710,
+  "edge_cells": 634,
+  "max_unmasked_delta": 219,
+  "largest_cluster": 89,
+  "passed": false,
+  "reference": "hub-shifted-reference.png",
+  "actual": "hub-shifted-actual.png",
+  "diff": "hub-shifted-diff.png"
+}
