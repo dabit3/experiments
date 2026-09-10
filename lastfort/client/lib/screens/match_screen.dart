@@ -432,7 +432,9 @@ class _CenterPrompt extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'ELIMINATED · #$placement',
+              placement > 0
+                  ? 'ELIMINATED · #$placement'
+                  : 'ELIMINATED · SQUAD STILL IN',
               style: hudLabel(context, color: LfTokens.danger),
             ),
             const SizedBox(height: 2),

@@ -132,16 +132,24 @@ class TopRightCluster extends StatelessWidget {
     final String label;
     final String value;
     Color accent = hudText;
+    if (inStorm) {
+      label = 'IN STORM';
+    } else if (phase == MatchPhase.bus) {
+      label = 'BUS LEAVES';
+    } else if (storm.finished && !storm.shrinking) {
+      label = 'FINAL RING';
+    } else if (storm.shrinking) {
+      label = 'SHRINKING';
+    } else {
+      label = 'SHRINKS IN';
+    }
     if (phase == MatchPhase.bus) {
-      label = 'BUS LEAVES IN';
       value = _fmt(client.busSecondsLeft);
       accent = LfTokens.teal;
     } else if (storm.finished && !storm.shrinking) {
-      label = 'FINAL CIRCLE';
       value = '${storm.damagePerSecond.toStringAsFixed(0)}/s';
       accent = LfTokens.storm;
     } else {
-      label = storm.shrinking ? 'STORM SHRINKING' : 'STORM SHRINKS IN';
       value = _fmt(storm.remaining);
       if (storm.shrinking) accent = LfTokens.storm;
     }
@@ -181,7 +189,7 @@ class TopRightCluster extends StatelessWidget {
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
-                          inStorm ? 'IN THE STORM' : label,
+                          label,
                           style: hudCaps(
                             compact ? 9 : 10,
                             color: inStorm ? LfTokens.storm : hudMuted,
@@ -189,9 +197,18 @@ class TopRightCluster extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      Text(value, style: hudDigits(digits, color: accent)),
+                      if (!compact)
+                        Text(value, style: hudDigits(digits, color: accent)),
                     ],
                   ),
+                  if (compact)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        value,
+                        style: hudDigits(digits, color: accent),
+                      ),
+                    ),
                   if (phase != MatchPhase.bus) ...[
                     const SizedBox(height: 5),
                     LfBar(
@@ -523,8 +540,9 @@ class SquadPanel extends StatelessWidget {
 
 // ------------------------------------------------------------ hotbar
 
-/// Tool slot plus five item slots; the selected slot lifts and gets a white
-/// frame, rarity tints the slot, ammo/count sits bottom-right.
+/// Build-tool slot, pickaxe slot (inventory 0, key 1) and five item slots
+/// (keys 2-6); the selected slot lifts and gets a white frame, rarity tints
+/// the slot, ammo/count sits bottom-right.
 class HotbarPanel extends StatelessWidget {
   const HotbarPanel({
     super.key,
@@ -536,7 +554,7 @@ class HotbarPanel extends StatelessWidget {
   final Controls controls;
   final bool compact;
 
-  static double widthFor(bool compact) => compact ? 296 : 396;
+  static double widthFor(bool compact) => compact ? 300 : 396;
 
   @override
   Widget build(BuildContext context) {
@@ -587,10 +605,21 @@ class HotbarPanel extends StatelessWidget {
               size: size,
               selected: p.buildMode,
               hint: 'Q',
+              icon: Icons.handyman_rounded,
+              label: 'Build tool',
               onTap: () => controls.toggleBuild(),
             ),
             const SizedBox(width: 6),
-            for (var i = 0; i < p.inventory.length; i++) ...[
+            _ToolSlot(
+              size: size,
+              selected: selected == 0,
+              hint: '1',
+              icon: Icons.hardware_rounded,
+              label: 'Pickaxe',
+              onTap: () => controls.selectSlot(0),
+            ),
+            const SizedBox(width: 3),
+            for (var i = 1; i < p.inventory.length; i++) ...[
               _ItemSlot(
                 size: size,
                 item: p.inventory[i],
@@ -615,18 +644,22 @@ class _ToolSlot extends StatelessWidget {
     required this.size,
     required this.selected,
     required this.hint,
+    required this.icon,
+    required this.label,
     required this.onTap,
   });
   final double size;
   final bool selected;
   final String hint;
+  final IconData icon;
+  final String label;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) => Semantics(
     button: true,
     selected: selected,
-    label: 'Build tool',
+    label: label,
     child: GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -646,7 +679,7 @@ class _ToolSlot extends StatelessWidget {
           children: [
             Center(
               child: Icon(
-                Icons.handyman_rounded,
+                icon,
                 color: selected ? Colors.white : hudMuted,
                 size: size * 0.42,
               ),

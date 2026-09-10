@@ -177,7 +177,11 @@ class _ResultsScreenState extends State<ResultsScreen>
                                       Text(
                                         '+${widget.xpGained} XP',
                                         style: context.text.titleLarge
-                                            ?.copyWith(color: LfTokens.teal),
+                                            ?.copyWith(
+                                              color: c.isDark
+                                                  ? LfTokens.teal
+                                                  : LfTokens.tealDeep,
+                                            ),
                                       ),
                                       const SizedBox(width: LfTokens.s2),
                                       Text(
@@ -281,8 +285,7 @@ class _Ribbon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = context.lf;
-    final fg = c.isDark ? const Color(0xFF0B0F17) : Colors.white;
+    const fg = Color(0xFF0B0F17);
     return Column(
       children: [
         Text(

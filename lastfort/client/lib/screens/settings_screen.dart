@@ -210,7 +210,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         _Key('Z X C V', 'Wall · Floor · Ramp · Roof'),
                         _Key('M', 'Cycle material'),
                         _Key('F', 'Edit piece'),
-                        _Key('1–6', 'Hotbar'),
+                        _Key('1–6', 'Pickaxe / hotbar'),
                         _Key('Tab', 'Spectate next'),
                       ],
                     ),

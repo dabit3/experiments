@@ -16,6 +16,4 @@ Completion gate failed:
 - checks[0].verified_revision does not match the current revision.
 - checks[1].status must be 'passed'.
 - checks[1].verified_revision does not match the current revision.
-- sweeps[0] must close the discovery frontier.
-- sweeps[1] must close the discovery frontier.
-exit=1
+- sweeps must contain two consecutive final discovery sweeps.

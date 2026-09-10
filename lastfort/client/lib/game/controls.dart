@@ -78,7 +78,7 @@ class Controls extends ChangeNotifier {
     if (k == LogicalKeyboardKey.tab)
       queue(const GameAction(ActionType.spectateNext));
     for (var i = 1; i <= 6; i++) {
-      if (k == LogicalKeyboardKey(0x30 + i)) selectSlot(i);
+      if (k == LogicalKeyboardKey(0x30 + i)) selectSlot(i - 1);
     }
   }
 
