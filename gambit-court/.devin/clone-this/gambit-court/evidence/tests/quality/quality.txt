@@ -1,6 +1,6 @@
-quality suite at 2026-09-09T23:38:33Z, git HEAD 3eefaa6ed97fc77c84b09b1d7986a133ed6c35ba
+quality suite at 2026-09-10T00:08:18Z, git HEAD 53810c2c982a68119fc9dd8300cfed34a4893bd8
 == core
-Formatted 12 files (0 changed) in 0.04 seconds.
+Formatted 12 files (0 changed) in 0.02 seconds.
 Analyzing gambit_court_core...
 No issues found!
 00:00 +27: All tests passed!
@@ -12,10 +12,10 @@ No issues found!
 00:00 +6: All tests passed!
 server exit=0
 == app
-Formatted 18 files (0 changed) in 0.10 seconds.
+Formatted 19 files (0 changed) in 0.12 seconds.
 Analyzing app...                                                
-No issues found! (ran in 3.5s)
-00:00 +3: All tests passed!
+No issues found! (ran in 1.6s)
+00:00 +6: All tests passed!
 app exit=0
 == harness
 harness lint ok
@@ -23,3 +23,4 @@ harness exit=0
 == swift
 swift parse ok
 swift exit=0
+quality exit=0

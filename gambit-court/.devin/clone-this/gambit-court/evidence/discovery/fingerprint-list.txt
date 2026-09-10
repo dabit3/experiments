@@ -127,6 +127,7 @@ app/macos/RunnerTests/RunnerTests.swift
 app/pubspec.lock
 app/pubspec.yaml
 app/test/chess_board_test.dart
+app/test/clock_display_test.dart
 app/tool/make_sfx.py
 app/web/favicon.png
 app/web/icons/Icon-192.png

@@ -37,7 +37,7 @@
       "detail": "lobby"
     },
     {
-      "label": "room created with invite code NANER2",
+      "label": "room created with invite code 2FENTE",
       "passed": true
     },
     {
@@ -50,7 +50,7 @@
       "passed": true,
       "detail": {
         "type": "ui_report",
-        "id": "1700000000000-825160349",
+        "id": "1700000000000-304968145",
         "ok": true,
         "clientId": "ios-e2e",
         "platform": "ios",
@@ -65,7 +65,7 @@
         "connection": "online",
         "screen": "game",
         "theme": "dark",
-        "roomCode": "NANER2",
+        "roomCode": "2FENTE",
         "status": "playing",
         "seq": 2,
         "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -98,11 +98,11 @@
       }
     },
     {
-      "label": "macos joined NANER2 as spectator",
+      "label": "macos joined 2FENTE as spectator",
       "passed": true,
       "detail": {
         "type": "ui_report",
-        "id": "1700000000000-707946124",
+        "id": "1700000000000-163442366",
         "ok": true,
         "clientId": "macos-e2e",
         "platform": "macos",
@@ -117,7 +117,7 @@
         "connection": "online",
         "screen": "game",
         "theme": "dark",
-        "roomCode": "NANER2",
+        "roomCode": "2FENTE",
         "status": "playing",
         "seq": 3,
         "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -157,7 +157,7 @@
       "detail": "playing"
     },
     {
-      "label": "web is in room NANER2",
+      "label": "web is in room 2FENTE",
       "passed": true
     },
     {
@@ -181,7 +181,7 @@
       "detail": "playing"
     },
     {
-      "label": "ios is in room NANER2",
+      "label": "ios is in room 2FENTE",
       "passed": true
     },
     {
@@ -205,7 +205,7 @@
       "detail": "playing"
     },
     {
-      "label": "macos is in room NANER2",
+      "label": "macos is in room 2FENTE",
       "passed": true
     },
     {
@@ -421,7 +421,7 @@
       "passed": true,
       "detail": {
         "type": "ui_report",
-        "id": "1700000000000-936552493",
+        "id": "1700000000000-799248449",
         "ok": true,
         "clientId": "web-e2e",
         "platform": "web",
@@ -464,7 +464,7 @@
       "passed": true,
       "detail": {
         "type": "ui_report",
-        "id": "1700000000000-654690101",
+        "id": "1700000000000-819498687",
         "ok": true,
         "clientId": "ios-e2e",
         "platform": "ios",
@@ -507,7 +507,7 @@
       "passed": true,
       "detail": {
         "type": "ui_report",
-        "id": "1700000000000-628170966",
+        "id": "1700000000000-209796152",
         "ok": true,
         "clientId": "macos-e2e",
         "platform": "macos",
@@ -731,7 +731,7 @@
       "status": 0
     }
   ],
-  "roomCode": "NANER2",
+  "roomCode": "2FENTE",
   "final": {
     "web": {
       "fen": "1n1Rkb1r/p4ppp/4q3/4p1B1/4P3/8/PPP2PPP/2K5 b k - 1 17",
@@ -884,6 +884,6 @@
       "seq": 38
     }
   },
-  "pgn": "[Event \"Gambit Court · Blitz\"]\n[Site \"Gambit Court (web)\"]\n[Date \"????.??.??\"]\n[Round \"NANER2\"]\n[White \"Web Ada\"]\n[Black \"iOS Bram\"]\n[Result \"1-0\"]\n[TimeControl \"180+2\"]\n[Termination \"by checkmate\"]\n\n1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7\n8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7\n14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0\n",
+  "pgn": "[Event \"Gambit Court · Blitz\"]\n[Site \"Gambit Court (web)\"]\n[Date \"????.??.??\"]\n[Round \"2FENTE\"]\n[White \"Web Ada\"]\n[Black \"iOS Bram\"]\n[Result \"1-0\"]\n[TimeControl \"180+2\"]\n[Termination \"by checkmate\"]\n\n1. e4 e5 2. Nf3 d6 3. d4 Bg4 4. dxe5 Bxf3 5. Qxf3 dxe5 6. Bc4 Nf6 7. Qb3 Qe7\n8. Nc3 c6 9. Bg5 b5 10. Nxb5 cxb5 11. Bxb5+ Nbd7 12. O-O-O Rd8 13. Rxd7 Rxd7\n14. Rd1 Qe6 15. Bxd7+ Nxd7 16. Qb8+ Nxb8 17. Rd8# 1-0\n",
   "passed": true
 }

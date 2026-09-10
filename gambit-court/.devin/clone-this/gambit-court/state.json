@@ -5,7 +5,7 @@
   "clone_root": "/Users/devin/repos/experiments/gambit-court",
   "status": "blocked",
   "iteration": 1,
-  "revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+  "revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
   "frontier": [],
   "blockers": [
     {
@@ -37,7 +37,7 @@
       "kind": "route",
       "label": "Lobby screen: identity, theme, quick-pair, create/join by invite code, open tables, bot level",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/web-lobby.png",
@@ -55,7 +55,7 @@
       "kind": "route",
       "label": "Game screen: board, player cards, clocks, move list, offers, history browsing",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/web-midgame.png",
@@ -69,7 +69,7 @@
       "kind": "route",
       "label": "Results overlay: outcome, reason, score, PGN export, rematch, back to lobby",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/web-results.png",
@@ -82,7 +82,7 @@
       "kind": "route",
       "label": "PGN review mode reached from import (read-only board + move list)",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/parity/web-review-ios.png",
@@ -95,7 +95,7 @@
       "kind": "feature",
       "label": "Legal move generation incl. castling, en passant, promotion, check, checkmate, stalemate (perft + rule unit tests)",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/quality/quality.txt"
       ]
@@ -105,7 +105,7 @@
       "kind": "feature",
       "label": "Threefold repetition, fifty-move rule, insufficient material, stalemate detection",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/quality/quality.txt"
       ]
@@ -115,7 +115,7 @@
       "kind": "feature",
       "label": "Promotion requires an explicit piece choice (picker in UI, `Promotion piece required` from server)",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/quality/quality.txt",
         "evidence/tests/e2e/result.json"
@@ -126,7 +126,7 @@
       "kind": "feature",
       "label": "SAN move list; PGN export/import round trip",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/quality/quality.txt",
         "evidence/tests/e2e/result.json"
@@ -137,7 +137,7 @@
       "kind": "feature",
       "label": "Server-owned clocks with bullet/blitz/rapid/classical presets and custom increment; first move per side untimed; frozen-clock determinism",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/quality/quality.txt",
         "evidence/tests/e2e/result.json"
@@ -148,7 +148,7 @@
       "kind": "feature",
       "label": "Resign, draw offers/accept/decline, takeback by agreement, rematch with colour swap",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/quality/quality.txt",
         "evidence/tests/e2e/result.json"
@@ -159,7 +159,7 @@
       "kind": "feature",
       "label": "Drag and tap-tap input, last-move/legal-move/check highlights, premove, board flip, keyboard history browsing",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/quality/quality.txt",
         "evidence/tests/e2e/result.json",
@@ -171,7 +171,7 @@
       "kind": "feature",
       "label": "Quick-pair, six-character invite codes, open tables, spectators, seat retention across reconnect",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/web-waiting.png",
@@ -183,7 +183,7 @@
       "kind": "feature",
       "label": "Server-side alpha-beta engine bot with four strengths, deterministic under --seed",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/quality/quality.txt",
         "evidence/tests/e2e/server-stdout.txt"
@@ -194,7 +194,7 @@
       "kind": "feature",
       "label": "Dark and light themes on every platform",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/web-light.png",
@@ -207,7 +207,7 @@
       "kind": "feature",
       "label": "Deterministic test-input channel (ui_command/ui_report) and /control endpoints, opt-in via --control",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/harness-stdout.txt"
@@ -218,7 +218,7 @@
       "kind": "journey",
       "label": "Two platforms play, others spectate the same room: lobby -> match -> checkmate -> identical FEN/SAN/score/clocks -> results -> PGN -> rematch -> lobby (verified web/iOS/macOS; Android runtime blocked, see blocker)",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/harness-stdout.txt",
@@ -236,7 +236,7 @@
       "kind": "journey",
       "label": "Spectator drops its socket mid-game and resumes the same room/game",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/macos-reconnecting.png"
@@ -247,7 +247,7 @@
       "kind": "journey",
       "label": "Browse earlier plies while the live move list stays intact; PGN import opens review mode",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/macos-history.png"
@@ -258,7 +258,7 @@
       "kind": "visual",
       "label": "lobby screen: ios matches the web baseline at 402x812 logical px (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/parity/lobby-ios-normalization.json",
@@ -281,7 +281,7 @@
       "kind": "visual",
       "label": "review screen: ios matches the web baseline at 402x812 logical px (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/parity/review-ios-normalization.json",
@@ -304,7 +304,7 @@
       "kind": "visual",
       "label": "lobby screen: macos matches the web baseline at 1000x488 logical px (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/parity/lobby-macos-normalization.json",
@@ -327,7 +327,7 @@
       "kind": "visual",
       "label": "review screen: macos matches the web baseline at 1000x488 logical px (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/parity/review-macos-normalization.json",
@@ -350,7 +350,7 @@
       "kind": "asset",
       "label": "Original vector piece set, brand mark, app icons; no third-party or trademarked artwork",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/security/secret-scan.txt",
         "evidence/tests/e2e/web-lobby.png"
@@ -361,7 +361,7 @@
       "kind": "asset",
       "label": "Original generated sound effects (app/tool/make_sfx.py)",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/fingerprint-list.txt"
       ]
@@ -371,7 +371,7 @@
       "kind": "integration",
       "label": "Authoritative Dart WebSocket server; JSON protocol documented in PROTOCOL.md",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/server-stdout.txt",
@@ -395,7 +395,7 @@
     {
       "id": "source",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/audits/source.md",
         "evidence/reference/source-reference.md",
@@ -405,7 +405,7 @@
     {
       "id": "navigation",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/audits/navigation.md",
         "evidence/tests/e2e/result.json"
@@ -414,7 +414,7 @@
     {
       "id": "roles",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/audits/roles.md",
         "evidence/tests/e2e/result.json",
@@ -424,7 +424,7 @@
     {
       "id": "states",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/audits/states.md",
         "evidence/tests/e2e/result.json",
@@ -437,7 +437,7 @@
     {
       "id": "responsive",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/audits/responsive.md",
         "evidence/tests/e2e/result.json",
@@ -448,7 +448,7 @@
     {
       "id": "data",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/audits/data.md",
         "evidence/tests/e2e/result.json"
@@ -457,7 +457,7 @@
     {
       "id": "assets",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/audits/assets.md",
         "evidence/discovery/fingerprint-list.txt"
@@ -466,7 +466,7 @@
     {
       "id": "accessibility",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/audits/accessibility.md",
         "evidence/tests/e2e/web-light.png",
@@ -476,7 +476,7 @@
     {
       "id": "reliability",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/audits/reliability.md",
         "evidence/discovery/fingerprint-list.txt",
@@ -487,7 +487,7 @@
     {
       "id": "rebrand",
       "status": "verified",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/discovery/audits/rebrand.md",
         "evidence/tests/security/secret-scan.txt",
@@ -499,7 +499,7 @@
     {
       "id": "functional",
       "status": "passed",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/harness-stdout.txt",
@@ -509,7 +509,7 @@
     {
       "id": "visual",
       "status": "passed",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/e2e/result.json",
         "evidence/tests/e2e/parity/lobby-ios-normalization.json",
@@ -521,7 +521,7 @@
     {
       "id": "build",
       "status": "passed",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/build/clean-checkout-build.txt"
       ]
@@ -529,7 +529,7 @@
     {
       "id": "quality",
       "status": "passed",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/quality/quality.txt"
       ]
@@ -537,7 +537,7 @@
     {
       "id": "security",
       "status": "passed",
-      "verified_revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "verified_revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "evidence": [
         "evidence/tests/security/secret-scan.txt",
         "evidence/tests/security/dependencies.txt",
@@ -547,7 +547,7 @@
   ],
   "sweeps": [
     {
-      "revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "new_items": 0,
       "frontier_empty": true,
       "audit_ids": [
@@ -567,7 +567,7 @@
       ]
     },
     {
-      "revision": "sha256:a9c3cf81c62fa9e83de74f535d25bce98c6c9b89422ddf6ef38f75f6855c134b",
+      "revision": "sha256:7d8373da7208aea444736b3790b15f7782f3fba3b3168148ee65125ce3a86a8b",
       "new_items": 0,
       "frontier_empty": true,
       "audit_ids": [
@@ -588,7 +588,7 @@
     }
   ],
   "next_action": "Blocked checkpoint: run the Android leg of the four-way E2E on a host with hardware virtualization, then re-run verify_state.py.",
-  "git_head": "3eefaa6ed97fc77c84b09b1d7986a133ed6c35ba",
+  "git_head": "53810c2c982a68119fc9dd8300cfed34a4893bd8",
   "reference_access": "Commercial source not run or purchased; public FIDE/PGN/SAN documentation is the reference. Visual parity is normalized parity between Gambit Court's own clients with web as baseline; no claim of parity with the commercial title.",
   "stack_decision": "Flutter for all four clients with a custom widget/CustomPainter board instead of Flame: the board is a static 8x8 grid with short piece slides, so Flutter's animation framework gives 60fps without a game-loop dependency; server is Dart shelf + web_socket_channel."
 }
