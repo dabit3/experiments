@@ -57,25 +57,28 @@ class _LobbyScreenState extends State<LobbyScreen> {
     final ff = formFactorOf(context);
     final t = Theme.of(context);
     final desktop = ff == FormFactor.desktop;
-    final body = desktop
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    // Desktop with enough height: chat fills the remaining column and nothing
+    // scrolls. Otherwise the whole page scrolls with fixed-height chat.
+    Widget desktopBody(bool fill) => Row(
+      crossAxisAlignment: fill ? CrossAxisAlignment.stretch : CrossAxisAlignment.start,
+      children: [
+        Expanded(flex: 6, child: fill ? SingleChildScrollView(child: _rosterCard(context)) : _rosterCard(context)),
+        const SizedBox(width: VhSpace.xl),
+        Expanded(
+          flex: 5,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(flex: 6, child: _rosterCard(context)),
-              const SizedBox(width: VhSpace.xl),
-              Expanded(
-                flex: 5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _settingsCard(context),
-                    const SizedBox(height: VhSpace.xl),
-                    SizedBox(height: 300, child: _chatCard(context)),
-                  ],
-                ),
-              ),
+              _settingsCard(context),
+              const SizedBox(height: VhSpace.xl),
+              if (fill) Expanded(child: _chatCard(context)) else SizedBox(height: 300, child: _chatCard(context)),
             ],
-          )
+          ),
+        ),
+      ],
+    );
+    final body = desktop
+        ? desktopBody(false)
         : Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -92,14 +95,30 @@ class _LobbyScreenState extends State<LobbyScreen> {
           children: [
             _header(context),
             Expanded(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(
-                  horizontal: ff == FormFactor.phone ? VhSpace.lg : VhSpace.xxxl,
-                  vertical: VhSpace.md,
-                ),
-                child: Center(
-                  child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 1180), child: body),
-                ),
+              child: LayoutBuilder(
+                builder: (context, c) {
+                  final pad = EdgeInsets.symmetric(
+                    horizontal: ff == FormFactor.phone ? VhSpace.lg : VhSpace.xxxl,
+                    vertical: VhSpace.md,
+                  );
+                  if (desktop && c.maxHeight >= 560) {
+                    return Padding(
+                      padding: pad,
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 1180),
+                          child: desktopBody(true),
+                        ),
+                      ),
+                    );
+                  }
+                  return SingleChildScrollView(
+                    padding: pad,
+                    child: Center(
+                      child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 1180), child: body),
+                    ),
+                  );
+                },
               ),
             ),
             _footer(context, t),
@@ -112,6 +131,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
   Widget _header(BuildContext context) {
     final t = Theme.of(context);
     final ff = formFactorOf(context);
+    final phone = ff == FormFactor.phone;
+    final modeLabel = s.mode == GameMode.creative ? 'Creative' : 'Survival';
     return Padding(
       padding: EdgeInsets.fromLTRB(
         ff == FormFactor.phone ? VhSpace.md : VhSpace.xxl,
@@ -134,13 +155,17 @@ class _LobbyScreenState extends State<LobbyScreen> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  '${s.mode == GameMode.creative ? 'Creative' : 'Survival'} · seed ${s.seed} · ${s.roster.length} in lobby',
+                  phone
+                      ? '$modeLabel · ${s.roster.length} in lobby'
+                      : '$modeLabel · seed ${s.seed} · ${s.roster.length} in lobby',
                   style: t.textTheme.bodySmall,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ),
-          RoomCodeChip(s.code, onCopy: () => _copy(context)),
+          RoomCodeChip(s.code, onCopy: () => _copy(context), compact: phone),
           const SizedBox(width: VhSpace.xs),
           IconButton(
             tooltip: 'Settings',

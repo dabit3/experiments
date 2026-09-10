@@ -38,7 +38,7 @@ commercial title; it cannot be run, purchased, or captured on this machine.
 ## Inferred (not directly documented in fetched pages; resolved by design decision)
 
 - Tool-appropriate break speeds (pickaxe for stone/ore, axe for wood) — documented elsewhere on the wiki; implemented from general knowledge and recorded as a design table in `voxelhearth_core/lib/blocks.dart`.
-- Chunk size 16x16 columns, greedy/culled meshing, frustum culling — engine implementation detail, not a visible rule.
+- Chunk size 16x16 columns, greedy/culled meshing, frustum culling — engine implementation detail, not a visible rule. The clone renders a packed voxel volume in a fragment shader (ray-march) instead of greedy-meshed geometry; recorded as an intentional deviation (`intentional-renderer`).
 
 ## Where the clone intentionally differs (recorded, not hidden)
 

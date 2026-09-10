@@ -302,6 +302,12 @@ class GameClient extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Replace the local session with synthetic data (visual fixtures).
+  void showFixture(RoomSession? s) {
+    session = s;
+    notifyListeners();
+  }
+
   /// Drop the room on this side only (used when the server is unreachable).
   void leaveRoomLocal() {
     session = null;

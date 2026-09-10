@@ -30,7 +30,7 @@ const iosApp = join(root, 'app/build/ios/iphonesimulator/Runner.app');
 const apk = join(root, 'app/build/app/outputs/flutter-apk/app-debug.apk');
 const androidSerial = process.env.ANDROID_SERIAL ?? 'emulator-5554';
 
-for (const sub of ['screenshots', 'frames', 'video-web']) {
+for (const sub of ['screenshots', 'frames', 'video-web', 'visual']) {
   rmSync(join(out, sub), { recursive: true, force: true });
   mkdirSync(join(out, sub), { recursive: true });
 }
@@ -68,7 +68,7 @@ const launch = {
   },
   async macos() {
     try { sh('pkill -f Voxelhearth.app/Contents/MacOS/Voxelhearth'); } catch { /* none running */ }
-    const p = spawn(macBin, [], { env: { ...process.env, VH_NAME: NAME.macos, VH_TEST: '1', VH_SERVER: wsUrl }, stdio: ['ignore', 'pipe', 'pipe'] });
+    const p = spawn(macBin, [], { env: { ...process.env, VH_NAME: NAME.macos, VH_TEST: '1', VH_SERVER: wsUrl, VH_WINDOW: '1280x800' }, stdio: ['ignore', 'pipe', 'pipe'] });
     p.stdout.on('data', (d) => appendFileSync(join(out, 'macos.log'), d));
     p.stderr.on('data', (d) => appendFileSync(join(out, 'macos.log'), d));
     procs.push(p);
@@ -304,6 +304,57 @@ try {
   const humanRows = results[0].results.filter((r) => !r.bot);
   check('scoreboard credits 2 placed + 1 broken per player', humanRows.length === players.length && humanRows.every((r) => r.placed === 2 && r.broken === 1), JSON.stringify(humanRows.map((r) => [r.name, r.platform, r.score, r.placed, r.broken])));
   report.results = results[0];
+
+  // ---- visual matrix: every client renders identical fixture data; web is the baseline.
+  // Raw screenshots are rasterizer-dependent (font AA and glyph advances differ per
+  // OS), so the parity check is structural: every text/icon node must match in
+  // normalized text, position and size within 2 logical px. Layout-map and raw
+  // pixel diffs are recorded alongside for disclosure.
+  const visualDir = join(out, 'visual');
+  const png = (args) => JSON.parse(sh(`python3 "${join(here, 'tools/pngcompare.py')}" ${args}`, { timeout: 600000 }).split('\n').pop());
+  const pngTry = (args) => { try { return png(args); } catch (e) { return JSON.parse(e.stdout?.toString().trim().split('\n').pop() || '{"error":"tool failed"}'); } };
+  report.visual = [];
+  for (const screen of ['lobby', 'results', 'home']) {
+    await step(`fixture ${screen}`, () => d.all(players, { t: 'fixture', screen }, { timeout: 30000 }));
+    await sleep(1500);
+    for (const p of platforms) {
+      const f = join(visualDir, `${p}-${screen}.png`);
+      try {
+        await shot[p](f);
+        if (p === 'macos') { sh(`mv "${f}" "${join(visualDir, `${p}-${screen}.window.png`)}"`); png(`crop "${join(visualDir, `${p}-${screen}.window.png`)}" "${f}" 800`); }
+      } catch (e) { log('visual screenshot failed', p, screen, e.message); }
+      const lay = await d.must(NAME[p], { t: 'layout' }, { timeout: 15000 });
+      writeFileSync(join(visualDir, `${p}-${screen}.layout.json`), JSON.stringify(lay, null, 1));
+      png(`layout "${join(visualDir, `${p}-${screen}.layout.json`)}" "${join(visualDir, `${p}-${screen}.layout.png`)}"`);
+    }
+    // Normalized layout maps: text boxes within 2 logical px of the web box are
+    // drawn at the web box (glyph-advance jitter); everything else is drawn as-is.
+    if (platforms.includes('web')) {
+      for (const p of platforms.filter((x) => x !== 'web')) {
+        png(`layout "${join(visualDir, `${p}-${screen}.layout.json`)}" "${join(visualDir, `${p}-${screen}.layout.normalized.png`)}" --snap-to "${join(visualDir, `web-${screen}.layout.json`)}" --tolerance 2`);
+      }
+    }
+    if (!platforms.includes('web')) continue;
+    for (const p of platforms.filter((x) => x !== 'web')) {
+      const layoutRaw = pngTry(`diff "${join(visualDir, `web-${screen}.layout.png`)}" "${join(visualDir, `${p}-${screen}.layout.png`)}" "${join(visualDir, `${p}-${screen}.layout.raw.diff.png`)}"`);
+      const layout = pngTry(`diff "${join(visualDir, `web-${screen}.layout.png`)}" "${join(visualDir, `${p}-${screen}.layout.normalized.png`)}" "${join(visualDir, `${p}-${screen}.layout.diff.png`)}"`);
+      const raw = existsSync(join(visualDir, `${p}-${screen}.png`))
+        ? pngTry(`diff "${join(visualDir, `web-${screen}.png`)}" "${join(visualDir, `${p}-${screen}.png`)}" "${join(visualDir, `${p}-${screen}.raw.diff.png`)}"`)
+        : { error: 'no screenshot' };
+      const nodes = pngTry(`nodes "${join(visualDir, `web-${screen}.layout.json`)}" "${join(visualDir, `${p}-${screen}.layout.json`)}" --tolerance 2`);
+      writeFileSync(join(visualDir, `${p}-${screen}.nodes.json`), JSON.stringify(nodes, null, 1));
+      // A phone-sized client renders the responsive phone layout; it is not
+      // comparable to the 1280x800 desktop baseline and is recorded as such.
+      const sameViewport = JSON.stringify(nodes.reference_viewport) === JSON.stringify(nodes.actual_viewport);
+      report.visual.push({ screen, platform: p, baseline: 'web', viewport: nodes.actual_viewport, sameViewport, nodes, layout, layoutRaw, raw });
+      const detail = sameViewport
+        ? JSON.stringify({ nodes: `${nodes.matched}/${nodes.nodes}`, exact: nodes.exact, mismatched: nodes.mismatched_count, normalizedPx: layout.different_pixels, layoutPx: layoutRaw.different_pixels, rawPx: raw.different_pixels ?? raw.error, total: layout.total_pixels })
+        : JSON.stringify({ viewport: nodes.actual_viewport, baseline: nodes.reference_viewport, note: 'phone layout family; not comparable to desktop baseline' });
+      // Home intentionally shows a per-platform badge; phones use the responsive layout. Both are recorded, not asserted.
+      if (p === 'macos' && screen !== 'home') check(`visual layout parity web→macos (${screen})`, nodes.ok === true && layout.different_pixels === 0, detail);
+      else log(`visual ${p} ${screen} (recorded only)`, detail);
+    }
+  }
 } catch (e) {
   log('ERROR', e.stack ?? e.message);
   report.failures.push(`exception: ${e.message}`);
@@ -322,6 +373,14 @@ try {
     '| check | result | detail |', '|---|---|---|',
     ...report.checks.map((c) => `| ${c.name} | ${c.ok ? 'pass' : 'FAIL'} | \`${String(c.detail ?? '').replace(/\|/g, '\\|').slice(0, 300)}\` |`),
     '',
+    ...(report.visual?.length ? [
+      '## Visual matrix (identical fixture data, web = baseline, 1280x800 logical)', '',
+      '| screen | platform | nodes matched (±2px) | exact nodes | normalized layout px diff | raw layout px diff | raw screenshot px diff | asserted |', '|---|---|---|---|---|---|---|---|',
+      ...report.visual.map((v) => v.sameViewport
+        ? `| ${v.screen} | ${v.platform} | ${v.nodes.matched ?? '-'}/${v.nodes.nodes ?? '-'} | ${v.nodes.exact ?? '-'} | ${v.layout.different_pixels ?? v.layout.error} | ${v.layoutRaw.different_pixels ?? v.layoutRaw.error} | ${v.raw.different_pixels ?? v.raw.error} | ${v.platform === 'macos' && v.screen !== 'home' ? 'yes' : 'recorded only'} |`
+        : `| ${v.screen} | ${v.platform} | n/a | n/a | n/a | n/a | n/a | phone layout ${v.viewport?.join('x')} — different layout family, not compared |`),
+      '',
+    ] : []),
     `Screenshots: \`${join(out, 'screenshots')}\``,
     recording ? `Recording: \`${recording}\`` : 'Recording: (not produced)',
     report.failures.length ? `\nFailures:\n${report.failures.map((f) => `- ${f}`).join('\n')}` : '',

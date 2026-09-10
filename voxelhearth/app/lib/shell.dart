@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:voxelhearth_core/voxelhearth_core.dart';
 
 import 'app_state.dart';
@@ -199,6 +200,10 @@ class _AppShellState extends State<AppShell> {
             for (final c in s?.chat ?? const <ChatEntry>[]) {'from': c.from, 'text': c.text},
           ],
         };
+      case 'fixture':
+        return _fixture(jstr(a, 'screen'));
+      case 'layout':
+        return _layout();
       case 'wait_game':
         final deadline = DateTime.now().add(Duration(seconds: jint(a, 'timeout', 20)));
         while (game == null && DateTime.now().isBefore(deadline)) {
@@ -212,6 +217,105 @@ class _AppShellState extends State<AppShell> {
         if (g == null) return {'ok': false, 'error': 'not in a match (screen=$screenName)'};
         return g.drive(a);
     }
+  }
+
+  /// Shows a screen populated from fixed synthetic data so every platform
+  /// renders the identical state for cross-platform visual comparison.
+  Future<Map<String, Object?>> _fixture(String screen) async {
+    if (client.session != null) {
+      client.leaveRoom();
+      await Future<void>.delayed(const Duration(milliseconds: 400));
+    }
+    client.playerName = 'Hearthling';
+    if (screen == 'home') {
+      client.showFixture(null);
+      return {'ok': true, 'screen': 'home'};
+    }
+    if (screen != 'lobby' && screen != 'results') {
+      return {'ok': false, 'error': 'unknown fixture $screen'};
+    }
+    PlayerInfo info(String id, String name, String platform, int score, int placed, int broken, {bool bot = false}) =>
+        PlayerInfo.fromJson({
+          'id': id,
+          'name': name,
+          'platform': platform,
+          'bot': bot,
+          'connected': true,
+          'ready': true,
+          'score': score,
+          'placed': placed,
+          'broken': broken,
+          'crafted': 0,
+          'kills': 0,
+          'deaths': 0,
+        });
+    final roster = [
+      info('fx-1', 'Hearthling', 'web', 9, 7, 2),
+      info('fx-2', 'Pocket Pioneer', 'ios', 6, 4, 2),
+      info('fx-3', 'Droid Delver', 'android', 5, 3, 2),
+      info('fx-4', 'Desk Dweller', 'macos', 8, 6, 2),
+      info('fx-5', 'Ember Bot', 'server', 3, 3, 0, bot: true),
+    ];
+    final s = RoomSession(1234)
+      ..code = 'FIXTR'
+      ..roomName = 'Fixture world'
+      ..mode = GameMode.survival
+      ..hostId = 'fx-1'
+      ..youId = 'fx-1'
+      ..time = 6000
+      ..tick = 2400
+      ..durationTicks = 6000
+      ..matchEndTick = 6000
+      ..roster = roster;
+    final t0 = DateTime(2026, 1, 1);
+    s.chat
+      ..add(ChatEntry(10, 'system', 'Hearthling created the world.', true, t0))
+      ..add(ChatEntry(400, 'Pocket Pioneer', 'hello from the pocket', false, t0))
+      ..add(ChatEntry(410, 'Desk Dweller', 'hearth is warm', false, t0));
+    if (screen == 'results') {
+      s
+        ..phase = Phase.results
+        ..results = (roster.toList()..sort((a, b) => b.score.compareTo(a.score)))
+        ..resultsWorldHash = 'f1x7ur3d'
+        ..resultsChatHash = 'c4a7f1x7';
+    }
+    client.showFixture(s);
+    await Future<void>.delayed(VhMotion.slow);
+    return {'ok': true, 'screen': screen};
+  }
+
+  /// Logical-pixel boxes of every laid-out text and icon glyph, independent
+  /// of the platform rasterizer, for layout parity comparisons.
+  Map<String, Object?> _layout() {
+    final out = <Map<String, Object?>>[];
+    void visit(Element e) {
+      final r = e.renderObject;
+      if (r is RenderParagraph && r.attached && r.hasSize) {
+        final o = r.localToGlobal(Offset.zero);
+        out.add({
+          'text': r.text.toPlainText(),
+          'x': o.dx.round(),
+          'y': o.dy.round(),
+          'w': r.size.width.round(),
+          'h': r.size.height.round(),
+        });
+      }
+      e.visitChildElements(visit);
+    }
+
+    final root = WidgetsBinding.instance.rootElement;
+    if (root != null) visit(root);
+    final view = View.of(context);
+    return {
+      'ok': true,
+      'screen': screenName,
+      'viewport': [
+        (view.physicalSize.width / view.devicePixelRatio).round(),
+        (view.physicalSize.height / view.devicePixelRatio).round(),
+      ],
+      'dpr': view.devicePixelRatio,
+      'nodes': out,
+    };
   }
 
   // ---------------------------------------------------------------- build

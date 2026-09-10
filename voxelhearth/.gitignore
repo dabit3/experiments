@@ -19,3 +19,8 @@ server/saves/
 .devin/clone-this/**/*.mov
 .devin/clone-this/**/*.webm
 .devin/clone-this/**/*.zip
+
+# ...except the small normalized layout maps that back the visual comparisons
+!.devin/clone-this/**/visual/*.layout.png
+!.devin/clone-this/**/visual/*.layout.normalized.png
+!.devin/clone-this/**/visual/*.layout.diff.png

@@ -209,27 +209,37 @@ class SectionLabel extends StatelessWidget {
 
 /// Voxelhearth wordmark with a small ember glyph.
 class Wordmark extends StatelessWidget {
-  const Wordmark({super.key, this.size = 40, this.subtitle});
+  const Wordmark({super.key, this.size = 40, this.subtitle, this.onDark = false, this.center = false});
   final double size;
   final String? subtitle;
+
+  /// Render in light ink for use over the dark scene backdrop.
+  final bool onDark;
+  final bool center;
 
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context);
+    final ink = onDark ? Colors.white : null;
+    final sub = onDark ? Colors.white70 : t.colorScheme.onSurfaceVariant;
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: center ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Row(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             EmberGlyph(size: size * 0.9),
             SizedBox(width: size * 0.3),
-            Text('Voxelhearth', style: t.textTheme.displayMedium?.copyWith(fontSize: size, height: 1)),
+            Text(
+              'Voxelhearth',
+              style: t.textTheme.displayMedium?.copyWith(fontSize: size, height: 1, color: ink),
+            ),
           ],
         ),
         if (subtitle != null) ...[
           const SizedBox(height: VhSpace.sm),
-          Text(subtitle!, style: t.textTheme.bodyLarge?.copyWith(color: t.colorScheme.onSurfaceVariant)),
+          Text(subtitle!, style: t.textTheme.bodyLarge?.copyWith(color: sub)),
         ],
       ],
     );
@@ -380,9 +390,12 @@ class StateBlock extends StatelessWidget {
 
 /// Large monospaced room code with copy affordance.
 class RoomCodeChip extends StatelessWidget {
-  const RoomCodeChip(this.code, {super.key, this.onCopy});
+  const RoomCodeChip(this.code, {super.key, this.onCopy, this.compact = false});
   final String code;
   final VoidCallback? onCopy;
+
+  /// Tighter variant for phone headers where the room title needs the width.
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
@@ -394,15 +407,15 @@ class RoomCodeChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(VhRadius.md),
         onTap: onCopy,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: compact ? 10 : 14, vertical: compact ? 6 : 8),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 code,
-                style: t.textTheme.headlineSmall?.copyWith(
+                style: (compact ? t.textTheme.titleMedium : t.textTheme.headlineSmall)?.copyWith(
                   fontFamily: 'Outfit',
-                  letterSpacing: 4,
+                  letterSpacing: compact ? 2 : 4,
                   fontWeight: FontWeight.w700,
                   color: t.colorScheme.onSecondaryContainer,
                 ),

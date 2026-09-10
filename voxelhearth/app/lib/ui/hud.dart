@@ -36,9 +36,25 @@ class Hud extends StatelessWidget {
         padding: EdgeInsets.all(compact ? VhSpace.sm : VhSpace.md),
         child: Stack(
           children: [
+            // Phones keep the bottom edge for the joystick, action buttons and
+            // hotbar, so vitals and the chat feed stack under the room panel.
             Align(
               alignment: Alignment.topLeft,
-              child: _TopLeft(game: game, frame: frame, compact: compact),
+              child: compact
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _TopLeft(game: game, frame: frame, compact: compact),
+                        const SizedBox(height: VhSpace.xs),
+                        _Vitals(game: game, frame: frame, compact: true, stacked: true),
+                        if (!game.chatOpen) ...[
+                          const SizedBox(height: VhSpace.xs),
+                          _ChatFeed(game: game, frame: frame, compact: true),
+                        ],
+                      ],
+                    )
+                  : _TopLeft(game: game, frame: frame, compact: compact),
             ),
             if (settings.showFps)
               Align(
@@ -49,19 +65,20 @@ class Hud extends StatelessWidget {
               alignment: Alignment.center,
               child: _TargetLabel(game: game, frame: frame),
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(bottom: compact ? 66 : 84),
-                child: _Vitals(game: game, frame: frame, compact: compact),
+            if (!compact)
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 84),
+                  child: _Vitals(game: game, frame: frame, compact: false),
+                ),
               ),
-            ),
-            if (!game.chatOpen)
+            if (!compact && !game.chatOpen)
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: compact ? 60 : 96),
-                  child: _ChatFeed(game: game, frame: frame, compact: compact),
+                  padding: const EdgeInsets.only(bottom: 96),
+                  child: _ChatFeed(game: game, frame: frame, compact: false),
                 ),
               ),
             if (game.showRoster)
@@ -313,10 +330,13 @@ class _TargetLabel extends StatelessWidget {
 
 /// Health, hunger and air, drawn as original glyph rows.
 class _Vitals extends StatelessWidget {
-  const _Vitals({required this.game, required this.frame, required this.compact});
+  const _Vitals({required this.game, required this.frame, required this.compact, this.stacked = false});
   final GameController game;
   final FrameNotifier frame;
   final bool compact;
+
+  /// Hearts above food inside a glass panel (phone HUD corner).
+  final bool stacked;
 
   @override
   Widget build(BuildContext context) => ListenableBuilder(
@@ -326,6 +346,30 @@ class _Vitals extends StatelessWidget {
       if (s.mode == GameMode.creative) return const SizedBox.shrink();
       final w = compact ? 15.0 : 18.0;
       final width = w * 10 + 9 * 2;
+      Widget row(_Glyph kind, double value, {double flash = 0, double? pulse, bool mirrored = false}) => SizedBox(
+        width: width,
+        height: w,
+        child: CustomPaint(
+          painter: _GlyphRowPainter(value: value, kind: kind, size: w, flash: flash, pulse: pulse, mirrored: mirrored),
+        ),
+      );
+      if (stacked) {
+        return GlassPanel(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          radius: VhRadius.md,
+          tint: Colors.black.withValues(alpha: 0.35),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (s.air < 300) ...[row(_Glyph.air, s.air / 30), const SizedBox(height: 5)],
+              row(_Glyph.heart, s.hp / 2, flash: game.damageFlash, pulse: s.hp <= 4 ? game.anim : null),
+              const SizedBox(height: 5),
+              row(_Glyph.food, s.food / 2),
+            ],
+          ),
+        );
+      }
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [

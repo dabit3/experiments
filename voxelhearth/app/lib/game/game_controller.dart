@@ -978,6 +978,7 @@ class GameController extends ChangeNotifier {
     _effectSub?.cancel();
     _worldSub?.cancel();
     entityImage?.dispose();
+    entityImage = null;
     view.dispose();
     super.dispose();
   }

@@ -1,12 +1,12 @@
 {
-    "name": "voxelhearth",
-    "short_name": "voxelhearth",
+    "name": "Voxelhearth",
+    "short_name": "Voxelhearth",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#1b1a22",
+    "theme_color": "#1b1a22",
+    "description": "An original cross-platform voxel sandbox with shared multiplayer worlds.",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {

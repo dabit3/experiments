@@ -105,7 +105,7 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
                       Reveal(
                         child: Column(
                           children: [
-                            const Wordmark(size: 24, subtitle: 'Match complete'),
+                            const Wordmark(size: 22, subtitle: 'Match complete', onDark: true, center: true),
                             const SizedBox(height: VhSpace.md),
                             Text(
                               rank == 1

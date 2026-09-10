@@ -322,8 +322,9 @@ class VoxelView {
   }
 
   void dispose() {
-    for (final i in images) {
-      i?.dispose();
+    for (var q = 0; q < images.length; q++) {
+      images[q]?.dispose();
+      images[q] = null;
     }
   }
 }

@@ -10,4 +10,11 @@ class AppDelegate: FlutterAppDelegate {
   override func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
     return true
   }
+
+  override func applicationDidFinishLaunching(_ notification: Notification) {
+    super.applicationDidFinishLaunching(notification)
+    for window in NSApp.windows {
+      (window as? MainFlutterWindow)?.applyRequestedSize()
+    }
+  }
 }
