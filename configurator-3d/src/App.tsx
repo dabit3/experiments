@@ -113,6 +113,7 @@ export default function App() {
     const onKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null
       if (target && ['INPUT', 'TEXTAREA', 'BUTTON', 'SELECT'].includes(target.tagName)) return
+      if (e.ctrlKey || e.metaKey || e.altKey) return
       if (e.key === 'Escape') setSelected(null)
       else if (e.key === ' ') {
         e.preventDefault()

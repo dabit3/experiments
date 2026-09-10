@@ -706,7 +706,7 @@ export function buildSneaker(): SneakerModel {
   add('outsole', soleShell({ margin: 0.07, y0: 0, height: 0.075, rBottom: 0.035, rTop: 0.008 }))
   add('sole', soleShell({ margin: 0.085, y0: 0.06, height: 0.17, rBottom: 0.012, rTop: 0.045, taper: 0.012, belly: 0.01 }))
   // Foxing lip: the cupsole wraps up over the bottom edge of the upper.
-  add('sole', soleShell({ margin: 0.04, y0: BASE_Y - 0.03, height: 0.046, rBottom: 0.004, rTop: 0.012 }))
+  add('sole', soleShell({ margin: 0.052, y0: BASE_Y - 0.06, height: 0.092, rBottom: 0.004, rTop: 0.014 }))
 
   // --- Upper (base) -----------------------------------------------------------
   add('upper', lastSurface(160, 72))
