@@ -1,6 +1,6 @@
 {
-  "revision": "sha256:c0981af2ad3b96f6b293518092fb514456651a2af7365bf678b41423ae6d43ca",
-  "timestamp": "2026-09-10T01:26:51Z",
+  "revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+  "timestamp": "2026-09-10T13:48:49Z",
   "method": "Enumerate every client UI action in app/lib/state/app_controller.dart and every screen in app/lib/screens, map each to an inventory item.",
   "enumerated": {
     "ui_actions": [

@@ -1,4 +1,4 @@
-quality suite at 2026-09-10T00:08:18Z, git HEAD 041883c71ad0f5a09e63c3655feb763a45c80ffb
+quality suite at 2026-09-10T00:08:18Z, git HEAD a4bec3536c52a35dfba12a11e2274a0de375db8c
 == core
 Formatted 12 files (0 changed) in 0.02 seconds.
 Analyzing gambit_court_core...
