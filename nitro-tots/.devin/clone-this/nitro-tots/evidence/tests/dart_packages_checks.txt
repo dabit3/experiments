@@ -1,7 +1,7 @@
-# 2026-09-10T02:42:12Z dart format / analyze / test for nitro_core, nitro_server, app (commit 39b7e58)
+# 2026-09-10T15:00:10Z dart format / analyze / test for nitro_core, nitro_server, app (commit 8f8b533)
 
 ## packages/nitro_core
-Formatted 10 files (0 changed) in 0.05 seconds.
+Formatted 10 files (0 changed) in 0.11 seconds.
 format: clean
 Analyzing nitro_core...
 No issues found!
@@ -11,21 +11,21 @@ No issues found!
 exit=0
 
 ## packages/nitro_server
-Formatted 5 files (0 changed) in 0.02 seconds.
+Formatted 5 files (0 changed) in 0.03 seconds.
 format: clean
 Analyzing nitro_server...
 No issues found!
-00:26 +2: test/server_test.dart: a player can resume after disconnecting mid-lobby
-Nitro Tots server listening on ws://127.0.0.1:62077/ws (seed=1234)
-00:26 +3: All tests passed!
+00:25 +2: test/server_test.dart: a player can resume after disconnecting mid-lobby
+Nitro Tots server listening on ws://127.0.0.1:60220/ws (seed=1234)
+00:25 +3: All tests passed!
 exit=0
 
 ## app
-Formatted 25 files (0 changed) in 0.22 seconds.
+Formatted 25 files (0 changed) in 0.20 seconds.
 format: clean
 Analyzing app...                                                
-No issues found! (ran in 2.4s)
-00:03 +36: /Users/devin/repos/experiments/nitro-tots/app/test/screens_smoke_test.dart: desktop lobby
-00:03 +37: /Users/devin/repos/experiments/nitro-tots/app/test/screens_smoke_test.dart: desktop podium
-00:03 +38: All tests passed!
+No issues found! (ran in 3.8s)
+00:04 +36: /Users/devin/repos/experiments/nitro-tots/app/test/screens_smoke_test.dart: desktop lobby
+00:04 +37: /Users/devin/repos/experiments/nitro-tots/app/test/screens_smoke_test.dart: desktop podium
+00:04 +38: All tests passed!
 exit=0

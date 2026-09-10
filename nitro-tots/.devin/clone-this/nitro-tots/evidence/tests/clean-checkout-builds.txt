@@ -1,4 +1,4 @@
-# clean checkout: git clone -> 39b7e58 nitro-tots: fixed GP rival roster, cumulative standings, rejoin banner, time-trial clock, touch HUD spacing ; 2026-09-10T02:41:17Z
+# clean checkout: git clone -> 8f8b533 nitro-tots: design pass (HUD, results, title/garage layouts), edited review video pipeline, post-design e2e + manual evidence ; 2026-09-10T14:59:53Z
 # flutter Flutter 3.47.3 • channel stable • https://github.com/flutter/flutter.git
 
 ## pub get
@@ -7,7 +7,7 @@ Got dependencies!
 Try `flutter pub outdated` for more information.
 
 ## web
-Compiling lib/main.dart for the Web...                             20.7s
+Compiling lib/main.dart for the Web...                             29.3s
 ✓ Built build/web
 exit=0
 
@@ -17,17 +17,17 @@ warning: Run script build phase 'Run Script' will be run during every build beca
 exit=0
 
 ## ios (simulator)
-Xcode build done.                                           19.2s
+Xcode build done.                                           34.1s
 ✓ Built build/ios/iphonesimulator/Runner.app
 exit=0
 
 ## android
-Running Gradle task 'assembleRelease'...                           33.3s
+Running Gradle task 'assembleRelease'...                           73.7s
 ✓ Built build/app/outputs/flutter-apk/app-release.apk (54.7MB)
 exit=0
 
 ## artifacts
--rw-r--r--  1 devin  staff  54705664 Sep  9 19:43 app/build/app/outputs/flutter-apk/app-release.apk
--rwxr-xr-x  1 devin  staff     73112 Sep  9 19:42 app/build/ios/iphonesimulator/Runner.app/Runner
--rwxr-xr-x  1 devin  staff    780784 Sep  9 19:42 app/build/macos/Build/Products/Release/Nitro Tots.app/Contents/MacOS/Nitro Tots
--rw-r--r--  1 devin  staff      1508 Sep  9 19:41 app/build/web/index.html
+-rw-r--r--  1 devin  staff  54722048 Sep 10 08:03 app/build/app/outputs/flutter-apk/app-release.apk
+-rwxr-xr-x  1 devin  staff     73112 Sep 10 08:02 app/build/ios/iphonesimulator/Runner.app/Runner
+-rwxr-xr-x  1 devin  staff    780784 Sep 10 08:01 app/build/macos/Build/Products/Release/Nitro Tots.app/Contents/MacOS/Nitro Tots
+-rw-r--r--  1 devin  staff      1508 Sep 10 07:59 app/build/web/index.html
