@@ -43,6 +43,7 @@ class RoomSettings {
     this.trackId = 'sprinkle',
     this.laps = 3,
     this.maxPlayers = 8,
+    this.minPlayers = 2,
     this.fillBots = true,
     this.botSkill = 0.7,
     this.grandPrix = true,
@@ -54,6 +55,7 @@ class RoomSettings {
   final String trackId;
   final int laps;
   final int maxPlayers;
+  final int minPlayers;
   final bool fillBots;
   final double botSkill;
   final bool grandPrix;
@@ -65,6 +67,7 @@ class RoomSettings {
     'trackId': trackId,
     'laps': laps,
     'maxPlayers': maxPlayers,
+    'minPlayers': minPlayers,
     'fillBots': fillBots,
     'botSkill': botSkill,
     'grandPrix': grandPrix,
@@ -77,6 +80,7 @@ class RoomSettings {
     trackId: (j['trackId'] as String?) ?? 'sprinkle',
     laps: ((j['laps'] as num?) ?? 3).toInt().clamp(1, 5),
     maxPlayers: ((j['maxPlayers'] as num?) ?? 8).toInt().clamp(2, 8),
+    minPlayers: ((j['minPlayers'] as num?) ?? 2).toInt().clamp(1, 8),
     fillBots: (j['fillBots'] as bool?) ?? true,
     botSkill: ((j['botSkill'] as num?) ?? 0.7).toDouble().clamp(0.0, 1.0),
     grandPrix: (j['grandPrix'] as bool?) ?? true,
@@ -89,6 +93,7 @@ class RoomSettings {
     String? trackId,
     int? laps,
     int? maxPlayers,
+    int? minPlayers,
     bool? fillBots,
     double? botSkill,
     bool? grandPrix,
@@ -99,6 +104,7 @@ class RoomSettings {
     trackId: trackId ?? this.trackId,
     laps: laps ?? this.laps,
     maxPlayers: maxPlayers ?? this.maxPlayers,
+    minPlayers: minPlayers ?? this.minPlayers,
     fillBots: fillBots ?? this.fillBots,
     botSkill: botSkill ?? this.botSkill,
     grandPrix: grandPrix ?? this.grandPrix,

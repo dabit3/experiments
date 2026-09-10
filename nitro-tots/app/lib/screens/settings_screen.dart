@@ -116,7 +116,9 @@ class SettingsScreen extends StatelessWidget {
                             child: Text(k, style: NtType.caption(nt.ink)),
                           ),
                           const SizedBox(width: 6),
-                          Text(v, style: NtType.small(nt.inkSoft)),
+                          Flexible(
+                            child: Text(v, style: NtType.small(nt.inkSoft), softWrap: false, overflow: TextOverflow.fade),
+                          ),
                         ],
                       ),
                   ],
@@ -200,9 +202,13 @@ class _Segmented<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nt = context.nt;
-    return Row(
+    return Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: NtSpace.x3,
+      runSpacing: NtSpace.x2,
       children: [
-        Expanded(child: Text(label, style: NtType.label(nt.ink))),
+        Text(label, style: NtType.label(nt.ink)),
         SegmentedButton<T>(
           segments: [for (final e in items.entries) ButtonSegment(value: e.key, label: Text(e.value))],
           selected: {value},

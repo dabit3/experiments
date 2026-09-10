@@ -1,9 +1,14 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 /// Automation hooks for the cross-platform multiplayer test.
 ///
-/// Values come from `--dart-define=NT_*` at build time, or from URL query
-/// parameters on the web (`?test=1&room=ABCD`). They are never persisted.
+/// Values come from `--dart-define=NT_*` at build time, from `NT_*` process
+/// environment variables on desktop and the iOS Simulator
+/// (`SIMCTL_CHILD_NT_TEST=1`), or from URL query parameters on the web
+/// (`?test=1&room=ABCD`). They are never persisted.
 class TestConfig {
   const TestConfig({
     this.active = false,
@@ -22,6 +27,8 @@ class TestConfig {
     this.players,
     this.autoReady = true,
     this.screenshotLabel,
+    this.screen,
+    this.still = false,
   });
 
   final bool active;
@@ -43,6 +50,14 @@ class TestConfig {
   final bool autoReady;
   final String? screenshotLabel;
 
+  /// Opens this menu screen offline instead of joining a room (visual parity
+  /// captures): `title`, `garage`, `track`, `settings` or `online`.
+  final String? screen;
+
+  /// Deterministic captures: freezes intro/idle animations, ignores persisted
+  /// preferences and hides live numbers such as the connection latency.
+  final bool still;
+
   static const _defActive = bool.fromEnvironment('NT_TEST');
   static const _defRoom = String.fromEnvironment('NT_ROOM');
   static const _defHost = bool.fromEnvironment('NT_HOST');
@@ -57,9 +72,35 @@ class TestConfig {
   static const _defCup = String.fromEnvironment('NT_CUP');
   static const _defMode = String.fromEnvironment('NT_MODE');
   static const _defPlayers = String.fromEnvironment('NT_PLAYERS');
+  static const _defScreen = String.fromEnvironment('NT_SCREEN');
+  static const _defStill = bool.fromEnvironment('NT_STILL');
+
+  static const _launchChannel = MethodChannel('nitrotots/launch');
+
+  /// Runtime overrides for the current process: URL query parameters on the
+  /// web, `NT_*` environment variables elsewhere (`NT_ROOM=ABCD` -> `room`).
+  /// The iOS runner exposes its environment and `--NT_*` launch arguments over
+  /// a method channel because the sandboxed process environment is not
+  /// visible to Dart there.
+  static Future<Map<String, String>> runtimeQuery() async {
+    if (kIsWeb) return Uri.base.queryParameters;
+    final raw = <String, String>{...Platform.environment};
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      try {
+        final fromRunner = await _launchChannel.invokeMapMethod<String, String>('config');
+        if (fromRunner != null) raw.addAll(fromRunner);
+      } on MissingPluginException {
+        // Runner without the launch channel: environment only.
+      }
+    }
+    return {
+      for (final e in raw.entries)
+        if (e.key.startsWith('NT_') && e.value.isNotEmpty) e.key.substring(3).toLowerCase(): e.value,
+    };
+  }
 
   /// Builds config from compile-time defines merged with runtime [query]
-  /// parameters (web only). Query values win.
+  /// parameters. Query values win.
   factory TestConfig.resolve(Map<String, String> query, String platformId) {
     String? pick(String key, String def) {
       final q = query[key];
@@ -91,6 +132,8 @@ class TestConfig {
       mode: pick('mode', _defMode),
       players: int.tryParse(pick('players', _defPlayers) ?? ''),
       autoReady: query['ready'] != '0',
+      screen: pick('screen', _defScreen),
+      still: query['still'] == '1' || _defStill,
     );
   }
 
@@ -106,7 +149,8 @@ class TestConfig {
   }
 
   @override
-  String toString() => 'TestConfig(active: $active, room: $room, host: $host, name: $name, lane: $lane, laps: $laps, players: $players)';
+  String toString() =>
+      'TestConfig(active: $active, room: $room, host: $host, name: $name, lane: $lane, laps: $laps, players: $players, screen: $screen, still: $still)';
 
   static TestConfig none() => const TestConfig();
 

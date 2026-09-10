@@ -292,8 +292,10 @@ class Track {
     startGrid = List.generate(8, (i) {
       final row = i ~/ 2;
       final col = i % 2;
-      final back = 16.0 + row * 16.0;
-      final side = (col == 0 ? -1.0 : 1.0) * start.width * 0.22;
+      // Staggered two-wide grid: a kart length between rows, half a length
+      // between the columns so no sprite or name tag overlaps at the line.
+      final back = 24.0 + row * 34.0 + col * 17.0;
+      final side = (col == 0 ? -1.0 : 1.0) * start.width * 0.24;
       final s = sampleAtDistance(-back);
       return s.pos + s.normal * side;
     });

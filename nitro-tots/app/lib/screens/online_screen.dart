@@ -80,7 +80,7 @@ class _OnlineScreenState extends State<OnlineScreen> {
             widget.onBack();
           },
           maxWidth: 760,
-          trailing: _ConnPill(client: client),
+          trailing: _ConnPill(client: client, showLatency: !widget.app.testConfig.still),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -116,6 +116,7 @@ class _OnlineScreenState extends State<OnlineScreen> {
                 _JoinCard(
                   controller: _code,
                   error: _localError,
+                  autofocus: !widget.app.isMobile && !widget.app.testConfig.active,
                   onJoin: (code) {
                     widget.feedback.tap();
                     setState(() => _localError = null);
@@ -153,12 +154,13 @@ class _OnlineScreenState extends State<OnlineScreen> {
 }
 
 class _ConnPill extends StatelessWidget {
-  const _ConnPill({required this.client});
+  const _ConnPill({required this.client, this.showLatency = true});
   final NetClient client;
+  final bool showLatency;
   @override
   Widget build(BuildContext context) {
     final (label, color, icon) = switch (client.state) {
-      ConnState.online => ('Online · ${client.rttMs} ms', NtColors.lime, Icons.wifi_rounded),
+      ConnState.online => (showLatency ? 'Online · ${client.rttMs} ms' : 'Online', NtColors.lime, Icons.wifi_rounded),
       ConnState.connecting => ('Connecting', NtColors.sunny, Icons.wifi_find_rounded),
       ConnState.reconnecting => ('Reconnecting', NtColors.sunny, Icons.wifi_find_rounded),
       ConnState.failed => ('Offline', NtColors.bubblegum, Icons.wifi_off_rounded),
@@ -173,10 +175,11 @@ class _ConnPill extends StatelessWidget {
 }
 
 class _JoinCard extends StatelessWidget {
-  const _JoinCard({required this.controller, required this.onJoin, this.error});
+  const _JoinCard({required this.controller, required this.onJoin, this.error, this.autofocus = true});
   final TextEditingController controller;
   final void Function(String code) onJoin;
   final String? error;
+  final bool autofocus;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +199,7 @@ class _JoinCard extends StatelessWidget {
               Expanded(
                 child: TextField(
                   controller: controller,
-                  autofocus: true,
+                  autofocus: autofocus,
                   maxLength: 4,
                   textCapitalization: TextCapitalization.characters,
                   inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]')), _Upper()],

@@ -12,6 +12,19 @@ class NtFeedback {
   String? _music;
   bool _musicStarted = false;
   int _lastTickMs = 0;
+  int _failures = 0;
+
+  /// Audio is disabled after repeated backend failures (e.g. a simulator
+  /// without an audio route) so gameplay never pays for a broken player.
+  bool get available => _failures < _maxFailures;
+  static const _maxFailures = 6;
+
+  void _fail(String what, Object e) {
+    _failures++;
+    if (_failures <= 2 || _failures == _maxFailures) {
+      debugPrint('$what failed${_failures == _maxFailures ? ' — audio disabled' : ''}: $e');
+    }
+  }
 
   Future<void> preload() async {
     try {
@@ -42,17 +55,13 @@ class NtFeedback {
   }
 
   void sfx(String name, {double volume = 1, int throttleMs = 0}) {
-    if (state.sfxVolume <= 0) return;
+    if (state.sfxVolume <= 0 || !available) return;
     if (throttleMs > 0) {
       final now = DateTime.now().millisecondsSinceEpoch;
       if (now - _lastTickMs < throttleMs) return;
       _lastTickMs = now;
     }
-    try {
-      FlameAudio.play('$name.wav', volume: (volume * state.sfxVolume).clamp(0, 1));
-    } catch (e) {
-      debugPrint('sfx failed: $e');
-    }
+    FlameAudio.play('$name.wav', volume: (volume * state.sfxVolume).clamp(0, 1)).then<void>((_) => _failures = 0, onError: (Object e) => _fail('sfx $name', e));
   }
 
   Future<void> music(String name) async {
@@ -61,7 +70,7 @@ class NtFeedback {
       return;
     }
     _music = name;
-    if (state.musicVolume <= 0) {
+    if (state.musicVolume <= 0 || !available) {
       await stopMusic();
       return;
     }
@@ -69,11 +78,12 @@ class NtFeedback {
       await FlameAudio.bgm.play('$name.wav', volume: state.musicVolume);
       _musicStarted = true;
     } catch (e) {
-      debugPrint('music failed: $e');
+      _fail('music $name', e);
     }
   }
 
   Future<void> setMusicVolume(double v) async {
+    if (!available) return;
     try {
       if (v <= 0) {
         await FlameAudio.bgm.stop();
@@ -85,7 +95,7 @@ class NtFeedback {
         await FlameAudio.bgm.audioPlayer.setVolume(v);
       }
     } catch (e) {
-      debugPrint('music volume failed: $e');
+      _fail('music volume', e);
     }
   }
 

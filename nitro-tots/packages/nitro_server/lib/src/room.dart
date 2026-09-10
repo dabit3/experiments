@@ -175,7 +175,8 @@ class Room {
 
   void _maybeAutoStart() {
     if (status != RoomStatus.lobby && status != RoomStatus.matchOver) return;
-    if (players.length >= 2 && players.every((p) => p.ready && p.connected)) {
+    final needed = math.max(2, settings.minPlayers);
+    if (players.length >= needed && players.every((p) => p.ready && p.connected)) {
       startMatch(hostId!);
     }
   }
@@ -258,6 +259,7 @@ class Room {
     status = RoomStatus.racing;
     _snapshotCounter = 0;
     _pendingEvents.clear();
+    broadcastRoomState();
     broadcast(matchStartJson());
   }
 
@@ -341,6 +343,7 @@ class Room {
     races.add(RoomRace(trackList[raceIndex], s.results!));
     status = RoomStatus.results;
     resultsShownAt = now();
+    broadcastRoomState();
     broadcast({
       'type': Msg.raceFinished,
       'raceIndex': raceIndex,
@@ -411,7 +414,10 @@ class Room {
   }
 
   void recordTestReport(String playerId, Map<String, dynamic> report) {
-    playerById(playerId)?.testReport = report;
+    final p = playerById(playerId);
+    if (p == null) return;
+    // Merge so a later phase report does not drop the match hash.
+    p.testReport = {...?p.testReport, ...report}..remove('type');
   }
 
   Map<String, dynamic> inspectJson() => {

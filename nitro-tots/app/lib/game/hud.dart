@@ -380,7 +380,7 @@ class _CentreText extends StatelessWidget {
     double scale = 1;
     if (sim.phase == RacePhase.countdown) {
       final left = countdownTicks - sim.tick;
-      final n = (left / ticksPerSecond).ceil();
+      final n = (left / ticksPerSecond).ceil().clamp(1, 4);
       if (n <= 3) {
         text = '$n';
         color = [NtColors.nitro, NtColors.sunny, NtColors.lime][3 - n];

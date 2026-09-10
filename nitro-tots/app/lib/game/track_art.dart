@@ -19,8 +19,11 @@ class TrackArt {
 
   static Color c(int argb) => Color(argb);
 
+  /// Dim applied to ground outside the drivable band.
+  static const beyondTint = Color(0x1A000000);
+
   void _build() {
-    final margin = track.def.grassMargin + 260;
+    final margin = track.def.grassMargin + 900;
     bounds = Rect.fromLTRB(track.boundsMin.x - margin, track.boundsMin.y - margin, track.boundsMax.x + margin, track.boundsMax.y + margin);
     final rec = ui.PictureRecorder();
     final canvas = Canvas(rec, bounds);
@@ -107,9 +110,17 @@ class TrackArt {
       outer.add(Offset(s.pos.x + n.x * d, s.pos.y + n.y * d));
       inner.add(Offset(s.pos.x - n.x * d, s.pos.y - n.y * d));
     }
-    final band = Path.combine(PathOperation.xor, Path()..addPolygon(outer, true), Path()..addPolygon(inner, true));
-    final beyond = Path.combine(PathOperation.difference, Path()..addRect(bounds), band);
-    canvas.drawPath(beyond, Paint()..color = const Color(0x1A000000));
+    // Even-odd fills instead of Path.combine: identical output on every renderer.
+    final band = Path()
+      ..fillType = PathFillType.evenOdd
+      ..addPolygon(outer, true)
+      ..addPolygon(inner, true);
+    final beyond = Path()
+      ..fillType = PathFillType.evenOdd
+      ..addRect(bounds)
+      ..addPolygon(outer, true)
+      ..addPolygon(inner, true);
+    canvas.drawPath(beyond, Paint()..color = beyondTint);
     canvas.drawPath(
       band,
       Paint()
@@ -137,8 +148,10 @@ class TrackArt {
       right.add(Offset(s.pos.x - n.x * s.width / 2, s.pos.y - n.y * s.width / 2));
     }
     roadPath = Path()..addPolygon(left, true);
-    final inner = Path()..addPolygon(right, true);
-    final ring = Path.combine(PathOperation.xor, roadPath, inner);
+    final ring = Path()
+      ..fillType = PathFillType.evenOdd
+      ..addPolygon(left, true)
+      ..addPolygon(right, true);
 
     // Edge shadow / curb.
     canvas.drawPath(

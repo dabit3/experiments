@@ -209,7 +209,9 @@ class StandingsTable extends StatelessWidget {
                   Expanded(
                     child: Text(standings[i].name, style: NtType.body(nt.ink), overflow: TextOverflow.ellipsis),
                   ),
-                  Text(standings[i].places.map(ordinal).join(' · '), style: NtType.caption(nt.inkSoft)),
+                  Flexible(
+                    child: Text(standings[i].places.map(ordinal).join(' · '), style: NtType.caption(nt.inkSoft), softWrap: false, overflow: TextOverflow.fade),
+                  ),
                   const SizedBox(width: 12),
                   Text('${standings[i].points}', style: NtType.mono(nt.ink)),
                 ],

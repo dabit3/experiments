@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flame/flame.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nitro_core/nitro_core.dart';
@@ -28,8 +27,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Flame.device.fullScreen();
   final prefs = await SharedPreferences.getInstance();
-  final query = kIsWeb ? Uri.base.queryParameters : const <String, String>{};
-  final test = TestConfig.resolve(query, AppState.platformId);
+  final test = TestConfig.resolve(await TestConfig.runtimeQuery(), AppState.platformId);
+  if (test.active) debugPrint('nitro-tots $test');
   final app = AppState(prefs, test);
   final feedback = NtFeedback(app);
   unawaited(feedback.preload());
@@ -87,6 +86,8 @@ class _AppShellState extends State<AppShell> {
   Timer? _testTimer;
   bool _testReportedMatch = false;
   String? _lastTestPhase;
+  int _lastStartRequestMs = 0;
+  int? _lobbyEnteredMs;
 
   AppState get app => widget.app;
   NtFeedback get feedback => widget.feedback;
@@ -137,7 +138,7 @@ class _AppShellState extends State<AppShell> {
     if (client.session != null && screen == Screen.lobby) {
       _go(Screen.race);
     }
-    if (test.active) _driveTest();
+    if (test.active && test.screen == null) _driveTest();
   }
 
   void _onServerEvent(Map<String, dynamic> m) {
@@ -154,6 +155,7 @@ class _AppShellState extends State<AppShell> {
     _go(Screen.podium);
     if (test.active && !_testReportedMatch) {
       _testReportedMatch = true;
+      _lastTestPhase = 'matchOver';
       client.testReport({
         'phase': 'matchOver',
         'hash': o.hash,
@@ -203,6 +205,11 @@ class _AppShellState extends State<AppShell> {
   // Automated test flow -------------------------------------------------------
 
   Future<void> _startTestFlow() async {
+    final still = Screen.values.where((s) => s.name == test.screen).firstOrNull;
+    if (still != null) {
+      _go(still);
+      return;
+    }
     _go(Screen.online);
     await client.connect(app.serverUrl, name: app.name, character: app.characterId, kart: app.kartId);
     _testTimer = Timer.periodic(const Duration(milliseconds: 500), (_) => _driveTest());
@@ -221,6 +228,7 @@ class _AppShellState extends State<AppShell> {
             cupId: test.cup ?? 'sugar',
             trackId: test.mode == 'battle' ? arenaDefs.first.id : raceTrackDefs.first.id,
             laps: test.laps ?? 1,
+            minPlayers: test.players ?? 4,
           ),
           code: code,
         );
@@ -229,13 +237,23 @@ class _AppShellState extends State<AppShell> {
     }
     final me = room.players.where((p) => p.id == client.playerId).firstOrNull;
     if (me == null) return;
-    final phase = screen == Screen.lobby ? 'lobby' : (screen == Screen.race ? (client.session?.sim.phase.name ?? 'race') : screen.name);
+    final phase = switch (screen) {
+      Screen.lobby => 'lobby',
+      Screen.race => client.session?.sim.phase.name ?? 'race',
+      Screen.podium => 'matchOver',
+      _ => screen.name,
+    };
     if (phase != _lastTestPhase) {
       _lastTestPhase = phase;
       client.testReport({'phase': phase, 'platform': AppState.platformId, 'screen': screen.name});
     }
-    if (room.status == 'lobby' && test.autoReady && !me.ready) client.setReady(true);
-    if (client.isHost && room.status == 'lobby' && room.players.length >= (test.players ?? 4) && room.players.every((p) => p.ready)) {
+    if (room.status != 'lobby' || client.session != null) return;
+    final nowMs = DateTime.now().millisecondsSinceEpoch;
+    _lobbyEnteredMs ??= nowMs;
+    // Linger in the lobby briefly so every client renders (and captures) it.
+    if (test.autoReady && !me.ready && nowMs - _lobbyEnteredMs! >= 3000) client.setReady(true);
+    if (client.isHost && nowMs - _lastStartRequestMs > 2000 && room.players.length >= (test.players ?? 4) && room.players.every((p) => p.ready)) {
+      _lastStartRequestMs = nowMs;
       client.startMatch();
     }
   }
@@ -279,7 +297,9 @@ class _AppShellState extends State<AppShell> {
           feedback: feedback,
           onBack: () => _go(_garageReturn, forward: false),
           onDone: () {
-            if (client.state == ConnState.online) client.updateProfile(name: app.name, character: app.characterId, kart: app.kartId);
+            if (client.state == ConnState.online) {
+              client.updateProfile(name: app.name, character: app.characterId, kart: app.kartId);
+            }
             _go(_garageReturn, forward: false);
           },
         );

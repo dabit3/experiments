@@ -114,8 +114,9 @@ class _CupPicker extends StatelessWidget {
                     children: [
                       Icon(Icons.emoji_events_rounded, color: Color(cup.color), size: 30),
                       const SizedBox(width: NtSpace.x2),
-                      Text(cup.name, style: NtType.h2(nt.ink)),
-                      const Spacer(),
+                      Expanded(
+                        child: Text(cup.name, style: NtType.h2(nt.ink), overflow: TextOverflow.ellipsis),
+                      ),
                       if (cup.id == flow.cupId) const NtChip('Selected', color: NtColors.lime, icon: Icons.check_rounded),
                     ],
                   ),

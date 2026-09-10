@@ -292,8 +292,8 @@ class _KartList extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(k.name, style: NtType.h3(nt.ink)),
-                          Text(_kartHint(k), style: NtType.caption(nt.inkSoft)),
+                          Text(k.name, style: NtType.h3(nt.ink), maxLines: 1, overflow: TextOverflow.ellipsis),
+                          Text(_kartHint(k), style: NtType.caption(nt.inkSoft), maxLines: 1, overflow: TextOverflow.ellipsis),
                         ],
                       ),
                     ),

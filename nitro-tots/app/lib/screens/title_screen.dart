@@ -33,7 +33,8 @@ class _TitleScreenState extends State<TitleScreen> with SingleTickerProviderStat
   Widget build(BuildContext context) {
     final nt = context.nt;
     final size = MediaQuery.sizeOf(context);
-    final wide = size.width >= 820 && size.height >= 520;
+    final wide = size.width >= 820;
+    final short = size.height < 520;
     final app = widget.app;
 
     final menu = Column(
@@ -111,60 +112,61 @@ class _TitleScreenState extends State<TitleScreen> with SingleTickerProviderStat
                   ],
                 ),
               ),
-              Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(NtSpace.x6),
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 1040),
-                    child: wide
-                        ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                flex: 5,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
+              Column(
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.fromLTRB(NtSpace.x6, short ? NtSpace.x3 : NtSpace.x6, NtSpace.x6, NtSpace.x3),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 1040),
+                          child: wide
+                              ? Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    const _Logo(),
-                                    const SizedBox(height: NtSpace.x6),
-                                    _HeroKart(app: app),
+                                    Expanded(
+                                      flex: 5,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          _Logo(compact: short),
+                                          if (!short) ...[const SizedBox(height: NtSpace.x6), _HeroKart(app: app)],
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(width: NtSpace.x10),
+                                    Expanded(
+                                      flex: 4,
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          profile,
+                                          const SizedBox(height: NtSpace.x4),
+                                          menu,
+                                        ],
+                                      ),
+                                    ),
                                   ],
-                                ),
-                              ),
-                              const SizedBox(width: NtSpace.x10),
-                              Expanded(
-                                flex: 4,
-                                child: Column(
+                                )
+                              : Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
+                                    const _Logo(compact: true),
+                                    const SizedBox(height: NtSpace.x4),
                                     profile,
                                     const SizedBox(height: NtSpace.x4),
-                                    menu,
+                                    ConstrainedBox(constraints: const BoxConstraints(maxWidth: 420), child: menu),
                                   ],
                                 ),
-                              ),
-                            ],
-                          )
-                        : Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const _Logo(compact: true),
-                              const SizedBox(height: NtSpace.x4),
-                              profile,
-                              const SizedBox(height: NtSpace.x4),
-                              ConstrainedBox(constraints: const BoxConstraints(maxWidth: 420), child: menu),
-                            ],
-                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Positioned(
-                bottom: NtSpace.x2,
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: Text('An original arcade kart racer · ${PlatformBadge.labelFor(AppState.platformId)} build', style: NtType.caption(nt.inkSoft)),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: NtSpace.x2),
+                    child: Text('An original arcade kart racer · play cross-platform', style: NtType.caption(nt.inkSoft)),
+                  ),
+                ],
               ),
             ],
           ),

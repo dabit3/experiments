@@ -59,9 +59,11 @@ class _PodiumScreenState extends State<PodiumScreen> with SingleTickerProviderSt
     final nt = context.nt;
     final top = widget.standings.take(3).toList();
     final myRank = widget.standings.indexWhere((s) => s.slot == widget.localSlot) + 1;
-    final wide = MediaQuery.sizeOf(context).width >= 900;
+    final size = MediaQuery.sizeOf(context);
+    final wide = size.width >= 900;
+    final compact = size.height < 640;
 
-    final podium = _Podium(top: top, anim: _c, localSlot: widget.localSlot);
+    final podium = _Podium(top: top, anim: _c, localSlot: widget.localSlot, compact: compact);
     final table = NtCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -100,10 +102,12 @@ class _PodiumScreenState extends State<PodiumScreen> with SingleTickerProviderSt
           backdrop: false,
           title: widget.title,
           subtitle: myRank > 0 ? 'You finished ${ordinal(myRank)} overall.' : null,
-          footer: Row(
+          footer: Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: NtSpace.x3,
+            runSpacing: NtSpace.x2,
             children: [
               NtButton(label: 'Home', icon: Icons.home_rounded, kind: NtButtonKind.secondary, onPressed: widget.onHome),
-              const Spacer(),
               if (widget.onAgain != null) NtButton(label: widget.againLabel, icon: Icons.replay_rounded, onPressed: widget.onAgain, autofocus: true),
             ],
           ),
@@ -131,17 +135,20 @@ class _PodiumScreenState extends State<PodiumScreen> with SingleTickerProviderSt
 }
 
 class _Podium extends StatelessWidget {
-  const _Podium({required this.top, required this.anim, required this.localSlot});
+  const _Podium({required this.top, required this.anim, required this.localSlot, required this.compact});
   final List<Standing> top;
   final Animation<double> anim;
   final int localSlot;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
+    final nt = context.nt;
+    final k = compact ? 0.68 : 1.0;
     // Layout order: 2nd, 1st, 3rd.
     final order = [if (top.length > 1) (top[1], 2), if (top.isNotEmpty) (top[0], 1), if (top.length > 2) (top[2], 3)];
     return SizedBox(
-      height: 360,
+      height: compact ? 290 : 380,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -160,11 +167,13 @@ class _Podium extends StatelessWidget {
                     };
                     final t = Curves.elasticOut.transform(((anim.value - delay) / 0.5).clamp(0.0, 1.0));
                     final fade = ((anim.value - delay) / 0.2).clamp(0.0, 1.0);
-                    final h = switch (place) {
-                      1 => 190.0,
-                      2 => 140.0,
-                      _ => 105.0,
-                    };
+                    final h =
+                        k *
+                        switch (place) {
+                          1 => 190.0,
+                          2 => 140.0,
+                          _ => 105.0,
+                        };
                     final color = switch (place) {
                       1 => NtColors.sunny,
                       2 => const Color(0xFFC9D1DA),
@@ -173,34 +182,40 @@ class _Podium extends StatelessWidget {
                     return Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Opacity(
-                          opacity: fade,
-                          child: Transform.translate(
-                            offset: Offset(0, (1 - t) * 40),
-                            child: Column(
-                              children: [
-                                if (place == 1)
-                                  Icon(
-                                    Icons.emoji_events_rounded,
-                                    color: NtColors.sunny,
-                                    size: 36,
-                                    shadows: const [Shadow(color: Colors.black26, blurRadius: 6)],
-                                  ),
-                                Avatar(
-                                  characterId: s.characterId,
-                                  size: place == 1 ? 84 : 68,
-                                  bot: s.isBot,
-                                  ring: s.slot == localSlot ? NtColors.nitro : Colors.white,
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Opacity(
+                              opacity: fade,
+                              child: Transform.translate(
+                                offset: Offset(0, (1 - t) * 40),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    if (place == 1)
+                                      Icon(
+                                        Icons.emoji_events_rounded,
+                                        color: NtColors.sunny,
+                                        size: 36 * k,
+                                        shadows: const [Shadow(color: Colors.black26, blurRadius: 6)],
+                                      ),
+                                    Avatar(
+                                      characterId: s.characterId,
+                                      size: (place == 1 ? 84 : 68) * k,
+                                      bot: s.isBot,
+                                      ring: s.slot == localSlot ? NtColors.nitro : Colors.white,
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      s.name,
+                                      style: compact ? NtType.body(nt.ink).copyWith(fontWeight: FontWeight.w700) : NtType.h3(nt.ink),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    PlatformBadge(s.isBot ? 'bot' : s.platform, compact: true),
+                                    SizedBox(height: 8 * k),
+                                  ],
                                 ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  s.name,
-                                  style: NtType.h3(Colors.white).copyWith(shadows: const [Shadow(color: Colors.black45, blurRadius: 4)]),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                PlatformBadge(s.isBot ? 'bot' : s.platform, compact: true),
-                                const SizedBox(height: 8),
-                              ],
+                              ),
                             ),
                           ),
                         ),

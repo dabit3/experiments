@@ -203,6 +203,8 @@ class RaceGame extends FlameGame {
     final sim = session.sim;
     final w = size.x;
     final h = size.y;
+    // The world picture is finite; paint the horizon in the track's ground colour first.
+    canvas.drawRect(Rect.fromLTWH(0, 0, w, h), Paint()..color = Color.alphaBlend(TrackArt.beyondTint, TrackArt.c(art.theme.ground)));
     canvas.save();
     // Camera: kart sits ~62% down the screen in chase mode.
     final anchorY = chaseCamera ? h * 0.62 : h * 0.5;

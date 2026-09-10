@@ -74,17 +74,13 @@ class _LobbyScreenState extends State<LobbyScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      const SectionTitle('Match'),
-                      const Spacer(),
-                      NtChip(
-                        settings.mode == GameMode.battle ? 'Battle' : (settings.grandPrix ? 'Grand Prix' : 'Single race'),
-                        color: settings.mode == GameMode.battle ? NtColors.grape : NtColors.nitro,
-                      ),
-                    ],
+                  SectionTitle(
+                    'Match',
+                    trailing: NtChip(
+                      settings.mode == GameMode.battle ? 'Battle' : (settings.grandPrix ? 'Grand Prix' : 'Single race'),
+                      color: settings.mode == GameMode.battle ? NtColors.grape : NtColors.nitro,
+                    ),
                   ),
-                  const SizedBox(height: NtSpace.x3),
                   for (final (i, tid) in trackIds.indexed)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8),
@@ -108,7 +104,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                               children: [
                                 Text('${trackIds.length > 1 ? '${i + 1}. ' : ''}${trackDefById(tid).name}', style: NtType.label(nt.ink)),
                                 Text(
-                                  settings.mode == GameMode.battle ? '${settings.battleSeconds ~/ 60} min · balloons' : '${settings.laps} laps',
+                                  settings.mode == GameMode.battle
+                                      ? '${settings.battleSeconds ~/ 60} min · balloons'
+                                      : '${settings.laps} lap${settings.laps == 1 ? '' : 's'}',
                                   style: NtType.caption(nt.inkSoft),
                                 ),
                               ],
@@ -159,36 +157,42 @@ class _LobbyScreenState extends State<LobbyScreen> {
             widget.onLeave();
           },
           trailing: NtChip('${client.rttMs} ms', icon: Icons.wifi_rounded, color: client.rttMs < 120 ? NtColors.lime : NtColors.sunny),
-          footer: Row(
+          footer: Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            spacing: NtSpace.x3,
+            runSpacing: NtSpace.x2,
             children: [
               NtButton(label: 'Garage', icon: Icons.garage_rounded, kind: NtButtonKind.ghost, onPressed: widget.onGarage),
-              const Spacer(),
-              NtButton(
-                label: ready ? 'Ready!' : 'Ready up',
-                icon: ready ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-                kind: ready ? NtButtonKind.secondary : NtButtonKind.primary,
-                color: ready ? NtColors.lime : null,
-                onPressed: () {
-                  widget.feedback.tap();
-                  widget.feedback.haptic(HapticsKind.select);
-                  client.setReady(!ready);
-                },
-              ),
-              if (isHost) ...[
-                const SizedBox(width: NtSpace.x3),
-                Tooltip(
-                  message: humans < 2 ? 'Start now — bots fill the empty seats' : (allReady ? 'Everyone is ready' : 'Waiting for players to ready up'),
-                  child: NtButton(
-                    label: 'Start race',
-                    icon: Icons.play_arrow_rounded,
-                    color: NtColors.nitro,
+              Wrap(
+                spacing: NtSpace.x3,
+                runSpacing: NtSpace.x2,
+                children: [
+                  NtButton(
+                    label: ready ? 'Ready!' : 'Ready up',
+                    icon: ready ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
+                    kind: ready ? NtButtonKind.secondary : NtButtonKind.primary,
+                    color: ready ? NtColors.lime : null,
                     onPressed: () {
                       widget.feedback.tap();
-                      client.startMatch();
+                      widget.feedback.haptic(HapticsKind.select);
+                      client.setReady(!ready);
                     },
                   ),
-                ),
-              ],
+                  if (isHost)
+                    Tooltip(
+                      message: humans < 2 ? 'Start now — bots fill the empty seats' : (allReady ? 'Everyone is ready' : 'Waiting for players to ready up'),
+                      child: NtButton(
+                        label: 'Start race',
+                        icon: Icons.play_arrow_rounded,
+                        color: NtColors.nitro,
+                        onPressed: () {
+                          widget.feedback.tap();
+                          client.startMatch();
+                        },
+                      ),
+                    ),
+                ],
+              ),
             ],
           ),
           child: wide

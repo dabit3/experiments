@@ -94,6 +94,23 @@ class AppState extends ChangeNotifier {
   Kart get kart => karts.firstWhere((k) => k.id == kartId, orElse: () => karts.first);
 
   void _load() {
+    if (!testConfig.still) _loadPrefs();
+
+    // Test/automation overrides (never persisted).
+    final t = testConfig;
+    if (t.name != null) name = t.name!;
+    if (t.character != null) characterId = t.character!;
+    if (t.kart != null) kartId = t.kart!;
+    serverUrl = t.resolveServer(serverUrl) ?? serverUrl;
+    if (t.theme != null) themeMode = t.theme == 'dark' ? ThemeMode.dark : ThemeMode.light;
+    if (t.active) {
+      resumePlayerId = null;
+      resumeToken = null;
+      reduceMotion = t.still;
+    }
+  }
+
+  void _loadPrefs() {
     name = _prefs.getString('name') ?? name;
     characterId = _prefs.getString('character') ?? characterId;
     kartId = _prefs.getString('kart') ?? kartId;
@@ -114,19 +131,6 @@ class AppState extends ChangeNotifier {
       try {
         (jsonDecode(g) as Map<String, dynamic>).forEach((k, v) => ghosts[k] = (v as Map).cast<String, dynamic>());
       } catch (_) {}
-    }
-
-    // Test/automation overrides (never persisted).
-    final t = testConfig;
-    if (t.name != null) name = t.name!;
-    if (t.character != null) characterId = t.character!;
-    if (t.kart != null) kartId = t.kart!;
-    serverUrl = t.resolveServer(serverUrl) ?? serverUrl;
-    if (t.theme != null) themeMode = t.theme == 'dark' ? ThemeMode.dark : ThemeMode.light;
-    if (t.active) {
-      resumePlayerId = null;
-      resumeToken = null;
-      reduceMotion = false;
     }
   }
 
