@@ -8,6 +8,7 @@ import 'package:voxelhearth_core/voxelhearth_core.dart';
 
 import '../app_state.dart';
 import '../game/game_controller.dart';
+import '../game/pointer_lock.dart';
 import '../game/renderer.dart';
 import '../net/game_client.dart';
 import 'chat_panel.dart';
@@ -50,12 +51,32 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     _ticker = createTicker(_onTick)..start();
     g.addListener(_onGame);
     widget.client.addListener(_onGame);
+    PointerLock.onMove = _lockedLook;
+    PointerLock.onChange = _onLockChange;
     WidgetsBinding.instance.addPostFrameCallback((_) => _focus.requestFocus());
   }
 
   void _onGame() {
+    if (PointerLock.locked && g.inputBlocked) PointerLock.release();
     if (mounted) setState(() {});
   }
+
+  void _lockedLook(double dx, double dy) {
+    if (!g.inputBlocked) g.look(dx, dy);
+  }
+
+  /// Losing capture without the game asking for it (Esc in the browser,
+  /// window losing focus) drops into the pause menu so the player sees why
+  /// the mouse stopped steering.
+  void _onLockChange() {
+    if (!PointerLock.locked && !g.inputBlocked) g.setPaused(true);
+    if (mounted) setState(() {});
+  }
+
+  /// Desktop mouse look: the first click captures the pointer; later clicks
+  /// act on the world. Touch and unsupported hosts keep drag-to-look.
+  bool get _usesCapture => !_touchUi && PointerLock.supported;
+  bool get _showCaptureHint => _usesCapture && !PointerLock.locked && !g.inputBlocked && g.loaded;
 
   void _onTick(Duration now) {
     final dt = _last == Duration.zero ? 1 / 60 : (now - _last).inMicroseconds / 1e6;
@@ -66,6 +87,9 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
 
   @override
   void dispose() {
+    PointerLock.release();
+    PointerLock.onMove = null;
+    PointerLock.onChange = null;
     _ticker.dispose();
     g.removeListener(_onGame);
     widget.client.removeListener(_onGame);
@@ -82,6 +106,10 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     if (g.inputBlocked) return;
     _focus.requestFocus();
     if (e.kind == PointerDeviceKind.mouse) {
+      if (_usesCapture && !PointerLock.locked) {
+        PointerLock.request();
+        return;
+      }
       if (e.buttons & kSecondaryMouseButton != 0) {
         g.use();
         return;
@@ -107,7 +135,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
     final d = e.localPosition - _lookStart;
     if (!_lookMoved && d.distance > 6) _lookMoved = true;
     final scale = e.kind == PointerDeviceKind.mouse ? 1.0 : 1.6;
-    g.look(e.delta.dx * scale, e.delta.dy * scale);
+    if (!(PointerLock.locked && e.kind == PointerDeviceKind.mouse)) g.look(e.delta.dx * scale, e.delta.dy * scale);
     if (_touchUi && e.kind != PointerDeviceKind.mouse && !_holdBreak && !_lookMoved) {
       // long-press without movement starts breaking
       if (DateTime.now().difference(_downAt).inMilliseconds > 220) {
@@ -163,7 +191,7 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
               onPointerCancel: _pointerUp,
               onPointerSignal: _scroll,
               child: MouseRegion(
-                cursor: g.inputBlocked ? SystemMouseCursors.basic : SystemMouseCursors.none,
+                cursor: g.inputBlocked || _showCaptureHint ? SystemMouseCursors.basic : SystemMouseCursors.none,
                 child: RepaintBoundary(
                   child: VoxelCanvas(game: g, assets: widget.assets, frame: frame),
                 ),
@@ -175,6 +203,20 @@ class _GameScreenState extends State<GameScreen> with SingleTickerProviderStateM
                 child: CustomPaint(painter: OverlayPainter(g, frame, Theme.of(context)), isComplex: false),
               ),
             ),
+            if (_showCaptureHint)
+              IgnorePointer(
+                child: Align(
+                  alignment: const Alignment(0, 0.35),
+                  child: GlassPanel(
+                    padding: const EdgeInsets.symmetric(horizontal: VhSpace.md, vertical: VhSpace.sm),
+                    tint: Colors.black.withValues(alpha: 0.45),
+                    child: Text(
+                      'Click to look around  ·  Esc to pause',
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
             // HUD
             if (s.phase == Phase.playing) ...[
               IgnorePointer(

@@ -13,6 +13,7 @@ Future<void> main() async {
   final settings = await Settings.load();
   Sfx.enabled = settings.sound;
   await Sfx.init();
+  if (kIsWeb) await BrowserContextMenu.disableContextMenu();
   final query = kIsWeb ? Uri.base.queryParameters : const <String, String>{};
   final config = LaunchConfig.detect(query: query, overrides: await LaunchConfig.hostOverrides());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android)) {

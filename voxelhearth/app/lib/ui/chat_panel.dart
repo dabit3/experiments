@@ -36,7 +36,12 @@ class _ChatPanelState extends State<ChatPanel> {
   void initState() {
     super.initState();
     widget.client.addListener(_refresh);
-    if (widget.autofocus) WidgetsBinding.instance.addPostFrameCallback((_) => _focus.requestFocus());
+    _lastLen = widget.session.chat.length;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (_scroll.hasClients) _scroll.jumpTo(_scroll.position.maxScrollExtent);
+      if (widget.autofocus) _focus.requestFocus();
+    });
   }
 
   void _refresh() {

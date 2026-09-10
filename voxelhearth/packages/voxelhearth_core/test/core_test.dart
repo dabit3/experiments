@@ -177,6 +177,17 @@ void main() {
       expect(room.hostId, 'a');
     });
 
+    test('rejoining with a new display name keeps the player and renames them', () {
+      final a = room.join('a', 'Desk Dweller', 'macos');
+      a.inv[0] = const ItemStack(Ids.log, 3);
+      room.disconnect('a');
+      final again = room.join('a', 'bob mac', 'macos');
+      expect(identical(a, again), isTrue);
+      expect(again.name, 'bob mac');
+      expect(again.inv[0], const ItemStack(Ids.log, 3));
+      expect(room.hostId, 'a');
+    });
+
     test('crafting consumes ingredients and produces result', () {
       final a = room.join('a', 'Alice', 'web');
       room.startMatch();

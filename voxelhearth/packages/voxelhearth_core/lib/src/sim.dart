@@ -280,6 +280,8 @@ class Room {
       }
       players[id] = p;
       hostId ??= id;
+    } else if (!p.isBot) {
+      p.name = name;
     }
     p.connected = true;
     p.lastSeenTick = tick;

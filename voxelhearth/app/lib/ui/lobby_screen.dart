@@ -305,57 +305,87 @@ class _LobbyScreenState extends State<LobbyScreen> {
           children: [
             Text('World rules', style: t.textTheme.headlineSmall),
             const SizedBox(height: VhSpace.md),
-            const SectionLabel('Mode'),
-            SegmentedButton<String>(
-              segments: const [
-                ButtonSegment(value: GameMode.survival, label: Text('Survival'), icon: Icon(Icons.shield_moon_rounded)),
-                ButtonSegment(value: GameMode.creative, label: Text('Creative'), icon: Icon(Icons.brush_rounded)),
-              ],
-              selected: {s.mode},
-              onSelectionChanged: isHost ? (v) => c.send({'t': Msg.roomSettings, 'mode': v.first}) : null,
-              showSelectedIcon: false,
-            ),
-            const SizedBox(height: VhSpace.lg),
-            const SectionLabel('Match length'),
-            SegmentedButton<int>(
-              segments: const [
-                ButtonSegment(value: 0, label: Text('Open')),
-                ButtonSegment(value: 5, label: Text('5 min')),
-                ButtonSegment(value: 10, label: Text('10 min')),
-                ButtonSegment(value: 20, label: Text('20 min')),
-              ],
-              selected: {
-                [0, 5, 10, 20].contains(durationMin) ? durationMin : 0,
-              },
-              onSelectionChanged: isHost
-                  ? (v) => c.send({'t': Msg.roomSettings, 'durationTicks': v.first * 1200})
-                  : null,
-              showSelectedIcon: false,
-            ),
-            const SizedBox(height: VhSpace.sm),
-            SwitchListTile.adaptive(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('Creatures'),
-              subtitle: const Text('Mossbacks by day, Hollows and Cinderlings at night'),
-              value: s.spawnMobs,
-              onChanged: isHost ? (v) => c.send({'t': Msg.roomSettings, 'spawnMobs': v}) : null,
-            ),
-            SwitchListTile.adaptive(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('Freeze time of day'),
-              value: s.freezeTime,
-              onChanged: isHost ? (v) => c.send({'t': Msg.roomSettings, 'freezeTime': v}) : null,
-            ),
-            if (!isHost)
-              Padding(
-                padding: const EdgeInsets.only(top: VhSpace.xs),
-                child: Text('Only the host can change world rules.', style: t.textTheme.bodySmall),
+            if (!isHost) ...[
+              _ruleRow(
+                t,
+                s.mode == GameMode.creative ? Icons.brush_rounded : Icons.shield_moon_rounded,
+                'Mode',
+                s.mode == GameMode.creative ? 'Creative' : 'Survival',
               ),
+              _ruleRow(t, Icons.timer_outlined, 'Match length', durationMin == 0 ? 'Open' : '$durationMin min'),
+              _ruleRow(t, Icons.pets_rounded, 'Creatures', s.spawnMobs ? 'On' : 'Off'),
+              _ruleRow(t, Icons.wb_twilight_rounded, 'Time of day', s.freezeTime ? 'Frozen' : 'Cycles'),
+              Padding(
+                padding: const EdgeInsets.only(top: VhSpace.sm),
+                child: Text(
+                  'Only the host can change world rules.',
+                  style: t.textTheme.bodySmall?.copyWith(color: t.colorScheme.onSurfaceVariant),
+                ),
+              ),
+            ] else ...[
+              const SectionLabel('Mode'),
+              SegmentedButton<String>(
+                segments: const [
+                  ButtonSegment(
+                    value: GameMode.survival,
+                    label: Text('Survival'),
+                    icon: Icon(Icons.shield_moon_rounded),
+                  ),
+                  ButtonSegment(value: GameMode.creative, label: Text('Creative'), icon: Icon(Icons.brush_rounded)),
+                ],
+                selected: {s.mode},
+                onSelectionChanged: isHost ? (v) => c.send({'t': Msg.roomSettings, 'mode': v.first}) : null,
+                showSelectedIcon: false,
+              ),
+              const SizedBox(height: VhSpace.lg),
+              const SectionLabel('Match length'),
+              SegmentedButton<int>(
+                segments: const [
+                  ButtonSegment(value: 0, label: Text('Open')),
+                  ButtonSegment(value: 5, label: Text('5 min')),
+                  ButtonSegment(value: 10, label: Text('10 min')),
+                  ButtonSegment(value: 20, label: Text('20 min')),
+                ],
+                selected: {
+                  [0, 5, 10, 20].contains(durationMin) ? durationMin : 0,
+                },
+                onSelectionChanged: isHost
+                    ? (v) => c.send({'t': Msg.roomSettings, 'durationTicks': v.first * 1200})
+                    : null,
+                showSelectedIcon: false,
+              ),
+              const SizedBox(height: VhSpace.sm),
+              SwitchListTile.adaptive(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Creatures'),
+                subtitle: const Text('Mossbacks by day, Hollows and Cinderlings at night'),
+                value: s.spawnMobs,
+                onChanged: isHost ? (v) => c.send({'t': Msg.roomSettings, 'spawnMobs': v}) : null,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Freeze time of day'),
+                value: s.freezeTime,
+                onChanged: isHost ? (v) => c.send({'t': Msg.roomSettings, 'freezeTime': v}) : null,
+              ),
+            ],
           ],
         ),
       ),
     );
   }
+
+  Widget _ruleRow(ThemeData t, IconData icon, String label, String value) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: VhSpace.xs),
+    child: Row(
+      children: [
+        Icon(icon, size: 20, color: t.colorScheme.primary),
+        const SizedBox(width: VhSpace.sm),
+        Expanded(child: Text(label, style: t.textTheme.bodyMedium)),
+        Text(value, style: t.textTheme.titleSmall),
+      ],
+    ),
+  );
 
   Widget _chatCard(BuildContext context) => Card(
     clipBehavior: Clip.antiAlias,

@@ -32,6 +32,7 @@ class _AppShellState extends State<AppShell> {
   GameController? game;
   RoomSession? _gameSession;
   bool _autoJoined = false;
+  String? _savedToken;
 
   @override
   void initState() {
@@ -40,9 +41,13 @@ class _AppShellState extends State<AppShell> {
     client = GameClient(platform: c.platform);
     client.serverUrl = s.serverUrl.isNotEmpty && c.autoName == null ? s.serverUrl : c.defaultServer;
     client.playerName = c.autoName ?? (s.playerName.isNotEmpty ? s.playerName : _defaultName(c.platform));
+    if (c.autoName == null && !c.testMode) client.token = s.tokenFor(client.serverUrl);
     client.driveHandler = _drive;
     client.addListener(_onClient);
-    RenderAssets.load().then((a) => setState(() => assets = a), onError: (Object e) => setState(() => assetError = e));
+    RenderAssets.load().then((a) {
+      assets = a;
+      _onClient();
+    }, onError: (Object e) => setState(() => assetError = e));
     if (c.autoName != null || c.autoJoin != null) {
       client.connect();
     }
@@ -58,6 +63,13 @@ class _AppShellState extends State<AppShell> {
 
   void _onClient() {
     final s = client.session;
+    if (client.state == ConnState.connected &&
+        client.token != _savedToken &&
+        widget.config.autoName == null &&
+        !widget.config.testMode) {
+      _savedToken = client.token;
+      widget.settings.setToken(client.serverUrl, client.token);
+    }
     if (s != null && s != _gameSession) {
       game?.dispose();
       game = null;

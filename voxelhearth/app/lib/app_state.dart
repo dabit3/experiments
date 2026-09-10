@@ -34,6 +34,17 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Session token issued by [server]; lets a relaunch (or a browser reload)
+  /// resume the same player and room.
+  String? tokenFor(String server) => _prefs.getString('token@$server');
+  void setToken(String server, String? token) {
+    if (token == null || token.isEmpty) {
+      _prefs.remove('token@$server');
+    } else {
+      _prefs.setString('token@$server', token);
+    }
+  }
+
   double get sensitivity => _prefs.getDouble('sens') ?? 1.0;
   set sensitivity(double v) {
     _prefs.setDouble('sens', v);

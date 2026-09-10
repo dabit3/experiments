@@ -49,28 +49,33 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.dispose();
   }
 
-  void _commitIdentity() {
+  /// Applies the name/server fields; when either changed, the socket is
+  /// re-opened with the new identity before any room action is sent.
+  Future<void> _commitIdentity() async {
     final c = widget.client;
     final name = _name.text.trim().isEmpty ? 'Wanderer' : _name.text.trim();
     final server = _server.text.trim();
     widget.settings.playerName = name;
     widget.settings.serverUrl = server;
     final changed = c.playerName != name || c.serverUrl != server;
+    if (c.serverUrl != server) c.token = widget.settings.tokenFor(server);
     c.playerName = name;
     c.serverUrl = server;
-    if (changed || c.state == ConnState.failed) c.connect();
+    if (changed || c.state == ConnState.failed) await c.connect();
   }
 
-  void _create() {
-    _commitIdentity();
+  Future<void> _create() async {
+    await _commitIdentity();
+    if (!mounted) return;
     showDialog<void>(
       context: context,
       builder: (_) => _CreateDialog(client: widget.client),
     );
   }
 
-  void _join() {
-    _commitIdentity();
+  Future<void> _join() async {
+    await _commitIdentity();
+    if (!mounted) return;
     final code = _code.text.trim().toUpperCase();
     if (code.length < 4) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Enter a 5-letter room code')));

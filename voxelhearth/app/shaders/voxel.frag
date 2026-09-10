@@ -440,7 +440,7 @@ void main() {
     if (flag >= 4.0) {
       // sub-box decorations
       vec3 bmin, bmax;
-      if (flag == 4.0) { bmin = vec3(0.4, 0.0, 0.4); bmax = vec3(0.6, 0.62, 0.6); }          // torch
+      if (flag == 4.0) { bmin = vec3(0.43, 0.0, 0.43); bmax = vec3(0.57, 0.6, 0.57); }        // torch
       else if (flag == 5.0) { bmin = vec3(0.12, 0.0, 0.12); bmax = vec3(0.88, 0.8, 0.88); }   // plant
       else if (flag == 7.0) { bmin = vec3(0.0, 0.0, 0.0); bmax = vec3(1.0, 0.56, 1.0); }      // bed
       else if (flag == 8.0) { bmin = vec3(0.3, 0.0, 0.3); bmax = vec3(0.7, 0.55, 0.7); }      // lantern
@@ -456,6 +456,12 @@ void main() {
         else if (abs(bn.x) > 0.5) uv = vec2(bn.x > 0.0 ? 1.0 - local.z : local.z, 1.0 - local.y);
         else uv = vec2(bn.z > 0.0 ? local.x : 1.0 - local.x, 1.0 - local.y);
         float btile = abs(bn.y) > 0.5 ? (bn.y > 0.0 ? info.r : info.b) * 255.0 : info.g * 255.0;
+        if (flag == 4.0) {
+          // The torch tile paints a 4px stick in columns 6..10; stretch that
+          // strip over the thin box instead of showing the tile's empty margin.
+          if (abs(bn.y) > 0.5) uv = vec2(mix(0.375, 0.625, uv.x), mix(0.1875, 0.375, uv.y));
+          else uv = vec2(mix(0.375, 0.625, uv.x), mix(0.125, 1.0, uv.y));
+        }
         if (flag == 5.0) {
           // plants: use the side texture on every face, cutout, no top
           if (abs(bn.y) > 0.5) continue;
