@@ -1,9 +1,9 @@
 {
  "sweep": 2,
- "revision": "sha256:c8d24d274c8f293464a197966408960ae148930e9ad7c24f1cc6118689a45478",
- "captured_at": "2026-09-10T01:37:35.839065+00:00",
- "e2e_run": "evidence/tests/e2e-20260909-182954",
- "files_inspected": 51,
+ "revision": "sha256:46732d20786cfe94db6a7c60ebc03ec8db1c857517009dcffa791343f2fa3c57",
+ "captured_at": "2026-09-10T02:41:10.432011+00:00",
+ "e2e_run": "evidence/tests/e2e-20260909-193133",
+ "files_inspected": 54,
  "audit_ids": [
   "source",
   "navigation",
@@ -109,7 +109,7 @@
     "app/lib/net/game_client.dart:122: bool get isHost => hostId == youId;",
     "app/lib/net/game_client.dart:525: s.hostId = m['host'] as String?;",
     "app/lib/net/game_client.dart:552: s.hostId = m['host'] as String? ?? s.hostId;",
-    "app/lib/shell.dart:284: ..hostId = 'fx-1'",
+    "app/lib/shell.dart:296: ..hostId = 'fx-1'",
     "app/lib/ui/hud.dart:848: final isHost = s.hostId == s.youId;",
     "app/lib/ui/hud.dart:880: if (isHost) ...[",
     "app/lib/ui/lobby_screen.dart:41: bool get isHost => s.hostId == s.youId;"
@@ -117,7 +117,7 @@
    "new_requirements": []
   },
   "states": {
-   "empty_loading_error_widgets": 67,
+   "empty_loading_error_widgets": 68,
    "toasts_snackbars": 21,
    "keyboard_shortcuts": 20,
    "e2e_state_transitions": [
@@ -250,8 +250,8 @@
      "screen": "home",
      "platform": "macos",
      "sameViewport": true,
-     "nodes": "62/69",
-     "normalized_px": 3444
+     "nodes": "64/69",
+     "normalized_px": 3380
     }
    ],
    "new_requirements": []
@@ -320,9 +320,9 @@
    "e2e_error_lines": [],
    "fps_samples": {
     "fps": {
-     "Web": 20,
-     "iOS": 21,
-     "Mac": 35
+     "Web": 21,
+     "iOS": 22,
+     "Mac": 38
     }
    },
    "known_environment_issues": [

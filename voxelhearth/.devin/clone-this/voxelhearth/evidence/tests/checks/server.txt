@@ -1,4 +1,3 @@
 Formatted 2 files (0 changed) in 0.02 seconds.
 Analyzing server...
 No issues found!
-(server has no test/ directory; the room/world rules it hosts are covered by packages/voxelhearth_core tests)
