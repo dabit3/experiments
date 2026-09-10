@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:voxelhearth_core/voxelhearth_core.dart';
 
@@ -113,7 +112,14 @@ class _AppShellState extends State<AppShell> {
     final t = jstr(a, 't');
     switch (t) {
       case 'screen':
-        return {'ok': true, 'screen': screenName, 'connected': client.state == ConnState.connected};
+        return {
+          'ok': true,
+          'screen': screenName,
+          'connected': client.state == ConnState.connected,
+          'name': client.playerName,
+          'autoName': widget.config.autoName,
+          'server': client.serverUrl,
+        };
       case 'wait_screen':
         final want = jstr(a, 'screen');
         final deadline = DateTime.now().add(Duration(seconds: jint(a, 'timeout', 20)));
@@ -162,6 +168,37 @@ class _AppShellState extends State<AppShell> {
       case 'set_touch':
         widget.settings.touchControls = jbool(a, 'on', true);
         return {'ok': true};
+      case 'results':
+        final s = client.session;
+        return {
+          'ok': s != null && s.phase == Phase.results,
+          'phase': screenName,
+          'worldHash': s?.resultsWorldHash,
+          'chatHash': s?.resultsChatHash,
+          'results': [
+            for (final r in s?.results ?? const <PlayerInfo>[])
+              {
+                'name': r.name,
+                'platform': r.platform,
+                'bot': r.bot,
+                'score': r.score,
+                'placed': r.placed,
+                'broken': r.broken,
+                'crafted': r.crafted,
+                'kills': r.kills,
+                'deaths': r.deaths,
+              },
+          ],
+        };
+      case 'chat_log':
+        final s = client.session;
+        return {
+          'ok': s != null,
+          'chatHash': s?.chatHash(),
+          'chat': [
+            for (final c in s?.chat ?? const <ChatEntry>[]) {'from': c.from, 'text': c.text},
+          ],
+        };
       case 'wait_game':
         final deadline = DateTime.now().add(Duration(seconds: jint(a, 'timeout', 20)));
         while (game == null && DateTime.now().isBefore(deadline)) {

@@ -11,7 +11,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final settings = await Settings.load();
   final query = kIsWeb ? Uri.base.queryParameters : const <String, String>{};
-  final config = LaunchConfig.detect(query: query);
+  final config = LaunchConfig.detect(query: query, overrides: await LaunchConfig.hostOverrides());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android)) {
     await SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeLeft,

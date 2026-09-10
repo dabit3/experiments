@@ -172,6 +172,8 @@ class GameController extends ChangeNotifier {
 
   void update(double dt) {
     if (_disposed) return;
+    // Digging follows the wall clock so a slow frame rate never slows the pick.
+    final wallDt = dt.clamp(0.0, 0.5);
     dt = dt.clamp(0, 0.05);
     anim += dt;
     _fpsTimer += dt;
@@ -188,7 +190,7 @@ class GameController extends ChangeNotifier {
     view.follow(body.x, body.z);
     _interpolate(dt);
     _targeting();
-    _breaking(dt);
+    _breaking(wallDt);
     _particles(dt);
     if (damageFlash > 0) damageFlash = math.max(0, damageFlash - dt * 2.2);
     if (_shake > 0) _shake = math.max(0, _shake - dt);

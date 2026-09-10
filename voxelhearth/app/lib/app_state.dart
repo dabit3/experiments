@@ -1,5 +1,8 @@
+import 'dart:io' as io;
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voxelhearth_core/voxelhearth_core.dart';
 
@@ -99,7 +102,41 @@ class LaunchConfig {
   static const _envTest = bool.fromEnvironment('VH_TEST');
   static const _envCreate = bool.fromEnvironment('VH_CREATE');
 
-  static LaunchConfig detect({Map<String, String> query = const {}}) {
+  /// Compile-time `--dart-define` values can be overridden at launch by
+  /// process environment variables (macOS binary) or by the host launch
+  /// channel (iOS `SIMCTL_CHILD_VH_*` / `-VH_KEY value` arguments, Android
+  /// intent extras), which the automation harness uses.
+  static String _env(String key, String compiled, Map<String, String> overrides) {
+    final o = overrides[key];
+    if (o != null && o.isNotEmpty) return o;
+    if (!kIsWeb) {
+      final v = io.Platform.environment[key];
+      if (v != null && v.isNotEmpty) return v;
+    }
+    return compiled;
+  }
+
+  static bool _flag(String v) => v == '1' || v == 'true';
+
+  static const _channel = MethodChannel('voxelhearth/launch');
+
+  /// `VH_*` overrides supplied by the native host at launch, if it has any.
+  static Future<Map<String, String>> hostOverrides() async {
+    if (kIsWeb) return const {};
+    try {
+      final m = await _channel.invokeMapMethod<String, String>('overrides');
+      return m ?? const {};
+    } on MissingPluginException {
+      return const {};
+    }
+  }
+
+  static LaunchConfig detect({Map<String, String> query = const {}, Map<String, String> overrides = const {}}) {
+    final envServer = _env('VH_SERVER', _envServer, overrides);
+    final envName = _env('VH_NAME', _envName, overrides);
+    final envJoin = _env('VH_JOIN', _envJoin, overrides);
+    final envTest = _flag(_env('VH_TEST', '', overrides)) || _envTest;
+    final envCreate = _flag(_env('VH_CREATE', '', overrides)) || _envCreate;
     final platform = kIsWeb
         ? Platform.web
         : switch (defaultTargetPlatform) {
@@ -108,7 +145,7 @@ class LaunchConfig {
             TargetPlatform.macOS => Platform.macos,
             _ => Platform.unknown,
           };
-    var server = query['server'] ?? (_envServer.isEmpty ? '' : _envServer);
+    var server = query['server'] ?? envServer;
     if (server.isEmpty) {
       // Android emulators reach the host through 10.0.2.2.
       final host = platform == Platform.android ? '10.0.2.2' : 'localhost';
@@ -117,10 +154,10 @@ class LaunchConfig {
     return LaunchConfig(
       platform: platform,
       defaultServer: server,
-      autoName: query['name'] ?? (_envName.isEmpty ? null : _envName),
-      autoJoin: query['join'] ?? (_envJoin.isEmpty ? null : _envJoin),
-      autoCreate: (query['create'] ?? '') == '1' || _envCreate,
-      testMode: (query['test'] ?? '') == '1' || _envTest,
+      autoName: query['name'] ?? (envName.isEmpty ? null : envName),
+      autoJoin: query['join'] ?? (envJoin.isEmpty ? null : envJoin),
+      autoCreate: (query['create'] ?? '') == '1' || envCreate,
+      testMode: (query['test'] ?? '') == '1' || envTest,
     );
   }
 }

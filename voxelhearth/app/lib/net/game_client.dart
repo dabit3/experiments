@@ -155,6 +155,7 @@ class GameClient extends ChangeNotifier {
   Map<String, Object?> Function(Map<String, Object?> request)? hashProvider;
   int pingMs = 0;
   bool joiningRoom = false;
+  bool _awaitingRejoin = false;
   String? pendingJoinCode;
 
   WebSocketChannel? _ch;
@@ -339,6 +340,9 @@ class GameClient extends ChangeNotifier {
         reconnectAttempt = 0;
         state = ConnState.connected;
         lastError = null;
+        // The server either rejoins us to our room or answers with the room
+        // list; the latter means the room is gone (e.g. server restarted).
+        _awaitingRejoin = session != null;
         notifyListeners();
       case Msg.pong:
         final ts = jint(m, 'ts');
@@ -347,6 +351,11 @@ class GameClient extends ChangeNotifier {
         rooms = (m['rooms'] as List? ?? const [])
             .map((e) => RoomSummary.fromJson((e as Map).cast<String, Object?>()))
             .toList();
+        if (_awaitingRejoin) {
+          _awaitingRejoin = false;
+          session = null;
+          lastError = 'The world you were in is no longer available';
+        }
         notifyListeners();
       case Msg.error:
         final code = jstr(m, 'code');
@@ -358,6 +367,7 @@ class GameClient extends ChangeNotifier {
         if (code != 'no_recipe' && code != 'unknown') toast(msg, kind: 'error');
         notifyListeners();
       case Msg.roomJoined:
+        _awaitingRejoin = false;
         _onRoomJoined(m);
       case Msg.roomState:
         _onRoomState(m);

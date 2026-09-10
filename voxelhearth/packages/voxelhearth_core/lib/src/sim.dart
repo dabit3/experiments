@@ -1473,22 +1473,30 @@ class Room {
       final anchor = _nearestPlayer(b.x, b.z);
       final ax = anchor != null && !anchor.isBot ? anchor.body.x : spawn[0] + 0.5;
       final az = anchor != null && !anchor.isBot ? anchor.body.z : spawn[2] + 0.5;
-      p.botTx = ax + rng.nextInt(17) - 8;
-      p.botTz = az + rng.nextInt(17) - 8;
+      var ox = rng.nextInt(17) - 8.0, oz = rng.nextInt(17) - 8.0;
+      final od = math.sqrt(ox * ox + oz * oz);
+      if (od < 4) {
+        // Give people room to work instead of standing on their build.
+        final s = od < 0.01 ? 0.0 : 5 / od;
+        ox = od < 0.01 ? 5 : ox * s;
+        oz *= s;
+      }
+      p.botTx = ax + ox;
+      p.botTz = az + oz;
       if (p.botTask == 0) {
         _onChat(p, _botLines[rng.nextInt(_botLines.length)]);
       } else if (p.botTask <= 3) {
         // place a plank block in front
         final fx = b.x.floor() + (rng.nextInt(3) - 1), fz = b.z.floor() + (rng.nextInt(3) - 1);
         final h = world.heightAt(fx, fz);
-        if (h >= 0 && (fx != b.x.floor() || fz != b.z.floor())) {
+        if (h >= 0 && (fx != b.x.floor() || fz != b.z.floor()) && !_humanBuildingNear(fx, fz)) {
           p.selected = _slotOf(p, Ids.planks) ?? 0;
           _onPlace(p, fx, h + 1, fz, 0, 1, 0);
         }
       } else if (p.botTask <= 5) {
         final fx = b.x.floor() + (rng.nextInt(3) - 1), fz = b.z.floor() + (rng.nextInt(3) - 1);
         final h = world.heightAt(fx, fz);
-        if (h >= 1) {
+        if (h >= 1 && !_humanBuildingNear(fx, fz)) {
           final id = world.peek(fx, h, fz);
           if (id != Ids.bedrock && !Registry.block(id).fluid) {
             p.selected = _slotOf(p, Ids.stonePick) ?? 0;
@@ -1505,7 +1513,7 @@ class Room {
     final dx = p.botTx - b.x, dz = p.botTz - b.z;
     final len = math.sqrt(dx * dx + dz * dz);
     var wishX = 0.0, wishZ = 0.0, jump = false;
-    if (len > 0.6 && p.botTask >= 6) {
+    if (len > 0.6 && (p.botTask >= 6 || _humanNear(b.x, b.z, 2.5))) {
       wishX = dx / len * Move.walkSpeed * 0.8;
       wishZ = dz / len * Move.walkSpeed * 0.8;
       p.yaw = math.atan2(-dx, dz);
@@ -1514,6 +1522,18 @@ class Room {
     if (b.inWater) jump = true;
     physics.step(b, 0.05, wishX, wishZ, jump: jump);
     if (b.y < 0) _placeAtSpawn(p);
+  }
+
+  /// Bots keep their digging and building away from people's own work.
+  bool _humanBuildingNear(int x, int z) => _humanNear(x + 0.5, z + 0.5, 6);
+
+  bool _humanNear(double x, double z, double radius) {
+    for (final q in players.values) {
+      if (q.isBot || !q.connected) continue;
+      final dx = q.body.x - x, dz = q.body.z - z;
+      if (dx * dx + dz * dz < radius * radius) return true;
+    }
+    return false;
   }
 
   int? _slotOf(PlayerState p, int id) {

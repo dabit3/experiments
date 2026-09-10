@@ -422,9 +422,16 @@ class Hub {
     final room = rooms[code];
     switch (t) {
       case Msg.drive:
+        // Target by name, player id, or `@platform` (first connected client).
         final target = jstr(m, 'player');
         final client = clients
-            .where((c) => c.playerId != null && (c.name == target || c.playerId == target))
+            .where(
+              (c) =>
+                  c.playerId != null &&
+                  (c.name == target ||
+                      c.playerId == target ||
+                      (target.startsWith('@') && c.platform == target.substring(1))),
+            )
             .firstOrNull;
         if (client == null) {
           d.send({
@@ -473,6 +480,7 @@ class Hub {
             'chatHash': room.chatHash(),
             'chat': room.chat.map((c) => c.toJson()).toList(),
             'positions': room.players.values.map((p) => p.toSnapshot()).toList(),
+            'mobs': room.mobs.values.map((m) => m.toSnapshot()).toList(),
             'inventories': {for (final p in room.players.values) p.name: p.inv.toJson()},
             'blocks': _blocksFor(room, m),
           },
