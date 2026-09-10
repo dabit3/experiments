@@ -1,4 +1,4 @@
-Formatted 14 files (0 changed) in 0.07 seconds.
+Formatted 14 files (0 changed) in 0.06 seconds.
 Analyzing voxelhearth_core...
 No issues found!
 00:00 +0: loading test/core_test.dart

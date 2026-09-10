@@ -1,4 +1,4 @@
-Formatted 23 files (0 changed) in 0.12 seconds.
+Formatted 23 files (0 changed) in 0.14 seconds.
 Resolving dependencies...
 Downloading packages...
   code_assets 1.2.1 (2.0.0 available)
@@ -13,4 +13,4 @@ Got dependencies!
 8 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
 Analyzing app...                                                
-No issues found! (ran in 3.7s)
+No issues found! (ran in 2.5s)

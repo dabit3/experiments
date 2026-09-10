@@ -8,4 +8,3 @@ Completion gate failed:
 - items[29].status must be 'verified'.
 - items[29].verified_revision does not match the current revision.
 - items[29].comparison must be an object.
-exit=1  (1 = incomplete; items 21/25/29 are feature-60fps, journey-e2e-android, visual-android-lobby — the two recorded external blockers)

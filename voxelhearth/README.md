@@ -216,10 +216,11 @@ recorded, not compared. The `nodes.json`, layout maps and diffs are in the
 run's `visual/` folder.
 
 **Frame rate on the build machine:** the measured in-match FPS on this
-virtualized, software-rendered macOS host was ~20 (Chromium), ~21–22 (iOS
-Simulator) and ~35–48 (native macOS) across runs. Render quality auto-scales, but the 60 fps
-target has **not** been demonstrated on this host; it needs a machine with a
-hardware GPU. Recorded honestly as an open item rather than claimed.
+virtualized, software-rendered macOS host ranged ~20–33 (Chromium), ~21–60
+(iOS Simulator) and ~35–58 (native macOS) across runs, varying with host load.
+Render quality auto-scales, but a steady 60 fps on every platform has **not**
+been demonstrated on this host; it needs a machine with a hardware GPU.
+Recorded honestly as an open item rather than claimed.
 
 **iOS Simulator flakiness:** one run failed because the Simulator's
 `SimMetalHost` process crashed (`XPC_ERROR_CONNECTION_INTERRUPTED`) before the

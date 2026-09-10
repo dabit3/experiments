@@ -1,0 +1,421 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-home.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-home.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  874,
+  402
+ ],
+ "nodes": 34,
+ "matched": 0,
+ "exact": 0,
+ "within_tolerance": [],
+ "mismatched": [
+  {
+   "reference": {
+    "text": "VOXELHEARTH",
+    "x": 367,
+    "y": 84,
+    "w": 546,
+    "h": 89
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "VOXELHEARTH",
+    "x": 367,
+    "y": 84,
+    "w": 546,
+    "h": 89
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "VOXELHEARTH",
+    "x": 367,
+    "y": 84,
+    "w": 546,
+    "h": 89
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "An original voxel sandbox",
+    "x": 476,
+    "y": 179,
+    "w": 328,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "An original voxel sandbox",
+    "x": 476,
+    "y": 179,
+    "w": 328,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "An original voxel sandbox",
+    "x": 476,
+    "y": 179,
+    "w": 328,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Keep the hearth lit!",
+    "x": 829,
+    "y": 211,
+    "w": 266,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Keep the hearth lit!",
+    "x": 829,
+    "y": 211,
+    "w": 266,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Keep the hearth lit!",
+    "x": 829,
+    "y": 211,
+    "w": 266,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Play Online",
+    "x": 573,
+    "y": 333,
+    "w": 134,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Play Online",
+    "x": 573,
+    "y": 333,
+    "w": 134,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Play Online",
+    "x": 573,
+    "y": 333,
+    "w": 134,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Create World",
+    "x": 552,
+    "y": 405,
+    "w": 176,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Create World",
+    "x": 552,
+    "y": 405,
+    "w": 176,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Create World",
+    "x": 552,
+    "y": 405,
+    "w": 176,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player Name: Hearthling",
+    "x": 481,
+    "y": 477,
+    "w": 317,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player Name: Hearthling",
+    "x": 481,
+    "y": 477,
+    "w": 317,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player Name: Hearthling",
+    "x": 481,
+    "y": 477,
+    "w": 317,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Options...",
+    "x": 426,
+    "y": 585,
+    "w": 123,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Options...",
+    "x": 426,
+    "y": 585,
+    "w": 123,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Options...",
+    "x": 426,
+    "y": 585,
+    "w": 123,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "How to Play",
+    "x": 717,
+    "y": 585,
+    "w": 152,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "How to Play",
+    "x": 717,
+    "y": 585,
+    "w": 152,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "How to Play",
+    "x": 717,
+    "y": 585,
+    "w": 152,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Voxelhearth 1.0 · Web",
+    "x": 6,
+    "y": 764,
+    "w": 277,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Voxelhearth 1.0 · Web",
+    "x": 6,
+    "y": 764,
+    "w": 277,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Voxelhearth 1.0 · Web",
+    "x": 6,
+    "y": 764,
+    "w": 277,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Connected · 1 ms",
+    "x": 301,
+    "y": 764,
+    "w": 215,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Connected · 1 ms",
+    "x": 301,
+    "y": 764,
+    "w": 215,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Connected · 1 ms",
+    "x": 301,
+    "y": 764,
+    "w": 215,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Original game & art. Not affiliated with any other title.",
+    "x": 532,
+    "y": 764,
+    "w": 742,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Original game & art. Not affiliated with any other title.",
+    "x": 532,
+    "y": 764,
+    "w": 742,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Original game & art. Not affiliated with any other title.",
+    "x": 532,
+    "y": 764,
+    "w": 742,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Original game & art. Not affiliated with any other title.",
+    "x": 532,
+    "y": 764,
+    "w": 742,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "VOXELHEARTH",
+    "x": 255,
+    "y": 56,
+    "w": 364,
+    "h": 59
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "VOXELHEARTH",
+    "x": 255,
+    "y": 56,
+    "w": 364,
+    "h": 59
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "VOXELHEARTH",
+    "x": 255,
+    "y": 56,
+    "w": 364,
+    "h": 59
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "An original voxel sandbox",
+    "x": 327,
+    "y": 119,
+    "w": 221,
+    "h": 20
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "An original voxel sandbox",
+    "x": 327,
+    "y": 119,
+    "w": 221,
+    "h": 20
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "An original voxel sandbox",
+    "x": 327,
+    "y": 119,
+    "w": 221,
+    "h": 20
+   }
+  }
+ ],
+ "mismatched_count": 68,
+ "ok": false
+}
