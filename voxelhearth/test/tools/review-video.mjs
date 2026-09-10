@@ -83,10 +83,10 @@ html,body{width:${W}px;height:${H}px;background:transparent;overflow:hidden;font
 .title{position:absolute;left:40px;top:22px;font-size:44px;text-shadow:4px 4px 0 #3f3f3f;letter-spacing:1px;white-space:nowrap;max-width:1500px;overflow:hidden;text-overflow:ellipsis}
 .sub{position:absolute;left:40px;top:80px;font-size:24px;color:#a0a0a0;white-space:nowrap}
 .chip{position:absolute;right:40px;top:30px;font-size:22px;color:#ffff55;border:3px solid #ffff55;padding:8px 16px}
-.caption{position:absolute;left:40px;top:14px;font-size:30px;text-shadow:3px 3px 0 #3f3f3f;max-width:1400px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.notes{position:absolute;left:40px;top:64px;font-size:20px;color:#a0a0a0;white-space:nowrap;overflow:hidden;max-width:1500px}
+.caption{position:absolute;left:40px;top:14px;font-size:30px;text-shadow:3px 3px 0 #3f3f3f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.notes{position:absolute;left:40px;top:64px;font-size:20px;color:#a0a0a0;white-space:nowrap;overflow:hidden}
 .timeline{position:absolute;right:40px;top:22px;display:flex;gap:6px}
-.tl{width:34px;height:14px;background:#404040;border:2px solid #202020}
+.tl{height:14px;background:#404040;border:2px solid #202020}
 .tl.done{background:#55ff55}.tl.now{background:#ffff55}
 .tlabel{position:absolute;right:40px;top:52px;font-size:20px;color:#a0a0a0}
 .win{position:absolute;border:4px solid #000;box-shadow:0 0 0 4px #8b8b8b inset}
@@ -106,13 +106,18 @@ html,body{width:${W}px;height:${H}px;background:transparent;overflow:hidden;font
 .summary{position:absolute;left:0;right:0;top:120px;text-align:center;font-size:72px;text-shadow:6px 6px 0 #3f3f3f}
 `;
 
-const timeline = (idx) => `<div class="timeline">${(script.chapters ?? []).map((_, i) => `<div class="tl ${i < idx ? 'done' : i === idx ? 'now' : ''}"></div>`).join('')}</div>
-<div class="tlabel">chapter ${idx + 1} / ${(script.chapters ?? []).length}</div>`;
+// The timeline never grows past ~1/3 of the frame; captions get the rest.
+const chapterCount = (script.chapters ?? []).length;
+const tlSegment = Math.max(6, Math.min(34, Math.floor(640 / Math.max(1, chapterCount)) - 6));
+const tlWidth = chapterCount * (tlSegment + 10);
+const textMax = W - 40 - 40 - tlWidth - 60;
+const timeline = (idx) => `<div class="timeline">${(script.chapters ?? []).map((_, i) => `<div class="tl ${i < idx ? 'done' : i === idx ? 'now' : ''}" style="width:${tlSegment}px"></div>`).join('')}</div>
+<div class="tlabel">chapter ${idx + 1} / ${chapterCount}</div>`;
 
 const overlayHtml = (chapter, idx) => `<!doctype html><html><head><style>${css}</style></head><body>
 <div class="bar top"><div class="title">${esc(script.title)}</div><div class="sub">${esc(script.subtitle ?? '')}</div><div class="chip">${esc(chapter.title)}</div></div>
 ${sourceIds.map((id) => { const w = windows[id]; return `<div class="win" style="left:${w.x - 4}px;top:${w.y - 4}px;width:${w.w + 8}px;height:${w.h + 8}px"></div><div class="wlabel" style="left:${w.x}px;top:${w.y + w.h - 40}px">${esc(script.sources[id].label ?? id)}</div>`; }).join('')}
-<div class="bar bottom"><div class="caption">${esc(chapter.caption ?? '')}</div><div class="notes">${esc((chapter.notes ?? []).join('   ·   '))}</div>${timeline(idx)}</div>
+<div class="bar bottom"><div class="caption" style="max-width:${textMax}px">${esc(chapter.caption ?? '')}</div><div class="notes" style="max-width:${textMax}px">${esc((chapter.notes ?? []).join('   ·   '))}</div>${timeline(idx)}</div>
 </body></html>`;
 
 const titleHtml = () => `<!doctype html><html><head><style>${css}</style></head><body><div class="card"><div class="shade"></div>

@@ -1,8 +1,8 @@
 {
  "sweep": 5,
- "revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
- "captured_at": "2026-09-10T16:40:16.192453+00:00",
- "git_head": "c6b8ad96718124ea1e133a1be86a7c77390c62ab",
+ "revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
+ "captured_at": "2026-09-10T16:44:30.231037+00:00",
+ "git_head": "6fa7fd6095c8e49f82d78cf966e58f9de88974f3",
  "e2e_run": ".devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-093258",
  "files_inspected": 38,
  "audit_ids": [

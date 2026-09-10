@@ -1,1 +1,11 @@
+Completion gate failed:
+- status must be active or complete. Blocked and paused runs cannot pass.
+- blockers must be an empty array before completion.
+- items[21].status must be 'verified'.
+- items[21].verified_revision does not match the current revision.
+- items[25].status must be 'verified'.
+- items[25].verified_revision does not match the current revision.
+- items[29].status must be 'verified'.
+- items[29].verified_revision does not match the current revision.
+- items[29].comparison must be an object.
 exit 1

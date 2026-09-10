@@ -5,7 +5,7 @@
   "clone_root": "/Users/devin/repos/experiments/voxelhearth",
   "status": "blocked",
   "iteration": 7,
-  "revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+  "revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
   "frontier": [],
   "blockers": [
     {
@@ -44,7 +44,7 @@
       "kind": "route",
       "label": "Home: name, create world, join by code, server status, how-to-play (S-01, S-11)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/screenshots/web-home.png",
         "evidence/tests/e2e-20260910-093258/screenshots/ios-home.png",
@@ -59,7 +59,7 @@
       "kind": "route",
       "label": "Lobby: roster with platform/ready state, world rules (mode, match length, bots), chat, host start (S-07, S-11)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/screenshots/web-lobby.png",
         "evidence/tests/e2e-20260910-093258/screenshots/ios-lobby.png",
@@ -74,7 +74,7 @@
       "kind": "route",
       "label": "Gameplay: first-person voxel view, HUD (hotbar, crosshair, hearts, food, air), touch controls on phones (S-08, S-12)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/screenshots/web-gameplay.png",
         "evidence/tests/e2e-20260910-093258/screenshots/ios-gameplay.png",
@@ -87,7 +87,7 @@
       "kind": "route",
       "label": "Results: shared scoreboard with placed/broken/crafted/kills and world/chat fingerprints",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/screenshots/web-results.png",
         "evidence/tests/e2e-20260910-093258/screenshots/ios-results.png",
@@ -102,7 +102,7 @@
       "kind": "route",
       "label": "Inventory + 2x2 / 3x3 crafting + container overlays (S-02, S-03)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-001.json",
         "evidence/tests/checks/core.txt",
@@ -114,7 +114,7 @@
       "kind": "route",
       "label": "Pause / settings sheet: look sensitivity, FOV, render quality, touch controls, theme (S-09 Esc)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-001.json",
         "evidence/tests/e2e-20260910-093258/report.json"
@@ -125,7 +125,7 @@
       "kind": "feature",
       "label": "Deterministic chunked world with biomes, height, caves, trees, ores; same seed -> identical chunks on every peer (S-01)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/core.txt",
         "evidence/tests/e2e-20260910-093258/report.md"
@@ -136,7 +136,7 @@
       "kind": "feature",
       "label": "Walk, sprint, jump, sneak, swim with air meter; keyboard + captured-mouse look on desktop & web, joystick + buttons on touch (S-09)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/report.json",
         "evidence/tests/e2e-20260910-093258/screenshots/ios-gameplay.png",
@@ -149,7 +149,7 @@
       "kind": "feature",
       "label": "Break with tool-appropriate speed and tier gating; place with support-face targeting; server validates and broadcasts",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/core.txt",
         "evidence/tests/e2e-20260910-093258/report.md",
@@ -163,7 +163,7 @@
       "kind": "feature",
       "label": "27 + 9 hotbar slots, stacks of 64, tools do not stack, per-player server-side inventories (S-02)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/core.txt",
         "evidence/tests/e2e-20260910-093258/report.json"
@@ -174,7 +174,7 @@
       "kind": "feature",
       "label": "Recipe table: planks, sticks, tools (tiers), torches, chest, kiln, bed, crafting bench; shaped/shapeless, offset-tolerant (S-03)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/core.txt"
       ]
@@ -184,7 +184,7 @@
       "kind": "feature",
       "label": "Kiln consumes fuel to smelt ore into ingots, persistent per world (S-04)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/core.txt"
       ]
@@ -194,7 +194,7 @@
       "kind": "feature",
       "label": "Day/night cycle with sky + block light; beds set spawn and skip the night (S-06)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/core.txt",
         "evidence/tests/e2e-20260910-093258/report.json",
@@ -206,7 +206,7 @@
       "kind": "feature",
       "label": "Health, hunger, drowning; respawn at spawn; creative hides vitals and allows flight (S-07)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/screenshots/ios-gameplay.png",
         "evidence/tests/e2e-20260910-093258/screenshots/web-gameplay.png",
@@ -218,7 +218,7 @@
       "kind": "feature",
       "label": "Original creatures: passive by day, hostile at night, deterministic spawn/despawn radius (S-05)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/core.txt",
         "evidence/discovery/sweep-001.json"
@@ -229,7 +229,7 @@
       "kind": "feature",
       "label": "Server saves world edits, containers, kilns, inventories and chat per room; reload restores them",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/saves/HEARTH.json",
         "evidence/tests/e2e-20260910-093258/report.json"
@@ -240,7 +240,7 @@
       "kind": "feature",
       "label": "Authoritative server: players visible with names, synchronized block edits, identical world hash across all clients (S-11)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/report.md",
         "evidence/tests/e2e-20260910-093258/report.json",
@@ -254,7 +254,7 @@
       "kind": "feature",
       "label": "Room chat with identical history/hash on every client",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/report.md",
         "evidence/tests/e2e-20260910-093258/screenshots/web-chat.png",
@@ -269,7 +269,7 @@
       "kind": "feature",
       "label": "Rooms with 5-letter join codes, host controls, reconnection with session token (incl. plain reload/relaunch), lobby -> match -> results",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/report.md",
         "evidence/tests/e2e-20260910-093258/e2e.log",
@@ -281,7 +281,7 @@
       "kind": "feature",
       "label": "Server-side deterministic bots fill a match and stay clear of human work areas",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/core.txt",
         "evidence/tests/e2e-20260910-093258/report.md"
@@ -292,7 +292,7 @@
       "kind": "feature",
       "label": "Fixed seed, frozen clock, deterministic ids, director channel for automation",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/report.json",
         "evidence/tests/e2e-20260910-093258/e2e.log",
@@ -317,7 +317,7 @@
       "kind": "journey",
       "label": "Web (Playwright) creates room, plays the scripted match, verifies identical state, reaches results",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-092503/report.md",
         "evidence/tests/e2e-20260910-092503/review-script.json",
@@ -333,7 +333,7 @@
       "kind": "journey",
       "label": "iOS Simulator joins the same room via simctl launch args and completes the match",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-092503/report.md",
         "evidence/tests/e2e-20260910-092503/review-script.json",
@@ -349,7 +349,7 @@
       "kind": "journey",
       "label": "Native macOS app joins the same room and completes the match",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/report.md",
         "evidence/tests/e2e-20260910-093258/e2e.log",
@@ -374,7 +374,7 @@
       "kind": "journey",
       "label": "Client loses the socket mid-match and rejoins the same room/player with its token",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/e2e.log",
         "evidence/tests/e2e-20260910-093258/report.json"
@@ -385,7 +385,7 @@
       "kind": "visual",
       "label": "Lobby screen: native macOS matches the web baseline structurally (every node within 2 logical px) and the normalized layout maps are pixel-identical",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/visual/macos-lobby.nodes.json",
         "evidence/tests/e2e-20260910-093258/visual/NORMALIZATION.md",
@@ -412,7 +412,7 @@
       "kind": "visual",
       "label": "Results screen: native macOS matches the web baseline structurally (every node within 2 logical px) and the normalized layout maps are pixel-identical",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/visual/macos-results.nodes.json",
         "evidence/tests/e2e-20260910-093258/visual/NORMALIZATION.md",
@@ -452,7 +452,7 @@
       "kind": "asset",
       "label": "Fraunces + Outfit variable fonts (OFL, licenses included)",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-001.json"
       ]
@@ -462,7 +462,7 @@
       "kind": "asset",
       "label": "Original procedural block atlas and creature sprites",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-001.json",
         "evidence/tests/e2e-20260910-093258/screenshots/web-gameplay.png"
@@ -473,7 +473,7 @@
       "kind": "asset",
       "label": "Original app icon set for iOS/macOS/Android/web generated by tools/gen_icons.py",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-001.json",
         "evidence/tests/e2e-20260910-093258/screenshots/ios-home.png"
@@ -484,7 +484,7 @@
       "kind": "asset",
       "label": "Original procedural UI/gameplay audio cues",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-001.json"
       ]
@@ -494,7 +494,7 @@
       "kind": "integration",
       "label": "Dart shelf WebSocket server, JSON protocol per PROTOCOL.md",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/e2e-20260910-093258/server.log",
         "evidence/tests/e2e-20260910-093258/report.md",
@@ -506,7 +506,7 @@
     {
       "id": "source",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/reference/source-audit.md",
         "evidence/discovery/sweep-005.json"
@@ -515,7 +515,7 @@
     {
       "id": "navigation",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-005.json",
         "evidence/tests/e2e-20260910-093258/report.md",
@@ -527,7 +527,7 @@
     {
       "id": "roles",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-005.json",
         "evidence/tests/checks/security.md"
@@ -536,7 +536,7 @@
     {
       "id": "states",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-005.json",
         "evidence/tests/e2e-20260910-093258/e2e.log",
@@ -548,7 +548,7 @@
     {
       "id": "responsive",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-005.json",
         "evidence/tests/e2e-20260910-093258/screenshots/ios-lobby.png",
@@ -562,7 +562,7 @@
     {
       "id": "data",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-005.json",
         "evidence/tests/e2e-20260910-093258/saves/HEARTH.json",
@@ -572,7 +572,7 @@
     {
       "id": "assets",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-005.json"
       ]
@@ -580,7 +580,7 @@
     {
       "id": "accessibility",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-005.json"
       ]
@@ -588,7 +588,7 @@
     {
       "id": "reliability",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-005.json",
         "evidence/tests/checks/fingerprint-list.txt",
@@ -599,7 +599,7 @@
     {
       "id": "rebrand",
       "status": "verified",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/discovery/sweep-005.json",
         "evidence/reference/source-audit.md"
@@ -610,7 +610,7 @@
     {
       "id": "functional",
       "status": "passed",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/core.txt",
         "evidence/tests/e2e-20260910-092503/report.json",
@@ -630,7 +630,7 @@
     {
       "id": "visual",
       "status": "passed",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/design-pass/DESIGN-PASS.md",
         "evidence/tests/e2e-20260910-092503/report.md",
@@ -646,7 +646,7 @@
     {
       "id": "build",
       "status": "passed",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/clean-checkout-build.txt",
         "evidence/tests/checks/build-android.txt"
@@ -656,7 +656,7 @@
     {
       "id": "quality",
       "status": "passed",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/core.txt",
         "evidence/tests/checks/server.txt",
@@ -667,7 +667,7 @@
     {
       "id": "security",
       "status": "passed",
-      "verified_revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "verified_revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "evidence": [
         "evidence/tests/checks/security.md"
       ]
@@ -675,7 +675,7 @@
   ],
   "sweeps": [
     {
-      "revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "new_items": 0,
       "frontier_empty": true,
       "audit_ids": [
@@ -695,7 +695,7 @@
       ]
     },
     {
-      "revision": "sha256:e167c9a4e1c5a736f857ffd408bf3cea593d88de4b44a418209a3244076b763e",
+      "revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
       "new_items": 0,
       "frontier_empty": true,
       "audit_ids": [
@@ -739,5 +739,5 @@
       "note": "All names, art, creatures, audio and iconography are original Voxelhearth work."
     }
   ],
-  "updated_at": "2026-09-10T16:39:37.946781+00:00"
+  "updated_at": "2026-09-10T16:44:30.370607+00:00"
 }
