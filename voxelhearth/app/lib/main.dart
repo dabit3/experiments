@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'app_state.dart';
+import 'audio.dart';
 import 'shell.dart';
 import 'ui/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final settings = await Settings.load();
+  Sfx.enabled = settings.sound;
+  await Sfx.init();
   final query = kIsWeb ? Uri.base.queryParameters : const <String, String>{};
   final config = LaunchConfig.detect(query: query, overrides: await LaunchConfig.hostOverrides());
   if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.iOS || defaultTargetPlatform == TargetPlatform.android)) {

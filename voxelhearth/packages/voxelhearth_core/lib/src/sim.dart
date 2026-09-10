@@ -322,9 +322,19 @@ class Room {
     if (p == null) return;
     p.connected = false;
     p.openKind = null;
+    p.lastSeenTick = tick;
     _system('${p.name} disconnected');
     _broadcastRoomState();
-    if (hostId == id) _pickHost();
+  }
+
+  /// Ticks a dropped host keeps the role before another human takes over, so a
+  /// quick reconnect keeps the host in control.
+  static const hostGraceTicks = 30 * WorldConst.ticksPerSecond;
+
+  void _migrateStaleHost() {
+    final h = players[hostId];
+    if (h == null || h.connected || h.isBot) return;
+    if (tick - h.lastSeenTick >= hostGraceTicks) _pickHost();
   }
 
   void leave(String id) {
@@ -1162,6 +1172,7 @@ class Room {
 
   void tickOnce() {
     tick++;
+    _migrateStaleHost();
     if (!freezeTime && phase == Phase.playing) {
       timeOfDay = (timeOfDay + 1) % WorldConst.dayTicks;
     }

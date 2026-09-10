@@ -162,10 +162,29 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
                                 label: const Text('Back to lobby'),
                               )
                             else
-                              OutlinedButton.icon(
-                                onPressed: null,
-                                icon: const Icon(Icons.hourglass_top_rounded),
-                                label: const Text('Waiting for host'),
+                              Container(
+                                height: 48,
+                                padding: const EdgeInsets.symmetric(horizontal: VhSpace.lg),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.08),
+                                  borderRadius: BorderRadius.circular(VhRadius.md),
+                                  border: Border.all(color: Colors.white.withValues(alpha: 0.18)),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const SizedBox(
+                                      width: 14,
+                                      height: 14,
+                                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white70),
+                                    ),
+                                    const SizedBox(width: VhSpace.sm),
+                                    Text(
+                                      'Waiting for host',
+                                      style: t.textTheme.labelLarge?.copyWith(color: Colors.white70),
+                                    ),
+                                  ],
+                                ),
                               ),
                             OutlinedButton.icon(
                               onPressed: widget.client.leaveRoom,

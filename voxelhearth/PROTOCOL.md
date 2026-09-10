@@ -44,6 +44,12 @@ to spawn, chunks stream) → host `end_match` or `matchEndTick` reached →
 `results` → host `back_to_lobby`. The world persists across matches and
 across server restarts (`--save-dir`).
 
+Reconnection: a client that reconnects with its `token` gets the same player
+id and is rejoined to its room automatically (`room_joined` instead of
+`rooms`). A disconnected host keeps the role for 30 s (`Room.hostGraceTicks`)
+so a quick reconnect keeps control; after that, or when the host leaves, the
+first connected human becomes host (`room_state.host` changes).
+
 ## World
 
 Chunks are 16×16 columns, 64 blocks high. Terrain is generated
@@ -117,7 +123,10 @@ Drive actions implemented by every client (see `app/lib/shell.dart` and
 `back_to_lobby`, `set_theme`, `set_touch`, `wait_game`, `state`, `look`,
 `look_at`, `teleport`, `walk`, `break`, `place`, `place_at`, `select_slot`,
 `chat`, `give`, `craft`, `open_inventory`, `close_overlay`, `toggle_chat`,
-`pause`, `block`, `chat_log`, `results`, `wait_ready`.
+`pause`, `block`, `chat_log`, `results`, `wait_ready`, `drop_connection`
+(severs the socket and waits for the token-based rejoin), `fixture`
+(renders a screen from fixed synthetic data) and `layout` (dumps text-node
+geometry for cross-platform visual comparison).
 
 Clients enter test mode via `?test=1` (web), `VH_TEST=1` in the environment
 (macOS), `-VH_TEST 1` launch arguments (iOS Simulator) or `--es VH_TEST 1`

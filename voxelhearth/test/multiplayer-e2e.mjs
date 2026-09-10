@@ -271,6 +271,14 @@ try {
   await step('close chat', () => d.all(players, { t: 'toggle_chat', open: false }));
   await sleep(1500);
 
+  // ---- reconnect: the first client drops its socket mid-match and must rejoin
+  // the same room via its session token, then converge to the same state as
+  // everyone else (verified by the hash checks below).
+  const rc = await step(`${players[0]} drops connection and rejoins`, () => d.drive(players[0], { t: 'drop_connection', timeout: 30 }, { timeout: 40000 }));
+  check('dropped client rejoined the same room', rc?.ok === true && rc.room === ROOM && rc.phase === 'playing', JSON.stringify(rc));
+  await step('rejoined client is in-match again', () => d.must(players[0], { t: 'wait_game', timeout: 20 }, { timeout: 25000 }));
+  await sleep(1500);
+
   // ---- verification while playing
   const xs = cells.map((c) => c[0]);
   const region = [Math.min(...xs), by, bz + 3, Math.max(...xs), by + 1, bz + 3];

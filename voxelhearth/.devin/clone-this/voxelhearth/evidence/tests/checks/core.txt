@@ -15,8 +15,9 @@ No issues found!
 00:00 +10: test/core_test.dart: inventory tools do not stack
 00:00 +11: test/core_test.dart: break speeds tools speed up harvesting and tier gates drops
 00:00 +12: test/core_test.dart: room simulation join, start, place, break and hash
-00:00 +13: test/core_test.dart: room simulation crafting consumes ingredients and produces result
-00:00 +14: test/core_test.dart: room simulation match timer ends the match with results
-00:00 +15: test/core_test.dart: room simulation bots act deterministically for a given seed
-00:00 +16: test/core_test.dart: room simulation kiln smelts with fuel
-00:00 +17: All tests passed!
+00:00 +13: test/core_test.dart: room simulation host survives a short disconnect, migrates after the grace window
+00:00 +14: test/core_test.dart: room simulation crafting consumes ingredients and produces result
+00:00 +15: test/core_test.dart: room simulation match timer ends the match with results
+00:00 +16: test/core_test.dart: room simulation bots act deterministically for a given seed
+00:00 +17: test/core_test.dart: room simulation kiln smelts with fuel
+00:00 +18: All tests passed!

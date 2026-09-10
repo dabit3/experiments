@@ -104,18 +104,28 @@ class _ChatPanelState extends State<ChatPanel> {
                     style: t.textTheme.bodySmall?.copyWith(color: onDark ? Colors.white70 : null),
                   ),
                 )
-              : ListView.builder(
-                  controller: _scroll,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: widget.transparent ? VhSpace.sm : VhSpace.xl,
-                    vertical: VhSpace.xs,
-                  ),
-                  itemCount: chat.length,
-                  itemBuilder: (context, i) => _ChatLine(
-                    entry: chat[i],
-                    style: bodyStyle!,
-                    onDark: onDark,
-                    mine: chat[i].from == widget.client.playerName,
+              : ShaderMask(
+                  // Fade the top edge so older, partially scrolled lines taper out.
+                  shaderCallback: (r) => const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.transparent, Colors.black],
+                    stops: [0, 0.12],
+                  ).createShader(r),
+                  blendMode: BlendMode.dstIn,
+                  child: ListView.builder(
+                    controller: _scroll,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: widget.transparent ? VhSpace.sm : VhSpace.xl,
+                      vertical: VhSpace.md,
+                    ),
+                    itemCount: chat.length,
+                    itemBuilder: (context, i) => _ChatLine(
+                      entry: chat[i],
+                      style: bodyStyle!,
+                      onDark: onDark,
+                      mine: chat[i].from == widget.client.playerName,
+                    ),
                   ),
                 ),
         ),

@@ -47,7 +47,11 @@ See `.devin/clone-this/voxelhearth/` for the run manifest and evidence.
 * **Multiplayer** — rooms with 5-letter join codes, lobby → match → results
   flow, ready states, host controls, server-side bots to fill a room, other
   players rendered with name tags, synchronized block edits, chat, per-player
-  inventories, reconnection with the same identity.
+  inventories, reconnection with the same identity (a dropped host keeps the
+  role for 30 s so a quick rejoin keeps control).
+* **Feedback** — original procedurally generated sound cues (UI, dig, place,
+  break, craft, eat, hurt, chat, match start/end; `tools/gen_audio.py`),
+  haptics on touch platforms, both toggleable in settings.
 * **Rendering** — a single full-screen fragment shader ray-marches a packed
   128×64×128 voxel window (block id + sky light + block light per texel) with
   an original procedurally generated 16×16 tile atlas, smooth per-voxel
@@ -150,12 +154,14 @@ Android emulator, starts a fresh `--test-mode --seed 1234` server, then runs
    each client places a block on the lower row (verified on the server), then
    each client breaks the block above it with a stone pick;
 4. every client sends a chat line;
-5. asks the server and every client for `worldHash`, `chatHash` and the
+5. the web client (the host) severs its socket and must rejoin the same
+   room and player via its session token while the match keeps running;
+6. asks the server and every client for `worldHash`, `chatHash` and the
    region hash of the structure and asserts they are all identical, and that
    the structure matches the expected placements/breaks exactly;
-6. ends the match and asserts the results screen (scores, placed/broken
+7. ends the match and asserts the results screen (scores, placed/broken
    counts, world/chat fingerprints) is identical on every client;
-7. captures `home`, `lobby`, `gameplay`, `structure`, `chat` and `results`
+8. captures `home`, `lobby`, `gameplay`, `structure`, `chat` and `results`
    screenshots per platform and composes the per-platform frame captures into
    `four-way-recording.mp4` (plus the raw Playwright `web-recording.webm`).
 
@@ -190,8 +196,8 @@ recorded, not compared. The `nodes.json`, layout maps and diffs are in the
 run's `visual/` folder.
 
 **Frame rate on the build machine:** the measured in-match FPS on this
-virtualized, software-rendered macOS host was ~20 (Chromium), ~22 (iOS
-Simulator) and ~41 (native macOS). Render quality auto-scales, but the 60 fps
+virtualized, software-rendered macOS host was ~20 (Chromium), ~21–22 (iOS
+Simulator) and ~35–48 (native macOS) across runs. Render quality auto-scales, but the 60 fps
 target has **not** been demonstrated on this host; it needs a machine with a
 hardware GPU. Recorded honestly as an open item rather than claimed.
 
@@ -210,6 +216,7 @@ cd ../app && dart format --set-exit-if-changed lib && flutter analyze
 flutter build web --release && flutter build macos --debug \
   && flutter build ios --simulator --debug && flutter build apk --debug
 python3 ../tools/gen_icons.py   # regenerate the original app icon set for every target
+python3 ../tools/gen_audio.py   # regenerate the original sound cues in app/assets/audio
 ```
 
 ## Intentional deviations from the reference design

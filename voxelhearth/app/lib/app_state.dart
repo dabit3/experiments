@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voxelhearth_core/voxelhearth_core.dart';
 
+import 'audio.dart';
+
 /// User preferences persisted across launches.
 class Settings extends ChangeNotifier {
   Settings._(this._prefs);
@@ -59,6 +61,13 @@ class Settings extends ChangeNotifier {
   bool get haptics => _prefs.getBool('haptics') ?? true;
   set haptics(bool v) {
     _prefs.setBool('haptics', v);
+    notifyListeners();
+  }
+
+  bool get sound => _prefs.getBool('sound') ?? true;
+  set sound(bool v) {
+    _prefs.setBool('sound', v);
+    Sfx.enabled = v;
     notifyListeners();
   }
 

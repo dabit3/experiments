@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:voxelhearth_core/voxelhearth_core.dart';
 
 import '../app_state.dart';
+import '../audio.dart';
 import '../game/renderer.dart';
 import '../net/game_client.dart';
 import 'chat_panel.dart';
@@ -213,7 +214,10 @@ class _LobbyScreenState extends State<LobbyScreen> {
             ),
             if (!isHost)
               FilledButton.tonalIcon(
-                onPressed: () => widget.client.send({'t': 'ready', 'ready': !ready}),
+                onPressed: () {
+                  Sfx.play(ready ? 'ui_back' : 'ready');
+                  widget.client.send({'t': 'ready', 'ready': !ready});
+                },
                 icon: Icon(ready ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded),
                 label: Text(ready ? 'Ready' : 'Ready up'),
               ),
@@ -221,6 +225,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
               FilledButton.icon(
                 onPressed: () {
                   HapticFeedback.mediumImpact();
+                  Sfx.play('ui_confirm');
                   widget.client.send({'t': Msg.startMatch});
                 },
                 icon: const Icon(Icons.play_arrow_rounded),

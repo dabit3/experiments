@@ -1,0 +1,194 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-182614/visual/web-home.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-182614/visual/macos-home.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  1280,
+  800
+ ],
+ "nodes": 69,
+ "matched": 62,
+ "exact": 60,
+ "within_tolerance": [
+  {
+   "text": "Voxelhearth",
+   "reference": [
+    108,
+    64,
+    284,
+    48
+   ],
+   "actual": [
+    108,
+    64,
+    283,
+    48
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "Voxelhearth",
+   "reference": [
+    108,
+    64,
+    284,
+    48
+   ],
+   "actual": [
+    108,
+    64,
+    283,
+    48
+   ],
+   "delta_px": 1
+  }
+ ],
+ "mismatched": [
+  {
+   "reference": {
+    "text": "",
+    "x": 25,
+    "y": 21,
+    "w": 14,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Web",
+    "x": 43,
+    "y": 20,
+    "w": 24,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Web",
+    "x": 43,
+    "y": 20,
+    "w": 24,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Connected · 1 ms",
+    "x": 454,
+    "y": 461,
+    "w": 93,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Connected · 1 ms",
+    "x": 454,
+    "y": 461,
+    "w": 93,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "HEARTH · Survival · 1 player",
+    "x": 700,
+    "y": 175,
+    "w": 154,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "HEARTH · Survival · 1 player",
+    "x": 700,
+    "y": 175,
+    "w": 154,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "",
+    "x": 25,
+    "y": 21,
+    "w": 14,
+    "h": 14
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "macOS",
+    "x": 43,
+    "y": 20,
+    "w": 38,
+    "h": 16
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "macOS",
+    "x": 43,
+    "y": 20,
+    "w": 38,
+    "h": 16
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Connected · 0 ms",
+    "x": 451,
+    "y": 461,
+    "w": 97,
+    "h": 16
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Connected · 0 ms",
+    "x": 451,
+    "y": 461,
+    "w": 97,
+    "h": 16
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "HEARTH · Survival · 2 players",
+    "x": 700,
+    "y": 175,
+    "w": 161,
+    "h": 16
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "HEARTH · Survival · 2 players",
+    "x": 700,
+    "y": 175,
+    "w": 161,
+    "h": 16
+   }
+  }
+ ],
+ "mismatched_count": 14,
+ "ok": false
+}

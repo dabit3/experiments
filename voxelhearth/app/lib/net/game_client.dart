@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:voxelhearth_core/voxelhearth_core.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+import '../audio.dart';
+
 enum ConnState { idle, connecting, connected, reconnecting, failed }
 
 class RoomSummary {
@@ -241,6 +243,16 @@ class GameClient extends ChangeNotifier {
     connect();
   }
 
+  bool get awaitingRejoin => _awaitingRejoin;
+
+  /// Test hook: sever the socket as if the network dropped. The normal
+  /// reconnect path then re-sends `hello` with the session token and the
+  /// server rejoins us to the room we were in.
+  Future<void> dropConnection() async {
+    await _closeSocket();
+    _onDone(error: 'Connection dropped');
+  }
+
   Future<void> _closeSocket() async {
     await _sub?.cancel();
     _sub = null;
@@ -426,11 +438,17 @@ class GameClient extends ChangeNotifier {
         if (s == null) return;
         s.chat.add(ChatEntry(jint(m, 'tick'), jstr(m, 'from'), jstr(m, 'text'), jbool(m, 'system'), DateTime.now()));
         if (s.chat.length > 300) s.chat.removeAt(0);
+        if (!jbool(m, 'system') && jstr(m, 'from') != playerName) Sfx.play('chat', gain: 0.7);
         notifyListeners();
       case Msg.phase:
         final s = session;
         if (s == null) return;
+        final prevPhase = s.phase;
         s.phase = jstr(m, 'phase', s.phase);
+        if (s.phase != prevPhase) {
+          if (s.phase == Phase.playing) Sfx.play('match_start');
+          if (s.phase == Phase.results) Sfx.play('match_end');
+        }
         s.tick = jint(m, 'tick', s.tick);
         s.matchEndTick = jint(m, 'matchEndTick', s.matchEndTick);
         if (m.containsKey('time')) s.time = jint(m, 'time', s.time);

@@ -200,6 +200,27 @@ class _AppShellState extends State<AppShell> {
             for (final c in s?.chat ?? const <ChatEntry>[]) {'from': c.from, 'text': c.text},
           ],
         };
+      case 'drop_connection':
+        final code = client.session?.code;
+        final phase = client.session?.phase;
+        await client.dropConnection();
+        final dropped = client.state != ConnState.connected;
+        final deadline = DateTime.now().add(Duration(seconds: jint(a, 'timeout', 30)));
+        bool rejoined() =>
+            client.state == ConnState.connected && !client.awaitingRejoin && client.session?.code == code;
+        while (!rejoined() && DateTime.now().isBefore(deadline)) {
+          await Future<void>.delayed(const Duration(milliseconds: 50));
+        }
+        return {
+          'ok': dropped && rejoined(),
+          'dropped': dropped,
+          'rejoined': rejoined(),
+          'room': client.session?.code,
+          'phase': client.session?.phase,
+          'phaseBefore': phase,
+          'state': client.state.name,
+          'error': client.lastError,
+        };
       case 'fixture':
         return _fixture(jstr(a, 'screen'));
       case 'layout':

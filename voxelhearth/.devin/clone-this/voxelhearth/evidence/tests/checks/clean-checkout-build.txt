@@ -1,0 +1,46 @@
+== core
+Analyzing voxelhearth_core...
+No issues found!
+00:00 +0: loading test/core_test.dart
+00:00 +0: test/core_test.dart: determinism rng and hash3 are stable
+00:00 +1: test/core_test.dart: determinism same seed produces identical chunks
+00:00 +2: test/core_test.dart: determinism chunks have bedrock floor, surface and no floating water
+00:00 +3: test/core_test.dart: determinism world edit hash is order independent and equal across peers
+00:00 +4: test/core_test.dart: determinism spawn is on land
+00:00 +5: test/core_test.dart: recipes planks from any log, shapeless
+00:00 +6: test/core_test.dart: recipes shaped recipes can be offset inside the grid
+00:00 +7: test/core_test.dart: recipes pickaxe needs a 3x3 grid
+00:00 +8: test/core_test.dart: recipes every recipe result and ingredient is registered
+00:00 +9: test/core_test.dart: inventory stacks merge up to max and overflow returns remainder
+00:00 +10: test/core_test.dart: inventory tools do not stack
+00:00 +11: test/core_test.dart: break speeds tools speed up harvesting and tier gates drops
+00:00 +12: test/core_test.dart: room simulation join, start, place, break and hash
+00:00 +13: test/core_test.dart: room simulation crafting consumes ingredients and produces result
+00:00 +14: test/core_test.dart: room simulation match timer ends the match with results
+00:00 +15: test/core_test.dart: room simulation bots act deterministically for a given seed
+00:00 +16: test/core_test.dart: room simulation kiln smelts with fuel
+00:00 +17: All tests passed!
+== server
+Analyzing server...
+No issues found!
+== app
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing app...                                                
+No issues found! (ran in 1.0s)
+Compiling lib/main.dart for the Web...                             16.5s
+✓ Built build/web
+warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
+✓ Built build/macos/Build/Products/Debug/Voxelhearth.app
+Xcode build done.                                           18.5s
+✓ Built build/ios/iphonesimulator/Runner.app
+Running Gradle task 'assembleDebug'...                             18.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+clean-build-exit=0

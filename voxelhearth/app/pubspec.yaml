@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  audioplayers: ^6.8.0
   flame: ^1.32.0
   shared_preferences: ^2.5.3
   voxelhearth_core:
@@ -24,6 +25,8 @@ flutter:
   uses-material-design: true
   shaders:
     - shaders/voxel.frag
+  assets:
+    - assets/audio/
   fonts:
     - family: Fraunces
       fonts:

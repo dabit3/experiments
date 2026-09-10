@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_state.dart';
+import '../audio.dart';
 import '../game/game_controller.dart';
 import 'theme.dart';
 import 'widgets.dart';
@@ -92,6 +93,15 @@ class SettingsPanel extends StatelessWidget {
                 title: const Text('Haptic feedback'),
                 value: settings.haptics,
                 onChanged: (v) => settings.haptics = v,
+              ),
+              SwitchListTile.adaptive(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Sound effects'),
+                value: settings.sound,
+                onChanged: (v) {
+                  settings.sound = v;
+                  if (v) Sfx.play('ui_confirm');
+                },
               ),
               const SizedBox(height: VhSpace.lg),
               const SectionLabel('Graphics'),

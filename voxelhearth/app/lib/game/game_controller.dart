@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:voxelhearth_core/voxelhearth_core.dart';
 
+import '../audio.dart';
 import '../net/game_client.dart';
 import 'atlas.dart';
 import 'renderer.dart';
@@ -88,6 +89,7 @@ class GameController extends ChangeNotifier {
         damageFlash = 1;
         _shake = 0.25;
         HapticFeedback.heavyImpact();
+        Sfx.play('hurt');
       case 'teleport':
         body.setPos(jdouble(e, 'x'), jdouble(e, 'y'), jdouble(e, 'z'));
         body.vx = body.vy = body.vz = 0;
@@ -99,6 +101,7 @@ class GameController extends ChangeNotifier {
           assets.atlas.average(_tileOf(jint(e, 'id'))),
           14,
         );
+        Sfx.play(Registry.block(jint(e, 'id')).hardness >= 1.5 ? 'break_hard' : 'break_soft', gain: _nearGain(e));
       case 'place':
         _spawnBurst(
           jint(e, 'x') + 0.5,
@@ -108,17 +111,21 @@ class GameController extends ChangeNotifier {
           5,
           speed: 1.2,
         );
+        Sfx.play('place', gain: _nearGain(e));
       case 'craft':
         pickupText = '+${jint(e, 'count')} ${Registry.nameOf(jint(e, 'id'))}';
         pickupTimer = 2.2;
         HapticFeedback.lightImpact();
+        Sfx.play('craft');
       case 'eat':
         pickupText = 'Yum';
         pickupTimer = 1.4;
+        Sfx.play('eat');
       case 'hit':
         _spawnBurst(jdouble(e, 'x'), jdouble(e, 'y'), jdouble(e, 'z'), 0xffd94a3a, 8, speed: 2.5);
       case 'mob_died':
         _spawnBurst(jdouble(e, 'x'), jdouble(e, 'y') + 0.5, jdouble(e, 'z'), 0xffe0e0e0, 18, speed: 3);
+        Sfx.play('pickup', gain: 0.7);
       case 'inventory_full':
         pickupText = 'Inventory full';
         pickupTimer = 1.5;
@@ -127,6 +134,7 @@ class GameController extends ChangeNotifier {
         deathCause = jstr(e, 'cause');
         overlay = null;
         breaking = false;
+        Sfx.play('night');
       case 'mob_attack':
         _shake = math.max(_shake, 0.1);
       case 'open_ui':
@@ -551,6 +559,7 @@ class GameController extends ChangeNotifier {
       breakProgress = 0;
       _breakCooldown = isCreative ? 0.18 : 0.3;
       HapticFeedback.mediumImpact();
+      Sfx.play('dig', gain: 0.6);
     }
   }
 
@@ -633,6 +642,7 @@ class GameController extends ChangeNotifier {
     if (placeDef.solid && physics.blockOverlaps(body, px, py, pz)) return;
     client.send({'t': Msg.placeBlock, 'x': px, 'y': py, 'z': pz, 'nx': t.nx, 'ny': t.ny, 'nz': t.nz});
     HapticFeedback.lightImpact();
+    Sfx.play('ui_tap', gain: 0.35);
   }
 
   void selectSlot(int i) {
@@ -642,6 +652,7 @@ class GameController extends ChangeNotifier {
     heldLabelAge = 0;
     client.send({'t': Msg.selectSlot, 'slot': s});
     HapticFeedback.selectionClick();
+    Sfx.play('ui_tap', gain: 0.5);
     notifyListeners();
   }
 
@@ -739,6 +750,13 @@ class GameController extends ChangeNotifier {
   }
 
   // ---------------------------------------------------------------- particles
+
+  /// Distance attenuation for world cues: full volume within 4 blocks, silent past 24.
+  double _nearGain(Map<String, Object?> e) {
+    final dx = jdouble(e, 'x') + 0.5 - body.x, dy = jdouble(e, 'y') + 0.5 - body.y, dz = jdouble(e, 'z') + 0.5 - body.z;
+    final d = math.sqrt(dx * dx + dy * dy + dz * dz);
+    return (1 - ((d - 4) / 20)).clamp(0.0, 1.0);
+  }
 
   void _spawnBurst(double x, double y, double z, int argb, int n, {double speed = 2.0}) {
     for (var i = 0; i < n; i++) {

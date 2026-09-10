@@ -154,6 +154,29 @@ void main() {
       expect(mirror.editsHash(), h);
     });
 
+    test('host survives a short disconnect, migrates after the grace window', () {
+      room.join('a', 'Alice', 'web');
+      room.join('b', 'Bob', 'ios');
+      room.startMatch();
+      room.disconnect('a');
+      for (var i = 0; i < Room.hostGraceTicks ~/ 2; i++) {
+        room.tickOnce();
+      }
+      expect(room.hostId, 'a');
+      room.join('a', 'Alice', 'web');
+      for (var i = 0; i < Room.hostGraceTicks; i++) {
+        room.tickOnce();
+      }
+      expect(room.hostId, 'a');
+      room.disconnect('a');
+      for (var i = 0; i <= Room.hostGraceTicks; i++) {
+        room.tickOnce();
+      }
+      expect(room.hostId, 'b');
+      room.leave('b');
+      expect(room.hostId, 'a');
+    });
+
     test('crafting consumes ingredients and produces result', () {
       final a = room.join('a', 'Alice', 'web');
       room.startMatch();
