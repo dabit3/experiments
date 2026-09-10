@@ -22,18 +22,18 @@
     "reason": "macOS rounds the bottom window corners (masked); Chromium/CanvasKit and Impeller/Metal rasterize glyph edges differently, so captures are box-downscaled 8x and a pixel only counts as different when a channel differs by more than 64/255. Layout, geometry, colour tokens and copy remain comparable.",
     "self_check": {
       "shift_4px_differing_pixels": {
-        "title": 99,
-        "garage": 73,
+        "title": 103,
+        "garage": 145,
         "track": 134,
         "settings": 24,
         "online": 44
       },
       "cross_screen_differing_pixels": {
-        "title_vs_garage": 855,
-        "garage_vs_track": 1327,
+        "title_vs_garage": 1167,
+        "garage_vs_track": 1552,
         "track_vs_settings": 1541,
         "settings_vs_online": 701,
-        "online_vs_title": 873
+        "online_vs_title": 937
       },
       "passed": true
     }

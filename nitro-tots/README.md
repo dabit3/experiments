@@ -52,7 +52,8 @@ nitro-tots/
     test/                   widget smoke tests (all screens × 4 viewports × 2 themes)
   packages/nitro_core/      shared deterministic sim, tracks, items, bots, protocol types
   packages/nitro_server/    authoritative shelf + web_socket_channel server
-  test/                     multiplayer-e2e.sh + Playwright web driver + verifier
+  test/                     multiplayer-e2e.sh + Playwright web driver + verifier,
+                            visual_parity.py, make_review_video.py + review_cards.mjs
   tools/gen_audio.py        generates the original WAV sound set
   PROTOCOL.md               JSON-over-WebSocket protocol
   .devin/clone-this/        clone-this run manifest and evidence index
@@ -178,6 +179,31 @@ directory. iOS is captured as declared evidence only: the phone layout family
 ```sh
 cd nitro-tots && python3 test/visual_parity.py --out .devin/clone-this/nitro-tots/evidence/parity
 # → PASS: all screens match after normalization
+```
+
+## Edited review video
+
+`test/make_review_video.py` turns the raw evidence into a reviewable edit rather
+than a long screen recording: a title card, one chapter per topic (automated
+four-way match with the lobby/start/results beats cut from the e2e timeline and
+the middle laps time-lapsed, a per-platform screenshot walk, side-by-side
+final standings, the web↔macOS parity pairs, the manual play-through, the
+design pass), caption lower-thirds, corner tags that say which footage is
+automated versus manual, an Android build-only notice and a summary card of
+what the run actually verified. When the manual directory contains the
+recorder's `*annotations.json`, each assertion becomes its own clip (the
+seconds leading up to the check) with a PASS/FAIL chip; a `fixes.json` maps
+assertion text to a note so a defect fixed after the run is shown as FIXED.
+Cards are rendered by `test/review_cards.mjs` (headless Chromium with the
+game's own fonts and colour tokens); cutting,
+speed changes, stacking and the music bed are ffmpeg. Chapters are embedded
+as MP4 metadata and the edit decision list is written next to the video.
+
+```sh
+cd nitro-tots && E=.devin/clone-this/nitro-tots/evidence
+python3 test/make_review_video.py --e2e $E/multiplayer/<stamp> --manual $E/manual-ui-2 \
+  --parity $E/parity --design $E/design-pass --out $E/review/review
+# → review.mp4, review.chapters.json, review.md
 ```
 
 ## Development checks

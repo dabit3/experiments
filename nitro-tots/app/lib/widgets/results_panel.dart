@@ -29,12 +29,15 @@ class ResultsPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nt = context.nt;
-    final wide = MediaQuery.sizeOf(context).width >= 900 && standings != null && standings!.isNotEmpty;
+    final size = MediaQuery.sizeOf(context);
+    final hasStandings = standings != null && standings!.isNotEmpty;
+    final wide = size.width >= 760 && size.height >= 860;
     final me = results.where((r) => r.slot == localSlot).firstOrNull;
+    final totals = <int, int>{for (final s in standings ?? const <Standing>[]) s.slot: s.points};
     return NtCard(
       padding: const EdgeInsets.all(NtSpace.x6),
       child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: wide ? 980 : 560),
+        constraints: BoxConstraints(maxWidth: size.width >= 760 ? 820 : 560),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -56,28 +59,7 @@ class ResultsPanel extends StatelessWidget {
             const SizedBox(height: NtSpace.x4),
             Flexible(
               child: SingleChildScrollView(
-                child: wide
-                    ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: _ResultsTable(results: results, localSlot: localSlot, battle: battle),
-                          ),
-                          const SizedBox(width: NtSpace.x6),
-                          Expanded(
-                            child: StandingsTable(standings: standings!, localSlot: localSlot),
-                          ),
-                        ],
-                      )
-                    : Column(
-                        children: [
-                          _ResultsTable(results: results, localSlot: localSlot, battle: battle),
-                          if (standings != null && standings!.isNotEmpty) ...[
-                            const SizedBox(height: NtSpace.x5),
-                            StandingsTable(standings: standings!, localSlot: localSlot),
-                          ],
-                        ],
-                      ),
+                child: _ResultsTable(results: results, localSlot: localSlot, battle: battle, totals: hasStandings ? totals : null, wide: wide),
               ),
             ),
             const SizedBox(height: NtSpace.x5),
@@ -89,24 +71,60 @@ class ResultsPanel extends StatelessWidget {
   }
 }
 
+/// Finishing-order table: rank, portrait, name, time, points gained and
+/// (during a cup) running total, one row per racer.
 class _ResultsTable extends StatelessWidget {
-  const _ResultsTable({required this.results, required this.localSlot, required this.battle});
+  const _ResultsTable({required this.results, required this.localSlot, required this.battle, required this.totals, required this.wide});
   final List<RaceResult> results;
   final int localSlot;
   final bool battle;
+  final Map<int, int>? totals;
+  final bool wide;
 
   @override
   Widget build(BuildContext context) {
     final nt = context.nt;
+    final timeW = wide ? 96.0 : 76.0;
+    final ptsW = wide ? 64.0 : 52.0;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SectionTitle(battle ? 'Arena results' : 'Finishing order'),
-        const SizedBox(height: NtSpace.x2),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(12, 0, 12, 6),
+          child: Row(
+            children: [
+              SizedBox(width: wide ? 52 : 40),
+              const SizedBox(width: 10),
+              Expanded(child: Text(battle ? 'ARENA RESULTS' : 'FINISHING ORDER', style: NtType.caption(nt.inkSoft))),
+              SizedBox(
+                width: timeW,
+                child: Text(battle ? 'SCORE' : 'TIME', style: NtType.caption(nt.inkSoft), textAlign: TextAlign.right),
+              ),
+              SizedBox(
+                width: ptsW,
+                child: Text('PTS', style: NtType.caption(nt.inkSoft), textAlign: TextAlign.right),
+              ),
+              if (totals != null)
+                SizedBox(
+                  width: ptsW,
+                  child: Text('TOTAL', style: NtType.caption(nt.inkSoft), textAlign: TextAlign.right),
+                ),
+            ],
+          ),
+        ),
         for (var i = 0; i < results.length; i++)
           _Reveal(
             delay: Duration(milliseconds: 60 * i),
-            child: _ResultRow(r: results[i], me: results[i].slot == localSlot, battle: battle, nt: nt),
+            child: _ResultRow(
+              r: results[i],
+              me: results[i].slot == localSlot,
+              battle: battle,
+              nt: nt,
+              total: totals?[results[i].slot],
+              wide: wide,
+              timeW: timeW,
+              ptsW: ptsW,
+            ),
           ),
       ],
     );
@@ -114,20 +132,34 @@ class _ResultsTable extends StatelessWidget {
 }
 
 class _ResultRow extends StatelessWidget {
-  const _ResultRow({required this.r, required this.me, required this.battle, required this.nt});
+  const _ResultRow({
+    required this.r,
+    required this.me,
+    required this.battle,
+    required this.nt,
+    required this.total,
+    required this.wide,
+    required this.timeW,
+    required this.ptsW,
+  });
   final RaceResult r;
   final bool me;
   final bool battle;
   final NtScheme nt;
+  final int? total;
+  final bool wide;
+  final double timeW;
+  final double ptsW;
 
   @override
   Widget build(BuildContext context) {
     final platformColor = NtColors.platform(r.isBot ? 'bot' : r.platform);
+    final podium = r.place <= 3;
     return Semantics(
-      label: '${ordinal(r.place)}: ${r.name}, ${r.points} points${me ? ', you' : ''}',
+      label: '${ordinal(r.place)}: ${r.name}, ${r.points} points${total != null ? ', $total total' : ''}${me ? ', you' : ''}',
       child: Container(
         margin: const EdgeInsets.only(bottom: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: wide ? 8 : 6),
         decoration: BoxDecoration(
           color: me ? NtColors.sunny.withValues(alpha: nt.isDark ? 0.22 : 0.35) : nt.bgAlt,
           borderRadius: BorderRadius.circular(NtRadius.md),
@@ -135,9 +167,23 @@ class _ResultRow extends StatelessWidget {
         ),
         child: Row(
           children: [
-            _PlaceBadge(place: r.place),
+            SizedBox(
+              width: wide ? 52 : 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '${r.place}',
+                    style: NtType.hud(podium ? _placeTint(r.place) : nt.ink, size: wide ? 30 : 24).copyWith(shadows: const []),
+                  ),
+                  Text(ordinal(r.place).substring('${r.place}'.length), style: NtType.caption(nt.inkSoft)),
+                ],
+              ),
+            ),
             const SizedBox(width: 10),
-            Avatar(characterId: r.characterId, size: 36, bot: r.isBot, ring: platformColor),
+            Avatar(characterId: r.characterId, size: wide ? 40 : 34, bot: r.isBot, ring: podium ? _placeTint(r.place) : platformColor),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -148,25 +194,47 @@ class _ResultRow extends StatelessWidget {
                     children: [
                       PlatformBadge(r.isBot ? 'bot' : r.platform, compact: true),
                       const SizedBox(width: 6),
-                      Text(kartById(r.kartId).name, style: NtType.caption(nt.inkSoft)),
+                      Flexible(
+                        child: Text(kartById(r.kartId).name, style: NtType.caption(nt.inkSoft), overflow: TextOverflow.ellipsis),
+                      ),
                     ],
                   ),
                 ],
               ),
             ),
-            const SizedBox(width: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(battle ? '${r.score} pts' : formatTicks(r.raceTicks), style: NtType.mono(nt.ink)),
-                Text('+${r.points}', style: NtType.caption(NtColors.nitro)),
-              ],
+            SizedBox(
+              width: timeW,
+              child: Text(battle ? '${r.score}' : formatTicks(r.raceTicks), style: NtType.mono(nt.ink), textAlign: TextAlign.right),
             ),
+            SizedBox(
+              width: ptsW,
+              child: Text(
+                '+${r.points}',
+                style: NtType.mono(NtColors.nitro, size: wide ? 17 : 15),
+                textAlign: TextAlign.right,
+              ),
+            ),
+            if (total != null)
+              SizedBox(
+                width: ptsW,
+                child: Text(
+                  '$total',
+                  style: NtType.hud(nt.ink, size: wide ? 22 : 18).copyWith(shadows: const []),
+                  textAlign: TextAlign.right,
+                ),
+              ),
           ],
         ),
       ),
     );
   }
+
+  static Color _placeTint(int place) => switch (place) {
+    1 => NtColors.gold,
+    2 => const Color(0xFF8E9BB0),
+    3 => NtColors.bronze,
+    _ => NtColors.ink,
+  };
 }
 
 class StandingsTable extends StatelessWidget {

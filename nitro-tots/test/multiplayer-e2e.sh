@@ -166,6 +166,22 @@ dismiss_notifications() {
   osascript "$TEST_DIR/dismiss_notifications.applescript" >/dev/null 2>&1 || true
 }
 
+# Stray windows from earlier runs (a leftover Playwright Chromium, a Finder
+# window) can cover the macOS client; keep it on top so region captures and
+# the recording show the app rather than whatever landed over it.
+raise_macos() {
+  have macos || return 0
+  osascript -e 'tell application "System Events" to tell process "Nitro Tots"
+      set frontmost to true
+      perform action "AXRaise" of window 1
+    end tell' >/dev/null 2>&1 || true
+}
+
+if have macos && pgrep -f 'ms-playwright/.*Chromium\.app/Contents/MacOS/Chromium' >/dev/null 2>&1; then
+  log "warning: a Playwright Chromium from another run is already open; raising the macOS client above it"
+fi
+raise_macos
+
 # ------------------------------------------------------- native screenshots
 shot_native() { # <phase>
   local phase=$1
@@ -180,6 +196,7 @@ shot_native() { # <phase>
   fi
   if have android; then adb exec-out screencap -p >"$OUT/screenshots/android_$phase.png" 2>/dev/null || true; fi
   if have macos; then
+    raise_macos
     local rect
     rect=$(osascript -e 'tell application "System Events" to tell process "Nitro Tots"
         set {x, y} to position of window 1

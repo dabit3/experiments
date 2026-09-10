@@ -37,56 +37,73 @@ class _TitleScreenState extends State<TitleScreen> with SingleTickerProviderStat
     final short = size.height < 520;
     final app = widget.app;
 
+    final tiles = [
+      _MenuTile(
+        label: 'Grand Prix',
+        hint: 'Two cups, 4 tracks',
+        icon: Icons.emoji_events_rounded,
+        color: NtColors.nitro,
+        onTap: () => widget.onPlay(PlayMode.grandPrix),
+        delay: 0,
+        intro: _intro,
+      ),
+      _MenuTile(
+        label: 'Quick Race',
+        hint: 'One track, 8 racers',
+        icon: Icons.flag_rounded,
+        color: NtColors.sky,
+        onTap: () => widget.onPlay(PlayMode.quickRace),
+        delay: 1,
+        intro: _intro,
+      ),
+      _MenuTile(
+        label: 'Time Trial',
+        hint: 'Beat your ghost',
+        icon: Icons.timer_rounded,
+        color: NtColors.lime,
+        onTap: () => widget.onPlay(PlayMode.timeTrial),
+        delay: 2,
+        intro: _intro,
+      ),
+      _MenuTile(
+        label: 'Battle',
+        hint: 'Balloon arena brawl',
+        icon: Icons.sports_kabaddi_rounded,
+        color: NtColors.grape,
+        onTap: () => widget.onPlay(PlayMode.battle),
+        delay: 3,
+        intro: _intro,
+      ),
+      _MenuTile(
+        label: 'Play Online',
+        hint: 'Rooms, join codes, cross-platform',
+        icon: Icons.public_rounded,
+        color: NtColors.bubblegum,
+        onTap: () => widget.onPlay(PlayMode.online),
+        delay: 4,
+        intro: _intro,
+        wideTile: true,
+      ),
+    ];
+
+    // Mode tiles in a 2-column grid (3 on narrow-but-not-phone widths);
+    // the online tile spans the full width so the grid stays balanced.
     final menu = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _ResumeBanner(app: app, onTap: () => widget.onPlay(PlayMode.online)),
-        _MenuButton(
-          label: 'Grand Prix',
-          hint: 'Two cups · four tracks each',
-          icon: Icons.emoji_events_rounded,
-          color: NtColors.nitro,
-          onTap: () => widget.onPlay(PlayMode.grandPrix),
-          delay: 0,
-          intro: _intro,
-          autofocus: true,
-        ),
-        _MenuButton(
-          label: 'Quick Race',
-          hint: 'One track, up to 8 racers',
-          icon: Icons.flag_rounded,
-          color: NtColors.sky,
-          onTap: () => widget.onPlay(PlayMode.quickRace),
-          delay: 1,
-          intro: _intro,
-        ),
-        _MenuButton(
-          label: 'Time Trial',
-          hint: 'Beat your ghost',
-          icon: Icons.timer_rounded,
-          color: NtColors.lime,
-          onTap: () => widget.onPlay(PlayMode.timeTrial),
-          delay: 2,
-          intro: _intro,
-        ),
-        _MenuButton(
-          label: 'Battle',
-          hint: 'Balloon arena free-for-all',
-          icon: Icons.sports_kabaddi_rounded,
-          color: NtColors.grape,
-          onTap: () => widget.onPlay(PlayMode.battle),
-          delay: 3,
-          intro: _intro,
-        ),
-        _MenuButton(
-          label: 'Play Online',
-          hint: 'Rooms, join codes, cross-platform',
-          icon: Icons.public_rounded,
-          color: NtColors.bubblegum,
-          onTap: () => widget.onPlay(PlayMode.online),
-          delay: 4,
-          intro: _intro,
+        LayoutBuilder(
+          builder: (context, c) {
+            final cols = c.maxWidth >= 560 ? 3 : (c.maxWidth >= 480 ? 2 : 1);
+            final gap = NtSpace.x3;
+            final w = (c.maxWidth - gap * (cols - 1)) / cols;
+            return Wrap(
+              spacing: gap,
+              runSpacing: gap,
+              children: [for (final t in tiles) SizedBox(width: t.wideTile && cols == 2 ? c.maxWidth : w, child: t)],
+            );
+          },
         ),
       ],
     );
@@ -156,7 +173,7 @@ class _TitleScreenState extends State<TitleScreen> with SingleTickerProviderStat
                                     const SizedBox(height: NtSpace.x4),
                                     profile,
                                     const SizedBox(height: NtSpace.x4),
-                                    ConstrainedBox(constraints: const BoxConstraints(maxWidth: 420), child: menu),
+                                    ConstrainedBox(constraints: const BoxConstraints(maxWidth: 720), child: menu),
                                   ],
                                 ),
                         ),
@@ -380,8 +397,9 @@ class _ProfileCard extends StatelessWidget {
   }
 }
 
-class _MenuButton extends StatelessWidget {
-  const _MenuButton({
+/// Large mode tile: coloured icon plate, mode name and a one-line hint.
+class _MenuTile extends StatelessWidget {
+  const _MenuTile({
     required this.label,
     required this.hint,
     required this.icon,
@@ -389,7 +407,7 @@ class _MenuButton extends StatelessWidget {
     required this.onTap,
     required this.delay,
     required this.intro,
-    this.autofocus = false,
+    this.wideTile = false,
   });
   final String label;
   final String hint;
@@ -398,7 +416,7 @@ class _MenuButton extends StatelessWidget {
   final VoidCallback onTap;
   final int delay;
   final Animation<double> intro;
-  final bool autofocus;
+  final bool wideTile;
 
   @override
   Widget build(BuildContext context) {
@@ -410,34 +428,31 @@ class _MenuButton extends StatelessWidget {
     return FadeTransition(
       opacity: anim,
       child: SlideTransition(
-        position: Tween(begin: const Offset(0.08, 0), end: Offset.zero).animate(anim),
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: NtSpace.x3),
-          child: NtCard(
-            onTap: onTap,
-            accent: color,
-            padding: const EdgeInsets.symmetric(horizontal: NtSpace.x4, vertical: NtSpace.x3),
-            child: Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(NtRadius.md)),
-                  child: Icon(icon, color: Colors.white, size: 26),
+        position: Tween(begin: const Offset(0, 0.12), end: Offset.zero).animate(anim),
+        child: NtCard(
+          onTap: onTap,
+          accent: color,
+          padding: const EdgeInsets.all(NtSpace.x3),
+          child: Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(NtRadius.md), boxShadow: NtElevation.chunky(color)),
+                child: Icon(icon, color: Colors.white, size: 28),
+              ),
+              const SizedBox(width: NtSpace.x3),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(label, style: NtType.h3(nt.ink), maxLines: 1, overflow: TextOverflow.ellipsis),
+                    Text(hint, style: NtType.small(nt.inkSoft), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  ],
                 ),
-                const SizedBox(width: NtSpace.x4),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(label, style: NtType.h3(nt.ink)),
-                      Text(hint, style: NtType.small(nt.inkSoft)),
-                    ],
-                  ),
-                ),
-                Icon(Icons.chevron_right_rounded, color: nt.inkSoft),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

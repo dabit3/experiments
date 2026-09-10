@@ -733,5 +733,9 @@ Color placeColor(int place) => switch (place) {
   1 => NtColors.gold,
   2 => NtColors.silver,
   3 => NtColors.bronze,
-  _ => NtColors.inkSoft,
+  4 => NtColors.lime,
+  5 => NtColors.mint,
+  6 => NtColors.sky,
+  7 => NtColors.grape,
+  _ => NtColors.bubblegum,
 };

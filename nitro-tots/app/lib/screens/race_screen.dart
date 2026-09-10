@@ -240,13 +240,17 @@ class _RaceScreenState extends State<RaceScreen> with SingleTickerProviderStateM
           fit: StackFit.expand,
           children: [
             GameWidget(game: _game),
-            SafeArea(
-              child: RaceHud(
-                session: session,
-                art: _game.art,
-                compact: compact,
-                rttMs: widget.client?.rttMs,
-                bottomInset: touch ? TouchControls.heightFor(context) : 0,
+            AnimatedOpacity(
+              opacity: _showResults ? 0 : 1,
+              duration: NtMotion.normal,
+              child: SafeArea(
+                child: RaceHud(
+                  session: session,
+                  art: _game.art,
+                  compact: compact,
+                  rttMs: widget.client?.rttMs,
+                  bottomInset: touch ? TouchControls.heightFor(context) : 0,
+                ),
               ),
             ),
             if (touch && !_showResults)
@@ -261,13 +265,27 @@ class _RaceScreenState extends State<RaceScreen> with SingleTickerProviderStateM
               ),
             Positioned(
               top: 0,
+              left: 0,
               right: 0,
               child: SafeArea(
                 child: Padding(
-                  padding: EdgeInsets.only(top: compact ? 84 : 116, right: compact ? 10 : 16),
+                  padding: EdgeInsets.only(top: compact ? 10 : 16),
                   child: _showResults
                       ? const SizedBox.shrink()
-                      : NtIconButton(icon: Icons.pause_rounded, tooltip: 'Pause', onPressed: _togglePause, color: Colors.white, filled: false, size: 40),
+                      : Center(
+                          child: Material(
+                            color: NtColors.inkDark.withValues(alpha: 0.72),
+                            shape: const CircleBorder(),
+                            child: NtIconButton(
+                              icon: Icons.pause_rounded,
+                              tooltip: 'Pause',
+                              onPressed: _togglePause,
+                              color: Colors.white,
+                              filled: false,
+                              size: 40,
+                            ),
+                          ),
+                        ),
                 ),
               ),
             ),

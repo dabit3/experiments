@@ -32,7 +32,7 @@ class _GarageScreenState extends State<GarageScreen> {
   Widget build(BuildContext context) {
     final app = widget.app;
     final nt = context.nt;
-    final wide = MediaQuery.sizeOf(context).width >= 900;
+    final wide = MediaQuery.sizeOf(context).width >= 720;
 
     return AnimatedBuilder(
       animation: app,
@@ -88,8 +88,8 @@ class _GarageScreenState extends State<GarageScreen> {
               ? Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(width: 340, child: preview),
-                    const SizedBox(width: NtSpace.x8),
+                    SizedBox(width: 300, child: preview),
+                    const SizedBox(width: NtSpace.x6),
                     Expanded(child: pickers),
                   ],
                 )
@@ -202,7 +202,8 @@ class _CharacterGrid extends StatelessWidget {
     final nt = context.nt;
     return LayoutBuilder(
       builder: (context, c) {
-        final cols = (c.maxWidth / 132).floor().clamp(2, 8);
+        final fit = (c.maxWidth / 104).floor();
+        final cols = fit >= characters.length ? characters.length : (fit >= 4 ? 4 : 2);
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -210,7 +211,7 @@ class _CharacterGrid extends StatelessWidget {
             crossAxisCount: cols,
             mainAxisSpacing: NtSpace.x3,
             crossAxisSpacing: NtSpace.x3,
-            childAspectRatio: 0.86,
+            childAspectRatio: 0.9,
           ),
           itemCount: characters.length,
           itemBuilder: (_, i) {
@@ -229,7 +230,7 @@ class _CharacterGrid extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Avatar(characterId: ch.id, size: 56, ring: selected ? color : nt.outline),
+                    Avatar(characterId: ch.id, size: 48, ring: selected ? color : nt.outline),
                     const SizedBox(height: NtSpace.x2),
                     Text(ch.name, style: NtType.label(nt.ink)),
                     Text(_weightLabel(ch.weight), style: NtType.caption(nt.inkSoft)),
@@ -260,7 +261,7 @@ class _KartList extends StatelessWidget {
     final nt = context.nt;
     return LayoutBuilder(
       builder: (context, c) {
-        final cols = (c.maxWidth / 220).floor().clamp(1, 3);
+        final cols = (c.maxWidth / 250).floor().clamp(1, 3);
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -268,7 +269,7 @@ class _KartList extends StatelessWidget {
             crossAxisCount: cols,
             mainAxisSpacing: NtSpace.x3,
             crossAxisSpacing: NtSpace.x3,
-            mainAxisExtent: 92,
+            mainAxisExtent: 84,
           ),
           itemCount: karts.length,
           itemBuilder: (_, i) {
@@ -285,14 +286,14 @@ class _KartList extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: NtSpace.x3, vertical: NtSpace.x2),
                 child: Row(
                   children: [
-                    KartPreview(kart: k, characterId: app.characterId, size: 64),
-                    const SizedBox(width: NtSpace.x3),
+                    KartPreview(kart: k, characterId: app.characterId, size: 56),
+                    const SizedBox(width: NtSpace.x2),
                     Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(k.name, style: NtType.h3(nt.ink), maxLines: 1, overflow: TextOverflow.ellipsis),
+                          Text(k.name, style: NtType.label(nt.ink), maxLines: 1, overflow: TextOverflow.ellipsis),
                           Text(_kartHint(k), style: NtType.caption(nt.inkSoft), maxLines: 1, overflow: TextOverflow.ellipsis),
                         ],
                       ),
