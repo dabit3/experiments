@@ -1,7 +1,7 @@
-# 2026-09-10T01:06:52Z dart format / analyze / test for nitro_core, nitro_server, app
+# 2026-09-10T02:42:12Z dart format / analyze / test for nitro_core, nitro_server, app (commit 39b7e58)
 
 ## packages/nitro_core
-Formatted 10 files (0 changed) in 0.06 seconds.
+Formatted 10 files (0 changed) in 0.05 seconds.
 format: clean
 Analyzing nitro_core...
 No issues found!
@@ -15,18 +15,17 @@ Formatted 5 files (0 changed) in 0.02 seconds.
 format: clean
 Analyzing nitro_server...
 No issues found!
-00:25 +2: test/server_test.dart: a player can resume after disconnecting mid-lobby
-Nitro Tots server listening on ws://127.0.0.1:60227/ws (seed=1234)
+00:26 +2: test/server_test.dart: a player can resume after disconnecting mid-lobby
+Nitro Tots server listening on ws://127.0.0.1:62077/ws (seed=1234)
 00:26 +3: All tests passed!
 exit=0
 
 ## app
-Formatted 24 files (0 changed) in 0.09 seconds.
+Formatted 25 files (0 changed) in 0.22 seconds.
 format: clean
-Try `flutter pub outdated` for more information.
 Analyzing app...                                                
-No issues found! (ran in 2.0s)
-00:01 +30: desktop lobby
-00:01 +31: desktop podium
-00:01 +32: All tests passed!
+No issues found! (ran in 2.4s)
+00:03 +36: /Users/devin/repos/experiments/nitro-tots/app/test/screens_smoke_test.dart: desktop lobby
+00:03 +37: /Users/devin/repos/experiments/nitro-tots/app/test/screens_smoke_test.dart: desktop podium
+00:03 +38: All tests passed!
 exit=0

@@ -53,3 +53,12 @@ Nitro Tots server listening on ws://0.0.0.0:8787/ws (seed=4242)
 [2026-09-09T18:03:24.759836] player Web disconnected from E2E
 [2026-09-09T18:03:45.226072] player macOS disconnected from E2E
 [2026-09-09T18:03:45.376833] player iOS disconnected from E2E
+[2026-09-09T18:26:16.683371] connect (1 sessions)
+[2026-09-09T18:26:16.885813] hello web qa (web)
+[2026-09-09T18:26:25.148003] room VCXM created by web qa
+[2026-09-09T18:26:47.351777] connect (2 sessions)
+[2026-09-09T18:26:47.352394] hello mac qa (macos)
+[2026-09-09T18:26:48.142119] mac qa joined VCXM (2 players)
+[2026-09-09T18:27:17.869074] player web qa disconnected from VCXM
+[2026-09-09T18:27:28.080637] connect (2 sessions)
+[2026-09-09T18:27:28.082448] resume web qa

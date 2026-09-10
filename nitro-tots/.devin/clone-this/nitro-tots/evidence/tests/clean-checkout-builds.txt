@@ -1,13 +1,13 @@
-# clean checkout: git clone -> ad222b0 nitro-tots: multiplayer e2e harness, visual parity, responsive polish, docs ; 2026-09-10T01:08:57Z
+# clean checkout: git clone -> 39b7e58 nitro-tots: fixed GP rival roster, cumulative standings, rejoin banner, time-trial clock, touch HUD spacing ; 2026-09-10T02:41:17Z
 # flutter Flutter 3.47.3 • channel stable • https://github.com/flutter/flutter.git
 
 ## pub get
-Changed 48 dependencies!
 Got dependencies!
+3 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
 
 ## web
-Compiling lib/main.dart for the Web...                             17.8s
+Compiling lib/main.dart for the Web...                             20.7s
 ✓ Built build/web
 exit=0
 
@@ -17,17 +17,17 @@ warning: Run script build phase 'Run Script' will be run during every build beca
 exit=0
 
 ## ios (simulator)
-Xcode build done.                                           22.1s
+Xcode build done.                                           19.2s
 ✓ Built build/ios/iphonesimulator/Runner.app
 exit=0
 
 ## android
-Running Gradle task 'assembleRelease'...                           30.6s
+Running Gradle task 'assembleRelease'...                           33.3s
 ✓ Built build/app/outputs/flutter-apk/app-release.apk (54.7MB)
 exit=0
 
 ## artifacts
--rw-r--r--  1 devin  staff  54705584 Sep  9 18:10 app/build/app/outputs/flutter-apk/app-release.apk
--rwxr-xr-x  1 devin  staff    123808 Sep  9 18:10 app/build/ios/iphonesimulator/Runner.app/Runner
--rwxr-xr-x  1 devin  staff    780784 Sep  9 18:09 app/build/macos/Build/Products/Release/Nitro Tots.app/Contents/MacOS/Nitro Tots
--rw-r--r--  1 devin  staff      1508 Sep  9 18:08 app/build/web/index.html
+-rw-r--r--  1 devin  staff  54705664 Sep  9 19:43 app/build/app/outputs/flutter-apk/app-release.apk
+-rwxr-xr-x  1 devin  staff     73112 Sep  9 19:42 app/build/ios/iphonesimulator/Runner.app/Runner
+-rwxr-xr-x  1 devin  staff    780784 Sep  9 19:42 app/build/macos/Build/Products/Release/Nitro Tots.app/Contents/MacOS/Nitro Tots
+-rw-r--r--  1 devin  staff      1508 Sep  9 19:41 app/build/web/index.html
