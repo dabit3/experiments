@@ -1,12 +1,14 @@
-native artifact verification from clean checkout 11a811576a1a26bf0a69f21b40556dcd6ec38a29 2026-09-10T01:52:36Z
+native artifact verification from clean checkout ec98f99409884504631ac6e7dc28690038d9ad0f 2026-09-10T14:33:40Z
 
 ## macOS
 build/macos/Build/Products/Release/Lastfort.app/Contents/MacOS/Lastfort: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit executable x86_64] [arm64:Mach-O 64-bit executable arm64]
 build/macos/Build/Products/Release/Lastfort.app/Contents/MacOS/Lastfort (for architecture x86_64):	Mach-O 64-bit executable x86_64
 build/macos/Build/Products/Release/Lastfort.app/Contents/MacOS/Lastfort (for architecture arm64):	Mach-O 64-bit executable arm64
-0
+       0
 WebView references (0 = none): 0
-App.framework (AOT Dart): build/macos/Build/Products/Release/Lastfort.app/Contents/Frameworks/App.framework/App: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit dynamically linked shared library x86_64] [arm64]
+App.framework (AOT Dart): build/macos/Build/Products/Release/Lastfort.app/Contents/Frameworks/App.framework/App: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit dynamically linked shared library x86_64] [ar
+build/macos/Build/Products/Release/Lastfort.app/Contents/Frameworks/App.framework/App (for architecture x86_64):	Mach-O 64-bit dynamically linked shared library x86_64
+build/macos/Build/Products/Release/Lastfort.app/Contents/Frameworks/App.framework/App (for architecture arm64):	Mach-O 64-bit dynamically linked shared library arm64
 
 ## iOS simulator
 build/ios/iphonesimulator/Runner.app/Runner: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit executable x86_64] [arm64:Mach-O 64-bit executable arm64]
@@ -17,14 +19,13 @@ Flutter.framework
 WebKit refs: 0
 
 ## Android APK
--rw-r--r--  1 devin  staff  155641000 Sep  9 18:51 build/app/outputs/flutter-apk/app-debug.apk
+-rw-r--r--  1 devin  staff  155661608 Sep 10 07:32 build/app/outputs/flutter-apk/app-debug.apk
  38828704  01-01-1981 01:01   lib/arm64-v8a/libflutter.so
  33150308  01-01-1981 01:01   lib/armeabi-v7a/libflutter.so
  40083280  01-01-1981 01:01   lib/x86_64/libflutter.so
  11647016  01-01-1981 01:01   assets/flutter_assets/isolate_snapshot_data
- 49675896  01-01-1981 01:01   assets/flutter_assets/kernel_blob.bin
-     6624  01-01-1981 01:01   AndroidManifest.xml
-WebView classes in dex: 1
+ 49716224  01-01-1981 01:01   assets/flutter_assets/kernel_blob.bin
+WebView classes in dex: 1 (Flutter engine's platform-view plumbing; no WebView plugin is a dependency: 0 pubspec.lock hits)
 
 ## Web
 assets
@@ -38,9 +39,4 @@ index.html
 main.dart.js
 manifest.json
 version.json
--rw-r--r--  1 devin  staff  2790572 Sep  9 18:50 build/web/main.dart.js
-
-## WebView audit
-app source/pubspec/ios/macos/android references to WebView: 0
-The single 'Landroid/webkit/WebView;' dex type reference comes from the Flutter engine's Android embedding (accessibility/platform-view plumbing); the app declares no WebView.
-index.html bundled in native apps: macOS 0, iOS 0, APK 0
+-rw-r--r--  1 devin  staff  2820196 Sep 10 07:29 build/web/main.dart.js
