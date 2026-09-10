@@ -44,7 +44,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/diffs/visual-parity.log",
-        "evidence/e2e/2026-09-10T14-46-47/e2e.log"
+        "evidence/e2e/2026-09-10T15-15-30/e2e.log"
       ],
       "access": "inferred"
     },
@@ -71,11 +71,11 @@
       "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/web-lobby.png",
-        "evidence/e2e/2026-09-10T14-46-47/ios-lobby.png",
-        "evidence/e2e/2026-09-10T14-46-47/android-lobby.png",
-        "evidence/e2e/2026-09-10T14-46-47/macos-lobby.png",
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/web-lobby.png",
+        "evidence/e2e/2026-09-10T15-15-30/ios-lobby.png",
+        "evidence/e2e/2026-09-10T15-15-30/android-lobby.png",
+        "evidence/e2e/2026-09-10T15-15-30/macos-lobby.png",
         "evidence/tests/unit-tests.log"
       ],
       "access": "observed"
@@ -88,15 +88,15 @@
       "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/web-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/ios-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/android-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/macos-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/web-gameplay-late.png",
-        "evidence/e2e/2026-09-10T14-46-47/ios-gameplay-late.png",
-        "evidence/e2e/2026-09-10T14-46-47/android-gameplay-late.png",
-        "evidence/e2e/2026-09-10T14-46-47/macos-gameplay-late.png"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/web-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/android-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/web-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-15-30/android-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay-late.png"
       ],
       "access": "observed"
     },
@@ -108,11 +108,11 @@
       "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/web-results.png",
-        "evidence/e2e/2026-09-10T14-46-47/ios-results.png",
-        "evidence/e2e/2026-09-10T14-46-47/android-results.png",
-        "evidence/e2e/2026-09-10T14-46-47/macos-results.png"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/web-results.png",
+        "evidence/e2e/2026-09-10T15-15-30/ios-results.png",
+        "evidence/e2e/2026-09-10T15-15-30/android-results.png",
+        "evidence/e2e/2026-09-10T15-15-30/macos-results.png"
       ],
       "access": "observed"
     },
@@ -125,8 +125,8 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/ios-gameplay.png"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png"
       ],
       "access": "observed"
     },
@@ -139,8 +139,8 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/plan.json"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/plan.json"
       ],
       "access": "observed"
     },
@@ -153,8 +153,8 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/web-results.png"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/web-results.png"
       ],
       "access": "inferred"
     },
@@ -167,7 +167,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json"
       ],
       "access": "observed"
     },
@@ -180,7 +180,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json"
       ],
       "access": "inferred"
     },
@@ -206,7 +206,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json"
       ],
       "access": "observed"
     },
@@ -218,7 +218,7 @@
       "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
         "evidence/discovery/inventory.md"
       ],
       "access": "inferred"
@@ -245,7 +245,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/ios-gameplay.png"
+        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png"
       ],
       "access": "observed"
     },
@@ -299,7 +299,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json"
       ],
       "access": "observed"
     },
@@ -311,12 +311,12 @@
       "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/e2e.log",
-        "evidence/e2e/2026-09-10T14-46-47/web-gameplay-late.png",
-        "evidence/e2e/2026-09-10T14-46-47/ios-gameplay-late.png",
-        "evidence/e2e/2026-09-10T14-46-47/android-gameplay-late.png",
-        "evidence/e2e/2026-09-10T14-46-47/macos-gameplay-late.png"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/e2e.log",
+        "evidence/e2e/2026-09-10T15-15-30/web-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-15-30/android-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay-late.png"
       ],
       "access": "observed"
     },
@@ -329,7 +329,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/e2e.log",
+        "evidence/e2e/2026-09-10T15-15-30/e2e.log",
         "evidence/tests/ui-smoke/summary.json"
       ],
       "access": "inferred"
@@ -356,7 +356,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json"
       ],
       "access": "inferred"
     },
@@ -383,10 +383,10 @@
       "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T14-46-47/ios-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/android-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/macos-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/web-gameplay.png"
+        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/android-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/web-gameplay.png"
       ],
       "access": "observed"
     },
@@ -413,8 +413,8 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/plan.json",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json"
+        "evidence/e2e/2026-09-10T15-15-30/plan.json",
+        "evidence/e2e/2026-09-10T15-15-30/summary.json"
       ],
       "access": "inferred"
     },
@@ -427,7 +427,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/e2e.log",
+        "evidence/e2e/2026-09-10T15-15-30/e2e.log",
         "evidence/tests/ui-smoke/smoke.log"
       ],
       "access": "inferred"
@@ -439,27 +439,27 @@
       "status": "verified",
       "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
       "evidence": [
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/e2e.log",
-        "evidence/e2e/2026-09-10T14-46-47/plan.json",
-        "evidence/e2e/2026-09-10T14-46-47/web-lobby.png",
-        "evidence/e2e/2026-09-10T14-46-47/web-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/web-gameplay-late.png",
-        "evidence/e2e/2026-09-10T14-46-47/web-results.png",
-        "evidence/e2e/2026-09-10T14-46-47/ios-lobby.png",
-        "evidence/e2e/2026-09-10T14-46-47/ios-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/ios-gameplay-late.png",
-        "evidence/e2e/2026-09-10T14-46-47/ios-results.png",
-        "evidence/e2e/2026-09-10T14-46-47/android-lobby.png",
-        "evidence/e2e/2026-09-10T14-46-47/android-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/android-gameplay-late.png",
-        "evidence/e2e/2026-09-10T14-46-47/android-results.png",
-        "evidence/e2e/2026-09-10T14-46-47/macos-lobby.png",
-        "evidence/e2e/2026-09-10T14-46-47/macos-gameplay.png",
-        "evidence/e2e/2026-09-10T14-46-47/macos-gameplay-late.png",
-        "evidence/e2e/2026-09-10T14-46-47/macos-results.png",
-        "evidence/e2e/2026-09-10T14-46-47/four-way-match.mov",
-        "evidence/e2e/2026-09-10T14-46-47/review-video.mp4"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/e2e.log",
+        "evidence/e2e/2026-09-10T15-15-30/plan.json",
+        "evidence/e2e/2026-09-10T15-15-30/web-lobby.png",
+        "evidence/e2e/2026-09-10T15-15-30/web-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/web-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-15-30/web-results.png",
+        "evidence/e2e/2026-09-10T15-15-30/ios-lobby.png",
+        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-15-30/ios-results.png",
+        "evidence/e2e/2026-09-10T15-15-30/android-lobby.png",
+        "evidence/e2e/2026-09-10T15-15-30/android-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/android-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-15-30/android-results.png",
+        "evidence/e2e/2026-09-10T15-15-30/macos-lobby.png",
+        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay.png",
+        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-15-30/macos-results.png",
+        "evidence/e2e/2026-09-10T15-15-30/four-way-match.mov",
+        "evidence/e2e/2026-09-10T15-15-30/review-video.mp4"
       ],
       "access": "observed",
       "result": {
@@ -847,7 +847,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/discovery/audit-assets.md",
-        "evidence/e2e/2026-09-10T14-46-47/ios-gameplay.png"
+        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png"
       ],
       "access": "inferred"
     },
@@ -899,7 +899,7 @@
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T14-46-47/e2e.log"
+        "evidence/e2e/2026-09-10T15-15-30/e2e.log"
       ],
       "access": "inferred"
     },
@@ -924,17 +924,17 @@
       "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T14-46-47/review-video.mp4",
-        "evidence/e2e/2026-09-10T14-46-47/review-video.gif",
-        "evidence/e2e/2026-09-10T14-46-47/review-video.json",
-        "evidence/e2e/2026-09-10T14-46-47/review-video.log",
+        "evidence/e2e/2026-09-10T15-15-30/review-video.mp4",
+        "evidence/e2e/2026-09-10T15-15-30/review-video.gif",
+        "evidence/e2e/2026-09-10T15-15-30/review-video.json",
+        "evidence/e2e/2026-09-10T15-15-30/review-video.log",
         "evidence/tests/ui-smoke/browser-smoke.webm",
         "evidence/tests/quality.log"
       ],
       "access": "observed",
       "result": {
         "segments": 22,
-        "duration_s": 92.27,
+        "duration_s": 92.57,
         "size": "1280x720",
         "e2e_passed": true,
         "smoke_passed": true
@@ -959,7 +959,7 @@
       "evidence": [
         "evidence/discovery/audit-navigation.md",
         "evidence/tests/ui-smoke/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/e2e.log"
+        "evidence/e2e/2026-09-10T15-15-30/e2e.log"
       ]
     },
     {
@@ -978,7 +978,7 @@
       "evidence": [
         "evidence/discovery/audit-states.md",
         "evidence/tests/ui-smoke/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json"
       ]
     },
     {
@@ -988,7 +988,7 @@
       "evidence": [
         "evidence/discovery/audit-responsive.md",
         "evidence/diffs/visual-parity.json",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json"
+        "evidence/e2e/2026-09-10T15-15-30/summary.json"
       ]
     },
     {
@@ -997,7 +997,7 @@
       "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
       "evidence": [
         "evidence/discovery/audit-data.md",
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
         "evidence/tests/unit-tests.log"
       ]
     },
@@ -1027,7 +1027,7 @@
         "evidence/discovery/audit-reliability.md",
         "evidence/tests/unit-tests.log",
         "evidence/tests/ui-smoke/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/e2e.log"
+        "evidence/e2e/2026-09-10T15-15-30/e2e.log"
       ]
     },
     {
@@ -1046,8 +1046,8 @@
       "status": "passed",
       "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
       "evidence": [
-        "evidence/e2e/2026-09-10T14-46-47/summary.json",
-        "evidence/e2e/2026-09-10T14-46-47/e2e.log",
+        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-15-30/e2e.log",
         "evidence/tests/unit-tests.log",
         "evidence/tests/ui-smoke/summary.json"
       ]
