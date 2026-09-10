@@ -2,7 +2,7 @@
 
 | Scenario | Handling | Evidence |
 | --- | --- | --- |
-| Socket drop mid-match | client `ConnState.reconnecting`, exponential retry, resume token restores seat | server test "reconnect with token resumes seat mid-match" (`evidence/tests/unit-tests.log`); `client.dart` `_open(reconnect: true)` |
+| Socket drop (lobby or mid-match) | client `ConnState.reconnecting`, app-level overlay with Leave, exponential retry, resume token restores seat; if the server forgot the seat the stale room is dropped with a toast | server test "reconnect with token resumes seat mid-match" (`evidence/tests/unit-tests.log`); `client.dart` `_open(reconnect: true)` |
 | Server unreachable at start | `ConnState.failed` chip + retry on home; auto-join times out to home with toast | `home_screen.dart`; ui-smoke error toasts show the same path |
 | Bad / full join code | server `error`, client stays on home, field keeps code | ui-smoke `summary.json` |
 | Player leaves mid-match | seat marked disconnected, match continues, host migrates | `room.dart`; server test rematch flow |

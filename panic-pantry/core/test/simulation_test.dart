@@ -84,4 +84,48 @@ void main() {
     expect(Scoring.serveValue(fraction: 0.5, combo: 2), 30);
     expect(Scoring.serveValue(fraction: 0.1, combo: 4), 32);
   });
+
+  test('chopping needs the action input held across ticks', () {
+    final state = GameState(levelById('training'), playerCount: 1);
+    final sim = Simulation(state, seed: 1);
+    final chef = Chef(id: 'p', slot: 0, name: 'P', x: 0, y: 0);
+    state.chefs.add(chef);
+    sim.startRound();
+    while (state.phase == Phase.countdown) {
+      sim.step();
+    }
+
+    // Stand next to a cutting board, facing it, with a raw tomato on it.
+    late Tile board;
+    var placed = false;
+    for (final (x, y, t) in state.allTiles()) {
+      if (t.type != TileType.board || placed) continue;
+      for (final d in Dir.values) {
+        if (!state.walkable(x - d.dx, y - d.dy)) continue;
+        chef.x = x - d.dx + 0.5;
+        chef.y = y - d.dy + 0.5;
+        chef.facing = d;
+        board = t;
+        placed = true;
+        break;
+      }
+    }
+    expect(placed, isTrue);
+    board.item = const IngredientItem(Ingredient.tomato);
+
+    // A single-tick press only nudges the progress bar.
+    sim.pending['p'] = const ChefInput(action: true);
+    sim.step();
+    expect((board.item as IngredientItem).chopped, isFalse);
+    expect(board.progress, closeTo(Rules.tickSeconds / Rules.chopSeconds, 1e-9));
+
+    // Holding it for the full duration finishes the chop.
+    final ticks = (Rules.chopSeconds / Rules.tickSeconds).ceil();
+    for (var i = 0; i < ticks; i++) {
+      sim.pending['p'] = const ChefInput(action: true);
+      sim.step();
+    }
+    expect((board.item as IngredientItem).chopped, isTrue);
+    expect(board.progress, 0);
+  });
 }

@@ -1,4 +1,4 @@
-# 2026-09-10T02:37:10Z unit tests
+# 2026-09-10T03:44:29Z unit tests
 ## core dart test
 00:00 +0: loading test/simulation_test.dart
 00:00 +0: test/simulation_test.dart: levels parse and have spawns for four chefs
@@ -9,17 +9,39 @@ corner-cafe: score=334 stars=1 served=10 expired=0 burnt=0 wrong=0 tick=3061
 conveyor-canteen: score=235 stars=1 served=8 expired=2 burnt=0 wrong=0 tick=3061
 split-shift: score=304 stars=1 served=10 expired=1 burnt=0 wrong=0 tick=3260
 drift-deck: score=120 stars=0 served=6 expired=5 burnt=0 wrong=0 tick=3260
-00:06 +3: test/simulation_test.dart: gimmick levels: bots ship across belts, hatches and ferries
-00:08 +4: test/simulation_test.dart: moving platform tiles are walkable at both ends of travel
-00:08 +5: test/simulation_test.dart: scoring tiers
-00:08 +6: All tests passed!
+00:05 +3: test/simulation_test.dart: gimmick levels: bots ship across belts, hatches and ferries
+00:07 +4: test/simulation_test.dart: moving platform tiles are walkable at both ends of travel
+00:07 +5: test/simulation_test.dart: scoring tiers
+00:07 +6: test/simulation_test.dart: chopping needs the action input held across ticks
+00:07 +7: All tests passed!
 exit=0
 ## server dart test
 00:00 +0: loading test/server_test.dart
 00:00 +0: test/server_test.dart: hello, create, join, ready, start, results and rematch
+[server] listening on ws://127.0.0.1:52854/ws (test harness enabled)
+[server] room FAST created (seed 99, level training)
+[server] Ada joined FAST (1/4)
+[server] Bo joined FAST (2/4)
+[server] room FAST starting training with 4 chefs
+[server] Ada disconnected from FAST
+[server] Bo disconnected from FAST
 00:18 +1: test/server_test.dart: reconnect with token resumes seat mid-match
+[server] listening on ws://127.0.0.1:52958/ws (test harness enabled)
+[server] room DVXJ created (seed 105046169, level training)
+[server] Ada joined DVXJ (1/4)
+[server] room DVXJ starting training with 2 chefs
+[server] Ada disconnected from DVXJ
+[server] Ada resumed DVXJ
+[server] Ada disconnected from DVXJ
 00:18 +2: test/server_test.dart: test harness: fixed code/seed room, server-side scripted input, client test channel
+[server] listening on ws://127.0.0.1:52963/ws (test harness enabled)
+[server] room ZZZZ created (seed 4242, level training)
+[server] Web joined ZZZZ (2/4)
+[server] Web disconnected from ZZZZ
 00:23 +3: test/server_test.dart: test harness reaches connected clients outside a room
+[server] listening on ws://127.0.0.1:52994/ws (test harness enabled)
 00:23 +4: test/server_test.dart: test harness routes are absent unless enabled
+[server] listening on ws://127.0.0.1:53001/ws (test harness enabled)
+[server] listening on ws://127.0.0.1:53002/ws
 00:23 +5: All tests passed!
 exit=0

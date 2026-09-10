@@ -33,7 +33,7 @@ Message-type constants live in `core/lib/src/protocol.dart` (`Msg`).
 | `room.addBot` / `room.removeBot` | `id?` | Host only. Bots occupy real seats and run the deterministic core bot. |
 | `room.start` | `force?` | Host only; requires everyone ready unless `force`. |
 | `room.rematch` | — | Host only; returns everyone to the lobby with the same seats and an advanced match seed. |
-| `input` | `dx?`, `dy?` (−1…1), `i?` interact, `a?` action, `d?` dash, `e?` emote index, `tx?`/`ty?` | The chef's intent for the *next* tick. Movement is sticky until the next `input`; `i`/`a`/`d`/`e` are edge-triggered. `tx`/`ty` is the tile the client believed it faced when pressing interact (lag compensation for pickup/drop: the server honours it if the chef is adjacent). |
+| `input` | `dx?`, `dy?` (−1…1), `i?` interact, `a?` action, `d?` dash, `e?` emote index, `tx?`/`ty?` | The chef's intent for the *next* tick. Movement and `a` (a held button: chop/wash/spray progress accrues every tick it is on) are sticky until the next `input`; `i`/`d`/`e` are edge-triggered and consumed by one tick. `tx`/`ty` is the tile the client believed it faced when pressing interact (lag compensation for pickup/drop: the server honours it if the chef is adjacent). |
 | `test.report` | `platform`, `screen`, `phase`, `tick`, `score`, `stars`, `results`, `rtt`, `automated`, … | Sent by the client in response to a `test.command {cmd: "report"}`. Stored per player and exposed on `GET /test/rooms/<code>`. |
 
 ## Server → client

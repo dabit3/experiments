@@ -43,7 +43,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { env, makeHttp, osascript, placeWindow, serveWeb, sh, sleep, waitFor, windowBounds } from '../lib/common.mjs';
+import { env, makeHttp, osascript, parkMouse, placeWindow, serveWeb, sh, sleep, waitFor, windowBounds } from '../lib/common.mjs';
 import { crop, decodePng, diff, encodePng, resize } from '../lib/png.mjs';
 import { describe, evaluate, paramsFromEnv } from './gate.mjs';
 
@@ -314,6 +314,7 @@ const native = {
     },
     capture(view) {
       osascript('tell application "Panic Pantry" to activate');
+      parkMouse();
       const b = windowBounds('Panic Pantry');
       const titleBar = b.h - view.height; // content view is the reported logical size
       const file = join(EVIDENCE, 'clone', 'macos-raw.png');

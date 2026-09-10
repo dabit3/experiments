@@ -54,3 +54,50 @@ exit=0
 # the server in _join, kept in memory only, documented in PROTOCOL.md `welcome.token`);
 # no API key, password, or private key material is present. Verdict: pass.
 # summary: 1 pass (reviewed) / 2 pass / 3 pass / 4 documented / 5 pass / 6 pass / 7 pass
+
+# 2026-09-10T03:47:41Z re-run after post-review fixes (held Action input, reconnect overlay, visual gate maxBlocks 3 -> 2)
+# 1. secret / credential scan (tracked + new files, excluding run evidence and deps)
+app/lib/game/kitchen_game.dart:10:import '../theme/tokens.dart';
+app/lib/game/particles.dart:5:import '../theme/tokens.dart';
+app/lib/game/sprites.dart:6:import '../theme/tokens.dart';
+app/lib/main.dart:12:import 'theme/tokens.dart';
+app/lib/net/client.dart:52:  String? token;
+app/lib/net/client.dart:146:      _send({'type': Msg.hello, 'name': name, 'platform': platform, if (token != null) 'token': token});
+app/lib/net/client.dart:201:        token = m['token'] as String;
+app/lib/net/client.dart:287:      // Leaving while offline: forget the resume token so the next
+app/lib/net/client.dart:289:      token = null;
+app/lib/screens/game_screen.dart:12:import '../theme/tokens.dart';
+app/lib/screens/home_screen.dart:6:import '../theme/tokens.dart';
+app/lib/screens/how_to_play.dart:4:import '../theme/tokens.dart';
+app/lib/screens/lobby_screen.dart:6:import '../theme/tokens.dart';
+app/lib/screens/results_screen.dart:6:import '../theme/tokens.dart';
+app/lib/theme/tokens.dart:4:/// Panic Pantry design tokens.
+app/lib/widgets/level_preview.dart:5:import '../theme/tokens.dart';
+app/lib/widgets/ui.dart:6:import '../theme/tokens.dart';
+server/lib/src/room.dart:8:  Player({required this.id, required this.token, required this.name, required this.slot, required this.platform});
+server/lib/src/room.dart:11:  final String token;
+server/lib/src/room.dart:84:  Player? addPlayer({required String id, required String token, required String name, required String platform}) {
+server/lib/src/room.dart:88:    final p = Player(id: id, token: token, name: name, slot: slot, platform: platform);
+server/lib/src/server.dart:47:  /// Players by resume token (kept while their room exists).
+server/lib/src/server.dart:48:  final Map<String, (Room, Player)> _byToken = {};
+server/lib/src/server.dart:309:            _byToken.remove(p.token);
+server/lib/src/server.dart:333:          _join(conn, room, p.name, p.platform, token: p.token);
+server/lib/src/server.dart:344:          _join(conn, room, p.name, p.platform, token: p.token);
+server/lib/src/server.dart:398:    final token = msg['token'] as String?;
+server/lib/src/server.dart:400:    // Resume: same token reattaches to the existing seat, even mid-match.
+server/lib/src/server.dart:401:    final existing = token == null ? null : _byToken[token];
+server/lib/src/server.dart:429:      token: token ?? _rng.nextInt(1 << 30).toRadixString(36) + _rng.nextInt(1 << 30).toRadixString(36),
+server/lib/src/server.dart:441:    'token': p.token,
+server/lib/src/server.dart:449:  void _join(_Conn conn, Room room, String name, String platform, {required String token}) {
+server/lib/src/server.dart:451:    final p = room.addPlayer(id: id, token: token, name: name, platform: platform);
+server/lib/src/server.dart:456:    _byToken[token] = (room, p);
+server/lib/src/server.dart:466:    _byToken.remove(p.token);
+server/lib/src/server.dart:468:    conn.player = Player(id: p.id, token: p.token, name: p.name, slot: -1, platform: p.platform);
+server/test/server_test.dart:142:  test('reconnect with token resumes seat mid-match', () async {
+server/test/server_test.dart:157:    a2.send({'type': Msg.hello, 'name': 'Ada', 'platform': 'test', 'token': w['token']});
+exit=0 (1 = no matches outside the documented reconnect-token lines)
+# 2. no .env / keystore / provisioning files staged
+exit=1 (1 = none)
+# 3. /test/* routes absent without --test-harness
+unit-tests.log: test/server_test.dart: test harness routes are absent unless enabled (passed)
+# verdict: unchanged; matches are the in-memory reconnect token (PROTOCOL.md welcome.token). pass

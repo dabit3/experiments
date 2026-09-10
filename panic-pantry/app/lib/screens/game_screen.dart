@@ -72,11 +72,8 @@ class _GameScreenState extends State<GameScreen> {
       _keys.add(k);
       if (k == LogicalKeyboardKey.space || k == LogicalKeyboardKey.keyJ || k == LogicalKeyboardKey.enter) {
         _interact();
-      } else if (k == LogicalKeyboardKey.keyE ||
-          k == LogicalKeyboardKey.keyK ||
-          k == LogicalKeyboardKey.shiftLeft ||
-          k == LogicalKeyboardKey.shiftRight) {
-        widget.client.press(action: true);
+      } else if (_isActionKey(k)) {
+        widget.client.setAction(true);
       } else if (k == LogicalKeyboardKey.keyF || k == LogicalKeyboardKey.keyL) {
         widget.client.press(dash: true);
       } else if (k == LogicalKeyboardKey.escape) {
@@ -89,10 +86,17 @@ class _GameScreenState extends State<GameScreen> {
       }
     } else if (e is KeyUpEvent) {
       _keys.remove(k);
+      if (_isActionKey(k) && !_keys.any(_isActionKey)) widget.client.setAction(false);
     }
     _updateMovementFromKeys();
     return KeyEventResult.handled;
   }
+
+  static bool _isActionKey(LogicalKeyboardKey k) =>
+      k == LogicalKeyboardKey.keyE ||
+      k == LogicalKeyboardKey.keyK ||
+      k == LogicalKeyboardKey.shiftLeft ||
+      k == LogicalKeyboardKey.shiftRight;
 
   void _updateMovementFromKeys() {
     double dx = 0, dy = 0;
@@ -165,7 +169,7 @@ class _GameScreenState extends State<GameScreen> {
                     ? _TouchControls(
                         onMove: c.setMovement,
                         onInteract: _interact,
-                        onAction: () => c.press(action: true),
+                        onAction: c.setAction,
                         onDash: () => c.press(dash: true),
                         onEmote: () => setState(() => _emoteOpen = !_emoteOpen),
                       )
@@ -230,17 +234,6 @@ class _GameScreenState extends State<GameScreen> {
                     onToggleTheme: widget.onToggleTheme,
                     rtt: c.rttMs,
                     code: c.room?.code ?? '',
-                  ),
-                ),
-              if (c.conn == ConnState.reconnecting)
-                Positioned.fill(
-                  child: Container(
-                    color: s.bg.withValues(alpha: 0.75),
-                    child: const StatePanel(
-                      title: 'Reconnecting…',
-                      message: 'Hold tight — your seat is saved and the kitchen keeps cooking.',
-                      busy: true,
-                    ),
                   ),
                 ),
             ],
@@ -628,7 +621,7 @@ class _TouchControls extends StatelessWidget {
   });
   final void Function(double dx, double dy) onMove;
   final VoidCallback onInteract;
-  final VoidCallback onAction;
+  final void Function(bool down) onAction;
   final VoidCallback onDash;
   final VoidCallback onEmote;
 
@@ -671,7 +664,8 @@ class _TouchControls extends StatelessWidget {
                     icon: Icons.content_cut_rounded,
                     color: PPColor.basil,
                     size: 64,
-                    onTap: onAction,
+                    onTap: () => onAction(true),
+                    onRelease: () => onAction(false),
                   ),
                   const SizedBox(width: PPSpace.x3),
                   _ActionButton(
@@ -698,12 +692,14 @@ class _ActionButton extends StatefulWidget {
     required this.color,
     required this.size,
     required this.onTap,
+    this.onRelease,
   });
   final String label;
   final IconData icon;
   final Color color;
   final double size;
   final VoidCallback onTap;
+  final VoidCallback? onRelease;
 
   @override
   State<_ActionButton> createState() => _ActionButtonState();
@@ -712,6 +708,18 @@ class _ActionButton extends StatefulWidget {
 class _ActionButtonState extends State<_ActionButton> {
   bool _down = false;
 
+  void _release() {
+    if (!_down) return;
+    setState(() => _down = false);
+    widget.onRelease?.call();
+  }
+
+  @override
+  void dispose() {
+    if (_down) widget.onRelease?.call();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Listener(
@@ -719,8 +727,8 @@ class _ActionButtonState extends State<_ActionButton> {
         setState(() => _down = true);
         widget.onTap();
       },
-      onPointerUp: (_) => setState(() => _down = false),
-      onPointerCancel: (_) => setState(() => _down = false),
+      onPointerUp: (_) => _release(),
+      onPointerCancel: (_) => _release(),
       child: AnimatedScale(
         scale: _down ? 0.9 : 1,
         duration: PPMotion.fast,
@@ -946,12 +954,24 @@ class _Coach extends StatelessWidget {
     if (held == null) {
       var cookedPot = false;
       var dirty = false;
+      var rawOnBoard = false;
+      var choppedOnBoard = false;
       for (final (_, _, t) in state.allTiles()) {
-        if (t.item is Pot && (t.item as Pot).cook >= 1 && !(t.item as Pot).burnt) cookedPot = true;
-        if (t.item is PlateStack && (t.item as PlateStack).dirty && t.type != TileType.sink) dirty = true;
+        final item = t.item;
+        if (item is Pot && item.cook >= 1 && !item.burnt) cookedPot = true;
+        if (item is PlateStack && item.dirty && t.type != TileType.sink) dirty = true;
+        if (t.type == TileType.board && item is IngredientItem) {
+          if (item.chopped) {
+            choppedOnBoard = true;
+          } else {
+            rawOnBoard = true;
+          }
+        }
       }
       if (cookedPot) return (Icons.dinner_dining_rounded, 'Soup is ready! Grab a clean plate from the rack.');
       if (dirty) return (Icons.water_drop_rounded, 'Dirty plates are back — carry them to the sink and hold Action.');
+      if (rawOnBoard) return (Icons.content_cut_rounded, 'Face the board and hold Action until the bar fills.');
+      if (choppedOnBoard) return (Icons.soup_kitchen_rounded, 'Grab the chopped tomato and drop it in the pot.');
       return (Icons.inventory_2_rounded, 'Face a tomato crate and press Grab.');
     }
     switch (held) {

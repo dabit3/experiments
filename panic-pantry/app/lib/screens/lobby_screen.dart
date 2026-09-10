@@ -428,7 +428,7 @@ class _LevelMap extends StatelessWidget {
                     child: AnimatedContainer(
                       duration: PPMotion.base,
                       curve: PPMotion.emphasized,
-                      width: 168,
+                      width: 188,
                       transform: Matrix4.translationValues(0, sel ? -4 : 0, 0),
                       decoration: BoxDecoration(
                         color: s.surface,
@@ -468,7 +468,8 @@ class _LevelMap extends StatelessWidget {
                                     Expanded(
                                       child: Text(
                                         l.name,
-                                        style: PPType.h3(s.text).copyWith(fontSize: 14),
+                                        style: PPType.h3(s.text).copyWith(fontSize: 13.5),
+                                        maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),

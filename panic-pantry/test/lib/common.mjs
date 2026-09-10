@@ -94,6 +94,26 @@ export function osascript(script) {
   return sh('osascript', ['-e', script]).stdout.trim();
 }
 
+/**
+ * Posts a real mouse-moved event to the given screen point (macOS). Used to park
+ * the cursor off the app window so hover states/tooltips never leak into captures.
+ */
+export function parkMouse(x = 8, y = 8) {
+  const py = [
+    'import ctypes',
+    "cg = ctypes.CDLL('/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics')",
+    "class P(ctypes.Structure): _fields_ = [('x', ctypes.c_double), ('y', ctypes.c_double)]",
+    'cg.CGEventCreateMouseEvent.restype = ctypes.c_void_p',
+    'cg.CGEventCreateMouseEvent.argtypes = [ctypes.c_void_p, ctypes.c_uint32, P, ctypes.c_uint32]',
+    'cg.CGEventPost.argtypes = [ctypes.c_uint32, ctypes.c_void_p]',
+    'cg.CFRelease.argtypes = [ctypes.c_void_p]',
+    `ev = cg.CGEventCreateMouseEvent(None, 5, P(${x}, ${y}), 0)`,
+    'cg.CGEventPost(0, ev)',
+    'cg.CFRelease(ev)',
+  ].join('\n');
+  return sh('python3', ['-c', py]);
+}
+
 /** Frame of the first window of a macOS process (includes the title bar). */
 export function windowBounds(processName) {
   const s = osascript(`tell application "System Events" to tell process "${processName}" to get {position, size} of window 1`);

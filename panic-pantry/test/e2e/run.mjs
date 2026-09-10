@@ -15,7 +15,7 @@ import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { env, makeHttp, placeWindow as moveWindow, serveWeb, sh, sleep, stamp, waitFor, windowBounds } from '../lib/common.mjs';
+import { env, makeHttp, parkMouse, placeWindow as moveWindow, serveWeb, sh, sleep, stamp, waitFor, windowBounds } from '../lib/common.mjs';
 
 const here = fileURLToPath(new URL('.', import.meta.url));
 const root = resolve(here, '..', '..');
@@ -108,6 +108,7 @@ const macWindowBounds = () => windowBounds('Panic Pantry');
 function placeWindow(processName, x, y, w, h) {
   try {
     moveWindow(processName, x, y, w, h);
+    parkMouse();
   } catch (e) {
     log(`could not place ${processName} window: ${e.message}`);
   }

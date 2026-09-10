@@ -6,4 +6,5 @@ test/node_modules/
 .devin/clone-this/*/evidence/**/*.mov
 .devin/clone-this/*/evidence/**/*.mp4
 .devin/clone-this/*/evidence/**/*.webm
+.devin/clone-this/*/evidence/**/*.gif
 .devin/clone-this/*/evidence/**/*.apk

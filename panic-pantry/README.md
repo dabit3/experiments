@@ -30,7 +30,7 @@ below); all art, names, level designs and code are original.
   pass, trash, conveyor belts, moving platforms and pits.
 * **Actions**: move (WASD/arrows, on-screen joystick, or click/tap-to-move),
   pick up / drop / plate (`Space` or the *Grab* button), chop / wash /
-  extinguish (`E`/`Shift` or the *Action* button), dash (`F` or the *Dash*
+  extinguish (hold `E`/`Shift` or hold the *Action* button), dash (`F` or the *Dash*
   button), and six quick emotes (`1`–`6`, `T`, or the smile button).
 * **Rules**: soups need three chopped ingredients and 7 s on a stove; leave
   them 12 s more and the pot burns, then the stove ignites and fire spreads to

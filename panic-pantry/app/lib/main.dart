@@ -120,18 +120,43 @@ class _PanicPantryAppState extends State<PanicPantryApp> {
             stream: _client.toasts.stream,
             child: AnnotatedRegion<SystemUiOverlayStyle>(
               value: PPScheme.of(context).isDark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark,
-              child: AnimatedSwitcher(
-                duration: PPMotion.slow,
-                switchInCurve: PPMotion.emphasized,
-                switchOutCurve: Curves.easeIn,
-                transitionBuilder: (child, a) => FadeTransition(
-                  opacity: a,
-                  child: SlideTransition(
-                    position: Tween(begin: const Offset(0, 0.02), end: Offset.zero).animate(a),
-                    child: child,
+              child: Stack(
+                children: [
+                  AnimatedSwitcher(
+                    duration: PPMotion.slow,
+                    switchInCurve: PPMotion.emphasized,
+                    switchOutCurve: Curves.easeIn,
+                    transitionBuilder: (child, a) => FadeTransition(
+                      opacity: a,
+                      child: SlideTransition(
+                        position: Tween(begin: const Offset(0, 0.02), end: Offset.zero).animate(a),
+                        child: child,
+                      ),
+                    ),
+                    child: _screen(),
                   ),
-                ),
-                child: _screen(),
+                  if (_client.room != null && _client.conn == ConnState.reconnecting)
+                    Positioned.fill(
+                      child: Container(
+                        color: PPScheme.of(context).bg.withValues(alpha: 0.78),
+                        child: StatePanel(
+                          title: 'Reconnecting…',
+                          message: _client.game != null && _client.game!.phase != Phase.lobby
+                              ? 'Hold tight — your seat is saved and the kitchen keeps cooking.'
+                              : 'Lost the server. Your seat is kept while we try again.',
+                          busy: true,
+                          actions: [
+                            PPButton(
+                              label: 'Leave kitchen',
+                              icon: Icons.logout_rounded,
+                              kind: PPButtonKind.ghost,
+                              onPressed: _client.leaveRoom,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
           );

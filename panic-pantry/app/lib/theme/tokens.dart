@@ -170,7 +170,7 @@ class PPScheme extends ThemeExtension<PPScheme> {
     outline: Color(0xFF4A4858),
     text: PPColor.cream,
     text2: Color(0xFFCFC9BE),
-    text3: PPColor.mute,
+    text3: Color(0xFFA9A4B3),
     brightness: Brightness.dark,
   );
 

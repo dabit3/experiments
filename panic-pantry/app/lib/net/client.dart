@@ -209,7 +209,16 @@ class GameClient extends ChangeNotifier {
         );
         _inputTimer?.cancel();
         _inputTimer = Timer.periodic(Duration(microseconds: (tickSeconds * 1e6).round()), (_) => _inputTick());
-        if (m['resumed'] == true) toasts.add('Reconnected — welcome back!');
+        if (m['resumed'] == true) {
+          toasts.add('Reconnected — welcome back!');
+        } else if (room != null) {
+          // The server no longer knows our seat (it restarted or the room
+          // closed while we were away), so the old kitchen is gone.
+          room = null;
+          game = null;
+          results = null;
+          toasts.add('Connection lost — the kitchen closed');
+        }
       case Msg.pong:
         rttMs = DateTime.now().millisecondsSinceEpoch - (m['t'] as int);
       case Msg.roomState:
@@ -274,6 +283,11 @@ class GameClient extends ChangeNotifier {
   void createRoom({String? level}) => _send({'type': Msg.roomCreate, 'level': ?level});
   void joinRoom(String code) => _send({'type': Msg.roomJoin, 'code': code.trim().toUpperCase()});
   void leaveRoom() {
+    if (_ch == null) {
+      // Leaving while offline: forget the resume token so the next
+      // connection starts fresh instead of reattaching to the old seat.
+      token = null;
+    }
     _send({'type': Msg.roomLeave});
     room = null;
     game = null;
@@ -294,14 +308,29 @@ class GameClient extends ChangeNotifier {
   /// are sent immediately so button taps are never lost between ticks.
   void setMovement(double dx, double dy) {
     if (_held.dx == dx && _held.dy == dy) return;
-    _held = ChefInput(dx: dx, dy: dy);
+    _held = ChefInput(dx: dx, dy: dy, action: _held.action);
     _heldDirty = true;
   }
 
-  void press({bool interact = false, bool action = false, bool dash = false, int? emote}) {
+  /// Action (chop / wash / spray) is a held input: it stays on until released.
+  void setAction(bool down) {
+    if (_held.action == down) return;
+    _held = ChefInput(dx: _held.dx, dy: _held.dy, action: down);
+    _heldDirty = true;
+    _send({'type': Msg.input, ..._held.toJson()});
+  }
+
+  void press({bool interact = false, bool dash = false, int? emote}) {
     _send({
       'type': Msg.input,
-      ...ChefInput(dx: _held.dx, dy: _held.dy, interact: interact, action: action, dash: dash, emote: emote).toJson(),
+      ...ChefInput(
+        dx: _held.dx,
+        dy: _held.dy,
+        action: _held.action,
+        interact: interact,
+        dash: dash,
+        emote: emote,
+      ).toJson(),
     });
   }
 
@@ -310,11 +339,11 @@ class GameClient extends ChangeNotifier {
       if (_testTicksLeft == 0) {
         final step = testQueue.removeAt(0);
         _testTicksLeft = step.ticks;
-        _held = ChefInput(dx: step.input.dx, dy: step.input.dy);
+        _held = ChefInput(dx: step.input.dx, dy: step.input.dy, action: step.input.action);
         _send({'type': Msg.input, ...step.input.toJson()});
         notifyListeners();
       } else {
-        _send({'type': Msg.input, ...ChefInput(dx: _held.dx, dy: _held.dy).toJson()});
+        _send({'type': Msg.input, ..._held.toJson()});
       }
       _testTicksLeft--;
       if (_testTicksLeft == 0 && testQueue.isEmpty) {
@@ -326,7 +355,7 @@ class GameClient extends ChangeNotifier {
     }
     if (_heldDirty || !_held.isIdle) {
       _heldDirty = false;
-      _send({'type': Msg.input, ...ChefInput(dx: _held.dx, dy: _held.dy).toJson()});
+      _send({'type': Msg.input, ..._held.toJson()});
     }
   }
 

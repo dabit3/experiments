@@ -61,3 +61,13 @@ recorded limitation, not a missing item.
 
 Result: every enumerated surface maps to an existing verified item. No new item
 discovered. Frontier empty. `new_items: 0`.
+
+## Re-walk at iteration 8 (post-review fixes)
+
+New code surfaces since iteration 7: `GameClient.setAction`, `_ActionButton.onRelease`,
+`_isActionKey` (game_screen.dart) → feature-chop / feature-input; the `Stack` +
+`StatePanel` reconnect overlay in `main.dart` and the non-resumed-welcome cleanup in
+`client.dart` → feature-reconnect / journey-reconnect; `_Coach` board-state hints →
+feature-tutorial; `parkMouse` in `test/lib/common.mjs` and the tightened `maxBlocks` gate
+→ visual-* items (harness only). Every new surface maps to an existing item. No new
+item. Frontier empty. `new_items: 0`.

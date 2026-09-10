@@ -30,7 +30,7 @@ export const DEFAULTS = {
   block: 2, // logical px per block
   tolerance: 80, // per-channel 0..255
   shift: 1, // placement allowance (blocks in pass 1, logical px in pass 2)
-  maxBlocks: 3, // pass 1: differing blocks allowed
+  maxBlocks: 2, // pass 1: differing blocks allowed
   maxCore: 2, // pass 2: surviving logical px allowed
   maxCluster: 3, // both passes: largest 8-connected group allowed
 };

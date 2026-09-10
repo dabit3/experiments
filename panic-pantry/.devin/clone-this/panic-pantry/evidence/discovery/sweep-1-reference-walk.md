@@ -32,3 +32,13 @@ assets, accessibility, reliability, rebrand (`audit-*.md`).
 
 Result: every reference row maps to at least one verified item. No new item, route,
 feature, or journey discovered. Frontier empty. `new_items: 0`.
+
+## Re-walk at iteration 8 (post-review fixes)
+
+Re-checked after the independent manual pass led to source changes (held Action input,
+app-level reconnect overlay, tutorial board hints, lobby card width, dark `text3`
+contrast). The only reference rows touched are "hold to chop / wash / extinguish"
+(feature-chop, feature-plates, feature-fire — now literally held input, matching the
+documented source behaviour more closely) and "disconnect handling" (feature-reconnect).
+Both already had owning items; their labels and evidence were refreshed. No new item.
+`new_items: 0`.
