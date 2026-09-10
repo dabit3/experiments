@@ -93,30 +93,13 @@ class _ResultsScreenState extends State<ResultsScreen>
                         : 'Placed number $placement of $teams.',
                     child: Column(
                       children: [
-                        LfEyebrow(
-                          won ? 'LAST FORT STANDING' : 'MATCH OVER',
-                          color: accent,
+                        _Ribbon(
+                          eyebrow: won ? 'LAST FORT STANDING' : 'MATCH OVER',
+                          title: won ? 'VICTORY' : 'PLACED #$placement',
+                          accent: accent,
+                          phone: layout.isPhone,
                         ),
-                        const SizedBox(height: LfTokens.s2),
-                        Text(
-                          won ? 'VICTORY' : '#$placement',
-                          textAlign: TextAlign.center,
-                          style:
-                              (layout.isPhone
-                                      ? context.text.displayMedium
-                                      : context.text.displayLarge)
-                                  ?.copyWith(
-                                    color: accent,
-                                    height: 1,
-                                    shadows: [
-                                      Shadow(
-                                        color: accent.withValues(alpha: 0.6),
-                                        blurRadius: 30,
-                                      ),
-                                    ],
-                                  ),
-                        ),
-                        const SizedBox(height: LfTokens.s2),
+                        const SizedBox(height: LfTokens.s3),
                         Text(
                           won
                               ? 'Your squad outlasted $teams teams.'
@@ -280,6 +263,78 @@ class _ResultsScreenState extends State<ResultsScreen>
 
   static String _fmtTime(int s) =>
       '${s ~/ 60}:${(s % 60).toString().padLeft(2, '0')}';
+}
+
+/// Wide leaning banner behind the headline, the way BR results announce the
+/// outcome before any numbers.
+class _Ribbon extends StatelessWidget {
+  const _Ribbon({
+    required this.eyebrow,
+    required this.title,
+    required this.accent,
+    required this.phone,
+  });
+  final String eyebrow;
+  final String title;
+  final Color accent;
+  final bool phone;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.lf;
+    final fg = c.isDark ? const Color(0xFF0B0F17) : Colors.white;
+    return Column(
+      children: [
+        Text(
+          eyebrow,
+          style: context.text.labelLarge?.copyWith(
+            color: accent,
+            letterSpacing: 3,
+          ),
+        ),
+        const SizedBox(height: LfTokens.s2),
+        Transform(
+          transform: Matrix4.skewX(-0.18),
+          alignment: Alignment.center,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: phone ? LfTokens.s5 : LfTokens.s7,
+              vertical: phone ? LfTokens.s2 : LfTokens.s3,
+            ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.lerp(accent, Colors.white, 0.15)!,
+                  accent,
+                  Color.lerp(accent, Colors.black, 0.2)!,
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: accent.withValues(alpha: 0.5),
+                  blurRadius: 36,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Transform(
+              transform: Matrix4.skewX(0.18),
+              alignment: Alignment.center,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                style:
+                    (phone
+                            ? context.text.displaySmall
+                            : context.text.displayLarge)
+                        ?.copyWith(color: fg, height: 1, letterSpacing: 2),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class _Header extends StatelessWidget {

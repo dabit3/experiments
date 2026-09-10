@@ -14,6 +14,7 @@ import '../game/lastfort_game.dart';
 import '../game/match_client.dart';
 import '../net/connection.dart' as net;
 import 'hud.dart';
+import 'hud_panels.dart';
 import 'touch_controls.dart';
 
 /// Live match: Flame renderer underneath, HUD + touch controls on top.
@@ -182,25 +183,26 @@ class _Hud extends StatelessWidget {
     final sim = client.sim;
     final spectating = me != null && me.eliminated;
     final target = client.viewTarget;
-    final mapSize = compact ? 108.0 : 150.0;
+    final mapSize = compact ? 112.0 : 168.0;
     final busPhase = sim.phase == MatchPhase.bus;
     final inBus = me?.state == PlayerState.inBus;
     final dropping = me?.state == PlayerState.dropping;
 
     return LayoutBuilder(
       builder: (context, box) {
-        final compassWidth = compact ? 180.0 : 300.0;
-        // Side columns are ~220px wide; when the viewport cannot fit all three
-        // across, the compass joins the top-left column under the timers.
-        final sideWidth = pad.left + inset + 48 + 230;
+        final compassWidth = compact ? 220.0 : 380.0;
+        // The minimap cluster owns the top-right; when the compass cannot sit
+        // between the menu button and that cluster it joins the left column.
+        final sideWidth = pad.left + inset + mapSize + 16;
         final compassFits = box.maxWidth - 2 * sideWidth >= compassWidth;
         // Vitals and the hotbar share the bottom edge only when both fit;
         // otherwise the vitals stack above the hotbar column.
-        final vitalsWidth = compact ? 180.0 : 260.0;
-        final hotbarWidth = compact ? 280.0 : 360.0;
+        final vitalsWidth = VitalsPanel.widthFor(compact);
+        final hotbarWidth = HotbarPanel.widthFor(compact);
         final bottomFits =
             box.maxWidth - pad.horizontal - 3 * inset >=
             vitalsWidth + hotbarWidth;
+        final showSquad = bottomFits || layout != LfLayout.phone;
         // On narrow screens the minimap and feed own the upper-right, so the
         // prompt drops toward the middle instead of overlapping them.
         final promptTop = compassFits
@@ -245,21 +247,20 @@ class _Hud extends StatelessWidget {
                 ),
               ),
 
-            // Top-left: storm timer, players left (offset for menu button).
+            // Top-left column under the menu button: compass (when it does
+            // not fit centred) and the event feed.
             Positioned(
-              top: pad.top + inset,
-              left: pad.left + inset + 48,
+              top: pad.top + inset + 44,
+              left: pad.left + inset,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  StormPanel(client: client, compact: compact),
-                  const SizedBox(height: 6),
-                  PlayersLeftPanel(client: client),
                   if (!busPhase && !compassFits) ...[
-                    const SizedBox(height: 6),
                     CompassStrip(client: client, width: compassWidth),
+                    const SizedBox(height: 6),
                   ],
+                  FeedPanel(client: client, compact: compact),
                 ],
               ),
             ),
@@ -275,35 +276,29 @@ class _Hud extends StatelessWidget {
                 ),
               ),
 
-            // Top-right: minimap + feed.
+            // Top-right: minimap, storm timer, alive / eliminations.
             Positioned(
               top: pad.top + inset,
               right: pad.right + inset,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Minimap(client: client, size: mapSize),
-                  const SizedBox(height: 8),
-                  FeedPanel(client: client, compact: compact),
-                ],
-              ),
+              child: TopRightCluster(client: client, compact: compact),
             ),
 
-            // Left-middle squad panel.
-            if (!compact || layout != LfLayout.phone)
-              Positioned(
-                left: pad.left + inset,
-                top: pad.top + inset + (compassFits ? 118 : 150),
-                child: SquadPanel(client: client),
-              ),
-
-            // Bottom-left vitals.
+            // Bottom-left: squad above the player's own shield / health.
             if (bottomFits)
               Positioned(
                 left: pad.left + inset,
                 bottom: pad.bottom + inset,
-                child: VitalsPanel(client: client, compact: compact),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (showSquad) ...[
+                      SquadPanel(client: client, compact: compact),
+                      const SizedBox(height: 6),
+                    ],
+                    VitalsPanel(client: client, compact: compact),
+                  ],
+                ),
               ),
 
             // Bottom-right: materials above the hotbar.
@@ -394,33 +389,34 @@ class _CenterPrompt extends StatelessWidget {
       final winner = client.summary?['winnerTeam'] as int?;
       final won = me != null && winner != null && me.team == winner;
       final placement = me?.stats.placement ?? 0;
-      return HudPanel(
-        accent: won ? LfTokens.warning : LfTokens.teal,
-        padding: const EdgeInsets.symmetric(
-          horizontal: LfTokens.s5,
-          vertical: LfTokens.s3,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              won ? 'LAST FORT STANDING' : 'MATCH OVER',
-              style: hudLabel(
-                context,
-                color: won ? LfTokens.warning : LfTokens.teal,
-              ),
+      final accent = won ? LfTokens.warning : LfTokens.teal;
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            won ? 'LAST FORT STANDING' : 'MATCH OVER',
+            style: hudCaps(13, color: accent).copyWith(letterSpacing: 3),
+          ),
+          const SizedBox(height: 6),
+          HudSlab(
+            strong: true,
+            accent: accent,
+            lean: 0.3,
+            padding: const EdgeInsets.symmetric(
+              horizontal: LfTokens.s7,
+              vertical: LfTokens.s2,
             ),
-            const SizedBox(height: 2),
-            Text(
-              won ? 'Victory' : 'Placed #$placement',
-              style: context.text.headlineSmall?.copyWith(color: hudText),
+            child: Text(
+              won ? 'VICTORY' : 'PLACED #$placement',
+              style: hudDigits(
+                touch ? 30 : 40,
+                color: accent,
+              ).copyWith(letterSpacing: 2),
             ),
-            Text(
-              'Results in a moment',
-              style: context.text.bodySmall?.copyWith(color: hudMuted),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 6),
+          Text('Results in a moment', style: hudCaps(11)),
+        ],
       );
     }
     if (spectating) {

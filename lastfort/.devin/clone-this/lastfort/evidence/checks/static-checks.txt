@@ -1,4 +1,4 @@
-Formatted 13 files (0 changed) in 0.03 seconds.
+Formatted 13 files (0 changed) in 0.06 seconds.
 Analyzing core...
 No issues found!
 00:00 +0: loading test/sim_test.dart
@@ -25,21 +25,21 @@ ended at tick 2334 (116.7s), winner 0
 00:02 +3: test/sim_test.dart: building costs materials and blocks movement
 00:02 +4: All tests passed!
 web determinism: identical (    1196 bytes)
-Formatted 7 files (0 changed) in 0.02 seconds.
+Formatted 7 files (0 changed) in 0.03 seconds.
 Analyzing server...
 No issues found!
 00:00 +0: loading test/server_test.dart
 00:00 +0: test/server_test.dart: rooms: create, join by code, errors, host start with bots
 00:00 +1: test/server_test.dart: four platforms in one squad finish a match with identical summaries
-00:04 +2: test/server_test.dart: bots complete a partial human squad before forming their own
-00:04 +3: test/server_test.dart: reconnect resumes the same player mid-match
-00:04 +4: test/server_test.dart: a room can play a second match after the first ends
-00:08 +5: test/server_test.dart: a second connection with the same token supersedes the first
-00:08 +6: test/server_test.dart: disconnected players time out and the match still ends
-00:09 +7: All tests passed!
-Formatted 20 files (0 changed) in 0.18 seconds.
+00:03 +2: test/server_test.dart: bots complete a partial human squad before forming their own
+00:03 +3: test/server_test.dart: reconnect resumes the same player mid-match
+00:03 +4: test/server_test.dart: a room can play a second match after the first ends
+00:07 +5: test/server_test.dart: a second connection with the same token supersedes the first
+00:07 +6: test/server_test.dart: disconnected players time out and the match still ends
+00:07 +7: All tests passed!
+Formatted 22 files (0 changed) in 0.17 seconds.
 Analyzing client...                                             
-No issues found! (ran in 2.1s)
+No issues found! (ran in 2.6s)
 00:00 +0: loading /Users/devin/repos/experiments/lastfort/client/test/widget_test.dart
 00:00 +0: platform name is one of the four supported targets
 00:00 +1: themes build for both brightnesses

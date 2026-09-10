@@ -1,0 +1,8 @@
+[2026-09-10T07:14:43.682083] lastfort server listening on ws://0.0.0.0:8790/ws
+[2026-09-10T07:14:47.440381] hello Web [web] token=332zfs
+[2026-09-10T07:14:47.445352] room LFE2E created by Web (mode=squads fast=true seed=4242)
+[2026-09-10T07:14:49.977405] hello Ios [ios] token=0v3v7t
+[2026-09-10T07:16:56.593502] report LFE2E web digest=5B0FF7B1
+[2026-09-10T07:16:56.599662] report LFE2E ios digest=5B0FF7B1
+[2026-09-10T07:17:12.530042] disconnected Web (332zfs)
+[2026-09-10T07:17:13.435371] disconnected Ios (0v3v7t)

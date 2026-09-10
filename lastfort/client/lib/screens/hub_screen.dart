@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lastfort_core/lastfort_core.dart';
 
-import '../app/profile.dart';
 import '../app/scope.dart';
 import '../app/theme.dart';
 import '../app/widgets.dart';
 import '../net/connection.dart' as net;
 import '../net/session.dart';
+import 'lobby_play.dart';
 import 'locker_screen.dart';
 import 'pass_screen.dart';
 import 'results_screen.dart';
@@ -24,8 +24,9 @@ enum HubTab {
   final IconData icon;
 }
 
-/// Lobby hub: navigation rail/bar plus the Play, Locker, Pass and Settings
-/// tabs. Also hosts the post-match results while the room is back in lobby.
+/// Lobby hub: a top tab bar (wordmark, PLAY / LOCKER / PASS / SETTINGS,
+/// profile + tier) over the active tab. Also hosts the post-match results
+/// while the room is back in lobby.
 class HubScreen extends StatefulWidget {
   const HubScreen({super.key});
 
@@ -68,23 +69,12 @@ class _HubScreenState extends State<HubScreen> {
             children: [
               StormBackdrop(intensity: tab == HubTab.play ? 1 : 0.5),
               SafeArea(
-                child: layout.isPhone
-                    ? Column(
-                        children: [
-                          Expanded(child: _animated(body)),
-                          _BottomNav(tab: tab, onSelect: _select),
-                        ],
-                      )
-                    : Row(
-                        children: [
-                          _SideNav(
-                            tab: tab,
-                            onSelect: _select,
-                            compact: layout == LfLayout.tablet,
-                          ),
-                          Expanded(child: _animated(body)),
-                        ],
-                      ),
+                child: Column(
+                  children: [
+                    _TopBar(tab: tab, onSelect: _select, phone: layout.isPhone),
+                    Expanded(child: _animated(body)),
+                  ],
+                ),
               ),
               const _ConnectionBanner(),
             ],
@@ -118,56 +108,78 @@ class _HubScreenState extends State<HubScreen> {
   }
 }
 
-class _SideNav extends StatelessWidget {
-  const _SideNav({
+/// Top navigation: wordmark, uppercase tabs with an ember underline on the
+/// active one, then the player's outfit / name / tier on the right.
+class _TopBar extends StatelessWidget {
+  const _TopBar({
     required this.tab,
     required this.onSelect,
-    required this.compact,
+    required this.phone,
   });
   final HubTab tab;
   final ValueChanged<HubTab> onSelect;
-  final bool compact;
+  final bool phone;
+
+  static const double height = 64;
+  static const double phoneHeight = 56;
 
   @override
   Widget build(BuildContext context) {
     final c = context.lf;
     final profile = AppScope.of(context).profile;
     return Container(
-      width: compact ? 88 : 232,
-      margin: const EdgeInsets.all(LfTokens.s4),
-      padding: const EdgeInsets.symmetric(
-        vertical: LfTokens.s5,
-        horizontal: LfTokens.s3,
+      height: phone ? phoneHeight : height,
+      padding: EdgeInsets.symmetric(
+        horizontal: phone ? LfTokens.s3 : LfTokens.s5,
       ),
       decoration: BoxDecoration(
         color: c.glass,
-        borderRadius: BorderRadius.circular(LfTokens.rLg),
-        border: Border.all(color: c.line),
+        border: Border(bottom: BorderSide(color: c.line)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Row(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: LfTokens.s2),
-            child: compact
-                ? const Center(
-                    child: LastfortWordmark(size: 28, iconOnly: true),
-                  )
-                : const LastfortWordmark(size: 28),
-          ),
-          const SizedBox(height: LfTokens.s6),
-          for (final t in HubTab.values)
-            _NavItem(
-              tab: t,
-              selected: t == tab,
-              compact: compact,
-              onTap: () => onSelect(t),
-              badge: t == HubTab.pass ? profile.claimable.length : 0,
+          LastfortWordmark(size: phone ? 26 : 30, iconOnly: phone),
+          SizedBox(width: phone ? LfTokens.s3 : LfTokens.s6),
+          Expanded(
+            child: Semantics(
+              container: true,
+              label: 'Main navigation',
+              child: Row(
+                mainAxisAlignment: phone
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.start,
+                children: [
+                  for (final t in HubTab.values)
+                    _Tab(
+                      tab: t,
+                      selected: t == tab,
+                      phone: phone,
+                      onTap: () => onSelect(t),
+                    ),
+                ],
+              ),
             ),
-          const Spacer(),
+          ),
+          SizedBox(width: phone ? LfTokens.s3 : LfTokens.s4),
+          IconButton(
+            tooltip: 'How a match works',
+            onPressed: () => showDialog<void>(
+              context: context,
+              builder: (ctx) => Dialog(
+                backgroundColor: Colors.transparent,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 720),
+                  child: const SingleChildScrollView(child: _HowToPlay()),
+                ),
+              ),
+            ),
+            icon: Icon(Icons.help_outline_rounded, color: c.muted, size: 20),
+            visualDensity: VisualDensity.compact,
+          ),
+          if (!phone) const SizedBox(width: LfTokens.s2),
           ListenableBuilder(
             listenable: profile,
-            builder: (context, _) => _ProfileCard(compact: compact),
+            builder: (context, _) => _ProfilePill(phone: phone),
           ),
         ],
       ),
@@ -175,107 +187,67 @@ class _SideNav extends StatelessWidget {
   }
 }
 
-class _NavItem extends StatefulWidget {
-  const _NavItem({
+class _Tab extends StatefulWidget {
+  const _Tab({
     required this.tab,
     required this.selected,
-    required this.compact,
+    required this.phone,
     required this.onTap,
-    this.badge = 0,
   });
   final HubTab tab;
   final bool selected;
-  final bool compact;
+  final bool phone;
   final VoidCallback onTap;
-  final int badge;
 
   @override
-  State<_NavItem> createState() => _NavItemState();
+  State<_Tab> createState() => _TabState();
 }
 
-class _NavItemState extends State<_NavItem> {
-  bool hover = false;
+class _TabState extends State<_Tab> {
+  bool _hover = false;
 
   @override
   Widget build(BuildContext context) {
     final c = context.lf;
-    final sel = widget.selected;
-    final fg = sel ? LfTokens.ember : (hover ? c.text : c.muted);
+    final on = widget.selected;
+    final style =
+        (widget.phone ? context.text.labelMedium : context.text.titleMedium)
+            ?.copyWith(
+              letterSpacing: widget.phone ? 1 : 1.6,
+              fontWeight: FontWeight.w700,
+              color: on ? c.text : (_hover ? c.text : c.muted),
+            );
     return Semantics(
       button: true,
-      selected: sel,
-      label: widget.tab.label,
+      selected: on,
+      label: '${widget.tab.label} tab',
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
-        onEnter: (_) => setState(() => hover = true),
-        onExit: (_) => setState(() => hover = false),
+        onEnter: (_) => setState(() => _hover = true),
+        onExit: (_) => setState(() => _hover = false),
         child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: widget.onTap,
-          child: AnimatedContainer(
-            duration: LfTokens.fast,
-            margin: const EdgeInsets.only(bottom: LfTokens.s1),
+          child: Container(
+            height: double.infinity,
             padding: EdgeInsets.symmetric(
-              horizontal: widget.compact ? 0 : LfTokens.s3,
-              vertical: LfTokens.s3,
+              horizontal: widget.phone ? LfTokens.s1 : LfTokens.s4,
             ),
-            decoration: BoxDecoration(
-              color: sel
-                  ? LfTokens.ember.withValues(alpha: 0.12)
-                  : (hover
-                        ? c.surface2.withValues(alpha: 0.6)
-                        : Colors.transparent),
-              borderRadius: BorderRadius.circular(LfTokens.rMd),
-              border: Border.all(
-                color: sel
-                    ? LfTokens.ember.withValues(alpha: 0.5)
-                    : Colors.transparent,
-              ),
-            ),
-            child: Row(
-              mainAxisAlignment: widget.compact
-                  ? MainAxisAlignment.center
-                  : MainAxisAlignment.start,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Icon(widget.tab.icon, color: fg, size: 22),
-                    if (widget.badge > 0)
-                      Positioned(
-                        right: -6,
-                        top: -6,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 5,
-                            vertical: 1,
-                          ),
-                          decoration: BoxDecoration(
-                            color: LfTokens.teal,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            '${widget.badge}',
-                            style: const TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w800,
-                              color: Color(0xFF062B29),
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                if (!widget.compact) ...[
-                  const SizedBox(width: LfTokens.s3),
-                  Text(
-                    widget.tab.label.toUpperCase(),
-                    style: context.text.labelLarge?.copyWith(
-                      color: fg,
-                      letterSpacing: 1.6,
-                      fontWeight: FontWeight.w700,
-                    ),
+                const Spacer(),
+                Text(widget.tab.label.toUpperCase(), style: style),
+                const Spacer(),
+                AnimatedContainer(
+                  duration: LfTokens.fast,
+                  height: 3,
+                  width: on ? (widget.phone ? 28 : 44) : 0,
+                  decoration: BoxDecoration(
+                    color: LfTokens.ember,
+                    borderRadius: BorderRadius.circular(2),
                   ),
-                ],
+                ),
               ],
             ),
           ),
@@ -285,154 +257,68 @@ class _NavItemState extends State<_NavItem> {
   }
 }
 
-class _BottomNav extends StatelessWidget {
-  const _BottomNav({required this.tab, required this.onSelect});
-  final HubTab tab;
-  final ValueChanged<HubTab> onSelect;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.lf;
-    final profile = AppScope.of(context).profile;
-    return Container(
-      margin: const EdgeInsets.fromLTRB(
-        LfTokens.s3,
-        0,
-        LfTokens.s3,
-        LfTokens.s3,
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: LfTokens.s2,
-        vertical: LfTokens.s2,
-      ),
-      decoration: BoxDecoration(
-        color: c.glassStrong,
-        borderRadius: BorderRadius.circular(LfTokens.rLg),
-        border: Border.all(color: c.line),
-      ),
-      child: Row(
-        children: [
-          for (final t in HubTab.values)
-            Expanded(
-              child: Semantics(
-                button: true,
-                selected: t == tab,
-                label: t.label,
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => onSelect(t),
-                  child: AnimatedContainer(
-                    duration: LfTokens.fast,
-                    padding: const EdgeInsets.symmetric(vertical: LfTokens.s2),
-                    decoration: BoxDecoration(
-                      color: t == tab
-                          ? LfTokens.ember.withValues(alpha: 0.14)
-                          : Colors.transparent,
-                      borderRadius: BorderRadius.circular(LfTokens.rMd),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Stack(
-                          clipBehavior: Clip.none,
-                          children: [
-                            Icon(
-                              t.icon,
-                              size: 22,
-                              color: t == tab ? LfTokens.ember : c.muted,
-                            ),
-                            if (t == HubTab.pass &&
-                                profile.claimable.isNotEmpty)
-                              Positioned(
-                                right: -4,
-                                top: -3,
-                                child: Container(
-                                  width: 8,
-                                  height: 8,
-                                  decoration: const BoxDecoration(
-                                    color: LfTokens.teal,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          t.label,
-                          style: context.text.labelSmall?.copyWith(
-                            color: t == tab ? LfTokens.ember : c.muted,
-                            letterSpacing: 0.8,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ProfileCard extends StatelessWidget {
-  const _ProfileCard({required this.compact});
-  final bool compact;
+class _ProfilePill extends StatelessWidget {
+  const _ProfilePill({required this.phone});
+  final bool phone;
 
   @override
   Widget build(BuildContext context) {
     final profile = AppScope.of(context).profile;
     final c = context.lf;
     final outfit = profile.equipped(CosmeticSlot.outfit);
-    if (compact) {
-      return Center(child: OutfitAvatar(outfit, size: 44));
-    }
-    return Container(
-      padding: const EdgeInsets.all(LfTokens.s3),
-      decoration: BoxDecoration(
-        color: c.surface2.withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(LfTokens.rMd),
-      ),
-      child: Row(
-        children: [
-          OutfitAvatar(outfit, size: 40),
-          const SizedBox(width: LfTokens.s3),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  profile.name,
-                  style: context.text.titleMedium,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-                Row(
-                  children: [
-                    Text(
-                      'TIER ${profile.level}',
-                      style: context.text.labelSmall?.copyWith(
-                        color: LfTokens.teal,
-                        letterSpacing: 1.2,
-                        fontWeight: FontWeight.w700,
-                      ),
+    return Semantics(
+      label: '${profile.name}, tier ${profile.level}',
+      child: Container(
+        padding: EdgeInsets.fromLTRB(phone ? 2 : 4, 2, phone ? 2 : 12, 2),
+        decoration: BoxDecoration(
+          color: c.surface2.withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(999),
+          border: Border.all(color: c.line),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            OutfitAvatar(outfit, size: 32),
+            if (!phone) ...[
+              const SizedBox(width: LfTokens.s2),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 140),
+                    child: Text(
+                      profile.name,
+                      style: context.text.labelLarge,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(width: LfTokens.s2),
-                    Expanded(
-                      child: LfBar(
-                        value: profile.tierProgress,
-                        color: LfTokens.teal,
-                        height: 5,
+                  ),
+                  const SizedBox(height: 3),
+                  Row(
+                    children: [
+                      Text(
+                        'TIER ${profile.level}',
+                        style: context.text.labelSmall?.copyWith(
+                          color: LfTokens.teal,
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
+                      const SizedBox(width: 6),
+                      SizedBox(
+                        width: 64,
+                        child: LfBar(
+                          value: profile.tierProgress,
+                          color: LfTokens.teal,
+                          height: 4,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
@@ -540,678 +426,12 @@ class _ConnectionBanner extends StatelessWidget {
   }
 }
 
-// ------------------------------------------------------------------ Play tab
-
-class PlayTab extends StatefulWidget {
-  const PlayTab({super.key});
-
-  @override
-  State<PlayTab> createState() => _PlayTabState();
-}
-
-class _PlayTabState extends State<PlayTab> {
-  final codeCtl = TextEditingController();
-  SquadMode mode = SquadMode.squads;
-
-  @override
-  void dispose() {
-    codeCtl.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final session = AppScope.of(context).session;
-    final layout = LfLayout.of(context);
-    final pad = layout.isPhone ? LfTokens.s4 : LfTokens.s6;
-
-    return ListenableBuilder(
-      listenable: Listenable.merge([session, session.connection]),
-      builder: (context, _) => _buildPage(context, session, layout, pad),
-    );
-  }
-
-  Widget _buildPage(
-    BuildContext context,
-    Session session,
-    LfLayout layout,
-    double pad,
-  ) {
-    final room = session.room;
-    return LfPage(
-      child: ListView(
-        padding: EdgeInsets.fromLTRB(
-          pad,
-          layout.isPhone ? LfTokens.s5 : LfTokens.s6,
-          pad,
-          LfTokens.s6,
-        ),
-        children: [
-          _Hero(),
-          const SizedBox(height: LfTokens.s5),
-          AnimatedSwitcher(
-            duration: LfTokens.base,
-            child: room == null
-                ? _CreateJoinPanel(
-                    key: const ValueKey('create'),
-                    codeCtl: codeCtl,
-                    mode: mode,
-                    onMode: (m) => setState(() => mode = m),
-                  )
-                : _RoomPanel(key: ValueKey(room.code), room: room),
-          ),
-          if (session.notice != null && room == null) ...[
-            const SizedBox(height: LfTokens.s3),
-            _Notice(text: session.notice!, onDismiss: session.clearNotice),
-          ],
-          const SizedBox(height: LfTokens.s5),
-          const _HowToPlay(),
-        ],
-      ),
-    );
-  }
-}
-
-class _Hero extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final profile = AppScope.of(context).profile;
-    final layout = LfLayout.of(context);
-    final c = context.lf;
-    return ListenableBuilder(
-      listenable: profile,
-      builder: (context, _) {
-        final outfit = profile.equipped(CosmeticSlot.outfit);
-        final stats = profile.career;
-        final phone = layout.isPhone;
-        return LfPanel(
-          strong: true,
-          padding: EdgeInsets.all(phone ? LfTokens.s4 : LfTokens.s5),
-          child: Row(
-            children: [
-              OutfitAvatar(outfit, size: phone ? 72 : 104),
-              SizedBox(width: phone ? LfTokens.s4 : LfTokens.s5),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const LfEyebrow('WELCOME BACK'),
-                    const SizedBox(height: 2),
-                    Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            profile.name,
-                            style: (phone
-                                ? context.text.headlineMedium
-                                : context.text.headlineLarge),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        const SizedBox(width: LfTokens.s2),
-                        IconButton(
-                          tooltip: 'Change name',
-                          onPressed: () => _editName(context, profile),
-                          icon: Icon(
-                            Icons.edit_rounded,
-                            size: 18,
-                            color: c.muted,
-                          ),
-                          visualDensity: VisualDensity.compact,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: LfTokens.s2),
-                    Wrap(
-                      spacing: LfTokens.s4,
-                      runSpacing: LfTokens.s1,
-                      children: [
-                        _MiniStat('Wins', '${stats.wins}', LfTokens.warning),
-                        _MiniStat('Matches', '${stats.matches}', c.text),
-                        _MiniStat('Elims', '${stats.kills}', LfTokens.ember),
-                        _MiniStat('Tier', '${profile.level}', LfTokens.teal),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> _editName(BuildContext context, Profile profile) async {
-    final ctl = TextEditingController(text: profile.name);
-    final v = await showDialog<String>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Display name'),
-        content: TextField(
-          controller: ctl,
-          autofocus: true,
-          maxLength: 16,
-          decoration: const InputDecoration(hintText: 'Your name'),
-          onSubmitted: (v) => Navigator.pop(ctx, v),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, ctl.text),
-            child: const Text('Save'),
-          ),
-        ],
-      ),
-    );
-    if (v != null && v.trim().isNotEmpty) await profile.setName(v.trim());
-  }
-}
-
-class _MiniStat extends StatelessWidget {
-  const _MiniStat(this.label, this.value, this.color);
-  final String label;
-  final String value;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) => Row(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.baseline,
-    textBaseline: TextBaseline.alphabetic,
-    children: [
-      Text(value, style: context.text.titleLarge?.copyWith(color: color)),
-      const SizedBox(width: 4),
-      Text(
-        label.toUpperCase(),
-        style: context.text.labelSmall?.copyWith(
-          color: context.lf.muted,
-          letterSpacing: 1.2,
-        ),
-      ),
-    ],
-  );
-}
-
-class _CreateJoinPanel extends StatelessWidget {
-  const _CreateJoinPanel({
-    super.key,
-    required this.codeCtl,
-    required this.mode,
-    required this.onMode,
-  });
-  final TextEditingController codeCtl;
-  final SquadMode mode;
-  final ValueChanged<SquadMode> onMode;
-
-  @override
-  Widget build(BuildContext context) {
-    final session = AppScope.of(context).session;
-    final layout = LfLayout.of(context);
-    final c = context.lf;
-    final connected = session.connection.isConnected;
-
-    final create = LfPanel(
-      accent: LfTokens.ember,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const LfEyebrow('NEW MATCH'),
-          const SizedBox(height: LfTokens.s1),
-          Text('Create a room', style: context.text.headlineSmall),
-          const SizedBox(height: LfTokens.s3),
-          Text(
-            'Pick a squad size. Empty slots fill with bots when the host starts.',
-            style: context.text.bodyMedium?.copyWith(color: c.muted),
-          ),
-          const SizedBox(height: LfTokens.s4),
-          Wrap(
-            spacing: LfTokens.s2,
-            runSpacing: LfTokens.s2,
-            children: [
-              for (final m in SquadMode.values)
-                LfChip(
-                  label: '${m.label} · ${m.size}',
-                  selected: m == mode,
-                  onTap: () => onMode(m),
-                  color: LfTokens.ember,
-                ),
-            ],
-          ),
-          const SizedBox(height: LfTokens.s5),
-          LfButton(
-            label: 'Create room',
-            icon: Icons.add_rounded,
-            size: LfButtonSize.lg,
-            expand: true,
-            onPressed: connected ? () => session.createRoom(mode: mode) : null,
-          ),
-        ],
-      ),
-    );
-
-    final join = LfPanel(
-      accent: LfTokens.teal,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const LfEyebrow('WITH FRIENDS', color: LfTokens.teal),
-          const SizedBox(height: LfTokens.s1),
-          Text('Join with a code', style: context.text.headlineSmall),
-          const SizedBox(height: LfTokens.s3),
-          Text(
-            'Codes work across web, iOS, Android and macOS.',
-            style: context.text.bodyMedium?.copyWith(color: c.muted),
-          ),
-          const SizedBox(height: LfTokens.s4),
-          TextField(
-            controller: codeCtl,
-            textCapitalization: TextCapitalization.characters,
-            inputFormatters: [
-              UpperCaseTextFormatter(),
-              FilteringTextInputFormatter.allow(RegExp('[A-Z0-9]')),
-              LengthLimitingTextInputFormatter(6),
-            ],
-            style: context.text.headlineSmall?.copyWith(
-              letterSpacing: 6,
-              fontFeatures: const [FontFeature.tabularFigures()],
-            ),
-            textAlign: TextAlign.center,
-            decoration: const InputDecoration(hintText: 'ROOM CODE'),
-            onSubmitted: (v) => _join(session, v),
-          ),
-          const SizedBox(height: LfTokens.s4),
-          ValueListenableBuilder(
-            valueListenable: codeCtl,
-            builder: (context, v, _) => LfButton(
-              label: 'Join room',
-              icon: Icons.login_rounded,
-              variant: LfButtonVariant.secondary,
-              size: LfButtonSize.lg,
-              expand: true,
-              onPressed: connected && v.text.trim().length >= 4
-                  ? () => _join(session, v.text)
-                  : null,
-            ),
-          ),
-        ],
-      ),
-    );
-
-    if (layout.isPhone) {
-      return Column(
-        children: [
-          create,
-          const SizedBox(height: LfTokens.s4),
-          join,
-        ],
-      );
-    }
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(child: create),
-        const SizedBox(width: LfTokens.s4),
-        Expanded(child: join),
-      ],
-    );
-  }
-
-  void _join(Session s, String v) {
-    final code = v.trim().toUpperCase();
-    if (code.isEmpty) return;
-    s.joinRoom(code);
-  }
-}
-
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) => newValue.copyWith(text: newValue.text.toUpperCase());
-}
-
-class _RoomPanel extends StatelessWidget {
-  const _RoomPanel({super.key, required this.room});
-  final RoomState room;
-
-  @override
-  Widget build(BuildContext context) {
-    final session = AppScope.of(context).session;
-    final layout = LfLayout.of(context);
-    final c = context.lf;
-    final members = room.members;
-    final humans = members.length;
-    final isHost = session.isHost;
-    final ready = session.isReady;
-    final allReady = members.every((m) => m.ready || m.host);
-    final counting = room.phase == 'countdown';
-
-    final header = Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const LfEyebrow('ROOM CODE'),
-              const SizedBox(height: 2),
-              Row(
-                children: [
-                  SelectableText(
-                    room.code,
-                    style: context.text.displaySmall?.copyWith(
-                      letterSpacing: 6,
-                      color: LfTokens.ember,
-                    ),
-                  ),
-                  const SizedBox(width: LfTokens.s2),
-                  IconButton(
-                    tooltip: 'Copy code',
-                    onPressed: () {
-                      Clipboard.setData(ClipboardData(text: room.code));
-                      HapticFeedback.lightImpact();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Room code copied'),
-                          behavior: SnackBarBehavior.floating,
-                          width: 240,
-                        ),
-                      );
-                    },
-                    icon: Icon(Icons.copy_rounded, color: c.muted, size: 20),
-                  ),
-                ],
-              ),
-              Wrap(
-                spacing: LfTokens.s2,
-                children: [
-                  LfChip(
-                    label: room.mode.label,
-                    selected: true,
-                    color: LfTokens.teal,
-                    icon: Icons.groups_rounded,
-                  ),
-                  LfChip(
-                    label: '$humans / ${room.maxPlayers} players',
-                    color: c.muted,
-                    icon: Icons.person_rounded,
-                  ),
-                  if (room.fast)
-                    LfChip(
-                      label: 'Fast rules',
-                      color: LfTokens.warning,
-                      icon: Icons.bolt_rounded,
-                    ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        LfButton(
-          label: 'Leave',
-          icon: Icons.logout_rounded,
-          variant: LfButtonVariant.ghost,
-          size: LfButtonSize.sm,
-          onPressed: session.leaveRoom,
-        ),
-      ],
-    );
-
-    final roster = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const LfEyebrow('SQUAD LOBBY'),
-        const SizedBox(height: LfTokens.s2),
-        for (final m in members) _MemberRow(m: m, me: m.id == session.myId),
-        for (
-          var i = humans;
-          i <
-              (layout.isPhone
-                  ? humans + 1
-                  : (humans + 2).clamp(0, room.maxPlayers));
-          i++
-        )
-          const _EmptySlotRow(),
-        if (humans < room.maxPlayers)
-          Padding(
-            padding: const EdgeInsets.only(top: LfTokens.s2),
-            child: Text(
-              '${room.maxPlayers - humans} slot${room.maxPlayers - humans == 1 ? '' : 's'} will be filled with bots.',
-              style: context.text.bodySmall?.copyWith(color: c.muted),
-            ),
-          ),
-      ],
-    );
-
-    final actions = Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (isHost) ...[
-          const LfEyebrow('HOST CONTROLS'),
-          const SizedBox(height: LfTokens.s2),
-          Wrap(
-            spacing: LfTokens.s2,
-            runSpacing: LfTokens.s2,
-            children: [
-              for (final m in SquadMode.values)
-                LfChip(
-                  label: m.label,
-                  selected: m == room.mode,
-                  onTap: () => session.setMode(m),
-                  color: LfTokens.teal,
-                ),
-            ],
-          ),
-          const SizedBox(height: LfTokens.s4),
-          LfButton(
-            label: counting ? 'Starting…' : 'Start match',
-            icon: Icons.rocket_launch_rounded,
-            size: LfButtonSize.lg,
-            expand: true,
-            onPressed: counting
-                ? null
-                : () => session.startMatch(fill: room.maxPlayers),
-          ),
-          const SizedBox(height: LfTokens.s2),
-          Text(
-            allReady
-                ? 'Everyone is ready.'
-                : 'You can start before everyone readies up.',
-            style: context.text.bodySmall?.copyWith(color: c.muted),
-            textAlign: TextAlign.center,
-          ),
-        ] else ...[
-          const LfEyebrow('READY UP'),
-          const SizedBox(height: LfTokens.s2),
-          LfButton(
-            label: ready ? 'Ready ✓' : 'I\'m ready',
-            icon: ready
-                ? Icons.check_circle_rounded
-                : Icons.radio_button_unchecked_rounded,
-            variant: ready
-                ? LfButtonVariant.secondary
-                : LfButtonVariant.primary,
-            size: LfButtonSize.lg,
-            expand: true,
-            onPressed: () => session.setReady(!ready),
-          ),
-          const SizedBox(height: LfTokens.s2),
-          Text(
-            counting ? 'Match starting…' : 'Waiting for the host to start.',
-            style: context.text.bodySmall?.copyWith(color: c.muted),
-            textAlign: TextAlign.center,
-          ),
-        ],
-        if (counting) ...[
-          const SizedBox(height: LfTokens.s3),
-          const LinearProgressIndicator(
-            minHeight: 4,
-            color: LfTokens.ember,
-            backgroundColor: Colors.transparent,
-          ),
-        ],
-      ],
-    );
-
-    return LfPanel(
-      strong: true,
-      accent: LfTokens.ember,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          header,
-          const SizedBox(height: LfTokens.s4),
-          Divider(color: c.line, height: 1),
-          const SizedBox(height: LfTokens.s4),
-          if (layout.isPhone) ...[
-            roster,
-            const SizedBox(height: LfTokens.s5),
-            actions,
-          ] else
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(flex: 3, child: roster),
-                const SizedBox(width: LfTokens.s5),
-                Expanded(flex: 2, child: actions),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MemberRow extends StatelessWidget {
-  const _MemberRow({required this.m, required this.me});
-  final RoomMember m;
-  final bool me;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.lf;
-    final outfit = cosmeticById(m.loadout.outfit);
-    return Container(
-      margin: const EdgeInsets.only(bottom: LfTokens.s2),
-      padding: const EdgeInsets.symmetric(
-        horizontal: LfTokens.s3,
-        vertical: LfTokens.s2,
-      ),
-      decoration: BoxDecoration(
-        color: me
-            ? LfTokens.ember.withValues(alpha: 0.08)
-            : c.surface2.withValues(alpha: 0.6),
-        borderRadius: BorderRadius.circular(LfTokens.rMd),
-        border: Border.all(
-          color: me ? LfTokens.ember.withValues(alpha: 0.4) : c.line,
-        ),
-      ),
-      child: Row(
-        children: [
-          OutfitAvatar(outfit, size: 36),
-          const SizedBox(width: LfTokens.s3),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        m.name,
-                        style: context.text.titleMedium,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    if (me)
-                      Padding(
-                        padding: const EdgeInsets.only(left: 6),
-                        child: Text(
-                          'YOU',
-                          style: context.text.labelSmall?.copyWith(
-                            color: LfTokens.ember,
-                            letterSpacing: 1,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                Text(
-                  'Team ${m.team + 1}',
-                  style: context.text.bodySmall?.copyWith(color: c.muted),
-                ),
-              ],
-            ),
-          ),
-          PlatformBadge(m.platform),
-          const SizedBox(width: LfTokens.s2),
-          if (m.host)
-            Tooltip(
-              message: 'Host',
-              child: Icon(
-                Icons.star_rounded,
-                color: LfTokens.warning,
-                size: 20,
-              ),
-            )
-          else
-            Tooltip(
-              message: m.ready ? 'Ready' : 'Not ready',
-              child: Icon(
-                m.ready
-                    ? Icons.check_circle_rounded
-                    : Icons.radio_button_unchecked_rounded,
-                color: m.ready ? LfTokens.health : c.muted,
-                size: 20,
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _EmptySlotRow extends StatelessWidget {
-  const _EmptySlotRow();
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.lf;
-    return Container(
-      margin: const EdgeInsets.only(bottom: LfTokens.s2),
-      padding: const EdgeInsets.symmetric(
-        horizontal: LfTokens.s3,
-        vertical: LfTokens.s3,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(LfTokens.rMd),
-        border: Border.all(color: c.line.withValues(alpha: 0.7)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: c.line),
-            ),
-            child: Icon(Icons.smart_toy_outlined, size: 18, color: c.muted),
-          ),
-          const SizedBox(width: LfTokens.s3),
-          Text(
-            'Open slot · bot fills on start',
-            style: context.text.bodyMedium?.copyWith(color: c.muted),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 /// Small pill naming the client platform a player is on.
@@ -1263,8 +483,8 @@ class PlatformBadge extends StatelessWidget {
   }
 }
 
-class _Notice extends StatelessWidget {
-  const _Notice({required this.text, required this.onDismiss});
+class LobbyNotice extends StatelessWidget {
+  const LobbyNotice({super.key, required this.text, required this.onDismiss});
   final String text;
   final VoidCallback onDismiss;
 

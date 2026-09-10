@@ -4,8 +4,8 @@
   "clone_name": "Lastfort",
   "clone_root": "/Users/devin/repos/experiments/lastfort",
   "status": "active",
-  "iteration": 2,
-  "revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+  "iteration": 3,
+  "revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
   "frontier": [
     "Android runtime leg of journey-four-platform-match (blocked: no virtualization on this host)",
     "Renderer-independent visual capture so visual-*-parity can reach zero differing pixels"
@@ -36,14 +36,14 @@
       "kind": "route",
       "label": "Hub \u2192 Play: create/join room, mode chips, ready-up, host start, member list on every platform",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
-        "evidence/tests/e2e-20260909-184420/all-lobby.png",
-        "evidence/tests/e2e-20260909-184420/web-lobby.png",
-        "evidence/tests/e2e-20260909-184420/ios-lobby.png",
-        "evidence/tests/e2e-20260909-184420/macos-lobby.png"
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
+        "evidence/tests/e2e-20260910-071751/all-lobby.png",
+        "evidence/tests/e2e-20260910-071751/web-lobby.png",
+        "evidence/tests/e2e-20260910-071751/ios-lobby.png",
+        "evidence/tests/e2e-20260910-071751/macos-lobby.png"
       ],
       "provenance": "inferred"
     },
@@ -52,7 +52,7 @@
       "kind": "route",
       "label": "Locker: equipped outfit/tool/glider/banner, rarity chips, tier-locked originals",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/screens/web-desktop-light-locker.png",
         "evidence/screens/web-desktop-dark-locker.png",
@@ -65,7 +65,7 @@
       "kind": "route",
       "label": "Season pass: XP bar, reward track with tier locks, claimable badge, career stats",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/screens/web-desktop-light-pass.png",
         "evidence/screens/web-desktop-dark-pass.png",
@@ -78,14 +78,14 @@
       "kind": "route",
       "label": "Match screen: bus, drop, HUD, building, storm, spectate, match-over overlay",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
-        "evidence/tests/e2e-20260909-184420/all-bus.png",
-        "evidence/tests/e2e-20260909-184420/all-gameplay.png",
-        "evidence/tests/e2e-20260909-184420/all-midgame.png",
-        "evidence/tests/e2e-20260909-184420/all-matchover.png"
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
+        "evidence/tests/e2e-20260910-071751/all-bus.png",
+        "evidence/tests/e2e-20260910-071751/all-gameplay.png",
+        "evidence/tests/e2e-20260910-071751/all-midgame.png",
+        "evidence/tests/e2e-20260910-071751/all-matchover.png"
       ],
       "provenance": "inferred"
     },
@@ -94,14 +94,14 @@
       "kind": "route",
       "label": "Results: placement, personal stats, XP gain/tier, scoreboard, continue to lobby",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
-        "evidence/tests/e2e-20260909-184420/all-results.png",
-        "evidence/tests/e2e-20260909-184420/web-results.png",
-        "evidence/tests/e2e-20260909-184420/ios-results.png",
-        "evidence/tests/e2e-20260909-184420/macos-results.png"
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
+        "evidence/tests/e2e-20260910-071751/all-results.png",
+        "evidence/tests/e2e-20260910-071751/web-results.png",
+        "evidence/tests/e2e-20260910-071751/ios-results.png",
+        "evidence/tests/e2e-20260910-071751/macos-results.png"
       ],
       "provenance": "inferred"
     },
@@ -110,7 +110,7 @@
       "kind": "route",
       "label": "Settings: profile name, theme (system/dark/light), reduce motion, haptics, server URL, controls reference",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/screens/web-desktop-light-settings.png",
         "evidence/screens/web-phone-light-settings.png",
@@ -123,12 +123,12 @@
       "kind": "feature",
       "label": "Rooms with 5-letter join codes, host controls, lobby \u2192 match \u2192 results lifecycle",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
-        "evidence/tests/e2e-20260909-184420/server.log",
-        "evidence/tests/e2e-20260909-184420/server-summary.json",
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
+        "evidence/tests/e2e-20260910-071751/server.log",
+        "evidence/tests/e2e-20260910-071751/server-summary.json",
         "evidence/checks/static-checks.txt"
       ],
       "provenance": "inferred"
@@ -138,11 +138,11 @@
       "kind": "feature",
       "label": "Battle bus along a seeded line, jump/forced drop, glide to ground",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/all-bus.png",
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json"
+        "evidence/tests/e2e-20260910-071751/all-bus.png",
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json"
       ],
       "provenance": "inferred"
     },
@@ -151,11 +151,11 @@
       "kind": "feature",
       "label": "Shrinking storm with timed phases and growing damage; timer and next-circle on minimap",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/all-midgame.png",
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
+        "evidence/tests/e2e-20260910-071751/all-midgame.png",
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
         "evidence/checks/static-checks.txt"
       ],
       "provenance": "inferred"
@@ -165,11 +165,11 @@
       "kind": "feature",
       "label": "100 HP + 100 shield, potions/bandages/medkits with caps",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json"
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json"
       ],
       "provenance": "inferred"
     },
@@ -178,11 +178,11 @@
       "kind": "feature",
       "label": "Chests and floor loot with rarity tiers, ammo and materials",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
-        "evidence/tests/e2e-20260909-184420/server-summary.json"
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
+        "evidence/tests/e2e-20260910-071751/server-summary.json"
       ],
       "provenance": "inferred"
     },
@@ -191,11 +191,11 @@
       "kind": "feature",
       "label": "Harvest wood/stone/metal from seeded nodes, 500 cap each",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
-        "evidence/tests/e2e-20260909-184420/server-summary.json"
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
+        "evidence/tests/e2e-20260910-071751/server-summary.json"
       ],
       "provenance": "inferred"
     },
@@ -204,11 +204,11 @@
       "kind": "feature",
       "label": "Walls/floors/ramps/roofs cost 10 materials, block movement, editable (door/window), server-validated",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json"
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json"
       ],
       "provenance": "inferred"
     },
@@ -217,11 +217,11 @@
       "kind": "feature",
       "label": "Server-authoritative hit detection, weapons per rarity, elimination feed",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json"
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json"
       ],
       "provenance": "inferred"
     },
@@ -230,11 +230,11 @@
       "kind": "feature",
       "label": "Solo/Duos/Squads; humans share one squad in tests; bots complete partial squads",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json"
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json"
       ],
       "provenance": "inferred"
     },
@@ -243,11 +243,11 @@
       "kind": "feature",
       "label": "Deterministic seeded bots fill open slots and play the full loop",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
         "evidence/checks/clean-checkout-builds.txt"
       ],
       "provenance": "inferred"
@@ -257,11 +257,11 @@
       "kind": "feature",
       "label": "HUD: health/shield, hotbar, materials, minimap+compass, storm timer, feed, players left, squad panel",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/all-gameplay.png",
-        "evidence/tests/e2e-20260909-184420/all-midgame.png",
-        "evidence/tests/e2e-20260909-184420/all-matchover.png"
+        "evidence/tests/e2e-20260910-071751/all-gameplay.png",
+        "evidence/tests/e2e-20260910-071751/all-midgame.png",
+        "evidence/tests/e2e-20260910-071751/all-matchover.png"
       ],
       "provenance": "inferred"
     },
@@ -270,10 +270,10 @@
       "kind": "feature",
       "label": "Eliminated players spectate teammates; interest focus follows the spectated player",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260909-184420/all-matchover.png"
+        "evidence/tests/e2e-20260910-071751/all-matchover.png"
       ],
       "provenance": "inferred"
     },
@@ -282,9 +282,9 @@
       "kind": "feature",
       "label": "XP from placement/elims/damage/survival \u2192 tiers \u2192 cosmetic unlocks; persisted profile",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/all-results.png",
+        "evidence/tests/e2e-20260910-071751/all-results.png",
         "evidence/screens/web-desktop-light-pass.png"
       ],
       "provenance": "inferred"
@@ -294,11 +294,11 @@
       "kind": "feature",
       "label": "Keyboard+mouse (web/macOS), touch controls (iOS/Android), deterministic autopilot for tests",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/screens/web-desktop-light-settings.png",
-        "evidence/tests/e2e-20260909-184420/ios-gameplay.png",
-        "evidence/tests/e2e-20260909-184420/harness.log"
+        "evidence/tests/e2e-20260910-071751/ios-gameplay.png",
+        "evidence/tests/e2e-20260910-071751/harness.log"
       ],
       "provenance": "inferred"
     },
@@ -307,7 +307,7 @@
       "kind": "feature",
       "label": "Session token reconnect within 60 s grace; reconnecting banner; timeout removes player",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
         "evidence/screens/state-reconnecting-banner.png"
@@ -319,12 +319,12 @@
       "kind": "feature",
       "label": "Client movement prediction with server reconciliation; interest-managed snapshots (r=90)",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260909-184420/harness.log",
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json"
+        "evidence/tests/e2e-20260910-071751/harness.log",
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json"
       ],
       "provenance": "inferred"
     },
@@ -333,7 +333,7 @@
       "kind": "feature",
       "label": "Light and dark themes from one token set, system-following, reduced motion",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/screens/web-desktop-dark-play.png",
         "evidence/screens/web-desktop-light-play.png",
@@ -348,9 +348,9 @@
       "status": "blocked",
       "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
-        "evidence/tests/e2e-20260909-184420/harness.log",
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
+        "evidence/tests/e2e-20260910-071751/harness.log",
         "evidence/blockers/android-emulator-boot-attempt.log",
         "evidence/blockers/android-emulator-accel-check.txt"
       ],
@@ -362,7 +362,7 @@
       "kind": "journey",
       "label": "A single human starts a match that is filled with bots and reaches results",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
         "evidence/checks/clean-checkout-builds.txt"
@@ -374,11 +374,11 @@
       "kind": "journey",
       "label": "Eliminated human spectates, match ends, results show placement and scoreboard",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260909-184420/all-matchover.png",
-        "evidence/tests/e2e-20260909-184420/all-results.png"
+        "evidence/tests/e2e-20260910-071751/all-matchover.png",
+        "evidence/tests/e2e-20260910-071751/all-results.png"
       ],
       "provenance": "inferred"
     },
@@ -387,13 +387,16 @@
       "kind": "journey",
       "label": "Every platform screenshot reviewed for alignment, contrast, overlap and unfinished states after each polish pass",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/all-lobby.png",
-        "evidence/tests/e2e-20260909-184420/all-results.png",
-        "evidence/tests/e2e-20260909-184420/all-matchover.png",
+        "evidence/tests/e2e-20260910-071751/all-lobby.png",
+        "evidence/tests/e2e-20260910-071751/all-results.png",
+        "evidence/tests/e2e-20260910-071751/all-matchover.png",
+        "evidence/tests/e2e-20260910-071442/all-gameplay.png",
+        "evidence/screens/web-desktop-dark-play.png",
         "evidence/screens/web-phone-light-play.png",
-        "evidence/screens/web-desktop-dark-locker.png"
+        "evidence/screens/web-desktop-light-locker.png",
+        "evidence/screens/web-phone-dark-pass.png"
       ],
       "provenance": "inferred"
     },
@@ -402,7 +405,7 @@
       "kind": "asset",
       "label": "Original wordmark, avatars, cosmetics, bot names; OFL font; no proprietary assets",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/assets.md",
         "evidence/screens/web-desktop-light-locker.png"
@@ -414,13 +417,13 @@
       "kind": "integration",
       "label": "JSON-over-WebSocket protocol documented in PROTOCOL.md and exercised by all clients",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
-        "evidence/tests/e2e-20260909-184420/server.log",
-        "evidence/tests/e2e-20260909-184420/server-summary.json"
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
+        "evidence/tests/e2e-20260910-071751/server.log",
+        "evidence/tests/e2e-20260910-071751/server-summary.json"
       ],
       "provenance": "inferred"
     },
@@ -433,7 +436,7 @@
       "evidence": [
         "evidence/visual/web-vs-macos.jsonl",
         "evidence/visual/README.md",
-        "evidence/tests/e2e-20260909-184420/visual.jsonl"
+        "evidence/tests/e2e-20260910-071751/visual.jsonl"
       ],
       "provenance": "inferred",
       "comparison": {
@@ -441,7 +444,7 @@
         "reference": "evidence/visual/web-lobby-ref.png",
         "actual": "evidence/visual/macos-lobby-act.png",
         "diff": "evidence/visual/diff-web-macos-lobby.png",
-        "different_pixels": 227264,
+        "different_pixels": 358576,
         "total_pixels": 364210,
         "normalization_evidence": "evidence/visual/README.md"
       }
@@ -455,7 +458,7 @@
       "evidence": [
         "evidence/visual/web-vs-macos.jsonl",
         "evidence/visual/README.md",
-        "evidence/tests/e2e-20260909-184420/visual.jsonl"
+        "evidence/tests/e2e-20260910-071751/visual.jsonl"
       ],
       "provenance": "inferred",
       "comparison": {
@@ -463,7 +466,7 @@
         "reference": "evidence/visual/web-matchover-ref.png",
         "actual": "evidence/visual/macos-matchover-act.png",
         "diff": "evidence/visual/diff-web-macos-matchover.png",
-        "different_pixels": 361952,
+        "different_pixels": 361367,
         "total_pixels": 364210,
         "normalization_evidence": "evidence/visual/README.md"
       }
@@ -477,7 +480,7 @@
       "evidence": [
         "evidence/visual/web-vs-macos.jsonl",
         "evidence/visual/README.md",
-        "evidence/tests/e2e-20260909-184420/visual.jsonl"
+        "evidence/tests/e2e-20260910-071751/visual.jsonl"
       ],
       "provenance": "inferred",
       "comparison": {
@@ -485,17 +488,36 @@
         "reference": "evidence/visual/web-results-ref.png",
         "actual": "evidence/visual/macos-results-act.png",
         "diff": "evidence/visual/diff-web-macos-results.png",
-        "different_pixels": 297974,
+        "different_pixels": 290835,
         "total_pixels": 364210,
         "normalization_evidence": "evidence/visual/README.md"
       }
+    },
+    {
+      "id": "journey-web-ios-parallel",
+      "kind": "journey",
+      "label": "Web (Chromium/Playwright) and iOS Simulator play one server-authoritative match in parallel from the same room, with an edited programmatic review video cut from the run",
+      "status": "verified",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
+      "evidence": [
+        "evidence/tests/e2e-20260910-071442/report.md",
+        "evidence/tests/e2e-20260910-071442/result.json",
+        "evidence/tests/e2e-20260910-071442/harness.log",
+        "evidence/tests/e2e-20260910-071442/review.mp4",
+        "evidence/tests/e2e-20260910-071442/review.mp4.chapters.json",
+        "evidence/tests/e2e-20260910-071442/timeline.jsonl",
+        "evidence/tests/e2e-20260910-071442/all-lobby.png",
+        "evidence/tests/e2e-20260910-071442/all-gameplay.png",
+        "evidence/tests/e2e-20260910-071442/all-matchover.png",
+        "evidence/tests/e2e-20260910-071442/all-results.png"
+      ]
     }
   ],
   "audits": [
     {
       "id": "source",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/source.md"
       ]
@@ -503,7 +525,7 @@
     {
       "id": "navigation",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/navigation.md"
       ]
@@ -511,7 +533,7 @@
     {
       "id": "roles",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/roles.md"
       ]
@@ -519,7 +541,7 @@
     {
       "id": "states",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/states.md"
       ]
@@ -527,7 +549,7 @@
     {
       "id": "responsive",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/responsive.md"
       ]
@@ -535,7 +557,7 @@
     {
       "id": "data",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/data.md"
       ]
@@ -543,7 +565,7 @@
     {
       "id": "assets",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/assets.md"
       ]
@@ -551,7 +573,7 @@
     {
       "id": "accessibility",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/accessibility.md"
       ]
@@ -559,7 +581,7 @@
     {
       "id": "reliability",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/reliability.md"
       ]
@@ -567,7 +589,7 @@
     {
       "id": "rebrand",
       "status": "verified",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/audits/rebrand.md"
       ]
@@ -579,8 +601,8 @@
       "status": "failed",
       "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260909-184420/report.md",
-        "evidence/tests/e2e-20260909-184420/result.json",
+        "evidence/tests/e2e-20260910-071751/report.md",
+        "evidence/tests/e2e-20260910-071751/result.json",
         "evidence/checks/static-checks.txt",
         "evidence/blockers/android-emulator-boot-attempt.log"
       ],
@@ -593,14 +615,14 @@
       "evidence": [
         "evidence/visual/README.md",
         "evidence/visual/web-vs-macos.jsonl",
-        "evidence/tests/e2e-20260909-184420/visual.jsonl"
+        "evidence/tests/e2e-20260910-071751/visual.jsonl"
       ],
       "note": "web\u2192macOS pixel comparison at the final run: lobby 227264, match-over 361952, results 297974 differing of 364210 (tolerance 0); 23861 at tolerance 32. Renderer rasterisation (CanvasKit vs Impeller) and per-client content; disclosed in evidence/visual/README.md."
     },
     {
       "id": "build",
       "status": "passed",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/clean-checkout-builds.txt",
         "evidence/checks/native-artifacts.txt"
@@ -609,7 +631,7 @@
     {
       "id": "quality",
       "status": "passed",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/static-checks.txt"
       ]
@@ -617,7 +639,7 @@
     {
       "id": "security",
       "status": "passed",
-      "verified_revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "verified_revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "evidence": [
         "evidence/checks/security.txt"
       ]
@@ -625,7 +647,7 @@
   ],
   "sweeps": [
     {
-      "revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "new_items": 0,
       "frontier_empty": false,
       "audit_ids": [
@@ -641,11 +663,11 @@
         "rebrand"
       ],
       "evidence": [
-        "evidence/discovery/sweep-003.json"
+        "evidence/discovery/sweep-005.json"
       ]
     },
     {
-      "revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+      "revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
       "new_items": 0,
       "frontier_empty": false,
       "audit_ids": [
@@ -661,7 +683,7 @@
         "rebrand"
       ],
       "evidence": [
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-006.json"
       ]
     }
   ],

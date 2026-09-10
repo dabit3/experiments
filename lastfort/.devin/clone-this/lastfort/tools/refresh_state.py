@@ -1,4 +1,4 @@
-"""One-off manifest refresh after the post-UI-pass fixes (git 11a8115).
+"""Manifest refresh after a re-verification run: refresh_state.py OLD_RUN NEW_RUN
 
 Re-points every evidence path at the final harness run, re-stamps verified
 items/audits/checks at the current fingerprint, updates the visual comparison
@@ -13,7 +13,7 @@ import sys
 
 RUN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATE = os.path.join(RUN_DIR, "state.json")
-OLD_RUN, NEW_RUN = "e2e-20260909-175052", "e2e-20260909-184420"
+OLD_RUN, NEW_RUN = sys.argv[1:3] if len(sys.argv) == 3 else ("e2e-20260909-175052", "e2e-20260909-184420")
 
 
 def main() -> int:

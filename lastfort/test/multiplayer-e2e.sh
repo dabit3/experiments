@@ -8,8 +8,8 @@
 # (bots fill the other slots), then asserts that the final match summary every
 # client displayed is byte-identical across platforms and equals the server's.
 # Captures lobby / gameplay / results screenshots per platform plus a
-# four-way screen recording, and writes everything to the clone-this evidence
-# directory.
+# screen recording, cuts the recording into an edited review video
+# (review_video.py) and writes everything to the clone-this evidence directory.
 #
 # Environment overrides:
 #   LF_PORT=8790            server port
@@ -22,10 +22,13 @@
 #   LF_AVD=lastfort         Android AVD to boot when no device is attached
 #   LF_MATCH_TIMEOUT=600    seconds to wait for the match to finish
 #   LF_PLATFORMS=web,ios,android,macos
-#                           platforms that take part in the match. All four
-#                           artifacts are always built; a platform left out of
-#                           this list is not launched and the run is recorded
-#                           as partial (run.json: "partial": true).
+#                           platforms that take part in the match. Only their
+#                           artifacts are built (LF_BUILD_ALL=1 builds all four
+#                           regardless); a platform left out of this list is
+#                           not launched and the run is recorded as partial
+#                           (run.json: "partial": true). `web,ios` uses a
+#                           two-up window layout sized for the review video.
+#   LF_REVIEW=1             cut review.mp4 from the recording when the run ends
 set -euo pipefail
 
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
@@ -44,6 +47,8 @@ AVD=${LF_AVD:-lastfort}
 MATCH_TIMEOUT=${LF_MATCH_TIMEOUT:-600}
 ALL_PLATFORMS=web,ios,android,macos
 PLATFORMS=${LF_PLATFORMS:-$ALL_PLATFORMS}
+BUILD_ALL=${LF_BUILD_ALL:-0}
+REVIEW=${LF_REVIEW:-1}
 TEST_ID="e2e-$ROOM-$SEED"
 BASE="http://127.0.0.1:$PORT"
 ANDROID_SDK=${ANDROID_SDK_ROOT:-${ANDROID_HOME:-$HOME/android-sdk}}
@@ -68,6 +73,9 @@ done
 [ "$HUMANS" -ge 1 ] || fail "LF_PLATFORMS must name at least one of $ALL_PLATFORMS"
 PARTIAL=false
 [ "$PLATFORMS" = "$ALL_PLATFORMS" ] || PARTIAL=true
+LAYOUT=quad
+[ "$PLATFORMS" = "web,ios" ] && LAYOUT=twoup
+builds() { [ "$BUILD_ALL" = 1 ] || has "$1"; }
 
 for tool in flutter dart node xcrun adb emulator screencapture osascript python3 curl; do
   command -v "$tool" >/dev/null 2>&1 || fail "missing tool: $tool"
@@ -119,24 +127,33 @@ APK="$CLIENT/build/app/outputs/flutter-apk/app-debug.apk"
 MAC_APP="$CLIENT/build/macos/Build/Products/Release/Lastfort.app"
 
 if [ "$SKIP_BUILD" != "1" ]; then
-  log "building web"
-  (cd "$CLIENT" && flutter build web --release --no-web-resources-cdn >>"$LOG" 2>&1) || fail "web build"
-  log "building ios (simulator)"
-  (cd "$CLIENT" && flutter build ios --simulator --debug "${common_defines[@]}" \
-    "--dart-define=LASTFORT_SERVER=ws://127.0.0.1:$PORT/ws" \
-    "--dart-define=LASTFORT_NAME=Ios" >>"$LOG" 2>&1) || fail "ios build"
-  log "building android (apk)"
-  (cd "$CLIENT" && flutter build apk --debug "${common_defines[@]}" \
-    "--dart-define=LASTFORT_SERVER=ws://10.0.2.2:$PORT/ws" \
-    "--dart-define=LASTFORT_NAME=Android" >>"$LOG" 2>&1) || fail "android build"
-  log "building macos"
-  (cd "$CLIENT" && flutter build macos --release "${common_defines[@]}" \
-    "--dart-define=LASTFORT_SERVER=ws://127.0.0.1:$PORT/ws" \
-    "--dart-define=LASTFORT_NAME=Mac" >>"$LOG" 2>&1) || fail "macos build"
+  if builds web; then
+    log "building web"
+    (cd "$CLIENT" && flutter build web --release --no-web-resources-cdn >>"$LOG" 2>&1) || fail "web build"
+  fi
+  if builds ios; then
+    log "building ios (simulator)"
+    (cd "$CLIENT" && flutter build ios --simulator --debug "${common_defines[@]}" \
+      "--dart-define=LASTFORT_SERVER=ws://127.0.0.1:$PORT/ws" \
+      "--dart-define=LASTFORT_NAME=Ios" >>"$LOG" 2>&1) || fail "ios build"
+  fi
+  if builds android; then
+    log "building android (apk)"
+    (cd "$CLIENT" && flutter build apk --debug "${common_defines[@]}" \
+      "--dart-define=LASTFORT_SERVER=ws://10.0.2.2:$PORT/ws" \
+      "--dart-define=LASTFORT_NAME=Android" >>"$LOG" 2>&1) || fail "android build"
+  fi
+  if builds macos; then
+    log "building macos"
+    (cd "$CLIENT" && flutter build macos --release "${common_defines[@]}" \
+      "--dart-define=LASTFORT_SERVER=ws://127.0.0.1:$PORT/ws" \
+      "--dart-define=LASTFORT_NAME=Mac" >>"$LOG" 2>&1) || fail "macos build"
+  fi
 fi
-for p in "$WEB_DIR/index.html" "$IOS_APP" "$APK" "$MAC_APP"; do
-  [ -e "$p" ] || fail "missing build artifact $p"
-done
+builds web && { [ -e "$WEB_DIR/index.html" ] || fail "missing build artifact $WEB_DIR"; }
+builds ios && { [ -e "$IOS_APP" ] || fail "missing build artifact $IOS_APP"; }
+builds android && { [ -e "$APK" ] || fail "missing build artifact $APK"; }
+builds macos && { [ -e "$MAC_APP" ] || fail "missing build artifact $MAC_APP"; }
 
 # ------------------------------------------------------------------ server
 log "starting server on :$PORT"
@@ -196,19 +213,27 @@ if has android; then
 fi
 
 # ------------------------------------------------------------------ recording
-log "starting $HUMANS-way screen recording"
+# timeline.jsonl gives review_video.py wall-clock anchors (recording start,
+# every screenshot moment) so it can cut the raw capture into chapters.
+TIMELINE="$OUT/timeline.jsonl"
+: >"$TIMELINE"
+mark() { printf '{"label":"%s","t":%s}\n' "$1" "$(python3 -c 'import time;print(round(time.time(),3))')" >>"$TIMELINE"; }
+log "starting $HUMANS-way screen recording ($LAYOUT layout)"
 screencapture -v -x "$OUT/four-way.mov" &
 REC_PID=$!
 sleep 1
+mark rec_start
 
 # ------------------------------------------------------------------ clients
 # The web client creates the room (host) and starts the match once 4 humans
 # are in; the others join by code. Every client runs in test mode with the
 # deterministic server-side autopilot and reports its final summary back.
 WEB_URL="http://127.0.0.1:$PORT/?server=ws://127.0.0.1:$PORT/ws&room=$ROOM&auto=1&autostart=$HUMANS&seed=$SEED&fast=1&mode=squads&theme=light&name=Web&test=$TEST_ID"
+WEB_WINDOW="810,40,770,560"
+[ "$LAYOUT" = twoup ] && WEB_WINDOW="20,40,1060,740"
 if has web; then
   log "launching web client"
-  (cd "$TEST" && node web_client.mjs "$WEB_URL" "$CTL" "810,40,770,560" >"$OUT/web.log" 2>&1) &
+  (cd "$TEST" && node web_client.mjs "$WEB_URL" "$CTL" "$WEB_WINDOW" >"$OUT/web.log" 2>&1) &
   WEB_PID=$!
   for _ in $(seq 1 240); do [ -f "$CTL/web-ready" ] && break; sleep 0.5; done
   [ -f "$CTL/web-ready" ] || fail "web client did not load (see $OUT/web.log)"
@@ -236,8 +261,11 @@ fi
 # Arrange the four windows so the recording shows all clients at once and
 # clear system prompts (local-network permission, notification banners) that
 # would otherwise sit on top of the clients.
+SIM_GEOM="20 620 300 560"
+[ "$LAYOUT" = twoup ] && SIM_GEOM="1140 30 380 840"
 layout() {
-  osascript >>"$LOG" 2>&1 <<'EOF' || true
+  read -r sx sy sw sh <<<"$SIM_GEOM"
+  sed -e "s/SIM_X/$sx/; s/SIM_Y/$sy/; s/SIM_W/$sw/; s/SIM_H/$sh/" <<'EOF' | osascript >>"$LOG" 2>&1 || true
 tell application "System Events"
   try
     tell process "UserNotificationCenter"
@@ -259,8 +287,8 @@ tell application "System Events"
   end try
   try
     tell process "Simulator"
-      set position of window 1 to {20, 620}
-      set size of window 1 to {300, 560}
+      set position of window 1 to {SIM_X, SIM_Y}
+      set size of window 1 to {SIM_W, SIM_H}
     end tell
   end try
   try
@@ -324,6 +352,7 @@ shoot() {
   local label=$1
   SHOT_N=$((SHOT_N + 1))
   log "screenshots: $label"
+  mark "$label"
   # Every capture runs concurrently so all platforms show the same moment.
   local pids=()
   has web && echo "$OUT/web-$label.png" >"$CTL/shot-$SHOT_N.req"
@@ -366,6 +395,7 @@ shoot midgame
 
 log "waiting for all $HUMANS clients to report the final summary"
 python3 "$TEST/harness.py" wait-reports "$BASE" "$ROOM" --count "$HUMANS" --timeout "$MATCH_TIMEOUT" | tee -a "$LOG"
+mark reports
 sleep 1
 shoot matchover
 sleep 5
@@ -398,8 +428,18 @@ STATUS=${PIPESTATUS[0]}
 set -e
 
 cat >"$OUT/run.json" <<EOF
-{"room":"$ROOM","seed":$SEED,"port":$PORT,"testId":"$TEST_ID","platforms":"$PLATFORMS","partial":$PARTIAL,"iosUdid":"$IOS_UDID","avd":"$AVD","passed":$([ "$STATUS" = 0 ] && echo true || echo false),"startedAt":"$STAMP"}
+{"room":"$ROOM","seed":$SEED,"port":$PORT,"testId":"$TEST_ID","platforms":"$PLATFORMS","partial":$PARTIAL,"layout":"$LAYOUT","iosUdid":"$IOS_UDID","avd":"$AVD","passed":$([ "$STATUS" = 0 ] && echo true || echo false),"startedAt":"$STAMP"}
 EOF
+
+# Stop the recording before cutting it; the trap would otherwise do so later.
+if [ -n "$REC_PID" ]; then
+  kill -INT "$REC_PID" 2>/dev/null && wait "$REC_PID" 2>/dev/null || true
+  REC_PID=""
+fi
+if [ "$REVIEW" = 1 ] && command -v ffmpeg >/dev/null 2>&1; then
+  log "cutting review video"
+  python3 "$TEST/review_video.py" "$OUT" | tee -a "$LOG" || log "review video failed (non-fatal)"
+fi
 
 if [ "$STATUS" = 0 ] && [ "$PARTIAL" = true ]; then
   log "PASS (PARTIAL: $PLATFORMS only) — evidence in $OUT"

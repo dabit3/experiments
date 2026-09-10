@@ -121,7 +121,8 @@ builds pin the light theme and load a fresh, namespaced profile
 (`LASTFORT_TEST=<id>`), so a run never inherits or disturbs the real profile,
 theme or session token on the device. It also
 captures lobby / bus / gameplay / midgame / matchover / results screenshots per platform
-plus a screen recording of all clients at once.
+plus a screen recording of all clients at once, then cuts that recording into
+an edited review video (see below).
 
 Output goes to `.devin/clone-this/lastfort/evidence/tests/e2e-<timestamp>/`
 (`run.json`, `result.json`, `report.md`, `reports.json`, `server-summary.json`,
@@ -134,9 +135,31 @@ results screens and writes `diff-web-macos-*.png` plus `visual.jsonl` with the
 measured differing-pixel counts.
 
 Environment overrides: `LF_PORT`, `LF_ROOM`, `LF_SEED`, `LF_OUT`,
-`LF_SKIP_BUILD=1`, `LF_IOS_UDID`, `LF_AVD`, `LF_MATCH_TIMEOUT`, and
-`LF_PLATFORMS=web,ios,macos` to run without a platform (the run is then
+`LF_SKIP_BUILD=1`, `LF_BUILD_ALL=1`, `LF_IOS_UDID`, `LF_AVD`,
+`LF_MATCH_TIMEOUT`, `LF_REVIEW=0`, and `LF_PLATFORMS=web,ios,macos` to run
+without a platform (only the listed platforms are built; the run is then
 recorded as partial in `run.json`; it never counts as a full four-way pass).
+
+### Web x iOS review video
+
+```sh
+cd lastfort
+LF_PLATFORMS=web,ios ./test/multiplayer-e2e.sh
+```
+
+runs two clients in two separate environments in parallel — Chromium and the
+iOS Simulator — against one server and one room, in a two-up window layout.
+When the match ends `test/review_video.py` turns the raw `four-way.mov` into
+`review.mp4`: a title card, six captioned chapters cut around the moments the
+harness took its screenshots (lobby, drop, gameplay, storm, match over,
+results) with a platform tag over each window, side-by-side gameplay and
+results comparison cards with each client's digest, and a PASS/FAIL verdict
+card, plus `review.mp4.chapters.json` with chapter timestamps. Cards and
+captions are rendered with Pillow in the game's Rajdhani font; ffmpeg only
+trims, crops, overlays and concatenates. Anchors come from `timeline.jsonl`
+(wall-clock times of the recording start and every screenshot), so the cut is
+reproducible from the run directory: `python3 test/review_video.py <run-dir>`.
+Requires `ffmpeg` and `pillow`.
 
 The Android emulator needs hardware virtualization. On a host without it
 (`emulator -accel-check` fails, e.g. a macOS VM without nested
