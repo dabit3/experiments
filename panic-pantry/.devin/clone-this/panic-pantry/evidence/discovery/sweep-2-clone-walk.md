@@ -93,3 +93,11 @@ and the `PP_REVIEW_VIDEO` hook in `multiplayer-e2e.sh` → new item
 behaviour). Every other surface maps to an existing item. One new item, added to the
 inventory before this sweep was recorded, so the frontier is empty at the end of the
 sweep. `new_items: 0` after the item was inventoried.
+
+## Re-run at iteration 10 (post independent UI pass)
+
+Diff since iteration 9 is confined to `app/lib/screens/game_screen.dart`: the bottom bar
+became a `Column` (coach above key hints) in the keyboard layout, and `_CoinScore` picks
+the unlit-star colour from the scheme brightness. No new widget class, message, route,
+asset or script was introduced, so every surface still maps to an existing item.
+`new_items: 0`, frontier empty.

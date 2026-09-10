@@ -4,8 +4,8 @@
   "clone_name": "Panic Pantry",
   "clone_root": "/Users/devin/repos/experiments/panic-pantry",
   "status": "complete",
-  "iteration": 9,
-  "revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+  "iteration": 10,
+  "revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
   "reference_access": {
     "class": "inaccessible-commercial-title",
     "statement": "The source is a commercial game that was neither run nor purchased. Requirements come from public documentation only (evidence/discovery/reference-overcooked.md). Items needing the running original are classified inferred. No proprietary asset, name, logo, character or audio was copied. Visual parity means normalized parity among Panic Pantry's own four clients with the web build as the reference; no literal parity with the original is claimed."
@@ -25,7 +25,7 @@
       "kind": "route",
       "label": "Home: host, join by code, how to play, server, theme, connection chip",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/ui-smoke/summary.json",
@@ -40,11 +40,11 @@
       "kind": "route",
       "label": "Auto-join busy panel (PP_AUTO / ?auto=1) that resolves into the lobby",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/diffs/visual-parity.log",
-        "evidence/e2e/2026-09-10T15-15-30/e2e.log"
+        "evidence/e2e/2026-09-10T15-41-04/e2e.log"
       ],
       "access": "inferred"
     },
@@ -53,7 +53,7 @@
       "kind": "route",
       "label": "How to play sheet (stations, actions, rules, per-platform controls)",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/ui-smoke/summary.json",
@@ -68,14 +68,14 @@
       "kind": "route",
       "label": "Lobby: roster, bots, level select, join code, ready/start, leave",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/web-lobby.png",
-        "evidence/e2e/2026-09-10T15-15-30/ios-lobby.png",
-        "evidence/e2e/2026-09-10T15-15-30/android-lobby.png",
-        "evidence/e2e/2026-09-10T15-15-30/macos-lobby.png",
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/web-lobby.png",
+        "evidence/e2e/2026-09-10T15-41-04/ios-lobby.png",
+        "evidence/e2e/2026-09-10T15-41-04/android-lobby.png",
+        "evidence/e2e/2026-09-10T15-41-04/macos-lobby.png",
         "evidence/tests/unit-tests.log"
       ],
       "access": "observed"
@@ -85,18 +85,18 @@
       "kind": "route",
       "label": "Gameplay: kitchen canvas, HUD, ticket rail, touch/keyboard controls, overtime",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/web-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/android-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/web-gameplay-late.png",
-        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay-late.png",
-        "evidence/e2e/2026-09-10T15-15-30/android-gameplay-late.png",
-        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay-late.png"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/web-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/ios-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/android-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/macos-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/web-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-41-04/ios-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-41-04/android-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-41-04/macos-gameplay-late.png"
       ],
       "access": "observed"
     },
@@ -105,14 +105,14 @@
       "kind": "route",
       "label": "Results: score count-up, stars, stat tiles, rematch/leave",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/web-results.png",
-        "evidence/e2e/2026-09-10T15-15-30/ios-results.png",
-        "evidence/e2e/2026-09-10T15-15-30/android-results.png",
-        "evidence/e2e/2026-09-10T15-15-30/macos-results.png"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/web-results.png",
+        "evidence/e2e/2026-09-10T15-41-04/ios-results.png",
+        "evidence/e2e/2026-09-10T15-41-04/android-results.png",
+        "evidence/e2e/2026-09-10T15-41-04/macos-results.png"
       ],
       "access": "observed"
     },
@@ -121,12 +121,12 @@
       "kind": "feature",
       "label": "Ticket rail with timed orders, two queued at start, expiry penalty",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/ios-gameplay.png"
       ],
       "access": "observed"
     },
@@ -135,12 +135,12 @@
       "kind": "feature",
       "label": "+20 base, time-scaled tip, -10 expired, combo up to x4",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/plan.json"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/plan.json"
       ],
       "access": "observed"
     },
@@ -149,12 +149,12 @@
       "kind": "feature",
       "label": "Three-star thresholds scaling with player count",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/web-results.png"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/web-results.png"
       ],
       "access": "inferred"
     },
@@ -163,11 +163,11 @@
       "kind": "feature",
       "label": "Chopping at boards while Action is held (progress per held tick)",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json"
       ],
       "access": "observed"
     },
@@ -176,11 +176,11 @@
       "kind": "feature",
       "label": "Pots cook, then burn and ignite when neglected",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json"
       ],
       "access": "inferred"
     },
@@ -189,7 +189,7 @@
       "kind": "feature",
       "label": "Fire spreads; extinguisher puts it out",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
@@ -202,11 +202,11 @@
       "kind": "feature",
       "label": "Plating, serving at the pass, dirty plate return, sink",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json"
       ],
       "access": "observed"
     },
@@ -215,10 +215,10 @@
       "kind": "feature",
       "label": "Serving an unordered dish is refused and counted",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
         "evidence/discovery/inventory.md"
       ],
       "access": "inferred"
@@ -228,7 +228,7 @@
       "kind": "feature",
       "label": "Free floor drops",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
@@ -241,11 +241,11 @@
       "kind": "feature",
       "label": "Dash impulse (F/L key, Dash button)",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png"
+        "evidence/e2e/2026-09-10T15-41-04/ios-gameplay.png"
       ],
       "access": "observed"
     },
@@ -254,7 +254,7 @@
       "kind": "feature",
       "label": "Six quick emotes via keys, sheet or test command",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
@@ -267,7 +267,7 @@
       "kind": "feature",
       "label": "Five hand-designed kitchens with distinct gimmicks",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
@@ -281,7 +281,7 @@
       "kind": "feature",
       "label": "Host-only level grid with live previews",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
@@ -295,11 +295,11 @@
       "kind": "feature",
       "label": "1-4 chefs, bots fill seats",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json"
       ],
       "access": "observed"
     },
@@ -308,15 +308,15 @@
       "kind": "feature",
       "label": "Round timer, overtime grace, results",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/e2e.log",
-        "evidence/e2e/2026-09-10T15-15-30/web-gameplay-late.png",
-        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay-late.png",
-        "evidence/e2e/2026-09-10T15-15-30/android-gameplay-late.png",
-        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay-late.png"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/e2e.log",
+        "evidence/e2e/2026-09-10T15-41-04/web-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-41-04/ios-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-41-04/android-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-41-04/macos-gameplay-late.png"
       ],
       "access": "observed"
     },
@@ -325,11 +325,11 @@
       "kind": "feature",
       "label": "Rooms, four-letter join codes, ready/start/rematch",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/e2e.log",
+        "evidence/e2e/2026-09-10T15-41-04/e2e.log",
         "evidence/tests/ui-smoke/summary.json"
       ],
       "access": "inferred"
@@ -339,7 +339,7 @@
       "kind": "feature",
       "label": "Token resume keeps seat and score; app-level reconnect overlay in lobby and game",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
@@ -352,11 +352,11 @@
       "kind": "feature",
       "label": "Inputs carry the intended facing tile",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json"
       ],
       "access": "inferred"
     },
@@ -365,7 +365,7 @@
       "kind": "feature",
       "label": "Light and dark themes on every screen",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/ui-smoke/summary.json",
@@ -380,13 +380,13 @@
       "kind": "feature",
       "label": "Keyboard, touch and mouse per platform",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/android-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/web-gameplay.png"
+        "evidence/e2e/2026-09-10T15-41-04/ios-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/android-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/macos-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/web-gameplay.png"
       ],
       "access": "observed"
     },
@@ -395,7 +395,7 @@
       "kind": "feature",
       "label": "Training Kitchen level plus How to play sheet",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/ui-smoke/summary.json",
@@ -409,12 +409,12 @@
       "kind": "feature",
       "label": "Deterministic server bots and offline planner",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/plan.json",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json"
+        "evidence/e2e/2026-09-10T15-41-04/plan.json",
+        "evidence/e2e/2026-09-10T15-41-04/summary.json"
       ],
       "access": "inferred"
     },
@@ -423,11 +423,11 @@
       "kind": "feature",
       "label": "Automation HTTP/WebSocket channel, opt-in only",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/e2e.log",
+        "evidence/e2e/2026-09-10T15-41-04/e2e.log",
         "evidence/tests/ui-smoke/smoke.log"
       ],
       "access": "inferred"
@@ -437,29 +437,29 @@
       "kind": "journey",
       "label": "web + iOS + Android + macOS join one room and finish a match with identical results",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/e2e.log",
-        "evidence/e2e/2026-09-10T15-15-30/plan.json",
-        "evidence/e2e/2026-09-10T15-15-30/web-lobby.png",
-        "evidence/e2e/2026-09-10T15-15-30/web-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/web-gameplay-late.png",
-        "evidence/e2e/2026-09-10T15-15-30/web-results.png",
-        "evidence/e2e/2026-09-10T15-15-30/ios-lobby.png",
-        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay-late.png",
-        "evidence/e2e/2026-09-10T15-15-30/ios-results.png",
-        "evidence/e2e/2026-09-10T15-15-30/android-lobby.png",
-        "evidence/e2e/2026-09-10T15-15-30/android-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/android-gameplay-late.png",
-        "evidence/e2e/2026-09-10T15-15-30/android-results.png",
-        "evidence/e2e/2026-09-10T15-15-30/macos-lobby.png",
-        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay.png",
-        "evidence/e2e/2026-09-10T15-15-30/macos-gameplay-late.png",
-        "evidence/e2e/2026-09-10T15-15-30/macos-results.png",
-        "evidence/e2e/2026-09-10T15-15-30/four-way-match.mov",
-        "evidence/e2e/2026-09-10T15-15-30/review-video.mp4"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/e2e.log",
+        "evidence/e2e/2026-09-10T15-41-04/plan.json",
+        "evidence/e2e/2026-09-10T15-41-04/web-lobby.png",
+        "evidence/e2e/2026-09-10T15-41-04/web-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/web-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-41-04/web-results.png",
+        "evidence/e2e/2026-09-10T15-41-04/ios-lobby.png",
+        "evidence/e2e/2026-09-10T15-41-04/ios-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/ios-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-41-04/ios-results.png",
+        "evidence/e2e/2026-09-10T15-41-04/android-lobby.png",
+        "evidence/e2e/2026-09-10T15-41-04/android-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/android-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-41-04/android-results.png",
+        "evidence/e2e/2026-09-10T15-41-04/macos-lobby.png",
+        "evidence/e2e/2026-09-10T15-41-04/macos-gameplay.png",
+        "evidence/e2e/2026-09-10T15-41-04/macos-gameplay-late.png",
+        "evidence/e2e/2026-09-10T15-41-04/macos-results.png",
+        "evidence/e2e/2026-09-10T15-41-04/four-way-match.mov",
+        "evidence/e2e/2026-09-10T15-41-04/review-video.mp4"
       ],
       "access": "observed",
       "result": {
@@ -485,7 +485,7 @@
       "kind": "journey",
       "label": "results -> host rematch -> lobby -> second match",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/tests/unit-tests.log",
         "evidence/discovery/inventory.md"
@@ -497,7 +497,7 @@
       "kind": "journey",
       "label": "socket drop mid-match, token resume",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/tests/unit-tests.log",
         "evidence/discovery/inventory.md"
@@ -509,7 +509,7 @@
       "kind": "journey",
       "label": "leave -> home -> how to play -> bad/full join -> theme -> host on chosen level -> leave",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/tests/ui-smoke/summary.json",
         "evidence/tests/ui-smoke/smoke.log",
@@ -530,7 +530,7 @@
       "kind": "journey",
       "label": "one client hosts, adds bots, readies, starts, reaches results",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/tests/unit-tests.log",
         "evidence/discovery/inventory.md"
@@ -542,7 +542,7 @@
       "kind": "visual",
       "label": "lobby screen: ios client vs web reference at 402x874@3x",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/diffs/visual-parity.json",
         "evidence/diffs/visual-parity.log",
@@ -564,7 +564,7 @@
         "masked_regions": 2,
         "core_pass_surviving_pixels": 0,
         "core_pass_limit": 2,
-        "raw_differing_pixels": 1081,
+        "raw_differing_pixels": 1205,
         "raw_total_pixels": 2814804,
         "normalization_evidence": "evidence/diffs/visual-parity.json"
       }
@@ -574,7 +574,7 @@
       "kind": "visual",
       "label": "results screen: ios client vs web reference at 402x874@3x",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/diffs/visual-parity.json",
         "evidence/diffs/visual-parity.log",
@@ -606,7 +606,7 @@
       "kind": "visual",
       "label": "home screen: ios client vs web reference at 402x874@3x",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/diffs/visual-parity.json",
         "evidence/diffs/visual-parity.log",
@@ -638,7 +638,7 @@
       "kind": "visual",
       "label": "lobby screen: android client vs web reference at 1024x720@1x",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/diffs/visual-parity.json",
         "evidence/diffs/visual-parity.log",
@@ -660,7 +660,7 @@
         "masked_regions": 2,
         "core_pass_surviving_pixels": 0,
         "core_pass_limit": 2,
-        "raw_differing_pixels": 488,
+        "raw_differing_pixels": 480,
         "raw_total_pixels": 712704,
         "normalization_evidence": "evidence/diffs/visual-parity.json"
       }
@@ -670,7 +670,7 @@
       "kind": "visual",
       "label": "results screen: android client vs web reference at 1024x720@1x",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/diffs/visual-parity.json",
         "evidence/diffs/visual-parity.log",
@@ -702,7 +702,7 @@
       "kind": "visual",
       "label": "home screen: android client vs web reference at 1024x720@1x",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/diffs/visual-parity.json",
         "evidence/diffs/visual-parity.log",
@@ -734,7 +734,7 @@
       "kind": "visual",
       "label": "lobby screen: macos client vs web reference at 960x608@1x",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/diffs/visual-parity.json",
         "evidence/diffs/visual-parity.log",
@@ -756,7 +756,7 @@
         "masked_regions": 6,
         "core_pass_surviving_pixels": 0,
         "core_pass_limit": 2,
-        "raw_differing_pixels": 604,
+        "raw_differing_pixels": 594,
         "raw_total_pixels": 583680,
         "normalization_evidence": "evidence/diffs/visual-parity.json"
       }
@@ -766,7 +766,7 @@
       "kind": "visual",
       "label": "results screen: macos client vs web reference at 960x608@1x",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/diffs/visual-parity.json",
         "evidence/diffs/visual-parity.log",
@@ -798,7 +798,7 @@
       "kind": "visual",
       "label": "home screen: macos client vs web reference at 960x608@1x",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/diffs/visual-parity.json",
         "evidence/diffs/visual-parity.log",
@@ -830,7 +830,7 @@
       "kind": "asset",
       "label": "Nunito + JetBrains Mono (SIL OFL)",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/build.log",
@@ -843,11 +843,11 @@
       "kind": "asset",
       "label": "Procedural original sprites and particles",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/discovery/audit-assets.md",
-        "evidence/e2e/2026-09-10T15-15-30/ios-gameplay.png"
+        "evidence/e2e/2026-09-10T15-41-04/ios-gameplay.png"
       ],
       "access": "inferred"
     },
@@ -856,7 +856,7 @@
       "kind": "asset",
       "label": "Material Symbols UI icons",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/discovery/audit-assets.md",
@@ -869,7 +869,7 @@
       "kind": "asset",
       "label": "Original product, dish, chef and level names",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/discovery/audit-rebrand.md"
@@ -881,7 +881,7 @@
       "kind": "asset",
       "label": "Generated launcher icons and web manifest identity",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/discovery/audit-rebrand.md",
@@ -895,11 +895,11 @@
       "kind": "integration",
       "label": "JSON-over-WebSocket protocol v1",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
-        "evidence/e2e/2026-09-10T15-15-30/e2e.log"
+        "evidence/e2e/2026-09-10T15-41-04/e2e.log"
       ],
       "access": "inferred"
     },
@@ -908,7 +908,7 @@
       "kind": "integration",
       "label": "HTTP health/levels always; /test/* only with --test-harness",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
         "evidence/tests/unit-tests.log",
@@ -921,20 +921,20 @@
       "kind": "integration",
       "label": "Programmatic edited review reel cut from the E2E + browser-smoke evidence (cards, boards, log captions, pass cards, results table, verdict)",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/inventory.md",
-        "evidence/e2e/2026-09-10T15-15-30/review-video.mp4",
-        "evidence/e2e/2026-09-10T15-15-30/review-video.gif",
-        "evidence/e2e/2026-09-10T15-15-30/review-video.json",
-        "evidence/e2e/2026-09-10T15-15-30/review-video.log",
+        "evidence/e2e/2026-09-10T15-41-04/review-video.mp4",
+        "evidence/e2e/2026-09-10T15-41-04/review-video.gif",
+        "evidence/e2e/2026-09-10T15-41-04/review-video.json",
+        "evidence/e2e/2026-09-10T15-41-04/review-video.log",
         "evidence/tests/ui-smoke/browser-smoke.webm",
         "evidence/tests/quality.log"
       ],
       "access": "observed",
       "result": {
         "segments": 22,
-        "duration_s": 92.57,
+        "duration_s": 92.37,
         "size": "1280x720",
         "e2e_passed": true,
         "smoke_passed": true
@@ -945,7 +945,7 @@
     {
       "id": "source",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/audit-source.md",
         "evidence/discovery/reference-overcooked.md",
@@ -955,17 +955,17 @@
     {
       "id": "navigation",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/audit-navigation.md",
         "evidence/tests/ui-smoke/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/e2e.log"
+        "evidence/e2e/2026-09-10T15-41-04/e2e.log"
       ]
     },
     {
       "id": "roles",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/audit-roles.md",
         "evidence/tests/unit-tests.log"
@@ -974,37 +974,37 @@
     {
       "id": "states",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/audit-states.md",
         "evidence/tests/ui-smoke/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json"
       ]
     },
     {
       "id": "responsive",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/audit-responsive.md",
         "evidence/diffs/visual-parity.json",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json"
+        "evidence/e2e/2026-09-10T15-41-04/summary.json"
       ]
     },
     {
       "id": "data",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/audit-data.md",
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
         "evidence/tests/unit-tests.log"
       ]
     },
     {
       "id": "assets",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/audit-assets.md",
         "evidence/tests/build.log"
@@ -1013,7 +1013,7 @@
     {
       "id": "accessibility",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/audit-accessibility.md",
         "evidence/tests/quality.log"
@@ -1022,18 +1022,18 @@
     {
       "id": "reliability",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/audit-reliability.md",
         "evidence/tests/unit-tests.log",
         "evidence/tests/ui-smoke/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/e2e.log"
+        "evidence/e2e/2026-09-10T15-41-04/e2e.log"
       ]
     },
     {
       "id": "rebrand",
       "status": "verified",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/discovery/audit-rebrand.md",
         "evidence/tests/quality.log"
@@ -1044,10 +1044,10 @@
     {
       "id": "functional",
       "status": "passed",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
-        "evidence/e2e/2026-09-10T15-15-30/summary.json",
-        "evidence/e2e/2026-09-10T15-15-30/e2e.log",
+        "evidence/e2e/2026-09-10T15-41-04/summary.json",
+        "evidence/e2e/2026-09-10T15-41-04/e2e.log",
         "evidence/tests/unit-tests.log",
         "evidence/tests/ui-smoke/summary.json"
       ]
@@ -1055,7 +1055,7 @@
     {
       "id": "visual",
       "status": "passed",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/diffs/visual-parity.json",
         "evidence/diffs/visual-parity.log",
@@ -1065,7 +1065,7 @@
     {
       "id": "build",
       "status": "passed",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/tests/build.log"
       ]
@@ -1073,7 +1073,7 @@
     {
       "id": "quality",
       "status": "passed",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/tests/quality.log"
       ]
@@ -1081,7 +1081,7 @@
     {
       "id": "security",
       "status": "passed",
-      "verified_revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "verified_revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "evidence": [
         "evidence/tests/security.log",
         "evidence/tests/unit-tests.log"
@@ -1090,8 +1090,8 @@
   ],
   "sweeps": [
     {
-      "iteration": 9,
-      "revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "iteration": 10,
+      "revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "new_items": 0,
       "frontier_empty": true,
       "audit_ids": [
@@ -1112,8 +1112,8 @@
       ]
     },
     {
-      "iteration": 9,
-      "revision": "sha256:3c3125d440e0197cec91262872b519b2ad1bf229e33cb0d386bfc93a2aca9e41",
+      "iteration": 10,
+      "revision": "sha256:2938ae6410ae17fcb08dfff7775314958aabecf8f239406533cbf2abc0f774f6",
       "new_items": 0,
       "frontier_empty": true,
       "audit_ids": [

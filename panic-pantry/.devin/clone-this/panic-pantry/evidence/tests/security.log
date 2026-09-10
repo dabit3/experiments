@@ -101,3 +101,12 @@ exit=1 (1 = none)
 # 3. /test/* routes absent without --test-harness
 unit-tests.log: test/server_test.dart: test harness routes are absent unless enabled (passed)
 # verdict: unchanged; matches are the in-memory reconnect token (PROTOCOL.md welcome.token). pass
+
+# 2026-09-10T15:52:16Z re-run after iteration-10 fixes (coach/key-hint stacking, dark-theme unlit stars; game_screen.dart only)
+# 1. secret / credential scan over the changed file
+12:import '../theme/tokens.dart';
+# 2. no .env / keystore / provisioning files staged
+exit=1 (1 = none)
+# 3. /test/* routes absent without --test-harness
+test harness routes are absent unless enabled
+# verdict: unchanged. pass

@@ -1,10 +1,10 @@
 {
-  "finishedAt": "2026-09-10T14:52:36.930Z",
+  "finishedAt": "2026-09-10T15:45:02.388Z",
   "viewport": {
     "width": 800,
     "height": 520
   },
-  "videoStartedAt": "2026-09-10T14:52:18.491Z",
+  "videoStartedAt": "2026-09-10T15:44:43.340Z",
   "video": "browser-smoke.webm",
   "checks": [
     {

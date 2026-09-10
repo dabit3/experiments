@@ -20,7 +20,7 @@
   },
   "seed": 23,
   "level": "corner-cafe",
-  "finishedAt": "2026-09-10T15:03:21.787Z",
+  "finishedAt": "2026-09-10T15:50:39.273Z",
   "pass": true,
   "results": [
     {
@@ -62,8 +62,8 @@
         "width": 1206,
         "height": 2334,
         "compared": 2805795,
-        "differing": 1081,
-        "ratio": 0.00039,
+        "differing": 1205,
+        "ratio": 0.00043,
         "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/lobby-web-for-ios.png",
         "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/lobby-ios.png",
         "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-ios.png"
@@ -272,8 +272,8 @@
         "width": 1024,
         "height": 696,
         "compared": 711255,
-        "differing": 488,
-        "ratio": 0.00069,
+        "differing": 480,
+        "ratio": 0.00067,
         "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/lobby-web-for-android.png",
         "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/lobby-android.png",
         "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-android.png"
@@ -510,8 +510,8 @@
         "width": 960,
         "height": 608,
         "compared": 580799,
-        "differing": 604,
-        "ratio": 0.00104,
+        "differing": 594,
+        "ratio": 0.00102,
         "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/lobby-web-for-macos.png",
         "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/lobby-macos.png",
         "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-macos.png"
@@ -534,7 +534,7 @@
         },
         "core": {
           "compared": 580799,
-          "rawDiffering": 9,
+          "rawDiffering": 4,
           "differing": 0,
           "largestCluster": 0,
           "pass": true

@@ -53,3 +53,13 @@ existing item: feature-orders, feature-score, feature-timer, feature-levels,
 feature-cook/feature-chop, route-game, route-results, feature-level-select (the lobby now
 shows the session's best stars per level via `GameClient.bestStars`, still the same
 item). No behaviour row lacks an item. No new item. Frontier empty. `new_items: 0`.
+
+## Re-run at iteration 10 (post independent UI pass)
+
+The independent UI pass on the redesigned client found two presentation defects
+(Training coach pill overlapping the wrapped key-hint rows at ~900 px; dark-theme unlit
+HUD stars too low-contrast). Both fixes live in `app/lib/screens/game_screen.dart` and
+change no behaviour row: the coach and key hints still map to feature-tutorial /
+route-game, the HUD stars to feature-score. The reference walk was repeated against the
+rebuilt evidence (e2e/2026-09-10T15-41-04, ui-smoke, visual-parity) with the same result:
+every row owned, no new item. `new_items: 0`, frontier empty.

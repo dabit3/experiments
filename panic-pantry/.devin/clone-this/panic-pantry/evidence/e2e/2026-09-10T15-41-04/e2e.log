@@ -1,0 +1,41 @@
+[   1.6s] server ready on :8787
+[   1.6s] web build served on :8080
+[   1.6s] room E2E4 created (seed 23, level corner-cafe, speed 1)
+[   1.6s] screen recording -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov
+[   4.2s] web client opened
+[   6.7s] ios client launched on 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89: dev.panicpantry.panicPantry: 20423
+[  27.7s] android client launched
+[  30.8s] macos client launched
+[  30.8s] lobby: Webby(web, slot 0), Pip(ios, slot 1), Andi(android, slot 2), Mac(macos, slot 3)
+[  35.4s] screenshot web/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/web-lobby.png
+[  35.6s] screenshot ios/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/ios-lobby.png
+[  36.2s] screenshot android/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/android-lobby.png
+[  36.3s] screenshot macos/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/macos-lobby.png
+[  37.5s] plan: 3061 ticks, expected score 405, 1 star(s)
+[  37.5s] queued 3061 scripted ticks for Webby
+[  37.5s] queued 3061 scripted ticks for Pip
+[  37.5s] queued 3061 scripted ticks for Andi
+[  37.5s] queued 3061 scripted ticks for Mac
+[  38.0s] match started
+[  61.7s] screenshot web/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/web-gameplay.png
+[  61.9s] screenshot ios/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/ios-gameplay.png
+[  63.4s] screenshot android/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/android-gameplay.png
+[  63.6s] screenshot macos/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/macos-gameplay.png
+[  64.6s] mid-match web: phase=playing tick=511 score=36 rtt=1ms
+[  64.6s] mid-match ios: phase=playing tick=511 score=36 rtt=1ms
+[  64.6s] mid-match android: phase=playing tick=511 score=36 rtt=8ms
+[  64.6s] mid-match macos: phase=playing tick=511 score=36 rtt=1ms
+[  89.7s] screenshot web/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/web-gameplay-late.png
+[  89.9s] screenshot ios/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/ios-gameplay-late.png
+[  91.3s] screenshot android/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/android-gameplay-late.png
+[  91.5s] screenshot macos/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/macos-gameplay-late.png
+[ 195.4s] screenshot web/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/web-results.png
+[ 195.6s] screenshot ios/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/ios-results.png
+[ 196.8s] screenshot android/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/android-results.png
+[ 197.0s] screenshot macos/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/macos-results.png
+[ 197.5s] web     final: score=405 stars=1 served=11 tips=185 combo=4 screen=results
+[ 197.5s] ios     final: score=405 stars=1 served=11 tips=185 combo=4 screen=results
+[ 197.5s] android final: score=405 stars=1 served=11 tips=185 combo=4 screen=results
+[ 197.5s] macos   final: score=405 stars=1 served=11 tips=185 combo=4 screen=results
+[ 197.5s] PASS: 4 client(s) [web, ios, android, macos] + 0 bot(s) agree: score 405, 1 star(s), served 11
+[ 200.4s] evidence: /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04

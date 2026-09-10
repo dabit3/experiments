@@ -1,6 +1,6 @@
-# 2026-09-10T03:44:22Z quality suite
+# 2026-09-10T15:39:59Z quality suite
 ## dart format --set-exit-if-changed core server app/lib test
-Formatted 33 files (0 changed) in 0.18 seconds.
+Formatted 33 files (0 changed) in 0.20 seconds.
 exit=0
 ## core dart analyze
 Analyzing core...
@@ -21,7 +21,7 @@ Got dependencies!
 4 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
 Analyzing app...                                                
-No issues found! (ran in 3.2s)
+No issues found! (ran in 2.5s)
 exit=0
 ## node --check
 ok test/e2e/run.mjs
@@ -42,7 +42,7 @@ ok app/tool/make_icons.swift
 exit=0
 ## versions
 Flutter 3.47.3 • channel stable • https://github.com/flutter/flutter.git
-Framework • revision e8113bf456 (5 days ago) • 2026-09-04 13:20:08 -0700
+Framework • revision e8113bf456 (6 days ago) • 2026-09-04 13:20:08 -0700
 Engine • hash 0e228ec8c8d2abc9fcf1d053e8a40665bb859ec7 (revision 06a2e2a110) (6 days ago) • 2026-09-03 16:07:13.000Z
 v24.19.0
 Python 3.9.6

@@ -173,26 +173,47 @@ class _GameScreenState extends State<GameScreen> {
               ),
               // Bottom bar: hints / controls. Key hints sit between the coin
               // score and the stopwatch so neither corner is covered.
-              Positioned(
-                left: _showTouch ? 0 : (compact ? 240 : 300),
-                right: _showTouch ? 0 : (compact ? 96 : 116),
-                bottom: MediaQuery.paddingOf(context).bottom,
-                child: _showTouch
-                    ? _TouchControls(
-                        onMove: c.setMovement,
-                        onInteract: _interact,
-                        onAction: c.setAction,
-                        onDash: () => c.press(dash: true),
-                        onEmote: () => setState(() => _emoteOpen = !_emoteOpen),
-                      )
-                    : _KeyHints(compact: compact),
-              ),
-              // Tutorial coach marks.
-              if (g.level.tutorial && g.running && me != null)
+              if (_showTouch)
                 Positioned(
                   left: 0,
                   right: 0,
-                  bottom: MediaQuery.paddingOf(context).bottom + (_showTouch ? 156 : 52),
+                  bottom: MediaQuery.paddingOf(context).bottom,
+                  child: _TouchControls(
+                    onMove: c.setMovement,
+                    onInteract: _interact,
+                    onAction: c.setAction,
+                    onDash: () => c.press(dash: true),
+                    onEmote: () => setState(() => _emoteOpen = !_emoteOpen),
+                  ),
+                )
+              else
+                // The tutorial coach stacks above the hints (which may wrap
+                // to two rows on narrow windows) so the two never overlap.
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: MediaQuery.paddingOf(context).bottom,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (g.level.tutorial && g.running && me != null)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 6),
+                          child: _Coach(state: g, me: me),
+                        ),
+                      Padding(
+                        padding: EdgeInsets.only(left: compact ? 240 : 300, right: compact ? 96 : 116),
+                        child: _KeyHints(compact: compact),
+                      ),
+                    ],
+                  ),
+                ),
+              // Tutorial coach marks (touch layout: above the on-screen controls).
+              if (_showTouch && g.level.tutorial && g.running && me != null)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: MediaQuery.paddingOf(context).bottom + 156,
                   child: Center(
                     child: _Coach(state: g, me: me),
                   ),
@@ -341,7 +362,13 @@ class _CoinScore extends StatelessWidget {
         ),
         if (g.combo > 1) ...[const SizedBox(width: PPSpace.x2), _ComboBadge(combo: g.combo)],
         const SizedBox(width: PPSpace.x3),
-        StarRow(lit: g.stars, size: compact ? 16 : 20, dimColor: Colors.black.withValues(alpha: 0.25)),
+        StarRow(
+          lit: g.stars,
+          size: compact ? 16 : 20,
+          dimColor: (PPScheme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black).withValues(
+            alpha: 0.30,
+          ),
+        ),
       ],
     );
   }
