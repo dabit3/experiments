@@ -1,33 +1,14 @@
-# fresh clone of branch devin/1788988153-voxelhearth at 37a0aba, 2026-09-10T15:00:41Z
+# fresh clone of branch devin/1788988153-voxelhearth at 37c2beb, 2026-09-10T15:36:37Z
 == core
 Resolving dependencies...
 Downloading packages...
 Got dependencies!
-Formatted 14 files (0 changed) in 0.03 seconds.
+Formatted 14 files (0 changed) in 0.04 seconds.
 Analyzing voxelhearth_core...
 No issues found!
-00:00 +0: loading test/core_test.dart
-00:00 +0: test/core_test.dart: determinism rng and hash3 are stable
-00:00 +1: test/core_test.dart: determinism same seed produces identical chunks
-00:00 +2: test/core_test.dart: determinism chunks have bedrock floor, surface and no floating water
-00:00 +3: test/core_test.dart: determinism world edit hash is order independent and equal across peers
-00:00 +4: test/core_test.dart: determinism spawn is on land
-00:00 +5: test/core_test.dart: recipes planks from any log, shapeless
-00:00 +6: test/core_test.dart: recipes shaped recipes can be offset inside the grid
-00:00 +7: test/core_test.dart: recipes pickaxe needs a 3x3 grid
-00:00 +8: test/core_test.dart: recipes every recipe result and ingredient is registered
-00:00 +9: test/core_test.dart: inventory stacks merge up to max and overflow returns remainder
-00:00 +10: test/core_test.dart: inventory tools do not stack
-00:00 +11: test/core_test.dart: break speeds tools speed up harvesting and tier gates drops
-00:00 +12: test/core_test.dart: room simulation join, start, place, break and hash
-00:00 +13: test/core_test.dart: room simulation host survives a short disconnect, migrates after the grace window
-00:00 +14: test/core_test.dart: room simulation rejoining with a new display name keeps the player and renames them
-00:00 +15: test/core_test.dart: room simulation crafting consumes ingredients and produces result
-00:00 +16: test/core_test.dart: room simulation match timer ends the match with results
 00:00 +17: test/core_test.dart: room simulation bots act deterministically for a given seed
 00:00 +18: test/core_test.dart: room simulation kiln smelts with fuel
 00:00 +19: All tests passed!
-core exit=0
 == server
 Resolving dependencies...
 Downloading packages...
@@ -35,22 +16,8 @@ Got dependencies!
 Formatted 2 files (0 changed) in 0.01 seconds.
 Analyzing server...
 No issues found!
-server exit=0
 == app
-Resolving dependencies...
-Downloading packages...
-  code_assets 1.2.1 (2.0.0 available)
-  hooks 2.0.2 (2.2.0 available)
-  material_color_utilities 0.13.0 (0.13.1 available)
-  meta 1.18.3 (1.19.0 available)
-  objective_c 9.5.0 (9.6.0 available)
-  record_use 0.6.0 (1.1.1 available)
-  test_api 0.7.12 (0.7.14 available)
-  vector_math 2.4.0 (2.4.2 available)
-Got dependencies!
-8 packages have newer versions incompatible with dependency constraints.
-Try `flutter pub outdated` for more information.
-Formatted 23 files (0 changed) in 0.07 seconds.
+Formatted 23 files (0 changed) in 0.12 seconds.
 Resolving dependencies...
 Downloading packages...
   code_assets 1.2.1 (2.0.0 available)
@@ -65,75 +32,17 @@ Got dependencies!
 8 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
 Analyzing app...                                                
-No issues found! (ran in 1.0s)
-Resolving dependencies...
-Downloading packages...
-  code_assets 1.2.1 (2.0.0 available)
-  hooks 2.0.2 (2.2.0 available)
-  material_color_utilities 0.13.0 (0.13.1 available)
-  meta 1.18.3 (1.19.0 available)
-  objective_c 9.5.0 (9.6.0 available)
-  record_use 0.6.0 (1.1.1 available)
-  test_api 0.7.12 (0.7.14 available)
-  vector_math 2.4.0 (2.4.2 available)
-Got dependencies!
-8 packages have newer versions incompatible with dependency constraints.
-Try `flutter pub outdated` for more information.
-Compiling lib/main.dart for the Web...                          
-Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
-Use --no-wasm-dry-run to disable these warnings.
-Expected to find fonts for (MaterialIcons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
-Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 9016 bytes (99.5% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Compiling lib/main.dart for the Web...                             18.0s
+No issues found! (ran in 1.4s)
+== flutter build web --release
+Compiling lib/main.dart for the Web...                             24.8s
 ✓ Built build/web
-Resolving dependencies...
-Downloading packages...
-  code_assets 1.2.1 (2.0.0 available)
-  hooks 2.0.2 (2.2.0 available)
-  material_color_utilities 0.13.0 (0.13.1 available)
-  meta 1.18.3 (1.19.0 available)
-  objective_c 9.5.0 (9.6.0 available)
-  record_use 0.6.0 (1.1.1 available)
-  test_api 0.7.12 (0.7.14 available)
-  vector_math 2.4.0 (2.4.2 available)
-Got dependencies!
-8 packages have newer versions incompatible with dependency constraints.
-Try `flutter pub outdated` for more information.
-Building macOS application...                                   
+== flutter build macos
 warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
 ✓ Built build/macos/Build/Products/Release/Voxelhearth.app (46.0MB)
-Resolving dependencies...
-Downloading packages...
-  code_assets 1.2.1 (2.0.0 available)
-  hooks 2.0.2 (2.2.0 available)
-  material_color_utilities 0.13.0 (0.13.1 available)
-  meta 1.18.3 (1.19.0 available)
-  objective_c 9.5.0 (9.6.0 available)
-  record_use 0.6.0 (1.1.1 available)
-  test_api 0.7.12 (0.7.14 available)
-  vector_math 2.4.0 (2.4.2 available)
-Got dependencies!
-8 packages have newer versions incompatible with dependency constraints.
-Try `flutter pub outdated` for more information.
-Building com.voxelhearth.voxelhearth for simulator (ios)...
-Running Xcode build...                                          
-Xcode build done.                                           50.2s
+== flutter build ios --simulator
+Xcode build done.                                           34.4s
 ✓ Built build/ios/iphonesimulator/Runner.app
-Resolving dependencies...
-Downloading packages...
-  code_assets 1.2.1 (2.0.0 available)
-  hooks 2.0.2 (2.2.0 available)
-  material_color_utilities 0.13.0 (0.13.1 available)
-  meta 1.18.3 (1.19.0 available)
-  objective_c 9.5.0 (9.6.0 available)
-  record_use 0.6.0 (1.1.1 available)
-  test_api 0.7.12 (0.7.14 available)
-  vector_math 2.4.0 (2.4.2 available)
-Got dependencies!
-8 packages have newer versions incompatible with dependency constraints.
-Try `flutter pub outdated` for more information.
-Running Gradle task 'assembleRelease'...                        
-Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 2644 bytes (99.8% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Running Gradle task 'assembleRelease'...                           36.3s
+== flutter build apk
+Running Gradle task 'assembleRelease'...                           43.1s
 ✓ Built build/app/outputs/flutter-apk/app-release.apk (52.9MB)
-app exit=0
+EXIT=0
