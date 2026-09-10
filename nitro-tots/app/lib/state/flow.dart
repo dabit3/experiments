@@ -22,6 +22,10 @@ class GameFlow extends ChangeNotifier {
   int seed = DateTime.now().millisecondsSinceEpoch & 0xffff;
 
   int raceIndex = 0;
+
+  /// Bot line-up for the current series, fixed so cup rivals keep their
+  /// identity from race to race.
+  List<({String name, String characterId, String kartId})> _roster = const [];
   final Map<int, Standing> standings = {};
   final List<({String trackId, List<RaceResult> results})> raceHistory = [];
   LocalSession? session;
@@ -61,7 +65,25 @@ class GameFlow extends ChangeNotifier {
     standings.clear();
     raceHistory.clear();
     seed = DateTime.now().millisecondsSinceEpoch & 0xffff;
+    _roster = _buildRoster();
     _buildSession();
+  }
+
+  List<({String name, String characterId, String kartId})> _buildRoster() {
+    final isTT = mode == PlayMode.timeTrial;
+    final count = isTT ? 1 : racerCount.clamp(2, 8);
+    final rng = Rng(seed);
+    final pool = characters.where((c) => c.id != app.characterId).toList();
+    for (var i = pool.length - 1; i > 0; i--) {
+      final j = rng.nextInt(i + 1);
+      final t = pool[i];
+      pool[i] = pool[j];
+      pool[j] = t;
+    }
+    return [
+      for (var i = 1; i < count; i++)
+        (name: pool[(i - 1) % pool.length].name, characterId: pool[(i - 1) % pool.length].id, kartId: karts[rng.nextInt(karts.length)].id),
+    ];
   }
 
   void nextRace() {
@@ -77,22 +99,13 @@ class GameFlow extends ChangeNotifier {
     final track = trackById(tid);
     final isTT = mode == PlayMode.timeTrial;
     final isBattle = mode == PlayMode.battle;
-    final count = isTT ? 1 : racerCount.clamp(2, 8);
-    final rng = Rng(seed + raceIndex * 13);
-    final usedChars = <String>{app.characterId};
+    if (_roster.isEmpty && !isTT) _roster = _buildRoster();
     final racers = <Racer>[
       Racer(slot: 0, playerId: 'local', name: app.name, characterId: app.characterId, kartId: app.kartId, isBot: false, platform: AppState.platformId),
+      if (!isTT)
+        for (final (i, b) in _roster.indexed)
+          Racer(slot: i + 1, playerId: 'bot${i + 1}', name: b.name, characterId: b.characterId, kartId: b.kartId, isBot: true, platform: 'bot'),
     ];
-    for (var i = 1; i < count; i++) {
-      var c = characters[rng.nextInt(characters.length)];
-      var guard = 0;
-      while (usedChars.contains(c.id) && guard++ < 16) {
-        c = characters[rng.nextInt(characters.length)];
-      }
-      usedChars.add(c.id);
-      final k = karts[rng.nextInt(karts.length)];
-      racers.add(Racer(slot: i, playerId: 'bot$i', name: c.name, characterId: c.id, kartId: k.id, isBot: true, platform: 'bot'));
-    }
     final raceSeed = seed * 31 + raceIndex * 7 + 1;
     final sim = RaceSim(
       track: track,
@@ -128,39 +141,48 @@ class GameFlow extends ChangeNotifier {
     final s = session;
     if (s == null) return;
     raceHistory.add((trackId: s.info.trackId, results: results));
-    for (final r in results) {
-      final prev = standings[r.slot];
-      standings[r.slot] = Standing(
+    final merged = _merged(results);
+    standings
+      ..clear()
+      ..addAll(merged);
+    if (s.info.timeTrial) {
+      final me = results.firstWhere((r) => r.slot == 0);
+      final best = app.ghosts[s.info.trackId];
+      final bestTicks = best == null ? 1 << 30 : best['ticks'] as int;
+      if (me.finishTick > 0 && me.raceTicks < bestTicks) {
+        app.saveGhost(s.info.trackId, {'ticks': me.raceTicks, 'frames': s.recording});
+      }
+    }
+    notifyListeners();
+  }
+
+  Map<int, Standing> _merged(List<RaceResult> results) => {
+    ...standings,
+    for (final r in results)
+      r.slot: Standing(
         slot: r.slot,
         name: r.name,
         characterId: r.characterId,
         kartId: r.kartId,
         isBot: r.isBot,
         platform: r.platform,
-        points: (prev?.points ?? 0) + r.points,
-        places: [...?prev?.places, r.place],
-      );
-    }
-    if (s.info.timeTrial) {
-      final me = results.firstWhere((r) => r.slot == 0);
-      final best = app.ghosts[s.info.trackId];
-      final bestTicks = best == null ? 1 << 30 : best['ticks'] as int;
-      if (me.finishTick > 0 && me.finishTick < bestTicks) {
-        app.saveGhost(s.info.trackId, {'ticks': me.finishTick, 'frames': s.recording});
-      }
-    }
-    notifyListeners();
-  }
+        points: (standings[r.slot]?.points ?? 0) + r.points,
+        places: [...?standings[r.slot]?.places, r.place],
+      ),
+  };
 
-  List<Standing> get sortedStandings {
-    final list = standings.values.toList()
-      ..sort((a, b) {
-        final byPoints = b.points.compareTo(a.points);
-        if (byPoints != 0) return byPoints;
-        return a.slot.compareTo(b.slot);
-      });
-    return list;
-  }
+  static List<Standing> _sorted(Iterable<Standing> values) => values.toList()
+    ..sort((a, b) {
+      final byPoints = b.points.compareTo(a.points);
+      if (byPoints != 0) return byPoints;
+      return a.slot.compareTo(b.slot);
+    });
+
+  List<Standing> get sortedStandings => _sorted(standings.values);
+
+  /// Cup standings as they will read once [results] are recorded; used by the
+  /// between-race results panel before the player continues.
+  List<Standing> standingsAfter(List<RaceResult> results) => _sorted(_merged(results).values);
 
   void endSeries() {
     session?.dispose();

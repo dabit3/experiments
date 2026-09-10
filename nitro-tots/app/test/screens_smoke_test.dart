@@ -124,6 +124,18 @@ void main() {
     group(label, () {
       testWidgets('title', (t) => _pumpScreen(t, TitleScreen(app: app, onPlay: (_) {}, onSettings: () {}, onGarage: () {}), size, dpr));
 
+      testWidgets('title (rejoin banner)', (t) async {
+        PlayMode? played;
+        app.setResumeRoom('VCXM');
+        await _pumpScreen(t, TitleScreen(app: app, onPlay: (m) => played = m, onSettings: () {}, onGarage: () {}), size, dpr);
+        expect(find.text('You are still in room VCXM'), findsOneWidget);
+        await t.tap(find.text('Rejoin your match'));
+        expect(played, PlayMode.online);
+        app.setResumeRoom(null);
+        await t.pump();
+        expect(find.text('Rejoin your match'), findsNothing);
+      });
+
       testWidgets('garage', (t) => _pumpScreen(t, GarageScreen(app: app, feedback: feedback, onBack: () {}, onDone: () {}), size, dpr));
 
       testWidgets('track select', (t) => _pumpScreen(t, TrackScreen(flow: GameFlow(app), feedback: feedback, onBack: () {}, onStart: () {}), size, dpr));

@@ -90,13 +90,25 @@ class TouchControls extends StatelessWidget {
   final InputController input;
   final bool showGas;
 
+  static bool _compact(BuildContext context) => MediaQuery.sizeOf(context).shortestSide < 420;
+  static double _big(bool compact) => compact ? 68.0 : 80.0;
+  static double _small(bool compact) => compact ? 54.0 : 62.0;
+  static double _edge(bool compact) => compact ? 14.0 : 22.0;
+
+  /// Vertical space the controls occupy, so the HUD can stay clear of them.
+  static double heightFor(BuildContext context) {
+    final compact = _compact(context);
+    return _small(compact) + 10 + _big(compact) + _edge(compact);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final compact = MediaQuery.sizeOf(context).shortestSide < 420;
-    final big = compact ? 68.0 : 80.0;
-    final small = compact ? 54.0 : 62.0;
+    final compact = _compact(context);
+    final big = _big(compact);
+    final small = _small(compact);
+    final edge = _edge(compact);
     return Padding(
-      padding: EdgeInsets.fromLTRB(compact ? 14 : 22, 0, compact ? 14 : 22, compact ? 14 : 22),
+      padding: EdgeInsets.fromLTRB(edge, 0, edge, edge),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [

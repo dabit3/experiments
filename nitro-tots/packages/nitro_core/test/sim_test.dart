@@ -50,7 +50,10 @@ void main() {
       expect(finished, greaterThanOrEqualTo(6), reason: 'only $finished bots finished on ${def.name}');
       for (final r in a.racers.where((r) => r.finished)) {
         expect(r.lapTicks.length, 3);
+        expect(r.raceTicks, r.lapTicks.fold(0, (s, t) => s + t), reason: 'race time must exclude the countdown');
       }
+      final winner = a.results!.first;
+      expect(winner.raceTicks, winner.finishTick - countdownTicks);
     });
   }
 

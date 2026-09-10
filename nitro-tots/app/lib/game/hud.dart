@@ -12,12 +12,16 @@ import 'track_art.dart';
 /// Heads-up display drawn over the game canvas. Rebuilds every frame via a
 /// ticker owned by the race screen; keeps its widgets cheap.
 class RaceHud extends StatelessWidget {
-  const RaceHud({super.key, required this.session, required this.art, required this.compact, this.rttMs});
+  const RaceHud({super.key, required this.session, required this.art, required this.compact, this.rttMs, this.bottomInset = 0});
 
   final RaceSession session;
   final TrackArt art;
   final bool compact;
   final int? rttMs;
+
+  /// Height reserved at the bottom for on-screen touch controls so the speedo
+  /// and minimap sit above them instead of underneath.
+  final double bottomInset;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,13 @@ class RaceHud extends StatelessWidget {
                     children: [
                       lapOrTimer,
                       const SizedBox(height: 6),
-                      if (!isBattle) _Pill(label: 'TIME', value: formatTicks(math.max(0, sim.tick - countdownTicks)), color: NtColors.grape, compact: true),
+                      if (!isBattle)
+                        _Pill(
+                          label: 'TIME',
+                          value: formatTicks(me != null && me.finished ? me.raceTicks : math.max(0, sim.tick - countdownTicks)),
+                          color: NtColors.grape,
+                          compact: true,
+                        ),
                       if (info.online && rttMs != null) ...[
                         const SizedBox(height: 6),
                         _Pill(label: 'PING', value: '${rttMs}ms', color: rttMs! > 150 ? NtColors.nitro : NtColors.mint, compact: true),
@@ -84,14 +94,14 @@ class RaceHud extends StatelessWidget {
             // Bottom-right: minimap.
             Positioned(
               right: 0,
-              bottom: compact ? 0 : 4,
+              bottom: bottomInset + (compact ? 0 : 4),
               child: Minimap(session: session, art: art, size: compact ? 96 : 150),
             ),
             // Bottom-left: speed + boost gauge.
             if (me != null)
               Positioned(
                 left: 0,
-                bottom: 0,
+                bottom: bottomInset,
                 child: _Speedo(racer: me, compact: compact),
               ),
             // Centre: countdown / wrong way / finish.

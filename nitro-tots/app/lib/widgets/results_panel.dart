@@ -158,7 +158,7 @@ class _ResultRow extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(battle ? '${r.score} pts' : formatTicks(r.finishTick), style: NtType.mono(nt.ink)),
+                Text(battle ? '${r.score} pts' : formatTicks(r.raceTicks), style: NtType.mono(nt.ink)),
                 Text('+${r.points}', style: NtType.caption(NtColors.nitro)),
               ],
             ),

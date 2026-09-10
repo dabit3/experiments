@@ -23,13 +23,16 @@ karts, tracks, items, names, art, fonts (OFL) and audio are original.
 - **8 items** with position-weighted odds: Turbo Can, Triple Turbo, Homing
   Rocket, Bouncy Orb, Syrup Slick, Bubble Shield, Thunder Zap, Comet Ride.
 - **Modes:** single race, **Grand Prix** (Sugar Cup, Nitro Cup — points 15/12/10/9/8/7/6/5,
-  standings across 4 races), **time trial with ghost**, **battle** (balloons).
+  standings across 4 races, fixed rival line-up, cumulative standings shown
+  after every race), **time trial with ghost** (your best previous completed
+  run on that track is replayed as a translucent ghost), **battle** (balloons).
 - **Screens:** title, garage (character/kart), track & cup select, online lobby
   with join codes, race HUD (position, lap, item, minimap, countdown, wrong-way,
   boost meter), results + podium, Grand Prix standings, settings (controls,
   audio, theme).
 - **Multiplayer:** rooms with 4–6 character join codes, host controls, ready-up,
-  reconnect/resume with a session token, up to 8 racers, deterministic bots for
+  reconnect/resume with a session token (the title screen shows a *Rejoin your
+  match* banner while you are still in a room), up to 8 racers, deterministic bots for
   empty seats, client-side prediction + reconciliation for the local kart and
   interpolation for remote karts.
 - **Design system:** Fredoka display + Nunito body type scale, colour tokens

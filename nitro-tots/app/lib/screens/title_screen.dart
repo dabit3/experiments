@@ -41,6 +41,7 @@ class _TitleScreenState extends State<TitleScreen> with SingleTickerProviderStat
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        _ResumeBanner(app: app, onTap: () => widget.onPlay(PlayMode.online)),
         _MenuButton(
           label: 'Grand Prix',
           hint: 'Two cups · four tracks each',
@@ -294,6 +295,55 @@ class _HeroPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _HeroPainter old) => old.t != t || old.kart != kart || old.character != character;
+}
+
+/// Shown when the player closed the app or lost the connection while still in
+/// an online room, so the way back into the live match is one tap away.
+class _ResumeBanner extends StatelessWidget {
+  const _ResumeBanner({required this.app, required this.onTap});
+  final AppState app;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final nt = context.nt;
+    return AnimatedBuilder(
+      animation: app,
+      builder: (_, _) {
+        final code = app.resumeRoom;
+        if (code == null) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.only(bottom: NtSpace.x3),
+          child: NtCard(
+            onTap: onTap,
+            accent: NtColors.lime,
+            padding: const EdgeInsets.symmetric(horizontal: NtSpace.x4, vertical: NtSpace.x3),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(color: NtColors.lime, borderRadius: BorderRadius.circular(NtRadius.md)),
+                  child: const Icon(Icons.replay_rounded, color: Colors.white, size: 26),
+                ),
+                const SizedBox(width: NtSpace.x4),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Rejoin your match', style: NtType.h3(nt.ink)),
+                      Text('You are still in room $code', style: NtType.small(nt.inkSoft), overflow: TextOverflow.ellipsis),
+                    ],
+                  ),
+                ),
+                NtChip('Resume', icon: Icons.bolt_rounded, color: NtColors.lime),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 class _ProfileCard extends StatelessWidget {

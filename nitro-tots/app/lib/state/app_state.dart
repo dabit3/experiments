@@ -36,6 +36,10 @@ class AppState extends ChangeNotifier {
   String? resumePlayerId;
   String? resumeToken;
 
+  /// Room code of an online match this player was still in when the app last
+  /// closed or lost its connection; cleared when the match ends or is left.
+  String? resumeRoom;
+
   /// Best time-trial ghosts per track, serialized.
   final Map<String, Map<String, dynamic>> ghosts = {};
 
@@ -106,6 +110,7 @@ class AppState extends ChangeNotifier {
     if (t.active) {
       resumePlayerId = null;
       resumeToken = null;
+      resumeRoom = null;
       reduceMotion = t.still;
     }
   }
@@ -126,6 +131,7 @@ class AppState extends ChangeNotifier {
     lastRoomCode = _prefs.getString('lastRoom') ?? '';
     resumePlayerId = _prefs.getString('resumeId');
     resumeToken = _prefs.getString('resumeToken');
+    resumeRoom = _prefs.getString('resumeRoom');
     final g = _prefs.getString('ghosts');
     if (g != null) {
       try {
@@ -155,6 +161,11 @@ class AppState extends ChangeNotifier {
       await _prefs.remove('resumeId');
       await _prefs.remove('resumeToken');
     }
+    if (resumeRoom != null) {
+      await _prefs.setString('resumeRoom', resumeRoom!);
+    } else {
+      await _prefs.remove('resumeRoom');
+    }
     await _prefs.setString('ghosts', jsonEncode(ghosts));
   }
 
@@ -167,6 +178,14 @@ class AppState extends ChangeNotifier {
   void setResume(String? id, String? token) {
     resumePlayerId = id;
     resumeToken = token;
+    if (id == null) resumeRoom = null;
+    if (!testConfig.active) _save();
+  }
+
+  void setResumeRoom(String? code) {
+    if (code == resumeRoom) return;
+    resumeRoom = code;
+    notifyListeners();
     if (!testConfig.active) _save();
   }
 

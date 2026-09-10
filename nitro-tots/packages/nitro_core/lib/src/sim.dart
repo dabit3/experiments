@@ -112,6 +112,9 @@ class Racer {
   int position = 1;
   bool finished = false;
   int finishTick = 0;
+
+  /// Race time excluding the start countdown, matching the HUD clock.
+  int get raceTicks => math.max(0, finishTick - countdownTicks);
   List<int> lapTicks = [];
   int lapStartTick = 0;
   ItemKind? item;
@@ -237,6 +240,9 @@ class RaceResult {
   final String platform;
   final int place;
   final int finishTick;
+
+  /// Race time excluding the start countdown, matching the HUD clock.
+  int get raceTicks => math.max(0, finishTick - countdownTicks);
   final List<int> lapTicks;
   final int points;
   final int score;

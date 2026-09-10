@@ -130,6 +130,9 @@ class _AppShellState extends State<AppShell> {
 
   void _onClient() {
     final room = client.room;
+    if (client.state == ConnState.online) {
+      app.setResumeRoom(room != null && room.status != 'matchOver' ? room.code : null);
+    }
     if (screen == Screen.online && room != null) {
       _go(Screen.lobby);
     } else if (screen == Screen.lobby && room == null && client.state == ConnState.online) {
@@ -152,6 +155,7 @@ class _AppShellState extends State<AppShell> {
     final o = client.matchOutcome.value;
     if (o == null) return;
     _netOutcome = o;
+    app.setResumeRoom(null);
     _go(Screen.podium);
     if (test.active && !_testReportedMatch) {
       _testReportedMatch = true;
@@ -167,6 +171,7 @@ class _AppShellState extends State<AppShell> {
 
   void _leaveOnline() {
     client.leaveRoom();
+    app.setResumeRoom(null);
     _netOutcome = null;
     feedback.music('music_menu');
     _go(Screen.online, forward: false);
@@ -345,6 +350,7 @@ class _AppShellState extends State<AppShell> {
           scriptedDriver: test.active ? Autopilot(lane: test.lane ?? 0) : null,
           onQuit: online ? _leaveOnline : _quitOffline,
           onContinue: online ? () {} : _afterOfflineRace,
+          cupStandings: !online && flow.isSeries ? flow.standingsAfter : null,
         );
       case Screen.podium:
         if (_netOutcome != null) {
@@ -378,7 +384,7 @@ class _AppShellState extends State<AppShell> {
           localSlot: 0,
           feedback: feedback,
           races: flow.raceHistory,
-          hash: ttBest == null ? null : 'best ${(ttBest['ticks'] as int) / ticksPerSecond}s',
+          hash: ttBest == null ? null : 'best ${formatTicks(ttBest['ticks'] as int)}',
           onHome: _quitOffline,
           onAgain: () {
             feedback.tap();

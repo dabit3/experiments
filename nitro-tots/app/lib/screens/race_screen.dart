@@ -29,6 +29,7 @@ class RaceScreen extends StatefulWidget {
     required this.onContinue,
     this.client,
     this.scriptedDriver,
+    this.cupStandings,
   });
 
   final RaceSession session;
@@ -42,6 +43,10 @@ class RaceScreen extends StatefulWidget {
   /// Called when the player confirms the results panel (offline) or the
   /// server reports the next race / match end (online).
   final VoidCallback onContinue;
+
+  /// Offline cup standings including the given race results, shown next to
+  /// the per-race table between races.
+  final List<Standing> Function(List<RaceResult> results)? cupStandings;
 
   /// Deterministic bot that drives the local kart in automated tests.
   final Autopilot? scriptedDriver;
@@ -236,7 +241,13 @@ class _RaceScreenState extends State<RaceScreen> with SingleTickerProviderStateM
           children: [
             GameWidget(game: _game),
             SafeArea(
-              child: RaceHud(session: session, art: _game.art, compact: compact, rttMs: widget.client?.rttMs),
+              child: RaceHud(
+                session: session,
+                art: _game.art,
+                compact: compact,
+                rttMs: widget.client?.rttMs,
+                bottomInset: touch ? TouchControls.heightFor(context) : 0,
+              ),
             ),
             if (touch && !_showResults)
               Positioned(
@@ -265,6 +276,7 @@ class _RaceScreenState extends State<RaceScreen> with SingleTickerProviderStateM
               _ResultsOverlay(
                 session: session,
                 client: widget.client,
+                cupStandings: widget.cupStandings,
                 onContinue: () {
                   widget.feedback.tap();
                   widget.onContinue();
@@ -363,9 +375,10 @@ class _ControlsHelp extends StatelessWidget {
 }
 
 class _ResultsOverlay extends StatelessWidget {
-  const _ResultsOverlay({required this.session, required this.client, required this.onContinue, required this.onQuit});
+  const _ResultsOverlay({required this.session, required this.client, required this.onContinue, required this.onQuit, this.cupStandings});
   final RaceSession session;
   final NetClient? client;
+  final List<Standing> Function(List<RaceResult> results)? cupStandings;
   final VoidCallback onContinue;
   final VoidCallback onQuit;
 
@@ -392,7 +405,7 @@ class _ResultsOverlay extends StatelessWidget {
           trackName: trackDefById(info.trackId).name,
           results: results,
           localSlot: session.localSlot,
-          standings: outcome?.standings,
+          standings: outcome?.standings ?? cupStandings?.call(results),
           battle: info.mode == GameMode.battle,
           footer: client != null
               ? _NetFooter(client: client!, isLast: isLast, onQuit: onQuit)
