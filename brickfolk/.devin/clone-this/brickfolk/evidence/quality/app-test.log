@@ -9,6 +9,7 @@
 00:00 +7: BrickfolkApp signed-in hub lays out on phone without errors
 00:00 +8: BrickfolkApp signed-in hub lays out on tablet without errors
 00:00 +9: BrickfolkApp signed-in hub lays out on desktop without errors
-00:00 +10: BrickfolkApp forced dark theme applies
-00:00 +11: All tests passed!
+00:00 +10: BrickfolkApp entering a room dismisses the pushed place details page
+00:01 +11: BrickfolkApp forced dark theme applies
+00:01 +12: All tests passed!
 exit=0

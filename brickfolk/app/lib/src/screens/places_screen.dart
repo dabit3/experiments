@@ -6,11 +6,19 @@ import 'package:flutter/material.dart';
 import '../app_state.dart';
 import '../net/client.dart';
 import '../theme/tokens.dart';
+import '../widgets/avatar_painter.dart';
 import '../widgets/common.dart';
 
-/// Experience browser: thumbnails, live player counts, join by code.
+/// Home: greeting, friends rail, experience sorts ("Continue",
+/// "Recommended For You", ...), join by code. Tiles open [PlaceDetailsPage].
 class PlacesScreen extends StatefulWidget {
-  const PlacesScreen({super.key});
+  const PlacesScreen({super.key, this.query = '', this.onOpenFriends});
+
+  /// Filters tiles by name / tagline (from the chrome search field).
+  final String query;
+
+  /// Opens the Friends tab (from the "Add friends" rail item).
+  final VoidCallback? onOpenFriends;
 
   @override
   State<PlacesScreen> createState() => _PlacesScreenState();
@@ -35,110 +43,268 @@ class _PlacesScreenState extends State<PlacesScreen> {
   Widget build(BuildContext context) {
     final client = ClientScope.of(context);
     final p = context.palette;
+    final me = client.me!;
     final party = client.party;
-    final listings = client.places.isEmpty
+    final phone = context.isPhone;
+    final all = client.places.isEmpty
         ? [for (final pl in places) PlaceListing(pl, 0, const [])]
         : client.places;
+    final q = widget.query.trim().toLowerCase();
+    final listings = q.isEmpty
+        ? all
+        : [
+            for (final l in all)
+              if (l.info.name.toLowerCase().contains(q) ||
+                  l.info.tagline.toLowerCase().contains(q))
+                l,
+          ];
+    final continueList = [
+      for (final l in listings)
+        if ((me.stats['matches_${l.info.kind.id}'] ?? 0) > 0) l,
+    ];
+    final topRated = [
+      ...listings,
+    ]..sort((a, b) => (b.ratingPercent ?? -1).compareTo(a.ratingPercent ?? -1));
+    final mostActive = [...listings]
+      ..sort((a, b) {
+        final c = b.playing.compareTo(a.playing);
+        return c != 0 ? c : b.visits.compareTo(a.visits);
+      });
+    final pad = phone ? Space.lg : Space.xl;
+
+    final joinField = SizedBox(
+      width: phone ? double.infinity : 200,
+      height: 36,
+      child: TextField(
+        controller: _code,
+        textCapitalization: TextCapitalization.characters,
+        onSubmitted: (_) => _join(),
+        style: context.text.labelLarge?.copyWith(letterSpacing: 1),
+        decoration: InputDecoration(
+          hintText: 'Join code',
+          hintStyle: context.text.bodyMedium?.copyWith(color: p.textTertiary),
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: Space.md),
+          prefixIcon: const Icon(Icons.vpn_key_outlined, size: 16),
+          prefixIconConstraints: const BoxConstraints(minWidth: 36),
+          suffixIcon: IconButton(
+            tooltip: 'Join room',
+            iconSize: 18,
+            icon: const Icon(Icons.arrow_forward_rounded),
+            onPressed: _join,
+          ),
+        ),
+      ),
+    );
 
     return RefreshIndicator(
       onRefresh: () async => client.refreshPlaces(),
       child: ContentWidth(
+        max: 1180,
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(
-            Space.lg,
-            Space.sm,
-            Space.lg,
-            Space.xxl,
-          ),
+          padding: EdgeInsets.fromLTRB(pad, Space.lg, pad, Space.xxl),
           children: [
-            if (party != null && party.members.length > 1) ...[
-              Entrance(child: _PartyBanner(party)),
-              const SizedBox(height: Space.lg),
-            ],
-            SectionHeader(
-              'Experiences',
-              subtitle: 'Pick a place. Up to eight players per room — bots fill the empty seats.',
-              action: SizedBox(
-                width: 200,
-                child: TextField(
-                  controller: _code,
-                  textCapitalization: TextCapitalization.characters,
-                  onSubmitted: (_) => _join(),
-                  decoration: InputDecoration(
-                    hintText: 'Join code',
-                    isDense: true,
-                    prefixIcon: const Icon(Icons.vpn_key_outlined, size: 18),
-                    suffixIcon: IconButton(
-                      tooltip: 'Join room',
-                      icon: const Icon(Icons.arrow_forward_rounded, size: 18),
-                      onPressed: _join,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            LayoutBuilder(
-              builder: (context, c) {
-                final cols = c.maxWidth >= 900
-                    ? 3
-                    : (c.maxWidth >= 560 ? 2 : 1);
-                const gap = Space.lg;
-                // Cards in a row share the tallest card's height so their
-                // Play buttons line up whatever their description length.
-                return Column(
-                  children: [
-                    for (var r = 0; r < listings.length; r += cols) ...[
-                      if (r > 0) const SizedBox(height: gap),
-                      IntrinsicHeight(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            for (var i = r; i < r + cols; i++) ...[
-                              if (i > r) const SizedBox(width: gap),
-                              Expanded(
-                                child: i < listings.length
-                                    ? Entrance(
-                                        delay: Duration(milliseconds: 60 * i),
-                                        child: PlaceCard(
-                                          listings[i],
-                                          party: party,
-                                        ),
-                                      )
-                                    : const SizedBox.shrink(),
-                              ),
-                            ],
-                          ],
+            Row(
+              children: [
+                Headshot(me.summary.avatar, size: phone ? 44 : 52),
+                const SizedBox(width: Space.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hi, ${me.summary.name}',
+                        style: phone
+                            ? context.text.titleLarge
+                            : context.text.headlineSmall,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        '${client.onlineCount} online now',
+                        style: context.text.bodySmall?.copyWith(
+                          color: p.textTertiary,
                         ),
                       ),
                     ],
-                  ],
-                );
-              },
-            ),
-            const SizedBox(height: Space.xl),
-            Panel(
-              color: p.surface1,
-              child: Row(
-                children: [
-                  Icon(Icons.info_outline_rounded, color: p.textTertiary),
-                  const SizedBox(width: Space.md),
-                  Expanded(
-                    child: Text(
-                      party == null
-                          ? 'Tip: create a party from the Friends tab so your whole crew lands in the same room.'
-                          : party.leaderId == client.myId
-                          ? 'You lead a party of ${party.members.length}. Launching an experience brings everyone along.'
-                          : 'You are in ${party.members.firstWhere((m) => m.id == party.leaderId, orElse: () => party.members.first).name}\'s party. Only the leader can launch.',
-                      style: context.text.bodySmall?.copyWith(
-                        color: p.textSecondary,
-                      ),
-                    ),
                   ),
-                ],
+                ),
+                if (!phone) joinField,
+              ],
+            ),
+            if (phone) ...[const SizedBox(height: Space.md), joinField],
+            const SizedBox(height: Space.xl),
+            if (party != null && party.members.length > 1) ...[
+              Entrance(child: _PartyBanner(party)),
+              const SizedBox(height: Space.xl),
+            ],
+            if (q.isEmpty) ...[
+              _SortHeader('Friends (${client.friends.friends.length})'),
+              _FriendsRail(client.friends.friends, onAdd: widget.onOpenFriends),
+              const SizedBox(height: Space.xl),
+            ],
+            if (continueList.isNotEmpty) ...[
+              const _SortHeader('Continue'),
+              _Rail(
+                height: phone ? 190 : 210,
+                children: [for (final l in continueList) _WideTile(l)],
               ),
+              const SizedBox(height: Space.xl),
+            ],
+            _SortHeader(q.isEmpty ? 'Recommended For You' : 'Results'),
+            if (listings.isEmpty)
+              EmptyState(
+                icon: Icons.search_off_rounded,
+                title: 'No experiences match',
+                message: 'Try a different search.',
+              )
+            else
+              _Rail(
+                height: phone ? 188 : 208,
+                children: [for (final l in listings) _SquareTile(l)],
+              ),
+            if (q.isEmpty && listings.length > 1) ...[
+              const SizedBox(height: Space.xl),
+              const _SortHeader('Top Rated'),
+              _Rail(
+                height: phone ? 188 : 208,
+                children: [for (final l in topRated) _SquareTile(l)],
+              ),
+              const SizedBox(height: Space.xl),
+              const _SortHeader('Most Active'),
+              _Rail(
+                height: phone ? 188 : 208,
+                children: [for (final l in mostActive) _SquareTile(l)],
+              ),
+            ],
+            const SizedBox(height: Space.xxl),
+            Text(
+              party == null
+                  ? 'Up to eight players per room. Bots fill empty seats. Create a party from Friends so your crew lands in the same room.'
+                  : party.leaderId == client.myId
+                  ? 'You lead a party of ${party.members.length}. Playing an experience brings everyone along.'
+                  : 'You are in ${party.members.firstWhere((m) => m.id == party.leaderId, orElse: () => party.members.first).name}\'s party. Only the leader can launch.',
+              style: context.text.bodySmall?.copyWith(color: p.textTertiary),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _FriendsRail extends StatelessWidget {
+  const _FriendsRail(this.friends, {this.onAdd});
+
+  final List<PlayerSummary> friends;
+  final VoidCallback? onAdd;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    const size = 64.0;
+    Widget bubble({
+      required Widget head,
+      required String label,
+      VoidCallback? onTap,
+    }) {
+      return SizedBox(
+        width: size + Space.lg,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(Radii.md),
+          child: Column(
+            children: [
+              head,
+              const SizedBox(height: Space.xs),
+              Text(
+                label,
+                style: context.text.bodySmall?.copyWith(color: p.textSecondary),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return _Rail(
+      height: size + 28,
+      gap: Space.xs,
+      children: [
+        bubble(
+          head: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: p.surface2,
+              shape: BoxShape.circle,
+              border: Border.all(color: p.outline),
+            ),
+            child: Icon(Icons.person_add_alt_1_rounded, color: p.textSecondary),
+          ),
+          label: 'Add friends',
+          onTap: onAdd,
+        ),
+        for (final f in friends)
+          bubble(
+            head: Headshot(f.avatar, size: size, online: f.online),
+            label: f.name,
+            onTap: onAdd,
+          ),
+      ],
+    );
+  }
+}
+
+/// Horizontal sort rail.
+class _Rail extends StatelessWidget {
+  const _Rail({
+    required this.height,
+    required this.children,
+    this.gap = Space.md,
+  });
+
+  final double height;
+  final double gap;
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        clipBehavior: Clip.none,
+        itemCount: children.length,
+        separatorBuilder: (_, _) => SizedBox(width: gap),
+        itemBuilder: (_, i) => Entrance(
+          delay: Duration(milliseconds: 40 * i),
+          child: children[i],
+        ),
+      ),
+    );
+  }
+}
+
+class _SortHeader extends StatelessWidget {
+  const _SortHeader(this.title);
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Space.md),
+      child: Row(
+        children: [
+          Expanded(child: Text(title, style: context.text.titleLarge)),
+          Icon(
+            Icons.chevron_right_rounded,
+            color: context.palette.textTertiary,
+          ),
+        ],
       ),
     );
   }
@@ -152,10 +318,10 @@ class _PartyBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final client = ClientScope.of(context);
-    final scheme = Theme.of(context).colorScheme;
     return Panel(
-      color: scheme.primaryContainer.withValues(alpha: 0.35),
+      color: BrickColors.sky.withValues(alpha: 0.12),
       borderColor: BrickColors.sky.withValues(alpha: 0.4),
+      radius: Radii.md,
       child: Row(
         children: [
           const Icon(Icons.groups_rounded, color: BrickColors.sky),
@@ -172,7 +338,7 @@ class _PartyBanner extends StatelessWidget {
             const SizedBox(width: Space.sm),
             FilledButton(
               onPressed: () => client.roomJoin(party.roomCode!),
-              child: const Text('Rejoin room'),
+              child: const Text('Rejoin'),
             ),
           ],
         ],
@@ -181,187 +347,490 @@ class _PartyBanner extends StatelessWidget {
   }
 }
 
-class PlaceCard extends StatefulWidget {
-  const PlaceCard(this.listing, {super.key, this.party});
-
-  final PlaceListing listing;
-  final PartyState? party;
-
-  @override
-  State<PlaceCard> createState() => _PlaceCardState();
+/// Starts (or party-launches) a room for [kind].
+void playPlace(BuildContext context, ExperienceKind kind) {
+  final client = AppScope.read(context).client;
+  final party = client.party;
+  if (party != null && party.members.length > 1) {
+    client.partyLaunch(
+      kind,
+      bots: math.max(0, 8 - party.members.length).clamp(0, 3),
+    );
+  } else {
+    client.roomCreate(kind, bots: 3);
+  }
 }
 
-class _PlaceCardState extends State<PlaceCard> {
+bool _canLaunch(BrickfolkClient client) =>
+    client.connected &&
+    (client.party == null || client.party!.leaderId == client.myId);
+
+void _openDetails(BuildContext context, PlaceListing listing) {
+  Navigator.of(context).push(
+    MaterialPageRoute<void>(
+      builder: (_) => PlaceDetailsPage(listing.info.kind),
+    ),
+  );
+}
+
+/// Rating + active player metadata row under a tile.
+class _TileMeta extends StatelessWidget {
+  const _TileMeta(this.listing);
+
+  final PlaceListing listing;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    final style = context.text.bodySmall?.copyWith(color: p.textSecondary);
+    final rating = listing.ratingPercent;
+    return Row(
+      children: [
+        Icon(Icons.thumb_up_alt_rounded, size: 12, color: p.textTertiary),
+        const SizedBox(width: Space.xs),
+        Text(rating == null ? '--' : '$rating%', style: style),
+        const SizedBox(width: Space.md),
+        Icon(Icons.person_rounded, size: 13, color: p.textTertiary),
+        const SizedBox(width: Space.xs),
+        Text(formatNumber(listing.playing), style: style),
+      ],
+    );
+  }
+}
+
+class _HoverScale extends StatefulWidget {
+  const _HoverScale({required this.child, required this.onTap});
+
+  final Widget child;
+  final VoidCallback? onTap;
+
+  @override
+  State<_HoverScale> createState() => _HoverScaleState();
+}
+
+class _HoverScaleState extends State<_HoverScale> {
   bool _hover = false;
 
   @override
   Widget build(BuildContext context) {
-    final info = widget.listing.info;
-    final client = ClientScope.of(context);
-    final p = context.palette;
-    final accent = Color(info.accent);
-    final party = widget.party;
-    final leader = party == null || party.leaderId == client.myId;
-    final canLaunch = client.connected && leader;
-
-    void play() {
-      if (party != null && party.members.length > 1) {
-        client.partyLaunch(
-          info.kind,
-          bots: math.max(0, 8 - party.members.length).clamp(0, 3),
-        );
-      } else {
-        client.roomCreate(info.kind, bots: 3);
-      }
-    }
-
     return MouseRegion(
+      cursor: widget.onTap == null
+          ? MouseCursor.defer
+          : SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hover = true),
       onExit: (_) => setState(() => _hover = false),
-      child: AnimatedScale(
-        scale: _hover ? 1.012 : 1,
-        duration: Motion.fast,
-        child: Panel(
-          padding: EdgeInsets.zero,
-          elevated: _hover,
-          onTap: canLaunch ? play : null,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(Radii.lg),
-                ),
-                child: AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      PlaceThumbnail(info.kind),
-                      Positioned(
-                        left: Space.md,
-                        top: Space.md,
-                        child: Tag(
-                          '${widget.listing.playing} playing',
-                          icon: Icons.circle,
-                          color: Colors.black.withValues(alpha: 0.45),
-                          onColor: widget.listing.playing > 0
-                              ? BrickColors.mint
-                              : Colors.white70,
-                        ),
-                      ),
-                      Positioned(
-                        right: Space.md,
-                        top: Space.md,
-                        child: Tag(
-                          '${info.matchSeconds ~/ 60}:${(info.matchSeconds % 60).toString().padLeft(2, '0')}',
-                          icon: Icons.timer_outlined,
-                          color: Colors.black.withValues(alpha: 0.45),
-                          onColor: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(Space.lg),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            experienceIcon(info.kind),
-                            size: 18,
-                            color: accent,
-                          ),
-                          const SizedBox(width: Space.sm),
-                          Expanded(
-                            child: Text(
-                              info.name,
-                              style: context.text.titleLarge,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: Space.xs),
-                      Text(
-                        info.tagline,
-                        style: context.text.bodyMedium?.copyWith(
-                          color: p.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: Space.md),
-                      Text(
-                        info.description,
-                        style: context.text.bodySmall?.copyWith(
-                          color: p.textTertiary,
-                        ),
-                      ),
-                      const Spacer(),
-                      const SizedBox(height: Space.lg),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: FilledButton.icon(
-                              style: FilledButton.styleFrom(
-                                backgroundColor: accent,
-                              ),
-                              onPressed: canLaunch ? play : null,
-                              icon: const Icon(Icons.play_arrow_rounded),
-                              label: Text(
-                                party != null && party.members.length > 1
-                                    ? 'Launch for party'
-                                    : 'Play',
-                              ),
-                            ),
-                          ),
-                          if (widget.listing.rooms.isNotEmpty) ...[
-                            const SizedBox(width: Space.sm),
-                            _RoomsMenu(widget.listing.rooms),
-                          ],
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: AnimatedScale(
+          scale: _hover ? 1.02 : 1,
+          duration: Motion.fast,
+          child: widget.child,
         ),
       ),
     );
   }
 }
 
-class _RoomsMenu extends StatelessWidget {
-  const _RoomsMenu(this.rooms);
+/// Square-art tile used in the Recommended grid.
+class _SquareTile extends StatelessWidget {
+  const _SquareTile(this.listing);
 
-  final List<RoomSummary> rooms;
+  final PlaceListing listing;
+
+  @override
+  Widget build(BuildContext context) {
+    final info = listing.info;
+    final width = context.isPhone ? 140.0 : 160.0;
+    return SizedBox(
+      width: width,
+      child: _HoverScale(
+        onTap: () => _openDetails(context, listing),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(Radii.md),
+              child: SizedBox(
+                width: width,
+                height: width,
+                child: PlaceThumbnail(info.kind),
+              ),
+            ),
+            const SizedBox(height: Space.sm),
+            Text(
+              info.name,
+              style: context.text.titleSmall,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: Space.xxs),
+            _TileMeta(listing),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Wide 16:9 tile used in the Continue rail.
+class _WideTile extends StatelessWidget {
+  const _WideTile(this.listing);
+
+  final PlaceListing listing;
+
+  @override
+  Widget build(BuildContext context) {
+    final info = listing.info;
+    final p = context.palette;
+    final width = context.isPhone ? 232.0 : 264.0;
+    return SizedBox(
+      width: width,
+      child: _HoverScale(
+        onTap: () => _openDetails(context, listing),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(Radii.md),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    PlaceThumbnail(info.kind),
+                    if (listing.playing > 0)
+                      Positioned(
+                        left: Space.sm,
+                        bottom: Space.sm,
+                        child: Tag(
+                          '${listing.playing} playing',
+                          icon: Icons.circle,
+                          color: Colors.black.withValues(alpha: 0.55),
+                          onColor: BrickColors.mint,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: Space.sm),
+            Text(
+              info.name,
+              style: context.text.titleSmall,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: Space.xxs),
+            Text(
+              info.tagline,
+              style: context.text.bodySmall?.copyWith(color: p.textSecondary),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Experience details: hero art, Play, votes, about stats, open servers.
+class PlaceDetailsPage extends StatelessWidget {
+  const PlaceDetailsPage(this.kind, {super.key});
+
+  final ExperienceKind kind;
 
   @override
   Widget build(BuildContext context) {
     final client = ClientScope.of(context);
-    return MenuAnchor(
-      builder: (context, controller, _) => OutlinedButton.icon(
-        onPressed: () =>
-            controller.isOpen ? controller.close() : controller.open(),
-        icon: const Icon(Icons.meeting_room_outlined, size: 18),
-        label: Text('${rooms.length}'),
-      ),
-      menuChildren: [
-        for (final r in rooms)
-          MenuItemButton(
-            onPressed: r.phase == 'lobby' && r.players < maxRoomPlayers
-                ? () => client.roomJoin(r.code)
-                : null,
-            leadingIcon: const Icon(Icons.login_rounded, size: 18),
-            trailingIcon: Text(r.phase, style: context.text.labelSmall),
-            child: Text('${r.code} · ${r.players}/$maxRoomPlayers'),
+    final p = context.palette;
+    final listing = client.places.firstWhere(
+      (l) => l.info.kind == kind,
+      orElse: () => PlaceListing(placeFor(kind), 0, const []),
+    );
+    final info = listing.info;
+    final party = client.party;
+    final phone = context.isPhone;
+    final pad = phone ? Space.lg : Space.xl;
+    final canLaunch = _canLaunch(client);
+    final launchLabel = party != null && party.members.length > 1
+        ? 'Play with party'
+        : 'Play';
+
+    final hero = ClipRRect(
+      borderRadius: BorderRadius.circular(Radii.md),
+      child: AspectRatio(aspectRatio: 16 / 9, child: PlaceThumbnail(info.kind)),
+    );
+    final side = Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(info.name, style: context.text.headlineMedium),
+        const SizedBox(height: Space.xs),
+        Text(
+          'By Brickfolk Studios',
+          style: context.text.bodyMedium?.copyWith(color: BrickColors.sky),
+        ),
+        const SizedBox(height: Space.lg),
+        SizedBox(
+          height: 52,
+          child: FilledButton.icon(
+            style: FilledButton.styleFrom(
+              backgroundColor: BrickColors.mint,
+              textStyle: context.text.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            onPressed: canLaunch ? () => playPlace(context, kind) : null,
+            icon: const Icon(Icons.play_arrow_rounded, size: 28),
+            label: Text(launchLabel),
           ),
+        ),
+        const SizedBox(height: Space.md),
+        _VoteRow(listing),
       ],
+    );
+
+    final stats = <(String, String)>[
+      ('Active', formatNumber(listing.playing)),
+      ('Visits', formatNumber(listing.visits)),
+      ('Server size', '$maxRoomPlayers'),
+      ('Round', _mmss(info.matchSeconds)),
+      ('Min players', '${info.minPlayers}'),
+      ('Genre', _genre(kind)),
+    ];
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: const BackButton(color: BrickColors.onChrome),
+        title: Text(
+          info.name,
+          style: context.text.titleMedium?.copyWith(
+            color: BrickColors.onChrome,
+          ),
+        ),
+        backgroundColor: BrickColors.chrome,
+        toolbarHeight: 52,
+      ),
+      body: ContentWidth(
+        max: 1180,
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(pad, Space.sm, pad, Space.xxl),
+          children: [
+            if (phone) ...[
+              hero,
+              const SizedBox(height: Space.lg),
+              side,
+            ] else
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(flex: 3, child: hero),
+                  const SizedBox(width: Space.xl),
+                  Expanded(flex: 2, child: side),
+                ],
+              ),
+            const SizedBox(height: Space.xl),
+            Panel(
+              radius: Radii.md,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Description', style: context.text.titleMedium),
+                  const SizedBox(height: Space.sm),
+                  Text(info.tagline, style: context.text.bodyLarge),
+                  const SizedBox(height: Space.xs),
+                  Text(
+                    info.description,
+                    style: context.text.bodyMedium?.copyWith(
+                      color: p.textSecondary,
+                    ),
+                  ),
+                  const Divider(height: Space.xl),
+                  Wrap(
+                    spacing: Space.xxl,
+                    runSpacing: Space.lg,
+                    children: [
+                      for (final (label, value) in stats)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              label,
+                              style: context.text.bodySmall?.copyWith(
+                                color: p.textTertiary,
+                              ),
+                            ),
+                            Text(value, style: context.text.titleSmall),
+                          ],
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: Space.xl),
+            Text('Servers', style: context.text.titleLarge),
+            const SizedBox(height: Space.md),
+            if (listing.rooms.isEmpty)
+              Panel(
+                radius: Radii.md,
+                child: Row(
+                  children: [
+                    Icon(Icons.dns_outlined, color: p.textTertiary),
+                    const SizedBox(width: Space.md),
+                    Expanded(
+                      child: Text(
+                        'No open servers. Press Play to start one — bots fill the empty seats.',
+                        style: context.text.bodyMedium?.copyWith(
+                          color: p.textSecondary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              for (final r in listing.rooms) ...[
+                _ServerRow(r),
+                const SizedBox(height: Space.sm),
+              ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+String _mmss(int seconds) =>
+    '${seconds ~/ 60}:${(seconds % 60).toString().padLeft(2, '0')}';
+
+String _genre(ExperienceKind kind) => switch (kind) {
+  ExperienceKind.obby => 'Obby',
+  ExperienceKind.tycoon => 'Tycoon',
+  ExperienceKind.tag => 'Round-based',
+};
+
+class _VoteRow extends StatelessWidget {
+  const _VoteRow(this.listing);
+
+  final PlaceListing listing;
+
+  @override
+  Widget build(BuildContext context) {
+    final client = ClientScope.of(context);
+    final p = context.palette;
+    final kind = listing.info.kind;
+    final my = listing.myVote;
+    final rating = listing.ratingPercent;
+    Widget button(bool up) {
+      final active = my == up;
+      return Expanded(
+        child: OutlinedButton.icon(
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(0, 40),
+            backgroundColor: active
+                ? BrickColors.sky.withValues(alpha: 0.14)
+                : null,
+            side: BorderSide(color: active ? BrickColors.sky : p.surface3),
+            foregroundColor: active ? BrickColors.sky : p.textPrimary,
+          ),
+          onPressed: client.connected
+              ? () => client.ratePlace(kind, active ? null : up)
+              : null,
+          icon: Icon(
+            up
+                ? (active
+                      ? Icons.thumb_up_alt_rounded
+                      : Icons.thumb_up_alt_outlined)
+                : (active
+                      ? Icons.thumb_down_alt_rounded
+                      : Icons.thumb_down_alt_outlined),
+            size: 18,
+          ),
+          label: Text(formatNumber(up ? listing.likes : listing.dislikes)),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            button(true),
+            const SizedBox(width: Space.sm),
+            button(false),
+          ],
+        ),
+        const SizedBox(height: Space.sm),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(Radii.pill),
+          child: LinearProgressIndicator(
+            minHeight: 4,
+            value: rating == null ? 0 : rating / 100,
+            backgroundColor: p.surface3,
+            color: BrickColors.sky,
+          ),
+        ),
+        const SizedBox(height: Space.xs),
+        Text(
+          rating == null
+              ? 'No ratings yet'
+              : '$rating% of ${formatNumber(listing.votes)} ${listing.votes == 1 ? 'vote' : 'votes'} liked this',
+          style: context.text.bodySmall?.copyWith(color: p.textTertiary),
+        ),
+      ],
+    );
+  }
+}
+
+class _ServerRow extends StatelessWidget {
+  const _ServerRow(this.room);
+
+  final RoomSummary room;
+
+  @override
+  Widget build(BuildContext context) {
+    final client = ClientScope.of(context);
+    final p = context.palette;
+    final joinable = room.phase == 'lobby' && room.players < maxRoomPlayers;
+    return Panel(
+      radius: Radii.md,
+      padding: const EdgeInsets.symmetric(
+        horizontal: Space.lg,
+        vertical: Space.md,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${room.players} of $maxRoomPlayers players',
+                  style: context.text.titleSmall,
+                ),
+                Text(
+                  'Room ${room.code} · ${room.phase}',
+                  style: context.text.bodySmall?.copyWith(
+                    color: p.textTertiary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: BrickColors.mint,
+              minimumSize: const Size(0, 40),
+            ),
+            onPressed: joinable && client.connected
+                ? () => client.roomJoin(room.code)
+                : null,
+            child: const Text('Join'),
+          ),
+        ],
+      ),
     );
   }
 }

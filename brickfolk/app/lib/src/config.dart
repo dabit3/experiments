@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 
 /// Launch configuration. Values come from `--dart-define` at build time and
 /// may be overridden at launch: by URL query parameters on the web and by
-/// `BRICKFOLK_*` environment variables on desktop, so the automated test can
-/// point every client at the same server and party without rebuilding.
+/// `BRICKFOLK_*` environment variables on macOS, so the automated test can
+/// point those clients at the same server and party without rebuilding. iOS
+/// and Android see only the build-time defines (Dart's `Platform.environment`
+/// is empty on iOS).
 class AppConfig {
   const AppConfig({
     required this.serverUrl,

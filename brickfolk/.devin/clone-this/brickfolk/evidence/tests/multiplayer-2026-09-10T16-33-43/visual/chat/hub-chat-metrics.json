@@ -1,0 +1,54 @@
+{
+  "id": "hub-chat",
+  "mode": "normalized",
+  "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-33-43/visual/web-chat.png",
+  "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-33-43/visual/macos-chat.png",
+  "reference_crop": null,
+  "actual_crop": [
+    0,
+    32,
+    1180,
+    760
+  ],
+  "scale": 4,
+  "tolerance": 48,
+  "shift": 1,
+  "edge_tolerance": 24,
+  "max_edge_cells_allowed": 56,
+  "max_cluster_allowed": 8,
+  "masks": [
+    [
+      0,
+      187,
+      3,
+      3
+    ],
+    [
+      292,
+      187,
+      3,
+      3
+    ],
+    [
+      17,
+      177,
+      22,
+      8
+    ]
+  ],
+  "mask_note": "web 1180x760 viewport vs macOS window content below the 32px title bar; 4x box downscale, shift 1; a cell differs beyond 48/255 per channel (zero allowed); cells between 24 and 48 are anti-aliasing edge cells (at most 56, no connected run over 8); rounded bottom window corners and the platform chip in the rail pill masked; profile/daily also mask the platform chip in the profile header",
+  "normalized_size": [
+    295,
+    190
+  ],
+  "total_pixels": 56050,
+  "masked_pixels": 194,
+  "different_pixels": 0,
+  "edge_cells": 6,
+  "max_unmasked_delta": 28,
+  "largest_cluster": 1,
+  "passed": true,
+  "reference": "hub-chat-reference.png",
+  "actual": "hub-chat-actual.png",
+  "diff": "hub-chat-diff.png"
+}

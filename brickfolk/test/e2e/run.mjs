@@ -17,7 +17,7 @@
 // Usage: node run.mjs [--platforms web,ios,android,macos] [--no-build]
 //                     [--experience obby] [--seed 1234] [--party BRIK]
 //                     [--out <dir>] [--timeout 300] [--no-visual]
-//                     [--match-length-scale 2.5] [--visual-only]
+//                     [--match-length-scale 2.5] [--visual-only] [--no-review]
 
 import { spawn, execFile, execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -276,10 +276,12 @@ async function startServer() {
 // Builds
 // ---------------------------------------------------------------------------
 
-// Test configuration for a native client. Android only sees it as compile-time
-// --dart-define values (baked into the APK); macOS and iOS additionally read
-// the same keys from the process environment at launch, so a plain
-// `flutter build macos|ios` also works with --no-build.
+// Test configuration for a native client. iOS and Android only see it as
+// compile-time --dart-define values (Dart's Platform.environment is empty on
+// iOS, and the emulator has no launch environment), so with --no-build those
+// two must come from an earlier harness build with the same options. macOS
+// additionally reads the same keys from the process environment at launch, so
+// a plain `flutter build macos` works with --no-build.
 function clientConfig(platform) {
   const server =
     platform === 'android'
@@ -385,6 +387,18 @@ async function windowsOf(ownerName) {
 
 async function captureWindow(windowId, file) {
   await run('screencapture', ['-x', '-o', `-l${windowId}`, file]);
+}
+
+// Device pixels per point of the main display (window bounds are in points).
+async function displayScale() {
+  const { stdout } = await run('osascript', [
+    '-l',
+    'JavaScript',
+    '-e',
+    "ObjC.import('AppKit'); String($.NSScreen.mainScreen.backingScaleFactor)",
+  ]).catch(() => ({ stdout: '1' }));
+  const s = Number(stdout.trim());
+  return Number.isFinite(s) && s > 0 ? s : 1;
 }
 
 // ---------------------------------------------------------------------------
@@ -506,10 +520,7 @@ async function startIos() {
   );
   await run('xcrun', ['simctl', 'terminate', udid, iosBundleId]).catch(() => {});
   await run('xcrun', ['simctl', 'install', udid, app]);
-  const env = Object.fromEntries(
-    Object.entries(clientConfig('ios')).map(([k, v]) => [`SIMCTL_CHILD_${k}`, v]),
-  );
-  await run('xcrun', ['simctl', 'launch', udid, iosBundleId], { env: { ...process.env, ...env } });
+  await run('xcrun', ['simctl', 'launch', udid, iosBundleId]);
   log(`ios app launched on ${udid}`);
   const videoFile = path.join(outDir, 'recording-ios.mp4');
   // A recorder left behind by an aborted run blocks the simulator's next one.
@@ -1162,8 +1173,9 @@ async function startMacos() {
     timeoutMs: 60_000,
   });
   log(`macos app window ${win.id} (${win.w}x${win.h} at ${win.x},${win.y})`);
-  const videoFile = path.join(outDir, 'recording-macos.mov');
+  const videoFile = path.join(outDir, 'recording-macos.mp4');
   let rec;
+  let recordingStopping = false;
   let recordingStartedAt = null;
   return {
     name: 'macos',
@@ -1174,24 +1186,47 @@ async function startMacos() {
       const w = (await windowsOf(owner))[0] ?? win;
       await captureWindow(w.id, file);
     },
-    // The recording is a screen region, so the app is brought to the front
-    // first (the Simulator window can sit over it); other clients are
-    // recorded through their own APIs and do not need the focus.
+    // The recording is a screen region grabbed by ffmpeg (AVFoundation) with
+    // wall-clock timestamps, so frames dropped while the host is saturated
+    // by the other clients only lower the frame rate and never shorten or
+    // compress the timeline. The app is brought to the front first (the
+    // Simulator window can sit over it); other clients are recorded through
+    // their own APIs and do not need the focus.
     startRecording: async () => {
       await run('open', [app]).catch(() => {});
       await sleep(500);
+      const s = await displayScale();
+      const even = (v) => Math.floor(v / 2) * 2;
+      const crop = `${even(win.w * s)}:${even(win.h * s)}:${Math.round(win.x * s)}:${Math.round(win.y * s)}`;
+      const log_ = fs.openSync(path.join(outDir, 'macos-record.log'), 'a');
       recordingStartedAt = Date.now();
       rec = spawn(
-        'screencapture',
-        ['-v', '-x', '-R', `${win.x},${win.y},${win.w},${win.h}`, videoFile],
-        { stdio: 'ignore' },
+        findFfmpeg(),
+        [
+          '-hide_banner', '-v', 'warning', '-y',
+          '-f', 'avfoundation', '-framerate', '30', '-capture_cursor', '0',
+          '-pixel_format', 'uyvy422', '-use_wallclock_as_timestamps', '1', '-i', '0:none',
+          '-vf', `crop=${crop}`, '-fps_mode', 'vfr',
+          '-c:v', 'libx264', '-preset', 'veryfast', '-crf', '20', '-pix_fmt', 'yuv420p',
+          '-movflags', '+faststart', videoFile,
+        ],
+        { stdio: ['pipe', log_, log_] },
       );
+      rec.once('exit', (code, signal) => {
+        if (recordingStopping) return;
+        log(`macos recorder exited early (code=${code} signal=${signal}); see macos-record.log`);
+      });
       onCleanup(() => rec.kill('SIGINT'));
     },
     stopRecording: async () => {
       if (!rec) return null;
-      rec.kill('SIGINT');
-      await new Promise((r) => (rec.exitCode === null ? rec.once('exit', r) : r()));
+      recordingStopping = true;
+      rec.stdin.write('q');
+      rec.stdin.end();
+      const exited = new Promise((r) => (rec.exitCode === null ? rec.once('exit', r) : r()));
+      const timer = setTimeout(() => rec.kill('SIGINT'), 10_000);
+      await exited;
+      clearTimeout(timer);
       return fs.existsSync(videoFile) ? videoFile : null;
     },
     stop: () => child.kill('SIGTERM'),
@@ -1225,6 +1260,7 @@ async function observeMatch(clients) {
   const pending = [];
   const results = {};
   const seenPlaying = {};
+  const timeline = {}; // platform -> phase -> wall-clock ms of the first report
   const deadline = Date.now() + timeoutSec * 1000;
 
   // Clients report a phase only once a frame showing it has been rasterised;
@@ -1269,6 +1305,10 @@ async function observeMatch(clients) {
         );
         log(`${r.platform} signed in; recording started`);
       }
+      if (['lobby', 'countdown', 'playing', 'results'].includes(r.phase)) {
+        const phase = r.phase === 'playing' ? 'gameplay' : r.phase;
+        (timeline[r.platform] ??= {})[phase] ??= Date.now();
+      }
       if (r.phase !== 'frame' && r.payload?.rendered === false && !unrendered.has(`${r.platform}:${r.phase}`)) {
         unrendered.add(`${r.platform}:${r.phase}`);
         log(`${r.platform} reported ${r.phase} without a rasterised frame (raster gate timed out)`);
@@ -1311,7 +1351,7 @@ async function observeMatch(clients) {
     }
     if (platforms.every((p) => results[p])) {
       await Promise.all(pending);
-      return { results, state };
+      return { results, state, timeline };
     }
     await sleep(1000);
   }
@@ -1396,7 +1436,7 @@ async function composeRecording(videos, startedAt) {
 // Visual tour: equivalent hub states on web (reference) and macOS
 // ---------------------------------------------------------------------------
 
-const tourScreens = ['hub', 'avatar', 'social', 'chat', 'profile', 'daily'];
+const tourScreens = ['hub', 'place', 'avatar', 'social', 'chat', 'profile', 'daily'];
 const tourName = 'VisualVi';
 // macOS window chrome: 32px title bar above a 1180x760 content area that
 // matches the web viewport; the window's rounded bottom corners are masked
@@ -1408,12 +1448,14 @@ const visualScale = 4;
 // (measured across the tour screens; identical captures differ by 0), so a
 // cell is a differing pixel beyond 48/255 and the comparison requires zero of
 // them. Cells between 24 and 48 are reported as edge cells and bounded too:
-// at most 0.1% of the 295x190 frame and no connected run of more than 4 (a
-// moved or recoloured element clusters even when it stays under 48).
+// at most 0.1% of the 295x190 frame and no connected run of more than 8 (a
+// moved or recoloured element clusters even when it stays under 48; the
+// heaviest display glyphs can leave a run of up to 7 edge cells along one
+// stroke when their subpixel phase differs between CanvasKit and Impeller).
 const visualTolerance = 48;
 const visualEdgeTolerance = 24;
 const visualMaxEdgeCells = 56;
-const visualMaxCluster = 4;
+const visualMaxCluster = 8;
 // Glyph advances differ by a few device pixels between CanvasKit and Impeller,
 // so a reference cell may match a neighbouring actual cell.
 const visualShift = 1;
@@ -1672,6 +1714,13 @@ async function main() {
     for (const p of platforms) await flutterBuild(p);
   } else {
     log('skipping builds (--no-build)');
+    const baked = platforms.filter((p) => p === 'ios' || p === 'android');
+    if (baked.length) {
+      log(
+        `note: ${baked.join('/')} read their test config from build-time defines; ` +
+          'reuse only builds produced by this harness with the same options',
+      );
+    }
   }
 
   await stopStaleClients();
@@ -1683,7 +1732,7 @@ async function main() {
     clients.push(await starters[p]());
   }
 
-  const { results, state } = await observeMatch(clients);
+  const { results, state, timeline } = await observeMatch(clients);
 
   // Stop recordings and clients before heavy verification work.
   const videos = {};
@@ -1767,6 +1816,8 @@ async function main() {
       platforms.map((p) => [p, ['lobby', 'gameplay', 'results'].map((ph) => `${p}-${ph}.png`)]),
     ),
     recordings: { ...videos, fourWay },
+    recordingStartedAt: Object.fromEntries(clients.map((c) => [c.name, c.recordingStartedAt ?? null])),
+    timeline,
     visual: visualSummary,
     androidAnrDismissals: anrDismissals,
     androidCapture: platforms.includes('android') ? androidCapture : null,
@@ -1808,7 +1859,21 @@ async function main() {
   ];
   await fsp.writeFile(path.join(outDir, 'summary.md'), lines.join('\n') + '\n');
   log(lines.join('\n'));
+  if (!args['no-review']) await buildReview(outDir);
   return report.passed;
+}
+
+// Edited review video (title/chapter cards, aligned per-platform clips,
+// captions, verdict) cut from this run's evidence by review_video.mjs.
+async function buildReview(dir) {
+  try {
+    const { stdout } = await execFileP(process.execPath, [path.join(here, 'review_video.mjs'), dir], {
+      maxBuffer: 1 << 24,
+    });
+    log(stdout.trim().split('\n').at(-1));
+  } catch (e) {
+    log(`review video failed (evidence unaffected): ${e.message.split('\n')[0]}`);
+  }
 }
 
 function visualFailures(summary) {

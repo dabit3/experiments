@@ -24,7 +24,7 @@ step() {
 step pub-get bash -c '(cd shared && dart pub get) && (cd server && dart pub get) && (cd app && flutter pub get)'
 step format bash -c 'cd app && dart format --set-exit-if-changed . && cd ../server && dart format --set-exit-if-changed . && cd ../shared && dart format --set-exit-if-changed .'
 step analyze bash -c 'cd app && flutter analyze && cd ../server && dart analyze --fatal-infos && cd ../shared && dart analyze --fatal-infos'
-step node-check bash -c 'node --check test/e2e/run.mjs && cd test/e2e && npm ls --depth=0'
+step node-check bash -c 'node --check test/e2e/run.mjs && node --check test/e2e/review_video.mjs && cd test/e2e && npm ls --depth=0'
 step python-check bash -c 'python3 -B -m py_compile test/e2e/visual_compare.py test/manifest/build_manifest.py test/manifest/sweep.py && echo compiled'
 step shared-test bash -c 'cd shared && dart test'
 step server-test bash -c 'cd server && dart test'

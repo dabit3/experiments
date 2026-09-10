@@ -1,8 +1,8 @@
 # Rebrand scan: source-brand terms in shipped code, docs and assets
 # (matches outside the reference notes are listed; expected: only the honest
 #  reference-boundary statements in README.md and PROTOCOL.md)
-./test/manifest/build_manifest.py:104:                f"{r}/public-docs-roblox-wikipedia-obby-tycoon-avatar-home.txt")),
-./test/manifest/build_manifest.py:233:        "source": [f"{r}/public-docs-roblox-wikipedia-obby-tycoon-avatar-home.txt",
+./test/manifest/build_manifest.py:107:                f"{r}/public-docs-roblox-wikipedia-obby-tycoon-avatar-home.txt")),
+./test/manifest/build_manifest.py:239:        "source": [f"{r}/public-docs-roblox-wikipedia-obby-tycoon-avatar-home.txt",
 ./test/manifest/collect_quality.sh:39:  grep -rniE 'roblox|robux|builderman|\bnoob\b|bloxburg|\boof\b' \
 ./shared/lib/src/chat_filter.dart:27:    'noob',
 ./README.md:10:of Roblox as the *conceptual* reference (hub + experiences, avatar/inventory

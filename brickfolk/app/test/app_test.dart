@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:brickfolk_app/main.dart';
 import 'package:brickfolk_app/src/app_state.dart';
 import 'package:brickfolk_app/src/config.dart';
 import 'package:brickfolk_app/src/net/client.dart';
+import 'package:brickfolk_app/src/screens/places_screen.dart';
+import 'package:brickfolk_app/src/screens/room_screen.dart';
 import 'package:brickfolk_app/src/theme/theme.dart';
 import 'package:brickfolk_app/src/widgets/avatar_painter.dart';
 import 'package:brickfolk_shared/brickfolk_shared.dart';
@@ -188,6 +191,44 @@ void main() {
         state.client.dispose();
       });
     }
+
+    testWidgets('entering a room dismisses the pushed place details page', (
+      tester,
+    ) async {
+      await _loadInter();
+      tester.view.physicalSize = const Size(1180, 760);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      final state = await _state();
+      state.client.me = _profile;
+      await tester.pumpWidget(BrickfolkApp(state: state));
+      await tester.pump(const Duration(milliseconds: 600));
+      state.requestScreen('place');
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 600));
+      expect(find.byType(PlaceDetailsPage), findsOneWidget);
+
+      state.client.receiveFrame(
+        jsonEncode({
+          'type': MsgType.roomState,
+          'room': RoomState(
+            code: 'JH39',
+            experience: ExperienceKind.obby,
+            phase: RoomPhase.lobby,
+            members: [RoomMember(player: _profile.summary, ready: false)],
+            seed: 1234,
+          ).toJson(),
+        }),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 600));
+      await tester.pump(const Duration(milliseconds: 600));
+      expect(tester.takeException(), isNull);
+      expect(find.byType(PlaceDetailsPage), findsNothing);
+      expect(find.byType(RoomScreen), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+      state.client.dispose();
+    });
 
     testWidgets('forced dark theme applies', (tester) async {
       final state = await _state(query: {'theme': 'dark'});

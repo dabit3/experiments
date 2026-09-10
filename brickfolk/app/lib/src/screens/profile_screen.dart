@@ -145,10 +145,10 @@ class ProfileCard extends StatelessWidget {
                 ? CrossAxisAlignment.center
                 : CrossAxisAlignment.center,
             children: [
-              AvatarView(
+              Headshot(
                 profile.summary.avatar,
                 size: 120,
-                background: p.surface2,
+                online: isMe ? true : profile.summary.online,
               ),
               SizedBox(width: wide ? Space.xl : 0, height: wide ? 0 : Space.lg),
               Expanded(
@@ -162,7 +162,30 @@ class ProfileCard extends StatelessWidget {
                       profile.summary.name,
                       style: context.text.headlineMedium,
                     ),
-                    const SizedBox(height: Space.xs),
+                    Text(
+                      '@${profile.summary.name.toLowerCase()}',
+                      style: context.text.bodyMedium?.copyWith(
+                        color: p.textTertiary,
+                      ),
+                    ),
+                    const SizedBox(height: Space.md),
+                    Row(
+                      mainAxisAlignment: wide
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.center,
+                      children: [
+                        if (isMe) ...[
+                          _Count('Friends', '${client.friends.friends.length}'),
+                          const _CountDivider(),
+                        ],
+                        _Count('Badges', '${profile.badges.length}'),
+                        const _CountDivider(),
+                        _Count('Pips', formatNumber(profile.pips)),
+                        const _CountDivider(),
+                        _Count('Streak', '${profile.dailyStreak}d'),
+                      ],
+                    ),
+                    const SizedBox(height: Space.md),
                     Wrap(
                       spacing: Space.sm,
                       runSpacing: Space.xs,
@@ -174,27 +197,7 @@ class ProfileCard extends StatelessWidget {
                           'Joined ${joined.year}-${joined.month.toString().padLeft(2, '0')}-${joined.day.toString().padLeft(2, '0')}',
                           icon: Icons.calendar_today_outlined,
                         ),
-                        Tag(
-                          '${profile.dailyStreak}-day streak',
-                          icon: Icons.local_fire_department_rounded,
-                          color: BrickColors.brick.withValues(alpha: 0.16),
-                          onColor: BrickColors.brick,
-                        ),
                         PlatformTag(profile.summary),
-                      ],
-                    ),
-                    const SizedBox(height: Space.md),
-                    Row(
-                      mainAxisAlignment: wide
-                          ? MainAxisAlignment.start
-                          : MainAxisAlignment.center,
-                      children: [
-                        PipChip(profile.pips),
-                        const SizedBox(width: Space.sm),
-                        Tag(
-                          '${profile.badges.length} badges',
-                          icon: Icons.military_tech_rounded,
-                        ),
                       ],
                     ),
                     if (!isMe) ...[
@@ -346,6 +349,47 @@ class ProfileCard extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+class _Count extends StatelessWidget {
+  const _Count(this.label, this.value);
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          value,
+          style: context.text.titleMedium?.copyWith(
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        Text(
+          label,
+          style: context.text.labelSmall?.copyWith(color: p.textTertiary),
+        ),
+      ],
+    );
+  }
+}
+
+class _CountDivider extends StatelessWidget {
+  const _CountDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 1,
+      height: 28,
+      margin: const EdgeInsets.symmetric(horizontal: Space.lg),
+      color: context.palette.outline,
     );
   }
 }

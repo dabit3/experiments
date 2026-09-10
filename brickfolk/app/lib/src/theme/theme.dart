@@ -15,10 +15,8 @@ ThemeData brickTheme(Brightness brightness) {
     onPrimaryContainer: dark ? Colors.white : BrickColors.skyDark,
     secondary: BrickColors.brick,
     onSecondary: Colors.white,
-    secondaryContainer: dark
-        ? const Color(0xFF4A2A22)
-        : const Color(0xFFFFE3DB),
-    onSecondaryContainer: dark ? Colors.white : BrickColors.brickDark,
+    secondaryContainer: dark ? BrickColors.ink4 : BrickColors.paper3,
+    onSecondaryContainer: palette.textPrimary,
     tertiary: BrickColors.sun,
     onTertiary: BrickColors.ink,
     error: palette.danger,

@@ -204,6 +204,8 @@ class Hub implements RoomHost {
         _chatSend(s, p, msg);
       case MsgType.placesList:
         _sendPlaces(s);
+      case MsgType.placeRate:
+        _placeRate(s, p, msg);
       case MsgType.profileGet:
         _profileGet(s, p, msg);
       case MsgType.roomCreate:
@@ -745,6 +747,7 @@ class Hub implements RoomHost {
       return;
     }
     s.roomCode = room.code;
+    store.bumpVisits(room.experience.id);
     _broadcastPlaces();
   }
 
@@ -957,36 +960,74 @@ class Hub implements RoomHost {
   // Places, profiles
   // ---------------------------------------------------------------------------
 
-  Map<String, Object?> _placesFrame() => {
-    'type': MsgType.places,
-    'places': [
-      for (final place in places)
-        {
-          ...place.toJson(),
-          'playing': rooms.values
-              .where((r) => r.experience == place.kind)
-              .fold<int>(0, (n, r) => n + r.humanCount),
-          'rooms': [
-            for (final r in rooms.values)
-              if (r.experience == place.kind)
-                {
-                  'code': r.code,
-                  'players': r.humanCount,
-                  'phase': r.phase.name,
-                },
-          ],
-        },
-    ],
-    'online': byPlayer.length,
-  };
+  Map<String, Object?> _placesFrame(Session s) {
+    final votes = s.player == null
+        ? const <String, bool>{}
+        : store.votesOf(s.player!.id);
+    return {
+      'type': MsgType.places,
+      'places': [
+        for (final place in places)
+          {
+            ...place.toJson(),
+            'playing': rooms.values
+                .where((r) => r.experience == place.kind)
+                .fold<int>(0, (n, r) => n + r.humanCount),
+            'rooms': [
+              for (final r in rooms.values)
+                if (r.experience == place.kind)
+                  {
+                    'code': r.code,
+                    'players': r.humanCount,
+                    'phase': r.phase.name,
+                  },
+            ],
+            ..._placeStatsJson(place.kind.id),
+            'myVote': votes[place.kind.id],
+          },
+      ],
+      'online': byPlayer.length,
+    };
+  }
 
-  void _sendPlaces(Session s) => s.send(_placesFrame());
+  Map<String, Object?> _placeStatsJson(String kind) {
+    final stats = store.placeStats(kind);
+    return {
+      'visits': stats.visits,
+      'likes': stats.likes,
+      'dislikes': stats.dislikes,
+    };
+  }
+
+  void _sendPlaces(Session s) => s.send(_placesFrame(s));
 
   void _broadcastPlaces() {
-    final frame = _placesFrame();
     for (final s in byPlayer.values) {
-      s.send(frame);
+      s.send(_placesFrame(s));
     }
+  }
+
+  void _placeRate(Session s, PlayerRecord p, Map<String, Object?> msg) {
+    final kind = ExperienceKind.fromId(msg['place'] as String?);
+    if (kind == null) {
+      s.error(
+        ErrorCode.notFound,
+        'Unknown place.',
+        inReplyTo: MsgType.placeRate,
+      );
+      return;
+    }
+    final up = msg['up'];
+    if (up != null && up is! bool) {
+      s.error(
+        ErrorCode.badRequest,
+        '`up` must be true, false or null.',
+        inReplyTo: MsgType.placeRate,
+      );
+      return;
+    }
+    store.vote(p.id, kind.id, up as bool?);
+    _broadcastPlaces();
   }
 
   void _profileGet(Session s, PlayerRecord p, Map<String, Object?> msg) {

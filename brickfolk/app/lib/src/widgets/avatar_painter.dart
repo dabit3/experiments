@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:brickfolk_shared/brickfolk_shared.dart';
 import 'package:flutter/material.dart';
 
+import '../theme/tokens.dart';
+
 /// Paints a blocky Brickfolk avatar into [rect]. Shared by the Flutter UI and
 /// the Flame game components so the figure looks identical everywhere.
 ///
@@ -489,4 +491,55 @@ class _AvatarWidgetPainter extends CustomPainter {
       old.avatar != avatar ||
       old.facingRight != facingRight ||
       old.frozen != frozen;
+}
+
+/// Circular avatar crop used for greetings and friend bubbles.
+class Headshot extends StatelessWidget {
+  const Headshot(this.avatar, {super.key, required this.size, this.online});
+
+  final Avatar avatar;
+  final double size;
+  final bool? online;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          ClipOval(
+            child: Container(
+              color: p.surface2,
+              alignment: Alignment.topCenter,
+              child: OverflowBox(
+                maxHeight: size * 1.9,
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: EdgeInsets.only(top: size * 0.12),
+                  child: AvatarView(avatar, size: size * 1.9),
+                ),
+              ),
+            ),
+          ),
+          if (online != null)
+            Positioned(
+              right: 0,
+              bottom: 0,
+              child: Container(
+                width: size * 0.26,
+                height: size * 0.26,
+                decoration: BoxDecoration(
+                  color: online! ? BrickColors.mint : p.textTertiary,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: p.surface0, width: 2),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }

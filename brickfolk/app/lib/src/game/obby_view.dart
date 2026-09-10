@@ -158,6 +158,14 @@ class ObbyFlameGame extends FlameGame with KeyboardEvents {
 
   static const double _ppu = 48; // pixels per world unit at reference height
 
+  double get _scale => (size.y / 14).clamp(_ppu * 0.55, _ppu * 1.3);
+
+  /// World units the camera leads the player by, so they sit left of centre
+  /// with room to see ahead; shrinks on narrow viewports so the local player
+  /// always stays on screen.
+  double get _camLead =>
+      hasLayout ? (size.x / _scale * 0.2).clamp(0.0, 4.0) : 4;
+
   @override
   Color backgroundColor() =>
       dark ? const Color(0xFF0E1428) : const Color(0xFF9CC9FF);
@@ -297,7 +305,7 @@ class ObbyFlameGame extends FlameGame with KeyboardEvents {
     }
     final me = _lastStates[client.myId];
     if (me != null) {
-      final targetX = me.x + 4;
+      final targetX = me.x + _camLead;
       final targetY = math.max(me.y, 0) + 3;
       final k = 1 - math.exp(-dt * 8);
       _camX += (targetX - _camX) * k;
@@ -330,10 +338,7 @@ class _SceneComponent extends Component {
     final size = game.size;
     final w = size.x;
     final h = size.y;
-    final scale = (h / 14).clamp(
-      ObbyFlameGame._ppu * 0.55,
-      ObbyFlameGame._ppu * 1.3,
-    );
+    final scale = game._scale;
     final camX = game._camX;
     final camY = game._camY;
 

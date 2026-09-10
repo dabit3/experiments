@@ -25,3 +25,4 @@ node_modules/
 .devin/clone-this/brickfolk/evidence/tests/**/*.log
 .devin/clone-this/brickfolk/evidence/**/*.db
 .devin/clone-this/brickfolk/evidence/**/frames/
+.devin/clone-this/brickfolk/evidence/**/review-parts/

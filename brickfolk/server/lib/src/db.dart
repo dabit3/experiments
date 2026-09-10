@@ -72,7 +72,20 @@ class FriendRow {
   final bool accepted;
 }
 
-/// SQLite-backed store for players and friendships.
+/// Aggregate visit and vote counts for one place.
+class PlaceStats {
+  const PlaceStats({
+    required this.visits,
+    required this.likes,
+    required this.dislikes,
+  });
+
+  final int visits;
+  final int likes;
+  final int dislikes;
+}
+
+/// SQLite-backed store for players, friendships and place stats.
 class Store {
   Store(String path) : _db = sqlite3.open(path) {
     _db.execute('''
@@ -96,6 +109,16 @@ class Store {
         to_id TEXT NOT NULL,
         accepted INTEGER NOT NULL DEFAULT 0,
         PRIMARY KEY (from_id, to_id)
+      );
+      CREATE TABLE IF NOT EXISTS place_visits (
+        kind TEXT PRIMARY KEY,
+        visits INTEGER NOT NULL DEFAULT 0
+      );
+      CREATE TABLE IF NOT EXISTS place_votes (
+        player_id TEXT NOT NULL,
+        kind TEXT NOT NULL,
+        up INTEGER NOT NULL,
+        PRIMARY KEY (player_id, kind)
       );
     ''');
   }
@@ -246,6 +269,63 @@ class Store {
     'OR (from_id = ? AND to_id = ?)',
     [a, b, b, a],
   );
+
+  // Places --------------------------------------------------------------------
+
+  void bumpVisits(String kind) => _db.execute(
+    'INSERT INTO place_visits (kind, visits) VALUES (?, 1) '
+    'ON CONFLICT(kind) DO UPDATE SET visits = visits + 1',
+    [kind],
+  );
+
+  PlaceStats placeStats(String kind) {
+    final visits = _db.select(
+      'SELECT visits FROM place_visits WHERE kind = ?',
+      [kind],
+    );
+    final votes = _db.select(
+      'SELECT up, COUNT(*) AS n FROM place_votes WHERE kind = ? GROUP BY up',
+      [kind],
+    );
+    var up = 0;
+    var down = 0;
+    for (final r in votes) {
+      if (r['up'] == 1) {
+        up = r['n'] as int;
+      } else {
+        down = r['n'] as int;
+      }
+    }
+    return PlaceStats(
+      visits: visits.isEmpty ? 0 : visits.first['visits'] as int,
+      likes: up,
+      dislikes: down,
+    );
+  }
+
+  /// `up == null` clears the player's vote.
+  void vote(String playerId, String kind, bool? up) {
+    if (up == null) {
+      _db.execute('DELETE FROM place_votes WHERE player_id = ? AND kind = ?', [
+        playerId,
+        kind,
+      ]);
+      return;
+    }
+    _db.execute(
+      'INSERT INTO place_votes (player_id, kind, up) VALUES (?, ?, ?) '
+      'ON CONFLICT(player_id, kind) DO UPDATE SET up = excluded.up',
+      [playerId, kind, up ? 1 : 0],
+    );
+  }
+
+  Map<String, bool> votesOf(String playerId) => {
+    for (final r in _db.select(
+      'SELECT kind, up FROM place_votes WHERE player_id = ?',
+      [playerId],
+    ))
+      r['kind'] as String: r['up'] == 1,
+  };
 
   void close() => _db.close();
 }

@@ -1,4 +1,6 @@
-# flutter build apk --release (2026-09-10T11:29:58Z)
-Running Gradle task 'assembleRelease'...                           15.8s
+# flutter build apk --release (2026-09-10T15:21:16Z)
+Running Gradle task 'assembleRelease'...                        
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 15616 bytes (99.1% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Running Gradle task 'assembleRelease'...                           18.5s
 ✓ Built build/app/outputs/flutter-apk/app-release.apk (55.0MB)
 exit=0

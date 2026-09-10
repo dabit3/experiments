@@ -1,6 +1,6 @@
-# clean checkout build 2026-09-10T12:53:19Z
+# clean checkout build 2026-09-10T16:52:36Z
 # source: /Users/devin/repos/experiments/brickfolk  ->  /Users/devin/brickfolk-clean-checkout
-# files copied: 182
+# files copied: 183
 
 ==> bash -c cd shared && dart pub get
 Resolving dependencies...
@@ -54,13 +54,13 @@ Downloading packages...
 + webkit_inspection_protocol 1.2.1
 + yaml 3.1.4
 Changed 48 dependencies!
-<== ok in 0s
+<== ok in 1s
 
 ==> bash -c cd server && dart pub get
 Resolving dependencies...
 Downloading packages...
 Got dependencies!
-<== ok in 1s
+<== ok in 0s
 
 ==> bash -c cd app && flutter pub get
 Resolving dependencies...
@@ -76,15 +76,15 @@ Try `flutter pub outdated` for more information.
 
 ==> bash -c cd test/e2e && npm ci --no-audit --no-fund
 
-added 3 packages in 257ms
+added 3 packages in 242ms
 <== ok in 1s
 
 ==> bash -c cd shared && dart test
 00:00 +0: loading test/games_test.dart
 00:00 +0: test/games_test.dart: tycoon placing bricks costs cash and earns income
-00:00 +1: test/games_test.dart: tycoon autopilot is deterministic
-00:00 +2: test/obby_test.dart: course has 12 checkpoints and a finish pad
-00:00 +3: test/games_test.dart: tycoon plot round-trips through json
+00:00 +1: test/obby_test.dart: course has 12 checkpoints and a finish pad
+00:00 +2: test/games_test.dart: tycoon autopilot is deterministic
+00:00 +3: test/obby_test.dart: course generation is deterministic
 00:00 +4: test/obby_test.dart: course generation is deterministic
 00:00 +5: test/games_test.dart: tag tagger freezes runners and round ends when all frozen
 00:00 +6: test/obby_test.dart: autopilot with hesitation 0 finishes the course
@@ -114,22 +114,23 @@ Running build hooks...Running build hooks...00:00 +0: loading test/hub_test.dart
 00:00 +1: test/hub_test.dart: token resumes the same player and profile persists
 00:00 +2: test/hub_test.dart: unknown token without a name is rejected as unauthenticated
 00:00 +3: test/hub_test.dart: online count is pushed to everyone on sign-in and disconnect
-00:00 +4: test/hub_test.dart: daily reward claims once and reports cooldown
-00:00 +5: test/hub_test.dart: chat is filtered and rate limited
-00:00 +6: test/hub_test.dart: friends request/accept flow awards social badge
-00:00 +7: test/hub_test.dart: four platforms party up, play an obby match, identical results
-00:00 +8: test/hub_test.dart: reconnect within grace keeps the seat and re-sends room state
-00:00 +9: test/hub_test.dart: an obby plan applies each entry at its tick and does not expire
-00:00 +10: test/hub_test.dart: a held obby input expires when the client stops refreshing it
-00:00 +11: test/hub_test.dart: tycoon and tag matches complete with bots and persist the plot
-00:00 +12: All tests passed!
+00:00 +4: test/hub_test.dart: place visits and votes are aggregated, votes are per player
+00:00 +5: test/hub_test.dart: daily reward claims once and reports cooldown
+00:00 +6: test/hub_test.dart: chat is filtered and rate limited
+00:00 +7: test/hub_test.dart: friends request/accept flow awards social badge
+00:00 +8: test/hub_test.dart: four platforms party up, play an obby match, identical results
+00:00 +9: test/hub_test.dart: reconnect within grace keeps the seat and re-sends room state
+00:00 +10: test/hub_test.dart: an obby plan applies each entry at its tick and does not expire
+00:00 +11: test/hub_test.dart: a held obby input expires when the client stops refreshing it
+00:00 +12: test/hub_test.dart: tycoon and tag matches complete with bots and persist the plot
+00:00 +13: All tests passed!
 <== ok in 4s
 
 ==> bash -c cd server && dart build cli -o build/cli && ls -la build/cli/bundle/bin/server && build/cli/bundle/bin/server --help >/dev/null
 Running build hooks...Running build hooks...Running link hooks...Running link hooks...Copying 1 build assets:
 package:sqlite3/src/ffi/libsqlite3.g.dart
 Generated: /Users/devin/brickfolk-clean-checkout/brickfolk/server/build/cli/bundle/bin/server
--rwxr-xr-x  1 devin  staff  7571296 Sep 10 05:53 build/cli/bundle/bin/server
+-rwxr-xr-x  1 devin  staff  7571296 Sep 10 09:52 build/cli/bundle/bin/server
 <== ok in 2s
 
 ==> bash -c cd app && flutter test
@@ -144,43 +145,44 @@ Generated: /Users/devin/brickfolk-clean-checkout/brickfolk/server/build/cli/bund
 00:00 +7: BrickfolkApp signed-in hub lays out on phone without errors
 00:00 +8: BrickfolkApp signed-in hub lays out on tablet without errors
 00:00 +9: BrickfolkApp signed-in hub lays out on desktop without errors
-00:00 +10: BrickfolkApp forced dark theme applies
-00:00 +11: All tests passed!
-<== ok in 7s
+00:00 +10: BrickfolkApp entering a room dismisses the pushed place details page
+00:01 +11: BrickfolkApp forced dark theme applies
+00:01 +12: All tests passed!
+<== ok in 6s
 
 ==> bash -c cd app && flutter build web --release
 Compiling lib/main.dart for the Web...                          
 Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
 Use --no-wasm-dry-run to disable these warnings.
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 21228 bytes (98.7% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
 Font asset "CupertinoIcons.ttf" was tree-shaken, reducing it from 257628 to 1472 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 20600 bytes (98.7% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Compiling lib/main.dart for the Web...                             16.6s
+Compiling lib/main.dart for the Web...                             17.5s
 ✓ Built build/web
-<== ok in 17s
+<== ok in 18s
 
 ==> bash -c cd app && flutter build ios --simulator --debug
 Building dev.brickfolk.brickfolkApp for simulator (ios)...
 Running Xcode build...                                          
-Xcode build done.                                           21.6s
+Xcode build done.                                           27.8s
 ✓ Built build/ios/iphonesimulator/Runner.app
-<== ok in 27s
+<== ok in 33s
 
 ==> bash -c cd app && flutter build apk --release
 Running Gradle task 'assembleRelease'...                        
-Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 14804 bytes (99.1% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Running Gradle task 'assembleRelease'...                           22.3s
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 15616 bytes (99.1% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Running Gradle task 'assembleRelease'...                           23.3s
 ✓ Built build/app/outputs/flutter-apk/app-release.apk (55.0MB)
-<== ok in 23s
+<== ok in 24s
 
 ==> bash -c cd app && flutter build macos --release
 Building macOS application...                                   
 warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
-✓ Built build/macos/Build/Products/Release/Brickfolk.app (47.6MB)
-<== ok in 34s
+✓ Built build/macos/Build/Products/Release/Brickfolk.app (47.7MB)
+<== ok in 36s
 
 # artefacts
--rw-r--r--  1 devin  staff  54993659 Sep 10 05:54 app/build/app/outputs/flutter-apk/app-release.apk
--rw-r--r--  1 devin  staff   2924948 Sep 10 05:53 app/build/web/main.dart.js
+-rw-r--r--  1 devin  staff  54994287 Sep 10 09:54 app/build/app/outputs/flutter-apk/app-release.apk
+-rw-r--r--  1 devin  staff   2935404 Sep 10 09:53 app/build/web/main.dart.js
 app/build/ios/iphonesimulator/Runner.app
 app/build/macos/Build/Products/Release/Brickfolk.app
 clean checkout build passed

@@ -2,15 +2,15 @@
 00:00 +0: test/games_test.dart: tycoon placing bricks costs cash and earns income
 00:00 +1: test/games_test.dart: tycoon autopilot is deterministic
 00:00 +2: test/games_test.dart: tycoon plot round-trips through json
-00:00 +3: test/games_test.dart: tag tagger freezes runners and round ends when all frozen
-00:00 +4: test/obby_test.dart: course has 12 checkpoints and a finish pad
-00:00 +5: test/games_test.dart: tag players never end up inside walls
-00:00 +6: test/games_test.dart: tag players never end up inside walls
+00:00 +3: test/obby_test.dart: course has 12 checkpoints and a finish pad
+00:00 +4: test/games_test.dart: tag tagger freezes runners and round ends when all frozen
+00:00 +5: test/games_test.dart: tag tagger freezes runners and round ends when all frozen
+00:00 +6: test/obby_test.dart: autopilot with hesitation 0 finishes the course
 00:00 +7: test/games_test.dart: tag players never end up inside walls
 00:00 +8: test/games_test.dart: tag players never end up inside walls
 00:00 +9: test/games_test.dart: tag players never end up inside walls
 00:00 +10: test/obby_test.dart: lag-compensated autopilot finishes with 6 ticks of input lag
-00:00 +11: test/obby_test.dart: lag-compensated autopilot finishes with 6 ticks of input lag
+00:00 +11: test/games_test.dart: tag state packs round-trip
 00:00 +12: test/obby_test.dart: lag-compensated autopilot finishes with 12 ticks of input lag
 00:00 +13: test/obby_test.dart: lag-compensated autopilot finishes with 20 ticks of input lag
 00:00 +14: test/obby_test.dart: lag-compensated autopilot finishes with 30 ticks of input lag

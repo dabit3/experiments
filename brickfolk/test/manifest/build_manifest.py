@@ -24,7 +24,7 @@ AUDIT_IDS = (
     "data", "assets", "accessibility", "reliability", "rebrand",
 )
 CHECK_IDS = ("functional", "visual", "build", "quality", "security")
-VISUAL_SCREENS = ("hub", "avatar", "social", "chat", "profile", "daily")
+VISUAL_SCREENS = ("hub", "place", "avatar", "social", "chat", "profile", "daily")
 
 
 class Evidence:
@@ -69,6 +69,9 @@ def build_items(ev, e2e, tycoon, tag):
         item("route-hub-play", "route",
              "Hub / Play tab: experience browser with thumbnails, live player counts, party banner",
              ev(f"{vis}/web-hub.png", f"{vis}/macos-hub.png", f"{vis}/web-hub-dark.png")),
+        item("route-place-details", "route",
+             "Place details: hero thumbnail, description, votes, stats, server list, Play",
+             ev(f"{vis}/web-place.png", f"{vis}/macos-place.png")),
         item("route-hub-avatar", "route",
              "Hub / Avatar tab: avatar editor and shop",
              ev(f"{vis}/web-avatar.png", f"{vis}/macos-avatar.png", f"{vis}/web-avatar-dark.png")),
@@ -161,6 +164,9 @@ def build_items(ev, e2e, tycoon, tag):
              "Web, iOS, Android and macOS join party BRIK, enter one obby room, finish, identical results and checksum",
              ev(f"{e2e}/report.json", f"{e2e}/summary.md", f"{e2e}/recording-four-way.mp4",
                 *shots("results"))),
+        item("journey-edited-review-video", "journey",
+             "Edited review video: chaptered, captioned, platform-labelled cut of the e2e evidence with EDL",
+             ev(f"{e2e}/review.mp4", f"{e2e}/review-edl.json", f"{e2e}/recording-four-way.mp4")),
         item("journey-tycoon-match", "journey",
              "Web and macOS play a full tycoon match with bots to identical results",
              ev(f"{tycoon}/report.json", f"{tycoon}/summary.md")),

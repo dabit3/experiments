@@ -173,6 +173,7 @@ shared/test/obby_test.dart
 shared/tool/obby_debug.dart
 test/e2e/package-lock.json
 test/e2e/package.json
+test/e2e/review_video.mjs
 test/e2e/run.mjs
 test/e2e/visual_compare.py
 test/manifest/build_manifest.py

@@ -298,40 +298,48 @@ class PlayerTile extends StatelessWidget {
 }
 
 class PlatformTag extends StatelessWidget {
-  const PlatformTag(this.player, {super.key});
+  const PlatformTag(this.player, {super.key, this.compact = false});
 
   final PlayerSummary player;
+
+  /// Icon-only rendering for tight rows.
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final p = context.palette;
-    if (player.isBot) {
-      return Tag(
-        'BOT',
-        icon: Icons.smart_toy_outlined,
-        color: p.surface3,
-        onColor: p.textSecondary,
+    final blue = Theme.of(context).brightness == Brightness.dark
+        ? const Color(0xFF9DBBFF)
+        : BrickColors.skyDark;
+    final (label, icon, color, onColor) = player.isBot
+        ? ('BOT', Icons.smart_toy_outlined, p.surface3, p.textSecondary)
+        : (
+            switch (player.platform) {
+              'web' => 'Web',
+              'ios' => 'iOS',
+              'android' => 'Android',
+              'macos' => 'macOS',
+              _ => player.platform,
+            },
+            switch (player.platform) {
+              'web' => Icons.language,
+              'ios' => Icons.phone_iphone,
+              'android' => Icons.android,
+              'macos' => Icons.laptop_mac,
+              _ => Icons.devices_other,
+            },
+            player.online
+                ? BrickColors.sky.withValues(alpha: 0.16)
+                : p.surface2,
+            player.online ? blue : p.textTertiary,
+          );
+    if (compact) {
+      return Tooltip(
+        message: label,
+        child: Icon(icon, size: 14, color: onColor),
       );
     }
-    final (label, icon) = switch (player.platform) {
-      'web' => ('Web', Icons.language),
-      'ios' => ('iOS', Icons.phone_iphone),
-      'android' => ('Android', Icons.android),
-      'macos' => ('macOS', Icons.laptop_mac),
-      _ => (player.platform, Icons.devices_other),
-    };
-    return Tag(
-      label,
-      icon: icon,
-      color: player.online
-          ? BrickColors.sky.withValues(alpha: 0.16)
-          : p.surface2,
-      onColor: player.online
-          ? (Theme.of(context).brightness == Brightness.dark
-                ? const Color(0xFF9DBBFF)
-                : BrickColors.skyDark)
-          : p.textTertiary,
-    );
+    return Tag(label, icon: icon, color: color, onColor: onColor);
   }
 }
 
@@ -436,18 +444,27 @@ class EmptyState extends StatelessWidget {
 
 /// Copyable join code display.
 class CodeBadge extends StatelessWidget {
-  const CodeBadge(this.code, {super.key, this.label = 'Code'});
+  const CodeBadge(
+    this.code, {
+    super.key,
+    this.label = 'Code',
+    this.dark = false,
+  });
 
   final String code;
   final String label;
 
+  /// Renders on the near-black chrome.
+  final bool dark;
+
   @override
   Widget build(BuildContext context) {
     final p = context.palette;
+    final muted = dark ? BrickColors.onChromeMuted : p.textTertiary;
     return Tooltip(
       message: 'Copy code',
       child: Material(
-        color: p.surface2,
+        color: dark ? BrickColors.chromeRaised : p.surface2,
         borderRadius: BorderRadius.circular(Radii.md),
         child: InkWell(
           borderRadius: BorderRadius.circular(Radii.md),
@@ -467,9 +484,7 @@ class CodeBadge extends StatelessWidget {
               children: [
                 Text(
                   label.toUpperCase(),
-                  style: context.text.labelSmall?.copyWith(
-                    color: p.textTertiary,
-                  ),
+                  style: context.text.labelSmall?.copyWith(color: muted),
                 ),
                 const SizedBox(width: Space.sm),
                 Text(
@@ -477,10 +492,11 @@ class CodeBadge extends StatelessWidget {
                   style: context.text.titleMedium?.copyWith(
                     letterSpacing: 2,
                     fontWeight: FontWeight.w800,
+                    color: dark ? BrickColors.onChrome : null,
                   ),
                 ),
                 const SizedBox(width: Space.xs),
-                Icon(Icons.copy_rounded, size: 14, color: p.textTertiary),
+                Icon(Icons.copy_rounded, size: 14, color: muted),
               ],
             ),
           ),

@@ -104,6 +104,33 @@ void main() {
     expect(a.last[MsgType.places]?['online'], 1);
   });
 
+  test('place visits and votes are aggregated, votes are per player', () {
+    final hub = makeHub();
+    final a = FakeClient(hub, 'web')..hello('Alice');
+    final b = FakeClient(hub, 'ios')..hello('Bobby');
+    Map<String, Object?> obby(FakeClient c) =>
+        ((c.last[MsgType.places]!['places'] as List).first as Map)
+            .cast<String, Object?>();
+    expect(obby(a)['visits'], 0);
+    a.send({'type': MsgType.roomCreate, 'experience': 'obby'});
+    expect(obby(a)['visits'], 1);
+    expect(obby(b)['visits'], 1);
+    a.send({'type': MsgType.placeRate, 'place': 'obby', 'up': true});
+    b.send({'type': MsgType.placeRate, 'place': 'obby', 'up': false});
+    expect(obby(a)['likes'], 1);
+    expect(obby(a)['dislikes'], 1);
+    expect(obby(a)['myVote'], true);
+    expect(obby(b)['myVote'], false);
+    b.send({'type': MsgType.placeRate, 'place': 'obby', 'up': true});
+    expect(obby(a)['likes'], 2);
+    expect(obby(a)['dislikes'], 0);
+    b.send({'type': MsgType.placeRate, 'place': 'obby', 'up': null});
+    expect(obby(a)['likes'], 1);
+    expect(obby(b)['myVote'], isNull);
+    b.send({'type': MsgType.placeRate, 'place': 'nope', 'up': true});
+    expect(b.last[MsgType.error]?['code'], ErrorCode.notFound);
+  });
+
   test('daily reward claims once and reports cooldown', () {
     final hub = makeHub();
     final a = FakeClient(hub, 'web')..hello('Alice');

@@ -88,9 +88,18 @@ class _BrickfolkAppState extends State<BrickfolkApp> {
   }
 }
 
-/// Chooses between sign-in, hub and room based on client state.
-class _Root extends StatelessWidget {
+/// Chooses between sign-in, hub and room based on client state. Entering a
+/// room also dismisses whatever the hub had pushed on top (place details,
+/// sheets, dialogs) so the room is what the player sees.
+class _Root extends StatefulWidget {
   const _Root();
+
+  @override
+  State<_Root> createState() => _RootState();
+}
+
+class _RootState extends State<_Root> {
+  String? _roomCode;
 
   @override
   Widget build(BuildContext context) {
@@ -102,6 +111,17 @@ class _Root extends StatelessWidget {
       page = RoomScreen(key: ValueKey('room-${client.room!.code}'));
     } else {
       page = const HomeShell(key: ValueKey('home'));
+    }
+    final code = client.me == null ? null : client.room?.code;
+    if (code != _roomCode) {
+      _roomCode = code;
+      if (code != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          }
+        });
+      }
     }
     return AnimatedSwitcher(
       duration: Motion.slow,

@@ -82,6 +82,7 @@ Codes: `bad_request`, `name_taken`, `invalid_name`, `not_found`, `room_full`,
 | `party.launch` | `experience, bots?` | leader only: create a room and pull every member in |
 | `chat.send` | `channel, text` | post to `global`, `party` or `room` chat (filtered, rate limited) |
 | `places.list` | – | request the place browser list → `places` |
+| `place.rate` | `place, up` (`true`, `false` or `null` to clear) | thumbs up/down a place → `places` to everyone |
 | `profile.get` | `player` | request another player's profile → `profile` |
 | `room.create` | `experience, bots?` | create a room and join it |
 | `room.join` | `code` | join an existing room |
@@ -102,7 +103,7 @@ Codes: `bad_request`, `name_taken`, `invalid_name`, `not_found`, `room_full`,
 | `friends.state` | `friends: [PlayerSummary+online], incoming: [...], outgoing: [...]` |
 | `party.state` | `party: PartyState \| null` |
 | `chat.message` | `message: {id, channel, from: PlayerSummary, text, at}` |
-| `places` | `places: [PlaceInfo + playing]` (id, name, blurb, matchSeconds, players currently in rooms) |
+| `places` | `places: [PlaceInfo + playing, rooms, visits, likes, dislikes, myVote]`, `online` (id, name, blurb, matchSeconds, humans currently in rooms, open rooms, all-time room entries, vote totals and the receiving player's own vote) |
 | `profile` | `profile: PlayerProfile` (owned items removed for other players), `isFriend` |
 | `room.state` | `room: RoomState \| null, botCount, serverTime` |
 | `game.state` | experience frame (§5) plus `tick`, `ticksLeft` |

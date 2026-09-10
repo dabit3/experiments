@@ -106,7 +106,7 @@ arrows / drag joystick; tycoon — tap or click a plot cell, pick a part.
 ```sh
 cd brickfolk
 ./test/multiplayer-e2e.sh                 # builds all four targets, then plays a match
-./test/multiplayer-e2e.sh --no-build      # reuse existing builds
+./test/multiplayer-e2e.sh --no-build      # reuse builds from an earlier harness run
 ./test/multiplayer-e2e.sh --platforms web,ios,macos --bots 1
 ./test/multiplayer-e2e.sh --experience tag --seed 42 --timeout 600
 ```
@@ -128,7 +128,16 @@ The harness (`test/e2e/run.mjs`):
 6. saves per-platform `lobby`/`gameplay`/`results` screenshots, a recording
    per client and a composed four-way recording, `report.json`,
    `server-state.json`, `summary.md` and all logs to
-   `.devin/clone-this/brickfolk/evidence/tests/multiplayer-<timestamp>/`.
+   `.devin/clone-this/brickfolk/evidence/tests/multiplayer-<timestamp>/`,
+7. cuts an edited **review video** (`review.mp4`, with `review-edl.json`
+   describing every segment) from that evidence with
+   `test/e2e/review_video.mjs`: title card, chaptered sections (hub visual
+   parity, lobby, countdown/gameplay, results, verdict), the four platform
+   recordings aligned on wall-clock time and laid out side by side with
+   platform labels and captions, screenshot slides and the final
+   leaderboard. Chapters are embedded as MP4 chapter metadata. Skip with
+   `--no-review`; re-cut or combine runs by hand with
+   `node test/e2e/review_video.mjs <runDir> --extra <tycoonRunDir> --extra <tagRunDir>`.
 
 Exit code is non-zero on any mismatch or missing artefact.
 
@@ -172,7 +181,7 @@ to settle so System UI restarts do not compete with the match. Override with
 `BRICKFOLK_ANDROID_FRAME_MS`, `BRICKFOLK_ANDROID_CAPTURE`.
 
 The same run also performs a **visual tour**: web (reference) and native
-macOS (actual) sign in as the same player, open the hub, avatar, social,
+macOS (actual) sign in as the same player, open the hub, place details, avatar, social,
 chat, profile and daily-reward screens, and `test/e2e/visual_compare.py`
 normalises and diffs every pair (`visual/<screen>/hub-<screen>-{reference,
 actual,diff}.png` + metrics). Skip it with `--no-visual`.
@@ -182,6 +191,15 @@ Simulator.app, so a recorder that died without `SIGINT` leaves "Host
 recording is already in progress" behind for every later run. The harness
 detects that refusal, restarts Simulator.app (the device and the app under
 test stay booted) and starts the recorder again.
+
+macOS note: the native window is recorded as a screen region by ffmpeg's
+AVFoundation screen grabber with wall-clock timestamps
+(`recording-macos.mp4`, stderr in `macos-record.log`), so frames dropped
+while the host is saturated by the other three clients only lower the frame
+rate; `screencapture -v` silently stopped writing part-way through long
+matches. The review editor stands in a platform's phase screenshot for any
+recording that still ends before a clip window and labels the tile
+"recording ended, screenshot".
 
 ## Quality gates
 
@@ -207,7 +225,7 @@ the app icons for every platform from the original Brickfolk brick mark.
 Screenshots and recordings from the automated four-platform match live under
 `.devin/clone-this/brickfolk/evidence/tests/multiplayer-<timestamp>/`
 (`web|ios|android|macos-{lobby,gameplay,results}.png`,
-`recording-<platform>.*`, `recording-four-way.mp4`). Large binaries are kept
+`recording-<platform>.*`, `recording-four-way.mp4`, `review.mp4`). Large binaries are kept
 out of git and attached to the PR / session instead; `report.json` and
 `summary.md` describe each run. The clone-this manifest (`state.json`,
 `events.jsonl`) records audits, inventories, checks and sweeps.

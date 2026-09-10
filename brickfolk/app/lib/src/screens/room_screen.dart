@@ -122,55 +122,70 @@ class _LobbyView extends StatelessWidget {
         ? ((room.countdownEndsAt! - client.serverNow()) / 1000).clamp(0.0, 9.0)
         : null;
 
-    final header = Padding(
-      padding: const EdgeInsets.fromLTRB(
-        Space.lg,
-        Space.md,
-        Space.lg,
-        Space.md,
-      ),
-      child: Row(
-        children: [
-          IconButton.filledTonal(
-            tooltip: 'Leave room',
-            onPressed: client.roomLeave,
-            icon: const Icon(Icons.arrow_back_rounded),
-          ),
-          const SizedBox(width: Space.md),
-          Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: accent.withValues(alpha: 0.18),
-              borderRadius: BorderRadius.circular(Radii.md),
-            ),
-            child: Icon(experienceIcon(room.experience), color: accent),
-          ),
-          const SizedBox(width: Space.md),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    final header = Material(
+      color: BrickColors.chrome,
+      child: SafeArea(
+        bottom: false,
+        child: SizedBox(
+          height: 52,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Space.sm),
+            child: Row(
               children: [
-                Text(
-                  place.name,
-                  style: context.text.titleLarge,
-                  overflow: TextOverflow.ellipsis,
+                IconButton(
+                  tooltip: 'Leave room',
+                  onPressed: client.roomLeave,
+                  color: BrickColors.onChrome,
+                  hoverColor: Colors.white12,
+                  icon: const Icon(Icons.arrow_back_rounded),
                 ),
-                Text(
-                  room.round == 0
-                      ? 'Lobby · waiting for players'
-                      : 'Lobby · match ${room.round} finished',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: context.text.bodySmall?.copyWith(
-                    color: p.textTertiary,
+                const SizedBox(width: Space.xs),
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: accent,
+                    borderRadius: BorderRadius.circular(Radii.sm),
+                  ),
+                  child: Icon(
+                    experienceIcon(room.experience),
+                    color: Colors.white,
+                    size: 18,
                   ),
                 ),
+                const SizedBox(width: Space.md),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        place.name,
+                        style: context.text.titleMedium?.copyWith(
+                          color: BrickColors.onChrome,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        room.round == 0
+                            ? 'Lobby · waiting for players'
+                            : 'Lobby · match ${room.round} finished',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: context.text.labelSmall?.copyWith(
+                          color: BrickColors.onChromeMuted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (!narrow)
+                  CodeBadge(room.code, label: 'Room code', dark: true),
+                const SizedBox(width: Space.xs),
               ],
             ),
           ),
-          if (!narrow) CodeBadge(room.code, label: 'Room code'),
-        ],
+        ),
       ),
     );
 
@@ -205,6 +220,7 @@ class _LobbyView extends StatelessWidget {
                   ? 3
                   : 2;
               final w = (c.maxWidth - Space.sm * (cols - 1)) / cols;
+              final stacked = w < 168;
               final botSeats = math.min(
                 client.roomBotCount,
                 maxRoomPlayers - humans.length,
@@ -220,8 +236,12 @@ class _LobbyView extends StatelessWidget {
                           ? _Seat(
                               member: humans[i],
                               mine: humans[i].player.id == client.myId,
+                              stacked: stacked,
                             )
-                          : _Seat.empty(bot: i - humans.length < botSeats),
+                          : _Seat.empty(
+                              bot: i - humans.length < botSeats,
+                              stacked: stacked,
+                            ),
                     ),
                 ],
               );
@@ -232,8 +252,6 @@ class _LobbyView extends StatelessWidget {
     );
 
     final rules = Panel(
-      color: accent.withValues(alpha: 0.08),
-      borderColor: accent.withValues(alpha: 0.3),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -279,10 +297,11 @@ class _LobbyView extends StatelessWidget {
             height: 48,
             child: FilledButton.icon(
               style: FilledButton.styleFrom(
-                backgroundColor: (me?.ready ?? false)
-                    ? BrickColors.mint
-                    : accent,
+                backgroundColor: BrickColors.mint,
                 padding: const EdgeInsets.symmetric(horizontal: Space.xl),
+                textStyle: context.text.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               onPressed: me == null ? null : () => client.roomReady(!me.ready),
               icon: Icon(
@@ -311,6 +330,7 @@ class _LobbyView extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         SafeArea(
+          top: false,
           child: Column(
             children: [
               header,
@@ -318,9 +338,9 @@ class _LobbyView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(
                     Space.lg,
-                    0,
-                    Space.lg,
                     Space.md,
+                    Space.lg,
+                    0,
                   ),
                   child: Align(
                     alignment: Alignment.centerLeft,
@@ -334,7 +354,7 @@ class _LobbyView extends StatelessWidget {
                       ? Padding(
                           padding: const EdgeInsets.fromLTRB(
                             Space.lg,
-                            0,
+                            Space.lg,
                             Space.lg,
                             Space.lg,
                           ),
@@ -371,12 +391,7 @@ class _LobbyView extends StatelessWidget {
                           ),
                         )
                       : ListView(
-                          padding: const EdgeInsets.fromLTRB(
-                            Space.lg,
-                            0,
-                            Space.lg,
-                            Space.lg,
-                          ),
+                          padding: const EdgeInsets.all(Space.lg),
                           children: [
                             Entrance(child: seats),
                             const SizedBox(height: Space.lg),
@@ -409,12 +424,18 @@ class _LobbyView extends StatelessWidget {
 }
 
 class _Seat extends StatelessWidget {
-  const _Seat({required this.member, required this.mine}) : bot = false;
-  const _Seat.empty({required this.bot}) : member = null, mine = false;
+  const _Seat({required this.member, required this.mine, required this.stacked})
+    : bot = false;
+  const _Seat.empty({required this.bot, required this.stacked})
+    : member = null,
+      mine = false;
 
   final RoomMember? member;
   final bool mine;
   final bool bot;
+
+  /// Avatar above the name (narrow two-column grids) instead of beside it.
+  final bool stacked;
 
   @override
   Widget build(BuildContext context) {
@@ -422,7 +443,7 @@ class _Seat extends StatelessWidget {
     final m = member;
     if (m == null) {
       return Container(
-        height: 92,
+        height: stacked ? 132 : 92,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Radii.md),
           border: Border.all(color: p.outline, style: BorderStyle.solid),
@@ -444,9 +465,46 @@ class _Seat extends StatelessWidget {
         ),
       );
     }
+    final name = mine ? '${m.player.name} (you)' : m.player.name;
+    final avatar = Stack(
+      clipBehavior: Clip.none,
+      children: [
+        AvatarView(m.player.avatar, size: 52, background: p.surface3),
+        Positioned(
+          right: -4,
+          bottom: -4,
+          child: AnimatedSwitcher(
+            duration: Motion.fast,
+            child: m.ready
+                ? Container(
+                    key: const ValueKey('ready'),
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      color: BrickColors.mint,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: p.surface1, width: 2),
+                    ),
+                    child: const Icon(
+                      Icons.check_rounded,
+                      size: 12,
+                      color: Colors.white,
+                    ),
+                  )
+                : const SizedBox.shrink(key: ValueKey('nr')),
+          ),
+        ),
+      ],
+    );
+    final reconnecting = m.player.online
+        ? null
+        : Text(
+            'reconnecting…',
+            style: context.text.labelSmall?.copyWith(color: BrickColors.sun),
+          );
     return AnimatedContainer(
       duration: Motion.normal,
-      height: 92,
+      height: stacked ? 132 : 92,
       padding: const EdgeInsets.all(Space.sm),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Radii.md),
@@ -458,63 +516,44 @@ class _Seat extends StatelessWidget {
           width: mine ? 2 : 1,
         ),
       ),
-      child: Row(
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              AvatarView(m.player.avatar, size: 52, background: p.surface3),
-              Positioned(
-                right: -4,
-                bottom: -4,
-                child: AnimatedSwitcher(
-                  duration: Motion.fast,
-                  child: m.ready
-                      ? Container(
-                          key: const ValueKey('ready'),
-                          width: 22,
-                          height: 22,
-                          decoration: BoxDecoration(
-                            color: BrickColors.mint,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: p.surface1, width: 2),
-                          ),
-                          child: const Icon(
-                            Icons.check_rounded,
-                            size: 12,
-                            color: Colors.white,
-                          ),
-                        )
-                      : const SizedBox.shrink(key: ValueKey('nr')),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(width: Space.sm),
-          Expanded(
-            child: Column(
+      child: stacked
+          ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                avatar,
+                const SizedBox(height: Space.sm),
                 Text(
-                  mine ? '${m.player.name} (you)' : m.player.name,
-                  style: context.text.titleSmall,
+                  name,
+                  style: context.text.labelLarge,
                   overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: Space.xxs),
-                PlatformTag(m.player),
-                if (!m.player.online)
-                  Text(
-                    'reconnecting…',
-                    style: context.text.labelSmall?.copyWith(
-                      color: BrickColors.sun,
-                    ),
+                reconnecting ?? PlatformTag(m.player),
+              ],
+            )
+          : Row(
+              children: [
+                avatar,
+                const SizedBox(width: Space.sm),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        name,
+                        style: context.text.titleSmall,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: Space.xxs),
+                      PlatformTag(m.player),
+                      ?reconnecting,
+                    ],
                   ),
+                ),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -665,7 +704,6 @@ class _GameplayViewState extends State<_GameplayView> {
     final pad = MediaQuery.paddingOf(context);
     final width = MediaQuery.sizeOf(context).width;
     final wide = width >= Breakpoints.tablet;
-    final narrow = width < Breakpoints.compact;
     final game = switch (room.experience) {
       ExperienceKind.obby => const ObbyView(),
       ExperienceKind.tycoon => const TycoonView(),
@@ -687,7 +725,7 @@ class _GameplayViewState extends State<_GameplayView> {
       fit: StackFit.expand,
       children: [
         game,
-        // Top HUD
+        // Top HUD: menu + chat (left), timer (centre), player list (right).
         Positioned(
           left: Space.md + pad.left,
           right: Space.md + pad.right,
@@ -695,65 +733,49 @@ class _GameplayViewState extends State<_GameplayView> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _HudPill(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      experienceIcon(room.experience),
-                      size: 16,
-                      color: Color(placeFor(room.experience).accent),
-                    ),
-                    if (!narrow) ...[
-                      const SizedBox(width: Space.xs),
-                      Text(
-                        placeFor(room.experience).name,
-                        style: context.text.labelLarge?.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ],
+              _HudSquare(
+                tooltip: 'Menu',
+                onPressed: () => _showMenu(context),
+                child: const Icon(
+                  Icons.grid_view_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: Space.sm),
+              _HudSquare(
+                tooltip: 'Chat',
+                onPressed: () => setState(() => _chatOpen = !_chatOpen),
+                child: Icon(
+                  _chatOpen
+                      ? Icons.chat_bubble_rounded
+                      : Icons.chat_bubble_outline_rounded,
+                  color: Colors.white,
+                  size: 18,
                 ),
               ),
               const Spacer(),
               _Timer(seconds: left),
               const Spacer(),
-              if (wide) _MiniBoard(room: room),
-              if (wide) const SizedBox(width: Space.sm),
-              const SizedBox(width: Space.sm),
-              _HudPill(
-                padding: EdgeInsets.zero,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      tooltip: 'Chat',
-                      onPressed: () => setState(() => _chatOpen = !_chatOpen),
-                      icon: const Icon(
-                        Icons.chat_bubble_outline_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                    IconButton(
-                      tooltip: 'Leave match',
-                      onPressed: () => _confirmLeave(context),
-                      icon: const Icon(
-                        Icons.logout_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                  ],
+              if (wide)
+                _PlayerList(room: room)
+              else
+                _HudSquare(
+                  tooltip: 'Leave match',
+                  onPressed: () => _confirmLeave(context),
+                  child: const Icon(
+                    Icons.logout_rounded,
+                    color: Colors.white,
+                    size: 18,
+                  ),
                 ),
-              ),
             ],
           ),
         ),
         // Per-experience status strip
         Positioned(
           left: Space.md + pad.left,
+          right: wide ? null : 60 + pad.right,
           top: 60 + pad.top,
           child: _StatusStrip(room: room),
         ),
@@ -829,6 +851,53 @@ class _GameplayViewState extends State<_GameplayView> {
           ),
       ],
     );
+  }
+
+  Future<void> _showMenu(BuildContext context) async {
+    final room = widget.room;
+    final place = placeFor(room.experience);
+    final leave = await showModalBottomSheet<bool>(
+      context: context,
+      showDragHandle: true,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(experienceIcon(room.experience)),
+              title: Text(place.name),
+              subtitle: Text('Room ${room.code} · ${place.tagline}'),
+            ),
+            const Divider(height: 1),
+            ListTile(
+              leading: const Icon(Icons.play_arrow_rounded),
+              title: const Text('Resume'),
+              onTap: () => Navigator.pop(ctx, false),
+            ),
+            ListTile(
+              leading: const Icon(Icons.chat_bubble_outline_rounded),
+              title: const Text('Chat'),
+              onTap: () {
+                Navigator.pop(ctx, false);
+                setState(() => _chatOpen = true);
+              },
+            ),
+            ListTile(
+              leading: const Icon(
+                Icons.logout_rounded,
+                color: BrickColors.cherry,
+              ),
+              title: const Text('Leave match'),
+              onTap: () => Navigator.pop(ctx, true),
+            ),
+            const SizedBox(height: Space.sm),
+          ],
+        ),
+      ),
+    );
+    if (leave == true && context.mounted) {
+      AppScope.read(context).client.roomLeave();
+    }
   }
 
   Future<void> _confirmLeave(BuildContext context) async {
@@ -920,51 +989,97 @@ class _Timer extends StatelessWidget {
   }
 }
 
-/// Small live leaderboard in the HUD.
-class _MiniBoard extends StatelessWidget {
-  const _MiniBoard({required this.room});
+/// Rounded-square HUD button on a translucent near-black tile.
+class _HudSquare extends StatelessWidget {
+  const _HudSquare({
+    required this.child,
+    required this.onPressed,
+    this.tooltip,
+  });
+
+  final Widget child;
+  final VoidCallback onPressed;
+  final String? tooltip;
+
+  @override
+  Widget build(BuildContext context) {
+    final button = Material(
+      color: Colors.black.withValues(alpha: 0.55),
+      borderRadius: BorderRadius.circular(Radii.md),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(Radii.md),
+        child: SizedBox(width: 36, height: 36, child: Center(child: child)),
+      ),
+    );
+    return tooltip == null ? button : Tooltip(message: tooltip!, child: button);
+  }
+}
+
+/// Live player list in the HUD: name column plus one stat column.
+class _PlayerList extends StatelessWidget {
+  const _PlayerList({required this.room});
 
   final RoomState room;
 
   @override
   Widget build(BuildContext context) {
     final client = ClientScope.of(context);
-    final rows = _liveRanking(client, room).take(4).toList();
+    final rows = _liveRanking(client, room).toList();
     if (rows.isEmpty) return const SizedBox.shrink();
-    return _HudPill(
-      padding: const EdgeInsets.symmetric(
-        horizontal: Space.md,
-        vertical: Space.xs,
+    final stat = switch (room.experience) {
+      ExperienceKind.obby => 'Stage',
+      ExperienceKind.tag => 'Score',
+      ExperienceKind.tycoon => 'Earned',
+    };
+    final muted = context.text.labelSmall?.copyWith(color: Colors.white60);
+    return Container(
+      width: 220,
+      padding: const EdgeInsets.fromLTRB(
+        Space.md,
+        Space.sm,
+        Space.md,
+        Space.sm,
       ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.55),
+        borderRadius: BorderRadius.circular(Radii.md),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (var i = 0; i < rows.length; i++) ...[
-            if (i > 0)
-              Container(
-                width: 1,
-                height: 16,
-                color: Colors.white24,
-                margin: const EdgeInsets.symmetric(horizontal: Space.sm),
+          Row(
+            children: [
+              Expanded(child: Text('Players', style: muted)),
+              Text(stat, style: muted),
+            ],
+          ),
+          const SizedBox(height: Space.xs),
+          for (final (name, detail, me) in rows)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      name,
+                      style: context.text.labelMedium?.copyWith(
+                        color: me ? BrickColors.sun : Colors.white,
+                        fontWeight: me ? FontWeight.w700 : FontWeight.w600,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text(
+                    detail,
+                    style: context.text.labelMedium?.copyWith(
+                      color: Colors.white,
+                      fontFeatures: const [FontFeature.tabularFigures()],
+                    ),
+                  ),
+                ],
               ),
-            Text(
-              '${i + 1}',
-              style: context.text.labelSmall?.copyWith(color: Colors.white54),
             ),
-            const SizedBox(width: Space.xs),
-            Text(
-              rows[i].$1,
-              style: context.text.labelMedium?.copyWith(
-                color: rows[i].$3 ? BrickColors.sun : Colors.white,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(width: Space.xs),
-            Text(
-              rows[i].$2,
-              style: context.text.labelSmall?.copyWith(color: Colors.white70),
-            ),
-          ],
         ],
       ),
     );
@@ -999,7 +1114,7 @@ List<(String, String, bool)> _liveRanking(
         for (final (id, s) in rows)
           (
             names[id] ?? '?',
-            s.finished ? 'done' : 'CP ${s.checkpoint}',
+            s.finished ? 'Done' : '${s.checkpoint + 1}',
             id == client.myId,
           ),
       ];
@@ -1277,12 +1392,16 @@ class _ResultsView extends StatelessWidget {
                       child: OutlinedButton.icon(
                         onPressed: client.roomLeave,
                         icon: const Icon(Icons.home_outlined),
-                        label: const Text('Back to hub'),
+                        label: Text(
+                          wide ? 'Back to hub' : 'Hub',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                     const SizedBox(width: Space.md),
                     Expanded(
-                      flex: 2,
+                      flex: wide ? 2 : 1,
                       child: FilledButton.icon(
                         style: FilledButton.styleFrom(backgroundColor: accent),
                         onPressed: null,
@@ -1290,7 +1409,11 @@ class _ResultsView extends StatelessWidget {
                         label: Text(
                           left == null
                               ? 'Next lobby soon'
-                              : 'Lobby opens in ${left}s',
+                              : wide
+                              ? 'Lobby opens in ${left}s'
+                              : 'Lobby in ${left}s',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
@@ -1484,24 +1607,44 @@ class _ResultRow extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const SizedBox(width: Space.sm),
-                        PlatformTag(entry.player),
+                        if (wide) ...[
+                          const SizedBox(width: Space.sm),
+                          PlatformTag(entry.player),
+                        ],
                       ],
                     ),
-                    Text(
-                      entry.detail,
-                      style: context.text.bodySmall?.copyWith(
-                        color: p.textTertiary,
-                      ),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            entry.detail,
+                            style: context.text.bodySmall?.copyWith(
+                              color: p.textTertiary,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        if (!wide) ...[
+                          const SizedBox(width: Space.sm),
+                          PlatformTag(entry.player, compact: true),
+                        ],
+                      ],
                     ),
                   ],
                 ),
               ),
               if (entry.badgesEarned.isNotEmpty) ...[
-                for (final b in entry.badgesEarned)
+                for (final b in entry.badgesEarned.take(wide ? 4 : 2))
                   Padding(
                     padding: const EdgeInsets.only(right: Space.xs),
                     child: BadgeChip(b, size: 26),
+                  ),
+                if (entry.badgesEarned.length > (wide ? 4 : 2))
+                  Text(
+                    '+${entry.badgesEarned.length - (wide ? 4 : 2)}',
+                    style: context.text.labelSmall?.copyWith(
+                      color: p.textTertiary,
+                    ),
                   ),
                 const SizedBox(width: Space.sm),
               ],

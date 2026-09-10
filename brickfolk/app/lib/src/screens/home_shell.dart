@@ -27,6 +27,8 @@ class HomeShell extends StatefulWidget {
 
 class _HomeShellState extends State<HomeShell> {
   HubTab _tab = HubTab.play;
+  final _search = TextEditingController();
+  String _query = '';
   StreamSubscription<ServerError>? _errSub;
   StreamSubscription<String>? _screenSub;
   int _seenChat = 0;
@@ -73,6 +75,13 @@ class _HomeShellState extends State<HomeShell> {
         _select(HubTab.profile);
       case 'daily':
         showDailyRewardSheet(context);
+      case 'place':
+        _select(HubTab.play);
+        Navigator.of(context).push(
+          MaterialPageRoute<void>(
+            builder: (_) => const PlaceDetailsPage(ExperienceKind.obby),
+          ),
+        );
     }
   }
 
@@ -80,6 +89,7 @@ class _HomeShellState extends State<HomeShell> {
   void dispose() {
     _errSub?.cancel();
     _screenSub?.cancel();
+    _search.dispose();
     super.dispose();
   }
 
@@ -100,23 +110,18 @@ class _HomeShellState extends State<HomeShell> {
     final pendingFriends = client.friends.incoming.length;
 
     final destinations = [
-      const _Dest(
-        HubTab.play,
-        'Play',
-        Icons.sports_esports_outlined,
-        Icons.sports_esports_rounded,
-      ),
+      const _Dest(HubTab.play, 'Home', Icons.home_outlined, Icons.home_rounded),
       const _Dest(
         HubTab.avatar,
         'Avatar',
-        Icons.face_outlined,
-        Icons.face_rounded,
+        Icons.accessibility_new_outlined,
+        Icons.accessibility_new_rounded,
       ),
       _Dest(
         HubTab.social,
         'Friends',
-        Icons.group_outlined,
-        Icons.group_rounded,
+        Icons.people_outline_rounded,
+        Icons.people_rounded,
         badge: pendingFriends,
       ),
       _Dest(
@@ -149,7 +154,11 @@ class _HomeShellState extends State<HomeShell> {
         ),
       ),
       child: switch (_tab) {
-        HubTab.play => const PlacesScreen(key: ValueKey('play')),
+        HubTab.play => PlacesScreen(
+          key: const ValueKey('play'),
+          query: _query,
+          onOpenFriends: () => _select(HubTab.social),
+        ),
         HubTab.avatar => const AvatarScreen(key: ValueKey('avatar')),
         HubTab.social => const SocialScreen(key: ValueKey('social')),
         HubTab.chat => const ChatPanel(key: ValueKey('chat'), standalone: true),
@@ -157,86 +166,40 @@ class _HomeShellState extends State<HomeShell> {
       },
     );
 
+    final topBar = _ChromeBar(
+      searchController: _search,
+      onSearch: (q) => setState(() {
+        _query = q;
+        if (q.isNotEmpty) _tab = HubTab.play;
+      }),
+    );
+
     if (form == FormFactor.phone) {
       return Scaffold(
-        appBar: _HubAppBar(),
+        appBar: topBar,
         body: body,
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: _tab.index,
-          onDestinationSelected: (i) => _select(HubTab.values[i]),
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          destinations: [
-            for (final d in destinations)
-              NavigationDestination(
-                icon: _Badged(count: d.badge, child: Icon(d.icon)),
-                selectedIcon: _Badged(
-                  count: d.badge,
-                  child: Icon(d.selectedIcon),
-                ),
-                label: d.label,
-              ),
-          ],
+        bottomNavigationBar: _ChromeTabBar(
+          destinations: destinations,
+          selected: _tab,
+          onSelect: _select,
         ),
       );
     }
 
     return Scaffold(
+      appBar: topBar,
       body: Row(
         children: [
           SafeArea(
             right: false,
-            child: NavigationRail(
+            child: _SideNav(
+              destinations: destinations,
+              selected: _tab,
+              onSelect: _select,
               extended: form == FormFactor.desktop,
-              minExtendedWidth: _railExtendedWidth,
-              selectedIndex: _tab.index,
-              onDestinationSelected: (i) => _select(HubTab.values[i]),
-              labelType: form == FormFactor.desktop
-                  ? NavigationRailLabelType.none
-                  : NavigationRailLabelType.all,
-              leading: Padding(
-                padding: const EdgeInsets.symmetric(vertical: Space.lg),
-                child: form == FormFactor.desktop
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const _Logo(size: 28),
-                          const SizedBox(width: Space.sm),
-                          Text('Brickfolk', style: context.text.titleLarge),
-                        ],
-                      )
-                    : const _Logo(size: 28),
-              ),
-              trailing: Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: Space.lg),
-                    child: _PlayerPill(extended: form == FormFactor.desktop),
-                  ),
-                ),
-              ),
-              destinations: [
-                for (final d in destinations)
-                  NavigationRailDestination(
-                    icon: _Badged(count: d.badge, child: Icon(d.icon)),
-                    selectedIcon: _Badged(
-                      count: d.badge,
-                      child: Icon(d.selectedIcon),
-                    ),
-                    label: Text(d.label),
-                  ),
-              ],
             ),
           ),
-          VerticalDivider(width: 1, color: context.palette.outline),
-          Expanded(
-            child: Column(
-              children: [
-                _HubAppBar(),
-                Expanded(child: body),
-              ],
-            ),
-          ),
+          Expanded(child: body),
         ],
       ),
     );
@@ -270,13 +233,14 @@ class _Badged extends StatelessWidget {
     if (count == 0) return child;
     return Badge.count(
       count: count,
-      backgroundColor: BrickColors.brick,
+      backgroundColor: BrickColors.cherry,
       textColor: Colors.white,
       child: child,
     );
   }
 }
 
+/// Brickfolk mark: a white two-by-two stud on a rounded tile.
 class _Logo extends StatelessWidget {
   const _Logo({required this.size});
 
@@ -288,99 +252,113 @@ class _Logo extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: BrickColors.brick,
-        borderRadius: BorderRadius.circular(size * 0.3),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(size * 0.22),
       ),
       child: Icon(
         Icons.grid_view_rounded,
-        size: size * 0.55,
-        color: Colors.white,
+        size: size * 0.6,
+        color: BrickColors.chrome,
       ),
     );
   }
 }
 
-/// Top bar: greeting, pips, daily reward, theme, settings.
-class _HubAppBar extends StatelessWidget implements PreferredSizeWidget {
+const _chromeHeight = 52.0;
+const _sideNavWidth = 200.0;
+const _sideNavCompactWidth = 72.0;
+
+/// Near-black top bar shared by every form factor: brand, search, wallet,
+/// daily gift, theme, settings, avatar.
+class _ChromeBar extends StatelessWidget implements PreferredSizeWidget {
+  const _ChromeBar({required this.searchController, required this.onSearch});
+
+  final TextEditingController searchController;
+  final ValueChanged<String> onSearch;
+
   @override
-  Size get preferredSize => const Size.fromHeight(64);
+  Size get preferredSize => const Size.fromHeight(_chromeHeight);
 
   @override
   Widget build(BuildContext context) {
     final client = ClientScope.of(context);
     final app = AppScope.of(context);
     final me = client.me!;
-    final p = context.palette;
-    final phone = context.isPhone;
+    final form = context.formFactor;
+    final phone = form == FormFactor.phone;
+    final compact = MediaQuery.sizeOf(context).width < Breakpoints.compact;
     final canClaim = DailyReward.canClaim(
       me.lastDailyClaim,
       client.serverNow(),
     );
+    final dark = Theme.of(context).brightness == Brightness.dark;
 
     return Material(
-      color: p.surface0,
+      color: BrickColors.chrome,
       child: SafeArea(
         bottom: false,
         child: SizedBox(
-          height: 64,
+          height: _chromeHeight,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: Space.lg),
+            padding: const EdgeInsets.symmetric(horizontal: Space.md),
             child: Row(
               children: [
-                if (phone) ...[
-                  AvatarView(
-                    me.summary.avatar,
-                    size: 36,
-                    background: p.surface2,
+                const _Logo(size: 28),
+                if (!compact) ...[
+                  const SizedBox(width: Space.sm),
+                  Text(
+                    'Brickfolk',
+                    style: context.text.titleMedium?.copyWith(
+                      color: BrickColors.onChrome,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.2,
+                    ),
                   ),
-                  const SizedBox(width: Space.md),
                 ],
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        phone
-                            ? me.summary.name
-                            : 'Welcome back, ${me.summary.name}',
-                        style: context.text.titleMedium,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        '${client.onlineCount} online · ${me.badges.length} badge${me.badges.length == 1 ? '' : 's'}',
-                        style: context.text.bodySmall?.copyWith(
-                          color: p.textTertiary,
+                if (phone)
+                  const Spacer()
+                else ...[
+                  const SizedBox(width: Space.xl),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 440),
+                        child: _SearchField(
+                          controller: searchController,
+                          onChanged: onSearch,
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                PipChip(me.pips, compact: phone),
-                const SizedBox(width: Space.sm),
+                  const SizedBox(width: Space.lg),
+                ],
+                _ChromePips(me.pips, compact: phone),
+                const SizedBox(width: Space.xs),
                 Tooltip(
                   message: canClaim ? 'Daily reward ready!' : 'Daily reward',
                   child: Stack(
                     clipBehavior: Clip.none,
                     children: [
-                      IconButton(
+                      _ChromeIconButton(
+                        icon: Icons.card_giftcard_rounded,
+                        color: canClaim ? BrickColors.sun : null,
                         onPressed: () => showDailyRewardSheet(context),
-                        icon: Icon(
-                          Icons.card_giftcard_rounded,
-                          color: canClaim ? BrickColors.sun : null,
-                        ),
                       ),
                       if (canClaim)
                         Positioned(
-                          right: 8,
-                          top: 8,
+                          right: 7,
+                          top: 7,
                           child: Container(
                             width: 9,
                             height: 9,
                             decoration: BoxDecoration(
-                              color: BrickColors.brick,
+                              color: BrickColors.cherry,
                               shape: BoxShape.circle,
-                              border: Border.all(color: p.surface0, width: 1.5),
+                              border: Border.all(
+                                color: BrickColors.chrome,
+                                width: 1.5,
+                              ),
                             ),
                           ),
                         ),
@@ -388,26 +366,26 @@ class _HubAppBar extends StatelessWidget implements PreferredSizeWidget {
                   ),
                 ),
                 if (!phone)
-                  IconButton(
-                    tooltip: Theme.of(context).brightness == Brightness.dark
-                        ? 'Light theme'
-                        : 'Dark theme',
-                    onPressed: () => app.setTheme(
-                      Theme.of(context).brightness == Brightness.dark
-                          ? ThemeMode.light
-                          : ThemeMode.dark,
-                    ),
-                    icon: Icon(
-                      Theme.of(context).brightness == Brightness.dark
-                          ? Icons.light_mode_outlined
-                          : Icons.dark_mode_outlined,
-                    ),
+                  _ChromeIconButton(
+                    tooltip: dark ? 'Light theme' : 'Dark theme',
+                    icon: dark
+                        ? Icons.light_mode_outlined
+                        : Icons.dark_mode_outlined,
+                    onPressed: () =>
+                        app.setTheme(dark ? ThemeMode.light : ThemeMode.dark),
                   ),
-                IconButton(
+                _ChromeIconButton(
                   tooltip: 'Settings',
+                  icon: Icons.settings_outlined,
                   onPressed: () => showSettingsSheet(context),
-                  icon: const Icon(Icons.tune_rounded),
                 ),
+                if (!compact) ...[
+                  const SizedBox(width: Space.xs),
+                  Tooltip(
+                    message: me.summary.name,
+                    child: Headshot(me.summary.avatar, size: 30),
+                  ),
+                ],
               ],
             ),
           ),
@@ -417,50 +395,317 @@ class _HubAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-const _railExtendedWidth = 200.0;
+class _SearchField extends StatelessWidget {
+  const _SearchField({required this.controller, required this.onChanged});
 
-class _PlayerPill extends StatelessWidget {
-  const _PlayerPill({required this.extended});
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
 
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 32,
+      child: TextField(
+        controller: controller,
+        onChanged: onChanged,
+        style: context.text.bodyMedium?.copyWith(color: BrickColors.onChrome),
+        cursorColor: BrickColors.onChrome,
+        textInputAction: TextInputAction.search,
+        decoration: InputDecoration(
+          isDense: true,
+          hintText: 'Search',
+          hintStyle: context.text.bodyMedium?.copyWith(
+            color: BrickColors.onChromeMuted,
+          ),
+          prefixIcon: const Padding(
+            padding: EdgeInsets.only(left: Space.sm, right: Space.xs),
+            child: Icon(
+              Icons.search_rounded,
+              size: 18,
+              color: BrickColors.onChromeMuted,
+            ),
+          ),
+          prefixIconConstraints: const BoxConstraints(minWidth: 0),
+          suffixIcon: controller.text.isEmpty
+              ? null
+              : IconButton(
+                  iconSize: 16,
+                  padding: EdgeInsets.zero,
+                  color: BrickColors.onChromeMuted,
+                  icon: const Icon(Icons.close_rounded),
+                  onPressed: () {
+                    controller.clear();
+                    onChanged('');
+                  },
+                ),
+          filled: true,
+          fillColor: BrickColors.chromeRaised,
+          contentPadding: const EdgeInsets.symmetric(vertical: 0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Radii.md),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Radii.md),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(Radii.md),
+            borderSide: const BorderSide(color: BrickColors.sky, width: 1.5),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ChromeIconButton extends StatelessWidget {
+  const _ChromeIconButton({
+    required this.icon,
+    required this.onPressed,
+    this.tooltip,
+    this.color,
+  });
+
+  final IconData icon;
+  final VoidCallback onPressed;
+  final String? tooltip;
+  final Color? color;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      tooltip: tooltip,
+      onPressed: onPressed,
+      iconSize: 22,
+      color: color ?? BrickColors.onChrome,
+      hoverColor: Colors.white12,
+      icon: Icon(icon),
+    );
+  }
+}
+
+/// Wallet balance in the dark chrome.
+class _ChromePips extends StatelessWidget {
+  const _ChromePips(this.pips, {required this.compact});
+
+  final int pips;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: 'Pips',
+      child: Container(
+        height: 32,
+        padding: EdgeInsets.symmetric(
+          horizontal: compact ? Space.sm : Space.md,
+        ),
+        decoration: BoxDecoration(
+          color: BrickColors.chromeRaised,
+          borderRadius: BorderRadius.circular(Radii.md),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const PipIcon(size: 16),
+            const SizedBox(width: Space.xs + 2),
+            Text(
+              formatNumber(pips),
+              style: context.text.labelLarge?.copyWith(
+                color: BrickColors.onChrome,
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Left navigation list (desktop shows labels, tablet shows icons only).
+class _SideNav extends StatelessWidget {
+  const _SideNav({
+    required this.destinations,
+    required this.selected,
+    required this.onSelect,
+    required this.extended,
+  });
+
+  final List<_Dest> destinations;
+  final HubTab selected;
+  final ValueChanged<HubTab> onSelect;
   final bool extended;
 
   @override
   Widget build(BuildContext context) {
-    final me = ClientScope.of(context).me!;
     final p = context.palette;
-    final avatar = AvatarView(
-      me.summary.avatar,
-      size: 40,
-      background: p.surface2,
-    );
-    if (!extended) return avatar;
+    final me = ClientScope.of(context).me!;
     return Container(
-      width: _railExtendedWidth - Space.md * 2,
-      margin: const EdgeInsets.symmetric(horizontal: Space.md),
-      padding: const EdgeInsets.all(Space.sm),
-      decoration: BoxDecoration(
-        color: p.surface2,
-        borderRadius: BorderRadius.circular(Radii.md),
+      width: extended ? _sideNavWidth : _sideNavCompactWidth,
+      color: p.surface0,
+      padding: const EdgeInsets.fromLTRB(
+        Space.md,
+        Space.md,
+        Space.md,
+        Space.lg,
       ),
-      child: Row(
+      child: Column(
         children: [
-          avatar,
-          const SizedBox(width: Space.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  me.summary.name,
-                  style: context.text.titleSmall,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                PlatformTag(me.summary),
-              ],
-            ),
+          _NavRow(
+            icon: null,
+            selectedIcon: null,
+            avatar: me.summary.avatar,
+            label: me.summary.name,
+            selected: false,
+            extended: extended,
+            onTap: () => onSelect(HubTab.profile),
           ),
+          const SizedBox(height: Space.sm),
+          for (final d in destinations)
+            _NavRow(
+              icon: d.icon,
+              selectedIcon: d.selectedIcon,
+              label: d.label,
+              badge: d.badge,
+              selected: d.tab == selected,
+              extended: extended,
+              onTap: () => onSelect(d.tab),
+            ),
         ],
+      ),
+    );
+  }
+}
+
+class _NavRow extends StatelessWidget {
+  const _NavRow({
+    required this.icon,
+    required this.selectedIcon,
+    required this.label,
+    required this.selected,
+    required this.extended,
+    required this.onTap,
+    this.avatar,
+    this.badge = 0,
+  });
+
+  final IconData? icon;
+  final IconData? selectedIcon;
+  final Avatar? avatar;
+  final String label;
+  final int badge;
+  final bool selected;
+  final bool extended;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    final fg = selected ? p.textPrimary : p.textSecondary;
+    final leading = avatar != null
+        ? Headshot(avatar!, size: 28)
+        : _Badged(
+            count: badge,
+            child: Icon(selected ? selectedIcon : icon, size: 22, color: fg),
+          );
+    final row = Material(
+      color: selected ? p.surface2 : Colors.transparent,
+      borderRadius: BorderRadius.circular(Radii.md),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(Radii.md),
+        child: Container(
+          height: 40,
+          padding: EdgeInsets.symmetric(horizontal: extended ? Space.md : 0),
+          alignment: Alignment.centerLeft,
+          child: extended
+              ? Row(
+                  children: [
+                    leading,
+                    const SizedBox(width: Space.md),
+                    Expanded(
+                      child: Text(
+                        label,
+                        style: context.text.titleSmall?.copyWith(
+                          color: fg,
+                          fontWeight: selected
+                              ? FontWeight.w700
+                              : FontWeight.w600,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                )
+              : Center(child: leading),
+        ),
+      ),
+    );
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Space.xs),
+      child: extended ? row : Tooltip(message: label, child: row),
+    );
+  }
+}
+
+/// Phone bottom tabs on the dark chrome.
+class _ChromeTabBar extends StatelessWidget {
+  const _ChromeTabBar({
+    required this.destinations,
+    required this.selected,
+    required this.onSelect,
+  });
+
+  final List<_Dest> destinations;
+  final HubTab selected;
+  final ValueChanged<HubTab> onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: BrickColors.chrome,
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 56,
+          child: Row(
+            children: [
+              for (final d in destinations)
+                Expanded(
+                  child: InkWell(
+                    onTap: () => onSelect(d.tab),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _Badged(
+                          count: d.badge,
+                          child: Icon(
+                            d.tab == selected ? d.selectedIcon : d.icon,
+                            size: 24,
+                            color: d.tab == selected
+                                ? BrickColors.onChrome
+                                : BrickColors.onChromeMuted,
+                          ),
+                        ),
+                        const SizedBox(height: Space.xxs),
+                        Text(
+                          d.label,
+                          style: context.text.labelSmall?.copyWith(
+                            color: d.tab == selected
+                                ? BrickColors.onChrome
+                                : BrickColors.onChromeMuted,
+                            letterSpacing: 0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }

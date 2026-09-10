@@ -16,11 +16,28 @@ class ServerError {
 }
 
 class PlaceListing {
-  const PlaceListing(this.info, this.playing, this.rooms);
+  const PlaceListing(
+    this.info,
+    this.playing,
+    this.rooms, {
+    this.visits = 0,
+    this.likes = 0,
+    this.dislikes = 0,
+    this.myVote,
+  });
 
   final PlaceInfo info;
   final int playing;
   final List<RoomSummary> rooms;
+  final int visits;
+  final int likes;
+  final int dislikes;
+  final bool? myVote;
+
+  int get votes => likes + dislikes;
+
+  /// Share of thumbs-up votes in percent, or null with no votes yet.
+  int? get ratingPercent => votes == 0 ? null : (likes * 100 / votes).round();
 }
 
 class RoomSummary {
@@ -217,6 +234,10 @@ class BrickfolkClient extends ChangeNotifier {
     channel.sink.add(jsonEncode(frame));
   }
 
+  /// Feeds one server frame as if it had arrived on the socket.
+  @visibleForTesting
+  void receiveFrame(String raw) => _onFrame(raw);
+
   void _onFrame(String raw) {
     final msg = (jsonDecode(raw) as Map).cast<String, Object?>();
     final type = msg['type'] as String?;
@@ -301,6 +322,10 @@ class BrickfolkClient extends ChangeNotifier {
                     r['phase'] as String,
                   ),
               ],
+              visits: (p['visits'] as num?)?.toInt() ?? 0,
+              likes: (p['likes'] as num?)?.toInt() ?? 0,
+              dislikes: (p['dislikes'] as num?)?.toInt() ?? 0,
+              myVote: p['myVote'] as bool?,
             ),
         ];
       case MsgType.profile:
@@ -355,6 +380,10 @@ class BrickfolkClient extends ChangeNotifier {
   void buy(String itemId) => _send({'type': MsgType.shopBuy, 'item': itemId});
 
   void claimDaily() => _send({'type': MsgType.dailyClaim});
+
+  /// Thumbs the place up (`true`), down (`false`) or clears the vote (`null`).
+  void ratePlace(ExperienceKind kind, bool? up) =>
+      _send({'type': MsgType.placeRate, 'place': kind.id, 'up': up});
 
   void friendRequest(String name) =>
       _send({'type': MsgType.friendsRequest, 'player': name});

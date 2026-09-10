@@ -2,7 +2,8 @@
 # Runs the Brickfolk four-platform multiplayer test.
 #
 #   ./test/multiplayer-e2e.sh                      # build + run web, iOS, Android, macOS
-#   ./test/multiplayer-e2e.sh --no-build           # reuse existing builds
+#   ./test/multiplayer-e2e.sh --no-build           # reuse builds from an earlier harness run
+#                                                  # (iOS/Android bake the test config in at build time)
 #   ./test/multiplayer-e2e.sh --platforms web,macos
 #
 # Requirements: Flutter, Xcode + an iOS simulator, Android SDK with an AVD

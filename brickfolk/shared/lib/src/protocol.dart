@@ -19,6 +19,7 @@ abstract final class MsgType {
   static const partyLaunch = 'party.launch';
   static const chatSend = 'chat.send';
   static const placesList = 'places.list';
+  static const placeRate = 'place.rate';
   static const profileGet = 'profile.get';
   static const roomCreate = 'room.create';
   static const roomJoin = 'room.join';
