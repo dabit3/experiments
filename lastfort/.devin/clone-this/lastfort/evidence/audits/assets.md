@@ -1,4 +1,4 @@
-# Audit: assets (2026-09-10T01:07:50Z, git 5f87b21)
+# Audit: assets (2026-09-10T02:05:00Z, git 11a8115)
 
 All assets are original or openly licensed: Rajdhani font (SIL OFL, licence file
 `client/assets/fonts/OFL-Rajdhani.txt`), Material icons via Flutter, programmatic avatars,
@@ -8,4 +8,4 @@ in `core/lib/src/cosmetics.dart`. Bot names are original (Juniper, Gale, Rook, A
 Marrow…). No proprietary logos, characters, audio or trademarked copy are used; the victory
 banner reads "Victory" / "Victory. Placed number 1." (no trademarked phrase). Copy reviewed for long-name overflow (16-char name cap
 enforced server-side) and large values (XP bar clamps).
-Evidence: `evidence/screens/web-desktop-light-locker.png`, `evidence/tests/e2e-20260909-175052/all-results.png`.
+Evidence: `evidence/screens/web-desktop-light-locker.png`, `evidence/tests/e2e-20260909-184420/all-results.png`.

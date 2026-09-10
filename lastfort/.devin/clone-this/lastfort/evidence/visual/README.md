@@ -1,6 +1,6 @@
 # Visual comparison: web baseline vs macOS (normalized cross-platform parity)
 
-Captured from `evidence/tests/e2e-20260909-175052` (the final passing partial run).
+Captured from `evidence/tests/e2e-20260909-184420` (the final passing partial run).
 
 Reference-access boundary: the original game cannot be run here, so no comparison
 against the original is possible or claimed. The visual items in `state.json` compare the
@@ -11,13 +11,13 @@ cropped away by `tools/crop_png.py`) is the actual. iOS renders at a phone aspec
 
 | screen | reference | actual | diff | differing px | total px |
 | --- | --- | --- | --- | --- | --- |
-| lobby | `web-lobby-ref.png` | `macos-lobby-act.png` | `diff-web-macos-lobby.png` | 234246 | 364210 |
-| match-over HUD | `web-matchover-ref.png` | `macos-matchover-act.png` | `diff-web-macos-matchover.png` | 361388 | 364210 |
-| results | `web-results-ref.png` | `macos-results-act.png` | `diff-web-macos-results.png` | 293042 | 364210 |
+| lobby | `web-lobby-ref.png` | `macos-lobby-act.png` | `diff-web-macos-lobby.png` | 227264 | 364210 |
+| match-over HUD | `web-matchover-ref.png` | `macos-matchover-act.png` | `diff-web-macos-matchover.png` | 361952 | 364210 |
+| results | `web-results-ref.png` | `macos-results-act.png` | `diff-web-macos-results.png` | 297974 | 364210 |
 
-Raw counts are in `web-vs-macos.jsonl` (tolerance 0). A second results comparison in the
+Raw counts are in `web-vs-macos.jsonl` (tolerance 0). Test builds pin the light theme and load an isolated profile namespace so a persisted theme or stats on one client can no longer skew the comparison. A second results comparison in the
 run directory (`diff-web-macos-results-tol32.png`, tolerance 32/255 per channel) leaves
-26220 differing pixels — those are the per-player numbers (each client shows its *own*
+23861 differing pixels — those are the per-player numbers (each client shows its *own*
 stats card: Web harvested 250, Mac harvested 98) and glyph edges.
 
 ## Why the pixel counts are not zero (unresolved, recorded honestly)
@@ -26,7 +26,7 @@ stats card: Web harvested 250, Mac harvested 98) and glyph edges.
    app renders through Impeller (Metal). Text anti-aliasing, sub-pixel glyph positioning and
    gradient dithering differ between the two, so nearly every pixel of the background
    gradient and every glyph edge differs by a small amount. The `--tolerance 32` run
-   removes ~91% of the differing pixels, which is consistent with backend rasterisation
+   removes ~92% of the differing pixels, which is consistent with backend rasterisation
    noise rather than layout drift.
 2. **Per-client content.** Each client shows its own player's numbers on the results card
    and its own camera position in the match-over HUD, so those regions legitimately differ.

@@ -1,4 +1,4 @@
-# Audit: source (2026-09-10T01:07:50Z, git 5f87b21)
+# Audit: source (2026-09-10T02:05:00Z, git 11a8115)
 
 - Reference identity: Fortnite Battle Royale as publicly documented (wiki pages listed in
   `evidence/discovery/source-reference.md`, captured 2026-09-09). No running copy, source

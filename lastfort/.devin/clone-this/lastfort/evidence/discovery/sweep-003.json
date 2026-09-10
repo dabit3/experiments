@@ -1,0 +1,73 @@
+{
+  "sweep": 3,
+  "revision": "sha256:8f68f81c7ce20bb36afdd542a12bdcf19fe52cbed27092f5fb8c637a1a7c50e0",
+  "method": "Post-fix pass: re-read evidence/discovery/source-reference.md terms against inventory labels; re-listed client screens and PROTOCOL.md operations (including the new superseded error code and returnToLobby flow) and mapped each new behaviour from the manual UI pass (same-token takeover, consecutive matches in one room, Esc match menu, narrow-HUD stacking, isolated test profile) to an existing item.",
+  "screens": [
+    "hub_screen.dart",
+    "hud.dart",
+    "locker_screen.dart",
+    "match_screen.dart",
+    "pass_screen.dart",
+    "results_screen.dart",
+    "settings_screen.dart",
+    "touch_controls.dart"
+  ],
+  "protocol_ops": [
+    "autopilot",
+    "createRoom",
+    "error",
+    "hello",
+    "input",
+    "joinRoom",
+    "leaveRoom",
+    "matchEnd",
+    "matchStart",
+    "op",
+    "pause",
+    "ping",
+    "pong",
+    "ready",
+    "report",
+    "returnToLobby",
+    "roomState",
+    "setLoadout",
+    "setMode",
+    "snapshot",
+    "start",
+    "startMatch",
+    "state",
+    "step",
+    "summary",
+    "t",
+    "testAck",
+    "testControl",
+    "welcome",
+    "you"
+  ],
+  "behaviour_to_item": {
+    "same-token takeover / superseded": "feature-reconnect",
+    "consecutive matches in one room": "feature-rooms",
+    "Esc opens leave dialog": "feature-input",
+    "narrow HUD stacking": "feature-hud",
+    "isolated test profile + pinned theme": "journey-four-platform-match"
+  },
+  "new_items": 0,
+  "frontier_empty": false,
+  "frontier": [
+    "Android runtime leg of journey-four-platform-match (blocked: no virtualization on this host)",
+    "Renderer-independent visual capture so visual-*-parity can reach zero differing pixels"
+  ],
+  "audit_ids": [
+    "source",
+    "navigation",
+    "roles",
+    "states",
+    "responsive",
+    "data",
+    "assets",
+    "accessibility",
+    "reliability",
+    "rebrand"
+  ],
+  "note": "No new requirement discovered; every new behaviour maps to an inventoried item. Frontier remains non-empty for the two disclosed open items."
+}

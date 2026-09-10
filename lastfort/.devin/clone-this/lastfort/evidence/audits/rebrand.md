@@ -1,4 +1,4 @@
-# Audit: rebrand (2026-09-10T01:07:50Z, git 5f87b21)
+# Audit: rebrand (2026-09-10T02:05:00Z, git 11a8115)
 
 Product title "Lastfort" everywhere: web `<title>` and manifest name/short_name, macOS
 PRODUCT_NAME, iOS CFBundleDisplayName, Android applicationId/namespace

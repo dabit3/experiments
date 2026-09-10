@@ -1,4 +1,4 @@
-# Audit: accessibility (2026-09-10T01:07:50Z, git 5f87b21)
+# Audit: accessibility (2026-09-10T02:05:00Z, git 11a8115)
 
 Semantics: nav items, buttons and toggles carry `Semantics`/labels (21 explicit Semantics
 nodes in `client/lib`); icon buttons have tooltips ("Copy code", "Change name", "Dismiss").

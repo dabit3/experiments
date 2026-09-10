@@ -1,4 +1,4 @@
-clean checkout: 5f87b217ade0be65eca1ba6a9d56ee2165075ace at /Users/devin/tmp/lf-clean/lastfort 2026-09-10T00:57:55Z
+clean checkout: 11a811576a1a26bf0a69f21b40556dcd6ec38a29 at /Users/devin/tmp/lf-clean2/lastfort 2026-09-10T01:49:34Z
 Resolving dependencies...
 Downloading packages...
   lints 5.1.1 (6.1.0 available)
@@ -37,12 +37,14 @@ Try `dart pub outdated` for more information.
 00:00 +0: loading test/server_test.dart
 00:00 +0: test/server_test.dart: rooms: create, join by code, errors, host start with bots
 00:00 +1: test/server_test.dart: four platforms in one squad finish a match with identical summaries
-00:03 +2: test/server_test.dart: bots complete a partial human squad before forming their own
-00:03 +3: test/server_test.dart: reconnect resumes the same player mid-match
-00:04 +4: test/server_test.dart: disconnected players time out and the match still ends
-00:04 +5: All tests passed!
-Generated: /Users/devin/tmp/lf-clean/lastfort/server/build/lastfort_server
--rwxr-xr-x  1 devin  staff  7325072 Sep  9 17:58 build/lastfort_server
+00:04 +2: test/server_test.dart: bots complete a partial human squad before forming their own
+00:04 +3: test/server_test.dart: reconnect resumes the same player mid-match
+00:04 +4: test/server_test.dart: a room can play a second match after the first ends
+00:08 +5: test/server_test.dart: a second connection with the same token supersedes the first
+00:08 +6: test/server_test.dart: disconnected players time out and the match still ends
+00:09 +7: All tests passed!
+Generated: /Users/devin/tmp/lf-clean2/lastfort/server/build/lastfort_server
+-rwxr-xr-x  1 devin  staff  7325072 Sep  9 18:49 build/lastfort_server
 Resolving dependencies...
 Downloading packages...
   material_color_utilities 0.13.0 (0.13.1 available)
@@ -66,7 +68,7 @@ Wasm dry run succeeded. Consider building and testing your application with the 
 Use --no-wasm-dry-run to disable these warnings.
 Font asset "CupertinoIcons.ttf" was tree-shaken, reducing it from 257628 to 1472 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
 Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 16692 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Compiling lib/main.dart for the Web...                             24.3s
+Compiling lib/main.dart for the Web...                             23.4s
 ✓ Built build/web
 Resolving dependencies...
 Downloading packages...
@@ -79,7 +81,7 @@ Got dependencies!
 Try `flutter pub outdated` for more information.
 Building com.lastfort.lastfort for simulator (ios)...
 Running Xcode build...                                          
-Xcode build done.                                           31.2s
+Xcode build done.                                           26.7s
 ✓ Built build/ios/iphonesimulator/Runner.app
 Resolving dependencies...
 Downloading packages...
@@ -90,7 +92,7 @@ Downloading packages...
 Got dependencies!
 4 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
-Running Gradle task 'assembleDebug'...                             21.8s
+Running Gradle task 'assembleDebug'...                             22.4s
 ✓ Built build/app/outputs/flutter-apk/app-debug.apk
 Resolving dependencies...
 Downloading packages...
@@ -104,4 +106,5 @@ Try `flutter pub outdated` for more information.
 Building macOS application...                                   
 warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
 ✓ Built build/macos/Build/Products/Release/Lastfort.app (46.5MB)
-CLEAN-BUILDS-OK
+clean-checkout builds done 2026-09-10T01:52:07Z
+exit=0
