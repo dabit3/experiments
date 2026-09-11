@@ -1,3 +1,4 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -18,7 +19,7 @@ struct MemoryView: View {
         ScrollView {
           VStack(alignment: .leading, spacing: 24) {
             VStack(spacing: 0) {
-              MemoryArt(photo: memory.photo, style: trip.style).frame(height: 290)
+              MemoryArt(photo: memory.photo, style: trip.style).frame(height: 215)
               HStack {
                 Eyebrow(
                   text: memory.photo == nil ? "An illustrated memory" : "From your camera roll",
@@ -42,7 +43,7 @@ struct MemoryView: View {
               }
               .accessibilityLabel(memory.isFavorite ? "Remove from saved" : "Save to favorites")
             }
-            Text(memory.place).font(.system(size: 42, design: .serif)).foregroundStyle(Ink.navy)
+            Text(memory.place).font(.system(.largeTitle, design: .serif)).foregroundStyle(Ink.navy)
             if memory.note.isEmpty {
               Button("Add the little details") { editing = true }
                 .font(.system(.body, design: .serif)).foregroundStyle(Ink.blue)
@@ -56,16 +57,19 @@ struct MemoryView: View {
               Rectangle().fill(Ink.red).frame(width: 30, height: 1)
               Eyebrow(text: trip.title, color: Ink.muted)
             }
+          }
+          .padding(24)
+        }
+        .background(Ink.paper)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+          ActionShelf {
             Button {
               postcard = true
             } label: {
               Label("Make a postcard", systemImage: "rectangle.and.pencil.and.ellipsis")
             }
-            .buttonStyle(PaperButton()).padding(.top, 8)
           }
-          .padding(24)
         }
-        .background(Ink.paper)
         .sheet(isPresented: $editing) { MemoryEditor(journeyID: journeyID, existing: memory) }
         .sheet(isPresented: $postcard) { PostcardView(journey: trip, memory: memory) }
       } else {
@@ -74,6 +78,7 @@ struct MemoryView: View {
       }
     }
     .navigationTitle("A little memory").navigationBarTitleDisplayMode(.inline)
+    .toolbar(.hidden, for: .tabBar)
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
         Menu {
@@ -184,7 +189,7 @@ struct PostcardView: View {
         exportError = image == nil
       }
       .sheet(isPresented: $sharing) {
-        if let image { ShareSheet(image: image) }
+        if let image { ShareSheet(image: image, title: "Greetings from \(memory.place)") }
       }
     }
   }
@@ -192,8 +197,21 @@ struct PostcardView: View {
 
 struct ShareSheet: UIViewControllerRepresentable {
   let image: UIImage
+  let title: String
   func makeUIViewController(context: Context) -> UIActivityViewController {
-    UIActivityViewController(activityItems: [image], applicationActivities: nil)
+    let provider = NSItemProvider(object: image)
+    provider.suggestedName = title
+    let configuration = UIActivityItemsConfiguration(itemProviders: [provider])
+    configuration.metadataProvider = { key in key == .title ? title : nil }
+    configuration.previewProvider = { _, _, _ in provider }
+    configuration.perItemMetadataProvider = { _, key in
+      guard key == .linkPresentationMetadata else { return nil }
+      let metadata = LPLinkMetadata()
+      metadata.title = title
+      metadata.imageProvider = provider
+      return metadata
+    }
+    return UIActivityViewController(activityItemsConfiguration: configuration)
   }
   func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

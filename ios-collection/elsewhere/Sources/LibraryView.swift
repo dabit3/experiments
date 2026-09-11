@@ -2,6 +2,8 @@ import SwiftUI
 
 struct LibraryView: View {
   @EnvironmentObject private var journal: Journal
+  @Environment(\.dynamicTypeSize) private var dynamicType
+  @ScaledMetric(relativeTo: .largeTitle) private var titleSize = 44.0
   @State private var tab = 0
   @State private var addingJourney = false
   @State private var showingPassport = false
@@ -10,7 +12,7 @@ struct LibraryView: View {
     TabView(selection: $tab) {
       NavigationStack {
         ScrollView {
-          VStack(alignment: .leading, spacing: 24) {
+          VStack(alignment: .leading, spacing: 20) {
             HStack {
               Eyebrow(text: "ELSEWHERE", color: Ink.blue)
               Spacer()
@@ -24,21 +26,25 @@ struct LibraryView: View {
             }
             HStack(alignment: .top) {
               Text("The places\nwe keep.")
-                .font(.system(size: 46, weight: .regular, design: .serif))
+                .font(.system(size: titleSize, weight: .regular, design: .serif))
                 .tracking(-1.8).foregroundStyle(Ink.navy)
                 .accessibilityAddTraits(.isHeader)
-              Spacer()
-              Stamp().padding(.top, 16)
+              if !dynamicType.isAccessibilitySize {
+                Spacer()
+                Stamp().padding(.top, 16)
+              }
             }
             HStack {
               Eyebrow(
-                text: "\(journal.journeys.count) journeys · a world of memories", color: Ink.muted)
+                text: "\(journal.journeys.count) journeys · collected with love", color: Ink.muted)
               Spacer(minLength: 0)
             }
             Button {
               addingJourney = true
             } label: {
-              Label("Begin a journey", systemImage: "plus")
+              Label(
+                dynamicType.isAccessibilitySize ? "New journey" : "Begin a journey",
+                systemImage: "plus")
             }
             .buttonStyle(PaperButton())
             if journal.journeys.isEmpty {
@@ -82,11 +88,10 @@ struct JourneyCover: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
       ZStack(alignment: .topLeading) {
-        Landscape(style: journey.style).frame(height: 225)
-        Text("VOL. \(String(format: "%02d", number))")
-          .font(.system(.caption2, design: .monospaced, weight: .semibold))
-          .tracking(2).padding(.horizontal, 12).padding(.vertical, 8)
-          .foregroundStyle(Ink.navy).background(Ink.paper)
+        Landscape(style: journey.style).frame(height: 205)
+        Eyebrow(text: "VOL. \(String(format: "%02d", number))", color: Ink.navy)
+          .padding(.horizontal, 12).padding(.vertical, 8)
+          .background(Ink.paper)
           .padding(15)
       }
       VStack(alignment: .leading, spacing: 9) {
@@ -104,7 +109,7 @@ struct JourneyCover: View {
         }
         Divider().overlay(Ink.pale)
         Eyebrow(
-          text: journey.isSample ? "Sample journey · original illustrations" : "Personal journal",
+          text: journey.isSample ? "Sample journey · illustrated" : "Personal journal",
           color: Ink.blue)
       }
       .padding(18).background(Color(hex: 0xFFFBF2))

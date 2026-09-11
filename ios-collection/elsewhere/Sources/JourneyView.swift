@@ -15,14 +15,14 @@ struct JourneyView: View {
       if let trip = journal.journey(journeyID) {
         ScrollView {
           VStack(alignment: .leading, spacing: 22) {
-            Landscape(style: trip.style).frame(height: 230)
+            Landscape(style: trip.style).frame(height: 175)
               .overlay(alignment: .bottomTrailing) {
-                Eyebrow(text: "An original illustration", color: Ink.navy)
+                Eyebrow(text: "Original illustration", color: Ink.navy)
                   .padding(8).background(Ink.paper.opacity(0.9)).padding(12)
               }
             VStack(alignment: .leading, spacing: 20) {
               Eyebrow(text: trip.region.isEmpty ? "A personal journey" : trip.region)
-              Text(trip.title).font(.system(size: 40, design: .serif)).foregroundStyle(Ink.navy)
+              Text(trip.title).font(.system(.largeTitle, design: .serif)).foregroundStyle(Ink.navy)
                 .accessibilityAddTraits(.isHeader)
               HStack {
                 Text(trip.dateLabel).font(.subheadline).foregroundStyle(Ink.muted)
@@ -50,17 +50,20 @@ struct JourneyView: View {
               } else {
                 RouteView(journey: trip)
               }
-              Button {
-                addingStop = true
-              } label: {
-                Label("Add a stop", systemImage: "plus")
-              }
-              .buttonStyle(PaperButton())
             }
             .padding(.horizontal, 24).padding(.bottom, 24)
           }
         }
         .background(Ink.paper)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+          ActionShelf {
+            Button {
+              addingStop = true
+            } label: {
+              Label("Add a stop", systemImage: "plus")
+            }
+          }
+        }
         .sheet(isPresented: $editing) { JourneyEditor(existing: trip) }
         .sheet(isPresented: $addingStop) { MemoryEditor(journeyID: journeyID) }
         .sheet(isPresented: $reordering) { ReorderView(journeyID: journeyID) }
@@ -70,6 +73,7 @@ struct JourneyView: View {
       }
     }
     .navigationTitle("The journal").navigationBarTitleDisplayMode(.inline)
+    .toolbar(.hidden, for: .tabBar)
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
         Menu {
@@ -122,8 +126,10 @@ struct JournalRow: View {
           Text(memory.note).font(.subheadline).lineSpacing(4)
             .foregroundStyle(Ink.muted).lineLimit(3)
         }
-        MemoryArt(photo: memory.photo, style: style).frame(height: 140)
-          .padding(7).background(.white)
+        if memory.photo != nil {
+          MemoryArt(photo: memory.photo, style: style).frame(height: 140)
+            .padding(7).background(.white)
+        }
         Divider().padding(.top, 8)
       }
     }
@@ -151,28 +157,36 @@ struct RouteView: View {
                 control2: CGPoint(x: size.width * 0.7, y: y + 90))
               context.stroke(path, with: .color(Ink.navy.opacity(0.07)), lineWidth: 1)
             }
-            var route = Path()
-            route.move(to: CGPoint(x: size.width * 0.19, y: size.height * 0.78))
-            route.addCurve(
-              to: CGPoint(x: size.width * 0.80, y: size.height * 0.20),
-              control1: CGPoint(x: size.width * 0.90, y: size.height * 0.90),
-              control2: CGPoint(x: size.width * 0.10, y: size.height * 0.02))
-            context.stroke(
-              route, with: .color(Ink.blue), style: StrokeStyle(lineWidth: 2, dash: [5, 5]))
-          }
-          ForEach(0..<min(journey.stops.count, 5), id: \.self) { index in
-            let points: [UnitPoint] = [
-              .init(x: 0.19, y: 0.78), .init(x: 0.43, y: 0.67),
-              .init(x: 0.47, y: 0.40), .init(x: 0.62, y: 0.22), .init(x: 0.80, y: 0.20),
-            ]
-            GeometryReader { geo in
-              Text("\(index + 1)").font(.system(.caption, design: .monospaced, weight: .bold))
-                .foregroundStyle(.white).frame(width: 28, height: 28)
-                .background(Ink.blue, in: Circle())
-                .position(x: geo.size.width * points[index].x, y: geo.size.height * points[index].y)
+            if journey.stops.count > 1 {
+              var route = Path()
+              route.addLines((0...60).map { RouteGeometry.point(at: CGFloat($0) / 60, size: size) })
+              context.stroke(
+                route, with: .color(Ink.blue), style: StrokeStyle(lineWidth: 2, dash: [5, 5]))
             }
           }
-          Stamp(text: "TAKE THE\nLONG WAY").offset(x: 92, y: 70)
+          ForEach(0..<min(journey.stops.count, 5), id: \.self) { index in
+            GeometryReader { geo in
+              Text("\(index + 1)").font(.system(size: 13, weight: .bold, design: .monospaced))
+                .foregroundStyle(.white).frame(width: 28, height: 28)
+                .background(Ink.blue, in: Circle())
+                .overlay(Circle().stroke(Ink.paper, lineWidth: 3))
+                .position(
+                  RouteGeometry.point(
+                    at: CGFloat(index) / CGFloat(max(1, min(journey.stops.count, 5) - 1)),
+                    size: geo.size))
+            }
+          }
+          VStack {
+            HStack {
+              Eyebrow(text: "A trail of memories", color: Ink.blue)
+              Spacer()
+            }
+            Spacer()
+            HStack {
+              Spacer()
+              Eyebrow(text: "\(journey.stops.count) places · one story", color: Ink.blue)
+            }
+          }.padding(18)
         }
         .frame(height: 230).accessibilityHidden(true)
         Text(
@@ -200,6 +214,15 @@ struct RouteView: View {
         .buttonStyle(.plain)
       }
     }
+  }
+}
+
+enum RouteGeometry {
+  static func point(at t: CGFloat, size: CGSize) -> CGPoint {
+    let u = 1 - t
+    let x = u * u * u * 0.16 + 3 * u * u * t * 0.90 + 3 * u * t * t * 0.10 + t * t * t * 0.84
+    let y = u * u * u * 0.74 + 3 * u * u * t * 0.88 + 3 * u * t * t * 0.08 + t * t * t * 0.26
+    return CGPoint(x: x * size.width, y: y * size.height)
   }
 }
 

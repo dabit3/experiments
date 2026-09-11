@@ -19,12 +19,14 @@ extension Color {
 }
 
 struct Eyebrow: View {
+  @ScaledMetric(relativeTo: .caption) private var textSize = 12.0
   var text: String
   var color: Color = Ink.red
   var body: some View {
     Text(text.uppercased())
-      .font(.system(.caption2, design: .monospaced, weight: .medium))
-      .tracking(1.8).foregroundStyle(color)
+      .font(.system(size: min(textSize, 20), weight: .medium, design: .monospaced))
+      .tracking(1.1).foregroundStyle(color)
+      .fixedSize(horizontal: false, vertical: true)
   }
 }
 
@@ -55,6 +57,17 @@ struct PaperButton: ButtonStyle {
       .background(secondary ? Ink.pale : Ink.blue, in: RoundedRectangle(cornerRadius: 8))
       .foregroundStyle(secondary ? Ink.navy : .white)
       .opacity(configuration.isPressed ? 0.75 : 1)
+  }
+}
+
+struct ActionShelf<Content: View>: View {
+  @ViewBuilder var content: Content
+  var body: some View {
+    content
+      .buttonStyle(PaperButton())
+      .padding(.horizontal, 24).padding(.top, 12).padding(.bottom, 8)
+      .background(Ink.paper)
+      .overlay(alignment: .top) { Rectangle().fill(Ink.pale).frame(height: 1) }
   }
 }
 
