@@ -9,11 +9,6 @@ struct ProgressViewScreen: View {
       InstrumentBackground()
       ScrollView {
         VStack(alignment: .leading, spacing: 28) {
-          HStack {
-            MicroLabel(text: "SIGNAL ARCHIVE", color: Palette.mint)
-            Spacer()
-            IconButton(symbol: "xmark", label: "Close progress") { dismiss() }
-          }
           VStack(alignment: .leading, spacing: 8) {
             Text("A little more\nconnected.")
               .font(.system(.largeTitle, design: .rounded, weight: .light))
@@ -77,6 +72,9 @@ struct ProgressViewScreen: View {
         .padding(24)
       }
     }
+    .safeAreaInset(edge: .top, spacing: 0) {
+      SheetHeader(title: "SIGNAL ARCHIVE", closeLabel: "Close progress") { dismiss() }
+    }
   }
 }
 
@@ -91,11 +89,6 @@ struct GuideView: View {
       InstrumentBackground()
       ScrollView {
         VStack(alignment: .leading, spacing: 28) {
-          HStack {
-            MicroLabel(text: "OPERATOR’S GUIDE", color: Palette.mint)
-            Spacer()
-            IconButton(symbol: "xmark", label: "Close guide") { dismiss() }
-          }
           Text("Turn. Connect.\nCome alive.")
             .font(.system(.largeTitle, design: .rounded, weight: .light))
             .foregroundStyle(Palette.ink)
@@ -144,6 +137,9 @@ struct GuideView: View {
         }
         .padding(24)
       }
+    }
+    .safeAreaInset(edge: .top, spacing: 0) {
+      SheetHeader(title: "OPERATOR’S GUIDE", closeLabel: "Close guide") { dismiss() }
     }
     .confirmationDialog(
       "Erase all progress?", isPresented: $confirmErase, titleVisibility: .visible

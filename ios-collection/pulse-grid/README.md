@@ -47,11 +47,12 @@ xcrun swift-format lint --strict --recursive PulseGrid Tests Tools
   allowed; every tile need not be powered if all receivers are connected.
 - **Hint** aligns one tile to the authored solution, following distance from the
   source. It is optional and counted separately from player rotations.
-- **Reset** and **Play again** ask for confirmation and restore the exact starting
+- **Reset** and **Replay** ask for confirmation and restore the exact starting
   arrangement. Cancel keeps the current state. Completion records remain.
 - The signal archive shows completed circuits and best runs, ranked by fewer
   hints first, then fewer rotations. There is no claimed optimal move count.
-- The guide explains play, toggles haptics and offers confirmed progress erasure.
+- The guide explains play and toggles haptics. The home guide also offers
+  confirmed progress erasure; the in-game guide cannot erase an active session.
 
 ## Data and accessibility
 
@@ -61,8 +62,11 @@ you enter it again. No sample completions or invented progress are preloaded.
 Deleting the app or erasing progress removes local data. No cloud sync.
 
 Tiles announce row, column, fixed status, power state and port directions to
-VoiceOver. Text uses Dynamic Type except the decorative brand and large progress
-numeral. Content scrolls for larger text settings. Reduce Motion disables
+VoiceOver. Text uses Dynamic Type; monospaced instrument labels cap at XXXL, and
+the decorative archive numeral stays fixed. At accessibility sizes, navigation
+and action groups stack and the home illustration gives way to the circuit list.
+Large-text completion controls scroll below the board instead of covering it.
+Sheet dismissal controls remain pinned while scrolling. Reduce Motion disables
 traveling pulses and rotation springs. Color is reinforced by terminal shapes,
 checkmarks, receiver counts and text. Audio is not needed or used.
 

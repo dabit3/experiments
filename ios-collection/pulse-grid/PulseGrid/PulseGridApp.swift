@@ -16,6 +16,8 @@ struct PulseGridApp: App {
 
 struct HomeView: View {
   @EnvironmentObject private var store: ProgressStore
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+  @ScaledMetric(relativeTo: .largeTitle) private var brandSize = 49
   @State private var path: [Int] = []
   @State private var showProgress = false
   @State private var showGuide = false
@@ -38,15 +40,21 @@ struct HomeView: View {
             }
             VStack(alignment: .leading, spacing: 12) {
               Text("Pulse Grid")
-                .font(.system(size: 49, weight: .light, design: .rounded))
+                .font(.system(size: brandSize, weight: .light, design: .rounded))
                 .tracking(-2)
+                .lineLimit(1)
+                .minimumScaleFactor(0.6)
                 .foregroundStyle(Palette.ink)
                 .accessibilityAddTraits(.isHeader)
-              Text("Find the flow.")
-                .font(.system(.title3, weight: .regular))
-                .foregroundStyle(Palette.muted)
+              if !dynamicTypeSize.isAccessibilitySize {
+                Text("Find the flow.")
+                  .font(.system(.title3, weight: .regular))
+                  .foregroundStyle(Palette.muted)
+              }
             }
-            HeroCircuit().frame(height: 125).padding(.horizontal, 10)
+            if !dynamicTypeSize.isAccessibilitySize {
+              HeroCircuit().frame(height: 125).padding(.horizontal, 10)
+            }
             VStack(alignment: .leading, spacing: 15) {
               HStack {
                 MicroLabel(text: "NEXT CONNECTION", color: Palette.mint)
@@ -58,9 +66,11 @@ struct HomeView: View {
                   .font(.system(.title2, weight: .medium))
                   .foregroundStyle(Palette.ink)
                 Spacer()
-                Text("\(Circuits.all[store.suggestedLevel].receiverCount) RX")
-                  .font(.system(.caption, design: .monospaced))
-                  .foregroundStyle(Palette.muted)
+                if !dynamicTypeSize.isAccessibilitySize {
+                  Text("\(Circuits.all[store.suggestedLevel].receiverCount) RX")
+                    .font(.system(.caption, design: .monospaced))
+                    .foregroundStyle(Palette.muted)
+                }
               }
               ActionButton(title: "Enter circuit", symbol: "arrow.up.right", primary: true) {
                 path.append(store.suggestedLevel)
@@ -69,15 +79,17 @@ struct HomeView: View {
             .padding(20)
             .background(Palette.panel.opacity(0.65), in: RoundedRectangle(cornerRadius: 24))
             .overlay { RoundedRectangle(cornerRadius: 24).strokeBorder(Palette.line, lineWidth: 1) }
-            HStack {
+            archiveLayout {
               MicroLabel(text: "CIRCUITS")
-              Spacer()
+              if !dynamicTypeSize.isAccessibilitySize { Spacer() }
               Button {
                 showProgress = true
               } label: {
                 HStack(spacing: 6) {
-                  Image(systemName: "waveform.path")
-                  Text("Archive · \(store.completedCount)/10")
+                  Text("Archive").fixedSize()
+                  Text("\(store.completedCount)/10")
+                    .font(.system(.caption, design: .monospaced))
+                    .fixedSize()
                   Image(systemName: "arrow.up.right")
                 }
                 .font(.system(.subheadline, weight: .medium))
@@ -123,6 +135,12 @@ struct HomeView: View {
       .sheet(isPresented: $showGuide) { GuideView() }
     }
   }
+
+  private var archiveLayout: AnyLayout {
+    dynamicTypeSize.isAccessibilitySize
+      ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+      : AnyLayout(HStackLayout())
+  }
 }
 
 struct LevelRow: View {
@@ -134,7 +152,8 @@ struct LevelRow: View {
       Text(String(format: "%02d", level.id + 1))
         .font(.system(.title3, design: .monospaced, weight: .light))
         .foregroundStyle(record == nil ? Palette.muted : Palette.mint)
-        .frame(width: 32)
+        .fixedSize()
+        .frame(minWidth: 32)
       VStack(alignment: .leading, spacing: 6) {
         Text(level.name).font(.system(.body, weight: .medium)).foregroundStyle(Palette.ink)
         Text(

@@ -40,6 +40,7 @@ struct MicroLabel: View {
       .font(.system(.caption, design: .monospaced, weight: .medium))
       .tracking(1.0)
       .foregroundStyle(color)
+      .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
   }
 }
 
@@ -52,12 +53,15 @@ struct ActionButton: View {
   var body: some View {
     Button(action: action) {
       HStack(spacing: 10) {
-        Text(title).font(.system(.subheadline, weight: .semibold))
+        Text(title)
+          .font(.system(.subheadline, weight: .semibold))
+          .fixedSize(horizontal: false, vertical: true)
         Spacer(minLength: 8)
         Image(systemName: symbol).font(.system(size: 15, weight: .semibold))
       }
       .foregroundStyle(primary ? Palette.background : Palette.ink)
       .padding(.horizontal, 20)
+      .padding(.vertical, 12)
       .frame(minHeight: 54)
       .background(primary ? Palette.mint : Palette.panel, in: RoundedRectangle(cornerRadius: 16))
       .overlay {
@@ -125,16 +129,16 @@ struct TileView: View {
     ZStack {
       if level.masks[index] == 0 {
         RoundedRectangle(cornerRadius: 14)
-          .fill(Palette.panel.opacity(0.25))
+          .fill(Palette.panel.opacity(0.45))
           .overlay {
             RoundedRectangle(cornerRadius: 14)
               .strokeBorder(
-                Palette.line.opacity(0.35), style: StrokeStyle(lineWidth: 1, dash: [2, 5]))
+                Palette.line.opacity(0.7), style: StrokeStyle(lineWidth: 1, dash: [2, 5]))
           }
           .overlay {
             Image(systemName: "plus")
               .font(.system(size: 10, weight: .light))
-              .foregroundStyle(Palette.muted.opacity(0.3))
+              .foregroundStyle(Palette.muted.opacity(0.5))
           }
       } else {
         RoundedRectangle(cornerRadius: 14)
@@ -242,7 +246,7 @@ struct HeroCircuit: View {
           with: .color(.white))
         for (node, symbol, color) in [
           (nodes[0], "bolt.fill", Palette.mint),
-          (nodes[5], "diamond.fill", Palette.coral),
+          (nodes[5], "checkmark", Palette.mint),
         ] {
           let ring = Path(ellipseIn: CGRect(x: node.x - 13, y: node.y - 13, width: 26, height: 26))
           context.fill(ring, with: .color(Palette.background))
@@ -254,5 +258,25 @@ struct HeroCircuit: View {
       }
     }
     .accessibilityHidden(true)
+  }
+}
+
+struct SheetHeader: View {
+  let title: String
+  let closeLabel: String
+  let close: () -> Void
+
+  var body: some View {
+    HStack(spacing: 16) {
+      MicroLabel(text: title, color: Palette.mint)
+      Spacer(minLength: 8)
+      IconButton(symbol: "xmark", label: closeLabel, action: close)
+    }
+    .padding(.horizontal, 24)
+    .padding(.vertical, 14)
+    .background {
+      Palette.background
+        .overlay(alignment: .bottom) { Rectangle().fill(Palette.line).frame(height: 1) }
+    }
   }
 }
