@@ -90,14 +90,18 @@ private enum GardenTab: String, CaseIterable {
   }
 }
 
+private struct JournalExport: Identifiable {
+  let id = UUID()
+  let url: URL
+}
+
 struct GardenHome: View {
   @Bindable var store: GardenStore
   @State private var tab: GardenTab = .garden
   @State private var filter = "All plants"
   @State private var showAdd = false
   @State private var search = ""
-  @State private var exportURL: URL?
-  @State private var showShare = false
+  @State private var journalExport: JournalExport?
   private let columns = [GridItem(.flexible(), spacing: 12), GridItem(.flexible(), spacing: 12)]
 
   var body: some View {
@@ -164,8 +168,8 @@ struct GardenHome: View {
         PlantDetail(store: store, plantID: id)
       }
       .sheet(isPresented: $showAdd) { PlantEditor(store: store, plant: nil) }
-      .sheet(isPresented: $showShare) {
-        if let exportURL { ShareSheet(items: [exportURL]) }
+      .sheet(item: $journalExport) { export in
+        ShareSheet(items: [export.url])
       }
     }
     .overlay(alignment: .top) {
@@ -400,10 +404,7 @@ struct GardenHome: View {
           Text("Field notes").font(.system(size: 38, design: .serif)).tracking(-1)
           Spacer()
           Button {
-            if let url = store.export() {
-              exportURL = url
-              showShare = true
-            }
+            if let url = store.export() { journalExport = JournalExport(url: url) }
           } label: {
             Image(systemName: "square.and.arrow.up").font(.system(size: 18))
               .frame(width: 44, height: 44).background(Palette.sage, in: Circle())
