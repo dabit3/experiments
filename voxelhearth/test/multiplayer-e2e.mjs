@@ -55,6 +55,7 @@ const players = platforms.map((p) => NAME[p]);
 // ----------------------------------------------------------------- launchers
 const procs = [];
 let browser, page;
+let iosOrientation = 'LandscapeLeft';
 const sh = (cmd, opts = {}) => execSync(cmd, { stdio: ['ignore', 'pipe', 'pipe'], encoding: 'utf8', ...opts }).trim();
 
 const launch = {
@@ -74,6 +75,10 @@ const launch = {
     procs.push(p);
   },
   async ios() {
+    const prefs = JSON.parse(sh('defaults export com.apple.iphonesimulator - | plutil -convert json -o - -'));
+    iosOrientation = prefs.DevicePreferences?.[prefs.CurrentDeviceUDID]?.SimulatorWindowOrientation ?? iosOrientation;
+    report.iosCaptureOrientation = iosOrientation;
+    log('iOS capture orientation', iosOrientation);
     sh(`xcrun simctl terminate booted ${BUNDLE} || true`);
     sh(`xcrun simctl install booted "${iosApp}"`);
     sh(`SIMCTL_CHILD_VH_NAME=${NAME.ios} SIMCTL_CHILD_VH_TEST=1 SIMCTL_CHILD_VH_SERVER=${wsUrl} xcrun simctl launch booted ${BUNDLE}`);
@@ -94,19 +99,18 @@ const winid = () => {
   if (id) macWin = id;
   return macWin;
 };
-// Phone framebuffers are captured in the device's natural (portrait) orientation
-// while the app runs landscape-only, so a portrait PNG holds a 90° CW-rotated
-// scene: rotate it back so frames read upright.
-const upright = (file) => {
+// Normalize the portrait framebuffer using the device's landscape orientation.
+const upright = (file, orientation = 'LandscapeLeft') => {
   const fd = readFileSync(file);
   if (fd.readUInt32BE(20) <= fd.readUInt32BE(16)) return;
-  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file, '-vf', 'transpose=2', `${file}.rot.png`]);
+  const transpose = orientation === 'LandscapeRight' ? 'transpose=1' : 'transpose=2';
+  execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', file, '-vf', transpose, `${file}.rot.png`]);
   renameSync(`${file}.rot.png`, file);
 };
 const shot = {
   web: (file) => page.screenshot({ path: file }),
   macos: async (file) => { const id = winid(); if (id) sh(`screencapture -x -o -l ${id} "${file}"`); },
-  ios: async (file) => { sh(`xcrun simctl io booted screenshot "${file}"`); upright(file); },
+  ios: async (file) => { sh(`xcrun simctl io booted screenshot "${file}"`); upright(file, iosOrientation); },
   android: async (file) => { execSync(`adb -s ${androidSerial} exec-out screencap -p > "${file}"`, { timeout: 120000 }); upright(file); },
 };
 const snapAll = async (phase) => {
