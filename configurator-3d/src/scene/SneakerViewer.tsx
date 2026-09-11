@@ -31,7 +31,7 @@ const TARGET = new THREE.Vector3(0.05, 0.02, 0)
 const VIEW_POSITIONS: Record<ViewId, THREE.Vector3> = {
   hero: new THREE.Vector3(2.6, 1.9, 4.2),
   side: new THREE.Vector3(0.05, 0.5, 4.8),
-  heel: new THREE.Vector3(-3.7, 0.8, 0),
+  heel: new THREE.Vector3(-5.1, 0.7, 0),
   top: new THREE.Vector3(0.05, 4.8, 0.5),
 }
 
