@@ -10,7 +10,7 @@ struct HistoryView: View {
         HStack {
           Metric(value: "\(store.history.filter(\.completed).count)", label: "COMPLETED")
           Metric(
-            value: durationLabel(Int(store.history.reduce(0) { $0 + $1.activeSeconds })),
+            value: durationLabel(store.history.reduce(0) { $0 + Int($1.activeSeconds) }),
             label: "ACTIVE TIME")
         }
         Divider()

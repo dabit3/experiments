@@ -105,9 +105,12 @@ struct SessionView: View {
             .font(.headline).foregroundStyle(Palette.cream)
           }
           Spacer()
-          Text(clock(Int(session.totalActive(at: store.now))))
-            .font(.system(.body, design: .monospaced)).foregroundStyle(Palette.cream.opacity(0.6))
-            .accessibilityLabel("Active time \(Int(session.totalActive(at: store.now))) seconds")
+          VStack(alignment: .trailing, spacing: 8) {
+            Eyebrow(text: "Active time").foregroundStyle(Palette.cream.opacity(0.5))
+            Text(clock(Int(session.totalActive(at: store.now))))
+              .font(.system(.body, design: .monospaced)).foregroundStyle(Palette.cream)
+              .accessibilityLabel("Active time \(Int(session.totalActive(at: store.now))) seconds")
+          }
         }
         VStack(spacing: 14) {
           HStack(spacing: 12) {
@@ -125,10 +128,14 @@ struct SessionView: View {
             Button {
               store.skip()
             } label: {
-              Image(systemName: "forward.end.fill").font(.title3)
-                .frame(width: 68, height: 64).background(Palette.graphite)
-                .foregroundStyle(Palette.cream).clipShape(RoundedRectangle(cornerRadius: 18))
+              VStack(spacing: 4) {
+                Image(systemName: "forward.end.fill").font(.body)
+                Text("Skip").font(.caption.weight(.semibold))
+              }
+              .frame(width: 80, height: 64).background(Palette.graphite)
+              .foregroundStyle(Palette.cream).clipShape(RoundedRectangle(cornerRadius: 18))
             }.buttonStyle(.plain).accessibilityLabel("Skip interval")
+              .accessibilityHint("Advances to the next interval. Only time performed is saved.")
           }
           HStack {
             Button("Restart") { confirmRestart = true }.frame(minWidth: 80, minHeight: 44)
@@ -150,24 +157,24 @@ struct ResultView: View {
   var routine: Routine?
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 28) {
+      VStack(alignment: .leading, spacing: 22) {
         HStack {
           Eyebrow(text: "Session / saved")
           Spacer()
           CadenceMark(color: Palette.ink)
-        }.padding(.top, 16)
+        }.padding(.top, 4)
         ZStack {
           Circle().stroke(Palette.ink.opacity(0.1), lineWidth: 1)
           Circle().trim(from: 0.03, to: 0.89).stroke(
             Palette.ink, style: StrokeStyle(lineWidth: 14, lineCap: .round)
           )
           .rotationEffect(.degrees(-90))
-          CadenceMark(color: Palette.ink).scaleEffect(2.5)
-        }.frame(width: 150, height: 150).padding(.vertical, 10)
+          CadenceMark(color: Palette.ink).scaleEffect(1.7)
+        }.frame(width: 104, height: 104).padding(.vertical, 4)
           .accessibilityHidden(true)
         VStack(alignment: .leading, spacing: 10) {
           Text(record.completed ? "Effort in.\nEnergy out." : "Every effort\ncounts.").font(
-            .instrument(52))
+            .instrument(46))
           Text(record.name).font(.title3).foregroundStyle(Palette.muted)
           Text(
             record.completed
@@ -187,13 +194,19 @@ struct ResultView: View {
         }
         Text("Paused time is excluded. Skipped intervals count only the time you spent in them.")
           .font(.footnote).foregroundStyle(Palette.muted)
-        if let routine {
-          ActionButton(title: "Done", symbol: "checkmark") { store.closeSession() }
-          Button("Go again") { store.start(routine) }
-            .font(.headline).frame(maxWidth: .infinity, minHeight: 44)
-        }
       }.padding(28)
     }.background(Palette.cream.ignoresSafeArea()).foregroundStyle(Palette.ink)
+      .safeAreaInset(edge: .bottom) {
+        if let routine {
+          VStack(spacing: 4) {
+            ActionButton(title: "Done", symbol: "checkmark") { store.closeSession() }
+            Button("Go again") { store.start(routine) }
+              .font(.headline).frame(maxWidth: .infinity, minHeight: 44)
+          }
+          .padding(.horizontal, 28).padding(.top, 12)
+          .background(Palette.cream)
+        }
+      }
       .preferredColorScheme(.light)
   }
 }

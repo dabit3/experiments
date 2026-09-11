@@ -43,7 +43,7 @@ struct HomeView: View {
             Eyebrow(text: "Make time for you").foregroundStyle(Palette.muted)
             Text("Find your\nnext gear.").font(.instrument(54)).lineSpacing(-3)
           }
-          if let first = store.routines.first {
+          if let first = store.routines.last(where: { !$0.isExample }) ?? store.routines.first {
             Button {
               selectedRoutine = first
             } label: {
@@ -170,9 +170,11 @@ struct RoutineDetail: View {
               .foregroundStyle(Palette.muted)
             Text(routine.name).font(.instrument(48))
             Text(routine.subtitle).font(.title3).foregroundStyle(Palette.muted)
-            HStack {
-              Metric(value: durationLabel(routine.totalSeconds), label: "TOTAL TIME")
+            HStack(spacing: 18) {
+              Metric(value: clock(routine.totalSeconds), label: "TOTAL TIME")
+              Rectangle().fill(Palette.ink.opacity(0.15)).frame(width: 1, height: 42)
               Metric(value: "\(routine.rounds)", label: "ROUNDS")
+              Rectangle().fill(Palette.ink.opacity(0.15)).frame(width: 1, height: 42)
               Metric(value: "\(routine.intervals.count)", label: "INTERVALS")
             }.padding(.vertical, 8)
             VStack(alignment: .leading, spacing: 18) {
