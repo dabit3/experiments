@@ -28,11 +28,18 @@ struct StudioView: View {
   @State private var showSave = false
   @State private var title = ""
   @State private var toast: String?
-  @State private var exportURL: URL?
-
-  enum StudioSheet: String, Identifiable {
-    case brushes, symmetry, pigments, gallery, share
-    var id: String { rawValue }
+  enum StudioSheet: Identifiable {
+    case brushes, symmetry, pigments, gallery
+    case share(URL)
+    var id: String {
+      switch self {
+      case .brushes: "brushes"
+      case .symmetry: "symmetry"
+      case .pigments: "pigments"
+      case .gallery: "gallery"
+      case .share(let url): url.absoluteString
+      }
+    }
   }
 
   var body: some View {
@@ -43,12 +50,12 @@ struct StudioView: View {
           VStack(alignment: .leading, spacing: 5) {
             Text(studio.current.title)
               .font(.system(.title2, design: .serif))
+              .lineLimit(2)
             Text(
               studio.current.isSample
-                ? "EDITABLE SAMPLE  /  MAKE IT YOURS" : "YOUR STUDIO  /  AUTOSAVED"
+                ? "Editable sample · make it yours" : "Your studio · draft autosaved"
             )
-            .font(.system(size: 9, weight: .medium, design: .monospaced))
-            .tracking(1.5).foregroundStyle(Atelier.muted)
+            .font(.caption).foregroundStyle(Atelier.muted)
           }
           Spacer()
           Button {
@@ -70,6 +77,7 @@ struct StudioView: View {
                 .font(.system(.title, design: .serif)).foregroundStyle(Atelier.ivory.opacity(0.85))
               Text("A single line. Infinite possibility.")
                 .font(.subheadline).foregroundStyle(Atelier.muted)
+                .multilineTextAlignment(.center)
             }
             .allowsHitTesting(false)
           }
@@ -79,11 +87,13 @@ struct StudioView: View {
           height: min(geometry.size.width, geometry.size.height * 0.56)
         )
         .clipped()
+        .overlay { CanvasCorners().padding(7).allowsHitTesting(false) }
         Spacer(minLength: 12)
-        Text(studio.current.strokes.isEmpty ? "TOUCH THE CANVAS TO DRAW" : "EVERY GESTURE, AN ECHO")
-          .font(.system(size: 9, weight: .medium, design: .monospaced))
-          .tracking(2.2).foregroundStyle(Atelier.muted)
-          .padding(.bottom, 17)
+        Text(
+          "Next stroke · \(studio.settings.symmetry) \(studio.settings.mirror ? "mirrored" : "radial") axes"
+        )
+        .font(.caption).foregroundStyle(Atelier.muted)
+        .padding(.bottom, 12)
         pigmentStrip
         toolCapsule.padding(.top, 14)
         actionBar.padding(.top, 13).padding(.bottom, 8)
@@ -106,8 +116,7 @@ struct StudioView: View {
       case .symmetry: SymmetrySheet(studio: studio)
       case .pigments: PigmentSheet(studio: studio)
       case .gallery: GallerySheet(studio: studio)
-      case .share:
-        if let exportURL { ShareSheet(url: exportURL) }
+      case .share(let url): ShareSheet(url: url)
       }
     }
     .alert("Clear this canvas?", isPresented: $showClear) {
@@ -187,7 +196,7 @@ struct StudioView: View {
       Button {
         sheet = .pigments
       } label: {
-        Image(systemName: "slider.horizontal.3").frame(width: 44, height: 44)
+        Image(systemName: "paintpalette").frame(width: 44, height: 44)
       }.accessibilityLabel("Choose palette")
     }
   }
@@ -198,8 +207,10 @@ struct StudioView: View {
         sheet = .brushes
       } label: {
         HStack(spacing: 12) {
-          BrushPreview(brush: studio.settings.brush, pigment: "263B3C")
-            .frame(width: 34, height: 24)
+          BrushPreview(
+            brush: studio.settings.brush, pigment: "263B3C", weight: studio.settings.width
+          )
+          .frame(width: 34, height: 24)
           Text(studio.settings.brush.title).font(
             .system(.subheadline, design: .rounded).weight(.semibold))
           Image(systemName: "chevron.down").font(.system(size: 9, weight: .semibold))
@@ -240,8 +251,7 @@ struct StudioView: View {
       }.accessibilityLabel("Save artwork")
       action("Export PNG", icon: "square.and.arrow.up", disabled: studio.current.strokes.isEmpty) {
         do {
-          exportURL = try ArtRenderer.export(studio.current)
-          sheet = .share
+          sheet = .share(try ArtRenderer.export(studio.current))
         } catch { studio.errorMessage = "The PNG could not be created. Please try again." }
       }
     }.padding(.horizontal, 25)
@@ -284,6 +294,7 @@ struct BrandMark: View {
 struct BrushPreview: View {
   var brush: Brush
   var pigment: String
+  var weight: Double = 2.5
   var body: some View {
     Canvas { context, size in
       var path = Path()
@@ -300,13 +311,32 @@ struct BrushPreview: View {
         for point in points.enumerated() where point.offset % 5 == 0 {
           context.fill(
             Path(
-              ellipseIn: CGRect(x: point.element.x, y: point.element.y, width: 2.5, height: 2.5)),
+              ellipseIn: CGRect(
+                x: point.element.x - weight / 2, y: point.element.y - weight / 2, width: weight,
+                height: weight)),
             with: .color(color))
         }
       } else {
         context.stroke(
           path, with: .color(color),
-          style: StrokeStyle(lineWidth: brush == .ink ? 3 : 1.5, lineCap: .round))
+          style: StrokeStyle(lineWidth: weight, lineCap: .round))
+      }
+    }.accessibilityHidden(true)
+  }
+}
+
+struct CanvasCorners: View {
+  var body: some View {
+    Canvas { context, size in
+      for corner in 0..<4 {
+        var copy = context
+        copy.translateBy(x: corner % 2 == 0 ? 0 : size.width, y: corner < 2 ? 0 : size.height)
+        copy.scaleBy(x: corner % 2 == 0 ? 1 : -1, y: corner < 2 ? 1 : -1)
+        var path = Path()
+        path.move(to: CGPoint(x: 0, y: 14))
+        path.addLine(to: .zero)
+        path.addLine(to: CGPoint(x: 14, y: 0))
+        copy.stroke(path, with: .color(Atelier.muted.opacity(0.35)), lineWidth: 0.7)
       }
     }.accessibilityHidden(true)
   }

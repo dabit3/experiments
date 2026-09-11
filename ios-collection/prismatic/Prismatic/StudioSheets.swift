@@ -34,7 +34,9 @@ struct BrushSheet: View {
               studio.settings.brush = brush
             } label: {
               HStack(spacing: 20) {
-                BrushPreview(brush: brush, pigment: studio.settings.pigment).frame(
+                BrushPreview(
+                  brush: brush, pigment: studio.settings.pigment, weight: studio.settings.width
+                ).frame(
                   width: 80, height: 44)
                 VStack(alignment: .leading, spacing: 4) {
                   Text(brush.title).font(.headline)
