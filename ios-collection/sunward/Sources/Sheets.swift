@@ -1,0 +1,316 @@
+import SwiftUI
+
+struct LocationSheet: View {
+  let planner: Planner
+  @Environment(\.dismiss) private var dismiss
+  @State private var search = ""
+  @State private var manual = false
+  @State private var name = ""
+  @State private var latitude = ""
+  @State private var longitude = ""
+  @State private var zone = "Etc/UTC"
+  @State private var error = ""
+
+  var body: some View {
+    NavigationStack {
+      List {
+        if !manual {
+          Section {
+            ForEach(
+              Place.presets.filter {
+                search.isEmpty || $0.name.localizedCaseInsensitiveContains(search)
+              }
+            ) { place in
+              Button {
+                planner.select(place)
+                dismiss()
+              } label: {
+                HStack {
+                  VStack(alignment: .leading, spacing: 7) {
+                    Text(place.name).font(.system(.title3, design: .serif)).foregroundStyle(
+                      Palette.cream)
+                    Text(place.coordinates).font(.system(.caption, design: .monospaced))
+                      .foregroundStyle(Palette.muted)
+                  }
+                  Spacer()
+                  if place == planner.place {
+                    Image(systemName: "checkmark").foregroundStyle(Palette.copper)
+                  }
+                }.padding(.vertical, 7)
+              }
+            }
+          } header: {
+            Text("A world of light")
+          }
+          Section {
+            Button {
+              manual = true
+            } label: {
+              Label("Enter coordinates", systemImage: "location.viewfinder")
+            }
+          } footer: {
+            Text("All calculations happen on your iPhone. No location permission needed.")
+          }
+        } else {
+          Section("Your location") {
+            TextField("Location name", text: $name).textInputAutocapitalization(.words)
+            TextField("Latitude (−90 to 90)", text: $latitude).keyboardType(.numbersAndPunctuation)
+            TextField("Longitude (−180 to 180)", text: $longitude).keyboardType(
+              .numbersAndPunctuation)
+          }
+          Section {
+            Picker("Time zone", selection: $zone) {
+              ForEach(TimeZone.knownTimeZoneIdentifiers, id: \.self) { id in
+                Text(id.replacingOccurrences(of: "_", with: " ")).tag(id)
+              }
+            }
+          } footer: {
+            Text(
+              "Choose the time zone used at this location. Coordinates alone do not determine civil time."
+            )
+          }
+          if !error.isEmpty {
+            Section {
+              Text(error).foregroundStyle(Palette.copper).accessibilityLabel("Error: \(error)")
+            }
+          }
+          Section {
+            Button("Use these coordinates") { submit() }
+            Button("Back to cities") { manual = false }.foregroundStyle(Palette.muted)
+          }
+        }
+      }
+      .scrollContentBackground(.hidden).background(Palette.ink)
+      .searchable(text: $search, prompt: "Find a city")
+      .navigationTitle(manual ? "Coordinates" : "Find your light")
+      .toolbar {
+        ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+      }
+    }.tint(Palette.copper)
+  }
+
+  private func submit() {
+    guard
+      let lat = Double(
+        latitude.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "−", with: "-")),
+      let lon = Double(
+        longitude.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "−", with: "-")),
+      Place.valid(latitude: lat, longitude: lon)
+    else {
+      error = "Enter a latitude from −90 to 90 and longitude from −180 to 180."
+      return
+    }
+    let title = name.trimmingCharacters(in: .whitespacesAndNewlines)
+    planner.select(
+      Place(
+        name: title.isEmpty ? "Custom location" : title, latitude: lat, longitude: lon, zoneID: zone
+      ))
+    dismiss()
+  }
+}
+
+struct DateSheet: View {
+  let planner: Planner
+  @Environment(\.dismiss) private var dismiss
+  @State private var selection: Date
+  init(planner: Planner) {
+    self.planner = planner
+    _selection = State(initialValue: planner.date)
+  }
+  var body: some View {
+    NavigationStack {
+      VStack(alignment: .leading, spacing: 24) {
+        Text("Every day has\nits own light.").font(.system(size: 34, design: .serif))
+          .foregroundStyle(Palette.cream)
+        DatePicker("Shoot date", selection: $selection, in: dateRange, displayedComponents: .date)
+          .datePickerStyle(.graphical).tint(Palette.copper)
+          .environment(\.timeZone, planner.place.zone)
+          .environment(\.calendar, planner.place.calendar)
+        Button("Today in \(planner.place.name)") { selection = Date() }.frame(minHeight: 44)
+        Text(
+          "Dates and times use \(planner.place.zoneID). Daylight saving time is included automatically."
+        )
+        .font(.subheadline).foregroundStyle(Palette.muted)
+        Spacer()
+      }.padding(24).background(Palette.ink)
+        .navigationTitle("Choose a date").navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+          ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+          ToolbarItem(placement: .confirmationAction) {
+            Button("Done") {
+              planner.selectDate(selection)
+              dismiss()
+            }
+          }
+        }
+    }
+  }
+  private var dateRange: ClosedRange<Date> {
+    let calendar = planner.place.calendar
+    let first = calendar.date(from: DateComponents(year: 1900, month: 1, day: 1))!
+    let last = calendar.date(from: DateComponents(year: 2100, month: 12, day: 31))!
+    return first...last
+  }
+}
+
+struct SaveShootSheet: View {
+  let planner: Planner
+  var editing: Shoot?
+  var onSave: () -> Void = {}
+  @Environment(\.dismiss) private var dismiss
+  @State private var title = ""
+  @State private var notes = ""
+
+  var body: some View {
+    NavigationStack {
+      Form {
+        Section {
+          VStack(alignment: .leading, spacing: 8) {
+            Text(editing?.place.name ?? planner.place.name).font(.system(.title2, design: .serif))
+            Text(
+              Solar.dateLabel(editing?.date ?? planner.date, in: editing?.place ?? planner.place)
+                + " · "
+                + Solar.time(editing?.date ?? planner.date, in: editing?.place ?? planner.place)
+            )
+            .font(.system(.subheadline, design: .monospaced)).foregroundStyle(Palette.copper)
+          }.padding(.vertical, 12)
+        }
+        Section("Shoot name") {
+          TextField("Name this shoot", text: $title)
+        }
+        Section("Field notes") {
+          TextField("Lens, composition, a place to meet…", text: $notes, axis: .vertical)
+            .lineLimit(4...8)
+        }
+        Section {
+          Text("Saved on this iPhone, ready whenever the light is.")
+            .font(.subheadline).foregroundStyle(Palette.muted)
+        }
+      }
+      .scrollContentBackground(.hidden).background(Palette.ink)
+      .navigationTitle(editing == nil ? "Keep this light" : "Edit shoot")
+      .navigationBarTitleDisplayMode(.inline)
+      .toolbar {
+        ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+        ToolbarItem(placement: .confirmationAction) {
+          Button("Save") {
+            if var shoot = editing {
+              shoot.title = title.trimmingCharacters(in: .whitespacesAndNewlines)
+              shoot.notes = notes
+              planner.update(shoot)
+            } else {
+              planner.save(title: title, notes: notes)
+            }
+            onSave()
+            dismiss()
+          }.disabled(title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        }
+      }.onAppear {
+        title = editing?.title ?? "\(planner.place.name) light study"
+        notes = editing?.notes ?? ""
+      }
+    }
+  }
+}
+
+struct ShootsSheet: View {
+  let planner: Planner
+  @Environment(\.dismiss) private var dismiss
+  @State private var editing: Shoot?
+  var body: some View {
+    NavigationStack {
+      Group {
+        if planner.shoots.isEmpty {
+          ContentUnavailableView {
+            Label("Light worth keeping", systemImage: "bookmark")
+          } description: {
+            Text(
+              "Find your location, choose a moment, then save a shoot. Your field notes will live here."
+            )
+          } actions: {
+            Button("Explore the dial") { dismiss() }
+          }
+        } else {
+          List {
+            Section {
+              ForEach(planner.shoots) { shoot in
+                Button {
+                  planner.open(shoot)
+                  dismiss()
+                } label: {
+                  VStack(alignment: .leading, spacing: 8) {
+                    Text(shoot.title).font(.system(.title3, design: .serif)).foregroundStyle(
+                      Palette.cream)
+                    Text(shoot.place.name + " · " + Solar.time(shoot.date, in: shoot.place))
+                      .font(.subheadline).foregroundStyle(Palette.copper)
+                    Text(Solar.dateLabel(shoot.date, in: shoot.place)).font(.caption)
+                      .foregroundStyle(Palette.muted)
+                    if !shoot.notes.isEmpty {
+                      Text(shoot.notes).font(.subheadline).foregroundStyle(Palette.muted).lineLimit(
+                        2)
+                    }
+                  }.padding(.vertical, 10)
+                }
+                .swipeActions(edge: .trailing) {
+                  Button("Delete", role: .destructive) { planner.delete(shoot.id) }
+                  Button("Edit") { editing = shoot }.tint(Palette.copper)
+                }
+                .contextMenu {
+                  Button("Edit shoot") { editing = shoot }
+                  Button("Delete shoot", role: .destructive) { planner.delete(shoot.id) }
+                }
+              }
+            } footer: {
+              Text("Tap to return to this moment. Swipe to edit or delete.")
+            }
+          }.scrollContentBackground(.hidden)
+        }
+      }
+      .background(Palette.ink)
+      .navigationTitle("Saved shoots")
+      .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+      .sheet(item: $editing) { shoot in SaveShootSheet(planner: planner, editing: shoot) }
+    }
+  }
+}
+
+struct GuideSheet: View {
+  @Environment(\.dismiss) private var dismiss
+  var body: some View {
+    NavigationStack {
+      ScrollView {
+        VStack(alignment: .leading, spacing: 24) {
+          Text("A little closer\nto the sun.").font(.system(size: 36, design: .serif))
+          guide(
+            "Read the sky",
+            "The dial looks up at the sky: north at the top, east to the right. The outer circle is the horizon; the center is directly overhead. Copper traces the sun’s path. Drag it or use the time slider to explore your day."
+          )
+          guide(
+            "Find the softer light",
+            "Golden windows use the sun’s geometric center between −4° and +6° altitude. Tap a window to jump to its midpoint. Blue hour is −6° to −4°. These are photographic conventions, not weather forecasts."
+          )
+          guide(
+            "Precision, with perspective",
+            "Sunward computes solar position locally using NOAA’s solar equations (Julian centuries, equation of time and solar declination). Sunrise and sunset cross −0.833°, approximating refraction and the sun’s radius. Events are solved numerically within the selected location’s civil day."
+          )
+          guide(
+            "Know the limits",
+            "Times are estimates for an unobstructed, sea-level horizon. Mountains, buildings, elevation, refraction and weather can change what you see. Near the poles, the sun may never rise or set; golden light may span midnight or disappear entirely."
+          )
+          guide(
+            "Private by design",
+            "No GPS, network, account or analytics. Locations and saved shoots stay in this app’s local storage. Deleting the app removes them."
+          )
+        }.padding(24)
+      }.background(Palette.ink).foregroundStyle(Palette.cream)
+        .navigationTitle("Field guide").navigationBarTitleDisplayMode(.inline)
+        .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+    }
+  }
+  private func guide(_ title: String, _ body: String) -> some View {
+    VStack(alignment: .leading, spacing: 8) {
+      Text(title).font(.headline).foregroundStyle(Palette.copper)
+      Text(body).font(.body).foregroundStyle(Palette.muted).lineSpacing(4)
+    }
+  }
+}
