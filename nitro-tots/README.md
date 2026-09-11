@@ -132,7 +132,7 @@ NT_PLATFORMS="web ios android macos" bash test/multiplayer-e2e.sh
 # knobs
 NT_PLATFORMS="web ios macos"   # subset (android needs an attached emulator/device)
 NT_BUILD=0                      # reuse existing builds
-NT_RECORD=0                     # skip the screen recording
+NT_RECORD=0                     # skip the screen recording (otherwise requires brew install ffmpeg)
 NT_OUT="$HOME/nitro-e2e"        # evidence dir (default: .devin/clone-this/nitro-tots/evidence/multiplayer/<stamp>)
 NT_SEED=4242 NT_ROOM=E2E NT_LAPS=1 NT_CUP=sugar NT_TIMEOUT=900
 ```

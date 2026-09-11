@@ -51,7 +51,10 @@ count_players() { echo "$PLATFORMS" | wc -w | tr -d ' '; }
 
 cleanup() {
   log "cleaning up"
-  if [[ -n "${REC_PID:-}" ]]; then kill -INT "$REC_PID" 2>/dev/null || true; sleep 2; fi
+  if [[ -n "${REC_PID:-}" ]]; then
+    kill -TERM "$REC_PID" 2>/dev/null || true
+    wait "$REC_PID" 2>/dev/null || true
+  fi
   for p in "${PIDS[@]:-}"; do [[ -n "$p" ]] && kill "$p" 2>/dev/null || true; done
   have ios && xcrun simctl terminate booted "$IOS_BUNDLE" >/dev/null 2>&1 || true
   have android && adb shell am force-stop "$ANDROID_PKG" >/dev/null 2>&1 || true
@@ -62,6 +65,10 @@ trap cleanup EXIT
 # ---------------------------------------------------------------- preflight
 log "platforms: $PLATFORMS  room: $ROOM  seed: $SEED  cup: $CUP  laps: $LAPS"
 log "evidence: $OUT"
+if [[ "$RECORD" == 1 ]] && ! { command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null; }; then
+  log "FAIL: recording requires ffmpeg and ffprobe (brew install ffmpeg), or set NT_RECORD=0."
+  exit 3
+fi
 if have android; then
   if ! adb devices 2>/dev/null | awk 'NR>1 && $2=="device"' | grep -q .; then
     log "FAIL: 'android' requested but no emulator/device is attached (adb devices). Boot an AVD or set NT_PLATFORMS without android."
@@ -110,7 +117,11 @@ fi
 # Window layout on a 1600x1200 desktop: web top-left, macOS top-right,
 # iOS (landscape) bottom-left, Android bottom-right.
 if [[ "$RECORD" == 1 ]]; then
-  screencapture -x -v "$OUT/four-way-match.mov" >"$OUT/logs/record.log" 2>&1 &
+  ffmpeg -y -hide_banner -loglevel warning \
+    -f avfoundation -framerate 30 -pixel_format bgr0 -capture_cursor 1 \
+    -i 'Capture screen 0:none' -t "$TIMEOUT" -vf 'scale=1280:-2' \
+    -r 30 -c:v libx264 -preset veryfast -crf 28 -pix_fmt yuv420p -an \
+    "$OUT/four-way-match.mp4" >"$OUT/logs/record.log" 2>&1 &
   REC_PID=$!
   log "screen recording started (pid $REC_PID)"
 fi
@@ -248,11 +259,13 @@ python3 "$TEST_DIR/verify_room.py" "$SERVER_HTTP" "$ROOM" "$OUT" $PLATFORMS | te
 rc=${PIPESTATUS[0]}
 set -e
 if [[ -n "${REC_PID:-}" ]]; then
-  kill -INT "$REC_PID" 2>/dev/null || true
+  kill -TERM "$REC_PID" 2>/dev/null || true
   wait "$REC_PID" 2>/dev/null || true
   REC_PID=""
-  if command -v ffmpeg >/dev/null && [[ -f "$OUT/four-way-match.mov" ]]; then
-    ffmpeg -loglevel error -y -i "$OUT/four-way-match.mov" -vf "scale=1280:-2" -c:v libx264 -preset veryfast -crf 28 -pix_fmt yuv420p -an "$OUT/four-way-match.mp4" || true
+  if ! ffprobe -v error -show_entries format=duration -of csv=p=0 \
+    "$OUT/four-way-match.mp4" >"$OUT/logs/recording-duration.txt"; then
+    log "FAIL: screen recording is missing or invalid; see logs/record.log."
+    rc=1
   fi
 fi
 if [[ $rc -eq 0 ]]; then log "PASS: all clients ($PLATFORMS) agree on the final standings and hash"; else log "FAIL: see $OUT/result.md"; fi
