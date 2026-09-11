@@ -48,6 +48,19 @@ final class RailwayTests: XCTestCase {
     XCTAssertEqual(railway.elapsed, 3, accuracy: 0.0001)
   }
 
+  func testChangingSwitchAfterJunctionPreservesCommittedDestination() {
+    let railway = Railway(scenario: Scenario.all[0])
+    railway.startPause()
+    railway.advance(by: 9)
+    XCTAssertEqual(railway.trains.first?.committedDestination, .coral)
+    railway.roseRoute = false
+    railway.sunRoute = true
+    railway.advance(by: 6)
+    XCTAssertEqual(railway.delivered, 1)
+    XCTAssertEqual(railway.lastDelivery, .coral)
+    XCTAssertEqual(railway.state, .running)
+  }
+
   func testTimeStepConsistency() {
     let whole = Railway(scenario: Scenario.all[0])
     let chunks = Railway(scenario: Scenario.all[0])

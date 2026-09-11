@@ -226,6 +226,7 @@ struct BoardView: View {
   private func station(_ context: inout GraphicsContext, point: RailPoint, freight: Freight) {
     let x = point.x
     let y = point.y
+    let signY = freight == .blue ? y - 49 : y - 54
     let platform = CGRect(x: x - 29, y: y - 11, width: 58, height: 20)
     context.fill(
       Path(roundedRect: platform.offsetBy(dx: 0, dy: 4), cornerRadius: 5),
@@ -250,14 +251,14 @@ struct BoardView: View {
         .white),
       at: CGPoint(x: x, y: y - 14))
     context.fill(
-      Path(roundedRect: CGRect(x: x - 43, y: y + 14, width: 86, height: 19), cornerRadius: 5),
+      Path(roundedRect: CGRect(x: x - 43, y: signY - 9, width: 86, height: 18), cornerRadius: 5),
       with: .color(Ink.paper))
     context.draw(
       Text(freight.station.uppercased()).font(
         .system(size: 10.5, weight: .heavy, design: .monospaced)
       )
       .foregroundStyle(Ink.navy),
-      at: CGPoint(x: x, y: y + 23.5))
+      at: CGPoint(x: x, y: signY))
   }
 
   private func drawTrain(_ context: inout GraphicsContext, train: Train) {

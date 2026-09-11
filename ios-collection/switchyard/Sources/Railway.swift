@@ -127,6 +127,14 @@ struct Train: Identifiable {
       y: from.point.y + (to.point.y - from.point.y) * t)
   }
   var angle: Double { atan2(to.point.y - from.point.y, to.point.x - from.point.x) }
+  var committedDestination: Freight? {
+    switch to {
+    case .rose: .coral
+    case .lake: .blue
+    case .sun: .gold
+    default: nil
+    }
+  }
 }
 
 enum ShiftState: Equatable {

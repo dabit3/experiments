@@ -32,6 +32,8 @@ Original icon generation: `swift Scripts/GenerateIcon.swift Assets.xcassets/AppI
 - **West / East signals:** stop at the signal, or proceed through the shared merge. East starts on hold.
 - Signal queues maintain spacing; trains from opposing entrances can collide at the merge.
 - Set switches before a train passes them. Routing is committed at each junction.
+- Dispatch guidance identifies committed trains and prepares the next route.
+- Home continues the next incomplete shift. Success receipts show each station's deliveries and open the next shift directly.
 - Pause allows planning and switch/signal changes. Backgrounding automatically pauses.
 - Restart and exit ask for confirmation; cancel leaves the shift safely paused.
 - Scores, unlocks and tactile-control preference persist in UserDefaults. Active shifts are session-only.
@@ -40,6 +42,8 @@ Original icon generation: `swift Scripts/GenerateIcon.swift Assets.xcassets/AppI
 ## Accessibility
 
 Native controls have VoiceOver labels and values; trains and stations share letter codes as well as colors. HUD, instructions and navigation support Dynamic Type in scrollable layouts. The compact illustrated board uses fixed geometry with at least 44-point controls. There is no decorative motion, flashing or required audio; essential train motion follows the simulation. iPhone portrait is the focused V1 layout.
+
+Pause and speed stay docked while the board scrolls. At XXXL and accessibility sizes, dispatch guidance moves above the board and the arrivals strip prioritizes the next arrival to avoid compressed captions.
 
 ## Scope
 
