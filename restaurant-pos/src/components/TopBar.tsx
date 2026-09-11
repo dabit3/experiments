@@ -21,7 +21,7 @@ export function TopBar({ view, onNavigate, openTickets, editLayout, onToggleEdit
         <span className="topbar-divider" aria-hidden="true" />
         <div className="location">
           <span className="location-name">Mercer Street</span>
-          <span className="location-meta">Dinner service · Section A</span>
+          <span className="location-meta">New York · Dining room</span>
         </div>
       </div>
 
@@ -64,7 +64,7 @@ export function TopBar({ view, onNavigate, openTickets, editLayout, onToggleEdit
           <span className="server-avatar">JM</span>
           <span className="server-text">
             <strong>Jordan Miles</strong>
-            <span className="muted">Server</span>
+            <span className="muted">Dining room captain</span>
           </span>
         </div>
       </div>

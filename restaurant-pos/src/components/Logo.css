@@ -13,16 +13,18 @@
 }
 
 .logo-word {
-  font-size: 17px;
-  font-weight: 650;
-  letter-spacing: -0.015em;
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: .9;
 }
 
 .logo-sub {
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-top: 3px;
+  margin-top: 8px;
 }

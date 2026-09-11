@@ -28,12 +28,21 @@ type ModalState =
 export function OrderView({ table, check, dispatch, onBack, onPay, onKitchen }: Props) {
   const [activeSeat, setActiveSeat] = useState(1)
   const [category, setCategory] = useState<Category>('Mains')
+  const [search, setSearch] = useState('')
   const [modal, setModal] = useState<ModalState>({ kind: 'none' })
   const [flash, setFlash] = useState<string | null>(null)
 
   const totals = checkTotals(check)
   const seats = Array.from({ length: check.partySize }, (_, i) => i + 1)
-  const items = useMemo(() => MENU.filter((m) => m.category === category), [category])
+  const items = useMemo(
+    () =>
+      MENU.filter((m) =>
+        search.trim()
+          ? `${m.name} ${m.description}`.toLowerCase().includes(search.trim().toLowerCase())
+          : m.category === category,
+      ),
+    [category, search],
+  )
 
   const pendingByCourse = (course: Course) =>
     check.lines.filter((l) => l.status === 'pending' && l.course === course).length
@@ -83,6 +92,7 @@ export function OrderView({ table, check, dispatch, onBack, onPay, onKitchen }: 
           ← Floor
         </button>
         <div className="order-title">
+          <span className="eyebrow">Main dining room · Guest check</span>
           <h1>Table {table.number}</h1>
           <div className="order-chips">
             <span className="chip">Party of {check.partySize}</span>
@@ -125,8 +135,9 @@ export function OrderView({ table, check, dispatch, onBack, onPay, onKitchen }: 
           <div className="lines">
             {check.lines.length === 0 && (
               <div className="empty-check">
-                <strong>No items yet</strong>
-                <span className="muted">Pick a seat, then tap menu items on the right.</span>
+                <span className="empty-check-number">{table.number.toString().padStart(2, '0')}</span>
+                <strong>A memorable evening starts here.</strong>
+                <span className="muted">Select a seat, then add something from the menu.</span>
               </div>
             )}
             {seats.map((n) => {
@@ -204,6 +215,25 @@ export function OrderView({ table, check, dispatch, onBack, onPay, onKitchen }: 
         </section>
 
         <section className="menu-panel" aria-label="Menu">
+          <div className="menu-intro">
+            <div>
+              <span className="eyebrow">Prepared with care</span>
+              <h2>À la carte</h2>
+            </div>
+            <label className="menu-search">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.4" />
+                <path d="m12 12 5 5" stroke="currentColor" strokeWidth="1.4" />
+              </svg>
+              <input
+                type="search"
+                aria-label="Search menu"
+                placeholder="Find a dish…"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
+            </label>
+          </div>
           <div className="menu-header">
             <div className="category-tabs" role="tablist" aria-label="Menu categories">
               {CATEGORIES.map((c) => (
@@ -213,7 +243,10 @@ export function OrderView({ table, check, dispatch, onBack, onPay, onKitchen }: 
                   role="tab"
                   aria-selected={category === c}
                   className={`category-tab ${category === c ? 'active' : ''}`}
-                  onClick={() => setCategory(c)}
+                  onClick={() => {
+                    setCategory(c)
+                    setSearch('')
+                  }}
                 >
                   {c}
                 </button>
@@ -225,6 +258,9 @@ export function OrderView({ table, check, dispatch, onBack, onPay, onKitchen }: 
           </div>
 
           <div className="menu-grid">
+            {items.length === 0 && (
+              <div className="menu-no-results">No dishes found. Try another name or category.</div>
+            )}
             {items.map((item) => {
               const required = hasRequiredModifiers(item)
               return (
@@ -234,7 +270,10 @@ export function OrderView({ table, check, dispatch, onBack, onPay, onKitchen }: 
                     <span className="menu-card-desc">{item.description}</span>
                     <span className="menu-card-foot">
                       <span className="menu-card-price">{fmt(item.price)}</span>
-                      {required && <span className="chip chip-accent">Modifiers</span>}
+                      <span className="menu-card-action">
+                        {required ? 'Choose options' : 'Add to check'}
+                        <span aria-hidden="true">+</span>
+                      </span>
                     </span>
                   </button>
                   {!required && item.modifierGroups.length > 0 && (

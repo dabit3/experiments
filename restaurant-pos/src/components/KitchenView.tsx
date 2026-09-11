@@ -30,6 +30,7 @@ export function KitchenView({ tickets, focusTable, dispatch, onBack }: Props) {
           ← {focusTable ? `Back to table ${focusTable}` : 'Back to floor'}
         </button>
         <div className="order-title">
+          <span className="eyebrow">At the pass</span>
           <h1>Kitchen tickets</h1>
           <div className="order-chips">
             <span className="chip chip-amber">{open.length} open</span>

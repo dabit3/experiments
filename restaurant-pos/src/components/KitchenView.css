@@ -19,19 +19,18 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   grid-auto-rows: max-content;
-  gap: 16px;
-  padding: 20px 24px 28px;
+  gap: 22px;
+  padding: 28px 32px;
 }
 
 .ticket {
   display: flex;
   flex-direction: column;
-  background: #fbf7ee;
+  background: #fffefa;
   color: #1f1a14;
-  border-radius: 8px;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.35) inset,
-    0 14px 30px rgba(0, 0, 0, 0.45);
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-sm);
   font-family: var(--mono);
   position: relative;
   animation: pop-in 200ms var(--ease);
@@ -39,7 +38,7 @@
 
 .ticket::before {
   content: '';
-  height: 6px;
+  height: 3px;
   border-radius: 8px 8px 0 0;
   background: var(--amber);
 }
@@ -57,15 +56,15 @@
   justify-content: space-between;
   align-items: flex-start;
   padding: 12px 14px 8px;
-  border-bottom: 2px dashed #c9bda6;
+  border-bottom: 1px dashed #c9bda6;
 }
 
 .ticket-table {
   display: block;
-  font-size: 20px;
-  font-weight: 650;
+  font-size: 29px;
+  font-weight: 600;
   letter-spacing: -0.02em;
-  font-family: var(--sans);
+  font-family: var(--serif);
 }
 
 .ticket-course {
@@ -112,8 +111,9 @@
 }
 
 .ticket-item {
-  font-weight: 700;
-  font-size: 14.5px;
+  font-family: var(--sans);
+  font-weight: 550;
+  font-size: 14px;
 }
 
 .ticket-mods {

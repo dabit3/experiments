@@ -47,6 +47,7 @@ export function PaymentView({ table, check, dispatch, onBack, onClosed }: Props)
           ← Back to order
         </button>
         <div className="order-title">
+          <span className="eyebrow">A gracious finish</span>
           <h1>Table {table.number} · Split &amp; pay</h1>
           <div className="order-chips">
             <span className="chip">Party of {check.partySize}</span>
@@ -72,6 +73,7 @@ export function PaymentView({ table, check, dispatch, onBack, onClosed }: Props)
       </header>
 
       <div className="pay-toolbar">
+        <span className="eyebrow">Arrange the check</span>
         <div className="segmented" role="radiogroup" aria-label="Split mode">
           {MODES.map((m) => (
             <button
