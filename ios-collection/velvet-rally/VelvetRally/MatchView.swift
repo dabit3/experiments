@@ -86,9 +86,13 @@ struct MatchView: View {
           Text("FIRST TO \(session.engine.target)")
             .font(.system(.caption, design: .monospaced)).tracking(1)
             .foregroundStyle(Velvet.muted)
-          Text(session.engine.rally > 0 ? "\(session.engine.rally) SHOT RALLY" : "YOUR SERVE")
-            .font(.system(.caption, design: .monospaced, weight: .medium))
-            .foregroundStyle(Velvet.orange)
+          Text(
+            session.engine.rally > 0
+              ? "\(session.engine.rally) SHOT RALLY"
+              : session.engine.phase == .playing ? "IN PLAY" : "YOUR SERVE"
+          )
+          .font(.system(.caption, design: .monospaced, weight: .medium))
+          .foregroundStyle(Velvet.orange)
         }
         Spacer()
         VStack(alignment: .trailing, spacing: 3) {
@@ -109,7 +113,10 @@ struct MatchView: View {
   private func scorePips(_ score: Int, color: Color) -> some View {
     HStack(spacing: 4) {
       ForEach(0..<session.engine.target, id: \.self) { point in
-        Circle().fill(point < score ? color : color.opacity(0.16)).frame(width: 5, height: 5)
+        Circle()
+          .fill(point < score ? color : .clear)
+          .overlay(Circle().stroke(color.opacity(point < score ? 1 : 0.55), lineWidth: 1))
+          .frame(width: 7, height: 7)
       }
     }
     .accessibilityHidden(true)
@@ -149,7 +156,7 @@ struct MatchView: View {
     }
     .padding(18)
     .frame(maxWidth: .infinity)
-    .background(Velvet.background.opacity(0.92), in: RoundedRectangle(cornerRadius: 20))
+    .background(Velvet.background, in: RoundedRectangle(cornerRadius: 20))
     .padding(20)
   }
 

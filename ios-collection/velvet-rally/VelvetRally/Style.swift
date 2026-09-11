@@ -79,9 +79,17 @@ struct CourtArt: View {
         CGPoint(x: w * 0.05, y: h * 0.64),
       ]
       var shadow = Path()
-      shadow.addLines(vertices.map { CGPoint(x: $0.x, y: $0.y + 14) })
+      shadow.addLines(vertices.map { CGPoint(x: $0.x, y: $0.y + h * 0.06) })
       shadow.closeSubpath()
       context.fill(shadow, with: .color(.black.opacity(0.35)))
+      var edge = Path()
+      edge.addLines([
+        vertices[2], vertices[3],
+        CGPoint(x: vertices[3].x, y: vertices[3].y + h * 0.035),
+        CGPoint(x: vertices[2].x, y: vertices[2].y + h * 0.035),
+      ])
+      edge.closeSubpath()
+      context.fill(edge, with: .color(Velvet.court(court).opacity(0.55)))
       var table = Path()
       table.addLines(vertices)
       table.closeSubpath()
@@ -90,6 +98,11 @@ struct CourtArt: View {
         with: .linearGradient(
           Gradient(colors: [Velvet.court(court), Velvet.court(court).opacity(0.5)]),
           startPoint: .zero, endPoint: CGPoint(x: w, y: h)))
+      context.fill(
+        table,
+        with: .radialGradient(
+          Gradient(colors: [Velvet.cream.opacity(0.15), .clear]),
+          center: CGPoint(x: w * 0.35, y: h * 0.1), startRadius: 0, endRadius: w * 0.8))
       context.stroke(table, with: .color(Velvet.cream.opacity(0.65)), lineWidth: 1.5)
       var center = Path()
       center.move(to: CGPoint(x: w * 0.57, y: h * 0.21))
@@ -102,7 +115,7 @@ struct CourtArt: View {
       net.addLine(to: CGPoint(x: w * 0.16, y: h * 0.4))
       net.closeSubpath()
       context.fill(net, with: .color(Velvet.background.opacity(0.8)))
-      context.stroke(net, with: .color(Velvet.cream.opacity(0.75)), lineWidth: 1)
+      context.stroke(net, with: .color(Velvet.cream.opacity(0.55)), lineWidth: 0.8)
       for i in 1..<26 {
         let fraction = Double(i) / 26
         var mesh = Path()
@@ -121,9 +134,12 @@ struct CourtArt: View {
           Gradient(colors: [Velvet.orange.opacity(0), Velvet.orange.opacity(0.7)]),
           startPoint: CGPoint(x: w * 0.44, y: h * 0.27),
           endPoint: CGPoint(x: w * 0.68, y: h * 0.69)),
-        style: StrokeStyle(lineWidth: 4, lineCap: .round))
+        style: StrokeStyle(lineWidth: max(1.5, w * 0.012), lineCap: .round))
+      let radius = max(3, min(7, w * 0.022))
       context.fill(
-        Path(ellipseIn: CGRect(x: w * 0.68 - 7, y: h * 0.69 - 7, width: 14, height: 14)),
+        Path(
+          ellipseIn: CGRect(
+            x: w * 0.68 - radius, y: h * 0.69 - radius, width: radius * 2, height: radius * 2)),
         with: .color(Velvet.orange))
       let paddle = CGRect(x: w * 0.22, y: h * 0.66, width: w * 0.15, height: h * 0.028)
       context.fill(

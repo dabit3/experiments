@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
   @EnvironmentObject private var store: RallyStore
+  @Environment(\.dynamicTypeSize) private var textSize
   @State private var playing = false
   @State private var showSettings = false
   @State private var showRecords = false
@@ -27,9 +28,11 @@ struct HomeView: View {
             HStack(alignment: .firstTextBaseline) {
               Text("Rally").font(.system(size: 80, weight: .regular, design: .serif)).italic()
               Spacer()
-              Text("TABLE\nTENNIS\nREIMAGINED")
-                .font(.system(size: 9, weight: .medium, design: .monospaced))
-                .tracking(1.8).lineSpacing(5).foregroundStyle(Velvet.muted)
+              if !textSize.isAccessibilitySize {
+                Text("TABLE\nTENNIS\nREIMAGINED")
+                  .font(.system(size: 11, weight: .medium, design: .monospaced))
+                  .tracking(1.3).lineSpacing(5).foregroundStyle(Velvet.muted)
+              }
             }
           }
           .foregroundStyle(Velvet.cream)
@@ -106,6 +109,14 @@ struct HomeView: View {
 struct SettingsView: View {
   @EnvironmentObject private var store: RallyStore
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var textSize
+
+  private var surfaceLayout: AnyLayout {
+    textSize.isAccessibilitySize
+      ? AnyLayout(VStackLayout(spacing: 14))
+      : AnyLayout(HStackLayout(spacing: 14))
+  }
+
   var body: some View {
     NavigationStack {
       ScrollView {
@@ -113,13 +124,13 @@ struct SettingsView: View {
           Text("Make it your game.").font(.system(size: 36, design: .serif))
           VStack(alignment: .leading, spacing: 14) {
             Eyebrow(text: "01 / Surface")
-            HStack(spacing: 14) {
+            surfaceLayout {
               ForEach(Court.allCases) { court in
                 Button {
                   store.settings.court = court
                 } label: {
                   VStack(alignment: .leading, spacing: 8) {
-                    CourtArt(court: court).frame(height: 100)
+                    CourtArt(court: court).frame(maxWidth: 200).frame(height: 100)
                     HStack {
                       Text(court.title).font(.system(.subheadline, design: .serif))
                       Spacer()
@@ -128,7 +139,8 @@ struct SettingsView: View {
                       }
                     }
                   }
-                  .padding(12).background(Velvet.panel, in: RoundedRectangle(cornerRadius: 16))
+                  .padding(12).frame(maxWidth: .infinity)
+                  .background(Velvet.panel, in: RoundedRectangle(cornerRadius: 16))
                   .overlay(
                     RoundedRectangle(cornerRadius: 16).stroke(
                       store.settings.court == court ? Velvet.orange : .clear, lineWidth: 1))
@@ -164,14 +176,35 @@ struct SettingsView: View {
           }
           VStack(alignment: .leading, spacing: 12) {
             Eyebrow(text: "03 / Match length")
-            Picker("Match length", selection: $store.settings.target) {
-              Text("First to 7 · Classic").tag(7)
-              Text("First to 3 · Sprint").tag(3)
-            }.pickerStyle(.segmented)
+            if textSize.isAccessibilitySize {
+              ForEach([7, 3], id: \.self) { target in
+                Button {
+                  store.settings.target = target
+                } label: {
+                  HStack {
+                    Text(target == 7 ? "First to 7 · Classic" : "First to 3 · Sprint")
+                      .font(.subheadline).fixedSize(horizontal: false, vertical: true)
+                    Spacer()
+                    Image(
+                      systemName: store.settings.target == target
+                        ? "checkmark.circle.fill" : "circle"
+                    )
+                    .foregroundStyle(Velvet.orange)
+                  }
+                  .padding(14).background(Velvet.panel, in: RoundedRectangle(cornerRadius: 12))
+                }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(store.settings.target == target ? .isSelected : [])
+              }
+            } else {
+              Picker("Match length", selection: $store.settings.target) {
+                Text("First to 7 · Classic").tag(7)
+                Text("First to 3 · Sprint").tag(3)
+              }.pickerStyle(.segmented)
+            }
             Text("No deuce. Every point counts.").font(.caption).foregroundStyle(Velvet.muted)
           }
           Toggle("Paddle haptics", isOn: $store.settings.haptics).font(.subheadline)
-          PrimaryButton(title: "Back to the club", icon: "checkmark") { dismiss() }
         }
         .padding(24).foregroundStyle(Velvet.cream)
       }

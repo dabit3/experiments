@@ -105,6 +105,51 @@ final class GameEngineTests: XCTestCase {
     XCTAssertLessThanOrEqual(abs(game.opponentX - before), Difficulty.easy.aiSpeed / 60 + 0.0001)
   }
 
+  func testOpponentCollisionAndLongRallySpeedCap() {
+    var game = GameEngine(settings: MatchSettings())
+    game.serve()
+    for _ in 0..<100 {
+      game.ball = BallPoint(x: game.opponentX, y: 0.15)
+      game.velocity = BallPoint(x: 0, y: -1.1)
+      XCTAssertEqual(game.tick(delta: 1.0 / 30), .paddle)
+      XCTAssertGreaterThan(game.velocity.y, 0)
+      XCTAssertLessThanOrEqual(hypot(game.velocity.x, game.velocity.y), 1.12 + 0.0001)
+    }
+    XCTAssertEqual(game.bestRally, 100)
+    XCTAssertEqual(game.playerScore, 0)
+    XCTAssertEqual(game.opponentScore, 0)
+  }
+
+  @MainActor
+  func testSessionSavesOneCompletionAndResetStartsFresh() throws {
+    let suite = "VelvetRallyTests.\(UUID())"
+    let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let store = RallyStore(defaults: defaults)
+    var settings = MatchSettings()
+    settings.target = 3
+    settings.haptics = false
+    let session = MatchSession(settings: settings)
+    session.advance(at: 0, store: store)
+    for point in 1...3 {
+      session.engine.serve()
+      session.engine.ball = BallPoint(x: 0.1, y: 1.04)
+      session.engine.velocity = BallPoint(x: 0, y: 1)
+      session.advance(at: Double(point) / 60, store: store)
+    }
+    XCTAssertEqual(session.engine.phase, .finished)
+    for tick in 4...120 { session.advance(at: Double(tick) / 60, store: store) }
+    XCTAssertEqual(store.records.count, 1)
+    XCTAssertEqual(store.records.first?.opponentScore, 3)
+    XCTAssertEqual(store.records.first?.won, false)
+    session.reset()
+    XCTAssertEqual(session.engine.phase, .ready)
+    XCTAssertEqual(session.engine.playerScore, 0)
+    XCTAssertEqual(session.engine.opponentScore, 0)
+    session.advance(at: 3, store: store)
+    XCTAssertEqual(store.records.count, 1)
+  }
+
   @MainActor
   func testPersistenceSettingsRecordsAndClear() throws {
     let suite = "VelvetRallyTests.\(UUID())"
