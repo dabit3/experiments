@@ -47,7 +47,15 @@ void paintAvatar(
 
   void block(Rect r, Color color, {double radius = 0.18}) {
     final rr = RRect.fromRectAndRadius(r, Radius.circular(unit * radius));
-    canvas.drawRRect(rr, fill(color));
+    canvas.drawRRect(
+      rr,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [tint(color, 0.15), color, shade(color, 0.16)],
+        ).createShader(r),
+    );
     // Bevel: light top edge, dark bottom edge.
     canvas.drawRRect(
       RRect.fromRectAndRadius(

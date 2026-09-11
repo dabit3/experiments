@@ -1,5 +1,8 @@
 # Accessibility audit
 
+Arcade redesign: `arcade-ui.md` records 1.5x text, phone search, Tab/Enter on
+world cards, native arrow-key movement and joystick movement at arena walls.
+
 - Colour contrast (computed from `theme/tokens.dart`): ink on paper 16.6:1,
   slate on paper 4.2:1 (secondary text), ink on mint 7.6:1, slateLight on ink
   7.1:1, white on sky 3.9:1 (button labels, >= 3:1 large-text threshold). Brand

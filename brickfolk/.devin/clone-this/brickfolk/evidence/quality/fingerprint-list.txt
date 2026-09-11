@@ -31,6 +31,9 @@ app/assets/fonts/Inter-Medium.ttf
 app/assets/fonts/Inter-Regular.ttf
 app/assets/fonts/Inter-SemiBold.ttf
 app/assets/fonts/LICENSE-Inter.txt
+app/assets/worlds/factory.webp
+app/assets/worlds/freeze.webp
+app/assets/worlds/skyline.webp
 app/ios/.gitignore
 app/ios/Flutter/AppFrameworkInfo.plist
 app/ios/Flutter/Debug.xcconfig
@@ -96,6 +99,7 @@ app/lib/src/screens/social_screen.dart
 app/lib/src/test_driver.dart
 app/lib/src/theme/theme.dart
 app/lib/src/theme/tokens.dart
+app/lib/src/widgets/arcade.dart
 app/lib/src/widgets/avatar_painter.dart
 app/lib/src/widgets/common.dart
 app/lib/src/widgets/phase_marker.dart

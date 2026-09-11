@@ -44,18 +44,21 @@ ThemeData brickTheme(Brightness brightness) {
   final textTheme = base
       .copyWith(
         displayLarge: const TextStyle(
-          fontSize: 44,
+          fontSize: 52,
           fontWeight: FontWeight.w800,
+          letterSpacing: -2,
           height: 1.05,
         ),
         displayMedium: const TextStyle(
-          fontSize: 36,
+          fontSize: 40,
           fontWeight: FontWeight.w800,
+          letterSpacing: -1.5,
           height: 1.1,
         ),
         displaySmall: const TextStyle(
-          fontSize: 28,
+          fontSize: 30,
           fontWeight: FontWeight.w800,
+          letterSpacing: -1,
           height: 1.15,
         ),
         headlineMedium: const TextStyle(

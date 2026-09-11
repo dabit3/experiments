@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:brickfolk_app/main.dart';
 import 'package:brickfolk_app/src/app_state.dart';
 import 'package:brickfolk_app/src/config.dart';
+import 'package:brickfolk_app/src/game/tag_view.dart';
 import 'package:brickfolk_app/src/net/client.dart';
 import 'package:brickfolk_app/src/screens/places_screen.dart';
 import 'package:brickfolk_app/src/screens/room_screen.dart';
@@ -230,6 +231,42 @@ void main() {
       state.client.dispose();
     });
 
+    testWidgets('arcade hub supports a 320px viewport and enlarged text', (
+      tester,
+    ) async {
+      await _loadInter();
+      tester.view.physicalSize = const Size(320, 900);
+      tester.view.devicePixelRatio = 1;
+      tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+      addTearDown(tester.view.reset);
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      final state = await _state(query: {'test': '1'});
+      state.client.me = _profile;
+      await tester.pumpWidget(BrickfolkApp(state: state));
+      await tester.pump(const Duration(milliseconds: 600));
+      expect(tester.takeException(), isNull);
+      expect(find.text('Small bricks.\nBig adventures.'), findsOneWidget);
+      final search = find.byWidgetPredicate(
+        (widget) =>
+            widget is TextField &&
+            widget.decoration?.hintText == 'Find your next adventure',
+      );
+      expect(search, findsOneWidget);
+      await tester.enterText(search, 'not-a-world');
+      await tester.pump();
+      expect(find.text('No experiences match'), findsOneWidget);
+      await tester.enterText(search, '');
+      await tester.pump();
+      await tester.ensureVisible(find.text('Explore world  →'));
+      await tester.tap(find.text('Explore world  →'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 600));
+      expect(find.byType(PlaceDetailsPage), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.pumpWidget(const SizedBox());
+      state.client.dispose();
+    });
+
     testWidgets('forced dark theme applies', (tester) async {
       final state = await _state(query: {'theme': 'dark'});
       await tester.pumpWidget(BrickfolkApp(state: state));
@@ -240,4 +277,44 @@ void main() {
       state.client.dispose();
     });
   });
+
+  test(
+    'portrait Tag camera keeps corner spawns visible above touch controls',
+    () {
+      for (final spawn in TagArena.instance.spawns()) {
+        final player = Offset(spawn.x, spawn.y);
+        final camera = tagCamera(const Size(320, 760), player);
+        final screen = camera.origin + player * camera.scale;
+        expect(camera.bounds.contains(screen), isTrue);
+        expect(camera.scale, greaterThan(24));
+        expect(camera.bounds.top, greaterThanOrEqualTo(160));
+        expect(camera.bounds.bottom, lessThanOrEqualTo(604));
+      }
+      final desktop = tagCamera(const Size(1180, 760), const Offset(2, 2));
+      expect(desktop.scale, closeTo(44.5, 0.01));
+    },
+  );
+
+  test(
+    'portrait Tag leaves avatar and label clearance at actual arena walls',
+    () {
+      final arena = TagArena.instance;
+      for (final size in [const Size(320, 760), const Size(390, 844)]) {
+        for (final x in [TagSim.radius, arena.width - TagSim.radius]) {
+          for (final y in [TagSim.radius, arena.height - TagSim.radius]) {
+            final player = Offset(x, y);
+            final camera = tagCamera(size, player);
+            final screen = camera.origin + player * camera.scale;
+            final labelAndAvatar = Rect.fromCenter(
+              center: screen,
+              width: 96,
+              height: 100,
+            );
+            expect(camera.bounds.contains(labelAndAvatar.topLeft), isTrue);
+            expect(camera.bounds.contains(labelAndAvatar.bottomRight), isTrue);
+          }
+        }
+      }
+    },
+  );
 }

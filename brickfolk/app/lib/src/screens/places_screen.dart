@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../app_state.dart';
 import '../net/client.dart';
 import '../theme/tokens.dart';
+import '../widgets/arcade.dart';
 import '../widgets/avatar_painter.dart';
 import '../widgets/common.dart';
 
@@ -62,19 +63,11 @@ class _PlacesScreenState extends State<PlacesScreen> {
       for (final l in listings)
         if ((me.stats['matches_${l.info.kind.id}'] ?? 0) > 0) l,
     ];
-    final topRated = [
-      ...listings,
-    ]..sort((a, b) => (b.ratingPercent ?? -1).compareTo(a.ratingPercent ?? -1));
-    final mostActive = [...listings]
-      ..sort((a, b) {
-        final c = b.playing.compareTo(a.playing);
-        return c != 0 ? c : b.visits.compareTo(a.visits);
-      });
     final pad = phone ? Space.lg : Space.xl;
 
     final joinField = SizedBox(
       width: phone ? double.infinity : 200,
-      height: 36,
+      height: 44,
       child: TextField(
         controller: _code,
         textCapitalization: TextCapitalization.characters,
@@ -106,23 +99,22 @@ class _PlacesScreenState extends State<PlacesScreen> {
           children: [
             Row(
               children: [
-                Headshot(me.summary.avatar, size: phone ? 44 : 52),
+                AvatarView(
+                  me.summary.avatar,
+                  size: phone ? 48 : 58,
+                  background: p.surface2,
+                ),
                 const SizedBox(width: Space.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text('LET’S PLAY.', style: context.text.displaySmall),
                       Text(
-                        'Hi, ${me.summary.name}',
-                        style: phone
-                            ? context.text.titleLarge
-                            : context.text.headlineSmall,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        '${client.onlineCount} online now',
+                        'Welcome back, ${me.summary.name}. Your next adventure awaits.',
+                        maxLines: 2,
                         style: context.text.bodySmall?.copyWith(
-                          color: p.textTertiary,
+                          color: p.textSecondary,
                         ),
                       ),
                     ],
@@ -138,9 +130,8 @@ class _PlacesScreenState extends State<PlacesScreen> {
               const SizedBox(height: Space.xl),
             ],
             if (q.isEmpty) ...[
-              _SortHeader('Friends (${client.friends.friends.length})'),
-              _FriendsRail(client.friends.friends, onAdd: widget.onOpenFriends),
-              const SizedBox(height: Space.xl),
+              _ArcadeHero(canLaunch: _canLaunch(client)),
+              const SizedBox(height: Space.xxl),
             ],
             if (continueList.isNotEmpty) ...[
               const _SortHeader('Continue'),
@@ -150,7 +141,7 @@ class _PlacesScreenState extends State<PlacesScreen> {
               ),
               const SizedBox(height: Space.xl),
             ],
-            _SortHeader(q.isEmpty ? 'Recommended For You' : 'Results'),
+            _SortHeader(q.isEmpty ? 'Choose your adventure' : 'Results'),
             if (listings.isEmpty)
               EmptyState(
                 icon: Icons.search_off_rounded,
@@ -158,22 +149,66 @@ class _PlacesScreenState extends State<PlacesScreen> {
                 message: 'Try a different search.',
               )
             else
-              _Rail(
-                height: phone ? 188 : 208,
-                children: [for (final l in listings) _SquareTile(l)],
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final columns = constraints.maxWidth >= 800
+                      ? 3
+                      : constraints.maxWidth >= 520
+                      ? 2
+                      : 1;
+                  final width =
+                      (constraints.maxWidth - Space.lg * (columns - 1)) /
+                      columns;
+                  return Wrap(
+                    spacing: Space.lg,
+                    runSpacing: Space.lg,
+                    children: [
+                      for (final listing in listings)
+                        SizedBox(width: width, child: _SquareTile(listing)),
+                    ],
+                  );
+                },
               ),
-            if (q.isEmpty && listings.length > 1) ...[
-              const SizedBox(height: Space.xl),
-              const _SortHeader('Top Rated'),
-              _Rail(
-                height: phone ? 188 : 208,
-                children: [for (final l in topRated) _SquareTile(l)],
-              ),
-              const SizedBox(height: Space.xl),
-              const _SortHeader('Most Active'),
-              _Rail(
-                height: phone ? 188 : 208,
-                children: [for (final l in mostActive) _SquareTile(l)],
+            if (q.isEmpty) ...[
+              const SizedBox(height: Space.xxl),
+              Panel(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.groups_rounded,
+                          color: BrickColors.sky,
+                        ),
+                        const SizedBox(width: Space.sm),
+                        Expanded(
+                          child: Text(
+                            'Better together',
+                            style: context.text.titleLarge,
+                          ),
+                        ),
+                        Tag(
+                          '${client.onlineCount} online',
+                          icon: Icons.circle,
+                          onColor: p.success,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: Space.xs),
+                    Text(
+                      'One crew. Every screen. Invite a friend and jump in.',
+                      style: context.text.bodySmall?.copyWith(
+                        color: p.textSecondary,
+                      ),
+                    ),
+                    const SizedBox(height: Space.lg),
+                    _FriendsRail(
+                      client.friends.friends,
+                      onAdd: widget.onOpenFriends,
+                    ),
+                  ],
+                ),
               ),
             ],
             const SizedBox(height: Space.xxl),
@@ -300,9 +335,10 @@ class _SortHeader extends StatelessWidget {
       child: Row(
         children: [
           Expanded(child: Text(title, style: context.text.titleLarge)),
-          Icon(
-            Icons.chevron_right_rounded,
-            color: context.palette.textTertiary,
+          const Icon(
+            Icons.auto_awesome_rounded,
+            size: 19,
+            color: BrickColors.sun,
           ),
         ],
       ),
@@ -419,12 +455,16 @@ class _HoverScaleState extends State<_HoverScale> {
           : SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hover = true),
       onExit: (_) => setState(() => _hover = false),
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: AnimatedScale(
-          scale: _hover ? 1.02 : 1,
-          duration: Motion.fast,
-          child: widget.child,
+      child: AnimatedScale(
+        scale: _hover ? 1.015 : 1,
+        duration: MediaQuery.disableAnimationsOf(context)
+            ? Duration.zero
+            : Motion.fast,
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(Radii.lg),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(onTap: widget.onTap, child: widget.child),
         ),
       ),
     );
@@ -440,31 +480,216 @@ class _SquareTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final info = listing.info;
-    final width = context.isPhone ? 140.0 : 160.0;
-    return SizedBox(
-      width: width,
-      child: _HoverScale(
-        onTap: () => _openDetails(context, listing),
+    final accent = Color(info.accent);
+    return _HoverScale(
+      onTap: () => _openDetails(context, listing),
+      child: Ink(
+        decoration: BoxDecoration(
+          color: context.palette.surface1,
+          borderRadius: BorderRadius.circular(Radii.lg),
+          border: Border.all(color: context.palette.outline),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(Radii.md),
-              child: SizedBox(
-                width: width,
-                height: width,
-                child: PlaceThumbnail(info.kind),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(Radii.lg),
+              ),
+              child: AspectRatio(
+                aspectRatio: 1.85,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    PlaceThumbnail(info.kind),
+                    Positioned(
+                      top: Space.md,
+                      left: Space.md,
+                      child: Tag(
+                        switch (info.kind) {
+                          ExperienceKind.obby => 'RACE',
+                          ExperienceKind.tycoon => 'BUILD',
+                          ExperienceKind.tag => 'CHASE',
+                        },
+                        color: BrickColors.ink.withValues(alpha: 0.85),
+                        onColor: Colors.white,
+                        icon: experienceIcon(info.kind),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: Space.sm),
-            Text(
-              info.name,
-              style: context.text.titleSmall,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: const EdgeInsets.all(Space.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    info.name,
+                    style: context.text.titleLarge,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: Space.xs),
+                  SizedBox(
+                    height: 40,
+                    child: Text(
+                      info.tagline,
+                      style: context.text.bodySmall?.copyWith(
+                        color: context.palette.textSecondary,
+                      ),
+                      maxLines: 2,
+                    ),
+                  ),
+                  const SizedBox(height: Space.md),
+                  Row(
+                    children: [
+                      Expanded(child: _TileMeta(listing)),
+                      Container(
+                        padding: const EdgeInsets.all(Space.sm),
+                        decoration: BoxDecoration(
+                          color: accent.withValues(alpha: 0.18),
+                          borderRadius: BorderRadius.circular(Radii.sm),
+                        ),
+                        child: Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 18,
+                          color: context.palette.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: Space.xxs),
-            _TileMeta(listing),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ArcadeHero extends StatelessWidget {
+  const _ArcadeHero({required this.canLaunch});
+
+  final bool canLaunch;
+
+  @override
+  Widget build(BuildContext context) {
+    final phone = context.isPhone;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(Radii.xl),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(minHeight: phone ? 420 : 380),
+        child: Stack(
+          children: [
+            const Positioned.fill(
+              child: WorldArt(
+                ExperienceKind.obby,
+                alignment: Alignment(0.55, 0),
+              ),
+            ),
+            Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: phone
+                        ? Alignment.bottomCenter
+                        : Alignment.centerLeft,
+                    end: phone ? Alignment.topCenter : Alignment.centerRight,
+                    colors: const [
+                      Color(0xF509173E),
+                      Color(0xA609173E),
+                      Color(0x0009173E),
+                    ],
+                    stops: phone ? const [0, 0.45, 0.9] : const [0, 0.35, 0.8],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                phone ? Space.xl : Space.xxl,
+                phone ? 130 : Space.xxl,
+                phone ? Space.xl : Space.xxl,
+                Space.xxl,
+              ),
+              child: Align(
+                alignment: phone ? Alignment.bottomLeft : Alignment.centerLeft,
+                child: SizedBox(
+                  width: phone ? double.infinity : 420,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const ArcadeLabel('THE SKY IS YOUR PLAYGROUND'),
+                      const SizedBox(height: Space.md),
+                      Text(
+                        'Small bricks.\nBig adventures.',
+                        style:
+                            (phone
+                                    ? context.text.displaySmall
+                                    : context.text.displayLarge)
+                                ?.copyWith(color: Colors.white),
+                      ),
+                      const SizedBox(height: Space.md),
+                      Text(
+                        'Race your crew to the clouds in Skyline Obby.',
+                        style: context.text.bodyMedium?.copyWith(
+                          color: const Color(0xFFD2E1FF),
+                        ),
+                      ),
+                      const SizedBox(height: Space.xl),
+                      Wrap(
+                        spacing: Space.md,
+                        runSpacing: Space.md,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          ArcadeButton(
+                            label: 'Let’s play',
+                            onPressed: canLaunch
+                                ? () => playPlace(context, ExperienceKind.obby)
+                                : null,
+                          ),
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              foregroundColor: Colors.white,
+                            ),
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute<void>(
+                                builder: (_) =>
+                                    const PlaceDetailsPage(ExperienceKind.obby),
+                              ),
+                            ),
+                            child: const Text('Explore world  →'),
+                          ),
+                        ],
+                      ),
+                      if (!canLaunch) ...[
+                        const SizedBox(height: Space.md),
+                        Text(
+                          'Waiting for your connection or party leader.',
+                          style: context.text.bodySmall?.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            if (!phone)
+              Positioned(
+                bottom: Space.xl,
+                right: Space.xl,
+                child: Tag(
+                  '01 / SKYLINE OBBY',
+                  color: BrickColors.ink.withValues(alpha: 0.75),
+                  onColor: Colors.white,
+                ),
+              ),
           ],
         ),
       ),
@@ -843,7 +1068,7 @@ class PlaceThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(painter: _ThumbPainter(kind));
+    return WorldArt(kind, fallback: CustomPaint(painter: _ThumbPainter(kind)));
   }
 }
 

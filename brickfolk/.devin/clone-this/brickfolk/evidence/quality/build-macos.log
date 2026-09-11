@@ -1,4 +1,14 @@
-# flutter build macos --release (2026-09-10T15:21:35Z)
+==> bash -c cd app && flutter build macos --release
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
 Building macOS application...                                   
-✓ Built build/macos/Build/Products/Release/Brickfolk.app (47.6MB)
-exit=0
+warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
+✓ Built build/macos/Build/Products/Release/Brickfolk.app (52.4MB)
+<== ok in 85s

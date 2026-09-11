@@ -503,22 +503,57 @@ class _SceneComponent extends Component {
         Offset(0, h),
         dark
             ? [
-                const Color(0xFF0E1428),
-                const Color(0xFF1B2A55),
-                const Color(0xFF2B3F7A),
+                const Color(0xFF101A54),
+                const Color(0xFF244D8E),
+                const Color(0xFF348BAD),
               ]
             : [
-                const Color(0xFF7FB2FF),
-                const Color(0xFFB9DAFF),
-                const Color(0xFFE6F2FF),
+                const Color(0xFF3479E2),
+                const Color(0xFF76CBED),
+                const Color(0xFFD4F4F4),
               ],
         [0, 0.55, 1],
       );
     canvas.drawRect(Rect.fromLTWH(0, 0, w, h), sky);
 
+    final sunCenter = Offset(w * 0.78, h * 0.2);
+    canvas.drawCircle(
+      sunCenter,
+      h * 0.11,
+      Paint()
+        ..shader = ui.Gradient.radial(sunCenter, h * 0.11, [
+          const Color(0xFFFFEFBD),
+          const Color(0x00FFE6A0),
+        ]),
+    );
+    canvas.drawCircle(
+      sunCenter,
+      h * 0.055,
+      Paint()..color = const Color(0xFFFFE5A0),
+    );
+    final portalOffset = (camX * scale * 0.1) % (w + 600);
+    for (var i = 0; i < 3; i++) {
+      final center = Offset(i * 600 - portalOffset + 280, h * 0.48);
+      final ring = Rect.fromCenter(center: center, width: 170, height: 230);
+      canvas.drawOval(
+        ring.shift(const Offset(5, 8)),
+        Paint()
+          ..color = const Color(0xFF945274).withValues(alpha: 0.32)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 21,
+      );
+      canvas.drawOval(
+        ring,
+        Paint()
+          ..color = BrickColors.brick.withValues(alpha: 0.4)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 17,
+      );
+    }
+
     // Distant skyline (original silhouette), parallax 0.2
     final skyline = Paint()
-      ..color = (dark ? const Color(0xFF16204A) : const Color(0xFF5E8FE0))
+      ..color = (dark ? const Color(0xFF225B83) : const Color(0xFF309CB7))
           .withValues(alpha: 0.7);
     final base = h * 0.78;
     final off = (camX * scale * 0.2) % (w + 200);
@@ -532,6 +567,13 @@ class _SceneComponent extends Component {
           const Radius.circular(6),
         ),
         skyline,
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(bx, base - bh, bw, 6),
+          const Radius.circular(3),
+        ),
+        Paint()..color = BrickColors.mint.withValues(alpha: 0.3),
       );
       final windows = Paint()
         ..color = (dark ? BrickColors.sun : Colors.white).withValues(
@@ -569,10 +611,7 @@ class _SceneComponent extends Component {
 
   void _paintPlatform(Canvas canvas, Rect r, PlatformKind kind, double scale) {
     final (Color top, Color side) = switch (kind) {
-      PlatformKind.normal =>
-        game.dark
-            ? (const Color(0xFFB8C2D9), const Color(0xFF6D7A99))
-            : (const Color(0xFFFFF7EA), const Color(0xFFC7A27A)),
+      PlatformKind.normal => (const Color(0xFF73F0DC), const Color(0xFF168799)),
       PlatformKind.checkpoint => (BrickColors.mint, const Color(0xFF1F8A62)),
       PlatformKind.kill => (BrickColors.cherry, const Color(0xFF9E1F31)),
       PlatformKind.finish => (BrickColors.sun, const Color(0xFFB98A17)),
@@ -590,6 +629,18 @@ class _SceneComponent extends Component {
       );
     }
     canvas.drawRRect(RRect.fromRectAndRadius(r, radius), Paint()..color = side);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(r.shift(Offset(0, 5 * scale / 48)), radius),
+      Paint()..color = const Color(0xFF0B3555).withValues(alpha: 0.35),
+    );
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(r, radius),
+      Paint()
+        ..shader = ui.Gradient.linear(r.topLeft, r.bottomRight, [
+          side,
+          Color.lerp(side, Colors.black, 0.2)!,
+        ]),
+    );
     final topH = math.min(r.height * 0.6, 10 * scale / 48);
     canvas.drawRRect(
       RRect.fromRectAndRadius(

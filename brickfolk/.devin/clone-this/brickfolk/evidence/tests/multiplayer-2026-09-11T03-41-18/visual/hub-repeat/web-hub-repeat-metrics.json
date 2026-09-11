@@ -1,0 +1,30 @@
+{
+  "id": "web-hub-repeat",
+  "mode": "normalized",
+  "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-11T03-41-18/visual/web-hub.png",
+  "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-11T03-41-18/visual/web-hub-repeat.png",
+  "reference_crop": null,
+  "actual_crop": null,
+  "scale": 4,
+  "tolerance": 0,
+  "shift": 0,
+  "edge_tolerance": 0,
+  "max_edge_cells_allowed": 0,
+  "max_cluster_allowed": 0,
+  "masks": [],
+  "mask_note": "same web state captured twice; raw noise measurement (tolerance 0)",
+  "normalized_size": [
+    295,
+    190
+  ],
+  "total_pixels": 56050,
+  "masked_pixels": 0,
+  "different_pixels": 0,
+  "edge_cells": 0,
+  "max_unmasked_delta": 0,
+  "largest_cluster": 0,
+  "passed": true,
+  "reference": "web-hub-repeat-reference.png",
+  "actual": "web-hub-repeat-actual.png",
+  "diff": "web-hub-repeat-diff.png"
+}

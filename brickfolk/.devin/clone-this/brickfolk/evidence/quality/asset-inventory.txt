@@ -5,6 +5,9 @@ app/assets/fonts/Inter-Medium.ttf
 app/assets/fonts/Inter-Regular.ttf
 app/assets/fonts/Inter-SemiBold.ttf
 app/assets/fonts/LICENSE-Inter.txt
+app/assets/worlds/factory.webp
+app/assets/worlds/freeze.webp
+app/assets/worlds/skyline.webp
 
 # Licence
 Copyright (c) 2016 The Inter Project Authors (https://github.com/rsms/inter)

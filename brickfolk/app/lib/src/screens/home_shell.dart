@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../app_state.dart';
 import '../net/client.dart';
 import '../theme/tokens.dart';
+import '../widgets/arcade.dart';
 import '../widgets/avatar_painter.dart';
 import '../widgets/common.dart';
 import 'avatar_screen.dart';
@@ -177,7 +178,27 @@ class _HomeShellState extends State<HomeShell> {
     if (form == FormFactor.phone) {
       return Scaffold(
         appBar: topBar,
-        body: body,
+        body: Column(
+          children: [
+            if (_tab == HubTab.play)
+              Material(
+                color: BrickColors.chrome,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    Space.md,
+                    0,
+                    Space.md,
+                    Space.md,
+                  ),
+                  child: _SearchField(
+                    controller: _search,
+                    onChanged: (value) => setState(() => _query = value),
+                  ),
+                ),
+              ),
+            Expanded(child: ArcadeBackdrop(child: body)),
+          ],
+        ),
         bottomNavigationBar: _ChromeTabBar(
           destinations: destinations,
           selected: _tab,
@@ -199,7 +220,7 @@ class _HomeShellState extends State<HomeShell> {
               extended: form == FormFactor.desktop,
             ),
           ),
-          Expanded(child: body),
+          Expanded(child: ArcadeBackdrop(child: body)),
         ],
       ),
     );
@@ -252,8 +273,13 @@ class _Logo extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: Colors.white,
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [BrickColors.sun, BrickColors.brick],
+        ),
         borderRadius: BorderRadius.circular(size * 0.22),
+        boxShadow: const [BoxShadow(color: Color(0x66526BFF), blurRadius: 16)],
       ),
       child: Icon(
         Icons.grid_view_rounded,
@@ -264,8 +290,8 @@ class _Logo extends StatelessWidget {
   }
 }
 
-const _chromeHeight = 52.0;
-const _sideNavWidth = 200.0;
+const _chromeHeight = 68.0;
+const _sideNavWidth = 204.0;
 const _sideNavCompactWidth = 72.0;
 
 /// Near-black top bar shared by every form factor: brand, search, wallet,
@@ -303,7 +329,7 @@ class _ChromeBar extends StatelessWidget implements PreferredSizeWidget {
             padding: const EdgeInsets.symmetric(horizontal: Space.md),
             child: Row(
               children: [
-                const _Logo(size: 28),
+                const _Logo(size: 34),
                 if (!compact) ...[
                   const SizedBox(width: Space.sm),
                   Text(
@@ -311,7 +337,8 @@ class _ChromeBar extends StatelessWidget implements PreferredSizeWidget {
                     style: context.text.titleMedium?.copyWith(
                       color: BrickColors.onChrome,
                       fontWeight: FontWeight.w800,
-                      letterSpacing: -0.2,
+                      letterSpacing: -0.6,
+                      fontSize: 21,
                     ),
                   ),
                 ],
@@ -404,7 +431,7 @@ class _SearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 32,
+      height: 40,
       child: TextField(
         controller: controller,
         onChanged: onChanged,
@@ -413,7 +440,7 @@ class _SearchField extends StatelessWidget {
         textInputAction: TextInputAction.search,
         decoration: InputDecoration(
           isDense: true,
-          hintText: 'Search',
+          hintText: 'Find your next adventure',
           hintStyle: context.text.bodyMedium?.copyWith(
             color: BrickColors.onChromeMuted,
           ),
@@ -544,7 +571,10 @@ class _SideNav extends StatelessWidget {
     final me = ClientScope.of(context).me!;
     return Container(
       width: extended ? _sideNavWidth : _sideNavCompactWidth,
-      color: p.surface0,
+      decoration: BoxDecoration(
+        color: p.surface1,
+        border: Border(right: BorderSide(color: p.outline)),
+      ),
       padding: const EdgeInsets.fromLTRB(
         Space.md,
         Space.md,
@@ -562,7 +592,14 @@ class _SideNav extends StatelessWidget {
             extended: extended,
             onTap: () => onSelect(HubTab.profile),
           ),
-          const SizedBox(height: Space.sm),
+          const SizedBox(height: Space.xl),
+          if (extended) ...[
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: ArcadeLabel('YOUR PLAYGROUND', color: BrickColors.sky),
+            ),
+            const SizedBox(height: Space.md),
+          ],
           for (final d in destinations)
             _NavRow(
               icon: d.icon,
@@ -572,6 +609,39 @@ class _SideNav extends StatelessWidget {
               selected: d.tab == selected,
               extended: extended,
               onTap: () => onSelect(d.tab),
+            ),
+          const Spacer(),
+          if (extended)
+            Panel(
+              color: BrickColors.sky.withValues(alpha: 0.12),
+              padding: const EdgeInsets.all(Space.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(
+                    Icons.sports_esports_rounded,
+                    color: BrickColors.sky,
+                    size: 28,
+                  ),
+                  const SizedBox(height: Space.sm),
+                  Text(
+                    'Your crew.\nYour rules.',
+                    style: context.text.titleLarge,
+                  ),
+                  const SizedBox(height: Space.sm),
+                  Text(
+                    'Play together on any screen.',
+                    style: context.text.bodySmall?.copyWith(
+                      color: p.textSecondary,
+                    ),
+                  ),
+                  const SizedBox(height: Space.sm),
+                  TextButton(
+                    onPressed: () => onSelect(HubTab.social),
+                    child: const Text('Find your friends →'),
+                  ),
+                ],
+              ),
             ),
         ],
       ),
@@ -603,7 +673,7 @@ class _NavRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = context.palette;
-    final fg = selected ? p.textPrimary : p.textSecondary;
+    final fg = selected ? Colors.white : p.textSecondary;
     final leading = avatar != null
         ? Headshot(avatar!, size: 28)
         : _Badged(
@@ -611,13 +681,13 @@ class _NavRow extends StatelessWidget {
             child: Icon(selected ? selectedIcon : icon, size: 22, color: fg),
           );
     final row = Material(
-      color: selected ? p.surface2 : Colors.transparent,
+      color: selected ? BrickColors.sky : Colors.transparent,
       borderRadius: BorderRadius.circular(Radii.md),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(Radii.md),
         child: Container(
-          height: 40,
+          height: 48,
           padding: EdgeInsets.symmetric(horizontal: extended ? Space.md : 0),
           alignment: Alignment.centerLeft,
           child: extended
@@ -669,7 +739,7 @@ class _ChromeTabBar extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: SizedBox(
-          height: 56,
+          height: 64,
           child: Row(
             children: [
               for (final d in destinations)
@@ -685,7 +755,7 @@ class _ChromeTabBar extends StatelessWidget {
                             d.tab == selected ? d.selectedIcon : d.icon,
                             size: 24,
                             color: d.tab == selected
-                                ? BrickColors.onChrome
+                                ? BrickColors.sun
                                 : BrickColors.onChromeMuted,
                           ),
                         ),

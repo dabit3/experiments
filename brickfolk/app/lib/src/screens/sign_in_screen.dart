@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../app_state.dart';
 import '../net/client.dart';
 import '../theme/tokens.dart';
+import '../widgets/arcade.dart';
 import '../widgets/avatar_painter.dart';
 import '../widgets/common.dart';
 
@@ -246,7 +247,7 @@ class _SignInScreenState extends State<SignInScreen>
         const _Wordmark(size: 40),
         const SizedBox(height: Space.md),
         Text(
-          'Build, run, freeze and\nclimb with your friends.',
+          'Make room\nfor adventure.',
           textAlign: wide ? TextAlign.start : TextAlign.center,
           style: (wide
               ? context.text.displayMedium
@@ -254,7 +255,7 @@ class _SignInScreenState extends State<SignInScreen>
         ),
         const SizedBox(height: Space.md),
         Text(
-          'Three experiences, one blocky avatar, cross-platform parties on web, iOS, Android and macOS.',
+          'Race to the clouds. Build something brilliant. Chase your crew. Your playground starts here.',
           textAlign: wide ? TextAlign.start : TextAlign.center,
           style: context.text.bodyLarge?.copyWith(color: p.textSecondary),
         ),
@@ -273,7 +274,12 @@ class _SignInScreenState extends State<SignInScreen>
                     Transform.translate(
                       offset: Offset(
                         0,
-                        math.sin((_float.value + i * 0.22) * math.pi * 2) * 5,
+                        MediaQuery.disableAnimationsOf(context)
+                            ? 0
+                            : math.sin(
+                                    (_float.value + i * 0.22) * math.pi * 2,
+                                  ) *
+                                  5,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(right: Space.lg),
@@ -448,7 +454,16 @@ class _Backdrop extends StatelessWidget {
               : const [Color(0xFFEEF3FF), Color(0xFFF6F7FB), Color(0xFFFFF0EA)],
         ),
       ),
-      child: CustomPaint(painter: _BlobPainter(dark)),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Opacity(
+            opacity: dark ? 0.3 : 0.16,
+            child: const WorldArt(ExperienceKind.obby),
+          ),
+          CustomPaint(painter: _BlobPainter(dark)),
+        ],
+      ),
     );
   }
 }

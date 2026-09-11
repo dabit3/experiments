@@ -12,6 +12,24 @@ economy, parties, obby/tycoon/tag genres). See "Reference boundary" below.
 Everything here — name, art, characters, UI, audio-free feedback, copy — is
 original.
 
+### Arcade art direction
+
+The arcade edition uses a midnight-blue shell, electric-blue navigation,
+marigold action buttons with a physical press response, a featured world,
+three distinct illustrated game cards, crew staging, dimensional avatars,
+and a confetti championship screen. The same widgets and bundled Inter fonts
+ship on all four platforms. Light mode uses pale lavender surfaces.
+
+The three bundled `app/assets/worlds/*.webp` covers are original AI-generated
+promotional illustrations made for Brickfolk (OpenAI image generation, September
+2026). They depict each experience's theme; gameplay uses the actual Flame
+renderers, with a parallax skyline and coral arches, teal platforms, and a
+violet/cyan freeze arena. Portrait Tag follows the player at a readable scale
+and includes a full-arena minimap; its playfield stays clear of the HUD and
+joystick. Phone search remains available down to 320 logical pixels.
+No source-game assets or third-party characters are
+bundled. The procedural thumbnails remain the image-error fallback.
+
 | | |
 |---|---|
 | Hub | place browser with procedural thumbnails, friends & parties (4-letter join codes), filtered global/party/room chat, profiles with badges, daily reward streak, Pips currency + shop, avatar editor (body colours, faces, hats, accessories) |

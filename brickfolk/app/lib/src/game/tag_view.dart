@@ -57,6 +57,7 @@ class _TagViewState extends State<TagView> {
   Widget build(BuildContext context) {
     final touch = wantsTouchControls(context);
     final pad = MediaQuery.paddingOf(context);
+    _game!.safeInsets = pad;
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -108,6 +109,7 @@ class TagFlameGame extends FlameGame with KeyboardEvents {
 
   final BrickfolkClient client;
   bool dark;
+  EdgeInsets safeInsets = EdgeInsets.zero;
   final bool haptics;
 
   /// The test driver owns the input stream, so the view's periodic held-state
@@ -254,6 +256,46 @@ class _Spark {
   final Color color;
 }
 
+({double scale, Offset origin, Rect bounds}) tagCamera(
+  Size size,
+  Offset player, {
+  EdgeInsets safeInsets = EdgeInsets.zero,
+}) {
+  final arena = TagArena.instance;
+  final portrait = size.width < 600 && size.height > size.width;
+  final bounds = portrait
+      ? Rect.fromLTRB(
+          12 + safeInsets.left,
+          160 + safeInsets.top,
+          size.width - 12 - safeInsets.right,
+          math.max(220 + safeInsets.top, size.height - 156 - safeInsets.bottom),
+        )
+      : Rect.fromLTWH(24, 24, size.width - 48, size.height - 48);
+  final fit = math.min(
+    bounds.width / arena.width,
+    bounds.height / arena.height,
+  );
+  final scale = portrait
+      ? math.max(fit, math.min(bounds.width / 11, bounds.height / 10))
+      : fit;
+  final clearance = portrait ? math.min(48.0, bounds.shortestSide / 4) : 0.0;
+  double origin(double start, double extent, double world, double target) =>
+      world * scale + clearance * 2 <= extent
+      ? start + (extent - world * scale) / 2
+      : (start + extent / 2 - target * scale).clamp(
+          start + extent - world * scale - clearance,
+          start + clearance,
+        );
+  return (
+    scale: scale,
+    origin: Offset(
+      origin(bounds.left, bounds.width, arena.width, player.dx),
+      origin(bounds.top, bounds.height, arena.height, player.dy),
+    ),
+    bounds: bounds,
+  );
+}
+
 class _ArenaComponent extends Component {
   _ArenaComponent(this.game);
 
@@ -265,13 +307,26 @@ class _ArenaComponent extends Component {
     final w = size.x;
     final h = size.y;
     final arena = game.arena;
-    final margin = 24.0;
-    final scale = math.min(
-      (w - margin * 2) / arena.width,
-      (h - margin * 2) / arena.height,
+    final frame = game.client.frame;
+    final blend = frame == null
+        ? null
+        : FrameBlend(
+            frame,
+            game.client.previousFrame,
+            DateTime.now().millisecondsSinceEpoch,
+          );
+    final local = game._states[game.client.myId];
+    final position = local == null
+        ? null
+        : blend?.tagPos(game.client.myId!, local);
+    final camera = tagCamera(
+      Size(w, h),
+      Offset(position?.x ?? arena.width / 2, position?.y ?? arena.height / 2),
+      safeInsets: game.safeInsets,
     );
-    final ox = (w - arena.width * scale) / 2;
-    final oy = (h - arena.height * scale) / 2;
+    final scale = camera.scale;
+    final ox = camera.origin.dx;
+    final oy = camera.origin.dy;
     double sx(double x) => ox + x * scale;
     double sy(double y) => oy + y * scale;
     final u = scale / 40;
@@ -284,11 +339,13 @@ class _ArenaComponent extends Component {
           Offset(w / 2, h / 2),
           math.max(w, h) * 0.75,
           game.dark
-              ? [const Color(0xFF14304A), const Color(0xFF0B1B2B)]
-              : [const Color(0xFFE6F8FC), const Color(0xFFB7E3EF)],
+              ? [const Color(0xFF392866), const Color(0xFF111534)]
+              : [const Color(0xFFF0E5FF), const Color(0xFFB5A3EC)],
         ),
     );
 
+    canvas.save();
+    canvas.clipRect(camera.bounds);
     // Floor
     final floor = RRect.fromRectAndRadius(
       Rect.fromLTWH(sx(0), sy(0), arena.width * scale, arena.height * scale),
@@ -301,7 +358,7 @@ class _ArenaComponent extends Component {
     canvas.drawRRect(
       floor,
       Paint()
-        ..color = game.dark ? const Color(0xFF1E3B57) : const Color(0xFFF4FBFD),
+        ..color = game.dark ? const Color(0xFF3F477D) : const Color(0xFFEDEAFE),
     );
     canvas.save();
     canvas.clipRRect(floor);
@@ -349,8 +406,8 @@ class _ArenaComponent extends Component {
         RRect.fromRectAndRadius(r, Radius.circular(5 * u)),
         Paint()
           ..color = game.dark
-              ? const Color(0xFF6C86A8)
-              : const Color(0xFFB3C6DA),
+              ? const Color(0xFF308AAA)
+              : const Color(0xFF48AAC7),
       );
       canvas.drawRRect(
         RRect.fromRectAndRadius(
@@ -359,8 +416,8 @@ class _ArenaComponent extends Component {
         ),
         Paint()
           ..color = game.dark
-              ? const Color(0xFF8CA6C8)
-              : const Color(0xFFDCEAF5),
+              ? const Color(0xFF8EE8EF)
+              : const Color(0xFFB8F5F4),
       );
     }
 
@@ -374,7 +431,6 @@ class _ArenaComponent extends Component {
     );
 
     // Players
-    final frame = game.client.frame;
     if (frame != null) {
       final blend = FrameBlend(
         frame,
@@ -475,7 +531,7 @@ class _ArenaComponent extends Component {
             text: member?.name ?? '…',
             style: TextStyle(
               fontFamily: 'Inter',
-              fontSize: 10 * u,
+              fontSize: math.max(10 * u, 10),
               fontWeight: FontWeight.w700,
               color: Colors.white,
             ),
@@ -530,6 +586,59 @@ class _ArenaComponent extends Component {
         3 * u * (s.life / 0.8).clamp(0.2, 1.0),
         Paint()
           ..color = s.color.withValues(alpha: (s.life / 0.6).clamp(0.0, 1.0)),
+      );
+    }
+    canvas.restore();
+    if (w < 600 && h > w) {
+      final map = Rect.fromLTWH(
+        w - 122 - game.safeInsets.right,
+        h - 106 - game.safeInsets.bottom,
+        106,
+        72,
+      );
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(map.inflate(7), const Radius.circular(12)),
+        Paint()..color = BrickColors.chrome.withValues(alpha: 0.95),
+      );
+      final miniScale = map.width / arena.width;
+      for (final wall in arena.walls) {
+        canvas.drawRect(
+          Rect.fromLTWH(
+            map.left + wall.x * miniScale,
+            map.top + wall.y * miniScale,
+            wall.w * miniScale,
+            wall.h * miniScale,
+          ),
+          Paint()..color = const Color(0xFF63C8D8),
+        );
+      }
+      for (final entry in game._states.entries) {
+        final state = entry.value;
+        canvas.drawCircle(
+          Offset(map.left + state.x * miniScale, map.top + state.y * miniScale),
+          entry.key == game.client.myId ? 3 : 2,
+          Paint()
+            ..color = entry.key == game.client.myId
+                ? BrickColors.sun
+                : state.isTagger
+                ? BrickColors.brick
+                : state.frozen
+                ? Colors.lightBlueAccent
+                : Colors.white,
+        );
+      }
+      final visible = Rect.fromLTWH(
+        map.left + (camera.bounds.left - ox) / scale * miniScale,
+        map.top + (camera.bounds.top - oy) / scale * miniScale,
+        camera.bounds.width / scale * miniScale,
+        camera.bounds.height / scale * miniScale,
+      ).intersect(map);
+      canvas.drawRect(
+        visible,
+        Paint()
+          ..color = Colors.white54
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1,
       );
     }
   }

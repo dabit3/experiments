@@ -33,15 +33,13 @@ class Panel extends StatelessWidget {
       color: color ?? p.surface1,
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(color: borderColor ?? p.outline),
-      boxShadow: elevated
-          ? [
-              BoxShadow(
-                color: p.shadow,
-                blurRadius: 24,
-                offset: const Offset(0, 10),
-              ),
-            ]
-          : null,
+      boxShadow: [
+        BoxShadow(
+          color: p.shadow,
+          blurRadius: elevated ? 24 : 0,
+          offset: Offset(0, elevated ? 10 : 3),
+        ),
+      ],
     );
     final body = Padding(padding: padding, child: child);
     if (onTap == null) {

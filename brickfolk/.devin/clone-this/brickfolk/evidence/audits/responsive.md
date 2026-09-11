@@ -1,5 +1,8 @@
 # Responsive audit
 
+Arcade redesign verification: see `arcade-ui.md` for 320px search, enlarged text,
+camera/minimap, actual arena-wall clearance and native keyboard evidence.
+
 Breakpoints (`app/lib/src/theme/tokens.dart`): phone < 600 dp, tablet < 960 dp,
 desktop >= 1280 dp; content is centred with `ContentWidth` on wide layouts.
 

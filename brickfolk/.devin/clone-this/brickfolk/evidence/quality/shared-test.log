@@ -9,8 +9,8 @@
 00:00 +7: test/games_test.dart: tag players never end up inside walls
 00:00 +8: test/games_test.dart: tag players never end up inside walls
 00:00 +9: test/games_test.dart: tag players never end up inside walls
-00:00 +10: test/obby_test.dart: lag-compensated autopilot finishes with 6 ticks of input lag
-00:00 +11: test/games_test.dart: tag state packs round-trip
+00:00 +10: test/games_test.dart: tag players never end up inside walls
+00:00 +11: test/obby_test.dart: lag-compensated autopilot finishes with 12 ticks of input lag
 00:00 +12: test/obby_test.dart: lag-compensated autopilot finishes with 12 ticks of input lag
 00:00 +13: test/obby_test.dart: lag-compensated autopilot finishes with 20 ticks of input lag
 00:00 +14: test/obby_test.dart: lag-compensated autopilot finishes with 30 ticks of input lag

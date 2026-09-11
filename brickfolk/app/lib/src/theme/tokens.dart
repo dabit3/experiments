@@ -3,32 +3,29 @@ import 'package:flutter/material.dart';
 /// Brickfolk design tokens. Every screen composes from these rather than
 /// hard-coding numbers so all four platforms render identically.
 ///
-/// Neutral ramps follow the near-black / cool-grey convention of modern game
-/// platform shells (dark `#191A1F` base, `#2A2B32` / `#35363D` raised
-/// surfaces, `#F2F4F5` light base) with one vivid blue system accent.
 abstract final class BrickColors {
-  static const brick = Color(0xFFFF6B4A);
+  static const brick = Color(0xFFFF7856);
   static const brickDark = Color(0xFFD94E31);
-  static const sky = Color(0xFF335FFF);
+  static const sky = Color(0xFF526BFF);
   static const skyDark = Color(0xFF2A4FD6);
-  static const mint = Color(0xFF00B06F);
-  static const sun = Color(0xFFF5C04A);
+  static const mint = Color(0xFF21CB9C);
+  static const sun = Color(0xFFFFD454);
   static const grape = Color(0xFF8C5CF6);
   static const cherry = Color(0xFFE8455C);
-  static const ink = Color(0xFF191A1F);
-  static const ink2 = Color(0xFF232529);
-  static const ink3 = Color(0xFF2A2B32);
-  static const ink4 = Color(0xFF35363D);
-  static const paper = Color(0xFFF2F4F5);
+  static const ink = Color(0xFF0D1226);
+  static const ink2 = Color(0xFF171F39);
+  static const ink3 = Color(0xFF222D4C);
+  static const ink4 = Color(0xFF334064);
+  static const paper = Color(0xFFF1F3FC);
   static const paper2 = Color(0xFFFFFFFF);
-  static const paper3 = Color(0xFFE3E5E8);
-  static const paper4 = Color(0xFFD1D4D8);
+  static const paper3 = Color(0xFFE6EAF7);
+  static const paper4 = Color(0xFFCCD4EB);
   static const slate = Color(0xFF606162);
   static const slateLight = Color(0xFF8F9092);
 
   /// The app chrome (top bar, bottom tabs) stays near-black in both themes.
-  static const chrome = Color(0xFF191A1F);
-  static const chromeRaised = Color(0xFF232529);
+  static const chrome = Color(0xFF10172E);
+  static const chromeRaised = Color(0xFF222C4B);
   static const onChrome = Color(0xFFFFFFFF);
   static const onChromeMuted = Color(0xFFBDBEBE);
 }
@@ -45,10 +42,10 @@ abstract final class Space {
 }
 
 abstract final class Radii {
-  static const sm = 6.0;
-  static const md = 8.0;
-  static const lg = 12.0;
-  static const xl = 16.0;
+  static const sm = 10.0;
+  static const md = 14.0;
+  static const lg = 20.0;
+  static const xl = 28.0;
   static const pill = 999.0;
 }
 
@@ -120,8 +117,8 @@ class BrickPalette extends ThemeExtension<BrickPalette> {
     surface2: BrickColors.ink3,
     surface3: BrickColors.ink4,
     textPrimary: Color(0xFFFFFFFF),
-    textSecondary: Color(0xFFBDBEBE),
-    textTertiary: Color(0xFF8B8D90),
+    textSecondary: Color(0xFFBCC8E5),
+    textTertiary: Color(0xFF9CAACA),
     outline: Color(0x1AFFFFFF),
     success: BrickColors.mint,
     warning: BrickColors.sun,

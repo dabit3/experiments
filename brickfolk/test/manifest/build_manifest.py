@@ -185,7 +185,7 @@ def build_items(ev, e2e, tycoon, tag):
              "Procedurally painted blocky avatars, hats, faces and accessories (no third-party art)",
              ev(f"{a}/assets.md", f"{vis}/web-avatar.png")),
         item("asset-place-thumbnails", "asset",
-             "Procedural place thumbnails per experience",
+             "Original illustrated world covers with procedural fallback per experience",
              ev(f"{a}/assets.md", f"{vis}/web-hub.png")),
         item("asset-brand", "asset",
              "Brickfolk wordmark and brick logo painted in code",

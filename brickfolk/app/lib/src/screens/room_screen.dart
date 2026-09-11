@@ -11,6 +11,7 @@ import '../game/tag_view.dart';
 import '../game/tycoon_view.dart';
 import '../net/client.dart';
 import '../theme/tokens.dart';
+import '../widgets/arcade.dart';
 import '../widgets/avatar_painter.dart';
 import '../widgets/common.dart';
 import 'chat_panel.dart';
@@ -189,6 +190,49 @@ class _LobbyView extends StatelessWidget {
       ),
     );
 
+    final stage = ClipRRect(
+      borderRadius: BorderRadius.circular(Radii.lg),
+      child: SizedBox(
+        height: wide ? 160 : 128,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            WorldArt(room.experience),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xF00D1226), Color(0x330D1226)],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(Space.xl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const ArcadeLabel('THE CREW IS ASSEMBLING'),
+                  const SizedBox(height: Space.sm),
+                  Text(
+                    'Next stop: adventure.',
+                    style: context.text.headlineMedium?.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: Space.xs),
+                  Text(
+                    place.name,
+                    style: context.text.bodySmall?.copyWith(
+                      color: Colors.white70,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
     final seats = Panel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +241,7 @@ class _LobbyView extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Players · ${humans.length}/$maxRoomPlayers',
+                  'Your crew · ${humans.length}/$maxRoomPlayers',
                   style: context.text.titleMedium,
                 ),
               ),
@@ -293,24 +337,13 @@ class _LobbyView extends StatelessWidget {
             ),
           ),
           const SizedBox(width: Space.md),
-          SizedBox(
-            height: 48,
-            child: FilledButton.icon(
-              style: FilledButton.styleFrom(
-                backgroundColor: BrickColors.mint,
-                padding: const EdgeInsets.symmetric(horizontal: Space.xl),
-                textStyle: context.text.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              onPressed: me == null ? null : () => client.roomReady(!me.ready),
-              icon: Icon(
-                (me?.ready ?? false)
-                    ? Icons.check_rounded
-                    : Icons.sports_esports_rounded,
-              ),
-              label: Text((me?.ready ?? false) ? 'Ready!' : 'Ready up'),
-            ),
+          ArcadeButton(
+            color: (me?.ready ?? false) ? BrickColors.mint : BrickColors.sun,
+            onPressed: me == null ? null : () => client.roomReady(!me.ready),
+            icon: (me?.ready ?? false)
+                ? Icons.check_rounded
+                : Icons.sports_esports_rounded,
+            label: (me?.ready ?? false) ? 'Ready!' : 'Ready up',
           ),
         ],
       ),
@@ -329,6 +362,7 @@ class _LobbyView extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
+        const Positioned.fill(child: ArcadeBackdrop(child: SizedBox.expand())),
         SafeArea(
           top: false,
           child: Column(
@@ -365,6 +399,8 @@ class _LobbyView extends StatelessWidget {
                                 flex: 3,
                                 child: ListView(
                                   children: [
+                                    stage,
+                                    const SizedBox(height: Space.lg),
                                     Entrance(child: seats),
                                     const SizedBox(height: Space.lg),
                                     Entrance(
@@ -393,6 +429,8 @@ class _LobbyView extends StatelessWidget {
                       : ListView(
                           padding: const EdgeInsets.all(Space.lg),
                           children: [
+                            stage,
+                            const SizedBox(height: Space.lg),
                             Entrance(child: seats),
                             const SizedBox(height: Space.lg),
                             Entrance(
@@ -508,7 +546,13 @@ class _Seat extends StatelessWidget {
       padding: const EdgeInsets.all(Space.sm),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Radii.md),
-        color: m.ready ? BrickColors.mint.withValues(alpha: 0.12) : p.surface2,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: m.ready
+              ? [BrickColors.mint.withValues(alpha: 0.22), p.surface1]
+              : [p.surface3, p.surface2],
+        ),
         border: Border.all(
           color: mine
               ? BrickColors.sky
@@ -949,9 +993,12 @@ class _HudPill extends StatelessWidget {
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+        color: BrickColors.chrome.withValues(alpha: 0.94),
+        borderRadius: BorderRadius.circular(Radii.md),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.24)),
+        boxShadow: const [
+          BoxShadow(color: Color(0x44000000), offset: Offset(0, 3)),
+        ],
       ),
       child: child,
     );
@@ -972,13 +1019,13 @@ class _Timer extends StatelessWidget {
         children: [
           Icon(
             Icons.timer_outlined,
-            size: 16,
-            color: urgent ? BrickColors.cherry : Colors.white70,
+            size: 20,
+            color: urgent ? BrickColors.cherry : BrickColors.sun,
           ),
           const SizedBox(width: Space.xs),
           Text(
             '${seconds ~/ 60}:${(seconds % 60).toString().padLeft(2, '0')}',
-            style: context.text.titleMedium?.copyWith(
+            style: context.text.titleLarge?.copyWith(
               color: urgent ? BrickColors.cherry : Colors.white,
               fontFeatures: const [FontFeature.tabularFigures()],
             ),
@@ -1004,12 +1051,12 @@ class _HudSquare extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final button = Material(
-      color: Colors.black.withValues(alpha: 0.55),
+      color: BrickColors.chrome.withValues(alpha: 0.94),
       borderRadius: BorderRadius.circular(Radii.md),
       child: InkWell(
         onTap: onPressed,
         borderRadius: BorderRadius.circular(Radii.md),
-        child: SizedBox(width: 36, height: 36, child: Center(child: child)),
+        child: SizedBox(width: 44, height: 44, child: Center(child: child)),
       ),
     );
     return tooltip == null ? button : Tooltip(message: tooltip!, child: button);
@@ -1296,137 +1343,153 @@ class _ResultsView extends StatelessWidget {
           stops: const [0, 0.45],
         ),
       ),
-      child: SafeArea(
-        child: ContentWidth(
-          max: 900,
-          child: ListView(
-            padding: const EdgeInsets.all(Space.lg),
-            children: [
-              Entrance(
-                child: Column(
-                  children: [
-                    const SizedBox(height: Space.md),
-                    Text(
-                      mine == null
-                          ? 'MATCH OVER'
-                          : (mine.rank == 1 ? 'VICTORY' : 'MATCH OVER'),
-                      style: context.text.labelLarge?.copyWith(
-                        color: p.textTertiary,
-                        letterSpacing: 4,
-                      ),
-                    ),
-                    const SizedBox(height: Space.xs),
-                    Text(
-                      place.name,
-                      style: context.text.displaySmall,
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: Space.xs),
-                    Text(
-                      mine == null
-                          ? 'You spectated this one.'
-                          : 'You placed #${mine.rank} of ${results.entries.length} · ${mine.detail}'
-                                '${mine.pipsEarned > 0 ? ' · +${mine.pipsEarned} Pips' : ''}',
-                      style: context.text.bodyLarge?.copyWith(
-                        color: p.textSecondary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: Space.xl),
-              Entrance(
-                delay: const Duration(milliseconds: 120),
-                child: _Podium(entries: podium, accent: accent),
-              ),
-              const SizedBox(height: Space.xl),
-              Entrance(
-                delay: const Duration(milliseconds: 240),
-                child: Panel(
-                  padding: EdgeInsets.zero,
+      child: ArcadeBackdrop(
+        celebrate: true,
+        child: SafeArea(
+          child: ContentWidth(
+            max: 900,
+            child: ListView(
+              padding: const EdgeInsets.all(Space.lg),
+              children: [
+                Entrance(
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(
-                          Space.lg,
-                          Space.lg,
-                          Space.lg,
-                          Space.sm,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Leaderboard',
-                                style: context.text.titleMedium,
-                              ),
-                            ),
-                            Tooltip(
-                              message: 'Every client shows the same ranking; this digest proves it.',
-                              child: Tag(
-                                'Match ${results.checksum.substring(0, 8)}',
-                                icon: Icons.fingerprint_rounded,
-                              ),
-                            ),
-                          ],
-                        ),
+                      const SizedBox(height: Space.md),
+                      const Icon(
+                        Icons.emoji_events_rounded,
+                        size: 40,
+                        color: BrickColors.sun,
                       ),
-                      for (final e in results.entries)
-                        _ResultRow(
-                          entry: e,
-                          mine: e.player.id == client.myId,
-                          wide: wide,
+                      const SizedBox(height: Space.md),
+                      ArcadeLabel(place.name, color: p.textSecondary),
+                      const SizedBox(height: Space.xs),
+                      Text(
+                        mine?.rank == 1 ? 'YOU DID THAT!' : 'WHAT A ROUND.',
+                        style: wide
+                            ? context.text.displayLarge
+                            : context.text.displaySmall,
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: Space.xs),
+                      Text(
+                        mine == null
+                            ? 'You spectated this one.'
+                            : 'You placed #${mine.rank} of ${results.entries.length} · ${mine.detail}'
+                                  '${mine.pipsEarned > 0 ? ' · +${mine.pipsEarned} Pips' : ''}',
+                        style: context.text.bodyLarge?.copyWith(
+                          color: p.textSecondary,
                         ),
-                      const SizedBox(height: Space.sm),
+                        textAlign: TextAlign.center,
+                      ),
+                      if (mine != null && mine.pipsEarned > 0) ...[
+                        const SizedBox(height: Space.md),
+                        Tag(
+                          '+${mine.pipsEarned} PIPS EARNED',
+                          icon: Icons.stars_rounded,
+                          color: BrickColors.sun,
+                          onColor: BrickColors.ink,
+                        ),
+                      ],
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(height: Space.xl),
-              Entrance(
-                delay: const Duration(milliseconds: 320),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: client.roomLeave,
-                        icon: const Icon(Icons.home_outlined),
-                        label: Text(
-                          wide ? 'Back to hub' : 'Hub',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: Space.md),
-                    Expanded(
-                      flex: wide ? 2 : 1,
-                      child: FilledButton.icon(
-                        style: FilledButton.styleFrom(backgroundColor: accent),
-                        onPressed: null,
-                        icon: const Icon(Icons.replay_rounded),
-                        label: Text(
-                          left == null
-                              ? 'Next lobby soon'
-                              : wide
-                              ? 'Lobby opens in ${left}s'
-                              : 'Lobby in ${left}s',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ],
+                const SizedBox(height: Space.xl),
+                Entrance(
+                  delay: const Duration(milliseconds: 120),
+                  child: _Podium(entries: podium, accent: accent),
                 ),
-              ),
-              const SizedBox(height: Space.md),
-              Text(
-                'Match lasted ${(results.durationMs / 1000).toStringAsFixed(1)}s · room ${results.roomCode} · seed ${room.seed}',
-                textAlign: TextAlign.center,
-                style: context.text.bodySmall?.copyWith(color: p.textTertiary),
-              ),
-            ],
+                const SizedBox(height: Space.xl),
+                Entrance(
+                  delay: const Duration(milliseconds: 240),
+                  child: Panel(
+                    padding: EdgeInsets.zero,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(
+                            Space.lg,
+                            Space.lg,
+                            Space.lg,
+                            Space.sm,
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Leaderboard',
+                                  style: context.text.titleMedium,
+                                ),
+                              ),
+                              Tooltip(
+                                message: 'Every client shows the same ranking; this digest proves it.',
+                                child: Tag(
+                                  'Match ${results.checksum.substring(0, 8)}',
+                                  icon: Icons.fingerprint_rounded,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        for (final e in results.entries)
+                          _ResultRow(
+                            entry: e,
+                            mine: e.player.id == client.myId,
+                            wide: wide,
+                          ),
+                        const SizedBox(height: Space.sm),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: Space.xl),
+                Entrance(
+                  delay: const Duration(milliseconds: 320),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          onPressed: client.roomLeave,
+                          icon: const Icon(Icons.home_outlined),
+                          label: Text(
+                            wide ? 'Back to hub' : 'Hub',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: Space.md),
+                      Expanded(
+                        flex: wide ? 2 : 1,
+                        child: FilledButton.icon(
+                          style: FilledButton.styleFrom(
+                            backgroundColor: accent,
+                          ),
+                          onPressed: null,
+                          icon: const Icon(Icons.replay_rounded),
+                          label: Text(
+                            left == null
+                                ? 'Next lobby soon'
+                                : wide
+                                ? 'Lobby opens in ${left}s'
+                                : 'Lobby in ${left}s',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: Space.md),
+                Text(
+                  'Match lasted ${(results.durationMs / 1000).toStringAsFixed(1)}s · room ${results.roomCode} · seed ${room.seed}',
+                  textAlign: TextAlign.center,
+                  style: context.text.bodySmall?.copyWith(
+                    color: p.textTertiary,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -1519,7 +1582,14 @@ class _Podium extends StatelessWidget {
                         builder: (context, h, _) => Container(
                           height: h,
                           decoration: BoxDecoration(
-                            color: colors[i],
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Color.lerp(colors[i], Colors.white, 0.25)!,
+                                colors[i],
+                              ],
+                            ),
                             borderRadius: const BorderRadius.vertical(
                               top: Radius.circular(Radii.md),
                             ),
@@ -1539,7 +1609,7 @@ class _Podium extends StatelessWidget {
                           child: Text(
                             '${order[i]!.rank}',
                             style: context.text.headlineMedium?.copyWith(
-                              color: Colors.white,
+                              color: BrickColors.ink,
                             ),
                           ),
                         ),
