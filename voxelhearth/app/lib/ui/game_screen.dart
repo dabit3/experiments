@@ -343,7 +343,6 @@ class OverlayPainter extends CustomPainter {
     if (!g.inputBlocked) _crosshair(canvas, size);
   }
 
-  /// 9x9 inverted plus, plus a thin progress bar under it while breaking.
   void _crosshair(Canvas c, Size size) {
     final cx = (size.width / 2 / s).floorToDouble(), cy = (size.height / 2 / s).floorToDouble();
     final p = Paint()
@@ -352,8 +351,13 @@ class OverlayPainter extends CustomPainter {
     c.drawRect(Rect.fromLTWH((cx - 4) * s, cy * s, 9.0 * s, 1.0 * s), p);
     c.drawRect(Rect.fromLTWH(cx * s, (cy - 4) * s, 1.0 * s, 9.0 * s), p);
     if (g.breaking && g.breakProgress > 0) {
-      pxRect(c, s, cx - 9, cy + 7, 19, 3, const Color(0x80000000));
-      pxRect(c, s, cx - 8, cy + 8, (17 * g.breakProgress).clamp(0, 17), 1, Px.white);
+      final ring = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = s.toDouble()
+        ..strokeCap = StrokeCap.round;
+      final rect = Rect.fromCircle(center: Offset((cx + 0.5) * s, (cy + 0.5) * s), radius: 9.0 * s);
+      c.drawArc(rect, -math.pi / 2, math.pi * 2, false, ring..color = const Color(0x99071e2b));
+      c.drawArc(rect, -math.pi / 2, math.pi * 2 * g.breakProgress.clamp(0, 1), false, ring..color = Px.gold);
     }
   }
 

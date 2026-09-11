@@ -8,6 +8,7 @@ import 'package:voxelhearth_core/voxelhearth_core.dart';
 import '../audio.dart';
 import '../game/atlas.dart';
 import '../game/game_controller.dart' show itemTileFor;
+import 'arcade.dart';
 
 /// Voxelhearth's pixel GUI system. Every widget here is laid out on a
 /// "GUI pixel" grid: one GUI pixel is [Gui.of] logical pixels, so panels,
@@ -31,28 +32,28 @@ class Gui {
 /// Palette shared by every pixel widget.
 class Px {
   static const white = Color(0xffffffff);
-  static const gray = Color(0xffa0a0a0);
+  static const gray = Color(0xffb4ccd3);
   static const darkGray = Color(0xff404040);
-  static const yellow = Color(0xffffff55);
-  static const hoverText = Color(0xffffffa0);
-  static const red = Color(0xffff5555);
-  static const green = Color(0xff55ff55);
-  static const aqua = Color(0xff55ffff);
-  static const gold = Color(0xffffaa00);
-  static const xp = Color(0xff80ff20);
+  static const yellow = Hearth.gold;
+  static const hoverText = Hearth.cream;
+  static const red = Color(0xffff887d);
+  static const green = Hearth.teal;
+  static const aqua = Color(0xff8adcf0);
+  static const gold = Hearth.gold;
+  static const xp = Hearth.teal;
 
-  static const panel = Color(0xffc6c6c6);
-  static const panelLight = Color(0xffffffff);
-  static const panelDark = Color(0xff555555);
-  static const slot = Color(0xff8b8b8b);
-  static const slotDark = Color(0xff373737);
+  static const panel = Color(0xffe6dfc9);
+  static const panelLight = Hearth.cream;
+  static const panelDark = Color(0xff8a9f9c);
+  static const slot = Color(0xffafbeba);
+  static const slotDark = Color(0xff5c7a7d);
 
-  static const btn = Color(0xff6f6f6f);
-  static const btnLight = Color(0xffa8a8a8);
-  static const btnDark = Color(0xff4a4a4a);
-  static const btnHover = Color(0xff7d89c1);
-  static const btnHoverLight = Color(0xffbec6ea);
-  static const btnHoverDark = Color(0xff535a8b);
+  static const btn = Color(0xff214452);
+  static const btnLight = Color(0xff4e7986);
+  static const btnDark = Color(0xff102e3b);
+  static const btnHover = Color(0xff326758);
+  static const btnHoverLight = Hearth.teal;
+  static const btnHoverDark = Color(0xff183e3b);
   static const btnDisabled = Color(0xff353535);
   static const btnDisabledLight = Color(0xff4d4d4d);
   static const btnDisabledDark = Color(0xff262626);
@@ -61,8 +62,8 @@ class Px {
   static const dirtTintLight = Color(0xff8a8a8a);
   static const listTint = Color(0xff202020);
 
-  static const dim = Color(0xc0101010);
-  static const dimDeep = Color(0xd0101010);
+  static const dim = Color(0xd0071e2b);
+  static const dimDeep = Color(0xed071e2b);
 
   /// Font size in GUI pixels; one text line is [lineHeight] GUI pixels.
   static const font = 9.0;
@@ -289,22 +290,24 @@ class _DirtPainter extends CustomPainter {
 
   @override
   void paint(Canvas c, Size size) {
-    final d = dirt;
-    if (d == null) {
-      c.drawRect(Offset.zero & size, Paint()..color = const Color(0xff2f2419));
-      return;
+    c.drawRect(
+      Offset.zero & size,
+      Paint()
+        ..shader = const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xff193f4b), Hearth.ink, Color(0xff102b34)],
+        ).createShader(Offset.zero & size),
+    );
+    final grid = Paint()
+      ..color = const Color(0x0c70e2c4)
+      ..strokeWidth = 1;
+    final step = 24.0 * s;
+    for (double x = -size.height; x < size.width; x += step) {
+      c.drawLine(Offset(x, 0), Offset(x + size.height, size.height), grid);
+      c.drawLine(Offset(x + size.height, 0), Offset(x, size.height), grid);
     }
-    final k = 2.0 * s;
-    final paint = Paint()
-      ..shader = ui.ImageShader(
-        d,
-        TileMode.repeated,
-        TileMode.repeated,
-        Matrix4.diagonal3Values(k, k, 1).storage,
-        filterQuality: FilterQuality.none,
-      )
-      ..colorFilter = ColorFilter.mode(tint, BlendMode.modulate);
-    c.drawRect(Offset.zero & size, paint);
+    c.drawRect(Rect.fromLTWH(0, 0, size.width, s.toDouble()), Paint()..color = const Color(0x5070e2c4));
   }
 
   @override
@@ -336,6 +339,7 @@ class PxButton extends StatefulWidget {
     this.sound = 'ui_tap',
     this.semanticsLabel,
     this.textColor,
+    this.primary = false,
   });
   final String label;
   final VoidCallback? onPressed;
@@ -343,6 +347,7 @@ class PxButton extends StatefulWidget {
   final String sound;
   final String? semanticsLabel;
   final Color? textColor;
+  final bool primary;
 
   @override
   State<PxButton> createState() => _PxButtonState();
@@ -350,45 +355,98 @@ class PxButton extends StatefulWidget {
 
 class _PxButtonState extends State<PxButton> {
   bool _hover = false;
+  bool _focus = false;
+  bool _pressed = false;
+
+  void _activate() {
+    if (widget.onPressed == null) return;
+    Sfx.play(widget.sound);
+    HapticFeedback.selectionClick();
+    widget.onPressed!();
+  }
 
   @override
   Widget build(BuildContext context) {
     final s = Gui.of(context);
     final enabled = widget.onPressed != null;
-    final hover = _hover && enabled;
+    final hover = (_hover || _focus) && enabled;
     return Semantics(
       button: true,
       enabled: enabled,
       label: widget.semanticsLabel ?? widget.label,
-      child: MouseRegion(
-        cursor: enabled ? SystemMouseCursors.click : MouseCursor.defer,
-        onEnter: (_) => setState(() => _hover = true),
-        onExit: (_) => setState(() => _hover = false),
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: enabled
-              ? () {
-                  Sfx.play(widget.sound);
-                  widget.onPressed!();
-                }
-              : null,
-          child: CustomPaint(
-            size: Size(widget.width * s, widget.height * s),
-            painter: _ButtonPainter(s, hover: hover, enabled: enabled),
-            child: SizedBox(
-              width: widget.width * s,
-              height: widget.height * s,
-              child: Center(
-                child: PxText(
-                  widget.label,
-                  color:
-                      widget.textColor ??
-                      (!enabled
-                          ? Px.gray
-                          : hover
-                          ? Px.hoverText
-                          : Px.white),
-                  maxLines: 1,
+      child: FocusableActionDetector(
+        enabled: enabled,
+        onShowFocusHighlight: (value) => setState(() => _focus = value),
+        actions: <Type, Action<Intent>>{
+          ActivateIntent: CallbackAction<ActivateIntent>(
+            onInvoke: (_) {
+              _activate();
+              return null;
+            },
+          ),
+        },
+        child: MouseRegion(
+          cursor: enabled ? SystemMouseCursors.click : MouseCursor.defer,
+          onEnter: (_) => setState(() => _hover = true),
+          onExit: (_) => setState(() => _hover = false),
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTapDown: enabled ? (_) => setState(() => _pressed = true) : null,
+            onTapUp: (_) => setState(() => _pressed = false),
+            onTapCancel: () => setState(() => _pressed = false),
+            onTap: enabled ? _activate : null,
+            child: AnimatedContainer(
+              duration: MediaQuery.disableAnimationsOf(context) ? Duration.zero : const Duration(milliseconds: 140),
+              transform: Matrix4.translationValues(0, _pressed ? 2 : 0, 0),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: !enabled
+                      ? const [Color(0xff203640), Color(0xff192e38)]
+                      : widget.primary
+                      ? [hover ? const Color(0xffffdfa2) : Hearth.gold, const Color(0xffe9a950)]
+                      : [hover ? const Color(0xff2d5c63) : const Color(0xff214452), Hearth.navy],
+                ),
+                borderRadius: BorderRadius.circular(4.0 * s),
+                border: Border.all(
+                  color: hover
+                      ? Hearth.teal
+                      : widget.primary
+                      ? Hearth.gold
+                      : const Color(0xff476470),
+                  width: hover ? 2 : 1,
+                ),
+                boxShadow: [
+                  if (enabled)
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.3),
+                      offset: Offset(0, _pressed ? 1 : 3),
+                      blurRadius: 0,
+                    ),
+                  if (hover) BoxShadow(color: Hearth.teal.withValues(alpha: 0.14), blurRadius: 16),
+                ],
+              ),
+              child: SizedBox(
+                width: widget.width * s,
+                height: widget.height * s,
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2.0 * s),
+                    child: Text(
+                      widget.label,
+                      style: arcadeType(
+                        Px.font * s,
+                        color: !enabled
+                            ? const Color(0xff82999f)
+                            : widget.primary
+                            ? Hearth.ink
+                            : widget.textColor ?? Hearth.cream,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -763,12 +821,11 @@ class PxListEntry extends StatelessWidget {
         width: width == null ? null : width! * s,
         height: height * s,
         padding: EdgeInsets.all((selected ? 1.0 : 2.0) * s),
-        decoration: selected
-            ? BoxDecoration(
-                color: Colors.black,
-                border: Border.all(color: Px.slot, width: s.toDouble()),
-              )
-            : null,
+        decoration: BoxDecoration(
+          color: selected ? const Color(0xff245153) : const Color(0x80102e3b),
+          border: Border.all(color: selected ? Hearth.teal : const Color(0xff2d4c58)),
+          borderRadius: BorderRadius.circular(3.0 * s),
+        ),
         child: child,
       ),
     );
@@ -945,7 +1002,7 @@ class PxScreen extends StatelessWidget {
       children: [
         if (title != null) ...[
           SizedBox(height: titleY * s),
-          PxText(title!, align: TextAlign.center),
+          ArcadeHeading(title!, compact: Gui.guiSize(context).height < 230),
           SizedBox(height: 10.0 * s),
         ],
         Expanded(child: child),

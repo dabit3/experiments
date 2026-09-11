@@ -28,6 +28,7 @@ flutter:
     - shaders/voxel.frag
   assets:
     - assets/audio/
+    - assets/hearth-keyart.png
   fonts:
     - family: Fraunces
       fonts:

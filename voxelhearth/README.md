@@ -49,16 +49,18 @@ See `.devin/clone-this/voxelhearth/` for the run manifest and evidence.
   players rendered with name tags, synchronized block edits, chat, per-player
   inventories, reconnection with the same identity (a dropped host keeps the
   role for 30 s so a quick rejoin keeps control).
-* **Pixel GUI** — every screen (home, create/join, lobby, pause, options,
-  results, inventory, crafting, kiln, chest, HUD) is laid out on an integer
-  GUI-pixel grid (`app/lib/ui/pixel.dart`): scale 2–4 chosen from the window,
-  an original pixel typeface (Pixelify Sans, OFL), dirt-tile and dimmed
-  backgrounds, bevelled buttons/fields/list boxes, 18×18 item slots in
-  176-GUI-px-wide panels, a 182×22 hotbar with 10-heart/10-food rows and an XP
-  bar above it, drop-shadowed text and a light-grey crosshair. Mobile runs
-  landscape-only with a square d-pad and squared action buttons. Proportions
-  follow the publicly documented conventions of the genre; textures, icons,
-  names and typography are original.
+* **Arcade presentation** — original floating-island title artwork, a bold
+  Outfit wordmark, drifting embers, navy/teal surfaces and honey-gold primary
+  actions. Buttons have pressed, hover, keyboard-focus and disabled states,
+  sound and haptic feedback. Lobby player cards, celebration particles and
+  ranked results carry the same visual language. Menus respect reduced
+  motion and compact landscape phone layouts. The gameplay GUI retains its
+  integer 2–4× grid, Pixelify Sans labels, 18×18 item slots, warm ivory
+  inventory panels and 182×22 hotbar. Gold block outlines and a circular
+  break-progress meter give direct feedback over teal skies and water.
+  Outfit and Pixelify Sans are licensed under the OFL; bundled license files
+  are in `app/assets/fonts/`. Title key art was generated specifically for
+  Voxelhearth; it is promotional illustration, not a gameplay screenshot.
 * **Feedback** — original procedurally generated sound cues (UI, dig, place,
   break, craft, eat, hurt, chat, match start/end; `tools/gen_audio.py`),
   haptics on touch platforms, both toggleable in settings.
@@ -180,7 +182,7 @@ Android emulator, starts a fresh `--test-mode --seed 1234` server, then runs
    cards, side-by-side web | iOS footage with platform labels, captions, a
    chapter timeline and a closing check summary. The editor is
    `test/tools/review-video.mjs` (`node review-video.mjs script.json out.mp4`;
-   Playwright renders the pixel-font overlays, FFmpeg composites them), driven
+   Playwright renders the Outfit/teal/gold overlays, FFmpeg composites them), driven
    by the `review-script.json` the e2e writes next to it.
 
 Output lands in

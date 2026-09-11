@@ -116,8 +116,8 @@ float dayLightAmount() {
 
 vec3 skyColor(vec3 d, float dayLight) {
   float e = sin(uDay * 2.0 * PI);
-  vec3 dayZenith = vec3(0.30, 0.55, 0.92);
-  vec3 dayHorizon = vec3(0.72, 0.84, 0.96);
+  vec3 dayZenith = vec3(0.18, 0.52, 0.67);
+  vec3 dayHorizon = vec3(0.80, 0.89, 0.85);
   vec3 nightZenith = vec3(0.015, 0.025, 0.06);
   vec3 nightHorizon = vec3(0.05, 0.07, 0.13);
   float t = clamp(e * 2.4 + 0.25, 0.0, 1.0);
@@ -515,6 +515,7 @@ void main() {
     float bright = mix(0.035, 1.0, pow(l, 1.5));
     float shade = faceShade(hitN, sun, dayLight);
     color = tex.rgb * shade * bright;
+    color *= mix(vec3(0.87, 0.98, 1.05), vec3(1.07, 1.02, 0.89), max(dot(hitN, sun), 0.0) * dayLight);
     // torch flame flicker & lantern warmth
     if (flag == 4.0 && hitUv.y < 0.35) color = tex.rgb * (1.3 + 0.3 * sin(uAnim * 14.0 + hp.x * 7.0));
     if (flag == 8.0) color = tex.rgb * 1.25;
@@ -524,7 +525,7 @@ void main() {
       vec2 e = min(hitUv, 1.0 - hitUv);
       float edge = min(e.x, e.y);
       float lineW = 0.012 * max(1.0, hitT * 0.9);
-      if (edge < lineW) color = mix(color, vec3(0.05), 0.85);
+      if (edge < lineW) color = mix(color, vec3(1.0, 0.80, 0.46), 0.85);
       if (uBreak > 0.0) {
         vec2 cu = hitUv * 16.0;
         float cr = hash12(floor(cu) + floor(hitCell.xy) * 3.0);
@@ -549,8 +550,8 @@ void main() {
   // Water surface & depth tint.
   if (waterT >= 0.0 && waterT < finalT) {
     float depth = finalT - waterT;
-    vec3 deep = vec3(0.05, 0.22, 0.42);
-    vec3 shallow = vec3(0.2, 0.5, 0.75);
+    vec3 deep = vec3(0.04, 0.25, 0.31);
+    vec3 shallow = vec3(0.20, 0.65, 0.60);
     float absorb = 1.0 - exp(-depth * 0.32);
     vec3 wcol = mix(shallow, deep, clamp(depth * 0.12, 0.0, 1.0));
     float wl = lightAt(floor(waterP + waterN * 0.01), dayLight);

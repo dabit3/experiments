@@ -7,6 +7,7 @@ import '../app_state.dart';
 import '../game/game_controller.dart';
 import '../game/renderer.dart';
 import '../net/game_client.dart';
+import 'arcade.dart';
 import 'chat_panel.dart';
 import 'game_screen.dart';
 import 'pixel.dart';
@@ -219,8 +220,9 @@ class HudPainter extends CustomPainter {
 
   void _hotbar(Canvas c, double cx, double h, RoomSession sess) {
     final x = cx - 91, y = h - 22;
-    pxRect(c, s, x + 1, y + 1, 180, 20, const Color(0x8a8b8b8b));
-    pxFrame(c, s, x, y, 182, 22, const Color(0x9e000000), notch: false);
+    pxRect(c, s, x + 1, y + 1, 180, 20, const Color(0xee102e3b));
+    pxFrame(c, s, x, y, 182, 22, const Color(0xff4e7986), notch: false);
+    pxRect(c, s, x + sess.selected * 20 + 1, y + 1, 22, 20, const Color(0xff365953));
     for (var i = 1; i < Inventory.hotbarSize; i++) {
       pxRect(c, s, x + i * 20, y + 1, 1, 20, const Color(0x40000000));
     }
@@ -228,9 +230,9 @@ class HudPainter extends CustomPainter {
       pxItem(c, assets.atlasImage, s, sess.inventory[i], x + 3 + i * 20, y + 3);
     }
     final sx = x - 1 + sess.selected * 20, sy = y - 1;
-    pxFrame(c, s, sx, sy, 24, 24, const Color(0xffffffff), notch: false);
-    pxFrame(c, s, sx + 1, sy + 1, 22, 22, const Color(0xff8b8b8b), notch: false);
-    pxRect(c, s, sx + 1, sy + 23, 22, 1, const Color(0xffffffff));
+    pxFrame(c, s, sx, sy, 24, 24, Hearth.gold, notch: false);
+    pxFrame(c, s, sx + 1, sy + 1, 22, 22, const Color(0xff80663e), notch: false);
+    pxRect(c, s, sx + 1, sy + 23, 22, 1, Hearth.gold);
   }
 
   void _hearts(Canvas c, double cx, double h, RoomSession sess) {
@@ -320,6 +322,8 @@ class HudPainter extends CustomPainter {
     if (text == null || alpha <= 0) return;
     final y = h - (survival ? 72 : 58);
     final tp = pxPainter(text, s, color: color.withValues(alpha: alpha));
+    pxRect(c, s, cx - tp.width / s / 2 - 5, y - 3, tp.width / s + 10, 16, Hearth.ink.withValues(alpha: alpha * 0.9));
+    pxRect(c, s, cx - tp.width / s / 2 - 5, y - 3, 1, 16, color.withValues(alpha: alpha));
     tp.paint(c, Offset(cx * s - tp.width / 2, y * s));
   }
 
@@ -387,7 +391,9 @@ class HudPainter extends CustomPainter {
     // top-right for the menu buttons, so the roster sits top-left instead.
     final x = touch ? 2.0 : w - width - 2, y0 = touch ? 2.0 : (h / 2 - total / 2).floorToDouble();
     if (touch) _rosterRight = x + width + 2;
-    pxRect(c, s, x, y0, width, lh, const Color(0x60000000));
+    pxRect(c, s, x - 2, y0 - 2, width + 4, total + 4, const Color(0xc9102e3b));
+    pxFrame(c, s, x - 2, y0 - 2, width + 4, total + 4, const Color(0x904e7986));
+    pxRect(c, s, x, y0, width, lh, const Color(0xff245153));
     final tt = pxPainter(title, s, color: Px.yellow);
     tt.paint(c, Offset((x + width / 2) * s - tt.width / 2, y0 * s));
     var y = y0 + lh;
@@ -641,16 +647,20 @@ class PauseOverlay extends StatelessWidget {
     final sess = game.session;
     final isHost = sess.hostId == sess.youId;
     final gui = Gui.guiSize(context);
-    final top = math.max(40.0, gui.height / 4 - 16);
+    final top = gui.height < 230 ? 12.0 : math.max(30.0, gui.height / 4 - 24);
     return Positioned.fill(
       child: DimBackground(
         child: SafeArea(
           child: Column(
             children: [
               SizedBox(height: top * s),
-              const PxText('Game Menu'),
-              SizedBox(height: 24.0 * s),
-              PxButton('Back to Game', onPressed: () => game.setPaused(false), sound: 'ui_back'),
+              ArcadeHeading(
+                'TAKE A BREATHER',
+                eyebrow: gui.height < 230 ? null : 'YOUR WORLD KEEPS TURNING',
+                compact: gui.height < 230,
+              ),
+              SizedBox(height: 12.0 * s),
+              PxButton('Back to Game', primary: true, onPressed: () => game.setPaused(false), sound: 'ui_back'),
               SizedBox(height: 4.0 * s),
               Row(
                 mainAxisSize: MainAxisSize.min,

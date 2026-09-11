@@ -40,10 +40,9 @@ const work = join(dirname(resolve(outPath)), '.review-work');
 rmSync(work, { recursive: true, force: true });
 mkdirSync(work, { recursive: true });
 const ff = (args, timeout = 600000) => execFileSync('ffmpeg', ['-y', '-loglevel', 'error', ...args], { stdio: ['ignore', 'pipe', 'pipe'], timeout });
-const fontPath = resolve(here, '../../app/assets/fonts/PixelifySans-Variable.ttf');
-// Inlined: about:blank pages rendered with setContent cannot load file:// fonts.
+const fontPath = resolve(here, '../../app/assets/fonts/Outfit-Variable.ttf');
 const fontFace = existsSync(fontPath)
-  ? `@font-face{font-family:Pixelify;src:url('data:font/ttf;base64,${readFileSync(fontPath).toString('base64')}')}`
+  ? `@font-face{font-family:HearthUi;src:url('https://review.voxelhearth.local/Outfit.ttf')}`
   : '';
 const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -76,33 +75,33 @@ const windows = {};
 const css = `
 ${fontFace}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:${W}px;height:${H}px;background:transparent;overflow:hidden;font-family:Pixelify,'Courier New',monospace;color:#fff}
-.bar{position:absolute;left:0;right:0;background:rgba(10,10,12,.92)}
-.top{top:0;height:130px;border-bottom:4px solid #3a3a3a}
-.bottom{top:970px;height:110px;border-top:4px solid #3a3a3a}
-.title{position:absolute;left:40px;top:22px;font-size:44px;text-shadow:4px 4px 0 #3f3f3f;letter-spacing:1px;white-space:nowrap;max-width:1500px;overflow:hidden;text-overflow:ellipsis}
+html,body{width:${W}px;height:${H}px;background:transparent;overflow:hidden;font-family:HearthUi,sans-serif;color:#fff4dc}
+.bar{position:absolute;left:0;right:0;background:rgba(7,30,43,.96)}
+.top{top:0;height:130px;border-bottom:2px solid #4e7986}
+.bottom{top:970px;height:110px;border-top:2px solid #4e7986}
+.title{position:absolute;left:40px;top:22px;font-size:44px;font-weight:800;letter-spacing:1px;white-space:nowrap;max-width:1450px;overflow:hidden;text-overflow:ellipsis}
 .sub{position:absolute;left:40px;top:80px;font-size:24px;color:#a0a0a0;white-space:nowrap}
-.chip{position:absolute;right:40px;top:30px;font-size:22px;color:#ffff55;border:3px solid #ffff55;padding:8px 16px}
+.chip{position:absolute;right:40px;top:30px;font-size:22px;color:#ffcc75;border:1px solid #ffcc75;border-radius:10px;padding:8px 16px}
 .caption{position:absolute;left:40px;top:14px;font-size:30px;text-shadow:3px 3px 0 #3f3f3f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .notes{position:absolute;left:40px;top:64px;font-size:20px;color:#a0a0a0;white-space:nowrap;overflow:hidden}
 .timeline{position:absolute;right:40px;top:22px;display:flex;gap:6px}
 .tl{height:14px;background:#404040;border:2px solid #202020}
-.tl.done{background:#55ff55}.tl.now{background:#ffff55}
+.tl.done{background:#70e2c4}.tl.now{background:#ffcc75}
 .tlabel{position:absolute;right:40px;top:52px;font-size:20px;color:#a0a0a0}
 .win{position:absolute;border:4px solid #000;box-shadow:0 0 0 4px #8b8b8b inset}
 .wlabel{position:absolute;font-size:22px;background:rgba(0,0,0,.8);padding:4px 12px;color:#fff}
-.card{position:absolute;inset:0;background:#0b0b0d url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2264%22 height=%2264%22><rect width=%2264%22 height=%2264%22 fill=%22%233d2b1f%22/><rect x=%228%22 y=%228%22 width=%2216%22 height=%2216%22 fill=%22%23342418%22/><rect x=%2240%22 y=%2232%22 width=%2216%22 height=%2216%22 fill=%22%23452f21%22/></svg>');}
-.card .shade{position:absolute;inset:0;background:rgba(0,0,0,.55)}
-.big{position:absolute;left:80px;right:80px;top:300px;text-align:center;font-size:96px;line-height:1.15;text-shadow:8px 8px 0 #3f3f3f}
+.card{position:absolute;inset:0;background:radial-gradient(ellipse at 80% 20%,#326758 0%,transparent 65%),repeating-linear-gradient(45deg,transparent 0px,transparent 79px,#ffffff07 80px,#ffffff07 81px),#071e2b;}
+.card .shade{position:absolute;inset:0;background:linear-gradient(0deg,#071e2baa,transparent);border:24px solid #ffffff05}
+.big{position:absolute;left:80px;right:80px;top:300px;text-align:center;font-weight:800;font-size:96px;line-height:1.15;letter-spacing:-3px}
 .mid{position:absolute;left:120px;right:120px;top:560px;text-align:center;font-size:40px;color:#a0a0a0;line-height:1.4}
 .small{position:absolute;left:0;right:0;top:960px;text-align:center;font-size:22px;color:#707070}
-.ctitle{position:absolute;left:0;right:0;top:120px;text-align:center;font-size:40px;color:#ffff55;text-shadow:4px 4px 0 #3f3f3f}
-.cbig{position:absolute;left:80px;right:80px;top:210px;text-align:center;font-size:110px;line-height:1.1;text-shadow:8px 8px 0 #3f3f3f}
+.ctitle{position:absolute;left:0;right:0;top:120px;text-align:center;font-size:28px;color:#70e2c4;letter-spacing:5px;text-transform:uppercase}
+.cbig{position:absolute;left:80px;right:80px;top:210px;text-align:center;font-weight:800;font-size:110px;line-height:1.1;letter-spacing:-3px}
 .ccap{position:absolute;left:160px;right:160px;top:440px;text-align:center;font-size:40px;color:#c6c6c6;line-height:1.4}
 .cnotes{position:absolute;left:260px;right:260px;top:660px;font-size:30px;color:#a0a0a0;line-height:1.6}
 .checks{position:absolute;left:200px;right:200px;top:250px;font-size:28px;line-height:1.65}
 .checks div{display:flex;gap:24px;align-items:baseline}
-.ok{color:#55ff55;min-width:110px}.fail{color:#ff5555;min-width:110px}
+.ok{color:#70e2c4;min-width:110px}.fail{color:#ff887d;min-width:110px}
 .summary{position:absolute;left:0;right:0;top:120px;text-align:center;font-size:72px;text-shadow:6px 6px 0 #3f3f3f}
 `;
 
@@ -142,6 +141,8 @@ const summaryHtml = () => {
 // ---------------------------------------------------------------- render overlays
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
+await page.route('https://review.voxelhearth.local/Outfit.ttf', route =>
+  route.fulfill({ path: fontPath, contentType: 'font/ttf', headers: { 'access-control-allow-origin': '*' } }));
 const renderPng = async (html, file, transparent) => {
   await page.setContent(html, { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);

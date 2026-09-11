@@ -8,6 +8,7 @@ import '../app_state.dart';
 import '../game/game_controller.dart';
 import '../game/renderer.dart';
 import '../net/game_client.dart';
+import 'arcade.dart';
 import 'chat_panel.dart';
 import 'game_screen.dart';
 import 'pixel.dart';
@@ -96,7 +97,12 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
         mainAxisSize: MainAxisSize.min,
         children: [
           if (isHost)
-            PxButton('Back to Lobby', width: 120, onPressed: () => widget.client.send({'t': Msg.backToLobby}))
+            PxButton(
+              'Back to Lobby',
+              primary: true,
+              width: 120,
+              onPressed: () => widget.client.send({'t': Msg.backToLobby}),
+            )
           else
             const PxButton('Waiting for host...', width: 120),
           SizedBox(width: 4.0 * gs),
@@ -114,23 +120,27 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
             child: VoxelCanvas(game: widget.game, assets: widget.assets, frame: frame),
           ),
           PxScreen(
-            background: const DimBackground(),
+            background: const Stack(fit: StackFit.expand, children: [DimBackground(), HearthBackdrop(celebrate: true)]),
             footer: footer,
             child: Column(
               children: [
                 SizedBox(height: (short ? 4.0 : 10.0) * gs),
-                PxText(
-                  rank == 1 ? 'You lit the hearth brightest!' : (rank == 0 ? 'Match Complete' : 'You placed #$rank'),
-                  size: short ? 1 : 2,
-                  color: rank == 1 ? Px.yellow : Px.white,
-                  align: TextAlign.center,
+                ArcadeHeading(
+                  rank == 1 ? 'A HEARTH TO REMEMBER' : 'ADVENTURE COMPLETE',
+                  eyebrow: short ? null : 'THE WORLD IS BETTER BECAUSE YOU BUILT IT',
+                  compact: short,
                 ),
                 SizedBox(height: 2.0 * gs),
-                PxText(
-                  '${s.roomName.isEmpty ? s.code : s.roomName}  ·  ${s.mode == GameMode.creative ? 'Creative' : 'Survival'}  ·  seed ${s.seed}',
-                  color: Px.gray,
-                  align: TextAlign.center,
-                  maxLines: 1,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.emoji_events_rounded, color: Hearth.gold, size: short ? 22 : 36),
+                    const SizedBox(width: 8),
+                    Text(
+                      rank == 0 ? 'Thanks for playing' : 'RANK #$rank  ·  ${you?.score ?? 0} POINTS',
+                      style: arcadeType(short ? 16 : 23, color: Hearth.gold),
+                    ),
+                  ],
                 ),
                 SizedBox(height: (short ? 4.0 : 8.0) * gs),
                 Expanded(
@@ -198,8 +208,13 @@ class _Scoreboard extends StatelessWidget {
       child: PxText(t, color: color, align: align, maxLines: 1),
     );
     Widget row(List<Widget> cells, {Color? bg}) => Container(
-      color: bg ?? const Color(0x60000000),
-      padding: EdgeInsets.symmetric(horizontal: 3.0 * gs, vertical: 2.0 * gs),
+      margin: EdgeInsets.only(bottom: 2.0 * gs),
+      decoration: BoxDecoration(
+        color: bg ?? const Color(0xe0102e3b),
+        borderRadius: BorderRadius.circular(3.0 * gs),
+        border: Border.all(color: const Color(0x404e7986)),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 3.0 * gs, vertical: 4.0 * gs),
       child: Row(children: cells),
     );
     final header = row([
@@ -214,7 +229,7 @@ class _Scoreboard extends StatelessWidget {
         Container(
           color: const Color(0x90000000),
           padding: EdgeInsets.symmetric(horizontal: 3.0 * gs, vertical: 2.0 * gs),
-          child: const PxText('Scoreboard', color: Px.yellow, align: TextAlign.center),
+          child: const PxText('THE BUILDERS CLUB', color: Px.yellow, align: TextAlign.center),
         ),
         header,
         for (var i = 0; i < sorted.length; i++)
@@ -248,8 +263,8 @@ class _Scoreboard extends StatelessWidget {
             cell('${sorted[i].broken}', cw[2]),
             cell('${sorted[i].crafted}', cw[3]),
             cell('${sorted[i].kills}', cw[4]),
-            cell('${sorted[i].score}', cw[5], color: Px.red),
-          ], bg: sorted[i].id == youId ? const Color(0x80303010) : null),
+            cell('${sorted[i].score}', cw[5], color: Px.gold),
+          ], bg: sorted[i].id == youId ? const Color(0xe0245153) : null),
         if (sorted.isEmpty) row([const Expanded(child: PxText('No players scored', color: Px.gray))]),
         SizedBox(height: 4.0 * gs),
         row([

@@ -8,6 +8,7 @@ import 'package:voxelhearth_core/voxelhearth_core.dart';
 import '../app_state.dart';
 import '../game/renderer.dart';
 import '../net/game_client.dart';
+import 'arcade.dart';
 import 'pixel.dart';
 import 'settings_sheet.dart';
 
@@ -27,12 +28,10 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> {
   late final TextEditingController _name = TextEditingController(text: widget.client.playerName);
   late final TextEditingController _server = TextEditingController(text: widget.client.serverUrl);
   final TextEditingController _code = TextEditingController();
-  late final AnimationController _bg = AnimationController(vsync: this, duration: const Duration(seconds: 60))
-    ..repeat();
   _Page _page = _Page.title;
   int? _selectedRoom;
   String? _notice;
@@ -52,7 +51,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     _name.dispose();
     _server.dispose();
     _code.dispose();
-    _bg.dispose();
     super.dispose();
   }
 
@@ -98,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    final bg = _Panorama(animation: _bg);
+    const bg = HearthBackdrop();
     return Scaffold(
       backgroundColor: Colors.black,
       body: switch (_page) {
@@ -131,23 +129,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   Widget _titleMenu(BuildContext context, Size box) {
     final s = Gui.of(context);
-    final gui = Size(box.width / s, box.height / s);
     final c = widget.client;
-    final short = gui.height < 230;
-    final logoScale = gui.width < 330 || short ? 2.2 : 3.0;
-    final logoTop = short ? 14.0 : 28.0;
-    final menuGap = short ? 8.0 : 16.0;
-    // Footer text sits on one line when the screen is wide enough for both
-    // strings, otherwise the legal line stacks above the status line.
-    final footerRows = gui.width >= 600 ? 1 : 2;
-    final menuHeight = 3 * 20 + 2 * 4 + menuGap + 20;
-    final taglineBottom = logoTop + Px.lineHeight * logoScale * 1.1 + 2 + Px.lineHeight;
-    final btnY = math.max(
-      taglineBottom + 6,
-      math.min((gui.height / 4 + 40).floorToDouble(), gui.height - menuHeight - footerRows * Px.lineHeight - 6),
-    );
+    final compact = box.height < 560;
+    final narrow = box.width < 600;
+    final margin = compact ? 22.0 : (box.width * 0.045).clamp(24.0, 72.0);
+    final menuWidth = math.min(box.width - margin * 2, compact ? 350.0 : 490.0);
+    final buttonW = menuWidth / s;
+    final titleSize = compact ? 49.0 : (box.width * 0.07).clamp(52.0, 100.0);
     final status = switch (c.state) {
-      ConnState.connected => 'Connected · ${c.pingMs} ms',
+      ConnState.connected => 'ONLINE · ${c.pingMs} ms',
       ConnState.connecting || ConnState.idle => 'Connecting...',
       ConnState.reconnecting => 'Reconnecting (${c.reconnectAttempt})...',
       ConnState.failed => 'Server offline',
@@ -157,76 +147,130 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ConnState.failed => Px.red,
       _ => Px.yellow,
     };
-    return Stack(
-      children: [
-        Positioned(
-          top: logoTop * s,
-          left: 0,
-          right: 0,
-          child: Column(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: margin, vertical: compact ? 12 : 28),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              PxWordmark(size: logoScale),
-              SizedBox(height: 2.0 * s),
-              const PxText('An original voxel sandbox', color: Px.gray, align: TextAlign.center),
+              const Icon(Icons.local_fire_department_rounded, color: Hearth.gold, size: 28),
+              const SizedBox(width: 8),
+              Text('HEARTHBOUND ADVENTURES', style: arcadeType(compact ? 10 : 13).copyWith(letterSpacing: 2)),
+              const Spacer(),
+              if (!narrow) ArcadeBadge(status, icon: Icons.wifi_rounded, color: statusColor),
             ],
           ),
-        ),
-        Positioned(
-          top: logoTop * s + Px.lineHeight * s * logoScale * 1.1 - 6.0 * s,
-          left: gui.width / 2 * s + (gui.width < 330 ? 44.0 : 62.0) * s * logoScale / 3,
-          child: Transform.rotate(
-            angle: -math.pi / 9,
-            child: _Splash(animation: _bg),
-          ),
-        ),
-        Positioned(
-          top: btnY * s,
-          left: 0,
-          right: 0,
-          child: Column(
-            children: [
-              PxButton('Play Online', onPressed: () => _go(_Page.play)),
-              SizedBox(height: 4.0 * s),
-              PxButton('Create World', onPressed: () => _go(_Page.create)),
-              SizedBox(height: 4.0 * s),
-              PxButton('Player Name: ${c.playerName}', onPressed: () => _go(_Page.name)),
-              SizedBox(height: menuGap * s),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  PxButton(
-                    'Options...',
-                    width: 98,
-                    onPressed: () => showOptionsScreen(
-                      context,
-                      widget.settings,
-                      background: DirtBackground(dirt: widget.assets?.dirt),
+          Expanded(
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: SingleChildScrollView(
+                child: TweenAnimationBuilder<double>(
+                  tween: Tween(begin: 0, end: 1),
+                  duration: MediaQuery.disableAnimationsOf(context) ? Duration.zero : const Duration(milliseconds: 650),
+                  curve: Curves.easeOutCubic,
+                  builder: (context, value, child) => Opacity(
+                    opacity: value,
+                    child: Transform.translate(offset: Offset((1 - value) * -24, 0), child: child),
+                  ),
+                  child: SizedBox(
+                    width: menuWidth,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (!compact) ...[
+                          Text(
+                            'BIG WORLDS. BETTER TOGETHER.',
+                            style: arcadeType(13, color: Hearth.teal).copyWith(letterSpacing: 3),
+                          ),
+                          const SizedBox(height: 18),
+                        ],
+                        Semantics(
+                          label: 'Voxelhearth',
+                          child: ExcludeSemantics(
+                            child: Text(
+                              'VOXEL\nHEARTH',
+                              style: arcadeType(titleSize, weight: FontWeight.w900).copyWith(
+                                height: 0.84,
+                                letterSpacing: -titleSize * 0.04,
+                                shadows: const [
+                                  Shadow(color: Color(0xffb88543), offset: Offset(0, 3)),
+                                  Shadow(color: Hearth.ink, offset: Offset(0, 8), blurRadius: 12),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: compact ? 10 : 24),
+                        Text(
+                          compact
+                              ? 'Gather. Build. Make it yours.'
+                              : 'A spark. A block. An entire world of possibility.\nBring your friends. Leave your mark.',
+                          style: arcadeType(
+                            compact ? 14 : 19,
+                            color: Hearth.muted,
+                            weight: FontWeight.w400,
+                          ).copyWith(height: 1.4),
+                        ),
+                        SizedBox(height: compact ? 12 : 28),
+                        PxButton(
+                          'Play Online',
+                          primary: true,
+                          width: buttonW,
+                          height: compact ? 23 : 25,
+                          onPressed: () => _go(_Page.play),
+                        ),
+                        SizedBox(height: compact ? 6 : 10),
+                        Row(
+                          children: [
+                            PxButton('Create World', width: (buttonW - 4) / 2, onPressed: () => _go(_Page.create)),
+                            SizedBox(width: 4.0 * s),
+                            PxButton(
+                              'Player Name: ${c.playerName}',
+                              width: (buttonW - 4) / 2,
+                              onPressed: () => _go(_Page.name),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: compact ? 6 : 10),
+                        Row(
+                          children: [
+                            PxButton(
+                              'Options...',
+                              width: (buttonW - 4) / 2,
+                              onPressed: () => showOptionsScreen(
+                                context,
+                                widget.settings,
+                                background: DirtBackground(dirt: widget.assets?.dirt),
+                              ),
+                            ),
+                            SizedBox(width: 4.0 * s),
+                            PxButton('How to Play', width: (buttonW - 4) / 2, onPressed: () => _showHowToPlay(context)),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(width: 4.0 * s),
-                  PxButton('How to Play', width: 98, onPressed: () => _showHowToPlay(context)),
-                ],
+                ),
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  '01 / EXPLORE · BUILD · BELONG',
+                  style: arcadeType(compact ? 10 : 12, color: Hearth.muted).copyWith(letterSpacing: 1),
+                ),
+              ),
+              Text(
+                platformLabel(c.platform).toUpperCase(),
+                style: arcadeType(11, color: Hearth.teal).copyWith(letterSpacing: 2),
               ),
             ],
           ),
-        ),
-        Positioned(
-          left: 2.0 * s,
-          bottom: 2.0 * s,
-          child: Row(
-            children: [
-              PxText('Voxelhearth 1.0 · ${platformLabel(c.platform)}'),
-              SizedBox(width: 6.0 * s),
-              PxText(status, color: statusColor),
-            ],
-          ),
-        ),
-        Positioned(
-          right: 2.0 * s,
-          bottom: (footerRows == 1 ? 2.0 : 2.0 + Px.lineHeight) * s,
-          child: const PxText('Original game & art. Not affiliated with any other title.'),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -589,7 +633,7 @@ class _CreateScreenState extends State<_CreateScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            PxButton('Create New World', width: 150, onPressed: connected && !_busy ? _create : null),
+            PxButton('Create New World', primary: true, width: 150, onPressed: connected && !_busy ? _create : null),
             SizedBox(width: 4.0 * s),
             PxButton('Cancel', width: 150, sound: 'ui_back', onPressed: widget.onBack),
           ],
@@ -657,100 +701,4 @@ class _CreateScreenState extends State<_CreateScreen> {
       ),
     );
   }
-}
-
-/// Rotating yellow splash line beside the wordmark.
-class _Splash extends StatelessWidget {
-  const _Splash({required this.animation});
-  final Animation<double> animation;
-
-  static const _lines = [
-    'Keep the hearth lit!',
-    'Also on iOS, Android, macOS & web!',
-    'Now with Mossbacks!',
-    'Multiplayer across every device!',
-    'Bots welcome!',
-    'Deterministic!',
-    'Hollows hunt at night!',
-    'Craft a Workbench first!',
-  ];
-
-  @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-    animation: animation,
-    builder: (context, _) {
-      final t = animation.value;
-      final i = (t * _lines.length).floor() % _lines.length;
-      final pulse = 1 + 0.06 * math.sin(t * 2 * math.pi * 60);
-      return Transform.scale(
-        scale: pulse,
-        child: PxText(_lines[i], color: Px.yellow),
-      );
-    },
-  );
-}
-
-/// Slowly drifting voxel skyline behind the title screen.
-class _Panorama extends StatelessWidget {
-  const _Panorama({required this.animation});
-  final Animation<double> animation;
-
-  @override
-  Widget build(BuildContext context) => AnimatedBuilder(
-    animation: animation,
-    builder: (context, _) => CustomPaint(painter: _PanoramaPainter(animation.value, Gui.of(context))),
-  );
-}
-
-class _PanoramaPainter extends CustomPainter {
-  _PanoramaPainter(this.t, this.s);
-  final double t;
-  final int s;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final sky = Paint()
-      ..shader = const LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [Color(0xff0a1a3a), Color(0xff284d8f), Color(0xff6f9fd8)],
-        stops: [0, 0.55, 1],
-      ).createShader(Offset.zero & size);
-    canvas.drawRect(Offset.zero & size, sky);
-    final rnd = math.Random(11);
-    final cell = 6.0 * s;
-    final cols = (size.width / cell).ceil() + 2;
-    final scroll = t * cols * cell;
-    // Distant ridge
-    for (var i = -1; i < cols + 1; i++) {
-      final x = ((i * cell - scroll) % (cols * cell) + cols * cell) % (cols * cell) - cell;
-      final h = (0.30 + 0.12 * math.sin(i * 0.6) + 0.06 * math.sin(i * 1.7)) * size.height;
-      canvas.drawRect(Rect.fromLTWH(x, size.height - h, cell, h), Paint()..color = const Color(0xff2f4d6f));
-    }
-    // Near hills with grass tops and dirt
-    for (var i = -1; i < cols + 1; i++) {
-      final x = ((i * cell - scroll * 1.6) % (cols * cell) + cols * cell) % (cols * cell) - cell;
-      final h = (0.16 + 0.07 * math.sin(i * 0.9 + 2) + 0.03 * math.sin(i * 2.3)) * size.height;
-      final top = size.height - h;
-      canvas.drawRect(Rect.fromLTWH(x, top, cell, cell), Paint()..color = const Color(0xff5f9a34));
-      canvas.drawRect(Rect.fromLTWH(x, top + cell, cell, h), Paint()..color = const Color(0xff6b4a2c));
-      if (rnd.nextInt(7) == 0) {
-        canvas.drawRect(Rect.fromLTWH(x, top - cell * 3, cell, cell * 3), Paint()..color = const Color(0xff4b3320));
-        canvas.drawRect(
-          Rect.fromLTWH(x - cell, top - cell * 5, cell * 3, cell * 3),
-          Paint()..color = const Color(0xff3f7a2a),
-        );
-      }
-    }
-    // Stars
-    final star = Paint()..color = const Color(0x90ffffff);
-    for (var i = 0; i < 40; i++) {
-      final x = rnd.nextDouble() * size.width, y = rnd.nextDouble() * size.height * 0.4;
-      canvas.drawRect(Rect.fromLTWH(x, y, s.toDouble(), s.toDouble()), star);
-    }
-    canvas.drawRect(Offset.zero & size, Paint()..color = const Color(0x30000000));
-  }
-
-  @override
-  bool shouldRepaint(covariant _PanoramaPainter old) => old.t != t || old.s != s;
 }

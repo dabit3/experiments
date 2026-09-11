@@ -6,6 +6,7 @@ import '../app_state.dart';
 import '../audio.dart';
 import '../game/renderer.dart';
 import '../net/game_client.dart';
+import 'arcade.dart';
 import 'chat_panel.dart';
 import 'pixel.dart';
 import 'settings_sheet.dart';
@@ -68,13 +69,14 @@ class _LobbyScreenState extends State<LobbyScreen> {
     final gs = Gui.of(context);
     final gui = Gui.guiSize(context);
     final wide = gui.width >= 400;
+    final compactHeader = gui.height < 230;
     final modeLabel = s.mode == GameMode.creative ? 'Creative' : 'Survival';
     final humans = s.roster.where((p) => !p.bot).length;
     final header = Column(
       children: [
-        SizedBox(height: 6.0 * gs),
-        PxText(s.roomName, align: TextAlign.center, maxLines: 1),
-        SizedBox(height: 1.0 * gs),
+        SizedBox(height: compactHeader ? 6 : 18),
+        ArcadeHeading(s.roomName, eyebrow: compactHeader ? null : 'YOUR NEXT ADVENTURE', compact: compactHeader),
+        SizedBox(height: compactHeader ? 4 : 10),
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: _copy,
@@ -83,20 +85,20 @@ class _LobbyScreenState extends State<LobbyScreen> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                PxText('Code: ', color: Px.gray),
-                PxText(_copied ? 'Copied!' : s.code, color: _copied ? Px.green : Px.yellow),
+                Icon(_copied ? Icons.check_rounded : Icons.content_copy_rounded, size: 14, color: Hearth.teal),
+                const SizedBox(width: 6),
+                Text(
+                  _copied ? 'Copied!' : 'CODE  ${s.code}',
+                  style: arcadeType(compactHeader ? 14 : 20, color: Hearth.gold),
+                ),
                 Flexible(
-                  child: PxText(
-                    '  ·  $modeLabel  ·  seed ${s.seed}  ·  ${s.roster.length} in lobby',
-                    color: Px.gray,
-                    maxLines: 1,
-                  ),
+                  child: PxText('  ·  $modeLabel  ·  ${s.roster.length} explorers', color: Px.gray, maxLines: 1),
                 ),
               ],
             ),
           ),
         ),
-        SizedBox(height: 6.0 * gs),
+        SizedBox(height: compactHeader ? 8 : 18),
       ],
     );
     final players = PxListBox(
@@ -109,7 +111,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
               itemBuilder: (context, i) => Padding(
                 padding: EdgeInsets.symmetric(horizontal: 4.0 * gs),
                 child: PxListEntry(
-                  height: 24,
+                  height: 30,
                   selected: roster[i].id == s.youId,
                   child: _PlayerRow(
                     player: roster[i],
@@ -189,6 +191,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     final primary = isHost
         ? PxButton(
             'Start Match',
+            primary: true,
             width: primaryW,
             onPressed: () {
               HapticFeedback.mediumImpact();
@@ -198,6 +201,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
           )
         : PxButton(
             ready ? 'Ready!' : 'Ready Up',
+            primary: true,
             width: primaryW,
             textColor: ready ? Px.green : null,
             sound: ready ? 'ui_back' : 'ready',
@@ -389,13 +393,13 @@ class _PlayerRow extends StatelessWidget {
         Container(
           width: 16.0 * gs,
           height: 16.0 * gs,
-          color: platformColor(player.platform).withValues(alpha: 0.85),
-          alignment: Alignment.center,
-          child: PxText(
-            player.bot ? 'B' : platformLabel(player.platform).substring(0, 1),
-            color: Colors.black,
-            shadow: false,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [platformColor(player.platform), const Color(0xff426d75)]),
+            borderRadius: BorderRadius.circular(4.0 * gs),
+            border: Border.all(color: const Color(0x60ffffff)),
           ),
+          alignment: Alignment.center,
+          child: Icon(player.bot ? Icons.smart_toy_rounded : Icons.face_rounded, color: Hearth.ink, size: 12.0 * gs),
         ),
         SizedBox(width: 3.0 * gs),
         Expanded(
@@ -417,6 +421,12 @@ class _PlayerRow extends StatelessWidget {
             ],
           ),
         ),
+        Icon(
+          ready ? Icons.check_circle_rounded : Icons.more_horiz_rounded,
+          color: ready ? Px.green : Px.gray,
+          size: 9.0 * gs,
+        ),
+        SizedBox(width: 2.0 * gs),
         PxText(ready ? 'Ready' : '...', color: ready ? Px.green : Px.gray),
       ],
     );
