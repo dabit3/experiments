@@ -8,7 +8,8 @@ phone and a Mac in the same room, with server-side bots filling any empty seats.
 
 Nitro Tots is built from the publicly documented design of arcade kart racers
 (drift boosts, item boxes, Grand Prix cups, battle arenas). All characters,
-karts, tracks, items, names, art, fonts (OFL) and audio are original.
+karts, tracks, items, names, art and audio are original. Fredoka and Nunito
+are bundled under their OFL licenses.
 
 ## What is in the game
 
@@ -39,13 +40,19 @@ karts, tracks, items, names, art, fonts (OFL) and audio are original.
   (nitro orange, bubblegum, sky, lime, sunny, grape, mint), spacing/elevation
   scale, light and dark themes, responsive phone / tablet / desktop layouts,
   safe-area aware, keyboard + touch + mouse input.
+- **Arcade presentation:** original cinematic attract-screen art, eight racer
+  portraits, illustrated world cards, six sculpted kart sprites, candy/forest/
+  neon-city/ice scenery, textured track materials, metallic HUD panels and a
+  lit victory stage. Gameplay art is preloaded once and static scenery is
+  cached as a canvas picture; these visuals do not change simulation geometry.
 
 ## Layout
 
 ```
 nitro-tots/
   app/                      Flutter app (web, ios, android, macos runners)
-    lib/game/               Flame race game, HUD, kart/track vector art, controls
+    lib/game/               Flame race game, HUD, sprite/material art, controls
+    assets/art/             original portraits, key art, worlds, karts and scenery
     lib/net/                WebSocket client, prediction/reconciliation
     lib/screens/            title, garage, track, online, lobby, race, podium, settings
     lib/theme, lib/widgets  design tokens and shared widgets
@@ -126,7 +133,7 @@ NT_PLATFORMS="web ios android macos" bash test/multiplayer-e2e.sh
 NT_PLATFORMS="web ios macos"   # subset (android needs an attached emulator/device)
 NT_BUILD=0                      # reuse existing builds
 NT_RECORD=0                     # skip the screen recording
-NT_OUT=/tmp/nitro-e2e           # evidence dir (default: .devin/clone-this/nitro-tots/evidence/multiplayer/<stamp>)
+NT_OUT="$HOME/nitro-e2e"        # evidence dir (default: .devin/clone-this/nitro-tots/evidence/multiplayer/<stamp>)
 NT_SEED=4242 NT_ROOM=E2E NT_LAPS=1 NT_CUP=sugar NT_TIMEOUT=900
 ```
 
@@ -141,11 +148,10 @@ compares them with the server's authoritative result.
 
 ### Latest verified run
 
-Live clients: **web + iOS Simulator + macOS** (3 humans + 5 bots, Sugar Cup,
+Live clients: **web + iOS Simulator + macOS** (3 scripted clients + 5 bots, Sugar Cup,
 4 races, seed 4242) → `PASS`, all three clients and the server reported the
 same result hash and identical standings (the hash is recorded in the run's
-`result.json`; it is a function of the seed, the track set and the racers, so
-it changes whenever the deterministic core changes). Screenshots and the recording are
+`result.json`; seed, roster and input timing determine the race). Screenshots and the recording are
 linked from the pull request; the evidence index lives in
 `.devin/clone-this/nitro-tots/evidence/` (large PNG/MP4 files are attached to
 the PR rather than committed).
@@ -169,12 +175,14 @@ narrowly bounded normalization: the two bottom window corners (macOS rounds them
 are masked, both captures are box-downscaled 8×, and a cell counts as different
 when any channel differs by more than 64/255. That absorbs the sub-pixel glyph
 rasterization differences between Chromium/CanvasKit and Impeller/Metal while
-still flagging any layout, geometry, colour-token or copy mismatch — every run
+checking for significant layout, geometry, colour-token or copy mismatches — every run
 also proves this with a sensitivity self-check (a 4 px shift of the baseline and
 a different screen must both register as differences). Raw captures, normalized
 images, magenta diff maps and `visual_parity.json` land in the evidence
-directory. iOS is captured as declared evidence only: the phone layout family
-(safe-area insets, compact breakpoints) cannot share a viewport with desktop.
+directory. This tolerance is not literal pixel equality and may miss small
+differences. iOS screenshots are inspected separately: this harness does not
+normalize its phone layout and safe-area insets against a matching web viewport.
+Android screenshot comparison requires an attached runnable device.
 
 ```sh
 cd nitro-tots && python3 test/visual_parity.py --out .devin/clone-this/nitro-tots/evidence/parity
@@ -185,7 +193,7 @@ cd nitro-tots && python3 test/visual_parity.py --out .devin/clone-this/nitro-tot
 
 `test/make_review_video.py` turns the raw evidence into a reviewable edit rather
 than a long screen recording: a title card, one chapter per topic (automated
-four-way match with the lobby/start/results beats cut from the e2e timeline and
+cross-platform match with the lobby/start/results beats cut from the e2e timeline and
 the middle laps time-lapsed, a per-platform screenshot walk, side-by-side
 final standings, the web↔macOS parity pairs, the manual play-through, the
 design pass), caption lower-thirds, corner tags that say which footage is
@@ -201,8 +209,8 @@ as MP4 metadata and the edit decision list is written next to the video.
 
 ```sh
 cd nitro-tots && E=.devin/clone-this/nitro-tots/evidence
-python3 test/make_review_video.py --e2e $E/multiplayer/<stamp> --manual $E/manual-ui-2 \
-  --parity $E/parity --design $E/design-pass --out $E/review/review
+python3 test/make_review_video.py --e2e $E/multiplayer/<stamp> --manual $E/manual-arcade-final \
+  --parity $E/parity --design $E/arcade-design --out $E/review-arcade/review
 # → review.mp4, review.chapters.json, review.md
 ```
 
@@ -210,10 +218,19 @@ python3 test/make_review_video.py --e2e $E/multiplayer/<stamp> --manual $E/manua
 
 ```sh
 cd nitro-tots/packages/nitro_core   && dart format --set-exit-if-changed . && dart analyze && dart test
-cd nitro-tots/packages/nitro_server && dart format --set-exit-if-changed . && dart analyze && dart test
+cd nitro-tots/packages/nitro_server && dart format --set-exit-if-changed . && dart analyze && dart test --timeout 3m
 cd nitro-tots/app                   && dart format --set-exit-if-changed lib test && flutter analyze && flutter test
 ```
 
 `flutter test` in `app/` renders every screen at phone (portrait + landscape),
 tablet and desktop sizes in both themes with semantics enabled and fails on any
 layout exception or overflow.
+The server integration test drives a complete four-race cup. Its internal
+deadline is three minutes; the CLI timeout above also allows that duration
+instead of the test runner's default 30-second limit.
+
+`app/test/race_art_test.dart` loads the runtime artwork and rasterizes all five
+environments and all six kart models, catching asset decode and shader errors.
+Live Android multiplayer and four-platform visual equality remain unverified
+until suitable device evidence exists; the clone-this manifest records that
+boundary rather than marking the complete four-platform gate as passed.

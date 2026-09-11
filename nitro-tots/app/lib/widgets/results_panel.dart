@@ -311,6 +311,7 @@ class _PlaceBadge extends StatelessWidget {
       3 => const Color(0xFFD9A066),
       _ => context.nt.outline,
     };
+    final ink = place <= 3 ? NtColors.inkDark : context.nt.ink;
     final size = big ? 64.0 : 36.0;
     return Container(
       width: size,
@@ -321,7 +322,7 @@ class _PlaceBadge extends StatelessWidget {
         color: color,
         boxShadow: place <= 3 ? [BoxShadow(color: color.withValues(alpha: 0.5), blurRadius: 10)] : null,
       ),
-      child: Text(ordinal(place), style: (big ? NtType.h2(NtColors.inkDark) : NtType.caption(NtColors.inkDark)).copyWith(fontWeight: FontWeight.w800)),
+      child: Text(ordinal(place), style: (big ? NtType.h2(ink) : NtType.caption(ink)).copyWith(fontWeight: FontWeight.w800)),
     );
   }
 }

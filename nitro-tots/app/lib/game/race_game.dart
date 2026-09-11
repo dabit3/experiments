@@ -300,30 +300,61 @@ class RaceGame extends FlameGame {
         scale: airborne ? 1.12 : 1,
       );
       canvas.restore();
+    }
 
-      // Name tag for other racers.
-      if (r.slot != session.localSlot) {
+    final occupiedLabels = <Rect>[];
+    final kartBounds = [for (final r in sim.racers) Rect.fromCenter(center: worldToScreen(session.poseOf(r).pos), width: 36 * _camZoom, height: 36 * _camZoom)];
+    final rivals = sim.racers.where((r) => r.slot != session.localSlot).toList()..sort((a, b) => a.slot.compareTo(b.slot));
+    for (final r in rivals) {
+      if (r.respawnTicks > 0 && (r.respawnTicks ~/ 4).isEven) continue;
+      final pose = session.poseOf(r);
+      final screenPos = worldToScreen(pose.pos);
+      final tp = TextPainter(
+        maxLines: 1,
+        ellipsis: '…',
+        text: TextSpan(
+          text: r.name,
+          style: TextStyle(
+            fontFamily: NtType.displayFont,
+            fontSize: 7.5,
+            fontWeight: FontWeight.w600,
+            color: const Color(0xFFFFFFFF),
+            shadows: const [Shadow(color: Color(0x99000000), blurRadius: 3)],
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout(maxWidth: 70);
+      Offset? anchor;
+      for (final candidate in [const Offset(0, -29), const Offset(0, 29), Offset(-tp.width / 2 - 26, 0), Offset(tp.width / 2 + 26, 0)]) {
+        final bounds = Rect.fromCenter(
+          center: screenPos + candidate * _camZoom,
+          width: (tp.width + 8) * _camZoom,
+          height: (tp.height + 4) * _camZoom,
+        ).inflate(3);
+        final viewport = Rect.fromLTWH(0, 0, w, h);
+        if (!viewport.contains(bounds.topLeft) || !viewport.contains(bounds.bottomRight)) continue;
+        if (occupiedLabels.any(bounds.overlaps) || kartBounds.any(bounds.overlaps)) continue;
+        occupiedLabels.add(bounds);
+        anchor = candidate;
+        break;
+      }
+      if (anchor != null) {
         canvas.save();
         canvas.translate(pose.pos.x, pose.pos.y);
         canvas.rotate(_camHeading + math.pi / 2);
-        final tp = TextPainter(
-          text: TextSpan(
-            text: r.name,
-            style: TextStyle(
-              fontFamily: NtType.displayFont,
-              fontSize: 7.5,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFFFFFFFF),
-              shadows: const [Shadow(color: Color(0x99000000), blurRadius: 3)],
-            ),
-          ),
-          textDirection: TextDirection.ltr,
-        )..layout();
-        final bg = RRect.fromRectAndRadius(Rect.fromCenter(center: const Offset(0, -19), width: tp.width + 8, height: tp.height + 3), const Radius.circular(6));
-        canvas.drawRRect(bg, Paint()..color = NtColors.forCharacter(r.characterId).withValues(alpha: 0.85));
-        tp.paint(canvas, Offset(-tp.width / 2, -19 - tp.height / 2));
+        final bg = RRect.fromRectAndRadius(Rect.fromCenter(center: anchor, width: tp.width + 8, height: tp.height + 4), const Radius.circular(6));
+        canvas.drawRRect(bg, Paint()..color = const Color(0xED102B3B));
+        canvas.drawRRect(
+          bg,
+          Paint()
+            ..color = NtColors.forCharacter(r.characterId)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 0.7,
+        );
+        tp.paint(canvas, anchor - Offset(tp.width / 2, tp.height / 2));
         canvas.restore();
       }
+      tp.dispose();
     }
 
     // Projectiles.
