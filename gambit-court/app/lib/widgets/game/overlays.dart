@@ -35,13 +35,10 @@ class BoardOverlay extends StatelessWidget {
             child: _animated(
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: maxWidth),
-                child: SingleChildScrollView(
-                  clipBehavior: Clip.none,
-                  child: GcCard(
-                    raised: true,
-                    padding: EdgeInsets.all(tight ? GcSpace.lg : GcSpace.xl),
-                    child: child,
-                  ),
+                child: GcCard(
+                  raised: true,
+                  padding: EdgeInsets.all(tight ? GcSpace.md : GcSpace.xl),
+                  child: SingleChildScrollView(child: child),
                 ),
               ),
             ),
@@ -305,7 +302,7 @@ class ResultsOverlay extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: GcSpace.md),
+              SizedBox(height: tight ? GcSpace.sm : GcSpace.md),
               Text(
                 title,
                 style: GcType.display(c.text, size: tight ? 25 : 32),
@@ -382,16 +379,17 @@ class ResultsOverlay extends StatelessWidget {
               ],
               LayoutBuilder(
                 builder: (context, constraints) {
+                  final narrow = constraints.maxWidth < 320;
                   final review = GcButton(
                     label: 'Review',
                     expand: true,
-                    icon: Icons.grid_view_rounded,
+                    icon: narrow ? null : Icons.grid_view_rounded,
                     onPressed: controller.dismissResults,
                   );
                   final copy = GcButton(
                     label: 'Copy PGN',
                     expand: true,
-                    icon: Icons.copy_rounded,
+                    icon: narrow ? null : Icons.copy_rounded,
                     onPressed: () async {
                       await Clipboard.setData(
                         ClipboardData(text: controller.exportPgn()),
@@ -399,7 +397,7 @@ class ResultsOverlay extends StatelessWidget {
                       controller.showNotice('PGN copied to clipboard.');
                     },
                   );
-                  if (constraints.maxWidth < 320) {
+                  if (constraints.maxWidth < 260) {
                     return Column(
                       children: [
                         review,
@@ -447,7 +445,7 @@ class _ScoreLine extends StatelessWidget {
           children: [
             PieceGlyph(
               Piece(color, PieceType.king),
-              size: 40,
+              size: BoardOverlay.isTight(context) ? 32 : 40,
               opacity: result.winner == null || won ? 1 : 0.45,
             ),
             const SizedBox(height: 4),
