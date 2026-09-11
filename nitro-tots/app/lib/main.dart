@@ -140,7 +140,7 @@ class _AppShellState extends State<AppShell> {
     } else if (screen == Screen.lobby && room == null && client.state == ConnState.online) {
       _go(Screen.online, forward: false);
     }
-    if (client.session != null && screen == Screen.lobby) {
+    if (client.session?.finished == false && room?.status == 'racing' && screen == Screen.lobby) {
       _go(Screen.race);
     }
     if (test.active && test.screen == null) _driveTest();

@@ -178,14 +178,17 @@ class NetClient extends ChangeNotifier {
     _wantConnected = false;
     _reconnectTimer?.cancel();
     _pingTimer?.cancel();
-    await _sub?.cancel();
-    await _ws?.sink.close();
+    final subscription = _sub;
+    final socket = _ws;
+    _sub = null;
     _ws = null;
     room = null;
     session?.dispose();
     session = null;
     state = ConnState.offline;
     notifyListeners();
+    await subscription?.cancel();
+    await socket?.sink.close();
   }
 
   void send(Map<String, dynamic> msg) {
@@ -249,6 +252,7 @@ class NetClient extends ChangeNotifier {
         notifyListeners();
       case Msg.matchStart:
         raceOutcome.value = null;
+        matchOutcome.value = null;
         session?.dispose();
         session = NetSession.fromMatchStart(this, m, playerId!);
         notifyListeners();
