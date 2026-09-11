@@ -29,9 +29,9 @@ interface Props {
 const TARGET = new THREE.Vector3(0.05, 0.02, 0)
 
 const VIEW_POSITIONS: Record<ViewId, THREE.Vector3> = {
-  hero: new THREE.Vector3(3.0, 1.5, 3.4),
+  hero: new THREE.Vector3(2.6, 1.9, 4.2),
   side: new THREE.Vector3(0.05, 0.5, 4.8),
-  heel: new THREE.Vector3(-4.6, 1.1, 0.7),
+  heel: new THREE.Vector3(-3.7, 0.8, 0),
   top: new THREE.Vector3(0.05, 4.8, 0.5),
 }
 
@@ -72,9 +72,9 @@ function applyFinish(mat: THREE.MeshStandardMaterial, color: string, finish: Fin
   mat.envMap = env
   switch (finish) {
     case 'matte':
-      mat.roughness = 0.58
+      mat.roughness = 0.78
       mat.metalness = 0
-      mat.envMapIntensity = 0.35
+      mat.envMapIntensity = 0.3
       break
     case 'gloss':
       mat.roughness = 0.2
@@ -181,7 +181,7 @@ function createRig(container: HTMLDivElement): Rig {
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' })
   renderer.setClearColor(0x000000, 0)
   renderer.toneMapping = THREE.ACESFilmicToneMapping
-  renderer.toneMappingExposure = 1.0
+  renderer.toneMappingExposure = 0.95
   container.appendChild(renderer.domElement)
 
   const scene = new THREE.Scene()
@@ -205,10 +205,10 @@ function createRig(container: HTMLDivElement): Rig {
 
   // Studio setup: large soft key high front-right, cool fill from the back-left, a low rim
   // grazing the heel, and a bright hemisphere so shadows stay open like a product shoot.
-  const key = new THREE.DirectionalLight(0xfff4e6, 1.7)
+  const key = new THREE.DirectionalLight(0xfff9f0, 1.45)
   key.position.set(3, 5.5, 3.5)
   scene.add(key)
-  const fill = new THREE.DirectionalLight(0xdde6ff, 0.75)
+  const fill = new THREE.DirectionalLight(0xe4eaff, 0.65)
   fill.position.set(-4, 2.5, -3)
   scene.add(fill)
   const rim = new THREE.DirectionalLight(0xffffff, 0.55)
@@ -217,7 +217,7 @@ function createRig(container: HTMLDivElement): Rig {
   const top = new THREE.DirectionalLight(0xffffff, 0.45)
   top.position.set(0, 6, -1)
   scene.add(top)
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xcfc9c0, 1.05))
+  scene.add(new THREE.HemisphereLight(0xffffff, 0xb8b3a5, 0.8))
 
   scene.add(makeBlobShadow())
 
@@ -228,15 +228,23 @@ function createRig(container: HTMLDivElement): Rig {
   const hull = buildHulls(model, hullMaterial)
 
   const dispose = () => {
+    const textures = new Set<THREE.Texture>([environment])
     controls.dispose()
     renderer.dispose()
     scene.traverse((obj) => {
       if (obj instanceof THREE.Mesh) {
         obj.geometry.dispose()
         const mats = Array.isArray(obj.material) ? obj.material : [obj.material]
-        mats.forEach((m) => m.dispose())
+        mats.forEach((m) => {
+          if (m instanceof THREE.MeshStandardMaterial || m instanceof THREE.MeshBasicMaterial) {
+            if (m.map) textures.add(m.map)
+          }
+          if (m instanceof THREE.MeshStandardMaterial && m.bumpMap) textures.add(m.bumpMap)
+          m.dispose()
+        })
       }
     })
+    textures.forEach((texture) => texture.dispose())
     renderer.domElement.remove()
   }
 
@@ -285,6 +293,9 @@ export function SneakerViewer({ config, selected, onSelect, onHover, onOrbit, on
       const { clientWidth: w, clientHeight: h } = container
       if (w === 0 || h === 0) return
       rig.camera.aspect = w / h
+      rig.camera.fov = THREE.MathUtils.radToDeg(
+        2 * Math.atan(Math.tan(THREE.MathUtils.degToRad(19)) * Math.max(1, 1.15 / rig.camera.aspect)),
+      )
       rig.camera.updateProjectionMatrix()
       rig.renderer.setPixelRatio(rig.scale)
       rig.renderer.setSize(w, h, false)

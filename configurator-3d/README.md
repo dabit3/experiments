@@ -8,7 +8,9 @@ A Three.js product configurator for a low-top court sneaker in the spirit of the
 - **Eight configurable parts** – Base (quarter, vamp and collar), Overlays (toe cap, mudguard, eyestays, heel counter), Swoosh, Laces, Tongue, Heel tab, Midsole and Outsole, each with its own colour and finish.
 - **Colours** – 16 named swatches plus a native `<input type="color">` and a validated hex field.
 - **Finishes** – matte, gloss or metallic, mapped onto `MeshStandardMaterial` roughness/metalness with a `RoomEnvironment` PMREM for reflections.
-- **Engraving** – up to 8 characters rendered to an offscreen canvas and applied as a `CanvasTexture` on the heel pull tab; ink colour flips automatically for light/dark tabs. The engraving also becomes the giant watermark behind the shoe.
+- **Engraving** – up to 8 characters rendered to a 1024 × 540 canvas and applied to a curved heel patch with evenly spaced UVs, a subtle stitched border and satin-thread lettering. Ink colour flips automatically for light/dark tabs. The Personalise tab opens the Heel view and includes a large typography preview.
+- **Studio layout** – a full-size sage studio stage beside three focused tabs: Materials, Personalise and Your design. Direct 3D selection returns to Materials; Your design includes a colour/finish receipt and the share link. PNG export stays visible below the controls.
+- **Construction detail** – deterministic leather/textile bump maps, slimmer woven laces, punched toe perforations, and double stitch rows along the toe cap, eyestays and cupsole.
 - **Camera** – orbit by dragging, zoom with the wheel, autorotate toggle (`Space`), four animated presets (Hero, Side, Heel, Top; keys `1`–`4`).
 - **Randomise** – a seeded `mulberry32` PRNG so the sequence of random designs is reproducible in a fresh tab (key `R`).
 - **Share** – the full design is encoded in the URL hash (`#upper=1f4bd8.metallic&stripe=c8102e.gloss&…&text=DEVIN&view=hero`) and restored on load, so a copied link or a reload in a new tab reproduces the sneaker exactly.
@@ -31,15 +33,15 @@ npm run build    # tsc -b && vite build
 
 ## Browser test scenario
 
-1. Open the app in a maximised Chrome window. **Expect:** a white-on-white "Court Classic" with black swoosh and gum outsole on a light stage, camera toolbar at the bottom of the viewer, parts panel on the right.
+1. Open the app in a maximised Chrome window. **Expect:** a white-on-white "Court Classic" with black swoosh and gum outsole on a sage studio stage, camera toolbar at the bottom of the viewer, Materials tab on the right.
 2. Drag on the canvas to orbit the shoe and scroll to zoom. **Expect:** the camera rotates around the sneaker and the shoe grows/shrinks.
 3. Click the midsole in 3D, then pick a swatch. **Expect:** status chip shows "Midsole · Selected", orange outline on the cupsole wall, midsole re-renders in the new colour, parts list updates.
-4. Click the base (quarter panel or collar) in 3D and pick a distinct colour, then set the finish to **Metallic**. **Expect:** the base turns reflective with a "Metallic" chip in the parts list.
+4. Click the base (quarter panel or collar) in 3D and pick a distinct colour, then set the finish to **Metallic**. **Expect:** the base turns reflective with the Metallic finish card active.
 5. Click the laces and the swoosh in 3D and colour each distinctly. **Expect:** four parts now have visibly different colours.
-6. Type `DEVIN` in the engraving field and switch to the Heel preset. **Expect:** the text appears on the heel tab; the counter reads `5/8`; the watermark behind the shoe reads DEVIN.
+6. Open Personalise, which switches to Heel view, and type `DEVIN` in the engraving field. **Expect:** the text appears on the curved heel patch and large sidebar preview; the counter reads `5/8`.
 7. Switch between the Hero, Side, Heel and Top presets and toggle Auto-rotate on and off. **Expect:** the camera animates to each view, the active preset pill is highlighted, and the shoe spins while auto-rotate is on.
 8. Click **Download PNG**. **Expect:** `sneaker-devin.png` lands in the downloads folder and is a non-trivial size (hundreds of KB).
-9. Copy the share URL and open it in a new tab. **Expect:** the new tab shows the identical sneaker (same colours, metallic base, `DEVIN` engraving, same camera preset).
+9. Open Your design, copy the share URL and open it in a new tab. **Expect:** the new tab shows the identical sneaker (same colours, metallic base, `DEVIN` engraving, same camera preset).
 
 ## Recording
 

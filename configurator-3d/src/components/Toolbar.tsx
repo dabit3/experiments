@@ -7,13 +7,6 @@ interface Props {
   onToggleSpin: () => void
 }
 
-const VIEW_ICONS: Record<ViewId, string> = {
-  hero: '◈',
-  side: '▭',
-  heel: '◖',
-  top: '▽',
-}
-
 export function Toolbar({ view, spin, onView, onToggleSpin }: Props) {
   return (
     <div className="toolbar" role="toolbar" aria-label="Camera">
@@ -28,9 +21,6 @@ export function Toolbar({ view, spin, onView, onToggleSpin }: Props) {
             title={`${VIEW_LABELS[id]} view (shortcut ${i + 1})`}
             data-testid={`view-${id}`}
           >
-            <span className="seg-icon" aria-hidden="true">
-              {VIEW_ICONS[id]}
-            </span>
             {VIEW_LABELS[id]}
           </button>
         ))}

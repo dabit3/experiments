@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
-import { PART_IDS, type PartId } from '../config'
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js'
+import { PART_IDS, mulberry32, type PartId } from '../config'
 
 /**
  * A low-top court sneaker (Air Force 1 silhouette) modelled procedurally from a lofted
@@ -374,8 +375,19 @@ function patch(spec: PatchSpec): THREE.BufferGeometry {
       normalAt(u, theta, nrm)
       return out.addScaledVector(nrm, offset(s, t))
     }
-  const front = skin(build, n, m, pointAt((s, t) => patchOffset(spec, s, t)))
-  const back = skin(build, n, m, pointAt(() => -sink), true)
+  const front = skin(
+    build,
+    n,
+    m,
+    pointAt((s, t) => patchOffset(spec, s, t)),
+  )
+  const back = skin(
+    build,
+    n,
+    m,
+    pointAt(() => -sink),
+    true,
+  )
   const f = (i: number, j: number): number => front + i * (m + 1) + j
   const b = (i: number, j: number): number => back + i * (m + 1) + j
   for (let i = 0; i < n; i++) {
@@ -391,7 +403,12 @@ function patch(spec: PatchSpec): THREE.BufferGeometry {
 }
 
 /** A flat lace: a rectangular section swept along `curve`, kept level with `up`. */
-function ribbon(curve: THREE.Curve<THREE.Vector3>, up: THREE.Vector3, width: number, thick: number): THREE.BufferGeometry {
+function ribbon(
+  curve: THREE.Curve<THREE.Vector3>,
+  up: THREE.Vector3,
+  width: number,
+  thick: number,
+): THREE.BufferGeometry {
   const build = newBuild()
   const p = new THREE.Vector3()
   const tan = new THREE.Vector3()
@@ -434,11 +451,7 @@ function footprint(x: number, margin: number): number {
   if (x > xt) return wt * Math.sqrt(Math.max(0, 1 - ((x - xt) / toeR) ** 2))
   // Ease the straight-ish sides into the flat-tangent ends so the outline has no kinks.
   const w = WIDTH(x) + margin
-  return THREE.MathUtils.lerp(
-    THREE.MathUtils.lerp(w, wh, sstep(xh + 0.16, xh, x)),
-    wt,
-    sstep(xt - 0.16, xt, x),
-  )
+  return THREE.MathUtils.lerp(THREE.MathUtils.lerp(w, wh, sstep(xh + 0.16, xh, x)), wt, sstep(xt - 0.16, xt, x))
 }
 
 interface SoleSpec {
@@ -660,17 +673,66 @@ function swoosh(side: 1 | -1): THREE.BufferGeometry {
  * seam (u = 0) to the +z side; t runs up the back between two height fractions.
  */
 const HEEL_LABEL: PatchSpec = {
-  n: 28,
-  m: 12,
+  n: 64,
+  m: 24,
   base: 0.022,
   raise: 0.012,
   sink: 0.004,
-  bevel: [0.1, 0.1, 0.2, 0.2],
+  bevel: [0.06, 0.06, 0.12, 0.12],
   domain: (s, t) => {
     const side: 1 | -1 = s >= 0.5 ? 1 : -1
-    const u = Math.abs(2 * s - 1) * uAt(-1.262)
-    return [u, thetaAtHeight(u, THREE.MathUtils.lerp(0.36, 0.62, t), side)]
+    const fraction = THREE.MathUtils.lerp(0.49, 0.83, t)
+    const z = Math.abs(2 * s - 1) * 0.225
+    let lo = X0
+    let hi = -1.1
+    for (let i = 0; i < 24; i++) {
+      const x = (lo + hi) / 2
+      const u = uAt(x)
+      const p = surface(u, thetaAtHeight(u, fraction, side), new THREE.Vector3())
+      if (Math.abs(p.z) < z) lo = x
+      else hi = x
+    }
+    const u = uAt((lo + hi) / 2)
+    return [u, thetaAtHeight(u, fraction, side)]
   },
+}
+
+function grainTexture(woven: boolean): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = 256
+  const ctx = canvas.getContext('2d')!
+  const image = ctx.createImageData(256, 256)
+  const rand = mulberry32(81)
+  for (let y = 0; y < 256; y++) {
+    for (let x = 0; x < 256; x++) {
+      const i = (y * 256 + x) * 4
+      const weave = woven ? 25 * Math.sin((x * Math.PI) / 3) * Math.cos((y * Math.PI) / 3) : 0
+      const value = Math.round(128 + (rand() - 0.5) * 65 + weave)
+      image.data[i] = image.data[i + 1] = image.data[i + 2] = value
+      image.data[i + 3] = 255
+    }
+  }
+  ctx.putImageData(image, 0, 0)
+  const texture = new THREE.CanvasTexture(canvas)
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping
+  texture.repeat.set(woven ? 3 : 5, woven ? 2 : 3)
+  texture.anisotropy = 8
+  return texture
+}
+
+function stitching(path: THREE.Vector3[], radius = 0.002): THREE.BufferGeometry {
+  const curve = new THREE.CatmullRomCurve3(path)
+  const length = curve.getLength()
+  const count = Math.max(2, Math.floor(length / 0.025))
+  const pieces: THREE.BufferGeometry[] = []
+  for (let i = 0; i < count; i++) {
+    const a = curve.getPointAt((i + 0.12) / count)
+    const b = curve.getPointAt((i + 0.7) / count)
+    pieces.push(new THREE.TubeGeometry(new THREE.LineCurve3(a, b), 1, radius, 4, false))
+  }
+  const result = mergeGeometries(pieces)
+  pieces.forEach((piece) => piece.dispose())
+  return result
 }
 
 // ---------------------------------------------------------------------------
@@ -681,14 +743,19 @@ export function buildSneaker(): SneakerModel {
   const root = new THREE.Group()
   const partMeshes = {} as Record<PartId, THREE.Mesh[]>
   const materials = {} as Record<PartId, THREE.MeshStandardMaterial>
+  const leather = grainTexture(false)
+  const textile = grainTexture(true)
   for (const id of PART_IDS) {
     partMeshes[id] = []
     materials[id] = new THREE.MeshStandardMaterial({ roughness: 0.6, metalness: 0 })
+    materials[id].bumpMap = id === 'laces' || id === 'tongue' ? textile : leather
+    materials[id].bumpScale = id === 'sole' || id === 'outsole' ? 0.001 : 0.0025
   }
 
   const trim = new THREE.MeshStandardMaterial({ color: 0x15161a, roughness: 0.75, metalness: 0 })
   const lining = new THREE.MeshStandardMaterial({ color: 0x1b1b1f, roughness: 0.95, metalness: 0 })
-  const hardware = new THREE.MeshStandardMaterial({ color: 0x2a2b30, roughness: 0.35, metalness: 0.6 })
+  const hardware = new THREE.MeshStandardMaterial({ color: 0x55564e, roughness: 0.7, metalness: 0.2 })
+  const thread = new THREE.MeshStandardMaterial({ color: 0xc6c2b6, roughness: 0.92 })
 
   const add = (id: PartId, geometry: THREE.BufferGeometry, parent: THREE.Object3D = root): THREE.Mesh => {
     const mesh = new THREE.Mesh(geometry, materials[id])
@@ -704,7 +771,10 @@ export function buildSneaker(): SneakerModel {
 
   // --- Sole unit -------------------------------------------------------------
   add('outsole', soleShell({ margin: 0.07, y0: 0, height: 0.075, rBottom: 0.035, rTop: 0.008 }))
-  add('sole', soleShell({ margin: 0.085, y0: 0.06, height: 0.17, rBottom: 0.012, rTop: 0.045, taper: 0.012, belly: 0.01 }))
+  add(
+    'sole',
+    soleShell({ margin: 0.085, y0: 0.06, height: 0.17, rBottom: 0.012, rTop: 0.045, taper: 0.012, belly: 0.01 }),
+  )
   // Foxing lip: the cupsole wraps up over the bottom edge of the upper.
   add('sole', soleShell({ margin: 0.052, y0: BASE_Y - 0.06, height: 0.092, rBottom: 0.004, rTop: 0.014 }))
 
@@ -733,15 +803,50 @@ export function buildSneaker(): SneakerModel {
   addMirrored('overlays', eyestay)
   addMirrored('stripe', swoosh)
 
+  const seamPoint = (x: number, theta: number, offset: number) => {
+    const u = uAt(x)
+    const point = surface(u, theta, new THREE.Vector3())
+    const normal = normalAt(u, theta, new THREE.Vector3())
+    return point.addScaledVector(normal, offset)
+  }
+  const seam = (points: THREE.Vector3[]) => {
+    const mesh = new THREE.Mesh(stitching(points), thread)
+    root.add(mesh)
+  }
+  for (const shift of [0.04, 0.065]) {
+    seam(
+      Array.from({ length: 61 }, (_, i) => {
+        const theta = THREE.MathUtils.lerp(0.18, Math.PI - 0.18, i / 60)
+        return seamPoint(TOE_CAP_X - 0.08 * Math.sin(theta) + shift, theta, 0.031)
+      }),
+    )
+  }
+  for (const side of [1, -1] as const) {
+    for (const fraction of [0.7, 0.92]) {
+      seam(
+        Array.from({ length: 61 }, (_, i) => {
+          const x = THREE.MathUtils.lerp(-0.37, 0.75, i / 60)
+          return seamPoint(x, thetaAtHeight(uAt(x), fraction, side), 0.027)
+        }),
+      )
+    }
+    seam(
+      Array.from({ length: 71 }, (_, i) => {
+        const x = THREE.MathUtils.lerp(-1.17, 1.3, i / 70)
+        return new THREE.Vector3(x, 0.174 + lift(x), side * (footprint(x, 0.085) - 0.001))
+      }),
+    )
+  }
+
   // Perforations across the toe box.
-  const holeGeom = new THREE.CircleGeometry(0.0085, 10)
+  const holeGeom = new THREE.CircleGeometry(0.012, 14)
   const holes: THREE.Matrix4[] = []
   const probe = new THREE.Object3D()
-  for (const [row, x] of [0.98, 1.08, 1.18, 1.27].entries()) {
-    const count = 12 - row * 2
+  for (const [row, x] of [0.97, 1.06, 1.15, 1.24].entries()) {
+    const count = 7 - row
     for (let k = 0; k < count; k++) {
-      const theta = THREE.MathUtils.lerp(0.45, Math.PI - 0.45, (k + 0.5) / count)
-      placeOnLast(probe, uAt(x), theta, 0.027)
+      const theta = THREE.MathUtils.lerp(0.75, Math.PI - 0.75, (k + 0.5) / count)
+      placeOnLast(probe, uAt(x), theta, 0.0305)
       probe.updateMatrix()
       holes.push(probe.matrix.clone())
     }
@@ -751,7 +856,7 @@ export function buildSneaker(): SneakerModel {
   root.add(perforations)
 
   // Eyelets punched into the eyestays.
-  const eyeletGeom = new THREE.RingGeometry(0.018, 0.038, 18)
+  const eyeletGeom = new THREE.RingGeometry(0.018, 0.029, 18)
   const eyeletMesh = new THREE.InstancedMesh(eyeletGeom, hardware, EYELET_XS.length * 2)
   const eyelets: { pos: THREE.Vector3; nrm: THREE.Vector3 }[][] = [[], []]
   EYELET_XS.forEach((x, k) => {
@@ -786,11 +891,15 @@ export function buildSneaker(): SneakerModel {
   tongue.add(label)
 
   // --- Laces ------------------------------------------------------------------
-  const laceWidth = 0.075
-  const laceThick = 0.014
+  const laceWidth = 0.062
+  const laceThick = 0.012
   const tongueTopAt = (x: number): number =>
     tongue.position.y + (x - tongue.position.x) * Math.tan(tongueTilt) + tongueThick / 2 / Math.cos(tongueTilt)
-  const lace = (a: { pos: THREE.Vector3; nrm: THREE.Vector3 }, b: { pos: THREE.Vector3; nrm: THREE.Vector3 }, clearance: number) => {
+  const lace = (
+    a: { pos: THREE.Vector3; nrm: THREE.Vector3 },
+    b: { pos: THREE.Vector3; nrm: THREE.Vector3 },
+    clearance: number,
+  ) => {
     const from = a.pos.clone().addScaledVector(a.nrm, 0.004)
     const to = b.pos.clone().addScaledVector(b.nrm, 0.004)
     const mid = from.clone().lerp(to, 0.5)
@@ -798,7 +907,11 @@ export function buildSneaker(): SneakerModel {
     // Quadratic Bézier passes through (from + 2·ctrl + to) / 4 at its middle.
     const wantY = tongueTopAt(midX) + laceThick / 2 + clearance
     mid.y = 2 * wantY - (from.y + to.y) / 2
-    const up = a.nrm.clone().add(b.nrm).add(new THREE.Vector3(0, 1.5, 0)).normalize()
+    const up = a.nrm
+      .clone()
+      .add(b.nrm)
+      .add(new THREE.Vector3(0, 1.5, 0))
+      .normalize()
     return ribbon(new THREE.QuadraticBezierCurve3(from, mid, to), up, laceWidth, laceThick)
   }
   for (let k = 0; k < EYELET_XS.length - 1; k++) {

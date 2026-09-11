@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Sidebar } from './components/Sidebar'
 import { Toolbar } from './components/Toolbar'
+import { Icon } from './components/Icon'
 import {
   DEFAULT_CONFIG,
   FINISH_LABELS,
@@ -30,6 +31,7 @@ export default function App() {
   const [seed, setSeed] = useState(0)
   const [toast, setToast] = useState<string | null>(null)
   const [ready, setReady] = useState(false)
+  const [section, setSection] = useState<'materials' | 'personalise' | 'save'>('materials')
   const apiRef = useRef<ViewerApi | null>(null)
   const toastTimer = useRef<number | null>(null)
 
@@ -72,8 +74,20 @@ export default function App() {
   }, [])
 
   const updatePart = useCallback((id: PartId, patch: Partial<{ color: string; finish: Finish }>) => {
+    setSelected(id)
     setConfig((c) => ({ ...c, parts: { ...c.parts, [id]: { ...c.parts[id], ...patch } } }))
   }, [])
+
+  const selectPart = useCallback((id: PartId | null) => {
+    setSelected(id)
+    if (id) setSection('materials')
+  }, [])
+
+  const changeSection = (next: typeof section) => {
+    setSection(next)
+    setSelected(null)
+    if (next === 'personalise') setView('heel')
+  }
 
   const randomise = useCallback(() => {
     const next = seed + 1
@@ -128,7 +142,9 @@ export default function App() {
   const status = selected ?? hovered
   const statusStyle = status ? config.parts[status] : null
   const editedParts = PART_IDS.filter(
-    (id) => config.parts[id].color !== DEFAULT_CONFIG.parts[id].color || config.parts[id].finish !== DEFAULT_CONFIG.parts[id].finish,
+    (id) =>
+      config.parts[id].color !== DEFAULT_CONFIG.parts[id].color ||
+      config.parts[id].finish !== DEFAULT_CONFIG.parts[id].finish,
   ).length
 
   return (
@@ -137,27 +153,29 @@ export default function App() {
         <div className="brand">
           <span className="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-              <path d="M2.5 16.5c5.5-1.2 12.4-4 19-8.3-1.6 3.3-3.4 5.6-5.6 7.2-3.9 2.9-9.1 3.4-13.4 1.1z" fill="currentColor" />
+              <path
+                d="M2.5 16.5c5.5-1.2 12.4-4 19-8.3-1.6 3.3-3.4 5.6-5.6 7.2-3.9 2.9-9.1 3.4-13.4 1.1z"
+                fill="currentColor"
+              />
             </svg>
           </span>
           <div>
-            <h1>Kicks Lab</h1>
-            <p>Sneaker Studio</p>
+            <h1>
+              Kicks Lab<span> / BY YOU</span>
+            </h1>
+            <p>Independent design studio</p>
           </div>
         </div>
         <nav className="topbar-nav" aria-label="Studio">
-          <span className="nav-item is-current">Design</span>
-          <span className="nav-item">Court Classic Low</span>
-          <span className="nav-item nav-count">
-            {editedParts}/{PART_IDS.length} parts edited
-          </span>
+          <span className="nav-item is-current">THE CUSTOM STUDIO</span>
+          <span className="nav-item">VOL. 01 — COURT CLASSIC</span>
         </nav>
         <div className="topbar-actions">
           <button type="button" className="btn ghost" onClick={reset}>
             Reset
           </button>
-          <button type="button" className="btn dark" onClick={randomise} title="Shortcut: R">
-            <span aria-hidden="true">⚄</span> Randomise{seed > 0 ? ` · #${seed}` : ''}
+          <button type="button" className="btn outline" onClick={randomise} title="Shortcut: R">
+            <Icon name="shuffle" size={16} /> Randomise
           </button>
         </div>
       </header>
@@ -167,28 +185,40 @@ export default function App() {
           <SneakerViewer
             config={config}
             selected={selected}
-            onSelect={setSelected}
+            onSelect={selectPart}
             onHover={setHovered}
             onOrbit={() => setCustomView(true)}
             onReady={() => setReady(true)}
             apiRef={apiRef}
           />
           <div className="viewer-watermark" aria-hidden="true">
-            {config.text || 'CUSTOM'}
+            COURT
           </div>
           <div className="viewer-title">
-            <span className="eyebrow">Custom low-top · Season 26</span>
-            <h2>Court Classic</h2>
-            <p>Eight editable panels, three finishes, engraved heel tab.</p>
+            <span className="eyebrow">
+              <span className="live-dot" /> LIVE 3D STUDIO
+            </span>
+            <h2>
+              A classic.
+              <br />
+              Your signature.
+            </h2>
+            <p>Built for the court. Made for you.</p>
           </div>
+          <span className="viewer-edition" aria-hidden="true">
+            CC—01
+            <br />
+            EST. 2026
+          </span>
           <div className={`viewer-loading ${ready ? 'is-hidden' : ''}`} aria-hidden={ready}>
             <span className="spinner" />
             <span>Lacing up the scene…</span>
           </div>
           <div className="viewer-hint">
-            <span>Drag to orbit</span>
-            <span>Wheel to zoom</span>
-            <span>Click a part to select</span>
+            <Icon name="orbit" size={18} />
+            <span>
+              Drag to rotate <i /> Scroll to zoom <i /> Click to customise
+            </span>
           </div>
           <div
             className={`viewer-status ${selected ? 'is-selected' : ''} ${status ? 'is-visible' : ''}`}
@@ -211,12 +241,20 @@ export default function App() {
             onView={setView}
             onToggleSpin={() => setConfig((c) => ({ ...c, spin: !c.spin }))}
           />
+          <div className="stage-footer">
+            <span>
+              COURT CLASSIC LOW <b> / </b> UNISEX
+            </span>
+            <span>{String(editedParts).padStart(2, '0')} / 08 PANELS CUSTOMISED</span>
+          </div>
         </section>
 
         <Sidebar
           config={config}
           selected={selected}
-          onSelect={setSelected}
+          onSelect={selectPart}
+          section={section}
+          onSection={changeSection}
           onUpdatePart={updatePart}
           onText={(text) => setConfig((c) => ({ ...c, text }))}
           shareUrl={shareUrl}
