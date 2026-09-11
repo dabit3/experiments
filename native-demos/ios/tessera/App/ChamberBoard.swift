@@ -108,15 +108,15 @@ struct ChamberBoard: View {
       for x in 0..<7 {
         let point = layout.point(Cell(x, 0))
         context.draw(
-          Text(String(UnicodeScalar(65 + x)!)).font(.system(size: 7, design: .monospaced))
-            .foregroundStyle(Palette.muted.opacity(0.55)),
+          Text(String(UnicodeScalar(65 + x)!)).font(.system(size: 9, design: .monospaced))
+            .foregroundStyle(Palette.muted),
           at: CGPoint(x: point.x, y: 14))
       }
       for y in 0..<9 {
         let point = layout.point(Cell(0, y))
         context.draw(
-          Text("\(y + 1)").font(.system(size: 7, design: .monospaced))
-            .foregroundStyle(Palette.muted.opacity(0.55)),
+          Text("\(y + 1)").font(.system(size: 9, design: .monospaced))
+            .foregroundStyle(Palette.muted),
           at: CGPoint(x: size.width - 12, y: point.y))
       }
       context.draw(
