@@ -43,7 +43,8 @@ xcrun swift format lint --strict --recursive Sprout SproutTests Tools
 
 The compiler performs type checking. XCTest covers calendar-day calculations,
 daylight saving and year boundaries, interval changes, history ordering/editing,
-duplicates, input bounds, starter removal, persistence, undo and deletion.
+duplicates, input bounds, starter removal, persistence, undo, deletion and
+protection against overwriting unreadable saved data.
 
 To regenerate the original icon:
 
@@ -59,6 +60,8 @@ directory. Photos are selected using the system photo picker, resized to a maxim
 requests, notification permission, cloud service or secret API key is required.
 Deleting the app deletes its data; there is no export or device-to-device sync.
 Empty shelves stay empty across launches; samples are seeded only when no file exists.
+An unreadable saved file is preserved and new writes are blocked; there is no
+in-app data recovery tool.
 
 Tap a plant to see its journal. Use the top-right menu to edit or delete it.
 Tap a watering entry to adjust its date. Dates cannot be in the future.

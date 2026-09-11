@@ -95,6 +95,7 @@ final class PlantStore: ObservableObject {
   @Published private(set) var plants: [Plant] = []
   @Published var errorMessage: String?
   private let fileURL: URL
+  private var canWrite = true
 
   init(fileURL: URL? = nil, now: Date = .now) {
     self.fileURL =
@@ -106,6 +107,7 @@ final class PlantStore: ObservableObject {
       do {
         plants = try JSONDecoder().decode([Plant].self, from: Data(contentsOf: self.fileURL))
       } catch {
+        canWrite = false
         errorMessage =
           "Your shelf couldn’t be read. Your saved file has been kept safe. Please close and reopen Sprout."
       }
@@ -123,10 +125,16 @@ final class PlantStore: ObservableObject {
     plants.filter { $0.daysUntilDue() > 0 }.sorted { $0.dueDate() < $1.dueDate() }
   }
 
-  func save(_ plant: Plant) {
+  @discardableResult
+  func save(_ plant: Plant) -> Bool {
+    guard canWrite else {
+      errorMessage =
+        "Your saved shelf is unreadable and has been kept safe. Changes cannot be saved."
+      return false
+    }
     guard (1...90).contains(plant.interval),
       !plant.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    else { return }
+    else { return false }
     var updated = plant
     updated.name = String(plant.name.trimmingCharacters(in: .whitespacesAndNewlines).prefix(60))
     updated.room = String(plant.room.trimmingCharacters(in: .whitespacesAndNewlines).prefix(40))
@@ -136,7 +144,7 @@ final class PlantStore: ObservableObject {
     } else {
       plants.append(updated)
     }
-    persist()
+    return persist()
   }
 
   @discardableResult
@@ -174,14 +182,18 @@ final class PlantStore: ObservableObject {
     persist()
   }
 
-  private func persist() {
+  @discardableResult
+  private func persist() -> Bool {
+    guard canWrite else { return false }
     do {
       try FileManager.default.createDirectory(
         at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
       try JSONEncoder().encode(plants).write(to: fileURL, options: .atomic)
+      return true
     } catch {
       errorMessage =
         "Your changes couldn’t be saved. Please check available storage before closing Sprout."
+      return false
     }
   }
 

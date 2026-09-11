@@ -150,7 +150,6 @@ struct PlantEditor: View {
     plant.startedAt = baseline
     plant.notes = notes
     plant.photo = photo
-    store.save(plant)
-    dismiss()
+    if store.save(plant) { dismiss() }
   }
 }

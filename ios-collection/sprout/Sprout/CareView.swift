@@ -81,7 +81,7 @@ struct GuideView: View {
               }
               Spacer(minLength: 0)
               Image(systemName: "arrow.right").font(.subheadline)
-            }.padding(.vertical, 5)
+            }.padding(.vertical, 5).contentShape(Rectangle())
               .overlay(alignment: .bottom) { Rectangle().fill(Palette.line).frame(height: 1) }
           }.buttonStyle(.plain)
         }

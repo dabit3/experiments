@@ -129,9 +129,11 @@ struct Botanical: View {
 
 struct Eyebrow: View {
   var text: String
+  @Environment(\.dynamicTypeSize) private var typeSize
   var body: some View {
     Text(text.uppercased()).font(.system(.caption2, design: .monospaced).weight(.medium))
-      .tracking(2.0).foregroundStyle(Palette.muted)
+      .tracking(typeSize.isAccessibilitySize ? 0 : 2).foregroundStyle(Palette.muted)
+      .fixedSize(horizontal: false, vertical: true)
   }
 }
 

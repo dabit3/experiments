@@ -4,6 +4,7 @@ struct PlantDetailView: View {
   @EnvironmentObject private var store: PlantStore
   @Environment(\.dismiss) private var dismiss
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @Environment(\.dynamicTypeSize) private var typeSize
   var plantID: UUID
   @State private var editing = false
   @State private var deleting = false
@@ -20,7 +21,7 @@ struct PlantDetailView: View {
             ZStack(alignment: .bottomTrailing) {
               Ellipse().fill(Palette.sage.opacity(0.6)).frame(width: 260, height: 245).offset(
                 x: -30, y: -5)
-              PlantPortrait(plant: plant).frame(height: 290).frame(maxWidth: .infinity).clipped()
+              PlantPortrait(plant: plant).frame(height: 270).frame(maxWidth: .infinity).clipped()
                 .scaleEffect(watered && !reduceMotion ? 1.025 : 1)
               if watered {
                 Label("A little love, logged.", systemImage: "checkmark")
@@ -33,21 +34,23 @@ struct PlantDetailView: View {
               Text(plant.name).font(.system(.largeTitle, design: .serif))
               Text(plant.kind.scientific).font(.subheadline).italic().foregroundStyle(Palette.muted)
             }
-            HStack(alignment: .top, spacing: 25) {
-              VStack(alignment: .leading, spacing: 6) {
-                Eyebrow(text: "Next soil check")
-                Text(plant.status()).font(.system(.title2, design: .serif))
-                  .foregroundStyle(plant.daysUntilDue() < 0 ? Palette.terracotta : Palette.forest)
-                Text(plant.dueDate(), format: .dateTime.month(.abbreviated).day()).font(.caption)
-                  .foregroundStyle(Palette.muted)
-              }
-              Spacer()
-              VStack(alignment: .leading, spacing: 6) {
-                Eyebrow(text: "Your rhythm")
-                Text("Every \(plant.interval)d").font(.system(.title2, design: .serif))
-                Text("Adjust any time").font(.caption).foregroundStyle(Palette.muted)
-              }
-            }.padding(.vertical, 15)
+            (typeSize.isAccessibilitySize
+              ? AnyLayout(VStackLayout(alignment: .leading, spacing: 20))
+              : AnyLayout(HStackLayout(alignment: .top, spacing: 25))) {
+                VStack(alignment: .leading, spacing: 6) {
+                  Eyebrow(text: "Next soil check")
+                  Text(plant.status()).font(.system(.title2, design: .serif))
+                    .foregroundStyle(plant.daysUntilDue() < 0 ? Palette.terracotta : Palette.forest)
+                  Text(plant.dueDate(), format: .dateTime.month(.abbreviated).day()).font(.caption)
+                    .foregroundStyle(Palette.muted)
+                }
+                if !typeSize.isAccessibilitySize { Spacer() }
+                VStack(alignment: .leading, spacing: 6) {
+                  Eyebrow(text: "Your rhythm")
+                  Text("Every \(plant.interval)d").font(.system(.title2, design: .serif))
+                  Text("Adjust any time").font(.caption).foregroundStyle(Palette.muted)
+                }
+              }.padding(.vertical, 15)
               .overlay(alignment: .top) { Rectangle().fill(Palette.line).frame(height: 1) }
               .overlay(alignment: .bottom) { Rectangle().fill(Palette.line).frame(height: 1) }
             VStack(spacing: 10) {
@@ -80,12 +83,14 @@ struct PlantDetailView: View {
                 4)
             }
             VStack(alignment: .leading, spacing: 10) {
-              HStack {
-                Text("Your observations").font(.system(.title2, design: .serif))
-                Spacer()
-                Button("Edit") { editing = true }.font(.subheadline).frame(
-                  minWidth: 44, minHeight: 44)
-              }
+              (typeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+                : AnyLayout(HStackLayout())) {
+                  Text("Your observations").font(.system(.title2, design: .serif))
+                  if !typeSize.isAccessibilitySize { Spacer() }
+                  Button("Edit") { editing = true }.font(.subheadline).frame(
+                    minWidth: 44, minHeight: 44)
+                }
               Text(
                 plant.notes.isEmpty
                   ? "No notes yet. Notice a new leaf? Make a little note." : plant.notes
@@ -93,14 +98,16 @@ struct PlantDetailView: View {
               .font(.body).foregroundStyle(Palette.muted).lineSpacing(4)
             }
             VStack(alignment: .leading, spacing: 12) {
-              HStack {
-                Text("Care journal").font(.system(.title2, design: .serif))
-                Spacer()
-                Text(
-                  "\(plant.history.count) \(plant.history.count == 1 ? "watering" : "waterings")"
-                ).font(.caption).foregroundStyle(
-                  Palette.muted)
-              }
+              (typeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+                : AnyLayout(HStackLayout())) {
+                  Text("Care journal").font(.system(.title2, design: .serif))
+                  if !typeSize.isAccessibilitySize { Spacer() }
+                  Text(
+                    "\(plant.history.count) \(plant.history.count == 1 ? "watering" : "waterings")"
+                  ).font(.caption).foregroundStyle(
+                    Palette.muted)
+                }
               if plant.history.isEmpty {
                 Text("A fresh page. Your waterings will grow here.").font(.subheadline)
                   .foregroundStyle(Palette.muted)
@@ -122,21 +129,23 @@ struct PlantDetailView: View {
                     }
                     Spacer()
                     Image(systemName: "pencil").font(.subheadline)
-                  }.padding(.vertical, 6)
+                  }.padding(.vertical, 6).contentShape(Rectangle())
                 }.buttonStyle(.plain).accessibilityLabel(
                   "Edit watering on \(log.date.formatted(date: .abbreviated, time: .omitted))")
               }
             }.padding(.top, 8)
           }.padding(.horizontal, 26).padding(.bottom, 32)
-        }
-        .sheet(isPresented: $editing) { PlantEditor(existing: plant) }
-        .sheet(item: $editingLog) { log in WateringEditor(plantID: plantID, log: log) }
+        }.clipped()
+          .sheet(isPresented: $editing) { PlantEditor(existing: plant) }
+          .sheet(item: $editingLog) { log in WateringEditor(plantID: plantID, log: log) }
       } else {
         ContentUnavailableView("This plant has left the shelf", systemImage: "leaf")
       }
     }
     .foregroundStyle(Palette.forest).background(Palette.cream)
     .navigationBarTitleDisplayMode(.inline)
+    .toolbarBackground(Palette.cream, for: .navigationBar)
+    .toolbarBackground(.visible, for: .navigationBar)
     .toolbar {
       ToolbarItem(placement: .principal) { Eyebrow(text: "The plant journal") }
       ToolbarItem(placement: .topBarTrailing) {

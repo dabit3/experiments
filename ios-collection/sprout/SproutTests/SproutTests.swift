@@ -74,6 +74,22 @@ final class SproutTests: XCTestCase {
     XCTAssertEqual(store.plants.map(\.id), [own.id])
   }
   @MainActor
+  func testUnreadableShelfIsNeverOverwritten() throws {
+    let dir = URL.applicationSupportDirectory.appending(path: "SproutTests-\(UUID())")
+    defer { try? FileManager.default.removeItem(at: dir) }
+    try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+    let url = dir.appending(path: "plants.json")
+    let original = Data("unreadable shelf".utf8)
+    try original.write(to: url)
+    let store = PlantStore(fileURL: url)
+    XCTAssertNotNil(store.errorMessage)
+    XCTAssertFalse(store.save(plant(start: date(4, 10))))
+    store.removeSamples()
+    XCTAssertTrue(store.plants.isEmpty)
+    XCTAssertEqual(try Data(contentsOf: url), original)
+  }
+
+  @MainActor
   func testInvalidIntervalsAndBlankNamesAreRejected() {
     let dir = URL.applicationSupportDirectory.appending(path: "SproutTests-\(UUID())")
     defer { try? FileManager.default.removeItem(at: dir) }

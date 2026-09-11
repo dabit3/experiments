@@ -11,9 +11,9 @@ struct ShelfView: View {
 
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 23) {
+      VStack(alignment: .leading, spacing: 16) {
         HStack {
-          Eyebrow(text: "A little greener, every day")
+          Eyebrow(text: typeSize.isAccessibilitySize ? "Sprout" : "A little greener, every day")
           Spacer()
           Button {
             showSettings = true
@@ -23,10 +23,12 @@ struct ShelfView: View {
         }
         HStack(alignment: .bottom) {
           VStack(alignment: .leading, spacing: 8) {
-            Text("Room to\ngrow.").font(.system(size: 48, weight: .regular, design: .serif))
-              .lineSpacing(-3)
-            Text("Your own small corner of green.").font(.subheadline).foregroundStyle(
-              Palette.muted)
+            Text(typeSize.isAccessibilitySize ? "My shelf" : "Room to grow.")
+              .font(.system(.largeTitle, design: .serif))
+            if !typeSize.isAccessibilitySize {
+              Text("Your own small corner of green.").font(.subheadline).foregroundStyle(
+                Palette.muted)
+            }
           }
           Spacer(minLength: 0)
           Button {
@@ -39,15 +41,26 @@ struct ShelfView: View {
         if store.plants.contains(where: \.isSample) {
           HStack(spacing: 9) {
             Image(systemName: "sparkle")
-            Text("A starter shelf, ready to make your own.").font(.caption)
+            Text("Includes your starter collection.").font(.caption)
           }.foregroundStyle(Palette.muted)
         }
-        ScrollView(.horizontal, showsIndicators: false) {
-          HStack(spacing: 8) {
-            roomChip(nil)
-            ForEach(store.rooms, id: \.self) { roomChip($0) }
+        Menu {
+          Picker("Room", selection: $room) {
+            Text("All plants").tag(String?.none)
+            ForEach(store.rooms, id: \.self) { Text($0).tag(Optional($0)) }
           }
+        } label: {
+          HStack(spacing: 10) {
+            Image(systemName: "line.3.horizontal.decrease")
+            Text(room ?? "All plants").font(.subheadline.weight(.medium))
+              .multilineTextAlignment(.leading)
+            Spacer(minLength: 8)
+            Image(systemName: "chevron.down").font(.caption.weight(.semibold))
+          }
+          .padding(.horizontal, 16).padding(.vertical, 13)
+          .background(Palette.sage.opacity(0.65), in: RoundedRectangle(cornerRadius: 16))
         }
+        .accessibilityLabel("Filter by room, \(room ?? "All plants")")
         if visible.isEmpty {
           VStack(spacing: 14) {
             Botanical(kind: .monstera).frame(width: 190, height: 210)
@@ -59,7 +72,7 @@ struct ShelfView: View {
           LazyVGrid(
             columns: Array(
               repeating: GridItem(.flexible(), spacing: 20),
-              count: typeSize.isAccessibilitySize ? 1 : 2), alignment: .leading, spacing: 28
+              count: typeSize.isAccessibilitySize ? 1 : 2), alignment: .leading, spacing: 22
           ) {
             ForEach(visible) { plant in
               NavigationLink {
@@ -67,7 +80,7 @@ struct ShelfView: View {
               } label: {
                 VStack(alignment: .leading, spacing: 6) {
                   PlantPortrait(plant: plant).frame(
-                    height: typeSize.isAccessibilitySize ? 250 : 190
+                    height: typeSize.isAccessibilitySize ? 230 : 160
                   )
                   .frame(maxWidth: .infinity).clipped()
                   Rectangle().fill(Palette.line).frame(height: 3)
@@ -90,10 +103,10 @@ struct ShelfView: View {
             }
           }
         }
-        HStack {
-          Rectangle().fill(Palette.line).frame(height: 1)
+        VStack(spacing: 16) {
+          Rectangle().fill(Palette.line).frame(height: 1).accessibilityHidden(true)
           Eyebrow(text: "\(visible.count) little \(visible.count == 1 ? "life" : "lives")")
-          Rectangle().fill(Palette.line).frame(height: 1)
+            .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
         }.padding(.vertical, 12)
       }.padding(.horizontal, 24).padding(.bottom, 20)
     }
@@ -108,17 +121,6 @@ struct ShelfView: View {
     }
   }
 
-  private func roomChip(_ value: String?) -> some View {
-    Button {
-      room = value
-    } label: {
-      Text(value ?? "All plants").font(.subheadline.weight(.medium)).padding(.horizontal, 16)
-        .padding(.vertical, 12)
-        .foregroundStyle(room == value ? Palette.cream : Palette.forest)
-        .background(room == value ? Palette.forest : .clear, in: Capsule())
-        .overlay(Capsule().strokeBorder(Palette.line, lineWidth: room == value ? 0 : 1))
-    }.accessibilityAddTraits(room == value ? .isSelected : [])
-  }
 }
 
 struct ShelfSettings: View {
@@ -127,31 +129,44 @@ struct ShelfSettings: View {
   @State private var confirm = false
   var body: some View {
     NavigationStack {
-      List {
-        Section("Your private little garden") {
-          Text(
-            "Plants, notes, photos and watering history stay on this device. Sprout has no account or cloud service."
-          )
-          Text("Watering dates are gentle reminders to check the soil, never a command to water.")
-        }
-        if store.plants.contains(where: \.isSample) {
-          Section("Starter collection") {
+      ScrollView {
+        VStack(alignment: .leading, spacing: 28) {
+          Text("On this shelf").font(.system(.largeTitle, design: .serif))
+          VStack(alignment: .leading, spacing: 12) {
+            Label("Your private little garden", systemImage: "lock")
+              .font(.system(.title3, design: .serif))
             Text(
-              "Sunday, Olive, Cleo and Frida are sample plants. Add your own, or clear the samples for an empty shelf."
-            )
-            Button("Remove sample plants", role: .destructive) { confirm = true }
+              "Plants, notes, photos and watering history stay on this device. No account. No cloud service."
+            ).foregroundStyle(Palette.muted)
           }
-        }
-        Section {
-          Text("Sprout · Made for slow growth").font(.system(.body, design: .serif))
-        }
-      }.scrollContentBackground(.hidden).background(Palette.cream)
-        .navigationTitle("On this shelf")
+          Divider()
+          VStack(alignment: .leading, spacing: 12) {
+            Text("A rhythm, not a rule").font(.system(.title3, design: .serif))
+            Text("Watering dates are gentle reminders to check the soil, never a command to water.")
+              .foregroundStyle(Palette.muted)
+          }
+          if store.plants.contains(where: \.isSample) {
+            Divider()
+            VStack(alignment: .leading, spacing: 12) {
+              Text("Starter collection").font(.system(.title3, design: .serif))
+              Text(
+                "Sunday, Olive, Cleo and Frida are sample plants. Add your own, or clear the samples for an empty shelf."
+              ).foregroundStyle(Palette.muted)
+              Button("Remove sample plants", role: .destructive) { confirm = true }
+                .foregroundStyle(.red).frame(minHeight: 44)
+            }
+          }
+          Divider()
+          Eyebrow(text: "Made for slow growth")
+        }.padding(26).lineSpacing(4)
+      }.clipped().background(Palette.cream).foregroundStyle(Palette.forest)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         .confirmationDialog(
           "Remove the starter collection?", isPresented: $confirm, titleVisibility: .visible
         ) {
           Button("Remove sample plants", role: .destructive) { store.removeSamples() }
+          Button("Cancel", role: .cancel) {}
         } message: {
           Text("Your own plants will stay. Sample notes and care history will be deleted.")
         }
