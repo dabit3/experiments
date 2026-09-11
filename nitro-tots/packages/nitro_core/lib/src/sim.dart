@@ -63,6 +63,24 @@ class KartInput {
   );
 }
 
+class InputBuffer {
+  KartInput _current = KartInput.idle;
+
+  KartInput get current => _current;
+
+  void add(KartInput input) {
+    _current = input.copyWith(item: input.item || _current.item);
+  }
+
+  KartInput consume() {
+    final input = _current;
+    _current = _current.copyWith(item: false);
+    return input;
+  }
+
+  void clear() => _current = KartInput.idle;
+}
+
 /// Full mutable state for one kart.
 class Racer {
   Racer({

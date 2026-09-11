@@ -29,7 +29,7 @@ class Player {
   bool ready = false;
   bool connected = true;
   int lastInputTick = -1;
-  KartInput latestInput = KartInput.idle;
+  final InputBuffer input = InputBuffer();
   Map<String, dynamic>? testReport;
 
   /// Transport callback; swapped on reconnection.
@@ -232,7 +232,7 @@ class Room {
     for (final p in players) {
       p.ready = false;
       p.lastInputTick = -1;
-      p.latestInput = KartInput.idle;
+      p.input.clear();
       racers.add(Racer(slot: slot, playerId: p.id, name: p.name, characterId: p.characterId, kartId: p.kartId, isBot: !p.connected, platform: p.platform));
       slotToPlayer[slot] = p.id;
       playerToSlot[p.id] = slot;
@@ -283,7 +283,7 @@ class Room {
   void handleInput(String playerId, Map<String, dynamic> j) {
     final p = playerById(playerId);
     if (p == null || status != RoomStatus.racing) return;
-    p.latestInput = KartInput.fromJson(j);
+    p.input.add(KartInput.fromJson(j));
     p.lastInputTick = (j['tick'] as num?)?.toInt() ?? p.lastInputTick;
     lastActivity = now();
   }
@@ -302,7 +302,7 @@ class Room {
         if (racer == null) continue;
         if (p.connected) {
           racer.isBot = false;
-          inputs[slot] = p.latestInput;
+          inputs[slot] = p.input.consume();
         } else {
           racer.isBot = true;
         }

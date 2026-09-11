@@ -379,15 +379,16 @@ class NetSession extends RaceSession {
     _acc += math.min(dt, 0.25);
     while (_acc >= tickDt) {
       _acc -= tickDt;
+      final tickInput = consumeInput();
       if (sim.phase == RacePhase.racing) {
         final tick = sim.tick + 1;
-        _pending.add((tick, input));
+        _pending.add((tick, tickInput));
         if (_pending.length > _maxPending) _pending.removeAt(0);
         // Snapshot-derived poses for remote karts; predicted pose for me.
         _captureLocal();
-        sim.predictStep(localSlot, input);
+        sim.predictStep(localSlot, tickInput);
       }
-      client.send({'type': Msg.input, 'tick': sim.tick, ...input.toJson()});
+      client.send({'type': Msg.input, 'tick': sim.tick, ...tickInput.toJson()});
     }
     alpha = _acc / tickDt;
     // Bleed off reconciliation error smoothly.

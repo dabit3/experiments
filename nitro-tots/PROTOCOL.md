@@ -68,6 +68,11 @@ or the race ends.
 | `ping`            | `t` client time; answered with `pong`                                                                              |
 | `test_report`     | free-form; stored per player and exposed via `/rooms/<code>` for the automated cross-platform test                 |
 
+Item presses are buffered until the next simulation tick on both the client
+and server. A newer steering packet does not erase a pending `i:1`; consuming
+it clears only the item flag. Throttle, steering, drift and look-back retain
+their latest values. Multiple item presses received within one tick coalesce.
+
 `RoomSettings` (all optional on the wire, defaults shown):
 
 ```json

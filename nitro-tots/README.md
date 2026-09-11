@@ -200,7 +200,7 @@ design pass), caption lower-thirds, corner tags that say which footage is
 automated versus manual, an Android build-only notice and a summary card of
 what the run actually verified. When the manual directory contains the
 recorder's `*annotations.json`, each assertion becomes its own clip (the
-seconds leading up to the check) with a PASS/FAIL chip; a `fixes.json` maps
+seconds leading up to the check) with a PASS/FAIL/UNTESTED chip; a `fixes.json` maps
 assertion text to a note so a defect fixed after the run is shown as FIXED.
 Cards are rendered by `test/review_cards.mjs` (headless Chromium with the
 game's own fonts and colour tokens); cutting,
@@ -209,8 +209,8 @@ as MP4 metadata and the edit decision list is written next to the video.
 
 ```sh
 cd nitro-tots && E=.devin/clone-this/nitro-tots/evidence
-python3 test/make_review_video.py --e2e $E/multiplayer/<stamp> --manual $E/manual-arcade-final \
-  --parity $E/parity --design $E/arcade-design --out $E/review-arcade/review
+python3 test/make_review_video.py --e2e $E/multiplayer/<stamp> --manual $E/manual-arcade-release \
+  --parity $E/parity --design $E/arcade-design-release --out $E/review-arcade-release/review
 # → review.mp4, review.chapters.json, review.md
 ```
 
@@ -231,6 +231,8 @@ instead of the test runner's default 30-second limit.
 
 `app/test/race_art_test.dart` loads the runtime artwork and rasterizes all five
 environments and all six kart models, catching asset decode and shader errors.
+Input-delivery regression tests cover single item taps at 60/120 fps, slow
+frames, local/network prediction and packets arriving between server ticks.
 Live Android multiplayer and four-platform visual equality remain unverified
 until suitable device evidence exists; the clone-this manifest records that
 boundary rather than marking the complete four-platform gate as passed.

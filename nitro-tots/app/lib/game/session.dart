@@ -43,7 +43,12 @@ abstract class RaceSession extends ChangeNotifier {
   bool get finished => sim.phase == RacePhase.finished;
 
   /// Latest input from the controller; consumed each simulation tick.
-  KartInput input = KartInput.idle;
+  final InputBuffer _input = InputBuffer();
+  KartInput get input => _input.current;
+  set input(KartInput value) => _input.add(value);
+
+  @protected
+  KartInput consumeInput() => _input.consume();
 
   /// Fired once per race when results are final.
   final ValueNotifier<List<RaceResult>?> results = ValueNotifier(null);
@@ -137,7 +142,7 @@ class LocalSession extends RaceSession {
     while (_acc >= tickDt) {
       _acc -= tickDt;
       capturePoses();
-      sim.step({localSlot: input}, (s, r) => _bots[r.slot]!.drive(s, r));
+      sim.step({localSlot: consumeInput()}, (s, r) => _bots[r.slot]!.drive(s, r));
       frameEvents.addAll(sim.events);
       if (info.timeTrial && sim.phase == RacePhase.racing) {
         final me = local!;
