@@ -178,6 +178,7 @@ struct ObjectBrowser: View {
     .navigationBarTitleDisplayMode(.inline)
     .toolbarBackground(MuseumStyle.paper, for: .navigationBar)
     .toolbarBackground(.visible, for: .navigationBar)
+    .toolbarColorScheme(.light, for: .navigationBar)
     .toolbar {
       ToolbarItem(placement: .principal) {
         HStack(spacing: 7) {

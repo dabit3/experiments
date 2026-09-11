@@ -90,6 +90,7 @@ struct ObjectDetail: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbarBackground(MuseumStyle.paper, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
+      .toolbarColorScheme(.light, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .principal) { Eyebrow(text: "The exhibit", color: MuseumStyle.ink) }
         ToolbarItemGroup(placement: .topBarTrailing) {
@@ -245,6 +246,7 @@ struct LabelExport: View {
         .navigationTitle("Museum label").navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(MuseumStyle.paper, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarColorScheme(.light, for: .navigationBar)
         .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         .onAppear { generate() }
     }

@@ -241,6 +241,7 @@ struct MuseumAbout: View {
         .navigationTitle("About Curio").navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(MuseumStyle.paper, for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
+        .toolbarColorScheme(.light, for: .navigationBar)
         .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
     }
   }

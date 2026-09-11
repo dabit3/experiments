@@ -35,7 +35,12 @@ struct CollectionEditor: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbarBackground(MuseumStyle.paper, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
+      .toolbarColorScheme(.light, for: .navigationBar)
       .toolbar {
+        ToolbarItem(placement: .principal) {
+          Text(existing == nil ? "New collection" : "Edit collection")
+            .font(.headline).foregroundStyle(MuseumStyle.ink)
+        }
         ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
         ToolbarItem(placement: .confirmationAction) {
           Button("Save") {
@@ -159,7 +164,12 @@ struct ObjectEditor: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbarBackground(MuseumStyle.paper, for: .navigationBar)
       .toolbarBackground(.visible, for: .navigationBar)
+      .toolbarColorScheme(.light, for: .navigationBar)
       .toolbar {
+        ToolbarItem(placement: .principal) {
+          Text(existing == nil ? "New object" : "Edit object")
+            .font(.headline).foregroundStyle(MuseumStyle.ink)
+        }
         ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
         ToolbarItem(placement: .confirmationAction) {
           Button("Save") { save() }
