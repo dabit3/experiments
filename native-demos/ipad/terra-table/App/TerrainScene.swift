@@ -81,6 +81,26 @@ struct TerrainCanvas: UIViewRepresentable {
       floorNode.position.y = -0.46
       scene.rootNode.addChildNode(floorNode)
 
+      let shadowImage = UIGraphicsImageRenderer(size: CGSize(width: 256, height: 256)).image {
+        context in
+        let colors = [UIColor.black.withAlphaComponent(0.2).cgColor, UIColor.clear.cgColor]
+        if let gradient = CGGradient(
+          colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray, locations: [0, 1])
+        {
+          context.cgContext.drawRadialGradient(
+            gradient, startCenter: CGPoint(x: 128, y: 128), startRadius: 50,
+            endCenter: CGPoint(x: 128, y: 128), endRadius: 128, options: [])
+        }
+      }
+      let shadow = SCNPlane(width: 14, height: 14)
+      shadow.firstMaterial?.diffuse.contents = shadowImage
+      shadow.firstMaterial?.lightingModel = .constant
+      shadow.firstMaterial?.writesToDepthBuffer = false
+      let shadowNode = SCNNode(geometry: shadow)
+      shadowNode.eulerAngles.x = -.pi / 2
+      shadowNode.position = SCNVector3(0.35, -0.45, 0.35)
+      scene.rootNode.addChildNode(shadowNode)
+
       let water = SCNBox(width: 10, height: 0.035, length: 10, chamferRadius: 0)
       let waterMaterial = SCNMaterial()
       waterMaterial.diffuse.contents = UIColor(red: 0.27, green: 0.66, blue: 0.66, alpha: 1)
@@ -94,21 +114,24 @@ struct TerrainCanvas: UIViewRepresentable {
         _surface.diffuse.rgb += float3(ripples);
         """
       ]
-      water.materials = [waterMaterial]
+      let waterSide = SCNMaterial()
+      waterSide.diffuse.contents = UIColor(red: 0.20, green: 0.53, blue: 0.53, alpha: 1)
+      waterSide.lightingModel = .constant
+      water.materials = [waterSide, waterSide, waterSide, waterSide, waterMaterial, waterSide]
       waterNode.geometry = water
       scene.rootNode.addChildNode(waterNode)
 
       let ambient = SCNNode()
       ambient.light = SCNLight()
       ambient.light?.type = .ambient
-      ambient.light?.intensity = 700
+      ambient.light?.intensity = 450
       ambient.light?.color = UIColor(red: 0.94, green: 0.96, blue: 1, alpha: 1)
       scene.rootNode.addChildNode(ambient)
 
       let sun = SCNNode()
       sun.light = SCNLight()
       sun.light?.type = .directional
-      sun.light?.intensity = 950
+      sun.light?.intensity = 650
       sun.light?.castsShadow = true
       sun.light?.shadowMode = .deferred
       sun.light?.shadowColor = UIColor.black.withAlphaComponent(0.16)
@@ -152,7 +175,8 @@ struct TerrainCanvas: UIViewRepresentable {
         pitch = 0.66
         lastHome = model.homeRevision
       }
-      waterNode.position.y = model.terrain.water * 3
+      (waterNode.geometry as? SCNBox)?.height = CGFloat(model.terrain.water * 3 + 0.02)
+      waterNode.position.y = (model.terrain.water * 3 - 0.02) / 2
       waterNode.isHidden = model.terrain.water < 0.02
       updateCamera()
     }
@@ -173,12 +197,14 @@ struct TerrainCanvas: UIViewRepresentable {
       let step: Float = 10 / Float(n - 1)
       var vertices: [SCNVector3] = []
       var normals: [SCNVector3] = []
+      var coordinates: [CGPoint] = []
       var colors: [Float] = []
       var indices: [Int32] = []
       for z in 0..<n {
         for x in 0..<n {
           let h = heights[z * n + x]
           vertices.append(SCNVector3(Float(x) * step - 5, h * 3, Float(z) * step - 5))
+          coordinates.append(CGPoint(x: CGFloat(h * 3), y: 0))
           let dx = (heights[z * n + min(n - 1, x + 1)] - heights[z * n + max(0, x - 1)]) * 3
           let dz = (heights[min(n - 1, z + 1) * n + x] - heights[max(0, z - 1) * n + x]) * 3
           let length = sqrt(dx * dx + 4 * step * step + dz * dz)
@@ -199,7 +225,8 @@ struct TerrainCanvas: UIViewRepresentable {
         componentsPerVector: 4, bytesPerComponent: 4, dataOffset: 0, dataStride: 16)
       let geometry = SCNGeometry(
         sources: [
-          SCNGeometrySource(vertices: vertices), SCNGeometrySource(normals: normals), colorSource,
+          SCNGeometrySource(vertices: vertices), SCNGeometrySource(normals: normals),
+          SCNGeometrySource(textureCoordinates: coordinates), colorSource,
         ],
         elements: [SCNGeometryElement(indices: indices, primitiveType: .triangles)])
       let material = SCNMaterial()
@@ -209,7 +236,7 @@ struct TerrainCanvas: UIViewRepresentable {
       if model.contours {
         material.shaderModifiers = [
           .surface: """
-          float level = _surface.position.y / 0.15;
+            float level = _surface.diffuseTexcoord.x / 0.15;
           float line = 1.0 - smoothstep(0.025, 0.075, abs(fract(level) - 0.5));
           _surface.diffuse.rgb = mix(_surface.diffuse.rgb, float3(0.14, 0.22, 0.17), line * 0.72);
           """

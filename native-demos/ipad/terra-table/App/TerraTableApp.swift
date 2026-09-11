@@ -224,12 +224,19 @@ struct StudioView: View {
             .background(Palette.paper.opacity(0.95)).clipShape(Capsule())
             Spacer()
             HStack(spacing: 0) {
-              iconButton("minus", "Zoom out") { model.zoom = max(0.7, model.zoom - 0.15) }
-              iconButton("plus", "Zoom in") { model.zoom = min(1.8, model.zoom + 0.15) }
+              iconButton("minus", "Zoom out", disabled: model.zoom <= 0.7) {
+                model.zoom = max(0.7, model.zoom - 0.15)
+                model.status = "View scale \(Int(model.zoom * 100))%"
+              }
+              iconButton("plus", "Zoom in", disabled: model.zoom >= 1.8) {
+                model.zoom = min(1.8, model.zoom + 0.15)
+                model.status = "View scale \(Int(model.zoom * 100))%"
+              }
               Rectangle().fill(Palette.line).frame(width: 1, height: 20)
               iconButton("viewfinder", "Reset view") {
                 model.zoom = 1
                 model.homeRevision += 1
+                model.status = "Studio view restored · 100%"
               }
             }.background(Palette.paper.opacity(0.95)).clipShape(Capsule())
           }.padding(.horizontal, 25).padding(.bottom, 18)
@@ -477,7 +484,8 @@ struct StudioView: View {
     _ symbol: String, _ label: String, disabled: Bool = false, action: @escaping () -> Void
   ) -> some View {
     Button(action: action) {
-      Image(systemName: symbol).font(.system(size: 16)).frame(width: 42, height: 42)
+      Image(systemName: symbol).font(.system(size: 16)).frame(width: 44, height: 44)
+        .contentShape(Rectangle())
     }.buttonStyle(.plain).accessibilityLabel(label).disabled(disabled).opacity(disabled ? 0.28 : 1)
   }
 }
