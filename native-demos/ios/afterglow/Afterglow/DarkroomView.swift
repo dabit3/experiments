@@ -147,14 +147,18 @@ struct DarkroomView: View {
         if let image = comparing ? store.photo.image : store.preview {
           Image(uiImage: image)
             .resizable().scaledToFit()
+            .overlay {
+              if tool == .crop && !comparing {
+                GridOverlay().stroke(paper.opacity(0.35), lineWidth: 0.5)
+                  .allowsHitTesting(false)
+              }
+            }
             .frame(width: geometry.size.width, height: geometry.size.height)
             .accessibilityLabel(comparing ? "Original photograph" : "Edited photograph")
         } else {
           ProgressView().tint(amber)
         }
         if tool == .crop && !comparing {
-          GridOverlay().stroke(paper.opacity(0.25), lineWidth: 0.5)
-            .padding(16).allowsHitTesting(false)
           VStack {
             Text("DRAG TO REFRAME").font(.system(size: 8, weight: .medium)).tracking(2)
               .padding(8).background(.black.opacity(0.65), in: Capsule())
