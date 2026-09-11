@@ -215,11 +215,19 @@ final class StudioModel: ObservableObject {
   }
 
   func importAudio() {
+    guard let window = NSApp.keyWindow else { return }
+    stop()
     let panel = NSOpenPanel()
     panel.allowedContentTypes = [.wav, .aiff]
     panel.allowsMultipleSelection = false
     panel.message = "Open mono or stereo WAV / AIFF · up to 120 seconds"
-    guard panel.runModal() == .OK, let url = panel.url else { return }
+    panel.beginSheetModal(for: window) { [weak self] response in
+      guard response == .OK, let url = panel.url else { return }
+      self?.loadAudio(from: url)
+    }
+  }
+
+  private func loadAudio(from url: URL) {
     do {
       let file = try AVAudioFile(
         forReading: url, commonFormat: .pcmFormatFloat32, interleaved: false)
@@ -251,15 +259,19 @@ final class StudioModel: ObservableObject {
   }
 
   func exportAudio() {
+    guard let window = NSApp.keyWindow else { return }
+    stop()
     let panel = NSSavePanel()
     panel.allowedContentTypes = [.wav]
     panel.nameFieldStringValue = audio.name + " — edited.wav"
     panel.message = "Export full edited audio · 16-bit PCM WAV · \(Int(audio.sampleRate)) Hz"
-    guard panel.runModal() == .OK, let url = panel.url else { return }
-    do {
-      try audio.wavData().write(to: url, options: .atomic)
-      lastExport = url
-      notice = "Exported \(url.lastPathComponent)"
-    } catch { self.error = "Couldn't export: \(error.localizedDescription)" }
+    panel.beginSheetModal(for: window) { [weak self] response in
+      guard let self, response == .OK, let url = panel.url else { return }
+      do {
+        try audio.wavData().write(to: url, options: .atomic)
+        lastExport = url
+        notice = "Exported \(url.lastPathComponent)"
+      } catch { self.error = "Couldn't export: \(error.localizedDescription)" }
+    }
   }
 }
