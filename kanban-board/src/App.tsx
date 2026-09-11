@@ -46,6 +46,10 @@ const collisionDetection: CollisionDetection = (args) => {
   return closestCorners(args)
 }
 
+function issueCountLabel(count: number) {
+  return `${count} ${count === 1 ? 'issue' : 'issues'}`
+}
+
 export default function App() {
   const [board, dispatch] = useReducer(
     boardReducer,
@@ -396,7 +400,7 @@ export default function App() {
             <span className="property-divider" />
             <span className="project-property">
               <Icon name="box" size={14} />
-              {totalCards} issues
+              {issueCountLabel(totalCards)}
             </span>
             <div className="project-team">
               <div className="avatar-group">
@@ -522,12 +526,12 @@ export default function App() {
                     <span>
                       <strong>{person.name}</strong>
                       <small>
-                        {
+                        {issueCountLabel(
                           Object.values(board.cards).filter(
                             (card) => card.assigneeId === person.id,
-                          ).length
-                        }{' '}
-                        issues assigned
+                          ).length,
+                        )}{' '}
+                        assigned
                       </small>
                     </span>
                     <Icon name="arrow" size={14} />
