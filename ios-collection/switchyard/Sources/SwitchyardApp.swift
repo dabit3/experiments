@@ -154,8 +154,11 @@ struct GameView: View {
         BoardView(railway: railway, onTouch: haptic)
         arrivals
         controls
-        Text(scenario.note).font(.footnote).foregroundStyle(Ink.muted)
-          .frame(maxWidth: .infinity, alignment: .leading).padding(.bottom, 16)
+        VStack(alignment: .leading, spacing: 4) {
+          Text(dispatchHint.title).font(.subheadline.weight(.semibold))
+          Text(dispatchHint.detail).font(.footnote).foregroundStyle(Ink.muted)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading).padding(.bottom, 16)
       }.padding(20)
     }
     .foregroundStyle(Ink.navy).background(Ink.paper)
@@ -204,15 +207,35 @@ struct GameView: View {
           Text(
             "\(arrival.entrance == .west ? "W" : "E") · \(max(0, Int(ceil(arrival.time - railway.elapsed))))s"
           )
-          .font(.system(size: 9, weight: .bold, design: .monospaced))
+          .font(.system(.caption2, design: .monospaced, weight: .bold))
         }.frame(minWidth: 40)
           .accessibilityElement(children: .ignore)
           .accessibilityLabel(
             "\(arrival.freight.station), \(arrival.entrance.rawValue), in \(max(0, Int(ceil(arrival.time - railway.elapsed)))) seconds"
           )
       }
-    }.padding(.horizontal, 14).padding(.vertical, 10)
+    }.frame(minHeight: 42).padding(.horizontal, 14).padding(.vertical, 10)
       .background(.white.opacity(0.50), in: RoundedRectangle(cornerRadius: 16))
+  }
+
+  private var dispatchHint: (title: String, detail: String) {
+    guard let freight = railway.trains.first?.freight ?? railway.remaining.first?.freight else {
+      return ("All trains on the line", "Keep the route clear for the final delivery.")
+    }
+    if let train = railway.trains.first,
+      (train.to == .westSignal && !railway.westOpen)
+        || (train.to == .eastSignal && !railway.eastOpen)
+    {
+      return (
+        "\(freight.code) → \(freight.station) · held",
+        "Tap the \(train.entrance.rawValue) signal to release when the merge is clear."
+      )
+    }
+    let instruction = freight == .coral ? "A → Rosebay" : "A → To B, then B → \(freight.station)"
+    return (
+      "\(freight.code) → \(freight.station)",
+      "Set \(instruction). Tap the dark switches to change tracks."
+    )
   }
 
   private var controls: some View {

@@ -32,6 +32,10 @@ struct BoardView: View {
           terrain(&context)
           for (from, to) in Node.tracks { track(&context, from: from.point, to: to.point) }
           route(&context)
+          if !decorative {
+            junction(&context, node: .a, control: RailPoint(x: 124, y: 238))
+            junction(&context, node: .b, control: RailPoint(x: 278, y: 171))
+          }
           station(&context, point: Node.rose.point, freight: .coral)
           station(&context, point: Node.lake.point, freight: .blue)
           station(&context, point: Node.sun.point, freight: .gold)
@@ -58,7 +62,7 @@ struct BoardView: View {
         if !decorative {
           boardControl(
             "A", symbol: railway.roseRoute ? "arrow.up.left" : "arrow.up.right",
-            at: CGPoint(x: 150, y: 236), scale: scale,
+            at: CGPoint(x: 124, y: 238), scale: scale,
             label: "Switch A", value: railway.roseRoute ? "Rosebay" : "Onward to switch B"
           ) {
             railway.roseRoute.toggle()
@@ -66,7 +70,7 @@ struct BoardView: View {
           }
           boardControl(
             "B", symbol: railway.sunRoute ? "arrow.up.right" : "arrow.up.left",
-            at: CGPoint(x: 252, y: 158), scale: scale,
+            at: CGPoint(x: 278, y: 171), scale: scale,
             label: "Switch B", value: railway.sunRoute ? "Sunfield" : "Lakeview"
           ) {
             railway.sunRoute.toggle()
@@ -94,11 +98,15 @@ struct BoardView: View {
     label: String, value: String, action: @escaping () -> Void
   ) -> some View {
     Button(action: action) {
-      HStack(spacing: 2) {
-        Text(title).font(.system(size: 13, weight: .black, design: .rounded))
-        Image(systemName: symbol).font(.system(size: 12, weight: .heavy))
+      VStack(spacing: 3) {
+        HStack(spacing: 5) {
+          Text(title).font(.system(size: 14, weight: .black, design: .rounded))
+          Image(systemName: symbol).font(.system(size: 12, weight: .heavy))
+        }
+        Text(value == "Onward to switch B" ? "To B" : value)
+          .font(.system(size: 10, weight: .semibold))
       }
-      .foregroundStyle(Ink.paper).frame(width: 46, height: 44)
+      .foregroundStyle(Ink.paper).frame(width: 72, height: 50)
       .background(Ink.navy, in: RoundedRectangle(cornerRadius: 14))
       .overlay(RoundedRectangle(cornerRadius: 14).stroke(Ink.paper, lineWidth: 2))
       .shadow(color: Ink.navy.opacity(0.15), radius: 0, y: 3)
@@ -122,7 +130,7 @@ struct BoardView: View {
             isOpen ? Color(red: 0.14, green: 0.47, blue: 0.32) : Freight.coral.color, in: Circle()
           )
           .overlay(Circle().stroke(Ink.paper, lineWidth: 2))
-        Text(isOpen ? "GO" : "HOLD").font(.system(size: 8, weight: .black, design: .monospaced))
+        Text(isOpen ? "GO" : "HOLD").font(.system(size: 10, weight: .black, design: .monospaced))
           .foregroundStyle(Ink.navy)
       }.foregroundStyle(.white).frame(width: 50, height: 50)
     }
@@ -191,6 +199,16 @@ struct BoardView: View {
     context.stroke(line, with: .color(Ink.mint), style: StrokeStyle(lineWidth: 3, lineCap: .round))
   }
 
+  private func junction(_ context: inout GraphicsContext, node: Node, control: RailPoint) {
+    context.stroke(
+      path(node.point, control), with: .color(Ink.navy.opacity(0.45)),
+      style: StrokeStyle(lineWidth: 1.5, dash: [2, 3]))
+    let marker = Path(
+      ellipseIn: CGRect(x: node.point.x - 5, y: node.point.y - 5, width: 10, height: 10))
+    context.fill(marker, with: .color(Ink.paper))
+    context.stroke(marker, with: .color(Ink.navy), lineWidth: 2)
+  }
+
   private func route(_ context: inout GraphicsContext) {
     let nodes: [Node] =
       railway.roseRoute ? [.merge, .a, .rose] : [.merge, .a, .b, railway.sunRoute ? .sun : .lake]
@@ -231,10 +249,15 @@ struct BoardView: View {
       Text(freight.code).font(.system(size: 11, weight: .black, design: .rounded)).foregroundStyle(
         .white),
       at: CGPoint(x: x, y: y - 14))
+    context.fill(
+      Path(roundedRect: CGRect(x: x - 43, y: y + 14, width: 86, height: 19), cornerRadius: 5),
+      with: .color(Ink.paper))
     context.draw(
-      Text(freight.station.uppercased()).font(.system(size: 9, weight: .heavy, design: .monospaced))
-        .foregroundStyle(Ink.navy),
-      at: CGPoint(x: x, y: y + 23))
+      Text(freight.station.uppercased()).font(
+        .system(size: 10.5, weight: .heavy, design: .monospaced)
+      )
+      .foregroundStyle(Ink.navy),
+      at: CGPoint(x: x, y: y + 23.5))
   }
 
   private func drawTrain(_ context: inout GraphicsContext, train: Train) {
@@ -254,9 +277,9 @@ struct BoardView: View {
       Path(roundedRect: CGRect(x: 5, y: -5, width: 6, height: 10), cornerRadius: 2),
       with: .color(Ink.navy))
     local.fill(Path(CGRect(x: 13, y: -4, width: 3, height: 3)), with: .color(Ink.butter))
-    local.draw(
-      Text(train.freight.code).font(.system(size: 10, weight: .black, design: .rounded))
+    context.draw(
+      Text(train.freight.code).font(.system(size: 12, weight: .black, design: .rounded))
         .foregroundStyle(.white),
-      at: CGPoint(x: -6, y: 0))
+      at: CGPoint(x: train.point.x - 6 * cos(train.angle), y: train.point.y - 6 * sin(train.angle)))
   }
 }
