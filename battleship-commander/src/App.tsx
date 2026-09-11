@@ -384,10 +384,10 @@ export default function App() {
           LOCAL PLAY <i className="connection-dot" />
         </span>
       </footer>
-      {!placing && recentShot ? (
+      {!placing && recentShot && recentShot.result !== 'sunk' ? (
         <div
           key={state.log.length}
-          className={`shot-flash shot-flash--${recentShot.result}`}
+          className={`shot-flash shot-flash--${recentShot.result}${state.announcement ? ' shot-flash--suppressed' : ''}`}
           aria-hidden="true"
         >
           <span>
@@ -395,11 +395,7 @@ export default function App() {
             {coordLabel(recentShot.coord)}
           </span>
           <strong>
-            {recentShot.result === 'miss'
-              ? 'SPLASH'
-              : recentShot.result === 'sunk'
-                ? 'SHIP SUNK!'
-                : 'DIRECT HIT!'}
+            {recentShot.result === 'miss' ? 'SPLASH' : 'DIRECT HIT!'}
           </strong>
         </div>
       ) : null}

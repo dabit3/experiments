@@ -412,6 +412,9 @@ kbd {
   color: #a6d4de;
   text-shadow: 0 3px 0 #0b2a3e;
 }
+.shot-flash--suppressed {
+  visibility: hidden;
+}
 .shot-flash--miss strong {
   font-size: 32px;
 }
