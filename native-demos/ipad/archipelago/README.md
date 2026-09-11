@@ -133,8 +133,14 @@ Simulator through real clicking, with a separately attached annotated recording,
 full screenshots, exported sample and test report. Generated media, app binaries,
 DerivedData, local saves, and personal Xcode state are intentionally untracked.
 
+To regenerate the bundled original icon (macOS AppKit, no design-tool dependency):
+
+```sh
+swift scripts/generate-icon.swift Assets.xcassets/AppIcon.appiconset/AppIcon.png
+```
+
 To format after edits:
 
 ```sh
-xcrun swift-format format --in-place --recursive Sources Tests Package.swift
+xcrun swift-format format --in-place --recursive Sources Tests Package.swift scripts/generate-icon.swift
 ```
