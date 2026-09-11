@@ -226,9 +226,10 @@ class _Pill extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: compact ? 10 : 14, vertical: compact ? 5 : 8),
       decoration: BoxDecoration(
-        color: NtColors.inkDark.withValues(alpha: 0.78),
-        borderRadius: BorderRadius.circular(NtRadius.pill),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
+        gradient: const LinearGradient(colors: [Color(0xF025475C), Color(0xEF081927)]),
+        borderRadius: BorderRadius.circular(NtRadius.md),
+        border: Border.all(color: color.withValues(alpha: 0.6), width: 1.5),
+        boxShadow: const [BoxShadow(color: Color(0x33000000), blurRadius: 12, offset: Offset(0, 4))],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -300,13 +301,13 @@ class _ItemSlot extends StatelessWidget {
         width: size,
         height: size,
         decoration: BoxDecoration(
-          color: NtColors.inkDark.withValues(alpha: 0.82),
-          borderRadius: BorderRadius.circular(size * 0.28),
-          border: Border.all(color: accent, width: 4),
+          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xFA315770), Color(0xF5091928)]),
+          borderRadius: BorderRadius.circular(size * 0.18),
+          border: Border.all(color: accent, width: 3),
           boxShadow: item != null && !rolling ? NtElevation.glow(accent) : null,
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(size * 0.28 - 4),
+          borderRadius: BorderRadius.circular(size * 0.18 - 3),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -329,7 +330,21 @@ class _ItemSlot extends StatelessWidget {
               else if (item != null)
                 CustomPaint(painter: _ItemPainter(item, r?.itemCharges ?? 1), size: Size.square(size * 0.8))
               else
-                Icon(Icons.help_outline_rounded, color: Colors.white.withValues(alpha: 0.18), size: size * 0.4),
+                Icon(Icons.bolt_rounded, color: NtColors.mint.withValues(alpha: 0.3), size: size * 0.4),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 3,
+                child: Text(
+                  rolling
+                      ? 'ROLLING'
+                      : item == null
+                      ? 'ITEM'
+                      : 'READY',
+                  textAlign: TextAlign.center,
+                  style: NtType.caption(Colors.white.withValues(alpha: 0.7)).copyWith(fontSize: compact ? 7 : 9, letterSpacing: 2),
+                ),
+              ),
             ],
           ),
         ),
@@ -396,7 +411,11 @@ class _Speedo extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: compact ? 8 : 12, vertical: compact ? 4 : 6),
-            decoration: BoxDecoration(color: NtColors.inkDark.withValues(alpha: 0.78), borderRadius: BorderRadius.circular(NtRadius.pill)),
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(colors: [Color(0xEF24485C), Color(0xEF081927)]),
+              borderRadius: BorderRadius.circular(NtRadius.md),
+              border: Border.all(color: (racer.boostTicks > 0 ? NtColors.sunny : NtColors.mint).withValues(alpha: 0.45)),
+            ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -575,7 +594,7 @@ class Minimap extends StatelessWidget {
         height: size,
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: NtColors.inkDark.withValues(alpha: 0.72),
+          gradient: const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xE62A4A60), Color(0xE6081927)]),
           borderRadius: BorderRadius.circular(NtRadius.lg),
           border: Border.all(color: Colors.white.withValues(alpha: 0.12)),
         ),

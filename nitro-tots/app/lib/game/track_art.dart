@@ -37,6 +37,7 @@ class TrackArt {
       _road(canvas);
       _startLine(canvas);
     }
+    _scenery(canvas);
     _boostPads(canvas);
     _jumps(canvas);
     _staticHazards(canvas);
@@ -44,24 +45,27 @@ class TrackArt {
   }
 
   void _ground(Canvas canvas) {
-    canvas.drawRect(bounds, Paint()..color = c(theme.ground));
-    // Soft checker pattern so motion is readable off-road.
+    canvas.drawRect(
+      bounds,
+      Paint()
+        ..shader = ui.Gradient.linear(bounds.topLeft, bounds.bottomRight, [Color.lerp(c(theme.ground), const Color(0xFFF5F6CE), 0.12)!, c(theme.groundAlt)]),
+    );
     final alt = Paint()..color = c(theme.groundAlt);
-    const cell = 64.0;
+    const cell = 96.0;
     final x0 = (bounds.left / cell).floor();
     final x1 = (bounds.right / cell).ceil();
     final y0 = (bounds.top / cell).floor();
     final y1 = (bounds.bottom / cell).ceil();
     for (var i = x0; i < x1; i++) {
       for (var j = y0; j < y1; j++) {
-        if ((i + j).isEven) canvas.drawRect(Rect.fromLTWH(i * cell, j * cell, cell, cell), alt);
+        canvas.drawOval(Rect.fromLTWH(i * cell, j * cell, cell * 0.8, cell * 0.65), alt..color = c(theme.groundAlt).withValues(alpha: 0.25));
       }
     }
     // Scatter decor blobs (deterministic per track) for a lived-in look.
-    final rng = Rng(track.id.hashCode & 0x7fffffff);
+    final rng = Rng(track.id.codeUnits.fold(7, (a, b) => (a * 31 + b) & 0x7fffffff));
     final blob = Paint()..color = c(theme.groundAlt).withValues(alpha: 0.9);
     final blob2 = Paint()..color = c(theme.accent).withValues(alpha: 0.22);
-    for (var i = 0; i < 160; i++) {
+    for (var i = 0; i < 800; i++) {
       final p = Offset(bounds.left + rng.nextDouble() * bounds.width, bounds.top + rng.nextDouble() * bounds.height);
       final near = track.nearestIndex(V2(p.dx, p.dy));
       final s = track.samples[near];
@@ -70,6 +74,149 @@ class TrackArt {
       if (track.def.shortcuts.any((sc) => pointInPolygon(V2(p.dx, p.dy), sc.polygon))) continue;
       final r = 6 + rng.nextDouble() * 16;
       canvas.drawCircle(p, r, rng.nextInt(3) == 0 ? blob2 : blob);
+    }
+  }
+
+  void _scenery(Canvas canvas) {
+    final rng = Rng(9182);
+    for (var i = 0; i < track.samples.length; i += 9) {
+      final sample = track.samples[i];
+      for (final side in [-1.0, 1.0]) {
+        final radius = 12 + rng.nextDouble() * 14;
+        final distance = sample.width / 2 + track.def.grassMargin + radius + 10 + rng.nextDouble() * 35;
+        final pos = sample.pos + sample.normal * (distance * side);
+        final nearest = track.samples[track.nearestIndex(pos)];
+        if (nearest.pos.distanceTo(pos) < nearest.width / 2 + track.def.grassMargin + radius) continue;
+        if (track.def.shortcuts.any((sc) => pointInPolygon(pos, sc.polygon))) continue;
+        canvas.save();
+        canvas.translate(pos.x, pos.y);
+        canvas.drawOval(
+          Rect.fromCenter(center: Offset(radius * 0.45, radius * 0.6), width: radius * 2.4, height: radius * 1.6),
+          Paint()..color = const Color(0x33071827),
+        );
+        switch (track.id) {
+          case 'tincity':
+          case 'bowl':
+            _building(canvas, radius, i.isEven);
+          case 'frostbite':
+            _crystal(canvas, radius);
+          default:
+            _tree(canvas, radius, track.id == 'sprinkle', i ~/ 9 + (side < 0 ? 1 : 0));
+        }
+        canvas.restore();
+      }
+    }
+    if (track.isArena) return;
+    for (var i = 0; i < track.samples.length; i += 24) {
+      final s = track.samples[i];
+      final pos = s.pos + s.normal * (s.width / 2 + track.def.grassMargin + 4);
+      canvas.save();
+      canvas.translate(pos.x, pos.y);
+      canvas.rotate(s.tangent.angle);
+      final sign = RRect.fromRectAndRadius(const Rect.fromLTWH(-18, -5, 36, 10), const Radius.circular(2));
+      canvas.drawRRect(sign.shift(const Offset(2, 3)), Paint()..color = const Color(0x55000000));
+      canvas.drawRRect(sign, Paint()..color = const Color(0xFF102B3B));
+      for (var k = -1; k <= 1; k++) {
+        final x = k * 9.0;
+        canvas.drawPath(
+          Path()
+            ..moveTo(x - 3, -3)
+            ..lineTo(x + 1, 0)
+            ..lineTo(x - 3, 3),
+          Paint()
+            ..color = c(theme.curbA)
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 1.6,
+        );
+      }
+      canvas.restore();
+    }
+  }
+
+  void _tree(Canvas canvas, double r, bool candy, int index) {
+    final color = candy
+        ? [const Color(0xFFFF9466), const Color(0xFFEC6795), const Color(0xFFC66DB2)][index % 3]
+        : [const Color(0xFF247866), const Color(0xFF399660), const Color(0xFF5FAA69)][index % 3];
+    canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(-3, -2, 6, r * 0.8), const Radius.circular(2)), Paint()..color = const Color(0xFF8A6850));
+    for (final (x, y, scale) in [(0.0, 0.0, 1.0), (-0.4, -0.15, 0.7), (0.25, -0.45, 0.75)]) {
+      final center = Offset(x * r, y * r);
+      canvas.drawCircle(
+        center,
+        r * scale,
+        Paint()
+          ..shader = ui.Gradient.radial(
+            center.translate(-r * 0.3, -r * 0.3),
+            r * 1.5,
+            [Color.lerp(color, const Color(0xFFFFF4B0), 0.25)!, color, Color.lerp(color, const Color(0xFF072F3C), 0.45)!],
+            [0, 0.55, 1],
+          ),
+      );
+    }
+    if (candy) {
+      for (var k = 0; k < 9; k++) {
+        final a = k * 2.4;
+        final p = Offset(math.cos(a) * r * 0.65, math.sin(a) * r * 0.65);
+        canvas.drawLine(
+          p,
+          p.translate(2, -2),
+          Paint()
+            ..color = const Color(0xFFFDF1CA)
+            ..strokeWidth = 1.5
+            ..strokeCap = StrokeCap.round,
+        );
+      }
+    } else {
+      canvas.drawCircle(Offset(r + 3, 3), 4, Paint()..color = const Color(0xFF53CFC1));
+      canvas.drawCircle(Offset(r + 2, 2), 1, Paint()..color = const Color(0xFFEEFFD8));
+    }
+  }
+
+  void _crystal(Canvas canvas, double r) {
+    final p = Path()
+      ..moveTo(-r * 0.6, r * 0.6)
+      ..lineTo(-r * 0.3, -r)
+      ..lineTo(r * 0.3, -r * 1.4)
+      ..lineTo(r * 0.7, r * 0.4)
+      ..lineTo(0, r)
+      ..close();
+    canvas.drawPath(
+      p,
+      Paint()
+        ..shader = ui.Gradient.linear(Offset(-r, -r), Offset(r, r), [const Color(0xFFEEFFFF), const Color(0xFF4DC6E2), const Color(0xFF657FD1)], [0, 0.5, 1]),
+    );
+    canvas.drawPath(
+      Path()
+        ..moveTo(-r * 0.3, -r)
+        ..lineTo(0, r)
+        ..lineTo(r * 0.3, -r * 1.4),
+      Paint()
+        ..color = const Color(0xAAFFFFFF)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1,
+    );
+    canvas.drawOval(Rect.fromCenter(center: Offset(0, r), width: r * 1.8, height: r * 0.35), Paint()..color = const Color(0xFFDDF9FF));
+  }
+
+  void _building(Canvas canvas, double r, bool pink) {
+    final rect = Rect.fromCenter(center: Offset.zero, width: r * 1.7, height: r * 2);
+    canvas.drawRRect(RRect.fromRectAndRadius(rect.translate(4, 7), const Radius.circular(5)), Paint()..color = const Color(0xFF101A3F));
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(rect, const Radius.circular(5)),
+      Paint()..shader = ui.Gradient.linear(rect.topLeft, rect.bottomRight, [const Color(0xFF53628C), const Color(0xFF243557)]),
+    );
+    canvas.drawRRect(RRect.fromRectAndRadius(rect.deflate(3), const Radius.circular(3)), Paint()..color = const Color(0xFF172544));
+    final neon = pink ? const Color(0xFFFF76CC) : const Color(0xFF58E8FF);
+    canvas.drawLine(
+      rect.bottomLeft.translate(3, -1),
+      rect.bottomRight.translate(-3, -1),
+      Paint()
+        ..color = neon
+        ..strokeWidth = 2,
+    );
+    for (var y = -r + 7; y < r - 4; y += 6) {
+      for (var x = -r * 0.85 + 6; x < r * 0.85 - 4; x += 6) {
+        canvas.drawRect(Rect.fromLTWH(x, y, 2, 2.5), Paint()..color = neon.withValues(alpha: 0.75));
+      }
     }
   }
 
@@ -153,7 +300,14 @@ class TrackArt {
       ..addPolygon(left, true)
       ..addPolygon(right, true);
 
-    // Edge shadow / curb.
+    canvas.drawPath(
+      ring.shift(const Offset(3, 5)),
+      Paint()
+        ..color = const Color(0x33071927)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 17
+        ..strokeJoin = StrokeJoin.round,
+    );
     canvas.drawPath(
       ring,
       Paint()
@@ -162,7 +316,22 @@ class TrackArt {
         ..strokeWidth = 9
         ..strokeJoin = StrokeJoin.round,
     );
-    canvas.drawPath(ring, Paint()..color = c(theme.road));
+    canvas.drawPath(
+      ring,
+      Paint()..shader = ui.Gradient.linear(bounds.topLeft, bounds.bottomRight, [Color.lerp(c(theme.road), const Color(0xFF263B50), 0.28)!, c(theme.road)]),
+    );
+    canvas.save();
+    canvas.clipPath(ring);
+    final grain = Rng(781);
+    final texture = Paint()..color = const Color(0x10FFFFFF);
+    for (var i = 0; i < track.samples.length; i += 2) {
+      final s = track.samples[i];
+      for (var n = 0; n < 4; n++) {
+        final p = s.pos + s.normal * ((grain.nextDouble() - 0.5) * s.width);
+        canvas.drawCircle(Offset(p.x, p.y), 0.35 + grain.nextDouble() * 0.5, texture);
+      }
+    }
+    canvas.restore();
 
     // Curb stripes along both edges.
     final a = Paint()..color = c(theme.curbA);
@@ -179,9 +348,21 @@ class TrackArt {
           o1,
           o2,
           paint
-            ..strokeWidth = 4
+            ..strokeWidth = 5
             ..strokeCap = StrokeCap.butt,
         );
+      }
+    }
+    final lane = Paint()
+      ..color = const Color(0x88FFFFFF)
+      ..strokeWidth = 0.7;
+    for (var i = 0; i < track.samples.length; i++) {
+      final s = track.samples[i];
+      final next = track.samples[(i + 1) % track.samples.length];
+      for (final side in [-1.0, 1.0]) {
+        final p = s.pos + s.normal * ((s.width / 2 - 5) * side);
+        final q = next.pos + next.normal * ((next.width / 2 - 5) * side);
+        canvas.drawLine(Offset(p.x, p.y), Offset(q.x, q.y), lane);
       }
     }
 
@@ -270,8 +451,11 @@ class TrackArt {
       canvas.translate(p.pos.x, p.pos.y);
       canvas.rotate(p.angle);
       final rect = Rect.fromCenter(center: Offset.zero, width: p.length, height: p.width);
-      canvas.drawRRect(RRect.fromRectAndRadius(rect, const Radius.circular(4)), Paint()..color = const Color(0xFFFF8A3D));
-      canvas.drawRRect(RRect.fromRectAndRadius(rect.deflate(1.5), const Radius.circular(3)), Paint()..color = const Color(0xFFFFB347));
+      canvas.drawRRect(RRect.fromRectAndRadius(rect.inflate(2), const Radius.circular(4)), Paint()..color = const Color(0xFF182F43));
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(rect, const Radius.circular(3)),
+        Paint()..shader = ui.Gradient.linear(rect.topLeft, rect.bottomRight, [const Color(0xFFFFCD4B), const Color(0xFFFF643D)]),
+      );
       // Chevrons.
       final ch = Paint()
         ..color = const Color(0xFFFFFFFF)

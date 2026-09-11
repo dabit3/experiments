@@ -86,7 +86,10 @@ class _NtButtonState extends State<NtButton> {
       transform: Matrix4.translationValues(0, 4 - lift, 0),
       decoration: BoxDecoration(
         color: enabled ? (_hover && widget.kind != NtButtonKind.ghost ? Color.lerp(bg, Colors.white, 0.08) : bg) : bg.withValues(alpha: 0.45),
-        borderRadius: BorderRadius.circular(NtRadius.pill),
+        gradient: enabled && widget.kind == NtButtonKind.primary
+            ? LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Color.lerp(bg, Colors.white, 0.15)!, bg])
+            : null,
+        borderRadius: BorderRadius.circular(NtRadius.md),
         border: widget.kind == NtButtonKind.secondary ? Border.all(color: nt.outline, width: 2) : null,
         boxShadow: [
           if (widget.kind != NtButtonKind.ghost) BoxShadow(color: enabled ? shadow : shadow.withValues(alpha: 0.4), offset: Offset(0, lift), blurRadius: 0),
@@ -132,7 +135,7 @@ class _NtButtonState extends State<NtButton> {
   }
 }
 
-/// Elevated card with the toy-box outline and optional accent header stripe.
+/// Racing panel with keyboard, pointer and touch activation.
 class NtCard extends StatelessWidget {
   const NtCard({super.key, required this.child, this.padding = const EdgeInsets.all(NtSpace.x5), this.accent, this.onTap, this.selected = false, this.color});
 
@@ -146,23 +149,40 @@ class NtCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nt = context.nt;
-    final border = selected ? (accent ?? NtColors.nitro) : nt.outline;
-    final card = AnimatedContainer(
-      duration: NtMotion.base,
-      curve: NtMotion.emphasized,
-      padding: padding,
-      decoration: BoxDecoration(
-        color: color ?? nt.surface,
-        borderRadius: BorderRadius.circular(NtRadius.lg),
-        border: Border.all(color: border, width: selected ? 3 : 2),
-        boxShadow: selected ? NtElevation.glow((accent ?? NtColors.nitro).withValues(alpha: 0.6)) : NtElevation.soft(nt.shadow),
+    final base = color ?? nt.surface;
+    final border = selected ? (accent ?? NtColors.nitro) : (color != null ? Colors.white.withValues(alpha: 0.18) : nt.outline);
+    return Semantics(
+      button: onTap != null,
+      selected: selected,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(NtRadius.lg),
+          boxShadow: selected ? NtElevation.glow((accent ?? NtColors.nitro).withValues(alpha: 0.4)) : NtElevation.soft(nt.shadow),
+        ),
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(NtRadius.lg),
+          clipBehavior: Clip.antiAlias,
+          child: Ink(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [Color.lerp(base, Colors.white, nt.isDark || color != null ? 0.04 : 0)!, base],
+              ),
+              borderRadius: BorderRadius.circular(NtRadius.lg),
+              border: Border.all(color: border, width: selected ? 2.5 : 1),
+            ),
+            child: InkWell(
+              onTap: onTap,
+              hoverColor: (accent ?? NtColors.sky).withValues(alpha: 0.14),
+              focusColor: (accent ?? NtColors.sky).withValues(alpha: 0.26),
+              splashColor: (accent ?? NtColors.sky).withValues(alpha: 0.24),
+              child: Padding(padding: padding, child: child),
+            ),
+          ),
+        ),
       ),
-      child: child,
-    );
-    if (onTap == null) return card;
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(onTap: onTap, child: card),
     );
   }
 }
@@ -236,7 +256,7 @@ class PlatformBadge extends StatelessWidget {
   }
 }
 
-/// Character face avatar drawn with [KartArt.drawFace].
+/// Original racer portrait, with a vector fallback for unavailable assets.
 class Avatar extends StatelessWidget {
   const Avatar({super.key, required this.characterId, this.size = 44, this.bot = false, this.ring});
   final String characterId;
@@ -258,7 +278,16 @@ class Avatar extends StatelessWidget {
               )
             : null,
         child: Center(
-          child: CustomPaint(size: Size.square(size), painter: _FacePainter(NtColors.forCharacter(characterId), bot)),
+          child: ClipOval(
+            child: Image.asset(
+              'assets/art/${characterById(characterId).id}.jpg',
+              width: size,
+              height: size,
+              fit: BoxFit.cover,
+              excludeFromSemantics: true,
+              errorBuilder: (_, _, _) => CustomPaint(size: Size.square(size), painter: _FacePainter(NtColors.forCharacter(characterId), bot)),
+            ),
+          ),
         ),
       ),
     );
@@ -389,7 +418,7 @@ class _NtBackdropState extends State<NtBackdrop> with SingleTickerProviderStateM
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: nt.isDark ? [const Color(0xFF1B1533), const Color(0xFF0F0C1F)] : [const Color(0xFFFFF4E4), const Color(0xFFFBE6EE)],
+          colors: nt.isDark ? [const Color(0xFF16384D), NtColors.night] : [const Color(0xFFE9F6F6), const Color(0xFFF7F4EA)],
         ),
       ),
       child: Stack(
@@ -398,7 +427,8 @@ class _NtBackdropState extends State<NtBackdrop> with SingleTickerProviderStateM
           RepaintBoundary(
             child: AnimatedBuilder(
               animation: _c,
-              builder: (_, _) => CustomPaint(painter: _ConfettiPainter(reduce ? 0 : _c.value, nt.isDark, celebrate: widget.confetti)),
+              builder: (_, _) =>
+                  CustomPaint(painter: widget.confetti ? _ConfettiPainter(reduce ? 0 : _c.value, nt.isDark, celebrate: true) : _CircuitPainter(nt.isDark)),
             ),
           ),
           widget.child,
@@ -406,6 +436,39 @@ class _NtBackdropState extends State<NtBackdrop> with SingleTickerProviderStateM
       ),
     );
   }
+}
+
+class _CircuitPainter extends CustomPainter {
+  const _CircuitPainter(this.dark);
+  final bool dark;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final stroke = Paint()
+      ..color = (dark ? NtColors.mint : NtColors.ink).withValues(alpha: dark ? 0.055 : 0.045)
+      ..strokeWidth = 1;
+    for (var i = -10; i < 30; i++) {
+      final x = i * 90.0;
+      canvas.drawLine(Offset(x, 0), Offset(x - size.height * 0.6, size.height), stroke);
+    }
+    final rect = Rect.fromCircle(center: Offset(size.width * 0.85, size.height * 0.2), radius: size.width * 0.55);
+    canvas.drawOval(
+      rect,
+      Paint()
+        ..shader = RadialGradient(
+          colors: [
+            NtColors.sky.withValues(alpha: dark ? 0.14 : 0.1),
+            NtColors.sky.withValues(alpha: 0),
+          ],
+        ).createShader(rect),
+    );
+    for (var i = 0; i < 7; i++) {
+      canvas.drawLine(Offset(size.width - 220 + i * 30, size.height), Offset(size.width + i * 30, size.height - 300), stroke..strokeWidth = 12);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_CircuitPainter old) => old.dark != dark;
 }
 
 class _ConfettiPainter extends CustomPainter {

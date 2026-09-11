@@ -180,7 +180,7 @@ class _TrackPicker extends StatelessWidget {
   }
 }
 
-/// Track preview card with a live-rendered overhead map.
+/// World illustration with the actual circuit geometry inset.
 class TrackCard extends StatelessWidget {
   const TrackCard({super.key, required this.def, this.index, this.selected = false, this.onTap, this.compact = false, this.bestTicks});
   final TrackDef def;
@@ -213,10 +213,37 @@ class TrackCard extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    DecoratedBox(decoration: BoxDecoration(color: Color(theme.ground))),
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: CustomPaint(painter: TrackThumbPainter(trackById(def.id))),
+                    if (def.id != 'bowl')
+                      Image.asset(
+                        'assets/art/${switch (def.id) {
+                          'mossy' => 'moss',
+                          'tincity' => 'tin',
+                          'frostbite' => 'frost',
+                          _ => 'sprinkle',
+                        }}.jpg',
+                        fit: BoxFit.cover,
+                      )
+                    else
+                      DecoratedBox(decoration: BoxDecoration(color: Color(theme.ground))),
+                    const DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, Color(0x99071722)]),
+                      ),
+                    ),
+                    Positioned(
+                      right: 8,
+                      bottom: 8,
+                      width: compact ? 56 : 100,
+                      height: compact ? 42 : 70,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: const Color(0xD9081927),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: const Color(0x447AEBD4)),
+                        ),
+                        child: CustomPaint(painter: TrackThumbPainter(trackById(def.id))),
+                      ),
                     ),
                     if (index != null)
                       Positioned(
@@ -232,7 +259,7 @@ class TrackCard extends StatelessWidget {
                       ),
                     if (bestTicks != null)
                       Positioned(
-                        right: 8,
+                        left: 8,
                         top: 8,
                         child: NtChip(_fmt(bestTicks!), icon: Icons.timer_rounded, color: NtColors.sunny, textColor: NtColors.inkDark),
                       ),

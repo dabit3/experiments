@@ -90,7 +90,7 @@ class RaceGame extends FlameGame {
     final me = session.local ?? session.sim.racers.first;
     final pose = session.poseOf(me);
     // Look a bit ahead of the kart at speed.
-    final ahead = V2.fromAngle(pose.heading, 30 + me.speed.abs() * 0.35);
+    final ahead = V2.fromAngle(pose.heading, 18 + me.speed.abs() * 0.18);
     final target = pose.pos + ahead;
     final k = _first ? 1.0 : 1 - math.pow(0.001, dt * 2.2).toDouble();
     _camPos = V2(lerpD(_camPos.x, target.x, k), lerpD(_camPos.y, target.y, k));
@@ -101,7 +101,7 @@ class RaceGame extends FlameGame {
     } else {
       _camHeading = -math.pi / 2;
     }
-    final base = math.min(size.x, size.y) / 320;
+    final base = math.min(size.x, size.y) / 210;
     final wantZoom = base * (me.boostTicks > 0 ? 0.93 : 1.0);
     _camZoom = _first ? wantZoom : lerpD(_camZoom, wantZoom, 1 - math.pow(0.001, dt).toDouble());
     _first = false;
@@ -373,6 +373,12 @@ class RaceGame extends FlameGame {
     }
 
     canvas.restore();
+
+    final viewport = Rect.fromLTWH(0, 0, w, h);
+    canvas.drawRect(
+      viewport,
+      Paint()..shader = const RadialGradient(radius: 0.85, colors: [Color(0x00071927), Color(0x44071927)], stops: [0.5, 1]).createShader(viewport),
+    );
 
     // Vignette + speed lines when boosting.
     final me = session.local;

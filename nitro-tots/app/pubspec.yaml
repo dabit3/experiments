@@ -26,6 +26,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/audio/
+    - assets/art/
   fonts:
     - family: Fredoka
       fonts:
@@ -33,4 +34,3 @@ flutter:
     - family: Nunito
       fonts:
         - asset: assets/fonts/Nunito.ttf
-

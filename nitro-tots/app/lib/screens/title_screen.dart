@@ -1,9 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:nitro_core/nitro_core.dart';
 
-import '../game/kart_art.dart';
 import '../state/app_state.dart';
 import '../state/flow.dart';
 import '../theme/tokens.dart';
@@ -20,441 +18,329 @@ class TitleScreen extends StatefulWidget {
   State<TitleScreen> createState() => _TitleScreenState();
 }
 
-class _TitleScreenState extends State<TitleScreen> with SingleTickerProviderStateMixin {
-  late final AnimationController _intro = AnimationController(vsync: this, duration: const Duration(milliseconds: 900))..forward();
+class _TitleScreenState extends State<TitleScreen> with TickerProviderStateMixin {
+  late final AnimationController _intro = AnimationController(vsync: this, duration: const Duration(milliseconds: 850))..forward();
+  late final AnimationController _ambient = AnimationController(vsync: this, duration: const Duration(seconds: 12))..repeat(reverse: true);
 
   @override
   void dispose() {
     _intro.dispose();
+    _ambient.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final nt = context.nt;
-    final size = MediaQuery.sizeOf(context);
-    final wide = size.width >= 820;
-    final short = size.height < 520;
     final app = widget.app;
-
-    final tiles = [
-      _MenuTile(
-        label: 'Grand Prix',
-        hint: 'Two cups, 4 tracks',
-        icon: Icons.emoji_events_rounded,
-        color: NtColors.nitro,
-        onTap: () => widget.onPlay(PlayMode.grandPrix),
-        delay: 0,
-        intro: _intro,
-      ),
-      _MenuTile(
-        label: 'Quick Race',
-        hint: 'One track, 8 racers',
-        icon: Icons.flag_rounded,
-        color: NtColors.sky,
-        onTap: () => widget.onPlay(PlayMode.quickRace),
-        delay: 1,
-        intro: _intro,
-      ),
-      _MenuTile(
-        label: 'Time Trial',
-        hint: 'Beat your ghost',
-        icon: Icons.timer_rounded,
-        color: NtColors.lime,
-        onTap: () => widget.onPlay(PlayMode.timeTrial),
-        delay: 2,
-        intro: _intro,
-      ),
-      _MenuTile(
-        label: 'Battle',
-        hint: 'Balloon arena brawl',
-        icon: Icons.sports_kabaddi_rounded,
-        color: NtColors.grape,
-        onTap: () => widget.onPlay(PlayMode.battle),
-        delay: 3,
-        intro: _intro,
-      ),
-      _MenuTile(
-        label: 'Play Online',
-        hint: 'Rooms, join codes, cross-platform',
-        icon: Icons.public_rounded,
-        color: NtColors.bubblegum,
-        onTap: () => widget.onPlay(PlayMode.online),
-        delay: 4,
-        intro: _intro,
-        wideTile: true,
-      ),
-    ];
-
-    // Mode tiles in a 2-column grid (3 on narrow-but-not-phone widths);
-    // the online tile spans the full width so the grid stays balanced.
-    final menu = Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _ResumeBanner(app: app, onTap: () => widget.onPlay(PlayMode.online)),
-        LayoutBuilder(
-          builder: (context, c) {
-            final cols = c.maxWidth >= 560 ? 3 : (c.maxWidth >= 480 ? 2 : 1);
-            final gap = NtSpace.x3;
-            final w = (c.maxWidth - gap * (cols - 1)) / cols;
-            return Wrap(
-              spacing: gap,
-              runSpacing: gap,
-              children: [for (final t in tiles) SizedBox(width: t.wideTile && cols == 2 ? c.maxWidth : w, child: t)],
-            );
-          },
-        ),
-      ],
-    );
-
-    final profile = _ProfileCard(app: app, onTap: widget.onGarage);
-
-    return Scaffold(
-      body: NtBackdrop(
-        child: SafeArea(
-          child: Stack(
-            children: [
-              Positioned(
-                top: NtSpace.x3,
-                right: NtSpace.x3,
+    return AnimatedBuilder(
+      animation: app,
+      builder: (context, _) {
+        final size = MediaQuery.sizeOf(context);
+        final wide = size.width >= 900;
+        final short = size.height < 650;
+        final reduce = app.reduceMotion || MediaQuery.of(context).disableAnimations;
+        final menu = Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (app.resumeRoom != null) ...[
+              NtCard(
+                onTap: () => widget.onPlay(PlayMode.online),
+                color: NtColors.nightRaised,
+                accent: NtColors.lime,
+                padding: const EdgeInsets.all(12),
                 child: Row(
                   children: [
-                    NtIconButton(
-                      icon: nt.isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
-                      tooltip: nt.isDark ? 'Light theme' : 'Dark theme',
-                      onPressed: () => app.update((s) => s.themeMode = nt.isDark ? ThemeMode.light : ThemeMode.dark),
+                    const Icon(Icons.replay_rounded, color: NtColors.lime),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Rejoin your match', style: NtType.label(Colors.white)),
+                          Text('You are still in room ${app.resumeRoom}', style: NtType.small(const Color(0xFFB7CED5))),
+                        ],
+                      ),
                     ),
-                    const SizedBox(width: NtSpace.x2),
-                    NtIconButton(icon: Icons.settings_rounded, tooltip: 'Settings', onPressed: widget.onSettings),
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  Expanded(
-                    child: Center(
+              const SizedBox(height: 8),
+            ],
+            for (final (i, mode) in _modes.indexed)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: FadeTransition(
+                  opacity: CurvedAnimation(
+                    parent: _intro,
+                    curve: Interval(i * 0.08, 0.6 + i * 0.08, curve: Curves.easeOut),
+                  ),
+                  child: _ModeRow(
+                    number: i + 1,
+                    title: mode.title,
+                    detail: mode.detail,
+                    icon: mode.icon,
+                    color: mode.color,
+                    featured: i == 0,
+                    compact: short,
+                    onTap: () => widget.onPlay(mode.mode),
+                  ),
+                ),
+              ),
+          ],
+        );
+        final profile = NtCard(
+          color: const Color(0xEB102B3B),
+          onTap: widget.onGarage,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          child: Row(
+            children: [
+              Avatar(characterId: app.characterId, size: 42),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(app.name, style: NtType.label(Colors.white)),
+                    Text('${app.character.name} / ${app.kart.name}', style: NtType.small(const Color(0xFFB7CED5)), overflow: TextOverflow.ellipsis),
+                  ],
+                ),
+              ),
+              Text('GARAGE', style: NtType.caption(NtColors.mint)),
+              const SizedBox(width: 8),
+              const Icon(Icons.arrow_forward_rounded, color: NtColors.mint, size: 18),
+            ],
+          ),
+        );
+        return Scaffold(
+          backgroundColor: NtColors.night,
+          body: Stack(
+            fit: StackFit.expand,
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: wide ? size.height : 360,
+                child: ClipRect(
+                  child: AnimatedBuilder(
+                    animation: _ambient,
+                    child: Image.asset('assets/art/arcade-keyart.jpg', fit: BoxFit.cover, alignment: wide ? Alignment.centerRight : const Alignment(0.75, 0)),
+                    builder: (_, child) => Transform.scale(scale: reduce ? 1 : 1.025 + _ambient.value * 0.025, child: child),
+                  ),
+                ),
+              ),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: wide
+                      ? const LinearGradient(colors: [Color(0xFF071722), Color(0xEE071722), Color(0x55071722), Color(0x00071722)], stops: [0, 0.24, 0.53, 0.8])
+                      : const LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Color(0x22071722), NtColors.night],
+                          stops: [0, 0.4],
+                        ),
+                ),
+              ),
+              SafeArea(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: wide ? 36 : 20, vertical: 12),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.bolt_rounded, color: NtColors.mint, size: 24),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              'NITRO TOTS  /  RACING CLUB',
+                              style: NtType.caption(Colors.white).copyWith(letterSpacing: 2),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          NtIconButton(
+                            icon: context.nt.isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
+                            tooltip: context.nt.isDark ? 'Light theme' : 'Dark theme',
+                            color: Colors.white,
+                            filled: false,
+                            onPressed: () => app.update((s) => s.themeMode = context.nt.isDark ? ThemeMode.light : ThemeMode.dark),
+                          ),
+                          NtIconButton(icon: Icons.settings_rounded, tooltip: 'Settings', color: Colors.white, filled: false, onPressed: widget.onSettings),
+                        ],
+                      ),
+                    ),
+                    Expanded(
                       child: SingleChildScrollView(
-                        padding: EdgeInsets.fromLTRB(NtSpace.x6, short ? NtSpace.x3 : NtSpace.x6, NtSpace.x6, NtSpace.x3),
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 1040),
-                          child: wide
-                              ? Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      flex: 5,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          _Logo(compact: short),
-                                          if (!short) ...[const SizedBox(height: NtSpace.x6), _HeroKart(app: app)],
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(width: NtSpace.x10),
-                                    Expanded(
-                                      flex: 4,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          profile,
-                                          const SizedBox(height: NtSpace.x4),
-                                          menu,
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const _Logo(compact: true),
-                                    const SizedBox(height: NtSpace.x4),
-                                    profile,
-                                    const SizedBox(height: NtSpace.x4),
-                                    ConstrainedBox(constraints: const BoxConstraints(maxWidth: 720), child: menu),
-                                  ],
-                                ),
+                        padding: EdgeInsets.fromLTRB(wide ? 56 : 20, wide ? 8 : 20, wide ? 56 : 20, 20),
+                        child: Align(
+                          alignment: wide ? Alignment.centerLeft : Alignment.center,
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: wide ? 400 : 600),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                _ArcadeLogo(compact: short || !wide),
+                                const SizedBox(height: 12),
+                                Text('SMALL RACERS. BIG TROUBLE.', style: NtType.caption(NtColors.mint).copyWith(letterSpacing: 2.5)),
+                                SizedBox(height: short ? 14 : 26),
+                                menu,
+                                const SizedBox(height: 8),
+                                profile,
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: NtSpace.x2),
-                    child: Text('An original arcade kart racer · play cross-platform', style: NtType.caption(nt.inkSoft)),
-                  ),
-                ],
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
+                      decoration: const BoxDecoration(
+                        color: Color(0xDD071722),
+                        border: Border(top: BorderSide(color: Color(0xFF254652))),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 6,
+                            height: 6,
+                            decoration: const BoxDecoration(color: NtColors.mint, shape: BoxShape.circle),
+                          ),
+                          const SizedBox(width: 8),
+                          Text('READY TO RACE', style: NtType.caption(NtColors.mint)),
+                          const Spacer(),
+                          Flexible(
+                            child: Text(
+                              wide ? '8 RACERS  /  4 WORLDS  /  ONE FINISH LINE' : 'CROSS-PLATFORM',
+                              style: NtType.caption(const Color(0xFFAAC2CD)),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              if (wide)
+                Positioned(
+                  right: 40,
+                  bottom: 82,
+                  child: IgnorePointer(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'FULL THROTTLE.',
+                          style: NtType.h1(Colors.white).copyWith(fontStyle: FontStyle.italic, shadows: const [Shadow(blurRadius: 10)]),
+                        ),
+                        Text('ZERO GROWN-UPS.', style: NtType.label(NtColors.mint).copyWith(letterSpacing: 3)),
+                      ],
+                    ),
+                  ),
+                ),
             ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
 
-class _Logo extends StatelessWidget {
-  const _Logo({this.compact = false});
+const _modes = [
+  (mode: PlayMode.grandPrix, title: 'Grand Prix', detail: 'CHASE THE CUP', icon: Icons.emoji_events_rounded, color: NtColors.nitro),
+  (mode: PlayMode.quickRace, title: 'Quick Race', detail: 'STRAIGHT TO THE GRID', icon: Icons.flag_rounded, color: NtColors.sky),
+  (mode: PlayMode.timeTrial, title: 'Time Trial', detail: 'BEAT YOUR GHOST', icon: Icons.timer_rounded, color: NtColors.mint),
+  (mode: PlayMode.battle, title: 'Battle', detail: 'MAKE SOME TROUBLE', icon: Icons.flash_on_rounded, color: NtColors.grape),
+  (mode: PlayMode.online, title: 'Play Online', detail: 'RACE TOGETHER. ANYWHERE.', icon: Icons.public_rounded, color: NtColors.bubblegum),
+];
+
+class _ArcadeLogo extends StatelessWidget {
+  const _ArcadeLogo({required this.compact});
   final bool compact;
 
   @override
   Widget build(BuildContext context) {
-    final scale = compact ? 0.62 : 1.0;
+    final fontSize = compact ? 56.0 : 80.0;
     return Semantics(
       header: true,
       label: 'Nitro Tots',
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Transform.rotate(
-            angle: -0.06,
+      child: ExcludeSemantics(
+        child: Transform.rotate(
+          angle: -0.035,
+          alignment: Alignment.centerLeft,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
             child: Stack(
               children: [
-                Text(
-                  'NITRO',
-                  style: NtType.hero(NtColors.inkDark).copyWith(
-                    fontSize: 92 * scale,
-                    foreground: Paint()
-                      ..style = PaintingStyle.stroke
-                      ..strokeWidth = 12 * scale
-                      ..color = NtColors.inkDark,
-                  ),
+                Transform.translate(
+                  offset: const Offset(3, 6),
+                  child: Text('NITRO\nTOTS', style: NtType.hero(NtColors.nitroDeep).copyWith(fontSize: fontSize, height: 0.84, letterSpacing: 3)),
                 ),
-                Text('NITRO', style: NtType.hero(NtColors.sunny).copyWith(fontSize: 92 * scale)),
+                ShaderMask(
+                  shaderCallback: (rect) => const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.white, Color(0xFFFFDAA4)],
+                  ).createShader(rect),
+                  child: Text('NITRO\nTOTS', style: NtType.hero(Colors.white).copyWith(fontSize: fontSize, height: 0.84, letterSpacing: 3)),
+                ),
               ],
             ),
           ),
-          Transform.translate(
-            offset: Offset(0, -18 * scale),
-            child: Transform.rotate(
-              angle: 0.04,
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 26 * scale, vertical: 6 * scale),
-                decoration: BoxDecoration(
-                  color: NtColors.nitro,
-                  borderRadius: BorderRadius.circular(NtRadius.pill),
-                  border: Border.all(color: NtColors.inkDark, width: 4 * scale),
-                  boxShadow: const [BoxShadow(color: Color(0x55000000), offset: Offset(0, 6), blurRadius: 10)],
-                ),
-                child: Text(
-                  'TOTS',
-                  style: NtType.hero(Colors.white).copyWith(fontSize: 54 * scale, letterSpacing: 6 * scale),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _HeroKart extends StatefulWidget {
-  const _HeroKart({required this.app});
-  final AppState app;
-  @override
-  State<_HeroKart> createState() => _HeroKartState();
-}
-
-class _HeroKartState extends State<_HeroKart> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(seconds: 3))..repeat();
-  @override
-  void dispose() {
-    _c.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final app = widget.app;
-    return AnimatedBuilder(
-      animation: Listenable.merge([_c, app]),
-      builder: (_, _) {
-        final bob = app.reduceMotion ? 0.0 : math.sin(_c.value * math.pi * 2) * 5;
-        return SizedBox(
-          height: 220,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 300,
-                height: 60,
-                margin: const EdgeInsets.only(top: 140),
-                decoration: BoxDecoration(color: Colors.black.withValues(alpha: 0.18), borderRadius: BorderRadius.circular(999)),
-              ),
-              Transform.translate(
-                offset: Offset(0, bob),
-                child: CustomPaint(size: const Size(260, 200), painter: _HeroPainter(app.kart, app.character, _c.value)),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _HeroPainter extends CustomPainter {
-  _HeroPainter(this.kart, this.character, this.t);
-  final Kart kart;
-  final Character character;
-  final double t;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.save();
-    canvas.translate(size.width / 2, size.height / 2);
-    canvas.rotate(-math.pi / 2 + 0.55);
-    KartArt.drawKart(canvas, body: NtColors.forCharacter(character.id), kart: kart, scale: 5.2, time: t * 3);
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(covariant _HeroPainter old) => old.t != t || old.kart != kart || old.character != character;
-}
-
-/// Shown when the player closed the app or lost the connection while still in
-/// an online room, so the way back into the live match is one tap away.
-class _ResumeBanner extends StatelessWidget {
-  const _ResumeBanner({required this.app, required this.onTap});
-  final AppState app;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final nt = context.nt;
-    return AnimatedBuilder(
-      animation: app,
-      builder: (_, _) {
-        final code = app.resumeRoom;
-        if (code == null) return const SizedBox.shrink();
-        return Padding(
-          padding: const EdgeInsets.only(bottom: NtSpace.x3),
-          child: NtCard(
-            onTap: onTap,
-            accent: NtColors.lime,
-            padding: const EdgeInsets.symmetric(horizontal: NtSpace.x4, vertical: NtSpace.x3),
-            child: Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(color: NtColors.lime, borderRadius: BorderRadius.circular(NtRadius.md)),
-                  child: const Icon(Icons.replay_rounded, color: Colors.white, size: 26),
-                ),
-                const SizedBox(width: NtSpace.x4),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Rejoin your match', style: NtType.h3(nt.ink)),
-                      Text('You are still in room $code', style: NtType.small(nt.inkSoft), overflow: TextOverflow.ellipsis),
-                    ],
-                  ),
-                ),
-                NtChip('Resume', icon: Icons.bolt_rounded, color: NtColors.lime),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _ProfileCard extends StatelessWidget {
-  const _ProfileCard({required this.app, required this.onTap});
-  final AppState app;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final nt = context.nt;
-    return AnimatedBuilder(
-      animation: app,
-      builder: (_, _) => NtCard(
-        onTap: onTap,
-        padding: const EdgeInsets.all(NtSpace.x3),
-        child: Row(
-          children: [
-            Avatar(characterId: app.characterId, size: 52, ring: NtColors.forCharacter(app.characterId)),
-            const SizedBox(width: NtSpace.x3),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(app.name, style: NtType.h3(nt.ink), overflow: TextOverflow.ellipsis),
-                  Text('${app.character.name} · ${app.kart.name}', style: NtType.small(nt.inkSoft), overflow: TextOverflow.ellipsis),
-                ],
-              ),
-            ),
-            NtChip('Garage', icon: Icons.garage_rounded, color: NtColors.sky),
-          ],
         ),
       ),
     );
   }
 }
 
-/// Large mode tile: coloured icon plate, mode name and a one-line hint.
-class _MenuTile extends StatelessWidget {
-  const _MenuTile({
-    required this.label,
-    required this.hint,
+class _ModeRow extends StatelessWidget {
+  const _ModeRow({
+    required this.number,
+    required this.title,
+    required this.detail,
     required this.icon,
     required this.color,
+    required this.featured,
+    required this.compact,
     required this.onTap,
-    required this.delay,
-    required this.intro,
-    this.wideTile = false,
   });
-  final String label;
-  final String hint;
+  final int number;
+  final String title;
+  final String detail;
   final IconData icon;
   final Color color;
+  final bool featured;
+  final bool compact;
   final VoidCallback onTap;
-  final int delay;
-  final Animation<double> intro;
-  final bool wideTile;
 
   @override
   Widget build(BuildContext context) {
-    final nt = context.nt;
-    final anim = CurvedAnimation(
-      parent: intro,
-      curve: Interval(0.1 * delay, math.min(1, 0.1 * delay + 0.6), curve: NtMotion.emphasized),
-    );
-    return FadeTransition(
-      opacity: anim,
-      child: SlideTransition(
-        position: Tween(begin: const Offset(0, 0.12), end: Offset.zero).animate(anim),
-        child: NtCard(
-          onTap: onTap,
-          accent: color,
-          padding: const EdgeInsets.all(NtSpace.x3),
-          child: Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(NtRadius.md), boxShadow: NtElevation.chunky(color)),
-                child: Icon(icon, color: Colors.white, size: 28),
-              ),
-              const SizedBox(width: NtSpace.x3),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(label, style: NtType.h3(nt.ink), maxLines: 1, overflow: TextOverflow.ellipsis),
-                    Text(hint, style: NtType.small(nt.inkSoft), maxLines: 1, overflow: TextOverflow.ellipsis),
-                  ],
-                ),
-              ),
-            ],
+    return NtCard(
+      onTap: onTap,
+      color: featured ? NtColors.nitro : const Color(0xED102B3B),
+      accent: color,
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: compact ? 8 : 11),
+      child: Row(
+        children: [
+          Icon(icon, color: featured ? Colors.white : color, size: 28),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: NtType.h3(Colors.white).copyWith(fontSize: 21)),
+                Text(detail, style: NtType.caption(featured ? Colors.white : const Color(0xFFB7CED5)).copyWith(fontSize: 9, letterSpacing: 1.4)),
+              ],
+            ),
           ),
-        ),
+          Text(number.toString().padLeft(2, '0'), style: NtType.mono(featured ? const Color(0xCCFFFFFF) : const Color(0xFF7298AA), size: 13)),
+          const SizedBox(width: 12),
+          Transform.rotate(
+            angle: -math.pi / 4,
+            child: const Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 20),
+          ),
+        ],
       ),
     );
   }

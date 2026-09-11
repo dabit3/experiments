@@ -63,7 +63,21 @@ class _PodiumScreenState extends State<PodiumScreen> with SingleTickerProviderSt
     final wide = size.width >= 900;
     final compact = size.height < 640;
 
-    final podium = _Podium(top: top, anim: _c, localSlot: widget.localSlot, compact: compact);
+    final podium = Container(
+      padding: const EdgeInsets.fromLTRB(12, 20, 12, 0),
+      decoration: BoxDecoration(
+        gradient: const RadialGradient(center: Alignment.topCenter, radius: 1.2, colors: [Color(0xFF3C7189), NtColors.night]),
+        borderRadius: BorderRadius.circular(NtRadius.xl),
+        border: Border.all(color: NtColors.mint.withValues(alpha: 0.3)),
+        boxShadow: NtElevation.glow(NtColors.sky.withValues(alpha: 0.35)),
+      ),
+      child: Column(
+        children: [
+          Text(myRank == 1 ? 'VICTORY LANE' : 'THE WINNERS CIRCLE', style: NtType.caption(NtColors.mint).copyWith(letterSpacing: 3)),
+          _Podium(top: top, anim: _c, localSlot: widget.localSlot, compact: compact),
+        ],
+      ),
+    );
     final table = NtCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -143,7 +157,6 @@ class _Podium extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final nt = context.nt;
     final k = compact ? 0.68 : 1.0;
     // Layout order: 2nd, 1st, 3rd.
     final order = [if (top.length > 1) (top[1], 2), if (top.isNotEmpty) (top[0], 1), if (top.length > 2) (top[2], 3)];
@@ -208,7 +221,7 @@ class _Podium extends StatelessWidget {
                                     const SizedBox(height: 6),
                                     Text(
                                       s.name,
-                                      style: compact ? NtType.body(nt.ink).copyWith(fontWeight: FontWeight.w700) : NtType.h3(nt.ink),
+                                      style: compact ? NtType.body(Colors.white).copyWith(fontWeight: FontWeight.w700) : NtType.h3(Colors.white),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     PlatformBadge(s.isBot ? 'bot' : s.platform, compact: true),
@@ -222,10 +235,15 @@ class _Podium extends StatelessWidget {
                         Container(
                           height: math.max(0, h * t),
                           decoration: BoxDecoration(
-                            color: color,
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Color.lerp(color, Colors.white, 0.45)!, color, Color.lerp(color, NtColors.night, 0.35)!],
+                              stops: const [0, 0.3, 1],
+                            ),
                             borderRadius: const BorderRadius.vertical(top: Radius.circular(NtRadius.md)),
-                            border: Border.all(color: NtColors.inkDark, width: 3),
-                            boxShadow: const [BoxShadow(color: Color(0x44000000), offset: Offset(0, 6), blurRadius: 10)],
+                            border: Border.all(color: Color.lerp(color, Colors.white, 0.6)!, width: 2),
+                            boxShadow: [BoxShadow(color: color.withValues(alpha: 0.25), offset: const Offset(0, -5), blurRadius: 24)],
                           ),
                           alignment: Alignment.topCenter,
                           padding: const EdgeInsets.only(top: 10),

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:flutter/material.dart';
 
-/// Nitro Tots design tokens: "toy box" palette, 4pt spacing, chunky radii.
+/// Nitro Tots racing palette, typography and material tokens.
 abstract final class NtColors {
   static const nitro = Color(0xFFFF6B35); // primary
   static const nitroDeep = Color(0xFFD94E1F);
@@ -13,14 +13,14 @@ abstract final class NtColors {
   static const grape = Color(0xFF9B6DFF);
   static const mint = Color(0xFF4FE3C1);
 
-  static const inkDark = Color(0xFF241E3A);
-  static const ink = Color(0xFF3B3355);
-  static const inkSoft = Color(0xFF6E6689);
-  static const cream = Color(0xFFFFF8F0);
-  static const creamDeep = Color(0xFFF6EADB);
-  static const night = Color(0xFF16122A);
-  static const nightRaised = Color(0xFF221C3D);
-  static const nightRaised2 = Color(0xFF2E2650);
+  static const inkDark = Color(0xFF081927);
+  static const ink = Color(0xFF15364A);
+  static const inkSoft = Color(0xFF557484);
+  static const cream = Color(0xFFF2F8F7);
+  static const creamDeep = Color(0xFFE1ECEE);
+  static const night = Color(0xFF071722);
+  static const nightRaised = Color(0xFF102B3B);
+  static const nightRaised2 = Color(0xFF193B4D);
 
   static const gold = Color(0xFFFFC53D);
   static const silver = Color(0xFFC9D1E0);
@@ -59,9 +59,9 @@ abstract final class NtSpace {
 
 abstract final class NtRadius {
   static const double sm = 10;
-  static const double md = 16;
-  static const double lg = 24;
-  static const double xl = 32;
+  static const double md = 12;
+  static const double lg = 18;
+  static const double xl = 24;
   static const double pill = 999;
 }
 

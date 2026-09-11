@@ -3,8 +3,8 @@
   "source": "Mario Kart",
   "clone_name": "Nitro Tots",
   "clone_root": "/Users/devin/repos/experiments/nitro-tots",
-  "status": "complete",
-  "iteration": 8,
+  "status": "active",
+  "iteration": 9,
   "revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
   "stack": "Flutter 3.47 + Flame clients (web, iOS, Android, native macOS); Dart shelf/web_socket_channel authoritative server; shared nitro_core simulation",
   "reference_access": {
@@ -18,7 +18,7 @@
     "macos": "live (native app)",
     "android": "APK built from clean checkout; live emulator run not possible on this VM (kern.hv_support=0, HVF unsupported). Needs a virtualization-capable machine or device farm."
   },
-  "frontier": [],
+  "frontier": ["Arcade redesign: original key art, title, garage, track environments, HUD and podium; rebuild all targets and replace affected evidence."],
   "blockers": [],
   "unverified_assumptions": [],
   "items": [

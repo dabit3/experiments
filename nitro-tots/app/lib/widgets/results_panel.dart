@@ -48,6 +48,8 @@ class ResultsPanel extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text('NITRO TOTS  /  RACE CONTROL', style: NtType.caption(NtColors.nitro).copyWith(letterSpacing: 1.5)),
+                      const SizedBox(height: 6),
                       Text(title, style: NtType.h1(nt.ink)),
                       Text(trackName, style: NtType.body(nt.inkSoft)),
                     ],
@@ -55,6 +57,11 @@ class ResultsPanel extends StatelessWidget {
                 ),
                 if (me != null) _PlaceBadge(place: me.place, big: true),
               ],
+            ),
+            const SizedBox(height: NtSpace.x3),
+            Container(
+              height: 3,
+              decoration: const BoxDecoration(gradient: LinearGradient(colors: [NtColors.nitro, NtColors.sunny, NtColors.mint])),
             ),
             const SizedBox(height: NtSpace.x4),
             Flexible(

@@ -67,7 +67,7 @@ class _GarageScreenState extends State<GarageScreen> {
 
         return NtScreen(
           title: 'Garage',
-          subtitle: 'Every tot and kart is available from the start.',
+          subtitle: 'BUILD YOUR LEGEND  /  8 RACERS. 6 MACHINES.',
           onBack: widget.onBack,
           footer: Row(
             children: [
@@ -143,20 +143,22 @@ class _Preview extends StatelessWidget {
               child: Container(
                 key: ValueKey('${c.id}-${k.id}'),
                 width: 220,
-                height: 200,
+                height: 230,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(colors: [color.withValues(alpha: 0.35), color.withValues(alpha: 0.0)]),
+                  borderRadius: BorderRadius.circular(NtRadius.lg),
+                  gradient: RadialGradient(center: const Alignment(-0.3, -0.4), colors: [Color.lerp(color, NtColors.night, 0.55)!, NtColors.night]),
+                  border: Border.all(color: color.withValues(alpha: 0.5)),
                 ),
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    KartPreview(kart: k, characterId: c.id, size: 190),
+                    Positioned(top: 12, left: 12, child: Avatar(characterId: c.id, size: 122)),
                     Positioned(
-                      top: 0,
-                      right: 8,
-                      child: Avatar(characterId: c.id, size: 64, ring: Colors.white),
+                      right: -6,
+                      bottom: -2,
+                      child: KartPreview(kart: k, characterId: c.id, size: 166),
                     ),
+                    Positioned(left: 14, bottom: 14, child: Text('READY\nTO ROLL', style: NtType.caption(Colors.white).copyWith(letterSpacing: 2))),
                   ],
                 ),
               ),
@@ -202,8 +204,7 @@ class _CharacterGrid extends StatelessWidget {
     final nt = context.nt;
     return LayoutBuilder(
       builder: (context, c) {
-        final fit = (c.maxWidth / 104).floor();
-        final cols = fit >= characters.length ? characters.length : (fit >= 4 ? 4 : 2);
+        final cols = c.maxWidth >= 400 ? 4 : 2;
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -226,14 +227,28 @@ class _CharacterGrid extends StatelessWidget {
                 onTap: () => onPick(ch.id),
                 selected: selected,
                 accent: selected ? color : null,
-                padding: const EdgeInsets.all(NtSpace.x2),
+                padding: EdgeInsets.zero,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Avatar(characterId: ch.id, size: 48, ring: selected ? color : nt.outline),
-                    const SizedBox(height: NtSpace.x2),
-                    Text(ch.name, style: NtType.label(nt.ink)),
-                    Text(_weightLabel(ch.weight), style: NtType.caption(nt.inkSoft)),
+                    Expanded(
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Image.asset('assets/art/${ch.id}.jpg', fit: BoxFit.cover),
+                          if (selected) Positioned(top: 6, right: 6, child: Icon(Icons.check_circle_rounded, color: color, size: 22)),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                      child: Row(
+                        children: [
+                          Expanded(child: Text(ch.name, style: NtType.label(nt.ink))),
+                          Text(_weightLabel(ch.weight).substring(0, 1), style: NtType.caption(nt.inkSoft)),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
