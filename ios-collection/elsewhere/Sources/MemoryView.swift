@@ -175,13 +175,18 @@ enum PostcardExporter {
   }
 }
 
+struct PostcardShare: Identifiable {
+  let url: URL
+  var id: URL { url }
+}
+
 struct PostcardView: View {
   @Environment(\.dismiss) private var dismiss
   var journey: Journey
   var memory: Memory
   @State private var image: UIImage?
-  @State private var shareURL: URL?
-  @State private var sharing = false
+  @State private var share: PostcardShare?
+  @State private var exportDirectory: URL?
   @State private var inspecting = false
   @State private var exportError = false
   @State private var shareError = false
@@ -230,8 +235,9 @@ struct PostcardView: View {
           Button {
             guard let image else { return }
             do {
-              shareURL = try PostcardExporter.write(image: image, place: memory.place)
-              sharing = true
+              let url = try PostcardExporter.write(image: image, place: memory.place)
+              exportDirectory = url.deletingLastPathComponent()
+              share = PostcardShare(url: url)
             } catch {
               shareError = true
             }
@@ -247,15 +253,15 @@ struct PostcardView: View {
         exportError = image == nil
       }
       .sheet(
-        isPresented: $sharing,
+        item: $share,
         onDismiss: {
-          if let shareURL {
-            try? FileManager.default.removeItem(at: shareURL.deletingLastPathComponent())
+          if let exportDirectory {
+            try? FileManager.default.removeItem(at: exportDirectory)
           }
-          shareURL = nil
+          exportDirectory = nil
         }
-      ) {
-        if let shareURL { ShareSheet(url: shareURL) }
+      ) { share in
+        ShareSheet(url: share.url)
       }
       .alert("Couldn't prepare your postcard", isPresented: $shareError) {
         Button("OK", role: .cancel) {}
