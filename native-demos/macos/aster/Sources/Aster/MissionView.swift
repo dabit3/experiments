@@ -192,6 +192,7 @@ struct MissionView: View {
       VStack(alignment: .leading, spacing: 5) {
         Text(title).font(.system(size: 14, weight: .semibold))
         Text(detail).font(.system(size: 12)).foregroundStyle(Theme.muted).lineSpacing(3)
+          .fixedSize(horizontal: false, vertical: true)
       }
     }
   }
