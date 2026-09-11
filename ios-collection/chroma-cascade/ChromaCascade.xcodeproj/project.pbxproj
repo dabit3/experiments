@@ -1,0 +1,407 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04D0B720EC7EE9BACA3CF22B /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00470199B67850B81038EA99 /* GameView.swift */; };
+		1E862842F0CB4B6889E10B59 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AE8EDD8B993A7352AAC68A /* Puzzle.swift */; };
+		32A6E5A19395878E417B0F68 /* ChromaCascadeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C098468014653E95081065C4 /* ChromaCascadeApp.swift */; };
+		5D0DEA56588E51D311AF2ACE /* PuzzleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8D9C193732C7C522158167 /* PuzzleTests.swift */; };
+		AD71A1628440132B7CD3D4E8 /* CollectionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5A8FFA721D3F91AC8678AF /* CollectionStore.swift */; };
+		D7F73CB4F7F6964A236B3257 /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0DD281358DAF7BE74058FA /* Design.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A1706BD94F41C51DFDC4AB68 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 36FC508003C3CC56CC38528A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 99E10D14C97A273F25545CB0;
+			remoteInfo = ChromaCascade;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		00470199B67850B81038EA99 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		1CDDE63D03336268FFE72444 /* ChromaCascade.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ChromaCascade.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		73AE8EDD8B993A7352AAC68A /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
+		BA8D9C193732C7C522158167 /* PuzzleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleTests.swift; sourceTree = "<group>"; };
+		BB01FE42AFBFD82B8AE27C4A /* ChromaCascadeTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ChromaCascadeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE0DD281358DAF7BE74058FA /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
+		C098468014653E95081065C4 /* ChromaCascadeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChromaCascadeApp.swift; sourceTree = "<group>"; };
+		DA5A8FFA721D3F91AC8678AF /* CollectionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionStore.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1AFE1F824F281CA4B93E6015 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1CDDE63D03336268FFE72444 /* ChromaCascade.app */,
+				BB01FE42AFBFD82B8AE27C4A /* ChromaCascadeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		40A47ECD354231ABD36B6C22 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				BA8D9C193732C7C522158167 /* PuzzleTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		97DD19A507267E359520C824 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				C098468014653E95081065C4 /* ChromaCascadeApp.swift */,
+				DA5A8FFA721D3F91AC8678AF /* CollectionStore.swift */,
+				BE0DD281358DAF7BE74058FA /* Design.swift */,
+				00470199B67850B81038EA99 /* GameView.swift */,
+				73AE8EDD8B993A7352AAC68A /* Puzzle.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		9B339A066EC1B0D33CE7FCD2 = {
+			isa = PBXGroup;
+			children = (
+				97DD19A507267E359520C824 /* Sources */,
+				40A47ECD354231ABD36B6C22 /* Tests */,
+				1AFE1F824F281CA4B93E6015 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		99E10D14C97A273F25545CB0 /* ChromaCascade */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5BB25D3185AA85CF85E3E9EF /* Build configuration list for PBXNativeTarget "ChromaCascade" */;
+			buildPhases = (
+				2F349B9C5B3D4E487D0CE666 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChromaCascade;
+			packageProductDependencies = (
+			);
+			productName = ChromaCascade;
+			productReference = 1CDDE63D03336268FFE72444 /* ChromaCascade.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A8A84590DCB27B2E256AF172 /* ChromaCascadeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F565356704C5D9A217F818A2 /* Build configuration list for PBXNativeTarget "ChromaCascadeTests" */;
+			buildPhases = (
+				C393BD5BCD3BDB8C603D3ADE /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5D095555E0E38DD50593052D /* PBXTargetDependency */,
+			);
+			name = ChromaCascadeTests;
+			packageProductDependencies = (
+			);
+			productName = ChromaCascadeTests;
+			productReference = BB01FE42AFBFD82B8AE27C4A /* ChromaCascadeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		36FC508003C3CC56CC38528A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 6B9C915D28AD0338F392F001 /* Build configuration list for PBXProject "ChromaCascade" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 9B339A066EC1B0D33CE7FCD2;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1AFE1F824F281CA4B93E6015 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				99E10D14C97A273F25545CB0 /* ChromaCascade */,
+				A8A84590DCB27B2E256AF172 /* ChromaCascadeTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2F349B9C5B3D4E487D0CE666 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				32A6E5A19395878E417B0F68 /* ChromaCascadeApp.swift in Sources */,
+				AD71A1628440132B7CD3D4E8 /* CollectionStore.swift in Sources */,
+				D7F73CB4F7F6964A236B3257 /* Design.swift in Sources */,
+				04D0B720EC7EE9BACA3CF22B /* GameView.swift in Sources */,
+				1E862842F0CB4B6889E10B59 /* Puzzle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C393BD5BCD3BDB8C603D3ADE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D0DEA56588E51D311AF2ACE /* PuzzleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5D095555E0E38DD50593052D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 99E10D14C97A273F25545CB0 /* ChromaCascade */;
+			targetProxy = A1706BD94F41C51DFDC4AB68 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		31A3F8D48B30A6391585223E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.collection.ChromaCascadeTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChromaCascade.app/ChromaCascade";
+			};
+			name = Debug;
+		};
+		5F8F136247E576ED5FD98A45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Chroma Cascade";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		6625A1155B487846B0C89A19 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Chroma Cascade";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		9005309B54EB28DDBBCC6FAD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.collection.chromacascade;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AE2BDA6BD252F01FAAA6DC7E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.collection.ChromaCascadeTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChromaCascade.app/ChromaCascade";
+			};
+			name = Release;
+		};
+		B92A48C6E76A65FD465B3A49 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.collection.chromacascade;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5BB25D3185AA85CF85E3E9EF /* Build configuration list for PBXNativeTarget "ChromaCascade" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9005309B54EB28DDBBCC6FAD /* Debug */,
+				B92A48C6E76A65FD465B3A49 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6B9C915D28AD0338F392F001 /* Build configuration list for PBXProject "ChromaCascade" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5F8F136247E576ED5FD98A45 /* Debug */,
+				6625A1155B487846B0C89A19 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F565356704C5D9A217F818A2 /* Build configuration list for PBXNativeTarget "ChromaCascadeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				31A3F8D48B30A6391585223E /* Debug */,
+				AE2BDA6BD252F01FAAA6DC7E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 36FC508003C3CC56CC38528A /* Project object */;
+}
