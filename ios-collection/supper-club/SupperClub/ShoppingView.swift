@@ -240,7 +240,10 @@ struct AboutView: View {
           .lineSpacing(5)
           Divider()
           Eyebrow(text: "Your kitchen")
-          Text("\(store.state.mealsCooked) suppers cooked").font(.editorial(28))
+          Text(
+            "\(store.state.mealsCooked) \(store.state.mealsCooked == 1 ? "supper" : "suppers") cooked"
+          )
+          .font(.editorial(28))
           Text(
             "Saved recipes, serving sizes, your shopping list, cooking progress and timers live on this device. Deleting the app removes them. Nothing is sent to a server."
           )

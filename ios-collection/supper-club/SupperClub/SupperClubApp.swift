@@ -45,7 +45,7 @@ struct BrowseView: View {
 
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 24) {
+      VStack(alignment: .leading, spacing: 18) {
         HStack(spacing: 10) {
           PlateMark()
           Text("supper club").font(.editorial(25))
@@ -62,18 +62,13 @@ struct BrowseView: View {
           }.accessibilityLabel("About Supper Club")
         }
         .foregroundStyle(Palette.ink)
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 8) {
           Eyebrow(
-            text: savedOnly ? "Your personal collection" : "A small collection. A full table."
+            text: savedOnly ? "Your personal collection" : "Volume 01 / Ten original recipes"
           )
           .foregroundStyle(Palette.red)
-          Text(savedOnly ? "Worth making\nagain." : "Good food.\nAny night.")
-            .font(.editorial(49)).lineSpacing(-5)
-          Text(
-            savedOnly
-              ? "Keep your favorites close." : "Ten recipes for the everyday ritual of dinner."
-          )
-          .font(.subheadline).foregroundStyle(Palette.muted)
+          Text(savedOnly ? "Your favorites." : "Good food. Any night.")
+            .font(.editorial(32)).lineLimit(1).minimumScaleFactor(0.85)
         }
         if let id = store.state.cookRecipeID, let recipe = Recipes.all.first(where: { $0.id == id })
         {
@@ -95,9 +90,12 @@ struct BrowseView: View {
         }
         HStack(spacing: 10) {
           Image(systemName: "magnifyingglass").foregroundStyle(Palette.red)
-          TextField("Find a recipe or ingredient", text: $query)
-            .autocorrectionDisabled().textInputAutocapitalization(.never)
-            .accessibilityLabel("Find a recipe or ingredient")
+          TextField(
+            "Find a recipe or ingredient", text: $query,
+            prompt: Text("Find a recipe or ingredient").foregroundStyle(Palette.muted)
+          )
+          .autocorrectionDisabled().textInputAutocapitalization(.never)
+          .accessibilityLabel("Find a recipe or ingredient")
           if !query.isEmpty {
             Button {
               query = ""
@@ -150,12 +148,12 @@ struct BrowseView: View {
             } label: {
               VStack(alignment: .leading, spacing: 0) {
                 ZStack(alignment: .topLeading) {
-                  FoodArt(style: recipes[0].style).frame(height: 274)
+                  FoodArt(style: recipes[0].style).frame(height: 222)
                   Eyebrow(text: "Tonight’s pick").padding(12)
                     .background(Palette.paper, in: Capsule()).padding(16)
                 }
                 VStack(alignment: .leading, spacing: 12) {
-                  Text(recipes[0].title).font(.editorial(33)).multilineTextAlignment(.leading)
+                  Text(recipes[0].title).font(.editorial(30)).multilineTextAlignment(.leading)
                   HStack {
                     Text("25 MIN  /  VEGETARIAN").font(.caption.weight(.semibold)).tracking(1)
                     Spacer()
@@ -169,7 +167,8 @@ struct BrowseView: View {
           HStack {
             Eyebrow(text: query.isEmpty ? "The recipe collection" : "For your pantry")
             Spacer()
-            Text("\(recipes.count) recipes").font(.caption).foregroundStyle(Palette.muted)
+            Text("\(recipes.count) \(recipes.count == 1 ? "recipe" : "recipes")")
+              .font(.caption).foregroundStyle(Palette.muted)
           }.padding(.top, 5)
           ForEach(recipes) { recipe in
             NavigationLink {
@@ -218,19 +217,19 @@ struct RecipeView: View {
 
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 25) {
-        FoodArt(style: recipe.style).frame(height: 290)
+      VStack(alignment: .leading, spacing: 20) {
+        FoodArt(style: recipe.style).frame(height: 205)
           .clipShape(RoundedRectangle(cornerRadius: 20))
         VStack(alignment: .leading, spacing: 14) {
           Eyebrow(text: "\(recipe.minutes) minutes  /  \(recipe.label)").foregroundStyle(
             Palette.red)
-          Text(recipe.title).font(.editorial(43)).lineSpacing(-3)
+          Text(recipe.title).font(.editorial(37)).lineSpacing(-3)
           Text(recipe.subtitle).foregroundStyle(Palette.muted).font(.body).lineSpacing(4)
         }
         HStack {
           VStack(alignment: .leading, spacing: 5) {
-            Text("At your table").font(.editorial(26))
-            Text("Ingredients scale with you").font(.caption).foregroundStyle(Palette.muted)
+            Text("Servings").font(.editorial(26))
+            Text("Made for your table").font(.caption).foregroundStyle(Palette.muted)
           }
           Spacer()
           HStack(spacing: 12) {
@@ -250,6 +249,23 @@ struct RecipeView: View {
             }.disabled(store.servings(for: recipe) == 12).accessibilityLabel("More servings")
           }.background(.white.opacity(0.8), in: Capsule())
         }
+        Button {
+          store.addIngredients(recipe)
+          added = true
+          UINotificationFeedbackGenerator().notificationOccurred(.success)
+        } label: {
+          HStack {
+            Image(systemName: added ? "checkmark.circle.fill" : "basket")
+            Text(added ? "Ingredients on your list" : "Add ingredients to list")
+              .font(.headline)
+            Spacer()
+            if !added { Image(systemName: "plus") }
+          }.padding(.horizontal, 18).frame(minHeight: 56)
+            .foregroundStyle(added ? Palette.green : Palette.red)
+            .background(.white.opacity(0.75), in: RoundedRectangle(cornerRadius: 15))
+            .overlay(RoundedRectangle(cornerRadius: 15).stroke(Palette.line, lineWidth: 1))
+        }.buttonStyle(.plain)
+        Text("Ingredients").font(.editorial(29)).padding(.top, 4)
         VStack(spacing: 0) {
           ForEach(recipe.ingredients) { ingredient in
             let scaled = ingredient.scaled(store.servings(for: recipe), from: recipe.servings)
@@ -266,13 +282,6 @@ struct RecipeView: View {
             }.padding(.vertical, 14)
             Rectangle().fill(Palette.line).frame(height: 0.7)
           }
-        }
-        MainButton(
-          title: added ? "Ingredients on your list" : "Add to shopping list",
-          symbol: added ? "checkmark" : "plus"
-        ) {
-          store.addIngredients(recipe)
-          added = true
         }
         Text(
           "Adding again updates this recipe’s quantities. Shared ingredients combine automatically."
@@ -296,6 +305,7 @@ struct RecipeView: View {
     }
     .background(Palette.paper).foregroundStyle(Palette.ink)
     .navigationTitle("The recipe").navigationBarTitleDisplayMode(.inline)
+    .toolbar(.hidden, for: .tabBar)
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
         Button {

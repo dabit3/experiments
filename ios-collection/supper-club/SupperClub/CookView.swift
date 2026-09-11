@@ -18,8 +18,10 @@ struct CookView: View {
         Button {
           dismiss()
         } label: {
-          Label("Save & close", systemImage: "xmark").font(.subheadline.weight(.medium))
-            .frame(minHeight: 44)
+          Label(finished ? "Close" : "Save & close", systemImage: "xmark").font(
+            .subheadline.weight(.medium)
+          )
+          .frame(minHeight: 44)
         }
         Spacer()
         Button {
@@ -39,7 +41,7 @@ struct CookView: View {
               "You made \(recipe.title.replacingOccurrences(of: "\n", with: " ").lowercased()). Take a seat. You’ve earned it."
             )
             .font(.title3).lineSpacing(5)
-            MainButton(title: "Back to the collection", symbol: "arrow.right") { dismiss() }
+            MainButton(title: "Done cooking", symbol: "checkmark") { dismiss() }
             Button {
               store.beginCooking(recipe)
               finished = false
@@ -102,8 +104,8 @@ struct CookView: View {
                 Text(recipe.steps[index + 1].title).font(.editorial(25))
               }.padding(.top, 10)
             }
-          }.padding(24).id(index)
-        }
+          }.padding(24)
+        }.id(index)
         VStack(spacing: 8) {
           MainButton(
             title: index == recipe.steps.count - 1 ? "Supper is ready" : "Next step",
@@ -129,6 +131,7 @@ struct CookView: View {
       }
     }
     .background(Palette.ink).foregroundStyle(Palette.paper)
+    .preferredColorScheme(.dark)
     .sheet(isPresented: $showTimers) { TimerRoomView() }
     .sheet(isPresented: $showIngredients) {
       NavigationStack {
@@ -142,7 +145,7 @@ struct CookView: View {
           .toolbar {
             ToolbarItem(placement: .topBarTrailing) { Button("Done") { showIngredients = false } }
           }
-      }.tint(Palette.red)
+      }.tint(Palette.red).preferredColorScheme(.light)
     }
     .confirmationDialog(
       "Start this recipe again?", isPresented: $showRestart, titleVisibility: .visible
@@ -257,7 +260,7 @@ struct TimerRoomView: View {
       }.background(Color(red: 0.92, green: 0.89, blue: 0.83)).foregroundStyle(Palette.ink)
         .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
         .sheet(isPresented: $newTimer) { TimerEditor() }
-    }.tint(Palette.red)
+    }.tint(Palette.red).preferredColorScheme(.light)
   }
 }
 
@@ -308,6 +311,6 @@ struct TimerEditor: View {
             seconds = Int(existing.duration) % 60
           }
         }
-    }.tint(Palette.red)
+    }.tint(Palette.red).preferredColorScheme(.light)
   }
 }
