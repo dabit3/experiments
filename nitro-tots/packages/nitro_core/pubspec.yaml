@@ -1,0 +1,17 @@
+name: nitro_core
+description: Shared deterministic game core for Nitro Tots.
+version: 0.1.0
+
+publish_to: none
+
+environment:
+  sdk: ^3.13.3
+
+# Add regular dependencies here.
+dependencies:
+  meta: ^1.19.0
+  # path: ^1.9.0
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6

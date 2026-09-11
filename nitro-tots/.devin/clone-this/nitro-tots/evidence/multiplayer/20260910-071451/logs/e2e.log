@@ -1,0 +1,42 @@
+[e2e 07:14:51] platforms: web ios macos  room: E2E  seed: 4242  cup: sugar  laps: 1
+[e2e 07:14:51] evidence: /Users/devin/repos/experiments/nitro-tots/.devin/clone-this/nitro-tots/evidence/multiplayer/20260910-071451
+[e2e 07:14:53] building web
+[e2e 07:15:18] building ios (simulator)
+[e2e 07:15:40] building macos
+[e2e 07:15:58] starting server on :8787 (seed 4242)
+[e2e 07:16:00] server healthy: {"ok":true,"uptimeMs":941}
+[e2e 07:16:01] screen recording started (pid 5684)
+[e2e 07:16:01] launching macOS app
+[e2e 07:16:02] launching iOS simulator app
+[e2e 07:16:08] launching web client (Playwright)
+[e2e 07:16:08] waiting for room E2E to finish (timeout 900s)
+[e2e 07:16:08] room status: lobby
+[e2e 07:16:22] room status: racing
+[e2e 07:17:17] room status: results
+[e2e 07:17:27] room status: racing
+[e2e 07:18:47] room status: results
+[e2e 07:18:56] room status: racing
+[e2e 07:20:12] room status: results
+[e2e 07:20:22] room status: racing
+[e2e 07:21:32] room status: results
+[e2e 07:21:41] room status: matchOver
+# Multiplayer result for room E2E
+
+- Status: `matchOver`  ·  seed `4242`  ·  races `4`
+- Server result hash: `b7486dfb`
+- OK  web: `b7486dfb`
+- OK  ios: `b7486dfb`
+- OK  macos: `b7486dfb`
+
+| # | Racer | Platform | Points | Places |
+|---|---|---|---|---|
+| 1 | Biscuit | bot | 51 | 1 2 1 4 |
+| 2 | Dot | bot | 42 | 3 1 6 3 |
+| 3 | Waffles | bot | 39 | 4 3 5 2 |
+| 4 | macOS | macos | 35 | 7 5 7 1 |
+| 5 | Zippy | bot | 35 | 5 4 3 5 |
+| 6 | Nova | bot | 32 | 2 8 4 7 |
+| 7 | Web | web | 28 | 8 7 2 8 |
+| 8 | iOS | ios | 26 | 6 6 8 6 |
+[e2e 07:22:47] PASS: all clients (web ios macos) agree on the final standings and hash
+[e2e 07:22:47] cleaning up

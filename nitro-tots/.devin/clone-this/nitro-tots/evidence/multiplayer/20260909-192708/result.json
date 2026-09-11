@@ -1,0 +1,635 @@
+{
+  "room": "E2E",
+  "status": "matchOver",
+  "seed": 4242,
+  "races": 4,
+  "serverHash": "1656e738",
+  "clientHashes": {
+    "web": "1656e738",
+    "ios": "1656e738",
+    "macos": "1656e738"
+  },
+  "platformsVerified": [
+    "web",
+    "ios",
+    "macos"
+  ],
+  "standings": [
+    {
+      "slot": 4,
+      "name": "Waffles",
+      "character": "rocco",
+      "kart": "pinewood",
+      "bot": true,
+      "platform": "bot",
+      "points": 45,
+      "places": [
+        5,
+        3,
+        2,
+        1
+      ]
+    },
+    {
+      "slot": 6,
+      "name": "Biscuit",
+      "character": "tank",
+      "kart": "jellybean",
+      "bot": true,
+      "platform": "bot",
+      "points": 44,
+      "places": [
+        1,
+        4,
+        1,
+        8
+      ]
+    },
+    {
+      "slot": 5,
+      "name": "Dot",
+      "character": "pip",
+      "kart": "pinewood",
+      "bot": true,
+      "platform": "bot",
+      "points": 41,
+      "places": [
+        3,
+        1,
+        6,
+        4
+      ]
+    },
+    {
+      "slot": 3,
+      "name": "Zippy",
+      "character": "ozzie",
+      "kart": "tincan",
+      "bot": true,
+      "platform": "bot",
+      "points": 36,
+      "places": [
+        7,
+        2,
+        3,
+        5
+      ]
+    },
+    {
+      "slot": 0,
+      "name": "macOS",
+      "character": "bea",
+      "kart": "rocketscoot",
+      "bot": false,
+      "platform": "macos",
+      "points": 32,
+      "places": [
+        4,
+        8,
+        5,
+        3
+      ]
+    },
+    {
+      "slot": 1,
+      "name": "iOS",
+      "character": "mabel",
+      "kart": "pinewood",
+      "bot": false,
+      "platform": "ios",
+      "points": 31,
+      "places": [
+        6,
+        6,
+        8,
+        2
+      ]
+    },
+    {
+      "slot": 2,
+      "name": "Web",
+      "character": "juno",
+      "kart": "bubble",
+      "bot": false,
+      "platform": "web",
+      "points": 31,
+      "places": [
+        2,
+        7,
+        7,
+        6
+      ]
+    },
+    {
+      "slot": 7,
+      "name": "Nova",
+      "character": "kiki",
+      "kart": "tincan",
+      "bot": true,
+      "platform": "bot",
+      "points": 28,
+      "places": [
+        8,
+        5,
+        4,
+        7
+      ]
+    }
+  ],
+  "raceResults": [
+    {
+      "trackId": "sprinkle",
+      "results": [
+        {
+          "slot": 6,
+          "name": "Biscuit",
+          "character": "ozzie",
+          "kart": "bigwheel",
+          "bot": true,
+          "platform": "bot",
+          "place": 1,
+          "finishTick": 1380,
+          "lapTicks": [
+            1260
+          ],
+          "points": 15,
+          "score": 0
+        },
+        {
+          "slot": 2,
+          "name": "Web",
+          "character": "juno",
+          "kart": "bubble",
+          "bot": false,
+          "platform": "web",
+          "place": 2,
+          "finishTick": 1452,
+          "lapTicks": [
+            1332
+          ],
+          "points": 12,
+          "score": 0
+        },
+        {
+          "slot": 5,
+          "name": "Dot",
+          "character": "tank",
+          "kart": "pinewood",
+          "bot": true,
+          "platform": "bot",
+          "place": 3,
+          "finishTick": 1457,
+          "lapTicks": [
+            1337
+          ],
+          "points": 10,
+          "score": 0
+        },
+        {
+          "slot": 0,
+          "name": "macOS",
+          "character": "bea",
+          "kart": "rocketscoot",
+          "bot": false,
+          "platform": "macos",
+          "place": 4,
+          "finishTick": 1482,
+          "lapTicks": [
+            1362
+          ],
+          "points": 9,
+          "score": 0
+        },
+        {
+          "slot": 4,
+          "name": "Waffles",
+          "character": "rocco",
+          "kart": "bubble",
+          "bot": true,
+          "platform": "bot",
+          "place": 5,
+          "finishTick": 1483,
+          "lapTicks": [
+            1363
+          ],
+          "points": 8,
+          "score": 0
+        },
+        {
+          "slot": 1,
+          "name": "iOS",
+          "character": "mabel",
+          "kart": "pinewood",
+          "bot": false,
+          "platform": "ios",
+          "place": 6,
+          "finishTick": 1514,
+          "lapTicks": [
+            1394
+          ],
+          "points": 7,
+          "score": 0
+        },
+        {
+          "slot": 3,
+          "name": "Zippy",
+          "character": "pip",
+          "kart": "bubble",
+          "bot": true,
+          "platform": "bot",
+          "place": 7,
+          "finishTick": 1544,
+          "lapTicks": [],
+          "points": 6,
+          "score": 0
+        },
+        {
+          "slot": 7,
+          "name": "Nova",
+          "character": "kiki",
+          "kart": "pinewood",
+          "bot": true,
+          "platform": "bot",
+          "place": 8,
+          "finishTick": 1574,
+          "lapTicks": [],
+          "points": 5,
+          "score": 0
+        }
+      ]
+    },
+    {
+      "trackId": "mossy",
+      "results": [
+        {
+          "slot": 5,
+          "name": "Dot",
+          "character": "ozzie",
+          "kart": "bigwheel",
+          "bot": true,
+          "platform": "bot",
+          "place": 1,
+          "finishTick": 2076,
+          "lapTicks": [
+            1956
+          ],
+          "points": 15,
+          "score": 0
+        },
+        {
+          "slot": 3,
+          "name": "Zippy",
+          "character": "kiki",
+          "kart": "bubble",
+          "bot": true,
+          "platform": "bot",
+          "place": 2,
+          "finishTick": 2140,
+          "lapTicks": [
+            2020
+          ],
+          "points": 12,
+          "score": 0
+        },
+        {
+          "slot": 4,
+          "name": "Waffles",
+          "character": "tank",
+          "kart": "pinewood",
+          "bot": true,
+          "platform": "bot",
+          "place": 3,
+          "finishTick": 2142,
+          "lapTicks": [
+            2022
+          ],
+          "points": 10,
+          "score": 0
+        },
+        {
+          "slot": 6,
+          "name": "Biscuit",
+          "character": "rocco",
+          "kart": "bigwheel",
+          "bot": true,
+          "platform": "bot",
+          "place": 4,
+          "finishTick": 2164,
+          "lapTicks": [
+            2044
+          ],
+          "points": 9,
+          "score": 0
+        },
+        {
+          "slot": 7,
+          "name": "Nova",
+          "character": "pip",
+          "kart": "tincan",
+          "bot": true,
+          "platform": "bot",
+          "place": 5,
+          "finishTick": 2227,
+          "lapTicks": [
+            2107
+          ],
+          "points": 8,
+          "score": 0
+        },
+        {
+          "slot": 1,
+          "name": "iOS",
+          "character": "mabel",
+          "kart": "pinewood",
+          "bot": false,
+          "platform": "ios",
+          "place": 6,
+          "finishTick": 2229,
+          "lapTicks": [
+            2109
+          ],
+          "points": 7,
+          "score": 0
+        },
+        {
+          "slot": 2,
+          "name": "Web",
+          "character": "juno",
+          "kart": "bubble",
+          "bot": false,
+          "platform": "web",
+          "place": 7,
+          "finishTick": 2282,
+          "lapTicks": [
+            2162
+          ],
+          "points": 6,
+          "score": 0
+        },
+        {
+          "slot": 0,
+          "name": "macOS",
+          "character": "bea",
+          "kart": "rocketscoot",
+          "bot": false,
+          "platform": "macos",
+          "place": 8,
+          "finishTick": 2283,
+          "lapTicks": [
+            2163
+          ],
+          "points": 5,
+          "score": 0
+        }
+      ]
+    },
+    {
+      "trackId": "tincity",
+      "results": [
+        {
+          "slot": 6,
+          "name": "Biscuit",
+          "character": "kiki",
+          "kart": "bigwheel",
+          "bot": true,
+          "platform": "bot",
+          "place": 1,
+          "finishTick": 1736,
+          "lapTicks": [
+            1616
+          ],
+          "points": 15,
+          "score": 0
+        },
+        {
+          "slot": 4,
+          "name": "Waffles",
+          "character": "pip",
+          "kart": "pinewood",
+          "bot": true,
+          "platform": "bot",
+          "place": 2,
+          "finishTick": 1874,
+          "lapTicks": [
+            1754
+          ],
+          "points": 12,
+          "score": 0
+        },
+        {
+          "slot": 3,
+          "name": "Zippy",
+          "character": "tank",
+          "kart": "tincan",
+          "bot": true,
+          "platform": "bot",
+          "place": 3,
+          "finishTick": 1977,
+          "lapTicks": [
+            1857
+          ],
+          "points": 10,
+          "score": 0
+        },
+        {
+          "slot": 7,
+          "name": "Nova",
+          "character": "ozzie",
+          "kart": "rocketscoot",
+          "bot": true,
+          "platform": "bot",
+          "place": 4,
+          "finishTick": 1981,
+          "lapTicks": [
+            1861
+          ],
+          "points": 9,
+          "score": 0
+        },
+        {
+          "slot": 0,
+          "name": "macOS",
+          "character": "bea",
+          "kart": "rocketscoot",
+          "bot": false,
+          "platform": "macos",
+          "place": 5,
+          "finishTick": 2015,
+          "lapTicks": [
+            1895
+          ],
+          "points": 8,
+          "score": 0
+        },
+        {
+          "slot": 5,
+          "name": "Dot",
+          "character": "rocco",
+          "kart": "tincan",
+          "bot": true,
+          "platform": "bot",
+          "place": 6,
+          "finishTick": 2078,
+          "lapTicks": [
+            1958
+          ],
+          "points": 7,
+          "score": 0
+        },
+        {
+          "slot": 2,
+          "name": "Web",
+          "character": "juno",
+          "kart": "bubble",
+          "bot": false,
+          "platform": "web",
+          "place": 7,
+          "finishTick": 2091,
+          "lapTicks": [
+            1971
+          ],
+          "points": 6,
+          "score": 0
+        },
+        {
+          "slot": 1,
+          "name": "iOS",
+          "character": "mabel",
+          "kart": "pinewood",
+          "bot": false,
+          "platform": "ios",
+          "place": 8,
+          "finishTick": 2112,
+          "lapTicks": [
+            1992
+          ],
+          "points": 5,
+          "score": 0
+        }
+      ]
+    },
+    {
+      "trackId": "frostbite",
+      "results": [
+        {
+          "slot": 4,
+          "name": "Waffles",
+          "character": "rocco",
+          "kart": "pinewood",
+          "bot": true,
+          "platform": "bot",
+          "place": 1,
+          "finishTick": 1600,
+          "lapTicks": [
+            1480
+          ],
+          "points": 15,
+          "score": 0
+        },
+        {
+          "slot": 1,
+          "name": "iOS",
+          "character": "mabel",
+          "kart": "pinewood",
+          "bot": false,
+          "platform": "ios",
+          "place": 2,
+          "finishTick": 1668,
+          "lapTicks": [
+            1548
+          ],
+          "points": 12,
+          "score": 0
+        },
+        {
+          "slot": 0,
+          "name": "macOS",
+          "character": "bea",
+          "kart": "rocketscoot",
+          "bot": false,
+          "platform": "macos",
+          "place": 3,
+          "finishTick": 1680,
+          "lapTicks": [
+            1560
+          ],
+          "points": 10,
+          "score": 0
+        },
+        {
+          "slot": 5,
+          "name": "Dot",
+          "character": "pip",
+          "kart": "pinewood",
+          "bot": true,
+          "platform": "bot",
+          "place": 4,
+          "finishTick": 1682,
+          "lapTicks": [
+            1562
+          ],
+          "points": 9,
+          "score": 0
+        },
+        {
+          "slot": 3,
+          "name": "Zippy",
+          "character": "ozzie",
+          "kart": "tincan",
+          "bot": true,
+          "platform": "bot",
+          "place": 5,
+          "finishTick": 1829,
+          "lapTicks": [
+            1709
+          ],
+          "points": 8,
+          "score": 0
+        },
+        {
+          "slot": 2,
+          "name": "Web",
+          "character": "juno",
+          "kart": "bubble",
+          "bot": false,
+          "platform": "web",
+          "place": 6,
+          "finishTick": 1841,
+          "lapTicks": [
+            1721
+          ],
+          "points": 7,
+          "score": 0
+        },
+        {
+          "slot": 7,
+          "name": "Nova",
+          "character": "kiki",
+          "kart": "tincan",
+          "bot": true,
+          "platform": "bot",
+          "place": 7,
+          "finishTick": 1871,
+          "lapTicks": [],
+          "points": 6,
+          "score": 0
+        },
+        {
+          "slot": 6,
+          "name": "Biscuit",
+          "character": "tank",
+          "kart": "jellybean",
+          "bot": true,
+          "platform": "bot",
+          "place": 8,
+          "finishTick": 1901,
+          "lapTicks": [],
+          "points": 5,
+          "score": 0
+        }
+      ]
+    }
+  ],
+  "problems": [],
+  "passed": true
+}

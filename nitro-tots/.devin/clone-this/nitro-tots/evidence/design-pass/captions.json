@@ -1,0 +1,11 @@
+{
+ "01_title": "Title: mode tiles + racer card, logo left",
+ "02_garage": "Garage: tot roster grid, kart list, stat bars",
+ "03_cup_select": "Cup select: four tracks, race options",
+ "04_get_ready": "Start lights + GET READY",
+ "05_go": "GO! Rocket start",
+ "06_hud_racing": "HUD: item slot \u00b7 lap/clock/ping \u00b7 place \u00b7 speedo \u00b7 minimap",
+ "07_hud_boost_pad": "HUD mid-race: boost pad, name tags, 7th place badge",
+ "08_race_results_table": "Race results: rank \u00b7 portrait \u00b7 time \u00b7 +pts \u00b7 total",
+ "09_podium": "Podium + final standings"
+}

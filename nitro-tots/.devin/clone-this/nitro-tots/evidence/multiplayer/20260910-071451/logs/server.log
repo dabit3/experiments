@@ -1,0 +1,55 @@
+Nitro Tots server listening on ws://0.0.0.0:8787/ws (seed=4242)
+[2026-09-10T07:16:01.721147] connect (1 sessions)
+[2026-09-10T07:16:01.740138] hello macOS (macos)
+[2026-09-10T07:16:01.745574] room E2E created by macOS
+[2026-09-10T07:16:01.746422] test report from macOS/macos: null
+[2026-09-10T07:16:08.914154] connect (2 sessions)
+[2026-09-10T07:16:08.979805] hello iOS (ios)
+[2026-09-10T07:16:08.987469] iOS joined E2E (2 players)
+[2026-09-10T07:16:09.278581] test report from iOS/ios: null
+[2026-09-10T07:16:17.178] connect (3 sessions)
+[2026-09-10T07:16:17.799602] hello Web (web)
+[2026-09-10T07:16:17.808413] Web joined E2E (3 players)
+[2026-09-10T07:16:18.010932] test report from Web/web: null
+[2026-09-10T07:16:21.336637] test report from macOS/macos: null
+[2026-09-10T07:16:21.349158] test report from iOS/ios: null
+[2026-09-10T07:16:21.373582] test report from Web/web: null
+[2026-09-10T07:16:25.741875] test report from macOS/macos: null
+[2026-09-10T07:16:25.811304] test report from Web/web: null
+[2026-09-10T07:16:25.982827] test report from iOS/ios: null
+[2026-09-10T07:17:17.524367] test report from Web/web: null
+[2026-09-10T07:17:17.524618] test report from macOS/macos: null
+[2026-09-10T07:17:17.530324] test report from iOS/ios: null
+[2026-09-10T07:17:26.531392] test report from macOS/macos: null
+[2026-09-10T07:17:26.531902] test report from iOS/ios: null
+[2026-09-10T07:17:26.532066] test report from Web/web: null
+[2026-09-10T07:17:30.730276] test report from macOS/macos: null
+[2026-09-10T07:17:30.802764] test report from Web/web: null
+[2026-09-10T07:17:30.978031] test report from iOS/ios: null
+[2026-09-10T07:18:47.611956] test report from macOS/macos: null
+[2026-09-10T07:18:47.612194] test report from iOS/ios: null
+[2026-09-10T07:18:47.612269] test report from Web/web: null
+[2026-09-10T07:18:56.621127] test report from macOS/macos: null
+[2026-09-10T07:18:56.621636] test report from iOS/ios: null
+[2026-09-10T07:18:56.629560] test report from Web/web: null
+[2026-09-10T07:19:00.729235] test report from macOS/macos: null
+[2026-09-10T07:19:00.797680] test report from Web/web: null
+[2026-09-10T07:19:00.975372] test report from iOS/ios: null
+[2026-09-10T07:20:12.758919] test report from iOS/ios: null
+[2026-09-10T07:20:12.760743] test report from macOS/macos: null
+[2026-09-10T07:20:12.762524] test report from Web/web: null
+[2026-09-10T07:20:21.850388] test report from iOS/ios: null
+[2026-09-10T07:20:21.850862] test report from macOS/macos: null
+[2026-09-10T07:20:21.850889] test report from Web/web: null
+[2026-09-10T07:20:27.229628] test report from macOS/macos: null
+[2026-09-10T07:20:27.293743] test report from Web/web: null
+[2026-09-10T07:20:27.477324] test report from iOS/ios: null
+[2026-09-10T07:21:32.049769] test report from macOS/macos: null
+[2026-09-10T07:21:32.050355] test report from iOS/ios: null
+[2026-09-10T07:21:32.050884] test report from Web/web: null
+[2026-09-10T07:21:41.061073] test report from iOS/ios: b7486dfb
+[2026-09-10T07:21:41.061189] test report from macOS/macos: b7486dfb
+[2026-09-10T07:21:41.063947] test report from Web/web: b7486dfb
+[2026-09-10T07:21:50.150669] player Web disconnected from E2E
+[2026-09-10T07:22:47.039911] player macOS disconnected from E2E
+[2026-09-10T07:22:47.187926] player iOS disconnected from E2E
