@@ -21,7 +21,12 @@ bottom sheet (dismiss by tap-out / Escape), toast snackbars for copy/join
 errors, reconnect banner (top, safe-area aware). No not-found route exists:
 an unknown room code produces the `room_not_found` error toast on `home`.
 
-Back / refresh: reloading the web client with a stored resume token reclaims
-the seat (server `reconnectGraceMs` grace); leaving via the Leave button
-returns to `home`. Verified live in the four-platform run (lobby → game →
-results → leave → spectate relaunch) — `evidence/tests/<final>/e2e.log`.
+Back / refresh: automatic socket reconnection reuses the in-memory resume
+token within `reconnectGraceMs`. A full page reload loses that token and
+returns to Home; persistent reload recovery is not implemented. Leaving via
+the Leave button returns to Home. The E2E exercises lobby → game → results →
+leave → spectator relaunch; it does not prove page-reload seat restoration.
+
+Arcade revision: the four routes and their controls retain the same keys and
+server phase transitions. Shared `ArcadeScaffold` adds a finite entrance
+transition; it does not alter routing or network state.

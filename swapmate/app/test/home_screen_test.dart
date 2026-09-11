@@ -18,6 +18,33 @@ Widget _home(Brightness brightness, GameClient client, VoidCallback onToggle) =>
     );
 
 void main() {
+  testWidgets('phone theme control remains reachable while scrolling', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 844);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final client = GameClient(platform: 'test');
+    addTearDown(client.dispose);
+    var toggles = 0;
+    await tester.pumpWidget(_home(Brightness.dark, client, () => toggles++));
+    await tester.pumpAndSettle();
+
+    final theme = find.byTooltip('Light theme');
+    final scroll = find.byType(SingleChildScrollView);
+    await tester.tap(theme);
+    expect(toggles, 1);
+    await tester.drag(scroll, const Offset(0, -300));
+    await tester.pumpAndSettle();
+    await tester.tap(theme);
+    expect(toggles, 2);
+    expect(
+      tester.getRect(scroll).top,
+      greaterThanOrEqualTo(tester.getRect(theme).bottom),
+    );
+  });
+
   testWidgets('home screen shows the brand, entry points and join form', (
     tester,
   ) async {

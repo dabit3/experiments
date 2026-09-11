@@ -7,6 +7,7 @@ import 'package:swapmate_core/swapmate_core.dart';
 import '../net/game_client.dart';
 import '../theme/tokens.dart';
 import '../widgets/board_view.dart';
+import '../widgets/arcade.dart';
 import '../widgets/chat_panel.dart';
 import '../widgets/common.dart';
 import '../widgets/move_list.dart';
@@ -414,7 +415,7 @@ class _GameScreenState extends State<GameScreen>
     final wide = size.width >= 1024;
     final medium = size.width >= 700 && size.width > size.height;
 
-    return Scaffold(
+    return ArcadeScaffold(
       body: SafeArea(
         child: Shortcuts(
           shortcuts: const {
@@ -442,6 +443,7 @@ class _GameScreenState extends State<GameScreen>
                   Column(
                     children: [
                       _header(context),
+                      _matchBanner(context),
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(
@@ -530,7 +532,7 @@ class _GameScreenState extends State<GameScreen>
           const SizedBox(width: Space.xs),
           const SwapmateMark(size: 24),
           const SizedBox(width: Space.sm),
-          Text('Swapmate', style: context.type.titleMedium),
+          Text('SWAPMATE', style: context.type.headlineSmall),
           const SizedBox(width: Space.md),
           Chip2(room.code, icon: Icons.tag, dense: true),
           if (!narrow) ...[
@@ -651,21 +653,67 @@ class _GameScreenState extends State<GameScreen>
     );
   }
 
+  Widget _matchBanner(BuildContext context) {
+    final c = context.colors;
+    final compact = MediaQuery.sizeOf(context).width < 640;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        Space.md,
+        0,
+        Space.md,
+        compact ? Space.sm : Space.lg,
+      ),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: Space.lg,
+          vertical: compact ? 6 : 10,
+        ),
+        decoration: BoxDecoration(
+          color: c.surfaceSunken,
+          borderRadius: BorderRadius.circular(Radii.md),
+          border: Border.all(color: c.outline),
+        ),
+        child: Row(
+          children: [
+            TeamEmblem(team: Team.one, size: compact ? 22 : 32),
+            const SizedBox(width: Space.sm),
+            Text(
+              'TIDAL',
+              style: context.type.headlineSmall?.copyWith(color: c.teamOne),
+            ),
+            const Spacer(),
+            Text(
+              'VS',
+              style: context.type.headlineSmall?.copyWith(color: c.textFaint),
+            ),
+            const Spacer(),
+            Text(
+              'EMBER',
+              style: context.type.headlineSmall?.copyWith(color: c.teamTwo),
+            ),
+            const SizedBox(width: Space.sm),
+            TeamEmblem(team: Team.two, size: compact ? 22 : 32),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _wideLayout(BuildContext context) => Row(
     crossAxisAlignment: CrossAxisAlignment.stretch,
     children: [
       Expanded(
-        flex: 11,
+        flex: 10,
         child: _boardColumn(context, mainBoard, primary: true),
       ),
       const SizedBox(width: Space.lg),
       Expanded(
-        flex: 8,
+        flex: 9,
         child: _boardColumn(context, mainBoard.other, primary: false),
       ),
       const SizedBox(width: Space.lg),
       SizedBox(
-        width: 300,
+        width: 236,
         child: Column(
           children: [
             Expanded(flex: 4, child: MoveList(moves: game.moves)),
@@ -685,12 +733,22 @@ class _GameScreenState extends State<GameScreen>
           children: [
             Expanded(
               flex: 11,
-              child: _boardColumn(context, mainBoard, primary: true),
+              child: _boardColumn(
+                context,
+                mainBoard,
+                primary: true,
+                dense: true,
+              ),
             ),
             const SizedBox(width: Space.md),
             Expanded(
               flex: 8,
-              child: _boardColumn(context, mainBoard.other, primary: false),
+              child: _boardColumn(
+                context,
+                mainBoard.other,
+                primary: false,
+                dense: true,
+              ),
             ),
           ],
         ),
@@ -777,11 +835,36 @@ class _GameScreenState extends State<GameScreen>
     final interactive = primary && !spectating && !game.isOver;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: Space.sm),
+          child: Row(
+            children: [
+              ArcadeEyebrow(
+                'BOARD ${b.id.toUpperCase()}',
+                color: primary
+                    ? context.colors.teamOne
+                    : context.colors.teamTwo,
+              ),
+              const Spacer(),
+              Text(
+                primary
+                    ? (spectating ? 'ARENA' : 'YOUR ARENA')
+                    : 'PARTNER ARENA',
+                style: context.type.labelSmall?.copyWith(
+                  fontSize: 9,
+                  letterSpacing: 1.5,
+                ),
+              ),
+            ],
+          ),
+        ),
         _playerBar(context, top, snap, dense: dense),
         const SizedBox(height: Space.sm),
-        Expanded(
+        Flexible(
           child: Center(
+            heightFactor: 1,
             child: AspectRatio(
               aspectRatio: 1,
               child: _framedBoard(
@@ -820,9 +903,13 @@ class _GameScreenState extends State<GameScreen>
     final over = game.isOver;
     final decided = over && game.result?.board == b;
     return Container(
-      padding: const EdgeInsets.all(6),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: c.boardFrame,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [c.outlineStrong, c.boardFrame, c.boardFrame],
+        ),
         borderRadius: BorderRadius.circular(Radii.md),
         boxShadow: [
           BoxShadow(
@@ -831,7 +918,10 @@ class _GameScreenState extends State<GameScreen>
             offset: const Offset(0, 14),
           ),
         ],
-        border: decided ? Border.all(color: c.accent, width: 2) : null,
+        border: Border.all(
+          color: decided ? c.accent : c.outlineStrong,
+          width: 1,
+        ),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(Radii.sm),
@@ -884,7 +974,14 @@ class _GameScreenState extends State<GameScreen>
         vertical: compact || dense ? Space.xs : Space.sm,
       ),
       decoration: BoxDecoration(
-        color: c.surface,
+        gradient: LinearGradient(
+          colors: [
+            toMove
+                ? Color.alphaBlend(teamColor.withValues(alpha: 0.12), c.surface)
+                : c.surface,
+            c.surface,
+          ],
+        ),
         borderRadius: BorderRadius.circular(Radii.md),
         border: Border.all(
           color: toMove ? teamColor.withValues(alpha: 0.7) : c.outline,
@@ -933,7 +1030,7 @@ class _GameScreenState extends State<GameScreen>
             )
           : LayoutBuilder(
               builder: (context, box) {
-                final stacked = box.maxWidth < 440;
+                final stacked = box.maxWidth < 600;
                 final tray = ReserveTray(
                   trayKey: _trayKeys[seat],
                   reserve: reserve,
@@ -978,14 +1075,15 @@ class _GameScreenState extends State<GameScreen>
                           ],
                         ],
                       ),
-                      Row(
+                      Wrap(
+                        spacing: Space.xs,
+                        crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           Icon(
                             platformIcon(p?.platform),
                             size: 12,
                             color: c.textFaint,
                           ),
-                          const SizedBox(width: 4),
                           Text(
                             p == null
                                 ? ''
@@ -994,9 +1092,8 @@ class _GameScreenState extends State<GameScreen>
                               color: c.textFaint,
                             ),
                           ),
-                          const SizedBox(width: Space.sm),
                           Text(
-                            toMove ? 'to move' : '',
+                            toMove ? 'TO MOVE' : '',
                             style: context.type.labelSmall?.copyWith(
                               color: teamColor,
                             ),
@@ -1012,11 +1109,12 @@ class _GameScreenState extends State<GameScreen>
                   sampledAt: game.serverTime,
                   serverNow: () => client.serverNow,
                   isMine: isMe,
+                  compact: dense,
                 );
                 final avatar = Avatar(
                   name: p?.name ?? '—',
                   team: seat.team,
-                  size: 34,
+                  size: dense ? 26 : 34,
                   isBot: p?.isBot ?? false,
                 );
                 if (stacked) {

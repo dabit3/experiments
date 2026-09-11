@@ -393,6 +393,13 @@ class _SquaresPainter extends CustomPainter {
     for (var sq = 0; sq < 64; sq++) {
       final r = BoardView.squareRect(sq, s, orientation);
       canvas.drawRect(r, Square.isLight(sq) ? light : dark);
+      canvas.drawLine(
+        r.topLeft + const Offset(0, 0.5),
+        r.topRight + const Offset(0, 0.5),
+        Paint()
+          ..color = Colors.white.withValues(alpha: 0.16)
+          ..strokeWidth = 1,
+      );
     }
     void fill(int sq, Color c) => canvas.drawRect(
       BoardView.squareRect(sq, s, orientation),
@@ -425,7 +432,16 @@ class _SquaresPainter extends CustomPainter {
               ),
       );
     }
-    if (selected != null) fill(selected!, colors.highlightSelect);
+    if (selected != null) {
+      fill(selected!, colors.highlightSelect);
+      canvas.drawRect(
+        BoardView.squareRect(selected!, s, orientation).deflate(2),
+        Paint()
+          ..color = colors.onAccent.withValues(alpha: 0.6)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2,
+      );
+    }
     for (final t in dropTargets) {
       final r = BoardView.squareRect(t, s, orientation);
       canvas.drawRRect(

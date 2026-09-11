@@ -207,9 +207,14 @@ class GameClient extends ChangeNotifier {
         _serverOffset = (msg['serverTime'] as int) + latencyMs ~/ 2 - now;
       case MsgType.roomState:
         final r = msg['room'];
-        final wasIn = room != null;
+        final previous = room;
         room = r == null ? null : RoomState.fromJson(r as Map<String, dynamic>);
-        if (room == null && wasIn) {
+        if (room == null ||
+            room?.code != previous?.code ||
+            room?.phase != previous?.phase) {
+          lastError = null;
+        }
+        if (room == null && previous != null) {
           game = null;
           chats.clear();
         }
@@ -263,6 +268,7 @@ class GameClient extends ChangeNotifier {
 
   void leaveRoom() {
     _send(ClientMsg.roomLeave());
+    lastError = null;
     room = null;
     game = null;
     chats.clear();

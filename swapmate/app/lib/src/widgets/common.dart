@@ -33,18 +33,23 @@ class Panel extends StatelessWidget {
     final c = context.colors;
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: color ?? (raised ? c.surfaceRaised : c.surface),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            color ?? (raised ? c.surfaceRaised : c.surface),
+            color ?? c.surface,
+          ],
+        ),
         borderRadius: BorderRadius.circular(radius),
         border: Border.all(color: borderColor ?? c.outline),
-        boxShadow: raised
-            ? [
-                BoxShadow(
-                  color: c.shadow.withValues(alpha: 0.18),
-                  blurRadius: 24,
-                  offset: const Offset(0, 10),
-                ),
-              ]
-            : null,
+        boxShadow: [
+          BoxShadow(
+            color: c.shadow.withValues(alpha: raised ? 0.25 : 0.14),
+            blurRadius: raised ? 22 : 0,
+            offset: Offset(0, raised ? 8 : 3),
+          ),
+        ],
       ),
       child: Padding(padding: padding, child: child),
     );
@@ -283,8 +288,8 @@ class _ClockViewState extends State<ClockView> {
     final c = context.colors;
     final ms = _remaining;
     final low = ms < 10000 && _running;
-    final bg = _running ? (low ? c.dangerSoft : c.accentSoft) : c.surfaceSunken;
-    final fg = _running ? (low ? c.danger : c.text) : c.textMuted;
+    final bg = _running ? (low ? c.danger : c.accent) : c.surfaceSunken;
+    final fg = _running ? (low ? Colors.white : c.onAccent) : c.textMuted;
     return Semantics(
       label: '${widget.color.name} clock ${ClockView.format(ms)}',
       child: AnimatedContainer(
@@ -311,6 +316,9 @@ class _ClockViewState extends State<ClockView> {
                       : context.type.headlineSmall)
                   ?.copyWith(
                     color: fg,
+                    fontFamily: 'BarlowCondensed',
+                    fontWeight: FontWeight.w800,
+                    fontSize: widget.compact ? 22 : 30,
                     fontFeatures: const [FontFeature.tabularFigures()],
                   ),
         ),
@@ -369,24 +377,30 @@ class ReserveTray extends StatelessWidget {
       child: items.isEmpty
           ? Center(
               child: Text(
-                compact ? '—' : 'Empty hand',
-                style: context.type.labelSmall?.copyWith(color: c.textFaint),
+                compact ? '—' : 'RESERVE · AWAITING CAPTURES',
+                style: context.type.labelSmall?.copyWith(
+                  color: c.textFaint,
+                  fontSize: compact ? 10 : 9,
+                ),
               ),
             )
-          : Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (final t in items)
-                  _ReserveItem(
-                    piece: Piece(color, t),
-                    count: reserve.count(t),
-                    size: size,
-                    boardId: boardId,
-                    selected: selected == t,
-                    interactive: interactive,
-                    onTap: () => onSelect?.call(t),
-                  ),
-              ],
+          : SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (final t in items)
+                    _ReserveItem(
+                      piece: Piece(color, t),
+                      count: reserve.count(t),
+                      size: size,
+                      boardId: boardId,
+                      selected: selected == t,
+                      interactive: interactive,
+                      onTap: () => onSelect?.call(t),
+                    ),
+                ],
+              ),
             ),
     );
   }
@@ -511,7 +525,7 @@ class Avatar extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.18),
-        shape: BoxShape.circle,
+        borderRadius: BorderRadius.circular(size * 0.28),
         border: Border.all(color: color.withValues(alpha: 0.6)),
       ),
       alignment: Alignment.center,

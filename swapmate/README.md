@@ -38,6 +38,27 @@ Features:
 - dark and light themes, phone / tablet / desktop / web layouts, safe-area
   aware, keyboard + mouse + touch input, loading / error / reconnecting states
 
+## Arcade art direction
+
+The shared UI uses a navy/cream palette, lime action buttons, and two original
+team identities: **Tidal** (Team 1, mint) and **Ember** (Team 2, coral).
+Barlow Condensed supplies the arcade display lettering; Inter handles names,
+controls, and chat. Both font families ship locally with their OFL licenses.
+The title-screen miniature arenas, team emblems, medal, chessmen, backgrounds,
+and platform launcher icons are rendered from original vector geometry.
+The boards use mint/cream squares and beveled pieces; active clocks, reserves,
+and the match banner keep the two-team relationship visible.
+
+Screen entrances settle after 360 ms and honor the system's reduced-motion
+setting. Existing piece movement, capture transfers, selection, and result
+transitions remain part of the shared Flutter interface.
+
+The responsive regression suite renders Home, Lobby, Game, and Results in
+both themes at 320×640, 390×844, 800×600, and 1180×800, including full reserves.
+Run it with `cd app && flutter test test/arcade_layout_test.dart`.
+To save its synthetic layout captures, set `SWAPMATE_RENDER_DIR` to an existing
+directory; live platform screenshots come from the multiplayer E2E above.
+
 ## Layout
 
 ```
@@ -89,7 +110,6 @@ long-press to premove.
 cd swapmate
 test/multiplayer-e2e.sh                # builds everything, then runs the match
 test/multiplayer-e2e.sh --skip-build   # reuse the existing builds
-test/multiplayer-e2e.sh --platforms web,ios,macos --no-visual   # subset; bots fill the missing seats
 ```
 
 The script:
@@ -104,7 +124,7 @@ The script:
    hypervisor-less hosts, `CLOCK_MS`);
 4. plays a scripted match through each client's own board controller
    (Scholar's mate on board A while board B trades pawns and a queen, a
-   pre-drop of the captured pawn, a premove that fires, a quick-chat request,
+   drop of the captured pawn, a premove that fires, a quick-chat request,
    and `Qxf7#`);
 5. asserts that all four clients report the **same FEN for both boards, move
    list, BPGN, result and score** and are on the results screen;
@@ -168,6 +188,21 @@ Captures obtained this way are listed in `captures.txt` next to the
 screenshots. On a host with a hypervisor the ordinary `adb screencap` path is
 used.
 
+These workarounds do not guarantee progress: TCG can still stall APK installation
+or Flutter frame delivery, or crash Android's `system_server`. The harness bounds frame waits and reports lifecycle
+state; a timeout is a failed run, even if Android registered and exchanged moves.
+Use a host with hardware acceleration or an authorized device when software
+emulation cannot finish the assertions. Check the current manifest before
+treating an older successful recording as verification of the latest source.
+
+The arcade redesign's four-platform gate is currently **blocked**. In the
+September 11 run, all four clients joined and played nine moves before Android's
+`system_server` exited with SIGSEGV and zygote terminated. Android's client then
+disconnected. The APK builds successfully, but this attempt does not establish
+a completed four-platform match. The manifest retains the failure and the
+remaining Android visual cases; an earlier successful run does not verify the
+redesign.
+
 ## Quality checks
 
 ```sh
@@ -192,9 +227,10 @@ request and the session report instead.
 - **Flutter widgets + custom painters instead of Flame.** A chess board is a
   static grid with a handful of animated sprites; Flutter's own render tree
   with `CustomPainter` pieces, implicit animations and `RepaintBoundary`s
-  gives 60 fps with far less machinery than a game loop, keeps the whole UI
-  (lobby, HUD, chat, dialogs) in one widget tree, and lets every platform
-  share exactly the same pixels. This deviation from the recommended stack is
+  schedules animations through Flutter's frame pipeline, keeps the whole UI
+  (lobby, HUD, chat, dialogs) in one widget tree, and shares layout and artwork
+  across platforms. A sustained 60 fps has not been measured on all four targets.
+  This deviation from the recommended stack is
   recorded in the clone-this manifest.
 - The server is authoritative: clients never mutate game state locally, they
   render `game.state` snapshots and extrapolate the running clock.

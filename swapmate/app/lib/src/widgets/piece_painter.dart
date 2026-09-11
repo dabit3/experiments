@@ -30,15 +30,28 @@ class PiecePainter extends CustomPainter {
 
     final isWhite = piece.color == PieceColor.white;
     final fill = Paint()
-      ..color = (isWhite ? colors.pieceWhite : colors.pieceBlack).withValues(
-        alpha: opacity,
-      )
+      ..shader = LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: isWhite
+            ? [
+                Colors.white.withValues(alpha: opacity),
+                colors.pieceWhite.withValues(alpha: opacity),
+                const Color(0xFFDFCDA4).withValues(alpha: opacity),
+              ]
+            : [
+                const Color(0xFF557887).withValues(alpha: opacity),
+                colors.pieceBlack.withValues(alpha: opacity),
+                const Color(0xFF132931).withValues(alpha: opacity),
+              ],
+        stops: const [0, 0.5, 1],
+      ).createShader(const Rect.fromLTWH(20, 8, 60, 86))
       ..style = PaintingStyle.fill;
     final stroke = Paint()
       ..color = (isWhite ? colors.pieceWhiteOutline : colors.pieceBlackOutline)
           .withValues(alpha: opacity)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 3.4
+      ..strokeWidth = 3.2
       ..strokeJoin = StrokeJoin.round
       ..strokeCap = StrokeCap.round;
     final detail = Paint()
@@ -50,16 +63,46 @@ class PiecePainter extends CustomPainter {
 
     final body = _path(piece.type);
     if (shadow) {
+      canvas.drawOval(
+        const Rect.fromLTWH(18, 87, 64, 10),
+        Paint()
+          ..color = const Color(0xFF102E2D).withValues(alpha: opacity * 0.22),
+      );
       canvas.drawPath(
-        body.shift(const Offset(0, 3)),
+        body.shift(const Offset(0, 4)),
         Paint()
           ..color = colors.shadow.withValues(alpha: 0.35 * opacity)
-          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2.5),
+          ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1.5),
       );
     }
+    canvas.drawPath(
+      body.shift(const Offset(0, 3)),
+      Paint()..color = colors.pieceWhiteOutline.withValues(alpha: opacity),
+    );
     canvas.drawPath(body, fill);
     canvas.drawPath(body, stroke);
+    canvas.save();
+    canvas.clipPath(body);
+    canvas.drawPath(
+      body.shift(const Offset(1.8, 2.2)),
+      Paint()
+        ..color = Colors.white.withValues(
+          alpha: opacity * (isWhite ? 0.85 : 0.3),
+        )
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2,
+    );
+    canvas.restore();
     _details(canvas, piece.type, detail, fill, stroke);
+    canvas.drawLine(
+      const Offset(30, 86),
+      const Offset(70, 86),
+      Paint()
+        ..color = (isWhite ? const Color(0xFFC2AE7D) : const Color(0xFF719992))
+            .withValues(alpha: opacity)
+        ..strokeWidth = 2.5
+        ..strokeCap = StrokeCap.round,
+    );
     canvas.restore();
   }
 

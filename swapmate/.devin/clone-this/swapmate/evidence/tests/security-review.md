@@ -1,8 +1,9 @@
 # Security review (final revision)
 
-Scope: everything under `swapmate/` that will be committed (264 files as listed
-by `git ls-files -o --exclude-standard swapmate`), plus the runtime surface of
-the server and the four clients.
+Scope: fingerprinted Swapmate source, configuration, tests, dependencies and
+licenses, plus the runtime surface of the server and the four clients.
+The arcade revision adds only presentation code, licensed fonts and layout
+tests; it does not change the protocol or server authorization.
 
 ## Secrets
 
@@ -26,11 +27,13 @@ the server and the four clients.
   flood-limited to 10 messages per 5 seconds (`rate_limited`).
 - The `/test/*` control channel is only mounted when the server is started with
   `--test` or `SWAPMATE_TEST=1`; production starts without it. `/healthz`
-  reports `testMode` so a deployment can be checked.
+  reports `testMode` so a deployment can be checked. With static web serving,
+  unmounted test paths return the SPA shell; this is not a test API response.
+  See `arcade-production-http.log` for the production executable smoke check.
 - CORS is `*` for the read-only `/healthz` and `/rooms/<code>` snapshots; no
   cookies or credentials are involved.
-- Rooms are in-memory and garbage-collected when empty; there is no
-  persistence layer and therefore no injection or data-at-rest concern.
+- Rooms are in-memory and garbage-collected when empty. There is no database
+  query surface; this does not establish a blanket security guarantee.
 
 ## Clients
 
@@ -47,6 +50,7 @@ the server and the four clients.
 
 ## Result
 
-PASS — no secrets, no unauthenticated mutating endpoints outside explicit test
-mode, input validated and bounded, and remaining relaxations are development
-defaults called out above.
+PASS for the local multiplayer scope: no identified committed secrets,
+test controls disabled in normal mode, and gameplay authorization/input bounds
+covered by the server tests. Anonymous room creation/joining is intentional.
+The network and persistence limitations above remain explicit.

@@ -1,0 +1,88 @@
+== Swapmate multiplayer e2e  20260911T050701Z
+   out=/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current server=ws://172.16.5.2:8795/ws seed=42 room=SWAP platforms=web,ios,macos
+[0s] starting server
+[0s] recording screen -> recording.mov
+[0s] launching macOS app
+[0s] launching web client (Playwright Chromium)
+[1s] installing + launching iOS app on 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[3s] waiting for 3 test clients to register
+[7s] registered: ios,macos,web
+[7s] web creates room SWAP (30+0, no bots)
+[10s] launching desktop spectators for visual parity
+[14s] registered: ios,macos,macos-spec,web,web-spec
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/ios-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/macos-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-spec-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/macos-spec-lobby.png
+[20s] match started
+[20s]   web plays e2e4
+[20s]   ios plays e7e5
+[20s]   web plays d1h5
+[21s]   ios plays b8c6
+[21s]   web plays f1c4
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/ios-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/macos-game.png
+[30s]   ios plays a7a6
+[31s]   web plays h5f7
+[33s] match over
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/ios-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/macos-results.png
+[36s] collecting final state from every client
+{
+  "fenA": "r1bqkbnr/1ppp1Qpp/p1n5/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR[] b KQkq - 0 4",
+  "fenB": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR[p] b KQkq e3 0 1",
+  "moves": 8,
+  "score": "1-0",
+  "result": {
+    "winner": "1",
+    "reason": "checkmate",
+    "board": "a",
+    "loser": "ab"
+  }
+}
+  web      screen=results seat=aw moves=8 score=1-0
+  ios      screen=results seat=ab moves=8 score=1-0
+  macos    screen=results seat=bb moves=8 score=1-0
+all clients agree on the final state
+[36s] visual parity phase
+[37s] registered: ios-spec,macos,macos-spec,web,web-spec
+[38s]   ios-spec viewport 1206x2334@3.0 (safe-area crop 0,186,1206,2334) -> web baseline 402x778@3.0
+[42s] registered: ios-spec,macos,macos-spec,web,web-ios-spec,web-spec
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/macos-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/ios-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-ios-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/macos-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/ios-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-ios-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/macos-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/ios-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-ios-spec-home-light.png
+   macos-spec-lobby: 1180x800: exact diff 675043 px, edge coverage 9872 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 177404 edge px, shift 1, 2 mask(s))
+   macos-spec-results: 1180x800: exact diff 641383 px, edge coverage 21013 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 248722 edge px, shift 1, 2 mask(s))
+   macos-spec-home-dark: 1180x800: exact diff 701805 px, edge coverage 13553 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 158908 edge px, shift 1, 2 mask(s))
+   macos-spec-home-light: 1180x800: exact diff 709971 px, edge coverage 14462 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 162016 edge px, shift 1, 2 mask(s))
+   ios-spec-results: 1206x2334: exact diff 1841069 px, edge coverage 44926 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 487859 edge px, shift 1, 0 mask(s))
+   ios-spec-home-dark: 1206x2334: exact diff 1993575 px, edge coverage 30577 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 331019 edge px, shift 1, 0 mask(s))
+   ios-spec-home-light: 1206x2334: exact diff 2003366 px, edge coverage 17880 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 318426 edge px, shift 1, 0 mask(s))
+   control shift-4px (must differ): 1176x796: exact diff 745592 px, edge coverage 83103 px, anti-aliasing 4385 px, jitter 373 px, normalized diff 10508 px (tolerance 16, edge tolerance 255 within 2px of 158000 edge px, shift 1, 0 mask(s))
+   control theme-swap (must differ): 1180x800: exact diff 937769 px, edge coverage 146215 px, anti-aliasing 680 px, jitter 0 px, normalized diff 781441 px (tolerance 16, edge tolerance 255 within 2px of 158908 edge px, shift 1, 0 mask(s))
+   control screen-swap (must differ): 1180x800: exact diff 885825 px, edge coverage 105653 px, anti-aliasing 7770 px, jitter 2626 px, normalized diff 272956 px (tolerance 16, edge tolerance 255 within 2px of 177404 edge px, shift 1, 0 mask(s))
+   ios-spec-home-dark       1206x2334  exact=1993575  edge-band=11.8%  aa=    0  jitter=   0  normalized=    0
+   ios-spec-home-light      1206x2334  exact=2003366  edge-band=11.3%  aa=    0  jitter=   0  normalized=    0
+   ios-spec-results         1206x2334  exact=1841069  edge-band=17.3%  aa=    0  jitter=   0  normalized=    0
+   macos-spec-home-dark     1180x800  exact= 701805  edge-band=16.8%  aa=    0  jitter=   0  normalized=    0
+   macos-spec-home-light    1180x800  exact= 709971  edge-band=17.2%  aa=    0  jitter=   0  normalized=    0
+   macos-spec-lobby         1180x800  exact= 675043  edge-band=18.8%  aa=    0  jitter=   0  normalized=    0
+   macos-spec-results       1180x800  exact= 641383  edge-band=26.4%  aa=    0  jitter=   0  normalized=    0
+   control screen-swap      normalized= 272956 (must be > 0)
+   control shift-4px        normalized=  10508 (must be > 0)
+   control theme-swap       normalized= 781441 (must be > 0)
+[96s] visual parity: all comparisons identical after documented normalization
+[96s] PASS  evidence: /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current
+[96s] cleanup

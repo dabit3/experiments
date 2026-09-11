@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:swapmate_core/swapmate_core.dart';
 
 import '../net/game_client.dart';
 import '../theme/tokens.dart';
 import '../widgets/common.dart';
-import '../widgets/piece_painter.dart';
+import '../widgets/arcade.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -86,15 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final client = widget.client;
     final wide = MediaQuery.sizeOf(context).width >= 760;
     final err = client.lastError;
-    return Scaffold(
+    return ArcadeScaffold(
       body: SafeArea(
-        child: Stack(
+        child: Column(
           children: [
-            Positioned.fill(child: CustomPaint(painter: _BackdropPainter(c))),
-            Positioned(
-              top: Space.md,
-              right: Space.md,
+            Padding(
+              padding: const EdgeInsets.only(top: Space.md, right: Space.md),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   StatusPill(client),
                   const SizedBox(width: Space.sm),
@@ -110,30 +108,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Space.xl,
-                  vertical: Space.xxxl,
-                ),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: wide ? 920 : 440),
-                  child: wide
-                      ? Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(child: _hero(context)),
-                            const SizedBox(width: Space.xxxl),
-                            SizedBox(width: 400, child: _form(context, err)),
-                          ],
-                        )
-                      : Column(
-                          children: [
-                            _hero(context, center: true),
-                            const SizedBox(height: Space.xxl),
-                            _form(context, err),
-                          ],
-                        ),
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Space.xl,
+                    vertical: wide ? Space.xxxl : Space.lg,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: wide ? 1120 : 440),
+                    child: wide
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(child: _hero(context)),
+                              const SizedBox(width: Space.xxxl),
+                              SizedBox(width: 360, child: _form(context, err)),
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              _hero(context, center: true),
+                              const SizedBox(height: Space.xxl),
+                              _form(context, err),
+                              const SizedBox(height: Space.xl),
+                              const ArenaIllustration(),
+                            ],
+                          ),
+                  ),
                 ),
               ),
             ),
@@ -149,57 +151,70 @@ class _HomeScreenState extends State<HomeScreen> {
     return Column(
       crossAxisAlignment: align,
       children: [
-        const SwapmateMark(size: 72),
-        const SizedBox(height: Space.xl),
-        Text(
-          'Swapmate',
-          style: context.type.displayLarge,
-          textAlign: center ? TextAlign.center : TextAlign.start,
+        const ArcadeWordmark(),
+        SizedBox(height: center ? Space.lg : Space.xxl),
+        if (!center) ...[
+          const ArcadeEyebrow('THE TAG-TEAM CHESS ARCADE'),
+          const SizedBox(height: Space.md),
+        ],
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            'TWO BOARDS.\nONE TEAM.',
+            style: context.type.displayLarge?.copyWith(
+              fontSize: center ? 52 : 92,
+            ),
+            textAlign: center ? TextAlign.center : TextAlign.start,
+          ),
         ),
-        const SizedBox(height: Space.sm),
+        const SizedBox(height: Space.lg),
         Text(
-          'Team-up chess on two boards. Capture a piece, hand it to your partner, drop it where it hurts.',
+          center ? 'Your capture. Their secret weapon.' : 'Your capture. Their secret weapon.\nLink up, pass pieces, and turn the match together.',
           style: context.type.bodyLarge?.copyWith(color: c.textMuted),
           textAlign: center ? TextAlign.center : TextAlign.start,
         ),
-        const SizedBox(height: Space.xl),
-        Wrap(
-          spacing: Space.sm,
-          runSpacing: Space.sm,
-          alignment: center ? WrapAlignment.center : WrapAlignment.start,
-          children: const [
-            Chip2('2 v 2', icon: Icons.groups_2_outlined),
-            Chip2('Two boards', icon: Icons.grid_on),
-            Chip2('Cross-platform', icon: Icons.devices),
-            Chip2('Real-time', icon: Icons.bolt_outlined),
-          ],
-        ),
-        const SizedBox(height: Space.xl),
-        Row(
-          mainAxisAlignment: center
-              ? MainAxisAlignment.center
-              : MainAxisAlignment.start,
-          children: [
-            for (final t in [
-              PieceType.king,
-              PieceType.queen,
-              PieceType.rook,
-              PieceType.bishop,
-              PieceType.knight,
-              PieceType.pawn,
-            ])
-              Padding(
-                padding: const EdgeInsets.only(right: Space.xs),
-                child: PieceGlyph(
-                  Piece(
-                    t.index.isEven ? PieceColor.white : PieceColor.black,
-                    t,
-                  ),
-                  size: 40,
+        if (!center) ...[
+          const SizedBox(height: Space.sm),
+          const ArenaIllustration(),
+          const SizedBox(height: Space.sm),
+          Wrap(
+            spacing: Space.xl,
+            runSpacing: Space.sm,
+            children: [
+              for (final (number, label) in [
+                ('01', 'CAPTURE'),
+                ('02', 'PASS'),
+                ('03', 'DROP'),
+              ])
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      number,
+                      style: context.type.headlineSmall?.copyWith(
+                        color: c.teamOne,
+                      ),
+                    ),
+                    const SizedBox(width: Space.sm),
+                    Text(
+                      label,
+                      style: context.type.labelSmall?.copyWith(
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-          ],
-        ),
+            ],
+          ),
+          const SizedBox(height: Space.xl),
+          Text(
+            'WEB  /  iOS  /  ANDROID  /  MAC',
+            style: context.type.labelSmall?.copyWith(
+              fontSize: 9,
+              letterSpacing: 2,
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -213,7 +228,18 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('Play', style: context.type.headlineSmall),
+          const ArcadeEyebrow('PLAYER SELECT'),
+          const SizedBox(height: Space.sm),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text('MAKE YOUR MOVE.', style: context.type.headlineLarge),
+          ),
+          const SizedBox(height: Space.xs),
+          Text(
+            'Four players. Any device. One room.',
+            style: context.type.bodySmall,
+          ),
           const SizedBox(height: Space.lg),
           TextField(
             controller: _name,
@@ -229,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
           FilledButton.icon(
             key: const Key('home-create'),
             onPressed: busy ? null : () => _create(),
-            icon: const Icon(Icons.add_circle_outline),
+            icon: const Icon(Icons.play_arrow_rounded),
             label: const Text('Create a room'),
           ),
           const SizedBox(height: Space.sm),
@@ -257,6 +283,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: TextField(
                   key: const Key('home-code'),
                   controller: _code,
+                  autocorrect: false,
+                  enableSuggestions: false,
                   textCapitalization: TextCapitalization.characters,
                   inputFormatters: [
                     FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]')),
@@ -418,46 +446,4 @@ class _UpperCaseFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) => newValue.copyWith(text: newValue.text.toUpperCase());
-}
-
-/// Soft radial glows behind the home screen.
-class _BackdropPainter extends CustomPainter {
-  _BackdropPainter(this.c);
-  final SwapColors c;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    void glow(Offset center, double r, Color color) {
-      canvas.drawCircle(
-        center,
-        r,
-        Paint()
-          ..shader = RadialGradient(
-            colors: [
-              color.withValues(alpha: c.isDark ? 0.22 : 0.16),
-              color.withValues(alpha: 0),
-            ],
-          ).createShader(Rect.fromCircle(center: center, radius: r)),
-      );
-    }
-
-    glow(
-      Offset(size.width * 0.15, size.height * 0.2),
-      size.shortestSide * 0.7,
-      c.teamOne,
-    );
-    glow(
-      Offset(size.width * 0.85, size.height * 0.85),
-      size.shortestSide * 0.7,
-      c.teamTwo,
-    );
-    glow(
-      Offset(size.width * 0.6, size.height * 0.1),
-      size.shortestSide * 0.4,
-      c.accent,
-    );
-  }
-
-  @override
-  bool shouldRepaint(_BackdropPainter old) => old.c != c;
 }

@@ -1,0 +1,4 @@
+[web] ready http://172.16.5.2:8795/?testId=web-ios-spec&name=Spectator&room=SWAP&server=ws://172.16.5.2:8795/ws
+[web] shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-ios-spec-results.png
+[web] shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-ios-spec-home-dark.png
+[web] shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-current/web-ios-spec-home-light.png

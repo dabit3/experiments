@@ -162,7 +162,7 @@ class TestChannel {
               (over == null || (client.game?.isOver ?? false) == over),
           timeout: timeout,
         );
-        await _frames(frames);
+        await _frames(frames, timeout);
         return state();
       case 'capture':
         final image = await capture();
@@ -194,10 +194,17 @@ class TestChannel {
   /// Completes after [n] further frames have been built and handed to the
   /// engine; the raster pipeline is at most two frames deep, so three frames
   /// guarantee that the first one is on screen for a device screenshot.
-  Future<void> _frames(int n) async {
+  Future<void> _frames(int n, Duration timeout) async {
     for (var i = 0; i < n; i++) {
       WidgetsBinding.instance.scheduleFrame();
-      await WidgetsBinding.instance.endOfFrame;
+      await WidgetsBinding.instance.endOfFrame.timeout(
+        timeout,
+        onTimeout: () => throw TimeoutException(
+          'Frame $i/$n unavailable: '
+          'lifecycle=${WidgetsBinding.instance.lifecycleState?.name}, '
+          'framesEnabled=${WidgetsBinding.instance.framesEnabled}',
+        ),
+      );
     }
   }
 
@@ -266,6 +273,12 @@ class TestChannel {
               'moveText': game.moves.map((m) => m.bpgn).join(' '),
             },
       'chats': client.chats.length,
+      'rendering': {
+        'lifecycle': WidgetsBinding.instance.lifecycleState?.name,
+        'framesEnabled': WidgetsBinding.instance.framesEnabled,
+        'frameScheduled': WidgetsBinding.instance.hasScheduledFrame,
+        'schedulerPhase': WidgetsBinding.instance.schedulerPhase.name,
+      },
       'ui': GameScreenController.current?.debugState(),
       'viewport': _viewport(),
     };

@@ -5,6 +5,7 @@ import 'package:swapmate_core/swapmate_core.dart';
 import '../net/game_client.dart';
 import '../theme/tokens.dart';
 import '../widgets/chat_panel.dart';
+import '../widgets/arcade.dart';
 import '../widgets/common.dart';
 import '../widgets/piece_painter.dart';
 
@@ -48,9 +49,9 @@ class LobbyScreen extends StatelessWidget {
         const SizedBox(width: Space.xs),
         const SwapmateMark(size: 28),
         const SizedBox(width: Space.sm),
-        Text('Lobby', style: context.type.headlineSmall),
+        Text('MATCH LOBBY', style: context.type.headlineSmall),
         const Spacer(),
-        StatusPill(client),
+        StatusPill(client, compact: !wide),
         const SizedBox(width: Space.xs),
         IconButton(
           tooltip: c.isDark ? 'Light theme' : 'Dark theme',
@@ -64,11 +65,12 @@ class LobbyScreen extends StatelessWidget {
 
     final codeCard = Panel(
       raised: true,
+      borderColor: c.accent.withValues(alpha: 0.4),
       padding: const EdgeInsets.all(Space.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('ROOM CODE', style: context.type.labelSmall),
+          const ArcadeEyebrow('INVITE YOUR CREW'),
           const SizedBox(height: Space.xs),
           Row(
             children: [
@@ -76,7 +78,8 @@ class LobbyScreen extends StatelessWidget {
                 room.code,
                 key: const Key('lobby-code'),
                 style: context.type.displayMedium?.copyWith(
-                  letterSpacing: 8,
+                  fontSize: 68,
+                  letterSpacing: 12,
                   color: c.accent,
                 ),
               ),
@@ -210,14 +213,49 @@ class LobbyScreen extends StatelessWidget {
       child: ChatPanel(client: client, scopeSelectable: false),
     );
 
-    return Scaffold(
+    return ArcadeScaffold(
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(Space.md, Space.sm, Space.md, 0),
           child: Column(
             children: [
               header,
-              const SizedBox(height: Space.sm),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  Space.md,
+                  Space.lg,
+                  Space.md,
+                  Space.xl,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'ASSEMBLE YOUR DUO.',
+                            style: wide
+                                ? context.type.displayMedium
+                                : context.type.headlineLarge,
+                          ),
+                          const SizedBox(height: Space.xs),
+                          Text(
+                            'Opposite colors. Same side.',
+                            style: context.type.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ),
+                    if (wide)
+                      Chip2(
+                        '$seatedCount / 4 PLAYERS',
+                        icon: Icons.groups_rounded,
+                        color: c.accent,
+                      ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: wide
                     ? Center(
@@ -344,19 +382,29 @@ class _TeamCard extends StatelessWidget {
     final color = c.team(team);
     final mine = client.mySeat?.team == team;
     return Panel(
-      borderColor: mine ? color.withValues(alpha: 0.6) : null,
+      borderColor: color.withValues(alpha: mine ? 0.7 : 0.35),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+              TeamEmblem(team: team),
+              const SizedBox(width: Space.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'TEAM ${team.id}',
+                      style: context.type.labelSmall?.copyWith(
+                        color: color,
+                        letterSpacing: 2,
+                      ),
+                    ),
+                    Text(teamName(team), style: context.type.headlineLarge),
+                  ],
+                ),
               ),
-              const SizedBox(width: Space.sm),
-              Text('Team ${team.id}', style: context.type.titleMedium),
               if (mine) ...[
                 const SizedBox(width: Space.sm),
                 Chip2(

@@ -7,7 +7,8 @@
 - Wire format: JSON over WebSocket at `/ws`, fully documented in
   `PROTOCOL.md` (handshake, room lifecycle, gameplay, chat, errors, test
   channel). Shared Dart types in `packages/swapmate_core/lib/src/protocol.dart`
-  are used by both ends, so client and server cannot drift.
+  are used by both ends; server/client agreement is independently asserted by
+  the four-platform test.
 - Identity / persistence: player id + resume token per connection; rooms are
   in-memory and garbage-collected when empty (`onEmpty`). There is no database
   by design — the reference describes a live game, not a persisted service.
@@ -18,8 +19,8 @@
 - Snapshot round trip: `snapshot json round trip` test; `GET /rooms/<code>`
   returns the same room snapshot the clients receive.
 - Cross-client consistency: the e2e harness compares `fenA`, `fenB`, `moves`,
-  `score`, `moveText` / BPGN, `result`, `gameId` and `over` across all four
-  clients and fails on any difference (`summary.json` → `agreement`).
+  `score`, `moveText`, `bpgn`, `result`, `gameId` and `over` across all four
+  clients and fails on any difference (`summary.json` → `passed` / `problems`).
 - Determinism: server `--seed`, seeded bots, fixed time control, scripted
   moves; the same script yields the same final FENs on every run
   (`e2e-20260910T054256Z`, `e2e-20260910T061421Z` and the final run all end in

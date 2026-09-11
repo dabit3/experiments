@@ -24,11 +24,35 @@ ThemeData buildTheme(Brightness brightness) {
   );
 
   final text = TextTheme(
-    displayLarge: t(44, FontWeight.w700, height: 1.05, spacing: -1.2),
-    displayMedium: t(34, FontWeight.w700, height: 1.1, spacing: -0.8),
-    headlineLarge: t(28, FontWeight.w700, height: 1.15, spacing: -0.5),
-    headlineMedium: t(22, FontWeight.w600, height: 1.2, spacing: -0.3),
-    headlineSmall: t(18, FontWeight.w600, height: 1.25, spacing: -0.2),
+    displayLarge: t(
+      76,
+      FontWeight.w800,
+      height: 0.95,
+      spacing: -1,
+    ).copyWith(fontFamily: 'BarlowCondensed'),
+    displayMedium: t(
+      48,
+      FontWeight.w800,
+      height: 1,
+      spacing: 0.2,
+    ).copyWith(fontFamily: 'BarlowCondensed'),
+    headlineLarge: t(
+      36,
+      FontWeight.w800,
+      height: 1.05,
+    ).copyWith(fontFamily: 'BarlowCondensed'),
+    headlineMedium: t(
+      28,
+      FontWeight.w800,
+      height: 1.1,
+      spacing: 0.4,
+    ).copyWith(fontFamily: 'BarlowCondensed'),
+    headlineSmall: t(
+      22,
+      FontWeight.w800,
+      height: 1.15,
+      spacing: 0.3,
+    ).copyWith(fontFamily: 'BarlowCondensed'),
     titleLarge: t(16, FontWeight.w600, height: 1.3),
     titleMedium: t(14, FontWeight.w600, height: 1.35),
     titleSmall: t(12, FontWeight.w600, height: 1.35, spacing: 0.2),
@@ -107,6 +131,8 @@ ThemeData buildTheme(Brightness brightness) {
         minimumSize: const Size(48, 48),
         padding: const EdgeInsets.symmetric(horizontal: Space.xl),
         shape: shape,
+        elevation: 4,
+        shadowColor: c.shadow,
       ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(

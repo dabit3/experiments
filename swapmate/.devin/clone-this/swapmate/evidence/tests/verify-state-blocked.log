@@ -1,0 +1,25 @@
+Completion gate failed:
+- status must be active or complete. Blocked and paused runs cannot pass.
+- frontier must be an empty array before completion.
+- blockers must be an empty array before completion.
+- items[21].status must be 'verified'.
+- items[21].verified_revision does not match the current revision.
+- items[27].status must be 'verified'.
+- items[27].verified_revision does not match the current revision.
+- items[28].status must be 'verified'.
+- items[28].verified_revision does not match the current revision.
+- items[29].status must be 'verified'.
+- items[29].verified_revision does not match the current revision.
+- items[37].status must be 'verified'.
+- items[37].verified_revision does not match the current revision.
+- items[27].comparison must be an object.
+- items[28].comparison must be an object.
+- items[29].comparison must be an object.
+- checks[0].status must be 'passed'.
+- checks[0].verified_revision does not match the current revision.
+- checks[1].status must be 'passed'.
+- checks[1].verified_revision does not match the current revision.
+- sweeps[4] must discover zero new requirements.
+- sweeps[4] must close the discovery frontier.
+- sweeps[5] must close the discovery frontier.
+verify_state.py exit code: 1

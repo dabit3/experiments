@@ -4,6 +4,7 @@ import 'package:swapmate_core/swapmate_core.dart';
 import '../net/game_client.dart';
 import '../theme/tokens.dart';
 import '../widgets/board_view.dart';
+import '../widgets/arcade.dart';
 import '../widgets/common.dart';
 import '../widgets/move_list.dart';
 import '../widgets/piece_painter.dart';
@@ -65,7 +66,7 @@ class _ResultsScreenState extends State<ResultsScreen>
     final headline = result.isDraw
         ? 'Draw'
         : myTeam == null
-        ? 'Team ${result.winner!.id} wins'
+        ? '${teamName(result.winner!)} wins'
         : won
         ? 'Victory'
         : 'Defeat';
@@ -82,40 +83,38 @@ class _ResultsScreenState extends State<ResultsScreen>
 
     final summary = Panel(
       raised: true,
+      borderColor: accent.withValues(alpha: 0.5),
       padding: const EdgeInsets.all(Space.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ArcadeEyebrow(
+            result.isDraw
+                ? 'HONORS EVEN'
+                : won
+                ? 'TOGETHER, UNSTOPPABLE.'
+                : 'THE NEXT ROUND IS YOURS.',
+            color: accent,
+          ),
+          const SizedBox(height: Space.lg),
           Row(
             children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: accent.withValues(alpha: 0.16),
-                  shape: BoxShape.circle,
-                ),
-                alignment: Alignment.center,
-                child: Icon(
-                  result.isDraw
-                      ? Icons.handshake_outlined
-                      : (lost
-                            ? Icons.sentiment_dissatisfied_outlined
-                            : Icons.emoji_events_outlined),
-                  color: accent,
-                  size: 28,
-                ),
-              ),
+              ResultMedal(color: accent, won: !lost && !result.isDraw),
               const SizedBox(width: Space.lg),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      headline,
-                      key: const Key('result-headline'),
-                      style: context.type.displayMedium?.copyWith(
-                        color: accent,
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        headline.toUpperCase(),
+                        key: const Key('result-headline'),
+                        style: context.type.displayMedium?.copyWith(
+                          color: accent,
+                          fontSize: narrow ? 48 : 68,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -303,7 +302,7 @@ class _ResultsScreenState extends State<ResultsScreen>
       ),
     );
 
-    return Scaffold(
+    return ArcadeScaffold(
       body: SafeArea(
         child: FadeTransition(
           opacity: CurvedAnimation(parent: _in, curve: Curves.easeOut),
@@ -326,11 +325,13 @@ class _ResultsScreenState extends State<ResultsScreen>
                       const SizedBox(width: Space.xs),
                       const SwapmateMark(size: 28),
                       const SizedBox(width: Space.sm),
-                      Text('Results', style: context.type.headlineSmall),
-                      const SizedBox(width: Space.md),
-                      Chip2(room.code, icon: Icons.tag, dense: true),
+                      Text('MATCH COMPLETE', style: context.type.headlineSmall),
+                      if (width >= 360) ...[
+                        const SizedBox(width: Space.md),
+                        Chip2(room.code, icon: Icons.tag, dense: true),
+                      ],
                       const Spacer(),
-                      StatusPill(client),
+                      StatusPill(client, compact: narrow),
                       IconButton(
                         tooltip: c.isDark ? 'Light theme' : 'Dark theme',
                         onPressed: widget.onToggleTheme,
@@ -446,7 +447,7 @@ class _TeamResult extends StatelessWidget {
               ),
               const SizedBox(width: Space.xs),
               Text(
-                'Team ${team.id}',
+                teamName(team),
                 style: context.type.labelMedium?.copyWith(color: color),
               ),
               if (won) ...[
@@ -510,14 +511,15 @@ class _FinalBoard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
+          Wrap(
+            spacing: Space.sm,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               Text(
                 'Board ${b.id.toUpperCase()}',
                 style: context.type.titleSmall,
               ),
               if (decided) ...[
-                const SizedBox(width: Space.sm),
                 Chip2(
                   'Decisive',
                   dense: true,

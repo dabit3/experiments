@@ -3,11 +3,32 @@
   "source": "Bughouse chess",
   "clone_name": "Swapmate",
   "clone_root": "/Users/devin/repos/experiments/swapmate",
-  "status": "complete",
-  "iteration": 8,
-  "revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
-  "frontier": [],
-  "blockers": [],
+  "status": "blocked",
+  "iteration": 14,
+  "revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
+  "frontier": [
+    "Complete the deterministic four-platform match on the current arcade source.",
+    "Capture and compare the three current Android visual cases.",
+    "Measure sustained gameplay frame timing on supported target hardware.",
+    "Perform a second consecutive zero-discovery sweep after the Android gate passes."
+  ],
+  "blockers": [
+    {
+      "id": "android-runtime-system-server-crash",
+      "kind": "external_environment",
+      "status": "blocked",
+      "summary": "Android 35 ATD under software-only QEMU TCG/SwiftShader terminated system_server with SIGSEGV after all four clients joined and nine moves.",
+      "impact": "The current four-platform match, Android final screenshots, Android normalized comparisons and all-target frame-time measurement cannot finish.",
+      "evidence": [
+        "evidence/tests/e2e-20260911T043452Z/e2e.log",
+        "evidence/tests/e2e-20260911T043452Z/state-after-android-crash.json",
+        "evidence/tests/android-arcade-recovery/match-runtime-logcat.txt",
+        "evidence/tests/android-arcade-recovery/window-during-match.txt",
+        "evidence/tests/arcade-android-boot.md"
+      ],
+      "resolution": "Use a host with Android hardware virtualization or a stable authorized Android device reachable by the authoritative server."
+    }
+  ],
   "unverified_assumptions": [],
   "items": [
     {
@@ -15,11 +36,14 @@
       "kind": "route",
       "label": "Home: brand, create room, join by 4-letter code, name entry, connection state",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/e2e-20260910T152718Z/summary.json",
         "evidence/tests/e2e-20260910T152718Z/e2e.log",
-        "evidence/tests/quality-final.log"
+        "evidence/tests/quality-final.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ],
       "screens": [
         "HomeScreen"
@@ -36,10 +60,13 @@
       "kind": "route",
       "label": "Lobby: four seats in two teams, host controls, bots, ready/start, spectators list, join code",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/e2e-20260910T152718Z/summary.json",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/e2e-20260910T152718Z/e2e.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ],
       "screenshots": [
         "evidence/tests/e2e-20260910T152718Z/web-lobby.png",
@@ -53,10 +80,13 @@
       "kind": "route",
       "label": "Game: two boards, clocks, reserves, move list, chat drawer, promotion, resign/draw",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/e2e-20260910T152718Z/summary.json",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/e2e-20260910T152718Z/e2e.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ],
       "screenshots": [
         "evidence/tests/e2e-20260910T152718Z/web-game.png",
@@ -70,11 +100,14 @@
       "kind": "route",
       "label": "Results: winner/reason, final boards, move list, BPGN copy, rematch, leave",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/e2e-20260910T152718Z/summary.json",
         "evidence/tests/e2e-20260910T152718Z/e2e.log",
-        "evidence/tests/e2e-20260910T152718Z/final.bpgn"
+        "evidence/tests/e2e-20260910T152718Z/final.bpgn",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ],
       "screenshots": [
         "evidence/tests/e2e-20260910T152718Z/web-results.png",
@@ -88,9 +121,12 @@
       "kind": "feature",
       "label": "Standard legal move generation incl. castling, en passant, promotion, check/checkmate/stalemate",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/quality-final.log"
+        "evidence/tests/quality-final.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ],
       "tests": "swapmate_core position_test (22)"
     },
@@ -99,10 +135,13 @@
       "kind": "feature",
       "label": "Bughouse drops: any empty square, no pawns on ranks 1/8, checking and mating drops legal, SAN uses @, reserve consumed",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/quality-final.log",
-        "evidence/discovery/audit-source.md"
+        "evidence/discovery/audit-source.md",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ],
       "rule_set": "chess.com / FICS"
     },
@@ -111,9 +150,12 @@
       "kind": "feature",
       "label": "Promoted pieces revert to pawns when captured and passed",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/quality-final.log"
+        "evidence/tests/quality-final.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -121,11 +163,14 @@
       "kind": "feature",
       "label": "Captures are passed to the partner reserve on the other board; piece-flight animation in the client",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/quality-final.log",
         "evidence/tests/e2e-20260910T152718Z/e2e.log",
-        "evidence/tests/e2e-20260910T152718Z/summary.json"
+        "evidence/tests/e2e-20260910T152718Z/summary.json",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -133,9 +178,12 @@
       "kind": "feature",
       "label": "Independent per-board clocks with increment; flag fall ends the match for the other team",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/quality-final.log"
+        "evidence/tests/quality-final.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -143,10 +191,13 @@
       "kind": "feature",
       "label": "Checkmate or time-out on either board ends the whole match; resign/draw offers; results published to all clients",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/quality-final.log",
-        "evidence/tests/e2e-20260910T152718Z/summary.json"
+        "evidence/tests/e2e-20260910T152718Z/summary.json",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -154,11 +205,14 @@
       "kind": "feature",
       "label": "Per-player reserve tray with drop selection on every platform",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/e2e-20260910T152718Z/android-game.png",
         "evidence/tests/e2e-20260910T152718Z/web-game.png",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/e2e-20260910T152718Z/e2e.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -166,10 +220,13 @@
       "kind": "feature",
       "label": "Partner-only quick chat / emotes (\"Need a knight!\") and room chat visible to spectators, flood-limited and length-bounded",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/quality-final.log",
-        "evidence/tests/e2e-20260910T152718Z/summary.json"
+        "evidence/tests/e2e-20260910T152718Z/summary.json",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -177,9 +234,12 @@
       "kind": "feature",
       "label": "Premove and pre-drop: queued while opponent is on move, executed if legal, dropped otherwise",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/quality-final.log"
+        "evidence/tests/quality-final.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -187,10 +247,13 @@
       "kind": "feature",
       "label": "Four-player room with join codes, team assignment (A-white/B-black vs A-black/B-white), host start, ready state",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/e2e-20260910T152718Z/summary.json",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/e2e-20260910T152718Z/e2e.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -198,10 +261,13 @@
       "kind": "feature",
       "label": "Unseated clients spectate live boards and room chat",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/quality-final.log",
-        "evidence/discovery/audit-roles.md"
+        "evidence/discovery/audit-roles.md",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -209,10 +275,13 @@
       "kind": "feature",
       "label": "Move list and BPGN export listing both boards chronologically",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/quality-final.log",
-        "evidence/tests/e2e-20260910T152718Z/final.bpgn"
+        "evidence/tests/e2e-20260910T152718Z/final.bpgn",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -220,9 +289,12 @@
       "kind": "feature",
       "label": "Deterministic server-side bots (seeded) fill empty seats and finish matches on their own",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/quality-final.log"
+        "evidence/tests/quality-final.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -230,10 +302,13 @@
       "kind": "feature",
       "label": "Reconnection with resume token restores the seat; client shows reconnecting state",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/quality-final.log",
-        "evidence/discovery/audit-reliability.md"
+        "evidence/discovery/audit-reliability.md",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -241,11 +316,14 @@
       "kind": "feature",
       "label": "Dark and light themes with shared design tokens on all four platforms",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/e2e-20260910T152718Z/visual/macos-spec-home-light.json",
         "evidence/tests/e2e-20260910T152718Z/visual/macos-spec-home-dark.json",
-        "evidence/discovery/audit-responsive.md"
+        "evidence/discovery/audit-responsive.md",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -253,9 +331,12 @@
       "kind": "feature",
       "label": "Loading/connecting, offline/error, empty, reconnecting and finished states",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/discovery/audit-states.md"
+        "evidence/discovery/audit-states.md",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -263,23 +344,25 @@
       "kind": "feature",
       "label": "Touch, mouse/trackpad and keyboard (Escape) input handled per platform; safe areas respected",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-accessibility.md",
-        "evidence/discovery/audit-responsive.md"
+        "evidence/discovery/audit-responsive.md",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
       "id": "journey-four-platform-match",
       "kind": "journey",
       "label": "web + iOS Simulator + Android emulator + macOS join one room, play a full deterministic match and all reach the results screen with identical final state",
-      "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "status": "pending",
+      "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/summary.json",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log",
-        "evidence/tests/e2e-20260910T152718Z/final.bpgn",
-        "evidence/tests/e2e-20260910T152718Z/recording.mov"
+        "evidence/tests/e2e-20260911T043452Z/e2e.log",
+        "evidence/tests/e2e-20260911T043452Z/state-after-android-crash.json",
+        "evidence/tests/android-arcade-recovery/match-runtime-logcat.txt"
       ]
     },
     {
@@ -287,9 +370,12 @@
       "kind": "journey",
       "label": "A single human creates a room, fills it with bots and the match completes",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/quality-final.log"
+        "evidence/tests/quality-final.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -297,9 +383,12 @@
       "kind": "journey",
       "label": "A disconnected player resumes the seat with the resume token",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/quality-final.log"
+        "evidence/tests/quality-final.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -307,9 +396,12 @@
       "kind": "journey",
       "label": "A fifth client joins the room, watches and sees room chat but not partner quick chat",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/quality-final.log"
+        "evidence/tests/quality-final.log",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -317,10 +409,13 @@
       "kind": "asset",
       "label": "Original Swapmate mark, vector chess pieces, generated launcher/web icons, Inter font (SIL OFL); no source-game media",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-assets.md",
-        "evidence/discovery/audit-rebrand.md"
+        "evidence/discovery/audit-rebrand.md",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
@@ -328,107 +423,74 @@
       "kind": "integration",
       "label": "Authoritative Dart server over JSON WebSocket /ws with /healthz, /rooms/<CODE> and --test only /test/* endpoints",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/tests/quality-final.log",
         "evidence/discovery/sweep-002.json",
-        "evidence/discovery/audit-data.md"
+        "evidence/discovery/audit-data.md",
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json"
       ]
     },
     {
       "id": "visual-android-spec-home-dark",
       "kind": "visual",
       "label": "android-spec-home-dark: native client capture matches the web baseline at 540x1200 (normalized)",
-      "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "status": "pending",
+      "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/visual/android-spec-home-dark.json",
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
-      ],
-      "comparison": {
-        "mode": "normalized",
-        "reference": "evidence/reference/android-spec-home-dark.png",
-        "actual": "evidence/clone/android-spec-home-dark.png",
-        "diff": "evidence/diffs/android-spec-home-dark.png",
-        "different_pixels": 0,
-        "total_pixels": 648000,
-        "normalization_evidence": "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "exact_different_pixels": 163173,
-        "raw_reference": "evidence/tests/e2e-20260910T152718Z/web-android-spec-home-dark.png",
-        "raw_actual": "evidence/tests/e2e-20260910T152718Z/android-spec-home-dark.png"
-      }
+        "evidence/tests/e2e-20260911T043452Z/e2e.log",
+        "evidence/tests/e2e-20260911T043452Z/android-lobby.png",
+        "evidence/tests/android-arcade-recovery/match-runtime-logcat.txt"
+      ]
     },
     {
       "id": "visual-android-spec-home-light",
       "kind": "visual",
       "label": "android-spec-home-light: native client capture matches the web baseline at 540x1200 (normalized)",
-      "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "status": "pending",
+      "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/visual/android-spec-home-light.json",
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
-      ],
-      "comparison": {
-        "mode": "normalized",
-        "reference": "evidence/reference/android-spec-home-light.png",
-        "actual": "evidence/clone/android-spec-home-light.png",
-        "diff": "evidence/diffs/android-spec-home-light.png",
-        "different_pixels": 0,
-        "total_pixels": 648000,
-        "normalization_evidence": "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "exact_different_pixels": 183466,
-        "raw_reference": "evidence/tests/e2e-20260910T152718Z/web-android-spec-home-light.png",
-        "raw_actual": "evidence/tests/e2e-20260910T152718Z/android-spec-home-light.png"
-      }
+        "evidence/tests/e2e-20260911T043452Z/e2e.log",
+        "evidence/tests/e2e-20260911T043452Z/android-lobby.png",
+        "evidence/tests/android-arcade-recovery/match-runtime-logcat.txt"
+      ]
     },
     {
       "id": "visual-android-spec-results",
       "kind": "visual",
       "label": "android-spec-results: native client capture matches the web baseline at 540x1200 (normalized)",
-      "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "status": "pending",
+      "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/visual/android-spec-results.json",
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
-      ],
-      "comparison": {
-        "mode": "normalized",
-        "reference": "evidence/reference/android-spec-results.png",
-        "actual": "evidence/clone/android-spec-results.png",
-        "diff": "evidence/diffs/android-spec-results.png",
-        "different_pixels": 0,
-        "total_pixels": 648000,
-        "normalization_evidence": "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "exact_different_pixels": 45808,
-        "raw_reference": "evidence/tests/e2e-20260910T152718Z/web-android-spec-results.png",
-        "raw_actual": "evidence/tests/e2e-20260910T152718Z/android-spec-results.png"
-      }
+        "evidence/tests/e2e-20260911T043452Z/e2e.log",
+        "evidence/tests/e2e-20260911T043452Z/android-lobby.png",
+        "evidence/tests/android-arcade-recovery/match-runtime-logcat.txt"
+      ]
     },
     {
       "id": "visual-ios-spec-home-dark",
       "kind": "visual",
       "label": "ios-spec-home-dark: native client capture matches the web baseline at 1206x2334 (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/visual/ios-spec-home-dark.json",
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/partial-visual-current/visual/ios-spec-home-dark.json",
+        "evidence/tests/partial-visual-current/visual/summary.json",
+        "evidence/tests/partial-visual-current/e2e.log"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/reference/ios-spec-home-dark.png",
-        "actual": "evidence/clone/ios-spec-home-dark.png",
-        "diff": "evidence/diffs/ios-spec-home-dark.png",
+        "reference": "evidence/tests/partial-visual-current/visual/ios-spec-home-dark-reference.png",
+        "actual": "evidence/tests/partial-visual-current/visual/ios-spec-home-dark-actual.png",
+        "diff": "evidence/tests/partial-visual-current/visual/ios-spec-home-dark-diff.png",
         "different_pixels": 0,
         "total_pixels": 2814804,
-        "normalization_evidence": "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "exact_different_pixels": 1192489,
-        "raw_reference": "evidence/tests/e2e-20260910T152718Z/web-ios-spec-home-dark.png",
-        "raw_actual": "evidence/tests/e2e-20260910T152718Z/ios-spec-home-dark.png"
+        "normalization_evidence": "evidence/tests/partial-visual-current/visual/ios-spec-home-dark.json",
+        "exact_different_pixels": 1993575,
+        "raw_reference": "evidence/tests/partial-visual-current/web-ios-spec-home-dark.png",
+        "raw_actual": "evidence/tests/partial-visual-current/ios-spec-home-dark.png"
       }
     },
     {
@@ -436,23 +498,23 @@
       "kind": "visual",
       "label": "ios-spec-home-light: native client capture matches the web baseline at 1206x2334 (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/visual/ios-spec-home-light.json",
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/partial-visual-current/visual/ios-spec-home-light.json",
+        "evidence/tests/partial-visual-current/visual/summary.json",
+        "evidence/tests/partial-visual-current/e2e.log"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/reference/ios-spec-home-light.png",
-        "actual": "evidence/clone/ios-spec-home-light.png",
-        "diff": "evidence/diffs/ios-spec-home-light.png",
+        "reference": "evidence/tests/partial-visual-current/visual/ios-spec-home-light-reference.png",
+        "actual": "evidence/tests/partial-visual-current/visual/ios-spec-home-light-actual.png",
+        "diff": "evidence/tests/partial-visual-current/visual/ios-spec-home-light-diff.png",
         "different_pixels": 0,
         "total_pixels": 2814804,
-        "normalization_evidence": "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "exact_different_pixels": 1206627,
-        "raw_reference": "evidence/tests/e2e-20260910T152718Z/web-ios-spec-home-light.png",
-        "raw_actual": "evidence/tests/e2e-20260910T152718Z/ios-spec-home-light.png"
+        "normalization_evidence": "evidence/tests/partial-visual-current/visual/ios-spec-home-light.json",
+        "exact_different_pixels": 2003366,
+        "raw_reference": "evidence/tests/partial-visual-current/web-ios-spec-home-light.png",
+        "raw_actual": "evidence/tests/partial-visual-current/ios-spec-home-light.png"
       }
     },
     {
@@ -460,23 +522,23 @@
       "kind": "visual",
       "label": "ios-spec-results: native client capture matches the web baseline at 1206x2334 (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/visual/ios-spec-results.json",
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/partial-visual-current/visual/ios-spec-results.json",
+        "evidence/tests/partial-visual-current/visual/summary.json",
+        "evidence/tests/partial-visual-current/e2e.log"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/reference/ios-spec-results.png",
-        "actual": "evidence/clone/ios-spec-results.png",
-        "diff": "evidence/diffs/ios-spec-results.png",
+        "reference": "evidence/tests/partial-visual-current/visual/ios-spec-results-reference.png",
+        "actual": "evidence/tests/partial-visual-current/visual/ios-spec-results-actual.png",
+        "diff": "evidence/tests/partial-visual-current/visual/ios-spec-results-diff.png",
         "different_pixels": 0,
         "total_pixels": 2814804,
-        "normalization_evidence": "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "exact_different_pixels": 113642,
-        "raw_reference": "evidence/tests/e2e-20260910T152718Z/web-ios-spec-results.png",
-        "raw_actual": "evidence/tests/e2e-20260910T152718Z/ios-spec-results.png"
+        "normalization_evidence": "evidence/tests/partial-visual-current/visual/ios-spec-results.json",
+        "exact_different_pixels": 1841069,
+        "raw_reference": "evidence/tests/partial-visual-current/web-ios-spec-results.png",
+        "raw_actual": "evidence/tests/partial-visual-current/ios-spec-results.png"
       }
     },
     {
@@ -484,23 +546,23 @@
       "kind": "visual",
       "label": "macos-spec-home-dark: native client capture matches the web baseline at 1180x800 (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/visual/macos-spec-home-dark.json",
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/partial-visual-current/visual/macos-spec-home-dark.json",
+        "evidence/tests/partial-visual-current/visual/summary.json",
+        "evidence/tests/partial-visual-current/e2e.log"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/reference/macos-spec-home-dark.png",
-        "actual": "evidence/clone/macos-spec-home-dark.png",
-        "diff": "evidence/diffs/macos-spec-home-dark.png",
+        "reference": "evidence/tests/partial-visual-current/visual/macos-spec-home-dark-reference.png",
+        "actual": "evidence/tests/partial-visual-current/visual/macos-spec-home-dark-actual.png",
+        "diff": "evidence/tests/partial-visual-current/visual/macos-spec-home-dark-diff.png",
         "different_pixels": 0,
         "total_pixels": 944000,
-        "normalization_evidence": "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "exact_different_pixels": 666477,
-        "raw_reference": "evidence/tests/e2e-20260910T152718Z/web-spec-home-dark.png",
-        "raw_actual": "evidence/tests/e2e-20260910T152718Z/macos-spec-home-dark.png"
+        "normalization_evidence": "evidence/tests/partial-visual-current/visual/macos-spec-home-dark.json",
+        "exact_different_pixels": 701805,
+        "raw_reference": "evidence/tests/partial-visual-current/web-spec-home-dark.png",
+        "raw_actual": "evidence/tests/partial-visual-current/macos-spec-home-dark.png"
       }
     },
     {
@@ -508,23 +570,23 @@
       "kind": "visual",
       "label": "macos-spec-home-light: native client capture matches the web baseline at 1180x800 (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/visual/macos-spec-home-light.json",
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/partial-visual-current/visual/macos-spec-home-light.json",
+        "evidence/tests/partial-visual-current/visual/summary.json",
+        "evidence/tests/partial-visual-current/e2e.log"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/reference/macos-spec-home-light.png",
-        "actual": "evidence/clone/macos-spec-home-light.png",
-        "diff": "evidence/diffs/macos-spec-home-light.png",
+        "reference": "evidence/tests/partial-visual-current/visual/macos-spec-home-light-reference.png",
+        "actual": "evidence/tests/partial-visual-current/visual/macos-spec-home-light-actual.png",
+        "diff": "evidence/tests/partial-visual-current/visual/macos-spec-home-light-diff.png",
         "different_pixels": 0,
         "total_pixels": 944000,
-        "normalization_evidence": "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "exact_different_pixels": 662819,
-        "raw_reference": "evidence/tests/e2e-20260910T152718Z/web-spec-home-light.png",
-        "raw_actual": "evidence/tests/e2e-20260910T152718Z/macos-spec-home-light.png"
+        "normalization_evidence": "evidence/tests/partial-visual-current/visual/macos-spec-home-light.json",
+        "exact_different_pixels": 709971,
+        "raw_reference": "evidence/tests/partial-visual-current/web-spec-home-light.png",
+        "raw_actual": "evidence/tests/partial-visual-current/macos-spec-home-light.png"
       }
     },
     {
@@ -532,23 +594,23 @@
       "kind": "visual",
       "label": "macos-spec-lobby: native client capture matches the web baseline at 1180x800 (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/visual/macos-spec-lobby.json",
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/partial-visual-current/visual/macos-spec-lobby.json",
+        "evidence/tests/partial-visual-current/visual/summary.json",
+        "evidence/tests/partial-visual-current/e2e.log"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/reference/macos-spec-lobby.png",
-        "actual": "evidence/clone/macos-spec-lobby.png",
-        "diff": "evidence/diffs/macos-spec-lobby.png",
+        "reference": "evidence/tests/partial-visual-current/visual/macos-spec-lobby-reference.png",
+        "actual": "evidence/tests/partial-visual-current/visual/macos-spec-lobby-actual.png",
+        "diff": "evidence/tests/partial-visual-current/visual/macos-spec-lobby-diff.png",
         "different_pixels": 0,
         "total_pixels": 944000,
-        "normalization_evidence": "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "exact_different_pixels": 44618,
-        "raw_reference": "evidence/tests/e2e-20260910T152718Z/web-spec-lobby.png",
-        "raw_actual": "evidence/tests/e2e-20260910T152718Z/macos-spec-lobby.png"
+        "normalization_evidence": "evidence/tests/partial-visual-current/visual/macos-spec-lobby.json",
+        "exact_different_pixels": 675043,
+        "raw_reference": "evidence/tests/partial-visual-current/web-spec-lobby.png",
+        "raw_actual": "evidence/tests/partial-visual-current/macos-spec-lobby.png"
       }
     },
     {
@@ -556,176 +618,185 @@
       "kind": "visual",
       "label": "macos-spec-results: native client capture matches the web baseline at 1180x800 (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/visual/macos-spec-results.json",
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log"
+        "evidence/tests/partial-visual-current/visual/macos-spec-results.json",
+        "evidence/tests/partial-visual-current/visual/summary.json",
+        "evidence/tests/partial-visual-current/e2e.log"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/reference/macos-spec-results.png",
-        "actual": "evidence/clone/macos-spec-results.png",
-        "diff": "evidence/diffs/macos-spec-results.png",
+        "reference": "evidence/tests/partial-visual-current/visual/macos-spec-results-reference.png",
+        "actual": "evidence/tests/partial-visual-current/visual/macos-spec-results-actual.png",
+        "diff": "evidence/tests/partial-visual-current/visual/macos-spec-results-diff.png",
         "different_pixels": 0,
         "total_pixels": 944000,
-        "normalization_evidence": "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "exact_different_pixels": 74247,
-        "raw_reference": "evidence/tests/e2e-20260910T152718Z/web-spec-results.png",
-        "raw_actual": "evidence/tests/e2e-20260910T152718Z/macos-spec-results.png"
+        "normalization_evidence": "evidence/tests/partial-visual-current/visual/macos-spec-results.json",
+        "exact_different_pixels": 641383,
+        "raw_reference": "evidence/tests/partial-visual-current/web-spec-results.png",
+        "raw_actual": "evidence/tests/partial-visual-current/macos-spec-results.png"
       }
+    },
+    {
+      "id": "feature-performance",
+      "kind": "feature",
+      "label": "Gameplay animation sustains a measured 60 fps on supported target hardware",
+      "status": "pending",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/partial-visual-current/recording.mov",
+        "evidence/discovery/sweep-005.json"
+      ],
+      "tests": "Pending target frame-time profile; TCG is unsuitable and crashed."
     }
   ],
   "audits": [
     {
       "id": "source",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-source.md",
-        "evidence/discovery/sweep-003.json",
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-005.json",
+        "evidence/discovery/sweep-006.json"
       ]
     },
     {
       "id": "navigation",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-navigation.md",
-        "evidence/discovery/sweep-003.json",
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-005.json",
+        "evidence/discovery/sweep-006.json"
       ]
     },
     {
       "id": "roles",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-roles.md",
-        "evidence/discovery/sweep-003.json",
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-005.json",
+        "evidence/discovery/sweep-006.json"
       ]
     },
     {
       "id": "states",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-states.md",
-        "evidence/discovery/sweep-003.json",
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-005.json",
+        "evidence/discovery/sweep-006.json"
       ]
     },
     {
       "id": "responsive",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-responsive.md",
-        "evidence/discovery/sweep-003.json",
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-005.json",
+        "evidence/discovery/sweep-006.json"
       ]
     },
     {
       "id": "data",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-data.md",
-        "evidence/discovery/sweep-003.json",
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-005.json",
+        "evidence/discovery/sweep-006.json"
       ]
     },
     {
       "id": "assets",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-assets.md",
-        "evidence/discovery/sweep-003.json",
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-005.json",
+        "evidence/discovery/sweep-006.json"
       ]
     },
     {
       "id": "accessibility",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-accessibility.md",
-        "evidence/discovery/sweep-003.json",
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-005.json",
+        "evidence/discovery/sweep-006.json"
       ]
     },
     {
       "id": "reliability",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-reliability.md",
-        "evidence/discovery/sweep-003.json",
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-005.json",
+        "evidence/discovery/sweep-006.json"
       ]
     },
     {
       "id": "rebrand",
       "status": "verified",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
         "evidence/discovery/audit-rebrand.md",
-        "evidence/discovery/sweep-003.json",
-        "evidence/discovery/sweep-004.json"
+        "evidence/discovery/sweep-005.json",
+        "evidence/discovery/sweep-006.json"
       ]
     }
   ],
   "checks": [
     {
       "id": "functional",
-      "status": "passed",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "status": "pending",
+      "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/summary.json",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log",
-        "evidence/tests/quality-final.log",
-        "evidence/tests/e2e-20260910T152718Z/final.bpgn"
+        "evidence/tests/arcade-quality.log",
+        "evidence/tests/arcade-fresh-sessions.log",
+        "evidence/tests/partial-visual-current/summary.json",
+        "evidence/tests/e2e-20260911T043452Z/e2e.log"
       ]
     },
     {
       "id": "visual",
-      "status": "passed",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "status": "pending",
+      "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260910T152718Z/normalization.md",
-        "evidence/tests/e2e-20260910T152718Z/visual/summary.json",
-        "evidence/tests/e2e-20260910T152718Z/e2e.log",
-        "evidence/tests/e2e-20260910T152718Z/visual/controls/screen-swap.json",
-        "evidence/tests/e2e-20260910T152718Z/visual/controls/shift-4px.json",
-        "evidence/tests/e2e-20260910T152718Z/visual/controls/theme-swap.json"
+        "evidence/tests/partial-visual-current/visual/geometry.txt",
+        "evidence/tests/partial-visual-current/visual/summary.json",
+        "evidence/tests/e2e-20260911T043452Z/e2e.log"
       ]
     },
     {
       "id": "build",
       "status": "passed",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/build-final.log",
-        "evidence/tests/clean-checkout.log"
+        "evidence/tests/arcade-clean-checkout.log"
       ]
     },
     {
       "id": "quality",
       "status": "passed",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
-        "evidence/tests/quality-final.log",
-        "evidence/tests/clean-checkout.log"
+        "evidence/tests/arcade-quality.log"
       ]
     },
     {
       "id": "security",
       "status": "passed",
-      "verified_revision": "sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19",
+      "verified_revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
       "evidence": [
+        "evidence/tests/arcade-security-scan.log",
+        "evidence/tests/arcade-npm-audit.json",
         "evidence/tests/security-review.md"
       ]
     }
@@ -810,9 +881,49 @@
       "evidence": [
         "evidence/discovery/sweep-004.json"
       ]
+    },
+    {
+      "revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
+      "new_items": 1,
+      "frontier_empty": false,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-005.json"
+      ]
+    },
+    {
+      "revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
+      "new_items": 0,
+      "frontier_empty": false,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-006.json"
+      ]
     }
   ],
-  "next_action": "None. Run complete; deliver PR and attach binary evidence.",
+  "next_action": "Run the full four-platform match, Android visual comparisons and frame-time measurement on a hardware-accelerated emulator or a stable connected Android device; then perform another zero-discovery sweep and repeat verify_state.py.",
   "reference_access": {
     "boundary": "Commercial/hosted Bughouse titles were not run or purchased. Reference = public rules and design documentation (Wikipedia, chess.com Bughouse rules, chessvariants.org tandem chess) saved under evidence/reference/. Items depending on a running original are recorded as inferred; see evidence/discovery/audit-source.md.",
     "visual_parity_meaning": "normalized parity of the four Swapmate clients against Swapmate's own web build (baseline). No pixel parity with any commercial title is claimed."
@@ -828,5 +939,9 @@
       "to": "AOSP ATD image under software TCG + SwiftShader",
       "reason": "Host reports kern.hv_support=0 (no HVF inside the VM). Release/AOT APK, longer clocks and command timeouts, and an explicit 3-frame screenshot sync keep the Android client deterministic; documented in README and audit-reliability.md."
     }
+  ],
+  "limitations": [
+    "VoiceOver and TalkBack traversal have not been exercised on-device.",
+    "A full browser page reload does not persist the in-memory resume token."
   ]
 }

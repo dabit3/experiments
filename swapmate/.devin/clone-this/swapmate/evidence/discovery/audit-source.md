@@ -42,7 +42,7 @@
 ## Available structure of the clone
 
 - `packages/swapmate_core/` rules engine, protocol types, BPGN, bot (22 tests)
-- `server/` shelf + web_socket_channel authoritative server (8 tests)
+- `server/` shelf + web_socket_channel authoritative server (10 tests)
 - `app/` Flutter client with web / ios / android / macos targets (widget tests)
 - `test/multiplayer-e2e.sh` four-platform end-to-end harness
 - `PROTOCOL.md` documents every message, error code and test command.

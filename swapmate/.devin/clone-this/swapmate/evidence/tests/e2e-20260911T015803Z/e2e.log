@@ -1,0 +1,39 @@
+== Swapmate multiplayer e2e  20260911T015803Z
+   out=/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T015803Z server=ws://172.16.5.2:8787/ws seed=42 room=SWAP platforms=web,ios,android,macos
+[0s] building targets
+Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+Use --no-wasm-dry-run to disable these warnings.
+Warning: SDK processing. This version only understands SDK XML versions up to 3 but an SDK XML file of version 4 was encountered. This can happen if you use versions of Android Studio and the command-line tools that were released at different times.
+[271s] starting server
+[272s] recording screen -> recording.mov
+[272s] launching macOS app
+[272s] launching web client (Playwright Chromium)
+[274s] installing + launching iOS app on 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[297s] starting Android emulator swapmate_atd
+[665s] scaling Android watchdog/ANR timeouts for software emulation
+[736s] waiting for Android boot (up to 3000s)
+[2756s] installing + launching Android app
+[3818s] bringing up eth0 (SLIRP) as the Android fallback uplink
+[4029s] waiting for 4 test clients to register
+[4126s] registered: android,ios,macos,web
+[4126s] web creates room SWAP (30+0, no bots)
+[4132s] launching desktop spectators for visual parity
+[4144s] registered: android,ios,macos,macos-spec,web,web-spec
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T015803Z/web-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T015803Z/ios-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T015803Z/android-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T015803Z/macos-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T015803Z/web-spec-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T015803Z/macos-spec-lobby.png
+[4449s] match started
+[4449s]   web plays e2e4
+[4452s]   ios plays e7e5
+[4453s]   android plays e2e4
+[4490s]   macos plays d7d5
+[4491s]   web plays d1h5
+[4492s]   ios plays b8c6
+[4494s]   android plays e4d5
+[4852s]   macos plays d8d5
+[4852s]   web plays f1c4
+{"ok":false,"error":"test client \"android\" did not answer wait within 600s"}
+FAIL: command on android failed: {"cmd":"wait","phase":"playing","frames":3}

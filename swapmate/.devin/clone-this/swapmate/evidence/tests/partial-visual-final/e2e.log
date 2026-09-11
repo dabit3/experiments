@@ -1,0 +1,90 @@
+== Swapmate multiplayer e2e  20260911T042510Z
+   out=/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final server=ws://172.16.5.2:8792/ws seed=42 room=SWAP platforms=web,ios,macos
+[0s] building targets
+Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+Use --no-wasm-dry-run to disable these warnings.
+[66s] starting server
+[68s] recording screen -> recording.mov
+[68s] launching macOS app
+[68s] launching web client (Playwright Chromium)
+[68s] installing + launching iOS app on 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[73s] waiting for 3 test clients to register
+[83s] registered: ios,macos,web
+[83s] web creates room SWAP (30+0, no bots)
+[88s] launching desktop spectators for visual parity
+[95s] registered: ios,macos,macos-spec,web,web-spec
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/web-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/ios-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/macos-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/web-spec-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/macos-spec-lobby.png
+[106s] match started
+[106s]   web plays e2e4
+[106s]   ios plays e7e5
+[107s]   web plays d1h5
+[107s]   ios plays b8c6
+[108s]   web plays f1c4
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/web-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/ios-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/macos-game.png
+[133s]   ios plays a7a6
+[133s]   web plays h5f7
+[138s] match over
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/web-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/ios-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/macos-results.png
+[143s] collecting final state from every client
+{
+  "fenA": "r1bqkbnr/1ppp1Qpp/p1n5/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR[] b KQkq - 0 4",
+  "fenB": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR[p] b KQkq e3 0 1",
+  "moves": 8,
+  "score": "1-0",
+  "result": {
+    "winner": "1",
+    "reason": "checkmate",
+    "board": "a",
+    "loser": "ab"
+  }
+}
+  web      screen=results seat=aw moves=8 score=1-0
+  ios      screen=results seat=ab moves=8 score=1-0
+  macos    screen=results seat=bb moves=8 score=1-0
+all clients agree on the final state
+[144s] visual parity phase
+[146s] registered: ios-spec,macos,macos-spec,web,web-spec
+[147s]   ios-spec viewport 1206x2334@3.0 (safe-area crop 0,186,1206,2334) -> web baseline 402x778@3.0
+[154s] registered: ios-spec,macos,macos-spec,web,web-ios-spec,web-spec
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/web-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/macos-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/ios-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/web-ios-spec-results.png
+   MISSING shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/web-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/macos-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/ios-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/web-ios-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/web-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/macos-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/ios-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/web-ios-spec-home-light.png
+   macos-spec-lobby: 1180x800: exact diff 675043 px, edge coverage 9872 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 177404 edge px, shift 1, 2 mask(s))
+   macos-spec-results: 1180x800: exact diff 641363 px, edge coverage 20986 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 248703 edge px, shift 1, 2 mask(s))
+   macos-spec-home-dark: 1180x800: exact diff 701805 px, edge coverage 13553 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 158908 edge px, shift 1, 2 mask(s))
+   macos-spec-home-light: 1180x800: exact diff 709971 px, edge coverage 14462 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 162016 edge px, shift 1, 2 mask(s))
+   ios-spec-results: 1206x2334: exact diff 1846137 px, edge coverage 44875 px, anti-aliasing 0 px, jitter 0 px, normalized diff 2 px (tolerance 16, edge tolerance 255 within 2px of 487728 edge px, shift 1, 0 mask(s))
+   ios-spec-home-dark: 1206x2334: exact diff 2005442 px, edge coverage 30602 px, anti-aliasing 0 px, jitter 30 px, normalized diff 49 px (tolerance 16, edge tolerance 255 within 2px of 331019 edge px, shift 1, 0 mask(s))
+   ios-spec-home-light: 1206x2334: exact diff 2000900 px, edge coverage 17878 px, anti-aliasing 0 px, jitter 105 px, normalized diff 257 px (tolerance 16, edge tolerance 255 within 2px of 318426 edge px, shift 1, 0 mask(s))
+   control shift-4px (must differ): 1176x796: exact diff 745592 px, edge coverage 83103 px, anti-aliasing 4385 px, jitter 373 px, normalized diff 10508 px (tolerance 16, edge tolerance 255 within 2px of 158000 edge px, shift 1, 0 mask(s))
+   control theme-swap (must differ): 1180x800: exact diff 937769 px, edge coverage 146215 px, anti-aliasing 680 px, jitter 0 px, normalized diff 781441 px (tolerance 16, edge tolerance 255 within 2px of 158908 edge px, shift 1, 0 mask(s))
+   control screen-swap (must differ): 1180x800: exact diff 885817 px, edge coverage 105641 px, anti-aliasing 7781 px, jitter 2626 px, normalized diff 272938 px (tolerance 16, edge tolerance 255 within 2px of 177404 edge px, shift 1, 0 mask(s))
+   ios-spec-home-dark       1206x2334  exact=2005442  edge-band=11.8%  aa=    0  jitter=  30  normalized=   49
+   ios-spec-home-light      1206x2334  exact=2000900  edge-band=11.3%  aa=    0  jitter= 105  normalized=  257
+   ios-spec-results         1206x2334  exact=1846137  edge-band=17.3%  aa=    0  jitter=   0  normalized=    2
+   macos-spec-home-dark     1180x800  exact= 701805  edge-band=16.8%  aa=    0  jitter=   0  normalized=    0
+   macos-spec-home-light    1180x800  exact= 709971  edge-band=17.2%  aa=    0  jitter=   0  normalized=    0
+   macos-spec-lobby         1180x800  exact= 675043  edge-band=18.8%  aa=    0  jitter=   0  normalized=    0
+   macos-spec-results       1180x800  exact= 641363  edge-band=26.4%  aa=    0  jitter=   0  normalized=    0
+   control screen-swap      normalized= 272938 (must be > 0)
+   control shift-4px        normalized=  10508 (must be > 0)
+   control theme-swap       normalized= 781441 (must be > 0)
+FAIL: visual parity differences found (see /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/partial-visual-final/visual/*-diff.png)
+[230s] cleanup

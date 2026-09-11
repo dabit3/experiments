@@ -4,7 +4,7 @@ import 'package:swapmate_core/swapmate_core.dart';
 import '../theme/tokens.dart';
 import 'common.dart';
 
-/// Two-column move list, one column per board, in BPGN order.
+/// Move lists for both boards, in BPGN order.
 class MoveList extends StatefulWidget {
   const MoveList({
     super.key,
@@ -92,27 +92,36 @@ class _MoveListState extends State<MoveList> {
                       ),
                     ),
                   )
-                : Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: _Column(
-                          title: 'Board A',
-                          moves: a,
-                          controller: _a,
-                          dense: widget.dense,
-                        ),
-                      ),
-                      VerticalDivider(color: c.outline, width: 1),
-                      Expanded(
-                        child: _Column(
-                          title: 'Board B',
-                          moves: b,
-                          controller: _b,
-                          dense: widget.dense,
-                        ),
-                      ),
-                    ],
+                : LayoutBuilder(
+                    builder: (context, constraints) {
+                      final stacked = constraints.maxWidth < 400;
+                      return Flex(
+                        direction: stacked ? Axis.vertical : Axis.horizontal,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: _Column(
+                              title: 'Board A',
+                              moves: a,
+                              controller: _a,
+                              dense: widget.dense,
+                            ),
+                          ),
+                          if (stacked)
+                            Divider(color: c.outline, height: 1)
+                          else
+                            VerticalDivider(color: c.outline, width: 1),
+                          Expanded(
+                            child: _Column(
+                              title: 'Board B',
+                              moves: b,
+                              controller: _b,
+                              dense: widget.dense,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
           ),
         ],
@@ -192,8 +201,14 @@ class _Column extends StatelessWidget {
                         style: style?.copyWith(color: c.textFaint),
                       ),
                     ),
-                    Expanded(child: Text(r[0]?.san ?? '…', style: style)),
-                    Expanded(child: Text(r[1]?.san ?? '', style: style)),
+                    for (final san in [r[0]?.san ?? '…', r[1]?.san ?? ''])
+                      Expanded(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(san, style: style, maxLines: 1),
+                        ),
+                      ),
                   ],
                 ),
               );

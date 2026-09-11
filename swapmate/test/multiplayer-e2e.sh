@@ -104,7 +104,9 @@ if [[ $SKIP_BUILD -eq 0 ]]; then
   has android && (cd "$APP" && flutter build apk --release >/dev/null)
   (cd "$ROOT/test" && [[ -d node_modules ]] || npm install --no-audit --no-fund >/dev/null)
 fi
-[[ -x "$ROOT/test/tools/winid" ]] || swiftc -O -o "$ROOT/test/tools/winid" "$ROOT/test/tools/winid.swift"
+if [[ ! -x "$ROOT/test/tools/winid" || "$ROOT/test/tools/winid.swift" -nt "$ROOT/test/tools/winid" ]]; then
+  swiftc -O -o "$ROOT/test/tools/winid" "$ROOT/test/tools/winid.swift"
+fi
 has web && [[ -f "$APP/build/web/index.html" ]] || { has web && fail "web build missing"; }
 
 # ---------------------------------------------------------------- server
@@ -204,6 +206,15 @@ if has android; then
     "$ADB" wait-for-device
     "$ADB" shell setprop ro.hw_timeout_multiplier 10 >/dev/null 2>&1 || true
   fi
+  if [[ $ANDROID_TCG -eq 1 ]] &&
+     [[ "$("$ADB" shell getprop dalvik.vm.thread-suspend-timeout-ms 2>/dev/null | tr -d '\r')" != "60000" ]]; then
+    mark "scaling ART thread-suspend timeout for software emulation"
+    "$ADB" root >/dev/null 2>&1 || true
+    "$ADB" wait-for-device
+    "$ADB" shell "setprop dalvik.vm.thread-suspend-timeout-ms 60000; setprop ctl.restart zygote"
+    [[ "$("$ADB" shell getprop dalvik.vm.thread-suspend-timeout-ms | tr -d '\r')" == "60000" ]] ||
+      fail "Android ART timeout could not be configured"
+  fi
   ANDROID_BOOT_TIMEOUT="${ANDROID_BOOT_TIMEOUT:-$(( ANDROID_TCG == 1 ? 3000 : 900 ))}"
   mark "waiting for Android boot (up to ${ANDROID_BOOT_TIMEOUT}s)"
   for _ in $(seq 1 "$ANDROID_BOOT_TIMEOUT"); do
@@ -290,12 +301,13 @@ import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(sys.argv[1])))
 from compare_png import read_png
 w, h, rows = read_png(sys.argv[2])
-first = rows[0][:4]
-sys.exit(0 if all(r[i:i+4] == first for r in rows for i in range(0, len(r), 4)) else 1)
+first = rows[0][:3]
+sys.exit(0 if all(r[i:i+3] == first for r in rows for i in range(0, len(r), 3)) else 1)
 ' "$ROOT/test/compare_png.py" "$1"
 }
 shot() { # shot <testId> <name>   (testId: web*, ios*, android*, macos*)
   local f="$OUT/$1-$2.png"
+  tc "$1" "{\"cmd\":\"wait\",\"frames\":3,\"timeoutMs\":$TC_TIMEOUT_MS}" >/dev/null
   case "$1" in
     web*)
       echo "$2" > "$OUT/$1.request"
@@ -403,7 +415,7 @@ for p in plats:
     r = json.load(urllib.request.urlopen(req))
     assert r.get("ok"), r
     states[p] = r["result"]
-keys = ["fenA", "fenB", "moves", "moveText", "score", "result", "over", "gameId"]
+keys = ["fenA", "fenB", "moves", "moveText", "score", "result", "over", "gameId", "bpgn"]
 ref = {k: states[plats[0]]["game"][k] for k in keys}
 problems = []
 for p, s in states.items():
