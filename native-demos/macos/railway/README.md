@@ -3,7 +3,9 @@
 A native macOS miniature railway dispatch simulator. An original, procedurally drawn
 forest diorama surrounds a working track graph: cream station buildings, layered
 pine trees, timber sleepers, brass points and two moving passenger services.
-All artwork is drawn locally with SwiftUI Canvas; there are no downloaded assets,
+All artwork is drawn locally with SwiftUI Canvas; the forest uses deterministic
+irregular placement and the app icon is generated with AppKit during the build.
+There are no downloaded assets,
 network requests, external packages, accounts or hardware prerequisites.
 
 ## Build and run
@@ -75,7 +77,8 @@ elapsed simulation minutes/seconds since the 08:00 shift start.
 ./scripts/check.sh
 ```
 
-This runs native `swift format lint --strict`, six Swift Testing tests, a release
+This runs native `swift format lint --strict`, icon-script typechecking,
+six Swift Testing tests, a release
 build with compiler warnings treated as errors, and `plutil -lint`.
 
 Tests cover every station pair and both branches, route continuity, signal

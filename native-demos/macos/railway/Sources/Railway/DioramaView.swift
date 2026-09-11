@@ -69,14 +69,15 @@ struct DioramaView: View {
       context.stroke(contour, with: .color(color(0.65, 0.72, 0.58).opacity(0.22)), lineWidth: 1)
     }
     var water = Path()
-    water.move(to: CGPoint(x: -60, y: 485))
+    water.move(to: CGPoint(x: -600, y: 485))
+    water.addLine(to: CGPoint(x: -60, y: 485))
     water.addCurve(
       to: CGPoint(x: 260, y: 570), control1: CGPoint(x: 70, y: 420),
       control2: CGPoint(x: 130, y: 550))
     water.addCurve(
       to: CGPoint(x: 510, y: 790), control1: CGPoint(x: 380, y: 600),
       control2: CGPoint(x: 270, y: 735))
-    water.addLine(to: CGPoint(x: -60, y: 800))
+    water.addLine(to: CGPoint(x: -600, y: 1200))
     water.closeSubpath()
     context.stroke(water, with: .color(color(0.74, 0.80, 0.69)), lineWidth: 25)
     context.fill(water, with: .color(color(0.53, 0.70, 0.70)))
@@ -170,9 +171,10 @@ struct DioramaView: View {
     label("FOREST LOOP", 480, 307, size: 9, fill: Palette.muted, context: &context)
   }
   private func drawScenery(_ context: inout GraphicsContext) {
-    for n in 0..<155 {
-      let x = 38 + Double((n * 137 + 81) % 895)
-      let y = 45 + Double((n * 199 + 30) % 650)
+    var trees: [(point: MapPoint, size: Double, variant: Int)] = []
+    for n in 0..<280 {
+      let x = 30 + noise(n * 3) * 920
+      let y = 48 + noise(n * 3 + 1) * 665
       if y > 465 && x < (y - 440) * 1.5 { continue }
       if Station.allCases.contains(where: {
         abs($0.point.x - x) < 100 && abs($0.point.y - 40 - y) < 100
@@ -181,17 +183,25 @@ struct DioramaView: View {
       }
       if (330...640).contains(x) && (350...490).contains(y) { continue }
       if (350...585).contains(x) && (70...185).contains(y) { continue }
+      if x > 875 && y < 175 { continue }
+      if (390...565).contains(x) && (280...327).contains(y) { continue }
+      if (230...365).contains(x) && (530...625).contains(y) { continue }
+      if trees.contains(where: { $0.point.distance(to: MapPoint(x, y)) < 23 }) { continue }
       let nearTrack = Network.tracks.contains { track in
         stride(from: 0.0, through: 1.0, by: 0.04).contains {
           track.point(at: $0).distance(to: MapPoint(x, y)) < 37
         }
       }
       if nearTrack { continue }
-      tree(x, y, size: 17 + Double(n % 13), variant: n % 3, context: &context)
+      trees.append((MapPoint(x, y), 17 + noise(n * 3 + 2) * 14, n % 3))
+    }
+    for tree in trees.sorted(by: { $0.point.y < $1.point.y }) {
+      self.tree(
+        tree.point.x, tree.point.y, size: tree.size, variant: tree.variant, context: &context)
     }
     for n in 0..<16 {
-      let x = 380 + Double(n * 23 % 210)
-      let y = 531 + Double(n * 43 % 137)
+      let x = 380 + noise(n * 2 + 900) * 210
+      let y = 531 + noise(n * 2 + 901) * 137
       ellipse(x + 4, y + 6, 14, 7, Palette.ink.opacity(0.09), &context)
       ellipse(x, y, 13, 9, color(0.69, 0.72, 0.63), &context)
       ellipse(x + 1, y, 8, 5, color(0.80, 0.81, 0.72), &context)
@@ -203,6 +213,12 @@ struct DioramaView: View {
         lineWidth: 1)
     }
     label("RANGER'S LANDING", 300, 596, size: 8, fill: Palette.muted, context: &context)
+  }
+  private func noise(_ seed: Int) -> Double {
+    var value = UInt64(seed) &+ 0x9E37_79B9_7F4A_7C15
+    value = (value ^ (value >> 30)) &* 0xBF58_476D_1CE4_E5B9
+    value = (value ^ (value >> 27)) &* 0x94D0_49BB_1331_11EB
+    return Double((value ^ (value >> 31)) >> 11) / 9_007_199_254_740_992
   }
   private func tree(
     _ x: Double, _ y: Double, size: Double, variant: Int, context: inout GraphicsContext
