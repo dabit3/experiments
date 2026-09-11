@@ -1,153 +1,231 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useState, type FormEvent } from 'react'
 import { ASSIGNEES, LABELS, LABEL_ORDER } from '../data'
-import type { Card, LabelId } from '../types'
+import type { Card, Column, ColumnId, LabelId } from '../types'
 import { Avatar } from './Avatar'
+import { Dialog } from './Dialog'
+import { Icon, StatusIcon } from './Icon'
 
 interface CardModalProps {
   card: Card
-  columnTitle: string
-  onSave: (patch: Partial<Omit<Card, 'id'>>) => void
+  columnId: ColumnId
+  columns: Column[]
+  creating?: boolean
+  onSave: (patch: Omit<Card, 'id'>, columnId: ColumnId) => void
   onDelete: () => void
   onClose: () => void
 }
 
-export function CardModal({ card, columnTitle, onSave, onDelete, onClose }: CardModalProps) {
+export function CardModal({
+  card,
+  columnId,
+  columns,
+  creating = false,
+  onSave,
+  onDelete,
+  onClose,
+}: CardModalProps) {
   const [title, setTitle] = useState(card.title)
   const [description, setDescription] = useState(card.description)
   const [labels, setLabels] = useState<LabelId[]>(card.labels)
   const [assigneeId, setAssigneeId] = useState<string | null>(card.assigneeId)
-
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') onClose()
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [onClose])
+  const [status, setStatus] = useState(columnId)
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   function toggleLabel(labelId: LabelId) {
     setLabels((current) =>
       current.includes(labelId)
         ? current.filter((id) => id !== labelId)
-        : LABEL_ORDER.filter((id) => id === labelId || current.includes(id)),
+        : [...current, labelId],
     )
   }
 
-  function handleSave() {
-    const trimmed = title.trim()
-    if (!trimmed) return
-    onSave({ title: trimmed, description: description.trim(), labels, assigneeId })
+  function handleSave(event: FormEvent) {
+    event.preventDefault()
+    if (!title.trim()) return
+    onSave(
+      {
+        title: title.trim(),
+        description: description.trim(),
+        labels,
+        assigneeId,
+      },
+      status,
+    )
     onClose()
   }
 
   return (
-    <div className="modal-backdrop" onMouseDown={onClose} role="presentation">
-      <div
-        className="modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="modal-title"
-        onMouseDown={(event) => event.stopPropagation()}
+    <Dialog
+      onClose={onClose}
+      labelledBy="issue-dialog-title"
+      className="issue-dialog"
+    >
+      <form
+        onSubmit={handleSave}
+        onKeyDown={(event) => {
+          if ((event.metaKey || event.ctrlKey) && event.key === 'Enter')
+            event.currentTarget.requestSubmit()
+        }}
       >
         <header className="modal__header">
-          <div>
-            <span className="modal__eyebrow">
-              {card.id} · in <strong>{columnTitle}</strong>
+          <div className="modal__breadcrumb">
+            <span className="team-icon">
+              <Icon name="layers" size={12} />
+            </span>{' '}
+            Product <Icon name="chevron" size={12} />{' '}
+            <span id="issue-dialog-title">
+              {creating ? 'New issue' : card.id}
             </span>
-            <label htmlFor="modal-title" className="visually-hidden">
-              Title
-            </label>
-            <input
-              id="modal-title"
-              className="modal__title-input"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              autoFocus
-            />
           </div>
-          <button className="icon-button" onClick={onClose} aria-label="Close">
-            ×
+          <button
+            className="icon-button"
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+          >
+            <Icon name="close" />
           </button>
         </header>
-
         <div className="modal__body">
-          <section className="modal__section">
-            <h4>Labels</h4>
-            <div className="label-picker">
-              {LABEL_ORDER.map((labelId) => {
-                const label = LABELS[labelId]
-                const active = labels.includes(labelId)
-                return (
-                  <button
-                    key={labelId}
-                    type="button"
-                    className={`label-chip${active ? ' label-chip--active' : ''}`}
-                    style={{ '--chip-color': label.color } as CSSProperties}
-                    aria-pressed={active}
-                    onClick={() => toggleLabel(labelId)}
-                  >
-                    {label.name}
-                  </button>
-                )
-              })}
+          <label htmlFor="modal-title" className="visually-hidden">
+            Title
+          </label>
+          <input
+            id="modal-title"
+            className="modal__title-input"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            placeholder="Issue title"
+            maxLength={200}
+            required
+            autoFocus
+          />
+          <label htmlFor="modal-description" className="visually-hidden">
+            Description
+          </label>
+          <textarea
+            id="modal-description"
+            className="modal__description"
+            rows={5}
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+            placeholder="Add a description, a little context, or a big idea…"
+          />
+          <div className="modal__properties">
+            <div className="property-field">
+              <label htmlFor="issue-status">Status</label>
+              <div className="select-wrap">
+                <StatusIcon status={status} />
+                <select
+                  id="issue-status"
+                  value={status}
+                  onChange={(event) => {
+                    const column = columns.find(
+                      (entry) => entry.id === event.target.value,
+                    )
+                    if (column) setStatus(column.id)
+                  }}
+                >
+                  {columns.map((column) => (
+                    <option key={column.id} value={column.id}>
+                      {column.title}
+                    </option>
+                  ))}
+                </select>
+                <Icon name="down" size={12} />
+              </div>
             </div>
-          </section>
-
-          <section className="modal__section">
-            <h4>Assignee</h4>
-            <div className="assignee-picker">
+            <div className="property-field">
+              <label htmlFor="issue-assignee">Assignee</label>
+              <div className="select-wrap">
+                <Avatar assigneeId={assigneeId} />
+                <select
+                  id="issue-assignee"
+                  value={assigneeId ?? ''}
+                  onChange={(event) =>
+                    setAssigneeId(event.target.value || null)
+                  }
+                >
+                  <option value="">Unassigned</option>
+                  {Object.values(ASSIGNEES).map((assignee) => (
+                    <option key={assignee.id} value={assignee.id}>
+                      {assignee.name}
+                    </option>
+                  ))}
+                </select>
+                <Icon name="down" size={12} />
+              </div>
+            </div>
+          </div>
+          <fieldset className="label-picker">
+            <legend>Labels</legend>
+            {LABEL_ORDER.map((labelId) => (
+              <button
+                key={labelId}
+                type="button"
+                className={`label-chip${labels.includes(labelId) ? ' label-chip--active' : ''}`}
+                aria-pressed={labels.includes(labelId)}
+                onClick={() => toggleLabel(labelId)}
+              >
+                <span
+                  className="label-dot"
+                  style={{ background: LABELS[labelId].color }}
+                />
+                {LABELS[labelId].name}
+                {labels.includes(labelId) && <Icon name="check" size={12} />}
+              </button>
+            ))}
+          </fieldset>
+        </div>
+        <footer className="modal__footer">
+          {creating ? (
+            <span className="modal__hint">
+              Good work starts with a clear issue.
+            </span>
+          ) : confirmDelete ? (
+            <div className="delete-confirm">
+              <span>Delete this issue?</span>
               <button
                 type="button"
-                className={`assignee-option${assigneeId === null ? ' assignee-option--active' : ''}`}
-                onClick={() => setAssigneeId(null)}
-                aria-pressed={assigneeId === null}
+                className="button button--danger"
+                onClick={onDelete}
               >
-                <Avatar assigneeId={null} size="md" />
+                Delete issue
               </button>
-              {Object.values(ASSIGNEES).map((assignee) => (
-                <button
-                  key={assignee.id}
-                  type="button"
-                  className={`assignee-option${assigneeId === assignee.id ? ' assignee-option--active' : ''}`}
-                  onClick={() => setAssigneeId(assignee.id)}
-                  aria-pressed={assigneeId === assignee.id}
-                  title={assignee.name}
-                >
-                  <Avatar assigneeId={assignee.id} size="md" />
-                </button>
-              ))}
+              <button
+                type="button"
+                className="icon-button"
+                aria-label="Cancel deletion"
+                onClick={() => setConfirmDelete(false)}
+              >
+                <Icon name="close" size={14} />
+              </button>
             </div>
-          </section>
-
-          <section className="modal__section">
-            <h4>
-              <label htmlFor="modal-description">Description</label>
-            </h4>
-            <textarea
-              id="modal-description"
-              className="modal__description"
-              rows={5}
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
-              placeholder="Add a more detailed description…"
-            />
-          </section>
-        </div>
-
-        <footer className="modal__footer">
-          <button className="button button--danger" type="button" onClick={onDelete}>
-            Delete
-          </button>
+          ) : (
+            <button
+              className="icon-button delete-button"
+              type="button"
+              onClick={() => setConfirmDelete(true)}
+              aria-label="Delete issue"
+              title="Delete issue"
+            >
+              <Icon name="trash" />
+            </button>
+          )}
           <div className="modal__actions">
-            <button className="button button--ghost" type="button" onClick={onClose}>
+            <button className="button" type="button" onClick={onClose}>
               Cancel
             </button>
-            <button className="button button--primary" type="button" onClick={handleSave} disabled={!title.trim()}>
-              Save
+            <button
+              className="button button--primary"
+              type="submit"
+              disabled={!title.trim()}
+            >
+              {creating ? 'Create issue' : 'Save changes'} <kbd>↵</kbd>
             </button>
           </div>
         </footer>
-      </div>
-    </div>
+      </form>
+    </Dialog>
   )
 }

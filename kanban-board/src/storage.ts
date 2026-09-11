@@ -13,8 +13,13 @@ export function loadBoard(): BoardState | null {
   }
 }
 
-export function saveBoard(board: BoardState): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(board))
+export function saveBoard(board: BoardState): boolean {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(board))
+    return true
+  } catch {
+    return false
+  }
 }
 
 export function clearBoard(): void {

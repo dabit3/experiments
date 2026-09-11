@@ -9,7 +9,11 @@ export function Avatar({ assigneeId, size = 'sm' }: AvatarProps) {
   const assignee = assigneeId ? ASSIGNEES[assigneeId] : undefined
   if (!assignee) {
     return (
-      <span className={`avatar avatar--${size} avatar--empty`} title="Unassigned" aria-label="Unassigned">
+      <span
+        className={`avatar avatar--${size} avatar--empty`}
+        title="Unassigned"
+        aria-label="Unassigned"
+      >
         ?
       </span>
     )

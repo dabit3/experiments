@@ -1,4 +1,10 @@
-export type LabelId = 'bug' | 'feature' | 'design' | 'docs' | 'devops' | 'urgent'
+export type LabelId =
+  | 'bug'
+  | 'feature'
+  | 'design'
+  | 'docs'
+  | 'devops'
+  | 'urgent'
 
 export interface Label {
   id: LabelId
@@ -22,6 +28,12 @@ export interface Card {
 }
 
 export type ColumnId = 'backlog' | 'in-progress' | 'review' | 'done'
+export type WorkspaceView =
+  | 'project'
+  | 'overview'
+  | 'all'
+  | 'mine'
+  | 'completed'
 
 export interface Column {
   id: ColumnId

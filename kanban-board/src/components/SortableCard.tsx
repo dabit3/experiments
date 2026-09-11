@@ -9,7 +9,14 @@ interface SortableCardProps {
 }
 
 export function SortableCard({ card, onOpen }: SortableCardProps) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
     id: card.id,
     data: { type: 'card' },
   })
@@ -20,12 +27,16 @@ export function SortableCard({ card, onOpen }: SortableCardProps) {
       card={card}
       dragging={isDragging}
       style={{ transform: CSS.Translate.toString(transform), transition }}
-      onClick={() => onOpen(card.id)}
-      onKeyDown={(event) => {
-        if (event.key === 'Enter') onOpen(card.id)
-      }}
       {...attributes}
       {...listeners}
+      aria-label={`${card.id} ${card.title}`}
+      onClick={() => {
+        if (!isDragging) onOpen(card.id)
+      }}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter') onOpen(card.id)
+        else listeners?.onKeyDown?.(event)
+      }}
     />
   )
 }
