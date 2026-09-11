@@ -25,10 +25,20 @@ export function useSnakeGame() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const key = event.key.length === 1 ? event.key.toLowerCase() : event.key
+      const target = event.target
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))
+      )
+        return
+      if (event.altKey || event.ctrlKey || event.metaKey) return
       if (key === ' ') {
+        if (target instanceof HTMLElement && target.closest('button, summary')) return
         event.preventDefault()
+        if (event.repeat) return
         dispatch({ type: 'start' })
       } else if (key === 'p') {
+        if (event.repeat) return
         dispatch({ type: 'togglePause' })
       } else if (key in KEY_DIRECTIONS) {
         event.preventDefault()
@@ -52,5 +62,9 @@ export function useSnakeGame() {
 
   const setDifficulty = (difficulty: Difficulty) => dispatch({ type: 'setDifficulty', difficulty })
 
-  return { state, setDifficulty }
+  const start = () => dispatch({ type: 'start' })
+  const togglePause = () => dispatch({ type: 'togglePause' })
+  const turn = (direction: Direction) => dispatch({ type: 'turn', direction })
+
+  return { state, setDifficulty, start, togglePause, turn }
 }

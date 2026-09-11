@@ -1,12 +1,14 @@
 # Snake Arcade
 
-A retro, CRT-styled Snake game built with Vite + React + TypeScript. The 20x20
-board is rendered on a `<canvas>`; you steer with the arrow keys or WASD, start
-and restart with Space, and pause with P. Score and a localStorage-backed high
-score sit above the board, the snake speeds up 10% every 5 apples, and a
-"telemetry" side panel exposes the live game state (head, heading, apple, speed).
-Three difficulties (Chill 4 cells/s, Normal 6, Fast 9) can be picked on the start
-screen with the mouse or keys 1/2/3.
+A cabinet-inspired Snake game built with Vite + React + TypeScript: sculpted
+lime-green snakes, warm coral apples, a custom illustrated mascot, a chunky
+marquee, and a softly textured 20×20 canvas playfield. Steer with arrows or WASD,
+start/restart with Space, and pause with P; touch steering and clickable controls
+work on smaller screens. Personal bests persist locally, speed rises 10% every
+five apples, and Chill / Normal / Fast modes start at 4 / 6 / 9 cells per second.
+Optional synthesized arcade sounds, fullscreen mode, a live speed meter, and
+collapsible diagnostics complete the cabinet. Fonts and artwork are bundled;
+there are no external services or runtime network dependencies.
 
 ## Run it
 

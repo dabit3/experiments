@@ -1,116 +1,182 @@
 import { useEffect, useRef } from 'react'
 import { DIRECTION_VECTORS, GRID_SIZE } from '../game/engine'
-import type { GameState } from '../game/types'
+import type { GameState, Point } from '../game/types'
 
 const CELL = 28
-const MARGIN = 22
+const MARGIN = 14
 const BOARD = GRID_SIZE * CELL
 export const CANVAS_SIZE = BOARD + MARGIN * 2
 
-const COLORS = {
-  board: '#07120b',
-  grid: 'rgba(57, 255, 20, 0.08)',
-  border: '#39ff14',
-  label: 'rgba(57, 255, 20, 0.55)',
-  head: '#d9ffd0',
-  eye: '#07120b',
-  apple: '#ff3366',
-  appleGlow: 'rgba(255, 51, 102, 0.55)',
-  leaf: '#39ff14',
-}
-
-function cellRect(x: number, y: number) {
-  return { px: MARGIN + x * CELL, py: MARGIN + y * CELL }
-}
-
-function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
-  ctx.beginPath()
-  ctx.roundRect(x, y, w, h, r)
-  ctx.fill()
+function center(point: Point): Point {
+  return { x: MARGIN + (point.x + 0.5) * CELL, y: MARGIN + (point.y + 0.5) * CELL }
 }
 
 function drawBoard(ctx: CanvasRenderingContext2D) {
-  ctx.fillStyle = COLORS.board
-  ctx.fillRect(MARGIN, MARGIN, BOARD, BOARD)
-
-  ctx.strokeStyle = COLORS.grid
+  ctx.fillStyle = '#142119'
+  ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
+  for (let y = 0; y < GRID_SIZE; y++) {
+    for (let x = 0; x < GRID_SIZE; x++) {
+      ctx.fillStyle = (x + y) % 2 === 0 ? '#1b2b1e' : '#1d2e20'
+      ctx.fillRect(MARGIN + x * CELL + 1, MARGIN + y * CELL + 1, CELL - 2, CELL - 2)
+    }
+  }
+  ctx.strokeStyle = '#829b4b55'
   ctx.lineWidth = 1
-  for (let i = 1; i < GRID_SIZE; i++) {
-    const offset = MARGIN + i * CELL + 0.5
+  ctx.strokeRect(MARGIN - 1, MARGIN - 1, BOARD + 2, BOARD + 2)
+  ctx.strokeStyle = '#b0cd72'
+  ctx.lineWidth = 2
+  const far = MARGIN + BOARD + 4
+  const near = MARGIN - 4
+  for (const [x, y, dx, dy] of [
+    [near, near, 1, 1],
+    [far, near, -1, 1],
+    [far, far, -1, -1],
+    [near, far, 1, -1],
+  ]) {
     ctx.beginPath()
-    ctx.moveTo(offset, MARGIN)
-    ctx.lineTo(offset, MARGIN + BOARD)
-    ctx.moveTo(MARGIN, offset)
-    ctx.lineTo(MARGIN + BOARD, offset)
+    ctx.moveTo(x + dx * 10, y)
+    ctx.lineTo(x, y)
+    ctx.lineTo(x, y + dy * 10)
     ctx.stroke()
   }
+}
 
-  ctx.font = '9px "Press Start 2P", monospace'
-  ctx.fillStyle = COLORS.label
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  for (let i = 0; i < GRID_SIZE; i++) {
-    const center = MARGIN + i * CELL + CELL / 2
-    ctx.fillText(String(i), center, MARGIN / 2)
-    ctx.fillText(String(i), MARGIN / 2, center)
-  }
-
-  ctx.strokeStyle = COLORS.border
+function drawApple(ctx: CanvasRenderingContext2D, apple: Point) {
+  const { x, y } = center(apple)
+  ctx.save()
+  ctx.shadowColor = '#ff805888'
+  ctx.shadowBlur = 17
+  const skin = ctx.createRadialGradient(x - 4, y - 4, 1, x, y, 12)
+  skin.addColorStop(0, '#ffbe98')
+  skin.addColorStop(0.5, '#ff865f')
+  skin.addColorStop(1, '#d44f35')
+  ctx.fillStyle = skin
+  ctx.beginPath()
+  ctx.moveTo(x, y - 7)
+  ctx.bezierCurveTo(x - 13, y - 15, x - 17, y + 8, x - 3, y + 11)
+  ctx.quadraticCurveTo(x, y + 9, x + 3, y + 11)
+  ctx.bezierCurveTo(x + 17, y + 8, x + 13, y - 15, x, y - 7)
+  ctx.fill()
+  ctx.shadowBlur = 0
+  ctx.strokeStyle = '#dfa477'
   ctx.lineWidth = 2
-  ctx.shadowColor = COLORS.border
-  ctx.shadowBlur = 12
-  ctx.strokeRect(MARGIN, MARGIN, BOARD, BOARD)
-  ctx.shadowBlur = 0
+  ctx.beginPath()
+  ctx.moveTo(x, y - 7)
+  ctx.lineTo(x + 1, y - 13)
+  ctx.stroke()
+  ctx.fillStyle = '#ceef80'
+  ctx.beginPath()
+  ctx.ellipse(x + 5, y - 11, 5, 2.5, -0.5, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.fillStyle = '#ffe4cbbb'
+  ctx.beginPath()
+  ctx.ellipse(x - 6, y - 2, 2, 3.5, 0.4, 0, Math.PI * 2)
+  ctx.fill()
+  ctx.restore()
 }
 
-function drawApple(ctx: CanvasRenderingContext2D, x: number, y: number) {
-  const { px, py } = cellRect(x, y)
-  const cx = px + CELL / 2
-  const cy = py + CELL / 2 + 1
-  ctx.shadowColor = COLORS.appleGlow
-  ctx.shadowBlur = 16
-  ctx.fillStyle = COLORS.apple
-  ctx.beginPath()
-  ctx.arc(cx, cy, CELL * 0.36, 0, Math.PI * 2)
-  ctx.fill()
+function drawSnake(
+  ctx: CanvasRenderingContext2D,
+  snake: Point[],
+  direction: GameState['direction'],
+) {
+  const path = new Path2D()
+  snake.forEach((point, index) => {
+    const { x, y } = center(point)
+    if (index === 0) path.moveTo(x, y)
+    else path.lineTo(x, y)
+  })
+  ctx.save()
+  ctx.lineCap = 'round'
+  ctx.lineJoin = 'round'
+  ctx.shadowColor = '#050c07'
+  ctx.shadowBlur = 5
+  ctx.shadowOffsetY = 4
+  ctx.strokeStyle = '#5c812f'
+  ctx.lineWidth = CELL - 4
+  ctx.stroke(path)
   ctx.shadowBlur = 0
-  ctx.fillStyle = COLORS.leaf
-  ctx.beginPath()
-  ctx.ellipse(cx + 3, cy - CELL * 0.4, 5, 2.5, -Math.PI / 5, 0, Math.PI * 2)
-  ctx.fill()
-}
-
-function drawSnake(ctx: CanvasRenderingContext2D, state: GameState) {
-  const { snake, direction } = state
-  const length = snake.length
-  const pad = 2
-
-  for (let i = length - 1; i > 0; i--) {
-    const { px, py } = cellRect(snake[i].x, snake[i].y)
-    const fade = 1 - (i / length) * 0.65
-    ctx.fillStyle = `hsl(110 100% ${28 + fade * 24}%)`
-    roundRect(ctx, px + pad, py + pad, CELL - pad * 2, CELL - pad * 2, 6)
-  }
-
-  const head = snake[0]
-  const { px, py } = cellRect(head.x, head.y)
-  ctx.shadowColor = COLORS.border
-  ctx.shadowBlur = 14
-  ctx.fillStyle = COLORS.head
-  roundRect(ctx, px + 1, py + 1, CELL - 2, CELL - 2, 8)
-  ctx.shadowBlur = 0
-
-  const v = DIRECTION_VECTORS[direction]
-  const cx = px + CELL / 2 + v.x * 5
-  const cy = py + CELL / 2 + v.y * 5
-  const side = { x: -v.y, y: v.x }
-  ctx.fillStyle = COLORS.eye
-  for (const s of [-1, 1]) {
+  ctx.shadowOffsetY = 0
+  const skin = ctx.createLinearGradient(0, MARGIN, BOARD, MARGIN + BOARD)
+  skin.addColorStop(0, '#edffa6')
+  skin.addColorStop(0.5, '#c6ec6b')
+  skin.addColorStop(1, '#89b649')
+  ctx.strokeStyle = skin
+  ctx.lineWidth = CELL - 7
+  ctx.stroke(path)
+  ctx.strokeStyle = '#f5ffc747'
+  ctx.lineWidth = 4
+  ctx.translate(-3, -3)
+  ctx.stroke(path)
+  ctx.translate(3, 3)
+  for (let i = 2; i < snake.length; i += 2) {
+    const { x, y } = center(snake[i])
+    ctx.fillStyle = '#5d862548'
     ctx.beginPath()
-    ctx.arc(cx + side.x * 5 * s, cy + side.y * 5 * s, 2.6, 0, Math.PI * 2)
+    ctx.arc(x, y, 2, 0, Math.PI * 2)
     ctx.fill()
   }
+  const head = center(snake[0])
+  ctx.translate(head.x, head.y)
+  const vector = DIRECTION_VECTORS[direction]
+  ctx.rotate(Math.atan2(vector.y, vector.x))
+  ctx.fillStyle = '#def691'
+  ctx.beginPath()
+  ctx.roundRect(-13, -13, 27, 26, 10)
+  ctx.fill()
+  for (const side of [-1, 1]) {
+    ctx.fillStyle = '#fbffda'
+    ctx.beginPath()
+    ctx.ellipse(5, side * 7, 5.5, 5, 0, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.fillStyle = '#192c19'
+    ctx.beginPath()
+    ctx.arc(7, side * 7, 2.7, 0, Math.PI * 2)
+    ctx.fill()
+    ctx.fillStyle = 'white'
+    ctx.fillRect(7, side * 7 - 1, 1.3, 1.3)
+  }
+  ctx.restore()
 }
+
+const ATTRACT_SNAKE: Point[] = [
+  { x: 16, y: 3 },
+  { x: 15, y: 3 },
+  { x: 14, y: 3 },
+  { x: 13, y: 3 },
+  { x: 12, y: 3 },
+  { x: 11, y: 3 },
+  { x: 10, y: 3 },
+  { x: 9, y: 3 },
+  { x: 8, y: 3 },
+  { x: 7, y: 3 },
+  { x: 6, y: 3 },
+  { x: 5, y: 3 },
+  { x: 4, y: 3 },
+  { x: 3, y: 3 },
+  { x: 3, y: 4 },
+  { x: 3, y: 5 },
+  { x: 3, y: 6 },
+  { x: 3, y: 7 },
+  { x: 3, y: 8 },
+  { x: 3, y: 9 },
+  { x: 3, y: 10 },
+  { x: 3, y: 11 },
+  { x: 3, y: 12 },
+  { x: 3, y: 13 },
+  { x: 3, y: 14 },
+  { x: 3, y: 15 },
+  { x: 4, y: 15 },
+  { x: 5, y: 15 },
+  { x: 6, y: 15 },
+  { x: 7, y: 15 },
+  { x: 8, y: 15 },
+  { x: 9, y: 15 },
+  { x: 10, y: 15 },
+  { x: 11, y: 15 },
+  { x: 12, y: 15 },
+  { x: 13, y: 15 },
+]
 
 export function GameCanvas({ state }: { state: GameState }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -124,17 +190,22 @@ export function GameCanvas({ state }: { state: GameState }) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
     ctx.scale(dpr, dpr)
-    ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
     drawBoard(ctx)
-    drawApple(ctx, state.apple.x, state.apple.y)
-    drawSnake(ctx, state)
+    if (state.phase === 'ready') {
+      ctx.globalAlpha = 0.65
+      drawSnake(ctx, ATTRACT_SNAKE, 'right')
+      drawApple(ctx, { x: 16, y: 14 })
+      ctx.globalAlpha = 1
+    } else {
+      drawApple(ctx, state.apple)
+      drawSnake(ctx, state.snake, state.direction)
+    }
   }, [state])
 
   return (
     <canvas
       ref={canvasRef}
       className="game-canvas"
-      style={{ width: CANVAS_SIZE, height: CANVAS_SIZE }}
       aria-label="Snake game board"
       data-testid="game-canvas"
     />

@@ -1,78 +1,93 @@
-import { DIFFICULTIES } from '../game/engine'
-import type { Difficulty, GameState } from '../game/types'
+import type { GameState } from '../game/types'
+import { Icon } from './Icon'
 
 interface OverlayProps {
   state: GameState
-  onSelectDifficulty: (difficulty: Difficulty) => void
+  onStart: () => void
+  onResume: () => void
 }
 
-function DifficultyPicker({ state, onSelectDifficulty }: OverlayProps) {
-  return (
-    <div className="difficulty" role="radiogroup" aria-label="Difficulty">
-      {(Object.keys(DIFFICULTIES) as Difficulty[]).map((difficulty, index) => (
-        <button
-          key={difficulty}
-          type="button"
-          role="radio"
-          aria-checked={state.difficulty === difficulty}
-          className={`difficulty-option${state.difficulty === difficulty ? ' is-selected' : ''}`}
-          onClick={() => onSelectDifficulty(difficulty)}
-          data-testid={`difficulty-${difficulty}`}
-        >
-          <span className="difficulty-key">{index + 1}</span>
-          {DIFFICULTIES[difficulty].label}
-          <span className="difficulty-speed">{DIFFICULTIES[difficulty].cellsPerSecond} cells/s</span>
-        </button>
-      ))}
-    </div>
-  )
-}
-
-export function Overlay(props: OverlayProps) {
-  const { state } = props
-
+export function Overlay({ state, onStart, onResume }: OverlayProps) {
   if (state.phase === 'playing') return null
+  const paused = state.phase === 'paused'
+  const over = state.phase === 'over'
 
-  if (state.phase === 'paused') {
-    return (
-      <div className="overlay" data-testid="overlay-paused">
-        <h2 className="overlay-title">Paused</h2>
-        <p className="overlay-hint">
-          Press <kbd>P</kbd> to resume
-        </p>
-      </div>
-    )
-  }
-
-  if (state.phase === 'over') {
-    return (
-      <div className="overlay" data-testid="overlay-game-over">
-        <h2 className="overlay-title is-danger">Game Over</h2>
-        <p className="overlay-score">
-          Final score <strong data-testid="final-score">{state.score}</strong>
-        </p>
-        {state.isNewHighScore && (
-          <p className="overlay-badge" data-testid="new-high-score">
-            New high score!
+  return (
+    <div
+      className={`overlay overlay-${state.phase}`}
+      data-testid={paused ? 'overlay-paused' : over ? 'overlay-game-over' : 'overlay-start'}
+    >
+      <div className="overlay-content">
+        <span className="overlay-kicker">
+          {paused
+            ? 'GOOD THINGS CAN WAIT'
+            : over
+              ? 'THAT WAS A GOOD RUN'
+              : 'A CLASSIC WITH A FRESH BITE'}
+        </span>
+        <div className={`overlay-emblem ${over ? 'is-danger' : ''}`}>
+          <Icon name={paused ? 'pause' : over ? 'trophy' : 'apple'} />
+        </div>
+        <h2 className="overlay-title">
+          {paused ? (
+            'PAUSED.'
+          ) : over ? (
+            <>
+              GAME
+              <br />
+              <span>OVER.</span>
+            </>
+          ) : (
+            <>
+              ONE MORE
+              <br />
+              <span>BITE.</span>
+            </>
+          )}
+        </h2>
+        {over ? (
+          <div className="result-row">
+            <div>
+              <span>FINAL SCORE</span>
+              <strong data-testid="final-score">{String(state.score).padStart(3, '0')}</strong>
+            </div>
+            <div>
+              <span>BEST SCORE</span>
+              <strong>{String(state.highScore).padStart(3, '0')}</strong>
+            </div>
+          </div>
+        ) : (
+          <p className="overlay-description">
+            {paused ? (
+              'Your next apple isn’t going anywhere.'
+            ) : (
+              <>
+                Chase the apples. Beat your best.
+                <br />
+                Try not to eat your own tail.
+              </>
+            )}
           </p>
         )}
-        <p className="overlay-hint blink">
-          Press <kbd>Space</kbd> to restart
+        {over && state.isNewHighScore && (
+          <span className="overlay-badge" data-testid="new-high-score">
+            <Icon name="trophy" />
+            New high score!
+          </span>
+        )}
+        <button className="start-button" type="button" onClick={paused ? onResume : onStart}>
+          <Icon name="play" />
+          <span>{paused ? 'BACK TO IT' : over ? 'GO AGAIN' : 'LET’S PLAY'}</span>
+          <Icon name="arrow" />
+        </button>
+        <p className="overlay-hint">
+          Press <kbd>{paused ? 'P' : 'Space'}</kbd> to{' '}
+          {paused ? 'resume' : over ? 'restart' : 'start'}
         </p>
       </div>
-    )
-  }
-
-  return (
-    <div className="overlay" data-testid="overlay-start">
-      <h2 className="overlay-title">Snake</h2>
-      <p className="overlay-hint blink">
-        Press <kbd>Space</kbd> to start
-      </p>
-      <DifficultyPicker {...props} />
-      <p className="overlay-controls">
-        Arrows / WASD to steer · <kbd>P</kbd> to pause
-      </p>
+      {!paused && !over && (
+        <span className="overlay-bottom">SIMPLE RULES. ENDLESS “ONE MORE.”</span>
+      )}
     </div>
   )
 }
