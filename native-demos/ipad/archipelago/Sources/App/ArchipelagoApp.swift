@@ -51,7 +51,10 @@ final class GameStore: ObservableObject {
   }
 
   @discardableResult
-  func change(_ message: String, action: (inout Game) throws -> Void) -> Bool {
+  func change(
+    _ message: String, onError: ((String) -> Void)? = nil,
+    action: (inout Game) throws -> Void
+  ) -> Bool {
     do {
       var next = game
       try action(&next)
@@ -61,7 +64,11 @@ final class GameStore: ObservableObject {
       persist()
       return true
     } catch {
-      self.error = error.localizedDescription
+      if let onError {
+        onError(error.localizedDescription)
+      } else {
+        self.error = error.localizedDescription
+      }
       return false
     }
   }
@@ -601,7 +608,11 @@ struct ContentView: View {
       ForEach(Game.fleet) { boat in
         let busy = store.game.routes.contains { $0.id != route.id && $0.ferryID == boat.id }
         Button {
-          store.change("\(boat.name) is ready on route \(route.id + 1).") {
+          store.change(
+            route.ferryID == boat.id
+              ? "\(boat.name) returned to the fleet. Cargo is safely back on the dock."
+              : "\(boat.name) is ready on route \(route.id + 1)."
+          ) {
             try $0.assign(ferryID: route.ferryID == boat.id ? nil : boat.id, routeID: route.id)
           }
         } label: {
@@ -724,6 +735,7 @@ struct RouteEditor: View {
   let completed: (Int) -> Void
   @State private var source = 0
   @State private var destination = 1
+  @State private var editorError: String?
   @Environment(\.dismiss) private var dismiss
 
   var body: some View {
@@ -786,7 +798,8 @@ struct RouteEditor: View {
           let succeeded = store.change(
             routeID == nil
               ? "Route charted. Choose a ferry to bring it to life."
-              : "Course updated. Cargo returned safely."
+              : "Course updated. Cargo returned safely.",
+            onError: { editorError = $0 }
           ) {
             if let routeID {
               try $0.editRoute(id: routeID, source: source, destination: destination)
@@ -814,12 +827,12 @@ struct RouteEditor: View {
     .alert(
       "Couldn’t chart this route",
       isPresented: Binding(
-        get: { store.error != nil }, set: { if !$0 { store.error = nil } }
+        get: { editorError != nil }, set: { if !$0 { editorError = nil } }
       )
     ) {
-      Button("Got it") { store.error = nil }
+      Button("Got it") { editorError = nil }
     } message: {
-      Text(store.error ?? "")
+      Text(editorError ?? "")
     }
   }
 
