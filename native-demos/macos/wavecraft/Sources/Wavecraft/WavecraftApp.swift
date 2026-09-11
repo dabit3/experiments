@@ -25,7 +25,7 @@ struct WavecraftApp: App {
       }
       CommandMenu("Audio") {
         Button("Play / Stop") { model.togglePlayback() }.keyboardShortcut(.space, modifiers: [])
-        Button("Select All", action: model.selectAll).keyboardShortcut("a")
+        Button("Select All", action: model.selectAllFromMenu).keyboardShortcut("a")
         Button("Trim to Selection", action: model.trim).keyboardShortcut("t").disabled(
           !model.hasSelection)
       }

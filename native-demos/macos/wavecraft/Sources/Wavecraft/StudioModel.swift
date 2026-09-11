@@ -95,6 +95,14 @@ final class StudioModel: ObservableObject {
 
   func selectAll() { select(0, audio.duration) }
 
+  func selectAllFromMenu() {
+    if let editor = NSApp.keyWindow?.firstResponder as? NSTextView {
+      editor.selectAll(nil)
+    } else {
+      selectAll()
+    }
+  }
+
   func seek(_ time: Double) {
     stop()
     playhead = max(0, min(audio.duration, time))
