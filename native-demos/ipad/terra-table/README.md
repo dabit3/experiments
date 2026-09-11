@@ -79,9 +79,10 @@ replace the active terrain but remain undoable.
 ```
 
 `check.sh` uses the formatter bundled with Xcode as a strict native lint check, validates
-the property lists, and runs the Foundation-only Swift Testing suite. It checks deterministic
+the property lists, and runs the terrain and studio-model Swift Testing suites. They check deterministic
 presets, brush support and clamping, smoothing, invalid inputs, undo/redo branching and
-capacity, serialization, mesh topology and monotonic inundation. The native app build also
+capacity, serialization, mesh topology, monotonic inundation, and current/snapshot persistence
+under differing slider callback orders. The native app build also
 typechecks all SwiftUI, UIKit and SceneKit integration.
 
 To apply formatting intentionally:

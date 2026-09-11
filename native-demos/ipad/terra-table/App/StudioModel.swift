@@ -1,6 +1,10 @@
 import Foundation
 import SwiftUI
 
+#if SWIFT_PACKAGE
+  import TerraCore
+#endif
+
 @MainActor
 final class StudioModel: ObservableObject {
   @Published var terrain = Terrain()
@@ -17,13 +21,12 @@ final class StudioModel: ObservableObject {
   @Published var zoom: Float = 1
   private var transaction: Terrain?
 
-  static var documents: URL {
-    URL.documentsDirectory
-  }
-  private var autosaveURL: URL { Self.documents.appendingPathComponent("Current.terra") }
-  private var libraryURL: URL { Self.documents.appendingPathComponent("Library.json") }
+  private let documents: URL
+  private var autosaveURL: URL { documents.appendingPathComponent("Current.terra") }
+  private var libraryURL: URL { documents.appendingPathComponent("Library.json") }
 
-  init() {
+  init(documents: URL = .documentsDirectory) {
+    self.documents = documents
     do {
       if FileManager.default.fileExists(atPath: autosaveURL.path) {
         let restored = try JSONDecoder().decode(Terrain.self, from: Data(contentsOf: autosaveURL))
@@ -62,9 +65,12 @@ final class StudioModel: ObservableObject {
   }
 
   func setWater(_ value: Float) {
+    let standalone = transaction == nil
+    if standalone { begin() }
     terrain.water = max(0, min(0.85, value))
     revision += 1
     status = "Waterline at \(Int(terrain.water * 1000)) m"
+    if standalone { end() }
   }
 
   func preset(_ landscape: Landscape) {
@@ -124,7 +130,7 @@ final class StudioModel: ObservableObject {
 
   func exportMesh() -> URL? {
     do {
-      let directory = Self.documents.appendingPathComponent("Exports")
+      let directory = documents.appendingPathComponent("Exports")
       try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
       let url = directory.appendingPathComponent("TerraTable.obj")
       try terrain.obj().write(to: url, atomically: true, encoding: .utf8)
