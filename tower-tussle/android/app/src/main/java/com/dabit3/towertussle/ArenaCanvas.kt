@@ -52,21 +52,11 @@ internal fun hash(x: Int, y: Int, salt: Int = 0): Double {
 @Composable
 fun ArenaCanvas(engine: BattleEngine, scale: Float, modifier: Modifier = Modifier) {
     val measurer = rememberTextMeasurer()
-    val density = LocalDensity.current
-    val layoutDirection = LocalLayoutDirection.current
-    val widthPx = (Arena.WIDTH * scale).toInt().coerceAtLeast(1)
-    val heightPx = (Arena.HEIGHT * scale).toInt().coerceAtLeast(1)
-    val ground = remember(widthPx, heightPx) {
-        val bitmap = ImageBitmap(widthPx, heightPx)
-        CanvasDrawScope().draw(density, layoutDirection, GraphicsCanvas(bitmap), Size(widthPx.toFloat(), heightPx.toFloat())) {
-            ArenaGroundPainter(this, scale).draw()
-        }
-        bitmap
-    }
+    val art = rememberArt(battle = true)
     Canvas(modifier) {
         engine.version
-        drawImage(ground)
-        ArenaPainter(this, engine, measurer, scale).drawDynamic()
+        renderedImage(art.image("arena"), Offset.Zero, size)
+        ArenaPainter(this, engine, measurer, scale, art).drawDynamic()
     }
 }
 
@@ -203,7 +193,7 @@ private class ArenaGroundPainter(val scope: DrawScope, val scale: Float) {
     }
 }
 
-private class ArenaPainter(val scope: DrawScope, val engine: BattleEngine, val measurer: TextMeasurer, val scale: Float) {
+private class ArenaPainter(val scope: DrawScope, val engine: BattleEngine, val measurer: TextMeasurer, val scale: Float, val art: RenderedArt) {
     private fun pt(v: Vec) = Offset((v.x * scale).toFloat(), (v.y * scale).toFloat())
     private fun len(d: Double): Float = (d * scale).toFloat()
     private fun len(d: Float): Float = d * scale
@@ -223,7 +213,7 @@ private class ArenaPainter(val scope: DrawScope, val engine: BattleEngine, val m
         for (p in engine.projectiles) drawProjectile(p)
         for (e in engine.effects) if (e.kind == EffectKind.TOWER_FALL || (e.kind != EffectKind.DEPLOY && e.landed)) drawEffect(e)
         for (p in engine.particles) if (!(p.kind == ParticleKind.DUST || p.kind == ParticleKind.DEBRIS || p.kind == ParticleKind.BONE)) drawParticle(p)
-        for (t in engine.floatingTexts) drawFloatingText(t)
+        drawFloatingTexts()
     }
 
     private fun DrawScope.drawWater() {
@@ -280,7 +270,12 @@ private class ArenaPainter(val scope: DrawScope, val engine: BattleEngine, val m
         val r = len(tower.kind.radius) * (if (tower.kind == TowerKind.KEEP) 0.82f else 0.9f)
         val foot = pt(tower.pos)
         val center = Offset(foot.x, foot.y + r * 0.4f)
-        tower(tower.kind, tower.side, center, r, tower.alive, tower.activated, tower.hitFlash > 0, engine.elapsed)
+        if (tower.alive) {
+            val name = "tower_${if (tower.kind == TowerKind.KEEP) "keep" else "guard"}_${if (tower.side == Side.PLAYER) "blue" else "red"}"
+            renderedImage(art.image(name), Offset(center.x - r * 1.8f, center.y - r * 2.5f), Size(r * 3.6f, r * 3.6f), tower.hitFlash > 0)
+        } else {
+            tower(tower.kind, tower.side, center, r, false, tower.activated, false, engine.elapsed)
+        }
         if (!tower.alive) return
         val barY = center.y + r * 1.0f + len(0.25)
         healthBar(Offset(center.x, barY), r * 2.1f, len(0.34), tower.hp / tower.kind.maxHp, tower.side)
@@ -293,17 +288,14 @@ private class ArenaPainter(val scope: DrawScope, val engine: BattleEngine, val m
     }
 
     private fun DrawScope.drawUnit(unit: Troop) {
-        val r = len(unit.radius) * (if (unit.card.id == "giant") 1.15f else if (unit.card.count > 1) 1.05f else 0.95f)
+        val r = len(unit.radius) * (if (unit.card.id == "giant") 1.32f else if (unit.card.count > 1) 1.20f else 1.10f)
         val foot = pt(unit.pos)
         val spawn = min(1.0, unit.spawnAge / 0.35).toFloat()
         val pop = 1f + (1f - spawn) * 0.6f
         val shadowR = if (unit.card.flying) r * 0.9f else r * 1.1f
         softShadow(foot.x, foot.y, shadowR, shadowR * 0.4f, if (unit.card.flying) 0.25f else 0.35f)
-        val pose = Art.Pose(
-            phase = unit.walkPhase, facing = unit.facing.toFloat(), attack = unit.attackAnim,
-            flash = unit.hitFlash > 0, time = engine.elapsed + unit.id * 0.7, moving = unit.moving,
-        )
-        character(unit.card.id, unit.side, foot, r * pop, pose)
+        drawPath(Art.ellipse(foot.x, foot.y, shadowR, shadowR * 0.42f), Art.team(unit.side).copy(alpha = 0.85f), style = Stroke(len(0.10)))
+        renderedUnit(art, unit, foot, r * pop)
         val barW = r * (if (unit.card.count > 1) 1.8f else 2.4f)
         val height = if (unit.card.id == "giant") 4.5f else 3.9f
         val lift = if (unit.card.flying) 1.6f else 0f
@@ -477,12 +469,30 @@ private class ArenaPainter(val scope: DrawScope, val engine: BattleEngine, val m
         }
     }
 
-    private fun DrawScope.drawFloatingText(t: FloatingText) {
-        val c = pt(t.pos)
-        val life = t.life.toFloat()
-        val pop = 1f + 0.5f * max(0f, life - 0.75f) * 4
-        val alpha = min(1f, life * 3)
-        outlinedText(t.text, c, len(0.62) * pop, t.color.copy(alpha = alpha), Art.outline.copy(alpha = alpha))
+    private fun DrawScope.drawFloatingTexts() {
+        val bounds = Rect(len(0.2), len(0.2), len(Arena.WIDTH - 0.2), len(Arena.HEIGHT - 0.2))
+        val occupied = mutableListOf<Rect>()
+        for (t in engine.floatingTexts.sortedByDescending { it.ttl }) {
+            val maxFont = len(0.93)
+            val measured = measurer.measure(t.text, TextStyle(fontSize = (maxFont / density).sp / fontScale, fontWeight = FontWeight.Black))
+            val padding = 2 * max(1f, maxFont * 0.08f) + len(0.1)
+            val width = measured.size.width + padding
+            val height = measured.size.height + padding
+            val origin = pt(t.pos)
+            val x = (origin.x + len(if (t.victim == Side.PLAYER) 0.9 else -0.9)).coerceIn(bounds.left + width / 2, bounds.right - width / 2)
+            val y = origin.y.coerceIn(bounds.top + height / 2, bounds.bottom - height / 2)
+            for (row in 0 until 48) {
+                val offset = if (row == 0) 0 else if (row % 2 == 1) -(row + 1) / 2 else row / 2
+                val rect = Rect(x - width / 2, y + offset * height - height / 2, x + width / 2, y + offset * height + height / 2)
+                if (rect.top < bounds.top || rect.bottom > bounds.bottom || occupied.any { it.overlaps(rect) }) continue
+                occupied.add(rect)
+                val life = t.life.toFloat()
+                val pop = 1f + 0.5f * max(0f, life - 0.75f) * 4
+                val alpha = min(1f, life * 3)
+                outlinedText(t.text, rect.center, len(0.62) * pop, t.color.copy(alpha = alpha), Art.outline.copy(alpha = alpha))
+                break
+            }
+        }
     }
 
     private fun DrawScope.outlinedText(text: String, at: Offset, sizePx: Float, color: Color, outline: Color = Art.outline) {

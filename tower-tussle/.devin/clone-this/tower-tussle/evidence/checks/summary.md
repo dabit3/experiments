@@ -1,5 +1,12 @@
 # Check evidence — Tower Tussle
 
+## Current checkpoint: Skybound rendered-art redesign
+
+See [arcade-redesign.md](arcade-redesign.md) for iteration 5, current builds,
+two recorded iOS play tests, the missing-image/overlapping-label fixes, and
+verification limits. The sections below describe the earlier vector-art
+revision and are retained as history.
+
 ## build (passed)
 - iOS: `xcodebuild -project TowerTussle.xcodeproj -scheme TowerTussle -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 17' -derivedDataPath build build` → `** BUILD SUCCEEDED **` (Xcode 26.6, Swift 5.9, iOS 17 target).
 - Android: `./gradlew assembleDebug` (JDK 17, Gradle 8.11.1 wrapper, AGP 8.7.3, Kotlin 2.0.21) → `BUILD SUCCESSFUL`; APK at `android/app/build/outputs/apk/debug/app-debug.apk`.

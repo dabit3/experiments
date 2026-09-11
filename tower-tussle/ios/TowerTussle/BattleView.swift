@@ -23,7 +23,9 @@ struct BattleView: View {
                             .shadow(color: .black.opacity(0.5), radius: 10, y: 6)
                             .contentShape(Rectangle())
                             .onTapGesture(coordinateSpace: .local) { point in
+                                let before = engine.playerElixir
                                 engine.deployAtTap(Vec(x: point.x / scale, y: point.y / scale))
+                                if engine.playerElixir < before { ArcadeAudio.play(.deploy) }
                             }
                             .accessibilityIdentifier("arena")
                             .accessibilityLabel("Arena")
@@ -46,7 +48,10 @@ struct BattleView: View {
             .padding(.horizontal, 10)
             .padding(.bottom, 6)
         }
-        .onAppear { engine.start() }
+        .onAppear {
+            _ = RenderedArt.frames
+            engine.start()
+        }
         .onDisappear { engine.stop() }
         .onChange(of: engine.result?.outcome) { _, newValue in
             if newValue != nil, !finishedHandled, let r = engine.result {

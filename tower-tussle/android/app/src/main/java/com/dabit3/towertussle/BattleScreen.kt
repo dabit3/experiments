@@ -59,6 +59,7 @@ import kotlin.math.min
 @Composable
 fun BattleScreen(engine: BattleEngine, onFinished: (MatchResult) -> Unit, onQuit: () -> Unit) {
     var showQuitConfirm by remember { mutableStateOf(false) }
+    val audio = LocalArcadeAudio.current
 
     LaunchedEffect(engine) {
         while (engine.result == null) {
@@ -89,7 +90,11 @@ fun BattleScreen(engine: BattleEngine, onFinished: (MatchResult) -> Unit, onQuit
                         .clip(RoundedCornerShape(12.dp))
                         .border(2.5.dp, Art.outline.copy(alpha = 0.9f), RoundedCornerShape(12.dp))
                         .pointerInput(engine, scale) {
-                            detectTapGestures { p -> engine.deployAtTap(Vec(p.x / scale.toDouble(), p.y / scale.toDouble())) }
+                            detectTapGestures { p ->
+                                val before = engine.playerElixir
+                                engine.deployAtTap(Vec(p.x / scale.toDouble(), p.y / scale.toDouble()))
+                                if (engine.playerElixir < before) audio?.play("deploy")
+                            }
                         }
                         .semantics { contentDescription = "Arena" }
                         .testTag("arena"),

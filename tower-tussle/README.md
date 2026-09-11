@@ -50,18 +50,25 @@ deployment rules, timers, surrender, crowns).
 
 ## Graphics
 
-All artwork is original and drawn at runtime as vector graphics; there are no bitmap
-assets. Each platform has the same three rendering layers:
+The **Skybound** design uses original 3D models rendered in Blender: a floating
+castle island, ten illustrated card portraits, eight animated troop atlases
+(six poses per team), four towers, an arena, a crown emblem, and matching app
+icons. Lagoon enamel, coral opponents, champagne gold, emerald grass, and a
+midnight starfield unify the native screens.
 
-- `Art` (`ios/TowerTussle/Art.swift`, `android/.../Art.kt`): palette, shared shape
-  helpers, tower/character/icon painters and the per-card illustrations.
-- `ArenaCanvas`: textured grass, river with animated water, plank bridges, perimeter
-  walls and scenery; shaded towers with flags and keep dome; animated troop sprites
-  with shadows and hit flashes; typed projectiles (arrows, bolts, fireballs,
-  cannonballs); Meteor/Volley effects, particles and merged floating damage numbers,
-  all drawn in y-sorted order.
-- `Widgets`: painted scenery backdrop, beveled buttons, layered panels, framed card
-  art with elixir badges, vector crown/trophy/coin icons and the results emblem.
+- `RenderedArt`: cached native images/atlas frames; Android and iOS ship identical
+  PNG resources. No runtime rendering service or network access is needed.
+- `ArenaCanvas`: the rendered battlefield and y-sorted troops/towers, with live
+  water, team rings, flight motion, hit flashes, projectile arcs, spell effects,
+  particles, health bars, and merged damage numbers.
+- `Widgets` / Home / Results: illustrated cards, floating hero island, starfield,
+  illuminated rings, beveled controls, reward panels, and sculpted crown.
+- `ArcadeAudio`: original synthesized navigation, deployment, victory, and defeat
+  cues using native audio APIs. iOS also provides selection/deployment haptics.
+
+See [art/README.md](art/README.md) for the reproducible modeling/packaging pipeline,
+tool versions, atlas layout, and asset checksums. Blender/Python are development
+tools only; both applications build directly from the committed resources.
 
 ## Test identifiers
 

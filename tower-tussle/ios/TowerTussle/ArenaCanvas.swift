@@ -31,9 +31,7 @@ struct ArenaGround: View, Equatable {
     static func == (a: ArenaGround, b: ArenaGround) -> Bool { a.scale == b.scale }
 
     var body: some View {
-        Canvas(rendersAsynchronously: false) { ctx, size in
-            ArenaPainter.drawGround(&ctx, size: size, scale: scale)
-        }
+        RenderedArt.image("arena").resizable().interpolation(.high)
     }
 }
 
@@ -206,7 +204,7 @@ struct ArenaPainter {
         for p in engine.projectiles { drawProjectile(&ctx, p) }
         for e in engine.effects where e.kind == .towerFall || (e.kind != .deploy && e.landed) { drawEffect(&ctx, e) }
         for p in engine.particles where !(p.kind == .dust || p.kind == .debris || p.kind == .bone) { drawParticle(&ctx, p) }
-        for t in engine.floatingTexts { drawFloatingText(&ctx, t) }
+        drawFloatingTexts(&ctx)
     }
 
     private func drawWater(_ ctx: inout GraphicsContext, size: CGSize) {
@@ -266,8 +264,15 @@ struct ArenaPainter {
         let foot = pt(tower.pos)
         // Art is taller above its origin than below, so sit it slightly low on the footprint.
         let center = CGPoint(x: foot.x, y: foot.y + r * 0.4)
-        Art.tower(&ctx, kind: tower.kind, side: tower.side, center: center, r: r, alive: tower.alive,
-                  activated: tower.activated, flash: tower.hitFlash > 0, time: engine.elapsed)
+        if tower.alive {
+            let name = "tower_\(tower.kind == .keep ? "keep" : "guard")_\(tower.side == .player ? "blue" : "red")"
+            var g = ctx
+            if tower.hitFlash > 0 { g.addFilter(.brightness(0.3)) }
+            g.draw(RenderedArt.image(name), in: CGRect(x: center.x - r * 1.8, y: center.y - r * 2.5, width: r * 3.6, height: r * 3.6))
+        } else {
+            Art.tower(&ctx, kind: tower.kind, side: tower.side, center: center, r: r, alive: false,
+                      activated: tower.activated, flash: false, time: engine.elapsed)
+        }
         guard tower.alive else { return }
         let barY = center.y + r * 1.0 + len(0.25)
         Art.healthBar(&ctx, center: CGPoint(x: center.x, y: barY), width: r * 2.1, height: len(0.34),
@@ -281,14 +286,13 @@ struct ArenaPainter {
     }
 
     private func drawUnit(_ ctx: inout GraphicsContext, _ unit: Unit) {
-        let r = len(unit.radius) * (unit.card.id == "giant" ? 1.15 : (unit.card.count > 1 ? 1.05 : 0.95))
+        let r = len(unit.radius) * (unit.card.id == "giant" ? 1.32 : (unit.card.count > 1 ? 1.20 : 1.10))
         let foot = pt(unit.pos)
         let scaleIn = CGFloat(min(1, unit.spawnAge / 0.25))
         let shadowR = len(unit.radius) * (unit.card.flying ? 0.8 : 1.1)
         Art.softShadow(&ctx, cx: foot.x, cy: foot.y + len(0.05), rx: shadowR, ry: shadowR * 0.4, alpha: unit.card.flying ? 0.25 : 0.4)
-        let pose = Art.Pose(phase: unit.walkPhase, facing: CGFloat(unit.facing), attack: unit.attackAnim / 0.25,
-                            flash: unit.hitFlash > 0, time: engine.elapsed + Double(unit.id), moving: unit.moving)
-        Art.character(&ctx, id: unit.card.id, side: unit.side, foot: foot, r: r * (0.6 + 0.4 * scaleIn), pose: pose)
+        ctx.stroke(Art.ellipse(foot.x, foot.y, shadowR, shadowR * 0.42), with: .color(Art.team(unit.side).opacity(0.85)), lineWidth: len(0.10))
+        RenderedArt.unit(&ctx, unit: unit, foot: foot, radius: r * (0.6 + 0.4 * scaleIn))
         if unit.hp < unit.card.hp {
             let top = foot.y - r * (unit.card.id == "giant" ? 4.6 : (unit.card.flying ? 5.2 : 4.0))
             Art.healthBar(&ctx, center: CGPoint(x: foot.x, y: top), width: max(len(1.0), r * 2.6), height: len(0.2),
@@ -475,12 +479,29 @@ struct ArenaPainter {
         }
     }
 
-    private func drawFloatingText(_ ctx: inout GraphicsContext, _ t: FloatingText) {
-        let c = pt(t.pos)
-        let life = t.life
-        let pop = 1 + 0.5 * max(0, life - 0.75) * 4
-        var g = ctx
-        g.opacity = min(1, life * 3)
-        Art.outlinedText(&g, t.text, at: c, size: len(0.62) * CGFloat(pop), color: t.color)
+    private func drawFloatingTexts(_ ctx: inout GraphicsContext) {
+        let bounds = CGRect(x: len(0.2), y: len(0.2), width: len(Arena.width - 0.4), height: len(Arena.height - 0.4))
+        var occupied: [CGRect] = []
+        for t in engine.floatingTexts.sorted(by: { $0.ttl > $1.ttl }) {
+            let maxFont = len(0.93)
+            let measured = ctx.resolve(Text(t.text).font(.system(size: maxFont, weight: .black, design: .rounded)))
+                .measure(in: bounds.size)
+            let padding = 2 * max(1, maxFont * 0.08) + len(0.1)
+            let width = measured.width + padding, height = measured.height + padding
+            let origin = pt(t.pos)
+            let x = min(bounds.maxX - width / 2, max(bounds.minX + width / 2, origin.x + len(t.side == .player ? 0.9 : -0.9)))
+            let y = min(bounds.maxY - height / 2, max(bounds.minY + height / 2, origin.y))
+            for row in 0..<48 {
+                let offset = row == 0 ? 0 : (row % 2 == 1 ? -(row + 1) / 2 : row / 2)
+                let rect = CGRect(x: x - width / 2, y: y + CGFloat(offset) * height - height / 2, width: width, height: height)
+                guard bounds.contains(rect), !occupied.contains(where: { $0.intersects(rect) }) else { continue }
+                occupied.append(rect)
+                let pop = 1 + 0.5 * max(0, t.life - 0.75) * 4
+                var g = ctx
+                g.opacity = min(1, t.life * 3)
+                Art.outlinedText(&g, t.text, at: CGPoint(x: rect.midX, y: rect.midY), size: len(0.62) * CGFloat(pop), color: t.color)
+                break
+            }
+        }
     }
 }

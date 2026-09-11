@@ -4,6 +4,7 @@ struct HomeView: View {
     @EnvironmentObject var profile: PlayerProfile
     let onBattle: () -> Void
     let onCards: () -> Void
+    @State private var floating = false
 
     var body: some View {
         ZStack {
@@ -16,29 +17,40 @@ struct HomeView: View {
                 .padding(.horizontal)
                 .padding(.top, 8)
 
-                Spacer()
-
-                VStack(spacing: -6) {
-                    LogoView()
-                        .frame(width: 190, height: 150)
-                        .padding(.bottom, 10)
-                    DisplayText(text: "TOWER", size: 58, fill: .goldText)
-                    DisplayText(text: "TUSSLE", size: 58, fill: .whiteText)
-                    Text("Real-time tower defense duels")
-                        .font(.system(.subheadline, design: .rounded).weight(.bold))
-                        .foregroundStyle(.white.opacity(0.85))
-                        .shadow(color: .black.opacity(0.8), radius: 0, x: 1, y: 1)
-                        .padding(.top, 14)
+                VStack(spacing: -8) {
+                    Text("THE SKY IS YOUR BATTLEFIELD")
+                        .font(.system(size: 9, weight: .heavy, design: .rounded))
+                        .tracking(3)
+                        .foregroundStyle(.cyan.opacity(0.8))
+                        .padding(.bottom, 16)
+                    DisplayText(text: "TOWER", size: 52, fill: .whiteText)
+                    DisplayText(text: "TUSSLE", size: 62, fill: .goldText)
                 }
+                .padding(.top, 24)
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Tower Tussle")
 
-                Spacer()
+                GeometryReader { geo in
+                    RenderedImage(name: "hero")
+                        .frame(width: geo.size.width + 18, height: geo.size.height + 22)
+                        .offset(x: -9, y: floating ? -6 : 2)
+                        .shadow(color: .cyan.opacity(0.15), radius: 24, y: 10)
+                }
+                .frame(maxHeight: .infinity)
+                .padding(.horizontal, 4)
 
-                VStack(spacing: 14) {
-                    ChunkyButton(title: "BATTLE", icon: .swords, style: .gold, height: 64, fontSize: 28, action: onBattle)
+                VStack(spacing: 12) {
+                    HStack(spacing: 8) {
+                        Circle().fill(.cyan).frame(width: 5, height: 5)
+                        Text("SKYBOUND ARENA").tracking(2.5)
+                        Circle().fill(.cyan).frame(width: 5, height: 5)
+                    }
+                    .font(.system(size: 10, weight: .heavy, design: .rounded))
+                    .foregroundStyle(.white.opacity(0.8))
+                    .padding(.bottom, 4)
+                    ChunkyButton(title: "BATTLE", icon: .swords, style: .gold, height: 62, fontSize: 25, action: onBattle)
                         .accessibilityIdentifier("battleButton")
-                    ChunkyButton(title: "CARDS", icon: .cards, style: .blue, height: 52, fontSize: 21, action: onCards)
+                    ChunkyButton(title: "CARDS", icon: .cards, style: .slate, height: 48, fontSize: 18, action: onCards)
                         .accessibilityIdentifier("cardsButton")
 
                     Text("\(profile.wins)W · \(profile.losses)L · \(profile.draws)D")
@@ -47,9 +59,12 @@ struct HomeView: View {
                         .shadow(color: .black.opacity(0.8), radius: 0, x: 1, y: 1)
                         .padding(.top, 4)
                 }
-                .padding(.horizontal, 28)
-                .padding(.bottom, 24)
+                .padding(.horizontal, 30)
+                .padding(.bottom, 16)
             }
+        }
+        .onAppear {
+            withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) { floating = true }
         }
     }
 }

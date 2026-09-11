@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -31,6 +32,14 @@ import kotlin.math.sin
 @Composable
 fun ResultsScreen(result: MatchResult, onHome: () -> Unit, onRematch: () -> Unit) {
     val profile = LocalProfile.current
+    val audio = LocalArcadeAudio.current
+    LaunchedEffect(result) {
+        audio?.play(when (result.outcome) {
+            MatchOutcome.VICTORY -> "victory"
+            MatchOutcome.DEFEAT -> "defeat"
+            MatchOutcome.DRAW -> "tap"
+        })
+    }
     val titleColor = when (result.outcome) {
         MatchOutcome.VICTORY -> Theme.accent
         MatchOutcome.DEFEAT -> Theme.enemy
@@ -40,7 +49,7 @@ fun ResultsScreen(result: MatchResult, onHome: () -> Unit, onRematch: () -> Unit
         SceneryBackdrop(dim = if (result.outcome == MatchOutcome.DEFEAT) 0.5f else 0.2f)
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(20.dp)) {
             Spacer(Modifier.weight(1f))
-            OutcomeEmblem(result.outcome, Modifier.size(150.dp))
+            RenderedImage("emblem", Modifier.size(180.dp), muted = result.outcome == MatchOutcome.DEFEAT)
             DisplayText(result.outcome.title, 58.sp, color = titleColor, modifier = Modifier.testTag("resultTitle"))
 
             Row(

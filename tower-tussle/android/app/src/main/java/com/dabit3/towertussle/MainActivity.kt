@@ -50,10 +50,13 @@ val LocalProfile = compositionLocalOf<PlayerProfile> { error("No profile") }
 enum class Screen { HOME, CARDS, BATTLE, RESULTS }
 
 class MainActivity : ComponentActivity() {
+    private lateinit var audio: ArcadeAudio
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val profile = PlayerProfile(applicationContext)
+        audio = ArcadeAudio(applicationContext)
         setContent {
             MaterialTheme(
                 colorScheme = darkColorScheme(
@@ -65,11 +68,16 @@ class MainActivity : ComponentActivity() {
                 ),
                 typography = Typography(),
             ) {
-                androidx.compose.runtime.CompositionLocalProvider(LocalProfile provides profile) {
+                androidx.compose.runtime.CompositionLocalProvider(LocalProfile provides profile, LocalArcadeAudio provides audio) {
                     RootView()
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        audio.release()
+        super.onDestroy()
     }
 }
 

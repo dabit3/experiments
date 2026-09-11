@@ -132,7 +132,7 @@ struct ChunkyButton: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button(action: { ArcadeAudio.play(.tap); action() }) {
             HStack(spacing: 10) {
                 if let icon { IconView(kind: icon, size: fontSize * 1.25) }
                 Text(title)
@@ -247,7 +247,11 @@ struct CardFrame: View {
                 RoundedRectangle(cornerRadius: radius, style: .continuous)
                     .stroke(Art.outline, lineWidth: max(1.5, w * 0.03))
                 VStack(spacing: 0) {
-                    CardArtView(card: card)
+                    GeometryReader { area in
+                        RenderedArt.image("card_\(card.id)").resizable().interpolation(.high).scaledToFill()
+                            .frame(width: area.size.width, height: area.size.height)
+                            .clipped()
+                    }
                         .clipShape(RoundedRectangle(cornerRadius: radius * 0.6, style: .continuous))
                         .overlay(RoundedRectangle(cornerRadius: radius * 0.6, style: .continuous).stroke(Art.outline.opacity(0.8), lineWidth: 1))
                     if showName {
@@ -287,7 +291,7 @@ struct CardFrame: View {
 // MARK: - Scenery
 
 /// Painted backdrop for the menu screens: sky, hills, and a castle skyline.
-struct SceneryBackdrop: View {
+struct LegacySceneryBackdrop: View {
     var dim: Double = 0
 
     var body: some View {

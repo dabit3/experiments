@@ -18,7 +18,7 @@
 
 - `visual` comparisons against the source cannot be produced → recorded as a blocker
   (`blocker-no-reference-captures`). Clone screenshots are still captured as evidence of the
-  clone's own rendering on both platforms.
+  clone's own rendering on iOS. Android runtime remains blocked by host virtualization.
 - All other audit categories are evaluated against the *inferred requirement inventory* and
   against the clone itself (functional behavior, persistence, build, rebrand).
 - The run will therefore end as `blocked` (visual parity gate), not `complete`, and is reported
@@ -71,4 +71,6 @@
   Supercell trademarks (Giant→Colossus, Mini P.E.K.K.A→Duelist, Musketeer→Sharpshooter,
   Goblins→Gremlins, Skeleton Army→Bone Brigade, Baby Dragon→Whelp, Fireball→Meteor, Arrows→Volley,
   Princess Tower→Guard Tower, King Tower→Keep). No Supercell assets, fonts or art are used;
-  all art is original vector graphics drawn at runtime (Canvas/DrawScope), no bitmap assets.
+  artwork combines original Blender models rendered to PNG atlases/portraits/scenery,
+  native vector effects and UI, and original synthesized audio. See `art/README.md`
+  and `evidence/checks/arcade-redesign.md` for generation and verification details.

@@ -20,8 +20,11 @@ struct ResultsView: View {
             SceneryBackdrop(dim: result.outcome == .defeat ? 0.6 : 0.2)
             VStack(spacing: 22) {
                 Spacer()
-                ResultEmblem(outcome: result.outcome)
-                    .frame(width: 150, height: 150)
+                RenderedImage(name: "emblem")
+                    .saturation(result.outcome == .defeat ? 0.2 : 1)
+                    .rotationEffect(.degrees(result.outcome == .defeat ? -12 : 0))
+                    .frame(width: 180, height: 180)
+                    .shadow(color: (result.outcome == .defeat ? Theme.enemy : Theme.accent).opacity(0.22), radius: 28)
                     .scaleEffect(revealed ? 1 : 0.4)
                     .opacity(revealed ? 1 : 0)
                 DisplayText(text: result.outcome.rawValue, size: 56, fill: titleFill)
@@ -67,6 +70,7 @@ struct ResultsView: View {
             }
         }
         .onAppear {
+            ArcadeAudio.play(result.outcome == .victory ? .victory : (result.outcome == .defeat ? .defeat : .tap))
             withAnimation(.spring(duration: 0.6, bounce: 0.35)) { revealed = true }
         }
     }

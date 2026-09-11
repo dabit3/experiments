@@ -132,6 +132,7 @@ fun ChunkyButton(
     fontSize: TextUnit = 24.sp,
 ) {
     val interaction = remember { MutableInteractionSource() }
+    val audio = LocalArcadeAudio.current
     val pressed by interaction.collectIsPressedAsState()
     val lift = if (pressed) 2.dp else 6.dp
     Box(
@@ -140,7 +141,7 @@ fun ChunkyButton(
             .height(height + 6.dp)
             .padding(top = if (pressed) 4.dp else 0.dp)
             .semantics { role = Role.Button }
-            .clickable(interactionSource = interaction, indication = null, onClick = onClick),
+            .clickable(interactionSource = interaction, indication = null, onClick = { audio?.play("tap"); onClick() }),
     ) {
         val shape = RoundedCornerShape(16.dp)
         Box(Modifier.fillMaxWidth().height(height).offset(y = lift).clip(shape).background(style.edge))
@@ -226,12 +227,12 @@ fun CardFrame(
                     .border((w * 0.03f).coerceAtLeast(1.5.dp), Art.outline, RoundedCornerShape(radius)),
             ) {
                 Column(Modifier.fillMaxSize().padding(border)) {
-                    Canvas(
+                    RenderedImage(
+                        "card_${card.id}",
                         Modifier.fillMaxWidth().weight(1f).clip(RoundedCornerShape(radius * 0.6f))
                             .border(1.dp, Art.outline.copy(alpha = 0.8f), RoundedCornerShape(radius * 0.6f)),
-                    ) {
-                        cardArt(card, size)
-                    }
+                        fill = true,
+                    )
                     if (showName) {
                         Box(
                             Modifier.fillMaxWidth().padding(top = border * 0.6f).height((w * 0.24f).coerceAtLeast(12.dp))
@@ -265,7 +266,7 @@ private fun Modifier.colorFiltered(filter: ColorFilter?): Modifier = if (filter 
 
 /** Painted backdrop for the menu screens: sky, hills and a castle skyline. */
 @Composable
-fun SceneryBackdrop(modifier: Modifier = Modifier, dim: Float = 0f) {
+private fun LegacySceneryBackdrop(modifier: Modifier = Modifier, dim: Float = 0f) {
     Canvas(modifier.fillMaxSize()) {
         val w = size.width; val h = size.height
         drawRect(Brush.verticalGradient(listOf(Color(0.09f, 0.15f, 0.36f), Color(0.2f, 0.4f, 0.75f), Color(0.55f, 0.72f, 0.9f)), endY = h * 0.7f))

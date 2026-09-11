@@ -14,6 +14,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -28,6 +34,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun HomeScreen(onBattle: () -> Unit, onCards: () -> Unit) {
     val profile = LocalProfile.current
+    val transition = rememberInfiniteTransition(label = "floating island")
+    val hover by transition.animateFloat(2f, -6f, infiniteRepeatable(tween(3000), RepeatMode.Reverse), label = "hover")
     Box(Modifier.fillMaxSize()) {
         SceneryBackdrop()
         Column(Modifier.fillMaxSize()) {
@@ -39,30 +47,29 @@ fun HomeScreen(onBattle: () -> Unit, onCards: () -> Unit) {
                 StatPill(IconKind.COIN, "${profile.gold}", "Gold", Modifier.weight(1f))
             }
 
-            Spacer(Modifier.weight(1f))
-
             Column(
-                Modifier.fillMaxWidth().semantics(mergeDescendants = true) { contentDescription = "Tower Tussle" },
+                Modifier.fillMaxWidth().padding(top = 24.dp).semantics(mergeDescendants = true) { contentDescription = "Tower Tussle" },
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                HeroTowers(Modifier.fillMaxWidth().height(170.dp))
-                DisplayText("TOWER", 58.sp, color = Theme.accent, modifier = Modifier.offset(y = (-10).dp))
-                DisplayText("TUSSLE", 58.sp, color = Color.White, modifier = Modifier.offset(y = (-30).dp))
                 Text(
-                    "Real-time tower defense duels", fontSize = 15.sp, fontWeight = FontWeight.Bold,
-                    color = Color.White.copy(alpha = 0.85f), modifier = Modifier.offset(y = (-26).dp),
+                    "THE SKY IS YOUR BATTLEFIELD", fontSize = 9.sp, letterSpacing = 3.sp,
+                    fontWeight = FontWeight.Black, color = Color.Cyan.copy(alpha = 0.8f),
+                    modifier = Modifier.padding(bottom = 8.dp),
                 )
+                DisplayText("TOWER", 52.sp, color = Color.White)
+                DisplayText("TUSSLE", 62.sp, color = Theme.accent, modifier = Modifier.offset(y = (-14).dp))
             }
 
-            Spacer(Modifier.weight(1f))
+            RenderedImage("hero", Modifier.fillMaxWidth().weight(1f).offset(y = hover.dp))
 
             Column(
-                Modifier.fillMaxWidth().padding(horizontal = 28.dp).padding(bottom = 24.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
+                Modifier.fillMaxWidth().padding(horizontal = 30.dp).padding(bottom = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                Text("SKYBOUND ARENA", fontSize = 10.sp, letterSpacing = 2.5.sp, fontWeight = FontWeight.Black, color = Color.White.copy(alpha = 0.8f))
                 ChunkyButton("BATTLE", onClick = onBattle, icon = IconKind.SWORDS, modifier = Modifier.testTag("battleButton"))
-                ChunkyButton("CARDS", onClick = onCards, icon = IconKind.CARDS, style = ChunkyStyle.BLUE, height = 52.dp, fontSize = 20.sp, modifier = Modifier.testTag("cardsButton"))
+                ChunkyButton("CARDS", onClick = onCards, icon = IconKind.CARDS, style = ChunkyStyle.SLATE, height = 48.dp, fontSize = 18.sp, modifier = Modifier.testTag("cardsButton"))
                 Text(
                     "${profile.wins}W · ${profile.losses}L · ${profile.draws}D",
                     fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color.White.copy(alpha = 0.7f),

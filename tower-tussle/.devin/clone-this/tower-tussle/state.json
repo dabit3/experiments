@@ -4,8 +4,8 @@
   "clone_name": "Tower Tussle",
   "clone_root": "/Users/devin/repos/experiments/tower-tussle",
   "status": "blocked",
-  "iteration": 4,
-  "revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
+  "iteration": 5,
+  "revision": "sha256:a75980137fec6536c61bdbdab78bb5e8ebee0d8a8ff0082885c0ae614443a0a0",
   "frontier": [],
   "blockers": [
     {
@@ -31,7 +31,9 @@
   ],
   "unverified_assumptions": [
     "Card stats, tower HP, elixir rate and reward values are original tuning inferred from public gameplay knowledge, not measured from the reference.",
-    "Graphics were rebuilt as original runtime-drawn vector art (textured arena, shaded towers, animated troop sprites, spell/particle FX, framed card art). Visual quality relative to the reference was judged only by the clone's own captures; no side-by-side parity with Clash Royale was measured."
+    "The Skybound redesign uses original Blender-rendered art and native effects. Only the clone's iOS captures were visually tested; reference parity and Android runtime remain unverified.",
+    "Audio audibility, physical haptics, quantitative FPS, VoiceOver and other screen sizes were not tested.",
+    "Historical inventory entries retain earlier verified_revision values; current-fingerprint evidence is explicitly recorded in feature-arcade-redesign and the build/quality checks."
   ],
   "items": [
     {
@@ -207,11 +209,21 @@
     {
       "id": "asset-runtime-art",
       "kind": "asset",
-      "label": "All art is runtime-drawn vectors/emoji; app icons are original vector drawables",
+      "label": "Original Blender models, 25 matching PNG assets per platform, native effects, app icons and synthesized audio",
       "status": "verified",
-      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
+      "verified_revision": "sha256:a75980137fec6536c61bdbdab78bb5e8ebee0d8a8ff0082885c0ae614443a0a0",
       "evidence": [
-        "evidence/discovery/source-audit.md"
+        "evidence/checks/arcade-redesign.md"
+      ]
+    },
+    {
+      "id": "feature-arcade-redesign",
+      "kind": "feature",
+      "label": "iOS rendered Home/Cards/Battle/Results, enlarged animated troops, separated damage labels and rematch smoke test",
+      "status": "verified",
+      "verified_revision": "sha256:a75980137fec6536c61bdbdab78bb5e8ebee0d8a8ff0082885c0ae614443a0a0",
+      "evidence": [
+        "evidence/checks/arcade-redesign.md"
       ]
     },
     {
@@ -318,11 +330,11 @@
   "checks": [
     {
       "id": "functional",
-      "status": "passed",
-      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
+      "status": "blocked",
+      "verified_revision": null,
       "evidence": [
-        "evidence/checks/summary.md",
-        "evidence/android/battle-engine-unit-tests.xml"
+        "evidence/checks/arcade-redesign.md",
+        "evidence/checks/arcade-engine-tests.xml"
       ]
     },
     {
@@ -336,18 +348,18 @@
     {
       "id": "build",
       "status": "passed",
-      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
+      "verified_revision": "sha256:a75980137fec6536c61bdbdab78bb5e8ebee0d8a8ff0082885c0ae614443a0a0",
       "evidence": [
-        "evidence/checks/summary.md"
+        "evidence/checks/arcade-redesign.md"
       ]
     },
     {
       "id": "quality",
       "status": "passed",
-      "verified_revision": "sha256:210fecb0a42feefe716c8058e86c79450d8885ce5c1ad345bf7c26350d3d1f51",
+      "verified_revision": "sha256:a75980137fec6536c61bdbdab78bb5e8ebee0d8a8ff0082885c0ae614443a0a0",
       "evidence": [
-        "evidence/checks/android-lint-results.txt",
-        "evidence/checks/skill-tests.log"
+        "evidence/checks/arcade-android-lint.txt",
+        "evidence/checks/arcade-skill-tests.log"
       ]
     },
     {

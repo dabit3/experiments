@@ -12,3 +12,9 @@ android/local.properties
 android/.idea/
 android/*.iml
 android/.kotlin/
+
+# Reproducible art intermediates
+art/renders/
+art/__pycache__/
+art/.venv/
+.ruff_cache/
