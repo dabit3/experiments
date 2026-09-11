@@ -146,15 +146,7 @@
 }
 
 .rc-barcode {
-  display: flex;
-  justify-content: center;
-  gap: 2px;
-  margin-top: 14px;
-  height: 34px;
-}
-
-.rc-barcode i {
   display: block;
-  background: #1a1a1a;
-  height: 100%;
+  margin: 14px auto 0;
+  height: 34px;
 }

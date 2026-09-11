@@ -157,11 +157,11 @@ export function ReceiptModal({ table, check, split, onClose }: Props) {
           <br />
           Thank you for dining with us.
         </p>
-        <div className="rc-barcode" aria-hidden="true">
+        <svg className="rc-barcode" width="130" height="34" viewBox="0 0 130 34" aria-hidden="true">
           {Array.from({ length: 36 }, (_, i) => (
-            <i key={i} style={{ width: (i * 7) % 3 === 0 ? 3 : 1 }} />
+            <rect key={i} x={i * 3 + Math.ceil(i / 3) * 2} width={i % 3 === 0 ? 3 : 1} height="34" fill="#1a1a1a" />
           ))}
-        </div>
+        </svg>
       </div>
     </Modal>
   )
