@@ -1,0 +1,17 @@
+City,Year,Rides (000s),Cycle network km,Share (%)
+Copenhagen,2020,54,390,35
+Copenhagen,2025,72,435,42
+Amsterdam,2020,62,510,38
+Amsterdam,2025,86,560,48
+Utrecht,2020,38,230,40
+Utrecht,2025,58,290,51
+Strasbourg,2020,20,210,14
+Strasbourg,2025,32,265,21
+Berlin,2020,38,860,15
+Berlin,2025,61,1050,23
+Paris,2020,24,700,8
+Paris,2025,54,1120,18
+Barcelona,2020,16,190,6
+Barcelona,2025,28,260,11
+Vienna,2020,18,340,9
+Vienna,2025,31,430,16
