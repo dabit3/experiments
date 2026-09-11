@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
 import './App.css'
 import { LevelSelect } from './components/LevelSelect'
 import { PlayScreen } from './components/PlayScreen'
@@ -12,6 +12,10 @@ export default function App() {
   const { progress, record, reset } = useProgress()
   const [screen, setScreen] = useState<Screen>({ kind: 'select' })
   const helpDialog = useRef<HTMLDialogElement>(null)
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, [screen])
 
   const play = useCallback((levelId: number) => {
     setScreen((s) => ({ kind: 'play', levelId, run: s.kind === 'play' ? s.run + 1 : 0 }))
