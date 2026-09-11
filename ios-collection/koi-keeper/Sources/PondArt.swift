@@ -21,6 +21,10 @@ struct PondCanvas: View {
   @ObservedObject var engine: PondEngine
   var reduceMotion: Bool
   var editing: Bool
+  var editingMaxY: Double = 0.78
+  var previewKind: GardenKind?
+  var previewPoint: PondPoint?
+  var previewValid = false
 
   var body: some View {
     Canvas { context, size in
@@ -90,18 +94,30 @@ struct PondCanvas: View {
       if editing {
         let area = CGRect(
           x: size.width * 0.10, y: size.height * 0.20, width: size.width * 0.80,
-          height: size.height * 0.58)
+          height: size.height * (editingMaxY - 0.20))
         context.stroke(
           Path(roundedRect: area, cornerRadius: 25), with: .color(PondPalette.paper.opacity(0.6)),
           style: StrokeStyle(lineWidth: 1, dash: [3, 8]))
+        var guides = context
+        guides.clip(to: Path(roundedRect: area, cornerRadius: 25))
         for item in model.save.garden {
           let exclusion = CGRect(
             x: (item.point.x - 0.12) * size.width, y: (item.point.y - 0.12) * size.height,
             width: size.width * 0.24, height: size.height * 0.24)
-          context.stroke(
+          guides.stroke(
             Path(ellipseIn: exclusion), with: .color(PondPalette.paper.opacity(0.25)),
             style: StrokeStyle(lineWidth: 1, dash: [2, 6]))
         }
+      }
+      if let previewKind, let previewPoint {
+        var ghost = context
+        ghost.translateBy(x: previewPoint.x * size.width, y: previewPoint.y * size.height)
+        let ring = Path(ellipseIn: CGRect(x: -42, y: -42, width: 84, height: 84))
+        let color = previewValid ? PondPalette.paper : Color(hex: 0xFFD0AB)
+        ghost.fill(ring, with: .color(PondPalette.ink.opacity(0.20)))
+        ghost.stroke(ring, with: .color(color), style: StrokeStyle(lineWidth: 2, dash: [5, 4]))
+        ghost.opacity = 0.8
+        GardenArt.draw(context: ghost, kind: previewKind, scale: 0.8)
       }
     }
     .accessibilityHidden(true)

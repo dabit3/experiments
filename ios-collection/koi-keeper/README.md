@@ -40,8 +40,10 @@ The original icon can be regenerated with `swift Scripts/GenerateIcon.swift`.
 - Eight grains can float at once. Uneaten food dissolves after 45 active seconds.
   Food is free, so you can always earn your way to a new addition.
 - **Garden** offers lilies (8), stones (10) and irises (12 pearls). Choose one,
-  then tap inside the dotted area. Invalid or cancelled placements cost nothing.
-  Keep pieces apart. **Lift an item** removes it and refunds its purchase price.
+  then tap inside the dotted area to preview it. **Find a spot** cycles through
+  available positions; **Place here** confirms and spends pearls. Invalid or
+  cancelled previews cost nothing. Keep pieces apart. **Lift an item** removes
+  it and refunds its purchase price; the garden also has a labeled lift list.
 - **Collection** includes four koi varieties with distinct procedural markings.
   Tap a variety to read about it and welcome a fish. The pond holds six fish.
 - Tap your pearl balance for the **Pond journal**, instructions, haptics and a
@@ -58,6 +60,9 @@ Currency is bounded at 9,999; garden capacity is 16. Reset requires confirmation
 
 Text uses system semantic styles where practical; custom controls have labels.
 The center feeding control provides an accessible alternative to coordinate taps.
+Collection and garden artwork stack above text at accessibility sizes. Garden
+placement has labeled preview and confirm controls, and its guide leaves room
+for the editor. The home title scales up to 46 points to preserve the pond view.
 Reduce Motion slows swimming and stops decorative water animation. Haptics are
 optional. There is no sound, so all feedback is visual.
 

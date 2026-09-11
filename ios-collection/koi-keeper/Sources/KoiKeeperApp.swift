@@ -23,15 +23,34 @@ struct PondHome: View {
   @ObservedObject var model: PondModel
   @StateObject private var engine = PondEngine()
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @Environment(\.dynamicTypeSize) private var typeSize
   @Environment(\.scenePhase) private var scenePhase
+  @ScaledMetric(relativeTo: .largeTitle) private var titleSize = 34
   @State private var sheet: PondSheet?
   @State private var edit: EditMode?
+  @State private var previewPoint: PondPoint?
+  @State private var editingMaxY = 0.70
+
+  private var previewKind: GardenKind? {
+    if case .place(let kind) = edit { return kind }
+    return nil
+  }
+
+  private var previewValid: Bool {
+    guard let previewKind, let previewPoint else { return false }
+    return previewPoint.y <= editingMaxY
+      && model.placementIssue(previewKind, at: previewPoint) == nil
+  }
 
   var body: some View {
     GeometryReader { geometry in
       ZStack {
-        PondCanvas(model: model, engine: engine, reduceMotion: reduceMotion, editing: edit != nil)
-          .ignoresSafeArea()
+        PondCanvas(
+          model: model, engine: engine, reduceMotion: reduceMotion, editing: edit != nil,
+          editingMaxY: editingMaxY, previewKind: previewKind, previewPoint: previewPoint,
+          previewValid: previewValid
+        )
+        .ignoresSafeArea()
         LinearGradient(
           stops: [
             .init(color: .clear, location: 0.58),
@@ -52,34 +71,53 @@ struct PondHome: View {
             act(at: point)
           }
           .accessibilityLabel("Living koi pond")
-          .accessibilityHint("Use Feed koi below to feed at the center.")
+          .accessibilityHint(
+            edit == nil
+              ? "Use Feed koi below to feed at the center."
+              : "Use Find a spot below to preview a placement."
+          )
           .accessibilityAddTraits(.isButton)
           .accessibilityAction { act(at: PondPoint(x: 0.5, y: 0.48)) }
         VStack(spacing: 0) {
           header
           Spacer()
-          VStack(spacing: 18) {
-            if !model.food.isEmpty {
-              Text("\(model.food.count) grains drifting")
-                .font(.system(.caption2, design: .monospaced))
-                .tracking(1)
-                .foregroundStyle(PondPalette.paper.opacity(0.8))
-            }
-            Text(model.notice)
-              .font(.system(.footnote, design: .rounded))
-              .foregroundStyle(PondPalette.paper)
-              .multilineTextAlignment(.center)
-              .padding(.horizontal, 30)
-              .frame(minHeight: 34)
-              .accessibilityIdentifier("pondNotice")
+          VStack(spacing: 12) {
             if let edit {
               editorBar(edit)
             } else {
+              VStack(spacing: 7) {
+                if !model.food.isEmpty {
+                  Text("\(model.food.count) grains drifting")
+                    .font(.system(.caption2, design: .monospaced))
+                    .tracking(1)
+                    .foregroundStyle(PondPalette.paper.opacity(0.8))
+                }
+                Text(model.notice)
+                  .font(.system(.footnote, design: .rounded))
+                  .foregroundStyle(PondPalette.paper)
+                  .multilineTextAlignment(.center)
+                  .accessibilityIdentifier("pondNotice")
+              }
+              .padding(.horizontal, 18)
+              .padding(.vertical, 12)
+              .background(PondPalette.ink.opacity(0.76), in: RoundedRectangle(cornerRadius: 20))
+              .padding(.horizontal, 25)
               mainControls
             }
           }
           .padding(.bottom, 8)
+          .background {
+            GeometryReader { panel in
+              Color.clear.preference(key: PondPanelHeight.self, value: panel.size.height)
+            }
+          }
         }
+      }
+      .onPreferenceChange(PondPanelHeight.self) { height in
+        let fullHeight =
+          geometry.size.height + geometry.safeAreaInsets.top + geometry.safeAreaInsets.bottom
+        editingMaxY = min(
+          0.78, max(0.40, 1 - (height + geometry.safeAreaInsets.bottom + 38) / fullHeight))
       }
     }
     .background(PondPalette.jade)
@@ -90,9 +128,10 @@ struct PondHome: View {
       case .garden:
         GardenView(model: model) { mode in
           edit = mode
+          previewPoint = nil
           sheet = nil
           if case .place(let kind) = mode {
-            model.notice = "Tap open water to place your \(kind.title.lowercased())."
+            model.notice = "Choose a spot for your \(kind.title.lowercased())."
           } else {
             model.notice = "Tap a garden item to lift it. Paid pearls return."
           }
@@ -116,12 +155,15 @@ struct PondHome: View {
     HStack(alignment: .top) {
       VStack(alignment: .leading, spacing: 5) {
         Text("Koi Keeper")
-          .font(.system(size: 34, weight: .regular, design: .serif))
-        HStack(spacing: 6) {
-          Circle().fill(Color(hex: 0xC3D7A7)).frame(width: 5, height: 5)
-          Text("A LITTLE WORLD, SLOWLY")
-            .font(.system(size: 9, weight: .semibold, design: .monospaced))
-            .tracking(2)
+          .font(.system(size: min(titleSize, 46), weight: .regular, design: .serif))
+          .fixedSize(horizontal: false, vertical: true)
+        if !typeSize.isAccessibilitySize {
+          HStack(spacing: 6) {
+            Circle().fill(Color(hex: 0xC3D7A7)).frame(width: 5, height: 5)
+            Text("A LITTLE WORLD, SLOWLY")
+              .font(.system(size: 9, weight: .semibold, design: .monospaced))
+              .tracking(2)
+          }
         }
       }
       Spacer()
@@ -193,22 +235,40 @@ struct PondHome: View {
   }
 
   private func editorBar(_ mode: EditMode) -> some View {
-    HStack {
-      VStack(alignment: .leading, spacing: 5) {
-        Text(editTitle(mode)).font(.system(.title3, design: .serif))
-        Text(mode == .remove ? "Tap an item. Pearls return." : "Tap water to confirm")
-          .font(.caption).foregroundStyle(PondPalette.muted)
+    VStack(alignment: .leading, spacing: 12) {
+      HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 5) {
+          Text(editTitle(mode)).font(.system(.title3, design: .serif))
+          Text(mode == .remove ? "Tap an item. Pearls return." : "Tap water to preview")
+            .font(.caption).foregroundStyle(PondPalette.muted)
+        }
+        Spacer(minLength: 8)
+        Button(mode == .remove ? "Done" : "Cancel") {
+          edit = nil
+          previewPoint = nil
+          model.notice =
+            mode == .remove
+            ? "Your garden is saved. Stay a little while." : "Nothing changed. Stay a little while."
+        }
+        .font(.subheadline.weight(.semibold))
+        .padding(.horizontal, 12)
+        .frame(minHeight: 44)
+        .background(PondPalette.ink.opacity(0.08), in: Capsule())
       }
-      Spacer()
-      Button(mode == .remove ? "Done" : "Cancel") {
-        edit = nil
-        model.notice =
-          mode == .remove
-          ? "Your garden is saved. Stay a little while." : "Nothing changed. Stay a little while."
+      if case .place = mode {
+        Text(model.notice).font(.caption).foregroundStyle(PondPalette.muted)
+          .fixedSize(horizontal: false, vertical: true)
+          .accessibilityIdentifier("placementNotice")
+        HStack(spacing: 10) {
+          Button("Find a spot") { findSpot() }
+            .font(.subheadline.weight(.medium))
+            .frame(maxWidth: .infinity, minHeight: 48)
+            .background(PondPalette.ink.opacity(0.07), in: Capsule())
+          Button("Place here") { confirmPlacement() }
+            .buttonStyle(PondPrimaryStyle())
+            .disabled(!previewValid)
+        }
       }
-      .font(.subheadline.weight(.semibold))
-      .padding(14)
-      .background(PondPalette.ink.opacity(0.08), in: Capsule())
     }
     .foregroundStyle(PondPalette.ink)
     .padding(18)
@@ -228,8 +288,12 @@ struct PondHome: View {
     let success: Bool
     switch edit {
     case .place(let kind):
-      success = model.place(kind, at: point)
-      if success { edit = nil }
+      previewPoint = point
+      let issue =
+        point.y > editingMaxY
+        ? "Choose a spot above the controls." : model.placementIssue(kind, at: point)
+      model.notice = issue ?? "A lovely spot. Place here when you’re ready."
+      success = issue == nil
     case .remove:
       success = model.remove(at: point)
     case nil:
@@ -243,6 +307,40 @@ struct PondHome: View {
       }
     }
   }
+
+  private func findSpot() {
+    guard let previewKind else { return }
+    var candidates: [PondPoint] = []
+    for y in stride(from: 0.30, through: editingMaxY, by: 0.14) {
+      for x in stride(from: 0.22, through: 0.82, by: 0.15) {
+        let point = PondPoint(x: x, y: y)
+        if model.placementIssue(previewKind, at: point) == nil { candidates.append(point) }
+      }
+    }
+    guard !candidates.isEmpty else {
+      model.notice = "No clear spots here. Lift an item to make room."
+      return
+    }
+    let next =
+      previewPoint.flatMap { current in candidates.firstIndex(of: current) }.map {
+        ($0 + 1) % candidates.count
+      } ?? 0
+    act(at: candidates[next])
+  }
+
+  private func confirmPlacement() {
+    guard previewValid, let previewKind, let previewPoint else { return }
+    if model.place(previewKind, at: previewPoint) {
+      edit = nil
+      self.previewPoint = nil
+      if model.save.haptics { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
+    }
+  }
+}
+
+private struct PondPanelHeight: PreferenceKey {
+  static let defaultValue: CGFloat = 0
+  static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
 }
 
 struct PearlBalance: View {
@@ -261,6 +359,7 @@ struct PearlBalance: View {
 struct PaperPage<Content: View>: View {
   let eyebrow: String
   let title: String
+  var dismissLabel = "Return to pond"
   @ViewBuilder let content: Content
   @Environment(\.dismiss) private var dismiss
 
@@ -280,7 +379,7 @@ struct PaperPage<Content: View>: View {
             Image(systemName: "xmark").font(.system(size: 15)).frame(width: 44, height: 44)
               .background(PondPalette.ink.opacity(0.06), in: Circle())
           }
-          .accessibilityLabel("Return to pond")
+          .accessibilityLabel(dismissLabel)
         }
         content
       }
@@ -296,6 +395,7 @@ struct PaperPage<Content: View>: View {
 
 struct CollectionView: View {
   @ObservedObject var model: PondModel
+  @Environment(\.dynamicTypeSize) private var typeSize
   @State private var selected: KoiKind?
   var body: some View {
     PaperPage(eyebrow: "Living jewels", title: "Your collection") {
@@ -310,22 +410,30 @@ struct CollectionView: View {
         Button {
           selected = kind
         } label: {
-          HStack(spacing: 18) {
+          let layout =
+            typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 16))
+            : AnyLayout(HStackLayout(spacing: 18))
+          layout {
             KoiPortrait(kind: kind)
-              .frame(width: 124, height: 98)
+              .frame(width: typeSize.isAccessibilitySize ? 180 : 124, height: 98)
               .background(Color(hex: 0xD9E1CF), in: RoundedRectangle(cornerRadius: 22))
             VStack(alignment: .leading, spacing: 6) {
               Text(kind.name).font(.system(.title2, design: .serif))
+                .fixedSize(horizontal: false, vertical: true)
               Text(kind.subtitle).font(.caption).foregroundStyle(PondPalette.muted)
               let count = model.save.fish.filter { $0.kind == kind }.count
               Text(count > 0 ? "\(count) in your pond" : "\(kind.price) pearls to welcome")
                 .font(.system(.caption2, design: .rounded, weight: .semibold)).foregroundStyle(
                   PondPalette.gold)
             }
-            Spacer(minLength: 0)
-            Image(systemName: "chevron.right").font(.caption)
+            if !typeSize.isAccessibilitySize {
+              Spacer(minLength: 0)
+              Image(systemName: "chevron.right").font(.caption)
+            }
           }
           .padding(.vertical, 4)
+          .frame(maxWidth: .infinity, alignment: .leading)
         }
         .buttonStyle(.plain)
       }
@@ -347,7 +455,9 @@ struct FishDetail: View {
   private var canAdd: Bool { model.save.pearls >= kind.price && model.save.fish.count < 6 }
 
   var body: some View {
-    PaperPage(eyebrow: "The koi field guide", title: kind.name) {
+    PaperPage(
+      eyebrow: "The koi field guide", title: kind.name, dismissLabel: "Return to collection"
+    ) {
       KoiPortrait(kind: kind)
         .frame(height: 215)
         .frame(maxWidth: .infinity)
@@ -398,6 +508,7 @@ struct FishDetail: View {
 
 struct GardenView: View {
   @ObservedObject var model: PondModel
+  @Environment(\.dynamicTypeSize) private var typeSize
   var select: (EditMode) -> Void
   var body: some View {
     PaperPage(eyebrow: "Make it yours", title: "A garden, afloat") {
@@ -406,17 +517,21 @@ struct GardenView: View {
         Spacer()
         PearlBalance(amount: model.save.pearls)
       }
-      Text("Choose a small addition, then tap the water to find its place.")
+      Text("Choose a small addition, preview its place, then make it yours.")
         .font(.system(.body, design: .serif)).foregroundStyle(PondPalette.muted)
       ForEach(GardenKind.allCases) { kind in
         VStack(spacing: 8) {
-          HStack(spacing: 18) {
+          let layout =
+            typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+            : AnyLayout(HStackLayout(spacing: 18))
+          layout {
             GardenPortrait(kind: kind).frame(width: 90, height: 90)
             VStack(alignment: .leading, spacing: 6) {
               Text(kind.title).font(.system(.title2, design: .serif))
               Text(kind.detail).font(.caption).foregroundStyle(PondPalette.muted)
             }
-            Spacer(minLength: 0)
+            if !typeSize.isAccessibilitySize { Spacer(minLength: 0) }
           }
           Button("Place \(kind.title.lowercased()) · \(kind.price) pearls") { select(.place(kind)) }
             .buttonStyle(PondPrimaryStyle())
@@ -434,6 +549,27 @@ struct GardenView: View {
         "Lift items to rearrange. Purchased items return all their pearls. Your first three garden pieces are a gift."
       )
       .font(.footnote).foregroundStyle(PondPalette.muted)
+      if !model.save.garden.isEmpty {
+        DisclosureGroup("Lift from your garden") {
+          ForEach(Array(model.save.garden.enumerated()), id: \.element.id) { index, item in
+            Button {
+              model.remove(at: item.point)
+            } label: {
+              HStack {
+                Text("\(index + 1). \(item.kind.title)")
+                Spacer()
+                Text("Lift · \(item.paid) back")
+              }
+              .font(.subheadline)
+              .padding(.vertical, 12)
+            }
+            .accessibilityLabel(
+              "Lift \(item.kind.title) number \(index + 1), return \(item.paid) pearls")
+          }
+        }
+        .font(.subheadline)
+        .tint(PondPalette.ink)
+      }
     }
   }
 }

@@ -205,20 +205,8 @@ final class PondModel: ObservableObject {
 
   @discardableResult
   func place(_ kind: GardenKind, at point: PondPoint) -> Bool {
-    guard point.isInside else {
-      notice = "Place it in the open water, away from the edges."
-      return false
-    }
-    guard save.garden.count < 16 else {
-      notice = "Your garden is full. Lift an item to make room."
-      return false
-    }
-    guard save.garden.allSatisfy({ $0.point.distance(to: point) > 0.12 }) else {
-      notice = "A little more room. Try a clear patch of water."
-      return false
-    }
-    guard save.pearls >= kind.price else {
-      notice = "Feed your koi to earn a few more pearls."
+    if let issue = placementIssue(kind, at: point) {
+      notice = issue
       return false
     }
     save.pearls -= kind.price
@@ -226,6 +214,16 @@ final class PondModel: ObservableObject {
     notice = "\(kind.title) planted. Your pond is saved."
     persist()
     return true
+  }
+
+  func placementIssue(_ kind: GardenKind, at point: PondPoint) -> String? {
+    guard point.isInside else { return "Choose open water, away from the edges." }
+    guard save.garden.count < 16 else { return "Your garden is full. Lift an item to make room." }
+    guard save.garden.allSatisfy({ $0.point.distance(to: point) > 0.12 }) else {
+      return "A little more room. Try a clear patch of water."
+    }
+    guard save.pearls >= kind.price else { return "Feed your koi to earn a few more pearls." }
+    return nil
   }
 
   @discardableResult

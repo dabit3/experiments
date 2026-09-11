@@ -82,6 +82,20 @@ final class PondModelTests: XCTestCase {
     XCTAssertEqual(reset.save.pearls, 12)
   }
 
+  func testPlacementPreviewDoesNotSpendAndRechecksAtConfirmation() {
+    let pond = model()
+    let target = PondPoint(x: 0.5, y: 0.5)
+    XCTAssertNil(pond.placementIssue(.stone, at: target))
+    XCTAssertEqual(pond.save.pearls, 12)
+    XCTAssertEqual(pond.save.garden.count, 3)
+    XCTAssertNotNil(pond.placementIssue(.stone, at: pond.save.garden[0].point))
+    XCTAssertTrue(pond.addFish(.kohaku))
+    XCTAssertNotNil(pond.placementIssue(.stone, at: target))
+    XCTAssertFalse(pond.place(.stone, at: target))
+    XCTAssertEqual(pond.save.pearls, 0)
+    XCTAssertEqual(pond.save.garden.count, 3)
+  }
+
   func testCorruptAndOutOfRangeSavesFallBackSafely() throws {
     let defaults = UserDefaults(suiteName: "tests.\(UUID().uuidString)")!
     defaults.set(Data("invalid".utf8), forKey: "koi-keeper.pond.v1")
