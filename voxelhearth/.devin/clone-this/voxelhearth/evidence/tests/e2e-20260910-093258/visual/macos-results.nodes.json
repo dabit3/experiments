@@ -1,0 +1,20 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-093258/visual/web-results.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-093258/visual/macos-results.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  1280,
+  800
+ ],
+ "nodes": 198,
+ "matched": 198,
+ "exact": 198,
+ "within_tolerance": [],
+ "mismatched": [],
+ "mismatched_count": 0,
+ "ok": true
+}

@@ -1,0 +1,34 @@
+{
+  "title": "Voxelhearth — shared arcade world",
+  "subtitle": "af9795d · real Chrome + iPhone 17 Simulator · normal local server",
+  "sources": {
+    "screen": {
+      "video": "/Users/devin/screencasts/vh-arcade-af9795d/vh-arcade-af9795d-clean.mp4",
+      "label": "Web / Chrome (left)     |     iOS / iPhone 17 Simulator (right)"
+    }
+  },
+  "chapters": [
+    {"title":"Movement fixed","caption":"Up approaches; down recedes; strafes and release work.","from":0,"to":16,"notes":["Real dragged joystick, relative to oak and avatar","Idle time shortened; no director input"]},
+    {"title":"Name keyboard","caption":"Phone name form scrolls above the keyboard.","from":28,"to":32.5,"notes":["Regression: retained name, Server Address and Done reachable"]},
+    {"title":"Lobby focus","caption":"Resized draft sends to both; new draft retains focus.","from":46,"to":56,"notes":["Fresh room BRU2K · two humans · Survival · creatures OFF"]},
+    {"title":"Still-touch break","caption":"Both cameras show the same missing oak log.","from":74,"to":80,"notes":["Stationary hold: no touch-drag workaround"]},
+    {"title":"Phone placement","caption":"Phone torch appears on both cameras.","from":80,"to":83.5,"notes":["Place button · torch count 8 → 7"]},
+    {"title":"Web shared edits","caption":"Web removes and replaces that same torch.","from":84,"to":92,"notes":["Locked right-click · no browser context menu","Both cameras show removal and replacement"]},
+    {"title":"Two-way chat","caption":"Both gameplay messages arrive in both feeds.","from":102,"to":106.4,"notes":["web game hello · ios game hello"]},
+    {"title":"Inventory + crafting","caption":"One phone log becomes four planks; moved items persist.","from":117,"to":124,"notes":["Ivory inventory panels · reopen retains moved torches"]},
+    {"title":"Pause Options","caption":"Held sliders change; Sound OFF persists on reopen.","from":134,"to":143,"notes":["No pause-label bleed · full phone helper · sound restored afterward"]},
+    {"title":"Reload recovery","caption":"Plain Web reload retains location, roster and inventory.","from":151,"to":160.5,"notes":["BRU2K · web score 2 · exactly two players · eight moved torches"]},
+    {"title":"Results → lobby","caption":"Scores and client hashes match; final chat survives.","from":163.5,"to":172.4,"notes":["ios 5 / web 2 · phone fingerprints revealed by scrolling","Host returns both clients to BRU2K lobby"]}
+  ],
+  "checks": [
+    {"name":"Joystick four directions + release","ok":true},
+    {"name":"Phone name/chat keyboard regressions","ok":true},
+    {"name":"Visibly shared placement and breaking","ok":true},
+    {"name":"Two-way gameplay chat","ok":true},
+    {"name":"Inventory move + one log → four planks","ok":true},
+    {"name":"Options controls, persistence and layout","ok":true},
+    {"name":"Plain Web reload preserves state","ok":true},
+    {"name":"Matching client results + return to lobby","ok":true}
+  ],
+  "footer": "Selected manual checks only · Android/native macOS/physical devices not tested · no universal FPS or authoritative-server-parity claim"
+}

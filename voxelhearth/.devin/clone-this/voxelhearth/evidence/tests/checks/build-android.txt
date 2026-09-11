@@ -1,0 +1,3 @@
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleDebug'...                             28.7s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk

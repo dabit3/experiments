@@ -1,0 +1,122 @@
+[
+  {
+    "t": 0.08,
+    "title": "01-movement-baseline",
+    "caption": "Rebuilt af9795d facing oak and Web avatar before movement",
+    "platform": "both"
+  },
+  {
+    "t": 25.77,
+    "title": "02-up-release",
+    "caption": "Up approaches oak; released stick centered and camera stationary",
+    "platform": "both"
+  },
+  {
+    "t": 63.84,
+    "title": "03-movement-complete",
+    "caption": "All four joystick directions and release verified relative to oak/avatar",
+    "platform": "both"
+  },
+  {
+    "t": 191.15,
+    "title": "04-name-keyboard",
+    "caption": "Name draft retained; touch scroll exposes Server Address and Done above keyboard",
+    "platform": "both"
+  },
+  {
+    "t": 304.57,
+    "title": "05-lobby-focus",
+    "caption": "Fresh BRU2K: phone message sent to both; new draft retains focus after resize",
+    "platform": "both"
+  },
+  {
+    "t": 404.11,
+    "title": "06-oak-before",
+    "caption": "Both cameras see same intact oak beside snow before stationary touch break",
+    "platform": "both"
+  },
+  {
+    "t": 433.49,
+    "title": "07-oak-gap",
+    "caption": "Stationary touch breaks upper trunk; both cameras show same missing log",
+    "platform": "both"
+  },
+  {
+    "t": 453.56,
+    "title": "08-shared-phone-torch",
+    "caption": "iOS Place 8 to 7; torch visibly appears in front of stump on both cameras",
+    "platform": "both"
+  },
+  {
+    "t": 482.03,
+    "title": "09-shared-removal",
+    "caption": "Web left hold removes phone torch; both show no torch; Web count 8 to 9",
+    "platform": "both"
+  },
+  {
+    "t": 496.56,
+    "title": "10-shared-web-placement",
+    "caption": "Web locked right-click puts torch back; both cameras show same torch; count 9 to 8",
+    "platform": "both"
+  },
+  {
+    "t": 599.33,
+    "title": "11-game-chat",
+    "caption": "Both game histories show web game hello and iOS game hello",
+    "platform": "both"
+  },
+  {
+    "t": 669.37,
+    "title": "12-inventory-before",
+    "caption": "Web eight torches moved into upper-right inventory; phone has one log and craftable four planks",
+    "platform": "both"
+  },
+  {
+    "t": 694.19,
+    "title": "13-crafted-reopened",
+    "caption": "Phone log consumed into four planks; seven torches moved and retained after reopening",
+    "platform": "both"
+  },
+  {
+    "t": 795.73,
+    "title": "14-options-persist",
+    "caption": "Web 121 percent and iOS 151 percent sensitivity retained; Sound OFF on both; clean helper/layering",
+    "platform": "both"
+  },
+  {
+    "t": 856.29,
+    "title": "15-reload-baseline",
+    "caption": "Nondefault Web location by stump; BRU2K exactly two players; inventory has eight moved torches",
+    "platform": "both"
+  },
+  {
+    "t": 881.23,
+    "title": "16-reload-restored",
+    "caption": "Plain reload retained exact oak viewpoint BRU2K name web score2 and two-player roster",
+    "platform": "both"
+  },
+  {
+    "t": 896.16,
+    "title": "17-reload-inventory",
+    "caption": "Eight torches remain in moved top-right inventory slot after plain reload",
+    "platform": "both"
+  },
+  {
+    "t": 930.35,
+    "title": "18-results",
+    "caption": "Both results show ios5 web2 and world 629922f4; Web final Match over chat present",
+    "platform": "both"
+  },
+  {
+    "t": 956.32,
+    "title": "19-result-hashes",
+    "caption": "Phone scroll exposes matching world and chat fingerprints; final Match over visible on Web",
+    "platform": "both"
+  },
+  {
+    "t": 988.57,
+    "title": "20-return-lobby",
+    "caption": "Both return BRU2K two players; final Match over chat readable on both including phone",
+    "platform": "both"
+  }
+]

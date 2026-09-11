@@ -1,0 +1,33 @@
+# clean checkout build — commit c6b8ad9 (iteration 7 source; README-only edit follows)
+
+clean checkout c6b8ad96718124ea1e133a1be86a7c77390c62ab 2026-09-10T16:32:35Z
+== packages/voxelhearth_core: pub get / format / analyze
+format OK
+No issues found!
+== server: pub get / format / analyze
+format OK
+No issues found!
+== app: pub get / format / analyze
+format OK
+No issues found!
+== packages/voxelhearth_core: dart test
+00:00 +19: All tests passed!
+== server: dart test (no test dir; server covered by core tests + e2e)
+                                      (auto-detected by default)
+== flutter build web --release
+Compiling lib/main.dart for the Web...                             23.2s
+✓ Built build/web
+BUILD OK: web --release
+== flutter build macos --release
+warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
+✓ Built build/macos/Build/Products/Release/Voxelhearth.app (46.0MB)
+BUILD OK: macos --release
+== flutter build ios --simulator
+Xcode build done.                                           49.5s
+✓ Built build/ios/iphonesimulator/Runner.app
+BUILD OK: ios --simulator
+== flutter build apk --release
+Running Gradle task 'assembleRelease'...                           57.1s
+✓ Built build/app/outputs/flutter-apk/app-release.apk (52.9MB)
+BUILD OK: apk --release
+done 2026-09-10T16:36:09Z

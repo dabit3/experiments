@@ -1,0 +1,20 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-trio-af9795d-isolated/visual/web-results.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-trio-af9795d-isolated/visual/macos-results.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  1280,
+  800
+ ],
+ "nodes": 196,
+ "matched": 196,
+ "exact": 196,
+ "within_tolerance": [],
+ "mismatched": [],
+ "mismatched_count": 0,
+ "ok": true
+}

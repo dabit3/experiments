@@ -1,0 +1,8 @@
+kern.hv_support=0
+ProductName:		macOS
+ProductVersion:		26.5.2
+BuildVersion:		25F84
+accel:
+0
+Hypervisor.Framework OS X Version 26.5
+accel

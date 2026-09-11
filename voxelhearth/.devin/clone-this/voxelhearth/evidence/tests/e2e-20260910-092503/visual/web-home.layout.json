@@ -1,0 +1,253 @@
+{
+ "ok": true,
+ "screen": "home",
+ "viewport": [
+  1280,
+  800
+ ],
+ "dpr": 1,
+ "nodes": [
+  {
+   "text": "VOXELHEARTH",
+   "x": 367,
+   "y": 84,
+   "w": 546,
+   "h": 89
+  },
+  {
+   "text": "VOXELHEARTH",
+   "x": 367,
+   "y": 84,
+   "w": 546,
+   "h": 89
+  },
+  {
+   "text": "VOXELHEARTH",
+   "x": 367,
+   "y": 84,
+   "w": 546,
+   "h": 89
+  },
+  {
+   "text": "An original voxel sandbox",
+   "x": 476,
+   "y": 179,
+   "w": 328,
+   "h": 30
+  },
+  {
+   "text": "An original voxel sandbox",
+   "x": 476,
+   "y": 179,
+   "w": 328,
+   "h": 30
+  },
+  {
+   "text": "An original voxel sandbox",
+   "x": 476,
+   "y": 179,
+   "w": 328,
+   "h": 30
+  },
+  {
+   "text": "Keep the hearth lit!",
+   "x": 830,
+   "y": 211,
+   "w": 266,
+   "h": 30
+  },
+  {
+   "text": "Keep the hearth lit!",
+   "x": 830,
+   "y": 211,
+   "w": 266,
+   "h": 30
+  },
+  {
+   "text": "Keep the hearth lit!",
+   "x": 830,
+   "y": 211,
+   "w": 266,
+   "h": 30
+  },
+  {
+   "text": "Play Online",
+   "x": 573,
+   "y": 333,
+   "w": 134,
+   "h": 30
+  },
+  {
+   "text": "Play Online",
+   "x": 573,
+   "y": 333,
+   "w": 134,
+   "h": 30
+  },
+  {
+   "text": "Play Online",
+   "x": 573,
+   "y": 333,
+   "w": 134,
+   "h": 30
+  },
+  {
+   "text": "Create World",
+   "x": 552,
+   "y": 405,
+   "w": 176,
+   "h": 30
+  },
+  {
+   "text": "Create World",
+   "x": 552,
+   "y": 405,
+   "w": 176,
+   "h": 30
+  },
+  {
+   "text": "Create World",
+   "x": 552,
+   "y": 405,
+   "w": 176,
+   "h": 30
+  },
+  {
+   "text": "Player Name: Hearthling",
+   "x": 481,
+   "y": 477,
+   "w": 317,
+   "h": 30
+  },
+  {
+   "text": "Player Name: Hearthling",
+   "x": 481,
+   "y": 477,
+   "w": 317,
+   "h": 30
+  },
+  {
+   "text": "Player Name: Hearthling",
+   "x": 481,
+   "y": 477,
+   "w": 317,
+   "h": 30
+  },
+  {
+   "text": "Options...",
+   "x": 426,
+   "y": 585,
+   "w": 123,
+   "h": 30
+  },
+  {
+   "text": "Options...",
+   "x": 426,
+   "y": 585,
+   "w": 123,
+   "h": 30
+  },
+  {
+   "text": "Options...",
+   "x": 426,
+   "y": 585,
+   "w": 123,
+   "h": 30
+  },
+  {
+   "text": "How to Play",
+   "x": 717,
+   "y": 585,
+   "w": 152,
+   "h": 30
+  },
+  {
+   "text": "How to Play",
+   "x": 717,
+   "y": 585,
+   "w": 152,
+   "h": 30
+  },
+  {
+   "text": "How to Play",
+   "x": 717,
+   "y": 585,
+   "w": 152,
+   "h": 30
+  },
+  {
+   "text": "Voxelhearth 1.0 · Web",
+   "x": 6,
+   "y": 764,
+   "w": 277,
+   "h": 30
+  },
+  {
+   "text": "Voxelhearth 1.0 · Web",
+   "x": 6,
+   "y": 764,
+   "w": 277,
+   "h": 30
+  },
+  {
+   "text": "Voxelhearth 1.0 · Web",
+   "x": 6,
+   "y": 764,
+   "w": 277,
+   "h": 30
+  },
+  {
+   "text": "Connected · 1 ms",
+   "x": 301,
+   "y": 764,
+   "w": 215,
+   "h": 30
+  },
+  {
+   "text": "Connected · 1 ms",
+   "x": 301,
+   "y": 764,
+   "w": 215,
+   "h": 30
+  },
+  {
+   "text": "Connected · 1 ms",
+   "x": 301,
+   "y": 764,
+   "w": 215,
+   "h": 30
+  },
+  {
+   "text": "Original game & art. Not affiliated with any other title.",
+   "x": 532,
+   "y": 734,
+   "w": 742,
+   "h": 30
+  },
+  {
+   "text": "Original game & art. Not affiliated with any other title.",
+   "x": 532,
+   "y": 734,
+   "w": 742,
+   "h": 30
+  },
+  {
+   "text": "Original game & art. Not affiliated with any other title.",
+   "x": 532,
+   "y": 734,
+   "w": 742,
+   "h": 30
+  },
+  {
+   "text": "Original game & art. Not affiliated with any other title.",
+   "x": 532,
+   "y": 734,
+   "w": 742,
+   "h": 30
+  }
+ ],
+ "t": "drive_done",
+ "id": "d66",
+ "player": "Web",
+ "playerId": "p-000f6823"
+}

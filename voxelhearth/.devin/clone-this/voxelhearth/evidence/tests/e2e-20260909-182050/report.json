@@ -1,0 +1,378 @@
+{
+  "startedAt": "2026-09-10T01:21:52.795Z",
+  "platforms": [
+    "web",
+    "ios",
+    "macos"
+  ],
+  "room": "HEARTH",
+  "seed": 1234,
+  "steps": [
+    {
+      "label": "launch web",
+      "ms": 4092,
+      "ok": true
+    },
+    {
+      "label": "launch ios",
+      "ms": 1658,
+      "ok": true
+    },
+    {
+      "label": "launch macos",
+      "ms": 74,
+      "ok": true
+    },
+    {
+      "label": "connect Web",
+      "ms": 18,
+      "ok": true
+    },
+    {
+      "label": "connect iOS",
+      "ms": 2026,
+      "ok": true
+    },
+    {
+      "label": "connect Mac",
+      "ms": 2015,
+      "ok": true
+    },
+    {
+      "label": "create room",
+      "ms": 87,
+      "ok": true
+    },
+    {
+      "label": "host in lobby",
+      "ms": 210,
+      "ok": true
+    },
+    {
+      "label": "iOS joins",
+      "ms": 3,
+      "ok": true
+    },
+    {
+      "label": "Mac joins",
+      "ms": 3,
+      "ok": true
+    },
+    {
+      "label": "all in lobby",
+      "ms": 109,
+      "ok": true
+    },
+    {
+      "label": "all ready",
+      "ms": 312,
+      "ok": true
+    },
+    {
+      "label": "start match",
+      "ms": 2,
+      "ok": true
+    },
+    {
+      "label": "all in game",
+      "ms": 2459,
+      "ok": true
+    },
+    {
+      "label": "host state",
+      "ms": 120,
+      "ok": true
+    },
+    {
+      "label": "give blocks",
+      "ms": 169,
+      "ok": true
+    },
+    {
+      "label": "give picks",
+      "ms": 197,
+      "ok": true
+    },
+    {
+      "label": "select blocks",
+      "ms": 294,
+      "ok": true
+    },
+    {
+      "label": "Web places 41,34,45",
+      "ms": 738,
+      "ok": true
+    },
+    {
+      "label": "iOS places 42,34,45",
+      "ms": 50,
+      "ok": true
+    },
+    {
+      "label": "Mac places 40,34,45",
+      "ms": 573,
+      "ok": true
+    },
+    {
+      "label": "Web places 41,35,45",
+      "ms": 279,
+      "ok": true
+    },
+    {
+      "label": "iOS places 42,35,45",
+      "ms": 45,
+      "ok": true
+    },
+    {
+      "label": "Mac places 40,35,45",
+      "ms": 47,
+      "ok": true
+    },
+    {
+      "label": "select picks",
+      "ms": 95,
+      "ok": true
+    },
+    {
+      "label": "Web breaks 42,35,45",
+      "ms": 1109,
+      "ok": true
+    },
+    {
+      "label": "iOS breaks 40,35,45",
+      "ms": 1070,
+      "ok": true
+    },
+    {
+      "label": "Mac breaks 41,35,45",
+      "ms": 1096,
+      "ok": true
+    },
+    {
+      "label": "Web chats",
+      "ms": 100,
+      "ok": true
+    },
+    {
+      "label": "iOS chats",
+      "ms": 4,
+      "ok": true
+    },
+    {
+      "label": "Mac chats",
+      "ms": 2,
+      "ok": true
+    },
+    {
+      "label": "open chat everywhere",
+      "ms": 95,
+      "ok": true
+    },
+    {
+      "label": "close chat",
+      "ms": 285,
+      "ok": true
+    },
+    {
+      "label": "Web drops connection and rejoins",
+      "ms": 2273,
+      "ok": true
+    },
+    {
+      "label": "rejoined client is in-match again",
+      "ms": 131,
+      "ok": true
+    },
+    {
+      "label": "hashes",
+      "ms": 817,
+      "ok": true
+    },
+    {
+      "label": "end match",
+      "ms": 156,
+      "ok": true
+    },
+    {
+      "label": "all on results",
+      "ms": 60042,
+      "ok": false,
+      "error": "iOS wait_screen failed: {\"ok\":false,\"screen\":\"playing\",\"t\":\"drive_done\",\"id\":\"d75\",\"player\":\"iOS\",\"playerId\":\"p-7bddcc6c\"}"
+    }
+  ],
+  "checks": [
+    {
+      "name": "all players in one lobby",
+      "ok": true,
+      "detail": "Bot Ashwick(bot), Web(web), iOS(ios), Mac(macos)"
+    },
+    {
+      "name": "found a flat row for the shared structure",
+      "ok": true,
+      "detail": "[[41,34,45],[42,34,45],[40,34,45]]"
+    },
+    {
+      "name": "dropped client rejoined the same room",
+      "ok": true,
+      "detail": "{\"ok\":true,\"dropped\":true,\"rejoined\":true,\"room\":\"HEARTH\",\"phase\":\"playing\",\"phaseBefore\":\"playing\",\"state\":\"connected\",\"error\":null,\"t\":\"drive_done\",\"id\":\"d65\",\"player\":\"Web\",\"playerId\":\"p-000f6823\"}"
+    },
+    {
+      "name": "every client answered the hash request",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "world hash identical on all clients + server",
+      "ok": true,
+      "detail": "{\"server\":\"5778c6b4\",\"clients\":{\"Web\":\"5778c6b4\",\"iOS\":\"5778c6b4\",\"Mac\":\"5778c6b4\"}}"
+    },
+    {
+      "name": "chat hash identical on all clients + server",
+      "ok": true,
+      "detail": "{\"server\":\"65d71bfe\",\"clients\":{\"Web\":\"65d71bfe\",\"iOS\":\"65d71bfe\",\"Mac\":\"65d71bfe\"}}"
+    },
+    {
+      "name": "structure region identical on all clients",
+      "ok": true,
+      "detail": "\"12e88ebe\""
+    },
+    {
+      "name": "server structure matches script (lower row placed, upper row broken)",
+      "ok": true,
+      "detail": "[9,9,9,0,0,0]"
+    },
+    {
+      "name": "chat history identical on all clients",
+      "ok": true,
+      "detail": "11 lines"
+    },
+    {
+      "name": "every player line present in chat",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "failures": [
+    "exception: iOS wait_screen failed: {\"ok\":false,\"screen\":\"playing\",\"t\":\"drive_done\",\"id\":\"d75\",\"player\":\"iOS\",\"playerId\":\"p-7bddcc6c\"}"
+  ],
+  "fps": {
+    "Web": 20,
+    "iOS": 21,
+    "Mac": 29
+  },
+  "gameplayState": {
+    "Web": {
+      "ok": true,
+      "x": 41.5,
+      "y": 34,
+      "z": 42.5,
+      "yaw": 0.322,
+      "pitch": -0.038,
+      "phase": "playing",
+      "hp": 20,
+      "food": 20,
+      "score": 3,
+      "selected": 4,
+      "held": [
+        111,
+        1
+      ],
+      "worldHash": "5778c6b4",
+      "chatHash": "65d71bfe",
+      "chatLines": 11,
+      "fps": 20,
+      "pixelScale": 1.5000000000000004,
+      "players": 4,
+      "ready": true,
+      "ground": true,
+      "spawn": [
+        41.5,
+        34,
+        42.5
+      ],
+      "spawnReady": true,
+      "t": "drive_done",
+      "id": "d70",
+      "player": "Web",
+      "playerId": "p-000f6823"
+    },
+    "iOS": {
+      "ok": true,
+      "x": 41.5,
+      "y": 34,
+      "z": 42.5,
+      "yaw": -0.3217505543966422,
+      "pitch": -0.037929132924045615,
+      "phase": "playing",
+      "hp": 20,
+      "food": 20,
+      "score": 3,
+      "selected": 4,
+      "held": [
+        111,
+        1
+      ],
+      "worldHash": "5778c6b4",
+      "chatHash": "65d71bfe",
+      "chatLines": 11,
+      "fps": 21,
+      "pixelScale": 3,
+      "players": 4,
+      "ready": true,
+      "ground": true,
+      "spawn": [
+        41.5,
+        34,
+        42.5
+      ],
+      "spawnReady": true,
+      "t": "drive_done",
+      "id": "d71",
+      "player": "iOS",
+      "playerId": "p-7bddcc6c"
+    },
+    "Mac": {
+      "ok": true,
+      "x": 41.5,
+      "y": 34,
+      "z": 42.5,
+      "yaw": 0,
+      "pitch": -0.03997868712328919,
+      "phase": "playing",
+      "hp": 20,
+      "food": 20,
+      "score": 3,
+      "selected": 4,
+      "held": [
+        111,
+        1
+      ],
+      "worldHash": "5778c6b4",
+      "chatHash": "65d71bfe",
+      "chatLines": 11,
+      "fps": 29,
+      "pixelScale": 3,
+      "players": 4,
+      "ready": true,
+      "ground": true,
+      "spawn": [
+        41.5,
+        34,
+        42.5
+      ],
+      "spawnReady": true,
+      "t": "drive_done",
+      "id": "d72",
+      "player": "Mac",
+      "playerId": "p-47bd5a7a"
+    }
+  },
+  "recordingLayout": [
+    "web",
+    "ios",
+    "macos"
+  ],
+  "recording": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-182050/four-way-recording.mp4",
+  "finishedAt": "2026-09-10T01:23:51.534Z",
+  "passed": false
+}

@@ -1,0 +1,421 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-results.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-results.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  874,
+  402
+ ],
+ "nodes": 198,
+ "matched": 0,
+ "exact": 0,
+ "within_tolerance": [],
+ "mismatched": [
+  {
+   "reference": {
+    "text": "You lit the hearth brightest!",
+    "x": 252,
+    "y": 30,
+    "w": 776,
+    "h": 60
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "You lit the hearth brightest!",
+    "x": 252,
+    "y": 30,
+    "w": 776,
+    "h": 60
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "You lit the hearth brightest!",
+    "x": 252,
+    "y": 30,
+    "w": 776,
+    "h": 60
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Fixture world  ·  Survival  ·  seed 1234",
+    "x": 402,
+    "y": 96,
+    "w": 476,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Fixture world  ·  Survival  ·  seed 1234",
+    "x": 402,
+    "y": 96,
+    "w": 476,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Fixture world  ·  Survival  ·  seed 1234",
+    "x": 402,
+    "y": 96,
+    "w": 476,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Scoreboard",
+    "x": 33,
+    "y": 156,
+    "w": 893,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Scoreboard",
+    "x": 33,
+    "y": 156,
+    "w": 893,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Scoreboard",
+    "x": 33,
+    "y": 156,
+    "w": 893,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "#",
+    "x": 33,
+    "y": 198,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "#",
+    "x": 33,
+    "y": 198,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "#",
+    "x": 33,
+    "y": 198,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player",
+    "x": 69,
+    "y": 198,
+    "w": 305,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player",
+    "x": 69,
+    "y": 198,
+    "w": 305,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player",
+    "x": 69,
+    "y": 198,
+    "w": 305,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player",
+    "x": 69,
+    "y": 198,
+    "w": 305,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Placed",
+    "x": 374,
+    "y": 198,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Placed",
+    "x": 374,
+    "y": 198,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Placed",
+    "x": 374,
+    "y": 198,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Broken",
+    "x": 488,
+    "y": 198,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Broken",
+    "x": 488,
+    "y": 198,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Broken",
+    "x": 488,
+    "y": 198,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Crafted",
+    "x": 602,
+    "y": 198,
+    "w": 132,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Crafted",
+    "x": 602,
+    "y": 198,
+    "w": 132,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Crafted",
+    "x": 602,
+    "y": 198,
+    "w": 132,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Kills",
+    "x": 734,
+    "y": 198,
+    "w": 90,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Kills",
+    "x": 734,
+    "y": 198,
+    "w": 90,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Kills",
+    "x": 734,
+    "y": 198,
+    "w": 90,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Score",
+    "x": 824,
+    "y": 198,
+    "w": 102,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Score",
+    "x": 824,
+    "y": 198,
+    "w": 102,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Score",
+    "x": 824,
+    "y": 198,
+    "w": 102,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "1",
+    "x": 33,
+    "y": 240,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "1",
+    "x": 33,
+    "y": 240,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "1",
+    "x": 33,
+    "y": 240,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 69,
+    "y": 240,
+    "w": 144,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 69,
+    "y": 240,
+    "w": 144,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 69,
+    "y": 240,
+    "w": 144,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 69,
+    "y": 240,
+    "w": 144,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "  Web",
+    "x": 213,
+    "y": 240,
+    "w": 64,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "  Web",
+    "x": 213,
+    "y": 240,
+    "w": 64,
+    "h": 30
+   },
+   "actual": null
+  }
+ ],
+ "mismatched_count": 382,
+ "ok": false
+}

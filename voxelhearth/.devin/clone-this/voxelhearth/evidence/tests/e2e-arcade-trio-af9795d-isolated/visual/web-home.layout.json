@@ -1,0 +1,211 @@
+{
+ "ok": true,
+ "screen": "home",
+ "viewport": [
+  1280,
+  800
+ ],
+ "dpr": 1,
+ "nodes": [
+  {
+   "text": "",
+   "x": 58,
+   "y": 30,
+   "w": 28,
+   "h": 28
+  },
+  {
+   "text": "HEARTHBOUND ADVENTURES",
+   "x": 94,
+   "y": 37,
+   "w": 230,
+   "h": 14
+  },
+  {
+   "text": "HEARTHBOUND ADVENTURES",
+   "x": 94,
+   "y": 37,
+   "w": 230,
+   "h": 14
+  },
+  {
+   "text": "󰊿",
+   "x": 1104,
+   "y": 36,
+   "w": 16,
+   "h": 16
+  },
+  {
+   "text": "ONLINE · 1 ms",
+   "x": 1127,
+   "y": 37,
+   "w": 83,
+   "h": 14
+  },
+  {
+   "text": "ONLINE · 1 ms",
+   "x": 1127,
+   "y": 37,
+   "w": 83,
+   "h": 14
+  },
+  {
+   "text": "ONLINE · 1 ms",
+   "x": 1127,
+   "y": 37,
+   "w": 83,
+   "h": 14
+  },
+  {
+   "text": "BIG WORLDS. BETTER TOGETHER.",
+   "x": 58,
+   "y": 158,
+   "w": 294,
+   "h": 14
+  },
+  {
+   "text": "BIG WORLDS. BETTER TOGETHER.",
+   "x": 58,
+   "y": 158,
+   "w": 294,
+   "h": 14
+  },
+  {
+   "text": "VOXEL\nHEARTH",
+   "x": 58,
+   "y": 190,
+   "w": 354,
+   "h": 150
+  },
+  {
+   "text": "VOXEL\nHEARTH",
+   "x": 58,
+   "y": 190,
+   "w": 354,
+   "h": 150
+  },
+  {
+   "text": "A spark. A block. An entire world of possibility.\nBring your friends. Leave your mark.",
+   "x": 58,
+   "y": 364,
+   "w": 396,
+   "h": 54
+  },
+  {
+   "text": "A spark. A block. An entire world of possibility.\nBring your friends. Leave your mark.",
+   "x": 58,
+   "y": 364,
+   "w": 396,
+   "h": 54
+  },
+  {
+   "text": "Play Online",
+   "x": 232,
+   "y": 469,
+   "w": 141,
+   "h": 30
+  },
+  {
+   "text": "Play Online",
+   "x": 232,
+   "y": 469,
+   "w": 141,
+   "h": 30
+  },
+  {
+   "text": "Create World",
+   "x": 94,
+   "y": 546,
+   "w": 167,
+   "h": 30
+  },
+  {
+   "text": "Create World",
+   "x": 94,
+   "y": 546,
+   "w": 167,
+   "h": 30
+  },
+  {
+   "text": "Player: Hearthling",
+   "x": 316,
+   "y": 546,
+   "w": 225,
+   "h": 30
+  },
+  {
+   "text": "Player: Hearthling",
+   "x": 316,
+   "y": 546,
+   "w": 225,
+   "h": 30
+  },
+  {
+   "text": "Options...",
+   "x": 115,
+   "y": 616,
+   "w": 123,
+   "h": 30
+  },
+  {
+   "text": "Options...",
+   "x": 115,
+   "y": 616,
+   "w": 123,
+   "h": 30
+  },
+  {
+   "text": "How to Play",
+   "x": 354,
+   "y": 616,
+   "w": 147,
+   "h": 30
+  },
+  {
+   "text": "How to Play",
+   "x": 354,
+   "y": 616,
+   "w": 147,
+   "h": 30
+  },
+  {
+   "text": "01 / EXPLORE · BUILD · BELONG",
+   "x": 58,
+   "y": 759,
+   "w": 1134,
+   "h": 13
+  },
+  {
+   "text": "01 / EXPLORE · BUILD · BELONG",
+   "x": 58,
+   "y": 759,
+   "w": 1134,
+   "h": 13
+  },
+  {
+   "text": "01 / EXPLORE · BUILD · BELONG",
+   "x": 58,
+   "y": 759,
+   "w": 1134,
+   "h": 13
+  },
+  {
+   "text": "WEB",
+   "x": 1192,
+   "y": 760,
+   "w": 30,
+   "h": 12
+  },
+  {
+   "text": "WEB",
+   "x": 1192,
+   "y": 760,
+   "w": 30,
+   "h": 12
+  }
+ ],
+ "t": "drive_done",
+ "id": "d95",
+ "player": "Web",
+ "playerId": "p-000f6823"
+}

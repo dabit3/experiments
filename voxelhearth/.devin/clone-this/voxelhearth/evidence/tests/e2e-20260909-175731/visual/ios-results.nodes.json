@@ -1,0 +1,421 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-175731/visual/web-results.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-175731/visual/ios-results.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  402,
+  874
+ ],
+ "nodes": 158,
+ "matched": 0,
+ "exact": 0,
+ "within_tolerance": [],
+ "mismatched": [
+  {
+   "reference": {
+    "text": "Voxelhearth",
+    "x": 591,
+    "y": 24,
+    "w": 124,
+    "h": 22
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Voxelhearth",
+    "x": 591,
+    "y": 24,
+    "w": 124,
+    "h": 22
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Match complete",
+    "x": 579,
+    "y": 54,
+    "w": 121,
+    "h": 22
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Match complete",
+    "x": 579,
+    "y": 54,
+    "w": 121,
+    "h": 22
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "You lit the hearth brightest",
+    "x": 386,
+    "y": 88,
+    "w": 508,
+    "h": 44
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "You lit the hearth brightest",
+    "x": 386,
+    "y": 88,
+    "w": 508,
+    "h": 44
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Fixture world · Survival · seed 1234",
+    "x": 533,
+    "y": 136,
+    "w": 215,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Fixture world · Survival · seed 1234",
+    "x": 533,
+    "y": 136,
+    "w": 215,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Scoreboard",
+    "x": 137,
+    "y": 197,
+    "w": 114,
+    "h": 25
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Scoreboard",
+    "x": 137,
+    "y": 197,
+    "w": 114,
+    "h": 25
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "placed + broken + crafted×3 + kills×5",
+    "x": 508,
+    "y": 202,
+    "w": 209,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "placed + broken + crafted×3 + kills×5",
+    "x": 508,
+    "y": 202,
+    "w": 209,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "1",
+    "x": 162,
+    "y": 248,
+    "w": 6,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "1",
+    "x": 162,
+    "y": 248,
+    "w": 6,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 195,
+    "y": 252,
+    "w": 12,
+    "h": 12
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling  (you)",
+    "x": 222,
+    "y": 246,
+    "w": 470,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling  (you)",
+    "x": 222,
+    "y": 246,
+    "w": 470,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling  (you)",
+    "x": 222,
+    "y": 246,
+    "w": 470,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "9",
+    "x": 692,
+    "y": 244,
+    "w": 13,
+    "h": 29
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "9",
+    "x": 692,
+    "y": 244,
+    "w": 13,
+    "h": 29
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 150,
+    "y": 296,
+    "w": 13,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "7 placed",
+    "x": 167,
+    "y": 294,
+    "w": 47,
+    "h": 17
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "7 placed",
+    "x": 167,
+    "y": 294,
+    "w": 47,
+    "h": 17
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "󰃫",
+    "x": 226,
+    "y": 296,
+    "w": 13,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "2 broken",
+    "x": 243,
+    "y": 294,
+    "w": 48,
+    "h": 17
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "2 broken",
+    "x": 243,
+    "y": 294,
+    "w": 48,
+    "h": 17
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 303,
+    "y": 296,
+    "w": 13,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "0 crafted",
+    "x": 320,
+    "y": 294,
+    "w": 52,
+    "h": 17
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "0 crafted",
+    "x": 320,
+    "y": 294,
+    "w": 52,
+    "h": 17
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 384,
+    "y": 296,
+    "w": 13,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "0 kills",
+    "x": 401,
+    "y": 294,
+    "w": 31,
+    "h": 17
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "0 kills",
+    "x": 401,
+    "y": 294,
+    "w": 31,
+    "h": 17
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "󰘏",
+    "x": 444,
+    "y": 296,
+    "w": 13,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "0 deaths",
+    "x": 461,
+    "y": 294,
+    "w": 49,
+    "h": 17
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "0 deaths",
+    "x": 461,
+    "y": 294,
+    "w": 49,
+    "h": 17
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "2",
+    "x": 161,
+    "y": 342,
+    "w": 8,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "2",
+    "x": 161,
+    "y": 342,
+    "w": 8,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 195,
+    "y": 346,
+    "w": 12,
+    "h": 12
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Desk Dweller",
+    "x": 222,
+    "y": 340,
+    "w": 470,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Desk Dweller",
+    "x": 222,
+    "y": 340,
+    "w": 470,
+    "h": 24
+   },
+   "actual": null
+  }
+ ],
+ "mismatched_count": 316,
+ "ok": false
+}
