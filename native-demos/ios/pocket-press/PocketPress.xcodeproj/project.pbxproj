@@ -1,0 +1,57 @@
+// !$*UTF8*$!
+{
+archiveVersion = 1;
+classes = {};
+objectVersion = 56;
+objects = {
+6B5BA3AD51EC4CFB5CBA075F = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Core/Magazine.swift"; sourceTree = "<group>"; };
+E982E6444EC8E1E2D67E86FF = { isa = PBXBuildFile; fileRef = 6B5BA3AD51EC4CFB5CBA075F; };
+339CF5903AC6ADC8D337A750 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PocketPress/EditorView.swift"; sourceTree = "<group>"; };
+D1C80AD2B317C388B96710A9 = { isa = PBXBuildFile; fileRef = 339CF5903AC6ADC8D337A750; };
+A682E6C9D1796CB65843CA24 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PocketPress/PDFPreviewScreen.swift"; sourceTree = "<group>"; };
+A28C11FAA8F35497708D7BD7 = { isa = PBXBuildFile; fileRef = A682E6C9D1796CB65843CA24; };
+38D40391DAA4C3CD9289A9AC = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PocketPress/PageEditView.swift"; sourceTree = "<group>"; };
+620DC38942A4BEA2EE1D04A6 = { isa = PBXBuildFile; fileRef = 38D40391DAA4C3CD9289A9AC; };
+54389694139A852E6B6583EC = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PocketPress/PageRenderer.swift"; sourceTree = "<group>"; };
+44E182839FD4A71C60ABD317 = { isa = PBXBuildFile; fileRef = 54389694139A852E6B6583EC; };
+43A543371AB2001030EA9B42 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PocketPress/PocketPressApp.swift"; sourceTree = "<group>"; };
+D1173C44E672372D7D08504F = { isa = PBXBuildFile; fileRef = 43A543371AB2001030EA9B42; };
+12906F402946A040D26ACBD9 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PocketPress/PressStore.swift"; sourceTree = "<group>"; };
+7CB501D5147BE38CCFF13C15 = { isa = PBXBuildFile; fileRef = 12906F402946A040D26ACBD9; };
+A138EA27BC933410C28692C4 = { isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Resources/harbour.jpg"; sourceTree = "<group>"; };
+C3F122D7AEDDDDEA34B81359 = { isa = PBXBuildFile; fileRef = A138EA27BC933410C28692C4; };
+D6B58678CD560AB16BBFF90A = { isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Resources/manarola.jpg"; sourceTree = "<group>"; };
+359AED806C980668ED607630 = { isa = PBXBuildFile; fileRef = D6B58678CD560AB16BBFF90A; };
+28DCF63E1EB5F53BA96138B3 = { isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Resources/Assets.xcassets"; sourceTree = "<group>"; };
+0561B6B779527A2FA058B6AB = { isa = PBXBuildFile; fileRef = 28DCF63E1EB5F53BA96138B3; };
+C6625452FCA3CDE6B832ABAA = { isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PocketPress/Info.plist"; sourceTree = "<group>"; };
+A8792157CB4F27FB949C035F = { isa = PBXFileReference; explicitFileType = wrapper.application; path = PocketPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
+4813494D137E1631BBA301D5 = { isa = PBXGroup; children = (6B5BA3AD51EC4CFB5CBA075F, 339CF5903AC6ADC8D337A750, A682E6C9D1796CB65843CA24, 38D40391DAA4C3CD9289A9AC, 54389694139A852E6B6583EC, 43A543371AB2001030EA9B42, 12906F402946A040D26ACBD9, A138EA27BC933410C28692C4, D6B58678CD560AB16BBFF90A, 28DCF63E1EB5F53BA96138B3, C6625452FCA3CDE6B832ABAA, 0A3E27B8CA818264D75C8D81); sourceTree = "<group>"; };
+0A3E27B8CA818264D75C8D81 = { isa = PBXGroup; children = (A8792157CB4F27FB949C035F); name = Products; sourceTree = "<group>"; };
+878A52FC5FF6A57D50B7B870 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (E982E6444EC8E1E2D67E86FF, D1C80AD2B317C388B96710A9, A28C11FAA8F35497708D7BD7, 620DC38942A4BEA2EE1D04A6, 44E182839FD4A71C60ABD317, D1173C44E672372D7D08504F, 7CB501D5147BE38CCFF13C15); runOnlyForDeploymentPostprocessing = 0; };
+41D311A605520FC7B8B9A980 = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (C3F122D7AEDDDDEA34B81359, 359AED806C980668ED607630, 0561B6B779527A2FA058B6AB); runOnlyForDeploymentPostprocessing = 0; };
+E2AA269EB967A8853A258BFA = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+2B23A31EEC75B029432F2445 = { isa = XCBuildConfiguration; buildSettings = { SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; CLANG_ENABLE_MODULES = YES; SWIFT_VERSION = 5.0; SWIFT_STRICT_CONCURRENCY = complete; ENABLE_USER_SCRIPT_SANDBOXING = YES;  SWIFT_OPTIMIZATION_LEVEL = "-Onone"; DEBUG_INFORMATION_FORMAT = dwarf; }; name = Debug; };
+07CA1E69F6068DEA30A4DA6B = { isa = XCBuildConfiguration; buildSettings = { SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; CLANG_ENABLE_MODULES = YES; SWIFT_VERSION = 5.0; SWIFT_STRICT_CONCURRENCY = complete; ENABLE_USER_SCRIPT_SANDBOXING = YES;  SWIFT_COMPILATION_MODE = wholemodule; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; }; name = Release; };
+F905B102B4F13BD6617D8EB3 = { isa = XCConfigurationList; buildConfigurations = (2B23A31EEC75B029432F2445, 07CA1E69F6068DEA30A4DA6B); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+EDDA600A3F771F810A8065C9 = { isa = XCBuildConfiguration; buildSettings = { PRODUCT_BUNDLE_IDENTIFIER = com.pocketpress.native; PRODUCT_NAME = PocketPress; INFOPLIST_FILE = PocketPress/Info.plist; TARGETED_DEVICE_FAMILY = "1"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SUPPORTS_MACCATALYST = NO; CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = NO; ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";  SWIFT_OPTIMIZATION_LEVEL = "-Onone"; DEBUG_INFORMATION_FORMAT = dwarf; }; name = Debug; };
+594BCDCC96599D88EF772A08 = { isa = XCBuildConfiguration; buildSettings = { PRODUCT_BUNDLE_IDENTIFIER = com.pocketpress.native; PRODUCT_NAME = PocketPress; INFOPLIST_FILE = PocketPress/Info.plist; TARGETED_DEVICE_FAMILY = "1"; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SUPPORTS_MACCATALYST = NO; CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = NO; ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";  SWIFT_COMPILATION_MODE = wholemodule; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; }; name = Release; };
+CE4CD5ACDBC4A8D938AD23C0 = { isa = XCConfigurationList; buildConfigurations = (EDDA600A3F771F810A8065C9, 594BCDCC96599D88EF772A08); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+34A04005BCAF206EEC990BD9 = {
+        isa = PBXNativeTarget; buildConfigurationList = CE4CD5ACDBC4A8D938AD23C0;
+        buildPhases = (878A52FC5FF6A57D50B7B870, E2AA269EB967A8853A258BFA, 41D311A605520FC7B8B9A980);
+        buildRules = (); dependencies = (); name = PocketPress;
+        productName = PocketPress; productReference = A8792157CB4F27FB949C035F;
+        productType = "com.apple.product-type.application";
+     };
+244210E48437B6556980A702 = {
+        isa = PBXProject; attributes = { LastUpgradeCheck = 2600; };
+        buildConfigurationList = F905B102B4F13BD6617D8EB3;
+        compatibilityVersion = "Xcode 14.0"; developmentRegion = en;
+        hasScannedForEncodings = 0; knownRegions = (en, Base);
+        mainGroup = 4813494D137E1631BBA301D5; productRefGroup = 0A3E27B8CA818264D75C8D81;
+        projectDirPath = ""; projectRoot = ""; targets = (34A04005BCAF206EEC990BD9);
+     };
+};
+rootObject = 244210E48437B6556980A702;
+}
