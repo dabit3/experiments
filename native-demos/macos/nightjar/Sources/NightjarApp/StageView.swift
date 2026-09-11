@@ -174,6 +174,7 @@ final class LightingView: SCNView {
     markerMaterial.diffuse.contents = NSColor.white
     markerGeometry.materials = [markerMaterial]
     targetMarker.geometry = markerGeometry
+    targetMarker.castsShadow = false
     stage.rootNode.addChildNode(targetMarker)
 
     for id in 0..<6 {
@@ -182,7 +183,7 @@ final class LightingView: SCNView {
       let light = SCNLight()
       light.type = .spot
       light.castsShadow = true
-      light.shadowMode = .deferred
+      light.shadowMode = .forward
       light.shadowRadius = 4
       light.shadowSampleCount = 8
       light.shadowMapSize = CGSize(width: 1024, height: 1024)
@@ -192,11 +193,13 @@ final class LightingView: SCNView {
       rig.light = light
       let housing = SCNNode(geometry: SCNCylinder(radius: 0.16, height: 0.38))
       housing.eulerAngles.x = .pi / 2
+      housing.castsShadow = false
       housing.geometry?.materials = [material(.init(white: 0.27, alpha: 1), metallic: 0.7)]
       housing.name = "fixture-\(id)"
       rig.addChildNode(housing)
       let lens = SCNNode(geometry: SCNCylinder(radius: 0.135, height: 0.012))
       lens.eulerAngles.x = .pi / 2
+      lens.castsShadow = false
       lens.position.z = -0.2
       lens.name = "lens"
       let lensMaterial = SCNMaterial()
@@ -207,6 +210,7 @@ final class LightingView: SCNView {
       fixtures[id] = rig
 
       let beam = SCNNode()
+      beam.castsShadow = false
       beam.renderingOrder = 10
       stage.rootNode.addChildNode(beam)
       beams[id] = beam
