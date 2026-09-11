@@ -66,6 +66,23 @@ final class CadenceCoachTests: XCTestCase {
     XCTAssertEqual(session.activeSeconds, 3)
   }
 
+  func testSkippedProgressSurvivesSerializationAcrossRounds() throws {
+    var session = Session(routine: routine, now: start)
+    let original = try JSONEncoder().encode(session)
+    XCTAssertNil(try JSONDecoder().decode(Session.self, from: original).skippedIndices)
+    session.skip(at: start.addingTimeInterval(3))
+    session.synchronize(at: start.addingTimeInterval(8))
+    session.skip(at: start.addingTimeInterval(10))
+    session = try JSONDecoder().decode(Session.self, from: JSONEncoder().encode(session))
+    XCTAssertEqual(session.skippedIndices, [0, 2])
+    XCTAssertEqual(session.completedPhases, 1)
+    XCTAssertEqual(session.skippedPhases, 2)
+    XCTAssertEqual(session.round, 2)
+    session.synchronize(at: start.addingTimeInterval(15))
+    XCTAssertEqual(session.completedPhases + session.skippedPhases, session.phaseCount)
+    XCTAssertEqual(session.activeSeconds, 15)
+  }
+
   func testEndAndRepeatedSynchronizeAreIdempotent() {
     var session = Session(routine: routine, now: start)
     session.end(at: start.addingTimeInterval(12))

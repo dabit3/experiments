@@ -41,6 +41,7 @@ xcodebuild -project CadenceCoach.xcodeproj -scheme CadenceCoach \
   -derivedDataPath ~/cadence-build CODE_SIGNING_ALLOWED=NO build
 xcodebuild -project CadenceCoach.xcodeproj -scheme CadenceCoach \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  -parallel-testing-enabled NO \
   -derivedDataPath ~/cadence-build CODE_SIGNING_ALLOWED=NO test
 xcrun swift format lint --strict --recursive Sources Tests Tools
 ```
@@ -62,6 +63,12 @@ excluded. Restart discards the current attempt; End saves it as ended early.
 Reaching the end (even with skips) is marked completed, with skipped and fully
 finished interval counts shown separately. History preserves a routine snapshot
 when the original routine is edited/deleted.
+Dashed phase bars identify skips; long sequences show the current group of 24
+phases. Displayed history totals sum the same whole seconds as individual rows.
+
+At accessibility text sizes, metrics and sequence details stack vertically.
+Workout Pause/Resume and Skip stay pinned to the safe area with adaptive sizing.
+Done and Go again remain pinned on the result screen.
 
 Data is JSON-encoded in app-local UserDefaults, with no cloud sync or account.
 Deleting the app removes its data. Clear history requires confirmation.

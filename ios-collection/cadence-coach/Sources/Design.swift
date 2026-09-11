@@ -11,7 +11,39 @@ enum Palette {
 
 extension Font {
   static func instrument(_ size: CGFloat) -> Font {
-    .system(size: size, weight: .heavy, design: .rounded).width(.condensed)
+    .system(size: size, weight: .heavy, design: .default).width(.compressed)
+  }
+}
+
+struct InstrumentType: ViewModifier {
+  @ScaledMetric private var size: CGFloat
+
+  init(size: CGFloat) {
+    _size = ScaledMetric(wrappedValue: size, relativeTo: .largeTitle)
+  }
+
+  func body(content: Content) -> some View {
+    content.font(.instrument(size))
+  }
+}
+
+extension View {
+  func instrumentDisplay(_ size: CGFloat) -> some View {
+    modifier(InstrumentType(size: size))
+  }
+}
+
+struct AdaptiveRow<Content: View>: View {
+  @Environment(\.dynamicTypeSize) private var typeSize
+  var spacing: CGFloat = 18
+  @ViewBuilder var content: () -> Content
+
+  var body: some View {
+    let layout =
+      typeSize.isAccessibilitySize
+      ? AnyLayout(VStackLayout(alignment: .leading, spacing: spacing))
+      : AnyLayout(HStackLayout(alignment: .center, spacing: spacing))
+    layout { content() }
   }
 }
 
@@ -19,6 +51,7 @@ struct Eyebrow: View {
   var text: String
   var body: some View {
     Text(text.uppercased()).font(.caption.weight(.bold)).tracking(2)
+      .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
   }
 }
 
@@ -66,7 +99,7 @@ struct ActionButton: View {
         Spacer()
         Image(systemName: symbol).font(.headline)
       }
-      .padding(.horizontal, 22).frame(minHeight: 58)
+      .padding(.horizontal, 22).padding(.vertical, 12).frame(minHeight: 58)
       .background(dark ? Palette.ink : Palette.lime)
       .foregroundStyle(dark ? Palette.cream : Palette.ink)
       .clipShape(RoundedRectangle(cornerRadius: 18))
@@ -79,7 +112,7 @@ struct Metric: View {
   var label: String
   var body: some View {
     VStack(alignment: .leading, spacing: 6) {
-      Text(value).font(.instrument(32)).minimumScaleFactor(0.6).lineLimit(1)
+      Text(value).instrumentDisplay(32).minimumScaleFactor(0.6).lineLimit(1)
       Text(label).font(.caption).foregroundStyle(Palette.muted)
     }
     .frame(maxWidth: .infinity, alignment: .leading)

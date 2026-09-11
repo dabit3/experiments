@@ -6,8 +6,8 @@ struct HistoryView: View {
     ScrollView {
       VStack(alignment: .leading, spacing: 28) {
         Eyebrow(text: "A record of showing up").foregroundStyle(Palette.muted)
-        Text("The work\nadds up.").font(.instrument(52))
-        HStack {
+        Text("The work\nadds up.").instrumentDisplay(52)
+        AdaptiveRow {
           Metric(value: "\(store.history.filter(\.completed).count)", label: "COMPLETED")
           Metric(
             value: durationLabel(store.history.reduce(0) { $0 + Int($1.activeSeconds) }),
@@ -29,7 +29,7 @@ struct HistoryView: View {
             ResultView(record: record).navigationTitle("Session detail")
               .navigationBarTitleDisplayMode(.inline)
           } label: {
-            HStack(spacing: 18) {
+            AdaptiveRow {
               VStack(alignment: .leading, spacing: 6) {
                 Text(record.date.formatted(date: .abbreviated, time: .shortened))
                   .font(.caption).foregroundStyle(Palette.muted)
@@ -40,7 +40,7 @@ struct HistoryView: View {
                 .font(.caption).foregroundStyle(Palette.muted)
               }
               Spacer()
-              Text(clock(Int(record.activeSeconds))).font(.instrument(28))
+              Text(clock(Int(record.activeSeconds))).instrumentDisplay(28)
               Image(systemName: "chevron.right").font(.caption)
             }.padding(.vertical, 4)
           }.buttonStyle(.plain)

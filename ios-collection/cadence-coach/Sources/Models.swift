@@ -89,6 +89,7 @@ struct Session: Identifiable, Codable {
   var workSeconds: Double = 0
   var completedPhases = 0
   var skippedPhases = 0
+  var skippedIndices: [Int]?
   var finished = false
   var endedEarly = false
   var endedAt: Date?
@@ -146,6 +147,7 @@ struct Session: Identifiable, Codable {
     synchronize(at: now)
     guard !finished else { return }
     consume(elapsed(at: now))
+    skippedIndices = (skippedIndices ?? []) + [index]
     skippedPhases += 1
     index += 1
     pausedElapsed = 0

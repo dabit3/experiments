@@ -47,7 +47,7 @@ struct SessionView: View {
             store.toggleMute()
           } label: {
             Image(systemName: store.muted ? "speaker.slash" : "speaker.wave.2")
-              .frame(width: 44, height: 44)
+              .font(.system(size: 20)).frame(width: 44, height: 44)
           }.accessibilityLabel(store.muted ? "Unmute cues" : "Mute cues")
         }.foregroundStyle(Palette.cream)
         HStack {
@@ -63,7 +63,7 @@ struct SessionView: View {
                 ? "Paused / \(session.phase.kind.title)" : session.phase.kind.title)
           }.foregroundStyle(accent)
           Text(clock(session.remaining(at: store.now)))
-            .font(.instrument(106)).monospacedDigit()
+            .instrumentDisplay(116).monospacedDigit()
             .lineLimit(1).minimumScaleFactor(0.5)
             .foregroundStyle(accent)
             .contentTransition(.numericText(countsDown: true))
@@ -83,19 +83,40 @@ struct SessionView: View {
                     / Double(session.phase.seconds)))
           }
         }.frame(height: 8).accessibilityHidden(true)
-        HStack(alignment: .bottom, spacing: 5) {
-          ForEach(0..<min(session.phaseCount, 60), id: \.self) { index in
-            RoundedRectangle(cornerRadius: 3)
-              .fill(
-                index == session.index
-                  ? accent
-                  : index < session.index ? accent.opacity(0.4) : Palette.cream.opacity(0.09)
-              )
-              .frame(height: index % session.routine.intervals.count == 0 ? 56 : 32)
+        VStack(alignment: .leading, spacing: 10) {
+          let start = session.index / 24 * 24
+          HStack(alignment: .bottom, spacing: 5) {
+            ForEach(start..<min(session.phaseCount, start + 24), id: \.self) { index in
+              let skipped = session.skippedIndices?.contains(index) == true
+              RoundedRectangle(cornerRadius: 3)
+                .fill(
+                  skipped
+                    ? .clear
+                    : index == session.index
+                      ? accent
+                      : index < session.index ? accent.opacity(0.4) : Palette.cream.opacity(0.09)
+                )
+                .overlay {
+                  if skipped {
+                    RoundedRectangle(cornerRadius: 3)
+                      .stroke(
+                        Palette.cream.opacity(0.65), style: StrokeStyle(lineWidth: 1, dash: [3]))
+                  }
+                }
+                .frame(
+                  height: session.routine.intervals[index % session.routine.intervals.count].kind
+                    == .work ? 56 : 32)
+            }
           }
-        }.frame(height: 60).accessibilityLabel(
-          "Interval \(session.index + 1) of \(session.phaseCount)")
-        HStack {
+          .frame(height: 60)
+          if session.skippedPhases > 0 {
+            Text("Dashed outline = skipped · \(session.skippedPhases)")
+              .font(.caption).foregroundStyle(Palette.cream.opacity(0.6))
+          }
+        }.accessibilityElement(children: .ignore).accessibilityLabel(
+          "Interval \(session.index + 1) of \(session.phaseCount). \(session.completedPhases) finished, \(session.skippedPhases) skipped."
+        )
+        AdaptiveRow {
           VStack(alignment: .leading, spacing: 8) {
             Eyebrow(text: "Up next").foregroundStyle(Palette.cream.opacity(0.5))
             Text(
@@ -112,40 +133,40 @@ struct SessionView: View {
               .accessibilityLabel("Active time \(Int(session.totalActive(at: store.now))) seconds")
           }
         }
-        VStack(spacing: 14) {
-          HStack(spacing: 12) {
-            Button {
-              store.togglePause()
-            } label: {
-              Label(
-                session.paused ? "Resume" : "Pause",
-                systemImage: session.paused ? "play.fill" : "pause.fill"
-              )
-              .font(.headline).frame(maxWidth: .infinity, minHeight: 64)
-              .background(accent).foregroundStyle(Palette.ink)
-              .clipShape(RoundedRectangle(cornerRadius: 18))
-            }.buttonStyle(.plain)
-            Button {
-              store.skip()
-            } label: {
-              VStack(spacing: 4) {
-                Image(systemName: "forward.end.fill").font(.body)
-                Text("Skip").font(.caption.weight(.semibold))
-              }
-              .frame(width: 80, height: 64).background(Palette.graphite)
-              .foregroundStyle(Palette.cream).clipShape(RoundedRectangle(cornerRadius: 18))
-            }.buttonStyle(.plain).accessibilityLabel("Skip interval")
-              .accessibilityHint("Advances to the next interval. Only time performed is saved.")
-          }
-          HStack {
-            Button("Restart") { confirmRestart = true }.frame(minWidth: 80, minHeight: 44)
-            Spacer()
-            Button("End session") { confirmEnd = true }.frame(minWidth: 100, minHeight: 44)
-          }.font(.subheadline).foregroundStyle(Palette.cream.opacity(0.6))
-        }
+        AdaptiveRow {
+          Button("Restart") { confirmRestart = true }.frame(minWidth: 80, minHeight: 44)
+          Spacer()
+          Button("End session") { confirmEnd = true }.frame(minWidth: 100, minHeight: 44)
+        }.font(.subheadline).foregroundStyle(Palette.cream.opacity(0.6))
       }.padding(28)
     }
     .background(Palette.ink.ignoresSafeArea())
+    .safeAreaInset(edge: .bottom) {
+      AdaptiveRow(spacing: 12) {
+        Button {
+          store.togglePause()
+        } label: {
+          Label(
+            session.paused ? "Resume" : "Pause",
+            systemImage: session.paused ? "play.fill" : "pause.fill"
+          )
+          .font(.headline).padding(.vertical, 16)
+          .frame(maxWidth: .infinity, minHeight: 64)
+          .background(accent).foregroundStyle(Palette.ink)
+          .clipShape(RoundedRectangle(cornerRadius: 18))
+        }.buttonStyle(.plain)
+        Button {
+          store.skip()
+        } label: {
+          Label("Skip", systemImage: "forward.end.fill")
+            .font(.headline).padding(.vertical, 16)
+            .frame(maxWidth: .infinity, minHeight: 64)
+            .background(Palette.graphite).foregroundStyle(Palette.cream)
+            .clipShape(RoundedRectangle(cornerRadius: 18))
+        }.buttonStyle(.plain).accessibilityLabel("Skip interval")
+          .accessibilityHint("Advances to the next interval. Only time performed is saved.")
+      }.padding(.horizontal, 28).padding(.vertical, 12).background(Palette.ink)
+    }
     .animation(reduceMotion ? nil : .easeInOut(duration: 0.25), value: session.index)
     .preferredColorScheme(.dark)
   }
@@ -173,8 +194,8 @@ struct ResultView: View {
         }.frame(width: 104, height: 104).padding(.vertical, 4)
           .accessibilityHidden(true)
         VStack(alignment: .leading, spacing: 10) {
-          Text(record.completed ? "Effort in.\nEnergy out." : "Every effort\ncounts.").font(
-            .instrument(46))
+          Text(record.completed ? "Effort in.\nEnergy out." : "Every effort\ncounts.")
+            .instrumentDisplay(46)
           Text(record.name).font(.title3).foregroundStyle(Palette.muted)
           Text(
             record.completed
@@ -182,12 +203,12 @@ struct ResultView: View {
           )
           .font(.subheadline).foregroundStyle(Palette.muted)
         }
-        HStack {
+        AdaptiveRow {
           Metric(value: clock(Int(record.activeSeconds.rounded(.down))), label: "ACTIVE TIME")
           Metric(value: clock(Int(record.workSeconds.rounded(.down))), label: "WORK TIME")
         }
         Divider()
-        HStack {
+        AdaptiveRow {
           Metric(
             value: "\(record.completedPhases)/\(record.totalPhases)", label: "FINISHED INTERVALS")
           Metric(value: "\(record.skippedPhases)", label: "SKIPPED")

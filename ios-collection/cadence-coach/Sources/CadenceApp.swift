@@ -41,7 +41,7 @@ struct HomeView: View {
           }
           VStack(alignment: .leading, spacing: 4) {
             Eyebrow(text: "Make time for you").foregroundStyle(Palette.muted)
-            Text("Find your\nnext gear.").font(.instrument(54)).lineSpacing(-3)
+            Text("Find your\nnext gear.").instrumentDisplay(54).lineSpacing(-3)
           }
           if let first = store.routines.last(where: { !$0.isExample }) ?? store.routines.first {
             Button {
@@ -54,12 +54,13 @@ struct HomeView: View {
                   Image(systemName: "arrow.up.right")
                 }.foregroundStyle(Palette.cream.opacity(0.8))
                 IntervalSculpture().frame(height: 108).padding(.vertical, 4)
-                Text(first.name).font(.instrument(32)).foregroundStyle(Palette.cream)
+                Text(first.name).instrumentDisplay(32).foregroundStyle(Palette.cream)
                 HStack {
                   Text("\(durationLabel(first.totalSeconds))  /  \(first.rounds) rounds")
                     .font(.subheadline).foregroundStyle(Palette.cream.opacity(0.7))
                   Spacer()
-                  Image(systemName: "play.fill").foregroundStyle(Palette.ink)
+                  Image(systemName: "play.fill").font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(Palette.ink)
                     .frame(width: 42, height: 42).background(Palette.lime).clipShape(Circle())
                 }
               }.padding(24).background(Palette.ink).clipShape(RoundedRectangle(cornerRadius: 26))
@@ -157,6 +158,7 @@ extension Routine: Hashable {
 struct RoutineDetail: View {
   @EnvironmentObject private var store: CoachStore
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var typeSize
   let routineID: UUID
   @State private var editing: Routine?
   @State private var confirmDelete = false
@@ -168,24 +170,28 @@ struct RoutineDetail: View {
           VStack(alignment: .leading, spacing: 30) {
             Eyebrow(text: routine.isExample ? "Example routine / Make it yours" : "Your routine")
               .foregroundStyle(Palette.muted)
-            Text(routine.name).font(.instrument(48))
+            Text(routine.name).instrumentDisplay(48)
             Text(routine.subtitle).font(.title3).foregroundStyle(Palette.muted)
-            HStack(spacing: 18) {
+            AdaptiveRow {
               Metric(value: clock(routine.totalSeconds), label: "TOTAL TIME")
-              Rectangle().fill(Palette.ink.opacity(0.15)).frame(width: 1, height: 42)
+              if !typeSize.isAccessibilitySize {
+                Rectangle().fill(Palette.ink.opacity(0.15)).frame(width: 1, height: 42)
+              }
               Metric(value: "\(routine.rounds)", label: "ROUNDS")
-              Rectangle().fill(Palette.ink.opacity(0.15)).frame(width: 1, height: 42)
+              if !typeSize.isAccessibilitySize {
+                Rectangle().fill(Palette.ink.opacity(0.15)).frame(width: 1, height: 42)
+              }
               Metric(value: "\(routine.intervals.count)", label: "INTERVALS")
             }.padding(.vertical, 8)
             VStack(alignment: .leading, spacing: 18) {
-              HStack {
+              AdaptiveRow {
                 Eyebrow(text: "The sequence")
                 Spacer()
                 Text("REPEAT ×\(routine.rounds)").font(.caption.weight(.bold)).foregroundStyle(
                   Palette.muted)
               }
               ForEach(Array(routine.intervals.enumerated()), id: \.element.id) { index, interval in
-                HStack(spacing: 16) {
+                AdaptiveRow(spacing: 16) {
                   RoundedRectangle(cornerRadius: 4).fill(
                     interval.kind == .work ? Palette.ink : Palette.rest
                   )
@@ -196,7 +202,7 @@ struct RoutineDetail: View {
                     Text(interval.name).font(.headline)
                   }
                   Spacer()
-                  Text(clock(interval.seconds)).font(.instrument(28))
+                  Text(clock(interval.seconds)).instrumentDisplay(28)
                 }
                 .accessibilityElement(children: .combine)
               }
