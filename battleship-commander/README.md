@@ -83,6 +83,19 @@ annotates it with setup / test_start / assertion markers, so the annotated
 video is the test artifact. A seed-8 oracle in the skill (fixed enemy layout,
 `D5` hit / `E5` miss) lets it check determinism without scripting the browser.
 
-Recording: https://app.devin.ai/attachments/ceed9b12-926e-442d-ba5c-afeb03c865ca/battleship-commander-redesign-showcase.mp4
+Recording: https://app.devin.ai/attachments/9c63b38a-6ebc-40bb-a7bc-10096f9d138d/battleship-showcase5-edited.mp4
 
-Result of the recorded run: victory in game 1 — 5/5 enemy ships sunk in 20 shots (85% accuracy) while the AI sank 2/5, so no rematch was needed.
+Result of the arcade recording (revision `7b545cc`): both game 1 and the required
+same-seed rematch ended in defeat. Each report showed 36 player shots, 15 hits,
+42% accuracy and 4/5 enemy ships sunk; the AI recorded 36 shots, 17 hits, 47%
+accuracy and 5/5 sunk. The full requested procedure completed using visible
+heatmap reasoning. Victory-specific styling was not exercised on this revision.
+
+During testing, generic combat text overlapped the named sinking banner.
+The fix reserves sinking feedback for the banner and hides other shot callouts
+while it is active. The fresh recording verifies both isolation and no stale
+callout after dismissal. A failed win-attempt annotation in the video describes
+the gameplay result, not an application defect.
+
+Animated preview (6.2 MB, 800 px wide, 5× speed):
+https://app.devin.ai/attachments/712ee6af-5cf0-4cfb-b14d-b69e5fa55213/battleship-arcade-preview.webp

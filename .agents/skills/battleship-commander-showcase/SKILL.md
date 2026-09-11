@@ -39,12 +39,14 @@ Use the recording annotation tool at every step below. Exactly this shape:
 | after the page loads | `setup` | `Opening Battleship Commander at ?seed=8 in maximised Chrome` |
 | before dragging | `test_start` | `It should place all five ships by dragging, rotating two with R` |
 | after the dock reads 5 / 5 placed | `assertion` (passed/failed) | `5/5 placed; two ships rotated vertical via R, Start battle enabled` |
-| before the first shot | `test_start` | `It should win the seed-8 game using the probability heatmap` |
+| before the first shot | `test_start` | `It should complete a seed-8 battle using the probability heatmap` |
 | after the first sunk banner | `assertion` | `Target mode after first hit; <ship> sunk with banner and log entry` |
-| when the end screen appears | `assertion` | `Victory in N shots, X% accuracy, 5/5 sunk vs AI M/5; mission report shown` (or the Defeat equivalent, `failed`) |
+| when the end screen appears | `assertion` | `Victory in N shots, X% accuracy, 5/5 sunk vs AI M/5; mission report shown` (or the actual Defeat statistics) |
 
 If a step cannot be executed, record the assertion with `untested` and say why
 in the final report — never mark it passed.
+Try to win, but a defeat with correct game behavior is not a failed application
+assertion. On defeat, complete the one required rematch and report both outcomes.
 
 ## Steps and expected results
 
