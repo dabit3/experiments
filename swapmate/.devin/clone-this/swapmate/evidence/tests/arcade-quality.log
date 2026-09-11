@@ -1,0 +1,91 @@
+Fri Sep 11 05:07:15 UTC 2026
+Formatted 39 files (0 changed) in 0.16 seconds.
+Analyzing swapmate_core...
+No issues found!
+00:00 +0: loading test/position_test.dart
+00:00 +0: test/position_test.dart: Position initial position has 20 legal moves and standard FEN
+00:00 +1: test/position_test.dart: Position FEN round trip
+00:00 +2: test/position_test.dart: Position scholar's mate is checkmate
+00:00 +3: test/position_test.dart: Position capture reports the captured piece and promoted pieces revert to pawns
+00:00 +4: test/position_test.dart: Position pawns cannot be dropped on the first or eighth rank
+00:00 +5: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +6: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +7: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +8: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +9: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +10: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +11: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +12: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +13: test/match_test.dart: BughouseMatch turn enforcement
+00:00 +14: test/match_test.dart: BughouseMatch clocks run independently and increment applies
+00:00 +15: test/match_test.dart: BughouseMatch flag fall ends the match for the other team
+00:00 +16: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +17: test/match_test.dart: BughouseMatch BPGN export lists both boards chronologically
+00:00 +18: test/match_test.dart: BughouseMatch snapshot json round trip
+00:00 +19: test/match_test.dart: Bot is deterministic for a given seed
+00:00 +20: test/match_test.dart: Bot takes mate in one
+00:00 +21: test/match_test.dart: Bot two bots finish a match
+00:01 +22: All tests passed!
+Analyzing server...
+No issues found!
+00:00 +0: loading test/server_test.dart
+00:00 +0: test/server_test.dart: four clients on four platforms play a complete match to checkmate
+00:00 +1: test/server_test.dart: bots fill a room and finish a match on their own
+00:00 +2: test/server_test.dart: two bots facing each other end the game by themselves
+00:02 +3: test/server_test.dart: premove executes when it becomes legal, and is dropped when it is not
+00:02 +4: test/server_test.dart: reconnecting with a resume token restores the seat
+00:02 +5: test/server_test.dart: quick chat goes to the partner only; room chat reaches spectators
+00:02 +6: test/server_test.dart: errors are reported for illegal moves and wrong turns
+00:02 +7: test/server_test.dart: chat flooding is rate limited
+00:02 +8: test/server_test.dart: over-long chat text is truncated
+00:02 +9: test/server_test.dart: healthz and rooms endpoints answer over HTTP
+00:02 +10: All tests passed!
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing app...
+No issues found! (ran in 4.8s)
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/devin/repos/experiments/swapmate/app/test/home_screen_test.dart
+00:00 +0: /Users/devin/repos/experiments/swapmate/app/test/home_screen_test.dart: phone theme control remains reachable while scrolling
+00:00 +1: /Users/devin/repos/experiments/swapmate/app/test/home_screen_test.dart: phone theme control remains reachable while scrolling
+00:01 +2: /Users/devin/repos/experiments/swapmate/app/test/home_screen_test.dart: phone theme control remains reachable while scrolling
+00:01 +3: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(320.0, 640.0) dark with full reserves
+00:01 +4: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(320.0, 640.0) dark with full reserves
+00:01 +5: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(320.0, 640.0) dark with full reserves
+00:02 +6: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(320.0, 640.0) light with full reserves
+00:02 +7: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(390.0, 844.0) dark with full reserves
+00:03 +8: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(390.0, 844.0) light with full reserves
+00:03 +9: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(800.0, 600.0) dark with full reserves
+00:04 +10: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(800.0, 600.0) light with full reserves
+00:04 +11: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(1180.0, 800.0) dark with full reserves
+00:05 +12: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(1180.0, 800.0) light with full reserves
+00:06 +13: /Users/devin/repos/experiments/swapmate/app/test/arcade_layout_test.dart: (tearDownAll)
+00:06 +13: All tests passed!
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/devin/repos/experiments/swapmate/app/tool/icons/generate_icons_test.dart
+00:00 +0: generate launcher icons
+00:00 +1: All tests passed!
+QUALITY PASS

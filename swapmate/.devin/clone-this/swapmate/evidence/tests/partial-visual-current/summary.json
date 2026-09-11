@@ -1,0 +1,76 @@
+{
+  "platforms": [
+    "web",
+    "ios",
+    "macos"
+  ],
+  "room": "SWAP",
+  "players": [
+    {
+      "name": "Web player",
+      "seat": "aw",
+      "platform": "web",
+      "bot": false
+    },
+    {
+      "name": "iPhone player",
+      "seat": "ab",
+      "platform": "ios",
+      "bot": false
+    },
+    {
+      "name": "Mac player",
+      "seat": "bb",
+      "platform": "macos",
+      "bot": false
+    },
+    {
+      "name": "Bishop Bell",
+      "seat": "bw",
+      "platform": "server",
+      "bot": true
+    }
+  ],
+  "final": {
+    "fenA": "r1bqkbnr/1ppp1Qpp/p1n5/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR[] b KQkq - 0 4",
+    "fenB": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR[p] b KQkq e3 0 1",
+    "moves": 8,
+    "moveText": "1B. e4 1A. e4 1a. e5 2A. Qh5 2a. Nc6 3A. Bc4 3a. a6 4A. Qxf7#",
+    "score": "1-0",
+    "result": {
+      "winner": "1",
+      "reason": "checkmate",
+      "board": "a",
+      "loser": "ab"
+    },
+    "over": true,
+    "gameId": "SWAP-1",
+    "bpgn": "[Event \"Swapmate match\"]\n[Site \"Swapmate\"]\n[Date \"2026.09.10\"]\n[WhiteA \"Web player\"]\n[BlackA \"iPhone player\"]\n[WhiteB \"Bishop Bell\"]\n[BlackB \"Mac player\"]\n[TimeControl \"1800+0\"]\n[Variant \"bughouse\"]\n[Result \"1-0\"]\n\n1B. e4 {1799.279} 1A. e4 {1798.182} 1a. e5 {1799.652} 2A. Qh5 {1797.891}\n2a. Nc6 {1799.377} 3A. Bc4 {1797.603} 3a. a6 {1789.976} 4A. Qxf7# {1797.353}\n{BA checkmated} 1-0\n"
+  },
+  "bpgn": "[Event \"Swapmate match\"]\n[Site \"Swapmate\"]\n[Date \"2026.09.10\"]\n[WhiteA \"Web player\"]\n[BlackA \"iPhone player\"]\n[WhiteB \"Bishop Bell\"]\n[BlackB \"Mac player\"]\n[TimeControl \"1800+0\"]\n[Variant \"bughouse\"]\n[Result \"1-0\"]\n\n1B. e4 {1799.279} 1A. e4 {1798.182} 1a. e5 {1799.652} 2A. Qh5 {1797.891}\n2a. Nc6 {1799.377} 3A. Bc4 {1797.603} 3a. a6 {1789.976} 4A. Qxf7# {1797.353}\n{BA checkmated} 1-0\n",
+  "perClient": {
+    "web": {
+      "screen": "results",
+      "platform": "web",
+      "name": "Web player",
+      "seat": "aw",
+      "chats": 0
+    },
+    "ios": {
+      "screen": "results",
+      "platform": "ios",
+      "name": "iPhone player",
+      "seat": "ab",
+      "chats": 0
+    },
+    "macos": {
+      "screen": "results",
+      "platform": "macos",
+      "name": "Mac player",
+      "seat": "bb",
+      "chats": 0
+    }
+  },
+  "passed": true,
+  "problems": []
+}

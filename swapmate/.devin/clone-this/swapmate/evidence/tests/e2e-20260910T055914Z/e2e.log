@@ -1,0 +1,111 @@
+== Swapmate multiplayer e2e  20260910T055914Z
+   out=/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z server=ws://172.16.5.2:8787/ws seed=42 room=SWAP platforms=web,ios,android,macos
+[0s] starting server
+[1s] recording screen -> recording.mov
+[1s] launching macOS app
+[1s] launching web client (Playwright Chromium)
+[2s] installing + launching iOS app on 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[7s] waiting for Android boot (up to 3000s)
+[10s] installing + launching Android app
+[152s] waiting for 4 test clients to register
+[152s] registered: android,ios,macos,web
+[152s] web creates room SWAP (30+0, no bots)
+[155s] launching desktop spectators for visual parity
+[159s] registered: android,ios,macos,macos-spec,web,web-spec
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/ios-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/android-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-spec-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-spec-lobby.png
+[206s] match started
+[206s]   web plays e2e4
+[206s]   ios plays e7e5
+[207s]   android plays e2e4
+[208s]   macos plays d7d5
+[209s]   web plays d1h5
+[209s]   ios plays b8c6
+[209s]   android plays e4d5
+[211s]   macos plays d8d5
+[211s]   web plays f1c4
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/ios-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/android-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-game.png
+[383s]   ios plays P@h6
+[383s]   android plays b1c3
+[385s]   web plays h5f7
+[387s] match over
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/ios-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/android-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-results.png
+[418s] collecting final state from every client
+{
+  "fenA": "r1bqkbnr/pppp1Qpp/2n4p/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR[P] b KQkq - 0 4",
+  "fenB": "rnb1kbnr/ppp1pppp/8/q7/8/2N5/PPPP1PPP/R1BQKBNR[p] w KQkq - 0 4",
+  "moves": 13,
+  "score": "1-0",
+  "result": {
+    "winner": "1",
+    "reason": "checkmate",
+    "board": "a",
+    "loser": "ab"
+  }
+}
+  web      screen=results seat=aw moves=13 score=1-0
+  ios      screen=results seat=ab moves=13 score=1-0
+  android  screen=results seat=bw moves=13 score=1-0
+  macos    screen=results seat=bb moves=13 score=1-0
+all clients agree on the final state
+[418s] visual parity phase
+[459s] registered: android-spec,ios-spec,macos,macos-spec,web,web-spec
+[460s]   ios-spec viewport 1206x2334@3.0 (safe-area crop 0,186,1206,2334) -> web baseline 402x778@3.0
+[462s]   android-spec viewport 540x1200@1.5 (safe-area crop 0,0,540,1200) -> web baseline 360x800@1.5
+[467s] registered: android-spec,ios-spec,macos,macos-spec,web,web-android-spec,web-ios-spec,web-spec
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/ios-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/android-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-ios-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-android-spec-results.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/ios-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/android-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-ios-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-android-spec-home-dark.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/ios-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/android-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-ios-spec-home-light.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-android-spec-home-light.png
+   macos-spec-lobby: 1180x800: exact diff 44618 px, edge coverage 5948 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 57838 edge px, shift 1, 2 mask(s))
+   macos-spec-results: 1180x800: exact diff 75437 px, edge coverage 15208 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 173338 edge px, shift 1, 2 mask(s))
+   macos-spec-home-dark: 1180x800: exact diff 666477 px, edge coverage 7008 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 52914 edge px, shift 1, 2 mask(s))
+   macos-spec-home-light: 1180x800: exact diff 662819 px, edge coverage 6738 px, anti-aliasing 0 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 59271 edge px, shift 1, 2 mask(s))
+   ios-spec-results: 1206x2334: exact diff 1022403 px, edge coverage 241667 px, anti-aliasing 29312 px, jitter 251 px, normalized diff 595805 px (tolerance 16, edge tolerance 255 within 2px of 389902 edge px, shift 1, 0 mask(s))
+   ios-spec-home-dark: 1206x2334: exact diff 1192489 px, edge coverage 24025 px, anti-aliasing 4 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 211972 edge px, shift 1, 0 mask(s))
+   ios-spec-home-light: 1206x2334: exact diff 1206627 px, edge coverage 16296 px, anti-aliasing 2 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 254694 edge px, shift 1, 0 mask(s))
+   android-spec-results: 540x1200: exact diff 45791 px, edge coverage 23097 px, anti-aliasing 1271 px, jitter 0 px, normalized diff 7 px (tolerance 16, edge tolerance 255 within 2px of 133886 edge px, shift 1, 0 mask(s))
+   android-spec-home-dark: 540x1200: exact diff 163173 px, edge coverage 12470 px, anti-aliasing 1598 px, jitter 5 px, normalized diff 137 px (tolerance 16, edge tolerance 255 within 2px of 82093 edge px, shift 1, 0 mask(s))
+   android-spec-home-light: 540x1200: exact diff 183466 px, edge coverage 4901 px, anti-aliasing 1467 px, jitter 0 px, normalized diff 0 px (tolerance 16, edge tolerance 255 within 2px of 93257 edge px, shift 1, 0 mask(s))
+   control shift-4px (must differ): 1176x796: exact diff 689495 px, edge coverage 26481 px, anti-aliasing 2577 px, jitter 178 px, normalized diff 10484 px (tolerance 16, edge tolerance 255 within 2px of 52914 edge px, shift 1, 0 mask(s))
+   control theme-swap (must differ): 1180x800: exact diff 943753 px, edge coverage 50518 px, anti-aliasing 5233 px, jitter 0 px, normalized diff 885796 px (tolerance 16, edge tolerance 255 within 2px of 52914 edge px, shift 1, 0 mask(s))
+   control screen-swap (must differ): 1180x800: exact diff 649140 px, edge coverage 33218 px, anti-aliasing 29786 px, jitter 184 px, normalized diff 253096 px (tolerance 16, edge tolerance 255 within 2px of 57838 edge px, shift 1, 0 mask(s))
+   android-spec-home-dark   540x1200  exact= 163173  edge-band=12.7%  aa= 1598  jitter=   5  normalized=  137
+   android-spec-home-light  540x1200  exact= 183466  edge-band=14.4%  aa= 1467  jitter=   0  normalized=    0
+   android-spec-results     540x1200  exact=  45791  edge-band=20.7%  aa= 1271  jitter=   0  normalized=    7
+   ios-spec-home-dark       1206x2334  exact=1192489  edge-band= 7.5%  aa=    4  jitter=   0  normalized=    0
+   ios-spec-home-light      1206x2334  exact=1206627  edge-band= 9.0%  aa=    2  jitter=   0  normalized=    0
+   ios-spec-results         1206x2334  exact=1022403  edge-band=13.9%  aa=29312  jitter= 251  normalized=595805
+   macos-spec-home-dark     1180x800  exact= 666477  edge-band= 5.6%  aa=    0  jitter=   0  normalized=    0
+   macos-spec-home-light    1180x800  exact= 662819  edge-band= 6.3%  aa=    0  jitter=   0  normalized=    0
+   macos-spec-lobby         1180x800  exact=  44618  edge-band= 6.1%  aa=    0  jitter=   0  normalized=    0
+   macos-spec-results       1180x800  exact=  75437  edge-band=18.4%  aa=    0  jitter=   0  normalized=    0
+   control screen-swap      normalized= 253096 (must be > 0)
+   control shift-4px        normalized=  10484 (must be > 0)
+   control theme-swap       normalized= 885796 (must be > 0)
+FAIL: visual parity differences found (see /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/*-diff.png)
+[586s] cleanup

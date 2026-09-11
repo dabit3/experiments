@@ -1,0 +1,2 @@
+macos-spec 0,TITLE,1180,800 web-spec
+ios-spec 0,186,1206,2334 web-ios-spec

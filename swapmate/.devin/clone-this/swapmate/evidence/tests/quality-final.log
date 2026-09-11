@@ -1,0 +1,62 @@
+# quality checks @ sha256:d3cf27e874c5700e7eccf4ae9409dc101900f267f48a6428f96f37b6fd295d19
+## packages/swapmate_core
+Formatted 11 files (0 changed) in 0.03 seconds.
+Analyzing swapmate_core...
+No issues found!
+00:00 +0: loading test/position_test.dart
+00:00 +0: test/position_test.dart: Position initial position has 20 legal moves and standard FEN
+00:00 +1: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +2: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +3: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +4: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +5: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +6: test/position_test.dart: Position drops can give checkmate
+00:00 +7: test/position_test.dart: Position drops can give checkmate
+00:00 +8: test/match_test.dart: BughouseMatch clocks run independently and increment applies
+00:00 +9: test/position_test.dart: Position drop consumes reserve and SAN uses @
+00:00 +10: test/position_test.dart: Position drop consumes reserve and SAN uses @
+00:00 +11: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +12: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +13: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +14: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +15: test/position_test.dart: Position moveFromSan parses drops and moves
+00:00 +16: test/match_test.dart: BughouseMatch BPGN export lists both boards chronologically
+00:00 +17: test/match_test.dart: BughouseMatch BPGN export lists both boards chronologically
+00:00 +18: test/match_test.dart: BughouseMatch snapshot json round trip
+00:00 +19: test/match_test.dart: Bot is deterministic for a given seed
+00:00 +20: test/match_test.dart: Bot takes mate in one
+00:00 +21: test/match_test.dart: Bot two bots finish a match
+00:01 +22: All tests passed!
+## server
+Formatted 6 files (0 changed) in 0.02 seconds.
+Analyzing server...
+No issues found!
+00:00 +0: loading test/server_test.dart
+00:00 +0: test/server_test.dart: four clients on four platforms play a complete match to checkmate
+00:00 +1: test/server_test.dart: bots fill a room and finish a match on their own
+00:00 +2: test/server_test.dart: two bots facing each other end the game by themselves
+00:01 +3: test/server_test.dart: premove executes when it becomes legal, and is dropped when it is not
+00:01 +4: test/server_test.dart: reconnecting with a resume token restores the seat
+00:01 +5: test/server_test.dart: quick chat goes to the partner only; room chat reaches spectators
+00:01 +6: test/server_test.dart: errors are reported for illegal moves and wrong turns
+00:01 +7: test/server_test.dart: chat flooding is rate limited
+00:01 +8: test/server_test.dart: over-long chat text is truncated
+00:01 +9: test/server_test.dart: healthz and rooms endpoints answer over HTTP
+00:01 +10: All tests passed!
+## app
+Formatted 19 files (0 changed) in 0.10 seconds.
+Analyzing app...                                                
+No issues found! (ran in 4.7s)
+00:00 +0: loading /Users/devin/repos/experiments/swapmate/app/test/home_screen_test.dart
+00:00 +0: home screen shows the brand, entry points and join form
+00:00 +1: joining without a room code explains the 4-letter code
+00:00 +2: All tests passed!
+## app icon generator
+00:00 +0: loading /Users/devin/repos/experiments/swapmate/app/tool/icons/generate_icons_test.dart
+00:00 +0: generate launcher icons
+00:00 +1: All tests passed!
+## shell
+bash -n: ok
+## node
+node --check web_client.mjs: ok
+py_compile compare_png.py: ok

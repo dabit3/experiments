@@ -1,0 +1,4 @@
+[web] ready http://172.16.5.2:8787/?testId=web&name=Web%20player&room=&server=ws://172.16.5.2:8787/ws
+[web] shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/web-lobby.png
+[web] shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/web-game.png
+[web] shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T054256Z/web-results.png

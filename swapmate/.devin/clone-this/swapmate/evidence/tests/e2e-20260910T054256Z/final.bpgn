@@ -1,0 +1,14 @@
+[Event "Swapmate match"]
+[Site "Swapmate"]
+[Date "2026.09.09"]
+[WhiteA "Web player"]
+[BlackA "iPhone player"]
+[WhiteB "Android player"]
+[BlackB "Mac player"]
+[TimeControl "300+0"]
+[Variant "bughouse"]
+[Result "1-0"]
+
+1A. e4 {257.374} 1a. e5 {299.675} 1B. e4 {253.11} 1b. d5 {298.244}
+2A. Qh5 {251.354} 2a. Nc6 {299.335} 2B. exd5 {250.87} 2b. Qxd5 {296.532}
+3A. Bc4 {247.743} {WB forfeits on time} 1-0

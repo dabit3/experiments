@@ -1,0 +1,38 @@
+== Swapmate multiplayer e2e  20260911T043452Z
+   out=/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T043452Z server=ws://172.16.5.2:8793/ws seed=42 room=SWAP platforms=web,ios,android,macos
+[0s] building targets
+Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+Use --no-wasm-dry-run to disable these warnings.
+[94s] starting server
+[95s] recording screen -> recording.mov
+[95s] launching macOS app
+[95s] launching web client (Playwright Chromium)
+[96s] installing + launching iOS app on 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[124s] waiting for Android boot (up to 3000s)
+[139s] installing + launching Android app
+[824s] bringing up eth0 (SLIRP) as the Android fallback uplink
+[1043s] waiting for 4 test clients to register
+[1043s] registered: android,ios,macos,web
+[1043s] web creates room SWAP (30+0, no bots)
+[1046s] launching desktop spectators for visual parity
+[1052s] registered: android,ios,macos,macos-spec,web,web-spec
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T043452Z/web-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T043452Z/ios-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T043452Z/android-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T043452Z/macos-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T043452Z/web-spec-lobby.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T043452Z/macos-spec-lobby.png
+[1172s] match started
+[1172s]   web plays e2e4
+[1172s]   ios plays e7e5
+[1173s]   android plays e2e4
+[1220s]   macos plays d7d5
+[1221s]   web plays d1h5
+[1221s]   ios plays b8c6
+[1222s]   android plays e4d5
+[1227s]   macos plays d8d5
+[1227s]   web plays f1c4
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T043452Z/web-game.png
+   shot /Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260911T043452Z/ios-game.png
+curl: (52) Empty reply from server
+[1704s] cleanup

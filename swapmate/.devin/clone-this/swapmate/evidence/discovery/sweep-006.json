@@ -1,0 +1,30 @@
+{
+  "sweep": 6,
+  "kind": "independent repeat inspection of final source, current evidence and unresolved Android/performance branches",
+  "revision": "sha256:2c6e754e4196f7105b67dc01c0dcc562fd7b8d44b3420c0fc7d4601617732ea4",
+  "date": "2026-09-11",
+  "audits_revisited": [
+    "source",
+    "navigation",
+    "roles",
+    "states",
+    "responsive",
+    "data",
+    "assets",
+    "accessibility",
+    "reliability",
+    "rebrand"
+  ],
+  "evidence_revisited": [
+    "evidence/tests/partial-visual-current/e2e.log",
+    "evidence/tests/partial-visual-current/visual/summary.json",
+    "evidence/tests/arcade-clean-source-match.log",
+    "evidence/tests/arcade-security-scan.log",
+    "evidence/tests/e2e-20260911T043452Z/state-after-android-crash.json",
+    "evidence/tests/arcade-capture-recovery.md"
+  ],
+  "new_items": [],
+  "new_item_count": 0,
+  "frontier_empty": false,
+  "notes": "No second new requirement was found. The same four routes, all documented controls and states, host/player/spectator/bot/resume roles, protocol messages, native launch paths, breakpoints/themes, local fonts and vector assets, semantic labels, reliability outcomes and branding were independently rechecked. Android completion, Android visual comparisons, a second consecutive zero-discovery sweep and measured 60 fps remain on the frontier; they cannot be marked verified from the unstable TCG guest."
+}

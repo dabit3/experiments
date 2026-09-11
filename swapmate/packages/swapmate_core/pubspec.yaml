@@ -1,0 +1,11 @@
+name: swapmate_core
+description: Swapmate rules engine, match model, BPGN export and wire protocol shared by the server and every client.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.3
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.0

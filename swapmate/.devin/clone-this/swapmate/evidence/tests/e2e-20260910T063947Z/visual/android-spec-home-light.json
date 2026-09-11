@@ -1,0 +1,32 @@
+{
+  "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T063947Z/visual/android-spec-home-light-reference.png",
+  "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T063947Z/visual/android-spec-home-light-actual.png",
+  "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T063947Z/web-android-spec-home-light.png",
+  "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T063947Z/android-spec-home-light.png",
+  "width": 540,
+  "height": 1200,
+  "total_pixels": 648000,
+  "exact_different_pixels": 183466,
+  "antialiased_pixels": 0,
+  "edge_pixels": 6368,
+  "edge_zone_pixels": 114115,
+  "edge_zone_fraction": 0.1761,
+  "shift_pixels": 0,
+  "normalization": {
+    "tolerance_per_channel": 16,
+    "edge_tolerance_per_channel": 255,
+    "edge_radius": 2,
+    "edge_threshold": 16,
+    "ignore_antialiasing": true,
+    "shift_radius": 1,
+    "masks": [],
+    "crop_actual": [
+      0,
+      0,
+      540,
+      1200
+    ],
+    "crop_reference": null
+  },
+  "different_pixels": 0
+}
