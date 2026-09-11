@@ -45,7 +45,7 @@ struct MatchView: View {
           }
           HStack {
             Image(systemName: "hand.draw").foregroundStyle(Velvet.orange)
-            Text("Drag anywhere on the court to move")
+            Text("Drag to move · Edge hits add angle")
               .font(.system(.caption, design: .rounded)).foregroundStyle(Velvet.muted)
           }.padding(.bottom, 4)
         }
@@ -79,14 +79,15 @@ struct MatchView: View {
           Text("\(session.engine.playerScore)")
             .font(.system(size: 60, weight: .regular, design: .serif))
             .foregroundStyle(Velvet.cream)
+          scorePips(session.engine.playerScore, color: Velvet.cream)
         }
         Spacer()
         VStack(spacing: 8) {
           Text("FIRST TO \(session.engine.target)")
-            .font(.system(.caption2, design: .monospaced)).tracking(1.5)
+            .font(.system(.caption, design: .monospaced)).tracking(1)
             .foregroundStyle(Velvet.muted)
-          Text(session.engine.rally > 0 ? "\(session.engine.rally) SHOT RALLY" : "FIND YOUR RHYTHM")
-            .font(.system(size: 10, weight: .medium, design: .monospaced))
+          Text(session.engine.rally > 0 ? "\(session.engine.rally) SHOT RALLY" : "YOUR SERVE")
+            .font(.system(.caption, design: .monospaced, weight: .medium))
             .foregroundStyle(Velvet.orange)
         }
         Spacer()
@@ -95,6 +96,7 @@ struct MatchView: View {
           Text("\(session.engine.opponentScore)")
             .font(.system(size: 60, weight: .regular, design: .serif))
             .foregroundStyle(Velvet.muted)
+          scorePips(session.engine.opponentScore, color: Velvet.orange)
         }
       }
       .accessibilityElement(children: .ignore)
@@ -104,16 +106,33 @@ struct MatchView: View {
     }
   }
 
+  private func scorePips(_ score: Int, color: Color) -> some View {
+    HStack(spacing: 4) {
+      ForEach(0..<session.engine.target, id: \.self) { point in
+        Circle().fill(point < score ? color : color.opacity(0.16)).frame(width: 5, height: 5)
+      }
+    }
+    .accessibilityHidden(true)
+  }
+
   private var servePrompt: some View {
-    VStack(spacing: 12) {
-      Eyebrow(text: session.engine.phase == .ready ? "Welcome to the club" : "Next point")
+    VStack(spacing: 10) {
       Text(
         session.engine.phase == .ready
-          ? "A little friendly\ncompetition."
-          : session.engine.lastPointWasPlayer ? "Beautifully placed." : "Shake it off."
+          ? "Your serve."
+          : session.engine.lastPointWasPlayer
+            ? "Point to you." : "Point to \(session.engine.settings.difficulty.title)."
       )
-      .font(.system(size: 28, design: .serif)).multilineTextAlignment(.center)
+      .font(.system(.title2, design: .serif)).multilineTextAlignment(.center)
       .foregroundStyle(Velvet.cream)
+      if session.engine.phase == .ready {
+        Text("Move the cream paddle. Aim with its edges.\nSide rails keep the ball in play.")
+          .font(.footnote).foregroundStyle(Velvet.muted)
+          .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+      } else {
+        Text(session.engine.lastPointWasPlayer ? "Beautifully placed." : "Find your next opening.")
+          .font(.footnote).foregroundStyle(Velvet.muted)
+      }
       Button {
         session.engine.serve()
       } label: {
@@ -128,7 +147,7 @@ struct MatchView: View {
       }
       .buttonStyle(.plain)
     }
-    .padding(24)
+    .padding(18)
     .frame(maxWidth: .infinity)
     .background(Velvet.background.opacity(0.92), in: RoundedRectangle(cornerRadius: 20))
     .padding(20)
@@ -136,15 +155,20 @@ struct MatchView: View {
 
   private var pauseOverlay: some View {
     ZStack {
-      Velvet.background.opacity(0.92).ignoresSafeArea()
+      Velvet.background.opacity(0.98).ignoresSafeArea()
       VStack(alignment: .leading, spacing: 24) {
         Eyebrow(text: "Take a breather")
         Text("Time out.").font(.system(size: 58, design: .serif)).foregroundStyle(Velvet.cream)
         Text("The court will wait for you.")
           .font(.system(.body, design: .serif)).foregroundStyle(Velvet.muted)
-        Text("\(session.engine.playerScore)  —  \(session.engine.opponentScore)")
-          .font(.system(size: 64, design: .serif)).foregroundStyle(Velvet.cream)
-          .padding(.vertical, 12)
+        HStack {
+          resultScore(session.engine.playerScore, label: "YOU")
+          Spacer()
+          resultScore(
+            session.engine.opponentScore,
+            label: session.engine.settings.difficulty.title.uppercased())
+        }
+        .foregroundStyle(Velvet.cream).padding(.vertical, 12)
         PrimaryButton(title: "Back to the rally", icon: "play.fill") { session.engine.resume() }
         Button("Restart match") { confirmReset = true }
           .font(.headline).foregroundStyle(Velvet.cream).frame(maxWidth: .infinity).padding(14)
@@ -175,17 +199,15 @@ struct MatchView: View {
               Spacer()
               Image(systemName: won ? "laurel.leading" : "sun.max")
             }
-            HStack(alignment: .firstTextBaseline, spacing: 16) {
-              Text("\(session.engine.playerScore)")
-              Text("–").opacity(0.45)
-              Text("\(session.engine.opponentScore)")
-            }
-            .font(.system(size: 94, design: .serif))
             HStack {
-              Text("YOU")
+              resultScore(session.engine.playerScore, label: "YOU")
               Spacer()
-              Text(session.engine.settings.difficulty.title.uppercased())
-            }.font(.system(.caption, design: .monospaced))
+              Text("–").font(.system(size: 54, design: .serif)).opacity(0.4)
+              Spacer()
+              resultScore(
+                session.engine.opponentScore,
+                label: session.engine.settings.difficulty.title.uppercased())
+            }
             Rectangle().fill(Velvet.background.opacity(0.3)).frame(height: 1)
             HStack {
               VStack(alignment: .leading, spacing: 5) {
@@ -210,6 +232,13 @@ struct MatchView: View {
       }.padding(28)
     }
   }
+
+  private func resultScore(_ score: Int, label: String) -> some View {
+    VStack(spacing: 6) {
+      Text("\(score)").font(.system(size: 86, design: .serif))
+      Text(label).font(.system(.caption, design: .monospaced))
+    }
+  }
 }
 
 struct PlayCourt: View {
@@ -228,12 +257,12 @@ struct PlayCourt: View {
             Velvet.court(engine.settings.court),
             Velvet.court(engine.settings.court).opacity(0.7),
           ]), startPoint: .zero, endPoint: CGPoint(x: w, y: h)))
-      for index in 0..<50 {
-        let y = Double(index) * h / 50
-        var line = Path()
-        line.move(to: CGPoint(x: 0, y: y))
-        line.addLine(to: CGPoint(x: w, y: y))
-        context.stroke(line, with: .color(.white.opacity(0.018)), lineWidth: 1)
+      for x in [0.05, 0.95] {
+        context.fill(
+          Path(roundedRect: bounds, cornerRadius: 12),
+          with: .radialGradient(
+            Gradient(colors: [Velvet.cream.opacity(0.12), .clear]),
+            center: CGPoint(x: w * x, y: h * 0.1), startRadius: 0, endRadius: h * 0.75))
       }
       context.stroke(
         Path(roundedRect: bounds.insetBy(dx: 2, dy: 2), cornerRadius: 10),
@@ -264,12 +293,19 @@ struct PlayCourt: View {
         let shadow = paddle.offsetBy(dx: 0, dy: 5)
         context.fill(Path(roundedRect: shadow, cornerRadius: 5), with: .color(.black.opacity(0.25)))
         context.fill(Path(roundedRect: paddle, cornerRadius: 5), with: .color(color))
+        context.stroke(
+          Path(roundedRect: paddle, cornerRadius: 5), with: .color(Velvet.cream.opacity(0.7)),
+          lineWidth: 1)
         context.fill(
           Path(
             roundedRect: CGRect(x: x * w - 3, y: y * h + (y > 0.5 ? 5 : -16), width: 6, height: 11),
             cornerRadius: 2),
           with: .color(color.opacity(0.6)))
       }
+      context.draw(
+        Text("YOU").font(.system(size: 10, weight: .medium, design: .monospaced))
+          .foregroundColor(Velvet.cream.opacity(0.7)),
+        at: CGPoint(x: engine.playerX * w, y: h * 0.96))
       if !reduceMotion {
         for (index, point) in engine.trail.enumerated() {
           let radius = Double(index + 1) / 9 * GameEngine.radius * w
@@ -289,6 +325,9 @@ struct PlayCourt: View {
       context.fill(
         Path(ellipseIn: CGRect(x: center.x - r, y: center.y - r, width: r * 2, height: r * 2)),
         with: .color(Velvet.orange))
+      context.stroke(
+        Path(ellipseIn: CGRect(x: center.x - r, y: center.y - r, width: r * 2, height: r * 2)),
+        with: .color(Velvet.cream), lineWidth: 1.8)
       context.fill(
         Path(
           ellipseIn: CGRect(

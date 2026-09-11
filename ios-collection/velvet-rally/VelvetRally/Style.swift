@@ -7,7 +7,7 @@ enum Velvet {
   static let orange = Color(hex: 0xFF9459)
   static let panel = Color(hex: 0x302235)
   static func court(_ court: Court) -> Color {
-    court == .aubergine ? Color(hex: 0x654266) : Color(hex: 0xB4654E)
+    court == .aubergine ? Color(hex: 0x654266) : Color(hex: 0x925039)
   }
 }
 
@@ -24,8 +24,8 @@ struct Eyebrow: View {
   let text: String
   var body: some View {
     Text(text.uppercased())
-      .font(.system(.caption2, design: .monospaced, weight: .medium))
-      .tracking(2)
+      .font(.system(.caption, design: .monospaced, weight: .medium))
+      .tracking(1.5)
       .foregroundStyle(Velvet.muted)
   }
 }

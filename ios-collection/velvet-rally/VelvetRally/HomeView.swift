@@ -5,6 +5,7 @@ struct HomeView: View {
   @State private var playing = false
   @State private var showSettings = false
   @State private var showRecords = false
+  @State private var playFromRecords = false
 
   var body: some View {
     ZStack {
@@ -65,7 +66,7 @@ struct HomeView: View {
           PrimaryButton(title: "Step onto the court") { playing = true }
           HStack {
             Text("One thumb. Endless rhythm.")
-              .font(.system(.caption, design: .serif)).italic().foregroundStyle(Velvet.muted)
+              .font(.system(.footnote, design: .serif)).italic().foregroundStyle(Velvet.muted)
             Spacer()
             Button {
               showRecords = true
@@ -85,7 +86,17 @@ struct HomeView: View {
       .scrollIndicators(.hidden)
     }
     .sheet(isPresented: $showSettings) { SettingsView() }
-    .sheet(isPresented: $showRecords) { RecordsView() }
+    .sheet(
+      isPresented: $showRecords,
+      onDismiss: {
+        if playFromRecords {
+          playFromRecords = false
+          playing = true
+        }
+      }
+    ) {
+      RecordsView { playFromRecords = true }
+    }
     .fullScreenCover(isPresented: $playing) {
       MatchView(settings: store.settings)
     }
@@ -99,7 +110,7 @@ struct SettingsView: View {
     NavigationStack {
       ScrollView {
         VStack(alignment: .leading, spacing: 26) {
-          Text("Make it\nyour game.").font(.system(size: 44, design: .serif))
+          Text("Make it your game.").font(.system(size: 36, design: .serif))
           VStack(alignment: .leading, spacing: 14) {
             Eyebrow(text: "01 / Surface")
             HStack(spacing: 14) {
@@ -165,6 +176,7 @@ struct SettingsView: View {
         .padding(24).foregroundStyle(Velvet.cream)
       }
       .background(Velvet.background)
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .principal) { Eyebrow(text: "Match settings") }
         ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } }
@@ -177,6 +189,7 @@ struct RecordsView: View {
   @EnvironmentObject private var store: RallyStore
   @Environment(\.dismiss) private var dismiss
   @State private var clear = false
+  var play: () -> Void
   var body: some View {
     NavigationStack {
       ScrollView {
@@ -189,6 +202,10 @@ struct RecordsView: View {
               "Finish your first match to start a collection of good games. Your results stay on this iPhone."
             )
             .foregroundStyle(Velvet.muted)
+            PrimaryButton(title: "Play your first match") {
+              play()
+              dismiss()
+            }
           } else {
             HStack {
               recordStat("\(store.records.filter(\.won).count)", "WINS")
@@ -222,6 +239,7 @@ struct RecordsView: View {
         }.padding(24).foregroundStyle(Velvet.cream)
       }
       .background(Velvet.background)
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
       .confirmationDialog(
         "Clear all local match history?", isPresented: $clear, titleVisibility: .visible
