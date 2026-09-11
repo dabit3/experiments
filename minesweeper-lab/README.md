@@ -75,12 +75,33 @@ confirms this seed / first-click combination is solvable without guessing.
 
 ### Recording
 
-**[Watch the full recording (mp4)](https://app.devin.ai/attachments/22c82815-fa6d-4cbb-993e-f88f17e7873f/minesweeper-lab-showcase.mp4)**
+**[Watch the annotated arcade showcase (mp4)](https://app.devin.ai/attachments/14816e55-505e-4b72-8b12-8186a9a8235c/minesweeper-lab-showcase.mp4)**
 
-![Animated preview of the showcase run](https://app.devin.ai/attachments/96496d48-ee01-4aa7-8aa8-57f2269127b2/minesweeper-lab-preview.webp)
+![Animated preview of the arcade showcase](https://app.devin.ai/attachments/8d9e916d-b0b8-4807-a32b-b8ca541003db/minesweeper-lab-preview.webp)
 
-Result: the recorded game was won on the first attempt with the timer stopping at 204 s, the mine
-counter at `000`, all 40 flags placed by hand before the final reveal, and 42 chord reveals.
+Result: the same-seed retry was won in **102 seconds**, with **41 chords**, **216/216 safe cells**,
+and all **40 flags placed manually before victory**. The counter remained `000`, the timer
+stayed frozen, and the matching best time survived a reload.
+
+The recording retains the first attempt: an incorrect deduction flagged `(2,9)` and chorded
+into the mine at `(2,10)`, losing at 90 seconds. This was a playing error, not an application
+defect. The retry used the same seed, as allowed by the scenario. All gameplay used real mouse
+input and visible board numbers; no solver, saved mine maps, board internals, Playwright, or
+scripted gameplay were used for this recording. It is a replay of a previously played seed,
+and the loss visually exposed the mines before the retry.
+
+The MP4 is the recording tool's edited, annotated 1600×1200 capture; the WebP is an 800×600,
+4× accelerated preview. Test steps stay in this README and the recording annotations.
+
+### Additional browser checks
+
+All three difficulties, seed Apply/shuffle, first-click safety, face reset, flag/question/clear
+cycling, keyboard `F`/`Enter`, and loss/wrong-flag rendering passed. How to play passed open,
+close, Escape, Tab/Shift+Tab containment and focus return checks. Best-time persistence was
+verified in a second tab to preserve the original win state.
+
+At approximately 390px and 1000px widths, oversized boards scrolled inside the cabinet
+without horizontal page overflow. These checks used native Chrome interactions.
 
 ## Project layout
 
