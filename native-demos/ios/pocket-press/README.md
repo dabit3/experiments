@@ -48,7 +48,7 @@ python3 scripts/generate_project.py
    Typography, paper, ink and accent change cohesively throughout the issue.
 5. Choose **Read**. Swipe or use the arrows to preview every page. Tap **Export
    print-ready PDF** to write a real multipage PDF and reopen it from disk in PDFKit.
-6. In the PDF reader, scroll, use page arrows, pinch to zoom or select text. **Share
+6. In the PDF reader, swipe, use page arrows, pinch to zoom or select text. **Share
    PDF** opens the native share sheet. Close it, then use **Studio → … → Reopen
    last PDF** to reopen the saved export independently of the live issue.
 

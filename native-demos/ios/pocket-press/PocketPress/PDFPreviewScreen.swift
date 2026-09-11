@@ -19,10 +19,11 @@ final class PDFReaderController: NSObject, ObservableObject {
             failed = true
             return
         }
+        view.displayMode = .singlePage
+        view.displayDirection = .horizontal
+        view.usePageViewController(true, withViewOptions: nil)
         view.document = document
         view.autoScales = true
-        view.displayMode = .singlePageContinuous
-        view.displayDirection = .vertical
         view.backgroundColor = UIColor(hex: 0xDDDCD4)
         view.pageShadowsEnabled = true
         count = document.pageCount
@@ -93,6 +94,7 @@ struct PDFPreviewScreen: View {
                     }.disabled(controller.failed)
                 }.padding(.horizontal, 15).padding(.vertical, 6)
             }.background(PressStyle.paper)
+                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
                         Eyebrow(text: "Pocket Press", color: PressStyle.ink)

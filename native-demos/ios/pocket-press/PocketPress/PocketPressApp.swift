@@ -245,6 +245,7 @@ struct TemplateView: View {
                         .font(PressStyle.sans(11)).foregroundStyle(PressStyle.muted)
                 }.padding(24)
             }.background(PressStyle.paper)
+                .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .principal) { Eyebrow(text: "New issue", color: PressStyle.ink) }
                     ToolbarItem(placement: .topBarTrailing) { Button("Close") { dismiss() } }

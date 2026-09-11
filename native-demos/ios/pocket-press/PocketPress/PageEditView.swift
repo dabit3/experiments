@@ -97,6 +97,7 @@ struct PageEditView: View {
             }
             .scrollDismissesKeyboard(.interactively)
             .background(PressStyle.paper)
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Cancel") { dismiss() }.foregroundStyle(PressStyle.muted)
@@ -108,6 +109,7 @@ struct PageEditView: View {
                         dismiss()
                     }.font(PressStyle.sans(15, bold: true))
                         .disabled(draft.validationMessage != nil || importing)
+                        .opacity(draft.validationMessage == nil && !importing ? 1 : 0.35)
                         .accessibilityLabel("Save page changes")
                 }
                 ToolbarItemGroup(placement: .keyboard) {

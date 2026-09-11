@@ -103,74 +103,85 @@ struct EditorView: View {
     }
 
     private func studio(_ issue: Magazine) -> some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 18) {
-                HStack(alignment: .firstTextBaseline) {
-                    Text("Make it yours.").font(PressStyle.serif(30)).tracking(-0.9)
-                    Spacer()
-                    Menu {
-                        Button("Restore template", systemImage: "arrow.counterclockwise") { showReset = true }
-                        if let latestURL {
-                            Button("Reopen last PDF", systemImage: "doc.richtext") {
-                                exported = ExportedIssue(url: latestURL, title: issue.title)
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 12) {
+                    HStack(alignment: .firstTextBaseline) {
+                        Text("Make it yours.").font(PressStyle.serif(30)).tracking(-0.9)
+                        Spacer()
+                        Menu {
+                            Button("Restore template", systemImage: "arrow.counterclockwise") {
+                                showReset = true
                             }
+                            if let latestURL {
+                                Button("Reopen last PDF", systemImage: "doc.richtext") {
+                                    exported = ExportedIssue(url: latestURL, title: issue.title)
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis").frame(width: 44, height: 44)
                         }
-                    } label: {
-                        Image(systemName: "ellipsis").frame(width: 44, height: 44)
+                        .accessibilityLabel("Magazine options")
                     }
-                    .accessibilityLabel("Magazine options")
-                }
-                Button {
-                    editing = issue.pages[safeIndex(issue)]
-                } label: {
-                    PageArtwork(
-                        page: issue.pages[safeIndex(issue)], theme: issue.theme, index: safeIndex(issue)
-                    )
-                    .shadow(color: .black.opacity(0.15), radius: 16, x: 0, y: 8)
-                    .padding(.horizontal, 21)
-                    .padding(.vertical, 17)
-                    .frame(maxWidth: .infinity)
-                    .background(
-                        Color(uiColor: UIColor(hex: 0xE0E3DA)),
-                        in: RoundedRectangle(cornerRadius: 7))
-                }.buttonStyle(.plain).accessibilityLabel("Edit current page")
-                HStack {
-                    Eyebrow(
-                        text:
-                            "\(String(format: "%02d", safeIndex(issue) + 1)) / \(String(format: "%02d", issue.pages.count))",
-                        color: PressStyle.ink)
-                    Text(issue.pages[safeIndex(issue)].kind.title).font(PressStyle.sans(12))
-                        .foregroundStyle(PressStyle.muted)
-                    Spacer()
-                    pageArrows(issue)
-                }
-                HStack(spacing: 10) {
                     Button {
                         editing = issue.pages[safeIndex(issue)]
                     } label: {
-                        Label("Edit page", systemImage: "pencil")
-                            .font(PressStyle.sans(14, bold: true)).frame(maxWidth: .infinity, minHeight: 50)
-                            .background(PressStyle.ink, in: RoundedRectangle(cornerRadius: 12))
-                            .foregroundStyle(.white)
-                    }.buttonStyle(.plain)
-                    Button {
-                        showThemes = true
-                    } label: {
-                        HStack(spacing: 8) {
-                            Circle().fill(Color(uiColor: PrintPalette.forTheme(issue.theme).accent))
-                                .frame(width: 14, height: 14)
-                            Text(issue.theme.title)
-                        }.font(PressStyle.sans(14, bold: true)).frame(maxWidth: .infinity, minHeight: 50)
-                            .background(.white.opacity(0.7), in: RoundedRectangle(cornerRadius: 12))
-                            .overlay(RoundedRectangle(cornerRadius: 12).stroke(PressStyle.line, lineWidth: 1))
-                    }.buttonStyle(.plain).accessibilityLabel("Choose theme")
-                }
-                HStack {
-                    Image(systemName: "hand.tap").font(.system(size: 12))
-                    Text("Tap the page to edit. Your layout takes care of itself.")
-                        .font(PressStyle.sans(10))
-                }.foregroundStyle(PressStyle.muted).frame(maxWidth: .infinity)
-            }.padding(.horizontal, 22).padding(.bottom, 24)
+                        PageArtwork(
+                            page: issue.pages[safeIndex(issue)], theme: issue.theme, index: safeIndex(issue)
+                        )
+                        .frame(
+                            height: max(
+                                210, min((geometry.size.width - 86) * 594 / 420, geometry.size.height - 242))
+                        )
+                        .shadow(color: .black.opacity(0.15), radius: 16, x: 0, y: 8)
+                        .padding(.horizontal, 21)
+                        .padding(.vertical, 14)
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            Color(uiColor: UIColor(hex: 0xE0E3DA)),
+                            in: RoundedRectangle(cornerRadius: 7))
+                    }.buttonStyle(.plain).accessibilityLabel("Edit current page")
+                    HStack {
+                        Eyebrow(
+                            text:
+                                "\(String(format: "%02d", safeIndex(issue) + 1)) / \(String(format: "%02d", issue.pages.count))",
+                            color: PressStyle.ink)
+                        Text(issue.pages[safeIndex(issue)].kind.title).font(PressStyle.sans(12))
+                            .foregroundStyle(PressStyle.muted)
+                        Spacer()
+                        pageArrows(issue)
+                    }
+                    HStack(spacing: 10) {
+                        Button {
+                            editing = issue.pages[safeIndex(issue)]
+                        } label: {
+                            Label("Edit page", systemImage: "pencil")
+                                .font(PressStyle.sans(14, bold: true)).frame(
+                                    maxWidth: .infinity, minHeight: 50
+                                )
+                                .background(PressStyle.ink, in: RoundedRectangle(cornerRadius: 12))
+                                .foregroundStyle(.white)
+                        }.buttonStyle(.plain)
+                        Button {
+                            showThemes = true
+                        } label: {
+                            HStack(spacing: 8) {
+                                Circle().fill(Color(uiColor: PrintPalette.forTheme(issue.theme).accent))
+                                    .frame(width: 14, height: 14)
+                                Text(issue.theme.title)
+                            }.font(PressStyle.sans(14, bold: true)).frame(maxWidth: .infinity, minHeight: 50)
+                                .background(.white.opacity(0.7), in: RoundedRectangle(cornerRadius: 12))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12).stroke(PressStyle.line, lineWidth: 1))
+                        }.buttonStyle(.plain).accessibilityLabel("Choose theme")
+                    }
+                    HStack {
+                        Image(systemName: "hand.tap").font(.system(size: 12))
+                        Text("Tap the page to edit. Your layout takes care of itself.")
+                            .font(PressStyle.sans(10))
+                    }.foregroundStyle(PressStyle.muted).frame(maxWidth: .infinity)
+                }.padding(.horizontal, 22).padding(.bottom, 18)
+            }
         }
     }
 
