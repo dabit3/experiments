@@ -327,6 +327,11 @@ class _ActionButtonState extends State<_ActionButton> {
     final size = widget.big ? 72.0 : (widget.small ? 48.0 : 58.0);
     final col = widget.color ?? Colors.white;
     final enabled = widget.onTap != null;
+    final foreground = !enabled
+        ? hudMuted
+        : widget.active
+        ? const Color(0xFF09162E)
+        : hudText;
     return Semantics(
       button: true,
       enabled: enabled,
@@ -344,9 +349,7 @@ class _ActionButtonState extends State<_ActionButton> {
             height: size,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: widget.active
-                  ? col.withValues(alpha: 0.45)
-                  : const Color(0xB30B0F17),
+              color: widget.active ? col : const Color(0xB30B0F17),
               border: Border.all(
                 color: col.withValues(alpha: enabled ? 0.7 : 0.25),
                 width: widget.active ? 2 : 1.5,
@@ -365,7 +368,7 @@ class _ActionButtonState extends State<_ActionButton> {
               children: [
                 Icon(
                   widget.icon,
-                  color: enabled ? hudText : hudMuted,
+                  color: foreground,
                   size: widget.small ? 18 : 22,
                 ),
                 if (!widget.small) ...[
@@ -376,7 +379,7 @@ class _ActionButtonState extends State<_ActionButton> {
                       fontSize: 9,
                       letterSpacing: 1,
                       fontWeight: FontWeight.w800,
-                      color: enabled ? hudText : hudMuted,
+                      color: foreground,
                     ),
                   ),
                 ],

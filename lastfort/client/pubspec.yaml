@@ -57,6 +57,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/island-keyart.webp
     - assets/fonts/OFL-Rajdhani.txt
   fonts:
     - family: Rajdhani
@@ -69,4 +70,3 @@ flutter:
           weight: 600
         - asset: assets/fonts/Rajdhani-Bold.ttf
           weight: 700
-

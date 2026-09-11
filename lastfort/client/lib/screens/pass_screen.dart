@@ -61,7 +61,7 @@ class PassScreen extends StatelessWidget {
                               Text(
                                 '${profile.level}',
                                 style: context.text.displayMedium?.copyWith(
-                                  color: LfTokens.teal,
+                                  color: c.readable(LfTokens.teal),
                                   height: 1,
                                 ),
                               ),
@@ -226,7 +226,9 @@ class _TierTrack extends StatelessWidget {
                         Text(
                           'TIER ${t.tier}',
                           style: context.text.labelSmall?.copyWith(
-                            color: reached ? LfTokens.teal : c.muted,
+                            color: reached
+                                ? c.readable(LfTokens.teal)
+                                : c.muted,
                             letterSpacing: 1.2,
                             fontWeight: FontWeight.w800,
                           ),

@@ -194,13 +194,13 @@ class LastfortGame extends FlameGame {
   // ----------------------------------------------------------------- terrain
 
   static const _terrainColors = <Terrain, Color>{
-    Terrain.water: Color(0xFF17456B),
-    Terrain.sand: Color(0xFFD8C289),
-    Terrain.grass: Color(0xFF5B9B47),
-    Terrain.meadow: Color(0xFF79B25A),
-    Terrain.dirt: Color(0xFF8A6A47),
-    Terrain.road: Color(0xFF6B6764),
-    Terrain.rock: Color(0xFF7C848E),
+    Terrain.water: Color(0xFF117FA3),
+    Terrain.sand: Color(0xFFF0D595),
+    Terrain.grass: Color(0xFF81B957),
+    Terrain.meadow: Color(0xFFACCD67),
+    Terrain.dirt: Color(0xFFC0A474),
+    Terrain.road: Color(0xFF566D79),
+    Terrain.rock: Color(0xFF8AABAF),
   };
 
   int _hash(int x, int y) {
@@ -222,8 +222,7 @@ class LastfortGame extends FlameGame {
         if (!lfWorld.inBounds(gx, gy)) continue;
         final t = lfWorld.terrainAt(gx, gy);
         final base = _terrainColors[t]!;
-        final v = ((_hash(gx, gy) % 100) / 100 - 0.5) * 0.10;
-        paint.color = _shade(base, v);
+        paint.color = base;
         c.drawRect(
           Rect.fromLTWH(gx * ts, gy * ts, ts + 0.02, ts + 0.02),
           paint,
@@ -239,20 +238,55 @@ class LastfortGame extends FlameGame {
             }
           }
           if (land) {
-            paint.color = const Color(0xFF3A7FA8).withValues(alpha: 0.55);
+            paint.color = const Color(0xFF62DBCF).withValues(alpha: 0.6);
             c.drawRect(
               Rect.fromLTWH(gx * ts, gy * ts, ts + 0.02, ts + 0.02),
               paint,
             );
+            c.drawArc(
+              Rect.fromLTWH(gx * ts + 0.3, gy * ts + 0.3, ts - 0.6, ts - 0.6),
+              0.2,
+              1.6,
+              false,
+              Paint()
+                ..color = const Color(0xFFBFF5DA)
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 0.12,
+            );
           }
         } else if (t == Terrain.grass || t == Terrain.meadow) {
-          // Sparse grass tufts.
           final h = _hash(gx * 7, gy * 3);
-          if (h % 5 == 0) {
-            paint.color = _shade(base, 0.12);
-            final ox = gx * ts + (h % 17) / 17 * ts;
-            final oy = gy * ts + ((h >> 5) % 13) / 13 * ts;
-            c.drawRect(Rect.fromLTWH(ox, oy, 0.5, 0.25), paint);
+          final ox = gx * ts + 0.5 + (h % 17) / 17 * (ts - 1);
+          final oy = gy * ts + 0.5 + ((h >> 5) % 13) / 13 * (ts - 1);
+          c.drawOval(
+            Rect.fromCenter(
+              center: Offset(ox, oy),
+              width: ts * 0.65,
+              height: ts * 0.38,
+            ),
+            Paint()..color = _shade(base, h.isEven ? 0.018 : -0.018),
+          );
+          if (h % 3 == 0) {
+            final tuft = Path()
+              ..moveTo(ox - 0.3, oy)
+              ..lineTo(ox - 0.4, oy - 0.5)
+              ..lineTo(ox, oy - 0.15)
+              ..lineTo(ox + 0.12, oy - 0.65)
+              ..lineTo(ox + 0.27, oy)
+              ..close();
+            c.drawPath(tuft, Paint()..color = _shade(base, -0.09));
+          }
+          if (h % 19 == 0) {
+            for (var f = 0; f < 3; f++) {
+              c.drawCircle(
+                Offset(ox + f * 0.3, oy + (f % 2) * 0.25),
+                0.10,
+                Paint()
+                  ..color = h.isEven
+                      ? const Color(0xFFFFF0A6)
+                      : const Color(0xFFDAD1FA),
+              );
+            }
           }
         } else if (t == Terrain.road) {
           final h = _hash(gx * 11, gy * 5);
@@ -262,6 +296,30 @@ class LastfortGame extends FlameGame {
               Rect.fromLTWH(gx * ts + 0.4, gy * ts + 0.4, ts - 0.8, ts - 0.8),
               paint,
             );
+          }
+        }
+        if (t != Terrain.road) {
+          for (final d in const [(1, 1), (1, -1), (-1, 1), (-1, -1)]) {
+            final horizontal = lfWorld.terrainAt(gx + d.$1, gy);
+            final vertical = lfWorld.terrainAt(gx, gy + d.$2);
+            if (horizontal == t ||
+                horizontal != vertical ||
+                horizontal == Terrain.road)
+              continue;
+            final cornerX = (gx + (d.$1 > 0 ? 1 : 0)) * ts;
+            final cornerY = (gy + (d.$2 > 0 ? 1 : 0)) * ts;
+            final radius = ts * 0.45;
+            final corner = Path()
+              ..moveTo(cornerX, cornerY)
+              ..lineTo(cornerX - d.$1 * radius, cornerY)
+              ..quadraticBezierTo(
+                cornerX,
+                cornerY,
+                cornerX,
+                cornerY - d.$2 * radius,
+              )
+              ..close();
+            c.drawPath(corner, Paint()..color = _terrainColors[horizontal]!);
           }
         }
       }
@@ -330,7 +388,7 @@ class LastfortGame extends FlameGame {
 
   Color _structColor(Structure s) {
     final base = s.team == -1
-        ? const Color(0xFF6D5A4A)
+        ? const Color(0xFFCDD5CD)
         : _matColors[s.material]!;
     final build = s.maxHp == 0 ? 1.0 : (s.hp / s.maxHp).clamp(0.0, 1.0);
     return Color.lerp(base.withValues(alpha: 0.45), base, build)!;
@@ -464,8 +522,12 @@ class LastfortGame extends FlameGame {
         r.deflate(0.1),
         const Radius.circular(0.3),
       );
-      fill.color = col;
+      fill.shader = ui.Gradient.linear(r.topLeft, r.bottomRight, [
+        _shade(col, 0.06),
+        _shade(col, -0.14),
+      ]);
       c.drawRRect(body, fill);
+      fill.shader = null;
       // Top face highlight.
       fill.color = _shade(col, 0.14);
       c.drawRRect(
@@ -474,13 +536,34 @@ class LastfortGame extends FlameGame {
             r.left + 0.1,
             r.top + 0.1,
             r.width - 0.2,
-            r.height * 0.45,
+            r.height * 0.64,
           ),
           const Radius.circular(0.3),
         ),
         fill,
       );
       c.drawRRect(body, edge);
+      if (s.team == -1) {
+        c.drawRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(
+              r.left + ts * 0.2,
+              r.bottom - ts * 0.25,
+              ts * 0.6,
+              ts * 0.12,
+            ),
+            const Radius.circular(0.08),
+          ),
+          Paint()..color = const Color(0xFF225573),
+        );
+        c.drawLine(
+          Offset(r.left + ts * 0.2, r.bottom - ts * 0.24),
+          Offset(r.right - ts * 0.2, r.bottom - ts * 0.24),
+          Paint()
+            ..color = const Color(0xFF83E5DB)
+            ..strokeWidth = 0.08,
+        );
+      }
       switch (s.edit) {
         case PieceEdit.door:
           fill.color = _shade(col, -0.32);
@@ -693,18 +776,54 @@ class LastfortGame extends FlameGame {
       switch (n.kind) {
         case ResourceKind.tree:
           final sway = reducedMotion ? 0.0 : math.sin(time * 1.3 + n.id) * 0.08;
-          paint.color = const Color(0xFF6E4B2B);
-          c.drawCircle(center, r * 0.28, paint);
-          final canopy = center.translate(sway, -0.2);
+          paint.color = const Color(0xFF816040);
+          c.drawRRect(
+            RRect.fromRectAndRadius(
+              Rect.fromCenter(
+                center: center.translate(0, r * 0.1),
+                width: r * 0.4,
+                height: r * 1.3,
+              ),
+              const Radius.circular(0.2),
+            ),
+            paint,
+          );
+          final canopy = center.translate(sway, -r * 0.4);
           final g = [
-            const Color(0xFF3E7D3A),
-            const Color(0xFF2F5E2C),
-            const Color(0xFF4D9945),
+            const Color(0xFF579C45),
+            const Color(0xFF3C9266),
+            const Color(0xFF92B749),
           ][n.variant % 3];
-          paint.color = g.withValues(alpha: 0.92);
-          c.drawCircle(canopy, r, paint);
-          paint.color = _shade(g, 0.12).withValues(alpha: 0.9);
-          c.drawCircle(canopy.translate(-r * 0.25, -r * 0.25), r * 0.55, paint);
+          c.drawCircle(
+            canopy.translate(0.1, r * 0.18),
+            r,
+            Paint()..color = _shade(g, -0.15),
+          );
+          for (var crown = 0; crown < 4; crown++) {
+            final a = crown * 2.4 + n.variant;
+            final pos = canopy + Offset(math.cos(a), math.sin(a)) * r * 0.35;
+            c.drawCircle(
+              pos,
+              r * 0.7,
+              Paint()
+                ..shader = ui.Gradient.radial(
+                  pos.translate(-r * 0.2, -r * 0.25),
+                  r,
+                  [_shade(g, 0.18), g, _shade(g, -0.10)],
+                  [0, 0.6, 1],
+                ),
+            );
+            c.drawArc(
+              Rect.fromCircle(center: pos, radius: r * 0.52),
+              3.6,
+              1.1,
+              false,
+              Paint()
+                ..color = _shade(g, 0.25).withValues(alpha: 0.6)
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 0.06,
+            );
+          }
         case ResourceKind.rock:
           final g = const Color(0xFF8A9199);
           final path = Path();
@@ -719,10 +838,28 @@ class LastfortGame extends FlameGame {
             }
           }
           path.close();
-          paint.color = g;
+          paint.shader = ui.Gradient.linear(
+            center.translate(-r, -r),
+            center.translate(r, r),
+            [const Color(0xFFCCDDE0), g, const Color(0xFF527380)],
+            [0, 0.5, 1],
+          );
           c.drawPath(path, paint);
-          paint.color = _shade(g, 0.15);
-          c.drawCircle(center.translate(-r * 0.2, -r * 0.25), r * 0.35, paint);
+          paint.shader = null;
+          c.drawPath(
+            path,
+            Paint()
+              ..color = const Color(0xFF476570)
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 0.08,
+          );
+          c.drawLine(
+            center.translate(-r * 0.45, -r * 0.5),
+            center.translate(r * 0.4, -r * 0.3),
+            Paint()
+              ..color = const Color(0xFFEBF2D9)
+              ..strokeWidth = 0.1,
+          );
         case ResourceKind.car:
           final col = [
             const Color(0xFFC94C4C),
@@ -944,45 +1081,73 @@ class LastfortGame extends FlameGame {
       c.restore();
     }
 
-    // Body.
-    c.drawCircle(Offset.zero, r, Paint()..color = primary);
-    // Shoulder / pattern by outfit shape.
-    switch (outfit.shape % 3) {
-      case 0:
-        c.drawArc(
-          Rect.fromCircle(center: Offset.zero, radius: r),
-          aim + math.pi * 0.6,
-          math.pi * 0.8,
-          true,
-          Paint()..color = secondary,
-        );
-      case 1:
-        c.drawCircle(Offset.zero, r * 0.55, Paint()..color = secondary);
-      default:
-        c.drawRect(
-          Rect.fromCenter(center: Offset.zero, width: r * 1.6, height: r * 0.5),
-          Paint()..color = secondary,
-        );
+    c.save();
+    c.rotate(aim);
+    for (final side in [-1.0, 1.0]) {
+      final shoulder = Rect.fromCenter(
+        center: Offset(-r * 0.12, side * r * 0.68),
+        width: r * 0.9,
+        height: r * 0.65,
+      );
+      c.drawRRect(
+        RRect.fromRectAndRadius(shoulder, Radius.circular(r * 0.25)),
+        Paint()
+          ..shader = ui.Gradient.linear(
+            shoulder.topLeft,
+            shoulder.bottomRight,
+            [_shade(primary, 0.20), primary, _shade(primary, -0.22)],
+            [0, 0.5, 1],
+          ),
+      );
     }
-    // Head toward aim.
-    final head = Offset(math.cos(aim), math.sin(aim)) * (r * 0.42);
-    c.drawCircle(head, r * 0.48, Paint()..color = _shade(primary, -0.22));
-    c.drawCircle(
-      head,
-      r * 0.48,
-      Paint()
-        ..color = accent
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 0.1,
+    c.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromCenter(
+          center: Offset(-r * 0.3, 0),
+          width: r * 1.15,
+          height: r * 1.3,
+        ),
+        Radius.circular(r * 0.3),
+      ),
+      Paint()..color = secondary,
     );
-    c.drawCircle(
-      Offset.zero,
-      r,
-      Paint()
-        ..color = Colors.black.withValues(alpha: 0.5)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 0.1,
+    final helmet = Rect.fromCenter(
+      center: Offset(r * 0.12, 0),
+      width: r * 1.38,
+      height: r * 1.25,
     );
+    c.drawRRect(
+      RRect.fromRectAndRadius(helmet, Radius.circular(r * 0.48)),
+      Paint()
+        ..shader = ui.Gradient.linear(
+          helmet.topLeft,
+          helmet.bottomRight,
+          [_shade(primary, 0.25), primary, _shade(primary, -0.16)],
+          [0, 0.5, 1],
+        ),
+    );
+    c.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(r * 0.45, -r * 0.43, r * 0.33, r * 0.86),
+        Radius.circular(r * 0.14),
+      ),
+      Paint()..color = const Color(0xFF132A46),
+    );
+    c.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(r * 0.56, -r * 0.32, r * 0.12, r * 0.64),
+        Radius.circular(r * 0.05),
+      ),
+      Paint()..color = accent,
+    );
+    c.drawLine(
+      Offset(-r * 0.38, -r * 0.27),
+      Offset(r * 0.18, -r * 0.38),
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.65)
+        ..strokeWidth = 0.08,
+    );
+    c.restore();
 
     // Emote sparkle.
     if (p.emoteRemaining > 0 && !reducedMotion) {
@@ -1367,6 +1532,16 @@ class LastfortGame extends FlameGame {
 
   void _drawScreenFlashes(Canvas c) {
     final rect = Rect.fromLTWH(0, 0, size.x, size.y);
+    c.drawRect(
+      rect,
+      Paint()
+        ..shader = ui.Gradient.radial(
+          rect.center,
+          rect.longestSide * 0.65,
+          [Colors.transparent, const Color(0x33112845)],
+          [0.5, 1],
+        ),
+    );
     if (client.damageFlash > 0) {
       c.drawRect(
         rect,

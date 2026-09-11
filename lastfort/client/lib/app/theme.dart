@@ -30,24 +30,24 @@ class LfTokens {
   // Brand palette (original Lastfort identity: storm-teal + ember-orange).
   static const Color ember = Color(0xFFFF7A2F);
   static const Color emberDeep = Color(0xFFC94F12);
-  static const Color teal = Color(0xFF2FD3C6);
-  static const Color tealDeep = Color(0xFF128C86);
+  static const Color teal = Color(0xFF56F5CB);
+  static const Color tealDeep = Color(0xFF087D70);
   static const Color storm = Color(0xFF7B5CFF);
   static const Color stormDeep = Color(0xFF3E2A99);
   static const Color health = Color(0xFF52D273);
   static const Color shield = Color(0xFF4DA3FF);
   static const Color danger = Color(0xFFFF4D5E);
-  static const Color warning = Color(0xFFFFC857);
+  static const Color warning = Color(0xFFDFFF62);
 
   static const Color wood = Color(0xFFB07A3C);
   static const Color stone = Color(0xFF9AA3AD);
   static const Color metal = Color(0xFF7FD6E8);
 
   // Dark surfaces.
-  static const Color dBg = Color(0xFF0B1220);
-  static const Color dSurface = Color(0xFF121B2E);
-  static const Color dSurface2 = Color(0xFF1A2540);
-  static const Color dLine = Color(0xFF2A3654);
+  static const Color dBg = Color(0xFF09162E);
+  static const Color dSurface = Color(0xFF112648);
+  static const Color dSurface2 = Color(0xFF1B365C);
+  static const Color dLine = Color(0xFF365578);
   static const Color dText = Color(0xFFEEF3FA);
   static const Color dMuted = Color(0xFF93A0B8);
 
@@ -113,6 +113,13 @@ class LfColors extends ThemeExtension<LfColors> {
   final Color glass;
   final Color glassStrong;
   final bool isDark;
+
+  Color readable(Color color) {
+    final hsl = HSLColor.fromColor(color);
+    return isDark
+        ? color
+        : hsl.withLightness(hsl.lightness.clamp(0, 0.34)).toColor();
+  }
 
   static const dark = LfColors(
     bg: LfTokens.dBg,

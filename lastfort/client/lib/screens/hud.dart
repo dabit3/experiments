@@ -26,7 +26,11 @@ class HudPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => DecoratedBox(
     decoration: BoxDecoration(
-      color: const Color(0xCC0B0F17),
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xEE1A3858), Color(0xEE0B172A)],
+      ),
       borderRadius: BorderRadius.circular(radius),
       border: Border.all(
         color: (accent ?? Colors.white).withValues(

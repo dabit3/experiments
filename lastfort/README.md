@@ -185,6 +185,14 @@ that runs in a few seconds without any simulator.
 
 ## Design notes
 
+- **Arcade presentation**: original island key art, a cobalt/mint/citrus palette,
+  full-body procedural scout outfits, a cinematic lobby, illuminated HUD
+  panels, sculpted tree canopies, beveled structures, helmet/visor characters,
+  and a medal-led results sequence with count-up stats and victory confetti.
+  The island illustration in `client/assets/island-keyart.webp` was generated
+  for Lastfort with an image-generation tool; it contains no third-party game
+  assets. Character and gameplay art are drawn from the equipped cosmetic
+  palette in Dart. Ambient motion honours the reduced-motion preference.
 - **Authority**: the server runs `Sim` from `core` at 20 Hz and is the only
   source of truth for movement validation, hits, damage, building, looting and
   the storm. Clients send `InputFrame`s and predict their own movement; the

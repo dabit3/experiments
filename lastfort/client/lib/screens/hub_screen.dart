@@ -120,7 +120,7 @@ class _TopBar extends StatelessWidget {
   final ValueChanged<HubTab> onSelect;
   final bool phone;
 
-  static const double height = 64;
+  static const double height = 76;
   static const double phoneHeight = 56;
 
   @override
@@ -230,6 +230,18 @@ class _TabState extends State<_Tab> {
           onTap: widget.onTap,
           child: Container(
             height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: on
+                  ? LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        LfTokens.teal.withValues(alpha: 0),
+                        LfTokens.teal.withValues(alpha: 0.12),
+                      ],
+                    )
+                  : null,
+            ),
             padding: EdgeInsets.symmetric(
               horizontal: widget.phone ? LfTokens.s1 : LfTokens.s4,
             ),
@@ -244,7 +256,7 @@ class _TabState extends State<_Tab> {
                   height: 3,
                   width: on ? (widget.phone ? 28 : 44) : 0,
                   decoration: BoxDecoration(
-                    color: LfTokens.ember,
+                    color: LfTokens.teal,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -299,7 +311,7 @@ class _ProfilePill extends StatelessWidget {
                       Text(
                         'TIER ${profile.level}',
                         style: context.text.labelSmall?.copyWith(
-                          color: LfTokens.teal,
+                          color: c.readable(LfTokens.teal),
                           fontSize: 10,
                         ),
                       ),

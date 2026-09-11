@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:lastfort_core/lastfort_core.dart' hide Material;
 
 import 'theme.dart';
+import 'arcade_art.dart';
 
 /// Primary/secondary/ghost button with press feedback and haptics.
 class LfButton extends StatefulWidget {
@@ -91,7 +92,7 @@ class _LfButtonState extends State<LfButton> {
             color: _hover && widget.variant == LfButtonVariant.ghost
                 ? c.surface2
                 : bg,
-            borderRadius: BorderRadius.circular(LfTokens.rMd),
+            borderRadius: BorderRadius.circular(LfTokens.rSm),
             border: Border.all(color: border, width: 1.5),
             boxShadow: widget.variant == LfButtonVariant.ghost || !enabled
                 ? null
@@ -185,10 +186,18 @@ class LfPanel extends StatelessWidget {
     final box = Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: strong ? c.glassStrong : c.glass,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            c.isDark ? const Color(0xF01B365B) : const Color(0xFAFFFFFF),
+            strong ? c.glassStrong : c.glass,
+          ],
+        ),
         borderRadius: BorderRadius.circular(radius),
         border: Border.all(
-          color: accent?.withValues(alpha: 0.6) ?? c.line,
+          color:
+              accent?.withValues(alpha: 0.6) ?? c.line.withValues(alpha: 0.65),
           width: accent == null ? 1 : 1.5,
         ),
         boxShadow: [
@@ -222,7 +231,7 @@ class LfEyebrow extends StatelessWidget {
   Widget build(BuildContext context) => Text(
     text.toUpperCase(),
     style: context.text.labelSmall?.copyWith(
-      color: color ?? context.lf.muted,
+      color: color == null ? context.lf.muted : context.lf.readable(color!),
       letterSpacing: 2,
     ),
   );
@@ -318,7 +327,7 @@ class RarityBadge extends StatelessWidget {
       child: Text(
         rarity.label.toUpperCase(),
         style: context.text.labelSmall?.copyWith(
-          color: col,
+          color: context.lf.readable(col),
           fontSize: compact ? 9 : 11,
         ),
       ),
@@ -417,75 +426,13 @@ class OutfitAvatar extends StatelessWidget {
   Widget build(BuildContext context) => Semantics(
     label: '${cosmetic.name} outfit',
     image: true,
-    child: CustomPaint(
-      size: Size.square(size),
-      painter: _OutfitPainter(cosmetic),
+    child: RepaintBoundary(
+      child: CustomPaint(
+        size: Size.square(size),
+        painter: ScoutPainter(cosmetic),
+      ),
     ),
   );
-}
-
-class _OutfitPainter extends CustomPainter {
-  _OutfitPainter(this.c);
-  final Cosmetic c;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final w = size.width;
-    final h = size.height;
-    final primary = Paint()..color = Color(c.primary);
-    final secondary = Paint()..color = Color(c.secondary);
-    final accent = Paint()..color = Color(c.accent);
-    // Shoulders / torso.
-    final torso = RRect.fromRectAndRadius(
-      Rect.fromLTWH(w * 0.14, h * 0.52, w * 0.72, h * 0.48),
-      Radius.circular(w * 0.2),
-    );
-    canvas.drawRRect(torso, primary);
-    // Chest stripe varies by shape.
-    switch (c.shape % 4) {
-      case 0:
-        canvas.drawRect(
-          Rect.fromLTWH(w * 0.46, h * 0.56, w * 0.08, h * 0.4),
-          accent,
-        );
-      case 1:
-        final path = Path()
-          ..moveTo(w * 0.2, h * 0.6)
-          ..lineTo(w * 0.8, h * 0.6)
-          ..lineTo(w * 0.5, h * 0.9)
-          ..close();
-        canvas.drawPath(path, accent);
-      case 2:
-        canvas.drawCircle(Offset(w * 0.5, h * 0.74), w * 0.11, accent);
-      default:
-        canvas.drawRect(
-          Rect.fromLTWH(w * 0.2, h * 0.6, w * 0.6, h * 0.06),
-          accent,
-        );
-        canvas.drawRect(
-          Rect.fromLTWH(w * 0.2, h * 0.72, w * 0.6, h * 0.06),
-          accent,
-        );
-    }
-    // Helmet.
-    canvas.drawCircle(Offset(w * 0.5, h * 0.32), w * 0.24, secondary);
-    // Visor.
-    final visor = RRect.fromRectAndRadius(
-      Rect.fromLTWH(w * 0.32, h * 0.26, w * 0.36, h * 0.14),
-      Radius.circular(w * 0.06),
-    );
-    canvas.drawRRect(visor, accent);
-    canvas.drawRRect(
-      visor,
-      Paint()
-        ..color = Colors.white.withValues(alpha: 0.35)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = w * 0.02,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant _OutfitPainter old) => old.c.id != c.id;
 }
 
 /// Procedural icon for pickaxe / glider / banner cosmetics.
@@ -624,6 +571,16 @@ class _StormBackdropState extends State<StormBackdrop>
     vsync: this,
     duration: const Duration(seconds: 14),
   )..repeat();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _ctrl.stop();
+    } else if (!_ctrl.isAnimating) {
+      _ctrl.repeat();
+    }
+  }
 
   @override
   void dispose() {
@@ -843,6 +800,9 @@ class StatTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.lf;
+    final tint = color ?? c.text;
+    final fg = c.readable(tint);
+    final number = int.tryParse(value);
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: LfTokens.s3,
@@ -850,8 +810,8 @@ class StatTile extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: c.surface2.withValues(alpha: 0.7),
-        borderRadius: BorderRadius.circular(LfTokens.rMd),
-        border: Border.all(color: c.line),
+        borderRadius: BorderRadius.circular(LfTokens.rSm),
+        border: Border(top: BorderSide(color: tint, width: 3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -859,10 +819,19 @@ class StatTile extends StatelessWidget {
         children: [
           LfEyebrow(label),
           const SizedBox(height: 2),
-          Text(
-            value,
-            style: context.text.headlineMedium?.copyWith(
-              color: color ?? c.text,
+          TweenAnimationBuilder<double>(
+            tween: Tween(begin: number == null ? 1 : 0, end: 1),
+            duration: MediaQuery.disableAnimationsOf(context)
+                ? Duration.zero
+                : const Duration(milliseconds: 1000),
+            curve: Curves.easeOutQuart,
+            builder: (context, t, _) => Text(
+              number == null ? value : '${(number * t).round()}',
+              style: context.text.headlineMedium?.copyWith(
+                color: fg,
+                fontWeight: FontWeight.w700,
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
             ),
           ),
         ],

@@ -64,6 +64,9 @@ class LastfortApp extends StatelessWidget {
               );
               return MediaQuery(
                 data: MediaQuery.of(context).copyWith(
+                  disableAnimations:
+                      profile.reducedMotion ||
+                      MediaQuery.disableAnimationsOf(context),
                   textScaler: MediaQuery.of(context).textScaler
                       .clamp(maxScaleFactor: 1.3),
                 ),

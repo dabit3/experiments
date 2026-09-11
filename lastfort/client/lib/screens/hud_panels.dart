@@ -90,7 +90,23 @@ class _SlabPainter extends CustomPainter {
       ..lineTo(size.width - k, size.height)
       ..lineTo(0, size.height)
       ..close();
-    canvas.drawPath(path, Paint()..color = color);
+    canvas.drawShadow(path, Colors.black54, 4, false);
+    canvas.drawPath(
+      path,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color.lerp(color, const Color(0xFF234975), 0.45)!, color],
+        ).createShader(Offset.zero & size),
+    );
+    canvas.drawLine(
+      Offset(k + 2, 1),
+      Offset(size.width - 2, 1),
+      Paint()
+        ..color = Colors.white.withValues(alpha: 0.28)
+        ..strokeWidth = 1,
+    );
     final a = accent;
     if (a != null) {
       canvas.drawPath(

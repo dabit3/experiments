@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app/scope.dart';
+import '../app/arcade_art.dart';
 import '../app/theme.dart';
 import '../app/widgets.dart';
 import 'hub_screen.dart';
@@ -66,6 +67,18 @@ class _ResultsScreenState extends State<ResultsScreen>
       fit: StackFit.expand,
       children: [
         StormBackdrop(intensity: won ? 1.4 : 0.8),
+        Positioned.fill(
+          child: IgnorePointer(
+            child: Opacity(
+              opacity: c.isDark ? 0.16 : 0.07,
+              child: Image.asset(
+                'assets/island-keyart.webp',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+        if (won) ArcadeAtmosphere(celebrate: true, reduced: reduced),
         SafeArea(
           child: LfPage(
             maxWidth: 980,
@@ -93,6 +106,7 @@ class _ResultsScreenState extends State<ResultsScreen>
                         : 'Placed number $placement of $teams.',
                     child: Column(
                       children: [
+                        VictoryCrest(accent: accent, won: won),
                         _Ribbon(
                           eyebrow: won ? 'LAST FORT STANDING' : 'MATCH OVER',
                           title: won ? 'VICTORY' : 'PLACED #$placement',
@@ -291,7 +305,7 @@ class _Ribbon extends StatelessWidget {
         Text(
           eyebrow,
           style: context.text.labelLarge?.copyWith(
-            color: accent,
+            color: context.lf.isDark ? accent : LfTokens.tealDeep,
             letterSpacing: 3,
           ),
         ),
@@ -424,7 +438,7 @@ class _Row extends StatelessWidget {
             child: Text(
               '${r['placement']}',
               style: context.text.titleMedium?.copyWith(
-                color: winner ? LfTokens.warning : fg,
+                color: winner ? c.readable(LfTokens.warning) : fg,
               ),
             ),
           ),
@@ -480,7 +494,9 @@ class _Row extends StatelessWidget {
             width: 56,
             child: Text(
               '${r['xp']}',
-              style: context.text.bodyMedium?.copyWith(color: LfTokens.teal),
+              style: context.text.bodyMedium?.copyWith(
+                color: c.readable(LfTokens.teal),
+              ),
               textAlign: TextAlign.right,
             ),
           ),

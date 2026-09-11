@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:lastfort_core/lastfort_core.dart';
 
 import '../app/profile.dart';
+import '../app/arcade_art.dart';
 import '../app/scope.dart';
 import '../app/theme.dart';
 import '../app/widgets.dart';
@@ -37,7 +38,7 @@ class _PlayTabState extends State<PlayTab> {
       ]),
       builder: (context, _) => LayoutBuilder(
         builder: (context, box) {
-          final wide = box.maxWidth >= 760;
+          final wide = box.maxWidth >= 860 && box.maxHeight >= 540;
           final room = session.room;
           final effectiveMode = room?.mode ?? mode;
           final pad = wide ? LfTokens.s6 : LfTokens.s4;
@@ -60,13 +61,14 @@ class _PlayTabState extends State<PlayTab> {
             profile: scope.profile,
             wide: wide,
             height: wide
-                ? math.min(box.maxHeight * 0.62, 460)
-                : math.min(box.maxHeight * 0.42, 320),
+                ? math.min(box.maxHeight - 160, 580)
+                : (box.maxHeight - 350).clamp(240, 460),
           );
           return Stack(
             fit: StackFit.expand,
             children: [
               const IgnorePointer(child: _Vista()),
+              ArcadeAtmosphere(reduced: scope.profile.reducedMotion),
               if (session.notice != null && room == null)
                 Positioned(
                   top: LfTokens.s3,
@@ -84,23 +86,27 @@ class _PlayTabState extends State<PlayTab> {
                 ),
               if (wide) ...[
                 Positioned(
-                  left: pad,
-                  right: pad,
-                  top: 0,
-                  bottom: 150,
-                  child: Align(
-                    alignment: const Alignment(-0.35, 0.2),
-                    child: showcase,
-                  ),
+                  left: pad + 8,
+                  top: box.maxHeight * 0.13,
+                  width: box.maxWidth * 0.32,
+                  child: const _LobbyHeadline(),
+                ),
+                Positioned(
+                  left: box.maxWidth * 0.29,
+                  right: box.maxWidth * 0.23,
+                  top: 12,
+                  bottom: 138,
+                  child: Align(alignment: Alignment.center, child: showcase),
                 ),
                 Positioned(left: pad, bottom: pad, child: party),
                 Positioned(right: pad, bottom: pad, child: actions),
               ] else
-                Padding(
+                SingleChildScrollView(
                   padding: EdgeInsets.fromLTRB(pad, LfTokens.s2, pad, pad),
                   child: Column(
                     children: [
-                      Expanded(child: Center(child: showcase)),
+                      const _LobbyHeadline(compact: true),
+                      Center(child: showcase),
                       const SizedBox(height: LfTokens.s3),
                       SizedBox(
                         width: double.infinity,
@@ -229,8 +235,112 @@ class _Vista extends StatelessWidget {
   const _Vista();
 
   @override
-  Widget build(BuildContext context) =>
-      CustomPaint(painter: _VistaPainter(context.lf.isDark));
+  Widget build(BuildContext context) => Stack(
+    fit: StackFit.expand,
+    children: [
+      CustomPaint(painter: _VistaPainter(context.lf.isDark)),
+      Image.asset(
+        'assets/island-keyart.webp',
+        fit: BoxFit.cover,
+        alignment: const Alignment(0.35, 0),
+      ),
+      const DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0x33071836), Color(0x00071836), Color(0xED07152E)],
+            stops: [0, 0.3, 1],
+          ),
+        ),
+      ),
+      const DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0x99071836), Color(0x00071836)],
+            stops: [0, 0.75],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+class _LobbyHeadline extends StatelessWidget {
+  const _LobbyHeadline({this.compact = false});
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: compact
+        ? CrossAxisAlignment.center
+        : CrossAxisAlignment.start,
+    children: [
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: const Color(0xD9091C3C),
+          border: Border.all(color: LfTokens.teal.withValues(alpha: 0.5)),
+          borderRadius: BorderRadius.circular(4),
+        ),
+        child: const Text(
+          'SEASON 01  /  FIRST LIGHT',
+          style: TextStyle(
+            color: LfTokens.teal,
+            fontWeight: FontWeight.w700,
+            fontSize: 12,
+            letterSpacing: 2,
+          ),
+        ),
+      ),
+      SizedBox(height: compact ? 8 : 24),
+      Text(
+        compact ? 'BUILD YOUR LEGEND.' : 'DROP IN.\nBUILD UP.\nOUTLAST.',
+        style: TextStyle(
+          fontSize: compact ? 30 : 66,
+          fontWeight: FontWeight.w700,
+          fontStyle: FontStyle.italic,
+          height: 0.92,
+          letterSpacing: compact ? -0.5 : -2,
+          color: Colors.white,
+          shadows: const [
+            Shadow(
+              color: Color(0xAA07152E),
+              offset: Offset(0, 4),
+              blurRadius: 16,
+            ),
+          ],
+        ),
+      ),
+      if (!compact) ...[
+        const SizedBox(height: 24),
+        const Text(
+          'One island. Sixteen contenders.\nThe last fort is yours to build.',
+          style: TextStyle(
+            color: Color(0xFFD8E8F8),
+            fontSize: 18,
+            height: 1.35,
+          ),
+        ),
+        const SizedBox(height: 24),
+        const Row(
+          children: [
+            Icon(Icons.language_rounded, size: 16, color: LfTokens.teal),
+            SizedBox(width: 8),
+            Text(
+              'CROSS-PLATFORM PLAY',
+              style: TextStyle(
+                color: LfTokens.teal,
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 2,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ],
+  );
 }
 
 class _VistaPainter extends CustomPainter {
@@ -334,7 +444,7 @@ class _Showcase extends StatelessWidget {
     final c = context.lf;
     final outfit = profile.equipped(CosmeticSlot.outfit);
     final stats = profile.career;
-    final avatar = (height * 0.66).clamp(120.0, 300.0);
+    final avatar = ((height - 130) / 1.17).clamp(120.0, 380.0);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -358,7 +468,7 @@ class _Showcase extends StatelessWidget {
             ),
             TweenAnimationBuilder<double>(
               tween: Tween(begin: 0.96, end: 1),
-              duration: LfTokens.slow,
+              duration: profile.reducedMotion ? Duration.zero : LfTokens.slow,
               curve: LfTokens.spring,
               builder: (context, v, child) =>
                   Transform.scale(scale: v, child: child),
@@ -467,7 +577,12 @@ class _MiniStat extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.baseline,
     textBaseline: TextBaseline.alphabetic,
     children: [
-      Text(value, style: context.text.titleLarge?.copyWith(color: color)),
+      Text(
+        value,
+        style: context.text.titleLarge?.copyWith(
+          color: context.lf.readable(color),
+        ),
+      ),
       const SizedBox(width: 4),
       Text(
         label.toUpperCase(),
@@ -624,7 +739,7 @@ class _PartyCard extends StatelessWidget {
       width: compact ? 80 : 96,
       height: compact ? 104 : 116,
       decoration: BoxDecoration(
-        color: empty ? c.glass.withValues(alpha: 0.35) : c.glassStrong,
+        color: c.glassStrong,
         borderRadius: BorderRadius.circular(LfTokens.rSm),
         border: Border.all(color: border, width: me ? 2 : 1),
         boxShadow: empty
@@ -693,7 +808,7 @@ class _PartyCard extends StatelessWidget {
                         status,
                         style: context.text.labelSmall?.copyWith(
                           fontSize: 9,
-                          color: statusColor,
+                          color: c.readable(statusColor),
                         ),
                       ),
                     ],
@@ -770,7 +885,7 @@ class _ActionCluster extends StatelessWidget {
       onPressed = () => session.setReady(!ready);
     }
 
-    final width = wide ? 300.0 : double.infinity;
+    final width = wide ? 310.0 : double.infinity;
     return SizedBox(
       width: width,
       child: Column(
@@ -1063,8 +1178,11 @@ class _PlayButtonState extends State<_PlayButton> {
               duration: LfTokens.fast,
               opacity: enabled || widget.progress ? 1 : 0.5,
               child: Container(
-                height: 68,
+                height: 72,
                 decoration: BoxDecoration(
+                  border: const Border(
+                    bottom: BorderSide(color: Color(0xFF7D9A21), width: 5),
+                  ),
                   borderRadius: BorderRadius.circular(LfTokens.rSm),
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
@@ -1136,11 +1254,17 @@ class _LinkButton extends StatelessWidget {
   final VoidCallback? onPressed;
 
   @override
-  Widget build(BuildContext context) => LfButton(
-    label: label,
-    icon: icon,
-    variant: LfButtonVariant.ghost,
-    size: LfButtonSize.sm,
-    onPressed: onPressed,
+  Widget build(BuildContext context) => DecoratedBox(
+    decoration: BoxDecoration(
+      color: context.lf.glassStrong,
+      borderRadius: BorderRadius.circular(LfTokens.rSm),
+    ),
+    child: LfButton(
+      label: label,
+      icon: icon,
+      variant: LfButtonVariant.ghost,
+      size: LfButtonSize.sm,
+      onPressed: onPressed,
+    ),
   );
 }

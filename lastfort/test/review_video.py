@@ -26,7 +26,7 @@ import sys
 import tempfile
 
 try:
-    from PIL import Image, ImageDraw, ImageFont
+    from PIL import Image, ImageDraw, ImageFont, ImageOps
 except ImportError:  # pragma: no cover
     print("review_video.py needs Pillow (pip install pillow)", file=sys.stderr)
     sys.exit(2)
@@ -36,13 +36,13 @@ FONTS = os.path.join(HERE, "..", "client", "assets", "fonts")
 FFMPEG = shutil.which("ffmpeg") or "/opt/homebrew/bin/ffmpeg"
 FFPROBE = shutil.which("ffprobe") or "/opt/homebrew/bin/ffprobe"
 
-BG = (11, 15, 23)
-PANEL = (18, 27, 46)
+BG = (9, 22, 46)
+PANEL = (17, 38, 72)
 TEXT = (243, 245, 248)
 MUTED = (154, 165, 184)
 EMBER = (255, 122, 47)
-TEAL = (47, 211, 198)
-WARNING = (255, 200, 87)
+TEAL = (86, 245, 203)
+WARNING = (223, 255, 98)
 HEALTH = (82, 210, 115)
 DANGER = (255, 77, 94)
 
@@ -105,11 +105,14 @@ def wordmark(draw, x, y, size):
 def title_card(size, run_info, platforms):
     w, h = size
     im = Image.new("RGB", size, BG)
+    art_path = os.path.join(HERE, "..", "client", "assets", "island-keyart.webp")
+    with Image.open(art_path) as art:
+        im = Image.blend(ImageOps.fit(art.convert("RGB"), size), im, 0.7)
     d = ImageDraw.Draw(im)
     # Diagonal ember slab behind the title, like the results ribbon in-game.
     d.polygon([(w * 0.08, h * 0.42), (w * 0.62, h * 0.42), (w * 0.58, h * 0.58), (w * 0.04, h * 0.58)], fill=EMBER)
     wordmark(d, w * 0.08, h * 0.16, int(h * 0.11))
-    d.text((w * 0.08, h * 0.30), "AUTOMATED MULTIPLAYER REVIEW", font=font(int(h * 0.045)), fill=MUTED)
+    d.text((w * 0.08, h * 0.30), "ARCADE EDITION / MULTIPLAYER REVIEW", font=font(int(h * 0.045)), fill=TEAL)
     d.text((w * 0.10, h * 0.445), "  x  ".join(SHORT_NAMES.get(p, p.upper()) for p in platforms),
            font=font(int(h * 0.1)), fill=BG)
     lines = [
@@ -211,7 +214,9 @@ def verdict_card(size, run_info, result, platforms):
     accent = HEALTH if passed else DANGER
     d.polygon([(w * 0.06, h * 0.12), (w * 0.60, h * 0.12), (w * 0.56, h * 0.30), (w * 0.02, h * 0.30)], fill=accent)
     d.text((w * 0.08, h * 0.135), "PASS" if passed else "FAIL", font=font(int(h * 0.13)), fill=BG)
-    d.text((w * 0.08, h * 0.36), "Final match summary identical on every client", font=font(int(h * 0.05)), fill=TEXT)
+    d.text((w * 0.08, h * 0.36),
+           "Final match summary identical on every client" if passed else "Multiplayer verification failed",
+           font=font(int(h * 0.05)), fill=TEXT)
     y = h * 0.46
     digest = (result or {}).get("digest", "-")
     rows = [("shared digest", digest, TEAL)]
