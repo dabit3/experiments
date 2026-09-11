@@ -334,7 +334,7 @@ struct GraphPane: View {
         Button {
           store.zoom = max(0.45, store.zoom - 0.1)
         } label: {
-          Image(systemName: "minus")
+          Image(systemName: "minus").frame(width: 24, height: 28).contentShape(Rectangle())
         }
         .accessibilityLabel("Zoom out")
         Text("\(Int(store.zoom * 100))%").font(.system(size: 9, design: .monospaced)).frame(
@@ -342,7 +342,7 @@ struct GraphPane: View {
         Button {
           store.zoom = min(1.4, store.zoom + 0.1)
         } label: {
-          Image(systemName: "plus")
+          Image(systemName: "plus").frame(width: 24, height: 28).contentShape(Rectangle())
         }
         .accessibilityLabel("Zoom in")
       }

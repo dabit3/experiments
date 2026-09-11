@@ -203,7 +203,7 @@ final class Store: ObservableObject {
     }
     let panel = NSSavePanel()
     panel.title = "Save Prism Project"
-    panel.nameFieldStringValue = "Solstice.prism"
+    panel.nameFieldStringValue = "Solstice"
     panel.allowedContentTypes = [.init(filenameExtension: "prism") ?? .json]
     panel.canCreateDirectories = true
     if panel.runModal() == .OK, let url = panel.url { writeProject(to: url) }
