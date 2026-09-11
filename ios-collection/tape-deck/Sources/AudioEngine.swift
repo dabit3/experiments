@@ -108,8 +108,15 @@ final class TapeAudio {
     try session.setCategory(.playback, mode: .default)
     try session.setPreferredIOBufferDuration(0.005)
     try session.setActive(true)
+    let outputFormat = engine.outputNode.inputFormat(forBus: 0)
+    guard outputFormat.sampleRate.isFinite, outputFormat.sampleRate > 0,
+      outputFormat.channelCount > 0
+    else {
+      try? session.setActive(false)
+      throw CocoaError(.featureUnsupported)
+    }
     if source == nil {
-      let sampleRate = engine.outputNode.inputFormat(forBus: 0).sampleRate
+      let sampleRate = outputFormat.sampleRate
       guard let format = AVAudioFormat(standardFormatWithSampleRate: sampleRate, channels: 2)
       else { throw CocoaError(.featureUnsupported) }
       let renderer = DrumRenderer(control: control, sampleRate: sampleRate)

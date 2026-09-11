@@ -50,16 +50,16 @@ struct CassetteView: View {
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
   var body: some View {
-    VStack(spacing: 12) {
+    VStack(spacing: 8) {
       HStack {
-        Micro(text: "TD—01  /  ANALOG SPIRIT", color: Deck.bone.opacity(0.75))
+        Micro(text: "A / TD—01  •  TYPE IV", color: Deck.bone.opacity(0.85))
         Spacer()
         Circle().fill(playing ? Deck.red : Deck.muted).frame(width: 6, height: 6)
         Micro(text: playing ? "RUN" : "READY", color: Deck.bone)
       }
       HStack(spacing: 0) {
         Reel(angle: reduceMotion ? 0 : Double(max(0, step)) * 23)
-          .frame(width: 76, height: 76)
+          .frame(width: 60, height: 60)
         VStack(spacing: 7) {
           HStack(spacing: 3) {
             ForEach(0..<14) { index in
@@ -68,24 +68,15 @@ struct CassetteView: View {
                 .frame(height: 13)
             }
           }
-          Micro(text: "STEREO  •  TYPE IV", color: Deck.amber)
+          Micro(text: "FOUR VOICES / 16 STEPS", color: Deck.amber)
           Rectangle().fill(Deck.bone.opacity(0.17)).frame(height: 1)
         }
         .padding(.horizontal, 14)
         Reel(angle: reduceMotion ? 0 : Double(max(0, step)) * 23)
-          .frame(width: 76, height: 76)
-      }
-      HStack {
-        Text("A").font(.system(.title3, design: .rounded).weight(.black))
-          .foregroundStyle(Deck.ink)
-          .frame(width: 27, height: 26)
-          .background(Deck.amber, in: RoundedRectangle(cornerRadius: 3))
-        Micro(text: "FOUR VOICES. ENDLESS SIDES.", color: Deck.bone.opacity(0.8))
-        Spacer(minLength: 0)
-        Image(systemName: "waveform").foregroundStyle(Deck.bone.opacity(0.6))
+          .frame(width: 60, height: 60)
       }
     }
-    .padding(16)
+    .padding(14)
     .background(
       LinearGradient(
         colors: [Color(white: 0.23), Deck.ink, Color(white: 0.11)],

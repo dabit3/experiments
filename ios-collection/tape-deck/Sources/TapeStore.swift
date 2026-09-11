@@ -48,7 +48,8 @@ final class TapeStore: ObservableObject {
         isPlaying = true
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
       } catch {
-        errorMessage = "Audio could not start. Check your audio output, then try Play again."
+        errorMessage =
+          "No audio output is available. Connect an audio device, then try Play again. You can still edit and save your tapes."
       }
     }
   }

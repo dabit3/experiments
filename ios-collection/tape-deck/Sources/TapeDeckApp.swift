@@ -40,31 +40,26 @@ struct DeckView: View {
   @State private var showingControls = false
   @State private var showingGuide = false
   @State private var confirmingClear = false
-  @ScaledMetric(relativeTo: .body) private var padHeight = 48
+  @ScaledMetric(relativeTo: .body) private var padHeight = 44
   private let timer = Timer.publish(every: 1 / 30, on: .main, in: .common).autoconnect()
 
   var body: some View {
-    ScrollView {
-      VStack(spacing: 19) {
-        header
-        CassetteView(playing: store.isPlaying, step: store.currentStep, level: store.level)
-        patternTitle
-        parameterControls
-        sequencer
-        HStack {
-          Micro(text: "16 STEPS / 1 BAR")
-          Spacer()
-          Button("How to play") { showingGuide = true }
-            .font(.caption).foregroundStyle(Deck.muted)
-            .frame(minHeight: 44)
+    VStack(spacing: 0) {
+      ScrollView {
+        VStack(spacing: 10) {
+          header
+          CassetteView(playing: store.isPlaying, step: store.currentStep, level: store.level)
+          patternTitle
+          parameterControls
+          sequencer
         }
+        .padding(.horizontal, 22)
+        .padding(.top, 4)
+        .padding(.bottom, 12)
       }
-      .padding(.horizontal, 22)
-      .padding(.top, 12)
-      .padding(.bottom, 8)
+      transport
     }
     .background(Deck.bone)
-    .safeAreaInset(edge: .bottom, spacing: 0) { transport }
     .onReceive(timer) { _ in store.tick() }
     .sheet(isPresented: $showingLibrary) { LibraryView() }
     .sheet(isPresented: $showingSave) { SaveTapeView() }
@@ -114,6 +109,14 @@ struct DeckView: View {
       .accessibilityElement(children: .combine)
       Spacer(minLength: 8)
       Button {
+        showingGuide = true
+      } label: {
+        Image(systemName: "info.circle")
+          .font(.body)
+          .frame(width: 44, height: 44)
+      }
+      .accessibilityLabel("How to play")
+      Button {
         showingLibrary = true
       } label: {
         Image(systemName: "square.stack")
@@ -130,7 +133,6 @@ struct DeckView: View {
   private var patternTitle: some View {
     HStack(alignment: .center) {
       VStack(alignment: .leading, spacing: 3) {
-        Micro(text: "ON THE DECK")
         Text(store.pattern.name).font(.system(.title2, design: .rounded).weight(.bold))
           .foregroundStyle(Deck.ink)
           .lineLimit(2)
@@ -156,7 +158,8 @@ struct DeckView: View {
         name: "SWING", value: "\(Int((store.pattern.swing * 100).rounded()))", unit: "%",
         fraction: store.pattern.swing / 0.6)
     }
-    .padding(12)
+    .padding(.horizontal, 10)
+    .padding(.vertical, 7)
     .background(Deck.paper.opacity(0.7), in: RoundedRectangle(cornerRadius: 13))
     .overlay(RoundedRectangle(cornerRadius: 13).stroke(Deck.line))
   }
@@ -168,7 +171,11 @@ struct DeckView: View {
       HStack(spacing: 8) {
         Knob(fraction: fraction)
         VStack(alignment: .leading, spacing: 1) {
-          Micro(text: name)
+          HStack(spacing: 3) {
+            Micro(text: name)
+            Image(systemName: "chevron.right").font(.system(size: 8, weight: .bold))
+              .foregroundStyle(Deck.muted)
+          }
           HStack(alignment: .firstTextBaseline, spacing: 3) {
             Text(value).font(.system(.title2, design: .monospaced).weight(.bold))
             Text(unit).font(.system(.caption2, design: .monospaced))
@@ -183,7 +190,7 @@ struct DeckView: View {
   }
 
   private var sequencer: some View {
-    VStack(spacing: 10) {
+    VStack(spacing: 6) {
       HStack(spacing: 4) {
         ForEach(Drum.allCases) { drum in
           Button {
@@ -192,25 +199,28 @@ struct DeckView: View {
           } label: {
             VStack(spacing: 7) {
               Text(drum.name.uppercased())
-                .font(.system(.caption, design: .monospaced).weight(.bold))
+                .font(.system(.subheadline, design: .monospaced).weight(.bold))
               Capsule().fill(store.selectedDrum == drum ? Deck.red : Deck.line)
                 .frame(height: 3)
             }
             .frame(maxWidth: .infinity, minHeight: 44)
-            .foregroundStyle(store.selectedDrum == drum ? Deck.red : Deck.muted)
+            .foregroundStyle(store.selectedDrum == drum ? Deck.red : Deck.ink)
           }
           .accessibilityLabel("\(drum.name) track")
           .accessibilityAddTraits(store.selectedDrum == drum ? .isSelected : [])
         }
       }
       HStack(spacing: 8) {
-        Micro(text: store.selectedDrum.subtitle)
+        Micro(text: store.selectedDrum.name.uppercased() + " / 16")
         Spacer(minLength: 0)
-        trackToggle("M", label: "Mute", enabled: store.pattern.muted[store.selectedDrum.rawValue]) {
+        trackToggle(
+          "MUTE", label: "Mute", enabled: store.pattern.muted[store.selectedDrum.rawValue]
+        ) {
           store.edit { $0.muted[store.selectedDrum.rawValue].toggle() }
         }
-        trackToggle("S", label: "Solo", enabled: store.pattern.soloed[store.selectedDrum.rawValue])
-        {
+        trackToggle(
+          "SOLO", label: "Solo", enabled: store.pattern.soloed[store.selectedDrum.rawValue]
+        ) {
           store.edit { $0.soloed[store.selectedDrum.rawValue].toggle() }
         }
         Button {
@@ -233,7 +243,8 @@ struct DeckView: View {
   ) -> some View {
     Button(action: action) {
       Text(title).font(.system(.caption, design: .monospaced).weight(.bold))
-        .frame(width: 44, height: 36)
+        .padding(.horizontal, 10)
+        .frame(minWidth: 54, minHeight: 36)
         .foregroundStyle(enabled ? Deck.paper : Deck.ink)
         .background(enabled ? Deck.red : Deck.paper, in: RoundedRectangle(cornerRadius: 7))
         .overlay(RoundedRectangle(cornerRadius: 7).stroke(enabled ? Deck.red : Deck.line))
