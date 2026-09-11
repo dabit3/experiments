@@ -10,6 +10,18 @@ column, save/load of the whole song as JSON (download/upload), and a read-only *
 showing a target "Boom Bap" pattern with a **Compare with reference** button that lists every
 step that differs.
 
+## Studio workspace
+
+A mineral-colored shell frames a graphite sequencer with muted track colors, precise beat
+divisions and an understated rhythm mark. Inter handles the interface; JetBrains Mono handles
+the musical data. The transport stays above the score, and live A/B pattern previews make it
+easy to switch ideas without losing your place.
+
+The piano roll fills the editor width and keeps its 25 pitches compact on desktop. Smaller
+screens use scrolling inside the editor with sticky pitch labels, rather than shrinking the
+whole application or requiring browser zoom. Velocity levels have visible bars as well as
+different color intensities.
+
 ## Run it
 
 ```bash
@@ -33,6 +45,11 @@ npm run test:e2e
 (reproduce Boom Bap → Compare = 0 differences → 92 BPM / 15 % swing → 4-note bass line → play and
 assert the playhead advances → Save JSON → Clear → upload the saved file → assert everything is
 restored). It starts the Vite dev server itself on port 5174.
+
+`e2e/studio.spec.ts` also covers independent A/B edits, live pattern previews, chained playback,
+mute/solo and velocity controls, plus containment and piano-ruler alignment at six viewport
+widths from 360 to 1600 pixels. The automated tests supplement the real mouse-and-keyboard
+showcase recording.
 
 Controls: left-click a cell to toggle a step · right-click to cycle velocity · `Space` play/stop ·
 tempo and swing sliders also respond to arrow keys and have −/+ buttons for exact values ·
@@ -58,9 +75,9 @@ Performed by Devin with mouse and keyboard in a maximised Chrome window with scr
 3. **Set tempo and swing.** Drive the Tempo slider to **92 BPM** and the Swing slider to **15 %**
    (slider drag plus arrow keys / −+ buttons for the last step). *Expected:* the readouts show
    exactly 92 and 15.
-4. **Add a bass line.** Switch to the **Bass** tab and place four notes (e.g. C2, G2, A#2, C3) on
-   different steps. *Expected:* the tab badge shows 4 notes.
-5. **Play.** Press **Play** (or `Space`). *Expected:* the teal playhead column sweeps left to
+4. **Add a bass line.** Switch to the **Bass** tab and place C2 on steps 1 and 5, D#2 on step 9,
+   and G2 on step 13. *Expected:* the tab badge shows 4 notes.
+5. **Play.** Press **Play** (or `Space`). *Expected:* the playhead column sweeps left to
    right across the grid in time with the audio; the Stop button replaces Play.
 6. **Save.** Click **Save JSON**. *Expected:* `beat-lab-pattern.json` lands in `~/Downloads` and
    a toast confirms the save.
@@ -87,11 +104,13 @@ Performed by Devin with mouse and keyboard in a maximised Chrome window with scr
 ```
 e2e/
   showcase.spec.ts           Playwright replay of the browser scenario (npm run test:e2e)
+  studio.spec.ts             A/B isolation, chaining, mixer controls and responsive layout
 src/
   App.tsx                    song state, sequencer wiring, compare / save / load, toasts, status bar
   components/
-    Logo.tsx                 knob-mark logo (also public/favicon.svg)
-    Transport.tsx            play/stop, beat LEDs, tempo + swing faders, pattern A/B, chain, file actions
+    Logo.tsx                 rhythm mark (also public/favicon.svg)
+    Transport.tsx            play/stop, position, beat markers, tempo + swing, chain, file actions
+    PatternOverview.tsx      live A/B previews and pattern selection
     StepGrid.tsx             8×16 drum grid with velocity cells, mute/solo, playhead column
     PianoRoll.tsx            25×16 C2–C4 note grid, one note per step
     ReferencePanel.tsx       read-only target grid + compare results

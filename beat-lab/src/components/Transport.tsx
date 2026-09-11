@@ -5,18 +5,18 @@ interface Props {
   playing: boolean
   bpm: number
   swing: number
-  editing: PatternId
   chain: boolean
   nowPlaying: PatternId | null
   currentStep: number | null
   onTogglePlay: () => void
   onBpm: (bpm: number) => void
   onSwing: (swing: number) => void
-  onEditing: (id: PatternId) => void
   onChain: (on: boolean) => void
+}
+
+interface FileProps {
   onSave: () => void
   onLoadFile: (file: File) => void
-  onClear: () => void
 }
 
 interface FaderProps {
@@ -62,7 +62,6 @@ function Fader(f: FaderProps) {
             style={{ '--pct': `${pct}%` } as CSSProperties}
             onChange={(e) => f.onChange(Number(e.target.value))}
           />
-          <span className="fader-ticks" aria-hidden="true" />
         </div>
         <button
           type="button"
@@ -82,14 +81,6 @@ function Fader(f: FaderProps) {
 export function Transport(p: Props) {
   const bpmId = useId()
   const swingId = useId()
-  const fileRef = useRef<HTMLInputElement>(null)
-
-  const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
-    const f = e.target.files?.[0]
-    if (f) p.onLoadFile(f)
-    e.target.value = ''
-  }
-
   const beat = p.currentStep === null ? -1 : Math.floor(p.currentStep / 4)
 
   return (
@@ -102,7 +93,6 @@ export function Transport(p: Props) {
           aria-pressed={p.playing}
           title="Play / stop (Space)"
         >
-          <span className="play-ring" aria-hidden="true" />
           {p.playing ? (
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <rect x="6.5" y="6.5" width="11" height="11" rx="2" />
@@ -113,13 +103,8 @@ export function Transport(p: Props) {
             </svg>
           )}
           <span className="play-label">{p.playing ? 'Stop' : 'Play'}</span>
+          <kbd aria-hidden="true">↵</kbd>
         </button>
-
-        <div className="beat-leds" aria-hidden="true">
-          {[0, 1, 2, 3].map((b) => (
-            <i key={b} className={beat === b ? 'is-lit' : ''} />
-          ))}
-        </div>
 
         <Fader
           id={bpmId}
@@ -142,22 +127,21 @@ export function Transport(p: Props) {
       </div>
 
       <div className="transport-side">
-        <div className="patterns" role="group" aria-label="Pattern">
-          <span className="group-label">Pattern</span>
-          <div className="segmented">
-            {(['A', 'B'] as PatternId[]).map((id) => (
-              <button
-                key={id}
-                type="button"
-                className={p.editing === id ? 'is-active' : ''}
-                aria-pressed={p.editing === id}
-                onClick={() => p.onEditing(id)}
-              >
-                {id}
-                {p.nowPlaying === id && <i className="dot" aria-label="playing" />}
-              </button>
-            ))}
+        <div className="position-display" aria-label="Playback position">
+          <span className="group-label">Position</span>
+          <div className="position-value">
+            <span>{p.nowPlaying ?? '—'}</span>
+            <span>{String((p.currentStep ?? -1) + 1).padStart(2, '0')}</span>
+            <small>/ 16</small>
           </div>
+        </div>
+        <div className="beat-leds" aria-hidden="true">
+          {[0, 1, 2, 3].map((b) => (
+            <i key={b} className={beat === b ? 'is-lit' : ''} />
+          ))}
+        </div>
+        <div className="chain-control">
+          <span className="group-label">Playback</span>
           <button
             type="button"
             className={`chip ${p.chain ? 'is-active' : ''}`}
@@ -165,37 +149,53 @@ export function Transport(p: Props) {
             onClick={() => p.onChain(!p.chain)}
             title="Play A then B in a loop"
           >
-            <i className="chip-led" aria-hidden="true" />
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M4 7h12l-3-3M16 13H4l3 3" />
+            </svg>
             Chain A→B
-          </button>
-        </div>
-
-        <div className="file-actions" role="group" aria-label="File">
-          <button type="button" className="btn" onClick={p.onSave}>
-            <svg viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M8 2.5v7.5m0 0L5 7m3 3 3-3M3 12.5h10" />
-            </svg>
-            Save JSON
-          </button>
-          <button type="button" className="btn" onClick={() => fileRef.current?.click()}>
-            <svg viewBox="0 0 16 16" aria-hidden="true">
-              <path d="M8 10.5V3m0 0L5 6m3-3 3 3M3 12.5h10" />
-            </svg>
-            Load JSON
-          </button>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="application/json,.json"
-            onChange={handleFile}
-            hidden
-            aria-label="Load pattern file"
-          />
-          <button type="button" className="btn btn-danger" onClick={p.onClear}>
-            Clear
+            <i className="switch" aria-hidden="true" />
           </button>
         </div>
       </div>
     </section>
+  )
+}
+
+export function ProjectActions(p: FileProps) {
+  const fileRef = useRef<HTMLInputElement>(null)
+
+  const handleFile = (e: ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0]
+    if (f) p.onLoadFile(f)
+    e.target.value = ''
+  }
+
+  return (
+    <div className="file-actions" role="group" aria-label="File">
+      <button
+        type="button"
+        className="btn"
+        onClick={() => fileRef.current?.click()}
+      >
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M3 6V4h5l2 2h7v3M3 8h15l-2 8H2z" />
+        </svg>
+        Load JSON
+      </button>
+      <input
+        ref={fileRef}
+        type="file"
+        accept="application/json,.json"
+        onChange={handleFile}
+        hidden
+        aria-label="Load pattern file"
+      />
+      <button type="button" className="btn btn-save" onClick={p.onSave}>
+        <svg viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M10 3v10m0 0 4-4m-4 4L6 9M3 13v4h14v-4" />
+        </svg>
+        Save JSON
+      </button>
+    </div>
   )
 }

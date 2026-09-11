@@ -48,12 +48,16 @@ export function StepGrid(p: Props) {
             key={track.id}
             className={`grid-row ${silenced ? 'is-silenced' : ''}`}
             role="row"
-            style={{ '--track': track.color } as CSSProperties}
+            style={{ '--track': `var(--track-${track.id})` } as CSSProperties}
           >
             <div className="track-cell">
-              <span className="track-swatch" />
-              <span className="track-name">{track.name}</span>
-              <span className="track-short">{track.short}</span>
+              <span className="track-index">
+                {String(t + 1).padStart(2, '0')}
+              </span>
+              <span className="track-identity">
+                <span className="track-name">{track.name}</span>
+                <span className="track-short">{track.short} / synth</span>
+              </span>
               <div className="track-toggles">
                 <button
                   type="button"
@@ -88,7 +92,14 @@ export function StepGrid(p: Props) {
                   onClick={() => p.onToggle(t, s)}
                   onContextMenu={(e) => onContext(e, t, s)}
                 >
-                  <span className="step-fill" />
+                  <span className="step-fill" aria-hidden="true">
+                    {[1, 2, 3].map((level) => (
+                      <i
+                        key={level}
+                        className={vel >= level ? 'is-filled' : ''}
+                      />
+                    ))}
+                  </span>
                 </button>
               ))}
             </div>
