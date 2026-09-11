@@ -15,12 +15,11 @@ func polygon(_ points: [(CGFloat, CGFloat)], fill: UInt32) {
   path.fill()
 }
 
-let bitmap = NSBitmapImageRep(
-  bitmapDataPlanes: nil, pixelsWide: 1024, pixelsHigh: 1024, bitsPerSample: 8,
-  samplesPerPixel: 3, hasAlpha: false, isPlanar: false, colorSpaceName: .deviceRGB,
-  bytesPerRow: 0, bitsPerPixel: 0)!
+let context = CGContext(
+  data: nil, width: 1024, height: 1024, bitsPerComponent: 8, bytesPerRow: 4096,
+  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
 NSGraphicsContext.saveGraphicsState()
-NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: bitmap)
+NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
 let bounds = NSRect(x: 0, y: 0, width: 1024, height: 1024)
 NSGradient(starting: color(0x217D7D), ending: color(0xA9E0D1))!.draw(in: bounds, angle: 70)
 for index in 0..<4 {
@@ -73,4 +72,5 @@ polygon([(715, 165), (833, 205), (848, 239), (810, 258), (693, 220)], fill: 0xFF
 polygon([(729, 185), (796, 208), (783, 239), (717, 215)], fill: 0xD78060)
 NSGraphicsContext.restoreGraphicsState()
 let output = URL(fileURLWithPath: CommandLine.arguments[1])
+let bitmap = NSBitmapImageRep(cgImage: context.makeImage()!)
 try bitmap.representation(using: .png, properties: [:])!.write(to: output)
