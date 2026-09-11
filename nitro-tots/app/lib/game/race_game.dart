@@ -49,8 +49,10 @@ class RaceGame extends FlameGame {
   final _rng = math.Random(7);
   final double _pausedAlpha = 0;
   bool _first = true;
+  bool _lookingBack = false;
 
   Track get track => session.sim.track;
+  double get _cameraRotation => -_camHeading - math.pi / 2 + (_lookingBack ? math.pi : 0);
 
   @override
   Color backgroundColor() => Color(track.def.theme.ground);
@@ -89,14 +91,15 @@ class RaceGame extends FlameGame {
   void _updateCamera(double dt) {
     final me = session.local ?? session.sim.racers.first;
     final pose = session.poseOf(me);
-    // Look a bit ahead of the kart at speed.
-    final ahead = V2.fromAngle(pose.heading, 18 + me.speed.abs() * 0.18);
+    final snap = _first || _lookingBack != session.input.lookBack;
+    _lookingBack = session.input.lookBack;
+    final ahead = V2.fromAngle(pose.heading, (18 + me.speed.abs() * 0.18) * (_lookingBack ? -1 : 1));
     final target = pose.pos + ahead;
-    final k = _first ? 1.0 : 1 - math.pow(0.001, dt * 2.2).toDouble();
+    final k = snap ? 1.0 : 1 - math.pow(0.001, dt * 2.2).toDouble();
     _camPos = V2(lerpD(_camPos.x, target.x, k), lerpD(_camPos.y, target.y, k));
-    if (chaseCamera) {
+    if (chaseCamera || _lookingBack) {
       final wantHeading = me.isSpinning ? _camHeading : pose.heading;
-      final hk = _first ? 1.0 : 1 - math.pow(0.001, dt * 1.6).toDouble();
+      final hk = snap ? 1.0 : 1 - math.pow(0.001, dt * 1.6).toDouble();
       _camHeading += wrapAngle(wantHeading - _camHeading) * hk;
     } else {
       _camHeading = -math.pi / 2;
@@ -215,7 +218,7 @@ class RaceGame extends FlameGame {
     }
     canvas.translate(w / 2 + shakeX, anchorY + shakeY);
     canvas.scale(_camZoom);
-    canvas.rotate(-_camHeading - math.pi / 2);
+    canvas.rotate(_cameraRotation);
     canvas.translate(-_camPos.x, -_camPos.y);
 
     canvas.drawPicture(art.picture);
@@ -433,7 +436,7 @@ class RaceGame extends FlameGame {
   Offset worldToScreen(V2 p) {
     final anchorY = chaseCamera ? size.y * 0.62 : size.y * 0.5;
     final d = p - _camPos;
-    final a = -_camHeading - math.pi / 2;
+    final a = _cameraRotation;
     final x = d.x * math.cos(a) - d.y * math.sin(a);
     final y = d.x * math.sin(a) + d.y * math.cos(a);
     return Offset(size.x / 2 + x * _camZoom, anchorY + y * _camZoom);

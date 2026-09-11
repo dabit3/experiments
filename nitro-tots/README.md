@@ -108,6 +108,8 @@ Play: **Online → Create room** on one client, share the join code, **Join** on
 the others, ready up, host presses **Start race**. Keyboard: arrows / WASD,
 Space or Shift to drift, Z / X / Enter / E for items, Q to look back, Esc to
 pause. Touch: on-screen gas/brake/steer/drift/item controls.
+Hold Q or the Look back button for a rear-facing camera and reverse item aim;
+release it to restore your selected camera view.
 
 The Android emulator reaches the host machine's server at `ws://10.0.2.2:8787/ws`
 (the default on Android); other platforms default to `ws://localhost:8787/ws`.
@@ -209,8 +211,8 @@ as MP4 metadata and the edit decision list is written next to the video.
 
 ```sh
 cd nitro-tots && E=.devin/clone-this/nitro-tots/evidence
-python3 test/make_review_video.py --e2e $E/multiplayer/<stamp> --manual $E/manual-arcade-release \
-  --parity $E/parity --design $E/arcade-design-release --out $E/review-arcade-release/review
+python3 test/make_review_video.py --e2e $E/multiplayer/<stamp> --manual $E/manual-arcade-current \
+  --parity $E/parity --design $E/arcade-design-current --out $E/review-arcade-current/review
 # → review.mp4, review.chapters.json, review.md
 ```
 
