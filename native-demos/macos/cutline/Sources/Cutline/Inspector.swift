@@ -128,6 +128,8 @@ struct Inspector: View {
         Palette.muted)
       TextField(label, value: value, format: .number.precision(.fractionLength(2)))
         .textFieldStyle(.plain).font(.system(size: 16, weight: .medium, design: .monospaced))
+        .controlSize(.large)
+        .frame(height: 28)
         .accessibilityLabel("\(label) seconds")
       HStack {
         Button {
