@@ -144,10 +144,9 @@ struct LibraryView: View {
         .padding(30)
       }
       .background(AtlasStyle.paper).foregroundStyle(AtlasStyle.ink)
+      .navigationTitle("Your boards")
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
-        ToolbarItem(placement: .topBarLeading) {
-          Text("ink atlas").font(.system(size: 22, design: .serif))
-        }
         ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } }
       }
     }
