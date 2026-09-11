@@ -181,8 +181,8 @@ final class Editor: ObservableObject {
     let panel = NSSavePanel()
     panel.title = "Save Cutline project"
     panel.nameFieldStringValue = "\(project.name).cutline"
-    panel.allowedContentTypes = [.json]
-    panel.allowsOtherFileTypes = true
+    panel.allowedContentTypes = [UTType(filenameExtension: "cutline", conformingTo: .data) ?? .data]
+    panel.allowsOtherFileTypes = false
     guard panel.runModal() == .OK, let url = panel.url else { return }
     do {
       try Storage.save(project, to: url)
