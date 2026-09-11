@@ -344,8 +344,9 @@ export default function App() {
             : 'Stopped'}
         </span>
         <span className="mono">
-          {song.bpm} BPM · {song.swing}% swing · {activeHits} hits ·{' '}
-          {activeNotes} notes
+          {song.bpm} BPM · {song.swing}% swing · {activeHits}{' '}
+          hit{activeHits === 1 ? '' : 's'} · {activeNotes}{' '}
+          note{activeNotes === 1 ? '' : 's'}
         </span>
         <span className="status-shortcut">
           <kbd>space</kbd> play / stop <span className="status-sep">/</span>{' '}

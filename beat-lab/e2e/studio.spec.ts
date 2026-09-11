@@ -80,3 +80,33 @@ test('The studio contains scrolling inside editors and aligns piano steps with t
     expect(Math.abs(headerBox!.width - cellBox!.width)).toBeLessThan(1)
   }
 })
+
+test('Mobile horizontal scrolling preserves track indices and masks the ruler corner', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 900 })
+  await page.goto('/')
+  const viewport = page.getByRole('tabpanel')
+  await viewport.evaluate((panel) => {
+    panel.scrollLeft = panel.scrollWidth
+  })
+  const viewportBox = await viewport.boundingBox()
+  expect(viewportBox).not.toBeNull()
+  for (const index of await page.locator('.track-index').all()) {
+    const box = await index.boundingBox()
+    expect(box).not.toBeNull()
+    expect(box!.x).toBeGreaterThanOrEqual(viewportBox!.x + 8)
+  }
+  const corner = page.locator('.grid-row-head .track-cell')
+  const box = await corner.boundingBox()
+  expect(box).not.toBeNull()
+  expect(box!.height).toBeGreaterThan(25)
+  const hitIsCorner = await corner.evaluate((cell) => {
+    const rect = cell.getBoundingClientRect()
+    return (
+      document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2) ===
+      cell
+    )
+  })
+  expect(hitIsCorner).toBe(true)
+})

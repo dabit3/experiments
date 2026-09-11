@@ -1431,16 +1431,19 @@
     height: 44px;
   }
   .grid-row {
-    grid-template-columns: 150px minmax(0, 1fr);
+    grid-template-columns: 164px minmax(0, 1fr);
   }
   .track-cell {
     position: sticky;
-    left: -12px;
+    left: 0;
     z-index: 1;
     background: var(--score);
-    padding-left: 8px;
-    margin-left: -8px;
+    padding-left: 12px;
+    margin-left: -12px;
     box-shadow: 8px 0 var(--score);
+  }
+  .grid-row-head .track-cell {
+    align-self: stretch;
   }
   .ms {
     width: 25px;
@@ -1464,11 +1467,14 @@
   }
   .piano-roll .key-cell {
     position: sticky;
-    left: -12px;
+    left: 0;
     z-index: 1;
   }
   .key-head {
     background: var(--score);
+    align-self: stretch;
+    align-items: center;
+    box-shadow: -12px 0 var(--score), 12px 0 var(--score);
   }
   .key-head > span:first-child {
     font-size: 9px;

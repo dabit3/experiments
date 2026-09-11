@@ -103,7 +103,7 @@ export function Transport(p: Props) {
             </svg>
           )}
           <span className="play-label">{p.playing ? 'Stop' : 'Play'}</span>
-          <kbd aria-hidden="true">↵</kbd>
+          <kbd aria-hidden="true">␣</kbd>
         </button>
 
         <Fader
