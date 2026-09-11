@@ -3,6 +3,14 @@ import PrismCore
 import SwiftUI
 
 enum PrismAssets {
+  static let images: [String: NSImage] = Dictionary(
+    uniqueKeysWithValues: ["Solstice", "Nocturne"].compactMap { name in
+      guard let url = bundle.url(forResource: name, withExtension: "png"),
+        let image = NSImage(contentsOf: url)
+      else { return nil }
+      return (name, image)
+    })
+
   static let bundle: Bundle = {
     if let url = Bundle.main.resourceURL?.appendingPathComponent("Prism_Prism.bundle"),
       let bundle = Bundle(url: url)
@@ -598,8 +606,10 @@ struct Inspector: View {
           store.updateAsset(node.id, asset: asset)
         } label: {
           HStack(spacing: 10) {
-            Image(asset, bundle: PrismAssets.bundle).resizable().aspectRatio(contentMode: .fill)
-              .frame(width: 53, height: 39).clipped().cornerRadius(4)
+            if let image = PrismAssets.images[asset] {
+              Image(nsImage: image).resizable().aspectRatio(contentMode: .fill)
+                .frame(width: 53, height: 39).clipped().cornerRadius(4)
+            }
             VStack(alignment: .leading, spacing: 4) {
               Text(asset).font(.system(size: 11, weight: .medium))
               Text(asset == "Solstice" ? "Warm / mineral" : "Cool / twilight")
