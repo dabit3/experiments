@@ -29,6 +29,8 @@ struct Engraving: View {
       .font(.system(.caption2, design: .monospaced).weight(.medium))
       .tracking(2)
       .foregroundStyle(color)
+      .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+      .fixedSize(horizontal: false, vertical: true)
   }
 }
 
@@ -37,6 +39,8 @@ struct InstrumentButton: ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .font(.system(.subheadline, design: .rounded).weight(.semibold))
+      .multilineTextAlignment(.center)
+      .fixedSize(horizontal: false, vertical: true)
       .foregroundStyle(filled ? Palette.background : Palette.ivory)
       .frame(maxWidth: .infinity)
       .padding(.vertical, 17)
@@ -51,6 +55,7 @@ struct ObservatoryView: View {
   @State private var activeMission: Mission?
   @State private var settings = false
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @ScaledMetric(relativeTo: .largeTitle) private var headlineSize = 43.0
 
   var body: some View {
     ZStack {
@@ -64,6 +69,7 @@ struct ObservatoryView: View {
               Text("ORBIT\nFOUNDRY")
                 .font(.system(.caption, design: .monospaced).weight(.semibold))
                 .tracking(3)
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             }
             Spacer()
             Button {
@@ -78,8 +84,9 @@ struct ObservatoryView: View {
           VStack(alignment: .leading, spacing: 10) {
             Engraving(text: "An orbital puzzle • Vol. 01", color: Palette.copper)
             Text("Small probe.\nInfinite pull.")
-              .font(.system(size: 43, weight: .regular, design: .serif))
+              .font(.system(size: min(headlineSize, 68), weight: .regular, design: .serif))
               .tracking(-1.7)
+              .fixedSize(horizontal: false, vertical: true)
               .accessibilityAddTraits(.isHeader)
             Text("Find your way through gravity.")
               .font(.subheadline).foregroundStyle(Palette.muted)
@@ -97,6 +104,8 @@ struct ObservatoryView: View {
               Spacer()
               Text("\(store.completed) / 08")
                 .font(.system(.caption, design: .monospaced)).foregroundStyle(Palette.muted)
+                .fixedSize()
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
             }
             HStack(alignment: .center, spacing: 16) {
               Text(store.nextMission.number)
@@ -158,6 +167,7 @@ struct MissionRow: View {
   let mission: Mission
   let record: FlightRecord?
   let unlocked: Bool
+  @Environment(\.dynamicTypeSize) private var typeSize
   var body: some View {
     HStack(spacing: 15) {
       ZStack {
@@ -169,12 +179,16 @@ struct MissionRow: View {
       VStack(alignment: .leading, spacing: 6) {
         Text(mission.name).font(.system(.body, design: .rounded).weight(.medium))
         if let record {
-          HStack(spacing: 5) {
-            ForEach(0..<3) { index in
-              Image(systemName: index < record.stars ? "star.fill" : "star")
-            }
-            Text("  \(record.attempts) \(record.attempts == 1 ? "launch" : "launches")")
-          }.font(.caption2).foregroundStyle(Palette.copper)
+          VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 5) {
+              ForEach(0..<3) { index in
+                Image(systemName: index < record.stars ? "star.fill" : "star")
+              }
+            }.font(.system(size: 11))
+            Text("\(record.attempts) \(record.attempts == 1 ? "launch" : "launches")")
+              .fixedSize(horizontal: false, vertical: true)
+          }
+          .font(.caption).foregroundStyle(Palette.copper)
         } else {
           Text(
             unlocked
@@ -182,6 +196,7 @@ struct MissionRow: View {
               : "Complete mission \(mission.number == "01" ? "01" : String(format: "%02d", mission.id)) to unlock"
           )
           .font(.caption).foregroundStyle(Palette.muted)
+          .fixedSize(horizontal: false, vertical: true)
         }
       }
       Spacer(minLength: 4)
@@ -189,7 +204,6 @@ struct MissionRow: View {
         .font(.caption).foregroundStyle(unlocked ? Palette.cyan : Palette.muted)
     }
     .padding(.vertical, 14)
-    .opacity(unlocked ? 1 : 0.58)
     .overlay(alignment: .bottom) { Rectangle().fill(Palette.muted.opacity(0.15)).frame(height: 1) }
   }
 }

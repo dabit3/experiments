@@ -10,6 +10,7 @@ struct MissionView: View {
   @State private var showTutorial: Bool
   @State private var nextMission: Mission?
   @State private var confirmLeave = false
+  @State private var reviewTrajectory = false
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @Environment(\.dynamicTypeSize) private var typeSize
 
@@ -23,29 +24,39 @@ struct MissionView: View {
 
   var body: some View {
     GeometryReader { geometry in
-      VStack(spacing: 0) {
-        header.padding(.horizontal, 22)
-        HStack {
-          HStack(spacing: 7) {
-            Image(systemName: "diamond.fill").font(.system(size: 8)).foregroundStyle(Palette.cyan)
-            Text("\(controller.flight?.collected.count ?? 0) / \(mission.beacons.count) BEACONS")
-          }
-          Spacer()
-          Text(String(format: "FLIGHT %02d", controller.attempts + (controller.isReady ? 1 : 0)))
+      if typeSize.isAccessibilitySize {
+        ScrollView {
+          VStack(spacing: 18) {
+            header
+            telemetry
+            FlightCanvas(controller: controller, reduceMotion: reduceMotion) {
+              controller.aim(toward: $0)
+            }.frame(height: 480)
+            if let outcome = controller.flight?.outcome, outcome != .flying, !reviewTrajectory {
+              resultPanel(outcome)
+            }
+            controls
+          }.padding(.horizontal, 22).padding(.bottom, 22)
         }
-        .font(.system(.caption2, design: .monospaced)).tracking(1.2)
-        .foregroundStyle(Palette.muted).padding(.horizontal, 25).padding(.top, 18)
-        ZStack {
-          FlightCanvas(controller: controller, reduceMotion: reduceMotion) {
-            controller.aim(toward: $0)
-          }
-          if let outcome = controller.flight?.outcome, outcome != .flying {
-            resultPanel(outcome).padding(22)
-          }
-        }.frame(maxHeight: .infinity)
-        controls.padding(.horizontal, 22).padding(.bottom, 12)
+      } else {
+        VStack(spacing: 0) {
+          header.padding(.horizontal, 22)
+          telemetry.padding(.horizontal, 25).padding(.top, 18)
+          ZStack {
+            FlightCanvas(controller: controller, reduceMotion: reduceMotion) {
+              controller.aim(toward: $0)
+            }
+            if let outcome = controller.flight?.outcome, outcome != .flying, !reviewTrajectory {
+              ScrollView {
+                resultPanel(outcome).padding(22)
+              }
+              .scrollBounceBehavior(.basedOnSize)
+            }
+          }.frame(maxHeight: .infinity)
+          controls.padding(.horizontal, 22).padding(.bottom, 12)
+        }
+        .frame(width: geometry.size.width, height: geometry.size.height)
       }
-      .frame(width: geometry.size.width, height: geometry.size.height)
     }
     .background(Palette.background.ignoresSafeArea())
     .foregroundStyle(Palette.ivory)
@@ -60,6 +71,9 @@ struct MissionView: View {
     }
     .fullScreenCover(item: $nextMission) { next in
       MissionView(mission: next, store: store, close: close)
+    }
+    .onChange(of: controller.isReady) { _, ready in
+      if ready { reviewTrajectory = false }
     }
     .task {
       while !Task.isCancelled {
@@ -81,22 +95,38 @@ struct MissionView: View {
     }
   }
 
+  private var telemetry: some View {
+    HStack {
+      HStack(spacing: 7) {
+        Image(systemName: "diamond.fill").font(.system(size: 8)).foregroundStyle(Palette.cyan)
+        Text("\(controller.flight?.collected.count ?? 0) / \(mission.beacons.count) BEACONS")
+      }
+      Spacer()
+      Text(String(format: "FLIGHT %02d", controller.attempts + (controller.isReady ? 1 : 0)))
+    }
+    .font(.system(.caption2, design: .monospaced)).tracking(1.2)
+    .foregroundStyle(Palette.muted)
+    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+  }
+
   private var header: some View {
     HStack(spacing: 8) {
       Button {
         if controller.isFlying { confirmLeave = true } else { close() }
       } label: {
-        Image(systemName: "arrow.left").frame(width: 44, height: 48)
+        Image(systemName: "arrow.left").font(.system(size: 20)).frame(width: 44, height: 48)
       }.accessibilityLabel("Return to observatory")
       VStack(alignment: .leading, spacing: 4) {
         Engraving(text: "Mission \(mission.number)", color: Palette.copper)
         Text(mission.name).font(.system(.title3, design: .rounded).weight(.medium))
+          .fixedSize(horizontal: false, vertical: true)
       }
       Spacer(minLength: 2)
       Button {
         controller.reset()
       } label: {
-        Image(systemName: "arrow.counterclockwise").frame(width: 44, height: 48)
+        Image(systemName: "arrow.counterclockwise").font(.system(size: 20)).frame(
+          width: 44, height: 48)
       }.accessibilityLabel("Restart flight")
     }.padding(.top, 5)
   }
@@ -104,11 +134,10 @@ struct MissionView: View {
   private var controls: some View {
     VStack(spacing: 12) {
       if controller.isReady {
-        HStack {
+        adaptiveControls {
           Engraving(
             text: controller.isAiming ? "Trajectory live" : "Set your trajectory",
             color: Palette.cyan)
-          Spacer()
           Button {
             showGuide = true
           } label: {
@@ -116,7 +145,7 @@ struct MissionView: View {
               .font(.caption).foregroundStyle(Palette.copper).padding(.vertical, 10)
           }
         }
-        HStack(spacing: 20) {
+        adaptiveControls {
           VStack(alignment: .leading, spacing: 0) {
             Text(String(format: "BEARING  %+.0f°", controller.angle))
               .font(.system(.caption2, design: .monospaced)).foregroundStyle(Palette.muted)
@@ -136,7 +165,7 @@ struct MissionView: View {
           feedback(.success)
         } label: {
           HStack {
-            Image(systemName: "location.north.fill")
+            Image(systemName: "location.north.fill").font(.system(size: 20))
             Text("Launch probe")
           }
         }.buttonStyle(InstrumentButton())
@@ -152,12 +181,28 @@ struct MissionView: View {
         }.padding(.vertical, 14)
         Button("Abort & re-aim") { controller.reset() }.buttonStyle(InstrumentButton(filled: false))
       } else {
-        HStack {
-          Image(systemName: "circle.dotted")
-          Text("Every orbit teaches you something.").font(.footnote)
-        }.foregroundStyle(Palette.muted).padding(.vertical, 14)
+        if reviewTrajectory {
+          Engraving(text: "Flight path / Review", color: Palette.copper)
+          Button("Return to flight result") { reviewTrajectory = false }.buttonStyle(
+            InstrumentButton(filled: false))
+          Button("Adjust & retry") { controller.reset() }.frame(minHeight: 44)
+        } else {
+          Button("Review trajectory") { reviewTrajectory = true }
+            .font(.subheadline).foregroundStyle(Palette.copper).frame(minHeight: 44)
+        }
       }
     }
+  }
+
+  private func adaptiveControls<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+    Group {
+      if typeSize.isAccessibilitySize {
+        VStack(alignment: .leading, spacing: 16, content: content)
+      } else {
+        HStack(spacing: 20, content: content)
+      }
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
   }
 
   private func resultPanel(_ outcome: FlightOutcome) -> some View {
@@ -227,46 +272,49 @@ struct MissionView: View {
   }
 
   private var tutorial: some View {
-    VStack(alignment: .leading, spacing: 22) {
-      Engraving(text: "Flight school / 01", color: Palette.copper)
-      Text("Let gravity\nlend a hand.").font(.system(size: 38, weight: .regular, design: .serif))
-      tutorialStep(
-        "01", title: "Draw a flight",
-        text:
-          "Drag from the probe toward your destination. The dotted cyan arc predicts the real flight."
-      )
-      tutorialStep(
-        "02", title: "Read the instruments",
-        text: "Cyan diamonds are beacons. The ivory ring is your dock. Avoid the planet's surface.")
-      tutorialStep(
-        "03", title: "Release. Review. Launch.",
-        text:
-          "Lifting your finger keeps your aim. Tap Launch probe when you're ready. Your first course is already aligned."
-      )
-      Button("Ready for first light") { showTutorial = false }.buttonStyle(InstrumentButton())
+    ScrollView {
+      VStack(alignment: .leading, spacing: 22) {
+        Engraving(text: "Flight school / 01", color: Palette.copper)
+        Text("Let gravity\nlend a hand.").font(.system(size: 38, weight: .regular, design: .serif))
+        tutorialStep(
+          "01", title: "Draw a flight",
+          text:
+            "Drag from the probe toward your destination. The dotted cyan arc predicts the real flight."
+        )
+        tutorialStep(
+          "02", title: "Read the instruments",
+          text:
+            "Cyan diamonds are beacons. The ivory ring is your dock. Avoid the planet's surface.")
+        tutorialStep(
+          "03", title: "Release. Review. Launch.",
+          text:
+            "Lifting your finger keeps your aim. Tap Launch probe when you're ready. Your first course is already aligned."
+        )
+        Button("Ready for first light") { showTutorial = false }.buttonStyle(InstrumentButton())
+      }.padding(28).fixedSize(horizontal: false, vertical: true)
     }
-    .padding(28).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     .background(Palette.background).foregroundStyle(Palette.ivory)
     .presentationDetents([.large]).presentationDragIndicator(.visible)
   }
   private var guide: some View {
-    VStack(alignment: .leading, spacing: 22) {
-      Engraving(text: "Mission \(mission.number) / Flight guide", color: Palette.copper)
-      Text("A nudge from\nmission control.").font(.system(.largeTitle, design: .serif))
-      Text(mission.briefing).font(.body).foregroundStyle(Palette.muted)
-      Text(
-        "Align a proven course, then study its arc or fine-tune it yourself. This flight will be marked as guided."
-      )
-      .font(.subheadline).foregroundStyle(Palette.muted)
-      Button("Align suggested course") {
-        controller.useGuide()
-        showGuide = false
-      }.buttonStyle(InstrumentButton())
-      Button("Keep my course") { showGuide = false }.frame(maxWidth: .infinity, minHeight: 44)
+    ScrollView {
+      VStack(alignment: .leading, spacing: 22) {
+        Engraving(text: "Mission \(mission.number) / Flight guide", color: Palette.copper)
+        Text("A nudge from\nmission control.").font(.system(.largeTitle, design: .serif))
+        Text(mission.briefing).font(.body).foregroundStyle(Palette.muted)
+        Text(
+          "Align a proven course, then study its arc or fine-tune it yourself. This flight will be marked as guided."
+        )
+        .font(.subheadline).foregroundStyle(Palette.muted)
+        Button("Align suggested course") {
+          controller.useGuide()
+          showGuide = false
+        }.buttonStyle(InstrumentButton())
+        Button("Keep my course") { showGuide = false }.frame(maxWidth: .infinity, minHeight: 44)
+      }.padding(28).fixedSize(horizontal: false, vertical: true)
     }
-    .padding(28).frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Palette.background).foregroundStyle(Palette.ivory)
-    .presentationDetents([.medium, .large]).presentationDragIndicator(.visible)
+    .presentationDetents([.large]).presentationDragIndicator(.visible)
   }
   private func tutorialStep(_ number: String, title: String, text: String) -> some View {
     HStack(alignment: .top, spacing: 16) {

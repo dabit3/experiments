@@ -65,7 +65,7 @@ enum OrbitalDrawing {
   static func beacon(
     _ context: inout GraphicsContext, at point: Vector, collected: Bool, time: Double
   ) {
-    let r = collected ? 12.0 + sin(time * 3) * 2 : 12.0
+    let r = collected ? 15.0 + sin(time * 3) * 2 : 15.0
     let opacity = collected ? 0.25 : 0.65
     context.fill(
       ellipse(point.x, point.y, 38, 38),
@@ -83,10 +83,10 @@ enum OrbitalDrawing {
       context.stroke(check, with: .color(Palette.cyan), lineWidth: 1.5)
     } else {
       var diamond = Path()
-      diamond.move(to: CGPoint(x: point.x, y: point.y - 4))
-      diamond.addLine(to: CGPoint(x: point.x + 4, y: point.y))
-      diamond.addLine(to: CGPoint(x: point.x, y: point.y + 4))
-      diamond.addLine(to: CGPoint(x: point.x - 4, y: point.y))
+      diamond.move(to: CGPoint(x: point.x, y: point.y - 5))
+      diamond.addLine(to: CGPoint(x: point.x + 5, y: point.y))
+      diamond.addLine(to: CGPoint(x: point.x, y: point.y + 5))
+      diamond.addLine(to: CGPoint(x: point.x - 5, y: point.y))
       diamond.closeSubpath()
       context.fill(diamond, with: .color(Palette.cyan))
     }
@@ -109,7 +109,7 @@ enum OrbitalDrawing {
       context.stroke(link, with: .color(Palette.ivory), lineWidth: 1)
     }
     context.draw(
-      Text("DOCK").font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(2)
+      Text("DOCK").font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(2)
         .foregroundColor(Palette.ivory.opacity(0.7)),
       at: CGPoint(x: point.x, y: point.y - 33))
   }
@@ -194,8 +194,7 @@ struct FlightCanvas: View {
             radius: planet.radius, hue: planet.hue)
           context.draw(
             Text(String(format: "μ %.1f", planet.gravity / 100_000))
-              .font(.system(size: 8, design: .monospaced)).foregroundColor(
-                Palette.copper.opacity(0.75)),
+              .font(.system(size: 10, design: .monospaced)).foregroundColor(Palette.copper),
             at: CGPoint(x: planet.center.x, y: planet.center.y + planet.radius + 22))
         }
         OrbitalDrawing.line(
@@ -213,11 +212,11 @@ struct FlightCanvas: View {
         if controller.isReady {
           let origin = controller.mission.origin
           context.stroke(
-            OrbitalDrawing.ellipse(origin.x, origin.y, 54, 54),
+            OrbitalDrawing.ellipse(origin.x, origin.y, 60, 60),
             with: .color(Palette.copper.opacity(0.6)),
             style: StrokeStyle(lineWidth: 0.8, dash: [3, 4]))
           context.draw(
-            Text("DRAG TO AIM").font(.system(size: 8, weight: .medium, design: .monospaced))
+            Text("DRAG TO AIM").font(.system(size: 10, weight: .medium, design: .monospaced))
               .tracking(1.5).foregroundColor(Palette.copper),
             at: CGPoint(x: min(300, max(63, origin.x)), y: origin.y + 42))
         }
