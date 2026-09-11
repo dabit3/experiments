@@ -33,8 +33,7 @@ struct RoomScene: UIViewRepresentable {
       camera.camera?.usesOrthographicProjection = true
       camera.camera?.zNear = 0.1
       camera.camera?.zFar = 100
-      camera.camera?.wantsHDR = true
-      camera.camera?.exposureOffset = -0.15
+      camera.camera?.wantsHDR = false
       camera.camera?.screenSpaceAmbientOcclusionIntensity = 0.7
       camera.camera?.screenSpaceAmbientOcclusionRadius = 0.3
       view.scene?.rootNode.addChildNode(camera)
