@@ -213,18 +213,16 @@ class TrackCard extends StatelessWidget {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    if (def.id != 'bowl')
-                      Image.asset(
-                        'assets/art/${switch (def.id) {
-                          'mossy' => 'moss',
-                          'tincity' => 'tin',
-                          'frostbite' => 'frost',
-                          _ => 'sprinkle',
-                        }}.jpg',
-                        fit: BoxFit.cover,
-                      )
-                    else
-                      DecoratedBox(decoration: BoxDecoration(color: Color(theme.ground))),
+                    Image.asset(
+                      'assets/art/${switch (def.id) {
+                        'mossy' => 'moss',
+                        'tincity' => 'tin',
+                        'frostbite' => 'frost',
+                        'bowl' => 'bowl',
+                        _ => 'sprinkle',
+                      }}.jpg',
+                      fit: BoxFit.cover,
+                    ),
                     const DecoratedBox(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [Colors.transparent, Color(0x99071722)]),

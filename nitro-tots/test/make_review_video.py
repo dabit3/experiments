@@ -317,7 +317,7 @@ def main() -> int:
     cap_plat = {p: caption(f"cap_{p}", platform_label(p), "Lobby → racing → results → match over") for p in live}
     cap_grid = caption("cap_grid", "Final standings side by side", "Identical order and points on each live client")
     cap_parity: dict[str, Path] = {}
-    cap_manual = caption("cap_manual", "Manual play-through (testing agent)", "Release web build + native macOS app")
+    cap_manual = caption("cap_manual", "Manual play-through (testing agent)", "Recorded input, layout and native-client checks")
     tag_e2e = label("tag_e2e", "Automated e2e")
     tag_manual = label("tag_manual", "Manual UI")
     tag_design = label("tag_design", "Design pass")
@@ -346,7 +346,7 @@ def main() -> int:
                     continue
                 text = str(a.get("assertion", ""))
                 fixed_note = next((note for key, note in fixes.items() if key in text), None)
-                verdict = "FIXED" if fixed_note else ("PASS" if a.get("test_result") == "passed" else "FAIL")
+                verdict = "FIXED" if fixed_note else {"passed": "PASS", "failed": "FAIL", "untested": "UNTESTED"}.get(a.get("test_result"), "UNTESTED")
                 detail = fixed_note or str(a.get("test", ""))
                 manual_cuts.append((float(a["source_time_ms"]) / 1000.0, caption(f"cap_a{i:03d}", text, detail, verdict)))
         wanted = [
@@ -409,7 +409,7 @@ def main() -> int:
     # ---- edit ---------------------------------------------------------------
     edit.still("Intro", c_title, 5.0, "title")
 
-    ch = "Automated four-way match"
+    ch = "Automated cross-platform match"
     edit.still(ch, c_ch_match, 3.0, "ch1")
     if video is not None and video.exists():
         vlen = duration(video)
