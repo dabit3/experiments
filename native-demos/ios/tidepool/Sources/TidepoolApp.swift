@@ -11,11 +11,6 @@ struct TidepoolApp: App {
   }
 }
 
-private struct BoardFrameKey: PreferenceKey {
-  static let defaultValue = CGRect.zero
-  static func reduce(value: inout CGRect, nextValue: () -> CGRect) { value = nextValue() }
-}
-
 struct TidepoolView: View {
   @ObservedObject var game: GameStore
   @State private var inspecting: Creature?
@@ -62,7 +57,6 @@ struct TidepoolView: View {
         }
       }
       .coordinateSpace(name: "play")
-      .onPreferenceChange(BoardFrameKey.self) { boardFrame = $0 }
       .sheet(item: $inspecting) { creature in inspector(creature) }
       .sheet(isPresented: $showLevels) { levelMap }
       .confirmationDialog(
@@ -185,10 +179,11 @@ struct TidepoolView: View {
             }
           }
         }
-        .background(
-          GeometryReader { proxy in
-            Color.clear.preference(key: BoardFrameKey.self, value: proxy.frame(in: .named("play")))
-          })
+        .onGeometryChange(for: CGRect.self) { proxy in
+          proxy.frame(in: .named("play"))
+        } action: { frame in
+          boardFrame = frame
+        }
         WaterLight().clipShape(RoundedRectangle(cornerRadius: 35)).padding(7)
         if game.restored {
           Image(systemName: "sparkle")

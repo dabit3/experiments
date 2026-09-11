@@ -18,8 +18,10 @@ struct CreatureArt: View {
       timeline in
       Canvas { context, size in
         let phase = animated && !reduceMotion ? timeline.date.timeIntervalSinceReferenceDate : 0
-        context.scaleBy(x: size.width / 100, y: size.height / 100)
-        context.translateBy(x: 50, y: 50 + sin(phase * 1.8) * (animated ? 2 : 0))
+        let scale = min(size.width, size.height) / 100
+        context.translateBy(x: size.width / 2, y: size.height / 2)
+        context.scaleBy(x: scale, y: scale)
+        context.translateBy(x: 0, y: sin(phase * 1.8) * (animated ? 2 : 0))
         draw(context: context, phase: phase)
       }
     }
