@@ -1,0 +1,403 @@
+## Page 1: Experience | Roblox Wiki | Fandom
+URL: https://roblox.fandom.com/wiki/Experience
+
+Experience | Roblox Wiki | Fandom
+
+ 
+
+"Game" redirects here. For the 2024 event, see The Games.
+
+Charts (formerly "Discover" & "Games") Page
+
+Add a new Place to an experience by right-clicking "Places" in the Asset Manager (View -> Asset Manager)
+
+The virtual interactive content on Roblox are referred as experiences or games (formerly sometimes referred to as "levels"). They are items that house and link places together. Each game or experience has a "starting place," this place is where initial players join as other places of the game cannot be joined directly. The starting place shares the name and description of the game, referring from the Experience Details page. Each game or experience also has an icon, which can be automatically-generated, or a custom one can be uploaded by a user, and at least one thumbnail that is viewed on the game's page.
+
+Games and experiences can be created any user who verified their ID, or has made a purchase on the Roblox website or app. When a place is being published, it must be added to a game. Other places that are not a starting place can be added to a game via the " Creator Hub" page ("Create" on the website), or the Asset Manager window, accessible through Studio's View menu (as shown by the picture to the right). Games can be owned by either a community or a user. Games can be transferred from an individual user's profile to a community, however, this action can only be taken once, so take caution when performing this. Otherwise, places can be transferred via saving/downloading, and re-uploading.
+
+Developers can transport players from one place in a game or experience to another using TeleportService. Furthermore, different servers of a given game can communicate with each other using MessagingService and MemoryStoreService. Saved data using DataStoreService is also accessible throughout all places within the game.
+
+Places using SavePlaceAsync and CreatePlaceAsync are shown in the "Created Place" menu of the game's Configure page on the Roblox Creator Hub.
+
+All users are allotted 200 active games. Before September 2017, the limit was dependent on the user's membership or previous membership status. The removal of this limitation allowed many users to create more experiences. In May 2021, the "Games" page was renamed to "Discover". On July 12, 2024, "Discover" was renamed to "Charts".
+
+## History
+
+On a technical level, experiences (named games) did not exist until January 2014 when they made their official debut in the ROBLOX 2014 Winter Games. Before then, most mention of games were on the Roblox site via the "Games" tab, and other references on the website. On the backend, the closest things to "games" were unlinked places. From December 2003 to February 2006, places were referred to as "minigames". Starting in February 2006, "minigames" were referred to as "games". From this point to roughly 2012, Roblox admins occasionally referred to games as "levels". In 2014, "universes" were introduced to link multiple of these "games" together. In May 2021, "games" officially by Roblox were renamed to "experiences", however that terminology has loosened since 2024/2025.
+
+## Features
+
+- Changing the start place in an experience used to be permitted in its "Configure Experience" page on the website. However, this feature was removed and all games that were missing a start place had one automatically generated.
+- Teleportation used to prompt users to ask whether they'd like to change places. Now, this teleports users without an option.
+- New places can be created in a game through the " CreatePlaceAsync" method.
+- There have been rumours that restrictions on the Apple App Store were the reason games were renamed in 2021. These have not been confirmed nor denied.
+
+## Experience Leaderboard
+
+See: List of places with the most visits
+
+---
+
+## Page 2: Chat | Roblox Wiki | Fandom
+URL: https://roblox.fandom.com/wiki/Chat
+
+Chat | Roblox Wiki | Fandom
+
+ 
+
+The earlier chat system.
+
+Chat is a communication feature in many multiuser games and platforms, including Roblox. There are two types of filtering for chat; 13+ Filtering (formerly called Safe Chat) and Maximum Filtering (formerly called Super Safe Chat). These features allow visitors to experiences to chat with other visitors and friends in their experience. Chat was added on July 14, 2006, along with the official release of Crossroads.
+
+Guests were the only users without the option to enable chat (after the revamp of Super Safe Chat).
+
+## Custom chat
+
+In late 2016, Roblox reduced the Core Scripts relating to the Chat Window to editable scripts. This allows for developers of experiences to create custom chat windows and make modifications. Although this does open the opportunity for inappropriate messages to be sent, Roblox demands that developers filter chat, or else the experience will go under review. On a positive note, this helps allow developers to make the chat window match their experiences better.
+
+## Filtering
+
+Super Safe Chat {} was a feature added on March 27, 2007, to allow Roblox to comply with COPPA. It prevented under-thirteen users from typing custom messages in the chat, to help prevent these users from seeing/typing expletives and/or profanity. Instead, these users could select from a list of predetermined messages.[1]
+
+In 2014, Super Safe Chat was disabled entirely, removing the ability to chat from Guests. However, users whose ages are under 13 years gained the ability to chat with words marked on the Whitelist, which has significantly more words than was on the Super Safe Chat menu. Words not marked on the Whitelist have since been replaced with hashtags (#).
+
+Users who have an age of 13 years or over can use any word, except the ones in the Blacklist. Any explicit word marked in the Blacklist is replaced by hashes. To prevent this from happening, some users censor their words by placing several spaces within the blocked word or try to make it look like one. Guests always had Super Safe Chat on, unless this was changed by an exploit. However, after Super Safe Chat was removed, the command "/sc" could still be used to summon the Super Safe Chat menu. The command was removed in mid-October 2016.
+
+Recently, in March 2026, chat rephrasing was introduced, meaning that any message that broke the policies and guidelines of Roblox would be rephrased to a more nicer and respectful sentence.[2] For example, saying "HURRY TF UP" will be rephrased to "Hurry up!" to maintain environmental friendliness.
+
+## Emojis
+
+An example of emoji short codes in the Roblox TextChatService chat bar with the old send button image.
+
+Emoji support was introduced in 2017, using the Twemoji image set. Some emojis are filtered by the chat. Roblox has previously confirmed the addition of an emoji keyboard,[3] but that idea eventually got scrapped and got replaced by emoji short codes, which are a quick way to add emojis to chat messages without emoji keyboards. Emoji short codes can be written by typing in the name of an emoji with colons around it. For example, typing ":rolling-on-the-floor-laughing:" will automatically turn into the "🤣" emoji.
+
+### List
+
+| Text | Emoji |
+| --- | --- |
+| rolling-on-the-floor-laughing | 🤣 |
+
+## /me
+
+The /me function is a chat function designed for roleplaying. It has been compared to the emotes feature. When "/me" is typed before a message, the message appears in the chat box, but instead of having colored text of the user's username in brackets, it displays the username as part of the message. For example, if the user's username is "username", then a chat message from them saying, "/me eats a hamburger." will display as "username eats a hamburger." in the chat window. No chat bubble is displayed.
+
+In practice, the /me function is not widely used in roleplaying in most experiences, with formats such as "*eats a hamburger*" being more common, as many users are more likely to look at a chat bubble than in the chat window. In late 2018, scambots began to use the /me function to fool users, as the name in brackets, the standard for user-generated chat, is not displayed.
+
+To new users, it may appear that the Roblox server is generating the text instead of a user. Therefore, many scam bots would type messages such as "/me earned 100,000 Robux at (scam site)!", and fool new users into thinking that either the experience or Roblox officially created that message and that they can earn Robux by visiting a phishing website. Because of this, the /me command was disabled by default for all experiences on May 17, 2019, however it was later re-enabled. The /me command no longer works in games that use the new chat system, TextChatService.
+
+## Regional restrictions
+
+### Middle East
+
+The chat on a restricted region.
+
+On September 3, 2025, all communication features with the exception of Community Forums were disabled in Countries in the Middle East Region, while there was no direct reason on why these restrictions happened, some suspect it happened due to an overwhelming amount of Middle Eastern countries banning Roblox for safety concerns such as Algeria, Oman and Qatar, some people were opting to using programs that would trick Roblox into changing communication settings to allow chatting on restricted regions, however this was patched on December 4, 2025, when Roblox rolled out Age Groups to New Zealand, Australia and The Netherlands, as of February 25, 2026, communication features are still disabled in the region.
+
+### Russia
+
+The chat on Roblox VNG.[4]
+
+On December 19, 2025, all communication features with the exception of Community Forums were disabled in Russia, this was done to comply with Russian laws, as of February 25, 2026, communication features are still disabled in the region.
+
+### Vietnam
+
+On January 14, 2026, chat was restricted in Vietnam to only allow people playing on Roblox VNG to communicate with each other, however Age Restrictions are not applied, as of February 25, 2026, chat is still restricted in the region.
+
+## Age restrictions
+
+The chat as of 2026's age restriction going into effect.
+
+As of January 7, 2026, Roblox updated the chat to where only users of similar age groups can chat with each other, and, as a result, are no longer able to see chat messages from anyone outside of their age group. This is intended to limit communication between minors and adults. System messages sent by the experience remain visible to everyone.
+
+Age groups shown are for Roblox chat. Age groups may vary by region and product.
+
+Age verification is also now required to use chat.[5][6]
+
+The update was met with widespread criticism from the Roblox community, with users sharing various technical, safety and gameplay-related problems[7][8][9][10]. This requires developers to make their own safe-chat system to remain compliant while keeping gameplay features, for social deduction games like Flicker.
+
+Reported limitations of the age-verification update include:
+
+- 11 References
+- Being easily bypassed
+- Misassignments (adults in minor age groups & vice versa)
+- Disrupting in-game moderation (moderators, trusted adults or otherwise bystanders that are unverified or are outside of a bad actor's "verified" age-group cannot see and report the actor's inappropriate chat)
+
+## Chat colors
+
+As soon as a user signs up, or changes their username, they will get assigned a chat color. These cannot be changed in any ways besides the aforementioned methods right now. Members of teams always have their chat colors in default chat as dependent on the color of the team they are on.
+
+### Chat color Script
+
+For instance, here's our volunteer Acebatonfan.
+
+```
+local COLORS = {
+ 	Color3.new(253/255, 41/255, 67/255),
+    Color3.new(1/255, 162/255, 255/255),
+    Color3.new(2/255, 184/255, 87/255),
+ 	BrickColor.new("Alder").Color, -- 2015-2022 is Bright Violet
+ 	BrickColor.new("Bright orange").Color,
+ 	BrickColor.new("Bright yellow").Color,
+ 	BrickColor.new("Light reddish violet").Color,
+ 	BrickColor.new("Brick yellow").Color,
+}
+
+local function getNameValue(playerName: string): number
+    local value = 0
+    for index = 1, #playerName do
+      local colorValue = string.byte(string.sub(playerName, index, index))
+      local reverseIndex = #playerName - index + 1
+      if #playerName % 2 == 1 then
+        reverseIndex = reverseIndex - 1
+      end
+      if reverseIndex % 4 >= 2 then
+        colorValue = -colorValue
+      end
+      value = value + colorValue
+    end
+    return value
+end
+
+local function getChatColor(name: string): Color3
+    return COLORS[(getNameValue(name) % #COLORS) + 1]
+end
+
+print(getChatColor("Acebatonfan"))
+
+```
+
+That script will retrieve Acebatonfan's chat color, and then after print it. Running the code will print output 0.00784314, 0.721569, 0.341176. In RGB values, this would be 2, 184, 87. This color is closest to brick color of Dark green[11].
+
+The values of the chat colors are:
+
+| BrickColor | RGB color code | Note |
+| --- | --- | --- |
+| Bright Red | 196, 40, 28 | Only used before the legacy ChatService from 2006-2015. |
+| Persimmon[11] | 196, 40, 28 |
+| Bright Blue | 13, 105, 172 | Only used before the legacy ChatService from 2006-2015. |
+| Cyan[11] | 1, 162, 255 |
+| Earth Green | 36, 70, 45 | Only used before the legacy ChatService from 2006-2015. |
+| Dark Green[11] | 2, 184, 87 |
+| Bright Violet | 107, 50, 124 | Only used in the legacy ChatService service from 2015-2022. |
+| Alder | 180, 128, 255 | Used in the TextChatService from 2022-present. |
+| Bright Orange | 218, 133, 65 |
+| Bright Yellow | 245, 205, 48 |
+| Light Reddish Violet | 232, 186, 200 |
+| Brick Yellow | 215, 197, 154 |
+
+## Spamming
+
+For other types of spam, refer to the Spam article. This is about in-experience chat's filtering of the same spam.
+
+The chat message that appears when a visitor rapidly sends messages in a brief amount of time.
+
+By default, the chat blocks additional comments by blocking
+
+---
+
+## Page 3: Party
+URL: https://roblox.fandom.com/wiki/Party
+
+Party | Roblox Wiki | Fandom
+[](https://www.fandom.com/)
+[![Roblox Wiki](https://static.wikia.nocookie.net/roblox/images/e/e6/Site-logo.png/revision/latest?cb=20210602061715)](https://roblox.fandom.com)[Roblox Wiki](https://roblox.fandom.com)
+[](https://roblox.fandom.com/f)[](#)
+[Sign In](https://auth.fandom.com/signin?source=mw&redirect=https://roblox.fandom.com/wiki/Party)
+Don't have an account?
+[Register](https://auth.fandom.com/register?source=mw&redirect=https://roblox.fandom.com/wiki/Party)
+[Sign In](https://auth.fandom.com/signin?source=mw&redirect=https://roblox.fandom.com/wiki/Party)
+Advertisement
+[Skip to content](#page-header)
+[![Roblox Wiki](https://static.wikia.nocookie.net/roblox/images/e/e6/Site-logo.png/revision/latest?cb=20210602061715)](https://roblox.fandom.com)
+[Roblox Wiki](https://roblox.fandom.com)
+36,912
+pages
+[](https://roblox.fandom.com/f)[](#)
+[](https://roblox.fandom.com/wiki/Party?action=edit)
+in:[Articles containing outdated information](https://roblox.fandom.com/wiki/Category:Articles_containing_outdated_information),[Articles imported from the Roblox Developer Wiki](https://roblox.fandom.com/wiki/Category:Articles_imported_from_the_Roblox_Developer_Wiki),[Website](https://roblox.fandom.com/wiki/Category:Website)
+# Party
+[View source](https://roblox.fandom.com/wiki/Party?action=edit)
+* [History](https://roblox.fandom.com/wiki/Party?action=history)
+* [Purge](https://roblox.fandom.com/wiki/Party?action=purge)
+* [Talk (0)](https://roblox.fandom.com/wiki/Talk:Party?action=edit&redlink=1)
+Outdated information
+The information on this article may be outdated. You can help the Roblox Wiki by[updating it](https://roblox.fandom.com/wiki/Party?action=edit)!
+[](https://static.wikia.nocookie.net/roblox/images/4/43/Website_Party_modern.png/revision/latest?cb=20251119154141)[](https://roblox.fandom.com/wiki/File:Website_Party_modern.png)
+Left: Example of an active party. Right: Example of the party feature being used in-experience through[Topbar](https://roblox.fandom.com/wiki/Topbar).
+On the[Roblox](https://roblox.fandom.com/wiki/Roblox)website, you were able to create a party in an online chat. This feature allowed users to join[Experiences](https://roblox.fandom.com/wiki/Experience)together. If the party leader (the one who created the party) joined an[Experience](https://roblox.fandom.com/wiki/Experience), everyone in that party would be forced to join their[Experience](https://roblox.fandom.com/wiki/Experience)and server with them. On[Xbox One](https://en.wikipedia.org/wiki/Xbox_One), users in the same Xbox Live party with Roblox open would join the[Experience](https://roblox.fandom.com/wiki/Experience)of the party. If someone left and joined a new[Experience](https://roblox.fandom.com/wiki/Experience), the entire party would follow them. This led to a lot of frustration because as people were playing an[Experience](https://roblox.fandom.com/wiki/Experience)if someone else joined a different one, they were automatically moved without warning. Parties were typically used in friend groups to join the same[Experience](https://roblox.fandom.com/wiki/Experience)together. If the party leader joins an[Experience](https://roblox.fandom.com/wiki/Experience), Roblox would have automatically found a server that fitted anyone. This allowed users to guarantee to be able to play with one another.
+Players were only allowed to be in one party at a time. Joining a party in a different chat whilst being in a party had you leave the previous one. There has been speculation that parties would return as "squads", as seen in the client files, but that has since been debunked.
+## Contents
+* [1Changes and removal](#Changes_and_removal)
+* [2New Version](#New_Version)
+* [3Trivia](#Trivia)
+* [4Gallery](#Gallery)
+* [5References](#References)
+## Changes and removal[[](https://auth.fandom.com/signin?redirect=https://roblox.fandom.com/wiki/Party?veaction=edit&section=1&amp;uselang=en)]
+In 2015, this feature was overhauled and was no longer available to people not on your friends list. In 2019, this feature was removed to "modernize" the site but ended up making the community upset.
+## New Version[[](https://auth.fandom.com/signin?redirect=https://roblox.fandom.com/wiki/Party?veaction=edit&section=2&amp;uselang=en)]
+At[Roblox Developers Conference 2024](https://roblox.fandom.com/wiki/Roblox_Developers_Conference_2024), it was announced that a revised version of the feature would be added. This time, it was age-locked to users 9 years old or older. It will allow users to communicate with both text and voice within and outside[Experiences](https://roblox.fandom.com/wiki/Experience). In early 2025, Roblox will also release an API allowing[Experience](https://roblox.fandom.com/wiki/Experience)developers to see who is in a party and who they are playing with. On December 2, 2024 the website parties was readded (13+ users until December 8 2024) alongside adding a way to use it in[Experience](https://roblox.fandom.com/wiki/Experience).
+## Trivia[[](https://auth.fandom.com/signin?redirect=https://roblox.fandom.com/wiki/Party?veaction=edit&section=3&amp;uselang=en)]
+*This section is a[trivia section](https://en.wikipedia.org/wiki/Wikipedia:Trivia_sections). Please[relocate](https://en.wikipedia.org/wiki/Wikipedia:Handling_trivia#Recommendations_for_handling_trivia)any relevant information into other sections of the article.*
+* On June 22, 2011, it was announced that this feature was going to come to Roblox in a blog post written by[ReeseMcBlox](https://roblox.fandom.com/wiki/Player:ReeseMcBlox).[[1]](#cite_note-1)
+* As of July 2, 2024, if you have no friends, the chat tab description still mentions partying. "Make friends to start chatting and partying!"
+* On December 3, 2024,[Roblox\_HaruHaru](https://www.roblox.com/users/3447631062/profile)announced that[voice chat](https://roblox.fandom.com/wiki/Voice_chat)will be coming to parties.[[2]](#cite_note-2)
+* On March 11, 2025, it was announced that Party voice chat will be available to 18+ users who have verified their phone numbers in certain countries. It is planned to extend Party voice chat widely to all 13+ users later in the same year.[[3]](#cite_note-3)## Gallery[[](https://auth.fandom.com/signin?redirect=https://roblox.fandom.com/wiki/Party?veaction=edit&section=4&amp;uselang=en)]
+[](https://roblox.fandom.com/wiki/File:Party_Example_-_At_a_game.png)
+Example of when a[Experience](https://roblox.fandom.com/wiki/Experience)is being played in 2015.
+[](https://roblox.fandom.com/wiki/File:Party_Example_-_Not_at_a_game.png)
+Example of a regular party in 2015.
+[](https://roblox.fandom.com/wiki/File:Party2_thumb.png)
+An example of what the party feature looked like in 2011
+## References[[](https://auth.fandom.com/signin?redirect=https://roblox.fandom.com/wiki/Party?veaction=edit&section=5&amp;uselang=en)]
+1. [↑](#cite_ref-1)[ReeseMcBlox](https://roblox.fandom.com/wiki/Player:ReeseMcBlox)(2011, June 22). "[New Play With Friends Feature!](https://web.archive.org/web/20130622234210if_/https://blog.roblox.com/2011/06/new-play-with-friends-feature/)". From*[Roblox Blog](https://web.archive.org/web/20130622234210if_/https://blog.roblox.com/2011/06/new-play-with-friends-feature/)*.[Archived](https://web.archive.org/web/20130622234210if_/https://blog.roblox.com/2011/06/new-play-with-friends-feature/)from the original on November 19, 2025.
+2. [↑](#cite_ref-2)[Roblox](https://roblox.fandom.com/wiki/Player:Roblox)(2024, December 3). "[Party Is Here! Unlock a New Level of Engagement](https://devforum.roblox.com/t/party-is-here-unlock-a-new-level-of-engagement/3282068)". From*[DevForum](https://devforum.roblox.com/t/party-is-here-unlock-a-new-level-of-engagement/3282068)*.[Archived](https://web.archive.org/web/https://devforum.roblox.com/t/party-is-here-unlock-a-new-level-of-engagement/3282068)from the original on November 19, 2025.
+3. [↑](#cite_ref-3)[https://devforum.roblox.com/t/party-is-here-unlock-a-new-level-of-engagement/3282068/107](https://devforum.roblox.com/t/party-is-here-unlock-a-new-level-of-engagement/3282068/107)
+|
+([V](https://roblox.fandom.com/wiki/Template:Navbox_Roblox)**·**[E](https://roblox.fandom.com/wiki/Template:Navbox_Roblox?action=edit))[Roblox](https://roblox.fandom.com/wiki/Roblox)
+|
+|
+[Corporate](https://roblox.fandom.com/wiki/Roblox_Corporation)|
+[All employees](https://roblox.fandom.com/wiki/List_of_Roblox_employees)**·***[Accelerator program](https://roblox.fandom.com/wiki/Accelerator_program)***·**[Intern](https://roblox.fandom.com/wiki/Intern)**·**[Administrator](https://roblox.fandom.com/wiki/Administrator)**·**[Moderator](https://roblox.fandom.com/wiki/Moderator)(*[Forum Moderator](https://roblox.fandom.com/wiki/Forum_Moderator)***·***[Super Moderator](https://roblox.fandom.com/wiki/Super_Moderator)*)**·**[David Baszucki](https://roblox.fandom.com/wiki/Player:David.baszucki)**·**[Erik Cassel](https://roblox.fandom.com/wiki/Player:Erik.cassel)**·**[Game Fund](https://roblox.fandom.com/wiki/Roblox_Game_Fund)**·**[Headquarters](https://roblox.fandom.com/wiki/Roblox_Headquarters)**·**[Newsroom](https://roblox.fandom.com/wiki/Newsroom)
+|
+|
+Software|
+|Platforms|
+[Linux](https://roblox.fandom.com/wiki/Roblox_on_Linux)**·**[Mac](https://roblox.fandom.com/wiki/Roblox_(Mac))**·**[Meta Quest](https://roblox.fandom.com/wiki/Roblox_(Meta_Quest))**·**[Mobile](https://roblox.fandom.com/wiki/Roblox_(mobile_application))**·**[PlayStation](https://roblox.fandom.com/wiki/Roblox_(PlayStation))**·**[Xbox](https://roblox.fandom.com/wiki/Roblox_(Xbox))
+|
+[Engine](https://roblox.fandom.com/wiki/Engine)**·**[Guilded](https://roblox.fandom.com/wiki/Guilded)**·**[Hyperion](https://roblox.fandom.com/wiki/Hyperion)**·**[Luobu](https://roblox.fandom.com/wiki/Luobu)**·**[Minimum system requirements](https://roblox.fandom.com/wiki/Minimum_system_requirements)**·**[Player](https://roblox.fandom.com/wiki/Roblox_Player)**·**[Studio](https://roblox.fandom.com/wiki/Roblox_Studio)**·**[VN](https
+
+---
+
+## Page 4: Friends | Roblox Wiki | Fandom
+URL: https://roblox.fandom.com/wiki/Friends
+
+Friends | Roblox Wiki | Fandom
+
+Sign In to Save
+
+Friends, previously called Connections, is a system where users are added when two users mutually agree to friendship. Users can have up to a maximum of 1,000 (formerly only 200) friends.[1] The friendship system was added on September 29, 2006.[2]
+
+## Making Friends[]
+
+In order to make a friend on Roblox, users must send a Friend Request to the person they want to add.
+
+Notifications that show incoming friend requests
+
+Sending a friend request using the player list
+
+Sending a friend request using the escape menu
+
+1/3
+
+### Sending Friend Requests[]
+
+Friend requests can be sent using the Add Friend button on a profile. Additionally, if both players are on the same game server, friend requests can be sent using the player list or the escape menu.
+
+### Receiving Friend Requests[]
+
+Incoming friend requests can be accepted or declined on the friends page of the Roblox website. Additionally, if a friend request was sent in-game, the recipient will receive an in-game notification that will allow them to accept or deny the request without going to the website. If a friend request is accepted, both users will become friends, and a message will be sent to the user who sent the friend request to notify them that the request was accepted. Friend requests can be accepted anytime, in-game or on the website. To accept a friend request using the website, the player can either use the Notifications tab or click on the Friends button at the very top.
+
+### Bugs[]
+
+- In 2012, there was a bug that allowed users to become friends with other users without sending a request.
+- In December 2015, a bug was introduced that prevented users from sending friend requests. This bug was fixed in February 2016.
+- In February 2016, a bug was introduced that allowed guests to send friend requests. This bug was fixed by mid-2016.
+
+## Benefits of Friends[]
+
+Latest Friendship badge.
+
+Users can join that user's current playing a game, invite them to games, chat with them using the Friends chat, and invite them to Group Chats(commonly known as Party Chats). There was formerly a Roblox badge that you would've obtained (and still could, but as an avatar accessory) by reaching 20 friends.
+
+### Followers[]
+
+A Follower is established when one person chooses to follow the activity of another user. It is used to stay up to date on what users are playing and making. Users can follow an unlimited number of users. Followers have the ability to (if the followed user's joins are on for everybody or only friends and followers) join their followed users in games, just like friends.
+
+### Friends Only Places[]
+
+Users can put their place into friends-only mode if they'd like. This mode can be useful for hangouts and/or game testing.
+
+## Chat Function[]
+
+Example of a chat with a friend on the website.
+
+### Chat[]
+
+Website chat will open up if users go to their friend's profile and click "Chat" or select their name in the chat box. Users can chat with their friends directly from the website/app.
+
+### Parties[]
+
+Users are able to create a party with one or multiple users using the chat system. The party leader can pick and join a game, which forces all other members of the party to join in the same game together. This feature was originally removed in 2019 but was later brought back in late 2024.
+
+## Updates to the Friends System[]
+
+### Changes to Homepage Display[]
+
+In the Summer of 2018, the Friends section on the Homepage was changed to only display the headshots of friends' avatars as thumbnails (before this change, it would show their entire bodies). Users can also see the game that their friends are currently playing underneath their avatar's thumbnail.
+
+### Friend Limit[]
+
+On February 4, 2015, Roblox added a limit of 200 Friends per account. Users' Friends before the update were converted into Followers. Additionally, Roblox converted any Best Friends into Friends.[3] This change was controversial, with many users arguing that a limit of 200 was too low.
+
+In October 2024, Roblox began increasing the Friends limit from 200 to 1,000.[4]
+
+### Best Friends Removal[]
+
+The Best Friends feature was added on July 30, 2009.[5] Originally, users could set 10 users to be their best friends. When a user was set as a best friend, users could see their status updates via the feed, which was originally on the profile. Sometime later, users could set more users as their best friends and see all friends and best friends' status updates. On October 16, 2014, Roblox announced that they will remove the best friends feature. Before the feature was removed, users were allowed to have up to 200 best friends.[6] Best friends were removed on February 4, 2015, along with the addition of a friend limit.[3]
+
+### Custom Name[]
+
+In the summer of 2019, Roblox gave users the ability to add custom names to their friends. This previously unannounced feature allowed users to give their friends a nickname/personal description. These custom names can only be seen by the user that sets them. Despite this, any real names will still get censored by the word filter.
+
+### Messaging[]
+
+Users could previously message users by clicking on their profile and clicking the "Message" button located by the "Remove Friend" button, or by triggering the dropdown menu and clicking the "Message" button (users might be limited or blocked from sending messages depending on their Privacy/Safety settings set in the Privacy Menu). On October 29, 2024, this feature was deprecated due to privacy and spam issues. It is now exclusively used to receive system messages from Roblox.
+
+### Trusted Friends[]
+
+On July 17, 2025, Trusted Friends (debuted as Trusted Connections) were added. For users to be Trusted Friends, users would have to be age verified and not already be friends with the user. Then, a user would have to share their QR code with the other user (this is only available on the mobile/desktop app, not through the website). The user sharing the QR code must stay on the page with the QR code until the other user has scanned it and sent them a friend request in order for them to become a Trusted Friend. Users who are Trusted Friends can communicate with each other via voice chat in Parties and have a less restrictive chat filter through the website chat. Additionally, with the addition of age verification, Trusted Friends can freely chat with each other within games regardless of their age groups.
+
+## Friends with Deleted Accounts[]
+
+If a Friend's avatar card is grayed out, it means that the user's account has been terminated or deleted. Clicking on their avatar card is disabled, and the drop-down menu located in the upper right-hand corner only contains the option to Unfriend the user.
+
+At an unknown date in 2021, the avatar cards of Friends with deleted accounts were updated to be grayed out. There is also an "inactive" label.
+
+As of an unknown date in 2025, users can no longer see the deleted account: both the Username and Display Name of the user will read, "Account Deleted."
+
+2014-2017
+
+2017-2021
+
+2021-2025 (Roblox Website)
+
+2025-Present (Roblox Website)
+
+2022-2025 (Roblox App)
+
+2025-Present (Roblox App)
+
+## Trivia[]
+
+This section is a trivia section. Please relocate any relevant information into other sections of the article.
+
+- There are multiple patents related to the Friends feature:
+- - US20110307807A1, which relates to creating a Party to chat with friends and invite them to games.
+- US10728701B1, which relates to a method of establishing friendships with Roblox users who are physically near another Roblox user in real life by making request-based "proximity chirps" through the user's device(s).
+- US20170296929A1, which relates to adding friends to private server whitelists.
+- US20170291111A1, which relates to creating a Party with multiple users to launch the Roblox player to join the chat leader in games.
+- US9919220B2, which relates to a system that prioritizes connecting users to video game servers that their friends are in.
+- Prior to its removal, even if users un-friended most of their friends, the user's Friendship Badge would remain on their profile.
+- In April 2025, Roblox removed the ability for users to view the friends lists of users who are under 13, along with all UK-based users, via the website and apps. However, as of September 11, 2025, these could still be viewed via the public API, though other UK-based and under-13 accounts were hidden. The ability to view the Friends list with the public API was patched in January 2026.
+- Friends were renamed to Connections in mid-2025, before being renamed back to Friends in late March to early April 2026.
+
+## References[]
+
+1. Roblox(2025, January 14). " Updating Friends API & Deprecating IsOnline property from GetFriendsAsync". From DevForum. Accessed January 14, 2025. Archived from the original on January 15, 2025.
+2. David.Baszucki(2006, September 29). ROBLOX v0.3.218. Accessed February 25, 2025. Archived from the original on February 25, 2025.
+3. Sorcus(2015, February 4). " Friends and Followers Makes ROBLOX More Social, and Even More Fun". From Roblox Blog. Archived from the original on September 21, 2024.
+4. Bloxy News [@Bloxy_News] (2024, September 8). " The #Roblox friend limit has increased from 200 users to 1,000 users! The amount of users you can block has also been increased to 1,000." [Tweet]. Twitter.
+5. roblosam(2009, July 30). " Status Updates, Best Friends, and Feeds, oh my". From Roblox Blog. Archived from the original on September 21, 2024.
+6. Sorcus (2014, October 16). " Ushering in the New ROBLOX Social Experience". From Roblox Blog. Archived from the original on September 21, 2024.
+
+Advertisement

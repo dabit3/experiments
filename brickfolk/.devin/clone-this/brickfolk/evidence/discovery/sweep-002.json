@@ -1,0 +1,169 @@
+{
+  "method": "reference",
+  "revision": "sha256:28de8de72b8097419ce8ce0a05d0498605ff2df98f7292cb1f802dc0dd02d4f8",
+  "checked": 22,
+  "new_items": 0,
+  "frontier_empty": true,
+  "discoveries": [],
+  "detail": [
+    {
+      "requirement": "Players represent themselves with a customisable blocky avatar",
+      "covered_by": [
+        "feature-avatar-editor"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Avatar items (hats, faces, accessories) bought with a virtual currency",
+      "covered_by": [
+        "feature-shop-currency"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "A catalogue of experiences (places) players browse and join",
+      "covered_by": [
+        "feature-experience-browser"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Obstacle courses (obbies) with checkpoints are a staple genre",
+      "covered_by": [
+        "feature-obby"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Tycoon games where players build and buy upgrades for income",
+      "covered_by": [
+        "feature-tycoon"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Round-based tag / hide-and-seek experiences",
+      "covered_by": [
+        "feature-tag"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Friends list with requests",
+      "covered_by": [
+        "feature-friends"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Parties that join an experience together",
+      "covered_by": [
+        "feature-party-join-codes"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Filtered text chat for a family-friendly audience",
+      "covered_by": [
+        "feature-chat-filtered"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Badges awarded for achievements shown on a profile",
+      "covered_by": [
+        "feature-profile-badges"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Daily login rewards and a soft-currency loop",
+      "covered_by": [
+        "feature-daily-reward"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Servers hold authoritative game state per experience instance",
+      "covered_by": [
+        "feature-server-authoritative-rooms"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Cross-platform play between web, phones, tablets and desktop",
+      "covered_by": [
+        "journey-cross-platform-obby-match"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Persistent player data across sessions",
+      "covered_by": [
+        "feature-persistence"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Bots / fill for under-populated matches (brief)",
+      "covered_by": [
+        "feature-bots"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Reconnect after a dropped connection (brief)",
+      "covered_by": [
+        "feature-reconnect"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Lobby, gameplay and results screens (brief)",
+      "covered_by": [
+        "route-room-lobby",
+        "route-room-gameplay",
+        "route-room-results"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Light and dark themes (brief)",
+      "covered_by": [
+        "feature-themes"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Keyboard, touch and mouse/trackpad input (brief)",
+      "covered_by": [
+        "feature-input-modes"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Deterministic automated four-platform test (brief)",
+      "covered_by": [
+        "feature-deterministic-test-mode",
+        "journey-cross-platform-obby-match"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Original art, names and audio under the new name (brief)",
+      "covered_by": [
+        "asset-brand",
+        "asset-original-avatars",
+        "asset-place-thumbnails"
+      ],
+      "ok": true
+    },
+    {
+      "requirement": "Documented JSON-over-WebSocket protocol (brief)",
+      "covered_by": [
+        "integration-websocket-protocol"
+      ],
+      "ok": true
+    }
+  ]
+}

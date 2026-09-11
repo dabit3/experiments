@@ -1,0 +1,505 @@
+{
+  "reference": "web",
+  "actual": "macos",
+  "screens": [
+    {
+      "screen": "hub",
+      "passed": true,
+      "metrics": {
+        "id": "hub-hub",
+        "mode": "normalized",
+        "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-hub.png",
+        "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/macos-hub.png",
+        "reference_crop": null,
+        "actual_crop": [
+          0,
+          32,
+          1180,
+          760
+        ],
+        "scale": 4,
+        "tolerance": 48,
+        "shift": 1,
+        "edge_tolerance": 24,
+        "max_edge_cells_allowed": 56,
+        "max_cluster_allowed": 8,
+        "masks": [
+          [
+            0,
+            187,
+            3,
+            3
+          ],
+          [
+            292,
+            187,
+            3,
+            3
+          ],
+          [
+            17,
+            177,
+            22,
+            8
+          ]
+        ],
+        "mask_note": "web 1180x760 viewport vs macOS window content below the 32px title bar; 4x box downscale, shift 1; a cell differs beyond 48/255 per channel (zero allowed); cells between 24 and 48 are anti-aliasing edge cells (at most 56, no connected run over 8); rounded bottom window corners and the platform chip in the rail pill masked; profile/daily also mask the platform chip in the profile header",
+        "normalized_size": [
+          295,
+          190
+        ],
+        "total_pixels": 56050,
+        "masked_pixels": 194,
+        "different_pixels": 0,
+        "edge_cells": 13,
+        "max_unmasked_delta": 34,
+        "largest_cluster": 2,
+        "passed": true,
+        "reference": "hub-hub-reference.png",
+        "actual": "hub-hub-actual.png",
+        "diff": "hub-hub-diff.png"
+      },
+      "error": null
+    },
+    {
+      "screen": "place",
+      "passed": true,
+      "metrics": {
+        "id": "hub-place",
+        "mode": "normalized",
+        "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-place.png",
+        "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/macos-place.png",
+        "reference_crop": null,
+        "actual_crop": [
+          0,
+          32,
+          1180,
+          760
+        ],
+        "scale": 4,
+        "tolerance": 48,
+        "shift": 1,
+        "edge_tolerance": 24,
+        "max_edge_cells_allowed": 56,
+        "max_cluster_allowed": 8,
+        "masks": [
+          [
+            0,
+            187,
+            3,
+            3
+          ],
+          [
+            292,
+            187,
+            3,
+            3
+          ],
+          [
+            17,
+            177,
+            22,
+            8
+          ]
+        ],
+        "mask_note": "web 1180x760 viewport vs macOS window content below the 32px title bar; 4x box downscale, shift 1; a cell differs beyond 48/255 per channel (zero allowed); cells between 24 and 48 are anti-aliasing edge cells (at most 56, no connected run over 8); rounded bottom window corners and the platform chip in the rail pill masked; profile/daily also mask the platform chip in the profile header",
+        "normalized_size": [
+          295,
+          190
+        ],
+        "total_pixels": 56050,
+        "masked_pixels": 194,
+        "different_pixels": 0,
+        "edge_cells": 20,
+        "max_unmasked_delta": 35,
+        "largest_cluster": 3,
+        "passed": true,
+        "reference": "hub-place-reference.png",
+        "actual": "hub-place-actual.png",
+        "diff": "hub-place-diff.png"
+      },
+      "error": null
+    },
+    {
+      "screen": "avatar",
+      "passed": true,
+      "metrics": {
+        "id": "hub-avatar",
+        "mode": "normalized",
+        "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-avatar.png",
+        "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/macos-avatar.png",
+        "reference_crop": null,
+        "actual_crop": [
+          0,
+          32,
+          1180,
+          760
+        ],
+        "scale": 4,
+        "tolerance": 48,
+        "shift": 1,
+        "edge_tolerance": 24,
+        "max_edge_cells_allowed": 56,
+        "max_cluster_allowed": 8,
+        "masks": [
+          [
+            0,
+            187,
+            3,
+            3
+          ],
+          [
+            292,
+            187,
+            3,
+            3
+          ],
+          [
+            17,
+            177,
+            22,
+            8
+          ]
+        ],
+        "mask_note": "web 1180x760 viewport vs macOS window content below the 32px title bar; 4x box downscale, shift 1; a cell differs beyond 48/255 per channel (zero allowed); cells between 24 and 48 are anti-aliasing edge cells (at most 56, no connected run over 8); rounded bottom window corners and the platform chip in the rail pill masked; profile/daily also mask the platform chip in the profile header",
+        "normalized_size": [
+          295,
+          190
+        ],
+        "total_pixels": 56050,
+        "masked_pixels": 194,
+        "different_pixels": 0,
+        "edge_cells": 25,
+        "max_unmasked_delta": 37,
+        "largest_cluster": 3,
+        "passed": true,
+        "reference": "hub-avatar-reference.png",
+        "actual": "hub-avatar-actual.png",
+        "diff": "hub-avatar-diff.png"
+      },
+      "error": null
+    },
+    {
+      "screen": "social",
+      "passed": true,
+      "metrics": {
+        "id": "hub-social",
+        "mode": "normalized",
+        "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-social.png",
+        "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/macos-social.png",
+        "reference_crop": null,
+        "actual_crop": [
+          0,
+          32,
+          1180,
+          760
+        ],
+        "scale": 4,
+        "tolerance": 48,
+        "shift": 1,
+        "edge_tolerance": 24,
+        "max_edge_cells_allowed": 56,
+        "max_cluster_allowed": 8,
+        "masks": [
+          [
+            0,
+            187,
+            3,
+            3
+          ],
+          [
+            292,
+            187,
+            3,
+            3
+          ],
+          [
+            17,
+            177,
+            22,
+            8
+          ]
+        ],
+        "mask_note": "web 1180x760 viewport vs macOS window content below the 32px title bar; 4x box downscale, shift 1; a cell differs beyond 48/255 per channel (zero allowed); cells between 24 and 48 are anti-aliasing edge cells (at most 56, no connected run over 8); rounded bottom window corners and the platform chip in the rail pill masked; profile/daily also mask the platform chip in the profile header",
+        "normalized_size": [
+          295,
+          190
+        ],
+        "total_pixels": 56050,
+        "masked_pixels": 194,
+        "different_pixels": 0,
+        "edge_cells": 17,
+        "max_unmasked_delta": 48,
+        "largest_cluster": 2,
+        "passed": true,
+        "reference": "hub-social-reference.png",
+        "actual": "hub-social-actual.png",
+        "diff": "hub-social-diff.png"
+      },
+      "error": null
+    },
+    {
+      "screen": "chat",
+      "passed": true,
+      "metrics": {
+        "id": "hub-chat",
+        "mode": "normalized",
+        "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-chat.png",
+        "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/macos-chat.png",
+        "reference_crop": null,
+        "actual_crop": [
+          0,
+          32,
+          1180,
+          760
+        ],
+        "scale": 4,
+        "tolerance": 48,
+        "shift": 1,
+        "edge_tolerance": 24,
+        "max_edge_cells_allowed": 56,
+        "max_cluster_allowed": 8,
+        "masks": [
+          [
+            0,
+            187,
+            3,
+            3
+          ],
+          [
+            292,
+            187,
+            3,
+            3
+          ],
+          [
+            17,
+            177,
+            22,
+            8
+          ]
+        ],
+        "mask_note": "web 1180x760 viewport vs macOS window content below the 32px title bar; 4x box downscale, shift 1; a cell differs beyond 48/255 per channel (zero allowed); cells between 24 and 48 are anti-aliasing edge cells (at most 56, no connected run over 8); rounded bottom window corners and the platform chip in the rail pill masked; profile/daily also mask the platform chip in the profile header",
+        "normalized_size": [
+          295,
+          190
+        ],
+        "total_pixels": 56050,
+        "masked_pixels": 194,
+        "different_pixels": 0,
+        "edge_cells": 6,
+        "max_unmasked_delta": 28,
+        "largest_cluster": 1,
+        "passed": true,
+        "reference": "hub-chat-reference.png",
+        "actual": "hub-chat-actual.png",
+        "diff": "hub-chat-diff.png"
+      },
+      "error": null
+    },
+    {
+      "screen": "profile",
+      "passed": true,
+      "metrics": {
+        "id": "hub-profile",
+        "mode": "normalized",
+        "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-profile.png",
+        "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/macos-profile.png",
+        "reference_crop": null,
+        "actual_crop": [
+          0,
+          32,
+          1180,
+          760
+        ],
+        "scale": 4,
+        "tolerance": 48,
+        "shift": 1,
+        "edge_tolerance": 24,
+        "max_edge_cells_allowed": 56,
+        "max_cluster_allowed": 8,
+        "masks": [
+          [
+            0,
+            187,
+            3,
+            3
+          ],
+          [
+            292,
+            187,
+            3,
+            3
+          ],
+          [
+            17,
+            177,
+            22,
+            8
+          ],
+          [
+            170,
+            43,
+            28,
+            9
+          ]
+        ],
+        "mask_note": "web 1180x760 viewport vs macOS window content below the 32px title bar; 4x box downscale, shift 1; a cell differs beyond 48/255 per channel (zero allowed); cells between 24 and 48 are anti-aliasing edge cells (at most 56, no connected run over 8); rounded bottom window corners and the platform chip in the rail pill masked; profile/daily also mask the platform chip in the profile header",
+        "normalized_size": [
+          295,
+          190
+        ],
+        "total_pixels": 56050,
+        "masked_pixels": 446,
+        "different_pixels": 0,
+        "edge_cells": 33,
+        "max_unmasked_delta": 43,
+        "largest_cluster": 7,
+        "passed": true,
+        "reference": "hub-profile-reference.png",
+        "actual": "hub-profile-actual.png",
+        "diff": "hub-profile-diff.png"
+      },
+      "error": null
+    },
+    {
+      "screen": "daily",
+      "passed": true,
+      "metrics": {
+        "id": "hub-daily",
+        "mode": "normalized",
+        "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-daily.png",
+        "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/macos-daily.png",
+        "reference_crop": null,
+        "actual_crop": [
+          0,
+          32,
+          1180,
+          760
+        ],
+        "scale": 4,
+        "tolerance": 48,
+        "shift": 1,
+        "edge_tolerance": 24,
+        "max_edge_cells_allowed": 56,
+        "max_cluster_allowed": 8,
+        "masks": [
+          [
+            0,
+            187,
+            3,
+            3
+          ],
+          [
+            292,
+            187,
+            3,
+            3
+          ],
+          [
+            17,
+            177,
+            22,
+            8
+          ],
+          [
+            170,
+            43,
+            28,
+            9
+          ]
+        ],
+        "mask_note": "web 1180x760 viewport vs macOS window content below the 32px title bar; 4x box downscale, shift 1; a cell differs beyond 48/255 per channel (zero allowed); cells between 24 and 48 are anti-aliasing edge cells (at most 56, no connected run over 8); rounded bottom window corners and the platform chip in the rail pill masked; profile/daily also mask the platform chip in the profile header",
+        "normalized_size": [
+          295,
+          190
+        ],
+        "total_pixels": 56050,
+        "masked_pixels": 446,
+        "different_pixels": 0,
+        "edge_cells": 5,
+        "max_unmasked_delta": 43,
+        "largest_cluster": 1,
+        "passed": true,
+        "reference": "hub-daily-reference.png",
+        "actual": "hub-daily-actual.png",
+        "diff": "hub-daily-diff.png"
+      },
+      "error": null
+    }
+  ],
+  "noiseBaseline": {
+    "id": "web-hub-repeat",
+    "mode": "normalized",
+    "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-hub.png",
+    "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-hub-repeat.png",
+    "reference_crop": null,
+    "actual_crop": null,
+    "scale": 4,
+    "tolerance": 0,
+    "shift": 0,
+    "edge_tolerance": 0,
+    "max_edge_cells_allowed": 0,
+    "max_cluster_allowed": 0,
+    "masks": [],
+    "mask_note": "same web state captured twice; raw noise measurement (tolerance 0)",
+    "normalized_size": [
+      295,
+      190
+    ],
+    "total_pixels": 56050,
+    "masked_pixels": 0,
+    "different_pixels": 0,
+    "edge_cells": 0,
+    "max_unmasked_delta": 0,
+    "largest_cluster": 0,
+    "passed": true,
+    "reference": "web-hub-repeat-reference.png",
+    "actual": "web-hub-repeat-actual.png",
+    "diff": "web-hub-repeat-diff.png"
+  },
+  "sensitivity": {
+    "shiftPx": 8,
+    "detected": true,
+    "metrics": {
+      "id": "hub-shifted",
+      "mode": "normalized",
+      "reference_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-hub.png",
+      "actual_source": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T16-45-13/visual/web-hub.png",
+      "reference_crop": [
+        0,
+        0,
+        1172,
+        760
+      ],
+      "actual_crop": [
+        8,
+        0,
+        1172,
+        760
+      ],
+      "scale": 4,
+      "tolerance": 48,
+      "shift": 1,
+      "edge_tolerance": 24,
+      "max_edge_cells_allowed": 56,
+      "max_cluster_allowed": 8,
+      "masks": [],
+      "mask_note": "sensitivity check: web hub against itself shifted 8px; must not pass",
+      "normalized_size": [
+        293,
+        190
+      ],
+      "total_pixels": 55670,
+      "masked_pixels": 0,
+      "different_pixels": 824,
+      "edge_cells": 396,
+      "max_unmasked_delta": 213,
+      "largest_cluster": 49,
+      "passed": false,
+      "reference": "hub-shifted-reference.png",
+      "actual": "hub-shifted-actual.png",
+      "diff": "hub-shifted-diff.png"
+    }
+  }
+}

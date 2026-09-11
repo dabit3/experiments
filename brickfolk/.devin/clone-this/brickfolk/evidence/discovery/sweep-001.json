@@ -1,0 +1,438 @@
+{
+  "method": "source",
+  "revision": "sha256:28de8de72b8097419ce8ce0a05d0498605ff2df98f7292cb1f802dc0dd02d4f8",
+  "checked": 52,
+  "new_items": 0,
+  "frontier_empty": true,
+  "discoveries": [],
+  "detail": [
+    {
+      "kind": "screen",
+      "name": "avatar_screen",
+      "covered_by": [
+        "route-hub-avatar",
+        "feature-avatar-editor"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "screen",
+      "name": "chat_panel",
+      "covered_by": [
+        "route-hub-chat",
+        "feature-chat-filtered"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "screen",
+      "name": "daily_reward_sheet",
+      "covered_by": [
+        "route-daily-reward",
+        "feature-daily-reward"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "screen",
+      "name": "home_shell",
+      "covered_by": [
+        "route-hub-play"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "screen",
+      "name": "places_screen",
+      "covered_by": [
+        "route-hub-play",
+        "feature-experience-browser"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "screen",
+      "name": "profile_screen",
+      "covered_by": [
+        "route-hub-profile",
+        "feature-profile-badges"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "screen",
+      "name": "room_screen",
+      "covered_by": [
+        "route-room-lobby",
+        "route-room-gameplay",
+        "route-room-results"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "screen",
+      "name": "sign_in_screen",
+      "covered_by": [
+        "route-sign-in"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "screen",
+      "name": "social_screen",
+      "covered_by": [
+        "route-hub-social",
+        "feature-friends",
+        "feature-party-join-codes"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "game-view",
+      "name": "obby",
+      "covered_by": [
+        "feature-obby"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "game-view",
+      "name": "tag",
+      "covered_by": [
+        "feature-tag"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "game-view",
+      "name": "tycoon",
+      "covered_by": [
+        "feature-tycoon"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "hub-tab",
+      "name": "play",
+      "covered_by": [
+        "route-hub-play"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "hub-tab",
+      "name": "avatar",
+      "covered_by": [
+        "route-hub-avatar"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "hub-tab",
+      "name": "social",
+      "covered_by": [
+        "route-hub-social"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "hub-tab",
+      "name": "chat",
+      "covered_by": [
+        "route-hub-chat"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "hub-tab",
+      "name": "profile",
+      "covered_by": [
+        "route-hub-profile"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "hello",
+      "covered_by": [
+        "integration-websocket-protocol"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "ping",
+      "covered_by": [
+        "feature-reconnect"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "input",
+      "covered_by": [
+        "feature-server-authoritative-rooms"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "welcome",
+      "covered_by": [
+        "integration-websocket-protocol"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "pong",
+      "covered_by": [
+        "feature-reconnect"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "error",
+      "covered_by": [
+        "integration-websocket-protocol"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "places",
+      "covered_by": [
+        "feature-experience-browser"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "profile",
+      "covered_by": [
+        "feature-profile-badges"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "badRequest",
+      "covered_by": [
+        "integration-websocket-protocol"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "nameTaken",
+      "covered_by": [
+        "route-sign-in"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "invalidName",
+      "covered_by": [
+        "route-sign-in"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "notFound",
+      "covered_by": [
+        "integration-websocket-protocol"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "roomFull",
+      "covered_by": [
+        "feature-server-authoritative-rooms"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "notEnoughPips",
+      "covered_by": [
+        "feature-shop-currency"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "alreadyOwned",
+      "covered_by": [
+        "feature-match-lifecycle"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "notLeader",
+      "covered_by": [
+        "feature-party-join-codes"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "cooldown",
+      "covered_by": [
+        "feature-daily-reward"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "rateLimited",
+      "covered_by": [
+        "feature-chat-filtered"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "unauthenticated",
+      "covered_by": [
+        "feature-reconnect"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "global",
+      "covered_by": [
+        "feature-chat-filtered"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "party",
+      "covered_by": [
+        "feature-party-join-codes"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "protocol",
+      "name": "room",
+      "covered_by": [
+        "feature-server-authoritative-rooms"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "experience",
+      "name": "obby",
+      "covered_by": [
+        "feature-obby",
+        "journey-cross-platform-obby-match"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "experience",
+      "name": "tycoon",
+      "covered_by": [
+        "feature-tycoon",
+        "journey-tycoon-match"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "experience",
+      "name": "tag",
+      "covered_by": [
+        "feature-tag",
+        "journey-tag-match"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "launch-flag",
+      "name": "tour",
+      "covered_by": [
+        "feature-deterministic-test-mode"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "launch-flag",
+      "name": "server",
+      "covered_by": [
+        "integration-websocket-protocol"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "launch-flag",
+      "name": "test",
+      "covered_by": [
+        "feature-deterministic-test-mode"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "launch-flag",
+      "name": "name",
+      "covered_by": [
+        "feature-deterministic-test-mode"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "launch-flag",
+      "name": "party",
+      "covered_by": [
+        "feature-party-join-codes"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "launch-flag",
+      "name": "host",
+      "covered_by": [
+        "feature-deterministic-test-mode"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "launch-flag",
+      "name": "experience",
+      "covered_by": [
+        "feature-deterministic-test-mode"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "launch-flag",
+      "name": "theme",
+      "covered_by": [
+        "feature-themes"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "launch-flag",
+      "name": "marker",
+      "covered_by": [
+        "feature-deterministic-test-mode"
+      ],
+      "ok": true
+    },
+    {
+      "kind": "launch-flag",
+      "name": "autoready",
+      "covered_by": [
+        "feature-deterministic-test-mode"
+      ],
+      "ok": true
+    }
+  ]
+}
