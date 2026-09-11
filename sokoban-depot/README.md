@@ -6,8 +6,9 @@ set), arrow-key / WASD movement, unlimited undo (`Z`), restart (`R`), move and p
 a par move count per level with a 1–3 star rating, a level-select screen with minimaps and
 sequential unlocking, and progress persisted in `localStorage`. All tiles — brick walls,
 wooden crates, the yellow-hard-hat worker, dashed targets — are pixel art drawn with inline
-SVG and CSS. The brand mark (crate-in-a-badge emblem + chunky wordmark) is also inline SVG /
-CSS, and the two typefaces (Lilita One for display, Nunito for UI) are bundled from
+SVG and CSS. An original SD monogram, warm cream / vermilion identity, illustrated depot
+diorama, tactile stage cards and a navy arcade cabinet give the game its own visual world.
+The two typefaces (Lilita One for display, Nunito for UI) are bundled from
 `@fontsource` packages; there are no external assets and no network calls at runtime.
 
 ## Run it
@@ -26,6 +27,8 @@ solvable and that `par` equals the optimal move count.
 
 Keyboard: `↑ ↓ ← →` or `W A S D` move (and push) · `Z` / `Backspace` undo · `R` restart ·
 `Esc` / `L` level select · `Enter` / `Space` / `N` next level after clearing one.
+The on-screen direction pad supports mouse and touch. **How to play** opens a keyboard-accessible
+help dialog; the victory dialog also traps focus, and Tab + Enter activates its selected action.
 
 Stars: 3 for finishing at or under par, 2 for at most 1.5× par, 1 for any finish. The best
 result per level is kept.
@@ -44,10 +47,14 @@ result per level is kept.
   solver; the `par` in `src/game/levels.ts` is the optimal move count it reports.
 - **Levels unlock sequentially** and progress lives under the `sokoban-depot:progress:v1`
   key, with a *Reset progress* button on the level-select screen.
-- **Dark, warehouse-flavoured design system.** Charcoal panels, an amber/orange accent with
-  hazard-stripe details, a display typeface for the wordmark, level numbers and stats, and
-  restrained motion (worker step bounce, crate settle, confetti on clear). All of it lives in
-  `src/index.css` (tokens) and `src/App.css` (components).
+- **An original arcade identity.** Cream, vermilion, ink blue and cargo yellow connect the
+  monogram, hand-drawn SVG depot diorama, stage tickets, cabinet, scoreboard and delivery-receipt
+  victory screen. The art is source code, with no generated images or external requests.
+  Tokens live in `src/index.css`; component styles live in `src/App.css`.
+- **A board that fits its cabinet.** `ResizeObserver` derives the tile size from available
+  width and height, including narrow screens. Walls, targets, crates and the worker remain
+  distinct at every size. Matched crates gain check badges; stuck crates gain warning badges.
+  Reduced-motion preferences disable animation and transitions.
 
 ## Computer-use showcase
 
@@ -98,7 +105,8 @@ All nine steps passed on the recorded run; no app defects were found during the 
 src/
   App.tsx                    screen routing (select ⇄ play), progress wiring
   components/
-    Logo.tsx                 emblem + wordmark brand mark (inline SVG)
+    Logo.tsx                 SD monogram + typographic wordmark
+    DepotScene.tsx           original isometric depot illustration (inline SVG)
     LevelSelect.tsx          level cards with minimaps, stars, lock state
     PlayScreen.tsx           board + sidebar, keyboard handling, win overlay
     Board.tsx                absolutely positioned tiles and animated entities

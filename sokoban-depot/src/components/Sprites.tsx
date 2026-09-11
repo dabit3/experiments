@@ -23,10 +23,10 @@ function Pixels({ pixels, viewBox = '0 0 16 16', className }: { pixels: Px[]; vi
   )
 }
 
-const MORTAR = '#1c202b'
-const BRICK = '#4c5568'
-const BRICK_HI = '#646e85'
-const BRICK_LO = '#394152'
+const MORTAR = '#2b4858'
+const BRICK = '#557989'
+const BRICK_HI = '#8eacb0'
+const BRICK_LO = '#365d71'
 
 function brickRow(y: number, offset: boolean): Px[] {
   const out: Px[] = []
@@ -55,12 +55,12 @@ export function WallTile() {
   return <Pixels pixels={WALL_PIXELS} className="sprite sprite-wall" />
 }
 
-const WOOD = '#cf9142'
-const WOOD_HI = '#e9b264'
-const WOOD_LO = '#96612a'
-const WOOD_EDGE = '#4a2c0f'
-const STEEL = '#b9c2d4'
-const STEEL_LO = '#6f7a90'
+const WOOD = '#eda84c'
+const WOOD_HI = '#ffe0a0'
+const WOOD_LO = '#ba762f'
+const WOOD_EDGE = '#79502e'
+const STEEL = '#fff4d4'
+const STEEL_LO = '#abc3bf'
 
 const CRATE_PIXELS: Px[] = [
   { x: 1, y: 1, w: 14, h: 14, c: WOOD },
@@ -106,10 +106,10 @@ const HAT_LO = '#d18a0c'
 const SKIN = '#f3c48e'
 const SKIN_LO = '#d9a06a'
 const EYE = '#1d1a24'
-const VEST = '#ff7a2f'
-const VEST_LO = '#cf5d0d'
+const VEST = '#ee6345'
+const VEST_LO = '#b9442c'
 const STRIPE = '#f7f7f7'
-const PANTS = '#2c3f75'
+const PANTS = '#2e6077'
 const BOOT = '#3a2a1e'
 const GLOVE = '#ffd166'
 
@@ -161,4 +161,3 @@ const WORKER_BY_DIR: Record<Dir, Px[]> = {
 export function WorkerSprite({ facing }: { facing: Dir }) {
   return <Pixels pixels={WORKER_BY_DIR[facing]} className={`sprite sprite-worker facing-${facing}`} />
 }
-

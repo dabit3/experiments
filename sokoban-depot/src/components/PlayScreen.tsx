@@ -1,10 +1,11 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { starsFor, type Dir } from '../game/engine'
 import { LEVELS, type LevelDef } from '../game/levels'
 import type { LevelResult } from '../game/progress'
 import { useSokoban } from '../game/useSokoban'
 import { Board } from './Board'
 import { Stars } from './Stars'
+import { WorkerSprite } from './Sprites'
 
 interface PlayScreenProps {
   level: LevelDef
@@ -57,10 +58,17 @@ function Confetti() {
 
 export function PlayScreen({ level, best, onSolved, onNext, onExit }: PlayScreenProps) {
   const { board, state, canUndo, solved, stuck, step, undo, restart } = useSokoban(level)
+  const winDialog = useRef<HTMLDialogElement>(null)
   const stuckIds = useMemo(() => new Set(stuck.map((c) => c.id)), [stuck])
   const isLast = level.id === LEVELS.length
   const stars = solved ? starsFor(state.moves, level.par) : null
   const cratesHome = state.crates.filter((c) => board.targets.some((t) => t.x === c.x && t.y === c.y)).length
+
+  useEffect(() => {
+    const dialog = winDialog.current
+    if (solved) dialog?.showModal()
+    return () => dialog?.close()
+  }, [solved])
 
   useEffect(() => {
     if (!solved) return
@@ -96,6 +104,13 @@ export function PlayScreen({ level, best, onSolved, onNext, onExit }: PlayScreen
           break
         case 'Enter':
         case ' ':
+          if (e.target instanceof HTMLButtonElement) break
+          if (solved) {
+            e.preventDefault()
+            if (isLast) onExit()
+            else onNext()
+          }
+          break
         case 'n':
         case 'N':
           if (solved) {
@@ -112,77 +127,137 @@ export function PlayScreen({ level, best, onSolved, onNext, onExit }: PlayScreen
 
   return (
     <section className="play">
+      <header className="play-heading">
+        <div>
+          <p className="eyebrow">WAREHOUSE {String(level.id).padStart(2, '0')} / 08</p>
+          <h1>
+            {level.name}
+            <span>.</span>
+          </h1>
+        </div>
+        <span className="play-tag">
+          <i /> {solved ? 'SHIFT COMPLETE' : 'TAKE YOUR TIME. FIND YOUR FLOW.'}
+        </span>
+      </header>
       <div className="play-main">
-        <div className="board-frame">
-          <Board board={board} state={state} stuckIds={stuckIds} maxWidth={720} maxHeight={560} />
+        <div className="cabinet">
+          <div className="cabinet-marquee">
+            <span>
+              <i /> DEPOT PUZZLE CO.
+            </span>
+            <strong>SHIFT {String(level.id).padStart(2, '0')}</strong>
+            <span>ONE PLAYER · ALL BRAIN</span>
+          </div>
+          <div className="board-frame">
+            <span className="bay-label" aria-hidden="true">
+              LOADING ZONE
+            </span>
+            <Board board={board} state={state} stuckIds={stuckIds} />
 
-          {solved && stars && (
-            <div className="win-overlay" role="dialog" aria-modal="true" aria-labelledby="win-title">
-              <Confetti />
-              <div className="win-card">
-                <p className="win-eyebrow">Level {level.id} cleared</p>
-                <h2 id="win-title">{level.name}</h2>
-                <Stars count={stars} size="lg" label={`${stars} of 3 stars earned`} />
-                <dl className="win-stats">
-                  <div>
-                    <dt>Moves</dt>
-                    <dd>{state.moves}</dd>
-                  </div>
-                  <div>
-                    <dt>Pushes</dt>
-                    <dd>{state.pushes}</dd>
-                  </div>
-                  <div>
-                    <dt>Par</dt>
-                    <dd>{level.par}</dd>
-                  </div>
-                </dl>
-                <p className="muted win-hint">
-                  {stars === 3
-                    ? 'Perfect — you matched par.'
-                    : stars === 2
-                      ? `Within 1.5× par. Finish in ${level.par} moves for three stars.`
-                      : `Cleared! Finish in ${level.par} moves for three stars.`}
-                </p>
-                <div className="win-actions">
-                  {isLast ? (
-                    <button className="btn btn-primary" onClick={onExit} autoFocus>
-                      Back to levels <Kbd>Enter</Kbd>
+            {solved && stars && (
+              <dialog ref={winDialog} className="win-overlay" aria-labelledby="win-title" onCancel={onExit}>
+                <Confetti />
+                <div className="win-card">
+                  <p className="win-eyebrow">Level {level.id} cleared</p>
+                  <h2 id="win-title">
+                    {stars === 3 ? 'SIGNED. SEALED.' : 'NICE SHIFT.'}
+                    <br />
+                    <span>{stars === 3 ? 'DELIVERED!' : 'GREAT WORK!'}</span>
+                  </h2>
+                  <p className="win-level">
+                    {level.name} · Shift {String(level.id).padStart(2, '0')}
+                  </p>
+                  <Stars count={stars} size="lg" label={`${stars} of 3 stars earned`} />
+                  <dl className="win-stats">
+                    <div>
+                      <dt>Moves</dt>
+                      <dd>{state.moves}</dd>
+                    </div>
+                    <div>
+                      <dt>Pushes</dt>
+                      <dd>{state.pushes}</dd>
+                    </div>
+                    <div>
+                      <dt>Par</dt>
+                      <dd>{level.par}</dd>
+                    </div>
+                  </dl>
+                  <p className="muted win-hint">
+                    {stars === 3
+                      ? 'Right on par. That’s some world-class box work.'
+                      : stars === 2
+                        ? `Within 1.5× par. Finish in ${level.par} moves for three stars.`
+                        : `Cleared! Finish in ${level.par} moves for three stars.`}
+                  </p>
+                  <div className="win-actions">
+                    {isLast ? (
+                      <button className="btn btn-primary" onClick={onExit} autoFocus>
+                        Back to levels <Kbd>Enter</Kbd>
+                      </button>
+                    ) : (
+                      <button className="btn btn-primary" onClick={onNext} autoFocus>
+                        Next level <Kbd>Enter</Kbd>
+                      </button>
+                    )}
+                    <button className="btn" onClick={restart}>
+                      Replay <Kbd>R</Kbd>
                     </button>
-                  ) : (
-                    <button className="btn btn-primary" onClick={onNext} autoFocus>
-                      Next level <Kbd>Enter</Kbd>
+                    <button className="btn btn-ghost" onClick={onExit}>
+                      Levels <Kbd>Esc</Kbd>
                     </button>
-                  )}
-                  <button className="btn" onClick={restart}>
-                    Replay <Kbd>R</Kbd>
-                  </button>
-                  <button className="btn btn-ghost" onClick={onExit}>
-                    Levels <Kbd>Esc</Kbd>
-                  </button>
+                  </div>
                 </div>
-              </div>
+              </dialog>
+            )}
+          </div>
+          <div className="control-deck">
+            <div className="direction-pad" aria-label="Movement controls">
+              <button onClick={() => step('up')} disabled={solved} aria-label="Move up">
+                ↑
+              </button>
+              <button onClick={() => step('left')} disabled={solved} aria-label="Move left">
+                ←
+              </button>
+              <button onClick={() => step('down')} disabled={solved} aria-label="Move down">
+                ↓
+              </button>
+              <button onClick={() => step('right')} disabled={solved} aria-label="Move right">
+                →
+              </button>
             </div>
-          )}
+            <span className="deck-label">
+              MAKE YOUR MOVE<small>Arrow keys or WASD</small>
+            </span>
+            <div className="deck-actions">
+              <button className="btn" onClick={undo} disabled={!canUndo || solved}>
+                ↶ Undo <Kbd>Z</Kbd>
+              </button>
+              <button className="btn" onClick={restart} disabled={state.moves === 0}>
+                ↻ Restart <Kbd>R</Kbd>
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className={`banner banner-stuck ${stuck.length > 0 && !solved ? 'visible' : ''}`} role="alert">
           {stuck.length > 0 && !solved && (
             <>
-              <strong>Crate wedged in a corner.</strong> It can never reach a target from there — press <Kbd>Z</Kbd> to
-              undo or <Kbd>R</Kbd> to restart.
+              <span aria-hidden="true">↶</span>
+              <span>
+                <strong>Crate wedged in a corner.</strong> No worries. Press <Kbd>Z</Kbd> to undo and try another route.
+              </span>
             </>
           )}
         </div>
       </div>
 
       <aside className="sidebar">
-        <div className="panel">
+        <div className="panel mission-panel">
+          <p className="eyebrow">THE JOB AT HAND</p>
           <div className="level-head">
-            <span className="level-num">{String(level.id).padStart(2, '0')}</span>
             <div>
-              <p className="eyebrow">Level {level.id} of {LEVELS.length}</p>
-              <h2 className="level-title">{level.name}</h2>
+              <h2 className="level-title">A place for every crate.</h2>
+              <p>Push each box onto a marked target.</p>
             </div>
           </div>
           <div className="progress-row">
@@ -190,32 +265,35 @@ export function PlayScreen({ level, best, onSolved, onNext, onExit }: PlayScreen
               <i style={{ width: `${(cratesHome / state.crates.length) * 100}%` }} />
             </span>
             <span>
-              {cratesHome} / {state.crates.length} crates
+              {cratesHome} / {state.crates.length}
             </span>
           </div>
         </div>
 
-        <div className="panel stats">
-          <div className={`stat${state.moves > level.par ? ' over' : ''}`}>
-            <span className="stat-label">Moves</span>
-            <span className="stat-value" data-testid="moves">
-              {state.moves}
-            </span>
-          </div>
-          <div className="stat">
-            <span className="stat-label">Pushes</span>
-            <span className="stat-value" data-testid="pushes">
-              {state.pushes}
-            </span>
-          </div>
-          <div className="stat stat-par">
-            <span className="stat-label">Par</span>
-            <span className="stat-value">{level.par}</span>
+        <div className="score-panel">
+          <p className="eyebrow">YOUR SHIFT IN NUMBERS</p>
+          <div className="stats">
+            <div className={`stat${state.moves > level.par ? ' over' : ''}`}>
+              <span className="stat-label">Moves</span>
+              <span className="stat-value" data-testid="moves">
+                {state.moves}
+              </span>
+            </div>
+            <div className="stat">
+              <span className="stat-label">Pushes</span>
+              <span className="stat-value" data-testid="pushes">
+                {state.pushes}
+              </span>
+            </div>
+            <div className="stat stat-par">
+              <span className="stat-label">Par</span>
+              <span className="stat-value">{level.par}</span>
+            </div>
           </div>
         </div>
 
         <div className="panel">
-          <p className="eyebrow">Star thresholds</p>
+          <p className="eyebrow">MAKE IT A GOLD-STAR SHIFT</p>
           <ul className="thresholds">
             <li className={state.moves <= level.par ? 'hit' : ''}>
               <Stars count={3} size="sm" /> <span>≤ {level.par} moves</span>
@@ -234,31 +312,15 @@ export function PlayScreen({ level, best, onSolved, onNext, onExit }: PlayScreen
           )}
         </div>
 
-        <div className="panel actions">
-          <button className="btn" onClick={undo} disabled={!canUndo || solved}>
-            Undo <Kbd>Z</Kbd>
-          </button>
-          <button className="btn" onClick={restart} disabled={state.moves === 0}>
-            Restart <Kbd>R</Kbd>
-          </button>
-          <button className="btn btn-ghost" onClick={onExit}>
-            Level select <Kbd>Esc</Kbd>
-          </button>
+        <div className="mentor-note">
+          <WorkerSprite facing="down" />
+          <p>
+            <strong>You’ve got this.</strong>Think two pushes ahead. A corner is no place for a crate.
+          </p>
         </div>
-
-        <div className="panel help">
-          <p className="eyebrow">Controls</p>
-          <div className="keys">
-            <Kbd>↑</Kbd>
-            <Kbd>↓</Kbd>
-            <Kbd>←</Kbd>
-            <Kbd>→</Kbd> <span className="muted">or</span> <Kbd>W</Kbd>
-            <Kbd>A</Kbd>
-            <Kbd>S</Kbd>
-            <Kbd>D</Kbd>
-          </div>
-          <p className="muted">Push every crate onto a yellow target. You can only push one crate at a time.</p>
-        </div>
+        <button className="btn btn-ghost exit-button" onClick={onExit}>
+          ← All warehouses <Kbd>Esc</Kbd>
+        </button>
       </aside>
     </section>
   )
