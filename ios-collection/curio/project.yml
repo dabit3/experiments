@@ -1,0 +1,41 @@
+name: Curio
+options:
+  bundleIdPrefix: com.curio.museum
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    GENERATE_INFOPLIST_FILE: YES
+    INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+    INFOPLIST_KEY_UIUserInterfaceStyle: Light
+    CODE_SIGNING_ALLOWED: NO
+targets:
+  Curio:
+    type: application
+    platform: iOS
+    sources: [Curio]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.curio.museum.collection
+        INFOPLIST_KEY_CFBundleDisplayName: Curio
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+  CurioTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [CurioTests]
+    dependencies:
+      - target: Curio
+schemes:
+  Curio:
+    build:
+      targets:
+        Curio: all
+        CurioTests: [test]
+    test:
+      targets: [CurioTests]
