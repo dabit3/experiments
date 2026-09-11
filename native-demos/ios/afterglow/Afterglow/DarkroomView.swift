@@ -330,15 +330,14 @@ struct DarkroomView: View {
       HStack(spacing: 13) {
         Image(systemName: tone == .exposure ? "sun.min" : "minus")
           .font(.system(size: 12)).foregroundStyle(muted)
-        Slider(
+        PrecisionSlider(
           value: Binding(
             get: { store.draft[keyPath: tone.key] },
             set: {
               store.draft[keyPath: tone.key] = $0
               store.render()
             }
-          ), in: tone.range,
-          onEditingChanged: { if !$0 { store.commit() } }
+          ), range: tone.range, onCommit: store.commit
         )
         .accessibilityLabel(tone.rawValue)
         .accessibilityValue(tone.display(store.draft[keyPath: tone.key]))
@@ -375,14 +374,14 @@ struct DarkroomView: View {
       }
       HStack(spacing: 13) {
         Text("ZOOM").font(.system(size: 8, weight: .medium)).tracking(1.4).foregroundStyle(muted)
-        Slider(
+        PrecisionSlider(
           value: Binding(
             get: { store.draft.zoom },
             set: {
               store.draft.zoom = $0
               store.render()
             }),
-          in: 1...2.5, onEditingChanged: { if !$0 { store.commit() } }
+          range: 1...2.5, onCommit: store.commit
         ).accessibilityLabel("Crop zoom")
         Text(String(format: "%.2f×", store.draft.zoom))
           .font(.system(size: 10, design: .monospaced)).foregroundStyle(amber)
@@ -412,6 +411,63 @@ struct DarkroomView: View {
     }
     .foregroundStyle(paper).padding(.horizontal, 23)
     .overlay(alignment: .top) { Rectangle().fill(.white.opacity(0.08)).frame(height: 0.5) }
+  }
+}
+
+private struct PrecisionSlider: View {
+  @Binding var value: Double
+  let range: ClosedRange<Double>
+  let onCommit: () -> Void
+
+  private var fraction: Double {
+    min(1, max(0, (value - range.lowerBound) / (range.upperBound - range.lowerBound)))
+  }
+
+  var body: some View {
+    GeometryReader { geometry in
+      let width = max(1, geometry.size.width - 18)
+      ZStack(alignment: .leading) {
+        Capsule().fill(paper.opacity(0.1)).frame(height: 2)
+        Capsule().fill(amber.opacity(0.6))
+          .frame(width: width * fraction, height: 2).padding(.leading, 9)
+        HStack(spacing: 0) {
+          ForEach(0..<21) { index in
+            Rectangle().fill(index == 10 ? paper.opacity(0.6) : muted.opacity(0.4))
+              .frame(width: 1, height: index % 5 == 0 ? 15 : 7)
+            if index != 20 { Spacer(minLength: 0) }
+          }
+        }.padding(.horizontal, 9)
+        RoundedRectangle(cornerRadius: 5)
+          .fill(paper)
+          .frame(width: 18, height: 28)
+          .overlay {
+            RoundedRectangle(cornerRadius: 1).fill(ink.opacity(0.45))
+              .frame(width: 2, height: 11)
+          }
+          .offset(x: width * fraction)
+      }
+      .frame(height: 44)
+      .contentShape(Rectangle())
+      .gesture(
+        DragGesture(minimumDistance: 0)
+          .onChanged { gesture in
+            let position = min(1, max(0, (gesture.location.x - 9) / width))
+            value = range.lowerBound + position * (range.upperBound - range.lowerBound)
+          }
+          .onEnded { _ in onCommit() }
+      )
+    }
+    .frame(height: 44)
+    .accessibilityElement(children: .ignore)
+    .accessibilityAdjustableAction { direction in
+      let step = (range.upperBound - range.lowerBound) / 40
+      switch direction {
+      case .increment: value = min(range.upperBound, value + step)
+      case .decrement: value = max(range.lowerBound, value - step)
+      @unknown default: return
+      }
+      onCommit()
+    }
   }
 }
 

@@ -30,7 +30,8 @@ it is not a signed iPhone or App Store release.
 - Tap one of the three filmstrip negatives to open its independent edit.
 - **Looks:** Original, Ember, Coastal, Silver, Dusk. The thumbnails are really rendered.
 - **Light:** exposure (−2 to +2 EV), contrast (50–150), color/saturation (0–200), warmth
-  (−100 to +100). Drag a slider; one completed drag is one undo step.
+  (−100 to +100). Drag the precision ruler; one completed drag is one undo step.
+  Release commits the last tracked value without recalculating the thumb position.
 - **Crop:** Full, 4:5, 1:1 or 16:9; rotate clockwise in 90° steps; zoom to 2.5×.
   Drag the image to reframe within the available crop margin.
 - **Hold to compare:** hold the badge on the image to see the untouched, uncropped original.
@@ -100,4 +101,4 @@ its decoded pixels/dimensions; terminate/relaunch and confirm edits and selectio
   resolution after cropping and rotation, without synthetic upscaling.
 - JPEG export is flattened sRGB and omits capture metadata. No Photos permission required.
 - Portrait-only, with scrolling on short displays or larger text sizes; iPhone is the
-  supported platform. VoiceOver labels and adjustable system sliders are provided.
+  supported platform. VoiceOver labels and adjustable precision rulers are provided.
