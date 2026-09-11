@@ -16,6 +16,11 @@ final class GameStore: ObservableObject {
     let directory = URL.documentsDirectory.appending(path: "Tidepool", directoryHint: .isDirectory)
     file = ProgressFile(url: directory.appending(path: "progress.json"))
     progress = file.load()
+    if restored {
+      message = "Welcome back to a thriving pool."
+    } else if !board.isEmpty {
+      message = "Welcome back. Your residents are right where you left them."
+    }
   }
 
   var level: PoolLevel { PoolLevel.all[progress.currentLevel] }
