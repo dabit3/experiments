@@ -48,8 +48,9 @@ restored). It starts the Vite dev server itself on port 5174.
 
 `e2e/studio.spec.ts` also covers independent A/B edits, live pattern previews, chained playback,
 mute/solo and velocity controls, plus containment and piano-ruler alignment at six viewport
-widths from 360 to 1600 pixels. The automated tests supplement the real mouse-and-keyboard
-showcase recording.
+widths from 360 to 1600 pixels. A dedicated mobile regression checks the visible sticky track
+indices and masked ruler corner after horizontal scrolling. The four automated tests supplement
+the real mouse-and-keyboard showcase recording.
 
 Controls: left-click a cell to toggle a step · right-click to cycle velocity · `Space` play/stop ·
 tempo and swing sliders also respond to arrow keys and have −/+ buttons for exact values ·
@@ -88,16 +89,32 @@ Performed by Devin with mouse and keyboard in a maximised Chrome window with scr
 
 ### Recording
 
-**Recording (mp4):** https://app.devin.ai/attachments/8d76bb37-6fe6-49b8-8c75-933c1cc165b4/beat-lab-run2.mp4
+**Recording (mp4):** https://app.devin.ai/attachments/64e88ebb-20c5-4210-9c0f-ccb96c8dec8f/beat-lab-run3.mp4
 
-![Beat Lab showcase preview](https://app.devin.ai/attachments/ed803741-9abc-49b6-b337-d567fbaa8a14/beat-lab-preview.webp)
+Latest studio design, recorded in maximized Chrome at 1600×1200 and 100% zoom. All 25 piano
+rows fit inside the editor. The full scenario passed; the download was independently checked
+for the exact drum hits, bass MIDI notes, tempo and swing.
+
+![Beat Lab showcase preview](https://app.devin.ai/attachments/06b6068c-e3d0-4ac8-b2db-d6153638f9a4/beat-lab-preview.webp)
 
 | | |
 | --- | --- |
-| ![Perfect match](https://app.devin.ai/attachments/08d9fb67-7e61-4b17-8782-b3831ca795c8/01-perfect-match.png) Boom Bap reproduced — Compare reports 0 differences | ![92 BPM / 15% swing](https://app.devin.ai/attachments/63670e8b-b85c-48f8-b60b-b4c77c118e7e/02-tempo-92-swing-15.png) Faders set to 92 BPM and 15% swing |
-| ![Bass line](https://app.devin.ai/attachments/0c73780a-b51a-4144-899f-104b5582bdf7/03-bass-line-4-notes.png) Four-note bass line in the piano roll | ![Playhead](https://app.devin.ai/attachments/7c9dd32f-704b-4e91-8fed-422956db1203/04-playhead-moving.png) Teal playhead column mid-playback |
-| ![Saved](https://app.devin.ai/attachments/f6cdc5e0-a0ee-4bee-8ae1-7b4b2128cda5/05-saved-json.png) `beat-lab-pattern.json` downloaded | ![Cleared](https://app.devin.ai/attachments/4b769312-212a-41a9-bc6d-4378ef1cfd88/06-cleared.png) Grid cleared (Drums 0, Bass 0) |
-| ![Reloaded](https://app.devin.ai/attachments/e96233ae-c284-4585-ae73-7f5ad1a84dc8/07-reloaded-drums.png) Upload restores all 21 steps | ![Round-trip verified](https://app.devin.ai/attachments/ebeb9232-ac40-4a7d-b855-ba72bdc03951/08-reloaded-bass-perfect-match.png) Bass notes back and Compare still reports 0 differences |
+| ![Perfect match](https://app.devin.ai/attachments/7846630b-8f4b-4785-93f3-2001b185219d/01-perfect-match.png) Boom Bap reproduced — Compare reports 0 differences | ![92 BPM / 15% swing](https://app.devin.ai/attachments/38609280-cbcc-4ae5-8abb-2e36aa88a168/02-tempo-92-swing-15.png) Faders set to 92 BPM and 15% swing |
+| ![Bass line](https://app.devin.ai/attachments/7bee7e69-490e-42f3-97bb-00e0eea61e7d/03-bass-line-4-notes.png) Four-note bass line at 100% zoom | ![Playhead](https://app.devin.ai/attachments/20378972-5c1f-4a21-80aa-4e0b333a6aed/04-playhead-moving.png) Playhead mid-playback |
+| ![Saved](https://app.devin.ai/attachments/8010186f-dd9b-4d24-9ecd-af8d040ea8bc/05-saved-json.png) `beat-lab-pattern.json` downloaded | ![Cleared](https://app.devin.ai/attachments/88af1a40-527b-4cd7-9894-65a7c6f44319/06-cleared.png) Grid cleared (Drums 0, Bass 0) |
+| ![Reloaded](https://app.devin.ai/attachments/35db425f-7cc5-42c5-883e-13a5f8ffd2aa/07-reloaded-drums.png) Upload restores all 21 steps | ![Round-trip verified](https://app.devin.ai/attachments/abfa6d92-f2a3-43b8-8bc4-7e2d31a6e61a/08-reloaded-bass-perfect-match.png) Bass notes back and Compare still reports 0 differences |
+
+### Responsive verification
+
+Mobile controls, editor scrolling, sticky track labels, ruler masking and note entry were
+checked at 375px using Chrome's native responsive mode.
+[Mobile recheck recording](https://app.devin.ai/attachments/04bda6c5-44a5-4504-a410-102a7b3ee0da/mobile-scroll-recheck.mp4).
+
+| Populated mobile studio | Scrolled drum editor |
+| --- | --- |
+| ![Mobile studio](https://app.devin.ai/attachments/0a3f77b3-554f-42d3-b3e4-a835eac88dba/mobile-full-populated.png) | ![Sticky labels after scrolling](https://app.devin.ai/attachments/6920c96c-edd5-49aa-bc16-963c14001429/mobile-drums-scrolled-fixed.png) |
+
+Audio quality and physical mobile hardware were not assessed.
 
 ## Project layout
 
