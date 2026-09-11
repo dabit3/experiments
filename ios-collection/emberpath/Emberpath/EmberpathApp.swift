@@ -255,7 +255,7 @@ struct RoomView: View {
             } label: {
               VStack(spacing: 8) {
                 Image(systemName: "arrow.uturn.backward").font(.title3)
-                Text("Undo").font(.caption)
+                Text("Undo").font(.caption).lineLimit(1).minimumScaleFactor(0.6)
               }
               .frame(maxWidth: .infinity, minHeight: 64)
             }
@@ -266,7 +266,7 @@ struct RoomView: View {
             } label: {
               VStack(spacing: 8) {
                 Image(systemName: "arrow.clockwise").font(.title3)
-                Text("Restart").font(.caption)
+                Text("Restart").font(.caption).lineLimit(1).minimumScaleFactor(0.6)
               }
               .frame(maxWidth: .infinity, minHeight: 64)
             }
