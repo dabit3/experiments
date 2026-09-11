@@ -46,23 +46,52 @@ class Sprites {
 
   RRect _rr(Rect r, double rad) => RRect.fromRectAndRadius(r, Radius.circular(rad));
 
+  Paint _glaze(Rect bounds, Color color) => Paint()
+    ..shader = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [Color.lerp(color, const Color(0xFFFFFFFF), 0.24)!, color, Color.lerp(color, PPColor.ink, 0.18)!],
+      stops: const [0, 0.45, 1],
+    ).createShader(bounds);
+
+  void _sphere(Offset center, double radius, Color color) {
+    c.drawCircle(
+      center,
+      radius,
+      Paint()
+        ..shader = RadialGradient(
+          center: const Alignment(-0.45, -0.5),
+          radius: 1,
+          colors: [Color.lerp(color, const Color(0xFFFFFFFF), 0.3)!, color, Color.lerp(color, PPColor.ink, 0.3)!],
+          stops: const [0, 0.55, 1],
+        ).createShader(Rect.fromCircle(center: center, radius: radius)),
+    );
+  }
+
   // ------------------------------------------------------------------ floors
 
   void floor(Rect r, int x, int y) {
     final even = (x + y) % 2 == 0;
-    final a = isDark ? const Color(0xFF4D4A5A) : PPColor.floorA;
-    final b = isDark ? const Color(0xFF45424F) : PPColor.floorB;
-    final grout = isDark ? const Color(0xFF3A3846) : PPColor.grout;
+    final a = isDark ? const Color(0xFF9CAB9D) : PPColor.floorA;
+    final b = isDark ? const Color(0xFF578B80) : PPColor.floorB;
+    final grout = isDark ? const Color(0xFF285D57) : PPColor.grout;
     c.drawRect(r, _fill(grout));
-    // Four glazed tiles per cell with thin grout lines.
-    final g = cell * 0.025;
-    final half = cell / 2;
-    for (var i = 0; i < 2; i++) {
-      for (var j = 0; j < 2; j++) {
-        final tile = Rect.fromLTWH(r.left + i * half + g, r.top + j * half + g, half - g * 2, half - g * 2);
-        c.drawRRect(_rr(tile, cell * 0.03), _fill(even == ((i + j) % 2 == 0) ? a : b));
-      }
-    }
+    final tile = r.deflate(cell * 0.018);
+    c.drawRRect(_rr(tile, cell * 0.045), _glaze(tile, even ? a : b));
+    c.drawLine(
+      tile.topLeft + Offset(cell * 0.07, 1),
+      tile.topRight - Offset(cell * 0.07, -1),
+      Paint()
+        ..color = const Color(0x40FFFFFF)
+        ..strokeWidth = cell * 0.025,
+    );
+    c.drawLine(
+      tile.bottomLeft + Offset(cell * 0.06, -1),
+      tile.bottomRight - Offset(cell * 0.06, 1),
+      Paint()
+        ..color = const Color(0x15000000)
+        ..strokeWidth = cell * 0.025,
+    );
   }
 
   void pitBase(Rect r) {
@@ -119,9 +148,9 @@ class Sprites {
   /// Chunky counter module: rounded top slab with a visible front face and a
   /// darker foot so the kitchen reads as blocks seen from a raised camera.
   void _counterBase(Rect r, {Color? top, Color? side, Color? edge, bool drawer = true}) {
-    final topC = top ?? (isDark ? const Color(0xFF8E7A5C) : PPColor.counterTop);
-    final sideC = side ?? (isDark ? const Color(0xFF5A4A34) : PPColor.counterSide);
-    final edgeC = edge ?? (isDark ? const Color(0xFF6E5B42) : PPColor.counterEdge);
+    final topC = top ?? (isDark ? const Color(0xFFE3D3AE) : PPColor.counterTop);
+    final sideC = side ?? (isDark ? const Color(0xFF26615D) : PPColor.counterSide);
+    final edgeC = edge ?? PPColor.counterEdge;
     final body = r.deflate(cell * 0.015);
     // Ground shadow.
     c.drawRRect(
@@ -139,7 +168,7 @@ class Sprites {
     // Front face.
     c.drawRRect(
       _rr(Rect.fromLTRB(body.left, body.top + cell * (1 - lip) - cell * 0.1, body.right, body.bottom), cell * 0.1),
-      _fill(sideC),
+      _glaze(r, sideC),
     );
     // Foot line.
     c.drawRect(
@@ -162,13 +191,36 @@ class Sprites {
           ),
           cell * 0.03,
         ),
-        _fill(const Color(0x55000000)),
+        _fill(PPColor.coin),
       );
     }
     // Top slab with a lighter rim.
     final slab = Rect.fromLTRB(body.left, body.top, body.right, body.bottom - cell * lip);
     c.drawRRect(_rr(slab, cell * 0.1), _fill(edgeC));
-    c.drawRRect(_rr(slab.deflate(cell * 0.045), cell * 0.07), _fill(topC));
+    c.drawRRect(_rr(slab.deflate(cell * 0.045), cell * 0.07), _glaze(slab, topC));
+    c.drawLine(
+      slab.topLeft + Offset(cell * 0.12, cell * 0.07),
+      slab.topRight + Offset(-cell * 0.12, cell * 0.07),
+      Paint()
+        ..color = const Color(0xAAFFFFFF)
+        ..strokeWidth = cell * 0.025
+        ..strokeCap = StrokeCap.round,
+    );
+    if (drawer) {
+      final panel = Rect.fromLTRB(
+        body.left + cell * 0.12,
+        slab.bottom + cell * 0.06,
+        body.right - cell * 0.12,
+        body.bottom - cell * 0.09,
+      );
+      c.drawRRect(
+        _rr(panel, cell * 0.04),
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..color = const Color(0x33000000)
+          ..strokeWidth = cell * 0.025,
+      );
+    }
   }
 
   /// Steel-topped module (stove, sink, pass, return chute) with a red or grey body.
@@ -436,8 +488,13 @@ class Sprites {
   /// Low brick wall framing the whole kitchen, with a soft ground shadow.
   void frame(Rect board) {
     final wall = board.inflate(cell * 0.22);
-    final mortar = isDark ? const Color(0xFF2C2A36) : PPColor.brickDark;
-    final brick = isDark ? const Color(0xFF3B3847) : PPColor.brick;
+    final mortar = PPColor.hudInk;
+    final brick = isDark ? const Color(0xFFBB6247) : PPColor.brick;
+    c.drawRRect(
+      _rr(wall.inflate(cell * 0.13).shift(Offset(0, cell * 0.2)), cell * 0.4),
+      _fill(PPColor.ink.withValues(alpha: 0.6)),
+    );
+    c.drawRRect(_rr(wall.inflate(cell * 0.09), cell * 0.34), _glaze(wall, PPColor.coin));
     c.drawRRect(
       _rr(wall.inflate(cell * 0.04).shift(Offset(0, cell * 0.16)), cell * 0.3),
       _fill(const Color(0x00000000).withValues(alpha: isDark ? 0.5 : 0.22)),
@@ -464,6 +521,13 @@ class Sprites {
       }
     }
     c.restore();
+    for (final corner in [wall.topLeft, wall.topRight, wall.bottomLeft, wall.bottomRight]) {
+      final p = Offset(
+        corner.dx + (corner.dx < board.center.dx ? 1 : -1) * cell * 0.12,
+        corner.dy + (corner.dy < board.center.dy ? 1 : -1) * cell * 0.12,
+      );
+      _sphere(p, cell * 0.07, PPColor.coin);
+    }
     c.drawRRect(
       _rr(wall, cell * 0.26),
       Paint()
@@ -802,7 +866,7 @@ class Sprites {
 
   // ------------------------------------------------------------------- chefs
 
-  void chef(Offset at, Chef ch, {Item? held, required bool isMe, required bool moving}) {
+  void chef(Offset at, Chef ch, {Item? held, required bool isMe, required bool moving, bool showLabel = true}) {
     final col = PPColor.chefs[ch.slot % 4];
     final dark = Color.lerp(col, const Color(0xFF000000), 0.25)!;
     final s = cell * 0.4;
@@ -842,7 +906,8 @@ class Sprites {
     }
     // Round body in the chef's colour, white double-breasted front.
     final torso = Rect.fromCenter(center: body + Offset(0, s * 0.45), width: s * 1.75, height: s * 1.45);
-    c.drawRRect(_rr(torso, s * 0.6), _fill(col));
+    c.drawRRect(_rr(torso.inflate(s * 0.04), s * 0.6), _fill(PPColor.ink.withValues(alpha: 0.7)));
+    c.drawRRect(_rr(torso, s * 0.6), _glaze(torso, col));
     c.drawRRect(
       _rr(Rect.fromLTRB(torso.left, torso.top + s * 0.9, torso.right, torso.bottom), s * 0.55),
       _fill(dark.withValues(alpha: 0.35)),
@@ -864,7 +929,7 @@ class Sprites {
     for (final dx in [-1.0, 1.0]) {
       final ax = body.dx + dx * s * 0.95 + fd.dx * s * 0.15;
       final ay = body.dy + s * 0.5 + fd.dy * s * 0.1;
-      c.drawCircle(Offset(ax, ay), s * 0.26, _fill(col));
+      _sphere(Offset(ax, ay), s * 0.26, col);
       c.drawCircle(
         Offset(ax, ay + s * 0.12),
         s * 0.18,
@@ -872,9 +937,12 @@ class Sprites {
       );
     }
     // Big round head.
-    final skin = ch.bot ? const Color(0xFFCFD4DA) : const Color(0xFFF6C9A0);
+    const skinTones = [Color(0xFFF4BB8D), Color(0xFFD5986F), Color(0xFFB97952), Color(0xFFF0C9A1)];
+    final skin = ch.bot ? const Color(0xFFCFD4DA) : skinTones[ch.slot % skinTones.length];
     final head = body + Offset(side * s * 0.05, -s * 0.55);
-    c.drawCircle(head, s * 0.82, _fill(skin));
+    _sphere(head + Offset(-s * 0.76, s * 0.08), s * 0.2, skin);
+    _sphere(head + Offset(s * 0.76, s * 0.08), s * 0.2, skin);
+    _sphere(head, s * 0.84, skin);
     if (ch.facing != Dir.up) {
       final eyeY = head.dy + s * 0.05 + fd.dy * s * 0.12;
       final ex = head.dx + fd.dx * s * 0.3;
@@ -889,6 +957,7 @@ class Sprites {
       );
       c.drawCircle(Offset(ex - s * gap - s * 0.04, eyeY - s * 0.06), s * 0.05, _fill(const Color(0xFFFFFFFF)));
       c.drawCircle(Offset(ex + s * gap - s * 0.04, eyeY - s * 0.06), s * 0.05, _fill(const Color(0xFFFFFFFF)));
+      _sphere(Offset(ex + fd.dx * s * 0.08, eyeY + s * 0.19), s * 0.17, Color.lerp(skin, PPColor.paprika, 0.25)!);
       // Cheeks.
       c.drawCircle(Offset(ex - s * 0.42, eyeY + s * 0.22), s * 0.1, _fill(const Color(0x33E8563F)));
       c.drawCircle(Offset(ex + s * 0.42, eyeY + s * 0.22), s * 0.1, _fill(const Color(0x33E8563F)));
@@ -919,7 +988,7 @@ class Sprites {
     }
     // Tall puffy toque: band + three lobes.
     final white = const Color(0xFFFFFFFF);
-    final shade = const Color(0xFFE4E2EA);
+    final shade = const Color(0xFFE6DFC9);
     final bandC = head + Offset(0, -s * 0.62);
     c.drawRRect(_rr(Rect.fromCenter(center: bandC, width: s * 1.5, height: s * 0.42), s * 0.14), _fill(white));
     c.drawRRect(
@@ -929,9 +998,9 @@ class Sprites {
     final puff = bandC + Offset(0, -s * 0.55);
     c.drawCircle(puff + Offset(-s * 0.5, s * 0.1), s * 0.5, _fill(shade));
     c.drawCircle(puff + Offset(s * 0.5, s * 0.1), s * 0.5, _fill(shade));
-    c.drawCircle(puff + Offset(0, -s * 0.15), s * 0.62, _fill(white));
-    c.drawCircle(puff + Offset(-s * 0.45, s * 0.02), s * 0.4, _fill(white));
-    c.drawCircle(puff + Offset(s * 0.45, s * 0.02), s * 0.4, _fill(white));
+    _sphere(puff + Offset(0, -s * 0.15), s * 0.62, white);
+    _sphere(puff + Offset(-s * 0.45, s * 0.02), s * 0.4, white);
+    _sphere(puff + Offset(s * 0.45, s * 0.02), s * 0.4, white);
     if (ch.bot) {
       // Antenna marks a server bot.
       c.drawLine(
@@ -956,13 +1025,15 @@ class Sprites {
       c.drawCircle(o - Offset(math.cos(a), math.sin(a)) * s * 0.3, s * 0.08, _fill(const Color(0xFFFFFFFF)));
     }
     // Name tag.
-    _label(
-      at + Offset(0, s * 1.5),
-      ch.name,
-      const Color(0xFFFFFFFF),
-      bg: col.withValues(alpha: ch.connected ? 0.95 : 0.45),
-      scale: 0.9,
-    );
+    if (showLabel) {
+      _label(
+        at + Offset(0, s * 1.5),
+        ch.name,
+        ch.slot == 3 ? PPColor.ink : const Color(0xFFFFFFFF),
+        bg: col.withValues(alpha: ch.connected ? 1 : 0.45),
+        scale: 0.9,
+      );
+    }
     if (!ch.connected) {
       _label(
         at + Offset(0, -s * 3.0),

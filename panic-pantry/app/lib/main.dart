@@ -137,7 +137,7 @@ class _PanicPantryAppState extends State<PanicPantryApp> {
                   ),
                   if (_client.room != null && _client.conn == ConnState.reconnecting)
                     Positioned.fill(
-                      child: Container(
+                      child: Material(
                         color: PPScheme.of(context).bg.withValues(alpha: 0.78),
                         child: StatePanel(
                           title: 'Reconnecting…',

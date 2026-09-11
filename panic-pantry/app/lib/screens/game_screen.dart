@@ -10,6 +10,7 @@ import '../game/kitchen_game.dart';
 import '../game/sprites.dart';
 import '../net/client.dart';
 import '../theme/tokens.dart';
+import '../widgets/arcade.dart';
 import '../widgets/ui.dart';
 
 /// Gameplay: Flame canvas + HUD overlay + platform input.
@@ -127,8 +128,14 @@ class _GameScreenState extends State<GameScreen> {
     final g = c.game;
     if (g == null) return const SizedBox.shrink();
     final size = MediaQuery.sizeOf(context);
-    final compact = size.width < 700;
+    final inset = MediaQuery.paddingOf(context);
+    final landscapeTouch = _showTouch && size.width > size.height && size.height < 520;
+    final compact = size.width < 700 || landscapeTouch;
     final me = c.me;
+    final coaching = g.level.tutorial && g.running && me != null;
+    final touchCoach = coaching
+        ? _Coach(key: const ValueKey('touch-coach'), state: g, me: me, compact: landscapeTouch)
+        : null;
 
     return Focus(
       focusNode: _focus,
@@ -141,14 +148,17 @@ class _GameScreenState extends State<GameScreen> {
           backgroundColor: s.bg2,
           body: Stack(
             children: [
+              const ArcadeBackdrop(),
               // Kitchen.
               Positioned.fill(
                 child: Padding(
                   padding: EdgeInsets.only(
-                    top: MediaQuery.paddingOf(context).top + _Hud.railHeight + 6,
-                    bottom: MediaQuery.paddingOf(context).bottom + (_showTouch ? 150 : (compact ? 76 : 64)),
-                    left: 8,
-                    right: 8,
+                    top: inset.top + (landscapeTouch ? _Hud.landscapeHeight : _Hud.railHeight) + 8,
+                    bottom:
+                        inset.bottom +
+                        (landscapeTouch ? 76 : (_showTouch ? (coaching ? 288 : 220) : (compact ? 76 : 64))),
+                    left: inset.left + (landscapeTouch ? 112 : 8),
+                    right: inset.right + (landscapeTouch ? 156 : 8),
                   ),
                   child: RepaintBoundary(child: GameWidget(game: _game)),
                 ),
@@ -157,28 +167,31 @@ class _GameScreenState extends State<GameScreen> {
               // in the bottom corners like a console kitchen game.
               Positioned(
                 top: MediaQuery.paddingOf(context).top,
-                left: PPSpace.x3,
-                right: 132,
-                child: _Hud(game: g, client: c, compact: compact),
+                left: inset.left + PPSpace.x3,
+                right: inset.right + 132,
+                child: _Hud(game: g, client: c, compact: compact, dense: landscapeTouch),
               ),
-              Positioned(
-                left: PPSpace.x4,
-                bottom: MediaQuery.paddingOf(context).bottom + (_showTouch ? 150 : 10),
-                child: _CoinScore(game: g, compact: compact),
-              ),
-              Positioned(
-                right: PPSpace.x4,
-                bottom: MediaQuery.paddingOf(context).bottom + (_showTouch ? 150 : 10),
-                child: _Stopwatch(game: g, compact: compact),
-              ),
+              if (!_showTouch)
+                Positioned(
+                  left: inset.left + PPSpace.x4,
+                  bottom: inset.bottom + 10,
+                  child: _CoinScore(game: g, compact: compact),
+                ),
+              if (!_showTouch)
+                Positioned(
+                  right: inset.right + PPSpace.x4,
+                  bottom: inset.bottom + 10,
+                  child: _Stopwatch(game: g, compact: compact),
+                ),
               // Bottom bar: hints / controls. Key hints sit between the coin
               // score and the stopwatch so neither corner is covered.
               if (_showTouch)
                 Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: MediaQuery.paddingOf(context).bottom,
+                  left: inset.left,
+                  right: inset.right,
+                  bottom: inset.bottom + (landscapeTouch ? 92 : 0),
                   child: _TouchControls(
+                    compact: landscapeTouch,
                     onMove: c.setMovement,
                     onInteract: _interact,
                     onAction: c.setAction,
@@ -208,14 +221,41 @@ class _GameScreenState extends State<GameScreen> {
                     ],
                   ),
                 ),
-              // Tutorial coach marks (touch layout: above the on-screen controls).
-              if (_showTouch && g.level.tutorial && g.running && me != null)
+              if (_showTouch)
                 Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: MediaQuery.paddingOf(context).bottom + 156,
-                  child: Center(
-                    child: _Coach(state: g, me: me),
+                  left: inset.left + 12,
+                  right: inset.right + 12,
+                  bottom: inset.bottom + (landscapeTouch ? 8 : 150),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (!landscapeTouch && touchCoach != null) ...[touchCoach, const SizedBox(height: 8)],
+                      Row(
+                        children: [
+                          Flexible(
+                            flex: 3,
+                            child: FittedBox(
+                              key: const ValueKey('score-hud'),
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: _CoinScore(game: g, compact: compact),
+                            ),
+                          ),
+                          if (landscapeTouch && touchCoach != null)
+                            Expanded(
+                              flex: 5,
+                              child: Padding(padding: const EdgeInsets.symmetric(horizontal: 8), child: touchCoach),
+                            )
+                          else
+                            const Spacer(),
+                          const SizedBox(width: 8),
+                          SizedBox(
+                            key: const ValueKey('clock-hud'),
+                            child: _Stopwatch(game: g, compact: compact),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               // Countdown / overtime / go banners.
@@ -236,7 +276,7 @@ class _GameScreenState extends State<GameScreen> {
               // Top-right utility buttons.
               Positioned(
                 top: MediaQuery.paddingOf(context).top + PPSpace.x2,
-                right: PPSpace.x2,
+                right: inset.right + PPSpace.x2,
                 child: Row(
                   children: [
                     _RoundIcon(
@@ -307,24 +347,27 @@ class _RoundIcon extends StatelessWidget {
 /// ticket flagged, each with an illustrated plate, ingredient pictograms and
 /// a thick urgency bar along its bottom.
 class _Hud extends StatelessWidget {
-  const _Hud({required this.game, required this.client, required this.compact});
+  const _Hud({required this.game, required this.client, required this.compact, this.dense = false});
   final GameState game;
   final GameClient client;
   final bool compact;
+  final bool dense;
 
-  static const double railHeight = 92;
+  static const double railHeight = 100;
+  static const double landscapeHeight = 72;
 
   @override
   Widget build(BuildContext context) {
     final g = game;
     return SizedBox(
-      height: railHeight,
+      height: dense ? landscapeHeight : railHeight,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.only(top: 8, bottom: 4),
         itemCount: g.orders.length,
         separatorBuilder: (_, _) => const SizedBox(width: PPSpace.x2),
-        itemBuilder: (context, i) => _Ticket(order: g.orders[i], first: i == 0, compact: compact),
+        itemBuilder: (context, i) =>
+            _Ticket(key: ValueKey(g.orders[i].id), order: g.orders[i], first: i == 0, compact: compact, dense: dense),
       ),
     );
   }
@@ -340,36 +383,39 @@ class _CoinScore extends StatelessWidget {
   Widget build(BuildContext context) {
     final g = game;
     final size = compact ? 30.0 : 38.0;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _Coin(size: compact ? 34 : 44),
-        const SizedBox(width: 6),
-        AnimatedSwitcher(
-          duration: PPMotion.fast,
-          transitionBuilder: (c, a) => ScaleTransition(scale: Tween(begin: 1.25, end: 1.0).animate(a), child: c),
-          layoutBuilder: (current, previous) =>
-              Stack(alignment: Alignment.centerLeft, children: [...previous, ?current]),
-          child: KeyedSubtree(
-            key: ValueKey(g.score),
-            child: OutlinedText(
-              '${g.score}',
-              style: PPType.hud(size: size),
-              fill: PPColor.butter,
-              stroke: 3.5,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: PPColor.ink,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: PPColor.butter.withValues(alpha: 0.6), width: 1.5),
+        boxShadow: const [BoxShadow(color: Color(0x33102F35), offset: Offset(0, 3), blurRadius: 8)],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          _Coin(size: compact ? 34 : 44),
+          const SizedBox(width: 6),
+          AnimatedSwitcher(
+            duration: PPMotion.fast,
+            transitionBuilder: (c, a) => ScaleTransition(scale: Tween(begin: 1.25, end: 1.0).animate(a), child: c),
+            layoutBuilder: (current, previous) =>
+                Stack(alignment: Alignment.centerLeft, children: [...previous, ?current]),
+            child: KeyedSubtree(
+              key: ValueKey(g.score),
+              child: OutlinedText(
+                '${g.score}',
+                style: PPType.hud(size: size),
+                fill: PPColor.butter,
+                stroke: 3.5,
+              ),
             ),
           ),
-        ),
-        if (g.combo > 1) ...[const SizedBox(width: PPSpace.x2), _ComboBadge(combo: g.combo)],
-        const SizedBox(width: PPSpace.x3),
-        StarRow(
-          lit: g.stars,
-          size: compact ? 16 : 20,
-          dimColor: (PPScheme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black).withValues(
-            alpha: 0.30,
-          ),
-        ),
-      ],
+          if (g.combo > 1) ...[const SizedBox(width: PPSpace.x2), _ComboBadge(combo: g.combo)],
+          const SizedBox(width: PPSpace.x3),
+          StarRow(lit: g.stars, size: compact ? 16 : 18, dimColor: Colors.white.withValues(alpha: 0.5)),
+        ],
+      ),
     );
   }
 }
@@ -567,16 +613,20 @@ class _PulseState extends State<_Pulse> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) => AnimatedBuilder(
     animation: _c,
-    builder: (context, child) => Transform.scale(scale: widget.active ? 1 + 0.08 * _c.value : 1, child: child),
+    builder: (context, child) => Transform.scale(
+      scale: widget.active && !MediaQuery.disableAnimationsOf(context) ? 1 + 0.08 * _c.value : 1,
+      child: child,
+    ),
     child: widget.child,
   );
 }
 
 class _Ticket extends StatelessWidget {
-  const _Ticket({required this.order, required this.first, required this.compact});
+  const _Ticket({super.key, required this.order, required this.first, required this.compact, this.dense = false});
   final Order order;
   final bool first;
   final bool compact;
+  final bool dense;
 
   @override
   Widget build(BuildContext context) {
@@ -584,7 +634,7 @@ class _Ticket extends StatelessWidget {
     final col = f > 0.5 ? PPColor.basil : (f > 0.25 ? PPColor.butter : PPColor.paprika);
     final urgent = f <= 0.25;
     final width = compact ? 118.0 : 138.0;
-    final barH = 10.0;
+    final barH = dense ? 6.0 : 10.0;
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: PPMotion.slow,
@@ -596,12 +646,8 @@ class _Ticket extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: const Color(0xFFFFFBF2),
-          borderRadius: const BorderRadius.vertical(bottom: PPRadius.md),
-          border: Border(
-            left: BorderSide(color: first ? PPColor.butter : PPColor.cream3, width: 3),
-            right: BorderSide(color: first ? PPColor.butter : PPColor.cream3, width: 3),
-            bottom: BorderSide(color: first ? PPColor.butter : PPColor.cream3, width: 3),
-          ),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: first ? PPColor.paprika : PPColor.cream3, width: 2),
           boxShadow: PPElevation.mid(Brightness.light),
         ),
         child: Column(
@@ -609,7 +655,7 @@ class _Ticket extends StatelessWidget {
             // Header strip with the dish name (first ticket flagged).
             Container(
               height: 20,
-              color: first ? PPColor.butter : PPColor.cream2,
+              color: first ? PPColor.paprika : PPColor.ink,
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
                 children: [
@@ -618,11 +664,10 @@ class _Ticket extends StatelessWidget {
                       order.dish.label.toUpperCase(),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: PPType.caption(first ? PPColor.ink : PPColor.mute)
-                          .copyWith(fontSize: 10, letterSpacing: 0.4),
+                      style: PPType.caption(Colors.white).copyWith(fontSize: 10, letterSpacing: 0.4),
                     ),
                   ),
-                  if (first) const Icon(Icons.bolt_rounded, size: 12, color: PPColor.ink),
+                  if (first) const Icon(Icons.bolt_rounded, size: 12, color: PPColor.butter),
                 ],
               ),
             ),
@@ -631,14 +676,17 @@ class _Ticket extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
                 child: Row(
                   children: [
-                    _DishIcon(dish: order.dish, size: compact ? 40 : 46),
+                    _DishIcon(dish: order.dish, size: dense ? 28 : (compact ? 40 : 46)),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Wrap(
                         spacing: 3,
                         runSpacing: 3,
                         alignment: WrapAlignment.start,
-                        children: [for (final ing in order.dish.ingredients) _IngPicto(ing, size: compact ? 16 : 18)],
+                        children: [
+                          for (final ing in order.dish.ingredients)
+                            _IngPicto(ing, size: dense ? 12 : (compact ? 16 : 18)),
+                        ],
                       ),
                     ),
                     Text(
@@ -845,21 +893,27 @@ class _TouchControls extends StatelessWidget {
     required this.onAction,
     required this.onDash,
     required this.onEmote,
+    this.compact = false,
   });
   final void Function(double dx, double dy) onMove;
   final VoidCallback onInteract;
   final void Function(bool down) onAction;
   final VoidCallback onDash;
   final VoidCallback onEmote;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(PPSpace.x5, 0, PPSpace.x5, PPSpace.x3),
+      padding: EdgeInsets.fromLTRB(compact ? 6 : PPSpace.x5, 0, compact ? 6 : PPSpace.x5, PPSpace.x3),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          _Joystick(onMove: onMove),
+          SizedBox(
+            width: compact ? 100 : 128,
+            height: compact ? 100 : 128,
+            child: FittedBox(child: _Joystick(onMove: onMove)),
+          ),
           const Spacer(),
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -870,7 +924,7 @@ class _TouchControls extends StatelessWidget {
                     label: 'Emote',
                     icon: Icons.emoji_emotions_rounded,
                     color: PPColor.plum,
-                    size: 52,
+                    size: compact ? 44 : 52,
                     onTap: onEmote,
                   ),
                   const SizedBox(width: PPSpace.x3),
@@ -878,7 +932,7 @@ class _TouchControls extends StatelessWidget {
                     label: 'Dash',
                     icon: Icons.bolt_rounded,
                     color: PPColor.blueberry,
-                    size: 60,
+                    size: compact ? 48 : 60,
                     onTap: onDash,
                   ),
                 ],
@@ -890,7 +944,7 @@ class _TouchControls extends StatelessWidget {
                     label: 'Action',
                     icon: Icons.content_cut_rounded,
                     color: PPColor.basil,
-                    size: 64,
+                    size: compact ? 52 : 64,
                     onTap: () => onAction(true),
                     onRelease: () => onAction(false),
                   ),
@@ -899,7 +953,7 @@ class _TouchControls extends StatelessWidget {
                     label: 'Grab',
                     icon: Icons.back_hand_rounded,
                     color: PPColor.paprika,
-                    size: 76,
+                    size: compact ? 58 : 76,
                     onTap: onInteract,
                   ),
                 ],
@@ -962,6 +1016,7 @@ class _ActionButtonState extends State<_ActionButton> {
         child: Semantics(
           button: true,
           label: widget.label,
+          excludeSemantics: true,
           child: Container(
             width: widget.size,
             height: widget.size,
@@ -975,8 +1030,11 @@ class _ActionButtonState extends State<_ActionButton> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(widget.icon, color: Colors.white, size: widget.size * 0.38),
-                if (widget.size >= 60)
-                  Text(widget.label.toUpperCase(), style: PPType.caption(Colors.white).copyWith(fontSize: 9)),
+                if (widget.size >= 48)
+                  Text(
+                    widget.label.toUpperCase(),
+                    style: PPType.caption(Colors.white).copyWith(fontSize: widget.size < 60 ? 8 : 9),
+                  ),
               ],
             ),
           ),
@@ -1172,9 +1230,10 @@ class _Menu extends StatelessWidget {
 // ----------------------------------------------------------------- tutorial
 
 class _Coach extends StatelessWidget {
-  const _Coach({required this.state, required this.me});
+  const _Coach({super.key, required this.state, required this.me, this.compact = false});
   final GameState state;
   final Chef me;
+  final bool compact;
 
   (IconData, String) _hint() {
     final held = me.held;
@@ -1227,8 +1286,8 @@ class _Coach extends StatelessWidget {
       duration: PPMotion.base,
       child: Container(
         key: ValueKey(text),
-        margin: const EdgeInsets.symmetric(horizontal: PPSpace.x4),
-        padding: const EdgeInsets.symmetric(horizontal: PPSpace.x4, vertical: PPSpace.x3),
+        margin: EdgeInsets.symmetric(horizontal: compact ? 0 : PPSpace.x4),
+        padding: EdgeInsets.symmetric(horizontal: compact ? 10 : PPSpace.x4, vertical: compact ? 8 : PPSpace.x3),
         decoration: BoxDecoration(
           color: s.text.withValues(alpha: 0.92),
           borderRadius: PPRadius.card,
@@ -1237,9 +1296,11 @@ class _Coach extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: PPColor.butter, size: 22),
-            const SizedBox(width: PPSpace.x3),
-            Flexible(child: Text(text, style: PPType.small(s.bg).copyWith(fontSize: 14))),
+            Icon(icon, color: PPColor.butter, size: compact ? 18 : 22),
+            SizedBox(width: compact ? 8 : PPSpace.x3),
+            Flexible(
+              child: Text(text, style: PPType.small(s.bg).copyWith(fontSize: compact ? 12 : 14)),
+            ),
           ],
         ),
       ),

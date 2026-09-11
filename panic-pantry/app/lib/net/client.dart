@@ -248,7 +248,7 @@ class GameClient extends ChangeNotifier {
         resultsMatch = (m['match'] as num).toInt();
         final lv = results!['levelId'] as String;
         final st = (results!['stars'] as num).toInt();
-        if (st > (bestStars[lv] ?? 0)) bestStars[lv] = st;
+        if (st > (bestStars[lv] ?? -1)) bestStars[lv] = st;
       case Msg.error:
         lastError = m['message'] as String? ?? 'Something went wrong';
         toasts.add(lastError!);

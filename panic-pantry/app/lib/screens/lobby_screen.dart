@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:panic_pantry_core/panic_pantry_core.dart';
 
 import '../net/client.dart';
+import '../game/sprites.dart';
 import '../theme/tokens.dart';
+import '../widgets/arcade.dart';
 import '../widgets/level_preview.dart';
 import '../widgets/platform_mark.dart';
 import '../widgets/ui.dart';
@@ -146,7 +148,7 @@ class LobbyScreen extends StatelessWidget {
 
     final header = Row(
       children: [
-        const Wordmark(size: 18),
+        const Wordmark(size: 22),
         const SizedBox(width: PPSpace.x5),
         Expanded(
           child: Wrap(
@@ -179,47 +181,61 @@ class LobbyScreen extends StatelessWidget {
     );
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(PPSpace.x5),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 1100),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Enter(child: header),
-                  const SizedBox(height: PPSpace.x5),
-                  if (wide)
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(flex: 5, child: Enter(index: 1, child: levels)),
-                        const SizedBox(width: PPSpace.x5),
-                        Expanded(
-                          flex: 4,
-                          child: Column(
-                            children: [
-                              Enter(index: 2, child: seats),
-                              const SizedBox(height: PPSpace.x5),
-                              Enter(index: 3, child: actions),
-                            ],
-                          ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          const ArcadeBackdrop(),
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(PPSpace.x5),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1100),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Enter(child: header),
+                      const SizedBox(height: PPSpace.x5),
+                      const Enter(
+                        child: ArcadeHeading(
+                          eyebrow: 'The dinner rush tour',
+                          title: 'Small kitchen. Big ambitions.',
+                          subtitle: 'Pick a stop, gather your crew, and turn up the heat.',
                         ),
+                      ),
+                      const SizedBox(height: PPSpace.x6),
+                      if (wide)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(flex: 5, child: Enter(index: 1, child: levels)),
+                            const SizedBox(width: PPSpace.x5),
+                            Expanded(
+                              flex: 4,
+                              child: Column(
+                                children: [
+                                  Enter(index: 2, child: seats),
+                                  const SizedBox(height: PPSpace.x5),
+                                  Enter(index: 3, child: actions),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      else ...[
+                        Enter(index: 1, child: seats),
+                        const SizedBox(height: PPSpace.x5),
+                        Enter(index: 2, child: levels),
+                        const SizedBox(height: PPSpace.x5),
+                        Enter(index: 3, child: actions),
                       ],
-                    )
-                  else ...[
-                    Enter(index: 1, child: seats),
-                    const SizedBox(height: PPSpace.x5),
-                    Enter(index: 2, child: levels),
-                    const SizedBox(height: PPSpace.x5),
-                    Enter(index: 3, child: actions),
-                  ],
-                ],
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -324,20 +340,18 @@ class _Seat extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 36,
-            height: 36,
+            width: 52,
+            height: 60,
             decoration: BoxDecoration(
-              color: empty ? s.outline.withValues(alpha: 0.5) : col,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.white.withValues(alpha: empty ? 0 : 0.7), width: 2),
+              color: empty ? s.outline.withValues(alpha: 0.2) : col.withValues(alpha: 0.16),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: empty ? s.outline : col.withValues(alpha: 0.5)),
             ),
-            child: Icon(
-              empty
-                  ? Icons.person_add_alt_1_rounded
-                  : (p['bot'] == true ? Icons.smart_toy_rounded : Icons.restaurant_rounded),
-              size: 18,
-              color: empty ? s.text3 : Colors.white,
-            ),
+            child: empty
+                ? Icon(Icons.person_add_alt_1_rounded, size: 22, color: s.text3)
+                : CustomPaint(
+                    painter: _Portrait(slot: slot, bot: p['bot'] == true, dark: s.isDark),
+                  ),
           ),
           const SizedBox(width: PPSpace.x3),
           Expanded(
@@ -396,6 +410,28 @@ class _Seat extends StatelessWidget {
   }
 }
 
+class _Portrait extends CustomPainter {
+  const _Portrait({required this.slot, required this.bot, required this.dark});
+  final int slot;
+  final bool bot;
+  final bool dark;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final sp = Sprites(canvas, size.width * 0.9, 0, isDark: dark);
+    sp.chef(
+      Offset(size.width / 2, size.height * 0.70),
+      Chef(id: 'portrait', slot: slot, name: '', x: 0, y: 0, bot: bot),
+      isMe: false,
+      moving: false,
+      showLabel: false,
+    );
+  }
+
+  @override
+  bool shouldRepaint(_Portrait old) => old.slot != slot || old.bot != bot || old.dark != dark;
+}
+
 /// Horizontal "world map": a path with one stop per kitchen.
 class _LevelMap extends StatelessWidget {
   const _LevelMap({required this.selected, required this.isDark, required this.bestStars, this.onSelect});
@@ -408,7 +444,7 @@ class _LevelMap extends StatelessWidget {
   Widget build(BuildContext context) {
     final s = PPScheme.of(context);
     return SizedBox(
-      height: 196,
+      height: 220,
       child: Stack(
         children: [
           Positioned.fill(
@@ -434,12 +470,12 @@ class _LevelMap extends StatelessWidget {
                     child: AnimatedContainer(
                       duration: PPMotion.base,
                       curve: PPMotion.emphasized,
-                      width: 188,
-                      transform: Matrix4.translationValues(0, sel ? -4 : 0, 0),
+                      width: 204,
+                      margin: const EdgeInsets.only(top: 6, bottom: 8),
                       decoration: BoxDecoration(
                         color: s.surface,
                         borderRadius: PPRadius.card,
-                        border: Border.all(color: sel ? accent : s.outline, width: sel ? 2.5 : 1),
+                        border: Border.all(color: sel ? PPColor.paprika : s.outline, width: sel ? 3 : 1),
                         boxShadow: sel ? PPElevation.mid(s.brightness) : PPElevation.low(s.brightness),
                       ),
                       clipBehavior: Clip.antiAlias,
@@ -449,8 +485,17 @@ class _LevelMap extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Container(
-                                height: 104,
-                                color: accent.withValues(alpha: 0.14),
+                                height: 114,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color.lerp(accent, PPColor.cream, 0.45)!,
+                                      Color.lerp(accent, PPColor.ink, 0.55)!,
+                                    ],
+                                  ),
+                                ),
                                 padding: const EdgeInsets.fromLTRB(PPSpace.x3, PPSpace.x3, PPSpace.x3, PPSpace.x2),
                                 alignment: Alignment.center,
                                 child: LevelPreview(level: l, isDark: isDark),
@@ -501,18 +546,24 @@ class _LevelMap extends StatelessWidget {
                             top: 8,
                             left: 8,
                             child: Container(
-                              width: 28,
-                              height: 28,
+                              width: 30,
+                              height: 30,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: accent,
-                                shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white, width: 2.5),
+                                color: sel ? PPColor.paprika : PPColor.ink,
+                                borderRadius: BorderRadius.circular(9),
+                                border: Border.all(color: PPColor.cream, width: 2),
                                 boxShadow: PPElevation.low(Brightness.light),
                               ),
                               child: Text('${i + 1}', style: PPType.hud(size: 13).copyWith(color: Colors.white)),
                             ),
                           ),
+                          if (sel)
+                            const Positioned(
+                              top: 10,
+                              right: 10,
+                              child: Icon(Icons.check_circle_rounded, color: PPColor.cream, size: 24),
+                            ),
                         ],
                       ),
                     ),
@@ -585,7 +636,12 @@ class _LevelDetails extends StatelessWidget {
               for (final d in level.menu)
                 PPChip(label: d.label, icon: d.cooked ? Icons.soup_kitchen_rounded : Icons.eco_rounded, color: s.text2),
               for (var i = 0; i < th.length; i++)
-                PPChip(label: '${th[i]}', icon: Icons.star_rounded, iconCount: i + 1, color: PPColor.butter),
+                PPChip(
+                  label: '${th[i]}',
+                  icon: Icons.star_rounded,
+                  iconCount: i + 1,
+                  color: s.isDark ? PPColor.butter : PPColor.coinDark,
+                ),
             ],
           ),
         ],

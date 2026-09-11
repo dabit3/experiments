@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import '../config.dart';
 import '../net/client.dart';
 import '../theme/tokens.dart';
+import '../widgets/arcade.dart';
 import '../widgets/ui.dart';
 import 'how_to_play.dart';
 
@@ -85,6 +86,14 @@ class _HomeScreenState extends State<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
+        const Enter(
+          child: ArcadeHeading(
+            eyebrow: 'Aprons on. Game on.',
+            title: 'Clock in, chef.',
+            subtitle: 'Rally your crew. The dinner rush is yours.',
+          ),
+        ),
+        const SizedBox(height: PPSpace.x6),
         Enter(index: 1, child: SectionLabel('Your chef name')),
         Enter(
           index: 1,
@@ -119,6 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: TextField(
                   controller: _code,
+                  autocorrect: false,
+                  enableSuggestions: false,
                   textCapitalization: TextCapitalization.characters,
                   maxLength: 4,
                   inputFormatters: [FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9]')), UpperCaseTextFormatter()],
@@ -203,54 +214,89 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
 
-    final hero = Column(
-      crossAxisAlignment: wide ? CrossAxisAlignment.start : CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Enter(child: Wordmark(size: wide ? 64 : 44)),
-        const SizedBox(height: PPSpace.x4),
-        Enter(
-          index: 1,
-          child: Text(
-            'A co-op kitchen for 2–4 chefs.\nChop, cook, plate, serve — before the tickets expire.',
-            style: PPType.body(s.text2),
-            textAlign: wide ? TextAlign.left : TextAlign.center,
-          ),
+    final hero = Enter(
+      child: Container(
+        height: wide ? 594 : 400,
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: PPColor.ink,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: PPColor.ink, width: 2),
+          boxShadow: PPElevation.high(s.brightness),
         ),
-        const SizedBox(height: PPSpace.x4),
-        Enter(
-          index: 2,
-          child: Wrap(
-            spacing: PPSpace.x2,
-            runSpacing: PPSpace.x2,
-            alignment: wide ? WrapAlignment.start : WrapAlignment.center,
-            children: const [
-              PPChip(label: 'Cross-platform co-op', icon: Icons.devices_rounded, color: PPColor.blueberry),
-              PPChip(label: '5 kitchens', icon: Icons.map_rounded, color: PPColor.basil),
-              PPChip(label: 'Bots fill seats', icon: Icons.smart_toy_rounded, color: PPColor.plum),
-            ],
-          ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset('assets/arcade-kitchen.png', fit: BoxFit.cover, excludeFromSemantics: true),
+            ),
+            const Positioned.fill(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    stops: [0, 0.4, 0.7, 1],
+                    colors: [Color(0xDD102F35), Color(0x00102F35), Color(0x00102F35), Color(0xFF102F35)],
+                  ),
+                ),
+              ),
+            ),
+            Positioned(top: 26, left: 26, child: Wordmark(size: wide ? 68 : 50)),
+            Positioned(
+              left: 26,
+              right: 22,
+              bottom: 24,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('GOOD FOOD. GREAT CHAOS.', style: PPType.h2(PPColor.cream).copyWith(fontSize: wide ? 23 : 19)),
+                  const SizedBox(height: 6),
+                  Text('2–4 chefs  /  5 kitchens  /  One wild dinner rush', style: PPType.small(PPColor.cream)),
+                  const SizedBox(height: 12),
+                  const Row(
+                    children: [
+                      Icon(Icons.devices_rounded, size: 16, color: PPColor.butter),
+                      SizedBox(width: 8),
+                      Text(
+                        'WEB  ·  iOS  ·  ANDROID  ·  macOS',
+                        style: TextStyle(
+                          fontFamily: PPType.family,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w800,
+                          color: PPColor.butter,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
 
     return Scaffold(
       body: Stack(
         children: [
-          const _Backdrop(),
+          const ArcadeBackdrop(),
           SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(PPSpace.x6),
+                padding: const EdgeInsets.fromLTRB(24, 60, 24, 48),
                 child: ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: wide ? 980 : 440),
+                  constraints: BoxConstraints(maxWidth: wide ? 1180 : 480),
                   child: wide
                       ? Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(child: hero),
-                            const SizedBox(width: PPSpace.x12),
-                            SizedBox(width: 420, child: PPCard(child: form)),
+                            const SizedBox(width: PPSpace.x8),
+                            SizedBox(
+                              width: 360,
+                              child: PPCard(padding: const EdgeInsets.all(22), child: form),
+                            ),
                           ],
                         )
                       : Column(
@@ -273,69 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(s.isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded, color: s.text2),
             ),
           ),
-          Positioned(
-            bottom: MediaQuery.paddingOf(context).bottom + PPSpace.x3,
-            left: 0,
-            right: 0,
-            child: Center(child: Text('Panic Pantry · co-op kitchen chaos', style: PPType.caption(s.text3))),
-          ),
         ],
-      ),
-    );
-  }
-}
-
-/// Soft radial blobs behind the title screen.
-class _Backdrop extends StatelessWidget {
-  const _Backdrop();
-
-  @override
-  Widget build(BuildContext context) {
-    final s = PPScheme.of(context);
-    return IgnorePointer(
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [s.bg, s.bg2]),
-              ),
-            ),
-          ),
-          Positioned(
-            top: -120,
-            left: -80,
-            child: _Blob(color: PPColor.butter.withValues(alpha: s.isDark ? 0.10 : 0.35), size: 380),
-          ),
-          Positioned(
-            bottom: -160,
-            right: -120,
-            child: _Blob(color: PPColor.paprika.withValues(alpha: s.isDark ? 0.14 : 0.22), size: 460),
-          ),
-          Positioned(
-            top: 160,
-            right: 80,
-            child: _Blob(color: PPColor.basil.withValues(alpha: s.isDark ? 0.08 : 0.18), size: 220),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _Blob extends StatelessWidget {
-  const _Blob({required this.color, required this.size});
-  final Color color;
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: RadialGradient(colors: [color, color.withValues(alpha: 0)]),
       ),
     );
   }

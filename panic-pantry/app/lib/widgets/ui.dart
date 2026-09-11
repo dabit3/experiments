@@ -35,13 +35,14 @@ class PPButton extends StatefulWidget {
 class _PPButtonState extends State<PPButton> {
   bool _down = false;
   bool _hover = false;
+  bool _focused = false;
 
   @override
   Widget build(BuildContext context) {
     final s = PPScheme.of(context);
     final enabled = widget.onPressed != null;
     final (bg, fg, border) = switch (widget.kind) {
-      PPButtonKind.primary => (PPColor.paprika, Colors.white, Colors.transparent),
+      PPButtonKind.primary => (PPColor.paprika, Colors.white, PPColor.paprikaDark),
       PPButtonKind.secondary => (s.surface2, s.text, s.outline),
       PPButtonKind.ghost => (Colors.transparent, s.text2, Colors.transparent),
       PPButtonKind.danger => (s.surface2, PPColor.paprikaDark, PPColor.paprika.withValues(alpha: 0.35)),
@@ -57,38 +58,75 @@ class _PPButtonState extends State<PPButton> {
           height: widget.compact ? 40 : 52,
           padding: EdgeInsets.symmetric(horizontal: widget.compact ? PPSpace.x4 : PPSpace.x6),
           decoration: BoxDecoration(
-            color: bg,
+            color: widget.kind == PPButtonKind.primary ? null : bg,
+            gradient: widget.kind == PPButtonKind.primary
+                ? const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xFFFF7957), PPColor.paprika],
+                  )
+                : null,
             borderRadius: PPRadius.button,
-            border: Border.all(color: border, width: 1.5),
-            boxShadow: widget.kind == PPButtonKind.primary && enabled ? PPElevation.low(s.brightness) : null,
+            border: Border.all(color: _focused ? PPColor.blueberry : border, width: _focused ? 3 : 1.5),
+            boxShadow: widget.kind == PPButtonKind.primary && enabled
+                ? [
+                    BoxShadow(color: PPColor.paprikaDark, offset: Offset(0, _down ? 1 : 5)),
+                    BoxShadow(
+                      color: PPColor.paprika.withValues(alpha: 0.18),
+                      blurRadius: 18,
+                      offset: const Offset(0, 8),
+                    ),
+                  ]
+                : null,
           ),
           child: Row(
             mainAxisSize: widget.expand ? MainAxisSize.max : MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (widget.icon != null) ...[Icon(widget.icon, size: 20, color: fg), const SizedBox(width: PPSpace.x2)],
-              Text(widget.label, style: PPType.h3(fg).copyWith(fontSize: widget.compact ? 15 : 16)),
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(widget.label, style: PPType.h3(fg).copyWith(fontSize: widget.compact ? 15 : 16)),
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
-    final w = MouseRegion(
-      cursor: enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
-      onEnter: (_) => setState(() => _hover = true),
-      onExit: (_) => setState(() => _hover = false),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTapDown: enabled ? (_) => setState(() => _down = true) : null,
-        onTapUp: enabled ? (_) => setState(() => _down = false) : null,
-        onTapCancel: enabled ? () => setState(() => _down = false) : null,
-        onTap: enabled
-            ? () {
-                HapticFeedback.lightImpact();
-                widget.onPressed!();
-              }
-            : null,
-        child: Semantics(button: true, enabled: enabled, label: widget.label, child: child),
+    final w = FocusableActionDetector(
+      enabled: enabled,
+      onShowFocusHighlight: (v) => setState(() => _focused = v),
+      shortcuts: const {
+        SingleActivator(LogicalKeyboardKey.enter): ActivateIntent(),
+        SingleActivator(LogicalKeyboardKey.space): ActivateIntent(),
+      },
+      actions: {
+        ActivateIntent: CallbackAction<ActivateIntent>(
+          onInvoke: (_) {
+            widget.onPressed?.call();
+            return null;
+          },
+        ),
+      },
+      child: MouseRegion(
+        cursor: enabled ? SystemMouseCursors.click : SystemMouseCursors.basic,
+        onEnter: (_) => setState(() => _hover = true),
+        onExit: (_) => setState(() => _hover = false),
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTapDown: enabled ? (_) => setState(() => _down = true) : null,
+          onTapUp: enabled ? (_) => setState(() => _down = false) : null,
+          onTapCancel: enabled ? () => setState(() => _down = false) : null,
+          onTap: enabled
+              ? () {
+                  HapticFeedback.lightImpact();
+                  widget.onPressed!();
+                }
+              : null,
+          child: Semantics(button: true, enabled: enabled, label: widget.label, child: child),
+        ),
       ),
     );
     return widget.tooltip == null ? w : Tooltip(message: widget.tooltip!, child: w);
@@ -116,7 +154,7 @@ class PPCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color ?? s.surface,
         borderRadius: PPRadius.card,
-        border: Border.all(color: s.outline),
+        border: Border.all(color: s.outline, width: 1.5),
         boxShadow: elevated ? PPElevation.mid(s.brightness) : null,
       ),
       child: child,
@@ -266,36 +304,34 @@ class SectionLabel extends StatelessWidget {
   }
 }
 
-/// Wordmark: "PANIC" in paprika on a tilted plate, "PANTRY" below.
 class Wordmark extends StatelessWidget {
   const Wordmark({super.key, this.size = 44});
   final double size;
 
   @override
   Widget build(BuildContext context) {
-    final s = PPScheme.of(context);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Transform.rotate(
-          angle: -0.04,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: size * 0.3, vertical: size * 0.08),
-            decoration: BoxDecoration(
-              color: PPColor.paprika,
-              borderRadius: BorderRadius.circular(size * 0.3),
-              boxShadow: PPElevation.low(s.brightness),
-            ),
-            child: Text('PANIC', style: PPType.display(Colors.white).copyWith(fontSize: size)),
+    return Transform.rotate(
+      angle: -0.045,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          OutlinedText(
+            'PANIC',
+            style: PPType.hud(size: size).copyWith(letterSpacing: size * -0.035),
+            fill: PPColor.butter,
+            outline: PPColor.ink,
+            stroke: size * 0.055,
           ),
-        ),
-        SizedBox(height: size * 0.12),
-        Padding(
-          padding: EdgeInsets.only(left: size * 0.12),
-          child: Text('PANTRY', style: PPType.display(s.text).copyWith(fontSize: size)),
-        ),
-      ],
+          OutlinedText(
+            'PANTRY',
+            style: PPType.hud(size: size).copyWith(letterSpacing: size * -0.045),
+            fill: PPColor.cream,
+            outline: PPColor.ink,
+            stroke: size * 0.055,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -439,12 +475,13 @@ class Enter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (MediaQuery.disableAnimationsOf(context)) return child;
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: PPMotion.slow + PPMotion.stagger * index,
       curve: PPMotion.emphasized,
       builder: (context, v, child) {
-        final t = ((v - index * 0.08).clamp(0.0, 1.0));
+        final t = v.clamp(0.0, 1.0);
         return Opacity(
           opacity: t,
           child: Transform.translate(offset: Offset(0, (1 - t) * 16), child: child),

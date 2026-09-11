@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flame/game.dart';
-import 'package:flutter/material.dart' show Colors;
+import 'package:flutter/material.dart' show Colors, RadialGradient;
 import 'package:panic_pantry_core/panic_pantry_core.dart';
 
 import '../net/client.dart';
@@ -54,6 +54,21 @@ class KitchenGame extends FlameGame {
     cached?.dispose();
     final recorder = PictureRecorder();
     final canvas = Canvas(recorder)..scale(dpr);
+    final arena = Rect.fromLTWH(0, 0, size.width, size.height);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(arena, const Radius.circular(22)),
+      Paint()
+        ..shader = const RadialGradient(
+          colors: [Color(0xFF376D66), Color(0xFF102F35)],
+          radius: 0.8,
+        ).createShader(arena),
+    );
+    final dot = Paint()..color = const Color(0x184FAF9D);
+    for (var y = 12.0; y < size.height; y += 22) {
+      for (var x = 12.0; x < size.width; x += 22) {
+        canvas.drawCircle(Offset(x, y), 1.3, dot);
+      }
+    }
     final sp = Sprites(canvas, cell, 0, isDark: isDark);
     sp.frame(Rect.fromLTWH(origin.dx, origin.dy, cell * g.width, cell * g.height));
     for (var y = 0; y < g.height; y++) {
@@ -174,7 +189,7 @@ class KitchenGame extends FlameGame {
 
   void _layout(Size size, GameState g) {
     // Leave room for the wall band (0.22 cell) and hanging progress bubbles.
-    const wallX = 0.6, wallY = 0.9;
+    const wallX = 1.0, wallY = 1.2;
     cell = math.min(size.width / (g.width + wallX), size.height / (g.height + wallY)).floorToDouble();
     final w = cell * g.width;
     final h = cell * g.height;

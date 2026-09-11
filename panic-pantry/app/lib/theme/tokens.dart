@@ -9,35 +9,35 @@ import 'package:flutter/material.dart';
 /// clients look identical modulo platform text rendering.
 abstract final class PPColor {
   // Brand.
-  static const paprika = Color(0xFFE8563F); // primary action / fire
-  static const paprikaDark = Color(0xFFB83A27);
-  static const butter = Color(0xFFF7C948); // highlights, stars, tips
-  static const basil = Color(0xFF3FAF6E); // success / serve
-  static const blueberry = Color(0xFF3F7FE8); // info / links
+  static const paprika = Color(0xFFEF593D); // primary action / fire
+  static const paprikaDark = Color(0xFF9D3225);
+  static const butter = Color(0xFFFFD363); // highlights, stars, tips
+  static const basil = Color(0xFF248875); // success / serve
+  static const blueberry = Color(0xFF337EBB); // info / links
   static const plum = Color(0xFF6E4AB5); // accent
 
   // Chef colours by slot.
   static const chefs = [Color(0xFFE8563F), Color(0xFF3F7FE8), Color(0xFF3FAF6E), Color(0xFFF7C948)];
 
   // Neutrals.
-  static const ink = Color(0xFF1B1A22);
-  static const ink2 = Color(0xFF2A2833);
-  static const ink3 = Color(0xFF3A3846);
-  static const cream = Color(0xFFFFF8EC);
-  static const cream2 = Color(0xFFF6EBD6);
-  static const cream3 = Color(0xFFE9DBC1);
-  static const mute = Color(0xFF8B8797);
+  static const ink = Color(0xFF102F35);
+  static const ink2 = Color(0xFF193E44);
+  static const ink3 = Color(0xFF254D52);
+  static const cream = Color(0xFFFFF7E7);
+  static const cream2 = Color(0xFFF0E5CF);
+  static const cream3 = Color(0xFFD1C5AA);
+  static const mute = Color(0xFF6D736D);
 
   // Kitchen surfaces (shared by both themes for cross-client parity).
-  static const floorA = Color(0xFFF2D9A6);
-  static const floorB = Color(0xFFEACE96);
-  static const grout = Color(0xFFD5B478);
-  static const counterTop = Color(0xFFEBD9B4);
-  static const counterEdge = Color(0xFFD2B98A);
-  static const counterSide = Color(0xFFB08E5C);
-  static const counterFoot = Color(0xFF8A6B42);
-  static const brick = Color(0xFFB5643E);
-  static const brickDark = Color(0xFF8E4A2C);
+  static const floorA = Color(0xFFF2E5C9);
+  static const floorB = Color(0xFF91BBB0);
+  static const grout = Color(0xFF528F85);
+  static const counterTop = Color(0xFFFFECD0);
+  static const counterEdge = Color(0xFFDAB990);
+  static const counterSide = Color(0xFF25756E);
+  static const counterFoot = Color(0xFF164A49);
+  static const brick = Color(0xFFED7953);
+  static const brickDark = Color(0xFF99462F);
   static const steel = Color(0xFFB9C4CE);
   static const steelDark = Color(0xFF7E8B96);
   static const stove = Color(0xFFD94A3A);
@@ -47,7 +47,7 @@ abstract final class PPColor {
   static const pit = Color(0xFF16222E);
 
   // HUD chrome (stopwatch / coin badge / outlined display text).
-  static const hudInk = Color(0xFF244A7A);
+  static const hudInk = Color(0xFF143D45);
   static const coin = Color(0xFFF2B531);
   static const coinDark = Color(0xFFC98A12);
 }
@@ -69,7 +69,7 @@ abstract final class PPRadius {
   static const md = Radius.circular(14);
   static const lg = Radius.circular(22);
   static const pill = Radius.circular(999);
-  static final BorderRadius card = BorderRadius.circular(18);
+  static final BorderRadius card = BorderRadius.circular(24);
   static final BorderRadius button = BorderRadius.circular(14);
   static final BorderRadius chip = BorderRadius.circular(999);
 }
@@ -188,10 +188,10 @@ class PPScheme extends ThemeExtension<PPScheme> {
     bg2: PPColor.ink2,
     surface: PPColor.ink2,
     surface2: PPColor.ink3,
-    outline: Color(0xFF4A4858),
+    outline: Color(0xFF487078),
     text: PPColor.cream,
     text2: Color(0xFFCFC9BE),
-    text3: Color(0xFFA9A4B3),
+    text3: Color(0xFFB2C5BE),
     brightness: Brightness.dark,
   );
 

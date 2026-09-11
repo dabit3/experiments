@@ -21,6 +21,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/arcade-kitchen.png
   # Bundled open-license (SIL OFL 1.1) fonts so every platform renders the
   # same glyphs; licenses live next to the files in assets/fonts.
   fonts:

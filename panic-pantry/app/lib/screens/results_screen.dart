@@ -4,6 +4,7 @@ import 'package:panic_pantry_core/panic_pantry_core.dart';
 
 import '../net/client.dart';
 import '../theme/tokens.dart';
+import '../widgets/arcade.dart';
 import '../widgets/platform_mark.dart';
 import '../widgets/ui.dart';
 
@@ -63,9 +64,9 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
     final wide = MediaQuery.sizeOf(context).width > 820;
 
     final verdict = switch (stars) {
-      3 => 'Michelin material!',
-      2 => 'Great service!',
-      1 => 'Kitchen survived.',
+      3 => 'Pantry legends!',
+      2 => 'That’s a hot streak!',
+      1 => 'A delicious start.',
       _ => 'Well… nobody got hurt.',
     };
     final served = (r['served'] as num).toInt();
@@ -78,7 +79,11 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
     final header = Container(
       padding: EdgeInsets.fromLTRB(PPSpace.x6, PPSpace.x5, PPSpace.x6, wide ? 56 : 44),
       decoration: const BoxDecoration(
-        color: PPColor.hudInk,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFF2B6A64), PPColor.hudInk],
+        ),
         borderRadius: BorderRadius.vertical(top: Radius.circular(26)),
       ),
       child: Column(
@@ -88,8 +93,8 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
           Transform.rotate(
             angle: -0.03,
             child: OutlinedText(
-              "TIME'S UP!",
-              style: PPType.hud(size: wide ? 60 : 44).copyWith(letterSpacing: -1.5),
+              'RUSH COMPLETE!',
+              style: PPType.hud(size: wide ? 54 : 32).copyWith(letterSpacing: -1.5),
               fill: PPColor.butter,
               outline: PPColor.ink,
               stroke: wide ? 5 : 4,
@@ -148,7 +153,21 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
                 color: PPColor.paprika,
               ),
             Divider(color: s.outline, height: PPSpace.x5),
-            tallyRow('Total', '${(score * k).round()}', total: true, color: PPColor.coinDark),
+            Container(
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: PPColor.ink,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: PPColor.butter, width: 2),
+              ),
+              child: Column(
+                children: [
+                  Text('TEAM SCORE', style: PPType.caption(PPColor.cream).copyWith(letterSpacing: 2)),
+                  const SizedBox(height: 8),
+                  Text('${(score * k).round()}', style: PPType.numeric(PPColor.butter, size: 62)),
+                ],
+              ),
+            ),
             const SizedBox(height: PPSpace.x2),
             AnimatedOpacity(
               opacity: _ctl.value > 0.9 ? 1 : 0,
@@ -365,16 +384,22 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
     );
 
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(PPSpace.x6),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 900),
-              child: Enter(child: card),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          const ArcadeBackdrop(celebrate: true),
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(PPSpace.x6),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 900),
+                  child: Enter(child: card),
+                ),
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
