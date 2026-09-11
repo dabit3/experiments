@@ -1,3 +1,4 @@
+import UIKit
 import XCTest
 
 @testable import Elsewhere
@@ -109,5 +110,28 @@ final class JournalTests: XCTestCase {
     XCTAssertEqual(image.cgImage?.width, 1200)
     XCTAssertEqual(image.cgImage?.height, 1760)
     XCTAssertGreaterThan(try XCTUnwrap(image.pngData()).count, 10_000)
+  }
+
+  func testShareFilesContainPNGAndKeepExportsIsolated() throws {
+    let directory = folder()
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let trip = try XCTUnwrap(Samples.journeys.first)
+    let memory = try XCTUnwrap(trip.stops.first)
+    let image = try XCTUnwrap(PostcardExporter.render(journey: trip, memory: memory))
+    let first = try PostcardExporter.write(
+      image: image, place: "../Kyōto: Higashiyama", directory: directory)
+    let second = try PostcardExporter.write(
+      image: image, place: "../Kyōto: Higashiyama", directory: directory)
+    XCTAssertNotEqual(first, second)
+    XCTAssertEqual(first.lastPathComponent, "Greetings from Kyōto Higashiyama.png")
+    XCTAssertEqual(first.deletingLastPathComponent().deletingLastPathComponent(), directory)
+    let data = try Data(contentsOf: first)
+    XCTAssertEqual(data, try XCTUnwrap(image.pngData()))
+    XCTAssertEqual(Array(data.prefix(8)), [137, 80, 78, 71, 13, 10, 26, 10])
+    let exported = try XCTUnwrap(UIImage(data: data))
+    XCTAssertEqual(exported.cgImage?.width, 1200)
+    XCTAssertEqual(exported.cgImage?.height, 1760)
+    try FileManager.default.removeItem(at: first.deletingLastPathComponent())
+    XCTAssertEqual(try Data(contentsOf: second), data)
   }
 }

@@ -1,4 +1,3 @@
-import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -144,12 +143,35 @@ struct PostcardArtwork: View {
 
 @MainActor
 enum PostcardExporter {
+  enum ExportError: Error {
+    case encodingFailed
+  }
+
   static func render(journey: Journey, memory: Memory) -> UIImage? {
     let renderer = ImageRenderer(
       content: PostcardArtwork(journey: journey, memory: memory)
         .environment(\.dynamicTypeSize, .large))
     renderer.scale = 2
     return renderer.uiImage
+  }
+
+  static func write(
+    image: UIImage, place: String,
+    directory: URL = URL.cachesDirectory.appending(path: "Postcards", directoryHint: .isDirectory)
+  ) throws -> URL {
+    guard let data = image.pngData() else { throw ExportError.encodingFailed }
+    let folder = directory.appending(path: UUID().uuidString, directoryHint: .isDirectory)
+    let name = String(place.prefix(80)).components(separatedBy: .alphanumerics.inverted)
+      .filter { !$0.isEmpty }.joined(separator: " ")
+    let url = folder.appending(path: name.isEmpty ? "Elsewhere.png" : "Greetings from \(name).png")
+    try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+    do {
+      try data.write(to: url, options: .atomic)
+      return url
+    } catch {
+      try? FileManager.default.removeItem(at: folder)
+      throw error
+    }
   }
 }
 
@@ -158,9 +180,11 @@ struct PostcardView: View {
   var journey: Journey
   var memory: Memory
   @State private var image: UIImage?
+  @State private var shareURL: URL?
   @State private var sharing = false
   @State private var inspecting = false
   @State private var exportError = false
+  @State private var shareError = false
 
   var body: some View {
     NavigationStack {
@@ -204,7 +228,13 @@ struct PostcardView: View {
       .safeAreaInset(edge: .bottom, spacing: 0) {
         ActionShelf {
           Button {
-            sharing = true
+            guard let image else { return }
+            do {
+              shareURL = try PostcardExporter.write(image: image, place: memory.place)
+              sharing = true
+            } catch {
+              shareError = true
+            }
           } label: {
             Label("Share postcard", systemImage: "square.and.arrow.up")
           }
@@ -216,8 +246,21 @@ struct PostcardView: View {
         image = PostcardExporter.render(journey: journey, memory: memory)
         exportError = image == nil
       }
-      .sheet(isPresented: $sharing) {
-        if let image { ShareSheet(image: image, title: "Greetings from \(memory.place)") }
+      .sheet(
+        isPresented: $sharing,
+        onDismiss: {
+          if let shareURL {
+            try? FileManager.default.removeItem(at: shareURL.deletingLastPathComponent())
+          }
+          shareURL = nil
+        }
+      ) {
+        if let shareURL { ShareSheet(url: shareURL) }
+      }
+      .alert("Couldn't prepare your postcard", isPresented: $shareError) {
+        Button("OK", role: .cancel) {}
+      } message: {
+        Text("The image couldn't be saved for sharing. Free up storage and try again.")
       }
       .fullScreenCover(isPresented: $inspecting) {
         if let image {
@@ -291,22 +334,9 @@ struct PostcardInspection: View {
 }
 
 struct ShareSheet: UIViewControllerRepresentable {
-  let image: UIImage
-  let title: String
+  let url: URL
   func makeUIViewController(context: Context) -> UIActivityViewController {
-    let provider = NSItemProvider(object: image)
-    provider.suggestedName = title
-    let configuration = UIActivityItemsConfiguration(itemProviders: [provider])
-    configuration.metadataProvider = { key in key == .title ? title : nil }
-    configuration.previewProvider = { _, _, _ in provider }
-    configuration.perItemMetadataProvider = { _, key in
-      guard key == .linkPresentationMetadata else { return nil }
-      let metadata = LPLinkMetadata()
-      metadata.title = title
-      metadata.imageProvider = provider
-      return metadata
-    }
-    return UIActivityViewController(activityItemsConfiguration: configuration)
+    UIActivityViewController(activityItems: [url], applicationActivities: nil)
   }
   func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

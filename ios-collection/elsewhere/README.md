@@ -66,6 +66,9 @@ journeys without touching personal journals.
 
 Journey and memory actions stay above the bottom safe area. Postcards have a
 larger inspection view with pinch, double-tap and labeled zoom/reset controls.
+Sharing creates a named PNG file in a unique cache folder and passes its file URL
+to the native share sheet. The file remains available until the sheet dismisses,
+then its export folder is removed. Saved copies remain in Files or Photos.
 Type follows system settings; decorative labels cap their growth while titles,
 notes and controls remain scalable. At accessibility sizes, illustrations shrink
 to give text more room. There are no essential animated transitions.
