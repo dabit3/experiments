@@ -484,7 +484,8 @@ struct StudioView: View {
         Text("⌘Z Undo    ⇧⌘Z Redo    ⌘S Save    Space Play / pause")
           .font(.system(size: 11, design: .monospaced)).foregroundStyle(Desk.muted)
         Spacer()
-      }.padding(30).background(Desk.background).navigationTitle("Field notes")
+      }.padding(30).frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Desk.background).navigationTitle("Field notes")
         .toolbar {
           ToolbarItem(placement: .confirmationAction) { Button("Done") { helpOpen = false } }
         }
@@ -522,7 +523,8 @@ struct StudioView: View {
             .font(.system(size: 15, weight: .semibold))
         }.buttonStyle(DeskButtonStyle(accent: true))
         Spacer(minLength: 0)
-      }.padding(28).background(Desk.background).navigationTitle("Export complete")
+      }.padding(28).frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Desk.background).navigationTitle("Export complete")
         .toolbar {
           ToolbarItem(placement: .confirmationAction) {
             Button("Done") { store.exportURL = nil }

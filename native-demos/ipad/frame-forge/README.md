@@ -66,10 +66,18 @@ bash Scripts/build.sh
 To format after source edits:
 
 ```sh
-xcrun swift format format --in-place --recursive Sources Tests Package.swift
+xcrun swift format format --in-place --recursive Sources Tests Scripts Package.swift
 ```
 
 Native UI acceptance scenario: modify the sample with actual drawing/erasing, undo and redo, duplicate and add frames, reorder/delete, toggle onion skin, change FPS, play/pause, save, reopen from Studio, relaunch the process, and export a GIF. Inspect the actual exported file's frame count, timing and distinct decoded pixels.
+
+Verify a real exported GIF using native ImageIO, with the expected frame count and FPS:
+
+```sh
+swift Scripts/verify-gif.swift /path/to/export.gif 10 10
+```
+
+The verifier checks dimensions, frame count, each delay, infinite-loop metadata and SHA-256 hashes of decoded RGBA pixels. It requires at least two distinct images. The bundled app icon is reproducible with `swift Scripts/generate-icon.swift Assets.xcassets/AppIcon.appiconset/AppIcon.png`.
 
 ## Modeling limits
 
