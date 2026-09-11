@@ -7,8 +7,8 @@ Coral Summit, Indigo Tide, Amber Dunes, Lilac Hour, and Terra Arch.
 ## Open and run
 
 Open `Foldscape.xcodeproj`, select the shared **Foldscape** scheme and an iPhone
-simulator, then Run. Requires Xcode 15+ and iOS 17+. Verified commands and final
-test environment are recorded below as testing is completed.
+simulator, then Run. Requires Xcode 15+ and iOS 17+. The project was built and
+tested on native macOS with Xcode 26.6 and the iOS 26.5 iPhone 17 Pro simulator.
 
 The generated project is committed. To regenerate it after project changes:
 
@@ -28,6 +28,10 @@ xcodebuild -project Foldscape.xcodeproj -scheme Foldscape \
   -derivedDataPath ~/foldscape-build CODE_SIGNING_ALLOWED=NO test
 xcrun swift format lint --strict --recursive Foldscape FoldscapeTests Tools
 ```
+
+Seven XCTest cases cover solvability across 600 seeded shuffles, legal moves,
+hint-guided completion after arbitrary moves, malformed-board rejection,
+persistence and reset, corrupt-storage recovery, and exact board tap mapping.
 
 ## Play
 

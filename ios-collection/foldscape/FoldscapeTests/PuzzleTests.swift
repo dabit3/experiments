@@ -11,6 +11,26 @@ struct SeededGenerator: RandomNumberGenerator {
 }
 
 final class PuzzleTests: XCTestCase {
+  func testBoardHitMappingKeepsCellsGapsAndEdgesSeparate() {
+    let grid = BoardGeometry(side: 312)
+    for row in 0..<3 {
+      for column in 0..<3 {
+        let x = Double(column * 106)
+        let y = Double(row * 106)
+        for inset in [0.0, 1, 50, 99.9] {
+          XCTAssertEqual(grid.index(x: x + inset, y: y + inset), row * 3 + column)
+        }
+      }
+    }
+    XCTAssertNil(grid.index(x: 102, y: 50))
+    XCTAssertNil(grid.index(x: 50, y: 102))
+    XCTAssertNil(grid.index(x: -1, y: 50))
+    XCTAssertNil(grid.index(x: 312, y: 50))
+    XCTAssertNil(grid.index(x: .infinity, y: 50))
+    XCTAssertNil(grid.index(x: .nan, y: 50))
+    XCTAssertNil(BoardGeometry(side: 0).index(x: 0, y: 0))
+  }
+
   func testAllShufflesAreSolvableNonCompleteAndHaveValidHintPaths() {
     for seed in 1...300 {
       for pace in Pace.allCases {

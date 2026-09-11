@@ -32,7 +32,8 @@ final class PaperPainter {
   func cut(_ path: CGPath, _ fill: UInt32, shadow: CGFloat = 10) {
     context.saveGState()
     context.setShadow(
-      offset: CGSize(width: 0, height: 8), blur: shadow, color: color(0x17242A, alpha: 0.22))
+      offset: CGSize(width: 4, height: -6), blur: shadow * 0.65,
+      color: color(0x17242A, alpha: 0.20))
     context.addPath(path)
     context.setFillColor(color(fill))
     context.fillPath(using: .evenOdd)
@@ -92,13 +93,46 @@ final class PaperPainter {
 
   func pine(_ x: CGFloat, _ y: CGFloat, _ height: CGFloat, _ fill: UInt32) {
     polygon(
-      [(x - 5, y), (x + 6, y), (x + 3, y - height), (x - 2, y - height)], 0x485446, shadow: 3)
-    for fraction in [CGFloat(0.72), 0.5, 0.3] {
-      let top = y - height
-      let bottom = top + height * fraction
-      let width = height * fraction * 0.42
-      polygon([(x, top - 7), (x + width, bottom), (x - width, bottom)], fill, shadow: 5)
+      [(x - 5, y), (x + 6, y), (x + 3, y - height * 0.65), (x - 2, y - height * 0.65)],
+      0x485446, shadow: 3)
+    let width = height * (0.25 + abs(sin(x)) * 0.05)
+    let top = y - height
+    let lean = sin(x * 0.12) * height * 0.035
+    let outline: [(CGFloat, CGFloat)] = [
+      (x + lean, top),
+      (x + width * 0.48, top + height * 0.28),
+      (x + width * 0.22, top + height * 0.25),
+      (x + width * 0.71, top + height * 0.46),
+      (x + width * 0.38, top + height * 0.42),
+      (x + width * 0.88, top + height * 0.63),
+      (x + width * 0.52, top + height * 0.59),
+      (x + width, top + height * 0.83),
+      (x - width * 0.95, top + height * 0.84),
+      (x - width * 0.46, top + height * 0.60),
+      (x - width * 0.85, top + height * 0.65),
+      (x - width * 0.32, top + height * 0.44),
+      (x - width * 0.68, top + height * 0.49),
+      (x - width * 0.15, top + height * 0.27),
+      (x - width * 0.46, top + height * 0.30),
+    ]
+    polygon(outline, fill, shadow: 7)
+    context.saveGState()
+    let fold = CGMutablePath()
+    fold.move(to: CGPoint(x: x + lean, y: top))
+    for point in outline[1...7] {
+      fold.addLine(to: CGPoint(x: point.0, y: point.1))
     }
+    fold.addLine(to: CGPoint(x: x + 1, y: top + height * 0.837))
+    fold.closeSubpath()
+    context.addPath(fold)
+    context.setFillColor(color(0x112D28, alpha: 0.13))
+    context.fillPath()
+    context.move(to: CGPoint(x: x + lean, y: top + 3))
+    context.addLine(to: CGPoint(x: x, y: top + height * 0.83))
+    context.setLineWidth(1.2)
+    context.setStrokeColor(color(0xF7ECCE, alpha: 0.25))
+    context.strokePath()
+    context.restoreGState()
   }
 
   func grasses(_ x: CGFloat, _ y: CGFloat, _ fill: UInt32) {
@@ -121,11 +155,29 @@ final class PaperPainter {
         pine(CGFloat(i) * 94, 646 + CGFloat(i % 3) * 12, 160 + CGFloat(i % 4) * 23, 0x527D68)
       }
       hill(730, 240, 0x3F705E)
-      polygon(
-        [
-          (612, 543), (652, 543), (602, 637), (712, 699), (543, 785), (646, 860),
-          (454, 1020), (101, 1020), (434, 849), (379, 779), (606, 694), (531, 632),
-        ], 0xBCD6C3)
+      let river = CGMutablePath()
+      river.move(to: CGPoint(x: 623, y: 543))
+      river.addCurve(
+        to: CGPoint(x: 645, y: 695), control1: CGPoint(x: 519, y: 652),
+        control2: CGPoint(x: 763, y: 641))
+      river.addCurve(
+        to: CGPoint(x: 578, y: 853), control1: CGPoint(x: 390, y: 780),
+        control2: CGPoint(x: 494, y: 794))
+      river.addCurve(
+        to: CGPoint(x: 386, y: 1030), control1: CGPoint(x: 759, y: 944),
+        control2: CGPoint(x: 457, y: 969))
+      river.addLine(to: CGPoint(x: 73, y: 1030))
+      river.addCurve(
+        to: CGPoint(x: 428, y: 851), control1: CGPoint(x: 247, y: 934),
+        control2: CGPoint(x: 566, y: 905))
+      river.addCurve(
+        to: CGPoint(x: 577, y: 685), control1: CGPoint(x: 233, y: 777),
+        control2: CGPoint(x: 558, y: 730))
+      river.addCurve(
+        to: CGPoint(x: 604, y: 543), control1: CGPoint(x: 684, y: 645),
+        control2: CGPoint(x: 474, y: 654))
+      river.closeSubpath()
+      cut(river, 0xBCD6C3, shadow: 7)
       hill(910, -170, 0x285744)
       pine(125, 1030, 514, 0x234B3C)
       pine(882, 941, 329, 0x315944)
@@ -270,12 +322,12 @@ final class PaperPainter {
       cloud(742, 104, 0.82, 0xF4E8CB)
     }
     var grain = Grain()
-    for _ in 0..<34_000 {
+    for _ in 0..<58_000 {
       let x = grain.next() * 1000
       let y = grain.next() * 1000
       let shade: UInt32 = grain.next() > 0.48 ? 0xFFF8E7 : 0x222B29
-      context.setFillColor(color(shade, alpha: grain.next() * 0.06))
-      context.fill(CGRect(x: x, y: y, width: grain.next() * 2 + 0.4, height: 0.7))
+      context.setFillColor(color(shade, alpha: grain.next() * (y > 550 ? 0.10 : 0.065)))
+      context.fill(CGRect(x: x, y: y, width: grain.next() * 3.2 + 0.5, height: 0.8))
     }
   }
 

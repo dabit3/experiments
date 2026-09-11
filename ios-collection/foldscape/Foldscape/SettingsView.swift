@@ -48,6 +48,7 @@ struct SettingsView: View {
           .padding(.vertical, 8)
         }
       }
+      .foregroundStyle(Paper.ink)
       .scrollContentBackground(.hidden).background(Paper.stock)
       .navigationTitle("A few small things")
       .navigationBarTitleDisplayMode(.inline)

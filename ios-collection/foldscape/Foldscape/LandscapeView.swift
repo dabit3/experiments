@@ -20,7 +20,7 @@ struct LandscapeView: View {
 
   var body: some View {
     ScrollView {
-      VStack(spacing: 24) {
+      VStack(spacing: complete ? 18 : 24) {
         HStack {
           Button {
             dismiss()
@@ -39,7 +39,7 @@ struct LandscapeView: View {
 
         VStack(spacing: 6) {
           Text(complete ? "A little world, whole." : scene.title)
-            .font(.system(.largeTitle, design: .serif))
+            .font(.system(complete ? .title : .largeTitle, design: .serif))
             .multilineTextAlignment(.center)
           Text(complete ? scene.title : scene.subtitle)
             .font(.subheadline).foregroundStyle(Paper.muted)
@@ -93,13 +93,14 @@ struct LandscapeView: View {
             .font(.system(.footnote, design: .serif)).italic()
             .foregroundStyle(Paper.muted)
         } else {
-          LivingLandscape(scene: scene, living: complete)
-            .aspectRatio(1, contentMode: .fit)
-            .clipShape(RoundedRectangle(cornerRadius: 3))
-            .shadow(color: scene.color.opacity(0.16), radius: 16, x: 0, y: 10)
           if complete {
+            collectedPrint
             completion
           } else {
+            LivingLandscape(scene: scene, living: false)
+              .aspectRatio(1, contentMode: .fit)
+              .clipShape(RoundedRectangle(cornerRadius: 3))
+              .shadow(color: scene.color.opacity(0.16), radius: 16, x: 0, y: 10)
             introduction
           }
         }
@@ -107,6 +108,26 @@ struct LandscapeView: View {
       .padding(.horizontal, 24).padding(.bottom, 32)
     }
     .paperScreen()
+    .safeAreaInset(edge: .bottom, spacing: 0) {
+      if complete {
+        HStack(spacing: 12) {
+          Button("Keep exploring") { dismiss() }.buttonStyle(InkButton())
+          Button {
+            start(puzzle?.pace ?? pace)
+          } label: {
+            VStack(spacing: 5) {
+              Image(systemName: "arrow.counterclockwise").font(.body)
+              Text("Again").font(.caption)
+            }
+            .frame(width: 70, height: 58)
+            .background(.white.opacity(0.65), in: RoundedRectangle(cornerRadius: 16))
+          }
+          .accessibilityLabel("Play this landscape again")
+        }
+        .padding(.horizontal, 24).padding(.top, 10).padding(.bottom, 8)
+        .background(Paper.stock)
+      }
+    }
     .toolbar(.hidden, for: .navigationBar)
     .sheet(isPresented: $preview) {
       PreviewView(scene: scene)
@@ -130,8 +151,10 @@ struct LandscapeView: View {
       }
       .pickerStyle(.segmented)
       if let puzzle, !puzzle.isComplete {
-        Button("Continue · \(puzzle.moves) moves") { playing = true }
-          .buttonStyle(InkButton())
+        Button("Continue · \(puzzle.moves) \(puzzle.moves == 1 ? "move" : "moves")") {
+          playing = true
+        }
+        .buttonStyle(InkButton())
         Button("Start a new \(pace.title.lowercased()) puzzle") { restart = true }
           .font(.subheadline).frame(minHeight: 44)
       } else {
@@ -152,27 +175,57 @@ struct LandscapeView: View {
     }
   }
 
+  private var collectedPrint: some View {
+    VStack(spacing: 0) {
+      LivingLandscape(scene: scene, living: true)
+        .aspectRatio(1, contentMode: .fit)
+        .clipped()
+      HStack(alignment: .center) {
+        VStack(alignment: .leading, spacing: 4) {
+          Text(scene.title).font(.system(.title3, design: .serif))
+          Text("PAPER ATLAS  /  \(scene.number)")
+            .font(.system(.caption2, design: .monospaced)).tracking(1.4)
+            .foregroundStyle(Paper.muted)
+        }
+        Spacer()
+        Image(systemName: "checkmark.seal")
+          .font(.system(size: 26, weight: .ultraLight))
+          .foregroundStyle(scene.color)
+          .rotationEffect(.degrees(-12))
+          .accessibilityLabel("Collected")
+      }
+      .padding(.horizontal, 5).padding(.top, 16).padding(.bottom, 8)
+    }
+    .padding(12)
+    .background(Color(hex: 0xFFFCF3))
+    .overlay(Rectangle().stroke(Paper.edge.opacity(0.6), lineWidth: 1))
+    .shadow(color: scene.color.opacity(0.14), radius: 12, x: 0, y: 6)
+    .transition(.opacity.combined(with: .scale(scale: reduceMotion ? 1 : 0.97)))
+  }
+
   private var completion: some View {
-    VStack(spacing: 20) {
-      Label("ADDED TO YOUR COLLECTION", systemImage: "checkmark")
-        .font(.system(.caption2, design: .monospaced)).tracking(1)
-        .foregroundStyle(scene.color)
+    VStack(spacing: 16) {
       Text(scene.story).font(.system(.body, design: .serif))
         .multilineTextAlignment(.center).lineSpacing(5)
-      HStack(spacing: 32) {
-        VStack(spacing: 5) {
-          Text("\(puzzle?.moves ?? 0)").font(.system(.title, design: .serif))
-          Text("moves").font(.caption).foregroundStyle(Paper.muted)
+      VStack(spacing: 10) {
+        HStack {
+          Text("\(puzzle?.moves ?? 0) moves · a world restored")
+          Spacer()
+          Text("\(store.saved.completions.count) / 6")
         }
-        Rectangle().fill(Paper.edge).frame(width: 1, height: 36)
-        VStack(spacing: 5) {
-          Text("\(store.saved.completions.count) / 6").font(.system(.title, design: .serif))
-          Text("collected").font(.caption).foregroundStyle(Paper.muted)
+        .font(.caption).foregroundStyle(Paper.muted)
+        HStack(spacing: 8) {
+          ForEach(Landscape.all) { landscape in
+            RoundedRectangle(cornerRadius: 3)
+              .fill(store.saved.completions[landscape.id] == nil ? Paper.edge : landscape.color)
+              .frame(height: 7)
+          }
         }
       }
-      Button("Back to landscapes") { dismiss() }.buttonStyle(InkButton())
-      Button("Fold it again") { start(puzzle?.pace ?? pace) }
-        .font(.subheadline).frame(minHeight: 44)
+      .accessibilityElement(children: .combine)
+      .accessibilityLabel(
+        "\(puzzle?.moves ?? 0) moves. \(store.saved.completions.count) of six landscapes collected."
+      )
     }
   }
 
@@ -262,6 +315,19 @@ struct PuzzleBoard: View {
           }
         }
       }
+      .overlay {
+        Color.clear
+          .contentShape(Rectangle())
+          .onTapGesture { location in
+            let grid = BoardGeometry(side: Double(side))
+            if let index = grid.index(x: Double(location.x), y: Double(location.y)),
+              puzzle.tiles[index] != 0
+            {
+              move(index)
+            }
+          }
+          .accessibilityHidden(true)
+      }
     }
     .aspectRatio(1, contentMode: .fit)
   }
@@ -320,23 +386,66 @@ struct LivingLandscape: View {
   let living: Bool
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @State private var drift = false
+  @State private var revealed = false
 
   var body: some View {
     GeometryReader { geometry in
       Image(scene.id).resizable().scaledToFill()
       if living {
-        Ellipse().fill(.white.opacity(0.20))
-          .frame(width: geometry.size.width * 0.3, height: 18)
-          .blur(radius: 8)
-          .offset(x: geometry.size.width * (drift ? 0.60 : 0.12), y: geometry.size.height * 0.24)
-          .animation(
-            reduceMotion ? nil : .easeInOut(duration: 7).repeatForever(autoreverses: true),
-            value: drift)
+        if !reduceMotion {
+          PaperCloud().fill(Color(hex: 0xFFF5DA).opacity(0.4))
+            .frame(width: geometry.size.width * 0.25, height: geometry.size.height * 0.06)
+            .shadow(color: .black.opacity(0.06), radius: 2, x: 1, y: 2)
+            .offset(x: geometry.size.width * (drift ? 0.48 : 0.17), y: geometry.size.height * 0.27)
+            .animation(.easeInOut(duration: 12).repeatForever(autoreverses: true), value: drift)
+        }
+        Rectangle().fill(Paper.stock)
+          .frame(width: geometry.size.width / 3, height: geometry.size.height / 3)
+          .offset(x: geometry.size.width * 2 / 3, y: geometry.size.height * 2 / 3)
+          .opacity(revealed ? 0 : 1)
+        Path { path in
+          for part in 1...2 {
+            let fraction = CGFloat(part) / 3
+            path.move(to: CGPoint(x: geometry.size.width * fraction, y: 0))
+            path.addLine(to: CGPoint(x: geometry.size.width * fraction, y: geometry.size.height))
+            path.move(to: CGPoint(x: 0, y: geometry.size.height * fraction))
+            path.addLine(to: CGPoint(x: geometry.size.width, y: geometry.size.height * fraction))
+          }
+        }
+        .stroke(Paper.stock, lineWidth: 5)
+        .opacity(revealed ? 0 : 1)
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.8).delay(0.3), value: revealed)
       }
     }
     .clipped()
-    .onAppear { if living && !reduceMotion { drift = true } }
+    .onAppear {
+      if living {
+        drift = !reduceMotion
+        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.45)) { revealed = true }
+      }
+    }
     .accessibilityLabel("\(scene.title), a layered paper landscape")
+  }
+}
+
+struct PaperCloud: Shape {
+  func path(in rect: CGRect) -> Path {
+    Path { path in
+      path.move(to: CGPoint(x: 0, y: rect.height * 0.9))
+      path.addCurve(
+        to: CGPoint(x: rect.width * 0.24, y: rect.height * 0.42),
+        control1: CGPoint(x: rect.width * 0.01, y: rect.height * 0.35),
+        control2: CGPoint(x: rect.width * 0.14, y: rect.height * 0.3))
+      path.addCurve(
+        to: CGPoint(x: rect.width * 0.66, y: rect.height * 0.32),
+        control1: CGPoint(x: rect.width * 0.26, y: -rect.height * 0.12),
+        control2: CGPoint(x: rect.width * 0.6, y: -rect.height * 0.13))
+      path.addCurve(
+        to: CGPoint(x: rect.width, y: rect.height * 0.9),
+        control1: CGPoint(x: rect.width * 0.88, y: rect.height * 0.17),
+        control2: CGPoint(x: rect.width, y: rect.height * 0.48))
+      path.closeSubpath()
+    }
   }
 }
 

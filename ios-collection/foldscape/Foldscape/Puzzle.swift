@@ -8,6 +8,26 @@ enum Pace: String, CaseIterable, Codable {
   var caption: String { self == .gentle ? "A few quiet moves" : "A longer little escape" }
 }
 
+struct BoardGeometry {
+  let side: Double
+  let gap: Double = 6
+
+  func index(x: Double, y: Double) -> Int? {
+    guard side > gap * 2, x.isFinite, y.isFinite,
+      x >= 0, y >= 0, x < side, y < side
+    else { return nil }
+    let cell = (side - gap * 2) / 3
+    let stride = cell + gap
+    let column = Int(x / stride)
+    let row = Int(y / stride)
+    guard column < 3, row < 3,
+      x - Double(column) * stride < cell,
+      y - Double(row) * stride < cell
+    else { return nil }
+    return row * 3 + column
+  }
+}
+
 struct Puzzle: Codable, Equatable {
   static let solved = Array(1...8) + [0]
   private(set) var tiles: [Int]
