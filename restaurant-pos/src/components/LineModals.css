@@ -1,0 +1,26 @@
+.discount-kind {
+  margin: 6px 0 14px;
+}
+
+.discount-presets {
+  margin-bottom: 4px;
+}
+
+.discount-input {
+  position: relative;
+}
+
+.discount-input .prefix {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.discount-input input {
+  padding-left: 32px;
+  font-size: 18px;
+  font-weight: 700;
+}

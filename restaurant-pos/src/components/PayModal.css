@@ -1,0 +1,72 @@
+.tip-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.tip-grid .option {
+  min-height: 56px;
+}
+
+.custom-tip {
+  position: relative;
+  margin-top: 10px;
+}
+
+.custom-tip .prefix {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.custom-tip input {
+  padding-left: 30px;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: var(--mono);
+}
+
+.method-picker {
+  display: flex;
+}
+
+.method-picker button {
+  flex: 1;
+  min-height: 48px;
+}
+
+.pay-summary {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.pay-summary > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pay-summary-total {
+  margin-top: 6px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-strong);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-strong);
+  align-items: baseline;
+}
+
+.pay-summary-total .mono {
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}

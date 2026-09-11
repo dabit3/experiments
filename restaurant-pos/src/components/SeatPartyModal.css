@@ -1,0 +1,55 @@
+.party-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  padding: 6px 0 8px;
+}
+
+.party-btn {
+  min-height: 72px;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  border-radius: var(--radius);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.party-btn small {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.party-btn.over {
+  color: var(--text-muted);
+}
+
+.party-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--panel-2);
+}
+
+.party-btn.selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  box-shadow: var(--shadow-sm);
+}
+
+.party-btn.selected small {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.seat-hint {
+  font-size: 13px;
+  align-self: center;
+}
