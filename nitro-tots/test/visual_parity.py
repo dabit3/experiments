@@ -205,7 +205,7 @@ def capture_web(screen: str, out: Path, port: int) -> None:
 
 
 def capture_macos(screen: str, out: Path) -> None:
-    subprocess.run(["pkill", "-f", "Nitro Tots.app/Contents/MacOS/Nitro Tots"], check=False, capture_output=True)
+    subprocess.run(["pkill", "-x", "Nitro Tots"], check=False, capture_output=True)
     time.sleep(0.5)
     # The runner pins its content area to NT_WINDOW; the title bar is whatever
     # the OS adds on top, so the content rect is the bottom VIEW_H rows.

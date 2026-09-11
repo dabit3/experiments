@@ -58,7 +58,7 @@ cleanup() {
   for p in "${PIDS[@]:-}"; do [[ -n "$p" ]] && kill "$p" 2>/dev/null || true; done
   have ios && xcrun simctl terminate booted "$IOS_BUNDLE" >/dev/null 2>&1 || true
   have android && adb shell am force-stop "$ANDROID_PKG" >/dev/null 2>&1 || true
-  pkill -f "Nitro Tots.app/Contents/MacOS/Nitro Tots" 2>/dev/null || true
+  pkill -x "Nitro Tots" 2>/dev/null || true
 }
 trap cleanup EXIT
 
