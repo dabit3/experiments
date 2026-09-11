@@ -344,7 +344,7 @@ class RaceGame extends FlameGame {
       if (anchor != null) {
         canvas.save();
         canvas.translate(pose.pos.x, pose.pos.y);
-        canvas.rotate(_camHeading + math.pi / 2);
+        canvas.rotate(-_cameraRotation);
         final bg = RRect.fromRectAndRadius(Rect.fromCenter(center: anchor, width: tp.width + 8, height: tp.height + 4), const Radius.circular(6));
         canvas.drawRRect(bg, Paint()..color = const Color(0xED102B3B));
         canvas.drawRRect(
@@ -386,7 +386,7 @@ class RaceGame extends FlameGame {
       canvas.save();
       final rise = (1.1 - t.life) * 26;
       canvas.translate(t.pos.x, t.pos.y);
-      canvas.rotate(_camHeading + math.pi / 2);
+      canvas.rotate(-_cameraRotation);
       canvas.translate(0, -28 - rise);
       final a = (t.life / 0.4).clamp(0.0, 1.0);
       final tp = TextPainter(

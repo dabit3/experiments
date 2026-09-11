@@ -217,7 +217,9 @@ def capture_macos(screen: str, out: Path) -> None:
             time.sleep(0.5)
             rect = osascript(
                 'tell application "System Events" to tell process "Nitro Tots"\n'
+                '  set value of attribute "AXMinimized" of window 1 to false\n'
                 "  set frontmost to true\n"
+                '  perform action "AXRaise" of window 1\n'
                 "  set {x, y} to position of window 1\n"
                 "  set {w, h} to size of window 1\n"
                 '  return (x as text) & "," & (y as text) & "," & (w as text) & "," & (h as text)\n'

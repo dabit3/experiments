@@ -187,6 +187,7 @@ dismiss_notifications() {
 raise_macos() {
   have macos || return 0
   osascript -e 'tell application "System Events" to tell process "Nitro Tots"
+      set value of attribute "AXMinimized" of window 1 to false
       set frontmost to true
       perform action "AXRaise" of window 1
     end tell' >/dev/null 2>&1 || true
