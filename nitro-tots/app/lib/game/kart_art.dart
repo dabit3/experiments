@@ -4,6 +4,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/painting.dart';
 import 'package:nitro_core/nitro_core.dart';
 
+import 'art_assets.dart';
+
 import '../theme/tokens.dart';
 
 /// Vector kart + item iconography shared by the race view, minimap, garage
@@ -57,104 +59,111 @@ abstract final class KartArt {
       canvas.drawPath(inner, Paint()..color = const Color(0xFFFFE27A).withValues(alpha: alpha));
     }
 
-    // Wheels.
-    final wheel = Paint()..color = ink.withValues(alpha: alpha);
-    final hub = Paint()..color = const Color(0xFFB8D8E3).withValues(alpha: alpha);
-    for (final (x, y, front) in [
-      (len * 0.30, -wid / 2 - 1.5, true),
-      (len * 0.30, wid / 2 + 1.5, true),
-      (-len * 0.32, -wid / 2 - 1.5, false),
-      (-len * 0.32, wid / 2 + 1.5, false),
-    ]) {
-      canvas.save();
-      canvas.translate(x, y);
-      if (front) canvas.rotate(steer * 0.45);
-      final r = RRect.fromRectAndRadius(const Rect.fromLTWH(-3.2, -2, 6.4, 4), const Radius.circular(1.6));
-      canvas.drawRRect(r, wheel);
-      for (var line = -2; line <= 2; line++) {
-        canvas.drawLine(
-          Offset(line.toDouble(), -1.7),
-          Offset(line.toDouble(), 1.7),
-          Paint()
-            ..color = const Color(0xFF394656).withValues(alpha: alpha)
-            ..strokeWidth = 0.4,
-        );
+    if (!ArtAssets.draw(
+      canvas,
+      'kart-${kart.id}.png',
+      Rect.fromCenter(center: Offset.zero, width: len + 10, height: (len + 10) * 0.75),
+      opacity: alpha,
+    )) {
+      // Wheels.
+      final wheel = Paint()..color = ink.withValues(alpha: alpha);
+      final hub = Paint()..color = const Color(0xFFB8D8E3).withValues(alpha: alpha);
+      for (final (x, y, front) in [
+        (len * 0.30, -wid / 2 - 1.5, true),
+        (len * 0.30, wid / 2 + 1.5, true),
+        (-len * 0.32, -wid / 2 - 1.5, false),
+        (-len * 0.32, wid / 2 + 1.5, false),
+      ]) {
+        canvas.save();
+        canvas.translate(x, y);
+        if (front) canvas.rotate(steer * 0.45);
+        final r = RRect.fromRectAndRadius(const Rect.fromLTWH(-3.2, -2, 6.4, 4), const Radius.circular(1.6));
+        canvas.drawRRect(r, wheel);
+        for (var line = -2; line <= 2; line++) {
+          canvas.drawLine(
+            Offset(line.toDouble(), -1.7),
+            Offset(line.toDouble(), 1.7),
+            Paint()
+              ..color = const Color(0xFF394656).withValues(alpha: alpha)
+              ..strokeWidth = 0.4,
+          );
+        }
+        canvas.drawRect(const Rect.fromLTWH(-1.2, -0.8, 2.4, 1.6), hub);
+        canvas.restore();
       }
-      canvas.drawRect(const Rect.fromLTWH(-1.2, -0.8, 2.4, 1.6), hub);
-      canvas.restore();
-    }
 
-    // Body.
-    final bodyRect = RRect.fromRectAndCorners(
-      Rect.fromCenter(center: Offset.zero, width: len, height: wid),
-      topRight: Radius.circular(wid * 0.5),
-      bottomRight: Radius.circular(wid * 0.5),
-      topLeft: const Radius.circular(3),
-      bottomLeft: const Radius.circular(3),
-    );
-    canvas.drawRRect(bodyRect, Paint()..color = ink.withValues(alpha: alpha));
-    canvas.drawRRect(
-      bodyRect.deflate(1.1),
-      Paint()
-        ..shader = ui.Gradient.linear(
-          Offset(-2, -wid / 2),
-          Offset(2, wid / 2),
-          [
-            Color.lerp(body, const Color(0xFFFFFFFF), 0.5)!.withValues(alpha: alpha),
-            body.withValues(alpha: alpha),
-            Color.lerp(body, ink, 0.5)!.withValues(alpha: alpha),
-          ],
-          [0, 0.4, 1],
-        ),
-    );
-    final spoiler = RRect.fromRectAndRadius(Rect.fromLTWH(-len / 2 - 1, -wid / 2 - 1, 3, wid + 2), const Radius.circular(0.7));
-    canvas.drawRRect(spoiler.shift(const Offset(1, 1)), Paint()..color = ink.withValues(alpha: alpha));
-    canvas.drawRRect(spoiler, Paint()..color = body.withValues(alpha: alpha));
-    canvas.drawLine(
-      Offset(-len / 2, -wid / 2),
-      Offset(-len / 2, wid / 2),
-      Paint()
-        ..color = const Color(0xFFECF3EE).withValues(alpha: alpha)
-        ..strokeWidth = 0.6,
-    );
-    for (final side in [-1.0, 1.0]) {
-      final pipe = Rect.fromLTWH(-len / 2 - 2, side * (wid * 0.33) - 1, 6, 2);
+      // Body.
+      final bodyRect = RRect.fromRectAndCorners(
+        Rect.fromCenter(center: Offset.zero, width: len, height: wid),
+        topRight: Radius.circular(wid * 0.5),
+        bottomRight: Radius.circular(wid * 0.5),
+        topLeft: const Radius.circular(3),
+        bottomLeft: const Radius.circular(3),
+      );
+      canvas.drawRRect(bodyRect, Paint()..color = ink.withValues(alpha: alpha));
       canvas.drawRRect(
-        RRect.fromRectAndRadius(pipe, const Radius.circular(0.7)),
+        bodyRect.deflate(1.1),
         Paint()
-          ..shader = ui.Gradient.linear(pipe.topLeft, pipe.bottomLeft, [
-            const Color(0xFFE1EDF3).withValues(alpha: alpha),
-            const Color(0xFF506273).withValues(alpha: alpha),
-          ]),
+          ..shader = ui.Gradient.linear(
+            Offset(-2, -wid / 2),
+            Offset(2, wid / 2),
+            [
+              Color.lerp(body, const Color(0xFFFFFFFF), 0.5)!.withValues(alpha: alpha),
+              body.withValues(alpha: alpha),
+              Color.lerp(body, ink, 0.5)!.withValues(alpha: alpha),
+            ],
+            [0, 0.4, 1],
+          ),
       );
-      canvas.drawCircle(Offset(-len / 2 - 1.7, side * (wid * 0.33)), 0.6, wheel);
-      canvas.drawOval(
-        Rect.fromCenter(center: Offset(len / 2 - 2, side * wid * 0.27), width: 2, height: 1.3),
-        Paint()..color = const Color(0xFF91FFFF).withValues(alpha: alpha),
+      final spoiler = RRect.fromRectAndRadius(Rect.fromLTWH(-len / 2 - 1, -wid / 2 - 1, 3, wid + 2), const Radius.circular(0.7));
+      canvas.drawRRect(spoiler.shift(const Offset(1, 1)), Paint()..color = ink.withValues(alpha: alpha));
+      canvas.drawRRect(spoiler, Paint()..color = body.withValues(alpha: alpha));
+      canvas.drawLine(
+        Offset(-len / 2, -wid / 2),
+        Offset(-len / 2, wid / 2),
+        Paint()
+          ..color = const Color(0xFFECF3EE).withValues(alpha: alpha)
+          ..strokeWidth = 0.6,
       );
-    }
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(2, -1.2, len / 2 - 4, 2.4), const Radius.circular(0.5)),
-      Paint()..color = const Color(0xFFFFF5D9).withValues(alpha: alpha),
-    );
-    if (kart.id == 'pinewood') {
-      for (var y = -2; y <= 2; y++) {
-        canvas.drawLine(
-          Offset(3, y * 1.6),
-          Offset(len / 2 - 2, y * 1.6),
+      for (final side in [-1.0, 1.0]) {
+        final pipe = Rect.fromLTWH(-len / 2 - 2, side * (wid * 0.33) - 1, 6, 2);
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(pipe, const Radius.circular(0.7)),
           Paint()
-            ..color = const Color(0x6696683A)
-            ..strokeWidth = 0.4,
+            ..shader = ui.Gradient.linear(pipe.topLeft, pipe.bottomLeft, [
+              const Color(0xFFE1EDF3).withValues(alpha: alpha),
+              const Color(0xFF506273).withValues(alpha: alpha),
+            ]),
+        );
+        canvas.drawCircle(Offset(-len / 2 - 1.7, side * (wid * 0.33)), 0.6, wheel);
+        canvas.drawOval(
+          Rect.fromCenter(center: Offset(len / 2 - 2, side * wid * 0.27), width: 2, height: 1.3),
+          Paint()..color = const Color(0xFF91FFFF).withValues(alpha: alpha),
         );
       }
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(Rect.fromLTWH(2, -1.2, len / 2 - 4, 2.4), const Radius.circular(0.5)),
+        Paint()..color = const Color(0xFFFFF5D9).withValues(alpha: alpha),
+      );
+      if (kart.id == 'pinewood') {
+        for (var y = -2; y <= 2; y++) {
+          canvas.drawLine(
+            Offset(3, y * 1.6),
+            Offset(len / 2 - 2, y * 1.6),
+            Paint()
+              ..color = const Color(0x6696683A)
+              ..strokeWidth = 0.4,
+          );
+        }
+      }
+      // Highlight stripe.
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(Rect.fromLTWH(-len / 2 + 3, -wid / 2 + 2.2, len - 8, 2.2), const Radius.circular(1)),
+        Paint()..color = const Color(0xFFFFFFFF).withValues(alpha: 0.35 * alpha),
+      );
+      // Nose / bumper accent.
+      canvas.drawCircle(Offset(len / 2 - 3, 0), 1.8, Paint()..color = const Color(0xFFFFE27A).withValues(alpha: alpha));
     }
-    // Highlight stripe.
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(-len / 2 + 3, -wid / 2 + 2.2, len - 8, 2.2), const Radius.circular(1)),
-      Paint()..color = const Color(0xFFFFFFFF).withValues(alpha: 0.35 * alpha),
-    );
-    // Nose / bumper accent.
-    canvas.drawCircle(Offset(len / 2 - 3, 0), 1.8, Paint()..color = const Color(0xFFFFE27A).withValues(alpha: alpha));
 
     // Driver helmet.
     canvas.drawCircle(const Offset(-1.4, 0.7), 4.8, Paint()..color = ink.withValues(alpha: alpha));

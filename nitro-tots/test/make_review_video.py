@@ -44,7 +44,7 @@ from pathlib import Path
 
 W, H = 1280, 720
 FPS = 30
-BG = "0x16122A"
+BG = "0x071722"
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 MUSIC = ROOT / "app" / "assets" / "audio" / "music_menu.wav"
@@ -302,15 +302,15 @@ def main() -> int:
             f"Rendered {datetime.now().strftime('%Y-%m-%d')} from the clone-this evidence directory",
         ],
     )
-    c_ch_match = chapter("ch_match", "Chapter 1", "Automated four-way match", f"{live_names} race the Sugar Cup through one authoritative server")
+    c_ch_match = chapter("ch_match", "Chapter 1", "Cross-platform match", f"{live_names} race the Sugar Cup through one authoritative server")
     c_ch_platforms = chapter("ch_platforms", "Chapter 2", "Platform by platform", "Lobby → racing → results → final standings on each client")
     c_ch_compare = chapter("ch_compare", "Chapter 3", "Same result everywhere", "Final standings, points and hash compared across clients")
     c_ch_parity = chapter("ch_parity", "Chapter 4", "Visual parity", "Web baseline vs native macOS after normalization")
-    c_ch_manual = chapter("ch_manual", "Chapter 5", "Manual play-through", "Testing-agent session: Grand Prix, rejoin, time trial, touch HUD")
-    c_ch_design = chapter("ch_design", "Chapter 6", "Design pass", "Kart-racer HUD and menu layout conventions, original Nitro Tots art")
+    c_ch_manual = chapter("ch_manual", "Chapter 5", "Manual play-through", "Recorded checks: responsive pause, Grand Prix, online and touch")
+    c_ch_design = chapter("ch_design", "Chapter 6", "Arcade redesign", "Original key art, racers, material textures and sculpted scenery")
     c_android = card("android", "notice", eyebrow="Build-only platform", title="Android", lines=[args.android_note, "Same Flutter/Flame codebase, same protocol, same test hooks", "The seat can be added live on a host with virtualization"])
 
-    cap_lobby = caption("cap_lobby", "Lobby: three live clients join room " + str(result.get("room", "")), "Host starts once every seat is ready; bots fill the remaining slots")
+    cap_lobby = caption("cap_lobby", f"Lobby: {len(live)} live clients join room " + str(result.get("room", "")), "Host starts once every seat is ready; bots fill the remaining slots")
     cap_race = caption("cap_race", "Race start: countdown, lights, GO!", "Server-authoritative 30 Hz simulation · client prediction + interpolation")
     cap_results = caption("cap_results", "Race results and running cup total", "Points 15/12/10/9/8/7/6/5 carried across the four races")
     cap_final = caption("cap_final", f"Final standings · hash {server_hash}", "Every client reports the same order, points and hash")

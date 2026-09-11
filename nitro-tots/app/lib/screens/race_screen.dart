@@ -327,35 +327,40 @@ class _PauseMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.black.withValues(alpha: 0.55),
-      child: Center(
-        child: NtCard(
-          padding: const EdgeInsets.all(NtSpace.x8),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 360),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(online ? 'Race continues' : 'Paused', style: NtType.h1(context.nt.ink), textAlign: TextAlign.center),
-                const SizedBox(height: NtSpace.x2),
-                Text(
-                  online ? 'Online races keep running while you are away.' : 'Take a breather, tot.',
-                  style: NtType.body(context.nt.inkSoft),
-                  textAlign: TextAlign.center,
+      child: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(NtSpace.x4),
+            child: NtCard(
+              padding: const EdgeInsets.all(NtSpace.x8),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 360),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(online ? 'Race continues' : 'Paused', style: NtType.h1(context.nt.ink), textAlign: TextAlign.center),
+                    const SizedBox(height: NtSpace.x2),
+                    Text(
+                      online ? 'Online races keep running while you are away.' : 'Take a breather, tot.',
+                      style: NtType.body(context.nt.inkSoft),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: NtSpace.x6),
+                    NtButton(label: 'Resume', icon: Icons.play_arrow_rounded, onPressed: onResume, expand: true, autofocus: true),
+                    const SizedBox(height: NtSpace.x3),
+                    NtButton(
+                      label: online ? 'Leave room' : 'Quit race',
+                      icon: Icons.exit_to_app_rounded,
+                      kind: NtButtonKind.secondary,
+                      onPressed: onQuit,
+                      expand: true,
+                    ),
+                    const SizedBox(height: NtSpace.x5),
+                    const _ControlsHelp(),
+                  ],
                 ),
-                const SizedBox(height: NtSpace.x6),
-                NtButton(label: 'Resume', icon: Icons.play_arrow_rounded, onPressed: onResume, expand: true, autofocus: true),
-                const SizedBox(height: NtSpace.x3),
-                NtButton(
-                  label: online ? 'Leave room' : 'Quit race',
-                  icon: Icons.exit_to_app_rounded,
-                  kind: NtButtonKind.secondary,
-                  onPressed: onQuit,
-                  expand: true,
-                ),
-                const SizedBox(height: NtSpace.x5),
-                const _ControlsHelp(),
-              ],
+              ),
             ),
           ),
         ),
@@ -370,6 +375,7 @@ class _ControlsHelp extends StatelessWidget {
   Widget build(BuildContext context) {
     final nt = context.nt;
     Widget key(String k, String what) => Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),

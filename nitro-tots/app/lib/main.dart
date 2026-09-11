@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:nitro_core/nitro_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'game/art_assets.dart';
 import 'game/session.dart';
 import 'net/client.dart';
 import 'screens/garage_screen.dart';
@@ -26,6 +27,7 @@ import 'widgets/nt_widgets.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Flame.device.fullScreen();
+  await ArtAssets.load();
   final prefs = await SharedPreferences.getInstance();
   final test = TestConfig.resolve(await TestConfig.runtimeQuery(), AppState.platformId);
   if (test.active) debugPrint('nitro-tots $test');

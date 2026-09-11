@@ -2,11 +2,13 @@ import 'dart:ui' as ui;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nitro_core/nitro_core.dart';
+import 'package:nitro_tots/game/art_assets.dart';
 import 'package:nitro_tots/game/kart_art.dart';
 import 'package:nitro_tots/game/track_art.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(ArtAssets.load);
 
   test('all worlds and kart effects produce rasterizable race art', () async {
     for (final id in ['sprinkle', 'mossy', 'tincity', 'frostbite', 'bowl']) {

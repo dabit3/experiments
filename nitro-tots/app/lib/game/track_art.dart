@@ -4,6 +4,8 @@ import 'dart:ui' as ui;
 import 'package:flutter/widgets.dart';
 import 'package:nitro_core/nitro_core.dart';
 
+import 'art_assets.dart';
+
 /// Builds a cached vector picture of everything on a track that never moves.
 class TrackArt {
   TrackArt(this.track) {
@@ -45,6 +47,28 @@ class TrackArt {
   }
 
   void _ground(Canvas canvas) {
+    final name = switch (track.id) {
+      'sprinkle' => 'sand',
+      'mossy' => 'moss',
+      'frostbite' => 'ice',
+      _ => 'asphalt',
+    };
+    final texture = ArtAssets.images['ground-$name.jpg'];
+    if (texture != null) {
+      canvas.drawRect(
+        bounds,
+        Paint()
+          ..shader = ui.ImageShader(
+            texture,
+            ui.TileMode.mirror,
+            ui.TileMode.mirror,
+            Matrix4.diagonal3Values(0.25, 0.25, 1).storage,
+            filterQuality: FilterQuality.medium,
+          ),
+      );
+      canvas.drawRect(bounds, Paint()..shader = ui.Gradient.linear(bounds.topLeft, bounds.bottomRight, [const Color(0x08FFF6CB), const Color(0x22061927)]));
+      return;
+    }
     canvas.drawRect(
       bounds,
       Paint()
@@ -94,14 +118,27 @@ class TrackArt {
           Rect.fromCenter(center: Offset(radius * 0.45, radius * 0.6), width: radius * 2.4, height: radius * 1.6),
           Paint()..color = const Color(0x33071827),
         );
-        switch (track.id) {
-          case 'tincity':
-          case 'bowl':
-            _building(canvas, radius, i.isEven);
-          case 'frostbite':
-            _crystal(canvas, radius);
-          default:
-            _tree(canvas, radius, track.id == 'sprinkle', i ~/ 9 + (side < 0 ? 1 : 0));
+        final prop = i % 72 == 0
+            ? 'grandstand'
+            : i % 99 == 0
+            ? 'pit'
+            : switch (track.id) {
+                'sprinkle' => 'candy',
+                'mossy' => 'forest',
+                'frostbite' => 'ice',
+                _ => 'tower',
+              };
+        final sprite = ArtAssets.draw(canvas, 'prop-$prop.png', Rect.fromCenter(center: Offset.zero, width: radius * 2.8, height: radius * 2.8));
+        if (!sprite) {
+          switch (track.id) {
+            case 'tincity':
+            case 'bowl':
+              _building(canvas, radius, i.isEven);
+            case 'frostbite':
+              _crystal(canvas, radius);
+            default:
+              _tree(canvas, radius, track.id == 'sprinkle', i ~/ 9 + (side < 0 ? 1 : 0));
+          }
         }
         canvas.restore();
       }
@@ -320,6 +357,22 @@ class TrackArt {
       ring,
       Paint()..shader = ui.Gradient.linear(bounds.topLeft, bounds.bottomRight, [Color.lerp(c(theme.road), const Color(0xFF263B50), 0.28)!, c(theme.road)]),
     );
+    final asphalt = ArtAssets.images['ground-asphalt.jpg'];
+    if (asphalt != null) {
+      canvas.drawPath(
+        ring,
+        Paint()
+          ..shader = ui.ImageShader(
+            asphalt,
+            ui.TileMode.mirror,
+            ui.TileMode.mirror,
+            Matrix4.diagonal3Values(0.16, 0.16, 1).storage,
+            filterQuality: FilterQuality.medium,
+          )
+          ..color = const Color(0x77FFFFFF)
+          ..blendMode = BlendMode.softLight,
+      );
+    }
     canvas.save();
     canvas.clipPath(ring);
     final grain = Rng(781);
