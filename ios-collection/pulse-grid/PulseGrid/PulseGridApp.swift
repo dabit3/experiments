@@ -25,11 +25,11 @@ struct HomeView: View {
       ZStack {
         InstrumentBackground()
         ScrollView {
-          VStack(alignment: .leading, spacing: 24) {
+          VStack(alignment: .leading, spacing: 20) {
             HStack {
               HStack(spacing: 8) {
                 Circle().fill(Palette.mint).frame(width: 6, height: 6)
-                MicroLabel(text: "POCKET INSTRUMENT / 01")
+                MicroLabel(text: "POCKET INSTRUMENT")
               }
               Spacer()
               IconButton(symbol: "slider.horizontal.3", label: "Guide and settings") {
@@ -46,10 +46,10 @@ struct HomeView: View {
                 .font(.system(.title3, weight: .regular))
                 .foregroundStyle(Palette.muted)
             }
-            HeroCircuit().frame(height: 160).padding(.horizontal, 10)
+            HeroCircuit().frame(height: 125).padding(.horizontal, 10)
             VStack(alignment: .leading, spacing: 15) {
               HStack {
-                MicroLabel(text: "YOUR NEXT CONNECTION", color: Palette.mint)
+                MicroLabel(text: "NEXT CONNECTION", color: Palette.mint)
                 Spacer()
                 MicroLabel(text: String(format: "%02d / 10", store.suggestedLevel + 1))
               }
@@ -70,18 +70,21 @@ struct HomeView: View {
             .background(Palette.panel.opacity(0.65), in: RoundedRectangle(cornerRadius: 24))
             .overlay { RoundedRectangle(cornerRadius: 24).strokeBorder(Palette.line, lineWidth: 1) }
             HStack {
-              MicroLabel(text: "TEN SMALL CONNECTIONS")
+              MicroLabel(text: "CIRCUITS")
               Spacer()
               Button {
                 showProgress = true
               } label: {
                 HStack(spacing: 6) {
-                  Text("\(store.completedCount)/10 powered")
+                  Image(systemName: "waveform.path")
+                  Text("Archive · \(store.completedCount)/10")
                   Image(systemName: "arrow.up.right")
                 }
-                .font(.system(.caption, design: .monospaced))
+                .font(.system(.subheadline, weight: .medium))
                 .foregroundStyle(Palette.mint)
+                .padding(.horizontal, 14)
                 .frame(minHeight: 44)
+                .background(Palette.panel, in: Capsule())
               }
               .accessibilityLabel("Progress, \(store.completedCount) of 10 circuits powered")
             }
@@ -114,6 +117,7 @@ struct HomeView: View {
         GameView(level: Circuits.all[id], initialSession: store.session(for: Circuits.all[id])) {
           path = [($0) % Circuits.all.count]
         }
+        .id(id)
       }
       .sheet(isPresented: $showProgress) { ProgressViewScreen() }
       .sheet(isPresented: $showGuide) { GuideView() }

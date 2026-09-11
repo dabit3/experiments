@@ -6,7 +6,7 @@ enum Palette {
   static let mint = Color(red: 0.55, green: 0.98, blue: 0.82)
   static let coral = Color(red: 1, green: 0.51, blue: 0.40)
   static let ink = Color(red: 0.89, green: 0.97, blue: 0.96)
-  static let muted = Color(red: 0.51, green: 0.66, blue: 0.69)
+  static let muted = Color(red: 0.58, green: 0.72, blue: 0.74)
   static let line = Color(red: 0.17, green: 0.29, blue: 0.33)
 }
 
@@ -37,8 +37,8 @@ struct MicroLabel: View {
 
   var body: some View {
     Text(text)
-      .font(.system(.caption2, design: .monospaced, weight: .medium))
-      .tracking(1.6)
+      .font(.system(.caption, design: .monospaced, weight: .medium))
+      .tracking(1.0)
       .foregroundStyle(color)
   }
 }
@@ -125,11 +125,16 @@ struct TileView: View {
     ZStack {
       if level.masks[index] == 0 {
         RoundedRectangle(cornerRadius: 14)
-          .fill(Palette.background.opacity(0.45))
+          .fill(Palette.panel.opacity(0.25))
+          .overlay {
+            RoundedRectangle(cornerRadius: 14)
+              .strokeBorder(
+                Palette.line.opacity(0.35), style: StrokeStyle(lineWidth: 1, dash: [2, 5]))
+          }
           .overlay {
             Image(systemName: "plus")
-              .font(.system(size: 10, weight: .ultraLight))
-              .foregroundStyle(Palette.line)
+              .font(.system(size: 10, weight: .light))
+              .foregroundStyle(Palette.muted.opacity(0.3))
           }
       } else {
         RoundedRectangle(cornerRadius: 14)
@@ -191,9 +196,9 @@ struct TileView: View {
 struct HeroCircuit: View {
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   private let points: [CGPoint] = [
-    CGPoint(x: 0.06, y: 0.66), CGPoint(x: 0.27, y: 0.66),
-    CGPoint(x: 0.27, y: 0.30), CGPoint(x: 0.55, y: 0.30),
-    CGPoint(x: 0.55, y: 0.66), CGPoint(x: 0.92, y: 0.66),
+    CGPoint(x: 0.06, y: 0.70), CGPoint(x: 0.28, y: 0.70),
+    CGPoint(x: 0.28, y: 0.25), CGPoint(x: 0.57, y: 0.25),
+    CGPoint(x: 0.57, y: 0.70), CGPoint(x: 0.94, y: 0.70),
   ]
 
   var body: some View {
@@ -202,25 +207,26 @@ struct HeroCircuit: View {
         let nodes = points.map { CGPoint(x: $0.x * size.width, y: $0.y * size.height) }
         var path = Path()
         path.addLines(nodes)
-        var branch = Path()
-        branch.addLines([
-          nodes[3], CGPoint(x: nodes[3].x, y: size.height * 0.1),
-          CGPoint(x: size.width * 0.78, y: size.height * 0.1),
-        ])
-        for trace in [path, branch] {
-          context.stroke(trace, with: .color(Palette.mint.opacity(0.035)), lineWidth: 34)
-          context.stroke(trace, with: .color(Palette.mint.opacity(0.08)), lineWidth: 14)
-          context.stroke(trace, with: .color(Palette.mint.opacity(0.3)), lineWidth: 2)
-        }
+        context.stroke(
+          path, with: .color(Palette.mint.opacity(0.035)),
+          style: StrokeStyle(lineWidth: 32, lineCap: .round, lineJoin: .round))
+        context.stroke(
+          path, with: .color(Palette.mint.opacity(0.08)),
+          style: StrokeStyle(lineWidth: 12, lineCap: .round, lineJoin: .round))
         for node in nodes {
           let rect = CGRect(x: node.x - 23, y: node.y - 23, width: 46, height: 46)
           context.fill(Path(roundedRect: rect, cornerRadius: 11), with: .color(Palette.panel))
           context.stroke(
             Path(roundedRect: rect, cornerRadius: 11),
             with: .color(Palette.mint.opacity(0.25)), lineWidth: 1)
-          context.fill(
-            Path(ellipseIn: CGRect(x: node.x - 3, y: node.y - 3, width: 6, height: 6)),
-            with: .color(Palette.mint))
+        }
+        context.stroke(
+          path, with: .color(Palette.mint.opacity(0.8)),
+          style: StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
+        for node in nodes {
+          let circle = Path(ellipseIn: CGRect(x: node.x - 4, y: node.y - 4, width: 8, height: 8))
+          context.fill(circle, with: .color(Palette.panel))
+          context.stroke(circle, with: .color(Palette.mint), lineWidth: 1.5)
         }
         let phase = (timeline.date.timeIntervalSinceReferenceDate * 0.8).truncatingRemainder(
           dividingBy: 5)
@@ -234,10 +240,17 @@ struct HeroCircuit: View {
         context.fill(
           Path(ellipseIn: CGRect(x: pulse.x - 3, y: pulse.y - 3, width: 6, height: 6)),
           with: .color(.white))
-        let end = nodes.last!
-        context.stroke(
-          Path(ellipseIn: CGRect(x: end.x - 9, y: end.y - 9, width: 18, height: 18)),
-          with: .color(Palette.coral), lineWidth: 2)
+        for (node, symbol, color) in [
+          (nodes[0], "bolt.fill", Palette.mint),
+          (nodes[5], "diamond.fill", Palette.coral),
+        ] {
+          let ring = Path(ellipseIn: CGRect(x: node.x - 13, y: node.y - 13, width: 26, height: 26))
+          context.fill(ring, with: .color(Palette.background))
+          context.stroke(ring, with: .color(color), lineWidth: 1.5)
+          context.draw(
+            Text(Image(systemName: symbol)).font(.system(size: 10, weight: .bold))
+              .foregroundStyle(color), at: node)
+        }
       }
     }
     .accessibilityHidden(true)

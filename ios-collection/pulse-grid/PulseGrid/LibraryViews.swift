@@ -81,6 +81,7 @@ struct ProgressViewScreen: View {
 }
 
 struct GuideView: View {
+  var allowErase = true
   @EnvironmentObject private var store: ProgressStore
   @Environment(\.dismiss) private var dismiss
   @State private var confirmErase = false
@@ -132,10 +133,12 @@ struct GuideView: View {
             )
             .font(.footnote)
             .foregroundStyle(Palette.muted)
-            Button("Erase all progress", role: .destructive) { confirmErase = true }
-              .font(.subheadline)
-              .foregroundStyle(Palette.coral)
-              .frame(minHeight: 44)
+            if allowErase {
+              Button("Erase all progress", role: .destructive) { confirmErase = true }
+                .font(.subheadline)
+                .foregroundStyle(Palette.coral)
+                .frame(minHeight: 44)
+            }
           }
           MicroLabel(text: "PULSE GRID / VERSION 1.0")
         }

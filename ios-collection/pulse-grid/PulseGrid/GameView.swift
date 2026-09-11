@@ -26,7 +26,7 @@ struct GameView: View {
     ZStack {
       InstrumentBackground()
       ScrollView {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 18) {
           HStack {
             Button {
               dismiss()
@@ -90,9 +90,7 @@ struct GameView: View {
             MicroLabel(text: "\(level.size) × \(level.size)")
           }
           .padding(.top, -9)
-          if solved {
-            completion
-          } else {
+          if !solved {
             VStack(spacing: 14) {
               HStack(spacing: 12) {
                 ActionButton(title: "Reset", symbol: "arrow.counterclockwise") { showReset = true }
@@ -111,12 +109,15 @@ struct GameView: View {
         }
         .padding(.horizontal, 24)
         .padding(.top, 8)
-        .padding(.bottom, 32)
+        .padding(.bottom, 20)
       }
+    }
+    .safeAreaInset(edge: .bottom, spacing: 0) {
+      if solved { completion }
     }
     .toolbar(.hidden, for: .navigationBar)
     .onAppear { store.save(session, for: level) }
-    .sheet(isPresented: $showGuide) { GuideView() }
+    .sheet(isPresented: $showGuide) { GuideView(allowErase: false) }
     .confirmationDialog("Reset this circuit?", isPresented: $showReset, titleVisibility: .visible) {
       Button("Reset circuit", role: .destructive) {
         session = CircuitSession(level: level)
@@ -143,7 +144,7 @@ struct GameView: View {
               distance: network[index], hint: hintIndex == index)
           }
           .buttonStyle(.plain)
-          .disabled(solved)
+          .allowsHitTesting(!solved)
           .accessibilityLabel(tileLabel(index))
           .accessibilityHint(
             solved ? "Circuit complete. Reset to play again." : "Rotates clockwise one quarter turn"
@@ -166,8 +167,8 @@ struct GameView: View {
   }
 
   private var completion: some View {
-    VStack(alignment: .leading, spacing: 16) {
-      HStack(alignment: .top) {
+    VStack(alignment: .leading, spacing: 10) {
+      HStack(alignment: .center) {
         VStack(alignment: .leading, spacing: 6) {
           Text("Signal locked.")
             .font(.system(.title2, design: .rounded, weight: .medium))
@@ -179,9 +180,7 @@ struct GameView: View {
           .foregroundStyle(Palette.muted)
         }
         Spacer()
-        Image(systemName: "checkmark.seal")
-          .font(.system(size: 27, weight: .ultraLight))
-          .foregroundStyle(Palette.mint)
+        IconButton(symbol: "arrow.counterclockwise", label: "Play again") { showReset = true }
       }
       ActionButton(
         title: level.id == 9 ? "Back to circuits" : "Next circuit",
@@ -189,17 +188,20 @@ struct GameView: View {
       ) {
         if level.id == 9 { dismiss() } else { next(level.id + 1) }
       }
-      Button("Play again") { showReset = true }
-        .font(.system(.subheadline))
-        .foregroundStyle(Palette.muted)
-        .frame(maxWidth: .infinity, minHeight: 44)
     }
-    .padding(20)
-    .background(Palette.panel.opacity(0.7), in: RoundedRectangle(cornerRadius: 22))
+    .padding(.horizontal, 24)
+    .padding(.top, 16)
+    .padding(.bottom, 12)
+    .background {
+      Palette.background
+        .overlay(alignment: .top) { Rectangle().fill(Palette.mint.opacity(0.25)).frame(height: 1) }
+        .ignoresSafeArea(edges: .bottom)
+    }
     .accessibilityElement(children: .contain)
   }
 
   private func rotate(_ index: Int) {
+    guard !solved else { return }
     hintIndex = nil
     withAnimation(reduceMotion ? nil : .spring(response: 0.32, dampingFraction: 0.72)) {
       session.rotate(index, in: level)
