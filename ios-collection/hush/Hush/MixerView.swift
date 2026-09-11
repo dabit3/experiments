@@ -20,6 +20,7 @@ struct MixerView: View {
       .scrollIndicators(.hidden)
     }
     .foregroundStyle(HushStyle.silver)
+    .tint(HushStyle.lavender)
     .safeAreaInset(edge: .bottom, spacing: 0) { playbackDock }
     .sheet(item: $sheet) { item in
       switch item {
@@ -34,7 +35,11 @@ struct MixerView: View {
       isPresented: Binding(
         get: { store.error != nil }, set: { if !$0 { store.error = nil } })
     ) {
-      Button("OK") { store.error = nil }
+      Button("Retry") {
+        store.error = nil
+        store.play()
+      }
+      Button("Cancel", role: .cancel) { store.error = nil }
     } message: {
       Text(store.error ?? "")
     }
@@ -79,36 +84,46 @@ struct MixerView: View {
   private var hero: some View {
     ZStack(alignment: .bottomLeading) {
       Landscape(mix: store.mix, animated: store.isPlaying)
-        .frame(height: typeSize.isAccessibilitySize ? 240 : 292)
+        .frame(height: typeSize.isAccessibilitySize ? 250 : 252)
       LinearGradient(colors: [.clear, HushStyle.ink], startPoint: .center, endPoint: .bottom)
       VStack(alignment: .leading, spacing: 10) {
         Text("A LITTLE LESS WORLD")
-          .font(.system(size: 10, weight: .medium, design: .monospaced))
-          .tracking(3).foregroundStyle(HushStyle.lavender)
+          .font(.system(size: 11, weight: .medium, design: .monospaced))
+          .tracking(2.4).foregroundStyle(HushStyle.lavender)
         Text(store.preferences.sceneName)
           .font(.system(.largeTitle, design: .serif).weight(.regular))
           .tracking(-0.9)
         HStack(spacing: 7) {
           Circle().fill(store.isPlaying ? HushStyle.lavender : HushStyle.muted)
             .frame(width: 5, height: 5)
-          Text(store.isPlaying ? "Here, for a while." : "Make room for quiet.")
-            .font(.subheadline).foregroundStyle(HushStyle.muted)
+          Text(
+            store.isMuted
+              ? "Muted · your mix is still here"
+              : store.isPlaying ? "Here, for a while." : "Make room for quiet."
+          )
+          .font(.subheadline).foregroundStyle(HushStyle.muted)
+          if store.isEdited {
+            Text("Edited").font(.caption)
+              .padding(.horizontal, 8).padding(.vertical, 4)
+              .background(.white.opacity(0.08), in: Capsule())
+          }
         }
       }.padding(.horizontal, 28).padding(.bottom, 10)
     }
   }
 
   private var mixer: some View {
-    VStack(spacing: 22) {
+    VStack(spacing: 16) {
       HStack {
         Text("THE ELEMENTS")
-          .font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(2.4)
+          .font(.system(size: 11, weight: .medium, design: .monospaced)).tracking(1.8)
           .foregroundStyle(HushStyle.muted)
         Spacer()
         Button {
           showReset = true
         } label: {
-          Image(systemName: "arrow.counterclockwise").frame(width: 40, height: 44)
+          Text("Clear").font(.subheadline).frame(minWidth: 44, minHeight: 44)
+            .foregroundStyle(HushStyle.muted)
         }.accessibilityLabel("Clear mix")
         Button {
           sheet = .save
@@ -141,7 +156,8 @@ struct MixerView: View {
           store.haptic()
         } label: {
           Image(systemName: store.isMuted ? "speaker.slash" : "speaker.wave.2")
-            .frame(width: 36, height: 44)
+            .foregroundStyle(store.isMuted ? HushStyle.lavender : HushStyle.silver)
+            .frame(width: 44, height: 44)
         }.accessibilityLabel(store.isMuted ? "Unmute all sounds" : "Mute all sounds")
         Slider(
           value: Binding(
@@ -178,14 +194,24 @@ struct MixerView: View {
         .foregroundStyle(HushStyle.ink).background(HushStyle.lavender, in: Capsule())
         .accessibilityLabel(store.isPlaying ? "Pause soundscape" : "Listen to soundscape")
       }
-      if store.isPlaying {
-        Button {
-          if store.fadeStarted != nil { store.fadeStarted = nil } else { store.fadeOut() }
-        } label: {
-          Text(store.isFading ? "Fading into quiet · tap to keep listening" : "Fade to quiet")
-            .font(.caption).foregroundStyle(HushStyle.muted).frame(minHeight: 30)
+      Group {
+        if store.isPlaying {
+          Button {
+            if store.fadeStarted != nil { store.fadeStarted = nil } else { store.fadeOut() }
+          } label: {
+            Text(
+              store.fadeStarted != nil
+                ? "Cancel fade · keep listening"
+                : store.isFading ? "Sleep timer · fading to quiet" : "Fade to quiet"
+            )
+            .font(.caption).foregroundStyle(HushStyle.muted).frame(minHeight: 34)
+          }
+          .disabled(store.isFading && store.fadeStarted == nil)
+        } else {
+          Text("OFFLINE SOUNDS · ORIGINAL BY NATURE")
+            .font(.system(size: 9, design: .monospaced)).tracking(1.2)
+            .foregroundStyle(HushStyle.muted).frame(minHeight: 34)
         }
-        .disabled(store.isFading && store.fadeStarted == nil)
       }
     }
     .padding(.horizontal, 24).padding(.top, 12).padding(.bottom, 6)
@@ -214,22 +240,22 @@ struct SoundFader: View {
         .frame(height: 24).accessibilityHidden(true)
       GeometryReader { geometry in
         ZStack(alignment: .bottom) {
-          Capsule().fill(.white.opacity(0.04))
+          Capsule().fill(.white.opacity(0.065))
           Capsule().fill(
             LinearGradient(
               colors: [HushStyle.lavender.opacity(0.12), HushStyle.lavender.opacity(0.45)],
               startPoint: .bottom, endPoint: .top)
           ).frame(height: max(0, geometry.size.height * level))
           ForEach(1..<5) { tick in
-            Rectangle().fill(.white.opacity(0.08)).frame(width: 14, height: 1)
+            Rectangle().fill(.white.opacity(0.12)).frame(width: 14, height: 1)
               .offset(y: -geometry.size.height * Double(tick) / 5)
           }
           Capsule().fill(level > 0 ? HushStyle.silver : HushStyle.muted)
-            .frame(width: 24, height: 3)
+            .frame(width: 26, height: 4)
             .shadow(color: HushStyle.lavender.opacity(0.5), radius: 10)
             .offset(y: -max(8, (geometry.size.height - 16) * level + 8))
         }
-        .overlay(Capsule().stroke(.white.opacity(level > 0 ? 0.17 : 0.06), lineWidth: 1))
+        .overlay(Capsule().stroke(.white.opacity(level > 0 ? 0.23 : 0.15), lineWidth: 1))
         .contentShape(Rectangle())
         .gesture(
           DragGesture(minimumDistance: 0)
@@ -239,7 +265,7 @@ struct SoundFader: View {
             .onEnded { _ in store.haptic() }
         )
       }
-      .frame(width: 48, height: 135)
+      .frame(width: 48, height: 150)
       .accessibilityElement()
       .accessibilityLabel("\(layer.title) volume")
       .accessibilityValue("\(Int(level * 100)) percent")
@@ -251,9 +277,10 @@ struct SoundFader: View {
         }
       }
       VStack(spacing: 4) {
-        Text(layer.title).font(.subheadline)
+        Text(layer.title).font(.subheadline).lineLimit(2).multilineTextAlignment(.center)
+          .frame(minHeight: 38, alignment: .top)
         Text(level > 0 ? "\(Int(level * 100))%" : "OFF")
-          .font(.system(size: 10, weight: .medium, design: .monospaced))
+          .font(.system(size: 12, weight: .medium, design: .monospaced))
           .tracking(1).foregroundStyle(HushStyle.muted)
       }
     }.frame(maxWidth: .infinity)

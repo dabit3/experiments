@@ -4,7 +4,7 @@ enum HushStyle {
   static let ink = Color(red: 0.035, green: 0.045, blue: 0.095)
   static let silver = Color(red: 0.91, green: 0.91, blue: 0.97)
   static let lavender = Color(red: 0.72, green: 0.69, blue: 0.96)
-  static let muted = Color(red: 0.59, green: 0.61, blue: 0.73)
+  static let muted = Color(red: 0.67, green: 0.68, blue: 0.79)
 }
 
 struct Landscape: View {

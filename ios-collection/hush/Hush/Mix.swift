@@ -4,7 +4,7 @@ enum Layer: String, CaseIterable, Codable, Identifiable {
   case rain, ocean, wind, brown
 
   var id: String { rawValue }
-  var title: String { rawValue.capitalized }
+  var title: String { self == .brown ? "Brown noise" : rawValue.capitalized }
   var subtitle: String {
     switch self {
     case .rain: "Soft rainfall"

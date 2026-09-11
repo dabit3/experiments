@@ -37,6 +37,11 @@ final class HushStore: ObservableObject {
   }
 
   var mix: Mix { preferences.mix }
+  var isEdited: Bool {
+    let original = (SavedScene.originals + preferences.scenes)
+      .first { $0.name == preferences.sceneName }
+    return original.map { $0.mix != mix } ?? false
+  }
   var timerLabel: String {
     guard let countdown else { return "Sleep timer" }
     let seconds = Int(ceil(countdown.remaining(at: now)))
@@ -53,7 +58,7 @@ final class HushStore: ObservableObject {
 
   func setLevel(_ layer: Layer, _ value: Double) {
     preferences.mix.set(layer, to: value)
-    preferences.sceneName = "Your quiet place"
+    message = nil
   }
 
   func play() {
@@ -62,6 +67,7 @@ final class HushStore: ObservableObject {
       return
     }
     do {
+      audio.update(mix: mix, gain: 0)
       try audio.start()
       isPlaying = true
       isMuted = false
@@ -71,7 +77,8 @@ final class HushStore: ObservableObject {
       updateNowPlaying()
       haptic()
     } catch {
-      self.error = "Audio couldn’t start. Check your output device and try again."
+      self.error =
+        "Reconnect your headphones or choose an audio output in Control Center, then retry."
     }
   }
 
