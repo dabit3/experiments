@@ -140,7 +140,7 @@ and `--es VH_KEY value` intent extras on Android.
 |---|---|---|
 | Move / look | WASD + mouse (click to capture) | left joystick / drag right side |
 | Jump / sneak / sprint | Space / Shift / Ctrl or Cmd | jump, sneak & sprint buttons |
-| Break / place | left / right mouse (hold to dig) | tap-hold / tap |
+| Break / place | left / right mouse (hold to dig) | stationary hold / Place button |
 | Hotbar | 1-9, scroll | tap slot |
 | Inventory / chat / pause | E / T / Esc | HUD buttons |
 | Drop / toggle fly (creative) | Q / F | HUD buttons |
@@ -192,6 +192,13 @@ screenshots, the raw recording and the edited review video. PNG/MP4 files are
 git-ignored and attached to the PR instead.
 
 ### Latest evidence
+
+The arcade redesign's builds, multiplayer checks, UI reports, screenshots
+and programmatically edited review videos are indexed in
+`.devin/clone-this/voxelhearth/evidence/tests/checks/arcade-summary.md`.
+The scripted test drives real web and iOS clients in one room in parallel;
+the separate computer-use recording exercises their actual controls.
+Neither recording is a promotional mockup of gameplay.
 
 `.devin/clone-this/voxelhearth/evidence/tests/` — see `report.md` in the
 newest run. The verified runs cover **web + iOS Simulator + macOS**
@@ -249,7 +256,7 @@ app drew its first frame. `xcrun simctl shutdown <udid> && xcrun simctl boot
 ```sh
 cd packages/voxelhearth_core && dart format --set-exit-if-changed . && dart analyze && dart test
 cd ../../server && dart analyze
-cd ../app && dart format --set-exit-if-changed lib && flutter analyze
+cd ../app && dart format --set-exit-if-changed lib test && flutter analyze && flutter test
 flutter build web --release && flutter build macos --debug \
   && flutter build ios --simulator --debug && flutter build apk --debug
 python3 ../tools/gen_icons.py   # regenerate the original app icon set for every target

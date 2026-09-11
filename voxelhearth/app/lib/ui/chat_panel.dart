@@ -144,11 +144,14 @@ class _ChatPanelState extends State<ChatPanel> {
     // Never squeeze below the composer row: clip the history instead.
     final minH = (widget.transparent ? 16.0 : 22.0) * s;
     return LayoutBuilder(
-      builder: (context, bc) => bc.maxHeight >= minH
-          ? column
-          : ClipRect(
-              child: OverflowBox(alignment: Alignment.bottomCenter, minHeight: minH, maxHeight: minH, child: column),
-            ),
+      builder: (context, bc) => ClipRect(
+        child: OverflowBox(
+          alignment: Alignment.bottomCenter,
+          minHeight: bc.maxHeight.clamp(minH, double.infinity),
+          maxHeight: bc.maxHeight.clamp(minH, double.infinity),
+          child: column,
+        ),
+      ),
     );
   }
 }

@@ -3,9 +3,9 @@
   "source": "Minecraft",
   "clone_name": "Voxelhearth",
   "clone_root": "/Users/devin/repos/experiments/voxelhearth",
-  "status": "blocked",
-  "iteration": 7,
-  "revision": "sha256:483b0fe73421154f0a655bce8ddc0a4747add90df94a56e965218a7b71b4cfbb",
+  "status": "active",
+  "iteration": 8,
+  "revision": "sha256:be73199a42f73af5f9fd6ab38512e5eec9167ea741e267eca70d528684ee7a68",
   "frontier": [],
   "blockers": [
     {
@@ -715,7 +715,7 @@
       ]
     }
   ],
-  "next_action": "Run the four-platform E2E on a host with hardware virtualization + GPU, then re-verify journey-e2e-android, visual-android-lobby and feature-60fps and clear the blockers.",
+  "next_action": "Retest phone lobby keyboard focus/draft and compact chat, finish real UI testing, rerun deterministic e2e and clean builds, then final sweeps and manifest gate.",
   "reference_access": {
     "runnable_original": false,
     "reference": "public documentation (minecraft.wiki Gameplay/Controls/HUD/Crafting pages)",
@@ -739,5 +739,5 @@
       "note": "All names, art, creatures, audio and iconography are original Voxelhearth work."
     }
   ],
-  "updated_at": "2026-09-10T16:44:30.370607+00:00"
+  "updated_at": "2026-09-11T02:19:45.780260+00:00"
 }

@@ -282,6 +282,24 @@ class _LobbyScreenState extends State<LobbyScreen> {
     final modeLabel = s.mode == GameMode.creative ? 'Creative' : 'Survival';
     final lengthLabel = durationMin == 0 ? 'Open' : '$durationMin min';
     if (!isHost) {
+      if (Gui.guiSize(context).height < 230) {
+        Widget pair(String left, String right) => Row(
+          children: [
+            Expanded(child: PxText(left, color: Px.gray, maxLines: 1)),
+            Expanded(child: PxText(right, color: Px.gray, maxLines: 1)),
+          ],
+        );
+        return Container(
+          padding: EdgeInsets.all(3.0 * gs),
+          color: const Color(0x80000000),
+          child: Column(
+            children: [
+              pair('Mode: $modeLabel', 'Length: $lengthLabel'),
+              pair('Mobs: ${s.spawnMobs ? 'On' : 'Off'}', 'Time: ${s.freezeTime ? 'Frozen' : 'Cycles'}'),
+            ],
+          ),
+        );
+      }
       Widget row(String k, String v) => Row(
         children: [
           Expanded(child: PxText(k, color: Px.gray)),
@@ -298,7 +316,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
             row('Creatures', s.spawnMobs ? 'On' : 'Off'),
             row('Time of Day', s.freezeTime ? 'Frozen' : 'Cycles'),
             SizedBox(height: 2.0 * gs),
-            const PxText('Only the host can change world rules.', color: Px.darkGray, maxLines: 1),
+            const PxText('Only the host can change world rules.', color: Px.gray, maxLines: 1),
           ],
         ),
       );

@@ -396,6 +396,8 @@ class _PxButtonState extends State<PxButton> {
             onTapCancel: () => setState(() => _pressed = false),
             onTap: enabled ? _activate : null,
             child: AnimatedContainer(
+              width: widget.width * s,
+              height: widget.height * s,
               duration: MediaQuery.disableAnimationsOf(context) ? Duration.zero : const Duration(milliseconds: 140),
               transform: Matrix4.translationValues(0, _pressed ? 2 : 0, 0),
               decoration: BoxDecoration(
@@ -1018,11 +1020,9 @@ class PxScreen extends StatelessWidget {
         background,
         SafeArea(
           child: LayoutBuilder(
-            builder: (context, bc) => bc.maxHeight >= minHeight
-                ? column
-                : SingleChildScrollView(
-                    child: SizedBox(height: minHeight, child: column),
-                  ),
+            builder: (context, bc) => SingleChildScrollView(
+              child: SizedBox(height: math.max(bc.maxHeight, minHeight), child: column),
+            ),
           ),
         ),
       ],
