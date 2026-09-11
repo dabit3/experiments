@@ -106,7 +106,7 @@ struct LandscapeView: View {
       }
       .padding(.horizontal, 24).padding(.bottom, 32)
     }
-    .background(Paper.stock)
+    .paperScreen()
     .toolbar(.hidden, for: .navigationBar)
     .sheet(isPresented: $preview) {
       PreviewView(scene: scene)
@@ -114,7 +114,7 @@ struct LandscapeView: View {
     .confirmationDialog("Start a fresh shuffle?", isPresented: $restart, titleVisibility: .visible)
     {
       Button("Restart with a new shuffle", role: .destructive) {
-        start(puzzle?.pace ?? pace)
+        start(playing ? (puzzle?.pace ?? pace) : pace)
       }
     } message: {
       Text("This puzzle’s moves will reset. Collected landscapes stay safe.")
@@ -209,7 +209,31 @@ struct PuzzleBoard: View {
       let side = geometry.size.width
       let cell = (side - 12) / 3
       ZStack(alignment: .topLeading) {
-        RoundedRectangle(cornerRadius: 10).fill(scene.color.opacity(0.12))
+        RoundedRectangle(cornerRadius: 10).fill(scene.color.opacity(0.09))
+        RoundedRectangle(cornerRadius: 5)
+          .fill(
+            scene.color.opacity(0.11).shadow(
+              .inner(color: .black.opacity(0.10), radius: 5, x: 0, y: 3))
+          )
+          .overlay {
+            RoundedRectangle(cornerRadius: 4)
+              .strokeBorder(
+                scene.color.opacity(0.24), style: StrokeStyle(lineWidth: 1, dash: [3, 4])
+              )
+              .padding(9)
+          }
+          .overlay {
+            Image(systemName: "arrow.up.and.down.and.arrow.left.and.right")
+              .font(.system(size: 18, weight: .ultraLight))
+              .foregroundStyle(scene.color.opacity(0.6))
+          }
+          .frame(width: cell, height: cell)
+          .position(
+            x: CGFloat(puzzle.blank % 3) * (cell + 6) + cell / 2,
+            y: CGFloat(puzzle.blank / 3) * (cell + 6) + cell / 2
+          )
+          .accessibilityLabel(
+            "Empty space, row \(puzzle.blank / 3 + 1), column \(puzzle.blank % 3 + 1)")
         ForEach(1...8, id: \.self) { value in
           if let index = puzzle.tiles.firstIndex(of: value) {
             Button {
@@ -217,14 +241,21 @@ struct PuzzleBoard: View {
             } label: {
               PaperTile(
                 scene: scene, value: value, cell: cell,
-                numbers: numbers, highlighted: hint == index)
+                numbers: numbers, highlighted: hint == index,
+                direction: direction(from: index)
+              )
+              .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .frame(width: cell, height: cell)
+            .contentShape(Rectangle())
             .position(
               x: CGFloat(index % 3) * (cell + 6) + cell / 2,
               y: CGFloat(index / 3) * (cell + 6) + cell / 2
             )
-            .accessibilityLabel("Piece \(value), row \(index / 3 + 1), column \(index % 3 + 1)")
+            .accessibilityLabel(
+              "\(hint == index ? "Hint: " : "")Piece \(value), row \(index / 3 + 1), column \(index % 3 + 1)"
+            )
             .accessibilityHint(
               puzzle.legalIndices.contains(index)
                 ? "Double tap to slide into the empty space" : "Not beside the empty space")
@@ -234,6 +265,12 @@ struct PuzzleBoard: View {
     }
     .aspectRatio(1, contentMode: .fit)
   }
+
+  private func direction(from index: Int) -> String {
+    if puzzle.blank / 3 < index / 3 { return "arrow.up" }
+    if puzzle.blank / 3 > index / 3 { return "arrow.down" }
+    return puzzle.blank < index ? "arrow.left" : "arrow.right"
+  }
 }
 
 struct PaperTile: View {
@@ -242,6 +279,7 @@ struct PaperTile: View {
   let cell: CGFloat
   let numbers: Bool
   let highlighted: Bool
+  let direction: String
 
   var body: some View {
     Image(scene.id).resizable()
@@ -263,8 +301,15 @@ struct PaperTile: View {
       .overlay {
         RoundedRectangle(cornerRadius: 5)
           .stroke(
-            highlighted ? Paper.stock : Color.white.opacity(0.4),
+            highlighted ? Paper.ink : Color.white.opacity(0.4),
             lineWidth: highlighted ? 4 : 1)
+      }
+      .overlay(alignment: .topTrailing) {
+        if highlighted {
+          Image(systemName: direction).font(.system(size: 14, weight: .semibold))
+            .foregroundStyle(Paper.stock).padding(9)
+            .background(Paper.ink, in: Circle()).padding(6)
+        }
       }
       .shadow(color: .black.opacity(0.18), radius: 2, x: 0, y: 3)
   }

@@ -95,7 +95,7 @@ struct AtlasView: View {
         }
         .padding(.horizontal, 24).padding(.bottom, 24)
       }
-      .background(Paper.stock)
+      .paperScreen()
       .toolbar(.hidden, for: .navigationBar)
       .navigationDestination(item: $selection) { scene in
         LandscapeView(scene: scene)

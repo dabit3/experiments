@@ -57,3 +57,25 @@ enum Paper {
   static let muted = Color(hex: 0x6F7366)
   static let edge = Color(hex: 0xDDD8C9)
 }
+
+struct PaperScreen: ViewModifier {
+  func body(content: Content) -> some View {
+    content
+      .foregroundStyle(Paper.ink)
+      .background(Paper.stock.ignoresSafeArea())
+      .overlay {
+        GeometryReader { proxy in
+          Paper.stock
+            .frame(height: proxy.safeAreaInsets.top)
+            .frame(maxHeight: .infinity, alignment: .top)
+            .ignoresSafeArea(edges: .top)
+            .allowsHitTesting(false)
+            .accessibilityHidden(true)
+        }
+      }
+  }
+}
+
+extension View {
+  func paperScreen() -> some View { modifier(PaperScreen()) }
+}
