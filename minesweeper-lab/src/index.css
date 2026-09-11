@@ -1,118 +1,98 @@
+@font-face {
+  font-family: Outfit;
+  src: url('./assets/outfit.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: Barlow;
+  src: url('./assets/barlow-condensed.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
 :root {
   color-scheme: dark;
-
-  /* Palette — deep navy/indigo to match the app icon, amber LEDs, red flags. */
-  --bg: #0b0f1a;
-  --bg-2: #111727;
-  --bg-3: #171e31;
-  --panel: rgba(21, 27, 44, 0.86);
-  --panel-solid: #151b2c;
-  --panel-border: rgba(255, 255, 255, 0.07);
-  --panel-border-strong: rgba(255, 255, 255, 0.12);
-  --text: #eef2fa;
-  --text-2: #c2cbdc;
-  --muted: #8b96ad;
-  --accent: #ffb020;
-  --accent-soft: rgba(255, 176, 32, 0.16);
-  --accent-2: #5cc8ff;
-  --accent-2-soft: rgba(92, 200, 255, 0.14);
-  --danger: #ff5a5f;
-  --danger-soft: rgba(255, 90, 95, 0.16);
-  --success: #3ddc84;
-  --success-soft: rgba(61, 220, 132, 0.16);
-  --flag: #ff3b3b;
-  --led: #ff4b3a;
-
-  --cell: 56px;
+  --bg: #191722;
+  --ink: #211c2b;
+  --paper: #fff5de;
+  --yellow: #f7cf57;
+  --mint: #8ee5cb;
+  --pink: #f58ca9;
+  --muted: #a8a1b5;
+  --flag: #ff5b7f;
+  --danger: #ff8b9d;
+  --success: #a7edb5;
+  --face-fill: #ffda57;
+  --face-stroke: #ce8432;
+  --cell: 48px;
   --cell-gap: 3px;
-  --cell-radius: 8px;
-  --hidden-top: #4a5b7c;
-  --hidden-bottom: #34425f;
-  --hidden-hover-top: #5a6d92;
-  --hidden-hover-bottom: #40506f;
-  --revealed: #0d1220;
-  --revealed-border: rgba(255, 255, 255, 0.045);
-
-  --face-fill: #ffcf3e;
-  --face-stroke: #c98d0a;
-
-  --shadow-lg: 0 30px 80px rgba(0, 0, 0, 0.55), 0 2px 0 rgba(255, 255, 255, 0.04) inset;
-  --shadow-md: 0 14px 40px rgba(0, 0, 0, 0.45);
-  --radius-lg: 22px;
-  --radius-md: 14px;
-  --radius-sm: 10px;
-
-  --font-sans:
-    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: ui-monospace, 'JetBrains Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
-
-  font-family: var(--font-sans);
+  --font-mono: 'Outfit', monospace;
+  font-family: Outfit, sans-serif;
   font-size: 16px;
-  line-height: 1.45;
+  font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
-
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
-
-html,
 body {
   margin: 0;
-  min-height: 100%;
+  min-width: 340px;
+  background: var(--bg);
+  color: var(--paper);
 }
-
-body {
-  position: relative;
-  background-color: var(--bg);
-  background-image:
-    radial-gradient(1100px 620px at 8% -12%, rgba(63, 82, 180, 0.42) 0%, transparent 60%),
-    radial-gradient(900px 560px at 100% -6%, rgba(255, 140, 40, 0.16) 0%, transparent 55%),
-    radial-gradient(1000px 700px at 50% 120%, rgba(30, 60, 120, 0.35) 0%, transparent 60%);
-  color: var(--text);
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* Faint blueprint grid over the background. */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
+  z-index: -1;
   pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse at 50% 0%, #000 0%, transparent 75%);
+  background:
+    radial-gradient(ellipse at 13% 40%, #44324a55, transparent 48%),
+    radial-gradient(ellipse at 95% 15%, #30635d20, transparent 50%), radial-gradient(#d4c8e512 0.7px, transparent 0.7px);
+  background-size:
+    auto,
+    auto,
+    7px 7px;
 }
-
-#root {
-  position: relative;
-  min-height: 100vh;
-}
-
 button,
 input {
   font: inherit;
   color: inherit;
 }
-
+button {
+  cursor: pointer;
+}
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
 button:focus-visible,
-input:focus-visible {
-  outline: 3px solid var(--accent-2);
-  outline-offset: 2px;
+a:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--pink);
+  outline-offset: 4px;
 }
-
-code,
-kbd {
-  font-family: var(--font-mono);
+button {
+  touch-action: manipulation;
 }
-
+svg {
+  display: block;
+}
+button,
+.board {
+  user-select: none;
+}
+::selection {
+  background: var(--pink);
+  color: var(--ink);
+}
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -121,12 +101,13 @@ kbd {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

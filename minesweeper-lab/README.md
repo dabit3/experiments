@@ -11,10 +11,16 @@ are stored in `localStorage`. Losing reveals every mine, highlights the one you 
 out any wrong flags. Winning flags every remaining mine so the counter reads `000`, freezes the
 timer and records the time.
 
-The UI is a dark, console-style layout: a glass masthead with the app icon, a segmented level
-switcher and the seed control; a game panel with LED counters, the face button, the board and a
-status bar with safe-cell / chord / seed stats; and a sidebar with best times and a controls
-legend.
+The UI is an original arcade cabinet: a butter-yellow enclosure, mint bevelled tiles, pink
+and mint counters, a springy smiley reset button, and a personal best-time strip. Sparky, the
+custom SVG bomb mascot, sits beside the condensed wordmark and tactile difficulty buttons.
+The cabinet's marquee reacts to wins and losses; a field-clear meter tracks the round.
+The How to play dialog explains the mouse and keyboard controls without adding test UI.
+Narrow screens stack the controls above the cabinet and allow horizontal scrolling inside
+large boards. Reduced-motion preferences are respected.
+
+Outfit and Barlow Condensed fonts are bundled with their SIL Open Font Licenses in
+`src/assets/`; the mascot and favicon are original SVGs. No runtime requests leave the app.
 
 ## Run it
 
@@ -57,7 +63,8 @@ performed the following scenario end to end while recording:
 4. Continued until all 40 flags were placed (counter `000`) and all 216 safe cells revealed. If a
    mine is hit, the face is clicked to restart the same seed and the run continues.
 5. Verified the win state: sunglasses face, mine counter `000`, timer frozen, status line
-   "Board cleared. Every mine is flagged.", and the Intermediate best time saved in the sidebar.
+   "Board cleared. Every mine is flagged.", the "YOU SWEPT IT!" marquee, 100% field cleared,
+   and the Intermediate best time saved below the cabinet.
 
 Each step is marked in the recording with a structured annotation (setup / test start /
 assertion), so the test script is visible in the video overlay rather than in the app.
@@ -79,8 +86,9 @@ counter at `000`, all 40 flags placed by hand before the final reveal, and 42 ch
 
 ```
 src/
-  App.tsx                 URL <-> level/seed sync, layout, HUD, sidebar
-  assets/app-icon.webp    app icon shown in the masthead (favicon in public/)
+  App.tsx                 URL <-> level/seed sync, arcade layout, HUD, help dialog
+  assets/sparky.svg        original bomb mascot (favicon in public/)
+  assets/*.ttf             bundled Outfit and Barlow Condensed fonts with licenses
   components/
     Board.tsx             mouse protocol: left reveal, right flag, middle / both chord
     Cell.tsx              a single cell (numbers, flag, question, mine, wrong flag)
