@@ -283,14 +283,24 @@ struct EditorView: View {
                 Button {
                   editor.selected = clip.id
                 } label: {
-                  ZStack(alignment: .bottomLeading) {
-                    HStack(spacing: 1) {
-                      thumbnail(clip.mediaID)
-                      thumbnail(clip.mediaID)
-                      thumbnail(clip.mediaID)
-                    }.opacity(editor.selected == clip.id ? 0.94 : 0.65)
+                  HStack(spacing: 1) {
+                    thumbnail(clip.mediaID)
+                    thumbnail(clip.mediaID)
+                    thumbnail(clip.mediaID)
+                  }
+                  .opacity(editor.selected == clip.id ? 0.94 : 0.65)
+                  .frame(
+                    width: max(
+                      1,
+                      (width - CGFloat(max(0, editor.project.clips.count - 1)) * 3) * clip.duration
+                        / total), height: 70
+                  )
+                  .clipped()
+                  .overlay {
                     LinearGradient(
                       colors: [.clear, .black.opacity(0.8)], startPoint: .center, endPoint: .bottom)
+                  }
+                  .overlay(alignment: .bottomLeading) {
                     HStack(spacing: 6) {
                       Text(String(format: "%02d", index + 1)).foregroundStyle(Palette.cyan)
                       Text(media?.name ?? "Missing clip").lineLimit(1)
@@ -299,13 +309,6 @@ struct EditorView: View {
                         .white.opacity(0.7))
                     }.font(.system(size: 10, weight: .medium)).padding(8)
                   }
-                  .frame(
-                    width: max(
-                      1,
-                      (width - CGFloat(max(0, editor.project.clips.count - 1)) * 3) * clip.duration
-                        / total), height: 70
-                  )
-                  .clipped()
                   .clipShape(RoundedRectangle(cornerRadius: 5))
                   .overlay(
                     RoundedRectangle(cornerRadius: 5)
