@@ -1,0 +1,106 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+
+:root {
+  --bg: #eeefeb;
+  --surface: #fafbf8;
+  --text: #202725;
+  --muted: #65716a;
+  --line: #daddd5;
+  --accent: #bed8c6;
+  --accent-strong: #456b51;
+  --accent-soft: #e3ede2;
+  --score: #242a29;
+  --score-raised: #2e3532;
+  --score-line: #3e4640;
+  --score-text: #edf0e8;
+  --score-muted: #a6afa7;
+  --pad: #343c37;
+  --pad-beat: #3d463f;
+  --danger: #b15442;
+  --track-kick: #d79f8e;
+  --track-snare: #d3b58c;
+  --track-chat: #cbca9f;
+  --track-ohat: #b2c5a2;
+  --track-clap: #c6a7b3;
+  --track-rim: #a2bcc9;
+  --track-tom: #b6afd0;
+  --track-cowbell: #a5cbb8;
+  --font-body: 'Inter Variable', Inter, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
+  --radius: 12px;
+  color-scheme: light;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'cv11', 'ss01';
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 360px;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+button,
+input {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+  color: inherit;
+  border: 0;
+  background: none;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+input,
+[tabindex] {
+  touch-action: manipulation;
+}
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent-strong);
+  outline-offset: 3px;
+}
+button {
+  transition:
+    background 150ms,
+    border-color 150ms,
+    color 150ms;
+}
+svg {
+  display: block;
+  flex-shrink: 0;
+}
+kbd {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 400;
+}
+::selection {
+  background: var(--accent);
+  color: var(--text);
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
