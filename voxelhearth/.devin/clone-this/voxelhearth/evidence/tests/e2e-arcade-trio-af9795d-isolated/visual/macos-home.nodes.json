@@ -1,0 +1,234 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-trio-af9795d-isolated/visual/web-home.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-trio-af9795d-isolated/visual/macos-home.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  1280,
+  800
+ ],
+ "nodes": 28,
+ "matched": 19,
+ "exact": 17,
+ "within_tolerance": [
+  {
+   "text": "Options...",
+   "reference": [
+    115,
+    616,
+    123,
+    30
+   ],
+   "actual": [
+    116,
+    616,
+    123,
+    30
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "Options...",
+   "reference": [
+    115,
+    616,
+    123,
+    30
+   ],
+   "actual": [
+    116,
+    616,
+    123,
+    30
+   ],
+   "delta_px": 1
+  }
+ ],
+ "mismatched": [
+  {
+   "reference": {
+    "text": "󰊿",
+    "x": 1104,
+    "y": 36,
+    "w": 16,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "ONLINE · 1 ms",
+    "x": 1127,
+    "y": 37,
+    "w": 83,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "ONLINE · 1 ms",
+    "x": 1127,
+    "y": 37,
+    "w": 83,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "ONLINE · 1 ms",
+    "x": 1127,
+    "y": 37,
+    "w": 83,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "01 / EXPLORE · BUILD · BELONG",
+    "x": 58,
+    "y": 759,
+    "w": 1134,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "01 / EXPLORE · BUILD · BELONG",
+    "x": 58,
+    "y": 759,
+    "w": 1134,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "01 / EXPLORE · BUILD · BELONG",
+    "x": 58,
+    "y": 759,
+    "w": 1134,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "WEB",
+    "x": 1192,
+    "y": 760,
+    "w": 30,
+    "h": 12
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "WEB",
+    "x": 1192,
+    "y": 760,
+    "w": 30,
+    "h": 12
+   },
+   "actual": null
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "󰊿",
+    "x": 1101,
+    "y": 36,
+    "w": 16,
+    "h": 16
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "ONLINE · 9 ms",
+    "x": 1124,
+    "y": 37,
+    "w": 85,
+    "h": 14
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "ONLINE · 9 ms",
+    "x": 1124,
+    "y": 37,
+    "w": 85,
+    "h": 14
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "ONLINE · 9 ms",
+    "x": 1124,
+    "y": 37,
+    "w": 85,
+    "h": 14
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "01 / EXPLORE · BUILD · BELONG",
+    "x": 58,
+    "y": 759,
+    "w": 1116,
+    "h": 13
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "01 / EXPLORE · BUILD · BELONG",
+    "x": 58,
+    "y": 759,
+    "w": 1116,
+    "h": 13
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "01 / EXPLORE · BUILD · BELONG",
+    "x": 58,
+    "y": 759,
+    "w": 1116,
+    "h": 13
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "MACOS",
+    "x": 1174,
+    "y": 760,
+    "w": 49,
+    "h": 12
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "MACOS",
+    "x": 1174,
+    "y": 760,
+    "w": 49,
+    "h": 12
+   }
+  }
+ ],
+ "mismatched_count": 18,
+ "ok": false
+}

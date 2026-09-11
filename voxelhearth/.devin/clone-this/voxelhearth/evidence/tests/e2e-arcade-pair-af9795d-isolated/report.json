@@ -1,0 +1,1907 @@
+{
+  "startedAt": "2026-09-11T04:13:16.893Z",
+  "platforms": [
+    "web",
+    "ios"
+  ],
+  "room": "HEARTH",
+  "seed": 1234,
+  "steps": [
+    {
+      "label": "launch web",
+      "ms": 2136,
+      "ok": true
+    },
+    {
+      "label": "launch ios",
+      "ms": 2382,
+      "ok": true
+    },
+    {
+      "label": "connect Web",
+      "ms": 6,
+      "ok": true
+    },
+    {
+      "label": "connect iOS",
+      "ms": 2009,
+      "ok": true
+    },
+    {
+      "label": "create room",
+      "ms": 1312,
+      "ok": true
+    },
+    {
+      "label": "host in lobby",
+      "ms": 3,
+      "ok": true
+    },
+    {
+      "label": "iOS joins",
+      "ms": 6,
+      "ok": true
+    },
+    {
+      "label": "all in lobby",
+      "ms": 424,
+      "ok": true
+    },
+    {
+      "label": "all ready",
+      "ms": 2,
+      "ok": true
+    },
+    {
+      "label": "start match",
+      "ms": 3,
+      "ok": true
+    },
+    {
+      "label": "all in game",
+      "ms": 799,
+      "ok": true
+    },
+    {
+      "label": "host state",
+      "ms": 1038,
+      "ok": true
+    },
+    {
+      "label": "give blocks",
+      "ms": 60,
+      "ok": true
+    },
+    {
+      "label": "give picks",
+      "ms": 185,
+      "ok": true
+    },
+    {
+      "label": "select blocks",
+      "ms": 132,
+      "ok": true
+    },
+    {
+      "label": "Web places 41,34,45",
+      "ms": 1268,
+      "ok": true
+    },
+    {
+      "label": "iOS places 42,34,45",
+      "ms": 86,
+      "ok": true
+    },
+    {
+      "label": "Web places 41,35,45",
+      "ms": 98,
+      "ok": true
+    },
+    {
+      "label": "iOS places 42,35,45",
+      "ms": 110,
+      "ok": true
+    },
+    {
+      "label": "select picks",
+      "ms": 74,
+      "ok": true
+    },
+    {
+      "label": "Web breaks 42,35,45",
+      "ms": 1492,
+      "ok": true
+    },
+    {
+      "label": "iOS breaks 41,35,45",
+      "ms": 1860,
+      "ok": true
+    },
+    {
+      "label": "Web chats",
+      "ms": 46,
+      "ok": true
+    },
+    {
+      "label": "iOS chats",
+      "ms": 1,
+      "ok": true
+    },
+    {
+      "label": "open chat everywhere",
+      "ms": 46,
+      "ok": true
+    },
+    {
+      "label": "close chat",
+      "ms": 1078,
+      "ok": true
+    },
+    {
+      "label": "Web drops connection and rejoins",
+      "ms": 1983,
+      "ok": true
+    },
+    {
+      "label": "rejoined client is in-match again",
+      "ms": 224,
+      "ok": true
+    },
+    {
+      "label": "hashes",
+      "ms": 93,
+      "ok": true
+    },
+    {
+      "label": "end match",
+      "ms": 92,
+      "ok": true
+    },
+    {
+      "label": "all on results",
+      "ms": 69,
+      "ok": true
+    },
+    {
+      "label": "server results state",
+      "ms": 1,
+      "ok": true
+    },
+    {
+      "label": "fixture lobby",
+      "ms": 771,
+      "ok": true
+    },
+    {
+      "label": "fixture results",
+      "ms": 2057,
+      "ok": true
+    },
+    {
+      "label": "fixture home",
+      "ms": 1662,
+      "ok": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "all players in one lobby",
+      "ok": true,
+      "detail": "Bot Ashwick(bot), Web(web), iOS(ios)"
+    },
+    {
+      "name": "found a flat row for the shared structure",
+      "ok": true,
+      "detail": "[[41,34,45],[42,34,45]]"
+    },
+    {
+      "name": "dropped client rejoined the same room",
+      "ok": true,
+      "detail": "{\"ok\":true,\"dropped\":true,\"rejoined\":true,\"room\":\"HEARTH\",\"phase\":\"playing\",\"phaseBefore\":\"playing\",\"state\":\"connected\",\"error\":null,\"t\":\"drive_done\",\"id\":\"d44\",\"player\":\"Web\",\"playerId\":\"p-000f6823\"}"
+    },
+    {
+      "name": "every client answered the hash request",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "world hash identical on all clients + server",
+      "ok": true,
+      "detail": "{\"server\":\"d8ee49a6\",\"clients\":{\"Web\":\"d8ee49a6\",\"iOS\":\"d8ee49a6\"}}"
+    },
+    {
+      "name": "chat hash identical on all clients + server",
+      "ok": true,
+      "detail": "{\"server\":\"37dbdaa7\",\"clients\":{\"Web\":\"37dbdaa7\",\"iOS\":\"37dbdaa7\"}}"
+    },
+    {
+      "name": "structure region identical on all clients",
+      "ok": true,
+      "detail": "\"b2e7fc2f\""
+    },
+    {
+      "name": "server structure matches script (lower row placed, upper row broken)",
+      "ok": true,
+      "detail": "[9,9,0,0]"
+    },
+    {
+      "name": "chat history identical on all clients",
+      "ok": true,
+      "detail": "9 lines"
+    },
+    {
+      "name": "every player line present in chat",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "server is in results phase",
+      "ok": true,
+      "detail": "results"
+    },
+    {
+      "name": "final scoreboard identical on all clients",
+      "ok": true,
+      "detail": "[{\"name\":\"Web\",\"platform\":\"web\",\"bot\":false,\"score\":3,\"placed\":2,\"broken\":1,\"crafted\":0,\"kills\":0,\"deaths\":0},{\"name\":\"iOS\",\"platform\":\"ios\",\"bot\":false,\"score\":3,\"placed\":2,\"broken\":1,\"crafted\":0,\"kills\":0,\"deaths\":0},{\"name\":\"Bot Ashwick\",\"platform\":\"bot\",\"bot\":true,\"score\":1,\"placed\":0,\"broken\":1,\"crafted\":0,\"kills\":0,\"deaths\":0}]"
+    },
+    {
+      "name": "final world/chat fingerprints identical on all clients",
+      "ok": true,
+      "detail": "[\"d8ee49a6\",\"67a001c9\"]"
+    },
+    {
+      "name": "final world/chat fingerprints match server",
+      "ok": true,
+      "detail": "{\"client\":[\"d8ee49a6\",\"67a001c9\"],\"server\":[\"d8ee49a6\",\"67a001c9\"]}"
+    },
+    {
+      "name": "scoreboard credits 2 placed + 1 broken per player",
+      "ok": true,
+      "detail": "[[\"Web\",\"web\",3,2,1],[\"iOS\",\"ios\",3,2,1]]"
+    }
+  ],
+  "failures": [],
+  "iosCaptureOrientation": "LandscapeRight",
+  "fps": {
+    "Web": 20,
+    "iOS": 50
+  },
+  "gameplayState": {
+    "Web": {
+      "ok": true,
+      "x": 41.5,
+      "y": 34,
+      "z": 42.5,
+      "yaw": 0.322,
+      "pitch": -0.038,
+      "phase": "playing",
+      "hp": 20,
+      "food": 20,
+      "score": 3,
+      "selected": 4,
+      "held": [
+        111,
+        1
+      ],
+      "worldHash": "d8ee49a6",
+      "chatHash": "37dbdaa7",
+      "chatLines": 9,
+      "fps": 20,
+      "pixelScale": 1.9400000000000008,
+      "players": 3,
+      "ready": true,
+      "ground": true,
+      "spawn": [
+        41.5,
+        34,
+        42.5
+      ],
+      "spawnReady": true,
+      "t": "drive_done",
+      "id": "d48",
+      "player": "Web",
+      "playerId": "p-000f6823"
+    },
+    "iOS": {
+      "ok": true,
+      "x": 41.5,
+      "y": 34,
+      "z": 42.5,
+      "yaw": 0,
+      "pitch": -0.03997868712328919,
+      "phase": "playing",
+      "hp": 20,
+      "food": 20,
+      "score": 3,
+      "selected": 4,
+      "held": [
+        111,
+        1
+      ],
+      "worldHash": "d8ee49a6",
+      "chatHash": "37dbdaa7",
+      "chatLines": 9,
+      "fps": 50,
+      "pixelScale": 3,
+      "players": 3,
+      "ready": true,
+      "ground": true,
+      "spawn": [
+        41.5,
+        34,
+        42.5
+      ],
+      "spawnReady": true,
+      "t": "drive_done",
+      "id": "d49",
+      "player": "iOS",
+      "playerId": "p-7bddcc6c"
+    }
+  },
+  "authoritativeResults": {
+    "phase": "results",
+    "worldHash": "d8ee49a6",
+    "chatHash": "67a001c9"
+  },
+  "results": {
+    "ok": true,
+    "phase": "results",
+    "worldHash": "d8ee49a6",
+    "chatHash": "67a001c9",
+    "results": [
+      {
+        "name": "Web",
+        "platform": "web",
+        "bot": false,
+        "score": 3,
+        "placed": 2,
+        "broken": 1,
+        "crafted": 0,
+        "kills": 0,
+        "deaths": 0
+      },
+      {
+        "name": "iOS",
+        "platform": "ios",
+        "bot": false,
+        "score": 3,
+        "placed": 2,
+        "broken": 1,
+        "crafted": 0,
+        "kills": 0,
+        "deaths": 0
+      },
+      {
+        "name": "Bot Ashwick",
+        "platform": "bot",
+        "bot": true,
+        "score": 1,
+        "placed": 0,
+        "broken": 1,
+        "crafted": 0,
+        "kills": 0,
+        "deaths": 0
+      }
+    ],
+    "t": "drive_done",
+    "id": "d53",
+    "player": "Web",
+    "playerId": "p-000f6823"
+  },
+  "visual": [
+    {
+      "screen": "lobby",
+      "platform": "ios",
+      "baseline": "web",
+      "viewport": [
+        874,
+        402
+      ],
+      "sameViewport": false,
+      "nodes": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-lobby.layout.json",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-lobby.layout.json",
+        "tolerance_px": 2,
+        "reference_viewport": [
+          1280,
+          800
+        ],
+        "actual_viewport": [
+          874,
+          402
+        ],
+        "nodes": 120,
+        "matched": 0,
+        "exact": 0,
+        "within_tolerance": [],
+        "mismatched": [
+          {
+            "reference": {
+              "text": "YOUR NEXT ADVENTURE",
+              "x": 535,
+              "y": 18,
+              "w": 210,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "YOUR NEXT ADVENTURE",
+              "x": 535,
+              "y": 18,
+              "w": 210,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Fixture world",
+              "x": 514,
+              "y": 38,
+              "w": 252,
+              "h": 44
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Fixture world",
+              "x": 514,
+              "y": 38,
+              "w": 252,
+              "h": 44
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "",
+              "x": 409,
+              "y": 100,
+              "w": 14,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "CODE  FIXTR",
+              "x": 429,
+              "y": 96,
+              "w": 123,
+              "h": 22
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "CODE  FIXTR",
+              "x": 429,
+              "y": 96,
+              "w": 123,
+              "h": 22
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  ·  Survival  ·  5 explorers",
+              "x": 551,
+              "y": 92,
+              "w": 320,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  ·  Survival  ·  5 explorers",
+              "x": 551,
+              "y": 92,
+              "w": 320,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  ·  Survival  ·  5 explorers",
+              "x": 551,
+              "y": 92,
+              "w": 320,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  ·  Survival  ·  5 explorers",
+              "x": 551,
+              "y": 92,
+              "w": 320,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Players",
+              "x": 72,
+              "y": 140,
+              "w": 507,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Players",
+              "x": 72,
+              "y": 140,
+              "w": 507,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Players",
+              "x": 72,
+              "y": 140,
+              "w": 507,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "",
+              "x": 82,
+              "y": 212,
+              "w": 36,
+              "h": 36
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 133,
+              "y": 200,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 133,
+              "y": 200,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 133,
+              "y": 200,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 133,
+              "y": 200,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " (you)",
+              "x": 277,
+              "y": 200,
+              "w": 75,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " (you)",
+              "x": 277,
+              "y": 200,
+              "w": 75,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " (you)",
+              "x": 277,
+              "y": 200,
+              "w": 75,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " host",
+              "x": 351,
+              "y": 200,
+              "w": 72,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " host",
+              "x": 351,
+              "y": 200,
+              "w": 72,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " host",
+              "x": 351,
+              "y": 200,
+              "w": 72,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Web",
+              "x": 133,
+              "y": 230,
+              "w": 52,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Web",
+              "x": 133,
+              "y": 230,
+              "w": 52,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Web",
+              "x": 133,
+              "y": 230,
+              "w": 52,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "",
+              "x": 449,
+              "y": 217,
+              "w": 27,
+              "h": 27
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Ready",
+              "x": 482,
+              "y": 215,
+              "w": 81,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Ready",
+              "x": 482,
+              "y": 215,
+              "w": 81,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Ready",
+              "x": 482,
+              "y": 215,
+              "w": 81,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "",
+              "x": 85,
+              "y": 302,
+              "w": 36,
+              "h": 36
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Desk Dweller",
+              "x": 136,
+              "y": 290,
+              "w": 166,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Desk Dweller",
+              "x": 136,
+              "y": 290,
+              "w": 166,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Desk Dweller",
+              "x": 136,
+              "y": 290,
+              "w": 166,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Desk Dweller",
+              "x": 136,
+              "y": 290,
+              "w": 166,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "macOS",
+              "x": 136,
+              "y": 320,
+              "w": 85,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "macOS",
+              "x": 136,
+              "y": 320,
+              "w": 85,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "macOS",
+              "x": 136,
+              "y": 320,
+              "w": 85,
+              "h": 30
+            },
+            "actual": null
+          }
+        ],
+        "mismatched_count": 238,
+        "ok": false
+      },
+      "layout": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-lobby.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-lobby.layout.normalized.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-lobby.layout.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "layoutRaw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-lobby.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-lobby.layout.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-lobby.layout.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "raw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-lobby.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-lobby.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-lobby.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          2622,
+          1206
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      }
+    },
+    {
+      "screen": "results",
+      "platform": "ios",
+      "baseline": "web",
+      "viewport": [
+        874,
+        402
+      ],
+      "sameViewport": false,
+      "nodes": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-results.layout.json",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-results.layout.json",
+        "tolerance_px": 2,
+        "reference_viewport": [
+          1280,
+          800
+        ],
+        "actual_viewport": [
+          874,
+          402
+        ],
+        "nodes": 196,
+        "matched": 0,
+        "exact": 0,
+        "within_tolerance": [],
+        "mismatched": [
+          {
+            "reference": {
+              "text": "THE WORLD IS BETTER BECAUSE YOU BUILT IT",
+              "x": 439,
+              "y": 30,
+              "w": 402,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "THE WORLD IS BETTER BECAUSE YOU BUILT IT",
+              "x": 439,
+              "y": 30,
+              "w": 402,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "A HEARTH TO REMEMBER",
+              "x": 390,
+              "y": 50,
+              "w": 500,
+              "h": 44
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "A HEARTH TO REMEMBER",
+              "x": 390,
+              "y": 50,
+              "w": 500,
+              "h": 44
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "",
+              "x": 510,
+              "y": 100,
+              "w": 36,
+              "h": 36
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "RANK #1  ·  9 POINTS",
+              "x": 554,
+              "y": 106,
+              "w": 217,
+              "h": 25
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "RANK #1  ·  9 POINTS",
+              "x": 554,
+              "y": 106,
+              "w": 217,
+              "h": 25
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "THE BUILDERS CLUB",
+              "x": 33,
+              "y": 166,
+              "w": 893,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "THE BUILDERS CLUB",
+              "x": 33,
+              "y": 166,
+              "w": 893,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "THE BUILDERS CLUB",
+              "x": 33,
+              "y": 166,
+              "w": 893,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "#",
+              "x": 34,
+              "y": 215,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "#",
+              "x": 34,
+              "y": 215,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "#",
+              "x": 34,
+              "y": 215,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player",
+              "x": 70,
+              "y": 215,
+              "w": 303,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player",
+              "x": 70,
+              "y": 215,
+              "w": 303,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player",
+              "x": 70,
+              "y": 215,
+              "w": 303,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player",
+              "x": 70,
+              "y": 215,
+              "w": 303,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Placed",
+              "x": 373,
+              "y": 215,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Placed",
+              "x": 373,
+              "y": 215,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Placed",
+              "x": 373,
+              "y": 215,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Broken",
+              "x": 487,
+              "y": 215,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Broken",
+              "x": 487,
+              "y": 215,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Broken",
+              "x": 487,
+              "y": 215,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Crafted",
+              "x": 601,
+              "y": 215,
+              "w": 132,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Crafted",
+              "x": 601,
+              "y": 215,
+              "w": 132,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Crafted",
+              "x": 601,
+              "y": 215,
+              "w": 132,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Kills",
+              "x": 733,
+              "y": 215,
+              "w": 90,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Kills",
+              "x": 733,
+              "y": 215,
+              "w": 90,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Kills",
+              "x": 733,
+              "y": 215,
+              "w": 90,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Score",
+              "x": 823,
+              "y": 215,
+              "w": 102,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Score",
+              "x": 823,
+              "y": 215,
+              "w": 102,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Score",
+              "x": 823,
+              "y": 215,
+              "w": 102,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "1",
+              "x": 34,
+              "y": 277,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "1",
+              "x": 34,
+              "y": 277,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "1",
+              "x": 34,
+              "y": 277,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 70,
+              "y": 277,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 70,
+              "y": 277,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 70,
+              "y": 277,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 70,
+              "y": 277,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  Web",
+              "x": 214,
+              "y": 277,
+              "w": 64,
+              "h": 30
+            },
+            "actual": null
+          }
+        ],
+        "mismatched_count": 377,
+        "ok": false
+      },
+      "layout": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-results.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-results.layout.normalized.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-results.layout.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "layoutRaw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-results.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-results.layout.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-results.layout.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "raw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-results.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-results.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-results.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          2622,
+          1206
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      }
+    },
+    {
+      "screen": "home",
+      "platform": "ios",
+      "baseline": "web",
+      "viewport": [
+        874,
+        402
+      ],
+      "sameViewport": false,
+      "nodes": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-home.layout.json",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-home.layout.json",
+        "tolerance_px": 2,
+        "reference_viewport": [
+          1280,
+          800
+        ],
+        "actual_viewport": [
+          874,
+          402
+        ],
+        "nodes": 28,
+        "matched": 0,
+        "exact": 0,
+        "within_tolerance": [],
+        "mismatched": [
+          {
+            "reference": {
+              "text": "",
+              "x": 58,
+              "y": 30,
+              "w": 28,
+              "h": 28
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "HEARTHBOUND ADVENTURES",
+              "x": 94,
+              "y": 37,
+              "w": 230,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "HEARTHBOUND ADVENTURES",
+              "x": 94,
+              "y": 37,
+              "w": 230,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "󰊿",
+              "x": 1101,
+              "y": 36,
+              "w": 16,
+              "h": 16
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "ONLINE · 2 ms",
+              "x": 1124,
+              "y": 37,
+              "w": 85,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "ONLINE · 2 ms",
+              "x": 1124,
+              "y": 37,
+              "w": 85,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "ONLINE · 2 ms",
+              "x": 1124,
+              "y": 37,
+              "w": 85,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "BIG WORLDS. BETTER TOGETHER.",
+              "x": 58,
+              "y": 158,
+              "w": 294,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "BIG WORLDS. BETTER TOGETHER.",
+              "x": 58,
+              "y": 158,
+              "w": 294,
+              "h": 14
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "VOXEL\nHEARTH",
+              "x": 58,
+              "y": 190,
+              "w": 354,
+              "h": 150
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "VOXEL\nHEARTH",
+              "x": 58,
+              "y": 190,
+              "w": 354,
+              "h": 150
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "A spark. A block. An entire world of possibility.\nBring your friends. Leave your mark.",
+              "x": 58,
+              "y": 364,
+              "w": 396,
+              "h": 54
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "A spark. A block. An entire world of possibility.\nBring your friends. Leave your mark.",
+              "x": 58,
+              "y": 364,
+              "w": 396,
+              "h": 54
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Play Online",
+              "x": 232,
+              "y": 469,
+              "w": 141,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Play Online",
+              "x": 232,
+              "y": 469,
+              "w": 141,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Create World",
+              "x": 94,
+              "y": 546,
+              "w": 167,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Create World",
+              "x": 94,
+              "y": 546,
+              "w": 167,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player: Hearthling",
+              "x": 316,
+              "y": 546,
+              "w": 225,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player: Hearthling",
+              "x": 316,
+              "y": 546,
+              "w": 225,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Options...",
+              "x": 115,
+              "y": 616,
+              "w": 123,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Options...",
+              "x": 115,
+              "y": 616,
+              "w": 123,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "How to Play",
+              "x": 354,
+              "y": 616,
+              "w": 147,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "How to Play",
+              "x": 354,
+              "y": 616,
+              "w": 147,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "01 / EXPLORE · BUILD · BELONG",
+              "x": 58,
+              "y": 759,
+              "w": 1134,
+              "h": 13
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "01 / EXPLORE · BUILD · BELONG",
+              "x": 58,
+              "y": 759,
+              "w": 1134,
+              "h": 13
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "01 / EXPLORE · BUILD · BELONG",
+              "x": 58,
+              "y": 759,
+              "w": 1134,
+              "h": 13
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "WEB",
+              "x": 1192,
+              "y": 760,
+              "w": 30,
+              "h": 12
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "WEB",
+              "x": 1192,
+              "y": 760,
+              "w": 30,
+              "h": 12
+            },
+            "actual": null
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "",
+              "x": 84,
+              "y": 14,
+              "w": 28,
+              "h": 28
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "HEARTHBOUND ADVENTURES",
+              "x": 120,
+              "y": 23,
+              "w": 187,
+              "h": 11
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "HEARTHBOUND ADVENTURES",
+              "x": 120,
+              "y": 23,
+              "w": 187,
+              "h": 11
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "󰊿",
+              "x": 671,
+              "y": 20,
+              "w": 16,
+              "h": 16
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "ONLINE · 1 ms",
+              "x": 694,
+              "y": 21,
+              "w": 83,
+              "h": 14
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "ONLINE · 1 ms",
+              "x": 694,
+              "y": 21,
+              "w": 83,
+              "h": 14
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "ONLINE · 1 ms",
+              "x": 694,
+              "y": 21,
+              "w": 83,
+              "h": 14
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "VOXEL\nHEARTH",
+              "x": 84,
+              "y": 70,
+              "w": 193,
+              "h": 82
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "VOXEL\nHEARTH",
+              "x": 84,
+              "y": 70,
+              "w": 193,
+              "h": 82
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Gather. Build. Make it yours.",
+              "x": 84,
+              "y": 162,
+              "w": 181,
+              "h": 20
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Gather. Build. Make it yours.",
+              "x": 84,
+              "y": 162,
+              "w": 181,
+              "h": 20
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Play Online",
+              "x": 211,
+              "y": 207,
+              "w": 95,
+              "h": 20
+            }
+          }
+        ],
+        "mismatched_count": 54,
+        "ok": false
+      },
+      "layout": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-home.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-home.layout.normalized.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-home.layout.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "layoutRaw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-home.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-home.layout.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-home.layout.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "raw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-home.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-home.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-home.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          2622,
+          1206
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      }
+    }
+  ],
+  "recordingLayout": [
+    "web",
+    "ios"
+  ],
+  "recording": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/four-way-recording.mp4",
+  "markers": [
+    {
+      "frame": 0,
+      "title": "Join & Lobby",
+      "caption": "Every client joins the same room by code and readies up",
+      "notes": [
+        "room HEARTH · seed 1234",
+        "Web on web",
+        "iOS on ios"
+      ]
+    },
+    {
+      "frame": 4,
+      "title": "Gameplay",
+      "caption": "Match starts: frozen noon, deterministic world, one server bot",
+      "notes": [
+        "lobby → playing on every client"
+      ]
+    },
+    {
+      "frame": 6,
+      "title": "Shared structure",
+      "caption": "Each client places two stone blocks in one shared row",
+      "notes": [
+        "cells [[41,34,45],[42,34,45]]",
+        "placed on the server, echoed to every client"
+      ]
+    },
+    {
+      "frame": 11,
+      "title": "Breaking & chat",
+      "caption": "Each client breaks the block placed by the next one, then chats",
+      "notes": [
+        "round-robin break",
+        "chat history compared on every client"
+      ]
+    },
+    {
+      "frame": 16,
+      "title": "Reconnect",
+      "caption": "Web drops its socket mid-match and rejoins with its session token",
+      "notes": [
+        "same room, same identity, converged state"
+      ]
+    },
+    {
+      "frame": 18,
+      "title": "Verification",
+      "caption": "World, chat and structure hashes compared across clients and server",
+      "notes": [
+        "director hash request → every client answers"
+      ]
+    },
+    {
+      "frame": 18,
+      "title": "Results",
+      "caption": "Host ends the match: identical scoreboard and fingerprints everywhere",
+      "notes": []
+    },
+    {
+      "frame": 20,
+      "title": "Visual parity fixtures",
+      "caption": "Every client renders identical fixture data; web is the layout baseline",
+      "notes": [
+        "lobby, results, home fixtures",
+        "text/icon nodes compared within 2 logical px"
+      ]
+    }
+  ],
+  "reviewVideo": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/review-video.mp4",
+  "finishedAt": "2026-09-11T04:15:45.916Z",
+  "passed": true
+}

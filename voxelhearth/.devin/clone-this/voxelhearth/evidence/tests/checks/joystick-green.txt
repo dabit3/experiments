@@ -1,0 +1,6 @@
+00:00 +0: loading /Users/devin/repos/experiments/voxelhearth/app/test/arcade_controls_test.dart
+00:00 +0: joystick moves in the camera-relative direction and releases cleanly
+00:01 +1: button borders and focus stay within a compact menu row
+00:01 +2: keyboard activates enabled buttons and skips disabled buttons
+00:01 +3: phone lobby keeps chat focus and draft when the keyboard opens
+00:02 +4: All tests passed!

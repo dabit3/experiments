@@ -1,0 +1,9 @@
+PASS day clock advances during play
+PASS bed sets a spawn point during the day
+PASS sleep skips night and clears sleeping state
+PASS chest transfer removes inventory and stores seven blocks
+PASS JSON save/load preserves world, chat, chest, kiln and inventory
+PASS starvation reduces health
+PASS submersion drains air and damages health
+PASS creative mode prevents survival damage
+PASS results remain stable after ticking
