@@ -60,7 +60,7 @@ struct ContentView: View {
           .foregroundStyle(Palette.amber)
           .padding(.top, 7)
         LanternArt()
-          .frame(height: 280)
+          .frame(height: 220)
           .padding(.horizontal, 20)
           .padding(.top, 4)
         VStack(spacing: 14) {
@@ -89,13 +89,23 @@ struct ContentView: View {
         HStack {
           Text("THE EIGHT CHAMBERS").tracking(2)
           Spacer()
-          Text("\(store.archive.bestMoves.count) / 8").monospacedDigit()
+          Text("\(store.archive.bestMoves.count) / 8 ESCAPED").monospacedDigit()
         }
         .font(.system(size: 10, weight: .medium, design: .monospaced))
         .foregroundStyle(Palette.muted)
         .padding(.horizontal, 28)
         .padding(.top, 25)
         .padding(.bottom, 8)
+        HStack(spacing: 5) {
+          ForEach(Room.all) { room in
+            Capsule()
+              .fill(store.archive.bestMoves[room.id] != nil ? Palette.amber : Palette.stone)
+              .frame(height: 3)
+          }
+        }
+        .padding(.horizontal, 28)
+        .padding(.bottom, 5)
+        .accessibilityHidden(true)
         VStack(spacing: 0) {
           ForEach(Room.all) { room in
             chapterRow(room)
@@ -180,18 +190,23 @@ struct RoomView: View {
                 .foregroundStyle(Palette.cream)
               Text(journey.room.subtitle).font(.caption).foregroundStyle(Palette.muted)
             }
-            lightMeter
+            if journey.turn.outcome == .exploring {
+              lightMeter
+            }
             HStack {
               Text(
                 journey.turn.outcome == .exploring
-                  ? "SWIPE THE MAP OR USE THE ARROWS" : "YOUR PATH THROUGH THE DARK"
+                  ? "Swipe to move · or tap the arrows" : "YOUR PATH THROUGH THE DARK"
               )
-              .font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(1)
+              .font(.caption)
               Spacer(minLength: 0)
             }
             .foregroundStyle(Palette.muted)
             DungeonView(journey: journey)
-              .frame(maxHeight: max(200, geometry.size.height - 425))
+              .frame(
+                maxHeight: journey.turn.outcome == .exploring
+                  ? max(200, geometry.size.height - 425) : min(280, geometry.size.height * 0.36)
+              )
               .padding(8)
               .background(Palette.background)
               .overlay {
@@ -206,15 +221,17 @@ struct RoomView: View {
                   }
                 }
               )
-            HStack {
-              Label("\(journey.turn.keys) key", systemImage: "key.horizontal")
-              Spacer()
-              Label("\(collectedEmbers)/\(journey.room.embers) embers", systemImage: "diamond")
-              Spacer()
-              Text("\(journey.turn.moves) steps")
+            if journey.turn.outcome == .exploring {
+              HStack {
+                Label("\(journey.turn.keys) key", systemImage: "key.horizontal")
+                Spacer()
+                Label("\(collectedEmbers)/\(journey.room.embers) embers", systemImage: "diamond")
+                Spacer()
+                Text("\(journey.turn.moves) steps")
+              }
+              .font(.system(.caption, design: .monospaced))
+              .foregroundStyle(Palette.muted)
             }
-            .font(.system(.caption, design: .monospaced))
-            .foregroundStyle(Palette.muted)
             if journey.turn.outcome == .exploring {
               Text(store.message)
                 .font(.footnote)
@@ -358,15 +375,29 @@ struct RoomView: View {
   private var result: some View {
     let won = journey.turn.outcome == .escaped
     return VStack(spacing: 14) {
+      Text(won ? "CHAMBER CLEARED" : "THE LIGHT HAS FADED")
+        .font(.system(.caption2, design: .monospaced)).tracking(2)
+        .foregroundStyle(Palette.amber)
       Text(won ? "You carried the light." : "Even embers need rest.")
         .font(.system(.title2, design: .serif))
         .foregroundStyle(Palette.cream)
-      Text(
-        won
-          ? "\(journey.turn.moves) steps · \(journey.turn.light) light saved"
-          : "Your lantern faded. Retrace a step or try a new path."
-      )
-      .font(.subheadline).foregroundStyle(Palette.muted).multilineTextAlignment(.center)
+      if won {
+        HStack(spacing: 30) {
+          resultStat("\(journey.turn.light)", label: "LIGHT SAVED")
+          Rectangle().fill(Palette.gold.opacity(0.4)).frame(width: 1, height: 35)
+          resultStat("\(journey.turn.moves)", label: "STEPS TAKEN")
+        }
+        .frame(maxWidth: .infinity)
+        Text(
+          journey.roomID == 7
+            ? "All eight chambers escaped. The dawn is yours."
+            : "Chapter \(Room.all[journey.roomID + 1].chapter) · \(Room.all[journey.roomID + 1].title) is unlocked."
+        )
+        .font(.footnote).foregroundStyle(Palette.cream).multilineTextAlignment(.center)
+      } else {
+        Text("Retrace a step or try a new path.\nNothing is lost by trying again.")
+          .font(.subheadline).foregroundStyle(Palette.muted).multilineTextAlignment(.center)
+      }
       Button {
         if won, journey.roomID < Room.all.count - 1 {
           store.start(Room.all[journey.roomID + 1])
@@ -392,7 +423,24 @@ struct RoomView: View {
         Button("View the chambers", action: onClose).frame(minHeight: 44)
       }
     }
-    .padding(.vertical, 12)
+    .padding(18)
+    .frame(maxWidth: .infinity)
+    .background(
+      LinearGradient(
+        colors: [Palette.gold.opacity(won ? 0.18 : 0.07), Palette.panel],
+        startPoint: .top, endPoint: .bottom),
+      in: RoundedRectangle(cornerRadius: 20)
+    )
+    .overlay {
+      RoundedRectangle(cornerRadius: 20).stroke(Palette.gold.opacity(0.3), lineWidth: 1)
+    }
+  }
+
+  private func resultStat(_ value: String, label: String) -> some View {
+    VStack(spacing: 4) {
+      Text(value).font(.system(.largeTitle, design: .serif)).foregroundStyle(Palette.amber)
+      Text(label).font(.system(.caption2, design: .monospaced)).foregroundStyle(Palette.muted)
+    }
   }
 }
 
@@ -426,9 +474,10 @@ struct GuideView: View {
           Text("The dark can wait.\nYour light cannot.")
             .font(.system(.title, design: .serif)).foregroundStyle(Palette.cream)
           HStack(spacing: 0) {
-            guideSymbol("diamond.fill", title: "+6 light")
-            guideSymbol("key.horizontal", title: "Open a door")
-            guideSymbol("door.left.hand.open", title: "Escape")
+            guideSymbol("e", title: "+6 light")
+            guideSymbol("k", title: "Key")
+            guideSymbol("D", title: "Door")
+            guideSymbol("X", title: "Exit")
           }
           .padding(.vertical, 14)
           .background(Palette.panel, in: RoundedRectangle(cornerRadius: 16))
@@ -452,7 +501,12 @@ struct GuideView: View {
             text:
               "Undo restores your previous position, light and items. Restart a chamber whenever you like. There is no timer."
           )
-          Button("I'll carry the light") { dismiss() }.buttonStyle(AmberButton())
+          Button {
+            dismiss()
+          } label: {
+            Text("I'll carry the light").frame(maxWidth: .infinity)
+          }
+          .buttonStyle(AmberButton())
         }
         .padding(28)
       }
@@ -462,9 +516,13 @@ struct GuideView: View {
     .preferredColorScheme(.dark)
   }
 
-  private func guideSymbol(_ symbol: String, title: String) -> some View {
+  private func guideSymbol(_ symbol: Character, title: String) -> some View {
     VStack(spacing: 10) {
-      Image(systemName: symbol).font(.title3).foregroundStyle(Palette.amber)
+      Canvas { context, size in
+        Artwork.item(&context, value: symbol, rect: CGRect(origin: .zero, size: size))
+      }
+      .frame(width: 34, height: 34)
+      .accessibilityHidden(true)
       Text(title).font(.caption).foregroundStyle(Palette.cream)
     }
     .frame(maxWidth: .infinity)
@@ -488,31 +546,47 @@ struct SettingsView: View {
   @State private var confirm = false
   var body: some View {
     NavigationStack {
-      Form {
-        Section("The way you wander") {
-          Toggle(
-            "Gentle haptics", isOn: Binding(get: { store.archive.haptics }, set: store.setHaptics))
-          Text("Emberpath follows your device’s text size and Reduce Motion settings.")
+      ScrollView {
+        VStack(alignment: .leading, spacing: 24) {
+          Text("By lantern light")
+            .font(.system(.largeTitle, design: .serif)).foregroundStyle(Palette.cream)
+          VStack(alignment: .leading, spacing: 16) {
+            Text("The way you wander")
+              .font(.system(.title2, design: .serif)).foregroundStyle(Palette.cream)
+            Toggle(
+              "Gentle haptics", isOn: Binding(get: { store.archive.haptics }, set: store.setHaptics)
+            )
+            Text("Emberpath follows your device’s text size and Reduce Motion settings.")
+              .font(.footnote).foregroundStyle(Palette.muted)
+          }
+          .padding(20)
+          .background(Palette.panel, in: RoundedRectangle(cornerRadius: 18))
+          VStack(alignment: .leading, spacing: 16) {
+            Text("Your journal")
+              .font(.system(.title2, design: .serif)).foregroundStyle(Palette.cream)
+            LabeledContent("Chambers escaped", value: "\(store.archive.bestMoves.count) of 8")
+            Text(
+              "Your steps, gathered items and unlocked chapters are saved on this device after every move."
+            )
             .font(.footnote).foregroundStyle(Palette.muted)
-        }
-        Section("Your journal") {
-          LabeledContent("Chambers escaped", value: "\(store.archive.bestMoves.count) of 8")
-          Text(
-            "Your steps, gathered items and unlocked chapters are saved on this device after every move."
-          )
-          .font(.footnote)
-          Button("Erase all progress", role: .destructive) { confirm = true }
-        }
-        Section {
-          Text("Eight small rooms. One stubborn spark.\nMade for a quiet moment, wherever you are.")
+            Button("Erase all progress", role: .destructive) { confirm = true }.frame(minHeight: 44)
+          }
+          .padding(20)
+          .background(Palette.panel, in: RoundedRectangle(cornerRadius: 18))
+          VStack(alignment: .leading, spacing: 14) {
+            Text(
+              "Eight small rooms. One stubborn spark.\nMade for a quiet moment, wherever you are."
+            )
             .font(.system(.body, design: .serif))
-        } footer: {
-          Text("Emberpath · 1.0\nNo accounts, ads, or network connection.")
+            .foregroundStyle(Palette.cream)
+            Text("Emberpath · 1.0\nNo accounts, ads, or network connection.")
+              .font(.footnote).foregroundStyle(Palette.muted)
+          }
+          .padding(.horizontal, 4)
         }
+        .padding(24)
       }
-      .scrollContentBackground(.hidden)
       .background(Palette.background)
-      .navigationTitle("By lantern light")
       .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
       .alert("Erase your journey?", isPresented: $confirm) {
         Button("Erase progress", role: .destructive) { store.reset() }
