@@ -161,6 +161,7 @@ struct ContentView: View {
 struct RoomView: View {
   @EnvironmentObject private var store: GameStore
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
   let journey: Journey
   let onClose: () -> Void
   let onGuide: () -> Void
@@ -196,7 +197,10 @@ struct RoomView: View {
             HStack {
               Text(
                 journey.turn.outcome == .exploring
-                  ? "Swipe to move · or tap the arrows" : "YOUR PATH THROUGH THE DARK"
+                  ? (dynamicTypeSize.isAccessibilitySize
+                    ? "Use arrows to move · scroll to explore"
+                    : "Swipe to move · or tap the arrows")
+                  : "YOUR PATH THROUGH THE DARK"
               )
               .font(.caption)
               Spacer(minLength: 0)
@@ -219,16 +223,22 @@ struct RoomView: View {
                   } else {
                     move(value.translation.height > 0 ? .down : .up)
                   }
-                }
+                },
+                including: dynamicTypeSize.isAccessibilitySize ? .none : .all
               )
             if journey.turn.outcome == .exploring {
-              HStack {
+              let layout =
+                dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 10))
+                : AnyLayout(HStackLayout())
+              layout {
                 Label("\(journey.turn.keys) key", systemImage: "key.horizontal")
-                Spacer()
+                if !dynamicTypeSize.isAccessibilitySize { Spacer() }
                 Label("\(collectedEmbers)/\(journey.room.embers) embers", systemImage: "diamond")
-                Spacer()
+                if !dynamicTypeSize.isAccessibilitySize { Spacer() }
                 Text("\(journey.turn.moves) steps")
               }
+              .frame(maxWidth: .infinity, alignment: .leading)
               .font(.system(.caption, design: .monospaced))
               .foregroundStyle(Palette.muted)
             }
@@ -440,6 +450,7 @@ struct RoomView: View {
     VStack(spacing: 4) {
       Text(value).font(.system(.largeTitle, design: .serif)).foregroundStyle(Palette.amber)
       Text(label).font(.system(.caption2, design: .monospaced)).foregroundStyle(Palette.muted)
+        .lineLimit(1).minimumScaleFactor(0.6)
     }
   }
 }
@@ -467,13 +478,18 @@ struct DirectionButtonStyle: ButtonStyle {
 
 struct GuideView: View {
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
   var body: some View {
     NavigationStack {
       ScrollView {
         VStack(alignment: .leading, spacing: 22) {
           Text("The dark can wait.\nYour light cannot.")
             .font(.system(.title, design: .serif)).foregroundStyle(Palette.cream)
-          HStack(spacing: 0) {
+          LazyVGrid(
+            columns: Array(
+              repeating: GridItem(.flexible()),
+              count: dynamicTypeSize.isAccessibilitySize ? 2 : 4), spacing: 18
+          ) {
             guideSymbol("e", title: "+6 light")
             guideSymbol("k", title: "Key")
             guideSymbol("D", title: "Door")

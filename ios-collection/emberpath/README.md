@@ -48,6 +48,8 @@ The icon is included; regenerate its original procedural artwork with
 The board exposes the explorer’s position and neighboring tiles to VoiceOver.
 Labels use Dynamic Type, controls have accessible names, movement has optional
 gentle haptics, and transitions honor Reduce Motion. No audio is required.
+At accessibility text sizes, stats stack vertically and the map scrolls rather
+than interpreting movement swipes; use the always-visible direction buttons.
 
 ## Data and tests
 
