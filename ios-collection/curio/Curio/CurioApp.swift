@@ -38,6 +38,9 @@ struct MuseumButton: ButtonStyle {
   var filled = true
   func makeBody(configuration: Configuration) -> some View {
     configuration.label.font(.subheadline.weight(.semibold))
+      .multilineTextAlignment(.center)
+      .fixedSize(horizontal: false, vertical: true)
+      .padding(.horizontal, 16).padding(.vertical, 14)
       .frame(maxWidth: .infinity, minHeight: 52)
       .foregroundStyle(filled ? .white : MuseumStyle.ink)
       .background(filled ? MuseumStyle.cobalt : MuseumStyle.stone.opacity(0.5))
@@ -188,6 +191,9 @@ struct FeaturedExhibition: View {
             ExhibitArtwork(artifact: .unpictured).frame(height: 158)
             Text("Your first object belongs here.")
               .font(.subheadline).foregroundStyle(MuseumStyle.muted)
+              .multilineTextAlignment(.center)
+              .fixedSize(horizontal: false, vertical: true)
+              .padding(.horizontal, 12)
           }
         } else {
           ExhibitArtwork(artifact: objects.first?.artifact ?? .camera, photo: objects.first?.photo)

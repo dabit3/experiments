@@ -78,3 +78,20 @@ on the device; no external service delivery is assumed.
 
 The simulator build uses Xcode 26.6 with iOS 26.5. App Store submission, production
 signing and physical-device validation are outside this version's validation.
+
+## Validation performed
+
+Native simulator checks covered iPhone 17 Pro and iPhone 17e, including an
+accessibility-large text spot check. The tested paths include create/edit/move,
+photo import, acquired date, favorite/tag/search combinations, cancellation,
+cascade deletion, relaunch persistence and native Save to Files export. The
+saved sample label is a decodable 960 × 1391 PNG.
+
+Seven XCTest cases cover persistence/CRUD, combined query behavior, validation
+and cascade deletion, preservation of unreadable archives, real PNG rendering,
+object moves/catalog stability and safe descriptive filenames. Strict
+Swift-format lint and the native Xcode test build pass.
+
+VoiceOver labels are implemented, but runtime VoiceOver reading was not
+validated. Extreme collection sizes and UI-level disk-full recovery were not
+tested. Museum data has no archive backup/recovery interface in this V1.
