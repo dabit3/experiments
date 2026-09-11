@@ -45,10 +45,12 @@ public struct Terrain: Codable, Equatable, Sendable {
         let h: Float
         switch landscape {
         case .alpine:
-          let peakA = Self.hill(u + 0.18, v + 0.15, 0.18) * 0.68
-          let peakB = Self.hill(u - 0.23, v - 0.04, 0.085) * 0.58
-          let ridge = Self.hill(u + 0.35, v - 0.34, 0.09) * 0.26
-          h = 0.05 + peakA + peakB + ridge + detail * max(0, 1 - r)
+          let peakA = Self.hill(u + 0.25, v + 0.22, 0.055) * 0.65
+          let peakB = Self.hill(u - 0.22, v - 0.18, 0.065) * 0.57
+          let foothills = Self.hill(u, v, 0.32) * 0.31
+          let ridge = Self.hill(u + 0.35, v - 0.34, 0.05) * 0.26
+          let crags = sin(u * 37 + v * 11) * cos(v * 32) * 0.035
+          h = 0.05 + peakA + peakB + foothills + ridge + (detail + crags) * max(0, 1 - r)
         case .caldera:
           let ring = exp(-pow((r - 0.47) * 7, 2)) * 0.62
           h = 0.06 + ring * (0.85 + 0.15 * sin(atan2(v, u) * 5)) + detail

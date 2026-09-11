@@ -76,20 +76,21 @@ struct TerrainCanvas: UIViewRepresentable {
       floor.reflectivity = 0
       floor.firstMaterial?.diffuse.contents = UIColor(
         red: 0.947, green: 0.941, blue: 0.909, alpha: 1)
+      floor.firstMaterial?.lightingModel = .constant
       let floorNode = SCNNode(geometry: floor)
       floorNode.position.y = -0.46
       scene.rootNode.addChildNode(floorNode)
 
       let water = SCNBox(width: 10, height: 0.035, length: 10, chamferRadius: 0)
       let waterMaterial = SCNMaterial()
-      waterMaterial.diffuse.contents = UIColor(red: 0.15, green: 0.61, blue: 0.62, alpha: 1)
+      waterMaterial.diffuse.contents = UIColor(red: 0.27, green: 0.66, blue: 0.66, alpha: 1)
       waterMaterial.metalness.contents = 0.12
       waterMaterial.roughness.contents = 0.28
-      waterMaterial.lightingModel = .physicallyBased
+      waterMaterial.lightingModel = .constant
       waterMaterial.shaderModifiers = [
         .surface: """
         float ripples = sin(_surface.position.x * 34.0 + _surface.position.z * 21.0)
-          * sin(_surface.position.z * 38.0) * 0.018;
+            * sin(_surface.position.z * 38.0) * 0.006;
         _surface.diffuse.rgb += float3(ripples);
         """
       ]
@@ -100,14 +101,14 @@ struct TerrainCanvas: UIViewRepresentable {
       let ambient = SCNNode()
       ambient.light = SCNLight()
       ambient.light?.type = .ambient
-      ambient.light?.intensity = 650
+      ambient.light?.intensity = 700
       ambient.light?.color = UIColor(red: 0.94, green: 0.96, blue: 1, alpha: 1)
       scene.rootNode.addChildNode(ambient)
 
       let sun = SCNNode()
       sun.light = SCNLight()
       sun.light?.type = .directional
-      sun.light?.intensity = 1500
+      sun.light?.intensity = 950
       sun.light?.castsShadow = true
       sun.light?.shadowMode = .deferred
       sun.light?.shadowColor = UIColor.black.withAlphaComponent(0.16)
@@ -121,8 +122,7 @@ struct TerrainCanvas: UIViewRepresentable {
       cameraNode.camera?.usesOrthographicProjection = true
       cameraNode.camera?.zNear = 0.1
       cameraNode.camera?.zFar = 100
-      cameraNode.camera?.wantsHDR = true
-      cameraNode.camera?.exposureOffset = -0.45
+      cameraNode.camera?.wantsHDR = false
       scene.rootNode.addChildNode(cameraNode)
       view.pointOfView = cameraNode
 
@@ -164,7 +164,7 @@ struct TerrainCanvas: UIViewRepresentable {
         sin(pitch) * distance + 0.5,
         cos(yaw) * cos(pitch) * distance)
       cameraNode.look(at: SCNVector3(0, 0.5, 0))
-      cameraNode.camera?.orthographicScale = Double(14.8 / model.zoom)
+      cameraNode.camera?.orthographicScale = Double(8.0 / model.zoom)
     }
 
     func rebuildMesh() {
@@ -205,7 +205,7 @@ struct TerrainCanvas: UIViewRepresentable {
       let material = SCNMaterial()
       material.diffuse.contents = UIColor.white
       material.roughness.contents = 0.95
-      material.lightingModel = .physicallyBased
+      material.lightingModel = .lambert
       if model.contours {
         material.shaderModifiers = [
           .surface: """
