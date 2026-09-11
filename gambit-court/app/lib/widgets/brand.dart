@@ -3,62 +3,54 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens.dart';
 
-/// Original Gambit Court mark: a 2x2 checker tile with a brass corner,
-/// plus the Fraunces wordmark.
 class GcMark extends StatelessWidget {
   const GcMark({super.key, this.size = 28});
   final double size;
 
   @override
   Widget build(BuildContext context) {
-    final c = context.gc;
-    return CustomPaint(
-      size: Size.square(size),
-      painter: _MarkPainter(c.brass, c.text, c.bg),
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: GcArcade.sunshine,
+        borderRadius: BorderRadius.circular(size * 0.24),
+        boxShadow: const [
+          BoxShadow(color: Color(0xFF9A701B), offset: Offset(0, 3)),
+        ],
+      ),
+      padding: EdgeInsets.all(size * 0.16),
+      child: CustomPaint(painter: _MarkPainter()),
     );
   }
 }
 
 class _MarkPainter extends CustomPainter {
-  _MarkPainter(this.brass, this.ink, this.bg);
-  final Color brass;
-  final Color ink;
-  final Color bg;
-
   @override
   void paint(Canvas canvas, Size size) {
-    final r = RRect.fromRectAndRadius(
-      Offset.zero & size,
-      Radius.circular(size.width * 0.28),
-    );
-    canvas.save();
-    canvas.clipRRect(r);
-    final half = size.width / 2;
-    final paintInk = Paint()..color = ink;
-    final paintBg = Paint()..color = bg;
-    canvas.drawRect(Rect.fromLTWH(0, 0, half, half), paintInk);
-    canvas.drawRect(Rect.fromLTWH(half, half, half, half), paintInk);
-    canvas.drawRect(Rect.fromLTWH(half, 0, half, half), paintBg);
-    canvas.drawRect(Rect.fromLTWH(0, half, half, half), paintBg);
-    canvas.drawRect(Rect.fromLTWH(half, 0, half, half), Paint()..color = brass);
-    canvas.drawCircle(
-      Offset(half * 0.5, half * 1.5),
-      size.width * 0.13,
-      Paint()..color = brass,
-    );
-    canvas.restore();
+    canvas.scale(size.width / 100, size.height / 100);
+    final crown = Path()
+      ..moveTo(9, 24)
+      ..lineTo(30, 43)
+      ..lineTo(50, 13)
+      ..lineTo(70, 43)
+      ..lineTo(91, 24)
+      ..lineTo(80, 72)
+      ..lineTo(20, 72)
+      ..close();
+    final paint = Paint()..color = GcArcade.midnight;
+    canvas.drawPath(crown, paint);
     canvas.drawRRect(
-      r,
-      Paint()
-        ..color = ink.withValues(alpha: 0.25)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1,
+      RRect.fromRectAndRadius(
+        const Rect.fromLTWH(20, 80, 60, 8),
+        const Radius.circular(3),
+      ),
+      paint,
     );
   }
 
   @override
-  bool shouldRepaint(_MarkPainter old) =>
-      old.brass != brass || old.ink != ink || old.bg != bg;
+  bool shouldRepaint(_MarkPainter old) => false;
 }
 
 class GcWordmark extends StatelessWidget {
@@ -73,25 +65,16 @@ class GcWordmark extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (showMark) ...[
-          GcMark(size: size * 1.25),
-          SizedBox(width: size * 0.5),
+          GcMark(size: size * 1.8),
+          SizedBox(width: size * 0.6),
         ],
-        Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text: 'Gambit ',
-                style: GcType.title(c.text, size: size),
-              ),
-              TextSpan(
-                text: 'Court',
-                style: GcType.displayItalic(
-                  c.brass,
-                  size: size,
-                ).copyWith(fontWeight: FontWeight.w500),
-              ),
-            ],
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('GAMBIT', style: GcType.display(c.text, size: size)),
+            Text('C O U R T', style: GcType.label(c.brass, size: size * 0.56)),
+          ],
         ),
       ],
     );

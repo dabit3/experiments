@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Gambit Court design tokens.
-///
-/// Palette: "ink & brass" — a warm, near-black ink for surfaces in dark
-/// mode, parchment in light mode, brass as the single accent, verdigris for
-/// success/online, and a walnut/linen board that reads well against both.
+class GcArcade {
+  GcArcade._();
+  static const midnight = Color(0xFF101B46);
+  static const royal = Color(0xFF254BCB);
+  static const sunshine = Color(0xFFFFD34D);
+  static const porcelain = Color(0xFFF6F8FF);
+  static const aqua = Color(0xFF59E1DD);
+}
+
 class GcColors extends ThemeExtension<GcColors> {
   const GcColors({
     required this.bg,
@@ -71,69 +75,69 @@ class GcColors extends ThemeExtension<GcColors> {
   final Color shadow;
 
   static const dark = GcColors(
-    bg: Color(0xFF110F0D),
-    surface: Color(0xFF1A1714),
-    surfaceRaised: Color(0xFF221E1A),
-    surfaceSunken: Color(0xFF0C0B09),
-    border: Color(0xFF2E2823),
-    borderStrong: Color(0xFF443B33),
-    text: Color(0xFFF3ECE1),
-    textMuted: Color(0xFFA79D90),
-    textFaint: Color(0xFF6F665B),
-    brass: Color(0xFFD9AC4F),
-    brassInk: Color(0xFF221A08),
-    brassSoft: Color(0x33D9AC4F),
-    verdigris: Color(0xFF5FB59E),
-    verdigrisSoft: Color(0x2E5FB59E),
-    danger: Color(0xFFE06A5A),
-    dangerSoft: Color(0x2EE06A5A),
-    boardLight: Color(0xFFE6D3B1),
-    boardDark: Color(0xFF8C6746),
-    boardFrame: Color(0xFF2A221B),
-    boardCoord: Color(0xFFB8A484),
-    lastMove: Color(0x8CE2B94F),
-    selected: Color(0xB3E2B94F),
-    legalDot: Color(0x5C1A1208),
-    premove: Color(0x805FB59E),
-    checkGlow: Color(0xD9E0453A),
-    pieceWhite: Color(0xFFF7EEDF),
-    pieceWhiteInk: Color(0xFF3A2C20),
-    pieceBlack: Color(0xFF2A221C),
-    pieceBlackInk: Color(0xFF0B0908),
-    shadow: Color(0x99000000),
+    bg: GcArcade.midnight,
+    surface: Color(0xFF172653),
+    surfaceRaised: Color(0xFF203465),
+    surfaceSunken: Color(0xFF0C173A),
+    border: Color(0xFF304576),
+    borderStrong: Color(0xFF506698),
+    text: GcArcade.porcelain,
+    textMuted: Color(0xFFBBC9EB),
+    textFaint: Color(0xFF8FA4D1),
+    brass: GcArcade.sunshine,
+    brassInk: GcArcade.midnight,
+    brassSoft: Color(0x26FFD34D),
+    verdigris: GcArcade.aqua,
+    verdigrisSoft: Color(0x2659E1DD),
+    danger: Color(0xFFFF857E),
+    dangerSoft: Color(0x2EFF857E),
+    boardLight: Color(0xFFE4EAF8),
+    boardDark: Color(0xFF6581BA),
+    boardFrame: Color(0xFF223B73),
+    boardCoord: Color(0xFFD2DEF7),
+    lastMove: Color(0xA6FFD34D),
+    selected: Color(0xD9FFD34D),
+    legalDot: Color(0x73101B46),
+    premove: Color(0x9959E1DD),
+    checkGlow: Color(0xE6EF625C),
+    pieceWhite: Color(0xFFFFF9E6),
+    pieceWhiteInk: Color(0xFF485984),
+    pieceBlack: Color(0xFF233B70),
+    pieceBlackInk: Color(0xFF091737),
+    shadow: Color(0x99060D27),
   );
 
   static const light = GcColors(
-    bg: Color(0xFFF4EEE4),
-    surface: Color(0xFFFCF9F3),
+    bg: Color(0xFFEDF2FF),
+    surface: Color(0xFFF8FAFF),
     surfaceRaised: Color(0xFFFFFFFF),
-    surfaceSunken: Color(0xFFEDE5D8),
-    border: Color(0xFFE3D9CA),
-    borderStrong: Color(0xFFC9BCA8),
-    text: Color(0xFF1E1913),
-    textMuted: Color(0xFF6E645A),
-    textFaint: Color(0xFFA0958A),
-    brass: Color(0xFF9E7524),
-    brassInk: Color(0xFFFFF8E8),
-    brassSoft: Color(0x269E7524),
-    verdigris: Color(0xFF2F8571),
-    verdigrisSoft: Color(0x262F8571),
-    danger: Color(0xFFC24B3C),
-    dangerSoft: Color(0x26C24B3C),
-    boardLight: Color(0xFFEEDFC2),
-    boardDark: Color(0xFF9E7654),
-    boardFrame: Color(0xFF5A4432),
-    boardCoord: Color(0xFFEADBC0),
-    lastMove: Color(0x8CE0B23F),
-    selected: Color(0xB3E0B23F),
-    legalDot: Color(0x521A1208),
-    premove: Color(0x802F8571),
-    checkGlow: Color(0xD9D84A3C),
-    pieceWhite: Color(0xFFFBF5EA),
-    pieceWhiteInk: Color(0xFF3A2C20),
-    pieceBlack: Color(0xFF2A221C),
-    pieceBlackInk: Color(0xFF0B0908),
-    shadow: Color(0x2E2A1A08),
+    surfaceSunken: Color(0xFFE4EAFA),
+    border: Color(0xFFD2DCF1),
+    borderStrong: Color(0xFFA8BADD),
+    text: GcArcade.midnight,
+    textMuted: Color(0xFF4E638A),
+    textFaint: Color(0xFF60769E),
+    brass: Color(0xFF876100),
+    brassInk: GcArcade.midnight,
+    brassSoft: Color(0x4DFFD34D),
+    verdigris: Color(0xFF087E80),
+    verdigrisSoft: Color(0x26087E80),
+    danger: Color(0xFFBB393B),
+    dangerSoft: Color(0x26BB393B),
+    boardLight: Color(0xFFE4EAF8),
+    boardDark: Color(0xFF6581BA),
+    boardFrame: Color(0xFF223B73),
+    boardCoord: Color(0xFFD2DEF7),
+    lastMove: Color(0xA6FFD34D),
+    selected: Color(0xD9FFD34D),
+    legalDot: Color(0x73101B46),
+    premove: Color(0x9959E1DD),
+    checkGlow: Color(0xE6EF625C),
+    pieceWhite: Color(0xFFFFF9E6),
+    pieceWhiteInk: Color(0xFF485984),
+    pieceBlack: Color(0xFF233B70),
+    pieceBlackInk: Color(0xFF091737),
+    shadow: Color(0x26223B73),
   );
 
   @override
@@ -225,53 +229,33 @@ class GcBreakpoints {
 
 class GcFonts {
   GcFonts._();
-  static const display = 'Fraunces';
+  static const display = 'Bungee';
   static const body = 'Manrope';
   static const mono = 'IBMPlexMono';
 }
 
-/// Typography scale. Display uses Fraunces (optical size + softness axes),
-/// UI text uses Manrope, and anything tabular (clocks, notation, codes)
-/// uses IBM Plex Mono.
 class GcType {
   GcType._();
 
   static TextStyle display(Color color, {double size = 40}) => TextStyle(
     fontFamily: GcFonts.display,
     fontSize: size,
-    height: 1.05,
-    letterSpacing: -0.02 * size,
-    fontWeight: FontWeight.w500,
-    fontVariations: const [
-      FontVariation('wght', 520),
-      FontVariation('opsz', 72),
-      FontVariation('SOFT', 30),
-    ],
+    height: 1.15,
+    letterSpacing: -0.01 * size,
+    fontWeight: FontWeight.w400,
     color: color,
   );
 
   static TextStyle displayItalic(Color color, {double size = 40}) =>
-      display(color, size: size).copyWith(
-        fontStyle: FontStyle.italic,
-        fontVariations: const [
-          FontVariation('wght', 480),
-          FontVariation('opsz', 72),
-          FontVariation('SOFT', 60),
-          FontVariation('WONK', 1),
-        ],
-      );
+      display(color, size: size);
 
   static TextStyle title(Color color, {double size = 22}) => TextStyle(
-    fontFamily: GcFonts.display,
+    fontFamily: GcFonts.body,
     fontSize: size,
     height: 1.15,
     letterSpacing: -0.01 * size,
-    fontWeight: FontWeight.w600,
-    fontVariations: const [
-      FontVariation('wght', 600),
-      FontVariation('opsz', 36),
-      FontVariation('SOFT', 20),
-    ],
+    fontWeight: FontWeight.w800,
+    fontVariations: const [FontVariation('wght', 800)],
     color: color,
   );
 

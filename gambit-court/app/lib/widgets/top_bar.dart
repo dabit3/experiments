@@ -35,6 +35,7 @@ class TopBar extends StatelessWidget {
         vertical: compact ? GcSpace.sm : GcSpace.md,
       ),
       decoration: BoxDecoration(
+        color: c.surface.withValues(alpha: 0.8),
         border: Border(bottom: BorderSide(color: c.border)),
       ),
       child: Row(

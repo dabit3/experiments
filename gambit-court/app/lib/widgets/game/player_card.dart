@@ -48,7 +48,8 @@ class PlayerCard extends StatelessWidget {
         ? 'Seat open'
         : p.isBot
         ? 'Server engine · depth ${EngineLevel.fromId(p.botLevel ?? 2).depth}'
-        : '${_platformLabel(p.platform)}${p.connected ? '' : ' · reconnecting'}';
+        : '${active && !gameOver ? (isMe ? 'YOUR MOVE · ' : 'TO MOVE · ') : ''}'
+              '${_platformLabel(p.platform)}${p.connected ? '' : ' · reconnecting'}';
     return AnimatedContainer(
       duration: GcMotion.fast,
       padding: EdgeInsets.symmetric(
@@ -56,10 +57,16 @@ class PlayerCard extends StatelessWidget {
         vertical: compact ? GcSpace.sm : GcSpace.md,
       ),
       decoration: BoxDecoration(
-        color: active ? c.surfaceRaised : c.surface,
+        gradient: LinearGradient(
+          colors: [
+            active ? c.brassSoft : c.surface,
+            active ? c.surfaceRaised : c.surface,
+          ],
+        ),
         borderRadius: GcRadius.mdAll,
         border: Border.all(
-          color: active ? c.brass.withValues(alpha: 0.6) : c.border,
+          color: active ? c.brass : c.border,
+          width: active ? 2 : 1,
         ),
       ),
       child: Row(
@@ -185,7 +192,9 @@ class _Avatar extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              color: color == PieceColor.white ? c.pieceWhite : c.pieceBlack,
+              color: color == PieceColor.white
+                  ? const Color(0xFF5474AD)
+                  : const Color(0xFFB7D6F1),
               borderRadius: GcRadius.smAll,
               border: Border.all(color: c.borderStrong),
             ),
@@ -349,7 +358,7 @@ class _ClockDisplayState extends State<ClockDisplay> {
       child: Text(
         text,
         style: GcType.mono(
-          low ? c.danger : (widget.active ? c.text : c.textMuted),
+          low ? c.danger : (widget.active ? GcArcade.midnight : c.textMuted),
           size: widget.compact ? 20 : 24,
           weight: FontWeight.w600,
         ),
@@ -383,7 +392,7 @@ class _Shell extends StatelessWidget {
         color: low
             ? c.dangerSoft
             : active
-            ? c.brassSoft
+            ? GcArcade.sunshine
             : c.surfaceSunken,
         borderRadius: GcRadius.smAll,
         border: Border.all(

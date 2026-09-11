@@ -43,10 +43,20 @@ highlights, check highlight, board flip, history browsing with arrow keys /
 Home / End (`F` flips, `Esc` clears a premove), original vector pieces,
 original generated sound effects, haptics on mobile.
 
-**Design** — an original "ink and brass" visual system with dark and light
-themes, Fraunces / Manrope / IBM Plex Mono typography, token-based spacing and
-motion, responsive layouts for phones, tablets, desktop windows and the
-browser, safe-area handling, and empty / waiting / reconnecting / error states.
+**Design** — an original arcade chess arena: cobalt and midnight blue,
+sunshine-yellow physical-button styling, a sculpted chess marquee, a crown
+identity, ceramic vector pieces, and a scoreboard HUD. Bungee / Manrope /
+IBM Plex Mono typography, dark and light themes, responsive layouts for
+phones, tablets, desktop windows and the browser, safe-area handling,
+and empty / waiting / reconnecting / error states. Match settings expand
+below the main play actions; the current clock, side and bot level remain visible.
+
+The marquee in `app/assets/art/arena.png` was generated for Gambit Court with
+an original art prompt; it contains no licensed game characters or branding.
+The Bungee font is distributed under the SIL Open Font License (included in
+`app/assets/fonts/OFL-Bungee.txt`). The crown, vector pieces, and icon generator
+are original. Run `python3 app/tool/make_icons.py` with Pillow installed to
+regenerate the native launcher icons and web favicons.
 
 ## Running it
 
@@ -100,6 +110,11 @@ table from the lobby. **Play the bot** starts a game against the server engine
 immediately.
 
 ## The automated four-platform match
+
+For an annotated demonstration, set `LOBBY_HOLD_MS=25000`,
+`RESULTS_HOLD_MS=8000` and `PRE_PARITY_HOLD_MS=12000`. These pauses let the
+recorder start after the lobby windows settle and stop before the browser
+resizes for parity captures. They do not alter game clocks or assertions.
 
 `test/multiplayer-e2e.sh` builds every client, starts the server in
 deterministic mode (`--seed 7 --frozen-clocks --control --bot-delay-ms 0`),

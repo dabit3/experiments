@@ -154,14 +154,23 @@ class _GameScreenState extends State<GameScreen> {
             ),
             _ConnectionBanner(controller: c),
             Expanded(
-              child: wide
-                  ? _WideLayout(controller: c, onTap: _onTap, onDrop: _onDrop)
-                  : _StackedLayout(
-                      controller: c,
-                      onTap: _onTap,
-                      onDrop: _onDrop,
-                      compact: compact,
-                    ),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    center: const Alignment(-0.5, -0.3),
+                    radius: 1.2,
+                    colors: [context.gc.surfaceRaised, context.gc.bg],
+                  ),
+                ),
+                child: wide
+                    ? _WideLayout(controller: c, onTap: _onTap, onDrop: _onDrop)
+                    : _StackedLayout(
+                        controller: c,
+                        onTap: _onTap,
+                        onDrop: _onDrop,
+                        compact: compact,
+                      ),
+              ),
             ),
           ],
         ),
@@ -280,14 +289,26 @@ class _BoardColumn extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: t.boardFrame,
-                      borderRadius: BorderRadius.circular(compact ? 8 : 10),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color.lerp(t.boardFrame, GcArcade.porcelain, 0.2)!,
+                          t.boardFrame,
+                          GcArcade.midnight,
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(compact ? 10 : 14),
                       boxShadow: [
+                        BoxShadow(
+                          color: t.surfaceSunken,
+                          offset: const Offset(0, 5),
+                        ),
                         BoxShadow(
                           color: t.shadow.withValues(
                             alpha: context.isDark ? 0.55 : 0.18,
                           ),
-                          blurRadius: 36,
+                          blurRadius: 24,
                           offset: const Offset(0, 16),
                         ),
                       ],

@@ -7,7 +7,6 @@ import 'package:gambit_court_core/gambit_court_core.dart';
 import '../state/app_controller.dart';
 import '../theme/app_theme.dart';
 import '../theme/tokens.dart';
-import '../widgets/board/chess_board.dart';
 import '../widgets/board/piece_glyph.dart';
 import '../widgets/top_bar.dart';
 import '../widgets/ui.dart';
@@ -20,7 +19,6 @@ class LobbyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
     final compact = width < GcBreakpoints.tablet;
-    final wide = width >= GcBreakpoints.desktop;
     return Column(
       children: [
         TopBar(controller: controller, compact: compact),
@@ -28,10 +26,7 @@ class LobbyScreen extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(child: _Backdrop()),
-              if (wide)
-                _WideLobby(controller: controller)
-              else
-                _StackedLobby(controller: controller, compact: compact),
+              _LobbyContent(controller: controller, compact: compact),
               if (controller.queued)
                 Positioned.fill(child: _QueueOverlay(controller: controller)),
             ],
@@ -42,8 +37,6 @@ class LobbyScreen extends StatelessWidget {
   }
 }
 
-/// Soft radial brass wash plus a faint board grid, so the lobby feels like
-/// a room rather than a form.
 class _Backdrop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -55,7 +48,7 @@ class _Backdrop extends StatelessWidget {
             center: const Alignment(-0.8, -1),
             radius: 1.4,
             colors: [
-              c.brass.withValues(alpha: context.isDark ? 0.10 : 0.16),
+              GcArcade.royal.withValues(alpha: context.isDark ? 0.35 : 0.12),
               c.bg.withValues(alpha: 0),
             ],
           ),
@@ -65,58 +58,8 @@ class _Backdrop extends StatelessWidget {
   }
 }
 
-class _WideLobby extends StatelessWidget {
-  const _WideLobby({required this.controller});
-  final AppController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1180),
-        child: Padding(
-          padding: const EdgeInsets.all(GcSpace.xxl),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 6,
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _Hero(controller: controller),
-                      const SizedBox(height: GcSpace.xl),
-                      _PlayCard(controller: controller),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: GcSpace.xl),
-              Expanded(
-                flex: 4,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      _JoinCard(controller: controller),
-                      const SizedBox(height: GcSpace.lg),
-                      _TablesCard(controller: controller),
-                      const SizedBox(height: GcSpace.lg),
-                      _ReviewCard(controller: controller),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StackedLobby extends StatelessWidget {
-  const _StackedLobby({required this.controller, required this.compact});
+class _LobbyContent extends StatelessWidget {
+  const _LobbyContent({required this.controller, required this.compact});
   final AppController controller;
   final bool compact;
 
@@ -132,17 +75,36 @@ class _StackedLobby extends StatelessWidget {
       ),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 680),
+          constraints: const BoxConstraints(maxWidth: 1240),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              _Hero(controller: controller, compact: compact),
+              _Hero(compact: compact),
               SizedBox(height: compact ? GcSpace.lg : GcSpace.xl),
-              _PlayCard(controller: controller, compact: compact),
-              const SizedBox(height: GcSpace.lg),
-              _JoinCard(controller: controller),
-              const SizedBox(height: GcSpace.lg),
-              _TablesCard(controller: controller),
+              if (compact) ...[
+                _PlayCard(controller: controller, compact: true),
+                const SizedBox(height: GcSpace.lg),
+                _JoinCard(controller: controller),
+                const SizedBox(height: GcSpace.lg),
+                _TablesCard(controller: controller),
+              ] else
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(flex: 6, child: _PlayCard(controller: controller)),
+                    const SizedBox(width: GcSpace.xl),
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        children: [
+                          _JoinCard(controller: controller),
+                          const SizedBox(height: GcSpace.lg),
+                          _TablesCard(controller: controller),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               const SizedBox(height: GcSpace.lg),
               _ReviewCard(controller: controller),
             ],
@@ -154,73 +116,88 @@ class _StackedLobby extends StatelessWidget {
 }
 
 class _Hero extends StatelessWidget {
-  const _Hero({required this.controller, this.compact = false});
-  final AppController controller;
+  const _Hero({this.compact = false});
   final bool compact;
 
   @override
   Widget build(BuildContext context) {
-    final c = context.gc;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+      height: compact ? 242 : 320,
+      decoration: BoxDecoration(
+        color: GcArcade.royal,
+        borderRadius: GcRadius.xlAll,
+        border: Border.all(color: const Color(0xFF4C72DC)),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: LayoutBuilder(
+        builder: (context, box) {
+          final narrow = box.maxWidth < 600;
+          return Stack(
+            fit: StackFit.expand,
             children: [
-              Text(
-                'Take your seat.',
-                style: GcType.display(c.text, size: compact ? 34 : 46),
+              Positioned(
+                top: 0,
+                bottom: 0,
+                right: narrow ? -100 : 0,
+                width: narrow ? 365 : box.maxWidth * 0.66,
+                child: Image.asset(
+                  'assets/art/arena.png',
+                  fit: BoxFit.cover,
+                  excludeFromSemantics: true,
+                ),
               ),
-              const SizedBox(height: GcSpace.sm),
-              Text(
-                'Classical rules, live clocks, and an opponent on any device. '
-                'Play a friend across platforms, spectate a table, or spar with the court bot.',
-                style: GcType.body(
-                  c.textMuted,
-                  size: compact ? 14 : 16,
-                  height: 1.5,
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      GcArcade.royal,
+                      GcArcade.royal.withValues(alpha: narrow ? 0.88 : 0.92),
+                      GcArcade.royal.withValues(alpha: 0),
+                    ],
+                    stops: const [0, 0.3, 0.76],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(narrow ? 22 : 32),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'THE CLASSIC. A NEW ARENA.',
+                      style: GcType.label(GcArcade.aqua, size: narrow ? 9 : 11),
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      'YOUR NEXT\nBRILLIANT\nMOVE.',
+                      style:
+                          GcType.display(
+                            GcArcade.porcelain,
+                            size: narrow ? 27 : 44,
+                          ).copyWith(
+                            shadows: const [
+                              Shadow(
+                                color: GcArcade.midnight,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      narrow ? 'Big plays. Any device.' : 'Play a friend. Challenge the court.\nMake every move count.',
+                      style: GcType.body(
+                        GcArcade.porcelain,
+                        size: narrow ? 12 : 15,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
-          ),
-        ),
-        if (!compact) ...[const SizedBox(width: GcSpace.xl), _HeroBoard()],
-      ],
-    );
-  }
-}
-
-/// A small static board showing a famous-looking (original) middlegame.
-class _HeroBoard extends StatelessWidget {
-  static final Position _pose =
-      Position.fromFen(
-        'r1bq1rk1/pp2bppp/2n1pn2/3p4/2PP4/2N1PN2/PP3PPP/R2QKB1R w KQ - 0 8',
-      ) ??
-      Position.initial;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.gc;
-    return Container(
-      padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        color: c.boardFrame,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: c.shadow.withValues(alpha: context.isDark ? 0.6 : 0.2),
-            blurRadius: 30,
-            offset: const Offset(0, 14),
-          ),
-        ],
-      ),
-      child: ChessBoard(
-        position: _pose,
-        orientation: PieceColor.white,
-        size: 168,
-        showCoordinates: false,
-        lastMove: Move(Square.parse('e2')!, Square.parse('e3')!),
+          );
+        },
       ),
     );
   }
@@ -243,7 +220,7 @@ class _PlayCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('New game', style: GcType.heading(c.text, size: 20)),
+              Text('LET’S PLAY', style: GcType.display(c.text, size: 20)),
               const Spacer(),
               GcPill(
                 label: '${tc.category} · ${tc.label}',
@@ -253,96 +230,193 @@ class _PlayCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: GcSpace.lg),
-          const GcLabel('Time control'),
-          const SizedBox(height: GcSpace.sm),
-          _TimeControlPicker(controller: controller),
-          const SizedBox(height: GcSpace.lg),
-          Wrap(
-            spacing: GcSpace.xl,
-            runSpacing: GcSpace.lg,
+          Row(
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const GcLabel('Play as'),
-                  const SizedBox(height: GcSpace.sm),
-                  Wrap(
-                    spacing: GcSpace.sm,
-                    runSpacing: GcSpace.sm,
-                    children: [
-                      for (final pref in SidePreference.values)
-                        _SideChip(
-                          pref: pref,
-                          selected: controller.sidePreference == pref,
-                          onTap: () => controller.setSidePreference(pref),
-                        ),
-                    ],
-                  ),
-                ],
+              Expanded(
+                child: _ModeTile(
+                  label: 'Quick pair',
+                  caption: 'Find your next rival',
+                  icon: Icons.bolt_rounded,
+                  primary: true,
+                  onTap: controller.ready ? controller.quickPair : null,
+                ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const GcLabel('Bot strength'),
-                  const SizedBox(height: GcSpace.sm),
-                  Wrap(
-                    spacing: GcSpace.sm,
-                    runSpacing: GcSpace.sm,
-                    children: [
-                      for (final level in EngineLevel.values)
-                        GcChip(
-                          label: level.label,
-                          selected: controller.botLevel == level,
-                          onTap: () => controller.setBotLevel(level),
-                        ),
-                    ],
-                  ),
-                ],
+              const SizedBox(width: GcSpace.md),
+              Expanded(
+                child: _ModeTile(
+                  label: 'Play the bot',
+                  caption: 'Train with the court',
+                  icon: Icons.smart_toy_rounded,
+                  onTap: controller.ready
+                      ? () => controller
+                            .createRoom(withBot: true, isPublic: false)
+                            .ignore()
+                      : null,
+                ),
               ),
             ],
           ),
-          const SizedBox(height: GcSpace.xl),
-          Wrap(
-            spacing: GcSpace.sm,
-            runSpacing: GcSpace.sm,
+          const SizedBox(height: GcSpace.lg),
+          Row(
             children: [
-              GcButton(
-                label: 'Quick pair',
-                icon: Icons.bolt_rounded,
-                kind: GcButtonKind.primary,
-                onPressed: controller.ready
-                    ? () => controller.quickPair()
-                    : null,
-                tooltip: 'Match with the next player at this time control; a bot fills the seat if no one arrives',
+              Expanded(
+                child: GcButton(
+                  label: 'Create invite',
+                  icon: Icons.link_rounded,
+                  expand: true,
+                  onPressed: controller.ready
+                      ? () => controller.createRoom(isPublic: false).ignore()
+                      : null,
+                ),
               ),
-              GcButton(
-                label: 'Play the bot',
-                icon: Icons.smart_toy_outlined,
-                onPressed: controller.ready
-                    ? () => controller
-                          .createRoom(withBot: true, isPublic: false)
-                          .ignore()
-                    : null,
+              const SizedBox(width: GcSpace.sm),
+              Expanded(
+                child: GcButton(
+                  label: 'Open table',
+                  icon: Icons.public_rounded,
+                  expand: true,
+                  onPressed: controller.ready
+                      ? () => controller.createRoom(isPublic: true).ignore()
+                      : null,
+                ),
               ),
-              GcButton(
-                label: 'Create invite',
-                icon: Icons.link_rounded,
-                onPressed: controller.ready
-                    ? () => controller.createRoom(isPublic: false).ignore()
-                    : null,
-                tooltip: 'Private table with a share code',
-              ),
-              GcButton(
-                label: 'Open table',
-                icon: Icons.public_rounded,
-                onPressed: controller.ready
-                    ? () => controller.createRoom(isPublic: true).ignore()
-                    : null,
-                tooltip: 'Listed publicly for anyone to join or watch',
+            ],
+          ),
+          const SizedBox(height: GcSpace.md),
+          ExpansionTile(
+            tilePadding: EdgeInsets.zero,
+            childrenPadding: const EdgeInsets.only(bottom: GcSpace.sm),
+            shape: const Border(),
+            collapsedShape: const Border(),
+            iconColor: c.textMuted,
+            collapsedIconColor: c.textMuted,
+            title: Text(
+              'Match settings',
+              style: GcType.heading(c.text, size: 14),
+            ),
+            subtitle: Text(
+              '${tc.label} clock · ${controller.sidePreference.name} pieces · ${controller.botLevel.label} bot',
+              style: GcType.body(c.textMuted, size: 12),
+            ),
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const GcLabel('Time control'),
+                  const SizedBox(height: GcSpace.sm),
+                  _TimeControlPicker(controller: controller),
+                  const SizedBox(height: GcSpace.lg),
+                  Wrap(
+                    spacing: GcSpace.xl,
+                    runSpacing: GcSpace.lg,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const GcLabel('Play as'),
+                          const SizedBox(height: GcSpace.sm),
+                          Wrap(
+                            spacing: GcSpace.sm,
+                            runSpacing: GcSpace.sm,
+                            children: [
+                              for (final pref in SidePreference.values)
+                                _SideChip(
+                                  pref: pref,
+                                  selected: controller.sidePreference == pref,
+                                  onTap: () =>
+                                      controller.setSidePreference(pref),
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const GcLabel('Bot strength'),
+                          const SizedBox(height: GcSpace.sm),
+                          Wrap(
+                            spacing: GcSpace.sm,
+                            runSpacing: GcSpace.sm,
+                            children: [
+                              for (final level in EngineLevel.values)
+                                GcChip(
+                                  label: level.label,
+                                  selected: controller.botLevel == level,
+                                  onTap: () => controller.setBotLevel(level),
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ModeTile extends StatelessWidget {
+  const _ModeTile({
+    required this.label,
+    required this.caption,
+    required this.icon,
+    required this.onTap,
+    this.primary = false,
+  });
+  final String label;
+  final String caption;
+  final IconData icon;
+  final VoidCallback? onTap;
+  final bool primary;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.gc;
+    final ink = primary ? GcArcade.midnight : c.text;
+    return Opacity(
+      opacity: onTap == null ? 0.5 : 1,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: GcRadius.lgAll,
+          boxShadow: [
+            BoxShadow(
+              color: primary ? const Color(0xFF987018) : c.surfaceSunken,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Material(
+          color: primary ? GcArcade.sunshine : c.surfaceSunken,
+          shape: RoundedRectangleBorder(
+            borderRadius: GcRadius.lgAll,
+            side: BorderSide(
+              color: primary ? GcArcade.sunshine : c.borderStrong,
+            ),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(icon, color: primary ? ink : c.verdigris, size: 28),
+                  const SizedBox(height: 10),
+                  Text(label, style: GcType.heading(ink, size: 16)),
+                  const SizedBox(height: 4),
+                  Text(caption, style: GcType.body(ink, size: 11)),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -79,7 +79,20 @@ class PiecePainter extends CustomPainter {
           ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 1.6),
       );
     }
-    canvas.drawPath(body, Paint()..color = fill);
+    canvas.drawPath(
+      body,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color.lerp(fill, Colors.white, white ? 0.7 : 0.27)!,
+            fill,
+            Color.lerp(fill, ink, white ? 0.22 : 0.45)!,
+          ],
+          stops: const [0, 0.5, 1],
+        ).createShader(const Rect.fromLTWH(20, 10, 65, 85)),
+    );
     canvas.drawPath(
       body,
       Paint()

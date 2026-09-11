@@ -40,7 +40,11 @@ class _GcButtonState extends State<GcButton> {
     final c = context.gc;
     final enabled = widget.onPressed != null;
     final (Color bg, Color fg, Color border) = switch (widget.kind) {
-      GcButtonKind.primary => (c.brass, c.brassInk, c.brass),
+      GcButtonKind.primary => (
+        GcArcade.sunshine,
+        GcArcade.midnight,
+        GcArcade.sunshine,
+      ),
       GcButtonKind.secondary => (c.surfaceRaised, c.text, c.borderStrong),
       GcButtonKind.ghost => (
         Colors.transparent,
@@ -82,9 +86,12 @@ class _GcButtonState extends State<GcButton> {
         boxShadow: widget.kind == GcButtonKind.primary && enabled && !_down
             ? [
                 BoxShadow(
-                  color: c.brass.withValues(alpha: _hover ? 0.35 : 0.2),
-                  blurRadius: _hover ? 18 : 10,
+                  color: Color.lerp(GcArcade.sunshine, GcArcade.midnight, 0.5)!,
                   offset: const Offset(0, 4),
+                ),
+                BoxShadow(
+                  color: GcArcade.sunshine.withValues(alpha: _hover ? 0.24 : 0),
+                  blurRadius: 18,
                 ),
               ]
             : null,
@@ -233,15 +240,15 @@ class GcCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color ?? (raised ? c.surfaceRaised : c.surface),
         borderRadius: GcRadius.lgAll,
-        border: Border.all(color: c.border),
+        border: Border.all(color: raised ? c.borderStrong : c.border),
         boxShadow: raised
             ? [
                 BoxShadow(
                   color: c.shadow.withValues(
-                    alpha: context.isDark ? 0.5 : 0.12,
+                    alpha: context.isDark ? 0.3 : 0.08,
                   ),
-                  blurRadius: 40,
-                  offset: const Offset(0, 18),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
                 ),
               ]
             : null,

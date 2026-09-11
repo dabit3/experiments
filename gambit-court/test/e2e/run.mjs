@@ -38,6 +38,14 @@ const HEADLESS = args.headless === 'true';
 const WINDOW_ID_BIN = args.windowIdBin ?? join(here, 'window_id');
 const TIME_CONTROL = { initialMs: 180_000, incrementMs: 2_000 };
 const PYTHON = args.python ?? 'python3';
+const LOBBY_HOLD_MS = Number(process.env.LOBBY_HOLD_MS ?? 3000);
+const RESULTS_HOLD_MS = Number(process.env.RESULTS_HOLD_MS ?? 0);
+const PRE_PARITY_HOLD_MS = Number(process.env.PRE_PARITY_HOLD_MS ?? 0);
+for (const hold of [LOBBY_HOLD_MS, RESULTS_HOLD_MS, PRE_PARITY_HOLD_MS]) {
+  if (!Number.isFinite(hold) || hold < 0) {
+    throw new Error('Recording hold durations must be nonnegative milliseconds');
+  }
+}
 
 // Normalized visual parity: the web build is re-rendered at each native
 // client's logical content size (with the same bottom safe-area inset) and
@@ -337,8 +345,10 @@ async function main() {
     assert(lobby[p].screen === 'lobby', `${p} starts in the lobby`, lobby[p].screen);
   }
   await shootAll('lobby');
-  // Hold the "every client idle in its own window" frame for the recording.
-  if (!HEADLESS) await new Promise((r) => setTimeout(r, 3_000));
+  if (!HEADLESS) {
+    log(`lobby ready — recording hold ${LOBBY_HOLD_MS}ms`);
+    await sleep(LOBBY_HOLD_MS);
+  }
 
   // 3. Create room, seat the second player, spectators join by code.
   results.steps.push('room');
@@ -448,6 +458,10 @@ async function main() {
     result: final[p].result, clocks: final[p].clocks, seq: final[p].seq,
   }]));
   await shootAll('results');
+  if (!HEADLESS) {
+    log(`results ready — recording hold ${RESULTS_HOLD_MS}ms`);
+    await sleep(RESULTS_HOLD_MS);
+  }
 
   // 7. PGN export agrees across players and spectators.
   const pgns = await Promise.all(PLATFORMS.map((p) => ui(p, { action: 'export_pgn' })));
@@ -482,6 +496,10 @@ async function main() {
   await shootAll('light');
   await Promise.all(PLATFORMS.map((p) => ui(p, { action: 'set_theme', theme: 'dark' })));
 
+  if (!HEADLESS) {
+    log(`before parity — recording hold ${PRE_PARITY_HOLD_MS}ms`);
+    await sleep(PRE_PARITY_HOLD_MS);
+  }
   // 10. Normalized visual parity against the web reference: lobby and PGN
   // review of the game just played, every client under the same identity.
   const natives = PLATFORMS.filter((p) => p !== 'web');

@@ -8,7 +8,6 @@ import '../../theme/tokens.dart';
 import '../board/piece_glyph.dart';
 import '../ui.dart';
 
-/// Frosted card floating over the board.
 class BoardOverlay extends StatelessWidget {
   const BoardOverlay({super.key, required this.child, this.maxWidth = 380});
   final Widget child;
@@ -271,21 +270,45 @@ class ResultsOverlay extends StatelessWidget {
     final vsBot = (room.white?.isBot ?? false) || (room.black?.isBot ?? false);
 
     return BoardOverlay(
-      maxWidth: 400,
+      maxWidth: 420,
       child: Builder(
         builder: (context) {
           final tight = BoardOverlay.isTight(context);
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                verdict.toUpperCase(),
-                style: GcType.label(accent, size: 12),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: tight ? 12 : 18,
+                  vertical: tight ? 6 : 10,
+                ),
+                decoration: BoxDecoration(
+                  color: accent.withValues(alpha: 0.15),
+                  borderRadius: GcRadius.mdAll,
+                  border: Border.all(color: accent.withValues(alpha: 0.5)),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      iLost ? Icons.shield_rounded : Icons.emoji_events_rounded,
+                      color: accent,
+                      size: tight ? 22 : 30,
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        verdict.toUpperCase(),
+                        style: GcType.label(accent, size: 12),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: GcSpace.xs),
+              const SizedBox(height: GcSpace.md),
               Text(
                 title,
-                style: GcType.display(c.text, size: tight ? 28 : 34),
+                style: GcType.display(c.text, size: tight ? 25 : 32),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: GcSpace.xs),
