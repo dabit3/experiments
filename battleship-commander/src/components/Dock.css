@@ -1,0 +1,125 @@
+.dock {
+  display: grid;
+  gap: 7px;
+}
+.dock-ship {
+  min-height: 69px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #42637266;
+  background: #0c243333;
+  transition:
+    background 0.18s,
+    border-color 0.18s;
+}
+.dock-ship--focus {
+  background: #31575166;
+  border-color: #99c5ae88;
+}
+.dock-ship--dragging {
+  opacity: 0.45;
+}
+.dock-ship--deployed {
+  border-color: #5ac4a733;
+  background: #17624e18;
+}
+.dock-ship__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 23px;
+  margin-bottom: 4px;
+}
+.dock-ship__name {
+  font: 600 15px var(--display);
+}
+.dock-ship__size {
+  margin-left: auto;
+  font: 8px var(--mono);
+  color: var(--text-faint);
+}
+.dock-ship--deployed .dock-ship__size {
+  color: var(--teal);
+}
+.dock-ship__rotate {
+  width: 23px;
+  height: 23px;
+  padding: 2px;
+  display: grid;
+  place-items: center;
+  color: #bcd5d7;
+  border: 1px solid #5d7984;
+  border-radius: 4px;
+}
+.dock-ship__rotate:hover:not(:disabled) {
+  color: var(--accent);
+  background: #375965;
+}
+.dock-ship__rotate:disabled {
+  opacity: 0.15;
+  cursor: default;
+}
+.dock-ship__hull {
+  display: flex;
+  position: relative;
+  width: max-content;
+  gap: var(--gap);
+  cursor: grab;
+  touch-action: none;
+}
+.dock-ship__hull > .vessel {
+  position: absolute;
+  inset: 0;
+  filter: drop-shadow(0 2px 1px #021525);
+}
+.dock-ship--deployed .dock-ship__hull {
+  cursor: default;
+  opacity: 0.35;
+}
+.dock-ship__seg {
+  width: 33px;
+  height: 26px;
+  display: block;
+}
+.ghost {
+  position: fixed;
+  z-index: 60;
+  left: 0;
+  top: 0;
+  display: flex;
+  gap: var(--gap);
+  pointer-events: none;
+  filter: drop-shadow(0 14px 10px #02182999);
+  transform: translate(
+    calc(
+      var(--gx) - var(--cell) / 2 - var(--grab) * (var(--cell) + var(--gap))
+    ),
+    calc(var(--gy) - var(--cell) / 2)
+  );
+}
+.ghost > .vessel {
+  position: absolute;
+  inset: 0;
+}
+.ghost__seg {
+  width: var(--cell);
+  height: var(--cell);
+}
+.ghost--v {
+  flex-direction: column;
+  transform: translate(
+    calc(var(--gx) - var(--cell) / 2),
+    calc(var(--gy) - var(--cell) / 2 - var(--grab) * (var(--cell) + var(--gap)))
+  );
+}
+.ghost--v > .vessel {
+  width: calc(var(--size) * (var(--cell) + var(--gap)) - var(--gap));
+  height: var(--cell);
+  transform: rotate(90deg) translateY(-100%);
+  transform-origin: top left;
+}
+@media (min-width: 761px) and (max-width: 1150px) {
+  .dock {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
