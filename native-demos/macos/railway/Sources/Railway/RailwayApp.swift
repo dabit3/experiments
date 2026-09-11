@@ -11,6 +11,11 @@ struct RailwayApp: App {
         .frame(minWidth: 1120, minHeight: 780)
         .onAppear {
           NSApplication.shared.setActivationPolicy(.regular)
+          if let iconURL = Bundle.main.url(forResource: "Railway", withExtension: "icns"),
+            let icon = NSImage(contentsOf: iconURL)
+          {
+            NSApplication.shared.applicationIconImage = icon
+          }
           NSApplication.shared.activate(ignoringOtherApps: true)
         }
     }
