@@ -223,7 +223,7 @@ final class ShowStore: ObservableObject {
   func openShow() {
     let panel = NSOpenPanel()
     panel.title = "Open a Nightjar show"
-    panel.allowedContentTypes = [.json, UTType(filenameExtension: "nightjar") ?? .data]
+    panel.allowedContentTypes = [.nightjarShow, .json]
     panel.allowsOtherFileTypes = true
     panel.canChooseDirectories = false
     panel.allowsMultipleSelection = false
@@ -248,9 +248,10 @@ final class ShowStore: ObservableObject {
     if destination == nil || forcePanel {
       let panel = NSSavePanel()
       panel.title = "Save your Nightjar show"
+      panel.allowedContentTypes = [.nightjarShow]
+      panel.isExtensionHidden = false
+      panel.canSelectHiddenExtension = false
       panel.nameFieldStringValue = "\(show.name).nightjar"
-      panel.allowedContentTypes = [UTType(filenameExtension: "nightjar") ?? .json]
-      panel.allowsOtherFileTypes = true
       guard panel.runModal() == .OK, let url = panel.url else { return }
       destination = url
     }
@@ -265,14 +266,21 @@ final class ShowStore: ObservableObject {
   func exportCueSheet() {
     let panel = NSSavePanel()
     panel.title = "Export a cue sheet"
-    panel.nameFieldStringValue = "\(show.name) — cue sheet.csv"
     panel.allowedContentTypes = [.commaSeparatedText]
+    panel.isExtensionHidden = false
+    panel.canSelectHiddenExtension = false
+    panel.nameFieldStringValue = "\(show.name) — cue sheet.csv"
     guard panel.runModal() == .OK, let destination = panel.url else { return }
     do {
       try show.cueSheet.write(to: destination, atomically: true, encoding: .utf8)
       status = "Exported \(show.cues.count) cues × 6 fixtures to \(destination.lastPathComponent)"
     } catch { self.error = "Export failed: \(error.localizedDescription)" }
   }
+}
+
+extension UTType {
+  fileprivate static let nightjarShow = UTType(
+    exportedAs: "studio.nightjar.show", conformingTo: .json)
 }
 
 enum StageCamera: String, CaseIterable {
