@@ -8,6 +8,8 @@ const PATHS: Record<Tool, string> = {
   rect: 'M4 6h16v12H4z',
   circle: 'M12 4a8 8 0 1 0 0 16 8 8 0 1 0 0-16z',
   fill: 'M6 3l8 8-6 6-6-6 4-8zM14 11l3 3M19 15c0 1.5-1 3-1 3s-1-1.5-1-3c0-.6.5-1 1-1s1 .4 1 1z',
+  freeform: 'M4 17C1 11 9 2 12 5s8-1 9 5-5 11-10 9-5 3-7-2z',
+  eyedropper: 'M14 5l5 5M12 7l5 5M14 3l7 7M13 8l-9 9v3h3l9-9',
 }
 
 export function ToolIcon({ tool }: { tool: Tool }) {

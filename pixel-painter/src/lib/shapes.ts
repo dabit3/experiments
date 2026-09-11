@@ -6,7 +6,55 @@ export interface StrokeStyle {
   fillShape: boolean
 }
 
-export function applyStyle(ctx: CanvasRenderingContext2D, style: StrokeStyle): void {
+export function constrainPoint(from: Point, to: Point, tool: Tool): Point {
+  const dx = to.x - from.x
+  const dy = to.y - from.y
+  if (tool === 'rect' || tool === 'circle') {
+    const side = Math.max(Math.abs(dx), Math.abs(dy))
+    return {
+      x: from.x + (dx < 0 ? -side : side),
+      y: from.y + (dy < 0 ? -side : side),
+    }
+  }
+  const angle = Math.round(Math.atan2(dy, dx) / (Math.PI / 4)) * (Math.PI / 4)
+  const length = Math.hypot(dx, dy)
+  return {
+    x: from.x + Math.cos(angle) * length,
+    y: from.y + Math.sin(angle) * length,
+  }
+}
+
+export function drawPath(
+  ctx: CanvasRenderingContext2D,
+  points: Point[],
+  smooth: boolean,
+  closed: boolean,
+): void {
+  if (!points.length) return
+  ctx.beginPath()
+  ctx.moveTo(points[0].x, points[0].y)
+  for (let i = 1; i < points.length; i++) {
+    const current = points[i]
+    const next = points[i + 1]
+    if (smooth && next)
+      ctx.quadraticCurveTo(
+        current.x,
+        current.y,
+        (current.x + next.x) / 2,
+        (current.y + next.y) / 2,
+      )
+    else ctx.lineTo(current.x, current.y)
+  }
+  if (closed) {
+    ctx.closePath()
+    ctx.fill()
+  } else ctx.stroke()
+}
+
+export function applyStyle(
+  ctx: CanvasRenderingContext2D,
+  style: StrokeStyle,
+): void {
   ctx.strokeStyle = style.color
   ctx.fillStyle = style.color
   ctx.lineWidth = style.size
@@ -14,14 +62,22 @@ export function applyStyle(ctx: CanvasRenderingContext2D, style: StrokeStyle): v
   ctx.lineJoin = 'round'
 }
 
-export function drawSegment(ctx: CanvasRenderingContext2D, from: Point, to: Point): void {
+export function drawSegment(
+  ctx: CanvasRenderingContext2D,
+  from: Point,
+  to: Point,
+): void {
   ctx.beginPath()
   ctx.moveTo(from.x, from.y)
   ctx.lineTo(to.x, to.y)
   ctx.stroke()
 }
 
-export function drawDot(ctx: CanvasRenderingContext2D, at: Point, size: number): void {
+export function drawDot(
+  ctx: CanvasRenderingContext2D,
+  at: Point,
+  size: number,
+): void {
   ctx.beginPath()
   ctx.arc(at.x, at.y, size / 2, 0, Math.PI * 2)
   ctx.fill()

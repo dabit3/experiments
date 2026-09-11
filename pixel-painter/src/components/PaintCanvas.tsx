@@ -1,6 +1,12 @@
 import { useEffect, useRef, type PointerEvent, type RefObject } from 'react'
 import { floodFill } from '../lib/floodFill'
-import { applyStyle, drawDot, drawSegment, drawShape } from '../lib/shapes'
+import {
+  applyStyle,
+  constrainPoint,
+  drawDot,
+  drawPath,
+  drawShape,
+} from '../lib/shapes'
 import {
   CANVAS_BACKGROUND,
   CANVAS_HEIGHT,
@@ -16,8 +22,13 @@ interface Props {
   color: string
   size: number
   fillShape: boolean
+  opacity: number
+  smooth: boolean
+  scale: number
+  grid: boolean
   onBeforeChange: () => void
   onPointerPosition: (point: Point | null) => void
+  onColorPick: (color: string) => void
 }
 
 const SHAPE_TOOLS: Tool[] = ['line', 'rect', 'circle']
@@ -28,14 +39,25 @@ export function PaintCanvas({
   color,
   size,
   fillShape,
+  opacity,
+  smooth,
+  scale,
+  grid,
   onBeforeChange,
   onPointerPosition,
+  onColorPick,
 }: Props) {
   const cursorRef = useRef<HTMLDivElement>(null)
-  const drawing = useRef(false)
-  const start = useRef<Point>({ x: 0, y: 0 })
-  const last = useRef<Point>({ x: 0, y: 0 })
-  const shapeBase = useRef<ImageData | null>(null)
+  const stroke = useRef<{
+    tool: Tool
+    color: string
+    size: number
+    opacity: number
+    fillShape: boolean
+    smooth: boolean
+    points: Point[]
+    base: ImageData
+  } | null>(null)
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext('2d')
@@ -54,8 +76,6 @@ export function PaintCanvas({
     }
   }
 
-  const strokeColor = tool === 'eraser' ? CANVAS_BACKGROUND : color
-
   const positionCursor = (e: PointerEvent<HTMLCanvasElement>) => {
     const cursor = cursorRef.current
     if (!cursor) return
@@ -73,56 +93,99 @@ export function PaintCanvas({
     if (e.button !== 0) return
     const ctx = getContext()
     if (!ctx) return
-    e.currentTarget.setPointerCapture(e.pointerId)
+    if (stroke.current) return
     const point = toCanvasPoint(e)
+    if (tool === 'eyedropper') {
+      const pixel = ctx.getImageData(
+        Math.min(CANVAS_WIDTH - 1, Math.max(0, Math.floor(point.x))),
+        Math.min(CANVAS_HEIGHT - 1, Math.max(0, Math.floor(point.y))),
+        1,
+        1,
+      ).data
+      onColorPick(
+        `#${[pixel[0], pixel[1], pixel[2]].map((channel) => channel.toString(16).padStart(2, '0')).join('')}`,
+      )
+      return
+    }
     onBeforeChange()
 
     if (tool === 'fill') {
       floodFill(ctx, point, color)
       return
     }
-
-    drawing.current = true
-    start.current = point
-    last.current = point
-    applyStyle(ctx, { color: strokeColor, size, fillShape })
-
-    if (SHAPE_TOOLS.includes(tool)) {
-      shapeBase.current = ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
-    } else {
-      drawDot(ctx, point, size)
+    e.currentTarget.setPointerCapture(e.pointerId)
+    stroke.current = {
+      tool,
+      color: tool === 'eraser' ? CANVAS_BACKGROUND : color,
+      size,
+      opacity,
+      fillShape,
+      smooth,
+      points: [point],
+      base: ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT),
     }
+    renderStroke(point, false)
+  }
+
+  const renderStroke = (point: Point, constrained: boolean) => {
+    const active = stroke.current
+    const ctx = getContext()
+    if (!active || !ctx) return
+    const from = active.points[0]
+    const to = constrained ? constrainPoint(from, point, active.tool) : point
+    ctx.putImageData(active.base, 0, 0)
+    ctx.save()
+    applyStyle(ctx, active)
+    ctx.globalAlpha = active.opacity
+    if (SHAPE_TOOLS.includes(active.tool)) {
+      drawShape(ctx, active.tool, from, to, active.fillShape)
+    } else if (active.points.length === 1 && active.tool !== 'freeform') {
+      drawDot(ctx, from, active.size)
+    } else {
+      drawPath(
+        ctx,
+        constrained ? [from, to] : active.points,
+        active.smooth,
+        active.tool === 'freeform',
+      )
+    }
+    ctx.restore()
   }
 
   const handlePointerMove = (e: PointerEvent<HTMLCanvasElement>) => {
     positionCursor(e)
     const point = toCanvasPoint(e)
     onPointerPosition(point)
-    if (!drawing.current) return
-    const ctx = getContext()
-    if (!ctx) return
-
-    if (SHAPE_TOOLS.includes(tool)) {
-      if (shapeBase.current) ctx.putImageData(shapeBase.current, 0, 0)
-      drawShape(ctx, tool, start.current, point, fillShape)
-    } else {
-      drawSegment(ctx, last.current, point)
-      last.current = point
-    }
+    if (!stroke.current) return
+    stroke.current.points.push(point)
+    renderStroke(point, e.shiftKey)
   }
 
-  const finishStroke = () => {
-    drawing.current = false
-    shapeBase.current = null
+  const finishStroke = (e: PointerEvent<HTMLCanvasElement>) => {
+    if (!stroke.current) return
+    const point = toCanvasPoint(e)
+    stroke.current.points.push(point)
+    renderStroke(point, e.shiftKey)
+    stroke.current = null
+  }
+
+  const cancelStroke = () => {
+    if (stroke.current) getContext()?.putImageData(stroke.current.base, 0, 0)
+    stroke.current = null
   }
 
   const handlePointerLeave = () => {
     onPointerPosition(null)
-    if (cursorRef.current) cursorRef.current.style.transform = 'translate(-9999px, -9999px)'
+    if (cursorRef.current)
+      cursorRef.current.style.transform = 'translate(-9999px, -9999px)'
   }
 
   return (
-    <div className="canvas-frame" data-tool={tool}>
+    <div
+      className="canvas-frame"
+      data-tool={tool}
+      style={{ width: CANVAS_WIDTH * scale }}
+    >
       <canvas
         ref={canvasRef}
         width={CANVAS_WIDTH}
@@ -132,9 +195,16 @@ export function PaintCanvas({
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={finishStroke}
-        onPointerCancel={finishStroke}
+        onPointerCancel={cancelStroke}
+        onLostPointerCapture={cancelStroke}
         onPointerLeave={handlePointerLeave}
       />
+      {grid && (
+        <div
+          className="canvas-grid"
+          style={{ backgroundSize: `${40 * scale}px ${40 * scale}px` }}
+        />
+      )}
       <div
         ref={cursorRef}
         className="brush-cursor"

@@ -11,7 +11,8 @@ export function useHistory() {
   const future = useRef<ImageData[]>([])
   const [counts, setCounts] = useState({ undo: 0, redo: 0 })
 
-  const sync = () => setCounts({ undo: past.current.length, redo: future.current.length })
+  const sync = () =>
+    setCounts({ undo: past.current.length, redo: future.current.length })
 
   const push = useCallback((snapshot: ImageData) => {
     past.current.push(snapshot)
@@ -36,5 +37,11 @@ export function useHistory() {
     return next
   }, [])
 
-  return { push, undo, redo, canUndo: counts.undo > 0, canRedo: counts.redo > 0 }
+  return {
+    push,
+    undo,
+    redo,
+    canUndo: counts.undo > 0,
+    canRedo: counts.redo > 0,
+  }
 }

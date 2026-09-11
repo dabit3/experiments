@@ -7,7 +7,11 @@ function hexToRgba(hex: string): [number, number, number, number] {
   return [(n >> 16) & 255, (n >> 8) & 255, n & 255, 255]
 }
 
-function matches(data: Uint8ClampedArray, i: number, target: Uint8ClampedArray): boolean {
+function matches(
+  data: Uint8ClampedArray,
+  i: number,
+  target: Uint8ClampedArray,
+): boolean {
   return (
     Math.abs(data[i] - target[0]) <= TOLERANCE &&
     Math.abs(data[i + 1] - target[1]) <= TOLERANCE &&
@@ -20,7 +24,11 @@ function matches(data: Uint8ClampedArray, i: number, target: Uint8ClampedArray):
  * Scanline flood fill starting at `start`, replacing every connected pixel that is
  * within TOLERANCE of the start pixel's color. Operates directly on the context.
  */
-export function floodFill(ctx: CanvasRenderingContext2D, start: Point, fillHex: string): void {
+export function floodFill(
+  ctx: CanvasRenderingContext2D,
+  start: Point,
+  fillHex: string,
+): void {
   const { width, height } = ctx.canvas
   const sx = Math.floor(start.x)
   const sy = Math.floor(start.y)
@@ -49,12 +57,21 @@ export function floodFill(ctx: CanvasRenderingContext2D, start: Point, fillHex: 
     let x = stack.pop() as number
 
     const rowStart = y * width
-    while (x >= 0 && !visited[rowStart + x] && matches(data, (rowStart + x) * 4, target)) x--
+    while (
+      x >= 0 &&
+      !visited[rowStart + x] &&
+      matches(data, (rowStart + x) * 4, target)
+    )
+      x--
     x++
 
     let spanAbove = false
     let spanBelow = false
-    while (x < width && !visited[rowStart + x] && matches(data, (rowStart + x) * 4, target)) {
+    while (
+      x < width &&
+      !visited[rowStart + x] &&
+      matches(data, (rowStart + x) * 4, target)
+    ) {
       const p = rowStart + x
       visited[p] = 1
       data[p * 4] = fill[0]
