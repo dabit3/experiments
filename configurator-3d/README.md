@@ -35,14 +35,25 @@ npm run build    # tsc -b && vite build
 
 1. Open the app in a maximised Chrome window. **Expect:** a white-on-white "Court Classic" with black swoosh and gum outsole on a sage studio stage, camera toolbar at the bottom of the viewer, Materials tab on the right.
 2. Drag on the canvas to orbit the shoe and scroll to zoom. **Expect:** the camera rotates around the sneaker and the shoe grows/shrinks.
-3. Click the midsole in 3D, then pick a swatch. **Expect:** status chip shows "Midsole · Selected", orange outline on the cupsole wall, midsole re-renders in the new colour, parts list updates.
-4. Click the base (quarter panel or collar) in 3D and pick a distinct colour, then set the finish to **Metallic**. **Expect:** the base turns reflective with the Metallic finish card active.
-5. Click the laces and the swoosh in 3D and colour each distinctly. **Expect:** four parts now have visibly different colours.
+3. Click the midsole in 3D, then pick **Obsidian (#1C2841)**. **Expect:** status chip shows "Midsole · Selected", orange outline on the cupsole wall, midsole re-renders in the new colour, parts list updates.
+4. Click the base (quarter panel or collar) in 3D and pick **Royal (#1F4BD8)**, then set the finish to **Metallic**. **Expect:** the base turns reflective with the Metallic finish card active.
+5. Click the laces in 3D and choose **Volt (#CEFF00)**. Click the swoosh in 3D and choose **University Red (#C8102E)** and **Gloss**. Set Overlays/Tongue to White and Heel tab to Black. **Expect:** four directly selected parts have visibly different colours.
 6. Open Personalise, which switches to Heel view, and type `DEVIN` in the engraving field. **Expect:** the text appears on the curved heel patch and large sidebar preview; the counter reads `5/8`.
 7. Switch between the Hero, Side, Heel and Top presets and toggle Auto-rotate on and off. **Expect:** the camera animates to each view, the active preset pill is highlighted, and the shoe spins while auto-rotate is on.
 8. Click **Download PNG**. **Expect:** `sneaker-devin.png` lands in the downloads folder and is a non-trivial size (hundreds of KB).
 9. Open Your design, copy the share URL and open it in a new tab. **Expect:** the new tab shows the identical sneaker (same colours, metallic base, `DEVIN` engraving, same camera preset).
 
+### Additional checks
+
+- Before building the final colourway, exercise Randomise then Reset. **Expect:** colours change, then defaults return.
+- Apply `#123456`, then enter `#ZZZZZZ`. **Expect:** the valid colour applies; invalid input does not replace it.
+- Enter `ABCDEFGHI` in Engraving. **Expect:** `ABCDEFGH`, counter `8/8`.
+- Focus a sidebar tab and use Left/Right arrows. **Expect:** the active section changes and wraps.
+- Inspect all four camera views on desktop and at 390 × 844. **Expect:** the sneaker fits above the camera controls and footer, with a readable heel label.
+- Inspect Chrome's console. **Expect:** no runtime errors.
+
 ## Recording
 
-Recording: https://app.devin.ai/attachments/ffc2196f-2a6b-4239-9c35-88dbf3c4a510/court-classic-b41a503-edited.mp4
+Recording: https://app.devin.ai/attachments/aae3463e-b6ed-4d34-8a8a-3627f80bea9b/court-classic-5846fa1-edited.mp4
+
+The complete showcase and additional checks passed on `5846fa1`. The exported PNG was 250,102 bytes, 1150 × 983 RGBA. Chrome reported software-WebGL fallback warnings without console errors; initial scene loading in the restored tab required an additional wait.
