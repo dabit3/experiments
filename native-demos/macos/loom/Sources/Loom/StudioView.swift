@@ -74,6 +74,8 @@ struct StudioView: View {
       .padding(.horizontal, 12).padding(.vertical, 4)
       .background(labelInk, in: RoundedRectangle(cornerRadius: 7))
       .foregroundStyle(.white)
+      .tint(.white)
+      .accentColor(.white)
       .accessibilityIdentifier("exportGraphic")
     }
     .buttonStyle(.borderless)
