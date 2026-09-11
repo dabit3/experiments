@@ -2,7 +2,13 @@ import SwiftUI
 
 struct RhythmView: View {
   @EnvironmentObject private var store: GardenStore
+  @Environment(\.dynamicTypeSize) private var textSize
   private var minutes: Int { Int(store.focusedSeconds(on: Date()) / 60) }
+  private var countersLayout: AnyLayout {
+    textSize.isAccessibilitySize
+      ? AnyLayout(VStackLayout(alignment: .leading, spacing: 24))
+      : AnyLayout(HStackLayout(alignment: .top))
+  }
   private var days: [Date] {
     (-6...0).compactMap { Calendar.current.date(byAdding: .day, value: $0, to: Date()) }
   }
@@ -71,19 +77,24 @@ struct RhythmView: View {
           }
           .frame(minHeight: 65, alignment: .bottom)
           Divider()
-          HStack(alignment: .top) {
+          countersLayout {
             VStack(alignment: .leading, spacing: 8) {
               Text("\(store.data.specimens.filter { !$0.isPreview }.count)")
                 .font(.system(.largeTitle, design: .serif))
               Text("Rituals completed").font(.caption).foregroundStyle(Palette.muted)
+                .fixedSize(horizontal: false, vertical: true)
             }
-            Spacer()
+            if !textSize.isAccessibilitySize {
+              Spacer()
+            }
             VStack(alignment: .leading, spacing: 8) {
               Text("\(store.data.specimens.count)")
                 .font(.system(.largeTitle, design: .serif))
               Text("Specimens grown").font(.caption).foregroundStyle(Palette.muted)
+                .fixedSize(horizontal: false, vertical: true)
             }
           }
+          .frame(maxWidth: .infinity, alignment: .leading)
           Text("“Attention is how we water\nwhat we want to grow.”")
             .font(.system(.title2, design: .serif).italic())
             .padding(.top, 10)

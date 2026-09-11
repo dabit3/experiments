@@ -122,8 +122,9 @@ struct RitualView: View {
       .padding(.bottom, 20)
       PrimaryButton(title: "Begin a ritual") { configure = true }
       HStack(spacing: 6) {
+        let minutes = Int(store.focusedSeconds(on: Date()) / 60)
         Image(systemName: "sun.max").font(.caption)
-        Text("\(Int(store.focusedSeconds(on: Date()) / 60)) mindful minutes today")
+        Text("\(minutes) mindful \(minutes == 1 ? "minute" : "minutes") today")
           .font(.footnote)
       }
       .foregroundStyle(Palette.muted)
