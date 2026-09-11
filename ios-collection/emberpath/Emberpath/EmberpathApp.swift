@@ -500,7 +500,7 @@ struct GuideView: View {
           rule(
             "01", title: "One step. One light.",
             text:
-              "Use the arrows or swipe the map. Every successful move costs one light. Bumping into stone costs nothing."
+              "Tap the arrows to move. Every successful move costs one light. Bumping into stone costs nothing."
           )
           rule(
             "02", title: "Follow the embers.",
