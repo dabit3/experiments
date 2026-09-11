@@ -24,17 +24,19 @@ let leaves: [(Double, Double, Double, Double)] = [
 for (x, y, ex, ey) in leaves {
   let dx = ex - x
   let dy = ey - y
-  let width = abs(dx) * 0.24
+  let length = hypot(dx, dy)
+  let normalX = -dy / length * length * 0.22
+  let normalY = dx / length * length * 0.22
   let leaf = NSBezierPath()
   leaf.move(to: NSPoint(x: x, y: y))
   leaf.curve(
     to: NSPoint(x: ex, y: ey),
-    controlPoint1: NSPoint(x: x + dx * 0.25 - width, y: y + dy * 0.65),
-    controlPoint2: NSPoint(x: x + dx * 0.9 - width, y: y + dy * 1.05))
+    controlPoint1: NSPoint(x: x + dx * 0.28 + normalX, y: y + dy * 0.28 + normalY),
+    controlPoint2: NSPoint(x: x + dx * 0.78 + normalX, y: y + dy * 0.78 + normalY))
   leaf.curve(
     to: NSPoint(x: x, y: y),
-    controlPoint1: NSPoint(x: x + dx * 0.9 + width, y: y + dy * 0.55),
-    controlPoint2: NSPoint(x: x + dx * 0.25 + width, y: y + dy * 0.1))
+    controlPoint1: NSPoint(x: x + dx * 0.78 - normalX, y: y + dy * 0.78 - normalY),
+    controlPoint2: NSPoint(x: x + dx * 0.28 - normalX, y: y + dy * 0.28 - normalY))
   NSColor(red: 0.35, green: 0.45, blue: 0.31, alpha: 1).setFill()
   leaf.fill()
   ink.setStroke()

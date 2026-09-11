@@ -77,7 +77,7 @@ struct RitualView: View {
       .toolbar(.hidden, for: .navigationBar)
       .sheet(isPresented: $configure) { ConfigureView() }
       .sheet(isPresented: $settings) { SettingsView() }
-      .confirmationDialog("Leave this ritual?", isPresented: $cancel, titleVisibility: .visible) {
+      .alert("Leave this ritual?", isPresented: $cancel) {
         Button("End without planting", role: .destructive) { store.cancel() }
         Button("Keep growing", role: .cancel) {}
       } message: {
@@ -185,7 +185,7 @@ struct ConfigureView: View {
   var body: some View {
     NavigationStack {
       ScrollView {
-        VStack(alignment: .leading, spacing: 26) {
+        VStack(alignment: .leading, spacing: 20) {
           Eyebrow(text: "Plant an intention")
           Text("What needs\nyour attention?")
             .font(.system(size: 36, design: .serif))
@@ -248,17 +248,23 @@ struct ConfigureView: View {
             .tint(Palette.sage)
           }
           Divider()
-          Text("Let one thing be enough.\nYour garden will keep time, even when you leave.")
+          Text("Let one thing be enough.\nYour garden keeps time, even when you leave.")
             .font(.system(.body, design: .serif))
             .foregroundStyle(Palette.muted)
+        }
+        .padding(26)
+      }
+      .safeAreaInset(edge: .bottom, spacing: 0) {
+        VStack(spacing: 0) {
+          Rectangle().fill(Palette.line).frame(height: 0.75)
           PrimaryButton(
             title: preview ? "Begin preview · 20 sec" : "Plant \(minutes) minutes", icon: "leaf"
           ) {
             editing = false
             if store.start(intention: intention, minutes: minutes, preview: preview) { dismiss() }
-          }
+          }.padding(.horizontal, 26).padding(.vertical, 12)
         }
-        .padding(26)
+        .background(Palette.paper)
       }
       .modifier(Paper())
       .navigationTitle("Your ritual")

@@ -38,18 +38,20 @@ struct Botanical: View {
         let visible = max(0.12, min(1, growth * 1.6 - Double(index) * 0.055))
         let dx = (endX - x) * visible
         let dy = (endY - y) * visible
-        let roundness = species == 1 ? 0.60 : 0.24
-        let width = abs(dx) * roundness
+        let length = hypot(dx, dy)
+        let width = length * (species == 1 ? 0.40 : 0.22)
+        let normalX = -dy / max(1, length) * width
+        let normalY = dx / max(1, length) * width
         var shape = Path()
         shape.move(to: point(x, y))
         shape.addCurve(
           to: point(x + dx, y + dy),
-          control1: point(x + dx * 0.25 - width, y + dy * 0.65),
-          control2: point(x + dx * 0.9 - width, y + dy * 1.05))
+          control1: point(x + dx * 0.28 + normalX, y + dy * 0.28 + normalY),
+          control2: point(x + dx * 0.78 + normalX, y + dy * 0.78 + normalY))
         shape.addCurve(
           to: point(x, y),
-          control1: point(x + dx * 0.9 + width, y + dy * 0.55),
-          control2: point(x + dx * 0.25 + width, y + dy * 0.1))
+          control1: point(x + dx * 0.78 - normalX, y + dy * 0.78 - normalY),
+          control2: point(x + dx * 0.28 - normalX, y + dy * 0.28 - normalY))
         context.fill(
           shape,
           with: .linearGradient(
@@ -60,7 +62,7 @@ struct Botanical: View {
         vein.move(to: point(x, y))
         vein.addQuadCurve(
           to: point(x + dx * 0.9, y + dy * 0.9),
-          control: point(x + dx * 0.55, y + dy * 0.38))
+          control: point(x + dx * 0.45, y + dy * 0.45))
         context.stroke(vein, with: .color(Palette.paper.opacity(0.65)), lineWidth: 0.8 * sx)
       }
       if species == 2 {

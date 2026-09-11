@@ -3,6 +3,7 @@ import SwiftUI
 struct RhythmView: View {
   @EnvironmentObject private var store: GardenStore
   private var minutes: Int { Int(store.focusedSeconds(on: Date()) / 60) }
+  private var emptyWeek: Bool { days.allSatisfy { store.focusedSeconds(on: $0) == 0 } }
   private var days: [Date] {
     (-6...0).compactMap { Calendar.current.date(byAdding: .day, value: $0, to: Date()) }
   }
@@ -39,6 +40,15 @@ struct RhythmView: View {
             )
             .font(.caption).foregroundStyle(Palette.muted)
           }
+          if store.data.specimens.contains(where: \.isPreview) {
+            Label(
+              "Preview plants are keepsakes. Focus totals count full rituals only.",
+              systemImage: "leaf"
+            )
+            .font(.footnote)
+            .foregroundStyle(Palette.muted)
+            .fixedSize(horizontal: false, vertical: true)
+          }
           Divider()
           Eyebrow(text: "The last seven days")
           HStack(alignment: .bottom, spacing: 12) {
@@ -60,7 +70,7 @@ struct RhythmView: View {
               .accessibilityLabel("\(day.formatted(.dateTime.weekday(.wide))), \(count) minutes")
             }
           }
-          .frame(height: 145, alignment: .bottom)
+          .frame(height: emptyWeek ? 65 : 145, alignment: .bottom)
           Divider()
           HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 8) {
@@ -75,10 +85,6 @@ struct RhythmView: View {
               Text("Specimens grown").font(.caption).foregroundStyle(Palette.muted)
             }
           }
-          Text(
-            "Preview plants live in your herbarium.\nOnly full rituals count toward your focus totals."
-          )
-          .font(.footnote).foregroundStyle(Palette.muted)
           Text("“Attention is how we water\nwhat we want to grow.”")
             .font(.system(.title2, design: .serif).italic())
             .padding(.top, 10)

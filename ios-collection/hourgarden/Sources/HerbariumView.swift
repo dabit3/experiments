@@ -43,7 +43,11 @@ struct HerbariumView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 24)
           } else {
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+            LazyVGrid(
+              columns: specimens.count == 1
+                ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())],
+              spacing: 16
+            ) {
               ForEach(specimens) { specimen in
                 NavigationLink {
                   SpecimenDetail(specimenID: specimen.id)
@@ -52,8 +56,16 @@ struct HerbariumView: View {
                     HStack {
                       Eyebrow(text: String(format: "No. %03d", number(specimen)))
                       Spacer(minLength: 0)
+                      if specimens.count == 1 { Eyebrow(text: "A moment preserved") }
                     }
-                    Botanical(species: specimen.species).frame(height: 170)
+                    Botanical(species: specimen.species).frame(
+                      height: specimens.count == 1 ? 250 : 170)
+                    if specimens.count == 1 {
+                      Divider()
+                      Text(Botany.latin[specimen.species])
+                        .font(.system(.caption, design: .serif).italic())
+                        .foregroundStyle(Palette.muted)
+                    }
                     Text(Botany.names[specimen.species])
                       .font(.system(.title3, design: .serif))
                     Text(specimen.intention).font(.caption).lineLimit(2)
@@ -61,7 +73,7 @@ struct HerbariumView: View {
                       specimen.isPreview
                         ? "20 SEC · PREVIEW" : "\(Int(specimen.duration / 60)) MIN · FOCUS"
                     )
-                    .font(.system(size: 9, design: .monospaced)).tracking(1)
+                    .font(.system(.caption2, design: .monospaced)).tracking(0.5)
                     .foregroundStyle(Palette.muted)
                     Text(specimen.completedAt, format: .dateTime.month(.abbreviated).day())
                       .font(.caption2).foregroundStyle(Palette.muted)
