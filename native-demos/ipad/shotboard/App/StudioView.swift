@@ -296,6 +296,7 @@ struct StudioView: View {
                 VStack(alignment: .leading, spacing: 8) {
                   ZStack(alignment: .bottomLeading) {
                     InkCanvas(shot: shot).frame(width: 151, height: 74).clipped()
+                      .allowsHitTesting(false)
                     Text(String(format: "%02d", index + 1))
                       .font(.system(size: 10, weight: .bold, design: .monospaced))
                       .foregroundStyle(Color.black).padding(.horizontal, 6).padding(.vertical, 4)

@@ -37,6 +37,7 @@ struct ProjectLibrary: View {
               HStack(spacing: 20) {
                 if let shot = project.shots.first {
                   InkCanvas(shot: shot).frame(width: 170, height: 90).clipped()
+                    .allowsHitTesting(false)
                 }
                 VStack(alignment: .leading, spacing: 10) {
                   Text(project.title).font(.system(size: 23, design: .serif))
