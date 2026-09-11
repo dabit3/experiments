@@ -1,0 +1,432 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0129A2C8345E200298DEF4DA /* Museum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 794820221151907B9F700E10 /* Museum.swift */; };
+		34293A26C6B026A1662720CE /* MuseumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65688A204DC04C6F22EC95E8 /* MuseumTests.swift */; };
+		5C2EF5BA48A7B666184D8E72 /* Gallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFF173A725151972B55B350 /* Gallery.swift */; };
+		9F2B83924E7CB4656EB1B15F /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07510437A0682CDE30A40820 /* Artwork.swift */; };
+		A467A742E9E43F41D5C9A47F /* Editors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798B386433DEFAC37E0B8570 /* Editors.swift */; };
+		C7D2BB22396D739980E75FF7 /* ObjectDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEE2E1A8F6303FB9B6363867 /* ObjectDetail.swift */; };
+		D30314333FE532A9142FCADE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABE4735C5A99E72B3F10D7B0 /* Assets.xcassets */; };
+		DAA2FB5BDCBD4AC271D746C2 /* CurioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98076632245F4396C4DEBE41 /* CurioApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BE8BDEADEE70EF262DA43663 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 25C043CDD8C665808683687E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C39E7AA31BDD96DF2E48ECAF;
+			remoteInfo = Curio;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		07510437A0682CDE30A40820 /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
+		1E052103A87F5F08AC0CB880 /* Curio.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Curio.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FFF173A725151972B55B350 /* Gallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gallery.swift; sourceTree = "<group>"; };
+		65688A204DC04C6F22EC95E8 /* MuseumTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumTests.swift; sourceTree = "<group>"; };
+		794820221151907B9F700E10 /* Museum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Museum.swift; sourceTree = "<group>"; };
+		798B386433DEFAC37E0B8570 /* Editors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Editors.swift; sourceTree = "<group>"; };
+		8462F5CE86E88D4E66A052E4 /* CurioTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CurioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		98076632245F4396C4DEBE41 /* CurioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurioApp.swift; sourceTree = "<group>"; };
+		ABE4735C5A99E72B3F10D7B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FEE2E1A8F6303FB9B6363867 /* ObjectDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectDetail.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		18F07888B9A141615E637B53 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E052103A87F5F08AC0CB880 /* Curio.app */,
+				8462F5CE86E88D4E66A052E4 /* CurioTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3D9495ECEAEC0E0416D7D15D /* CurioTests */ = {
+			isa = PBXGroup;
+			children = (
+				65688A204DC04C6F22EC95E8 /* MuseumTests.swift */,
+			);
+			path = CurioTests;
+			sourceTree = "<group>";
+		};
+		A7EB1A202D613F23E8F5438A /* Curio */ = {
+			isa = PBXGroup;
+			children = (
+				07510437A0682CDE30A40820 /* Artwork.swift */,
+				ABE4735C5A99E72B3F10D7B0 /* Assets.xcassets */,
+				98076632245F4396C4DEBE41 /* CurioApp.swift */,
+				798B386433DEFAC37E0B8570 /* Editors.swift */,
+				3FFF173A725151972B55B350 /* Gallery.swift */,
+				794820221151907B9F700E10 /* Museum.swift */,
+				FEE2E1A8F6303FB9B6363867 /* ObjectDetail.swift */,
+			);
+			path = Curio;
+			sourceTree = "<group>";
+		};
+		CBC207A500CB54EACABA2EF8 = {
+			isa = PBXGroup;
+			children = (
+				A7EB1A202D613F23E8F5438A /* Curio */,
+				3D9495ECEAEC0E0416D7D15D /* CurioTests */,
+				18F07888B9A141615E637B53 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		508F2886EE1CA251E5C4CB36 /* CurioTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 710CBF241DD154FC285166F3 /* Build configuration list for PBXNativeTarget "CurioTests" */;
+			buildPhases = (
+				68FA5C7DAC2C46A0B41BA509 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				973D815322D1E7B1548956EE /* PBXTargetDependency */,
+			);
+			name = CurioTests;
+			packageProductDependencies = (
+			);
+			productName = CurioTests;
+			productReference = 8462F5CE86E88D4E66A052E4 /* CurioTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C39E7AA31BDD96DF2E48ECAF /* Curio */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 020DD6EE670250178D3207BF /* Build configuration list for PBXNativeTarget "Curio" */;
+			buildPhases = (
+				477227FDED29268B2C9D0FAB /* Sources */,
+				1BA01C086F77BF52A1E31028 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Curio;
+			packageProductDependencies = (
+			);
+			productName = Curio;
+			productReference = 1E052103A87F5F08AC0CB880 /* Curio.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		25C043CDD8C665808683687E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = EF481C897B60FBC27E7CAC92 /* Build configuration list for PBXProject "Curio" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CBC207A500CB54EACABA2EF8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 18F07888B9A141615E637B53 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C39E7AA31BDD96DF2E48ECAF /* Curio */,
+				508F2886EE1CA251E5C4CB36 /* CurioTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1BA01C086F77BF52A1E31028 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D30314333FE532A9142FCADE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		477227FDED29268B2C9D0FAB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F2B83924E7CB4656EB1B15F /* Artwork.swift in Sources */,
+				DAA2FB5BDCBD4AC271D746C2 /* CurioApp.swift in Sources */,
+				A467A742E9E43F41D5C9A47F /* Editors.swift in Sources */,
+				5C2EF5BA48A7B666184D8E72 /* Gallery.swift in Sources */,
+				0129A2C8345E200298DEF4DA /* Museum.swift in Sources */,
+				C7D2BB22396D739980E75FF7 /* ObjectDetail.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		68FA5C7DAC2C46A0B41BA509 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34293A26C6B026A1662720CE /* MuseumTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		973D815322D1E7B1548956EE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C39E7AA31BDD96DF2E48ECAF /* Curio */;
+			targetProxy = BE8BDEADEE70EF262DA43663 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0EEF1C23D542AD12BFC9BEFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_KEY_CFBundleDisplayName = Curio;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curio.museum.collection;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1230991171B1F72022A2FFEE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		43D3075F12CA1E50D78B90AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_KEY_CFBundleDisplayName = Curio;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curio.museum.collection;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		669D04E1044CF9E0DC164589 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		6FD978D2416711D53615DB0A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.curio.museum.CurioTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Curio.app/Curio";
+			};
+			name = Release;
+		};
+		E186CE13E01CF7DE83473A6C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.curio.museum.CurioTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Curio.app/Curio";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		020DD6EE670250178D3207BF /* Build configuration list for PBXNativeTarget "Curio" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				43D3075F12CA1E50D78B90AF /* Debug */,
+				0EEF1C23D542AD12BFC9BEFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		710CBF241DD154FC285166F3 /* Build configuration list for PBXNativeTarget "CurioTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E186CE13E01CF7DE83473A6C /* Debug */,
+				6FD978D2416711D53615DB0A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EF481C897B60FBC27E7CAC92 /* Build configuration list for PBXProject "Curio" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1230991171B1F72022A2FFEE /* Debug */,
+				669D04E1044CF9E0DC164589 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 25C043CDD8C665808683687E /* Project object */;
+}
