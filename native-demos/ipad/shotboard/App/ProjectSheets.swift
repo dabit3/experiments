@@ -36,8 +36,7 @@ struct ProjectLibrary: View {
             } label: {
               HStack(spacing: 20) {
                 if let shot = project.shots.first {
-                  InkCanvas(shot: shot).frame(width: 170, height: 90).clipped()
-                    .allowsHitTesting(false)
+                  InkThumbnail(shot: shot).frame(width: 170, height: 90).clipped()
                 }
                 VStack(alignment: .leading, spacing: 10) {
                   Text(project.title).font(.system(size: 23, design: .serif))
@@ -48,7 +47,8 @@ struct ProjectLibrary: View {
                 }
                 Spacer()
                 Image(systemName: "arrow.up.right").foregroundStyle(Palette.yellow)
-              }.padding(15).background(Palette.panel).clipShape(RoundedRectangle(cornerRadius: 10))
+              }.contentShape(Rectangle()).padding(15).background(Palette.panel)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             }.buttonStyle(.plain)
           }
           Button {

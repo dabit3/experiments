@@ -155,3 +155,16 @@ struct InkCanvas: UIViewRepresentable {
     view.isUserInteractionEnabled = onStroke != nil
   }
 }
+
+struct InkThumbnail: View {
+  let shot: Shot
+
+  var body: some View {
+    let size = CGSize(width: 340, height: 170)
+    let image = UIGraphicsImageRenderer(size: size).image { renderer in
+      InkRenderer.draw(
+        shot.strokes, in: CGRect(origin: .zero, size: size), context: renderer.cgContext)
+    }
+    Image(uiImage: image).resizable()
+  }
+}
