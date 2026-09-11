@@ -10,12 +10,27 @@ struct StudioView: View {
   @State private var zoom = 0.76
   @State private var sheet: StudioSheet?
   @State private var saveName = ""
-  @State private var exportURL: URL?
   @State private var showNewConfirmation = false
 
-  enum StudioSheet: String, Identifiable {
-    case rooms, save, dimensions, export
-    var id: String { rawValue }
+  enum StudioSheet: Identifiable {
+    case rooms, save, dimensions
+    case export(URL)
+
+    var id: String {
+      switch self {
+      case .rooms: "Rooms"
+      case .save: "Save"
+      case .dimensions: "Dimensions"
+      case .export: "Your plan · PDF"
+      }
+    }
+
+    var detents: Set<PresentationDetent> {
+      switch self {
+      case .export: [.large]
+      default: [.medium, .large]
+      }
+    }
   }
 
   var body: some View {
@@ -37,7 +52,7 @@ struct StudioView: View {
     .preferredColorScheme(.light)
     .sheet(item: $sheet) { item in
       sheetContent(item)
-        .presentationDetents(item == .export ? [.large] : [.medium, .large])
+        .presentationDetents(item.detents)
         .presentationDragIndicator(.visible)
     }
     .alert(
@@ -380,6 +395,7 @@ struct StudioView: View {
               "Saved rooms live on this iPad. Your current edits are also recovered automatically."
             )
             .font(.system(size: 14)).foregroundStyle(Palette.muted)
+            .fixedSize(horizontal: false, vertical: true)
             Button("Save room") {
               store.save(name: saveName)
               sheet = nil
@@ -442,21 +458,19 @@ struct StudioView: View {
             .font(.system(size: 13)).foregroundStyle(Palette.muted)
             Spacer()
           }.padding(30)
-        case .export:
-          if let exportURL {
-            PDFPreview(url: exportURL)
-              .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                  ShareLink(item: exportURL) {
-                    Label("Share PDF", systemImage: "square.and.arrow.up")
-                  }
+        case .export(let url):
+          PDFPreview(url: url)
+            .toolbar {
+              ToolbarItem(placement: .bottomBar) {
+                ShareLink(item: url) {
+                  Label("Share PDF", systemImage: "square.and.arrow.up")
                 }
               }
-          }
+            }
         }
       }
       .background(Palette.paper)
-      .navigationTitle(item == .export ? "Your plan · PDF" : item.rawValue.capitalized)
+      .navigationTitle(item.id)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { sheet = nil } } }
     }.tint(Palette.clay)
@@ -534,9 +548,8 @@ struct StudioView: View {
               .font: UIFont.systemFont(ofSize: 9), .foregroundColor: UIColor(Palette.muted),
             ])
       }
-      exportURL = url
       store.message = "PDF exported · Roomlight-plan.pdf"
-      sheet = .export
+      sheet = .export(url)
     } catch { store.error = "Could not export PDF: \(error.localizedDescription)" }
   }
 }
