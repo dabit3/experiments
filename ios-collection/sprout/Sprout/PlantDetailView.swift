@@ -136,6 +136,12 @@ struct PlantDetailView: View {
             }.padding(.top, 8)
           }.padding(.horizontal, 26).padding(.bottom, 32)
         }.clipped()
+          .onChange(of: plant.history) { _, history in
+            if let lastLog, !history.contains(where: { $0.id == lastLog }) {
+              self.lastLog = nil
+              watered = false
+            }
+          }
           .sheet(isPresented: $editing) { PlantEditor(existing: plant) }
           .sheet(item: $editingLog) { log in WateringEditor(plantID: plantID, log: log) }
       } else {
