@@ -13,6 +13,8 @@ iOS 17 or later. No runtime dependencies, account, or network requests.
   through the native share sheet.
 - Six original procedural illustrations and an original generated app icon.
   The initial **Everyday icons** exhibition is explicitly fictional sample data.
+- Personal collections take priority on home. New objects begin with an honest
+  empty plinth; photo and illustration selection are optional and explicit.
 - VoiceOver labels, native Dynamic Type body text, a single-column accessibility
   layout and selection haptics. No essential motion or audio.
 

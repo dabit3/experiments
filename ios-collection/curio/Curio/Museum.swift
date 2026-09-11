@@ -3,9 +3,9 @@ import SwiftUI
 import UIKit
 
 enum Artifact: String, Codable, CaseIterable, Identifiable {
-  case camera, vase, record, chair, bottle, book
+  case camera, vase, record, chair, bottle, book, unpictured
   var id: String { rawValue }
-  var title: String { rawValue.capitalized }
+  var title: String { self == .unpictured ? "No illustration" : rawValue.capitalized }
 }
 
 struct MuseumCollection: Identifiable, Codable, Equatable {
@@ -67,7 +67,8 @@ struct MuseumArchive: Codable, Equatable {
       ["photography", "vintage"], ["ceramics", "handmade"], ["music", "vintage"],
       ["design", "wood"], ["glass", "design"], ["books", "design"],
     ]
-    let objects = Artifact.allCases.enumerated().map { index, artifact in
+    let objects = Artifact.allCases.filter { $0 != .unpictured }.enumerated().map {
+      index, artifact in
       MuseumObject(
         collectionID: collection.id, title: titles[index], maker: makers[index],
         story: stories[index],
@@ -133,7 +134,7 @@ final class MuseumStore: ObservableObject {
     return objects.filter { item in
       (collectionID == nil || item.collectionID == collectionID)
         && (!favorites || item.isFavorite)
-        && (tag == nil || item.tags.contains(tag!))
+        && (tag.map { item.tags.contains($0) } ?? true)
         && (words.isEmpty
           || ([item.title, item.maker, item.story] + item.tags).joined(separator: " ")
             .localizedStandardContains(words))

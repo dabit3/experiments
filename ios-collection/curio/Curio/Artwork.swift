@@ -48,6 +48,7 @@ struct ExhibitArtwork: View {
             case .chair: ChairArt()
             case .bottle: BottleArt()
             case .book: BookArt()
+            case .unpictured: EmptyPlinth()
             }
           }
           .shadow(color: .black.opacity(0.12), radius: 9, x: 3, y: 9)
@@ -58,6 +59,25 @@ struct ExhibitArtwork: View {
       }
     }
     .accessibilityHidden(true)
+  }
+}
+
+private struct EmptyPlinth: View {
+  var body: some View {
+    ZStack {
+      RoundedRectangle(cornerRadius: 50)
+        .stroke(MuseumStyle.muted.opacity(0.35), style: StrokeStyle(lineWidth: 1.5, dash: [4, 6]))
+        .frame(width: 90, height: 110).offset(y: -28)
+      Path { path in
+        path.move(to: CGPoint(x: 62, y: 206))
+        path.addLine(to: CGPoint(x: 88, y: 184))
+        path.addLine(to: CGPoint(x: 212, y: 184))
+        path.addLine(to: CGPoint(x: 238, y: 206))
+        path.closeSubpath()
+      }.fill(Color.white.opacity(0.75))
+      Rectangle().fill(MuseumStyle.stone).frame(width: 176, height: 12).offset(y: 72)
+      Rectangle().fill(MuseumStyle.cobalt).frame(width: 24, height: 3).offset(y: 73)
+    }
   }
 }
 

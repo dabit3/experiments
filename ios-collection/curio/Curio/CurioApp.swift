@@ -78,7 +78,7 @@ struct MuseumHome: View {
             }.buttonStyle(.plain)
           } else {
             VStack(alignment: .leading, spacing: 16) {
-              ExhibitArtwork(artifact: .vase).frame(height: 205)
+              ExhibitArtwork(artifact: .unpictured).frame(height: 180)
               Text("Every collection starts\nwith one good thing.")
                 .font(MuseumStyle.serif(29))
               Button("Create your first collection") { createCollection = true }
@@ -103,7 +103,8 @@ struct MuseumHome: View {
               } label: {
                 HStack(spacing: 16) {
                   ExhibitArtwork(
-                    artifact: museum.query(collectionID: collection.id).first?.artifact ?? .vase,
+                    artifact: museum.query(collectionID: collection.id).first?.artifact
+                      ?? .unpictured,
                     photo: museum.query(collectionID: collection.id).first?.photo
                   )
                   .frame(width: 66, height: 72).background(MuseumStyle.stone.opacity(0.4))
@@ -156,6 +157,7 @@ struct MuseumHome: View {
           }.accessibilityLabel("About your museum")
         }.padding(.horizontal, 25).padding(.vertical, 4)
           .background(MuseumStyle.paper)
+          .overlay(alignment: .bottom) { MuseumStyle.stone.opacity(0.7).frame(height: 0.5) }
       }
       .background(MuseumStyle.paper)
       .foregroundStyle(MuseumStyle.ink)
@@ -182,7 +184,11 @@ struct FeaturedExhibition: View {
       ZStack {
         Ellipse().fill(.white.opacity(0.45)).frame(width: 245, height: 160).blur(radius: 24)
         if objects.isEmpty {
-          ExhibitArtwork(artifact: .vase).frame(width: 240, height: 220)
+          VStack(spacing: 0) {
+            ExhibitArtwork(artifact: .unpictured).frame(height: 158)
+            Text("Your first object belongs here.")
+              .font(.subheadline).foregroundStyle(MuseumStyle.muted)
+          }
         } else {
           ExhibitArtwork(artifact: objects.first?.artifact ?? .camera, photo: objects.first?.photo)
             .frame(height: 195).padding(.horizontal, 25)

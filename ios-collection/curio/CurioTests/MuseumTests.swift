@@ -90,4 +90,28 @@ final class MuseumTests: XCTestCase {
     XCTAssertGreaterThan(image.size.height, 1000)
     XCTAssertGreaterThan(data.count, 10_000)
   }
+
+  func testMovePreservesIdentityAndNextCatalogNumber() throws {
+    let store = MuseumStore(directory: directory)
+    let collection = MuseumCollection(title: "New room", subtitle: "")
+    XCTAssertTrue(store.saveCollection(collection))
+    var object = try XCTUnwrap(store.objects.first)
+    let catalogNumber = object.catalogNumber
+    object.collectionID = collection.id
+    object.artifact = .unpictured
+    XCTAssertTrue(store.saveObject(object))
+    let restored = MuseumStore(directory: directory)
+    XCTAssertEqual(restored.query(collectionID: collection.id).map(\.id), [object.id])
+    XCTAssertEqual(restored.object(object.id)?.catalogNumber, catalogNumber)
+    XCTAssertEqual(restored.object(object.id)?.artifact, .unpictured)
+    XCTAssertEqual(restored.archive.nextNumber, 7)
+  }
+
+  func testLabelFilenameIsReadableAndCannotEscapeExportDirectory() throws {
+    var object = try XCTUnwrap(MuseumArchive.sample.objects.first)
+    object.title = "../../A keepsake: / summer"
+    let file = try PosterRenderer.export(object: object, collection: "Archive")
+    XCTAssertEqual(file.lastPathComponent, "Curio-001-A-keepsake-summer.png")
+    XCTAssertEqual(file.deletingLastPathComponent().lastPathComponent, "MuseumLabels")
+  }
 }

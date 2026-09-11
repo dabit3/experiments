@@ -13,10 +13,19 @@ struct CollectionEditor: View {
     NavigationStack {
       Form {
         Section {
+          VStack(alignment: .leading, spacing: 10) {
+            BrandMark()
+            Text("Make room for\nwhat matters.").font(MuseumStyle.serif(31))
+            Text("A theme, a passion, a few good finds.")
+              .font(.subheadline).foregroundStyle(MuseumStyle.muted)
+          }.padding(.vertical, 10)
+        }.listRowBackground(Color.clear).listRowInsets(
+          EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+        Section {
           TextField("Collection name", text: $title).accessibilityIdentifier("collectionName")
           TextField("A short introduction", text: $subtitle, axis: .vertical).lineLimit(2...4)
         } header: {
-          Text("Make room for your things")
+          Text("Collection details")
         } footer: {
           Text("A collection can hold a theme, a passion, or simply the things you love.")
         }
@@ -53,7 +62,7 @@ struct ObjectEditor: View {
   @State private var story = ""
   @State private var acquired = Date()
   @State private var tags = ""
-  @State private var artifact: Artifact = .vase
+  @State private var artifact: Artifact = .unpictured
   @State private var photo: Data?
   @State private var pickedPhoto: PhotosPickerItem?
   @State private var loadingPhoto = false
@@ -64,16 +73,41 @@ struct ObjectEditor: View {
     NavigationStack {
       Form {
         Section {
-          ExhibitArtwork(artifact: artifact, photo: photo)
-            .frame(height: 175).frame(maxWidth: .infinity)
-            .listRowBackground(MuseumStyle.stone.opacity(0.45))
+          VStack(alignment: .leading, spacing: 7) {
+            Eyebrow(
+              text: existing == nil ? "A new addition" : "The details matter",
+              color: MuseumStyle.cobalt)
+            Text(existing == nil ? "Give it a place." : "Continue its story.")
+              .font(MuseumStyle.serif(30))
+          }.padding(.vertical, 4)
+        }.listRowBackground(Color.clear).listRowInsets(
+          EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+        Section("The exhibit label") {
+          TextField("Title (required)", text: $title).accessibilityIdentifier("objectTitle")
+          TextField("Maker, material or year", text: $maker).accessibilityIdentifier("objectMaker")
+        }
+        Section {
+          if photo != nil || artifact != .unpictured {
+            ExhibitArtwork(artifact: artifact, photo: photo)
+              .frame(height: 130).frame(maxWidth: .infinity)
+              .listRowBackground(MuseumStyle.stone.opacity(0.45))
+          }
           PhotosPicker(selection: $pickedPhoto, matching: .images, photoLibrary: .shared()) {
-            Label(
-              loadingPhoto
-                ? "Preparing photo…" : photo == nil ? "Add your own photo" : "Replace photo",
-              systemImage: "photo"
-            )
-            .frame(minHeight: 32)
+            HStack(spacing: 12) {
+              Image(systemName: "photo.badge.plus").font(.title3)
+                .frame(width: 42, height: 48)
+                .background(MuseumStyle.cobalt.opacity(0.07)).clipShape(
+                  RoundedRectangle(cornerRadius: 5))
+              VStack(alignment: .leading, spacing: 4) {
+                Text(
+                  loadingPhoto
+                    ? "Preparing photo…" : photo == nil ? "Add your own photo" : "Replace photo"
+                )
+                .font(.body.weight(.medium))
+                Text("Private, on-device, entirely yours.")
+                  .font(.caption).foregroundStyle(MuseumStyle.muted)
+              }
+            }.padding(.vertical, 3)
           }.disabled(loadingPhoto)
           if photo != nil {
             Button("Remove photo", role: .destructive) {
@@ -85,15 +119,15 @@ struct ObjectEditor: View {
               ForEach(Artifact.allCases) { Text($0.title).tag($0) }
             }
           }
+        } header: {
+          Text("Its portrait")
         } footer: {
           Text(
             photo == nil
-              ? "Original Curio illustration. Add a photo to make it yours."
+              ? "A photo is optional. Choose an illustration, or leave a quiet space for one."
               : "Your photo stays offline, with this object.")
         }
-        Section("The exhibit label") {
-          TextField("Title (required)", text: $title).accessibilityIdentifier("objectTitle")
-          TextField("Maker, material or year", text: $maker).accessibilityIdentifier("objectMaker")
+        Section("Provenance") {
           DatePicker("Acquired", selection: $acquired, in: ...Date(), displayedComponents: .date)
           if museum.collections.count > 1 {
             Picker("Collection", selection: $targetCollection) {
@@ -189,7 +223,7 @@ struct ObjectEditor: View {
       existing
       ?? MuseumObject(
         collectionID: collectionID, title: "", maker: "", story: "", acquired: Date(), tags: [],
-        artifact: .vase, catalogNumber: 0)
+        artifact: .unpictured, catalogNumber: 0)
     object.collectionID = targetCollection ?? collectionID
     object.title = title
     object.maker = maker

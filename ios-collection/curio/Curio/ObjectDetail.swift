@@ -9,6 +9,7 @@ struct ObjectDetail: View {
   @State private var export = false
   @State private var confirmDelete = false
   @State private var favoriteFeedback = false
+  @Environment(\.dynamicTypeSize) private var typeSize
 
   var body: some View {
     if let object = museum.object(objectID) {
@@ -18,15 +19,24 @@ struct ObjectDetail: View {
             ExhibitArtwork(artifact: object.artifact, photo: object.photo)
               .frame(height: 315).padding(.horizontal, 25)
             Eyebrow(
-              text: object.photo == nil ? "Curio original illustration" : "From your photo library"
+              text: object.photo != nil
+                ? "From your photo library"
+                : object.artifact == .unpictured
+                  ? "A portrait waiting to happen" : "Curio original illustration"
             )
             .padding(18)
           }.background(MuseumStyle.stone.opacity(0.48))
           VStack(alignment: .leading, spacing: 22) {
-            HStack {
-              Eyebrow(text: "Object / \(museum.number(object))", color: MuseumStyle.cobalt)
-              Spacer()
-              if object.isSample { Eyebrow(text: "Sample exhibit") }
+            ViewThatFits(in: .horizontal) {
+              HStack {
+                Eyebrow(text: "Object / \(museum.number(object))", color: MuseumStyle.cobalt)
+                Spacer()
+                if object.isSample { Eyebrow(text: "Sample exhibit") }
+              }
+              VStack(alignment: .leading, spacing: 8) {
+                Eyebrow(text: "Object / \(museum.number(object))", color: MuseumStyle.cobalt)
+                if object.isSample { Eyebrow(text: "Sample exhibit") }
+              }
             }
             VStack(alignment: .leading, spacing: 9) {
               Text(object.title).font(MuseumStyle.serif(39)).tracking(-1)
@@ -45,13 +55,17 @@ struct ObjectDetail: View {
               .font(.body).lineSpacing(5).foregroundStyle(MuseumStyle.ink.opacity(0.85))
               .textSelection(.enabled)
             }
-            HStack(alignment: .top, spacing: 24) {
+            let metadataLayout =
+              typeSize.isAccessibilitySize
+              ? AnyLayout(VStackLayout(alignment: .leading, spacing: 18))
+              : AnyLayout(HStackLayout(alignment: .top, spacing: 24))
+            metadataLayout {
               VStack(alignment: .leading, spacing: 7) {
                 Eyebrow(text: "Acquired")
                 Text(object.acquired.formatted(date: .abbreviated, time: .omitted)).font(
                   .subheadline)
               }
-              Spacer()
+              if !typeSize.isAccessibilitySize { Spacer() }
               VStack(alignment: .leading, spacing: 7) {
                 Eyebrow(text: "Collection")
                 Text(museum.collection(object.collectionID)?.title ?? "").font(.subheadline)
@@ -74,6 +88,8 @@ struct ObjectDetail: View {
       }
       .background(MuseumStyle.paper).foregroundStyle(MuseumStyle.ink)
       .navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(MuseumStyle.paper, for: .navigationBar)
+      .toolbarBackground(.visible, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .principal) { Eyebrow(text: "The exhibit", color: MuseumStyle.ink) }
         ToolbarItemGroup(placement: .topBarTrailing) {
@@ -169,7 +185,14 @@ enum PosterRenderer {
     let directory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
       .appendingPathComponent("MuseumLabels")
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-    let url = directory.appendingPathComponent("Curio-\(object.id.uuidString).png")
+    let title = object.title.unicodeScalars.map {
+      CharacterSet.alphanumerics.contains($0) ? String($0) : "-"
+    }.joined()
+      .split(separator: "-").joined(separator: "-")
+    let filename = String(title.prefix(60))
+    let url = directory.appendingPathComponent(
+      "Curio-\(String(format: "%03d", object.catalogNumber))-\(filename.isEmpty ? "Object" : filename).png"
+    )
     try data.write(to: url, options: .atomic)
     return url
   }
@@ -193,7 +216,7 @@ struct LabelExport: View {
       ScrollView {
         VStack(alignment: .leading, spacing: 19) {
           Eyebrow(text: "From your private museum", color: MuseumStyle.cobalt)
-          Text("An object.\nA story. A keepsake.").font(MuseumStyle.serif(34)).tracking(-0.8)
+          Text("Ready to take with you.").font(MuseumStyle.serif(29)).tracking(-0.5)
           if let preview {
             Image(uiImage: preview).resizable().scaledToFit()
               .shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 5)
