@@ -161,7 +161,9 @@ struct CookView: View {
           .navigationTitle("For \(store.servings(for: recipe)) servings")
           .navigationBarTitleDisplayMode(.inline)
           .toolbar {
-            ToolbarItem(placement: .topBarTrailing) { Button("Done") { showIngredients = false } }
+            ToolbarItem(placement: .topBarTrailing) {
+              Button("Done") { showIngredients = false }.foregroundStyle(Palette.red)
+            }
           }
       }.tint(Palette.red).preferredColorScheme(.light)
     }
@@ -276,7 +278,11 @@ struct TimerRoomView: View {
           }
         }.padding(24)
       }.background(Color(red: 0.92, green: 0.89, blue: 0.83)).foregroundStyle(Palette.ink)
-        .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
+        .toolbar {
+          ToolbarItem(placement: .topBarTrailing) {
+            Button("Done") { dismiss() }.foregroundStyle(Palette.red)
+          }
+        }
         .sheet(isPresented: $newTimer) { TimerEditor() }
     }.tint(Palette.red).preferredColorScheme(.light)
   }
@@ -349,10 +355,12 @@ struct TimerEditor: View {
         .navigationTitle(existing == nil ? "New timer" : "Adjust timer")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-          ToolbarItem(placement: .topBarTrailing) { Button("Cancel") { dismiss() } }
+          ToolbarItem(placement: .topBarTrailing) {
+            Button("Cancel") { dismiss() }.foregroundStyle(Palette.red)
+          }
           ToolbarItem(placement: .topBarLeading) {
             if nameFocused {
-              Button("Done") { nameFocused = false }
+              Button("Done") { nameFocused = false }.foregroundStyle(Palette.red)
             }
           }
         }
