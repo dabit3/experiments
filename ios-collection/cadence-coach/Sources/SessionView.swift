@@ -20,8 +20,6 @@ struct SessionView: View {
     .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
     .confirmationDialog("End this session?", isPresented: $confirmEnd, titleVisibility: .visible) {
       Button("End and save effort", role: .destructive) { store.end() }
-    } message: {
-      Text("Your time so far will be saved as an ended session.")
     }
     .confirmationDialog(
       "Restart from the beginning?", isPresented: $confirmRestart, titleVisibility: .visible

@@ -30,13 +30,15 @@ struct HomeView: View {
           HStack {
             HStack(spacing: 10) {
               CadenceMark(color: Palette.ink).scaleEffect(0.7).frame(width: 28)
-              Text("CADENCE").font(.headline).tracking(3)
+              Text("CADENCE").font(.system(size: 17, weight: .semibold)).tracking(3)
+                .fixedSize()
             }
             Spacer()
             Button {
               showSettings = true
             } label: {
-              Image(systemName: "slider.horizontal.3").frame(width: 44, height: 44)
+              Image(systemName: "slider.horizontal.3").font(.system(size: 20))
+                .frame(width: 44, height: 44)
             }.accessibilityLabel("Settings")
           }
           VStack(alignment: .leading, spacing: 4) {
