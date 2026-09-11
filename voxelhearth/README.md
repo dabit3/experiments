@@ -172,7 +172,8 @@ Android emulator, starts a fresh `--test-mode --seed 1234` server, then runs
    region hash of the structure and asserts they are all identical, and that
    the structure matches the expected placements/breaks exactly;
 7. ends the match and asserts the results screen (scores, placed/broken
-   counts, world/chat fingerprints) is identical on every client;
+   counts, world/chat fingerprints) is identical on every client and matches
+   a fresh authoritative server query after the final match message;
 8. captures `home`, `lobby`, `gameplay`, `structure`, `chat` and `results`
    screenshots per platform and composes the per-platform frame captures into
    `four-way-recording.mp4` (plus the raw Playwright `web-recording.webm`);
@@ -200,12 +201,10 @@ The scripted test drives real web and iOS clients in one room in parallel;
 the separate computer-use recording exercises their actual controls.
 Neither recording is a promotional mockup of gameplay.
 
-`.devin/clone-this/voxelhearth/evidence/tests/` — see `report.md` in the
-newest run. The verified runs cover **web + iOS Simulator + macOS**
-(`e2e-20260909-*`) and, after the pixel-GUI design pass, a focused **web +
-iOS Simulator in parallel** run (`e2e-20260910-*`, with `review-video.mp4`):
-identical world hash, chat hash, structure region and scoreboard across the
-server and every client. The Android APK builds and installs, but the Android
+The evidence index distinguishes current arcade verification from historical
+design passes. Scripted runs record shared world/chat fingerprints, structure
+regions, final scoreboards, reconnect results and the platforms that actually
+participated. The Android APK builds, but the Android
 emulator on the build machine could not reach `sys.boot_completed` (nested
 virtualization — `HVF error: HV_UNSUPPORTED`, software rendering never
 finished booting), so Android has **not** been exercised in the live match.
@@ -213,19 +212,14 @@ The harness fully supports it (`VH_PLATFORMS=web,ios,android,macos`) on a host
 with a working emulator. This is recorded as an external blocker in
 `.devin/clone-this/voxelhearth/state.json`.
 
-A separate **real-UI (computer-use) pass** drove Chrome and the iPhone 17
-Simulator side by side through the actual menus, HUD and touch controls —
-create/join, ready/start, shared edits, chat, inventory/crafting, pause/options,
-reload/reconnect, results — without the director channel. Its reports,
-`markers.json` and screenshots are in `evidence/tests/manual-20260910/`; the
-same `review-video.mjs` editor cuts its raw screen recording plus the two
-fix-round recordings into `manual-20260910/review-video.mp4` (the script is
-generated from the markers, the fix-round annotations and the PASS/FAIL tables
-of the reports). The first pass found five UI defects (iOS stationary
-hold-to-break, iOS/web home footer collisions, keyboard overflow on the name
-form, capture hint over the Tab roster, pause menu visible behind Options)
-plus two follow-ups (iOS host-lobby overflow, clipped Options helper); all
-are fixed and re-verified in the fix rounds.
+The separate **real-UI (computer-use) pass** drives Chrome and the iPhone 17
+Simulator through actual menus, HUD and touch controls without the director
+channel. Its reports, screenshots, markers and edited video are linked from
+the evidence index. Earlier recordings remain historical evidence. The
+arcade regression fixes include stable iOS chat focus and draft retention
+when the keyboard opens, compact lobby rules, and correctly sized buttons.
+Simulator captures use its recorded landscape orientation so screenshots and
+review footage remain upright in either landscape direction.
 
 The run also records a **visual matrix**: every client renders identical
 fixture data for the lobby, results and home screens; the web capture is the
