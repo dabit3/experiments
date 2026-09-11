@@ -100,7 +100,7 @@ enum Money {
   }
 
   static func edit(_ cents: Int) -> String {
-    String(format: "%d.%02d", cents / 100, abs(cents % 100))
+    "\(cents / 100)." + String(format: "%02d", abs(cents % 100))
   }
 
   static func format(_ cents: Int) -> String {

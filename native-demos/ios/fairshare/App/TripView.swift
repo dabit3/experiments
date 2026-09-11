@@ -10,7 +10,7 @@ enum TripTab: String, CaseIterable {
     switch self {
     case .trip: "square.stack"
     case .balances: "arrow.left.arrow.right"
-    case .insights: "chart.donut"
+    case .insights: "chart.pie"
     }
   }
 }
@@ -192,7 +192,9 @@ struct TripView: View {
         HStack {
           Text("The trip ledger").font(.system(size: 21, design: .serif))
           Spacer()
-          Text("\(store.ledger.expenses.count) expenses").font(.system(size: 11)).foregroundStyle(
+          Text(
+            "\(store.ledger.expenses.count) \(store.ledger.expenses.count == 1 ? "expense" : "expenses")"
+          ).font(.system(size: 11)).foregroundStyle(
             Palette.muted)
         }.padding(.bottom, 15)
         if store.ledger.expenses.isEmpty {
@@ -395,7 +397,9 @@ struct TripView: View {
           Text(Money.format(store.ledger.total)).font(
             .system(size: 30, weight: .medium, design: .rounded)
           ).tracking(-1).monospacedDigit()
-          Text("\(store.ledger.expenses.count) shared moments").font(.system(size: 11))
+          Text(
+            "\(store.ledger.expenses.count) shared \(store.ledger.expenses.count == 1 ? "moment" : "moments")"
+          ).font(.system(size: 11))
             .foregroundStyle(Palette.muted)
         }
       }.frame(width: 228, height: 228).frame(maxWidth: .infinity).padding(.vertical, 24)
@@ -404,12 +408,13 @@ struct TripView: View {
       VStack(spacing: 20) {
         ForEach(Category.allCases, id: \.self) { category in
           let total = categoryTotal(category)
+          let count = store.ledger.expenses.filter { $0.category == category }.count
           HStack(spacing: 12) {
             RoundedRectangle(cornerRadius: 4).fill(categoryAccent(category)).frame(
               width: 10, height: 30)
             VStack(alignment: .leading, spacing: 4) {
               Text(category.rawValue).font(.system(size: 14, weight: .semibold))
-              Text("\(store.ledger.expenses.filter { $0.category == category }.count) expenses")
+              Text("\(count) \(count == 1 ? "expense" : "expenses")")
                 .font(.system(size: 11)).foregroundStyle(Palette.muted)
             }
             Spacer()

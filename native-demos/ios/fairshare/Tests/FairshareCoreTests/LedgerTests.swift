@@ -14,6 +14,11 @@ final class LedgerTests: XCTestCase {
     XCTAssertEqual(try Money.parse("0", allowZero: true), 0)
   }
 
+  func testExportAmountDoesNotTruncateLargeAggregatePayments() {
+    XCTAssertEqual(Money.edit(Money.maximum * 10_000), "9999999900.00")
+    XCTAssertEqual(Money.edit(1), "0.01")
+  }
+
   func testEqualSplitConservesEveryCentAndIsOrderIndependent() throws {
     var expense = Ledger.sample.expenses[0]
     expense.amount = 100
