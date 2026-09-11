@@ -168,6 +168,14 @@ struct GardenHome: View {
         if let exportURL { ShareSheet(items: [exportURL]) }
       }
     }
+    .overlay(alignment: .top) {
+      GeometryReader { geometry in
+        Palette.paper
+          .frame(height: geometry.safeAreaInsets.top)
+          .offset(y: -geometry.safeAreaInsets.top)
+      }
+      .allowsHitTesting(false)
+    }
   }
 
   private var header: some View {
@@ -211,9 +219,13 @@ struct GardenHome: View {
           VStack(alignment: .leading, spacing: 10) {
             Label("THE DAILY RITUAL", systemImage: "sun.max")
               .font(.system(size: 8, weight: .semibold)).tracking(1)
-            Text(due.isEmpty ? "All is\nwell." : "\(due.count) plants,\na little thirsty.")
-              .font(.system(size: 25, design: .serif)).tracking(-0.5)
-              .multilineTextAlignment(.leading)
+            Text(
+              due.isEmpty
+                ? "All is\nwell."
+                : "\(due.count) \(due.count == 1 ? "plant" : "plants"),\na little thirsty."
+            )
+            .font(.system(size: 25, design: .serif)).tracking(-0.5)
+            .multilineTextAlignment(.leading)
             HStack(spacing: 8) {
               Text(due.isEmpty ? "Enjoy your garden" : "Tend your garden")
                 .font(.system(size: 10, weight: .semibold))
