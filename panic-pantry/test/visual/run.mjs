@@ -19,9 +19,9 @@
 //   - macOS rounds the window's bottom corners itself; those four corner
 //     squares (PP_VISUAL_CORNER logical px, macOS only) are excluded
 //   - rasteriser differences (CoreText / FreeType / Skia-on-Android stroke
-//     weight and sub-pixel glyph placement) are removed by the two-pass gate
+//     weight and sub-pixel glyph placement) are removed by the three-pass gate
 //     in gate.mjs (box-averaged blocks intersected with a logical-pixel pass,
-//     plus a morphological "core" pass); see that file for the rules and the
+//     plus morphological "core" and unshifted colour-density passes); see that file for the rules and the
 //     PP_VISUAL_* knobs. Moved, missing or recoloured content forms a
 //     contiguous group in at least one pass and fails; leftover rasteriser
 //     noise is isolated pixels or 1-px-thin drift lines and passes.
@@ -408,10 +408,12 @@ async function compare(platform, state, launchVars, joinRoom, viewOverride) {
   const cloneNPath = clonePath.replace(/\.png$/, '.normalized.png');
   const diffNPath = diffPath.replace(/\.png$/, '.normalized.png');
   const coreNPath = diffPath.replace(/\.png$/, '.core.png');
+  const densityPath = diffPath.replace(/\.png$/, '.density.png');
   writeFileSync(refNPath, encodePng(gate.normalized.reference));
   writeFileSync(cloneNPath, encodePng(gate.normalized.clone));
   writeFileSync(diffNPath, encodePng(gate.blocks.image));
   writeFileSync(coreNPath, encodePng(gate.core.image));
+  writeFileSync(densityPath, encodePng(gate.density.image));
 
   const { pass } = gate;
   const row = {
@@ -448,10 +450,19 @@ async function compare(platform, state, launchVars, joinRoom, viewOverride) {
         largestCluster: gate.core.largestCluster,
         pass: gate.core.pass,
       },
+      density: {
+        block: gate.density.block,
+        tolerance: gate.density.tolerance,
+        compared: gate.density.compared,
+        differing: gate.density.differing,
+        largestCluster: gate.density.largestCluster,
+        pass: gate.density.pass,
+      },
       reference: refNPath,
       clone: cloneNPath,
       diff: diffNPath,
       coreDiff: coreNPath,
+      densityDiff: densityPath,
     },
     pass,
   };
@@ -535,7 +546,8 @@ const summary = {
     `macOS only: the ${CORNER}px window corners the OS rounds are excluded`,
     `block pass: box-average of ${GATE.block}x${GATE.block} logical px, per-channel tolerance ${GATE.tolerance}/255, placement allowance ${GATE.shift} block(s), intersected with a logical-pixel pass using the same tolerance and allowance; passes when differing blocks <= ${GATE.maxBlocks} and the largest connected group <= ${GATE.maxCluster}`,
     `core pass: logical-pixel comparison with the same tolerance and ${GATE.shift} px allowance, then morphological closing and one erosion (thin drift lines vanish, moved/missing/recoloured elements keep a core); passes when surviving pixels <= ${GATE.maxCore} and the largest connected group <= ${GATE.maxCluster}`,
-    'a pair passes only when both passes pass; test/visual/selftest.mjs proves the gate catches injected defects on the captured pairs',
+    `density pass: ${GATE.block * 4}x${GATE.block * 4} logical px box averages, per-channel tolerance ${GATE.tolerance * 0.4}/255, no placement allowance; differing cells <= ${GATE.maxBlocks}, largest connected group <= ${GATE.maxCluster}`,
+    'a pair passes only when all three passes pass; test/visual/selftest.mjs proves the gate catches injected defects on the captured pairs',
   ],
   gate: GATE,
   seed: SEED,

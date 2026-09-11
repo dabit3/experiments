@@ -154,10 +154,12 @@ PP_SKIP_BUILD=1 PP_PLATFORMS="macos" test/visual-parity.sh
 native client and every screen state (`home`, `lobby`, `results`), puts both
 sides into the same deterministic state, sizes the web viewport to the native
 client's reported logical viewport (inside the safe area) at its pixel ratio,
-captures both and compares them with the two-pass gate in `test/visual/gate.mjs`
+captures both and compares them with the three-pass gate in `test/visual/gate.mjs`
 (box-averaged blocks intersected with a logical-pixel pass, plus a
 morphological "core" pass that erodes 1-px rasteriser drift but keeps moved,
-missing or recoloured elements). The only UI that differs by design — the
+missing or recoloured elements, and an unshifted 8-pixel colour-density pass
+that checks whole-glyph distribution at a 32/255 channel tolerance).
+All three passes must pass. The only UI that differs by design — the
 local player's device label — is excluded using rectangles both clients
 report, and its text is checked separately. `test/visual/selftest.mjs` then
 re-runs the gate on the captured pairs with injected defects (missing 16 px

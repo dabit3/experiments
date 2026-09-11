@@ -154,7 +154,7 @@ class PPCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color ?? s.surface,
         borderRadius: PPRadius.card,
-        border: Border.all(color: s.outline, width: 1.5),
+        border: Border.all(color: s.outline, width: 2),
         boxShadow: elevated ? PPElevation.mid(s.brightness) : null,
       ),
       child: child,

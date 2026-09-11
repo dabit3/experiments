@@ -2,7 +2,7 @@
 // selftest.mjs (which proves the gate still catches injected defects).
 //
 // Inputs are two same-size physical-pixel captures of the same logical
-// viewport plus the platform-specific rectangles to exclude. Two passes run on
+// viewport plus the platform-specific rectangles to exclude. Three passes run on
 // DPR-normalized images and the pair fails when EITHER pass finds contiguous
 // differences:
 //
@@ -19,10 +19,13 @@
 //      lines that erode to nothing; moved, missing or recoloured elements leave
 //      solid blobs whose core survives. Catches small text moved a few px that
 //      averaging dilutes below the tolerance.
+//   3. density pass — 8-logical-px box averages without placement allowance,
+//      at 40% of the pixel tolerance. Checks the distribution of colour over
+//      whole glyphs instead of matching their pixels against nearby strokes.
 //
 // A pair passes when block-pass differing blocks <= maxBlocks with largest
 // 8-connected group <= maxCluster, AND core-pass surviving pixels <= maxCore
-// with largest group <= maxCluster.
+// with largest group <= maxCluster. The density pass uses the block limits.
 
 import { diff, refine, resize } from '../lib/png.mjs';
 
@@ -158,10 +161,22 @@ export function evaluate(ref, clone, dpr, masks, p = DEFAULTS) {
   const survived = erode(erode(dilate(grid(fine.image))));
   const core = clusters(survived);
 
+  const densityBlock = p.block * 4;
+  const densityScale = densityBlock * dpr;
+  const densityWidth = Math.floor(clone.width / densityScale);
+  const densityHeight = Math.floor(clone.height / densityScale);
+  const densityTolerance = p.tolerance * 0.4;
+  const density = diff(
+    resize(ref, densityWidth, densityHeight),
+    resize(clone, densityWidth, densityHeight),
+    { tolerance: densityTolerance, shift: 0, masks: masks.map((m) => scaleRect(m, densityScale)) },
+  );
+
   const blocksPass = blocks.differing <= p.maxBlocks && blocks.largestCluster <= p.maxCluster;
   const corePass = core.total <= p.maxCore && core.largest <= p.maxCluster;
+  const densityPass = density.differing <= p.maxBlocks && density.largestCluster <= p.maxCluster;
   return {
-    pass: blocksPass && corePass,
+    pass: blocksPass && corePass && densityPass,
     params: p,
     normalized: { width: nw, height: nh, reference: refN, clone: cloneN },
     blocks: {
@@ -182,6 +197,15 @@ export function evaluate(ref, clone, dpr, masks, p = DEFAULTS) {
       pass: corePass,
       image: coreImage(fine.image, survived),
     },
+    density: {
+      block: densityBlock,
+      tolerance: densityTolerance,
+      compared: density.compared,
+      differing: density.differing,
+      largestCluster: density.largestCluster,
+      pass: densityPass,
+      image: density.image,
+    },
   };
 }
 
@@ -189,6 +213,7 @@ export function describe(r) {
   const p = r.params;
   return (
     `blocks ${r.blocks.differing} <= ${p.maxBlocks} (group ${r.blocks.largestCluster} <= ${p.maxCluster}); ` +
-    `core ${r.core.differing} <= ${p.maxCore} (group ${r.core.largestCluster} <= ${p.maxCluster})`
+    `core ${r.core.differing} <= ${p.maxCore} (group ${r.core.largestCluster} <= ${p.maxCluster}); ` +
+    `density ${r.density.differing} <= ${p.maxBlocks} (group ${r.density.largestCluster} <= ${p.maxCluster})`
   );
 }

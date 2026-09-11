@@ -164,7 +164,7 @@ class _ResultsScreenState extends State<ResultsScreen> with SingleTickerProvider
                 children: [
                   Text('TEAM SCORE', style: PPType.caption(PPColor.cream).copyWith(letterSpacing: 2)),
                   const SizedBox(height: 8),
-                  Text('${(score * k).round()}', style: PPType.numeric(PPColor.butter, size: 62)),
+                  Text('${(score * k).round()}', style: PPType.numeric(PPColor.butter, size: 64)),
                 ],
               ),
             ),
