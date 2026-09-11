@@ -8,7 +8,7 @@ if [[ $# -ne 1 ]]; then
 fi
 DEVICE="$1"
 "$ROOT/scripts/build.sh"
-STATE="$(xcrun simctl list devices | rg "$DEVICE")"
+STATE="$(xcrun simctl list devices "$DEVICE")"
 if [[ "$STATE" != *"iPad"* ]]; then
   echo "Choose an iPad Simulator, not an iPhone."
   exit 1
