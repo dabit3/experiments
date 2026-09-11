@@ -98,7 +98,9 @@ export function CommandMenu({
         </button>
       </div>
       <div className="command-section-label">
-        {query ? `${items.length} results` : 'Quick actions & issues'}
+        {query
+          ? `${items.length} ${items.length === 1 ? 'result' : 'results'}`
+          : 'Quick actions & issues'}
       </div>
       <div
         ref={itemsRef}
