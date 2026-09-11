@@ -22,6 +22,7 @@ enum Atelier {
 struct StudioView: View {
   @Bindable var studio: Studio
   @Environment(\.scenePhase) private var scenePhase
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
   @State private var sheet: StudioSheet?
   @State private var showClear = false
   @State private var showNew = false
@@ -53,9 +54,10 @@ struct StudioView: View {
               .lineLimit(2)
             Text(
               studio.current.isSample
-                ? "Editable sample · make it yours" : "Your studio · draft autosaved"
+                ? "Editable sample" : "Draft autosaved"
             )
             .font(.caption).foregroundStyle(Atelier.muted)
+            .fixedSize(horizontal: false, vertical: true)
           }
           Spacer()
           Button {
@@ -83,20 +85,24 @@ struct StudioView: View {
           }
         }
         .frame(
-          width: min(geometry.size.width, geometry.size.height * 0.56),
-          height: min(geometry.size.width, geometry.size.height * 0.56)
+          width: min(
+            geometry.size.width,
+            geometry.size.height * (dynamicTypeSize.isAccessibilitySize ? 0.32 : 0.56)),
+          height: min(
+            geometry.size.width,
+            geometry.size.height * (dynamicTypeSize.isAccessibilitySize ? 0.32 : 0.56))
         )
         .clipped()
         .overlay { CanvasCorners().padding(7).allowsHitTesting(false) }
         Spacer(minLength: 12)
-        Text(
-          "Next stroke · \(studio.settings.symmetry) \(studio.settings.mirror ? "mirrored" : "radial") axes"
-        )
-        .font(.caption).foregroundStyle(Atelier.muted)
-        .padding(.bottom, 12)
-        pigmentStrip
-        toolCapsule.padding(.top, 14)
-        actionBar.padding(.top, 13).padding(.bottom, 8)
+        if dynamicTypeSize.isAccessibilitySize {
+          ScrollView {
+            studioControls
+          }
+          .scrollIndicators(.visible)
+        } else {
+          studioControls
+        }
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -157,6 +163,21 @@ struct StudioView: View {
     .onChange(of: scenePhase) { _, phase in if phase != .active { studio.persist() } }
   }
 
+  private var studioControls: some View {
+    VStack(spacing: 0) {
+      Text(
+        "Next stroke · \(studio.settings.symmetry) \(studio.settings.mirror ? "mirrored" : "radial") axes"
+      )
+      .font(.caption).foregroundStyle(Atelier.muted)
+      .multilineTextAlignment(.center)
+      .fixedSize(horizontal: false, vertical: true)
+      .padding(.horizontal, 24).padding(.bottom, 12)
+      pigmentStrip
+      toolCapsule.padding(.top, 14)
+      actionBar.padding(.top, 13).padding(.bottom, 8)
+    }
+  }
+
   private var header: some View {
     HStack(spacing: 10) {
       BrandMark().frame(width: 27, height: 27)
@@ -188,7 +209,7 @@ struct StudioView: View {
               Circle().stroke(
                 studio.settings.pigment == pigment.hex ? Atelier.ivory : .clear, lineWidth: 1)
             )
-            .frame(width: 42, height: 44)
+            .frame(width: 44, height: 44)
         }
         .accessibilityLabel("\(pigment.name) pigment")
         .accessibilityAddTraits(studio.settings.pigment == pigment.hex ? .isSelected : [])
@@ -202,7 +223,10 @@ struct StudioView: View {
   }
 
   private var toolCapsule: some View {
-    HStack(spacing: 0) {
+    let layout =
+      dynamicTypeSize.isAccessibilitySize
+      ? AnyLayout(VStackLayout(spacing: 0)) : AnyLayout(HStackLayout(spacing: 0))
+    return layout {
       Button {
         sheet = .brushes
       } label: {
@@ -212,11 +236,18 @@ struct StudioView: View {
           )
           .frame(width: 34, height: 24)
           Text(studio.settings.brush.title).font(
-            .system(.subheadline, design: .rounded).weight(.semibold))
+            .system(.subheadline, design: .rounded).weight(.semibold)
+          )
+          .fixedSize(horizontal: false, vertical: true)
           Image(systemName: "chevron.down").font(.system(size: 9, weight: .semibold))
-        }.frame(maxWidth: .infinity).frame(height: 56)
+        }.frame(maxWidth: .infinity).frame(minHeight: 56).padding(
+          .vertical, dynamicTypeSize.isAccessibilitySize ? 10 : 0)
       }.accessibilityLabel("Brush, \(studio.settings.brush.title)")
-      Rectangle().fill(.black.opacity(0.13)).frame(width: 1, height: 23)
+      if dynamicTypeSize.isAccessibilitySize {
+        Rectangle().fill(.black.opacity(0.13)).frame(height: 1).padding(.horizontal, 24)
+      } else {
+        Rectangle().fill(.black.opacity(0.13)).frame(width: 1, height: 23)
+      }
       Button {
         sheet = .symmetry
       } label: {
@@ -225,11 +256,12 @@ struct StudioView: View {
           Text("\(studio.settings.symmetry) axes").font(
             .system(.subheadline, design: .rounded).weight(.semibold))
           Image(systemName: "chevron.down").font(.system(size: 9, weight: .semibold))
-        }.frame(maxWidth: .infinity).frame(height: 56)
+        }.frame(maxWidth: .infinity).frame(minHeight: 56).padding(
+          .vertical, dynamicTypeSize.isAccessibilitySize ? 10 : 0)
       }.accessibilityLabel("Symmetry, \(studio.settings.symmetry) axes")
     }
     .foregroundStyle(Atelier.background)
-    .background(Atelier.ivory, in: Capsule())
+    .background(Atelier.ivory, in: RoundedRectangle(cornerRadius: 28))
     .padding(.horizontal, 24)
   }
 
@@ -247,7 +279,8 @@ struct StudioView: View {
         title = studio.current.isSample ? "\(studio.current.title) study" : studio.current.title
         showSave = true
       } label: {
-        Text("Save").font(.subheadline.weight(.semibold)).frame(width: 60, height: 44)
+        Text("Save").font(.subheadline.weight(.semibold)).fixedSize()
+          .frame(minWidth: 60, minHeight: 44)
       }.accessibilityLabel("Save artwork")
       action("Export PNG", icon: "square.and.arrow.up", disabled: studio.current.strokes.isEmpty) {
         do {
@@ -336,7 +369,7 @@ struct CanvasCorners: View {
         path.move(to: CGPoint(x: 0, y: 14))
         path.addLine(to: .zero)
         path.addLine(to: CGPoint(x: 14, y: 0))
-        copy.stroke(path, with: .color(Atelier.muted.opacity(0.35)), lineWidth: 0.7)
+        copy.stroke(path, with: .color(Atelier.muted.opacity(0.6)), lineWidth: 0.8)
       }
     }.accessibilityHidden(true)
   }

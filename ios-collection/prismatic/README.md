@@ -24,7 +24,7 @@ xcodebuild -project Prismatic.xcodeproj -scheme Prismatic \
   -derivedDataPath build build CODE_SIGNING_ALLOWED=NO
 xcodebuild -project Prismatic.xcodeproj -scheme Prismatic \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
-  -derivedDataPath build test CODE_SIGNING_ALLOWED=NO
+  -parallel-testing-enabled NO -derivedDataPath build test CODE_SIGNING_ALLOWED=NO
 xcrun swift-format lint --strict --recursive Prismatic PrismaticTests Scripts
 ```
 
@@ -40,9 +40,9 @@ The iOS 17 deployment target enables Observation and the modern SwiftUI state/ch
 
 ## Controls and accessibility
 
-Draw with a finger or pointer on the square canvas. The ivory tool capsule opens brush and symmetry controls. Color wells select pigments; sliders opens palettes. Gallery is at top right; `+` starts a blank study. Undo, redo, clear, save, and PNG share are along the bottom.
+Draw with a finger or pointer on the square canvas. The ivory tool capsule opens brush and symmetry controls. Color wells select pigments; the palette icon opens palettes. Gallery is at top right; `+` starts a blank study. Undo, redo, clear, save, and PNG share are along the bottom. Exports use your artwork title as the filename.
 
-UI text uses Dynamic Type where appropriate. Controls have VoiceOver labels and selected states; canvas announces stroke count and axes. Drawing itself is spatial and requires a touch gesture. Haptics supplement visible feedback. There are no essential animations or audio, so Reduce Motion does not remove information.
+UI text uses Dynamic Type where appropriate. At accessibility sizes the canvas becomes more compact and the tools stack in a separately scrollable area, preserving direct drawing without a competing scroll gesture. Brush rows and gallery grids adapt, and sheet close controls remain pinned. Controls have VoiceOver labels and selected states; canvas announces stroke count and axes. Drawing itself is spatial and requires a touch gesture. Haptics supplement visible feedback. There are no essential animations or audio, so Reduce Motion does not remove information.
 
 ## Limits
 

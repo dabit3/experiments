@@ -24,27 +24,34 @@ struct SheetHeading: View {
 
 struct BrushSheet: View {
   @Bindable var studio: Studio
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 24) {
-        SheetHeading(eyebrow: "THE TOOL CABINET", title: "A different feeling.")
         VStack(spacing: 10) {
           ForEach(Brush.allCases) { brush in
             Button {
               studio.settings.brush = brush
             } label: {
-              HStack(spacing: 20) {
+              let layout =
+                dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(VStackLayout(alignment: .leading, spacing: 14))
+                : AnyLayout(HStackLayout(spacing: 20))
+              layout {
                 BrushPreview(
                   brush: brush, pigment: studio.settings.pigment, weight: studio.settings.width
                 ).frame(
                   width: 80, height: 44)
-                VStack(alignment: .leading, spacing: 4) {
-                  Text(brush.title).font(.headline)
-                  Text(brush.subtitle).font(.caption).foregroundStyle(Atelier.muted)
-                }
-                Spacer()
-                if studio.settings.brush == brush {
-                  Image(systemName: "checkmark.circle.fill").foregroundStyle(Atelier.ivory)
+                HStack {
+                  VStack(alignment: .leading, spacing: 4) {
+                    Text(brush.title).font(.headline)
+                    Text(brush.subtitle).font(.caption).foregroundStyle(Atelier.muted)
+                      .fixedSize(horizontal: false, vertical: true)
+                  }
+                  Spacer(minLength: 0)
+                  if studio.settings.brush == brush {
+                    Image(systemName: "checkmark.circle.fill").foregroundStyle(Atelier.ivory)
+                  }
                 }
               }.padding(18).frame(maxWidth: .infinity, alignment: .leading)
                 .background(Atelier.panel, in: RoundedRectangle(cornerRadius: 20))
@@ -70,6 +77,10 @@ struct BrushSheet: View {
       }.padding(24)
     }
     .background(Atelier.background).foregroundStyle(Atelier.ivory)
+    .safeAreaInset(edge: .top) {
+      SheetHeading(eyebrow: "THE TOOL CABINET", title: "A different feeling.")
+        .padding(.horizontal, 24).padding(.bottom, 12).background(Atelier.background)
+    }
     .presentationDetents([.height(580), .large]).presentationDragIndicator(.visible)
   }
 }
@@ -79,7 +90,6 @@ struct SymmetrySheet: View {
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 25) {
-        SheetHeading(eyebrow: "FIND YOUR RHYTHM", title: "One line, multiplied.")
         HStack(spacing: 24) {
           SymmetryDiagram(count: studio.settings.symmetry, mirror: studio.settings.mirror)
             .frame(width: 120, height: 120)
@@ -122,6 +132,10 @@ struct SymmetrySheet: View {
       }.padding(24)
     }
     .background(Atelier.background).foregroundStyle(Atelier.ivory)
+    .safeAreaInset(edge: .top) {
+      SheetHeading(eyebrow: "FIND YOUR RHYTHM", title: "One line, multiplied.")
+        .padding(.horizontal, 24).padding(.bottom, 12).background(Atelier.background)
+    }
     .presentationDetents([.height(590), .large]).presentationDragIndicator(.visible)
   }
 }
@@ -159,7 +173,6 @@ struct PigmentSheet: View {
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 24) {
-        SheetHeading(eyebrow: "THE PIGMENT LIBRARY", title: "Color, collected.")
         ForEach(Palette.allCases) { palette in
           Button {
             studio.settings.palette = palette.rawValue
@@ -182,6 +195,10 @@ struct PigmentSheet: View {
         }
       }.padding(24)
     }.background(Atelier.background).foregroundStyle(Atelier.ivory)
+      .safeAreaInset(edge: .top) {
+        SheetHeading(eyebrow: "THE PIGMENT LIBRARY", title: "Color, collected.")
+          .padding(.horizontal, 24).padding(.bottom, 12).background(Atelier.background)
+      }
       .presentationDetents([.height(590), .large]).presentationDragIndicator(.visible)
   }
 }
@@ -189,12 +206,12 @@ struct PigmentSheet: View {
 struct GallerySheet: View {
   @Bindable var studio: Studio
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
   @State private var pendingOpen: Artwork?
   @State private var pendingDelete: Artwork?
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 26) {
-        SheetHeading(eyebrow: "YOUR PRIVATE COLLECTION", title: "The gallery.")
         Text("Saved pieces").font(.headline)
         if studio.gallery.isEmpty {
           VStack(alignment: .leading, spacing: 10) {
@@ -207,13 +224,26 @@ struct GallerySheet: View {
           }.padding(24).frame(maxWidth: .infinity, alignment: .leading)
             .background(Atelier.panel, in: RoundedRectangle(cornerRadius: 20))
         } else {
-          LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 24) {
+          LazyVGrid(
+            columns: Array(
+              repeating: GridItem(.flexible()),
+              count: dynamicTypeSize.isAccessibilitySize || studio.gallery.count == 1 ? 1 : 2),
+            spacing: 24
+          ) {
             ForEach(studio.gallery) { artwork in
-              VStack(alignment: .leading, spacing: 8) {
+              let layout =
+                studio.gallery.count == 1 && !dynamicTypeSize.isAccessibilitySize
+                ? AnyLayout(HStackLayout(alignment: .center, spacing: 18))
+                : AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+              layout {
                 Button {
-                  pendingOpen = artwork
+                  requestOpen(artwork)
                 } label: {
                   ArtThumbnail(artwork: artwork)
+                    .frame(
+                      maxWidth: studio.gallery.count == 1 && !dynamicTypeSize.isAccessibilitySize
+                        ? 150 : .infinity
+                    )
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .overlay(RoundedRectangle(cornerRadius: 16).stroke(Atelier.muted.opacity(0.15)))
                 }.accessibilityLabel("Open \(artwork.title)")
@@ -222,12 +252,18 @@ struct GallerySheet: View {
                     Text(artwork.title).font(.subheadline.weight(.medium))
                     Text("\(artwork.strokes.count) strokes").font(.caption).foregroundStyle(
                       Atelier.muted)
+                    if studio.gallery.count == 1 {
+                      Button("Continue drawing") { requestOpen(artwork) }
+                        .font(.caption.weight(.medium)).padding(.top, 8)
+                        .frame(minHeight: 44).accessibilityLabel(
+                          "Continue drawing \(artwork.title)")
+                    }
                   }
                   Spacer(minLength: 0)
                   Button {
                     pendingDelete = artwork
                   } label: {
-                    Image(systemName: "trash").font(.caption).frame(width: 32, height: 44)
+                    Image(systemName: "trash").font(.caption).frame(width: 44, height: 44)
                   }.accessibilityLabel("Delete \(artwork.title)")
                 }
               }
@@ -239,10 +275,14 @@ struct GallerySheet: View {
           Text("Editable samples · add your own mark").font(.subheadline).foregroundStyle(
             Atelier.muted)
         }.padding(.top, 8)
-        HStack(alignment: .top, spacing: 16) {
+        LazyVGrid(
+          columns: Array(
+            repeating: GridItem(.flexible()), count: dynamicTypeSize.isAccessibilitySize ? 1 : 2),
+          spacing: 16
+        ) {
           ForEach(Samples.all) { artwork in
             Button {
-              pendingOpen = artwork
+              requestOpen(artwork)
             } label: {
               VStack(alignment: .leading, spacing: 9) {
                 ArtThumbnail(artwork: artwork).clipShape(RoundedRectangle(cornerRadius: 16))
@@ -258,6 +298,10 @@ struct GallerySheet: View {
       }.padding(24)
     }
     .background(Atelier.background).foregroundStyle(Atelier.ivory)
+    .safeAreaInset(edge: .top) {
+      SheetHeading(eyebrow: "YOUR PRIVATE COLLECTION", title: "The gallery.")
+        .padding(.horizontal, 24).padding(.bottom, 12).background(Atelier.background)
+    }
     .presentationDragIndicator(.visible)
     .alert(
       "Open this piece?",
@@ -290,6 +334,15 @@ struct GallerySheet: View {
       Button("Cancel", role: .cancel) { pendingDelete = nil }
     } message: {
       Text("This removes it from the gallery. Your current canvas is not affected.")
+    }
+  }
+
+  private func requestOpen(_ artwork: Artwork) {
+    if studio.current == artwork || studio.current.strokes.isEmpty {
+      studio.open(artwork)
+      dismiss()
+    } else {
+      pendingOpen = artwork
     }
   }
 }

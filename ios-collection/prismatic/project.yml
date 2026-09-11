@@ -22,6 +22,7 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: UIInterfaceOrientationPortrait
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
         INFOPLIST_KEY_CFBundleDisplayName: Prismatic
+        INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription: Save an exported artwork to your photo library when you choose Save Image.
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
   PrismaticTests:

@@ -88,9 +88,15 @@ enum ArtRenderer {
   static func export(_ artwork: Artwork) throws -> URL {
     let image = image(strokes: artwork.strokes, size: 2048)
     guard let png = image.pngData() else { throw CocoaError(.fileWriteUnknown) }
-    let directory = URL.cachesDirectory.appending(path: "Exports")
+    let directory = URL.cachesDirectory.appending(path: "Exports").appending(
+      path: artwork.id.uuidString)
     try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-    let url = directory.appending(path: "Prismatic-\(artwork.id.uuidString).png")
+    let allowed = CharacterSet.alphanumerics.union(.whitespaces).union(
+      CharacterSet(charactersIn: "-_"))
+    let name = artwork.title.components(separatedBy: allowed.inverted)
+      .joined(separator: " ").split(whereSeparator: \.isWhitespace).joined(separator: " ")
+    let filename = name.isEmpty ? "Prismatic" : String(name.prefix(60))
+    let url = directory.appending(path: "\(filename).png")
     try png.write(to: url, options: .atomic)
     return url
   }

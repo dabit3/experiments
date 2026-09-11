@@ -97,4 +97,15 @@ final class PrismaticTests: XCTestCase {
     XCTAssertEqual(image.cgImage?.height, 2048)
     XCTAssertGreaterThan(data.count, 100_000)
   }
+
+  func testExportPreservesReadableTitleWithoutCreatingNestedPaths() throws {
+    var artwork = Artwork(title: "  Autumn / 光 : study  ")
+    let url = try ArtRenderer.export(artwork)
+    defer { try? FileManager.default.removeItem(at: url.deletingLastPathComponent()) }
+    XCTAssertEqual(url.lastPathComponent, "Autumn 光 study.png")
+    XCTAssertEqual(url.deletingLastPathComponent().lastPathComponent, artwork.id.uuidString)
+    artwork.title = "../"
+    let fallback = try ArtRenderer.export(artwork)
+    XCTAssertEqual(fallback.lastPathComponent, "Prismatic.png")
+  }
 }
