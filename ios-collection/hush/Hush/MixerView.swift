@@ -145,7 +145,8 @@ struct MixerView: View {
       }
       LazyVGrid(
         columns: Array(
-          repeating: GridItem(.flexible(), spacing: 12), count: typeSize.isAccessibilitySize ? 2 : 4
+          repeating: GridItem(.flexible(), spacing: 12, alignment: .top),
+          count: typeSize.isAccessibilitySize ? 2 : 4
         ),
         spacing: 26
       ) {
