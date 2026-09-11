@@ -24,6 +24,7 @@ struct MixerView: View {
             .padding(.bottom, 18)
           }
           .scrollIndicators(.visible)
+          .clipped()
           playbackDock
         }
       }
@@ -176,9 +177,10 @@ struct MixerView: View {
             set: { store.preferences.mix.master = Mix.clamp($0) }
           )
         ).tint(HushStyle.lavender).accessibilityLabel("Master volume")
-        Text("\(Int(store.mix.master * 100))")
+        Text("\(Int((store.mix.master * 100).rounded()))")
           .font(.system(.caption, design: .monospaced))
-          .foregroundStyle(HushStyle.muted).frame(width: 30)
+          .foregroundStyle(HushStyle.muted)
+          .lineLimit(1).fixedSize(horizontal: true, vertical: false).frame(minWidth: 30)
       }
       let controls =
         typeSize.isAccessibilitySize
@@ -275,7 +277,8 @@ struct SoundFader: View {
         .gesture(
           DragGesture(minimumDistance: 0)
             .onChanged { value in
-              level = Mix.clamp(1 - value.location.y / geometry.size.height)
+              let position = 1 - (value.location.y - 8) / (geometry.size.height - 16)
+              level = Mix.clamp((position * 100).rounded() / 100)
             }
             .onEnded { _ in store.haptic() }
         )
@@ -283,7 +286,7 @@ struct SoundFader: View {
       .frame(width: 48, height: height)
       .accessibilityElement()
       .accessibilityLabel("\(layer.title) volume")
-      .accessibilityValue("\(Int(level * 100)) percent")
+      .accessibilityValue("\(Int((level * 100).rounded())) percent")
       .accessibilityAdjustableAction { direction in
         switch direction {
         case .increment: level = Mix.clamp(level + 0.1)
@@ -294,7 +297,7 @@ struct SoundFader: View {
       VStack(spacing: 4) {
         Text(layer.title).font(.footnote.weight(.medium)).lineLimit(2)
           .minimumScaleFactor(0.9).multilineTextAlignment(.center)
-        Text(level > 0 ? "\(Int(level * 100))%" : "OFF")
+        Text(level > 0 ? "\(Int((level * 100).rounded()))%" : "OFF")
           .font(.system(size: 12, weight: .medium, design: .monospaced))
           .tracking(1).foregroundStyle(HushStyle.muted)
       }
