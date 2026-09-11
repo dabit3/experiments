@@ -83,11 +83,11 @@ struct LibraryView: View {
         ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } }
       }
       .sheet(isPresented: $showingSave) { SaveTapeView() }
-      .confirmationDialog(
+      .alert(
         "Replace your working pattern?",
         isPresented: Binding(
           get: { pendingLoad != nil }, set: { if !$0 { pendingLoad = nil } }
-        ), titleVisibility: .visible
+        )
       ) {
         Button("Load tape", role: .destructive) {
           if let pattern = pendingLoad {
@@ -144,11 +144,15 @@ struct LibraryView: View {
           }.padding(8)
         }.frame(width: 63, height: 46).accessibilityHidden(true)
         VStack(alignment: .leading, spacing: 4) {
+          if store.pattern == pattern {
+            Micro(text: "ON DECK", color: Deck.red)
+          }
           Text(pattern.name).font(.system(.headline, design: .rounded))
           Micro(text: "\(Int(pattern.tempo)) BPM · \(Int((pattern.swing * 100).rounded()))% SWING")
         }
         Spacer(minLength: 0)
-        Image(systemName: "arrow.up.right").font(.caption.weight(.semibold))
+        Image(systemName: store.pattern == pattern ? "checkmark" : "arrow.up.right")
+          .font(.caption.weight(.semibold))
       }
       .foregroundStyle(Deck.ink)
       .padding(14)
@@ -160,6 +164,7 @@ struct LibraryView: View {
     .accessibilityLabel(
       "Load \(pattern.name), \(Int(pattern.tempo)) beats per minute, \(factory ? "factory preset" : "saved tape")"
     )
+    .accessibilityValue(store.pattern == pattern ? "On deck" : "")
   }
 }
 
@@ -338,7 +343,7 @@ struct GuideView: View {
           )
           guide(
             "03", "Find the feel.",
-            "Tap either knob for tempo and swing. M mutes the selected voice; S solos it. Mute wins if both are on."
+            "Tap either knob for tempo and swing. MUTE silences the selected voice; SOLO isolates it. Mute wins if both are on. HELD means another track is soloed."
           )
           guide(
             "04", "Keep a side A.",

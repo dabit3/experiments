@@ -16,11 +16,12 @@ final class TapeStore: ObservableObject {
 
   var pattern: Pattern { archive.current }
 
-  init() {
+  init(repository: TapeRepository? = nil) {
     let directory = URL.applicationSupportDirectory.appendingPathComponent("TapeDeck")
-    repository = TapeRepository(url: directory.appendingPathComponent("tapes.json"))
+    self.repository =
+      repository ?? TapeRepository(url: directory.appendingPathComponent("tapes.json"))
     do {
-      archive = try repository.load()
+      archive = try self.repository.load()
     } catch {
       archive = TapeArchive()
       errorMessage = "Your tape file could not be read. The original file is still on this device."
@@ -28,8 +29,9 @@ final class TapeStore: ObservableObject {
   }
 
   func edit(_ change: (inout Pattern) -> Void) {
-    change(&archive.current)
-    archive.current = archive.current.normalized()
+    var updated = pattern
+    change(&updated)
+    archive.current = updated.normalized()
     audio.control.update(pattern: pattern)
     persist()
   }

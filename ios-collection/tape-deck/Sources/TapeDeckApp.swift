@@ -40,7 +40,7 @@ struct DeckView: View {
   @State private var showingControls = false
   @State private var showingGuide = false
   @State private var confirmingClear = false
-  @ScaledMetric(relativeTo: .body) private var padHeight = 44
+  @ScaledMetric(relativeTo: .body) private var padHeight = 48
   private let timer = Timer.publish(every: 1 / 30, on: .main, in: .common).autoconnect()
 
   var body: some View {
@@ -52,6 +52,7 @@ struct DeckView: View {
           patternTitle
           parameterControls
           sequencer
+          deckStatus
         }
         .padding(.horizontal, 22)
         .padding(.top, 4)
@@ -65,9 +66,9 @@ struct DeckView: View {
     .sheet(isPresented: $showingSave) { SaveTapeView() }
     .sheet(isPresented: $showingControls) { ParameterView() }
     .sheet(isPresented: $showingGuide) { GuideView() }
-    .confirmationDialog(
+    .alert(
       "Clear all \(store.selectedDrum.name.lowercased()) steps?",
-      isPresented: $confirmingClear, titleVisibility: .visible
+      isPresented: $confirmingClear
     ) {
       Button("Clear \(store.selectedDrum.name)", role: .destructive) { store.clearTrack() }
       Button("Cancel", role: .cancel) {}
@@ -82,17 +83,6 @@ struct DeckView: View {
       Button("OK") { store.errorMessage = nil }
     } message: {
       Text(store.errorMessage ?? "")
-    }
-    .overlay(alignment: .top) {
-      if let notice = store.notice {
-        Text(notice).font(.subheadline.weight(.medium))
-          .foregroundStyle(Deck.paper)
-          .padding(.horizontal, 18).padding(.vertical, 12)
-          .background(Deck.ink, in: Capsule())
-          .padding(.top, 3)
-          .allowsHitTesting(false)
-          .accessibilityAddTraits(.updatesFrequently)
-      }
     }
   }
 
@@ -197,16 +187,20 @@ struct DeckView: View {
             store.selectedDrum = drum
             UISelectionFeedbackGenerator().selectionChanged()
           } label: {
-            VStack(spacing: 7) {
+            VStack(spacing: 4) {
               Text(drum.name.uppercased())
                 .font(.system(.subheadline, design: .monospaced).weight(.bold))
+              Text(trackStatus(drum))
+                .font(.system(.caption2, design: .monospaced).weight(.medium))
+                .foregroundStyle(Deck.muted)
               Capsule().fill(store.selectedDrum == drum ? Deck.red : Deck.line)
                 .frame(height: 3)
             }
-            .frame(maxWidth: .infinity, minHeight: 44)
+            .frame(maxWidth: .infinity, minHeight: 58)
             .foregroundStyle(store.selectedDrum == drum ? Deck.red : Deck.ink)
           }
           .accessibilityLabel("\(drum.name) track")
+          .accessibilityValue(trackStatus(drum))
           .accessibilityAddTraits(store.selectedDrum == drum ? .isSelected : [])
         }
       }
@@ -235,6 +229,33 @@ struct DeckView: View {
         ForEach(0..<16) { step in pad(step) }
       }
     }
+  }
+
+  private func trackStatus(_ drum: Drum) -> String {
+    let index = drum.rawValue
+    if store.pattern.muted[index] {
+      return store.pattern.soloed[index] ? "MUTE + SOLO" : "MUTED"
+    }
+    if store.pattern.soloed[index] { return "SOLO" }
+    if store.pattern.activeMask & (1 << index) == 0 { return "HELD" }
+    return "\(store.pattern.steps[index].filter { $0 }.count) HITS"
+  }
+
+  private var deckStatus: some View {
+    VStack(spacing: 8) {
+      Rectangle().fill(Deck.line).frame(height: 1)
+      HStack(alignment: .top, spacing: 10) {
+        Image(systemName: store.notice == nil ? "internaldrive" : "checkmark.circle")
+          .foregroundStyle(Deck.red)
+        Text(store.notice ?? "Working copy · only on this iPhone")
+          .foregroundStyle(Deck.muted)
+        Spacer(minLength: 0)
+      }
+      .font(.footnote)
+      .accessibilityElement(children: .combine)
+      .accessibilityAddTraits(.updatesFrequently)
+    }
+    .padding(.top, 6)
   }
 
   private func trackToggle(

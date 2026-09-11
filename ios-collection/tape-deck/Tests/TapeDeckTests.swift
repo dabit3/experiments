@@ -1,9 +1,32 @@
 import AVFoundation
+import Combine
 import XCTest
 
 @testable import TapeDeck
 
 final class TapeDeckTests: XCTestCase {
+  @MainActor
+  func testParameterResetPublishesAndPersistsOneCompleteState() throws {
+    let directory = URL.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+    defer { try? FileManager.default.removeItem(at: directory) }
+    let repository = TapeRepository(url: directory.appendingPathComponent("tapes.json"))
+    let store = TapeStore(repository: repository)
+    store.edit {
+      $0.tempo = 180
+      $0.swing = 0.6
+    }
+    var snapshots: [Pattern] = []
+    let observation = store.$archive.dropFirst().sink { snapshots.append($0.current) }
+    store.edit {
+      $0.tempo = 96
+      $0.swing = 0
+    }
+    XCTAssertEqual(snapshots.count, 1)
+    XCTAssertTrue(snapshots.allSatisfy { $0.tempo == 96 && $0.swing == 0 })
+    XCTAssertEqual(try repository.load().current, store.pattern)
+    withExtendedLifetime(observation) {}
+  }
+
   func testSwingPreservesBarDurationAndAlternatesSteps() {
     for tempo in [60.0, 96, 120, 180] {
       for swing in [0.0, 0.16, 0.42, 0.6] {

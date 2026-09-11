@@ -46,11 +46,13 @@ swift Scripts/GenerateIcon.swift Assets.xcassets/AppIcon.appiconset/AppIcon.png
   read left to right. Amber is on; charcoal is off; the red outline is the playhead.
 - Tap either knob for live **60–180 BPM** tempo and **0–60%** swing.
   Swing alternates long and short sixteenths while preserving bar duration.
-- **M** mutes the selected voice. **S** solos it. Multiple solos are supported;
-  mute takes precedence. The eraser clears one voice after confirmation.
+- **MUTE** silences the selected voice. **SOLO** isolates it. Multiple solos are
+  supported; mute takes precedence. Each track shows its hit count or mix state;
+  **HELD** means another track is soloed. The eraser clears one voice after confirmation.
 - **Save** creates a named snapshot of all four voices, tempo, swing and mixer.
   The tape library includes four explicitly labeled original factory presets
-  and your saved copies. Saved tapes can be loaded or deleted.
+  and your saved copies. **ON DECK** marks an exact match to the working pattern.
+  Saved tapes can be loaded or deleted.
 - **How to play** opens the field notes.
 
 ## Audio and data
@@ -90,4 +92,5 @@ Sound and motion are supplementary to persistent visual step and transport state
 
 XCTest covers swing/bar timing, malformed data and parameter bounds, mute/solo
 precedence, archive round-trip and snapshot independence, corrupt archive handling,
-deterministic audible synthesized samples and rendered transport/step boundaries.
+deterministic audible synthesized samples, rendered transport/step boundaries,
+and atomic parameter reset publication/persistence.
