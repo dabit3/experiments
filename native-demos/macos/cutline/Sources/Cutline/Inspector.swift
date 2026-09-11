@@ -182,13 +182,19 @@ struct TrimInput: NSViewRepresentable {
 
   func updateNSView(_ field: NSTextField, context: Context) {
     context.coordinator.value = $value
-    if field.currentEditor() == nil, value.isFinite {
-      field.stringValue = String(format: "%.2f", locale: Locale.current, value)
+    let previous = context.coordinator.lastValue
+    let unchanged = previous == value || (previous?.isNaN == true && value.isNaN)
+    if !unchanged, value.isFinite {
+      let text = String(format: "%.2f", locale: Locale.current, value)
+      field.stringValue = text
+      field.currentEditor()?.string = text
     }
+    context.coordinator.lastValue = value
   }
 
   final class Coordinator: NSObject, NSTextFieldDelegate {
     var value: Binding<Double>
+    var lastValue: Double?
 
     init(value: Binding<Double>) {
       self.value = value
@@ -198,7 +204,9 @@ struct TrimInput: NSViewRepresentable {
       guard let field = notification.object as? NSTextField else { return }
       let normalized = field.stringValue.replacingOccurrences(
         of: Locale.current.decimalSeparator ?? ".", with: ".")
-      value.wrappedValue = Double(normalized) ?? .nan
+      let parsed = Double(normalized) ?? .nan
+      lastValue = parsed
+      value.wrappedValue = parsed
     }
   }
 }
