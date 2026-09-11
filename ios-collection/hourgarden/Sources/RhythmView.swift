@@ -3,7 +3,6 @@ import SwiftUI
 struct RhythmView: View {
   @EnvironmentObject private var store: GardenStore
   private var minutes: Int { Int(store.focusedSeconds(on: Date()) / 60) }
-  private var emptyWeek: Bool { days.allSatisfy { store.focusedSeconds(on: $0) == 0 } }
   private var days: [Date] {
     (-6...0).compactMap { Calendar.current.date(byAdding: .day, value: $0, to: Date()) }
   }
@@ -70,7 +69,7 @@ struct RhythmView: View {
               .accessibilityLabel("\(day.formatted(.dateTime.weekday(.wide))), \(count) minutes")
             }
           }
-          .frame(height: emptyWeek ? 65 : 145, alignment: .bottom)
+          .frame(minHeight: 65, alignment: .bottom)
           Divider()
           HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 8) {
