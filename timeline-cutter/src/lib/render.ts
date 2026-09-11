@@ -44,6 +44,9 @@ function noiseCells(id: string, n: number) {
 
 export function drawFrame(ctx: CanvasRenderingContext2D, media: MediaItem, t: number, w: number, h: number, burnIn = true) {
   ctx.save()
+  ctx.scale(w / 1280, h / 720)
+  w = 1280
+  h = 720
   switch (media.pattern) {
     case 'sunrise':
       drawSunrise(ctx, media, t, w, h)
@@ -64,8 +67,8 @@ export function drawFrame(ctx: CanvasRenderingContext2D, media: MediaItem, t: nu
       drawNoise(ctx, media, t, w, h)
       break
   }
-  ctx.restore()
   if (burnIn) drawBurnIn(ctx, media, t, w, h)
+  ctx.restore()
 }
 
 function drawSunrise(ctx: CanvasRenderingContext2D, m: MediaItem, t: number, w: number, h: number) {
@@ -217,7 +220,7 @@ function drawNoise(ctx: CanvasRenderingContext2D, m: MediaItem, t: number, w: nu
 }
 
 function drawBurnIn(ctx: CanvasRenderingContext2D, m: MediaItem, t: number, w: number, h: number) {
-  const fontSize = Math.max(12, Math.round(h * 0.07))
+  const fontSize = Math.max(12, Math.round(h * 0.027))
   ctx.save()
   ctx.font = `600 ${fontSize}px "JetBrains Mono Variable", "JetBrains Mono", Menlo, Consolas, monospace`
   ctx.textAlign = 'left'
@@ -226,22 +229,22 @@ function drawBurnIn(ctx: CanvasRenderingContext2D, m: MediaItem, t: number, w: n
   const padX = fontSize * 0.6
   const tw = ctx.measureText(tc).width + padX * 2
   const bh = fontSize * 1.7
-  const x = w - tw - fontSize * 0.8
-  const y = h - bh - fontSize * 0.8
+  const x = w - tw - w * 0.035
+  const y = h * 0.045
   ctx.fillStyle = 'rgba(0,0,0,0.65)'
-  roundRect(ctx, x, y, tw, bh, fontSize * 0.35)
+  roundRect(ctx, x, y, tw, bh, 3)
   ctx.fill()
   ctx.fillStyle = '#ffffff'
   ctx.fillText(tc, x + padX, y + bh / 2)
 
-  const label = `${m.id} · ${m.name}`
-  ctx.font = `600 ${Math.round(fontSize * 0.75)}px "Inter Variable", Inter, system-ui, sans-serif`
+  const label = `${m.id}  /  ${m.name.toUpperCase()}`
+  ctx.font = `500 ${Math.round(fontSize * 0.8)}px "Inter Variable", Inter, system-ui, sans-serif`
   const lw = ctx.measureText(label).width + padX * 2
   ctx.fillStyle = 'rgba(0,0,0,0.55)'
-  roundRect(ctx, fontSize * 0.8, fontSize * 0.8, lw, bh * 0.8, fontSize * 0.3)
+  roundRect(ctx, w * 0.035, y, lw, bh, 3)
   ctx.fill()
-  ctx.fillStyle = m.secondary
-  ctx.fillText(label, fontSize * 0.8 + padX, fontSize * 0.8 + bh * 0.4)
+  ctx.fillStyle = '#eeeeef'
+  ctx.fillText(label, w * 0.035 + padX, y + bh / 2)
   ctx.restore()
 }
 
@@ -264,29 +267,24 @@ export function drawTitleOverlay(ctx: CanvasRenderingContext2D, text: string, pr
   const alpha = Math.min(1, 0.35 + elapsed / fade, 0.35 + remaining / fade)
   ctx.save()
   ctx.globalAlpha = Math.max(0, alpha)
-  const fontSize = Math.round(h * 0.11)
-  ctx.font = `800 ${fontSize}px "Inter Variable", Inter, system-ui, sans-serif`
-  ctx.textAlign = 'center'
+  const fontSize = Math.round(h * 0.1)
+  ctx.font = `500 ${fontSize}px "Inter Variable", Inter, system-ui, sans-serif`
+  ctx.textAlign = 'left'
   ctx.textBaseline = 'middle'
-  const tw = ctx.measureText(text).width
-  const bx = (w - tw) / 2 - fontSize * 0.6
-  const by = h * 0.5 - fontSize * 0.85
-  ctx.fillStyle = 'rgba(15,17,23,0.72)'
-  roundRect(ctx, bx, by, tw + fontSize * 1.2, fontSize * 1.7, fontSize * 0.25)
-  ctx.fill()
-  ctx.fillStyle = '#f59e0b'
-  ctx.fillRect(bx, by + fontSize * 1.7 - 5, (tw + fontSize * 1.2) * Math.min(1, progress), 5)
+  const shade = ctx.createLinearGradient(0, h * .5, 0, h)
+  shade.addColorStop(0, 'rgba(0,0,0,0)')
+  shade.addColorStop(1, 'rgba(0,0,0,0.75)')
+  ctx.fillStyle = shade
+  ctx.fillRect(0, h * .5, w, h * .5)
   ctx.fillStyle = '#ffffff'
-  ctx.fillText(text, w / 2, h * 0.5)
+  ctx.fillRect(w * .075, h * .7, w * .045, 3)
+  ctx.fillText(text, w * .075, h * .81, w * .85)
+  ctx.fillStyle = 'rgba(255,255,255,0.45)'
+  ctx.fillRect(w * .075, h * .9, w * .15 * Math.min(1, progress), 2)
   ctx.restore()
 }
 
 export function drawEmpty(ctx: CanvasRenderingContext2D, w: number, h: number) {
   ctx.fillStyle = '#000'
   ctx.fillRect(0, 0, w, h)
-  ctx.fillStyle = 'rgba(255,255,255,0.35)'
-  ctx.font = `500 ${Math.round(h * 0.05)}px "Inter Variable", Inter, system-ui, sans-serif`
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.fillText('No clip at playhead', w / 2, h / 2)
 }

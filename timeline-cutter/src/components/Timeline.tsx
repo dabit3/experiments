@@ -364,8 +364,13 @@ export function Timeline(props: Props) {
 
   return (
     <section className="panel timeline" aria-label="Timeline">
+      <header className="sequence-bar">
+        <span className="sequence-tab"><Icon name="film" size={15} /> Sequence 01 <span className="tab-indicator" /></span>
+        <span className="sequence-format">HD 720p <span>/</span> 30 fps</span>
+        <span className="sequence-mode"><i className="status-dot" /> Magnetic timeline</span>
+      </header>
       <div className="tl-toolbar">
-        <div className="tool-group" role="radiogroup" aria-label="Tool">
+        <div className="tool-group" role="group" aria-label="Tool">
           <button
             className={`tool-btn ${tool === 'select' ? 'active' : ''}`}
             onClick={() => props.setTool('select')}
@@ -426,7 +431,7 @@ export function Timeline(props: Props) {
       <div className="tl-body">
         <div className="tl-headers">
           <div className="tl-header ruler-header">
-            <span className="mono dim">{shortTime(playhead)}</span>
+            <span className="mono">{timecode(playhead)}</span>
           </div>
           <div className="tl-header">
             <span className="track-badge title">T1</span> Titles
@@ -450,6 +455,7 @@ export function Timeline(props: Props) {
             </div>
 
             <div className="tl-track title-track" onPointerDown={onTrackBackground}>
+              {project.titles.length === 0 && <span className="title-track-hint">Graphics & titles <kbd>T</kbd></span>}
               {project.titles.map((t) => (
                 <TitleClipView
                   key={t.id}
@@ -469,7 +475,7 @@ export function Timeline(props: Props) {
                 <div className="tl-empty" role="status">
                   <Icon name="film" size={14} />
                   <span>
-                    <strong>Empty sequence.</strong> Add clips from the media bin — V1 is magnetic, so clips butt together and ripple when trimmed.
+                    <strong>Build your first cut.</strong> Add a clip from Project media to start editing.
                   </span>
                 </div>
               )}
@@ -515,6 +521,11 @@ export function Timeline(props: Props) {
           </div>
         </div>
       </div>
+      <footer className="timeline-footer">
+        <span><Icon name="select" size={12} />{drag ? 'Editing clip' : tool === 'razor' ? 'Click a clip to cut' : 'Drag to move · Drag an edge to trim'}</span>
+        <span><kbd>S</kbd> Split <span className="footer-divider">/</span><kbd>⌫</kbd> Ripple delete <span className="footer-divider">/</span><kbd>T</kbd> Add title</span>
+        <span>Frame accuracy <span className="mono">1/30 s</span></span>
+      </footer>
     </section>
   )
 }

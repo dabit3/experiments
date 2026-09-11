@@ -182,15 +182,6 @@ export default function App() {
   return (
     <div className="app">
       <Header
-        time={playback.time}
-        duration={duration}
-        speed={playback.speed}
-        isPlaying={playback.isPlaying}
-        onTogglePlay={playback.togglePlay}
-        onShuttle={playback.shuttle}
-        onPause={playback.pause}
-        onGoStart={() => scrub(0)}
-        onGoEnd={() => scrub(duration)}
         canUndo={history.canUndo}
         canRedo={history.canRedo}
         onUndo={history.undo}
@@ -199,7 +190,19 @@ export default function App() {
       />
       <main className="workspace">
         <MediaBin onAdd={add} usage={usage} />
-        <Preview project={project} time={playback.time} speed={playback.speed} />
+        <Preview
+          project={project}
+          time={playback.time}
+          duration={duration}
+          speed={playback.speed}
+          isPlaying={playback.isPlaying}
+          onTogglePlay={playback.togglePlay}
+          onShuttle={playback.shuttle}
+          onPause={playback.pause}
+          onGoStart={() => scrub(0)}
+          onGoEnd={() => scrub(duration)}
+          onStep={(dir) => scrub(playback.time + dir / FPS)}
+        />
         <Inspector
           project={project}
           selection={selection}

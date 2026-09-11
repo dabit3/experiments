@@ -1,6 +1,6 @@
 import type { Project, Selection } from '../types'
 import { mediaById } from '../lib/media'
-import { placeVideo } from '../lib/timeline'
+import { placeVideo, sequenceDuration } from '../lib/timeline'
 import { fmtSeconds, timecode } from '../lib/time'
 import { Icon } from './Icon'
 
@@ -23,12 +23,14 @@ export function Inspector({ project, selection, playhead, onSplit, onRippleDelet
   return (
     <aside className="panel inspector" aria-label="Inspector">
       <header className="panel-header">
-        <h2>Inspector</h2>
+        <h2>Properties</h2>
+        <span className="panel-meta">{video ? 'VIDEO' : title ? 'GRAPHIC' : 'SEQUENCE'}</span>
       </header>
 
       <div className="inspector-body">
         {video && (
           <>
+            <div className="section-eyebrow">Selected clip <span>V1</span></div>
             <div className="insp-title">
               <span className="media-reel" style={{ background: mediaById(video.clip.mediaId).primary }}>{mediaById(video.clip.mediaId).id}</span>
               {mediaById(video.clip.mediaId).name}
@@ -45,6 +47,7 @@ export function Inspector({ project, selection, playhead, onSplit, onRippleDelet
         )}
         {title && (
           <>
+            <div className="section-eyebrow">Essential graphics <span>T1</span></div>
             <div className="insp-title"><span className="title-chip">T1</span>Title</div>
             <label className="field">
               <span>Text</span>
@@ -57,13 +60,20 @@ export function Inspector({ project, selection, playhead, onSplit, onRippleDelet
           </>
         )}
         {!video && !title && (
-          <p className="insp-empty">
-            <strong>Nothing selected.</strong> Click a clip on the timeline to inspect it. Drag the handles at either end of a clip to trim, or drag the clip body to reorder it.
-          </p>
+          <>
+            <div className="section-eyebrow">Sequence overview</div>
+            <div className="sequence-card"><span className="sequence-icon"><Icon name="film" size={24} /></span><div><strong>Sequence 01</strong><span>HD · 16:9 · 30 fps</span></div></div>
+            <div className="sequence-stats">
+              <div><strong>{project.video.length.toString().padStart(2, '0')}</strong><span>Video clips</span></div>
+              <div><strong>{fmtSeconds(sequenceDuration(project))}</strong><span>Duration</span></div>
+            </div>
+            <p className="insp-empty">Select a clip to inspect its source and timing.</p>
+          </>
         )}
       </div>
 
       <div className="insp-actions">
+        <div className="section-eyebrow">Edit actions</div>
         <button className="btn" onClick={onSplit} disabled={!videoAtHead} title="Split the clip under the playhead (S)">
           <Icon name="split" size={16} /> Split at playhead <kbd>S</kbd>
         </button>
@@ -75,8 +85,8 @@ export function Inspector({ project, selection, playhead, onSplit, onRippleDelet
         </button>
       </div>
 
-      <div className="shortcuts">
-        <h3>Shortcuts</h3>
+      <details className="shortcuts">
+        <summary>Keyboard shortcuts <span>?</span></summary>
         <ul>
           <li><span className="keys"><kbd>Space</kbd></span><span>Play / pause</span></li>
           <li><span className="keys"><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></span><span>Shuttle back / stop / forward</span></li>
@@ -85,7 +95,7 @@ export function Inspector({ project, selection, playhead, onSplit, onRippleDelet
           <li><span className="keys"><kbd>N</kbd></span><span>Toggle snapping</span></li>
           <li><span className="keys"><kbd>Ctrl</kbd><kbd>Z</kbd></span><span>Undo · add <kbd>⇧</kbd> to redo</span></li>
         </ul>
-      </div>
+      </details>
     </aside>
   )
 }

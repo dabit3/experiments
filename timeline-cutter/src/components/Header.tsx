@@ -1,17 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from './Icon'
-import { timecode } from '../lib/time'
 
 interface Props {
-  time: number
-  duration: number
-  speed: number
-  isPlaying: boolean
-  onTogglePlay: () => void
-  onShuttle: (dir: 1 | -1) => void
-  onPause: () => void
-  onGoStart: () => void
-  onGoEnd: () => void
   canUndo: boolean
   canRedo: boolean
   onUndo: () => void
@@ -19,93 +9,64 @@ interface Props {
   onExport: (format: 'json' | 'csv') => void
 }
 
-function BrandMark() {
-  return (
-    <svg className="brand-mark" viewBox="0 0 28 28" aria-hidden="true">
-      <rect width="28" height="28" rx="7" fill="#f4f4f5" />
-      <path d="M7 10h8.6l-2.6 8H7z" fill="#111114" />
-      <path d="M17.4 10H21v8h-6.2z" fill="#111114" />
-    </svg>
-  )
-}
-
 export function Header(p: Props) {
   const [menu, setMenu] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     if (!menu) return
     const close = (e: PointerEvent) => {
       if (!menuRef.current?.contains(e.target as Node)) setMenu(false)
     }
+    const escape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMenu(false)
+        triggerRef.current?.focus()
+      }
+    }
     window.addEventListener('pointerdown', close)
-    return () => window.removeEventListener('pointerdown', close)
+    window.addEventListener('keydown', escape)
+    return () => {
+      window.removeEventListener('pointerdown', close)
+      window.removeEventListener('keydown', escape)
+    }
   }, [menu])
 
   return (
     <header className="app-header">
       <div className="brand">
-        <BrandMark />
-        <h1>Timeline Cutter</h1>
-        <span className="brand-divider" aria-hidden="true" />
-        <div className="brand-project">
-          <span>Untitled Sequence</span>
-          <span className="mono">1280×720 · 30 fps</span>
+        <span className="brand-mark" aria-hidden="true">Tc</span>
+        <div className="brand-type">
+          <h1>Timeline Cutter</h1>
+          <span>POST-PRODUCTION</span>
         </div>
       </div>
-
-      <div className="transport" role="group" aria-label="Transport">
-        <button className="icon-btn" onClick={p.onGoStart} title="Go to start (Home)" aria-label="Go to start">
-          <Icon name="skip-start" size={20} />
-        </button>
-        <button className={`icon-btn ${p.speed < 0 ? 'active' : ''}`} onClick={() => p.onShuttle(-1)} title="Shuttle backwards (J)" aria-label="Shuttle backwards">
-          <Icon name="rewind" size={20} />
-          <kbd>J</kbd>
-        </button>
-        <button className={`icon-btn ${p.speed === 0 ? 'active' : ''}`} onClick={p.onPause} title="Stop (K)" aria-label="Stop">
-          <Icon name="pause" size={20} />
-          <kbd>K</kbd>
-        </button>
-        <button className={`play-btn ${p.isPlaying ? 'playing' : ''}`} onClick={p.onTogglePlay} title="Play / pause (Space)" aria-label={p.isPlaying ? 'Pause' : 'Play'}>
-          <Icon name={p.isPlaying ? 'pause' : 'play'} size={20} />
-        </button>
-        <button className={`icon-btn ${p.speed > 0 ? 'active' : ''}`} onClick={() => p.onShuttle(1)} title="Shuttle forwards (L)" aria-label="Shuttle forwards">
-          <Icon name="forward" size={20} />
-          <kbd>L</kbd>
-        </button>
-        <button className="icon-btn" onClick={p.onGoEnd} title="Go to end (End)" aria-label="Go to end">
-          <Icon name="skip-end" size={20} />
-        </button>
-        <div className="tc-display" aria-live="off">
-          <span className="tc-current">{timecode(p.time)}</span>
-          <span className="tc-sep">/</span>
-          <span className="tc-total">{timecode(p.duration)}</span>
-        </div>
+      <div className="project-heading">
+        <span className="project-folder"><Icon name="folder" size={16} /> Untitled project</span>
+        <span className="breadcrumb-slash">/</span>
+        <strong>Sequence 01</strong>
+        <span className="session-label" title="Edits stay in this tab until you export">Local session</span>
       </div>
-
       <div className="header-actions">
-        <button className="icon-btn" onClick={p.onUndo} disabled={!p.canUndo} title="Undo (Ctrl+Z)" aria-label="Undo">
-          <Icon name="undo" size={18} />
-        </button>
-        <button className="icon-btn" onClick={p.onRedo} disabled={!p.canRedo} title="Redo (Ctrl+Shift+Z)" aria-label="Redo">
-          <Icon name="redo" size={18} />
-        </button>
+        <div className="history-actions">
+          <button className="icon-btn" onClick={p.onUndo} disabled={!p.canUndo} title="Undo (Ctrl+Z)" aria-label="Undo"><Icon name="undo" size={17} /></button>
+          <button className="icon-btn" onClick={p.onRedo} disabled={!p.canRedo} title="Redo (Ctrl+Shift+Z)" aria-label="Redo"><Icon name="redo" size={17} /></button>
+        </div>
         <div className="export-menu" ref={menuRef}>
-          <button className="btn primary" onClick={() => setMenu((m) => !m)} aria-haspopup="menu" aria-expanded={menu} data-testid="export-btn">
+          <button ref={triggerRef} className="btn primary" onClick={() => setMenu((m) => !m)} aria-expanded={menu} aria-controls="export-options" data-testid="export-btn">
             <Icon name="download" size={16} /> Export EDL <Icon name="chevron" size={14} />
           </button>
           {menu && (
-            <div className="menu" role="menu">
-              <div className="menu-title">Edit decision list</div>
-              <button role="menuitem" onClick={() => { setMenu(false); p.onExport('json') }} data-testid="export-json">
+            <div className="menu" id="export-options">
+              <div className="menu-title">Export edit decision list<span>Your edit, ready for the next step.</span></div>
+              <button onClick={() => { setMenu(false); p.onExport('json') }} data-testid="export-json">
                 <span className="menu-icon">{'{ }'}</span>
-                <strong>JSON</strong>
-                <span>timeline-cutter-edl.json</span>
+                <strong>JSON</strong><span>Structured timeline data</span>
               </button>
-              <button role="menuitem" onClick={() => { setMenu(false); p.onExport('csv') }} data-testid="export-csv">
+              <button onClick={() => { setMenu(false); p.onExport('csv') }} data-testid="export-csv">
                 <span className="menu-icon">CSV</span>
-                <strong>CSV</strong>
-                <span>timeline-cutter-edl.csv</span>
+                <strong>CSV</strong><span>Spreadsheet-compatible list</span>
               </button>
             </div>
           )}
