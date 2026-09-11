@@ -1,0 +1,40 @@
+{
+  "name": "review-ios",
+  "procedure": "Both captures are the same logical screen at identical logical dimensions (native captures are downscaled to 1x and cropped to the app content area first). Each 20x20 block is reduced to its content coverage (fraction of pixels deviating from the theme background (228, 234, 248) by more than 24/255 in any channel) and its mean colour. A block differs when coverage differs by more than 25% of the block or mean colour by more than 24/255 in any channel; the tolerances absorb anti-aliasing and downscaling differences between renderers, so a shift of one block or more, a missing or extra element, or a recoloured region is reported.",
+  "reference": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass4/network/parity/web-review-ios.png",
+  "actual": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass4/network/parity/ios-review.png",
+  "actual_crop": {
+    "top": 62,
+    "bottom": 0
+  },
+  "dimensions": {
+    "width": 402,
+    "height": 812,
+    "cols": 20,
+    "rows": 40
+  },
+  "background": [
+    228,
+    234,
+    248
+  ],
+  "content_blocks": {
+    "reference": 759,
+    "actual": 759
+  },
+  "tolerances": {
+    "coverage": 0.25,
+    "colour": 24
+  },
+  "differing_blocks": 0,
+  "differing_block_coords": [],
+  "coverage": {
+    "mean_block_delta": 0.0039,
+    "max_block_delta": 0.0825
+  },
+  "raw_colour": {
+    "mean_block_channel_delta": 0.993,
+    "max_block_channel_delta": 11.005,
+    "blocks_with_delta_over_16": 0
+  }
+}

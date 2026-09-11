@@ -548,129 +548,129 @@
     {
       "label": "visual parity lobby-ios (web reference vs ios)",
       "passed": true,
-      "detail": "PASS lobby-ios: 0 differing blocks of 800; mean colour delta 1.11"
+      "detail": "PASS lobby-ios: 0 differing blocks of 800; mean colour delta 1.801"
     },
     {
       "label": "visual parity review-ios (web reference vs ios)",
       "passed": true,
-      "detail": "PASS review-ios: 0 differing blocks of 800; mean colour delta 0.895"
+      "detail": "PASS review-ios: 0 differing blocks of 800; mean colour delta 0.999"
     },
     {
       "label": "visual parity lobby-macos (web reference vs macos)",
       "passed": true,
-      "detail": "PASS lobby-macos: 0 differing blocks of 1200; mean colour delta 0.919"
+      "detail": "PASS lobby-macos: 0 differing blocks of 1200; mean colour delta 0.87"
     },
     {
       "label": "visual parity review-macos (web reference vs macos)",
       "passed": true,
-      "detail": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.467"
+      "detail": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.614"
     }
   ],
   "screenshots": [
     {
       "platform": "web",
       "step": "lobby",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-lobby.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/web-lobby.png"
     },
     {
       "platform": "ios",
       "step": "lobby",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-lobby.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/ios-lobby.png"
     },
     {
       "platform": "macos",
       "step": "lobby",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-lobby.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/macos-lobby.png"
     },
     {
       "platform": "macos",
       "step": "waiting",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-waiting.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/macos-waiting.png"
     },
     {
       "platform": "web",
       "step": "start",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-start.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/web-start.png"
     },
     {
       "platform": "ios",
       "step": "start",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-start.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/ios-start.png"
     },
     {
       "platform": "macos",
       "step": "start",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-start.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/macos-start.png"
     },
     {
       "platform": "web",
       "step": "midgame",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-midgame.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/web-midgame.png"
     },
     {
       "platform": "ios",
       "step": "midgame",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-midgame.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/ios-midgame.png"
     },
     {
       "platform": "macos",
       "step": "midgame",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-midgame.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/macos-midgame.png"
     },
     {
       "platform": "ios",
       "step": "history",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-history.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/ios-history.png"
     },
     {
       "platform": "ios",
       "step": "reconnecting",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-reconnecting.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/ios-reconnecting.png"
     },
     {
       "platform": "web",
       "step": "results",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-results.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/web-results.png"
     },
     {
       "platform": "ios",
       "step": "results",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-results.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/ios-results.png"
     },
     {
       "platform": "macos",
       "step": "results",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-results.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/macos-results.png"
     },
     {
       "platform": "web",
       "step": "rematch",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-rematch.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/web-rematch.png"
     },
     {
       "platform": "ios",
       "step": "rematch",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-rematch.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/ios-rematch.png"
     },
     {
       "platform": "macos",
       "step": "rematch",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-rematch.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/macos-rematch.png"
     },
     {
       "platform": "web",
       "step": "light",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/web-light.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/web-light.png"
     },
     {
       "platform": "ios",
       "step": "light",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/ios-light.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/ios-light.png"
     },
     {
       "platform": "macos",
       "step": "light",
-      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/e2e/macos-light.png"
+      "file": "/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass3/preflight/macos-light.png"
     }
   ],
   "parity": [
@@ -685,7 +685,7 @@
       "scale": 3,
       "insetTop": 62,
       "safeBottom": 34,
-      "summary": "PASS lobby-ios: 0 differing blocks of 800; mean colour delta 1.11",
+      "summary": "PASS lobby-ios: 0 differing blocks of 800; mean colour delta 1.801",
       "status": 0
     },
     {
@@ -699,7 +699,7 @@
       "scale": 3,
       "insetTop": 62,
       "safeBottom": 34,
-      "summary": "PASS review-ios: 0 differing blocks of 800; mean colour delta 0.895",
+      "summary": "PASS review-ios: 0 differing blocks of 800; mean colour delta 0.999",
       "status": 0
     },
     {
@@ -713,7 +713,7 @@
       "scale": 1,
       "insetTop": 32,
       "safeBottom": 0,
-      "summary": "PASS lobby-macos: 0 differing blocks of 1200; mean colour delta 0.919",
+      "summary": "PASS lobby-macos: 0 differing blocks of 1200; mean colour delta 0.87",
       "status": 0
     },
     {
@@ -727,7 +727,7 @@
       "scale": 1,
       "insetTop": 32,
       "safeBottom": 0,
-      "summary": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.467",
+      "summary": "PASS review-macos: 0 differing blocks of 1200; mean colour delta 0.614",
       "status": 0
     }
   ],

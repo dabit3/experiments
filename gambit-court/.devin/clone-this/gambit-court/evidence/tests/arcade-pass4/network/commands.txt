@@ -1,0 +1,26 @@
+Current source703c987a67be76cd88e14fafddd00318fddb096d
+Supplied fingerprint sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc
+
+Runtime builds (working directory gambit-court/app; each exit0):
+flutter build web --release --dart-define=GC_SERVER=ws://localhost:8787/ws
+flutter build macos --debug --dart-define=GC_AUTOMATION=true --dart-define=GC_SERVER=ws://127.0.0.1:8765/ws --dart-define=GC_CLIENT_ID=macos-e2e --dart-define=GC_NAME="macOS Dov"
+flutter build ios --simulator --debug --dart-define=GC_AUTOMATION=true --dart-define=GC_SERVER=ws://127.0.0.1:8765/ws --dart-define=GC_CLIENT_ID=ios-e2e --dart-define=GC_NAME="iOS Bram"
+
+Harness (working directory gambit-court; exit0):
+PATH=/Users/devin/gcx/design-tools/bin:$PATH EVIDENCE=/Users/devin/repos/experiments/gambit-court/.devin/clone-this/gambit-court/evidence/tests/arcade-pass4/network LOBBY_HOLD_MS=25000 RESULTS_HOLD_MS=8000 PRE_PARITY_HOLD_MS=12000 RECORD=0 PLATFORMS=web,ios,macos WHITE=macos BLACK=web ./test/multiplayer-e2e.sh --skip-build
+
+58/58 assertions passed; roomU8LZ5W;4 parity comparisons passed.
+Per-platform game screenshots use the filename suffix "midgame".
+Manual invites: JULPAM (checkmate), GWCGRQ (bot resignation).
+
+Independent recording began after settled separate lobbies, with structured setup/test/assertion annotations. Recorder stop requested during before-parity hold; raw tail reaches lobby navigation but not overlapping viewport layout. Delivered fallback trims at80s before that transition.
+Built-in editor compressed83.267s to11.792s owing to malformed FPS metadata. Preserved raw and re-encoded using fps=15 true timestamps; no gameplay speed changes.
+node network/render-evidence.mjs
+Output arcade-pass4-final-annotated.mp4:80.000s,15fps,1200frames,1600x1250 (50px added caption strip).
+Caption timing is postprocessed; rendered-captions.json preserves its exact timing and audit labels.
+
+ffmpeg -ss 60 -i /Users/devin/screencasts/arcade-pass4-final/arcade-pass4-final-raw-000.mkv -frames:v 1 fullscreen-checkmate.png
+
+iOS runtime audit:
+xcrun simctl spawn booted log show --start '2026-09-10 19:37:20' --end '2026-09-10 19:39:30' --style compact --predicate 'process == "Runner"'
+Captured ios-runtime.log contains host Simulator CoreAudio output-device errors; no visible gameplay failure. Audio unverified.

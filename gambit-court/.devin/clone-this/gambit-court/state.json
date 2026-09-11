@@ -4,8 +4,8 @@
   "clone_name": "Gambit Court",
   "clone_root": "/Users/devin/repos/experiments/gambit-court",
   "status": "blocked",
-  "iteration": 3,
-  "revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+  "iteration": 7,
+  "revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
   "frontier": [],
   "blockers": [
     {
@@ -24,9 +24,27 @@
       ],
       "resume_condition": "On a host with virtualization: `WHITE=macos BLACK=android ./test/multiplayer-e2e.sh` (or PLATFORMS=web,ios,android,macos) and re-run the final suite.",
       "evidence": [
+        "evidence/tests/arcade-pass4/android-host.txt",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
         "evidence/tests/android/android-blocker.txt",
-        "evidence/tests/android/emulator-launch-tail.txt",
-        "evidence/tests/build/clean-checkout-build.txt"
+        "evidence/tests/android/emulator-launch-tail.txt"
+      ]
+    },
+    {
+      "id": "ios-simulator-audio-output",
+      "affects": [
+        "asset-original-audio"
+      ],
+      "summary": "The Simulator has no default host audio output device. CoreAudio errors -66680 and 560947818 prevent audible-feedback verification; no accompanying visual or gameplay failure was observed.",
+      "attempted": [
+        "Current iOS Simulator gameplay and scoped unified-log inspection",
+        "Inspected local sound assets and graceful playback failure handling"
+      ],
+      "resume_condition": "Verify move/capture/check/result sound on a Simulator host with a working audio device or a physical iOS device.",
+      "evidence": [
+        "evidence/tests/arcade-pass4/network/ios-runtime.log",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     }
   ],
@@ -37,12 +55,12 @@
       "kind": "route",
       "label": "Lobby screen: identity, theme, quick-pair, create/join by invite code, open tables, bot level",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/web-lobby.png",
-        "evidence/tests/e2e/ios-lobby.png",
-        "evidence/tests/e2e/macos-lobby.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ],
       "platforms": [
         "web",
@@ -55,13 +73,12 @@
       "kind": "route",
       "label": "Game screen: board, player cards, clocks, move list, offers, history browsing",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/web-midgame.png",
-        "evidence/tests/e2e/ios-midgame.png",
-        "evidence/tests/e2e/macos-midgame.png",
-        "evidence/tests/e2e/ios-history.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -69,12 +86,12 @@
       "kind": "route",
       "label": "Results overlay: outcome, reason, score, PGN export, rematch, back to lobby",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/web-results.png",
-        "evidence/tests/e2e/ios-results.png",
-        "evidence/tests/e2e/macos-results.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -82,12 +99,12 @@
       "kind": "route",
       "label": "PGN review mode reached from import (read-only board + move list)",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/parity/web-review-ios.png",
-        "evidence/tests/e2e/parity/ios-review.png",
-        "evidence/tests/e2e/parity/macos-review.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -95,9 +112,12 @@
       "kind": "feature",
       "label": "Legal move generation incl. castling, en passant, promotion, check, checkmate, stalemate (perft + rule unit tests)",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/quality/quality.txt"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -105,9 +125,12 @@
       "kind": "feature",
       "label": "Threefold repetition, fifty-move rule, insufficient material, stalemate detection",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/quality/quality.txt"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -115,21 +138,26 @@
       "kind": "feature",
       "label": "Promotion requires an explicit piece choice (picker in UI, `Promotion piece required` from server)",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/quality/quality.txt",
-        "evidence/tests/e2e/result.json"
-      ]
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
+      ],
+      "coverage": "Current unit/integration suite, source review and final network journeys pass. Promotion, premove, keyboard flip, offers and Quick pair manual checks in earlier UI passes are supplemental previous-revision evidence, not a fresh pass-four UI claim."
     },
     {
       "id": "feature-san-pgn",
       "kind": "feature",
       "label": "SAN move list; PGN export/import round trip",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/quality/quality.txt",
-        "evidence/tests/e2e/result.json"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -137,10 +165,12 @@
       "kind": "feature",
       "label": "Server-owned clocks with bullet/blitz/rapid/classical presets and custom increment; first move per side untimed; frozen-clock determinism",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/quality/quality.txt",
-        "evidence/tests/e2e/result.json"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -148,45 +178,54 @@
       "kind": "feature",
       "label": "Resign, draw offers/accept/decline, takeback by agreement, rematch with colour swap",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/quality/quality.txt",
-        "evidence/tests/e2e/result.json"
-      ]
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
+      ],
+      "coverage": "Current unit/integration suite, source review and final network journeys pass. Promotion, premove, keyboard flip, offers and Quick pair manual checks in earlier UI passes are supplemental previous-revision evidence, not a fresh pass-four UI claim."
     },
     {
       "id": "feature-board-input",
       "kind": "feature",
       "label": "Drag and tap-tap input, last-move/legal-move/check highlights, premove, board flip, keyboard history browsing",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/quality/quality.txt",
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/web-midgame.png"
-      ]
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
+      ],
+      "coverage": "Current unit/integration suite, source review and final network journeys pass. Promotion, premove, keyboard flip, offers and Quick pair manual checks in earlier UI passes are supplemental previous-revision evidence, not a fresh pass-four UI claim."
     },
     {
       "id": "feature-lobby-multiplayer",
       "kind": "feature",
       "label": "Quick-pair, six-character invite codes, open tables, spectators, seat retention across reconnect",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/macos-waiting.png",
-        "evidence/tests/e2e/ios-reconnecting.png"
-      ]
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
+      ],
+      "coverage": "Current unit/integration suite, source review and final network journeys pass. Promotion, premove, keyboard flip, offers and Quick pair manual checks in earlier UI passes are supplemental previous-revision evidence, not a fresh pass-four UI claim."
     },
     {
       "id": "feature-bot",
       "kind": "feature",
       "label": "Server-side alpha-beta engine bot with four strengths, deterministic under --seed",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/quality/quality.txt",
-        "evidence/tests/e2e/server-stdout.txt"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -194,52 +233,60 @@
       "kind": "feature",
       "label": "Dark and light themes on every platform",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/web-light.png",
-        "evidence/tests/e2e/ios-light.png",
-        "evidence/tests/e2e/macos-light.png"
-      ]
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
+      ],
+      "coverage": "Current web/macOS/iOS runtime themes pass. Android compiles the same theme code but its runtime is separately blocked."
     },
     {
       "id": "feature-automation-bridge",
       "kind": "feature",
       "label": "Deterministic test-input channel (ui_command/ui_report) and /control endpoints, opt-in via --control",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/harness-stdout.txt"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
       "id": "journey-four-way-match",
       "kind": "journey",
-      "label": "Two platforms play, others spectate the same room: lobby -> match -> checkmate -> identical FEN/SAN/score/clocks -> results -> PGN -> rematch -> lobby (verified web/iOS/macOS; Android runtime blocked, see blocker)",
-      "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "label": "macOS and web play while iOS and Android spectate the same room; Android runtime is unavailable",
+      "status": "blocked",
+      "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/harness-stdout.txt",
-        "evidence/tests/e2e/four-way-match.mov"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/android-host.txt"
       ],
       "assertions": 58,
       "platforms_verified": [
         "web",
         "ios",
         "macos"
-      ]
+      ],
+      "coverage": "Four clean builds pass. Current native macOS White vs web Black with iOS spectating passes 58/58. Android has not run."
     },
     {
       "id": "journey-reconnect",
       "kind": "journey",
       "label": "Spectator drops its socket mid-game and resumes the same room/game",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/ios-reconnecting.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -247,10 +294,12 @@
       "kind": "journey",
       "label": "Browse earlier plies while the live move list stays intact; PGN import opens review mode",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/ios-history.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -258,21 +307,20 @@
       "kind": "visual",
       "label": "lobby screen: ios matches the web baseline at 402x812 logical px (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/parity/lobby-ios-normalization.json",
-        "evidence/tests/e2e/parity/web-lobby-ios.png",
-        "evidence/tests/e2e/parity/ios-lobby.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/network/parity/lobby-ios-normalization.json"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/tests/e2e/parity/lobby-ios-reference.png",
-        "actual": "evidence/tests/e2e/parity/lobby-ios-actual.png",
-        "diff": "evidence/tests/e2e/parity/lobby-ios-diff.png",
+        "reference": "evidence/tests/arcade-pass4/network/parity/lobby-ios-reference.png",
+        "actual": "evidence/tests/arcade-pass4/network/parity/lobby-ios-actual.png",
+        "diff": "evidence/tests/arcade-pass4/network/parity/lobby-ios-diff.png",
         "different_pixels": 0,
         "total_pixels": 800,
-        "normalization_evidence": "evidence/tests/e2e/parity/lobby-ios-normalization.json",
+        "normalization_evidence": "evidence/tests/arcade-pass4/network/parity/lobby-ios-normalization.json",
         "unit": "20x20 logical-pixel block (coverage + mean colour)"
       }
     },
@@ -281,21 +329,20 @@
       "kind": "visual",
       "label": "review screen: ios matches the web baseline at 402x812 logical px (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/parity/review-ios-normalization.json",
-        "evidence/tests/e2e/parity/web-review-ios.png",
-        "evidence/tests/e2e/parity/ios-review.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/network/parity/review-ios-normalization.json"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/tests/e2e/parity/review-ios-reference.png",
-        "actual": "evidence/tests/e2e/parity/review-ios-actual.png",
-        "diff": "evidence/tests/e2e/parity/review-ios-diff.png",
+        "reference": "evidence/tests/arcade-pass4/network/parity/review-ios-reference.png",
+        "actual": "evidence/tests/arcade-pass4/network/parity/review-ios-actual.png",
+        "diff": "evidence/tests/arcade-pass4/network/parity/review-ios-diff.png",
         "different_pixels": 0,
         "total_pixels": 800,
-        "normalization_evidence": "evidence/tests/e2e/parity/review-ios-normalization.json",
+        "normalization_evidence": "evidence/tests/arcade-pass4/network/parity/review-ios-normalization.json",
         "unit": "20x20 logical-pixel block (coverage + mean colour)"
       }
     },
@@ -304,21 +351,20 @@
       "kind": "visual",
       "label": "lobby screen: macos matches the web baseline at 1000x488 logical px (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/parity/lobby-macos-normalization.json",
-        "evidence/tests/e2e/parity/web-lobby-macos.png",
-        "evidence/tests/e2e/parity/macos-lobby.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/network/parity/lobby-macos-normalization.json"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/tests/e2e/parity/lobby-macos-reference.png",
-        "actual": "evidence/tests/e2e/parity/lobby-macos-actual.png",
-        "diff": "evidence/tests/e2e/parity/lobby-macos-diff.png",
+        "reference": "evidence/tests/arcade-pass4/network/parity/lobby-macos-reference.png",
+        "actual": "evidence/tests/arcade-pass4/network/parity/lobby-macos-actual.png",
+        "diff": "evidence/tests/arcade-pass4/network/parity/lobby-macos-diff.png",
         "different_pixels": 0,
         "total_pixels": 1200,
-        "normalization_evidence": "evidence/tests/e2e/parity/lobby-macos-normalization.json",
+        "normalization_evidence": "evidence/tests/arcade-pass4/network/parity/lobby-macos-normalization.json",
         "unit": "20x20 logical-pixel block (coverage + mean colour)"
       }
     },
@@ -327,21 +373,20 @@
       "kind": "visual",
       "label": "review screen: macos matches the web baseline at 1000x488 logical px (normalized)",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/parity/review-macos-normalization.json",
-        "evidence/tests/e2e/parity/web-review-macos.png",
-        "evidence/tests/e2e/parity/macos-review.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/network/parity/review-macos-normalization.json"
       ],
       "comparison": {
         "mode": "normalized",
-        "reference": "evidence/tests/e2e/parity/review-macos-reference.png",
-        "actual": "evidence/tests/e2e/parity/review-macos-actual.png",
-        "diff": "evidence/tests/e2e/parity/review-macos-diff.png",
+        "reference": "evidence/tests/arcade-pass4/network/parity/review-macos-reference.png",
+        "actual": "evidence/tests/arcade-pass4/network/parity/review-macos-actual.png",
+        "diff": "evidence/tests/arcade-pass4/network/parity/review-macos-diff.png",
         "different_pixels": 0,
         "total_pixels": 1200,
-        "normalization_evidence": "evidence/tests/e2e/parity/review-macos-normalization.json",
+        "normalization_evidence": "evidence/tests/arcade-pass4/network/parity/review-macos-normalization.json",
         "unit": "20x20 logical-pixel block (coverage + mean colour)"
       }
     },
@@ -350,32 +395,40 @@
       "kind": "asset",
       "label": "Original vector piece set, brand mark, app icons; no third-party or trademarked artwork",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/security/secret-scan.txt",
-        "evidence/tests/e2e/web-lobby.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
       "id": "asset-original-audio",
       "kind": "asset",
       "label": "Original generated sound effects (app/tool/make_sfx.py)",
-      "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "status": "blocked",
+      "verified_revision": null,
       "evidence": [
-        "evidence/discovery/fingerprint-list.txt"
-      ]
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/ios-runtime.log"
+      ],
+      "coverage": "Original sound assets and failure handling inspected. iOS audible output cannot be verified without a host audio device."
     },
     {
       "id": "integration-websocket-server",
       "kind": "integration",
       "label": "Authoritative Dart WebSocket server; JSON protocol documented in PROTOCOL.md",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/server-stdout.txt",
-        "evidence/tests/quality/quality.txt"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md"
       ]
     },
     {
@@ -385,113 +438,141 @@
       "status": "blocked",
       "verified_revision": null,
       "evidence": [
-        "evidence/tests/build/clean-checkout-build.txt",
-        "evidence/tests/android/android-blocker.txt",
-        "evidence/tests/android/emulator-launch-tail.txt"
-      ]
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/android-host.txt"
+      ],
+      "coverage": "Four clean builds pass. Current native macOS White vs web Black with iOS spectating passes 58/58. Android has not run."
     }
   ],
   "audits": [
     {
       "id": "source",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/discovery/audits/source.md",
-        "evidence/reference/source-reference.md",
-        "evidence/tests/quality/quality.txt"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/sweep-01.md",
+        "evidence/tests/arcade-pass4/sweep-02.md",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/reference/source-reference.md"
       ]
     },
     {
       "id": "navigation",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/discovery/audits/navigation.md",
-        "evidence/tests/e2e/result.json"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/sweep-01.md",
+        "evidence/tests/arcade-pass4/sweep-02.md",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/result.json"
       ]
     },
     {
       "id": "roles",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/discovery/audits/roles.md",
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/security/secret-scan.txt"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/sweep-01.md",
+        "evidence/tests/arcade-pass4/sweep-02.md",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/security-check.txt"
       ]
     },
     {
       "id": "states",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/discovery/audits/states.md",
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/macos-waiting.png",
-        "evidence/tests/e2e/ios-reconnecting.png",
-        "evidence/tests/e2e/web-results.png",
-        "evidence/tests/e2e/web-light.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/sweep-01.md",
+        "evidence/tests/arcade-pass4/sweep-02.md",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/result.json"
       ]
     },
     {
       "id": "responsive",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/discovery/audits/responsive.md",
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/ios-results.png",
-        "evidence/tests/e2e/macos-results.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/sweep-01.md",
+        "evidence/tests/arcade-pass4/sweep-02.md",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/result.json"
       ]
     },
     {
       "id": "data",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/discovery/audits/data.md",
-        "evidence/tests/e2e/result.json"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/sweep-01.md",
+        "evidence/tests/arcade-pass4/sweep-02.md",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/result.json"
       ]
     },
     {
       "id": "assets",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/discovery/audits/assets.md",
-        "evidence/discovery/fingerprint-list.txt"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/sweep-01.md",
+        "evidence/tests/arcade-pass4/sweep-02.md",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/reference/source-reference.md"
       ]
     },
     {
       "id": "accessibility",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/discovery/audits/accessibility.md",
-        "evidence/tests/e2e/web-light.png",
-        "evidence/tests/e2e/ios-light.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/sweep-01.md",
+        "evidence/tests/arcade-pass4/sweep-02.md",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/contrast.json"
       ]
     },
     {
       "id": "reliability",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/discovery/audits/reliability.md",
-        "evidence/discovery/fingerprint-list.txt",
-        "evidence/tests/build/clean-checkout-build.txt",
-        "evidence/tests/e2e/result.json"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/sweep-01.md",
+        "evidence/tests/arcade-pass4/sweep-02.md",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/android-host.txt"
       ]
     },
     {
       "id": "rebrand",
       "status": "verified",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/discovery/audits/rebrand.md",
-        "evidence/tests/security/secret-scan.txt",
-        "evidence/tests/e2e/web-lobby.png"
+        "evidence/tests/arcade-pass4/audit.md",
+        "evidence/tests/arcade-pass4/sweep-01.md",
+        "evidence/tests/arcade-pass4/sweep-02.md",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/reference/source-reference.md"
       ]
     }
   ],
@@ -499,50 +580,55 @@
     {
       "id": "functional",
       "status": "passed",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/harness-stdout.txt",
-        "evidence/tests/quality/quality.txt"
-      ]
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/exit-status.txt"
+      ],
+      "scope": "Executed current-source suite; Android runtime and audible iOS feedback remain separate blocked inventory requirements."
     },
     {
       "id": "visual",
       "status": "passed",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/e2e/result.json",
-        "evidence/tests/e2e/parity/lobby-ios-normalization.json",
-        "evidence/tests/e2e/parity/review-ios-normalization.json",
-        "evidence/tests/e2e/parity/lobby-macos-normalization.json",
-        "evidence/tests/e2e/parity/review-macos-normalization.json"
-      ]
+        "evidence/tests/arcade-pass4/network/result.json",
+        "evidence/tests/arcade-pass4/contrast.json",
+        "evidence/tests/arcade-pass4/manual/manual-report.md",
+        "evidence/tests/arcade-pass4/network/fullscreen-checkmate.png"
+      ],
+      "scope": "Executed current-source suite; Android runtime and audible iOS feedback remain separate blocked inventory requirements."
     },
     {
       "id": "build",
       "status": "passed",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/build/clean-checkout-build.txt"
-      ]
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt"
+      ],
+      "scope": "Executed current-source suite; Android runtime and audible iOS feedback remain separate blocked inventory requirements."
     },
     {
       "id": "quality",
       "status": "passed",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/quality/quality.txt"
-      ]
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt",
+        "evidence/tests/arcade-pass4/contrast.json"
+      ],
+      "scope": "Executed current-source suite; Android runtime and audible iOS feedback remain separate blocked inventory requirements."
     },
     {
       "id": "security",
       "status": "passed",
-      "verified_revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "verified_revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
       "evidence": [
-        "evidence/tests/security/secret-scan.txt",
-        "evidence/tests/security/dependencies.txt",
-        "evidence/tests/security/review.md"
-      ]
+        "evidence/tests/arcade-pass4/security-check.txt",
+        "evidence/tests/arcade-pass4/builds/clean-checkout.txt"
+      ],
+      "scope": "Executed current-source suite; Android runtime and audible iOS feedback remain separate blocked inventory requirements."
     }
   ],
   "sweeps": [
@@ -585,10 +671,50 @@
       "evidence": [
         "evidence/discovery/sweep-002.json"
       ]
+    },
+    {
+      "revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
+      "new_items": 0,
+      "frontier_empty": true,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/tests/arcade-pass4/sweep-01.md"
+      ]
+    },
+    {
+      "revision": "sha256:c4ab07ded4212875064fd8201f8a3fbd9584f47279a1d315c029b2c61e654bbc",
+      "new_items": 0,
+      "frontier_empty": true,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/tests/arcade-pass4/sweep-02.md"
+      ]
     }
   ],
-  "next_action": "Blocked checkpoint: run the Android leg of the four-way E2E on a host with hardware virtualization, then re-run verify_state.py.",
-  "git_head": "a4bec3536c52a35dfba12a11e2274a0de375db8c",
+  "next_action": "Resume Android runtime and audible iOS feedback on a capable host, then repeat the final suites, audits, sweeps and manifest gate. Current arcade redesign and three-client evidence are ready for review.",
+  "git_head": "703c987a67be76cd88e14fafddd00318fddb096d",
   "reference_access": "Commercial source not run or purchased; public FIDE/PGN/SAN documentation is the reference. Visual parity is normalized parity between Gambit Court's own clients with web as baseline; no claim of parity with the commercial title.",
   "stack_decision": "Flutter for all four clients with a custom widget/CustomPainter board instead of Flame: the board is a static 8x8 grid with short piece slides, so Flutter's animation framework gives 60fps without a game-loop dependency; server is Dart shelf + web_socket_channel."
 }

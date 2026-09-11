@@ -1,0 +1,9 @@
+Revision: sha256:98257eae21b750008b86eec9ec737c66267d2ac43234cedd932636ffc376389b
+
+Production health: {"ok":true,"clients":0,"rooms":0,"serverTimeMs":1789093276469,"frozenClocks":false}
+Production control route status (expected 404): 404
+
+Secret-bearing filename check: none tracked
+
+Credential-pattern review (filenames only):
+no matches in application source
