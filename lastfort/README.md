@@ -159,6 +159,12 @@ captions are rendered with Pillow in the game's Rajdhani font; ffmpeg only
 trims, crops, overlays and concatenates. Anchors come from `timeline.jsonl`
 (wall-clock times of the recording start and every screenshot), so the cut is
 reproducible from the run directory: `python3 test/review_video.py <run-dir>`.
+
+Runs with web hold the host's start command until every client has joined and
+the lobby capture finishes. The driver then sends the normal `startMatch`
+message over that host's existing WebSocket connection. Each screenshot has a
+`phase-<label>.json` server-state record; the bus capture requires the bus phase.
+Missing screenshots or a failed review-video render fail the harness.
 Requires `ffmpeg` and `pillow`.
 
 The Android emulator needs hardware virtualization. On a host without it

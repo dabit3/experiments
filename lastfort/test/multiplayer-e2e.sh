@@ -76,6 +76,8 @@ PARTIAL=false
 LAYOUT=quad
 [ "$PLATFORMS" = "web,ios" ] && LAYOUT=twoup
 builds() { [ "$BUILD_ALL" = 1 ] || has "$1"; }
+AUTOSTART=$HUMANS
+has web && AUTOSTART=0
 
 for tool in flutter dart node xcrun adb emulator screencapture osascript python3 curl; do
   command -v "$tool" >/dev/null 2>&1 || fail "missing tool: $tool"
@@ -114,7 +116,7 @@ fi
 common_defines=(
   "--dart-define=LASTFORT_ROOM=$ROOM"
   "--dart-define=LASTFORT_AUTO=1"
-  "--dart-define=LASTFORT_AUTOSTART=$HUMANS"
+  "--dart-define=LASTFORT_AUTOSTART=$AUTOSTART"
   "--dart-define=LASTFORT_SEED=$SEED"
   "--dart-define=LASTFORT_FAST=1"
   "--dart-define=LASTFORT_MODE=squads"
@@ -225,10 +227,10 @@ sleep 1
 mark rec_start
 
 # ------------------------------------------------------------------ clients
-# The web client creates the room (host) and starts the match once 4 humans
-# are in; the others join by code. Every client runs in test mode with the
+# The web client creates the room (host); the others join by code.
+# The host starts only after the lobby capture. Every client uses the
 # deterministic server-side autopilot and reports its final summary back.
-WEB_URL="http://127.0.0.1:$PORT/?server=ws://127.0.0.1:$PORT/ws&room=$ROOM&auto=1&autostart=$HUMANS&seed=$SEED&fast=1&mode=squads&theme=light&name=Web&test=$TEST_ID"
+WEB_URL="http://127.0.0.1:$PORT/?server=ws://127.0.0.1:$PORT/ws&room=$ROOM&auto=1&autostart=$AUTOSTART&seed=$SEED&fast=1&mode=squads&theme=light&name=Web&test=$TEST_ID"
 WEB_WINDOW="810,40,770,560"
 [ "$LAYOUT" = twoup ] && WEB_WINDOW="20,40,1060,740"
 if has web; then
@@ -352,6 +354,7 @@ shoot() {
   local label=$1
   SHOT_N=$((SHOT_N + 1))
   log "screenshots: $label"
+  curl -fs "$BASE/rooms/$ROOM/summary" >"$OUT/phase-$label.json"
   mark "$label"
   # Every capture runs concurrently so all platforms show the same moment.
   local pids=()
@@ -374,18 +377,27 @@ shoot() {
   if has web; then
     for _ in $(seq 1 40); do [ -f "$CTL/shot-$SHOT_N.done" ] && break; sleep 0.25; done
   fi
+  for p in web ios android macos; do
+    if has "$p"; then
+      [ -s "$OUT/$p-$label.png" ] || fail "missing $p screenshot: $label"
+    fi
+  done
 }
 
-# The room auto-starts a countdown once every human is in, so the lobby shot
-# follows the room check immediately.
 log "waiting for $HUMANS humans in room $ROOM"
 python3 "$TEST/harness.py" wait-room "$BASE" "$ROOM" --members "$HUMANS" --timeout 180 | tee -a "$LOG"
+python3 "$TEST/harness.py" wait-phase "$BASE" "$ROOM" lobby --timeout 10 >>"$LOG"
 sleep 1
 shoot lobby
+if has web; then
+  touch "$CTL/start.req"
+  for _ in $(seq 1 40); do [ -f "$CTL/start.done" ] && break; sleep 0.25; done
+  [ -f "$CTL/start.done" ] || fail "web host did not request match start"
+fi
 
 log "waiting for the match to start"
-python3 "$TEST/harness.py" wait-phase "$BASE" "$ROOM" bus,playing --timeout 120 >>"$LOG"
-sleep 3
+python3 "$TEST/harness.py" wait-phase "$BASE" "$ROOM" bus --timeout 120 >>"$LOG"
+sleep 1
 shoot bus
 python3 "$TEST/harness.py" wait-phase "$BASE" "$ROOM" playing --timeout 120 >>"$LOG"
 sleep 12
@@ -400,6 +412,7 @@ sleep 1
 shoot matchover
 sleep 5
 shoot results
+sleep 5
 
 curl -fs "$BASE/rooms/$ROOM/reports" >"$OUT/reports.json"
 curl -fs "$BASE/rooms/$ROOM/summary" >"$OUT/server-summary.json"
@@ -436,9 +449,10 @@ if [ -n "$REC_PID" ]; then
   kill -INT "$REC_PID" 2>/dev/null && wait "$REC_PID" 2>/dev/null || true
   REC_PID=""
 fi
-if [ "$REVIEW" = 1 ] && command -v ffmpeg >/dev/null 2>&1; then
+if [ "$REVIEW" = 1 ]; then
+  command -v ffmpeg >/dev/null 2>&1 || fail "ffmpeg is required for the review video"
   log "cutting review video"
-  python3 "$TEST/review_video.py" "$OUT" | tee -a "$LOG" || log "review video failed (non-fatal)"
+  python3 "$TEST/review_video.py" "$OUT" | tee -a "$LOG" || fail "review video generation failed"
 fi
 
 if [ "$STATUS" = 0 ] && [ "$PARTIAL" = true ]; then

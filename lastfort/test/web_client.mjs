@@ -5,6 +5,7 @@
 // Opens <url> in a headed Chromium window, then watches <controlDir> for
 // request files written by multiplayer-e2e.sh:
 //   shot-<n>.req   -> contents: absolute PNG path; screenshot the page there
+//   start.req      -> send startMatch over this client's host connection
 //   quit.req       -> close the browser and exit 0
 // Each handled request is renamed to *.done so the shell can wait on it.
 import { chromium } from 'playwright';
@@ -31,6 +32,10 @@ const browser = await chromium.launch({
 });
 const context = await browser.newContext({ viewport: null });
 const page = await context.newPage();
+let matchSocket;
+await page.routeWebSocket('**/ws', (socket) => {
+  matchSocket = socket.connectToServer();
+});
 page.on('console', (m) => {
   if (m.type() === 'error') console.error('[web console]', m.text());
 });
@@ -50,6 +55,12 @@ while (running) {
       running = false;
       await fs.rename(file, file.replace(/\.req$/, '.done'));
       break;
+    }
+    if (name === 'start.req') {
+      if (!matchSocket) throw new Error('host WebSocket is not connected');
+      matchSocket.send(JSON.stringify({ t: 'startMatch', countdownMs: 3000 }));
+      await fs.rename(file, file.replace(/\.req$/, '.done'));
+      continue;
     }
     if (name.startsWith('shot-')) {
       const target = (await fs.readFile(file, 'utf8')).trim();

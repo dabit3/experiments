@@ -139,7 +139,7 @@ def cmd_compare(a):
     }
     with open(a.out + "/result.json", "w") as f:
         json.dump(result, f, indent=2, sort_keys=True)
-    lines = ["# Lastfort four-way multiplayer match", ""]
+    lines = ["# Lastfort %d-client multiplayer match" % len(platforms), ""]
     lines.append("Room `%s` — %s" % (a.code, "PASS" if not failures else "FAIL"))
     lines.append("")
     lines.append("| platform | player | digest | snapshots |")
