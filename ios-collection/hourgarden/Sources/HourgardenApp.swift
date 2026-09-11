@@ -90,7 +90,7 @@ struct RitualView: View {
     VStack(spacing: 0) {
       HStack {
         Text("A little time.\nA little growth.")
-          .font(.system(size: 41, weight: .regular, design: .serif))
+          .modifier(EditorialHeading(size: 41))
           .tracking(-1.5)
           .fixedSize(horizontal: false, vertical: true)
         Spacer(minLength: 0)
@@ -103,21 +103,23 @@ struct RitualView: View {
           .foregroundStyle(Palette.muted)
         Spacer()
       }
-      ZStack(alignment: .bottomLeading) {
+      ZStack {
         Ellipse()
           .fill(Palette.sage.opacity(0.065))
           .frame(width: 260, height: 285)
           .offset(x: 35, y: -10)
         Botanical(species: store.data.specimens.count % 3)
           .frame(height: 300)
-        VStack(alignment: .leading, spacing: 7) {
-          Eyebrow(text: "Next to grow")
-          Text(Botany.names[store.data.specimens.count % 3])
-            .font(.system(.title3, design: .serif))
-        }
-        .padding(.bottom, 22)
       }
-      .padding(.vertical, 16)
+      .padding(.top, 16)
+      HStack(alignment: .firstTextBaseline) {
+        Eyebrow(text: "Next to grow")
+        Spacer()
+        Text(Botany.names[store.data.specimens.count % 3])
+          .font(.system(.title3, design: .serif))
+      }
+      .padding(.top, 4)
+      .padding(.bottom, 20)
       PrimaryButton(title: "Begin a ritual") { configure = true }
       HStack(spacing: 6) {
         Image(systemName: "sun.max").font(.caption)
@@ -176,6 +178,7 @@ struct RitualView: View {
 struct ConfigureView: View {
   @EnvironmentObject private var store: GardenStore
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var textSize
   @State private var intention = ""
   @State private var minutes = 25
   @State private var preview = false
@@ -188,8 +191,9 @@ struct ConfigureView: View {
         VStack(alignment: .leading, spacing: 20) {
           Eyebrow(text: "Plant an intention")
           Text("What needs\nyour attention?")
-            .font(.system(size: 36, design: .serif))
-          TextField("Your intention", text: $intention)
+            .modifier(EditorialHeading(size: 36))
+          TextField("Your intention", text: $intention, axis: .vertical)
+            .lineLimit(1...4)
             .font(.title3)
             .padding(17)
             .background(.white.opacity(0.55), in: RoundedRectangle(cornerRadius: 14))
@@ -198,32 +202,45 @@ struct ConfigureView: View {
             .onSubmit { editing = false }
             .onChange(of: intention) { _, value in intention = String(value.prefix(60)) }
             .accessibilityIdentifier("intentionField")
-          LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+          LazyVGrid(
+            columns: textSize.isAccessibilitySize
+              ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())],
+            spacing: 10
+          ) {
             ForEach(intentions, id: \.self) { tag in
               Button {
                 intention = tag
                 editing = false
               } label: {
                 Text(tag).font(.subheadline)
+                  .fixedSize(horizontal: false, vertical: true)
+                  .padding(.horizontal, 12)
+                  .padding(.vertical, 10)
                   .frame(maxWidth: .infinity, minHeight: 46)
                   .background(
                     intention == tag ? Palette.sage.opacity(0.18) : .clear,
-                    in: Capsule()
+                    in: RoundedRectangle(cornerRadius: 22)
                   )
-                  .overlay(Capsule().stroke(Palette.line, lineWidth: 1))
+                  .overlay(RoundedRectangle(cornerRadius: 22).stroke(Palette.line, lineWidth: 1))
               }
               .buttonStyle(.plain)
             }
           }
           VStack(alignment: .leading, spacing: 16) {
-            HStack {
-              Eyebrow(text: "Make a little room")
-              Spacer()
-              Text(preview ? "20 sec" : "\(minutes) min")
-                .font(.system(.title2, design: .serif))
-            }
+            (textSize.isAccessibilitySize
+              ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+              : AnyLayout(HStackLayout())) {
+                Eyebrow(text: "Make a little room")
+                if !textSize.isAccessibilitySize { Spacer() }
+                Text(preview ? "20 sec" : "\(minutes) min")
+                  .font(.system(.title2, design: .serif))
+              }
             if !preview {
-              HStack(spacing: 10) {
+              LazyVGrid(
+                columns: Array(
+                  repeating: GridItem(.flexible()), count: textSize.isAccessibilitySize ? 2 : 4),
+                spacing: 10
+              ) {
                 ForEach([15, 25, 45, 60], id: \.self) { duration in
                   Button("\(duration)") { minutes = duration }
                     .frame(maxWidth: .infinity, minHeight: 45)
@@ -254,6 +271,7 @@ struct ConfigureView: View {
         }
         .padding(26)
       }
+      .scrollDismissesKeyboard(.interactively)
       .safeAreaInset(edge: .bottom, spacing: 0) {
         VStack(spacing: 0) {
           Rectangle().fill(Palette.line).frame(height: 0.75)
@@ -287,6 +305,7 @@ struct ConfigureView: View {
 }
 
 struct CompletionView: View {
+  @Environment(\.dynamicTypeSize) private var textSize
   let specimen: Specimen
   let done: () -> Void
   var body: some View {
@@ -295,20 +314,21 @@ struct CompletionView: View {
         Eyebrow(text: specimen.isPreview ? "Preview complete" : "Time beautifully spent")
           .padding(.top, 35)
         Text("You grew\nsomething good.")
-          .font(.system(size: 43, design: .serif))
+          .modifier(EditorialHeading(size: 43))
           .multilineTextAlignment(.center)
         Botanical(species: specimen.species).frame(height: 305)
         Text(Botany.names[specimen.species]).font(.system(.title, design: .serif))
         Text(Botany.meanings[specimen.species])
           .font(.system(.body, design: .serif)).foregroundStyle(Palette.muted)
-        HStack {
-          Text(specimen.intention)
-          Spacer()
-          Text(specimen.isPreview ? "20 sec · preview" : "\(Int(specimen.duration / 60)) min")
-        }
-        .font(.subheadline)
-        .padding(.vertical, 20)
-        .overlay(alignment: .top) { Rectangle().fill(Palette.ink.opacity(0.15)).frame(height: 1) }
+        (textSize.isAccessibilitySize
+          ? AnyLayout(VStackLayout(alignment: .leading, spacing: 10)) : AnyLayout(HStackLayout())) {
+            Text(specimen.intention)
+            if !textSize.isAccessibilitySize { Spacer() }
+            Text(specimen.isPreview ? "20 sec · preview" : "\(Int(specimen.duration / 60)) min")
+          }
+          .font(.subheadline)
+          .padding(.vertical, 20)
+          .overlay(alignment: .top) { Rectangle().fill(Palette.ink.opacity(0.15)).frame(height: 1) }
         PrimaryButton(title: "Keep in my herbarium", icon: "book.closed", action: done)
         Text("Saved with care, just for you.").font(.caption).foregroundStyle(Palette.muted)
       }

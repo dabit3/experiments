@@ -56,9 +56,15 @@ and AppKit drawing; regenerate the icon with `swift GenerateIcon.swift`.
 ## Accessibility
 
 Native controls provide accessible names and actions; custom artwork is hidden
-from VoiceOver. Dynamic text styles are used for body text and controls, with
-scrollable screens. Reduce Motion shows the mature plant throughout a ritual.
+from VoiceOver. Editorial headings scale alongside body text and controls.
+At accessibility text sizes the intention choices, archive and session metadata
+stack vertically; intention fields expand to multiple lines. The start action
+stays anchored above the safe area. Screens remain scrollable. Reduce Motion
+shows the mature plant throughout a ritual.
 No sound or animation is necessary to understand session status.
+
+The iOS 17 minimum supports SwiftUI sensory feedback and the two-value
+`onChange` API used to reconcile sessions on scene activation.
 
 ## Limitations
 

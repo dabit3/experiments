@@ -4,7 +4,7 @@ enum Palette {
   static let paper = Color(red: 0.965, green: 0.950, blue: 0.908)
   static let ink = Color(red: 0.17, green: 0.22, blue: 0.18)
   static let sage = Color(red: 0.37, green: 0.45, blue: 0.33)
-  static let muted = Color(red: 0.43, green: 0.46, blue: 0.40)
+  static let muted = Color(red: 0.33, green: 0.37, blue: 0.31)
   static let line = Color(red: 0.80, green: 0.81, blue: 0.74)
   static let apricot = Color(red: 0.96, green: 0.81, blue: 0.65)
 }
@@ -110,7 +110,23 @@ struct Eyebrow: View {
   }
 }
 
+struct EditorialHeading: ViewModifier {
+  @ScaledMetric private var size: CGFloat
+
+  init(size: CGFloat) {
+    _size = ScaledMetric(wrappedValue: size, relativeTo: .largeTitle)
+  }
+
+  func body(content: Content) -> some View {
+    content
+      .font(.system(size: size, design: .serif))
+      .fixedSize(horizontal: false, vertical: true)
+      .accessibilityAddTraits(.isHeader)
+  }
+}
+
 struct PrimaryButton: View {
+  @Environment(\.dynamicTypeSize) private var textSize
   var title: String
   var icon = "arrow.right"
   var action: () -> Void
@@ -118,8 +134,11 @@ struct PrimaryButton: View {
     Button(action: action) {
       HStack {
         Text(title).font(.system(.body, design: .rounded).weight(.medium))
+          .fixedSize(horizontal: false, vertical: true)
         Spacer()
-        Image(systemName: icon)
+        if !textSize.isAccessibilitySize {
+          Image(systemName: icon).accessibilityHidden(true)
+        }
       }
       .padding(.horizontal, 22)
       .padding(.vertical, 19)

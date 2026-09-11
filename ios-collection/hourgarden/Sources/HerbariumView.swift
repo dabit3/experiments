@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HerbariumView: View {
   @EnvironmentObject private var store: GardenStore
+  @Environment(\.dynamicTypeSize) private var textSize
   @State private var filter = "All"
   private let filters = ["All", "Focus", "Previews"]
   private var specimens: [Specimen] {
@@ -21,7 +22,7 @@ struct HerbariumView: View {
               .font(.system(.subheadline, design: .monospaced))
           }
           Text("Your herbarium")
-            .font(.system(size: 38, design: .serif))
+            .modifier(EditorialHeading(size: 38))
           Text("Small moments, made tangible.")
             .font(.subheadline).foregroundStyle(Palette.muted)
           Picker("Sessions", selection: $filter) {
@@ -44,7 +45,7 @@ struct HerbariumView: View {
             .padding(.vertical, 24)
           } else {
             LazyVGrid(
-              columns: specimens.count == 1
+              columns: specimens.count == 1 || textSize >= .xxxLarge
                 ? [GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible())],
               spacing: 16
             ) {
@@ -56,7 +57,9 @@ struct HerbariumView: View {
                     HStack {
                       Eyebrow(text: String(format: "No. %03d", number(specimen)))
                       Spacer(minLength: 0)
-                      if specimens.count == 1 { Eyebrow(text: "A moment preserved") }
+                      if specimens.count == 1 && !textSize.isAccessibilitySize {
+                        Eyebrow(text: "A moment preserved")
+                      }
                     }
                     Botanical(species: specimen.species).frame(
                       height: specimens.count == 1 ? 250 : 170)
@@ -68,13 +71,16 @@ struct HerbariumView: View {
                     }
                     Text(Botany.names[specimen.species])
                       .font(.system(.title3, design: .serif))
-                    Text(specimen.intention).font(.caption).lineLimit(2)
+                      .fixedSize(horizontal: false, vertical: true)
+                    Text(specimen.intention).font(.caption)
+                      .fixedSize(horizontal: false, vertical: true)
                     Text(
                       specimen.isPreview
                         ? "20 SEC · PREVIEW" : "\(Int(specimen.duration / 60)) MIN · FOCUS"
                     )
                     .font(.system(.caption2, design: .monospaced)).tracking(0.5)
                     .foregroundStyle(Palette.muted)
+                    .fixedSize(horizontal: false, vertical: true)
                     Text(specimen.completedAt, format: .dateTime.month(.abbreviated).day())
                       .font(.caption2).foregroundStyle(Palette.muted)
                   }
@@ -106,6 +112,7 @@ struct HerbariumView: View {
 struct SpecimenDetail: View {
   @EnvironmentObject private var store: GardenStore
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var textSize
   let specimenID: UUID
   @State private var edit = false
   @State private var delete = false
@@ -116,19 +123,22 @@ struct SpecimenDetail: View {
       if let specimen {
         VStack(alignment: .leading, spacing: 20) {
           Eyebrow(text: specimen.isPreview ? "Preview specimen" : "A moment preserved")
-          Text(Botany.names[specimen.species]).font(.system(size: 42, design: .serif))
+          Text(Botany.names[specimen.species]).modifier(EditorialHeading(size: 42))
           Text(Botany.latin[specimen.species]).font(.system(.body, design: .serif).italic())
             .foregroundStyle(Palette.muted)
           Botanical(species: specimen.species).frame(height: 300)
             .frame(maxWidth: .infinity)
             .background(.white.opacity(0.35))
             .overlay(Rectangle().stroke(Palette.line, lineWidth: 0.75))
-          HStack(alignment: .firstTextBaseline) {
-            Text(specimen.intention).font(.system(.title2, design: .serif))
-            Spacer()
-            Text(specimen.isPreview ? "20 sec" : "\(Int(specimen.duration / 60)) min")
-              .font(.system(.title2, design: .serif)).fixedSize()
-          }
+          (textSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 10))
+            : AnyLayout(HStackLayout(alignment: .firstTextBaseline))) {
+              Text(specimen.intention).font(.system(.title2, design: .serif))
+                .fixedSize(horizontal: false, vertical: true)
+              if !textSize.isAccessibilitySize { Spacer() }
+              Text(specimen.isPreview ? "20 sec" : "\(Int(specimen.duration / 60)) min")
+                .font(.system(.title2, design: .serif)).fixedSize()
+            }
           Text(
             specimen.completedAt,
             format: .dateTime.weekday(.wide).month(.wide).day().hour().minute()
@@ -162,11 +172,12 @@ struct SpecimenDetail: View {
     .sheet(isPresented: $edit) {
       if let specimen { EditSpecimen(specimen: specimen) }
     }
-    .confirmationDialog("Remove this specimen?", isPresented: $delete, titleVisibility: .visible) {
+    .alert("Remove this specimen?", isPresented: $delete) {
       Button("Remove permanently", role: .destructive) {
         store.delete(specimenID)
         dismiss()
       }
+      Button("Keep specimen", role: .cancel) {}
     } message: {
       Text("Its session will also be removed from your daily totals.")
     }
@@ -184,7 +195,8 @@ struct EditSpecimen: View {
     NavigationStack {
       Form {
         Section("Intention") {
-          TextField("Intention", text: $intention)
+          TextField("Intention", text: $intention, axis: .vertical)
+            .lineLimit(1...4)
             .onChange(of: intention) { _, value in intention = String(value.prefix(60)) }
         }
         Section("A note to your future self") {
@@ -196,7 +208,7 @@ struct EditSpecimen: View {
       }
       .scrollContentBackground(.hidden)
       .modifier(Paper())
-      .navigationTitle("A quiet reflection")
+      .navigationTitle("Reflection")
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }

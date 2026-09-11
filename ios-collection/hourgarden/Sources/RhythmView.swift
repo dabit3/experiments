@@ -14,7 +14,7 @@ struct RhythmView: View {
         VStack(alignment: .leading, spacing: 26) {
           Eyebrow(text: Date().formatted(.dateTime.weekday(.wide).month(.wide).day()))
           Text("Find your rhythm.")
-            .font(.system(size: 39, design: .serif))
+            .modifier(EditorialHeading(size: 39))
           Text("Consistency is a gentle thing.")
             .font(.subheadline).foregroundStyle(Palette.muted)
           HStack(alignment: .firstTextBaseline, spacing: 8) {
@@ -105,6 +105,17 @@ struct SettingsView: View {
     NavigationStack {
       Form {
         Section {
+          VStack(alignment: .leading, spacing: 10) {
+            Eyebrow(text: "A slower pace")
+            Text("Tend your garden.")
+              .font(.system(.title, design: .serif))
+            Text("Make space for a practice that feels like yours.")
+              .font(.subheadline).foregroundStyle(Palette.muted)
+          }
+          .padding(.vertical, 10)
+        }
+        .listRowBackground(Palette.sage.opacity(0.06))
+        Section {
           Stepper(
             "Daily intention: \(store.data.dailyGoal) minutes",
             value: Binding(get: { store.data.dailyGoal }, set: { store.setGoal($0) }),
@@ -136,16 +147,15 @@ struct SettingsView: View {
       }
       .scrollContentBackground(.hidden)
       .modifier(Paper())
-      .navigationTitle("Tend your garden")
+      .navigationTitle("Settings")
       .navigationBarTitleDisplayMode(.inline)
       .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
-      .confirmationDialog(
-        "Start with an empty garden?", isPresented: $reset, titleVisibility: .visible
-      ) {
+      .alert("Start with an empty garden?", isPresented: $reset) {
         Button("Reset everything", role: .destructive) {
           store.reset()
           dismiss()
         }
+        Button("Keep my garden", role: .cancel) {}
       } message: {
         Text(
           "All specimens, reflections, settings and any active ritual will be removed. This cannot be undone."
