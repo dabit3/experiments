@@ -30,8 +30,16 @@ leaf.curve(
 NSColor(srgbRed: 0.23, green: 0.35, blue: 0.22, alpha: 1).setFill()
 leaf.fill()
 image.unlockFocus()
-guard let tiff = image.tiffRepresentation,
-  let bitmap = NSBitmapImageRep(data: tiff),
-  let png = bitmap.representation(using: .png, properties: [:])
-else { fatalError("Could not render icon") }
+guard
+  let bitmap = NSBitmapImageRep(
+    bitmapDataPlanes: nil, pixelsWide: size, pixelsHigh: size,
+    bitsPerSample: 8, samplesPerPixel: 3, hasAlpha: false, isPlanar: false,
+    colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0)
+else { fatalError("Could not allocate icon") }
+NSGraphicsContext.saveGraphicsState()
+NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: bitmap)
+image.draw(in: NSRect(x: 0, y: 0, width: size, height: size))
+NSGraphicsContext.restoreGraphicsState()
+guard let png = bitmap.representation(using: .png, properties: [:])
+else { fatalError("Could not encode icon") }
 try png.write(to: URL(fileURLWithPath: "SupperClub/Assets.xcassets/AppIcon.appiconset/AppIcon.png"))

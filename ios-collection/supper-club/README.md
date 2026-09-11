@@ -10,7 +10,7 @@ A native, offline iPhone cooking companion, styled as a small food magazine. Bui
 - Create, edit, delete and check off your own extras. Remove individual recipes or clear the list with confirmation.
 - Full-screen, step-by-step cook mode, ingredient reference, previous/restart/close/resume and a finished-meal screen.
 - Named timers with custom duration, pause, resume, reset and restart. Deadlines persist across app closure. Visual and haptic completion cues while the timer is on screen.
-- VoiceOver labels for controls, native text styles for body copy, high contrast, 44-point or larger controls, no essential animation, portrait iPhone layout.
+- VoiceOver labels for controls, Dynamic Type editorial and body text, high contrast, 44-point or larger controls, no essential animation, portrait iPhone layout.
 
 ## Open and run
 
@@ -45,7 +45,7 @@ Re-render the original app icon with `swift Scripts/GenerateIcon.swift`. The foo
 
 Search accepts any number of words (or comma-separated words), matching all of them against recipe titles and ingredients. “Plant-based” displays the four vegan recipes; dietary labels are based on the written ingredients and do not imply allergen safety.
 
-Serving controls update amounts immediately and persist per recipe. Shopping contributions update when **Add to shopping list** is tapped. The list intentionally does not convert between unlike units. Extra items use free text so quantities or notes can be included. Exact duplicate extra names are ignored, case-insensitively.
+Serving controls update amounts immediately and persist per recipe. Shopping contributions update when **Add to list** is tapped. The list intentionally does not convert between unlike units. Extra items use free text so quantities or notes can be included. Exact duplicate extra names are ignored, case-insensitively.
 
 Closing cook mode saves the current step. Starting a different recipe replaces the resumable recipe; existing timers remain available in the timer room. Finishing a recipe increments the local supper count. Timers are independent of cook progress and are never silently canceled by finishing or leaving a recipe.
 
@@ -55,6 +55,6 @@ All state is stored in the app's local UserDefaults as a Codable record. Nothing
 
 - Timers track real wall-clock deadlines but do not send background notifications or make sounds. Open the timer room or relevant cook step for visible completion and foreground haptics. Changing the system clock affects deadlines.
 - Recipe instructions mention base water amounts where needed and explain that these should scale with servings. Large batches may need multiple pans. Timings are guidance; meat/fish instructions include safe internal temperatures.
-- Fixed editorial headline sizes and native body text are used; oversized accessibility text is verified separately during QA. No landscape or iPad-specific composition is promised.
+- Editorial and body text scale with Dynamic Type; decorative metadata stops at XXXL to preserve hierarchy. Serving controls stack at accessibility sizes. The logo and timer digits retain stable sizes. No landscape or iPad-specific composition is promised.
 - No physical-device validation, production signing, App Store submission, nutrition estimates, allergen filtering, recipe import or cloud services are included.
 - Unit tests cover fractions, ingredient search/catalog integrity, deduplication/rescaling, state restoration, custom items, serving bounds, timer deadlines/pause/reset, and cooking progress.

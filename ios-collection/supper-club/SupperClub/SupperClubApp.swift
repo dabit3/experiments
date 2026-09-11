@@ -48,7 +48,7 @@ struct BrowseView: View {
       VStack(alignment: .leading, spacing: 18) {
         HStack(spacing: 10) {
           PlateMark()
-          Text("supper club").font(.editorial(25))
+          Text("supper club").font(.system(size: 25, design: .serif))
           Spacer()
           Button {
             showTimers = true
@@ -68,7 +68,7 @@ struct BrowseView: View {
           )
           .foregroundStyle(Palette.red)
           Text(savedOnly ? "Your favorites." : "Good food. Any night.")
-            .font(.editorial(32)).lineLimit(1).minimumScaleFactor(0.85)
+            .font(.editorial(31)).fixedSize(horizontal: false, vertical: true)
         }
         if let id = store.state.cookRecipeID, let recipe = Recipes.all.first(where: { $0.id == id })
         {
@@ -147,15 +147,14 @@ struct BrowseView: View {
               RecipeView(recipe: recipes[0])
             } label: {
               VStack(alignment: .leading, spacing: 0) {
-                ZStack(alignment: .topLeading) {
-                  FoodArt(style: recipes[0].style).frame(height: 222)
-                  Eyebrow(text: "Tonight’s pick").padding(12)
-                    .background(Palette.paper, in: Capsule()).padding(16)
-                }
-                VStack(alignment: .leading, spacing: 12) {
+                FoodArt(style: recipes[0].style).scaleEffect(1.16)
+                  .frame(height: 222).clipped()
+                VStack(alignment: .leading, spacing: 10) {
+                  Eyebrow(text: "Tonight’s pick").foregroundStyle(Palette.red)
                   Text(recipes[0].title).font(.editorial(30)).multilineTextAlignment(.leading)
                   HStack {
                     Text("25 MIN  /  VEGETARIAN").font(.caption.weight(.semibold)).tracking(1)
+                      .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                     Spacer()
                     Image(systemName: "arrow.up.right").font(.title3)
                   }.foregroundStyle(Palette.red)
@@ -212,6 +211,7 @@ struct RecipeRow: View {
 struct RecipeView: View {
   let recipe: Recipe
   @EnvironmentObject private var store: KitchenStore
+  @Environment(\.dynamicTypeSize) private var typeSize
   @State private var cook = false
   @State private var added = false
 
@@ -226,12 +226,16 @@ struct RecipeView: View {
           Text(recipe.title).font(.editorial(37)).lineSpacing(-3)
           Text(recipe.subtitle).foregroundStyle(Palette.muted).font(.body).lineSpacing(4)
         }
-        HStack {
+        let servingLayout =
+          typeSize.isAccessibilitySize
+          ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+          : AnyLayout(HStackLayout())
+        servingLayout {
           VStack(alignment: .leading, spacing: 5) {
             Text("Servings").font(.editorial(26))
             Text("Made for your table").font(.caption).foregroundStyle(Palette.muted)
           }
-          Spacer()
+          if !typeSize.isAccessibilitySize { Spacer() }
           HStack(spacing: 12) {
             Button {
               store.setServings(store.servings(for: recipe) - 1, for: recipe)
@@ -255,12 +259,11 @@ struct RecipeView: View {
           UINotificationFeedbackGenerator().notificationOccurred(.success)
         } label: {
           HStack {
-            Image(systemName: added ? "checkmark.circle.fill" : "basket")
-            Text(added ? "Ingredients on your list" : "Add ingredients to list")
+            Image(systemName: added ? "checkmark.circle.fill" : "basket").font(.title3)
+            Text(added ? "On your list" : "Add to list")
               .font(.headline)
             Spacer()
-            if !added { Image(systemName: "plus") }
-          }.padding(.horizontal, 18).frame(minHeight: 56)
+          }.padding(.horizontal, 18).padding(.vertical, 15).frame(minHeight: 56)
             .foregroundStyle(added ? Palette.green : Palette.red)
             .background(.white.opacity(0.75), in: RoundedRectangle(cornerRadius: 15))
             .overlay(RoundedRectangle(cornerRadius: 15).stroke(Palette.line, lineWidth: 1))

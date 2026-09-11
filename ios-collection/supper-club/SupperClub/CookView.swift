@@ -135,13 +135,31 @@ struct CookView: View {
     .sheet(isPresented: $showTimers) { TimerRoomView() }
     .sheet(isPresented: $showIngredients) {
       NavigationStack {
-        List(recipe.ingredients) { ingredient in
-          HStack {
-            Text(ingredient.name)
-            Spacer()
-            Text(ingredient.scaled(store.servings(for: recipe), from: recipe.servings).amount)
-          }
-        }.navigationTitle("For \(store.servings(for: recipe)) servings")
+        ScrollView {
+          VStack(alignment: .leading, spacing: 18) {
+            Eyebrow(text: "At your elbow").foregroundStyle(Palette.red)
+            Text("Everything\nyou need.").font(.editorial(36))
+            Text(recipe.title.replacingOccurrences(of: "\n", with: " "))
+              .font(.subheadline).foregroundStyle(Palette.muted)
+            ForEach(recipe.ingredients) { ingredient in
+              HStack(alignment: .firstTextBaseline, spacing: 18) {
+                VStack(alignment: .leading, spacing: 5) {
+                  Text(ingredient.name)
+                  if !ingredient.note.isEmpty {
+                    Text(ingredient.note).font(.caption).foregroundStyle(Palette.muted)
+                  }
+                }
+                Spacer()
+                Text(ingredient.scaled(store.servings(for: recipe), from: recipe.servings).amount)
+                  .fontWeight(.medium).foregroundStyle(Palette.red)
+                  .multilineTextAlignment(.trailing)
+              }.padding(.vertical, 6)
+              Rectangle().fill(Palette.line).frame(height: 0.7)
+            }
+          }.padding(24)
+        }.background(Palette.paper).foregroundStyle(Palette.ink)
+          .navigationTitle("For \(store.servings(for: recipe)) servings")
+          .navigationBarTitleDisplayMode(.inline)
           .toolbar {
             ToolbarItem(placement: .topBarTrailing) { Button("Done") { showIngredients = false } }
           }
@@ -242,7 +260,7 @@ struct TimerRoomView: View {
           Text("Take your time.").font(.editorial(39))
           Text("Timers keep time when you leave. Alerts appear while the app is open.")
             .font(.subheadline).foregroundStyle(Palette.muted)
-          MainButton(title: "New kitchen timer", symbol: "plus") { newTimer = true }
+          MainButton(title: "New timer", symbol: "plus") { newTimer = true }
           if store.state.timers.isEmpty {
             Text("No timers on the go.\nStart one here or inside a recipe.").font(.title3)
               .foregroundStyle(Palette.muted).padding(.vertical, 24)
@@ -271,21 +289,77 @@ struct TimerEditor: View {
   @State private var name = ""
   @State private var minutes = 0
   @State private var seconds = 30
+  @FocusState private var nameFocused: Bool
+
+  private var valid: Bool {
+    !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && minutes * 60 + seconds > 0
+  }
 
   var body: some View {
     NavigationStack {
-      Form {
-        Section("Name your timer") {
-          TextField("e.g. Dressing", text: $name).accessibilityLabel("Timer name")
+      ScrollView {
+        VStack(alignment: .leading, spacing: 24) {
+          Eyebrow(text: "Every good thing in its time").foregroundStyle(Palette.red)
+          Text(existing == nil ? "Give it a moment." : "A little more time.")
+            .font(.editorial(36))
+          VStack(alignment: .leading, spacing: 10) {
+            Text("Timer name").font(.headline)
+            TextField("e.g. Dressing", text: $name)
+              .padding(16).background(.white.opacity(0.8), in: RoundedRectangle(cornerRadius: 14))
+              .overlay(RoundedRectangle(cornerRadius: 14).stroke(Palette.line, lineWidth: 1))
+              .focused($nameFocused).submitLabel(.done)
+              .onSubmit { nameFocused = false }
+              .accessibilityLabel("Timer name")
+          }
+          VStack(alignment: .leading, spacing: 16) {
+            Text("How long?").font(.headline)
+            Text(timerText(TimeInterval(minutes * 60 + seconds)))
+              .font(.system(size: 52, weight: .medium, design: .rounded)).monospacedDigit()
+              .foregroundStyle(Palette.red).accessibilityLabel(
+                "Duration \(minutes) minutes \(seconds) seconds")
+            Stepper("\(minutes) min", value: $minutes, in: 0...180).accessibilityLabel(
+              "Timer minutes")
+            Divider()
+            Stepper("\(seconds) sec", value: $seconds, in: 0...59).accessibilityLabel(
+              "Timer seconds")
+          }.padding(20).background(.white.opacity(0.7), in: RoundedRectangle(cornerRadius: 18))
+          ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) {
+              ForEach([30, 300, 600], id: \.self) { duration in
+                Button {
+                  minutes = duration / 60
+                  seconds = duration % 60
+                  nameFocused = false
+                } label: {
+                  Text(duration < 60 ? "\(duration) sec" : "\(duration / 60) min")
+                    .font(.subheadline.weight(.medium)).padding(.horizontal, 18)
+                    .frame(minHeight: 46).background(Palette.line.opacity(0.4), in: Capsule())
+                }.buttonStyle(.plain)
+              }
+            }
+          }
+          Text(
+            "Starts from the full duration. Alerts appear while the app is open; no background notifications."
+          )
+          .font(.footnote).foregroundStyle(Palette.muted).lineSpacing(4)
         }
-        Section("Duration") {
-          Stepper("\(minutes) minutes", value: $minutes, in: 0...180).accessibilityLabel(
-            "Timer minutes")
-          Stepper("\(seconds) seconds", value: $seconds, in: 0...59).accessibilityLabel(
-            "Timer seconds")
+        .padding(24)
+      }.scrollDismissesKeyboard(.interactively)
+        .background(Palette.paper).foregroundStyle(Palette.ink)
+        .navigationTitle(existing == nil ? "New timer" : "Adjust timer")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+          ToolbarItem(placement: .topBarTrailing) { Button("Cancel") { dismiss() } }
+          ToolbarItemGroup(placement: .keyboard) {
+            Spacer()
+            Button("Done") { nameFocused = false }
+          }
         }
-        Section {
-          Button(existing == nil ? "Create & start timer" : "Save & restart timer") {
+        .safeAreaInset(edge: .bottom) {
+          MainButton(
+            title: existing == nil ? "Start timer" : "Save & restart",
+            symbol: "play.fill"
+          ) {
             let id = existing?.id ?? UUID().uuidString
             var timer = KitchenTimer(
               id: id, name: name.trimmingCharacters(in: .whitespacesAndNewlines),
@@ -293,17 +367,9 @@ struct TimerEditor: View {
             timer.start()
             store.state.timers[id] = timer
             dismiss()
-          }.disabled(
-            name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-              || minutes * 60 + seconds == 0)
-        } footer: {
-          Text(
-            "Changing the duration starts the full timer again. Timers do not send background notifications."
-          )
+          }.disabled(!valid).opacity(valid ? 1 : 0.45)
+            .padding(.horizontal, 24).padding(.vertical, 12).background(Palette.paper)
         }
-      }.navigationTitle(existing == nil ? "New timer" : "Adjust timer")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Cancel") { dismiss() } } }
         .onAppear {
           if let existing {
             name = existing.name

@@ -219,6 +219,7 @@ struct ShoppingRecipesView: View {
           )
         }
       }
+      .scrollContentBackground(.hidden).background(Palette.paper)
       .navigationTitle("On the menu").navigationBarTitleDisplayMode(.inline)
       .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
     }

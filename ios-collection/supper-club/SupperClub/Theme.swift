@@ -11,7 +11,7 @@ enum Palette {
 
 extension Font {
   static func editorial(_ size: CGFloat) -> Font {
-    .system(size: size, weight: .regular, design: .serif)
+    .custom("Georgia", size: size, relativeTo: .largeTitle)
   }
 }
 
@@ -20,6 +20,7 @@ struct Eyebrow: View {
   var body: some View {
     Text(text.uppercased())
       .font(.caption.weight(.bold)).tracking(2)
+      .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
   }
 }
 
@@ -34,11 +35,11 @@ struct MainButton: View {
       action()
     }) {
       HStack(spacing: 12) {
-        Text(title).font(.headline)
+        Text(title).font(.headline).fixedSize(horizontal: false, vertical: true)
         Spacer()
         Image(systemName: symbol).font(.headline)
       }
-      .padding(.horizontal, 22).frame(minHeight: 60)
+      .padding(.horizontal, 22).padding(.vertical, 17).frame(minHeight: 60)
       .foregroundStyle(.white)
       .background(Palette.red, in: RoundedRectangle(cornerRadius: 18))
     }.buttonStyle(.plain)
@@ -108,14 +109,14 @@ struct FoodArt: View {
             with: .color(Color(red: 0.91, green: 0.75, blue: 0.48)))
         }
       }
-      for i in 0..<170 {
+      for i in 0..<230 {
         let angle = Double(i) * 2.399963
-        let radius = sqrt(Double(i) / 170) * 80
-        let x = 151 + cos(angle) * radius
-        let y = 149 + sin(angle) * radius
+        let radius = sqrt(Double(i) / 230) * 80
+        let x = 151 + cos(angle) * radius + sin(Double(i) * 7.31) * 3
+        let y = 149 + sin(angle) * radius + cos(Double(i) * 5.17) * 3
         var grain = c
         grain.translateBy(x: x, y: y)
-        grain.rotate(by: .radians(angle))
+        grain.rotate(by: .radians(angle * 3.7 + Double(i % 7)))
         let colors: [Color] = [
           Color(red: 0.95, green: 0.79, blue: 0.45),
           Color(red: 0.90, green: 0.68, blue: 0.32),
