@@ -93,22 +93,91 @@ struct SpecimenArt: View {
   }
 
   private func foliage(_ c: inout GraphicsContext, oak: Bool) {
-    for stalk in 0..<3 {
+    if oak {
+      oakBranch(&c)
+      return
+    }
+    for stalk in 0..<2 {
       var f = c
-      f.translateBy(x: 160, y: 277)
-      f.rotate(by: .degrees(Double(stalk - 1) * 28))
-      line(&f, [.zero, CGPoint(x: 0, y: -246)], width: 1.8)
-      let count = oak ? 6 : 17
-      for i in 0..<count {
-        let t = CGFloat(i) / CGFloat(count)
-        let y = -24 - t * 208
-        let length = (1 - t) * (oak ? 68 : 75) + 7
+      f.translateBy(x: stalk == 0 ? 142 : 168, y: 283)
+      f.rotate(by: .degrees(stalk == 0 ? -13 : 28))
+      let scale = stalk == 0 ? 0.95 : 0.75
+      f.scaleBy(x: scale, y: scale)
+      var stem = Path()
+      stem.move(to: .zero)
+      stem.addQuadCurve(to: CGPoint(x: 13, y: -267), control: CGPoint(x: -22, y: -153))
+      f.stroke(stem, with: .color(FieldStyle.ink), lineWidth: 1.1)
+      for i in 0..<15 {
+        let t = CGFloat(i + 2) / 17
+        let origin = CGPoint(x: -10 * sin(t * .pi) + t * 13, y: -t * 266)
+        let length = sin(t * .pi) * 60 + 7
         for side in [-1.0, 1.0] {
-          leaf(
-            &f, from: CGPoint(x: 0, y: y), to: CGPoint(x: side * length, y: y - (oak ? 30 : 24)),
-            width: oak ? 30 : 12 - 6 * t, shade: Double(stalk) * 0.035 + Double(i % 3) * 0.025)
+          let tip = CGPoint(x: origin.x + side * length, y: origin.y - 28 - 5 * sin(CGFloat(i)))
+          line(&f, [origin, tip], color: FieldStyle.muted, width: 0.7)
+          for leaflet in 1...7 {
+            let u = CGFloat(leaflet) / 8
+            let start = CGPoint(
+              x: origin.x + (tip.x - origin.x) * u, y: origin.y + (tip.y - origin.y) * u)
+            for facing in [-1.0, 1.0] {
+              let end = CGPoint(
+                x: start.x + side * 8 * (1 - u), y: start.y + facing * (12 - 6 * u) - 3)
+              leaf(
+                &f, from: start, to: end, width: 4.3 - 2 * u,
+                shade: Double(stalk) * 0.05 + Double(i % 3) * 0.02)
+            }
+          }
+          leaf(&f, from: CGPoint(x: tip.x - side * 6, y: tip.y + 5), to: tip, width: 3, shade: 0.04)
         }
       }
+    }
+  }
+
+  private func oakBranch(_ c: inout GraphicsContext) {
+    line(
+      &c, [CGPoint(x: 160, y: 279), CGPoint(x: 141, y: 149), CGPoint(x: 163, y: 37)],
+      color: Color(red: 0.45, green: 0.35, blue: 0.22), width: 2)
+    for index in 0..<5 {
+      var f = c
+      let y = CGFloat(231 - index * 37)
+      f.translateBy(x: 149, y: y)
+      f.rotate(by: .degrees(index.isMultiple(of: 2) ? -57 : 47))
+      let height = CGFloat(86 - index * 5)
+      var outline = Path()
+      outline.move(to: .zero)
+      for side in [1.0, -1.0] {
+        let steps = side > 0 ? Array(0...50) : Array((0...50).reversed())
+        for step in steps {
+          let t = CGFloat(step) / 50
+          let lobes = 0.76 + 0.24 * cos(t * .pi * 10)
+          let width = sin(t * .pi) * 28 * lobes
+          outline.addLine(to: CGPoint(x: side * width, y: -t * height))
+        }
+      }
+      outline.closeSubpath()
+      f.fill(
+        outline,
+        with: .color(
+          Color(red: 0.36 + Double(index) * 0.025, green: 0.43 + Double(index) * 0.018, blue: 0.23))
+      )
+      f.stroke(outline, with: .color(FieldStyle.ink.opacity(0.6)), lineWidth: 0.65)
+      line(
+        &f, [.zero, CGPoint(x: 0, y: -height)], color: FieldStyle.paper.opacity(0.7), width: 0.8)
+      for vein in 1...5 {
+        let y = CGFloat(vein) * height / 7
+        let width = sin(y / height * .pi) * 23
+        for side in [-1.0, 1.0] {
+          line(
+            &f, [CGPoint(x: 0, y: -y + 6), CGPoint(x: side * width, y: -y - 6)],
+            color: FieldStyle.paper.opacity(0.45), width: 0.7)
+        }
+      }
+    }
+    for x in [186.0, 211.0] {
+      line(&c, [CGPoint(x: 158, y: 189), CGPoint(x: x, y: 207)], color: FieldStyle.muted)
+      ellipse(
+        &c, CGRect(x: x - 10, y: 209, width: 19, height: 28),
+        Color(red: 0.61, green: 0.43, blue: 0.21))
+      ellipse(&c, CGRect(x: x - 11, y: 203, width: 22, height: 11), FieldStyle.ink)
     }
   }
 
@@ -262,23 +331,49 @@ struct SpecimenArt: View {
   private func fungi(_ c: inout GraphicsContext, bracket: Bool) {
     if bracket {
       line(
-        &c, [CGPoint(x: 80, y: 279), CGPoint(x: 194, y: 62)], color: .brown.opacity(0.5), width: 23)
+        &c, [CGPoint(x: 100, y: 279), CGPoint(x: 189, y: 61)], color: .brown.opacity(0.5), width: 34
+      )
+      for streak in 0..<5 {
+        line(
+          &c, [CGPoint(x: 89 + streak * 6, y: 275), CGPoint(x: 176 + streak * 6, y: 67)],
+          color: FieldStyle.ink.opacity(0.25), width: 1)
+      }
       for i in 0..<4 {
         var f = c
         f.translateBy(x: CGFloat(117 + i * 19), y: CGFloat(233 - i * 45))
-        f.rotate(by: .degrees(-24))
-        for band in (0..<6).reversed() {
-          let radius = CGFloat(22 + band * 10)
+        f.rotate(by: .degrees(Double(-32 + (i % 3) * 17)))
+        let palette: [Color] = [
+          Color(red: 0.34, green: 0.31, blue: 0.24),
+          Color(red: 0.50, green: 0.44, blue: 0.34),
+          Color(red: 0.69, green: 0.62, blue: 0.47),
+          Color(red: 0.39, green: 0.42, blue: 0.38),
+          Color(red: 0.77, green: 0.75, blue: 0.63),
+          Color(red: 0.54, green: 0.47, blue: 0.35),
+          FieldStyle.paper,
+        ]
+        for band in (0..<7).reversed() {
+          let radius = CGFloat(20 + band * 8 + i * 2)
           var p = Path()
-          p.move(to: .zero)
-          p.addArc(
-            center: .zero, radius: radius, startAngle: .degrees(190), endAngle: .degrees(350),
-            clockwise: false)
+          p.move(to: CGPoint(x: 0, y: 8))
+          for step in 0...80 {
+            let angle = CGFloat(step) / 80 * .pi * 1.05 + .pi * 0.98
+            let ripple = 1 + 0.045 * sin(angle * 13 + CGFloat(i)) + 0.025 * cos(angle * 19)
+            p.addLine(
+              to: CGPoint(x: cos(angle) * radius * ripple, y: sin(angle) * radius * ripple * 0.82))
+          }
           p.closeSubpath()
-          f.fill(
-            p,
-            with: .color(
-              [FieldStyle.ink, FieldStyle.rust, FieldStyle.muted, FieldStyle.paper][band % 4]))
+          f.fill(p, with: .color(palette[band]))
+          f.stroke(p, with: .color(FieldStyle.ink.opacity(0.3)), lineWidth: 0.4)
+        }
+        for ray in 0..<45 {
+          let angle = CGFloat(ray) / 44 * .pi + .pi
+          line(
+            &f,
+            [
+              CGPoint(x: cos(angle) * 23, y: sin(angle) * 23 * 0.82),
+              CGPoint(x: cos(angle) * 62, y: sin(angle) * 62 * 0.82),
+            ],
+            color: FieldStyle.paper.opacity(0.15), width: 0.45)
         }
       }
     } else {

@@ -113,7 +113,7 @@ struct ObservationEditor: View {
       }
       .scrollContentBackground(.hidden).background { Paper() }
       .foregroundStyle(FieldStyle.ink).navigationTitle(
-        isEditing ? "Edit observation" : "New observation"
+        isEditing ? "Edit entry" : "New entry"
       )
       .navigationBarTitleDisplayMode(.inline)
       .scrollDismissesKeyboard(.interactively)

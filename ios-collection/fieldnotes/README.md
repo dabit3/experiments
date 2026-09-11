@@ -14,8 +14,9 @@ backend, API keys or runtime packages.
 - Offline illustrated guide to twelve subjects, with field marks, habitats,
   regional context and observation prompts. Start an entry from any guide page.
 - Confirm discarding edits and deleting entries. Remove all samples from About.
-- VoiceOver labels, native navigation and forms, scalable system text, haptic
-  selection feedback. No essential animation, sound or motion.
+- VoiceOver labels, native navigation and forms, scalable serif headings,
+  large-text layouts and haptic selection feedback. No essential animation,
+  sound or motion. Observation details preserve imported photos' aspect ratios.
 
 ## Open and run
 
@@ -52,8 +53,9 @@ written atomically. Photos are resized to at most 1,600 pixels along their
 longest side and encoded as JPEG with 80% quality. They are stored with the
 entry. Import uses the system photo picker; no broad library permission is
 requested. No GPS or automatic species identification is used. Samples are
-seeded only if the journal file does not exist, including after deleting every
-entry. A corrupt journal is preserved and opened read-only with an error.
+seeded only if the journal file does not exist. Removing samples or deleting
+every entry preserves an empty journal across relaunches without reseeding.
+A corrupt journal is preserved and opened read-only with an error.
 
 ## Limitations
 

@@ -48,8 +48,24 @@ struct Eyebrow: View {
   }
 }
 
+struct EditorialHeading: View {
+  let text: String
+  @ScaledMetric(relativeTo: .largeTitle) private var size: CGFloat = 36
+
+  init(_ text: String, size: CGFloat) {
+    self.text = text
+    _size = ScaledMetric(wrappedValue: size, relativeTo: .largeTitle)
+  }
+
+  var body: some View {
+    Text(text).font(FieldStyle.serif(size))
+      .fixedSize(horizontal: false, vertical: true).accessibilityAddTraits(.isHeader)
+  }
+}
+
 struct JournalView: View {
   @Environment(JournalStore.self) private var store
+  @Environment(\.dynamicTypeSize) private var typeSize
   @State private var adding = false
   @State private var about = false
   let openCollection: () -> Void
@@ -59,7 +75,7 @@ struct JournalView: View {
       ZStack {
         Paper()
         ScrollView {
-          VStack(alignment: .leading, spacing: 24) {
+          VStack(alignment: .leading, spacing: 16) {
             HStack {
               Eyebrow(text: "A pocket naturalist’s journal")
               Spacer(minLength: 0)
@@ -71,7 +87,8 @@ struct JournalView: View {
               .accessibilityLabel("About your journal")
             }
             VStack(alignment: .leading, spacing: 8) {
-              Text("Fieldnotes").font(FieldStyle.serif(49))
+              EditorialHeading("Fieldnotes", size: 44)
+              if typeSize.isAccessibilitySize { recordButton }
               Text("There is a whole world\nin the little things.")
                 .font(.system(.title3, design: .serif)).foregroundStyle(FieldStyle.muted)
                 .fixedSize(horizontal: false, vertical: true)
@@ -85,7 +102,7 @@ struct JournalView: View {
                   Spacer()
                   Text("PL. 01").font(.system(.caption2, design: .monospaced))
                 }.padding(18)
-                SpecimenArt(kind: "fern").frame(height: 226)
+                SpecimenArt(kind: "fern").frame(height: 166)
                 HStack(alignment: .bottom) {
                   VStack(alignment: .leading, spacing: 5) {
                     Text("A quiet unfurling").font(.system(.title2, design: .serif))
@@ -98,17 +115,17 @@ struct JournalView: View {
               }.background(FieldStyle.wash.opacity(0.5))
                 .overlay(Rectangle().stroke(FieldStyle.rule, lineWidth: 0.7))
             }.buttonStyle(.plain).accessibilityLabel("Explore lady fern in the field guide")
-            Button {
-              adding = true
-            } label: {
-              Label("Record an observation", systemImage: "plus")
-                .font(.headline).frame(maxWidth: .infinity).padding(.vertical, 18)
-                .background(FieldStyle.ink).foregroundStyle(FieldStyle.paper)
-            }.buttonStyle(.plain)
-            HStack {
-              Text("From your notebook").font(.system(.title2, design: .serif))
-              Spacer()
-              Button("View all", action: openCollection).font(.subheadline)
+            if !typeSize.isAccessibilitySize { recordButton }
+            ViewThatFits(in: .horizontal) {
+              HStack {
+                Text("From your notebook").font(.system(.title2, design: .serif))
+                Spacer()
+                Button("View all", action: openCollection).font(.subheadline).frame(minHeight: 44)
+              }
+              VStack(alignment: .leading, spacing: 8) {
+                Text("From your notebook").font(.system(.title2, design: .serif))
+                Button("View all", action: openCollection).font(.subheadline).frame(minHeight: 44)
+              }
             }
             if store.entries.isEmpty {
               EmptyJournal(
@@ -134,14 +151,33 @@ struct JournalView: View {
         .sheet(isPresented: $about) { AboutView() }
     }
   }
+
+  private var recordButton: some View {
+    Button {
+      adding = true
+    } label: {
+      Label("Record an observation", systemImage: "plus")
+        .font(.headline).frame(maxWidth: .infinity).padding(.vertical, 18)
+        .background(FieldStyle.ink).foregroundStyle(FieldStyle.paper)
+    }.buttonStyle(.plain)
+  }
 }
 
 struct ObservationRow: View {
   let entry: ObservationEntry
+  @Environment(\.dynamicTypeSize) private var typeSize
   var body: some View {
     VStack(spacing: 16) {
-      HStack(spacing: 16) {
-        EntryImage(entry: entry).frame(width: 86, height: 98).clipped()
+      let layout =
+        typeSize.isAccessibilitySize
+        ? AnyLayout(VStackLayout(alignment: .leading, spacing: 14))
+        : AnyLayout(HStackLayout(spacing: 16))
+      layout {
+        EntryImage(entry: entry)
+          .frame(
+            width: typeSize.isAccessibilitySize ? 120 : 86,
+            height: typeSize.isAccessibilitySize ? 120 : 98
+          ).clipped()
           .background(FieldStyle.wash.opacity(0.6))
         VStack(alignment: .leading, spacing: 7) {
           HStack {
@@ -159,8 +195,10 @@ struct ObservationRow: View {
           )
           .font(.caption2).foregroundStyle(FieldStyle.muted)
         }
-        Spacer(minLength: 0)
-        Image(systemName: "chevron.right").font(.caption)
+        if !typeSize.isAccessibilitySize {
+          Spacer(minLength: 0)
+          Image(systemName: "chevron.right").font(.caption)
+        }
       }
       Rectangle().fill(FieldStyle.rule).frame(height: 0.5)
     }.accessibilityElement(children: .combine)
@@ -219,7 +257,7 @@ struct CollectionView: View {
           VStack(alignment: .leading, spacing: 22) {
             Eyebrow(text: "Collected with curiosity")
             HStack {
-              Text("Collection").font(FieldStyle.serif(38))
+              EditorialHeading("Collection", size: 38)
               Spacer()
               Button {
                 adding = true
@@ -336,7 +374,7 @@ struct GuideView: View {
         ScrollView {
           VStack(alignment: .leading, spacing: 24) {
             Eyebrow(text: "Twelve familiar wonders")
-            Text("The field guide").font(FieldStyle.serif(38))
+            EditorialHeading("The field guide", size: 38)
             Text("A little knowledge.\nA deeper kind of looking.")
               .font(.system(.title3, design: .serif)).foregroundStyle(FieldStyle.muted)
             CategoryFilter(selection: $category)
@@ -394,7 +432,7 @@ struct GuideDetail: View {
           SpecimenArt(kind: subject.id).frame(height: 280).frame(maxWidth: .infinity)
             .background(FieldStyle.wash.opacity(0.5))
           VStack(alignment: .leading, spacing: 8) {
-            Text(subject.name).font(FieldStyle.serif(36))
+            EditorialHeading(subject.name, size: 36)
             Text(subject.latin).font(.system(.title3, design: .serif)).italic().foregroundStyle(
               FieldStyle.muted)
           }
@@ -472,15 +510,21 @@ struct ObservationDetail: View {
                   .foregroundStyle(FieldStyle.rust).frame(width: 44, height: 44)
               }.accessibilityLabel(entry.isFavorite ? "Remove from favorites" : "Add to favorites")
             }
-            EntryImage(entry: entry).frame(height: 270).frame(maxWidth: .infinity).clipped()
-              .background(FieldStyle.wash.opacity(0.55))
+            if let data = entry.photo, let image = UIImage(data: data) {
+              Image(uiImage: image).resizable().scaledToFit().frame(maxWidth: .infinity)
+                .background(FieldStyle.wash.opacity(0.55))
+                .accessibilityLabel("Full observation photograph")
+            } else {
+              EntryImage(entry: entry).frame(height: 270).frame(maxWidth: .infinity)
+                .background(FieldStyle.wash.opacity(0.55))
+            }
             if entry.photo == nil {
               Text("ILLUSTRATION · NOT A PHOTO").font(.system(.caption2, design: .monospaced))
                 .foregroundStyle(FieldStyle.muted)
             }
             VStack(alignment: .leading, spacing: 12) {
               if entry.isSample { Eyebrow(text: "Sample observation") }
-              Text(entry.title).font(FieldStyle.serif(35))
+              EditorialHeading(entry.title, size: 35)
               Text(entry.date.formatted(date: .long, time: .shortened)).font(.subheadline)
                 .foregroundStyle(FieldStyle.muted)
               if !entry.location.isEmpty {
@@ -564,7 +608,7 @@ struct AboutView: View {
         ScrollView {
           VStack(alignment: .leading, spacing: 24) {
             SpecimenArt(kind: "daisy").frame(height: 170).frame(maxWidth: .infinity)
-            Text("Keep a little wonder.").font(FieldStyle.serif(34))
+            EditorialHeading("Keep a little wonder.", size: 34)
             Text(
               "Fieldnotes is a quiet place for the things you notice outside. Your notes and imported photos stay in this app on this device. There are no accounts, identification services or location tracking."
             )
