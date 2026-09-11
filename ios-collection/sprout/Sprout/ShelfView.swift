@@ -5,6 +5,7 @@ struct ShelfView: View {
   @State private var room: String?
   @State private var adding = false
   @State private var showSettings = false
+  @State private var selectingRoom = false
   @Environment(\.dynamicTypeSize) private var typeSize
 
   private var visible: [Plant] { store.plants.filter { room == nil || $0.room == room } }
@@ -44,11 +45,8 @@ struct ShelfView: View {
             Text("Includes your starter collection.").font(.caption)
           }.foregroundStyle(Palette.muted)
         }
-        Menu {
-          Picker("Room", selection: $room) {
-            Text("All plants").tag(String?.none)
-            ForEach(store.rooms, id: \.self) { Text($0).tag(Optional($0)) }
-          }
+        Button {
+          selectingRoom = true
         } label: {
           HStack(spacing: 10) {
             Image(systemName: "line.3.horizontal.decrease")
@@ -116,9 +114,45 @@ struct ShelfView: View {
     .toolbar(.hidden, for: .navigationBar)
     .sheet(isPresented: $adding) { PlantEditor() }
     .sheet(isPresented: $showSettings) { ShelfSettings() }
+    .sheet(isPresented: $selectingRoom) {
+      NavigationStack {
+        ScrollView {
+          VStack(spacing: 0) {
+            roomChoice(nil)
+            ForEach(store.rooms, id: \.self) { roomChoice($0) }
+          }.padding(24)
+        }
+        .background(Palette.cream).foregroundStyle(Palette.forest)
+        .navigationTitle("Rooms").navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+          ToolbarItem(placement: .cancellationAction) {
+            Button("Cancel") { selectingRoom = false }
+          }
+        }
+      }
+    }
     .onChange(of: store.rooms) { _, rooms in
       if let room, !rooms.contains(room) { self.room = nil }
     }
+  }
+
+  private func roomChoice(_ value: String?) -> some View {
+    Button {
+      room = value
+      selectingRoom = false
+    } label: {
+      HStack(spacing: 12) {
+        Text(value ?? "All plants").font(.system(.title3, design: .serif))
+          .multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
+        Spacer(minLength: 0)
+        if room == value {
+          Image(systemName: "checkmark").accessibilityHidden(true)
+        }
+      }
+      .frame(minHeight: 44).padding(.vertical, 14).contentShape(Rectangle())
+      .overlay(alignment: .bottom) { Rectangle().fill(Palette.line).frame(height: 1) }
+    }
+    .buttonStyle(.plain).accessibilityAddTraits(room == value ? .isSelected : [])
   }
 
 }
@@ -162,9 +196,7 @@ struct ShelfSettings: View {
       }.clipped().background(Palette.cream).foregroundStyle(Palette.forest)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
-        .confirmationDialog(
-          "Remove the starter collection?", isPresented: $confirm, titleVisibility: .visible
-        ) {
+        .alert("Remove the starter collection?", isPresented: $confirm) {
           Button("Remove sample plants", role: .destructive) { store.removeSamples() }
           Button("Cancel", role: .cancel) {}
         } message: {

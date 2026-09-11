@@ -4,6 +4,7 @@ import SwiftUI
 struct PlantEditor: View {
   @EnvironmentObject private var store: PlantStore
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var typeSize
   var existing: Plant?
   @State private var name = ""
   @State private var room = "Living room"
@@ -58,14 +59,25 @@ struct PlantEditor: View {
             .accessibilityIdentifier("plantRoom")
         }
         Section {
-          Stepper(value: $interval, in: 1...90) {
-            HStack {
-              Text("Check every")
-              Spacer()
-              Text("\(interval) \(interval == 1 ? "day" : "days")").foregroundStyle(Palette.forest)
-                .fontWeight(.semibold)
+          if typeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 12) {
+              Text("Check every \(interval) \(interval == 1 ? "day" : "days")")
+                .foregroundStyle(Palette.forest).fixedSize(horizontal: false, vertical: true)
+              Stepper("Watering interval", value: $interval, in: 1...90).labelsHidden()
+                .accessibilityLabel("Watering interval").accessibilityValue("\(interval) days")
             }
-          }.accessibilityLabel("Watering interval, \(interval) days")
+          } else {
+            Stepper(value: $interval, in: 1...90) {
+              HStack {
+                Text("Check every")
+                Spacer()
+                Text("\(interval) \(interval == 1 ? "day" : "days")").foregroundStyle(
+                  Palette.forest
+                )
+                .fontWeight(.semibold)
+              }
+            }.accessibilityLabel("Watering interval, \(interval) days")
+          }
           if existing?.history.isEmpty != false {
             DatePicker(
               "Last watered / start date", selection: $baseline, in: ...Date.now,
