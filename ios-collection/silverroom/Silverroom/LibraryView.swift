@@ -45,21 +45,10 @@ struct LibraryView: View {
     }
     .background(Palette.background)
     .safeAreaInset(edge: .bottom) {
-      PhotosPicker(selection: $pickerItem, matching: .images, photoLibrary: .shared()) {
-        HStack(spacing: 10) {
-          if library.importing {
-            ProgressView().tint(Palette.background)
-          } else {
-            Image(systemName: "plus")
-          }
-          Text(library.importing ? "Opening photograph…" : "Import a photograph")
-          Spacer()
-          Image(systemName: "arrow.up.right")
-        }
-      }
-      .buttonStyle(AmberButton()).disabled(library.importing)
-      .padding(.horizontal, 24).padding(.top, 12).padding(.bottom, 8)
-      .background(Palette.background)
+      importControl
+        .buttonStyle(AmberButton()).disabled(library.importing)
+        .padding(.horizontal, 24).padding(.top, 12).padding(.bottom, 8)
+        .background(Palette.background)
     }
     .fullScreenCover(item: $opened) { negative in
       EditorView(negative: negative)
@@ -93,6 +82,18 @@ struct LibraryView: View {
       }
     } message: {
       Text("The photo in your Photos library will not be changed.")
+    }
+  }
+
+  private var importControl: some View {
+    let importing = library.importing
+    return PhotosPicker(selection: $pickerItem, matching: .images, photoLibrary: .shared()) {
+      HStack(spacing: 10) {
+        if importing { ProgressView().tint(Palette.background) } else { Image(systemName: "plus") }
+        Text(importing ? "Opening photograph…" : "Import a photograph")
+        Spacer()
+        Image(systemName: "arrow.up.right")
+      }
     }
   }
 

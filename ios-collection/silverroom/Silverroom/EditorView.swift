@@ -17,6 +17,21 @@ enum Adjustment: String, CaseIterable {
     case .warmth: -1...1
     }
   }
+  var neutral: Double { self == .contrast ? 1 : 0 }
+  var lowerLabel: String {
+    switch self {
+    case .exposure: "−2 EV"
+    case .contrast: "Softer"
+    case .warmth: "Cool"
+    }
+  }
+  var upperLabel: String {
+    switch self {
+    case .exposure: "+2 EV"
+    case .contrast: "Deeper"
+    case .warmth: "Warm"
+    }
+  }
 }
 
 struct EditorView: View {
@@ -66,7 +81,7 @@ struct EditorView: View {
       await room.develop()
     }
     .sheet(isPresented: $showRecipes) {
-      RecipeShelf { recipe in
+      RecipeShelf(negative: negative) { recipe in
         room.apply(recipe)
         showRecipes = false
       }
@@ -171,6 +186,8 @@ struct EditorView: View {
       .padding(14)
     }
     .frame(height: height)
+    .contentShape(Rectangle())
+    .onLongPressGesture(minimumDuration: 0.12, pressing: { comparing = $0 }) {}
     .overlay { Rectangle().stroke(Palette.line, lineWidth: 1) }
     .padding(.horizontal, 20)
   }
@@ -226,38 +243,47 @@ struct EditorView: View {
 
   private var filmstrip: some View {
     VStack(alignment: .leading, spacing: 12) {
-      ScrollView(.horizontal, showsIndicators: false) {
-        HStack(spacing: 10) {
-          ForEach(Film.allCases) { film in
-            Button {
-              room.settings.film = film
-            } label: {
-              VStack(alignment: .leading, spacing: 6) {
-                ZStack(alignment: .topLeading) {
-                  if let image = room.films[film] {
-                    Image(uiImage: image).resizable().scaledToFill()
-                      .frame(width: 68, height: 78).clipped()
-                  } else {
-                    Palette.panel.frame(width: 68, height: 78)
+      ScrollViewReader { proxy in
+        ScrollView(.horizontal, showsIndicators: false) {
+          HStack(spacing: 10) {
+            ForEach(Film.allCases) { film in
+              Button {
+                room.settings.film = film
+              } label: {
+                VStack(alignment: .leading, spacing: 6) {
+                  ZStack(alignment: .topLeading) {
+                    if let image = room.films[film] {
+                      Image(uiImage: image).resizable().scaledToFill()
+                        .frame(width: 68, height: 78).clipped()
+                    } else {
+                      Palette.panel.frame(width: 68, height: 78)
+                    }
+                    Text(film.code).font(.system(size: 8, design: .monospaced))
+                      .padding(4).background(.black.opacity(0.5))
                   }
-                  Text(film.code).font(.system(size: 8, design: .monospaced))
-                    .padding(4).background(.black.opacity(0.5))
+                  Text(film.title).font(.system(.caption, design: .monospaced))
                 }
-                Text(film.title).font(.system(.caption, design: .monospaced))
+                .foregroundStyle(room.settings.film == film ? Palette.amber : Palette.muted)
+                .padding(5)
+                .overlay {
+                  Rectangle().stroke(
+                    room.settings.film == film ? Palette.amber : Palette.line, lineWidth: 1)
+                }
               }
-              .foregroundStyle(room.settings.film == film ? Palette.amber : Palette.muted)
-              .padding(5)
-              .overlay {
-                Rectangle().stroke(
-                  room.settings.film == film ? Palette.amber : Palette.line, lineWidth: 1)
-              }
+              .buttonStyle(.plain)
+              .id(film)
+              .accessibilityLabel("\(film.title) look")
+              .accessibilityAddTraits(room.settings.film == film ? .isSelected : [])
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel("\(film.title) look")
-            .accessibilityAddTraits(room.settings.film == film ? .isSelected : [])
+          }
+          .padding(.horizontal, 24)
+        }
+        .onChange(of: room.settings.film) { _, film in
+          withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) {
+            proxy.scrollTo(film, anchor: .center)
           }
         }
-        .padding(.horizontal, 24)
+        .onAppear { proxy.scrollTo(room.settings.film, anchor: .center) }
       }
       Text(room.settings.film.note).font(.caption).foregroundStyle(Palette.muted)
         .padding(.horizontal, 24)
@@ -272,8 +298,8 @@ struct EditorView: View {
           Button {
             adjustment = item
           } label: {
-            Text(item.rawValue).font(.caption)
-              .padding(.vertical, 10).frame(maxWidth: .infinity)
+            Text(item.rawValue).font(.subheadline)
+              .frame(maxWidth: .infinity, minHeight: 44)
               .background(adjustment == item ? Palette.panel : .clear, in: Capsule())
               .foregroundStyle(adjustment == item ? Palette.silver : Palette.muted)
           }
@@ -281,7 +307,14 @@ struct EditorView: View {
         }
       }
       HStack {
-        Text(adjustment.rawValue).font(.system(.subheadline, design: .serif))
+        Button {
+          adjustmentBinding.wrappedValue = adjustment.neutral
+        } label: {
+          Label("Neutral", systemImage: "arrow.uturn.backward")
+            .font(.caption).frame(minHeight: 32)
+        }
+        .foregroundStyle(Palette.muted)
+        .accessibilityLabel("Reset \(adjustment.rawValue.lowercased()) to neutral")
         Spacer()
         Text(valueText).font(.system(.subheadline, design: .monospaced)).foregroundStyle(
           Palette.amber)
@@ -301,6 +334,15 @@ struct EditorView: View {
           .accessibilityValue(valueText)
       }
       .padding(.bottom, 8)
+      HStack {
+        Text(adjustment.lowerLabel)
+        Spacer()
+        Text(adjustment == .contrast ? "1.00" : "0")
+          .foregroundStyle(Palette.amber)
+        Spacer()
+        Text(adjustment.upperLabel)
+      }
+      .font(.system(.caption, design: .monospaced)).foregroundStyle(Palette.muted)
     }
     .padding(.horizontal, 24).padding(.vertical, 14)
   }
@@ -344,8 +386,10 @@ struct EditorView: View {
           room.settings.squareCrop = true
         }
       }
-      Text("Reframe gently. Your original stays untouched.")
-        .font(.caption).foregroundStyle(Palette.muted)
+      Text(
+        "Rotation \(room.settings.quarterTurns * 90)° · \(room.settings.squareCrop ? "Centered square crop" : "Original proportions")"
+      )
+      .font(.caption).foregroundStyle(Palette.muted)
     }
     .padding(.horizontal, 24).padding(.vertical, 16)
   }
@@ -372,14 +416,14 @@ struct EditorView: View {
         Button {
           showRecipes = true
         } label: {
-          Label("Recipes", systemImage: "bookmark").font(.caption).frame(minHeight: 46)
+          Label("Recipes", systemImage: "bookmark").font(.subheadline).frame(minHeight: 46)
         }
         Spacer()
         Button {
           recipeName = "\(room.settings.film.title) study"
           showSave = true
         } label: {
-          Label(saved ? "Save another" : "Save recipe", systemImage: "plus").font(.caption)
+          Label(saved ? "Save another" : "Save recipe", systemImage: "plus").font(.subheadline)
             .frame(minHeight: 46)
         }
         Spacer()
@@ -391,6 +435,12 @@ struct EditorView: View {
         .accessibilityLabel("Reset edits")
       }
       .foregroundStyle(Palette.muted).padding(.horizontal, 24)
+      Label(
+        library.error == nil ? "Edits saved on this device" : "Edits could not be saved",
+        systemImage: library.error == nil ? "checkmark" : "exclamationmark.circle"
+      )
+      .font(.caption2).foregroundStyle(Palette.muted)
+      .padding(.bottom, 6)
     }
   }
 }

@@ -4,7 +4,10 @@ struct RecipeShelf: View {
   @EnvironmentObject private var library: LibraryStore
   @Environment(\.dismiss) private var dismiss
   @State private var renaming: Recipe?
+  @State private var deleting: Recipe?
   @State private var newName = ""
+  @State private var previews: [UUID: UIImage] = [:]
+  var negative: Negative?
   var onApply: ((Recipe) -> Void)?
 
   var body: some View {
@@ -35,6 +38,23 @@ struct RecipeShelf: View {
           }
           ForEach(library.state.recipes) { recipe in
             recipeRow(recipe)
+              .task(id: recipe.settings) {
+                guard
+                  let example = negative ?? library.state.negatives.first(where: { $0.isSample }),
+                  let data = try? library.data(for: example)
+                else { return }
+                let settings = recipe.settings
+                previews[recipe.id] = await Task.detached(priority: .utility) {
+                  try? ImageEngine().render(data, settings: settings, maxPixel: 220)
+                }.value
+              }
+          }
+          if !library.state.recipes.isEmpty {
+            Text(
+              negative == nil
+                ? "Previews shown on The cove sample." : "Previews shown on this photograph."
+            )
+            .font(.caption).foregroundStyle(Palette.muted)
           }
         }
         .padding(.horizontal, 26).padding(.bottom, 30)
@@ -55,15 +75,35 @@ struct RecipeShelf: View {
         }
         .disabled(newName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
       }
+      .confirmationDialog(
+        "Delete this recipe?",
+        isPresented: Binding(
+          get: { deleting != nil }, set: { if !$0 { deleting = nil } }),
+        titleVisibility: .visible
+      ) {
+        Button("Delete recipe", role: .destructive) {
+          if let deleting { library.deleteRecipe(deleting) }
+          deleting = nil
+        }
+      } message: {
+        Text("Edits already applied to photographs will be kept.")
+      }
     }
   }
 
   private func recipeRow(_ recipe: Recipe) -> some View {
     VStack(alignment: .leading, spacing: 13) {
       HStack(alignment: .top, spacing: 14) {
-        Text(recipe.settings.film.code)
-          .font(.system(size: 34, weight: .ultraLight, design: .serif))
-          .foregroundStyle(Palette.amber)
+        Group {
+          if let preview = previews[recipe.id] {
+            Image(uiImage: preview).resizable().scaledToFill()
+          } else {
+            Palette.panel
+          }
+        }
+        .frame(width: 66, height: 88).clipped()
+        .overlay { Rectangle().stroke(Palette.line, lineWidth: 1) }
+        .accessibilityHidden(true)
         VStack(alignment: .leading, spacing: 6) {
           Text(recipe.name).font(.system(.title2, design: .serif)).foregroundStyle(Palette.silver)
           Text(
@@ -71,6 +111,12 @@ struct RecipeShelf: View {
               + String(format: "%+.2f EV", recipe.settings.exposure)
           )
           .font(.system(.caption, design: .monospaced)).foregroundStyle(Palette.muted)
+          Text(
+            String(
+              format: "Contrast %.2f · Warmth %+.0f", recipe.settings.contrast,
+              recipe.settings.warmth * 100)
+          )
+          .font(.caption).foregroundStyle(Palette.muted)
         }
         Spacer(minLength: 0)
         Menu {
@@ -79,7 +125,7 @@ struct RecipeShelf: View {
             renaming = recipe
           }
           Button("Delete recipe", systemImage: "trash", role: .destructive) {
-            library.deleteRecipe(recipe)
+            deleting = recipe
           }
         } label: {
           Image(systemName: "ellipsis").frame(width: 44, height: 44).foregroundStyle(Palette.muted)

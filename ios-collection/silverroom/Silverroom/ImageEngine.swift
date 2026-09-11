@@ -74,8 +74,20 @@ final class ImageEngine {
       "CIColorControls",
       parameters: [
         kCIInputSaturationKey: saturation,
-        kCIInputContrastKey: settings.contrast * filmContrast,
+        kCIInputContrastKey: 1,
       ])
+    let contrast = (settings.contrast * filmContrast - 1) * 0.55
+    if contrast != 0 {
+      image = image.applyingFilter(
+        "CIToneCurve",
+        parameters: [
+          "inputPoint0": CIVector(x: 0, y: 0),
+          "inputPoint1": CIVector(x: 0.25, y: 0.25 - contrast / 2),
+          "inputPoint2": CIVector(x: 0.5, y: 0.5),
+          "inputPoint3": CIVector(x: 0.75, y: 0.75 + contrast / 2),
+          "inputPoint4": CIVector(x: 1, y: 1),
+        ])
+    }
     if settings.film == .silver || settings.film == .faded {
       let lift = settings.film == .silver ? 0.025 : 0.065
       image = image.applyingFilter(
