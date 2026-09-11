@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C9E8757B793EFEF95951BFA /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72795CD96611B89555F42573 /* Models.swift */; };
+		3D98B8414BEFF45D8DBFD31D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDB3208F3FDA461A5B9C2A27 /* Assets.xcassets */; };
 		4A69201F288143BA5FE07BCB /* CadenceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 968A9608728BD804995C513E /* CadenceApp.swift */; };
 		6F16EAD5A31479A9C1F6AF3C /* SessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8317E061A8DEA1C278C0E21 /* SessionView.swift */; };
 		BDBC6CDA85AF613DA84E931D /* Design.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95BF43F89B815A82D9D010E8 /* Design.swift */; };
@@ -36,6 +37,7 @@
 		95BF43F89B815A82D9D010E8 /* Design.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.swift; sourceTree = "<group>"; };
 		968A9608728BD804995C513E /* CadenceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CadenceApp.swift; sourceTree = "<group>"; };
 		A8317E061A8DEA1C278C0E21 /* SessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionView.swift; sourceTree = "<group>"; };
+		CDB3208F3FDA461A5B9C2A27 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D32D93C3A236C5B58E588C31 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		FD9FC11655635E07995796C6 /* RoutineEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutineEditor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -52,10 +54,19 @@
 		4243E910FD6A38C96D190A3B = {
 			isa = PBXGroup;
 			children = (
+				AE69C3953C6479F5C8339426 /* Resources */,
 				C9C2B55A84D4B7BD9D173D17 /* Sources */,
 				043109AA76E319C50DE63D51 /* Tests */,
 				C1F7A3E13909C18DDCE3248D /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		AE69C3953C6479F5C8339426 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CDB3208F3FDA461A5B9C2A27 /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		C1F7A3E13909C18DDCE3248D /* Products */ = {
@@ -89,6 +100,7 @@
 			buildConfigurationList = 1735C0221130CB3BCDA7BE7A /* Build configuration list for PBXNativeTarget "CadenceCoach" */;
 			buildPhases = (
 				31737370A1BFC42F6D01AA29 /* Sources */,
+				4ED8FD3B023AF725CC02E7BB /* Resources */,
 			);
 			buildRules = (
 			);
@@ -155,6 +167,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4ED8FD3B023AF725CC02E7BB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D98B8414BEFF45D8DBFD31D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		31737370A1BFC42F6D01AA29 /* Sources */ = {
@@ -281,7 +304,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dabit3.cadencecoach;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -301,7 +324,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dabit3.cadencecoach;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};

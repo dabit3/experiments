@@ -12,11 +12,11 @@ targets:
   CadenceCoach:
     type: application
     platform: iOS
-    sources: [Sources]
-    resources: [Resources]
+    sources: [Sources, Resources]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.dabit3.cadencecoach
+        TARGETED_DEVICE_FAMILY: "1"
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: Cadence
         INFOPLIST_KEY_UILaunchScreen_Generation: YES
