@@ -157,9 +157,9 @@ struct RoomView: View {
   @State private var restartConfirmation = false
 
   var body: some View {
-    ScrollView {
-      VStack(spacing: 18) {
-        HStack {
+    GeometryReader { geometry in
+      VStack(spacing: 0) {
+        HStack(spacing: 4) {
           Button(action: onClose) {
             Label("Chambers", systemImage: "chevron.left").font(.subheadline)
           }
@@ -171,72 +171,99 @@ struct RoomView: View {
           Button(action: onGuide) { Image(systemName: "questionmark").frame(width: 44, height: 44) }
             .accessibilityLabel("How to play")
         }
-        VStack(spacing: 5) {
-          Text(journey.room.title)
-            .font(.system(.largeTitle, design: .serif))
-            .foregroundStyle(Palette.cream)
-          Text(journey.room.subtitle).font(.caption).foregroundStyle(Palette.muted)
-        }
-        lightMeter
-        DungeonView(journey: journey)
-          .padding(8)
-          .background(Palette.background)
-          .overlay {
-            RoundedRectangle(cornerRadius: 12).stroke(Palette.muted.opacity(0.18), lineWidth: 1)
-          }
-          .gesture(
-            DragGesture(minimumDistance: 25).onEnded { value in
-              if abs(value.translation.width) > abs(value.translation.height) {
-                move(value.translation.width > 0 ? .right : .left)
-              } else {
-                move(value.translation.height > 0 ? .down : .up)
-              }
+        .padding(.horizontal, 22)
+        ScrollView {
+          VStack(spacing: 12) {
+            VStack(spacing: 4) {
+              Text(journey.room.title)
+                .font(.system(.title, design: .serif))
+                .foregroundStyle(Palette.cream)
+              Text(journey.room.subtitle).font(.caption).foregroundStyle(Palette.muted)
             }
-          )
-        HStack {
-          Label("\(journey.turn.keys) key", systemImage: "key.horizontal")
-          Spacer()
-          Label("\(collectedEmbers)/\(journey.room.embers) embers", systemImage: "diamond")
-          Spacer()
-          Text("\(journey.turn.moves) steps")
+            lightMeter
+            HStack {
+              Text(
+                journey.turn.outcome == .exploring
+                  ? "SWIPE THE MAP OR USE THE ARROWS" : "YOUR PATH THROUGH THE DARK"
+              )
+              .font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(1)
+              Spacer(minLength: 0)
+            }
+            .foregroundStyle(Palette.muted)
+            DungeonView(journey: journey)
+              .frame(maxHeight: max(200, geometry.size.height - 425))
+              .padding(8)
+              .background(Palette.background)
+              .overlay {
+                RoundedRectangle(cornerRadius: 12).stroke(Palette.muted.opacity(0.18), lineWidth: 1)
+              }
+              .gesture(
+                DragGesture(minimumDistance: 25).onEnded { value in
+                  if abs(value.translation.width) > abs(value.translation.height) {
+                    move(value.translation.width > 0 ? .right : .left)
+                  } else {
+                    move(value.translation.height > 0 ? .down : .up)
+                  }
+                }
+              )
+            HStack {
+              Label("\(journey.turn.keys) key", systemImage: "key.horizontal")
+              Spacer()
+              Label("\(collectedEmbers)/\(journey.room.embers) embers", systemImage: "diamond")
+              Spacer()
+              Text("\(journey.turn.moves) steps")
+            }
+            .font(.system(.caption, design: .monospaced))
+            .foregroundStyle(Palette.muted)
+            if journey.turn.outcome == .exploring {
+              Text(store.message)
+                .font(.footnote)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Palette.cream)
+                .frame(maxWidth: .infinity, minHeight: 36)
+                .accessibilityIdentifier("journey-message")
+            } else {
+              result
+            }
+          }
+          .padding(.horizontal, 24)
+          .padding(.top, 6)
+          .padding(.bottom, 8)
         }
-        .font(.system(.caption, design: .monospaced))
-        .foregroundStyle(Palette.muted)
+        .scrollIndicators(.hidden)
         if journey.turn.outcome == .exploring {
-          Text(store.message)
-            .font(.footnote)
-            .multilineTextAlignment(.center)
-            .foregroundStyle(Palette.cream)
-            .frame(minHeight: 36)
-            .accessibilityIdentifier("journey-message")
-          controls
-          HStack {
+          HStack(alignment: .center, spacing: 8) {
             Button {
               store.undo()
             } label: {
-              Label("Undo", systemImage: "arrow.uturn.backward")
+              VStack(spacing: 8) {
+                Image(systemName: "arrow.uturn.backward").font(.title3)
+                Text("Undo").font(.caption)
+              }
+              .frame(maxWidth: .infinity, minHeight: 64)
             }
             .disabled(journey.history.isEmpty)
-            Spacer()
-            Text("SWIPE OR TAP TO MOVE").font(.system(size: 8, design: .monospaced)).tracking(1)
-            Spacer()
+            controls
             Button {
               restartConfirmation = true
             } label: {
-              Label("Restart", systemImage: "arrow.clockwise")
+              VStack(spacing: 8) {
+                Image(systemName: "arrow.clockwise").font(.title3)
+                Text("Restart").font(.caption)
+              }
+              .frame(maxWidth: .infinity, minHeight: 64)
             }
           }
-          .font(.caption)
-          .frame(minHeight: 44)
           .foregroundStyle(Palette.muted)
-        } else {
-          result
+          .padding(.horizontal, 14)
+          .padding(.vertical, 8)
+          .background(Palette.background)
+          .overlay(alignment: .top) {
+            Rectangle().fill(Palette.muted.opacity(0.15)).frame(height: 1).padding(.horizontal, 24)
+          }
         }
       }
-      .padding(.horizontal, 24)
-      .padding(.bottom, 24)
     }
-    .scrollIndicators(.hidden)
     .confirmationDialog(
       "Start this chamber again?", isPresented: $restartConfirmation, titleVisibility: .visible
     ) {
@@ -262,7 +289,8 @@ struct RoomView: View {
         Text("light left").font(.caption).foregroundStyle(Palette.muted)
       }
       .foregroundStyle(
-        journey.turn.light <= 3 ? Color(red: 1, green: 0.43, blue: 0.3) : Palette.amber)
+        journey.turn.light <= 3 && journey.turn.outcome != .escaped
+          ? Color(red: 1, green: 0.43, blue: 0.3) : Palette.amber)
       GeometryReader { geometry in
         ZStack(alignment: .leading) {
           Capsule().fill(Palette.stone.opacity(0.6))
@@ -283,13 +311,13 @@ struct RoomView: View {
   }
 
   private var controls: some View {
-    VStack(spacing: 8) {
+    VStack(spacing: 4) {
       directionButton(.up)
-      HStack(spacing: 12) {
+      HStack(spacing: 4) {
         directionButton(.left)
         Image(systemName: "sparkle")
           .foregroundStyle(Palette.gold)
-          .frame(width: 50, height: 50)
+          .frame(width: 48, height: 44)
           .accessibilityHidden(true)
         directionButton(.right)
       }
@@ -304,13 +332,13 @@ struct RoomView: View {
       Image(systemName: direction.symbol)
         .font(.system(size: 20, weight: .medium))
         .foregroundStyle(Palette.cream)
-        .frame(width: 62, height: 50)
+        .frame(width: 56, height: 44)
         .background(Palette.panel, in: RoundedRectangle(cornerRadius: 16))
         .overlay {
           RoundedRectangle(cornerRadius: 16).stroke(Palette.muted.opacity(0.25), lineWidth: 1)
         }
     }
-    .buttonStyle(.plain)
+    .buttonStyle(DirectionButtonStyle())
     .accessibilityLabel("Move \(direction.rawValue)")
     .accessibilityIdentifier("move-\(direction.rawValue)")
   }
@@ -381,15 +409,29 @@ struct AmberButton: ButtonStyle {
   }
 }
 
+struct DirectionButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .brightness(configuration.isPressed ? 0.12 : 0)
+      .scaleEffect(configuration.isPressed ? 0.96 : 1)
+  }
+}
+
 struct GuideView: View {
   @Environment(\.dismiss) private var dismiss
   var body: some View {
     NavigationStack {
       ScrollView {
-        VStack(alignment: .leading, spacing: 28) {
-          LanternArt().frame(height: 175).frame(maxWidth: .infinity)
+        VStack(alignment: .leading, spacing: 22) {
           Text("The dark can wait.\nYour light cannot.")
-            .font(.system(.largeTitle, design: .serif)).foregroundStyle(Palette.cream)
+            .font(.system(.title, design: .serif)).foregroundStyle(Palette.cream)
+          HStack(spacing: 0) {
+            guideSymbol("diamond.fill", title: "+6 light")
+            guideSymbol("key.horizontal", title: "Open a door")
+            guideSymbol("door.left.hand.open", title: "Escape")
+          }
+          .padding(.vertical, 14)
+          .background(Palette.panel, in: RoundedRectangle(cornerRadius: 16))
           rule(
             "01", title: "One step. One light.",
             text:
@@ -418,6 +460,14 @@ struct GuideView: View {
       .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Done") { dismiss() } } }
     }
     .preferredColorScheme(.dark)
+  }
+
+  private func guideSymbol(_ symbol: String, title: String) -> some View {
+    VStack(spacing: 10) {
+      Image(systemName: symbol).font(.title3).foregroundStyle(Palette.amber)
+      Text(title).font(.caption).foregroundStyle(Palette.cream)
+    }
+    .frame(maxWidth: .infinity)
   }
 
   private func rule(_ number: String, title: String, text: String) -> some View {

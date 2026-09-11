@@ -158,7 +158,7 @@ struct DungeonView: View {
         let seen = journey.turn.revealed.contains(cell)
         let nearby =
           abs(cell.x - journey.turn.position.x) <= 2 && abs(cell.y - journey.turn.position.y) <= 2
-        let opacity: Double = seen ? (nearby ? 1 : 0.48) : 0.08
+        let opacity: Double = seen ? (nearby ? 1 : 0.68) : 0.06
         var tileContext = context
         tileContext.opacity = opacity
         let value = room.tile(at: cell)
@@ -177,11 +177,16 @@ struct DungeonView: View {
           crack.move(to: CGPoint(x: stone.minX + tile * 0.6, y: stone.minY))
           crack.addLine(to: CGPoint(x: stone.minX + tile * 0.53, y: stone.minY + tile * 0.22))
           crack.addLine(to: CGPoint(x: stone.minX + tile * 0.67, y: stone.minY + tile * 0.37))
-          tileContext.stroke(crack, with: .color(Palette.background.opacity(0.7)), lineWidth: 1)
+          if (cell.x * 3 + cell.y) % 4 == 0 {
+            tileContext.stroke(crack, with: .color(Palette.background.opacity(0.7)), lineWidth: 1)
+          }
         } else {
           tileContext.fill(
             Path(roundedRect: rect.insetBy(dx: 1, dy: 1), cornerRadius: 2),
-            with: .color(Palette.panel))
+            with: .color(Color(red: 0.14, green: 0.17, blue: 0.17)))
+          tileContext.stroke(
+            Path(roundedRect: rect.insetBy(dx: 3, dy: 3), cornerRadius: 2),
+            with: .color(Palette.muted.opacity(0.12)), lineWidth: 0.5)
           tileContext.fill(
             Path(
               ellipseIn: CGRect(

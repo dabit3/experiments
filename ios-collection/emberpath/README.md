@@ -24,7 +24,7 @@ xcodebuild -project Emberpath.xcodeproj -scheme Emberpath \
 
 xcodebuild -project Emberpath.xcodeproj -scheme Emberpath \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
-  -derivedDataPath build CODE_SIGNING_ALLOWED=NO test
+  -parallel-testing-enabled NO -derivedDataPath build CODE_SIGNING_ALLOWED=NO test
 
 xcrun swift format lint --strict --recursive Emberpath EmberpathTests Tools
 ```
@@ -60,6 +60,8 @@ explicit confirmation. No cloud sync; uninstalling the app removes local data.
 XCTest covers walls, key/door rules, ember cap and single collection, atomic undo,
 fog memory, loss, last-light semantics, restart, persisted unlocks/settings and a
 breadth-first solver that proves all eight designed rooms can be escaped.
+Run simulator UI testing and XCTest serially on this VM. The first parallel
+XCTest launch failed during simulator bootstrap; a serial run passed all nine tests.
 
 ## Scope
 
