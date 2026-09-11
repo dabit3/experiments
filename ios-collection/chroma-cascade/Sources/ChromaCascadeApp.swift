@@ -16,6 +16,7 @@ struct ChromaCascadeApp: App {
 
 struct HomeView: View {
   @EnvironmentObject private var store: CollectionStore
+  @Environment(\.dynamicTypeSize) private var typeSize
   @State private var path: [Int] = []
   @State private var chapters = false
   @State private var settings = false
@@ -43,13 +44,15 @@ struct HomeView: View {
               .foregroundStyle(Gallery.muted)
               .padding(.top, 15)
             GallerySculpture().padding(.top, 8)
-            HStack {
-              Eyebrow(text: "The collection")
-              Spacer()
-              Text("\(store.saved.bestMoves.count) of 12 studies")
-                .font(.system(.caption, design: .monospaced))
-                .foregroundStyle(Gallery.muted)
-            }
+            (typeSize.isAccessibilitySize
+              ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+              : AnyLayout(HStackLayout())) {
+                Eyebrow(text: "The collection")
+                if !typeSize.isAccessibilitySize { Spacer() }
+                Text("\(store.saved.bestMoves.count) of 12 studies")
+                  .font(.system(.caption, design: .monospaced))
+                  .foregroundStyle(Gallery.muted)
+              }
             ProgressView(value: Double(store.saved.bestMoves.count), total: 12)
               .tint(Gallery.accent)
               .padding(.top, 12)
@@ -101,6 +104,7 @@ struct HomeView: View {
 struct ChaptersView: View {
   @EnvironmentObject private var store: CollectionStore
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var typeSize
   let choose: (Int) -> Void
 
   var body: some View {
@@ -114,8 +118,9 @@ struct ChaptersView: View {
             CircleControl(icon: "xmark", label: "Close chapters") { dismiss() }
           }
           Text("Find your\nflow.")
-            .font(.system(size: 49, design: .serif))
+            .font(.system(.largeTitle, design: .serif))
             .tracking(-1.5)
+            .accessibilityAddTraits(.isHeader)
           Text("Every study is open. Follow your curiosity.")
             .font(.subheadline)
             .foregroundStyle(Gallery.muted)
@@ -123,7 +128,7 @@ struct ChaptersView: View {
             VStack(alignment: .leading, spacing: 16) {
               HStack(alignment: .firstTextBaseline, spacing: 16) {
                 Text(String(format: "%02d", chapter + 1))
-                  .font(.system(size: 42, design: .serif))
+                  .font(.system(.largeTitle, design: .serif))
                   .foregroundStyle(Gallery.accent)
                 VStack(alignment: .leading, spacing: 5) {
                   Text(Study.chapterNames[chapter]).font(.title3.weight(.medium))
@@ -132,14 +137,19 @@ struct ChaptersView: View {
                     .foregroundStyle(Gallery.muted)
                 }
               }
-              HStack(spacing: 12) {
+              LazyVGrid(
+                columns: Array(
+                  repeating: GridItem(.flexible(), spacing: 12),
+                  count: typeSize.isAccessibilitySize ? 2 : 4),
+                spacing: 12
+              ) {
                 ForEach((chapter * 4)..<(chapter * 4 + 4), id: \.self) { id in
                   Button {
                     choose(id)
                   } label: {
                     VStack(spacing: 9) {
                       Text(Study.all[id].number)
-                        .font(.system(size: 25, design: .serif))
+                        .font(.system(.title2, design: .serif))
                       Image(
                         systemName: store.saved.bestMoves[id] == nil
                           ? "circle" : "checkmark.circle.fill"
@@ -149,6 +159,7 @@ struct ChaptersView: View {
                         store.saved.bestMoves[id] == nil ? Gallery.line : Gallery.accent)
                     }
                     .frame(maxWidth: .infinity, minHeight: 88)
+                    .padding(.vertical, typeSize.isAccessibilitySize ? 16 : 0)
                     .background(.white.opacity(0.55), in: RoundedRectangle(cornerRadius: 15))
                     .overlay(
                       RoundedRectangle(cornerRadius: 15).strokeBorder(Gallery.line.opacity(0.7)))
@@ -207,6 +218,7 @@ struct SettingsView: View {
           ForEach(0..<5) { color in
             HStack(spacing: 16) {
               Image(systemName: Gallery.symbols[color])
+                .font(.system(size: 22))
                 .foregroundStyle(Gallery.colors[color])
                 .frame(width: 24)
               Text(Gallery.names[color]).font(.body)
@@ -220,7 +232,7 @@ struct SettingsView: View {
           Text("Made for a slower moment.")
             .font(.title3).fontDesign(.serif)
           Text(
-            "12 solvable studies. Unlimited undo. Your progress stays on this device, automatically. No accounts, clocks or scores to chase."
+            "12 solvable studies. Unlimited undo. Your progress stays on this device, automatically. No accounts or clocks."
           )
           .font(.subheadline)
           .foregroundStyle(Gallery.muted)

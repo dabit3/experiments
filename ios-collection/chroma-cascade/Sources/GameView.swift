@@ -19,6 +19,7 @@ struct GameView: View {
   @EnvironmentObject private var store: CollectionStore
   @Environment(\.dismiss) private var dismiss
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @Environment(\.dynamicTypeSize) private var typeSize
   @State private var selected: Int?
   @State private var message = "Tap a vessel, then choose where to pour."
   @State private var isError = false
@@ -45,28 +46,32 @@ struct GameView: View {
             Spacer()
             CircleControl(icon: "questionmark", label: "How to play") { help = true }
           }
-          HStack(alignment: .center) {
-            VStack(alignment: .leading, spacing: 9) {
-              Eyebrow(text: Study.chapterNames[study.chapter])
-              Text(study.name)
-                .font(.system(.title2, design: .serif))
-                .accessibilityAddTraits(.isHeader)
-              HStack(spacing: 7) {
-                ForEach(0..<study.pigmentCount, id: \.self) { color in
-                  Circle().fill(Gallery.colors[color]).frame(width: 7, height: 7)
+          (typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+            : AnyLayout(HStackLayout(alignment: .center))) {
+              VStack(alignment: .leading, spacing: 9) {
+                Eyebrow(text: Study.chapterNames[study.chapter])
+                Text(study.name)
+                  .font(.system(.title2, design: .serif))
+                  .accessibilityAddTraits(.isHeader)
+                HStack(spacing: 7) {
+                  if !typeSize.isAccessibilitySize {
+                    ForEach(0..<study.pigmentCount, id: \.self) { color in
+                      Circle().fill(Gallery.colors[color]).frame(width: 7, height: 7)
+                    }
+                  }
+                  Text("\(study.pigmentCount) pigments")
+                    .font(.caption)
+                    .foregroundStyle(Gallery.muted)
                 }
-                Text("\(study.pigmentCount) pigments")
-                  .font(.caption)
-                  .foregroundStyle(Gallery.muted)
               }
+              if !typeSize.isAccessibilitySize { Spacer() }
+              Text(study.number)
+                .font(.system(size: 76, weight: .regular, design: .serif))
+                .tracking(-4)
+                .foregroundStyle(Gallery.accent)
+                .accessibilityLabel("Study \(id + 1)")
             }
-            Spacer()
-            Text(study.number)
-              .font(.system(size: 76, weight: .regular, design: .serif))
-              .tracking(-4)
-              .foregroundStyle(Gallery.accent)
-              .accessibilityLabel("Study \(id + 1)")
-          }
           HStack {
             Eyebrow(text: "\(puzzle.moves) pours")
             Spacer()
@@ -91,19 +96,21 @@ struct GameView: View {
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity, minHeight: 44)
             .accessibilityIdentifier("pour-feedback")
-          HStack(spacing: 14) {
-            actionButton(
-              "Undo", icon: "arrow.uturn.backward", disabled: puzzle.moves == 0 || flight != nil
-            ) {
-              store.undo(id)
-              selected = nil
-              isError = false
-              message = "One step back. A fresh perspective."
+          (typeSize.isAccessibilitySize
+            ? AnyLayout(VStackLayout(spacing: 14))
+            : AnyLayout(HStackLayout(spacing: 14))) {
+              actionButton(
+                "Undo", icon: "arrow.uturn.backward", disabled: puzzle.moves == 0 || flight != nil
+              ) {
+                store.undo(id)
+                selected = nil
+                isError = false
+                message = "One step back. A fresh perspective."
+              }
+              actionButton("Restart", icon: "arrow.clockwise", disabled: flight != nil) {
+                restart = true
+              }
             }
-            actionButton("Restart", icon: "arrow.clockwise", disabled: flight != nil) {
-              restart = true
-            }
-          }
           if puzzle.isSolved {
             PrimaryButton(title: "View your finished study") { result = true }
           }
@@ -116,7 +123,12 @@ struct GameView: View {
     }
     .foregroundStyle(Gallery.ink)
     .toolbar(.hidden, for: .navigationBar)
-    .onAppear { store.open(id) }
+    .onAppear {
+      store.open(id)
+      message =
+        puzzle.isSolved
+        ? "Every pigment has found its place." : "Tap a vessel, then choose where to pour."
+    }
     .alert("Begin this study again?", isPresented: $restart) {
       Button("Restart study", role: .destructive) { resetStudy() }
       Button("Keep arranging", role: .cancel) {}
@@ -156,10 +168,10 @@ struct GameView: View {
                 .rotationEffect(.degrees(flight?.source == index ? -9 : 0))
                 .offset(y: selected == index ? -10 : 0)
                 Text(
-                  String(format: "%02d", index + 1) + " · "
-                    + (puzzle.vessels[index].isEmpty ? "empty" : "\(puzzle.vessels[index].count)/4")
+                  String(format: "%02d", index + 1) + "\n\(puzzle.vessels[index].count)/4"
                 )
                 .font(.system(.caption2, design: .monospaced))
+                .multilineTextAlignment(.center)
                 .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
                 .foregroundStyle(selected == index ? Gallery.accent : Gallery.muted)
               }
@@ -304,7 +316,7 @@ struct GameView: View {
             CircleControl(icon: "xmark", label: "Close instructions") { help = false }
           }
           Text("Let color\nfind its place.")
-            .font(.system(size: 42, design: .serif))
+            .font(.system(.largeTitle, design: .serif))
           ForEach(
             Array(
               [
