@@ -233,7 +233,7 @@ class NetClient extends ChangeNotifier {
         _attempt = 0;
         lastError = null;
         if (m['resumed'] == true) {
-          // Server re-sends room_state/match_start right after.
+          send({'type': Msg.updateProfile, ..._profile});
         } else {
           room = null;
         }
