@@ -34,6 +34,49 @@ src/
 
 ## Computer-use showcase
 
+### Arcade redesign — live fullscreen play
+
+**[Watch the 59-second, original-speed annotated recording](https://app.devin.ai/attachments/052c4628-5d3d-4125-ac81-5616a768db28/snake-redesign-fullscreen-realtime-annotated.mp4)**
+
+![The redesigned Snake Arcade cabinet](docs/showcase/redesign-start.png)
+
+Devin drove maximized, fullscreen Chrome with native keyboard input and observed
+game telemetry. No game state was injected.
+
+1. Selected **Chill**, then pressed **Space**: score 000, length 3, speed 4.0.
+2. Steered continuously to **eight apples in 22.44 seconds**, with **zero deaths
+   or pauses before the target**. The fifth apple increased speed to 4.4 cells/s;
+   the eighth produced length 11 and level 02.
+3. Pressed **P**, verified the paused overlay and frozen movement, then resumed
+   after **0.82 seconds**.
+4. Deliberately hit a wall; verified **Game Over**, final score **008**, and the
+   existing personal best **100** retained.
+5. Restarted with **Space** and ate **two more apples in 4.51 seconds**, without
+   pausing.
+
+| Eight apples, live | Game over |
+|---|---|
+| ![Continuous play at score 8](docs/showcase/redesign-score8.png) | ![Final score 008 with best 100 preserved](docs/showcase/redesign-game-over.png) |
+
+Additional browser checks passed: difficulty keys and buttons, locked difficulty
+during a run, clickable start/pause/resume/restart, all four WASD directions,
+Space/Enter on focused buttons, holding P without repeat toggles, fullscreen,
+diagnostics, enabled audio graph activity and muted silence. A separate origin
+verified the new-record badge and reload persistence without changing the
+legitimate 100-point record. No console errors were observed.
+
+Portrait checks used **390px browser touch emulation**, including all four D-pad
+turns, disabled controls while paused, and no horizontal overflow in any game
+phase. Physical mobile hardware was not tested. Sound was checked through actual
+Web Audio events; speaker quality was not assessed, and the recording is silent.
+
+![Portrait layout with touch controls](docs/showcase/redesign-mobile.png)
+
+Validation: `npm run lint`, `npm run build` (including TypeScript), and the browser
+checks above passed on the redesign.
+
+## Earlier recordings (original design)
+
 This app exists to show Devin playing a real-time game in a real browser. Devin
 drove a maximized Chrome window with genuine keyboard input only (no game-state
 injection), steering **live while the snake was moving** — reading the canvas and
