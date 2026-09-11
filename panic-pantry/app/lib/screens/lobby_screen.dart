@@ -475,7 +475,7 @@ class _LevelMap extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: s.surface,
                         borderRadius: PPRadius.card,
-                        border: Border.all(color: sel ? PPColor.paprika : s.outline, width: sel ? 3 : 1),
+                        border: Border.all(color: sel ? PPColor.paprika : s.outline, width: sel ? 4 : 1),
                         boxShadow: sel ? PPElevation.mid(s.brightness) : PPElevation.low(s.brightness),
                       ),
                       clipBehavior: Clip.antiAlias,
