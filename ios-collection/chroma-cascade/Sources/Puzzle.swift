@@ -75,7 +75,7 @@ struct Study: Identifiable {
   static let chapterNames = ["First light", "Earth & air", "After hours"]
   static let chapterNotes = [
     "Small beginnings. Beautiful order.",
-    "Warmer tones. Deeper arrangements.",
+    "Warm color. Deeper balance.",
     "Rich pigments. A little more mystery.",
   ]
   static let names = [

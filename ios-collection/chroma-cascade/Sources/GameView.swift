@@ -73,7 +73,7 @@ struct GameView: View {
                 .accessibilityLabel("Study \(id + 1)")
             }
           HStack {
-            Eyebrow(text: "\(puzzle.moves) pours")
+            Eyebrow(text: "\(puzzle.moves) \(puzzle.moves == 1 ? "pour" : "pours")")
             Spacer()
             Button {
               store.setSymbols(!store.saved.symbols)

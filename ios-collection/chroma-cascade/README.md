@@ -55,6 +55,12 @@ adds unique pigment shapes. Standard text uses Dynamic Type where appropriate;
 decorative display typography stays fixed. Scrollable screens accommodate
 larger text. Reduce Motion removes the transfer animation. Haptics are optional.
 
+Verified natively on iPhone 17 and iPhone 17e simulators running iOS 26.5,
+including maximum Dynamic Type, Reduce Motion, a completed study/replay,
+invalid moves, restart/reset cancellation, and persistence after relaunch.
+All twelve solution witnesses pass the model test suite. Spoken VoiceOver
+output/focus order and physical haptic quality have not been validated.
+
 ## Scope
 
 Portrait iPhone app. Simulator testing does not establish physical-device
