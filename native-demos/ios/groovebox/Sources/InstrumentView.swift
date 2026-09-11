@@ -391,7 +391,7 @@ struct InstrumentView: View {
         .toolbar {
           ToolbarItem(placement: .confirmationAction) { Button("Done") { mixer = false } }
         }
-    }.presentationDetents([.medium, .large])
+    }.presentationDetents([.large])
   }
 
   private var helpSheet: some View {
