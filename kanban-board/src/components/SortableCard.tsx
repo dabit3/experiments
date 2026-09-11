@@ -34,7 +34,7 @@ export function SortableCard({ card, onOpen }: SortableCardProps) {
         if (!isDragging) onOpen(card.id)
       }}
       onKeyDown={(event) => {
-        if (event.key === 'Enter') onOpen(card.id)
+        if (event.key === 'Enter' && !isDragging) onOpen(card.id)
         else listeners?.onKeyDown?.(event)
       }}
     />

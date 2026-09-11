@@ -98,7 +98,7 @@ export function CardModal({
             placeholder="Issue title"
             maxLength={200}
             required
-            autoFocus
+            data-autofocus
           />
           <label htmlFor="modal-description" className="visually-hidden">
             Description

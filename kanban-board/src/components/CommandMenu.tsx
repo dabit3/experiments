@@ -58,7 +58,7 @@ export function CommandMenu({
       <div className="command-input">
         <Icon name="search" size={20} />
         <input
-          autoFocus
+          data-autofocus
           placeholder="Search issues or type a command…"
           aria-label="Search issues and commands"
           role="combobox"

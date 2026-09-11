@@ -60,7 +60,7 @@ export default function App() {
   const [query, setQuery] = useState('')
   const [labelFilter, setLabelFilter] = useState<LabelId[]>([])
   const [assigneeFilter, setAssigneeFilter] = useState('')
-  const [descriptions, setDescriptions] = useState(true)
+  const [descriptions, setDescriptions] = useState(false)
   const [commandOpen, setCommandOpen] = useState(false)
   const [helpOpen, setHelpOpen] = useState(false)
   const [resetOpen, setResetOpen] = useState(false)
@@ -98,7 +98,7 @@ export default function App() {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (document.querySelector('dialog[open]')) return
+      if (activeCardId || document.querySelector('dialog[open]')) return
       const target = event.target
       const editing =
         target instanceof HTMLElement &&
@@ -112,7 +112,10 @@ export default function App() {
         !event.ctrlKey &&
         !event.altKey
       ) {
-        if (event.key.toLowerCase() === 'c') setOpenCardId('new')
+        if (event.key.toLowerCase() === 'c') {
+          event.preventDefault()
+          setOpenCardId('new')
+        }
         if (event.key === '/') {
           event.preventDefault()
           document.getElementById('board-search')?.focus()
@@ -130,7 +133,7 @@ export default function App() {
     }
     document.addEventListener('keydown', onKeyDown)
     return () => document.removeEventListener('keydown', onKeyDown)
-  }, [])
+  }, [activeCardId])
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
