@@ -45,28 +45,21 @@ struct TopoArtwork: View {
         warm
         ? Color(red: 0.68, green: 0.53, blue: 0.34)
         : Color(red: 0.45, green: 0.55, blue: 0.36)
-      let hills: [(Double, Double, Double)] = [
-        (0.10, 0.12, 0.2), (0.95, 0.70, 1.5), (0.48, -0.45, 2.8),
-        (-0.38, 1.20, 3.4), (1.36, -0.14, 0.7),
-      ]
-      for (cx, cy, phase) in hills {
-        for ring in stride(from: 24.0, through: 420.0, by: 13) {
-          var contourPath = Path()
-          for step in 0...100 {
-            let angle = Double(step) / 100 * .pi * 2
-            let ripple = 1 + 0.08 * sin(angle * 5 + phase) + 0.05 * cos(angle * 3 + ring * 0.01)
-            let x = cx * size.width + cos(angle) * ring * ripple
-            let y = cy * size.height + sin(angle) * ring * 0.72 * ripple
-            if step == 0 {
-              contourPath.move(to: CGPoint(x: x, y: y))
-            } else {
-              contourPath.addLine(to: CGPoint(x: x, y: y))
-            }
-          }
-          context.stroke(
-            contourPath, with: .color(contour.opacity(Int(ring) % 3 == 0 ? 0.40 : 0.22)),
-            lineWidth: 0.8)
+      let contours =
+        warm
+        ? TerrainContours.juniper
+        : (trail.id == "mirror" ? TerrainContours.mirror : TerrainContours.granite)
+      for (index, segments) in contours.enumerated() {
+        var contourPath = Path()
+        for segment in segments {
+          contourPath.move(
+            to: CGPoint(x: segment.start.x * size.width, y: segment.start.y * size.height))
+          contourPath.addLine(
+            to: CGPoint(x: segment.end.x * size.width, y: segment.end.y * size.height))
         }
+        context.stroke(
+          contourPath, with: .color(contour.opacity(index % 5 == 0 ? 0.50 : 0.28)),
+          lineWidth: index % 5 == 0 ? 1.0 : 0.65)
       }
 
       var lake = Path()
@@ -280,7 +273,7 @@ struct ElevationProfile: View {
             fraction = min(1, max(0, $0.location.x / geometry.size.width))
           })
       }
-      .frame(height: 58)
+      .frame(height: 42)
       Slider(value: $fraction, in: 0...1)
         .tint(Field.orange)
         .accessibilityLabel("Elevation route position")

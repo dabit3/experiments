@@ -132,10 +132,10 @@ struct ExpeditionView: View {
   }
 
   private var journal: some View {
-    VStack(alignment: .leading, spacing: 12) {
+    VStack(alignment: .leading, spacing: 9) {
       HStack {
         Text(
-          "0\(Trails.all.firstIndex(where: { $0.id == store.trail.id })! + 1) / \(store.trail.region)"
+          "0\((Trails.all.firstIndex(where: { $0.id == store.trail.id }) ?? 0) + 1) / \(store.trail.region)"
         )
         .font(.system(size: 8, weight: .bold)).tracking(1.8)
         Spacer()
@@ -193,7 +193,9 @@ struct ExpeditionView: View {
         }
         .padding(.bottom, 6)
       }
-      .scrollIndicators(.hidden)
+      .id("\(store.trail.id)-\(tab.rawValue)")
+      .scrollIndicators(.visible)
+      .scrollIndicatorsFlash(trigger: tab)
     }
     .padding(.horizontal, 22).padding(.top, 18)
     .background(Field.paper)
@@ -201,7 +203,7 @@ struct ExpeditionView: View {
   }
 
   private var routeDetails: some View {
-    VStack(alignment: .leading, spacing: 12) {
+    VStack(alignment: .leading, spacing: 9) {
       HStack {
         Label("\(Int(store.trail.point(at: fraction).elevation)) m", systemImage: "mountain.2")
           .font(.system(size: 12, weight: .semibold))
@@ -222,8 +224,8 @@ struct ExpeditionView: View {
       HStack {
         Text("YOUR WAYPOINTS").font(.system(size: 8, weight: .bold)).tracking(1.5)
         Spacer()
-        Text("\(store.trip.waypoints.count) stops").font(.system(size: 9)).foregroundStyle(
-          Field.muted)
+        Label("\(store.trip.waypoints.count) stops · scroll", systemImage: "chevron.down")
+          .font(.system(size: 9)).foregroundStyle(Field.muted)
       }
       ForEach(Array(store.trip.waypoints.enumerated()), id: \.element.id) { index, waypoint in
         HStack(spacing: 9) {

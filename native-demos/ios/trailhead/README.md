@@ -62,7 +62,7 @@ The bundled icon is original AppKit vector artwork. Regenerate its asset catalog
 
 Distances use the haversine formula with a 6,371 km spherical Earth radius. Ascent sums positive vertex elevation differences. Scrubbing interpolates linearly within the segment containing the selected cumulative distance. Moving time estimates **distance / 4 km/h + ascent / 600 m/h**. It excludes breaks, terrain, weather, altitude effects and descent difficulty.
 
-The map projects longitude using the region’s middle latitude so route proportions remain coherent. Contours are hand-composed parametric vector artwork, independent from the route’s elevation profile. No location permission or live position is requested.
+The map projects longitude using the region’s middle latitude so route proportions remain coherent. Contours sample a hand-composed synthetic height field with marching triangles, independent from the route’s elevation profile. They are nonintersecting vector artwork, not real elevation data. No location permission or live position is requested.
 
 ## Storage and exports
 

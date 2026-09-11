@@ -20,6 +20,7 @@ enum ItineraryExporter {
     let data = renderer.pdfData { context in
       var y: CGFloat = 42
       var page = 0
+      var section = ""
       func beginPage() {
         context.beginPage()
         page += 1
@@ -46,7 +47,17 @@ enum ItineraryExporter {
         let rect = (value as NSString).boundingRect(
           with: CGSize(width: 515, height: CGFloat.greatestFiniteMagnitude),
           options: .usesLineFragmentOrigin, attributes: attrs, context: nil)
-        if y + rect.height > 775 { beginPage() }
+        if y + rect.height > 775 {
+          beginPage()
+          if !section.isEmpty {
+            ("\(section) / CONTINUED" as NSString).draw(
+              at: CGPoint(x: 40, y: y),
+              withAttributes: [
+                .font: UIFont.systemFont(ofSize: 11, weight: .semibold), .foregroundColor: ink,
+              ])
+            y += 30
+          }
+        }
         (value as NSString).draw(
           in: CGRect(x: 40, y: y, width: 515, height: ceil(rect.height) + 3), withAttributes: attrs)
         y += ceil(rect.height) + 12
@@ -68,7 +79,12 @@ enum ItineraryExporter {
         y += 257
       }
       text(trail.description)
-      text("WAYPOINTS", size: 15, serif: true)
+      func heading(_ title: String) {
+        if y + 100 > 775 { beginPage() }
+        section = title
+        text(title, size: 15, serif: true)
+      }
+      heading("WAYPOINTS")
       for (index, waypoint) in trip.waypoints.enumerated() {
         let point = trail.point(at: waypoint.fraction)
         text(
@@ -77,11 +93,11 @@ enum ItineraryExporter {
             index + 1, waypoint.name, trail.distance * waypoint.fraction, point.elevation,
             point.latitude, point.longitude))
       }
-      text("PACKING LIST", size: 15, serif: true)
+      heading("PACKING LIST")
       for item in trip.gear {
         text("\(item.packed ? "[PACKED]" : "[      ]")  \(item.name)")
       }
-      text("PLANNING NOTES", size: 15, serif: true)
+      heading("PLANNING NOTES")
       text(
         "Moving time uses 4 km/h plus 1 hour per 600 m ascent; breaks, weather, terrain and descent difficulty are not included. Carry water, layers and appropriate navigation."
       )
