@@ -14,6 +14,14 @@ struct Revision {
   let label: String
 }
 
+enum PlaybackError: LocalizedError {
+  case outputUnavailable
+
+  var errorDescription: String? {
+    "The audio output could not start. Choose an available output in System Settings → Sound, then try again."
+  }
+}
+
 @MainActor
 final class StudioModel: ObservableObject {
   @Published var project: Project
@@ -181,8 +189,9 @@ final class StudioModel: ObservableObject {
       let range = try audio.frameRange(start: from, end: to)
       player = try AVAudioPlayer(data: audio.wavData(range: range))
       playbackOffset = Double(range.lowerBound) / audio.sampleRate
-      player?.prepareToPlay()
-      guard player?.play() == true else { throw AudioError.invalidAudio }
+      guard player?.prepareToPlay() == true, player?.play() == true else {
+        throw PlaybackError.outputUnavailable
+      }
       playing = true
       notice = selection && hasSelection ? "Auditioning selection" : "Playing"
     } catch { self.error = "Playback failed: \(error.localizedDescription)" }

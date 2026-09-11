@@ -55,7 +55,7 @@ Edits, imports, library loads, and range changes trigger autosave. Undo/redo hol
 `scripts/check.sh` runs the Xcode-provided `swift-format` linter in strict mode and the Swift Testing suite. The compiler performs Swift 6 type/concurrency checks. To format intentionally edited Swift source:
 
 ```sh
-xcrun swift-format format --in-place --recursive Sources Tests Package.swift
+xcrun swift-format format --in-place --recursive Sources Tests Package.swift scripts/make_icon.swift
 ```
 
 Tests cover frame-exact trims, linear fade endpoints and unaffected samples, gain and clipping, WAV header/interleaving/saturation, project serialization, deterministic synthesis, and rejected invalid inputs.
@@ -77,3 +77,15 @@ This checks channels, duration, frame count, sample rate, and every quantized PC
 - Export and playback clamp amplitudes above full scale to 16-bit PCM; the editor retains the unclipped float values and explicitly reports samples over 0 dBFS. No limiter or dither is applied.
 - All processing happens on the main thread. The bounded short-sound scope keeps normal operations fast; very long allowed imports may pause the interface.
 - The app does not promise gapless looping or zero-crossing alignment. Use short fades and audition to prepare loop boundaries.
+
+### Testing on a virtual Mac
+
+A Core Audio output device is required for playback. This VM initially had none (`system_profiler SPAudioDataType` showed an empty Devices section). A BlackHole 2ch 0.7.1 virtual loopback device restored real AVAudioPlayer playback:
+
+```sh
+brew install --cask blackhole-2ch
+sudo killall coreaudiod
+system_profiler SPAudioDataType
+```
+
+This is only a VM testing prerequisite, not a dependency on a Mac with speakers/headphones. It does not manufacture audible speakers: audio is routed to a virtual device, and physical listening fidelity remains unverified. BlackHole can be recorded as an input for signal verification. If output is unavailable, the app reports an actionable Sound settings error.
