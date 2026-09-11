@@ -463,29 +463,30 @@ struct StudioView: View {
 
   private var help: some View {
     NavigationStack {
-      VStack(alignment: .leading, spacing: 23) {
-        Text("A tiny guide to\nbringing drawings to life.")
-          .font(.system(size: 31, weight: .medium, design: .serif))
-        guideStep(
-          "01", "Draw a pose",
-          "Use your finger or Pencil on the warm paper. Pick a pigment and adjust your brush size.")
-        guideStep(
-          "02", "Find the next moment",
-          "Duplicate a frame, erase a detail and redraw it. Onion skin shows the previous frame at 18% opacity."
-        )
-        guideStep(
-          "03", "Give it a little rhythm",
-          "Play your loop and tune the frame rate. Move frames with the arrows; undo restores each edit."
-        )
-        guideStep(
-          "04", "Send it into the world",
-          "Every edit saves locally. Export creates a real 800 × 520 looping GIF, ready to share or save to Files."
-        )
-        Text("⌘Z Undo    ⇧⌘Z Redo    ⌘S Save    Space Play / pause")
-          .font(.system(size: 11, design: .monospaced)).foregroundStyle(Desk.muted)
-        Spacer()
-      }.padding(30).frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Desk.background).navigationTitle("Field notes")
+      ScrollView {
+        VStack(alignment: .leading, spacing: 23) {
+          Text("A tiny guide to\nbringing drawings to life.")
+            .font(.system(size: 31, weight: .medium, design: .serif))
+          guideStep(
+            "01", "Draw a pose",
+            "Use your finger or Pencil on the warm paper. Pick a pigment and adjust your brush size."
+          )
+          guideStep(
+            "02", "Find the next moment",
+            "Duplicate a frame, erase a detail and redraw it. Onion skin shows the previous frame at 18% opacity."
+          )
+          guideStep(
+            "03", "Give it a little rhythm",
+            "Play your loop and tune the frame rate. Move frames with the arrows; undo restores each edit."
+          )
+          guideStep(
+            "04", "Send it into the world",
+            "Every edit saves locally. Export creates a real 800 × 520 looping GIF, ready to share or save to Files."
+          )
+          Text("⌘Z Undo    ⇧⌘Z Redo    ⌘S Save    Space Play / pause")
+            .font(.system(size: 11, design: .monospaced)).foregroundStyle(Desk.muted)
+        }.padding(30).frame(maxWidth: .infinity, alignment: .leading)
+      }.background(Desk.background).navigationTitle("Field notes")
         .toolbar {
           ToolbarItem(placement: .confirmationAction) { Button("Done") { helpOpen = false } }
         }
@@ -498,33 +499,38 @@ struct StudioView: View {
       VStack(alignment: .leading, spacing: 6) {
         Text(title).font(.system(size: 17, weight: .semibold))
         Text(detail).font(.system(size: 14)).foregroundStyle(Desk.muted).lineSpacing(4)
+          .fixedSize(horizontal: false, vertical: true)
       }
     }
   }
 
   private var exportResult: some View {
     NavigationStack {
-      VStack(spacing: 23) {
-        Image(systemName: "checkmark.seal.fill").font(.system(size: 38)).foregroundStyle(Desk.coral)
-        Text("A little loop, ready to go.")
-          .font(.system(size: 29, weight: .medium, design: .serif))
-        Image(uiImage: ArtworkRenderer.image(store.project.frames[0], width: 600))
-          .resizable().aspectRatio(contentMode: .fit).clipShape(RoundedRectangle(cornerRadius: 12))
-          .padding(.horizontal, 15)
-        Text("\(store.project.frames.count) frames  /  \(store.project.fps) fps  /  800 × 520")
-          .font(.system(size: 13, design: .monospaced)).foregroundStyle(Desk.muted)
-        Text("Animated GIF · loops forever\nSaved in Frame Forge / Exports")
-          .font(.system(size: 13)).multilineTextAlignment(.center).lineSpacing(5)
-          .foregroundStyle(Desk.muted)
-        Button {
-          shareOpen = true
-        } label: {
-          Label("Share GIF", systemImage: "square.and.arrow.up")
-            .font(.system(size: 15, weight: .semibold))
-        }.buttonStyle(DeskButtonStyle(accent: true))
-        Spacer(minLength: 0)
-      }.padding(28).frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Desk.background).navigationTitle("Export complete")
+      ScrollView {
+        VStack(spacing: 23) {
+          Image(systemName: "checkmark.seal.fill").font(.system(size: 38)).foregroundStyle(
+            Desk.coral)
+          Text("A little loop, ready to go.")
+            .font(.system(size: 29, weight: .medium, design: .serif))
+          Image(uiImage: ArtworkRenderer.image(store.project.frames[0], width: 600))
+            .resizable().aspectRatio(contentMode: .fit).clipShape(
+              RoundedRectangle(cornerRadius: 12)
+            )
+            .frame(maxHeight: 240)
+            .padding(.horizontal, 15)
+          Text("\(store.project.frames.count) frames  /  \(store.project.fps) fps  /  800 × 520")
+            .font(.system(size: 13, design: .monospaced)).foregroundStyle(Desk.muted)
+          Text("Animated GIF · loops forever\nSaved in Frame Forge / Exports")
+            .font(.system(size: 13)).multilineTextAlignment(.center).lineSpacing(5)
+            .foregroundStyle(Desk.muted)
+          Button {
+            shareOpen = true
+          } label: {
+            Label("Share GIF", systemImage: "square.and.arrow.up")
+              .font(.system(size: 15, weight: .semibold))
+          }.buttonStyle(DeskButtonStyle(accent: true))
+        }.padding(28).frame(maxWidth: .infinity)
+      }.background(Desk.background).navigationTitle("Export complete")
         .toolbar {
           ToolbarItem(placement: .confirmationAction) {
             Button("Done") { store.exportURL = nil }
