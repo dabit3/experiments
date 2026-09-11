@@ -52,6 +52,7 @@ struct StudioView: View {
             Text(studio.current.title)
               .font(.system(.title2, design: .serif))
               .lineLimit(2)
+              .fixedSize(horizontal: false, vertical: true)
             Text(
               studio.current.isSample
                 ? "Editable sample" : "Draft autosaved"

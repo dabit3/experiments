@@ -250,7 +250,9 @@ struct GallerySheet: View {
                 HStack(alignment: .top) {
                   VStack(alignment: .leading, spacing: 4) {
                     Text(artwork.title).font(.subheadline.weight(.medium))
-                    Text("\(artwork.strokes.count) strokes").font(.caption).foregroundStyle(
+                    Text(
+                      "\(artwork.strokes.count) \(artwork.strokes.count == 1 ? "stroke" : "strokes")"
+                    ).font(.caption).foregroundStyle(
                       Atelier.muted)
                     if studio.gallery.count == 1 {
                       Button("Continue drawing") { requestOpen(artwork) }
