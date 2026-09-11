@@ -1,0 +1,450 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00ADC46B1BBBE62835737AE2 /* ImageEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0432D7E7D74DD09CCD2F00A2 /* ImageEngineTests.swift */; };
+		4D6FFF4077BE8644F9AACA76 /* ExportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEF16AC03BD49F11E1C06D5 /* ExportView.swift */; };
+		4E94B9034888EBFD77BE96CB /* Cove.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 11439DCEE84AF81D8A2F97E5 /* Cove.jpg */; };
+		5A70053C12EBD32047E86811 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53C0D2FEA0D94FE801F4AB3 /* LibraryView.swift */; };
+		73864AE268789C85D67301B0 /* LibraryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E83742D5A7D6CCD879CFB49 /* LibraryStore.swift */; };
+		88DF4BBF5B91D2A27882041F /* ImageEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8704C054A18C8191572622FE /* ImageEngine.swift */; };
+		91D6464BFD9D5D960F4D724A /* RecipeShelf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C3626AEDB9F019130FAC83 /* RecipeShelf.swift */; };
+		D85386734DB43A0CEDA980FA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDB47BE048CFC879F07CF010 /* Assets.xcassets */; };
+		E0A3E85880DA7A6918534EE3 /* Still.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 132478021A5BAB88697BAC19 /* Still.jpg */; };
+		EC1DFE1B6C0BA309AD401FB0 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F810F7C9A1E9207A150DE /* EditorView.swift */; };
+		F4569AFB908E08919A1B8157 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7DE7D5A03FA83D3AAF91920 /* Models.swift */; };
+		FDD5EA20A06E38D0C0BD7522 /* SilverroomApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 796B4AC42907CB765B267F96 /* SilverroomApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		37620B92E74DCCA74143D829 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0F997A26441FBA51D6C711DD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AEC716AAA04E3157A268AF0;
+			remoteInfo = Silverroom;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01C3626AEDB9F019130FAC83 /* RecipeShelf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeShelf.swift; sourceTree = "<group>"; };
+		0432D7E7D74DD09CCD2F00A2 /* ImageEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEngineTests.swift; sourceTree = "<group>"; };
+		11439DCEE84AF81D8A2F97E5 /* Cove.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Cove.jpg; sourceTree = "<group>"; };
+		132478021A5BAB88697BAC19 /* Still.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Still.jpg; sourceTree = "<group>"; };
+		1E83742D5A7D6CCD879CFB49 /* LibraryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryStore.swift; sourceTree = "<group>"; };
+		325F810F7C9A1E9207A150DE /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		796B4AC42907CB765B267F96 /* SilverroomApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SilverroomApp.swift; sourceTree = "<group>"; };
+		8704C054A18C8191572622FE /* ImageEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageEngine.swift; sourceTree = "<group>"; };
+		95319D5C06A6FCBA6DA6E7F2 /* SilverroomTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SilverroomTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AEF16AC03BD49F11E1C06D5 /* ExportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportView.swift; sourceTree = "<group>"; };
+		BBDBD2CAF44187ECD4C6480E /* Silverroom.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Silverroom.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDB47BE048CFC879F07CF010 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C53C0D2FEA0D94FE801F4AB3 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		C7DE7D5A03FA83D3AAF91920 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		F6B549AAFEA9E0F8F6E13F24 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		128237B10975EC6E6BBC4A8F = {
+			isa = PBXGroup;
+			children = (
+				79DD14CFE96DBC985EDCBD96 /* Silverroom */,
+				CE3AA3EE70041103917D2A7C /* SilverroomTests */,
+				DB8203F53AD6BD19465CF296 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		79DD14CFE96DBC985EDCBD96 /* Silverroom */ = {
+			isa = PBXGroup;
+			children = (
+				BDB47BE048CFC879F07CF010 /* Assets.xcassets */,
+				325F810F7C9A1E9207A150DE /* EditorView.swift */,
+				9AEF16AC03BD49F11E1C06D5 /* ExportView.swift */,
+				8704C054A18C8191572622FE /* ImageEngine.swift */,
+				F6B549AAFEA9E0F8F6E13F24 /* Info.plist */,
+				1E83742D5A7D6CCD879CFB49 /* LibraryStore.swift */,
+				C53C0D2FEA0D94FE801F4AB3 /* LibraryView.swift */,
+				C7DE7D5A03FA83D3AAF91920 /* Models.swift */,
+				01C3626AEDB9F019130FAC83 /* RecipeShelf.swift */,
+				796B4AC42907CB765B267F96 /* SilverroomApp.swift */,
+				8B5572FCA8B20654D429A666 /* Resources */,
+			);
+			path = Silverroom;
+			sourceTree = "<group>";
+		};
+		8B5572FCA8B20654D429A666 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				11439DCEE84AF81D8A2F97E5 /* Cove.jpg */,
+				132478021A5BAB88697BAC19 /* Still.jpg */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		CE3AA3EE70041103917D2A7C /* SilverroomTests */ = {
+			isa = PBXGroup;
+			children = (
+				0432D7E7D74DD09CCD2F00A2 /* ImageEngineTests.swift */,
+			);
+			path = SilverroomTests;
+			sourceTree = "<group>";
+		};
+		DB8203F53AD6BD19465CF296 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BBDBD2CAF44187ECD4C6480E /* Silverroom.app */,
+				95319D5C06A6FCBA6DA6E7F2 /* SilverroomTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		32A95FEEB59B4E3A91C80F4B /* SilverroomTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9F177AAA599677391EE7F586 /* Build configuration list for PBXNativeTarget "SilverroomTests" */;
+			buildPhases = (
+				10C48B98436B0C433EAA2EC2 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6CEC805A7E1805637A67AB5A /* PBXTargetDependency */,
+			);
+			name = SilverroomTests;
+			packageProductDependencies = (
+			);
+			productName = SilverroomTests;
+			productReference = 95319D5C06A6FCBA6DA6E7F2 /* SilverroomTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9AEC716AAA04E3157A268AF0 /* Silverroom */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1547106811B440423E10E311 /* Build configuration list for PBXNativeTarget "Silverroom" */;
+			buildPhases = (
+				93602149287C2D9C205F0E24 /* Sources */,
+				1CA886692CE40146B16BBB35 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Silverroom;
+			packageProductDependencies = (
+			);
+			productName = Silverroom;
+			productReference = BBDBD2CAF44187ECD4C6480E /* Silverroom.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0F997A26441FBA51D6C711DD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = C60E7B6F18E05E38666B4880 /* Build configuration list for PBXProject "Silverroom" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 128237B10975EC6E6BBC4A8F;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = DB8203F53AD6BD19465CF296 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9AEC716AAA04E3157A268AF0 /* Silverroom */,
+				32A95FEEB59B4E3A91C80F4B /* SilverroomTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1CA886692CE40146B16BBB35 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D85386734DB43A0CEDA980FA /* Assets.xcassets in Resources */,
+				4E94B9034888EBFD77BE96CB /* Cove.jpg in Resources */,
+				E0A3E85880DA7A6918534EE3 /* Still.jpg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		10C48B98436B0C433EAA2EC2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00ADC46B1BBBE62835737AE2 /* ImageEngineTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93602149287C2D9C205F0E24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EC1DFE1B6C0BA309AD401FB0 /* EditorView.swift in Sources */,
+				4D6FFF4077BE8644F9AACA76 /* ExportView.swift in Sources */,
+				88DF4BBF5B91D2A27882041F /* ImageEngine.swift in Sources */,
+				73864AE268789C85D67301B0 /* LibraryStore.swift in Sources */,
+				5A70053C12EBD32047E86811 /* LibraryView.swift in Sources */,
+				F4569AFB908E08919A1B8157 /* Models.swift in Sources */,
+				91D6464BFD9D5D960F4D724A /* RecipeShelf.swift in Sources */,
+				FDD5EA20A06E38D0C0BD7522 /* SilverroomApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6CEC805A7E1805637A67AB5A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AEC716AAA04E3157A268AF0 /* Silverroom */;
+			targetProxy = 37620B92E74DCCA74143D829 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		02CD9F5A1DC95BC7786217DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		06C4430B83E2F4EB1172912B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Silverroom/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.ioscollection.silverroom;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		08CC54D8F400F54013EAE8E8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.ioscollection.SilverroomTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Silverroom.app/Silverroom";
+			};
+			name = Release;
+		};
+		7FDE67603A4DA939C860D4A2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.ioscollection.SilverroomTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Silverroom.app/Silverroom";
+			};
+			name = Debug;
+		};
+		E6C025F5DD740D0A4AB6770A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Silverroom/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.ioscollection.silverroom;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E757A6481AC712D8EBB31D1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1547106811B440423E10E311 /* Build configuration list for PBXNativeTarget "Silverroom" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E6C025F5DD740D0A4AB6770A /* Debug */,
+				06C4430B83E2F4EB1172912B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9F177AAA599677391EE7F586 /* Build configuration list for PBXNativeTarget "SilverroomTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7FDE67603A4DA939C860D4A2 /* Debug */,
+				08CC54D8F400F54013EAE8E8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C60E7B6F18E05E38666B4880 /* Build configuration list for PBXProject "Silverroom" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02CD9F5A1DC95BC7786217DE /* Debug */,
+				E757A6481AC712D8EBB31D1E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0F997A26441FBA51D6C711DD /* Project object */;
+}
