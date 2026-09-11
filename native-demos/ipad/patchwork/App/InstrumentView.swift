@@ -490,7 +490,7 @@ struct InstrumentView: View {
         for index in samples.indices {
           let point = CGPoint(
             x: Double(index) / Double(max(1, samples.count - 1)) * size.width,
-            y: size.height / 2 - Double(samples[index]) * size.height * 1.4)
+            y: size.height / 2 - Double(samples[index]) / scopePeak * size.height * 0.43)
           if index == 0 { wave.move(to: point) } else { wave.addLine(to: point) }
         }
         let color = Color(red: 0.82, green: 0.93, blue: 0.57)
@@ -500,13 +500,17 @@ struct InstrumentView: View {
       .clipped()
       .accessibilityLabel("Live waveform, RMS \(store.telemetry.rms)")
       HStack {
-        Text("POST OUTPUT / REAL SAMPLES")
+        Text(String(format: "POST OUT / AUTO ±%.2f FS", scopePeak))
         Spacer()
         Text("\(store.telemetry.frames / 1000)k frames").monospacedDigit()
       }.font(.system(size: 8, design: .monospaced)).foregroundStyle(.white.opacity(0.45))
     }
     .padding(17)
     .background(Palette.ink, in: RoundedRectangle(cornerRadius: 14))
+  }
+
+  private var scopePeak: Double {
+    max(0.1, store.telemetry.samples.reduce(0) { max($0, Double(abs($1))) })
   }
 
   private var footer: some View {
