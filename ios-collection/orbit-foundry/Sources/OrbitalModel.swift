@@ -269,6 +269,7 @@ final class FlightController {
   var guided = false
   var isAiming = false
   var savedResult = false
+  var captureMoments: [Int: Double] = [:]
   init(mission: Mission) {
     self.mission = mission
     angle = mission.id == 0 ? mission.referenceAngle : mission.referenceAngle + 8
@@ -301,14 +302,25 @@ final class FlightController {
   }
   func tick() {
     guard var current = flight, current.outcome == .flying else { return }
+    let previous = current.collected
     for _ in 0..<2 { OrbitalPhysics.advance(&current, mission: mission) }
+    for index in current.collected.subtracting(previous) {
+      captureMoments[index] = current.elapsed
+    }
     trail.append(current.position)
     flight = current
   }
   func reset() {
+    if flight?.outcome == .docked {
+      attempts = 0
+      guided = false
+      angle = mission.id == 0 ? mission.referenceAngle : mission.referenceAngle + 8
+      thrust = mission.reference.length
+    }
     flight = nil
     trail = []
     isAiming = false
     savedResult = false
+    captureMoments = [:]
   }
 }

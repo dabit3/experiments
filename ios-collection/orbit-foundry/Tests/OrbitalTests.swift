@@ -94,6 +94,21 @@ final class OrbitalTests: XCTestCase {
     XCTAssertTrue(controller.guided)
   }
 
+  func testReplayAfterWinningStartsFreshScoreAndClearsCaptureEffects() {
+    let controller = FlightController(mission: Mission.all[0])
+    controller.useGuide()
+    controller.launch()
+    for _ in 0..<750 { controller.tick() }
+    XCTAssertEqual(controller.flight?.outcome, .docked)
+    XCTAssertEqual(controller.captureMoments.count, 2)
+    controller.reset()
+    XCTAssertEqual(controller.attempts, 0)
+    XCTAssertFalse(controller.guided)
+    XCTAssertTrue(controller.captureMoments.isEmpty)
+    controller.launch()
+    XCTAssertEqual(controller.attempts, 1)
+  }
+
   func testProgressionPersistenceAndBestScores() throws {
     let suite = "orbit-foundry-test-\(UUID().uuidString)"
     let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))

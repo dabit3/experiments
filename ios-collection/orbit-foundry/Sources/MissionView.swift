@@ -13,6 +13,7 @@ struct MissionView: View {
   @State private var reviewTrajectory = false
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @Environment(\.dynamicTypeSize) private var typeSize
+  @Environment(\.scenePhase) private var scenePhase
 
   init(mission: Mission, store: FlightStore, close: @escaping () -> Void) {
     self.mission = mission
@@ -25,18 +26,25 @@ struct MissionView: View {
   var body: some View {
     GeometryReader { geometry in
       if typeSize.isAccessibilitySize {
-        ScrollView {
-          VStack(spacing: 18) {
-            header
-            telemetry
-            FlightCanvas(controller: controller, reduceMotion: reduceMotion) {
-              controller.aim(toward: $0)
-            }.frame(height: 480)
-            if let outcome = controller.flight?.outcome, outcome != .flying, !reviewTrajectory {
-              resultPanel(outcome)
-            }
-            controls
-          }.padding(.horizontal, 22).padding(.bottom, 22)
+        ScrollViewReader { proxy in
+          ScrollView {
+            VStack(spacing: 18) {
+              header
+              telemetry
+              FlightCanvas(controller: controller, reduceMotion: reduceMotion) {
+                controller.aim(toward: $0)
+              }.frame(height: 480).id("trajectory")
+              if let outcome = controller.flight?.outcome, outcome != .flying, !reviewTrajectory {
+                resultPanel(outcome)
+              }
+              controls
+              Button("Back to trajectory") {
+                withAnimation(reduceMotion ? nil : .easeInOut) {
+                  proxy.scrollTo("trajectory", anchor: .top)
+                }
+              }.buttonStyle(InstrumentButton(filled: false))
+            }.padding(.horizontal, 22).padding(.bottom, 22)
+          }.clipped()
         }
       } else {
         VStack(spacing: 0) {
@@ -79,7 +87,7 @@ struct MissionView: View {
       while !Task.isCancelled {
         try? await Task.sleep(for: .milliseconds(16))
         guard !Task.isCancelled else { break }
-        if !confirmLeave {
+        if !confirmLeave && scenePhase == .active {
           let count = controller.flight?.collected.count ?? 0
           controller.tick()
           if (controller.flight?.collected.count ?? 0) > count { feedback(.success) }
@@ -313,8 +321,23 @@ struct MissionView: View {
         Button("Keep my course") { showGuide = false }.frame(maxWidth: .infinity, minHeight: 44)
       }.padding(28).fixedSize(horizontal: false, vertical: true)
     }
+    .safeAreaInset(edge: .top, spacing: 0) {
+      HStack {
+        Engraving(text: "Mission control", color: Palette.copper)
+        Spacer()
+        Button {
+          showGuide = false
+        } label: {
+          Image(systemName: "xmark").font(.system(size: 16, weight: .medium))
+            .foregroundStyle(Palette.ivory).frame(width: 44, height: 44)
+            .background(Palette.panel, in: Circle())
+        }.accessibilityLabel("Close flight guide")
+      }.padding(.horizontal, 28).padding(.top, 12).padding(.bottom, 4)
+        .background(Palette.background)
+    }
     .background(Palette.background).foregroundStyle(Palette.ivory)
-    .presentationDetents([.large]).presentationDragIndicator(.visible)
+    .presentationDetents(typeSize.isAccessibilitySize ? [.large] : [.height(580), .large])
+    .presentationDragIndicator(.visible)
   }
   private func tutorialStep(_ number: String, title: String, text: String) -> some View {
     HStack(alignment: .top, spacing: 16) {

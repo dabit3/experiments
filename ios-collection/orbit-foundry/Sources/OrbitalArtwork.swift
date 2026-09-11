@@ -91,6 +91,20 @@ enum OrbitalDrawing {
       context.fill(diamond, with: .color(Palette.cyan))
     }
   }
+  static func capture(_ context: inout GraphicsContext, at point: Vector, age: Double) {
+    guard age >= 0, age < 0.7 else { return }
+    let progress = age / 0.7
+    let radius = 16 + progress * 30
+    context.stroke(
+      ellipse(point.x, point.y, radius * 2, radius * 2),
+      with: .color(Palette.cyan.opacity(1 - progress)), lineWidth: 1.2)
+    for index in 0..<8 {
+      let angle = Double(index) * .pi / 4
+      let x = point.x + cos(angle) * (radius + 4)
+      let y = point.y + sin(angle) * (radius + 4)
+      context.fill(ellipse(x, y, 2.5, 2.5), with: .color(Palette.ivory.opacity(1 - progress)))
+    }
+  }
   static func station(_ context: inout GraphicsContext, at point: Vector) {
     context.stroke(
       ellipse(point.x, point.y, 44, 44), with: .color(Palette.ivory.opacity(0.3)),
@@ -204,6 +218,10 @@ struct FlightCanvas: View {
           OrbitalDrawing.beacon(
             &context, at: beacon, collected: controller.flight?.collected.contains(index) == true,
             time: reduceMotion ? 0 : controller.flight?.elapsed ?? 0)
+          if !reduceMotion, let moment = controller.captureMoments[index] {
+            OrbitalDrawing.capture(
+              &context, at: beacon, age: (controller.flight?.elapsed ?? 0) - moment)
+          }
         }
         OrbitalDrawing.station(&context, at: controller.mission.station)
         let position = controller.flight?.position ?? controller.mission.origin
@@ -221,17 +239,29 @@ struct FlightCanvas: View {
             at: CGPoint(x: min(300, max(63, origin.x)), y: origin.y + 42))
         }
       }
-      .contentShape(Rectangle())
-      .gesture(
-        DragGesture(minimumDistance: 4)
-          .onChanged { value in
-            controller.isAiming = true
-            onAim(
-              Vector(
-                x: (value.location.x - offsetX) / scale, y: (value.location.y - offsetY) / scale))
-          }
-          .onEnded { _ in controller.isAiming = false }
-      )
+      .overlay {
+        if controller.isReady {
+          Circle().fill(Color.clear).frame(width: 72, height: 72)
+            .contentShape(Circle())
+            .position(
+              x: controller.mission.origin.x * scale + offsetX,
+              y: controller.mission.origin.y * scale + offsetY
+            )
+            .highPriorityGesture(
+              DragGesture(minimumDistance: 4, coordinateSpace: .named("flightField"))
+                .onChanged { value in
+                  controller.isAiming = true
+                  onAim(
+                    Vector(
+                      x: (value.location.x - offsetX) / scale,
+                      y: (value.location.y - offsetY) / scale))
+                }
+                .onEnded { _ in controller.isAiming = false }
+            )
+            .accessibilityHidden(true)
+        }
+      }
+      .coordinateSpace(name: "flightField")
       .accessibilityElement(children: .ignore)
       .accessibilityLabel(
         "Orbital flight field, \(controller.mission.planets.count) planets, \(controller.flight?.collected.count ?? 0) of \(controller.mission.beacons.count) beacons collected"

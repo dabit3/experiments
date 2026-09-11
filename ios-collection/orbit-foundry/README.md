@@ -4,11 +4,13 @@ A native, offline iPhone gravity puzzle, built in SwiftUI with original procedur
 
 ## Play
 
-Eight sequential missions introduce gentle gravity, binary fields, narrow passages and deep slingshots. Drag from the probe toward the desired direction: the dotted cyan arc uses the same fixed-step physics as the flight. Releasing keeps the aim; **Launch probe** ignites it. Bearing and thrust sliders also support precise adjustment and accessibility.
+Eight sequential missions introduce gentle gravity, binary fields, narrow passages and deep slingshots. Drag from the probe's copper aim ring toward the desired direction: the dotted cyan arc uses the same fixed-step physics as the flight. Releasing keeps the aim; **Launch probe** ignites it. Bearing and thrust sliders also support precise adjustment and accessibility.
 
 Collect every cyan beacon before reaching the ivory station. Avoid planet surfaces and the flight boundary. Restart or abort at any time. **Flight guide** aligns a tested solution, marks the run guided, and explains the mission; it remains available on every mission. The first mission includes a flight-school tutorial and an aligned starting course.
 
-Three stars: one launch. Two stars: up to three launches. One star: four or more. Best scores prefer fewer launches, then shorter flight time. Every completed mission unlocks the next. Scores, lifetime launch count, and haptic preferences persist locally in UserDefaults. Leaving a mission abandons its attempt counter; the lifetime count remains. Settings can erase the flight log after confirmation.
+Three stars: one launch. Two stars: up to three launches. One star: four or more. Best scores prefer fewer launches, then shorter flight time. Every completed mission unlocks the next. Scores, lifetime launch count, and haptic preferences persist locally in UserDefaults. Replaying a completed flight starts a fresh attempt counter; retries after failure retain it. Leaving a mission abandons its attempt counter; the lifetime count remains. Settings can erase the flight log after confirmation.
+
+After a flight, **Review trajectory** reveals the path behind the result card. At accessibility text sizes, the playfield and controls scroll vertically; **Back to trajectory** returns to the field. Start aiming inside the copper ring so swipes elsewhere can scroll. Flight guide has a persistent close button and scrollable content.
 
 ## Open and build
 
@@ -46,7 +48,7 @@ swift Tools/GenerateIcon.swift
 
 The softened gravity integrator runs at 120 fixed steps per simulated second. The preview and gameplay share the same integration and collision rules. Planet layouts, reference velocities, beacon coordinates, and docks are fixed, authored mission data; XCTest verifies all eight have complete solutions. Tests also cover numerical stability, collision/missing-beacon failures, reset, launch protection, progression, best scores, serialization, and corrupt-save fallback.
 
-Canvas renders planet shading and contours, star fields, engraved rulers, trails, beacons, station and probe. The observatory animates orbital artwork; Reduce Motion pauses decorative animation. Standard controls have VoiceOver labels. Haptics are optional. There is no audio.
+Canvas renders planet shading and contours, star fields, engraved rulers, trails, beacons, station and probe. Captures emit a brief expanding ring and particles. The observatory animates orbital artwork; Reduce Motion pauses decorative animation and disables capture bursts. Flight simulation pauses when the app is inactive. Standard controls have VoiceOver labels. Haptics are optional. There is no audio.
 
 ## Scope and limitations
 

@@ -55,6 +55,7 @@ struct ObservatoryView: View {
   @State private var activeMission: Mission?
   @State private var settings = false
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @Environment(\.dynamicTypeSize) private var typeSize
   @ScaledMetric(relativeTo: .largeTitle) private var headlineSize = 43.0
 
   var body: some View {
@@ -128,10 +129,19 @@ struct ObservatoryView: View {
           }
           .padding(20)
           .background(Palette.panel.opacity(0.65), in: RoundedRectangle(cornerRadius: 24))
-          HStack {
-            Text("Mission atlas").font(.title2.weight(.medium))
-            Spacer()
-            Engraving(text: "8 coordinates")
+          Group {
+            if typeSize.isAccessibilitySize {
+              VStack(alignment: .leading, spacing: 10) {
+                Text("Mission atlas").font(.title2.weight(.medium))
+                Engraving(text: "8 coordinates")
+              }
+            } else {
+              HStack {
+                Text("Mission atlas").font(.title2.weight(.medium))
+                Spacer()
+                Engraving(text: "8 coordinates")
+              }
+            }
           }.padding(.top, 8)
           VStack(spacing: 0) {
             ForEach(Mission.all) { mission in
@@ -153,7 +163,7 @@ struct ObservatoryView: View {
             .font(.footnote).foregroundStyle(Palette.muted).frame(maxWidth: .infinity).padding(
               .bottom, 20)
         }.padding(.horizontal, 24).padding(.top, 8)
-      }
+      }.clipped()
     }
     .foregroundStyle(Palette.ivory)
     .fullScreenCover(item: $activeMission) { mission in
@@ -167,7 +177,6 @@ struct MissionRow: View {
   let mission: Mission
   let record: FlightRecord?
   let unlocked: Bool
-  @Environment(\.dynamicTypeSize) private var typeSize
   var body: some View {
     HStack(spacing: 15) {
       ZStack {
