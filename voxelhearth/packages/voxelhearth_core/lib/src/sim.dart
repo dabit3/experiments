@@ -1121,6 +1121,7 @@ class Room {
     phase = Phase.results;
     final results = players.values.map((p) => p.toInfo()).toList()
       ..sort((a, b) => (b['score'] as int).compareTo(a['score'] as int));
+    _system('Match over. ${results.isNotEmpty ? '${results.first['name']} takes the crown!' : ''}');
     emit(null, {
       't': Msg.phase,
       'phase': phase,
@@ -1129,7 +1130,6 @@ class Room {
       'worldHash': world.editsHash(),
       'chatHash': chatHash(),
     });
-    _system('Match over. ${results.isNotEmpty ? '${results.first['name']} takes the crown!' : ''}');
     dirty = true;
   }
 

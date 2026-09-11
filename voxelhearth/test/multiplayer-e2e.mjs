@@ -356,9 +356,12 @@ try {
   await sleep(2500);
   await snapAll('results');
   const results = await Promise.all(players.map((n) => d.must(n, { t: 'results' })));
+  const finalServer = await step('server results state', () => d.query(ROOM));
+  report.authoritativeResults = { phase: finalServer.state.phase, worldHash: finalServer.worldHash, chatHash: finalServer.chatHash };
+  check('server is in results phase', finalServer.state.phase === 'results', finalServer.state.phase);
   check('final scoreboard identical on all clients', same(results.map((r) => r.results)), JSON.stringify(results[0].results));
   check('final world/chat fingerprints identical on all clients', same(results.map((r) => [r.worldHash, r.chatHash])), JSON.stringify([results[0].worldHash, results[0].chatHash]));
-  check('final world/chat fingerprints match server', results[0].worldHash === q.worldHash && results[0].chatHash === q.chatHash, JSON.stringify({ client: [results[0].worldHash, results[0].chatHash], server: [q.worldHash, q.chatHash] }));
+  check('final world/chat fingerprints match server', results[0].worldHash === finalServer.worldHash && results[0].chatHash === finalServer.chatHash, JSON.stringify({ client: [results[0].worldHash, results[0].chatHash], server: [finalServer.worldHash, finalServer.chatHash] }));
   const humanRows = results[0].results.filter((r) => !r.bot);
   check('scoreboard credits 2 placed + 1 broken per player', humanRows.length === players.length && humanRows.every((r) => r.placed === 2 && r.broken === 1), JSON.stringify(humanRows.map((r) => [r.name, r.platform, r.score, r.placed, r.broken])));
   report.results = results[0];

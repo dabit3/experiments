@@ -228,6 +228,25 @@ void main() {
       expect(ph['results'], isA<List<Object?>>());
     });
 
+    test('results fingerprint includes the final chat and remains stable after match end', () {
+      room.join('a', 'Alice', 'web');
+      room.addBot();
+      room.startMatch();
+      for (var i = 0; i < 600; i++) {
+        room.tickOnce();
+      }
+      room.endMatch();
+      final result = out.lastWhere((m) => m['t'] == Msg.phase);
+      expect(room.chat.last.text, startsWith('Match over.'));
+      expect(result['worldHash'], room.world.editsHash());
+      expect(result['chatHash'], room.chatHash());
+      for (var i = 0; i < 100; i++) {
+        room.tickOnce();
+      }
+      expect(result['worldHash'], room.world.editsHash());
+      expect(result['chatHash'], room.chatHash());
+    });
+
     test('bots act deterministically for a given seed', () {
       String run() {
         final r = Room(code: 'BOTS', name: 'b', seed: 5, emit: (_, _) {}, spawnMobs: false);
