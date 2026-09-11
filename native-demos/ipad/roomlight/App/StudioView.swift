@@ -519,6 +519,10 @@ struct StudioView: View {
             .font: titleFont, .foregroundColor: UIColor(Palette.ink),
           ])
         image.draw(in: CGRect(x: 35, y: 75, width: 600, height: 470))
+        let schedule = FurnitureKind.allCases.compactMap { kind -> String? in
+          let count = room.furniture.filter { $0.kind == kind }.count
+          return count == 0 ? nil : "\(count) × \(kind.title)"
+        }.joined(separator: "\n")
         let detail = """
           ROOM STUDY
 
@@ -531,10 +535,7 @@ struct StudioView: View {
           \(room.wall.title) walls
 
           FURNITURE
-                    \(FurnitureKind.allCases.compactMap { kind -> String? in
-                        let count = room.furniture.filter { $0.kind == kind }.count
-                        return count == 0 ? nil : "\(count) × \(kind.title)"
-                    }.joined(separator: "\n"))
+          \(schedule)
           """
         (detail as NSString).draw(
           in: CGRect(x: 655, y: 105, width: 155, height: 415),

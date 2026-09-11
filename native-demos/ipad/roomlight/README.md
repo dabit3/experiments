@@ -66,10 +66,12 @@ Invalid room geometry is sanitized on read. An unreadable JSON file displays an 
 Runs the Xcode-bundled `swift-format lint --strict`, five meaningful Swift Testing model tests, and a native Simulator build/typecheck. To format intentionally edited Swift source:
 
 ```sh
-xcrun swift-format format --in-place --recursive App Sources Tests Package.swift
+xcrun swift-format format --in-place --recursive App Sources Tests scripts/generate-icon.swift Package.swift
 ```
 
 Tests cover quarter-turn bounds, grid snapping, invalid dimensions/coordinates, all eight footprints in a minimum room, atomic JSON round-trip, named-save replacement and corrupt input. UI verification must additionally exercise native drag placement, materials, view switching, undo, save/reopen, relaunch and real PDF export.
+
+An Xcode build phase draws the original architectural app icon with AppKit into the built app. Only the generator source is tracked; no prebuilt images or binaries are required.
 
 ## Modeling limits
 
