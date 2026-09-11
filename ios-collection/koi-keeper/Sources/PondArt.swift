@@ -30,7 +30,7 @@ struct PondCanvas: View {
         Path(rect),
         with: .linearGradient(
           Gradient(colors: [
-            Color(hex: 0x93AD86), Color(hex: 0x5DAB93), Color(hex: 0x1A6B63), Color(hex: 0x194E48),
+            Color(hex: 0x879B68), Color(hex: 0x55A68C), Color(hex: 0x1C756A), Color(hex: 0x174D46),
           ]),
           startPoint: .zero, endPoint: CGPoint(x: size.width, y: size.height)))
       let sun = CGPoint(x: size.width * 0.12, y: size.height * 0.27)
@@ -39,19 +39,7 @@ struct PondCanvas: View {
         with: .radialGradient(
           Gradient(colors: [Color(hex: 0xFCE8A5).opacity(0.40), .clear]),
           center: sun, startRadius: 0, endRadius: size.height * 0.65))
-      for row in 0..<20 {
-        var wave = Path()
-        let y = Double(row) * size.height / 18
-        wave.move(to: CGPoint(x: -30, y: y))
-        for col in 0..<9 {
-          let x = Double(col) * size.width / 7
-          let yy = y + sin(Double(col) * 1.8 + Double(row) + time * 0.22) * 14
-          wave.addQuadCurve(to: CGPoint(x: x + 30, y: yy), control: CGPoint(x: x, y: yy - 22))
-        }
-        context.stroke(
-          wave, with: .color(.white.opacity(row % 3 == 0 ? 0.075 : 0.033)),
-          lineWidth: row % 3 == 0 ? 2 : 1)
-      }
+      drawWaterLight(context: context, size: size, time: time)
       for index in 0..<35 {
         let x = (sin(Double(index) * 73.13) + 1) / 2 * size.width
         let y = (cos(Double(index) * 31.73) + 1) / 2 * size.height
@@ -106,10 +94,55 @@ struct PondCanvas: View {
         context.stroke(
           Path(roundedRect: area, cornerRadius: 25), with: .color(PondPalette.paper.opacity(0.6)),
           style: StrokeStyle(lineWidth: 1, dash: [3, 8]))
+        for item in model.save.garden {
+          let exclusion = CGRect(
+            x: (item.point.x - 0.12) * size.width, y: (item.point.y - 0.12) * size.height,
+            width: size.width * 0.24, height: size.height * 0.24)
+          context.stroke(
+            Path(ellipseIn: exclusion), with: .color(PondPalette.paper.opacity(0.25)),
+            style: StrokeStyle(lineWidth: 1, dash: [2, 6]))
+        }
       }
     }
     .accessibilityHidden(true)
     .drawingGroup()
+  }
+
+  private func drawWaterLight(context: GraphicsContext, size: CGSize, time: Double) {
+    var light = context
+    light.addFilter(.blur(radius: 14))
+    for ray in 0..<5 {
+      let start = Double(ray) * 66 - 90
+      var shaft = Path()
+      shaft.move(to: CGPoint(x: start, y: -30))
+      shaft.addLine(to: CGPoint(x: start + 55, y: -30))
+      shaft.addLine(to: CGPoint(x: start + 350, y: size.height * 0.79))
+      shaft.addLine(to: CGPoint(x: start + 220, y: size.height * 0.79))
+      shaft.closeSubpath()
+      light.fill(
+        shaft,
+        with: .linearGradient(
+          Gradient(colors: [Color(hex: 0xFFF1B7).opacity(0.07), .clear]),
+          startPoint: .zero, endPoint: CGPoint(x: 0, y: size.height * 0.8)))
+    }
+    for index in 0..<18 {
+      let center = CGPoint(
+        x: (sin(Double(index) * 23.4) + 1) * 0.5 * size.width,
+        y: (cos(Double(index) * 43.9) + 1) * 0.5 * size.height)
+      let radius = Double(28 + index % 5 * 14)
+      var caustic = Path()
+      for step in 0...60 {
+        let angle = Double(step) / 60 * .pi * 2
+        let wobble = 1 + sin(angle * 3 + Double(index) + time * 0.2) * 0.18
+        let point = CGPoint(
+          x: center.x + cos(angle) * radius * wobble,
+          y: center.y + sin(angle) * radius * wobble * 0.65)
+        if step == 0 { caustic.move(to: point) } else { caustic.addLine(to: point) }
+      }
+      var refracted = context
+      refracted.addFilter(.blur(radius: 0.7))
+      refracted.stroke(caustic, with: .color(Color(hex: 0xC5EBC6).opacity(0.075)), lineWidth: 1.1)
+    }
   }
 
   private func drawShore(context: GraphicsContext, size: CGSize) {
@@ -119,16 +152,16 @@ struct PondCanvas: View {
       stone.translateBy(
         x: top ? size.width + 4 - Double(index) * 19 : Double(index - 5) * 20 - 8,
         y: top
-          ? size.height * 0.10 + Double(index) * 17 : size.height * 0.82 + Double(index - 5) * 9)
+          ? size.height * 0.20 + Double(index) * 13 : size.height * 0.83 + Double(index - 5) * 9)
       stone.rotate(by: .radians(Double(index) * 0.7))
-      GardenArt.draw(context: stone, kind: .stone, scale: 0.9)
+      GardenArt.draw(context: stone, kind: .stone, scale: 0.65)
     }
     for side in 0..<2 {
       var reeds = context
       reeds.translateBy(
-        x: side == 0 ? -4 : size.width + 4, y: side == 0 ? size.height * 0.41 : size.height * 0.73)
+        x: side == 0 ? -7 : size.width + 7, y: side == 0 ? size.height * 0.38 : size.height * 0.70)
       reeds.rotate(by: .degrees(side == 0 ? 65 : -80))
-      GardenArt.draw(context: reeds, kind: .iris, scale: 1.9)
+      GardenArt.draw(context: reeds, kind: .iris, scale: 1.1)
     }
   }
 }

@@ -32,6 +32,15 @@ struct PondHome: View {
       ZStack {
         PondCanvas(model: model, engine: engine, reduceMotion: reduceMotion, editing: edit != nil)
           .ignoresSafeArea()
+        LinearGradient(
+          stops: [
+            .init(color: .clear, location: 0.58),
+            .init(color: Color(hex: 0x0D3933).opacity(0.94), location: 1),
+          ],
+          startPoint: .top, endPoint: .bottom
+        )
+        .ignoresSafeArea()
+        .allowsHitTesting(false)
         Color.clear
           .contentShape(Rectangle())
           .onTapGesture { location in
@@ -50,6 +59,12 @@ struct PondHome: View {
           header
           Spacer()
           VStack(spacing: 18) {
+            if !model.food.isEmpty {
+              Text("\(model.food.count) grains drifting")
+                .font(.system(.caption2, design: .monospaced))
+                .tracking(1)
+                .foregroundStyle(PondPalette.paper.opacity(0.8))
+            }
             Text(model.notice)
               .font(.system(.footnote, design: .rounded))
               .foregroundStyle(PondPalette.paper)
@@ -113,11 +128,15 @@ struct PondHome: View {
       Button {
         sheet = .journal
       } label: {
-        VStack(spacing: 5) {
+        VStack(spacing: 8) {
           PearlBalance(amount: model.save.pearls)
-          Text("CARE PEARLS").font(.system(size: 8, weight: .bold)).tracking(1)
+            .padding(.horizontal, 13)
+            .padding(.vertical, 8)
+            .background(PondPalette.paper, in: Capsule())
+            .foregroundStyle(PondPalette.ink)
+          Label("Journal", systemImage: "book.closed")
+            .font(.system(.caption2, design: .rounded))
         }
-        .padding(.top, 6)
       }
       .accessibilityLabel("\(model.save.pearls) care pearls. Open pond journal")
     }
@@ -159,12 +178,6 @@ struct PondHome: View {
     .padding(.horizontal, 25)
     .padding(.vertical, 20)
     .frame(maxWidth: .infinity)
-    .background {
-      LinearGradient(
-        colors: [.clear, Color(hex: 0x113E37).opacity(0.9)], startPoint: .top, endPoint: .bottom
-      )
-      .ignoresSafeArea(edges: .bottom)
-    }
   }
 
   private func pondButton(_ title: String, symbol: String, action: @escaping () -> Void)
@@ -183,12 +196,15 @@ struct PondHome: View {
     HStack {
       VStack(alignment: .leading, spacing: 5) {
         Text(editTitle(mode)).font(.system(.title3, design: .serif))
-        Text("Tap water to confirm").font(.caption).foregroundStyle(PondPalette.muted)
+        Text(mode == .remove ? "Tap an item. Pearls return." : "Tap water to confirm")
+          .font(.caption).foregroundStyle(PondPalette.muted)
       }
       Spacer()
-      Button("Cancel") {
+      Button(mode == .remove ? "Done" : "Cancel") {
         edit = nil
-        model.notice = "Nothing changed. Stay a little while."
+        model.notice =
+          mode == .remove
+          ? "Your garden is saved. Stay a little while." : "Nothing changed. Stay a little while."
       }
       .font(.subheadline.weight(.semibold))
       .padding(14)
@@ -235,6 +251,7 @@ struct PearlBalance: View {
     HStack(spacing: 6) {
       Image(systemName: "circle.inset.filled").font(.system(size: 12, weight: .light))
       Text("\(amount)").font(.system(.title3, design: .serif)).monospacedDigit()
+        .contentTransition(.numericText())
     }
     .accessibilityElement(children: .ignore)
     .accessibilityLabel("\(amount) care pearls")
