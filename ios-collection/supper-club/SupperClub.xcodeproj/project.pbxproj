@@ -1,0 +1,442 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00949F902109C2C5B254F156 /* CookView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812050454FE12EB9D0E874CD /* CookView.swift */; };
+		12C44CBE11144948CE01F05F /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6272D420054309FBEDB27DC2 /* Theme.swift */; };
+		32C0B9569844E5EB8D689950 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9DC8CD90A332DC1D711906 /* Models.swift */; };
+		53A3F14476B26435FC980683 /* SupperClubApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE747077A64B434A478F011 /* SupperClubApp.swift */; };
+		5908ED49FD77930487B8DDA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D81D39FD6BB9D312881C91E /* Assets.xcassets */; };
+		59C2E442C1AC234CAA7D9BDA /* KitchenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1755FBC86BE838B4CF0F8441 /* KitchenTests.swift */; };
+		BA14ACE8A937D125F730368E /* Recipes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC5B8E8E98045993875059D8 /* Recipes.swift */; };
+		C06B917DC0F1F7BF86B578A7 /* ShoppingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CF220149730634ADFB0F58 /* ShoppingView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		57351DBE200D09D1854FFB35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A0C3AC859155AC86478E25B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A11962337F5313103F5FD74B;
+			remoteInfo = SupperClub;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1755FBC86BE838B4CF0F8441 /* KitchenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KitchenTests.swift; sourceTree = "<group>"; };
+		21CF220149730634ADFB0F58 /* ShoppingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingView.swift; sourceTree = "<group>"; };
+		3D42B2FE6236458C6ABD6BFD /* SupperClubTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SupperClubTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D9DC8CD90A332DC1D711906 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		4D81D39FD6BB9D312881C91E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6272D420054309FBEDB27DC2 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		812050454FE12EB9D0E874CD /* CookView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookView.swift; sourceTree = "<group>"; };
+		8613757B330B31DF4B395911 /* SupperClub.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SupperClub.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC5B8E8E98045993875059D8 /* Recipes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recipes.swift; sourceTree = "<group>"; };
+		BCE747077A64B434A478F011 /* SupperClubApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupperClubApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		8B83C884B11E6589A634208A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8613757B330B31DF4B395911 /* SupperClub.app */,
+				3D42B2FE6236458C6ABD6BFD /* SupperClubTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B0E75FE8FFA63DDF771FE1AE /* SupperClub */ = {
+			isa = PBXGroup;
+			children = (
+				4D81D39FD6BB9D312881C91E /* Assets.xcassets */,
+				812050454FE12EB9D0E874CD /* CookView.swift */,
+				3D9DC8CD90A332DC1D711906 /* Models.swift */,
+				BC5B8E8E98045993875059D8 /* Recipes.swift */,
+				21CF220149730634ADFB0F58 /* ShoppingView.swift */,
+				BCE747077A64B434A478F011 /* SupperClubApp.swift */,
+				6272D420054309FBEDB27DC2 /* Theme.swift */,
+			);
+			path = SupperClub;
+			sourceTree = "<group>";
+		};
+		FC88B22E14A2282211389798 = {
+			isa = PBXGroup;
+			children = (
+				B0E75FE8FFA63DDF771FE1AE /* SupperClub */,
+				FDED844239DA66AB7075E294 /* SupperClubTests */,
+				8B83C884B11E6589A634208A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FDED844239DA66AB7075E294 /* SupperClubTests */ = {
+			isa = PBXGroup;
+			children = (
+				1755FBC86BE838B4CF0F8441 /* KitchenTests.swift */,
+			);
+			path = SupperClubTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A11962337F5313103F5FD74B /* SupperClub */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85BA6041465E23B76C335C86 /* Build configuration list for PBXNativeTarget "SupperClub" */;
+			buildPhases = (
+				6E2609F0AC280AC1586D8FA9 /* Sources */,
+				9A8A50D7AF9566EB9D28CFA5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SupperClub;
+			packageProductDependencies = (
+			);
+			productName = SupperClub;
+			productReference = 8613757B330B31DF4B395911 /* SupperClub.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C315A11DA7F5B2E010353548 /* SupperClubTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9167DC333CBFFE879996A605 /* Build configuration list for PBXNativeTarget "SupperClubTests" */;
+			buildPhases = (
+				B14015F3D713A769DFEC8305 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D8C2AB6E73B75CCA59386957 /* PBXTargetDependency */,
+			);
+			name = SupperClubTests;
+			packageProductDependencies = (
+			);
+			productName = SupperClubTests;
+			productReference = 3D42B2FE6236458C6ABD6BFD /* SupperClubTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A0C3AC859155AC86478E25B4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					A11962337F5313103F5FD74B = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					C315A11DA7F5B2E010353548 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = AF698A980BAF5A5FE4F91169 /* Build configuration list for PBXProject "SupperClub" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = FC88B22E14A2282211389798;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8B83C884B11E6589A634208A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A11962337F5313103F5FD74B /* SupperClub */,
+				C315A11DA7F5B2E010353548 /* SupperClubTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9A8A50D7AF9566EB9D28CFA5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5908ED49FD77930487B8DDA6 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6E2609F0AC280AC1586D8FA9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00949F902109C2C5B254F156 /* CookView.swift in Sources */,
+				32C0B9569844E5EB8D689950 /* Models.swift in Sources */,
+				BA14ACE8A937D125F730368E /* Recipes.swift in Sources */,
+				C06B917DC0F1F7BF86B578A7 /* ShoppingView.swift in Sources */,
+				53A3F14476B26435FC980683 /* SupperClubApp.swift in Sources */,
+				12C44CBE11144948CE01F05F /* Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B14015F3D713A769DFEC8305 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				59C2E442C1AC234CAA7D9BDA /* KitchenTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D8C2AB6E73B75CCA59386957 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A11962337F5313103F5FD74B /* SupperClub */;
+			targetProxy = 57351DBE200D09D1854FFB35 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		35F50986A98DD7CC829268C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		4587797F8B633BB3AC282D3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Supper Club";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.supperclub.ioscollection;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		682B4D4654ECC4421634554A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		758B00E186E841FCD5540912 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.supperclub.SupperClubTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SupperClub.app/SupperClub";
+			};
+			name = Debug;
+		};
+		995DECDD6C8DAFCECEBDBB42 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.supperclub.SupperClubTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SupperClub.app/SupperClub";
+			};
+			name = Release;
+		};
+		A20CCF3867303AFAD0F86944 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Supper Club";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.supperclub.ioscollection;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		85BA6041465E23B76C335C86 /* Build configuration list for PBXNativeTarget "SupperClub" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4587797F8B633BB3AC282D3F /* Debug */,
+				A20CCF3867303AFAD0F86944 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9167DC333CBFFE879996A605 /* Build configuration list for PBXNativeTarget "SupperClubTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				758B00E186E841FCD5540912 /* Debug */,
+				995DECDD6C8DAFCECEBDBB42 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AF698A980BAF5A5FE4F91169 /* Build configuration list for PBXProject "SupperClub" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35F50986A98DD7CC829268C0 /* Debug */,
+				682B4D4654ECC4421634554A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A0C3AC859155AC86478E25B4 /* Project object */;
+}
