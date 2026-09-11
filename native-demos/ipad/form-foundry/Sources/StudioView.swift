@@ -415,27 +415,31 @@ struct StudioView: View {
 
   private var exportSheet: some View {
     NavigationStack {
-      VStack(alignment: .leading, spacing: 25) {
-        Image(systemName: "cube.transparent").font(.system(size: 46, weight: .ultraLight))
-        Text("From form to file.").font(.system(size: 36, design: .serif))
-        Text("Your real mesh is ready.").font(.system(size: 18, weight: .medium))
-        HStack(spacing: 32) {
-          exportStat("\(store.project.solids.count)", label: "SOLIDS")
-          exportStat("\(store.exportVertexCount)", label: "VERTICES")
-          exportStat("\(store.exportFaceCount)", label: "TRIANGLES")
-        }
-        Text(
-          "Wavefront OBJ · millimeters · Y up\nEach primitive is a separate closed shell. Overlapping objects are not fused."
-        )
-        .foregroundStyle(StudioStyle.muted).lineSpacing(6)
-        Text("Saved in Files → On My iPad → Form Foundry → Exports → FormFoundry.obj")
-          .font(.system(size: 12, design: .monospaced)).padding(18).background(Color.white)
-        if let url = store.exportURL {
-          ShareLink(item: url) { Label("Share mesh", systemImage: "square.and.arrow.up") }
-            .buttonStyle(AccentButton())
-        }
-        Spacer()
-      }.padding(30).frame(maxWidth: .infinity, alignment: .leading).background(StudioStyle.paper)
+      ScrollView {
+        VStack(alignment: .leading, spacing: 25) {
+          Image(systemName: "cube.transparent").font(.system(size: 46, weight: .ultraLight))
+          Text("From form to file.").font(.system(size: 36, design: .serif))
+          Text("Your real mesh is ready.").font(.system(size: 18, weight: .medium))
+          HStack(spacing: 32) {
+            exportStat("\(store.project.solids.count)", label: "SOLIDS")
+            exportStat("\(store.exportVertexCount)", label: "VERTICES")
+            exportStat("\(store.exportFaceCount)", label: "TRIANGLES")
+          }
+          Text(
+            "Wavefront OBJ · millimeters · Y up\nEach primitive is a separate closed shell. Overlapping objects are not fused."
+          )
+          .foregroundStyle(StudioStyle.muted).lineSpacing(6)
+          .fixedSize(horizontal: false, vertical: true)
+          Text("Saved in Files → On My iPad → Form Foundry → Exports → FormFoundry.obj")
+            .font(.system(size: 12, design: .monospaced))
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(18).background(Color.white)
+          if let url = store.exportURL {
+            ShareLink(item: url) { Label("Share mesh", systemImage: "square.and.arrow.up") }
+              .buttonStyle(AccentButton())
+          }
+        }.padding(30).frame(maxWidth: .infinity, alignment: .leading)
+      }.background(StudioStyle.paper)
         .navigationTitle("Export complete").navigationBarTitleDisplayMode(.inline)
         .toolbar {
           ToolbarItem(placement: .confirmationAction) { Button("Done") { exportOpen = false } }
