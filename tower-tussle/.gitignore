@@ -1,0 +1,20 @@
+# iOS
+ios/build/
+ios/TowerTussle.xcodeproj/xcuserdata/
+ios/TowerTussle.xcodeproj/project.xcworkspace/xcuserdata/
+*.DS_Store
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/
+android/*.iml
+android/.kotlin/
+
+# Reproducible art intermediates
+art/renders/
+art/__pycache__/
+art/.venv/
+.ruff_cache/
