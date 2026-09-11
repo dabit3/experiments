@@ -72,7 +72,9 @@ struct ObservatoryView: View {
         }
         VStack(alignment: .leading, spacing: 3) {
           Text("Celestia").font(.system(size: 32, weight: .regular, design: .serif)).tracking(-1)
-          Eyebrow(text: "The night, within reach")
+          Text("THE NIGHT, WITHIN REACH")
+            .font(.system(size: 8, weight: .medium, design: .monospaced))
+            .tracking(1.2).foregroundStyle(Palette.muted).lineLimit(1).fixedSize()
         }
       }.frame(width: 230, alignment: .leading)
       Button {
@@ -280,6 +282,7 @@ struct ObservatoryView: View {
             set: { store.archive.working.notes = String($0.prefix(5000)) })
         )
         .font(.system(size: 13)).lineSpacing(4).scrollContentBackground(.hidden)
+        .autocorrectionDisabled().textInputAutocapitalization(.never)
         .padding(8).frame(minHeight: 130).background(Palette.ink)
         .clipShape(RoundedRectangle(cornerRadius: 8)).accessibilityIdentifier("fieldNotes")
         Text("Notes autosave on this iPad. Save evening to update the library copy.")
@@ -447,15 +450,19 @@ struct ObservatoryView: View {
           Button {
             store.change { $0.date = $0.date.addingTimeInterval(-3600) }
           } label: {
-            Image(systemName: "chevron.left")
-            Text("1h")
+            HStack(spacing: 8) {
+              Image(systemName: "chevron.left")
+              Text("1h")
+            }
           }
           .buttonStyle(InstrumentButton()).accessibilityLabel("One hour earlier")
           Button {
             store.change { $0.date = $0.date.addingTimeInterval(3600) }
           } label: {
-            Text("1h")
-            Image(systemName: "chevron.right")
+            HStack(spacing: 8) {
+              Text("1h")
+              Image(systemName: "chevron.right")
+            }
           }
           .buttonStyle(InstrumentButton()).accessibilityLabel("One hour later")
         }
@@ -573,7 +580,9 @@ struct ObservatoryView: View {
         case .save:
           Form {
             Section("Evening name") {
-              TextField("Name your evening", text: $saveName).accessibilityIdentifier("planName")
+              TextField("Name your evening", text: $saveName)
+                .autocorrectionDisabled().textInputAutocapitalization(.never)
+                .accessibilityIdentifier("planName")
             }.listRowBackground(Palette.panel)
             Section {
               Text(
