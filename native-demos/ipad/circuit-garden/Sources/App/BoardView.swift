@@ -164,21 +164,7 @@ struct ComponentView: View {
           Circle().fill(active ? GardenStyle.green : GardenStyle.brass.opacity(0.5)).frame(
             width: 5, height: 5)
         }
-        if component.kind == .toggle {
-          Button {
-            store.toggle(component.id)
-          } label: {
-            SchematicSymbol(kind: .toggle, closed: component.closed, brightness: 0)
-              .frame(height: 43)
-              .contentShape(Rectangle())
-          }
-          .buttonStyle(.plain)
-          .accessibilityLabel(component.closed ? "Open switch" : "Close switch")
-          .accessibilityIdentifier("switch.toggle")
-        } else {
-          SchematicSymbol(kind: component.kind, closed: component.closed, brightness: brightness)
-            .frame(height: 43)
-        }
+        Spacer(minLength: 0)
         Text(valueLabel)
           .font(.system(size: 11, weight: .semibold, design: .monospaced))
           .foregroundStyle(
@@ -186,6 +172,23 @@ struct ComponentView: View {
       }
       .padding(12)
       .frame(width: 144, height: 112)
+      .overlay {
+        if component.kind == .toggle {
+          Button {
+            store.toggle(component.id)
+          } label: {
+            SchematicSymbol(kind: .toggle, closed: component.closed, brightness: 0)
+              .frame(width: 120, height: 43)
+              .contentShape(Rectangle())
+          }
+          .buttonStyle(.plain)
+          .accessibilityLabel(component.closed ? "Open switch" : "Close switch")
+          .accessibilityIdentifier("switch.toggle")
+        } else {
+          SchematicSymbol(kind: component.kind, closed: component.closed, brightness: brightness)
+            .frame(width: 120, height: 43)
+        }
+      }
       .background(
         RoundedRectangle(cornerRadius: 15)
           .fill(Color(red: 0.995, green: 0.99, blue: 0.96))
@@ -257,69 +260,63 @@ struct SchematicSymbol: View {
   var brightness: Double
 
   var body: some View {
-    GeometryReader { geometry in
-      let width = geometry.size.width
-      let height = geometry.size.height
-      ZStack {
-        if kind == .lamp {
-          Circle()
-            .fill(
-              RadialGradient(
-                colors: [
-                  Color.yellow.opacity(brightness), Color.orange.opacity(brightness * 0.45), .clear,
-                ], center: .center, startRadius: 2, endRadius: 37)
-            )
-            .frame(width: 88, height: 88)
-          Circle().fill(Color(red: 1, green: 0.83, blue: 0.37).opacity(brightness)).frame(
-            width: 32, height: 32)
-        }
-        Canvas { context, _ in
-          let mid = height / 2
-          var path = Path()
-          path.move(to: CGPoint(x: 4, y: mid))
-          path.addLine(to: CGPoint(x: width * 0.28, y: mid))
-          switch kind {
-          case .battery:
-            path.move(to: CGPoint(x: width * 0.40, y: mid - 10))
-            path.addLine(to: CGPoint(x: width * 0.40, y: mid + 10))
-            path.move(to: CGPoint(x: width * 0.57, y: mid - 19))
-            path.addLine(to: CGPoint(x: width * 0.57, y: mid + 19))
-            path.move(to: CGPoint(x: width * 0.28, y: mid))
-            path.addLine(to: CGPoint(x: width * 0.40, y: mid))
-            path.move(to: CGPoint(x: width * 0.57, y: mid))
-            path.addLine(to: CGPoint(x: width - 4, y: mid))
-          case .toggle:
-            path.addLine(to: CGPoint(x: width * 0.32, y: mid))
-            path.addLine(to: CGPoint(x: width * 0.69, y: closed ? mid : mid - 18))
-            path.move(to: CGPoint(x: width * 0.7, y: mid))
-            path.addLine(to: CGPoint(x: width - 4, y: mid))
-            for x in [width * 0.30, width * 0.70] {
-              path.addEllipse(in: CGRect(x: x - 3, y: mid - 3, width: 6, height: 6))
-            }
-          case .resistor:
-            for index in 0...6 {
-              path.addLine(
-                to: CGPoint(
-                  x: width * (0.28 + Double(index) * 0.07), y: mid + (index % 2 == 0 ? -9 : 9)))
-            }
-            path.addLine(to: CGPoint(x: width * 0.73, y: mid))
-            path.addLine(to: CGPoint(x: width - 4, y: mid))
-          case .lamp:
-            path.addLine(to: CGPoint(x: width / 2 - 18, y: mid))
-            path.addEllipse(in: CGRect(x: width / 2 - 18, y: mid - 18, width: 36, height: 36))
-            path.move(to: CGPoint(x: width / 2 - 12, y: mid - 12))
-            path.addLine(to: CGPoint(x: width / 2 + 12, y: mid + 12))
-            path.move(to: CGPoint(x: width / 2 + 12, y: mid - 12))
-            path.addLine(to: CGPoint(x: width / 2 - 12, y: mid + 12))
-            path.move(to: CGPoint(x: width / 2 + 18, y: mid))
-            path.addLine(to: CGPoint(x: width - 4, y: mid))
-          }
-          context.stroke(
-            path, with: .color(GardenStyle.ink),
-            style: StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
-        }
+    Canvas { context, size in
+      let width = size.width
+      let mid = size.height / 2
+      if kind == .lamp {
+        context.fill(
+          Path(ellipseIn: CGRect(x: width / 2 - 37, y: mid - 37, width: 74, height: 74)),
+          with: .radialGradient(
+            Gradient(colors: [
+              Color.yellow.opacity(brightness), Color.orange.opacity(brightness * 0.45), .clear,
+            ]),
+            center: CGPoint(x: width / 2, y: mid), startRadius: 2, endRadius: 37))
+        context.fill(
+          Path(ellipseIn: CGRect(x: width / 2 - 16, y: mid - 16, width: 32, height: 32)),
+          with: .color(Color(red: 1, green: 0.83, blue: 0.37).opacity(brightness)))
       }
-      .frame(width: width, height: height)
+      var path = Path()
+      path.move(to: CGPoint(x: 4, y: mid))
+      path.addLine(to: CGPoint(x: width * 0.28, y: mid))
+      switch kind {
+      case .battery:
+        path.move(to: CGPoint(x: width * 0.40, y: mid - 10))
+        path.addLine(to: CGPoint(x: width * 0.40, y: mid + 10))
+        path.move(to: CGPoint(x: width * 0.57, y: mid - 19))
+        path.addLine(to: CGPoint(x: width * 0.57, y: mid + 19))
+        path.move(to: CGPoint(x: width * 0.28, y: mid))
+        path.addLine(to: CGPoint(x: width * 0.40, y: mid))
+        path.move(to: CGPoint(x: width * 0.57, y: mid))
+        path.addLine(to: CGPoint(x: width - 4, y: mid))
+      case .toggle:
+        path.addLine(to: CGPoint(x: width * 0.32, y: mid))
+        path.addLine(to: CGPoint(x: width * 0.69, y: closed ? mid : mid - 18))
+        path.move(to: CGPoint(x: width * 0.7, y: mid))
+        path.addLine(to: CGPoint(x: width - 4, y: mid))
+        for x in [width * 0.30, width * 0.70] {
+          path.addEllipse(in: CGRect(x: x - 3, y: mid - 3, width: 6, height: 6))
+        }
+      case .resistor:
+        for index in 0...6 {
+          path.addLine(
+            to: CGPoint(
+              x: width * (0.28 + Double(index) * 0.07), y: mid + (index % 2 == 0 ? -9 : 9)))
+        }
+        path.addLine(to: CGPoint(x: width * 0.73, y: mid))
+        path.addLine(to: CGPoint(x: width - 4, y: mid))
+      case .lamp:
+        path.addLine(to: CGPoint(x: width / 2 - 18, y: mid))
+        path.addEllipse(in: CGRect(x: width / 2 - 18, y: mid - 18, width: 36, height: 36))
+        path.move(to: CGPoint(x: width / 2 - 12, y: mid - 12))
+        path.addLine(to: CGPoint(x: width / 2 + 12, y: mid + 12))
+        path.move(to: CGPoint(x: width / 2 + 12, y: mid - 12))
+        path.addLine(to: CGPoint(x: width / 2 - 12, y: mid + 12))
+        path.move(to: CGPoint(x: width / 2 + 18, y: mid))
+        path.addLine(to: CGPoint(x: width - 4, y: mid))
+      }
+      context.stroke(
+        path, with: .color(GardenStyle.ink),
+        style: StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
     }
     .animation(.easeInOut(duration: 0.25), value: brightness)
   }
