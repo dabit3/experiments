@@ -71,6 +71,14 @@ struct ActionShelf<Content: View>: View {
   }
 }
 
+extension View {
+  func journalNavigation() -> some View {
+    toolbarBackground(Ink.paper, for: .navigationBar)
+      .toolbarBackground(.visible, for: .navigationBar)
+      .toolbarColorScheme(.light, for: .navigationBar)
+  }
+}
+
 struct EmptyJournal: View {
   var title: String
   var detail: String

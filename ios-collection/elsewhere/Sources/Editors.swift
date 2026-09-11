@@ -36,6 +36,7 @@ struct JourneyEditor: View {
       .scrollContentBackground(.hidden).background(Ink.paper)
       .navigationTitle(existing == nil ? "A new journey" : "Edit journey")
       .navigationBarTitleDisplayMode(.inline)
+      .journalNavigation()
       .toolbar {
         ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
         ToolbarItem(placement: .confirmationAction) {
@@ -125,6 +126,7 @@ struct MemoryEditor: View {
       .scrollContentBackground(.hidden).background(Ink.paper)
       .navigationTitle(existing == nil ? "A new stop" : "Edit memory")
       .navigationBarTitleDisplayMode(.inline)
+      .journalNavigation()
       .toolbar {
         ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
         ToolbarItem(placement: .confirmationAction) {

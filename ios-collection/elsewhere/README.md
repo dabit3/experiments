@@ -8,7 +8,8 @@ original procedural destination illustrations and vermilion journal details.
 - Three clearly labeled sample journeys, plus create, edit and delete your own.
 - Dated stops with notes, optional photo import, favorites and custom ordering.
 - A journal timeline and a decorative route diagram that works without map tiles.
-- Real 1200 × 1760 postcard images rendered locally and shared through iOS.
+- Real 1200 × 1760 postcard images rendered locally, inspectable with zoom
+  controls and shared/saved through the native iOS share sheet.
 - Local persistence across launches. Photos are resized to at most 1600 px and
   stored as JPEGs inside the journal; no accounts, network requests or API keys.
 - Original app icon and three original SwiftUI Canvas illustrations.
@@ -62,6 +63,12 @@ opens stop ordering; arrow buttons move a stop immediately. The Journal/Route
 switch changes presentation without changing order or dates. Saved collects all
 favorited stops. The passport button explains storage and can restore sample
 journeys without touching personal journals.
+
+Journey and memory actions stay above the bottom safe area. Postcards have a
+larger inspection view with pinch, double-tap and labeled zoom/reset controls.
+Type follows system settings; decorative labels cap their growth while titles,
+notes and controls remain scalable. At accessibility sizes, illustrations shrink
+to give text more room. There are no essential animated transitions.
 
 Forms save only after tapping Save; Cancel discards drafts. Empty names cannot
 be saved. Deletion asks for confirmation. Notes have a 4,000-character limit;

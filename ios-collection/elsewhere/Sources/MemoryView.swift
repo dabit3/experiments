@@ -5,6 +5,7 @@ import UIKit
 struct MemoryView: View {
   @EnvironmentObject private var journal: Journal
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var dynamicType
   let journeyID: UUID
   let memoryID: UUID
   @State private var editing = false
@@ -19,7 +20,8 @@ struct MemoryView: View {
         ScrollView {
           VStack(alignment: .leading, spacing: 24) {
             VStack(spacing: 0) {
-              MemoryArt(photo: memory.photo, style: trip.style).frame(height: 215)
+              MemoryArt(photo: memory.photo, style: trip.style)
+                .frame(height: dynamicType.isAccessibilitySize ? 125 : 215)
               HStack {
                 Eyebrow(
                   text: memory.photo == nil ? "An illustrated memory" : "From your camera roll",
@@ -78,6 +80,7 @@ struct MemoryView: View {
       }
     }
     .navigationTitle("A little memory").navigationBarTitleDisplayMode(.inline)
+    .journalNavigation()
     .toolbar(.hidden, for: .tabBar)
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
@@ -142,7 +145,9 @@ struct PostcardArtwork: View {
 @MainActor
 enum PostcardExporter {
   static func render(journey: Journey, memory: Memory) -> UIImage? {
-    let renderer = ImageRenderer(content: PostcardArtwork(journey: journey, memory: memory))
+    let renderer = ImageRenderer(
+      content: PostcardArtwork(journey: journey, memory: memory)
+        .environment(\.dynamicTypeSize, .large))
     renderer.scale = 2
     return renderer.uiImage
   }
@@ -154,6 +159,7 @@ struct PostcardView: View {
   var memory: Memory
   @State private var image: UIImage?
   @State private var sharing = false
+  @State private var inspecting = false
   @State private var exportError = false
 
   var body: some View {
@@ -162,27 +168,49 @@ struct PostcardView: View {
         VStack(spacing: 22) {
           Eyebrow(text: "Some things are worth sending", color: Ink.blue)
           if let image {
-            Image(uiImage: image).resizable().scaledToFit()
-              .shadow(color: Ink.navy.opacity(0.12), radius: 12, y: 8)
-              .accessibilityLabel("Generated postcard from \(memory.place)")
+            Button {
+              inspecting = true
+            } label: {
+              Image(uiImage: image).resizable().scaledToFit()
+                .shadow(color: Ink.navy.opacity(0.12), radius: 12, y: 8)
+                .overlay(alignment: .topTrailing) {
+                  Image(systemName: "arrow.up.left.and.arrow.down.right")
+                    .foregroundStyle(Ink.blue).padding(12).background(Ink.paper, in: Circle())
+                    .padding(8)
+                }
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Inspect postcard from \(memory.place)")
+            .accessibilityHint("Open a larger preview with zoom controls.")
+            Text("Tap to inspect · 1200 × 1760 pixels")
+              .font(.caption).foregroundStyle(Ink.muted)
           } else if exportError {
             EmptyJournal(
               title: "Couldn't make your postcard.", detail: "Close this page and try again.")
           } else {
             ProgressView("Pressing your postcard…")
           }
+          Text(
+            memory.note.count > 220
+              ? "Your postcard includes an excerpt of your note. The full memory stays in your journal."
+              : "A real image, made on your device.\nSave it, or send a little hello."
+          )
+          .font(.caption).multilineTextAlignment(.center).foregroundStyle(Ink.muted)
+        }
+        .padding(24)
+      }
+      .background(Ink.pale).navigationTitle("Your postcard").navigationBarTitleDisplayMode(.inline)
+      .journalNavigation()
+      .safeAreaInset(edge: .bottom, spacing: 0) {
+        ActionShelf {
           Button {
             sharing = true
           } label: {
             Label("Share postcard", systemImage: "square.and.arrow.up")
           }
-          .buttonStyle(PaperButton()).disabled(image == nil)
-          Text("A real image, made on your device.\nShare it, save it, or send a little hello.")
-            .font(.caption).multilineTextAlignment(.center).foregroundStyle(Ink.muted)
+          .disabled(image == nil)
         }
-        .padding(24)
       }
-      .background(Ink.pale).navigationTitle("Your postcard").navigationBarTitleDisplayMode(.inline)
       .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
       .task {
         image = PostcardExporter.render(journey: journey, memory: memory)
@@ -191,7 +219,74 @@ struct PostcardView: View {
       .sheet(isPresented: $sharing) {
         if let image { ShareSheet(image: image, title: "Greetings from \(memory.place)") }
       }
+      .fullScreenCover(isPresented: $inspecting) {
+        if let image {
+          PostcardInspection(image: image, memory: memory)
+        }
+      }
     }
+  }
+}
+
+struct PostcardInspection: View {
+  @Environment(\.dismiss) private var dismiss
+  let image: UIImage
+  let memory: Memory
+  @State private var zoom = 1.0
+  @State private var gestureZoom = 1.0
+
+  var body: some View {
+    NavigationStack {
+      GeometryReader { proxy in
+        ScrollView([.horizontal, .vertical]) {
+          Image(uiImage: image).resizable().scaledToFit()
+            .frame(width: (proxy.size.width - 32) * zoom)
+            .padding(16)
+            .accessibilityLabel(
+              "Greetings from \(memory.place). \(memory.date.formatted(date: .long, time: .omitted)). \(String(memory.note.prefix(220)))"
+            )
+            .onTapGesture(count: 2) { setZoom(zoom > 1 ? 1 : 2) }
+            .simultaneousGesture(
+              MagnifyGesture()
+                .onChanged { value in zoom = min(3, max(1, gestureZoom * value.magnification)) }
+                .onEnded { _ in gestureZoom = zoom }
+            )
+        }
+      }
+      .background(Ink.pale)
+      .navigationTitle("A closer look").navigationBarTitleDisplayMode(.inline)
+      .journalNavigation()
+      .toolbar {
+        ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } }
+      }
+      .safeAreaInset(edge: .bottom, spacing: 0) {
+        HStack {
+          Button {
+            setZoom(zoom - 0.5)
+          } label: {
+            Image(systemName: "minus.magnifyingglass").frame(width: 52, height: 48)
+          }.disabled(zoom <= 1).accessibilityLabel("Zoom out")
+          Spacer()
+          Button {
+            setZoom(1)
+          } label: {
+            Text("\(Int(zoom * 100))% · Reset").font(.subheadline).padding(12)
+          }.accessibilityLabel("Reset postcard zoom")
+          Spacer()
+          Button {
+            setZoom(zoom + 0.5)
+          } label: {
+            Image(systemName: "plus.magnifyingglass").frame(width: 52, height: 48)
+          }.disabled(zoom >= 3).accessibilityLabel("Zoom in")
+        }
+        .tint(Ink.blue).padding(.horizontal, 20).background(Ink.paper)
+      }
+    }
+  }
+
+  private func setZoom(_ value: Double) {
+    zoom = min(3, max(1, value))
+    gestureZoom = zoom
   }
 }
 

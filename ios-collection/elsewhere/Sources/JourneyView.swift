@@ -3,6 +3,7 @@ import SwiftUI
 struct JourneyView: View {
   @EnvironmentObject private var journal: Journal
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var dynamicType
   @State private var mode = 0
   @State private var editing = false
   @State private var addingStop = false
@@ -15,7 +16,7 @@ struct JourneyView: View {
       if let trip = journal.journey(journeyID) {
         ScrollView {
           VStack(alignment: .leading, spacing: 22) {
-            Landscape(style: trip.style).frame(height: 175)
+            Landscape(style: trip.style).frame(height: dynamicType.isAccessibilitySize ? 110 : 175)
               .overlay(alignment: .bottomTrailing) {
                 Eyebrow(text: "Original illustration", color: Ink.navy)
                   .padding(8).background(Ink.paper.opacity(0.9)).padding(12)
@@ -29,11 +30,13 @@ struct JourneyView: View {
                 Spacer()
                 if trip.isSample { Eyebrow(text: "Sample", color: Ink.blue) }
               }
-              Picker("Journal view", selection: $mode) {
-                Text("Journal").tag(0)
-                Text("Route").tag(1)
+              if !trip.stops.isEmpty {
+                Picker("Journal view", selection: $mode) {
+                  Text("Journal").tag(0)
+                  Text("Route").tag(1)
+                }
+                .pickerStyle(.segmented)
               }
-              .pickerStyle(.segmented)
               if trip.stops.isEmpty {
                 EmptyJournal(
                   title: "Every journey starts somewhere.",
@@ -73,6 +76,7 @@ struct JourneyView: View {
       }
     }
     .navigationTitle("The journal").navigationBarTitleDisplayMode(.inline)
+    .journalNavigation()
     .toolbar(.hidden, for: .tabBar)
     .toolbar {
       ToolbarItem(placement: .topBarTrailing) {
@@ -184,7 +188,7 @@ struct RouteView: View {
             Spacer()
             HStack {
               Spacer()
-              Eyebrow(text: "\(journey.stops.count) places · one story", color: Ink.blue)
+              Eyebrow(text: "\(journey.stopCountLabel) · one story", color: Ink.blue)
             }
           }.padding(18)
         }

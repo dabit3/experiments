@@ -30,6 +30,8 @@ struct Journey: Identifiable, Codable, Equatable {
   var isSample = false
   var stops: [Memory] = []
 
+  var stopCountLabel: String { "\(stops.count) \(stops.count == 1 ? "stop" : "stops")" }
+
   var dateLabel: String {
     guard let first = stops.map(\.date).min(), let last = stops.map(\.date).max() else {
       return "A story waiting to happen"

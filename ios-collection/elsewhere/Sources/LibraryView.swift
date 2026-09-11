@@ -36,7 +36,9 @@ struct LibraryView: View {
             }
             HStack {
               Eyebrow(
-                text: "\(journal.journeys.count) journeys · collected with love", color: Ink.muted)
+                text:
+                  "\(journal.journeys.count) \(journal.journeys.count == 1 ? "journey" : "journeys") · collected with love",
+                color: Ink.muted)
               Spacer(minLength: 0)
             }
             Button {
@@ -105,7 +107,7 @@ struct JourneyCover: View {
         HStack {
           Text(journey.dateLabel).font(.caption).foregroundStyle(Ink.muted)
           Spacer()
-          Text("\(journey.stops.count) stops").font(.caption).foregroundStyle(Ink.muted)
+          Text(journey.stopCountLabel).font(.caption).foregroundStyle(Ink.muted)
         }
         Divider().overlay(Ink.pale)
         Eyebrow(
@@ -119,7 +121,7 @@ struct JourneyCover: View {
     .shadow(color: Ink.navy.opacity(0.08), radius: 8, x: 0, y: 4)
     .accessibilityElement(children: .combine)
     .accessibilityLabel(
-      "\(journey.title), \(journey.stops.count) stops\(journey.isSample ? ", sample journey" : "")")
+      "\(journey.title), \(journey.stopCountLabel)\(journey.isSample ? ", sample journey" : "")")
   }
 }
 
@@ -160,6 +162,7 @@ struct SavedView: View {
       .padding(24)
     }
     .background(Ink.paper).navigationTitle("Saved").navigationBarTitleDisplayMode(.inline)
+    .journalNavigation()
   }
 }
 
@@ -198,6 +201,7 @@ struct PassportView: View {
         .padding(26)
       }
       .background(Ink.paper).navigationTitle("Your passport").navigationBarTitleDisplayMode(.inline)
+      .journalNavigation()
       .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
       .confirmationDialog(
         "Restore the original samples?", isPresented: $restoring, titleVisibility: .visible
