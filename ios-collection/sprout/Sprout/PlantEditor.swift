@@ -15,7 +15,8 @@ struct PlantEditor: View {
   @State private var selectedPhoto: PhotosPickerItem?
   @State private var photoError = false
   @State private var loadingPhoto = false
-  @FocusState private var focused: Bool
+  private enum Field { case name, room, notes }
+  @FocusState private var focused: Field?
   private var valid: Bool { !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 
   var body: some View {
@@ -46,12 +47,14 @@ struct PlantEditor: View {
           }
         }
         Section("Make it yours") {
-          TextField("Plant name", text: $name).focused($focused).textInputAutocapitalization(.words)
+          TextField("Plant name", text: $name).focused($focused, equals: .name)
+            .textInputAutocapitalization(.words)
             .accessibilityIdentifier("plantName")
           Picker("Plant / illustration", selection: $kind) {
             ForEach(PlantKind.allCases) { Text($0.rawValue).tag($0) }
           }
           TextField("Room", text: $room).textInputAutocapitalization(.words)
+            .focused($focused, equals: .room)
             .accessibilityIdentifier("plantRoom")
         }
         Section {
@@ -77,6 +80,7 @@ struct PlantEditor: View {
         }
         Section("Notes") {
           TextField("Light, new leaves, little observations…", text: $notes, axis: .vertical)
+            .focused($focused, equals: .notes)
             .lineLimit(4...8).accessibilityIdentifier("plantNotes")
         }
       }
@@ -91,7 +95,7 @@ struct PlantEditor: View {
         }
         ToolbarItemGroup(placement: .keyboard) {
           Spacer()
-          Button("Done") { focused = false }
+          Button("Done") { focused = nil }
         }
       }
       .onAppear {

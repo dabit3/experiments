@@ -97,6 +97,7 @@ struct ShelfView: View {
         }.padding(.vertical, 12)
       }.padding(.horizontal, 24).padding(.bottom, 20)
     }
+    .clipped()
     .background(Palette.cream)
     .foregroundStyle(Palette.forest)
     .toolbar(.hidden, for: .navigationBar)

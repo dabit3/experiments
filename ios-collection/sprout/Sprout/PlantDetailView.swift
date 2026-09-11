@@ -96,7 +96,9 @@ struct PlantDetailView: View {
               HStack {
                 Text("Care journal").font(.system(.title2, design: .serif))
                 Spacer()
-                Text("\(plant.history.count) waterings").font(.caption).foregroundStyle(
+                Text(
+                  "\(plant.history.count) \(plant.history.count == 1 ? "watering" : "waterings")"
+                ).font(.caption).foregroundStyle(
                   Palette.muted)
               }
               if plant.history.isEmpty {
@@ -174,6 +176,7 @@ struct WateringEditor: View {
           Text("The next soil check is calculated from your most recent watering.")
         }
         Button("Delete this watering", role: .destructive) { confirm = true }
+          .foregroundStyle(.red)
       }
       .scrollContentBackground(.hidden).background(Palette.cream)
       .navigationTitle("Edit watering").navigationBarTitleDisplayMode(.inline)

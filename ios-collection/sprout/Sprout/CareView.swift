@@ -34,6 +34,7 @@ struct CareView: View {
         .font(.caption).foregroundStyle(Palette.muted).lineSpacing(4).padding(.top, 8)
       }.padding(24)
     }
+    .clipped()
     .background(Palette.cream).foregroundStyle(Palette.forest)
     .toolbar(.hidden, for: .navigationBar)
   }
@@ -52,7 +53,7 @@ struct CareView: View {
         }
         Spacer(minLength: 0)
         Image(systemName: "arrow.up.right").font(.subheadline)
-      }.padding(.bottom, 10).overlay(alignment: .bottom) {
+      }.padding(.bottom, 10).contentShape(Rectangle()).overlay(alignment: .bottom) {
         Rectangle().fill(Palette.line).frame(height: 1)
       }
     }.buttonStyle(.plain)
@@ -89,6 +90,7 @@ struct GuideView: View {
         ).font(.caption).foregroundStyle(Palette.muted).lineSpacing(4)
       }.padding(24)
     }
+    .clipped()
     .background(Palette.cream).foregroundStyle(Palette.forest)
     .toolbar(.hidden, for: .navigationBar)
   }
