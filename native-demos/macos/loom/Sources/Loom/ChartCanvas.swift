@@ -212,6 +212,10 @@ enum Graphic {
       path.stroke()
     }
     var hits: [(NSRect, Datum)] = []
+    var labels: [NSRect] = []
+    let markBounds = positions.map {
+      NSRect(x: $0.x - 9, y: $0.y - 9, width: 18, height: 18)
+    }
     for (point, position) in zip(points, positions) {
       let diameter: CGFloat = selected == point.id ? 15 : scatter ? 12 : 9
       let circle = NSRect(
@@ -225,9 +229,23 @@ enum Graphic {
       outline.lineWidth = 2
       outline.stroke()
       if (project.showValues && points.count <= 12) || selected == point.id {
-        text(
-          number(point.value), x: position.x - 40, y: position.y - 23, width: 80,
-          size: 11, weight: .semibold, align: .center, mono: true)
+        let candidates = [
+          NSRect(x: position.x - 30, y: position.y - 25, width: 60, height: 16),
+          NSRect(x: position.x - 30, y: position.y + 11, width: 60, height: 16),
+          NSRect(x: position.x + 13, y: position.y - 8, width: 60, height: 16),
+          NSRect(x: position.x - 73, y: position.y - 8, width: 60, height: 16),
+        ]
+        if let label = candidates.first(where: { candidate in
+          candidate.minX >= 44 && candidate.maxX <= 996
+            && candidate.minY >= 272 && candidate.maxY <= 584
+            && !markBounds.contains(where: { $0.intersects(candidate) })
+            && !labels.contains(where: { $0.intersects(candidate.insetBy(dx: -2, dy: -2)) })
+        }) {
+          labels.append(label)
+          text(
+            number(point.value), x: label.minX, y: label.minY, width: label.width,
+            size: 11, weight: .semibold, align: .center, height: label.height, mono: true)
+        }
       }
       hits.append((circle.insetBy(dx: -10, dy: -10), point))
     }
