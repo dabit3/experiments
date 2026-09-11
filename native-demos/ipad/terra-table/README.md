@@ -54,7 +54,7 @@ are session preferences; terrain, waterline and saved snapshots survive relaunch
 
 The app's Documents folder contains:
 
-- `Current.terra`: automatically and atomically saved JSON after every completed edit.
+- `Current.terra`: atomically saved JSON after each stroke and every water value change.
 - `Library.json`: saved snapshots with UUIDs and timestamps.
 - `Exports/TerraTable.obj`: last exported terrain surface, 6,561 vertices / 12,800 triangles.
 - `Exports/TerraTable.png`: last exported view, without the surrounding controls.

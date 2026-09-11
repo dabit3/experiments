@@ -48,7 +48,8 @@ final class StudioModel: ObservableObject {
   }
 
   func begin() {
-    if transaction == nil { transaction = terrain }
+    end()
+    transaction = terrain
   }
 
   func end() {
@@ -70,7 +71,11 @@ final class StudioModel: ObservableObject {
     terrain.water = max(0, min(0.85, value))
     revision += 1
     status = "Waterline at \(Int(terrain.water * 1000)) m"
-    if standalone { end() }
+    if standalone {
+      end()
+    } else {
+      persist()
+    }
   }
 
   func preset(_ landscape: Landscape) {
@@ -82,6 +87,7 @@ final class StudioModel: ObservableObject {
   }
 
   func undo() {
+    end()
     if let restored = history.undo(terrain) {
       terrain = restored
       revision += 1
@@ -91,6 +97,7 @@ final class StudioModel: ObservableObject {
   }
 
   func redo() {
+    end()
     if let restored = history.redo(terrain) {
       terrain = restored
       revision += 1
@@ -108,6 +115,7 @@ final class StudioModel: ObservableObject {
   }
 
   func save() {
+    end()
     let world = SavedWorld(terrain: terrain)
     let next = [world] + saved
     do {

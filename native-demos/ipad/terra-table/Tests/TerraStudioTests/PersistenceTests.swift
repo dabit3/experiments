@@ -4,6 +4,24 @@ import Testing
 
 @testable import TerraStudio
 
+@Test @MainActor func inFlightWaterIsDurableAndUndoable() throws {
+  let directory = URL.cachesDirectory.appendingPathComponent(UUID().uuidString)
+  try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+  defer { try? FileManager.default.removeItem(at: directory) }
+  let model = StudioModel(documents: directory)
+  let original = model.terrain
+  model.begin()
+  model.setWater(0.35)
+  model.setWater(0.264)
+
+  #expect(StudioModel(documents: directory).terrain.water == 0.264)
+  model.undo()
+  #expect(model.terrain == original)
+  model.redo()
+  #expect(model.terrain.water == 0.264)
+  #expect(StudioModel(documents: directory).terrain == model.terrain)
+}
+
 @Test @MainActor func waterChangesPersistAcrossEditingCallbackOrder() throws {
   let directory = URL.cachesDirectory.appendingPathComponent(UUID().uuidString)
   try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
