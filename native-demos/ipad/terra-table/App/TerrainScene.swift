@@ -101,7 +101,7 @@ struct TerrainCanvas: UIViewRepresentable {
       shadowNode.position = SCNVector3(0.35, -0.45, 0.35)
       scene.rootNode.addChildNode(shadowNode)
 
-      let water = SCNBox(width: 10, height: 0.035, length: 10, chamferRadius: 0)
+      let water = SCNBox(width: 10.02, height: 0.035, length: 10.02, chamferRadius: 0)
       let waterMaterial = SCNMaterial()
       waterMaterial.diffuse.contents = UIColor(red: 0.27, green: 0.66, blue: 0.66, alpha: 1)
       waterMaterial.metalness.contents = 0.12
@@ -187,7 +187,9 @@ struct TerrainCanvas: UIViewRepresentable {
         sin(yaw) * cos(pitch) * distance,
         sin(pitch) * distance + 0.5,
         cos(yaw) * cos(pitch) * distance)
-      cameraNode.look(at: SCNVector3(0, 0.5, 0))
+      cameraNode.look(
+        at: SCNVector3(0, 0.5, 0), up: SCNVector3(0, 1, 0),
+        localFront: SCNVector3(0, 0, -1))
       cameraNode.camera?.orthographicScale = Double(8.0 / model.zoom)
     }
 
