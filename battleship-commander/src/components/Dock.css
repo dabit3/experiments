@@ -1,170 +1,110 @@
 .dock {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  min-height: calc(5 * (var(--cell) * 0.82 + 52px) + 56px);
-  gap: 14px 18px;
-}
-
-.dock--empty {
   display: grid;
-  place-items: center;
-  text-align: center;
-  color: var(--text-dim);
-  font-size: 14px;
-  padding: 12px 14px;
-  border-radius: var(--radius-sm);
-  background: rgba(61, 220, 151, 0.07);
-  border: 1px dashed rgba(61, 220, 151, 0.4);
+  gap: 7px;
 }
-
-.dock--empty p {
-  margin: 0;
-}
-
 .dock-ship {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid transparent;
+  min-height: 69px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #42637266;
+  background: #0c243333;
   transition:
-    border-color 0.15s ease,
-    background-color 0.15s ease;
+    background 0.18s,
+    border-color 0.18s;
 }
-
 .dock-ship--focus {
-  border-color: rgba(240, 183, 63, 0.4);
-  background: rgba(240, 183, 63, 0.05);
+  background: #31575166;
+  border-color: #99c5ae88;
 }
-
 .dock-ship--dragging {
-  opacity: 0.35;
+  opacity: 0.45;
 }
-
+.dock-ship--deployed {
+  border-color: #5ac4a733;
+  background: #17624e18;
+}
 .dock-ship__meta {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  height: 23px;
+  margin-bottom: 4px;
 }
-
 .dock-ship__name {
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font: 600 15px var(--display);
 }
-
 .dock-ship__size {
+  margin-left: auto;
+  font: 8px var(--mono);
   color: var(--text-faint);
-  font-family: var(--mono);
-  font-size: 11.5px;
 }
-
+.dock-ship--deployed .dock-ship__size {
+  color: var(--teal);
+}
 .dock-ship__rotate {
+  width: 23px;
+  height: 23px;
+  padding: 2px;
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
-  margin-left: auto;
-  border-radius: 6px;
-  color: var(--text-dim);
-  background: var(--panel-2);
-  border: 1px solid var(--line-strong);
-  transition:
-    color 0.15s ease,
-    background-color 0.15s ease,
-    transform 0.15s ease;
+  color: #bcd5d7;
+  border: 1px solid #5d7984;
+  border-radius: 4px;
 }
-
-.dock-ship__rotate:hover {
-  color: var(--accent-2);
-  background: rgba(240, 183, 63, 0.12);
-  border-color: rgba(240, 183, 63, 0.5);
-  transform: rotate(90deg);
+.dock-ship__rotate:hover:not(:disabled) {
+  color: var(--accent);
+  background: #375965;
 }
-
+.dock-ship__rotate:disabled {
+  opacity: 0.15;
+  cursor: default;
+}
 .dock-ship__hull {
   display: flex;
+  position: relative;
+  width: max-content;
   gap: var(--gap);
   cursor: grab;
-  width: max-content;
+  touch-action: none;
 }
-
-.dock-ship--v .dock-ship__hull {
-  flex-direction: column;
-}
-
-.dock-ship__hull:active {
-  cursor: grabbing;
-}
-
-.dock-ship__seg,
-.ghost__seg {
-  display: block;
-  width: calc(var(--cell) * 0.82);
-  height: calc(var(--cell) * 0.82);
-  border-radius: 3px;
-  background: linear-gradient(180deg, #d6e0eb 0%, var(--ship) 45%, #8d9fb3 100%);
-  border: 1px solid #56687f;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset 0 -3px 0 rgba(0, 0, 0, 0.22),
-    0 4px 10px -4px rgba(0, 0, 0, 0.7);
-  position: relative;
-}
-
-.dock-ship__seg::before,
-.ghost__seg::before {
-  content: '';
+.dock-ship__hull > .vessel {
   position: absolute;
-  inset: 33%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, #4a5c74, #1f2c3f 75%);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.35);
+  inset: 0;
+  filter: drop-shadow(0 2px 1px #021525);
 }
-
-.dock-ship--h .dock-ship__seg:first-child,
-.ghost--h .ghost__seg:first-child {
-  border-radius: 50% 3px 3px 50%;
+.dock-ship--deployed .dock-ship__hull {
+  cursor: default;
+  opacity: 0.35;
 }
-.dock-ship--h .dock-ship__seg:last-child,
-.ghost--h .ghost__seg:last-child {
-  border-radius: 3px 50% 50% 3px;
+.dock-ship__seg {
+  width: 33px;
+  height: 26px;
+  display: block;
 }
-.dock-ship--v .dock-ship__seg:first-child,
-.ghost--v .ghost__seg:first-child {
-  border-radius: 50% 50% 3px 3px;
-}
-.dock-ship--v .dock-ship__seg:last-child,
-.ghost--v .ghost__seg:last-child {
-  border-radius: 3px 3px 50% 50%;
-}
-
-.dock-ship__hull:hover .dock-ship__seg {
-  filter: brightness(1.12);
-}
-
-/* ---- floating ghost that follows the pointer ---- */
-
 .ghost {
   position: fixed;
-  z-index: 50;
+  z-index: 60;
+  left: 0;
+  top: 0;
   display: flex;
   gap: var(--gap);
   pointer-events: none;
-  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 14px 10px #02182999);
   transform: translate(
-    calc(var(--gx) - var(--cell) / 2 - var(--grab) * (var(--cell) + var(--gap))),
+    calc(
+      var(--gx) - var(--cell) / 2 - var(--grab) * (var(--cell) + var(--gap))
+    ),
     calc(var(--gy) - var(--cell) / 2)
   );
-  left: 0;
-  top: 0;
 }
-
+.ghost > .vessel {
+  position: absolute;
+  inset: 0;
+}
+.ghost__seg {
+  width: var(--cell);
+  height: var(--cell);
+}
 .ghost--v {
   flex-direction: column;
   transform: translate(
@@ -172,9 +112,14 @@
     calc(var(--gy) - var(--cell) / 2 - var(--grab) * (var(--cell) + var(--gap)))
   );
 }
-
-.ghost__seg {
-  width: var(--cell);
+.ghost--v > .vessel {
+  width: calc(var(--size) * (var(--cell) + var(--gap)) - var(--gap));
   height: var(--cell);
-  opacity: 0.92;
+  transform: rotate(90deg) translateY(-100%);
+  transform-origin: top left;
+}
+@media (min-width: 761px) and (max-width: 1150px) {
+  .dock {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

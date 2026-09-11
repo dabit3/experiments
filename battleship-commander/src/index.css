@@ -39,19 +39,19 @@
 }
 
 :root {
-  --bg: #05080f;
+  --bg: #071b29;
   --bg-2: #0a1120;
-  --panel: #0c1526;
-  --panel-2: #111d33;
-  --panel-3: #16243d;
+  --panel: #102d3e;
+  --panel-2: #173c4f;
+  --panel-3: #234e60;
   --line: rgba(146, 172, 214, 0.14);
   --line-strong: rgba(146, 172, 214, 0.3);
-  --text: #e9eff9;
-  --text-dim: #93a4c2;
-  --text-faint: #56688a;
-  --water: #0e213d;
-  --water-2: #10284a;
-  --water-hover: #17406f;
+  --text: #f2f4e6;
+  --text-dim: #a1b9c5;
+  --text-faint: #789ba9;
+  --water: #103d4f;
+  --water-2: #144f62;
+  --water-hover: #207c89;
   --ship: #b6c3d3;
   --ship-dark: #6b7d94;
   --hit: #ff5436;
@@ -59,23 +59,30 @@
   --miss: #6fc6ff;
   --sunk: #5f1a12;
   --heat-rgb: 255, 170, 40;
-  --accent: #f0b73f;
-  --accent-2: #ffd97a;
+  --accent: #ffcd63;
+  --accent-2: #ffe6a7;
   --accent-deep: #9a6410;
   --accent-ink: #1a1100;
-  --teal: #4fd8c8;
-  --teal-rgb: 79, 216, 200;
+  --teal: #65e6d7;
+  --teal-rgb: 101, 230, 215;
   --good: #3ddc97;
   --bad: #ff6b7a;
   --radius: 12px;
   --radius-sm: 8px;
-  --cell: clamp(30px, 3.2vw, 56px);
-  --gap: 3px;
+  --cell: clamp(28px, calc((100vw - 584px) / 20), 48px);
+  --gap: 2px;
   --sans: 'Inter', 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
   --display: 'Barlow Condensed', 'Inter', 'Segoe UI', system-ui, sans-serif;
-  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-  --shadow-lg: 0 30px 60px -30px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.4);
-  --gold-gradient: linear-gradient(180deg, #ffe39a 0%, #f0b73f 45%, #c98a1c 100%);
+  --mono:
+    'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --shadow-lg:
+    0 30px 60px -30px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.4);
+  --gold-gradient: linear-gradient(
+    180deg,
+    #ffe4a1 0%,
+    #ffca5d 75%,
+    #f2b348 100%
+  );
 
   font-family: var(--sans);
   font-size: 15px;
@@ -102,11 +109,8 @@ body {
 body {
   position: relative;
   background:
-    radial-gradient(1100px 620px at 50% -12%, rgba(31, 84, 156, 0.42), transparent 62%),
-    radial-gradient(800px 480px at 100% 104%, rgba(240, 183, 63, 0.09), transparent 60%),
-    radial-gradient(700px 420px at 0% 100%, rgba(79, 216, 200, 0.07), transparent 60%),
-    linear-gradient(180deg, #070c17 0%, var(--bg) 100%);
-  overflow-x: hidden;
+    radial-gradient(ellipse at 0% 50%, #16445266, transparent 65%),
+    radial-gradient(ellipse at 100% 0%, #28737333, transparent 60%), var(--bg);
 }
 
 body::before {
@@ -118,8 +122,12 @@ body::before {
   background-image:
     linear-gradient(rgba(146, 172, 214, 0.045) 1px, transparent 1px),
     linear-gradient(90deg, rgba(146, 172, 214, 0.045) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse at 50% 30%, rgba(0, 0, 0, 0.9), transparent 75%);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(
+    ellipse at 50% 30%,
+    rgba(0, 0, 0, 0.9),
+    transparent 75%
+  );
 }
 
 body::after {
@@ -128,7 +136,11 @@ body::after {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
 }
 
 #root {
@@ -161,4 +173,15 @@ button:focus-visible,
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

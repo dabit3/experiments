@@ -4,6 +4,10 @@ Battleship against a hunt-and-target AI. Two 10×10 grids, the classic 5/4/3/3/2
 fleet, drag-and-drop ship placement, a deterministic seed so any game can be
 replayed move-for-move, animated hits/misses/sunk announcements, a shot log, an
 educational probability heatmap for your own guesses, and a one-click rematch.
+The arcade presentation includes an illustrated title screen, an original
+anchor-and-wave insignia, ocean radar, top-down ship models, a live score strip,
+combat callouts, and a victory/defeat award screen. Motion respects the system's
+reduced-motion preference.
 
 ## Run it
 
@@ -16,10 +20,12 @@ npm run build
 ```
 
 No backend, no network calls; everything is bundled (including the Barlow
-Condensed / Inter / JetBrains Mono fonts and the SVG crest).
+Condensed / Inter / JetBrains Mono fonts, SVG insignia, and generated ocean
+key art). The insignia and ship models are hand-authored SVGs.
 
 ## How to play
 
+- **Launch.** Click *Take command* on the title screen to enter deployment.
 - **Placement.** Drag each ship from the dock onto *Your fleet*. Press `R`
   while dragging (or while hovering a ship in the dock / on the board) to
   rotate; clicking a placed ship also rotates it. Invalid drops (off-grid or
@@ -47,11 +53,12 @@ targets turn after turn until the game ends.
 
 ## Browser test scenario
 
-Open `http://localhost:5173/?seed=8` in a maximised Chrome window.
+Open `http://localhost:5173/?seed=8` in a maximised Chrome window. Capture the
+arcade title screen and click *Take command* to enter deployment.
 
 1. Drag all five ships from the dock onto *Your fleet*, rotating at least two
    of them to vertical with `R`. **Expected:** green preview while hovering a
-   legal spot, red while illegal; the dock empties, the badge reads
+   legal spot, red while illegal; five dock cards read `DEPLOYED`, the badge reads
    `5/5 placed`, and *Start battle* becomes enabled.
 2. Click *Start battle*. **Expected:** the dock is replaced by the heatmap
    toggle, fleet status, and shot log; the status pill says it is your turn.

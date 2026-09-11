@@ -1,7 +1,13 @@
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react'
 import type { DockOrientations } from '../hooks/usePlacementDrag'
-import { FLEET, type Orientation, type PlacedShip, type ShipSpec } from '../game/types'
+import {
+  FLEET,
+  type Orientation,
+  type PlacedShip,
+  type ShipSpec,
+} from '../game/types'
 import './Dock.css'
+import { Vessel } from './Vessel'
 
 interface DockProps {
   placed: readonly PlacedShip[]
@@ -23,39 +29,42 @@ export function Dock({
   onPointerDown,
 }: DockProps) {
   const placedIds = new Set(placed.map((s) => s.id))
-  const remaining = FLEET.filter((s) => !placedIds.has(s.id))
-
-  if (remaining.length === 0) {
-    return (
-      <div className="dock dock--empty">
-        <p>All ships deployed. Click a ship on the grid to rotate it, or drag it to move.</p>
-      </div>
-    )
-  }
-
   return (
     <div className="dock">
-      {remaining.map((spec) => {
+      {FLEET.map((spec) => {
+        const deployed = placedIds.has(spec.id)
         const orientation: Orientation = orientations[spec.id]
         const isFocus = focusId === spec.id
         const isDragging = draggingId === spec.id
         return (
           <div
             key={spec.id}
-            className={`dock-ship dock-ship--${orientation}${isFocus ? ' dock-ship--focus' : ''}${isDragging ? ' dock-ship--dragging' : ''}`}
-            onPointerEnter={() => onFocus(spec.id)}
+            className={`dock-ship${deployed ? ' dock-ship--deployed' : ''}${isFocus && !deployed ? ' dock-ship--focus' : ''}${isDragging ? ' dock-ship--dragging' : ''}`}
+            onPointerEnter={() => {
+              if (!deployed) onFocus(spec.id)
+            }}
           >
             <div className="dock-ship__meta">
               <span className="dock-ship__name">{spec.name}</span>
-              <span className="dock-ship__size">{spec.size} cells</span>
+              <span className="dock-ship__size">
+                {deployed
+                  ? 'DEPLOYED'
+                  : `${spec.size} CELLS · ${orientation === 'h' ? 'H' : 'V'}`}
+              </span>
               <button
                 type="button"
                 className="dock-ship__rotate"
                 aria-label={`Rotate ${spec.name}`}
                 title="Rotate (R)"
                 onClick={() => onRotate(spec.id)}
+                disabled={deployed}
               >
-                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  aria-hidden="true"
+                >
                   <path
                     d="M4 12a8 8 0 0 1 13.66-5.66L20 8.7M20 4v5h-5"
                     fill="none"
@@ -75,12 +84,22 @@ export function Dock({
                 </svg>
               </button>
             </div>
-            <div className="dock-ship__hull" aria-label={`Drag ${spec.name} onto your grid`}>
+            <div
+              className="dock-ship__hull"
+              aria-label={
+                deployed
+                  ? `${spec.name} deployed`
+                  : `Drag ${spec.name} onto your grid`
+              }
+            >
+              <Vessel kind={spec.id} />
               {Array.from({ length: spec.size }, (_, i) => (
                 <span
                   key={i}
                   className="dock-ship__seg"
-                  onPointerDown={(e) => onPointerDown(spec, i, e)}
+                  onPointerDown={
+                    deployed ? undefined : (e) => onPointerDown(spec, i, e)
+                  }
                 />
               ))}
             </div>
@@ -104,9 +123,15 @@ export function DragGhost({ spec, orientation, grabIndex, x, y }: GhostProps) {
     '--gx': `${x}px`,
     '--gy': `${y}px`,
     '--grab': grabIndex,
+    '--size': spec.size,
   } as CSSProperties
   return (
-    <div className={`ghost ghost--${orientation}`} style={style} aria-hidden="true">
+    <div
+      className={`ghost ghost--${orientation}`}
+      style={style}
+      aria-hidden="true"
+    >
+      <Vessel kind={spec.id} />
       {Array.from({ length: spec.size }, (_, i) => (
         <span key={i} className="ghost__seg" />
       ))}

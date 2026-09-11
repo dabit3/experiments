@@ -1,4 +1,8 @@
-import type { CSSProperties, PointerEvent as ReactPointerEvent, Ref } from 'react'
+import type {
+  CSSProperties,
+  PointerEvent as ReactPointerEvent,
+  Ref,
+} from 'react'
 import type { Heatmap } from '../game/heatmap'
 import {
   BOARD_SIZE,
@@ -10,6 +14,7 @@ import {
   type Shot,
 } from '../game/types'
 import './Board.css'
+import { Vessel } from './Vessel'
 
 export interface Preview {
   cells: Coord[]
@@ -25,7 +30,11 @@ interface BoardProps {
   preview?: Preview | null
   interactive?: boolean
   onFire?: (coord: Coord) => void
-  onShipPointerDown?: (ship: PlacedShip, segment: number, e: ReactPointerEvent) => void
+  onShipPointerDown?: (
+    ship: PlacedShip,
+    segment: number,
+    e: ReactPointerEvent,
+  ) => void
   lastShot?: Coord | null
   boardRef?: Ref<HTMLDivElement>
   dimmed?: boolean
@@ -60,10 +69,12 @@ export function Board({
   }
 
   const sunkIds = new Set<string>()
-  for (const s of shots.values()) if (s.result === 'sunk' && s.shipId) sunkIds.add(s.shipId)
+  for (const s of shots.values())
+    if (s.result === 'sunk' && s.shipId) sunkIds.add(s.shipId)
 
   const previewMap = new Map<string, boolean>()
-  if (preview) for (const c of preview.cells) previewMap.set(key(c), preview.valid)
+  if (preview)
+    for (const c of preview.cells) previewMap.set(key(c), preview.valid)
 
   const lastKey = lastShot ? key(lastShot) : null
   const bestKey = heatmap?.best ? key(heatmap.best) : null
@@ -87,7 +98,8 @@ export function Board({
         classes.push(`cell--${shot.result}`)
         if (isSunk) classes.push('cell--sunk')
       }
-      if (previewMap.has(k)) classes.push(previewMap.get(k) ? 'cell--ok' : 'cell--bad')
+      if (previewMap.has(k))
+        classes.push(previewMap.get(k) ? 'cell--ok' : 'cell--bad')
       if (lastKey === k) classes.push('cell--last')
       if (bestKey === k && !shot) classes.push('cell--best')
 
@@ -108,7 +120,10 @@ export function Board({
         'data-cell': '',
         'data-r': r,
         'data-c': c,
-        style: heat !== undefined ? ({ '--heat': heat } as CSSProperties) : undefined,
+        style:
+          heat !== undefined
+            ? ({ '--heat': heat } as CSSProperties)
+            : undefined,
       }
 
       if (interactive) {
@@ -123,7 +138,10 @@ export function Board({
             onClick={() => onFire?.(coord)}
           >
             {ratio !== undefined && ratio >= 0.4 && pct > 0 ? (
-              <span className="cell__pct">{pct}</span>
+              <span className="cell__pct">
+                {pct}
+                <small>%</small>
+              </span>
             ) : null}
             <span className="cell__mark" />
           </button>,
@@ -136,7 +154,9 @@ export function Board({
             role="presentation"
             title={label}
             onPointerDown={
-              seg && onShipPointerDown ? (e) => onShipPointerDown(seg.ship, seg.index, e) : undefined
+              seg && onShipPointerDown
+                ? (e) => onShipPointerDown(seg.ship, seg.index, e)
+                : undefined
             }
           >
             <span className="cell__mark" />
@@ -147,9 +167,15 @@ export function Board({
   }
 
   return (
-    <section className={`board board--${tone}${dimmed ? ' board--dimmed' : ''}`} aria-label={title}>
+    <section
+      className={`board board--${tone}${dimmed ? ' board--dimmed' : ''}`}
+      aria-label={title}
+    >
       <header className="board__header">
         <div className="board__heading">
+          <span className="board__identity">
+            {tone === 'own' ? '01 / FRIENDLY WATERS' : '02 / HOSTILE WATERS'}
+          </span>
           <h2 className="board__title">{title}</h2>
           {subtitle ? <p className="board__subtitle">{subtitle}</p> : null}
         </div>
@@ -160,7 +186,9 @@ export function Board({
         <span className="board__rivet board__rivet--tr" aria-hidden="true" />
         <span className="board__rivet board__rivet--bl" aria-hidden="true" />
         <span className="board__rivet board__rivet--br" aria-hidden="true" />
-        <div className="board__corner" />
+        <div className="board__corner" aria-hidden="true">
+          +
+        </div>
         <div className="board__cols">
           {Array.from({ length: BOARD_SIZE }, (_, i) => (
             <span key={i}>{i + 1}</span>
@@ -176,8 +204,48 @@ export function Board({
           ref={boardRef}
         >
           {cells}
+          {ships.map((ship) => (
+            <div
+              key={ship.id}
+              className={`board__vessel board__vessel--${ship.orientation}${sunkIds.has(ship.id) ? ' board__vessel--sunk' : ''}`}
+              style={
+                {
+                  '--ship-row': ship.bow.r,
+                  '--ship-col': ship.bow.c,
+                  '--ship-size': ship.size,
+                } as CSSProperties
+              }
+            >
+              <Vessel kind={ship.id} />
+            </div>
+          ))}
+          {dimmed ? (
+            <div className="board__locked">
+              <div className="radar" aria-hidden="true">
+                <i />
+                <b />
+                <span />
+              </div>
+              <strong>UNKNOWN WATERS</strong>
+              <p>The hunt begins when you deploy.</p>
+              <span className="board__locked-label">ENEMY SIGNAL DETECTED</span>
+            </div>
+          ) : null}
         </div>
       </div>
+      <footer className="board__footer">
+        <span>
+          <i />
+          {tone === 'own'
+            ? 'FLEET COMMS ONLINE'
+            : dimmed
+              ? 'AWAITING DEPLOYMENT'
+              : interactive
+                ? 'TARGETING SYSTEM READY'
+                : 'SCANNING ENEMY WATERS'}
+        </span>
+        <span>10 × 10</span>
+      </footer>
     </section>
   )
 }

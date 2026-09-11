@@ -24,7 +24,12 @@ interface FleetStatusProps {
   detailed: boolean
 }
 
-export function FleetStatus({ title, ships, shots, detailed }: FleetStatusProps) {
+export function FleetStatus({
+  title,
+  ships,
+  shots,
+  detailed,
+}: FleetStatusProps) {
   const byId = new Map(ships.map((s) => [s.id, s]))
   return (
     <div className="fleet">
@@ -36,15 +41,27 @@ export function FleetStatus({ title, ships, shots, detailed }: FleetStatusProps)
           const hits = cells.filter((c) => shots.has(key(c))).length
           const sunk = ship !== undefined && hits >= spec.size
           return (
-            <li key={spec.id} className={`fleet__ship${sunk ? ' fleet__ship--sunk' : ''}`}>
+            <li
+              key={spec.id}
+              className={`fleet__ship${sunk ? ' fleet__ship--sunk' : ''}`}
+            >
               <span className="fleet__name">{spec.name}</span>
-              <span className="fleet__segs" aria-label={`${spec.size} segments`}>
+              <span
+                className="fleet__segs"
+                aria-label={`${spec.size} segments`}
+              >
                 {Array.from({ length: spec.size }, (_, i) => {
-                  const damaged = detailed ? Boolean(ship) && shots.has(key(cells[i])) : sunk
-                  return <i key={i} className={damaged ? 'seg seg--hit' : 'seg'} />
+                  const damaged = detailed
+                    ? Boolean(ship) && shots.has(key(cells[i]))
+                    : sunk
+                  return (
+                    <i key={i} className={damaged ? 'seg seg--hit' : 'seg'} />
+                  )
                 })}
               </span>
-              <span className="fleet__state">{sunk ? 'Sunk' : detailed ? `${hits}/${spec.size}` : 'Afloat'}</span>
+              <span className="fleet__state">
+                {sunk ? 'Sunk' : detailed ? `${hits}/${spec.size}` : 'Afloat'}
+              </span>
             </li>
           )
         })}
@@ -71,16 +88,27 @@ export function ShotLog({ log }: ShotLogProps) {
         Shot log <span className="panel__count">{log.length}</span>
       </h3>
       {log.length === 0 ? (
-        <p className="log__empty">No shots fired yet. Click a cell in enemy waters.</p>
+        <p className="log__empty">
+          No shots fired yet. Click a cell in enemy waters.
+        </p>
       ) : (
         <ol className="log__list" ref={listRef} aria-live="polite">
           {[...log].reverse().map((e, i) => (
-            <li key={log.length - i} className={`log__row log__row--${e.side} log__row--${e.result}`}>
+            <li
+              key={log.length - i}
+              className={`log__row log__row--${e.side} log__row--${e.result}`}
+            >
               <span className="log__turn">T{e.turn}</span>
-              <span className="log__who">{e.side === 'player' ? 'You' : 'AI'}</span>
+              <span className="log__who">
+                {e.side === 'player' ? 'You' : 'AI'}
+              </span>
               <span className="log__coord">{coordLabel(e.coord)}</span>
               <span className="log__result">
-                {e.result === 'sunk' ? `Sunk ${e.shipName}` : e.result === 'hit' ? 'Hit' : 'Miss'}
+                {e.result === 'sunk'
+                  ? `Sunk ${e.shipName}`
+                  : e.result === 'hit'
+                    ? 'Hit'
+                    : 'Miss'}
               </span>
             </li>
           ))}
@@ -98,11 +126,16 @@ interface HeatmapControlProps {
   heatmap: Heatmap | null
 }
 
-export function HeatmapControl({ enabled, onToggle, heatmap }: HeatmapControlProps) {
+export function HeatmapControl({
+  enabled,
+  onToggle,
+  heatmap,
+}: HeatmapControlProps) {
   const best = heatmap?.best
-  const pct = heatmap && best && heatmap.total > 0
-    ? Math.round((heatmap.weights[best.r][best.c] / heatmap.total) * 100)
-    : 0
+  const pct =
+    heatmap && best && heatmap.total > 0
+      ? Math.round((heatmap.weights[best.r][best.c] / heatmap.total) * 100)
+      : 0
   return (
     <div className={`heatctl${enabled ? ' heatctl--on' : ''}`}>
       <button
@@ -122,10 +155,13 @@ export function HeatmapControl({ enabled, onToggle, heatmap }: HeatmapControlPro
       </button>
       {enabled && heatmap ? (
         <p className="heatctl__hint">
-          <span className={`heatctl__mode heatctl__mode--${heatmap.mode}`}>{heatmap.mode}</span>
+          <span className={`heatctl__mode heatctl__mode--${heatmap.mode}`}>
+            {heatmap.mode}
+          </span>
           {best ? (
             <>
-              best guess <b>{coordLabel(best)}</b> · {pct}% of remaining placements
+              best guess <b>{coordLabel(best)}</b> · {pct}% of remaining
+              placements
             </>
           ) : (
             'no candidates'
@@ -186,9 +222,19 @@ export function EndScreen({
   const ai = statsFor(shotsOnPlayer)
   const won = winner === 'player'
   return (
-    <div className="end" role="dialog" aria-modal="true" aria-labelledby="end-title">
+    <div
+      className="end"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="end-title"
+    >
       <div className={`end__card end__card--${won ? 'win' : 'lose'}`}>
-        <Logo size={64} className="end__emblem" />
+        <div className="end__rays" aria-hidden="true" />
+        <div className="end__award">
+          <span aria-hidden="true">★</span>
+          <Logo size={80} className="end__emblem" />
+          <span aria-hidden="true">★</span>
+        </div>
         <p className="end__eyebrow">
           Mission report · Game {String(round).padStart(2, '0')} · Seed {seed}
         </p>
@@ -200,6 +246,11 @@ export function EndScreen({
             ? `You sank the entire enemy fleet in ${you.shots} shots.`
             : `The AI sank your fleet in ${ai.shots} shots.`}
         </p>
+        <div className="end__ribbon">
+          {won
+            ? 'THE OCEAN IS YOURS, COMMANDER.'
+            : 'REGROUP. REDEPLOY. RETURN STRONGER.'}
+        </div>
         <table className="end__stats">
           <thead>
             <tr>
@@ -232,7 +283,11 @@ export function EndScreen({
           </tbody>
         </table>
         <div className="end__actions">
-          <button type="button" className="btn btn--primary" onClick={onRematch}>
+          <button
+            type="button"
+            className="btn btn--primary"
+            onClick={onRematch}
+          >
             Rematch (same seed)
           </button>
           <button type="button" className="btn" onClick={onEditFleet}>
