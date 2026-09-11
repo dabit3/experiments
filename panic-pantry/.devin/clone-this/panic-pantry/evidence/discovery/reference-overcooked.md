@@ -22,11 +22,11 @@ game design gathered on 2026-09-09 from:
 
 Consequences:
 
-- Every item whose evidence requires the running original (exact pixel art, exact timer
-  durations, exact star thresholds per level, audio) is classified **inferred** and was
-  implemented from the documented design, not copied.
+- Items requiring the running original (exact art, timer durations, thresholds
+  and audio) are classified **inferred**. Implemented replacements follow the
+  documented design; audio is omitted.
 - No proprietary assets, characters, names, logos, level names, or audio were copied.
-  All Panic Pantry art, names, and sounds are original.
+  All Panic Pantry art and names are original; no audio track is shipped.
 - "Visual parity" in this run means **normalized visual parity against Panic Pantry's own
   cross-platform reference**: the web build is the visual baseline and iOS / Android / macOS
   builds are compared against it (see evidence/diffs). No literal pixel parity with Overcooked
@@ -55,8 +55,9 @@ Consequences:
 
 The second design pass ("follow the original as closely as possible") was driven by the
 publicly documented, widely described HUD and kitchen conventions below. These are layout
-and proportion conventions, not assets: every sprite, tile, icon, font and name in Panic
-Pantry is original and the original was never run, so nothing here is a pixel measurement.
+and proportion conventions, not assets. Game art and names are original;
+bundled fonts and Material icons use their documented open-source licenses.
+The original was never run, so nothing here is a pixel measurement.
 
 | Convention | Public description | Panic Pantry realisation |
 | --- | --- | --- |
@@ -75,7 +76,17 @@ copied into the repository.
 
 ## Inaccessible (recorded, not claimed)
 
-- Exact sprite art, fonts, animation timings, level names, and audio -> original assets used.
+- Exact sprite art, timings and level names -> original replacements.
+- Fonts and UI icons -> licensed open-source assets; audio -> not shipped.
 - Exact per-level star thresholds -> Panic Pantry defines its own thresholds per level and
-  player count (documented in core/lib/levels.dart).
-- Exact tip curve -> Panic Pantry uses tip = round(remainingFraction * 8) * combo, combo 1..4.
+  player count (documented in core/lib/src/levels.dart).
+- Exact tip curve -> Panic Pantry uses remaining-time tiers of 8/5/3 multiplied by combo 1..4.
+
+## Arcade redesign request (iteration 11)
+
+The user's subsequent arcade-quality design request authorizes a new original
+art direction. Panic Pantry now uses petrol teal, paprika and enamel cream,
+a generated toy-diorama hero, dimensional procedural kitchen materials and a
+teal results header. The documented gameplay and HUD conventions above remain
+the reference; these new palette and illustration choices are original design
+decisions, not newly observed properties of the commercial game.

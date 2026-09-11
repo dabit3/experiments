@@ -16,6 +16,6 @@ Error states exercised end-to-end: missing room code and full room (server
 server test "reconnect with token resumes seat mid-match" and the app-level
 overlay in `main.dart` (shown in the lobby as well as in-game, with a Leave
 action; a non-resumed reconnect drops the stale room and returns Home with a
-toast). The overlay itself is not screenshot-verified (recorded as a
-non-blocking gap, not a claim); an independent manual pass found the earlier
-lobby gap (no feedback when the server went away) and it was fixed.
+toast). The arcade UI pass screenshot-verifies the overlay and restoration
+(`evidence/tests/arcade-ui/ss_063bcb6e.png`, `ss_91ee254a.png`). The same pass
+exercises natural overtime, zero-star completion, and rematch `best 0/3`.

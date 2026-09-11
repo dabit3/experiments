@@ -1,10 +1,10 @@
-# 2026-09-11T03:59:18Z clean build of all four targets (flutter clean first)
-# directory: /Users/devin/repos/experiments/panic-pantry/app
+# 2026-09-11T03:58:34Z clean build of all four targets (flutter clean first)
+# directory: /Users/devin/pp-clean-arcade/panic-pantry/app
 # flutter clean
-Cleaning Xcode workspace...                                      2,424ms
-Cleaning Xcode workspace...                                         4.0s
-Deleting build...                                                  522ms
-Deleting .dart_tool...                                               6ms
+Cleaning Xcode workspace...                                         4.1s
+Cleaning Xcode workspace...                                         3.4s
+Deleting build...                                                  589ms
+Deleting .dart_tool...                                               5ms
 Deleting ephemeral...                                                0ms
 Deleting Generated.xcconfig...                                       0ms
 Deleting flutter_export_environment.sh...                            0ms
@@ -36,7 +36,7 @@ Wasm dry run succeeded. Consider building and testing your application with the 
 Use --no-wasm-dry-run to disable these warnings.
 Expected to find fonts for (MaterialIcons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
 Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 15788 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Compiling lib/main.dart for the Web...                             20.1s
+Compiling lib/main.dart for the Web...                             17.2s
 ✓ Built build/web
 exit=0
 # flutter build macos --debug
@@ -65,7 +65,7 @@ Got dependencies!
 Try `flutter pub outdated` for more information.
 Building dev.panicpantry.panicPantry for simulator (ios)...
 Running Xcode build...                                          
-Xcode build done.                                           16.0s
+Xcode build done.                                           19.1s
 ✓ Built build/ios/iphonesimulator/Runner.app
 exit=0
 # flutter build apk --release
@@ -80,18 +80,18 @@ Got dependencies!
 Try `flutter pub outdated` for more information.
 Running Gradle task 'assembleRelease'...                        
 Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 9392 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
-Running Gradle task 'assembleRelease'...                           18.5s
+Running Gradle task 'assembleRelease'...                           22.4s
 ✓ Built build/app/outputs/flutter-apk/app-release.apk (54.5MB)
 exit=0
 # artefacts
 -rw-r--r--  1 devin  staff  54452977 Sep 10 21:00 build/app/outputs/flutter-apk/app-release.apk
--rw-r--r--  1 devin  staff      1993 Sep 10 21:00 build/ios/iphonesimulator/Runner.app/Info.plist
--rw-r--r--  1 devin  staff      1558 Sep 10 20:59 build/web/index.html
+-rw-r--r--  1 devin  staff      1993 Sep 10 20:59 build/ios/iphonesimulator/Runner.app/Info.plist
+-rw-r--r--  1 devin  staff      1558 Sep 10 20:58 build/web/index.html
 
 build/macos/Build/Products/Debug/Panic Pantry.app/Contents/MacOS:
 total 448
-drwxr-xr-x  5 devin  staff     160 Sep 10 21:00 .
-drwxr-xr-x  8 devin  staff     256 Sep 10 21:00 ..
--rwxr-xr-x  1 devin  staff   59104 Sep 10 21:00 Panic Pantry
--rwxr-xr-x  1 devin  staff  129888 Sep 10 21:00 Panic Pantry.debug.dylib
--rwxr-xr-x  1 devin  staff   34800 Sep 10 21:00 __preview.dylib
+drwxr-xr-x  5 devin  staff     160 Sep 10 20:59 .
+drwxr-xr-x  8 devin  staff     256 Sep 10 20:59 ..
+-rwxr-xr-x  1 devin  staff   59104 Sep 10 20:59 Panic Pantry
+-rwxr-xr-x  1 devin  staff  129856 Sep 10 20:59 Panic Pantry.debug.dylib
+-rwxr-xr-x  1 devin  staff   34800 Sep 10 20:59 __preview.dylib

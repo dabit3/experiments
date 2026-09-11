@@ -26,6 +26,6 @@ implemented from the documented rules, not copied. Nothing was left as an
 unrecorded frontier entry: the reference document has no remaining
 "to inspect" branches, and `frontier` is empty.
 
-Commercial-title consequence recorded in `state.json.notes`: no literal
+Commercial-title consequence recorded in `state.json.reference_access`: no literal
 parity with the original is claimed; visual parity is normalized parity
 between Panic Pantry's own four clients.

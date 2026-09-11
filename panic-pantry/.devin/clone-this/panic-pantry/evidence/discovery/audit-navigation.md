@@ -15,7 +15,7 @@ Edges verified by executable tests (each row names the artefact that proves it):
 | home -> Join full room -> stays home + toast | ui-smoke "joining a full room is rejected" |
 | home / lobby -> help -> how-to-play -> Got it / back -> previous | ui-smoke "how-to-play sheet keeps the home route underneath" (`03-how-to-play.png`, `04-home-after-dismiss.png`, `07-how-to-play-dark.png`) |
 | lobby -> Start -> countdown -> game | E2E `e2e.log` "match started", `*-gameplay.png` |
-| game -> timer + overtime -> results | E2E `summary.json` (`resultsMatch`, phase finished), `*-results.png` |
+| game -> timer -> results; overtime when eligible | E2E `summary.json` (`resultsMatch`, phase finished), `*-results.png`; natural overtime in `evidence/tests/arcade-ui/report.md` |
 | results -> Rematch -> lobby -> second match | `evidence/tests/unit-tests.log` server test "hello, create, join, ready, start, results and rematch" |
 | any -> Leave -> home (room closed when empty) | ui-smoke "leave returns to home", "empty room is closed on leave", "second leave returns to home" |
 | game -> Esc / menu -> pause overlay | `app/lib/screens/game_screen.dart` (`_menu`), keyboard table in README; not covered by an automated harness (recorded gap, non-blocking; the overlay is plain Material widgets analysed by `flutter analyze`) |

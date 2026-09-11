@@ -63,3 +63,31 @@ change no behaviour row: the coach and key hints still map to feature-tutorial /
 route-game, the HUD stars to feature-score. The reference walk was repeated against the
 rebuilt evidence (e2e/2026-09-10T15-41-04, ui-smoke, visual-parity) with the same result:
 every row owned, no new item. `new_items: 0`, frontier empty.
+
+## Final arcade sweep — iteration 11, 2026-09-11
+
+Revision: `sha256:990018ca86cc4ff5d5d9ad8f101d46de6e948983f7b9c02fad47c6a58a266938`.
+
+Repeated the reference-document walk after the final builds, unit/widget tests,
+smoke, nine visual pairs and four-platform E2E `2026-09-11T03-48-33` passed.
+Re-read all ten audits and the inventory against every documented core-loop,
+scoring, controls, fire, plate, level, multiplayer, timer and visual-language
+row. The arcade art direction is explicitly a user-authorized original design
+decision; it does not change the commercial-reference access boundary.
+
+| Audit | Fresh review outcome |
+| --- | --- |
+| source | Public-document inventory and inaccessible original remain bounded; corrected the description of Panic Pantry's tip tiers and audio omission. |
+| navigation | Six routes and existing help, join-error, lobby, match, results, rematch and leave edges remain owned. |
+| roles | Host, guest, bot and opt-in test-harness capabilities map to the existing server tests. |
+| states | Loading, open/full seats, errors, reconnect, ready/start, countdown, overtime and zero-star results retain existing owners. |
+| responsive | Original key art, safe-area motifs, even panel outlines and score sizing are covered by the current native/web pairs and layout tests. |
+| data | Final four-client score 405, one star, 11 serves, 185 tips and x4 best combo match the server and offline plan. |
+| assets | Original key art was already inventoried as `asset-arcade-key-art`; procedural sprites, licensed fonts and icons retain owners. |
+| accessibility | Keyboard/focus and mobile control geometry have tests; Android manual touch, 200% text and whole-app reduced motion remain disclosed limits. |
+| reliability | Both clean-build logs pass; Android fixture recovery and awaited video finalization are documented with fresh evidence. |
+| rebrand | Product identity remains Panic Pantry across all targets; source references are confined to documentation. |
+
+No new requirement or unexplored branch was found. `new_items: 0`;
+`frontier_empty: true`. Earlier sections record historical sweeps rather than
+the final score or revision.
