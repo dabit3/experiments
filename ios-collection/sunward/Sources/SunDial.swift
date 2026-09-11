@@ -7,8 +7,10 @@ struct SunDial: View {
   let onScrub: (Double) -> Void
 
   private func point(_ position: SunPosition, size: CGSize) -> CGPoint {
-    let radius = min(size.width, size.height) * 0.39
-    let distance = radius * (1 - position.altitude / 90)
+    let radius = min(size.width, size.height) * 0.33
+    let distance =
+      radius
+      * (position.altitude >= 0 ? 1 - position.altitude / 90 : 1 - position.altitude / 90 * 0.18)
     let angle = (position.azimuth - 90) * .pi / 180
     return CGPoint(
       x: size.width / 2 + cos(angle) * distance, y: size.height / 2 + sin(angle) * distance)
@@ -18,15 +20,21 @@ struct SunDial: View {
     GeometryReader { geometry in
       Canvas { context, size in
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
-        let radius = min(size.width, size.height) * 0.39
-        let outer = radius * 1.14
+        let radius = min(size.width, size.height) * 0.33
+        let outer = radius * 1.28
         let circle = CGRect(
           x: center.x - radius, y: center.y - radius, width: radius * 2, height: radius * 2)
+        context.fill(
+          Path(
+            ellipseIn: CGRect(
+              x: center.x - radius * 1.18, y: center.y - radius * 1.18, width: radius * 2.36,
+              height: radius * 2.36)),
+          with: .color(Color(red: 0.20, green: 0.25, blue: 0.37).opacity(0.22)))
         context.fill(
           Path(ellipseIn: circle),
           with: .radialGradient(
             Gradient(colors: [
-              Palette.copper.opacity(0.20), Color(red: 0.17, green: 0.17, blue: 0.25).opacity(0.4),
+              Palette.copper.opacity(0.42), Color(red: 0.16, green: 0.19, blue: 0.30).opacity(0.7),
             ]),
             center: CGPoint(x: center.x, y: center.y + radius * 0.65), startRadius: 0,
             endRadius: radius * 1.7))
@@ -51,7 +59,7 @@ struct SunDial: View {
         for (index, label) in ["N", "E", "S", "W"].enumerated() {
           let angle = (Double(index * 90) - 90) * .pi / 180
           context.draw(
-            Text(label).font(.system(size: 10, weight: .medium, design: .monospaced))
+            Text(label).font(.system(size: 12, weight: .medium, design: .monospaced))
               .foregroundColor(Palette.cream),
             at: CGPoint(
               x: center.x + cos(angle) * (outer + 12), y: center.y + sin(angle) * (outer + 12)))
@@ -63,15 +71,11 @@ struct SunDial: View {
         cross.addLine(to: CGPoint(x: center.x, y: center.y + 5))
         context.stroke(cross, with: .color(Palette.cream.opacity(0.25)), lineWidth: 0.7)
         context.draw(
-          Text("ZENITH").font(.system(size: 8, design: .monospaced)).foregroundColor(
-            Palette.muted.opacity(0.7)), at: CGPoint(x: center.x, y: center.y + 16))
-
-        let clipRadius = radius * 1.04
-        context.clip(
-          to: Path(
-            ellipseIn: CGRect(
-              x: center.x - clipRadius, y: center.y - clipRadius, width: clipRadius * 2,
-              height: clipRadius * 2)))
+          Text("90°").font(.system(size: 11, design: .monospaced)).foregroundColor(
+            Palette.muted), at: CGPoint(x: center.x, y: center.y + 17))
+        context.draw(
+          Text("0°").font(.system(size: 10, design: .monospaced)).foregroundColor(Palette.muted),
+          at: CGPoint(x: center.x + 12, y: center.y - radius + 12))
         for index in 1..<day.samples.count {
           let a = day.samples[index - 1]
           let b = day.samples[index]
@@ -82,27 +86,42 @@ struct SunDial: View {
           context.stroke(
             segment,
             with: .color(
-              golden ? Palette.cream : Palette.copper.opacity(b.position.altitude >= 0 ? 0.8 : 0.2)),
-            style: StrokeStyle(lineWidth: golden ? 3 : 1.5, lineCap: .round))
+              golden
+                ? Palette.cream
+                : b.position.altitude >= 0
+                  ? Palette.copper : Color(red: 0.47, green: 0.58, blue: 0.76)),
+            style: StrokeStyle(
+              lineWidth: golden ? 3 : 1.5, lineCap: .round,
+              dash: b.position.altitude < -4 ? [2, 3] : []))
         }
         let sun = Solar.position(at: date, place: place)
         let p = point(sun, size: size)
         for r in [20.0, 12.0, 6.0] {
           context.fill(
             Path(ellipseIn: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2)),
-            with: .color(Palette.copper.opacity(r == 6 ? 1 : r == 12 ? 0.15 : 0.05)))
+            with: .color(
+              (sun.altitude >= -4 ? Palette.copper : Palette.cream).opacity(
+                r == 6 ? 1 : r == 12 ? 0.15 : 0.05)))
         }
       }
-      .gesture(
-        DragGesture(minimumDistance: 0).onChanged { value in
-          let closest = day.samples.min {
-            let a = point($0.position, size: geometry.size)
-            let b = point($1.position, size: geometry.size)
-            return hypot(a.x - value.location.x, a.y - value.location.y)
-              < hypot(b.x - value.location.x, b.y - value.location.y)
-          }
-          if let closest { onScrub(day.fraction(at: closest.date)) }
-        })
+      .simultaneousGesture(
+        LongPressGesture(minimumDuration: 0.25)
+          .sequenced(before: DragGesture(minimumDistance: 0))
+          .onChanged { value in
+            guard case .second(true, let drag?) = value else { return }
+            let startIsOnPath = day.samples.contains {
+              let p = point($0.position, size: geometry.size)
+              return hypot(p.x - drag.startLocation.x, p.y - drag.startLocation.y) < 24
+            }
+            guard startIsOnPath else { return }
+            let closest = day.samples.min {
+              let a = point($0.position, size: geometry.size)
+              let b = point($1.position, size: geometry.size)
+              return hypot(a.x - drag.location.x, a.y - drag.location.y)
+                < hypot(b.x - drag.location.x, b.y - drag.location.y)
+            }
+            if let closest { onScrub(day.fraction(at: closest.date)) }
+          })
     }
     .accessibilityElement(children: .ignore)
     .accessibilityLabel("Interactive sun path, compass sky projection")

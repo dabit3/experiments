@@ -9,7 +9,7 @@ struct PlannerView: View {
   @Bindable var planner: Planner
   @State private var sheet: PlannerSheet?
   @State private var saved = false
-  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @ScaledMetric(relativeTo: .largeTitle) private var locationSize = 32
 
   private var sun: SunPosition { Solar.position(at: planner.date, place: planner.place) }
 
@@ -17,28 +17,26 @@ struct PlannerView: View {
     ZStack {
       Palette.ink.ignoresSafeArea()
       LinearGradient(
-        colors: [Color(red: 0.23, green: 0.18, blue: 0.23), Palette.ink, Palette.ink],
+        colors: [Color(red: 0.29, green: 0.21, blue: 0.25), Palette.ink, Palette.ink],
         startPoint: .topLeading, endPoint: .bottomTrailing
       ).ignoresSafeArea()
       ScrollView {
-        VStack(spacing: 24) {
+        VStack(spacing: 16) {
           header
           location
           dateBar
           VStack(spacing: 0) {
-            HStack {
-              Text("THE SUN, AT A GLANCE").technical()
-              Spacer()
-              Text("01 / SKY DIAL").technical()
-            }.foregroundStyle(Palette.muted)
+            windowSummary
             SunDial(
               day: planner.day, place: planner.place, date: planner.date,
               onScrub: { planner.scrub($0) }
             )
-            .frame(height: 310)
+            .frame(height: 266)
+            Text(sun.altitude < 0 ? "BELOW HORIZON · OUTER BAND" : "HOLD THE PATH TO SCRUB")
+              .technical(10).foregroundStyle(Palette.muted).padding(.bottom, 8)
             HStack(alignment: .firstTextBaseline) {
               Text(Solar.time(planner.date, in: planner.place))
-                .font(.system(size: 48, weight: .light, design: .rounded)).monospacedDigit()
+                .font(.system(size: 42, weight: .light, design: .rounded)).monospacedDigit()
               Spacer()
               VStack(alignment: .trailing, spacing: 5) {
                 Text(sun.phase).font(.system(.headline, design: .serif)).foregroundStyle(
@@ -57,11 +55,11 @@ struct PlannerView: View {
             HStack {
               Text("00")
               Spacer()
-              Text("06")
+              Text(timelineLabel(0.25))
               Spacer()
-              Text("12")
+              Text(timelineLabel(0.5))
               Spacer()
-              Text("18")
+              Text(timelineLabel(0.75))
               Spacer()
               Text("24")
             }.technical(10).foregroundStyle(Palette.muted)
@@ -71,7 +69,7 @@ struct PlannerView: View {
               Rectangle().fill(Palette.line).frame(width: 1, height: 30)
               Spacer()
               metric("AZIMUTH", value: String(format: "%.1f°", sun.azimuth))
-            }.padding(.top, 20)
+            }.padding(.top, 14)
           }
           lightWindows
           HStack {
@@ -85,7 +83,7 @@ struct PlannerView: View {
             .technical(9).foregroundStyle(Palette.muted).padding(.bottom, 12)
         }
         .padding(.horizontal, 24)
-        .padding(.top, 14)
+        .padding(.top, 4)
       }
     }
     .foregroundStyle(Palette.cream)
@@ -98,11 +96,11 @@ struct PlannerView: View {
           Text(saved ? "Shoot saved" : "Save this shoot").fontWeight(.semibold)
           Spacer()
           Image(systemName: "arrow.up.right")
-        }.padding(18).background(Palette.copper, in: RoundedRectangle(cornerRadius: 18))
+        }.padding(14).background(Palette.copper, in: RoundedRectangle(cornerRadius: 16))
           .foregroundStyle(Palette.ink)
       }
       .padding(.horizontal, 24).padding(.top, 10).padding(.bottom, 8)
-      .background(Palette.ink.opacity(0.97))
+      .background(Palette.ink.ignoresSafeArea(edges: .bottom))
     }
     .sheet(item: $sheet) { item in
       Group {
@@ -153,8 +151,10 @@ struct PlannerView: View {
       VStack(alignment: .leading, spacing: 9) {
         Text("CHASE A DIFFERENT LIGHT").technical(10).foregroundStyle(Palette.copper)
         HStack(alignment: .firstTextBaseline) {
-          Text(planner.place.name).font(.system(size: 35, weight: .regular, design: .serif))
-            .multilineTextAlignment(.leading)
+          Text(planner.place.name).font(
+            .system(size: locationSize, weight: .regular, design: .serif)
+          )
+          .multilineTextAlignment(.leading)
           Spacer(minLength: 8)
           Image(systemName: "chevron.down").font(.system(size: 13))
         }
@@ -233,7 +233,7 @@ struct PlannerView: View {
               Text(String(format: "%02d", index + 1)).technical(12).foregroundStyle(Palette.copper)
               VStack(alignment: .leading, spacing: 6) {
                 Text(
-                  "\(Solar.time(window.start, in: planner.place)) – \(Solar.time(window.end, in: planner.place))"
+                  "\(Solar.time(window.start, in: planner.place)) – \(windowEnd(window))"
                 )
                 .font(.system(.title3, design: .monospaced))
                 Text("\(window.minutes) MIN OF GOLDEN LIGHT").technical(9).foregroundStyle(
@@ -244,7 +244,7 @@ struct PlannerView: View {
             }.padding(.vertical, 14)
               .overlay(alignment: .bottom) { Rectangle().fill(Palette.line).frame(height: 1) }
           }.accessibilityLabel(
-            "Golden window \(index + 1), \(Solar.time(window.start, in: planner.place)) to \(Solar.time(window.end, in: planner.place)). Jump to midpoint"
+            "Golden window \(index + 1), \(Solar.time(window.start, in: planner.place)) to \(windowEnd(window)). Jump to midpoint"
           )
         }
       }
@@ -259,5 +259,31 @@ struct PlannerView: View {
         Text(Solar.time(date, in: planner.place)).font(.system(.headline, design: .monospaced))
       }
     }
+  }
+
+  private func timelineLabel(_ fraction: Double) -> String {
+    Solar.time(planner.day.date(at: fraction), in: planner.place)
+  }
+
+  private func windowEnd(_ window: LightWindow) -> String {
+    window.end == planner.day.end ? "24:00" : Solar.time(window.end, in: planner.place)
+  }
+
+  private var windowSummary: some View {
+    HStack(spacing: 8) {
+      Circle().fill(Palette.copper).frame(width: 5, height: 5)
+      if let condition = planner.day.condition {
+        Text(condition.uppercased()).technical(11)
+      } else if let window = planner.day.golden.first(where: { $0.end > planner.date })
+        ?? planner.day.golden.last
+      {
+        Text("GOLDEN \(Solar.time(window.start, in: planner.place))–\(windowEnd(window))")
+          .technical(11)
+      } else {
+        Text("NO GOLDEN WINDOW TODAY").technical(10)
+      }
+      Spacer()
+      Text("SKY DIAL").technical(10).foregroundStyle(Palette.muted)
+    }.foregroundStyle(Palette.copper)
   }
 }

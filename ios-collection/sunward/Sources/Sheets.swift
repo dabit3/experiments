@@ -10,11 +10,19 @@ struct LocationSheet: View {
   @State private var longitude = ""
   @State private var zone = "Etc/UTC"
   @State private var error = ""
+  @FocusState private var focus: Field?
+  private enum Field { case name, latitude, longitude }
 
   var body: some View {
     NavigationStack {
       List {
         if !manual {
+          Section {
+            HStack {
+              Image(systemName: "magnifyingglass").foregroundStyle(Palette.muted)
+              TextField("Find a city", text: $search).accessibilityLabel("Find a city")
+            }
+          }.listRowBackground(Palette.line)
           Section {
             ForEach(
               Place.presets.filter {
@@ -39,9 +47,16 @@ struct LocationSheet: View {
                 }.padding(.vertical, 7)
               }
             }
+            if !search.isEmpty
+              && !Place.presets.contains(where: { $0.name.localizedCaseInsensitiveContains(search) }
+              )
+            {
+              Text("No matching city. Enter coordinates below to plan anywhere.")
+                .foregroundStyle(Palette.muted)
+            }
           } header: {
             Text("A world of light")
-          }
+          }.listRowBackground(Color.clear)
           Section {
             Button {
               manual = true
@@ -53,22 +68,37 @@ struct LocationSheet: View {
           }
         } else {
           Section("Your location") {
-            TextField("Location name", text: $name).textInputAutocapitalization(.words)
-            TextField("Latitude (−90 to 90)", text: $latitude).keyboardType(.numbersAndPunctuation)
-            TextField("Longitude (−180 to 180)", text: $longitude).keyboardType(
-              .numbersAndPunctuation)
-          }
+            VStack(alignment: .leading, spacing: 8) {
+              Text("LOCATION NAME").technical(10).foregroundStyle(Palette.muted)
+              TextField("Your viewpoint", text: $name).textInputAutocapitalization(.words)
+                .focused($focus, equals: .name).accessibilityLabel("Location name")
+            }.padding(.vertical, 6)
+            VStack(alignment: .leading, spacing: 8) {
+              Text("LATITUDE · −90° TO 90°").technical(10).foregroundStyle(Palette.muted)
+              TextField("e.g. 37.7749", text: $latitude).keyboardType(.numbersAndPunctuation)
+                .focused($focus, equals: .latitude).accessibilityLabel("Latitude")
+            }.padding(.vertical, 6)
+            VStack(alignment: .leading, spacing: 8) {
+              Text("LONGITUDE · −180° TO 180°").technical(10).foregroundStyle(Palette.muted)
+              TextField("e.g. −122.4194", text: $longitude).keyboardType(.numbersAndPunctuation)
+                .focused($focus, equals: .longitude).accessibilityLabel("Longitude")
+            }.padding(.vertical, 6)
+          }.listRowBackground(Palette.line)
           Section {
-            Picker("Time zone", selection: $zone) {
-              ForEach(TimeZone.knownTimeZoneIdentifiers, id: \.self) { id in
-                Text(id.replacingOccurrences(of: "_", with: " ")).tag(id)
+            NavigationLink {
+              TimeZoneSheet(selection: $zone)
+            } label: {
+              VStack(alignment: .leading, spacing: 8) {
+                Text("TIME ZONE").technical(10).foregroundStyle(Palette.muted)
+                Text(zone.replacingOccurrences(of: "_", with: " "))
+                  .font(.subheadline).foregroundStyle(Palette.cream)
               }
             }
           } footer: {
             Text(
               "Choose the time zone used at this location. Coordinates alone do not determine civil time."
             )
-          }
+          }.listRowBackground(Palette.line)
           if !error.isEmpty {
             Section {
               Text(error).foregroundStyle(Palette.copper).accessibilityLabel("Error: \(error)")
@@ -81,23 +111,35 @@ struct LocationSheet: View {
         }
       }
       .scrollContentBackground(.hidden).background(Palette.ink)
-      .searchable(text: $search, prompt: "Find a city")
+      .scrollDismissesKeyboard(.interactively)
       .navigationTitle(manual ? "Coordinates" : "Find your light")
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+        ToolbarItemGroup(placement: .keyboard) {
+          Spacer()
+          Button("Done") { focus = nil }
+        }
       }
     }.tint(Palette.copper)
   }
 
   private func submit() {
+    focus = nil
     guard
       let lat = Double(
         latitude.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "−", with: "-")),
+      lat.isFinite, (-90...90).contains(lat)
+    else {
+      error = "Latitude must be a number from −90 to 90."
+      return
+    }
+    guard
       let lon = Double(
         longitude.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "−", with: "-")),
-      Place.valid(latitude: lat, longitude: lon)
+      lon.isFinite, (-180...180).contains(lon)
     else {
-      error = "Enter a latitude from −90 to 90 and longitude from −180 to 180."
+      error = "Longitude must be a number from −180 to 180."
       return
     }
     let title = name.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -106,6 +148,41 @@ struct LocationSheet: View {
         name: title.isEmpty ? "Custom location" : title, latitude: lat, longitude: lon, zoneID: zone
       ))
     dismiss()
+  }
+}
+
+struct TimeZoneSheet: View {
+  @Binding var selection: String
+  @Environment(\.dismiss) private var dismiss
+  @State private var search = ""
+  private var zones: [String] {
+    Array(Set(["Etc/UTC"] + TimeZone.knownTimeZoneIdentifiers)).sorted()
+      .filter {
+        search.isEmpty
+          || $0.replacingOccurrences(of: "_", with: " ").localizedCaseInsensitiveContains(search)
+      }
+  }
+  var body: some View {
+    List {
+      ForEach(zones, id: \.self) { zone in
+        Button {
+          selection = zone
+          dismiss()
+        } label: {
+          HStack {
+            Text(zone.replacingOccurrences(of: "_", with: " ")).foregroundStyle(Palette.cream)
+            Spacer()
+            if selection == zone { Image(systemName: "checkmark") }
+          }.padding(.vertical, 6)
+        }.listRowBackground(Color.clear)
+      }
+      if zones.isEmpty {
+        Text("No matching time zone. Try a city or region.").foregroundStyle(Palette.muted)
+      }
+    }
+    .searchable(text: $search, prompt: "City, region or UTC")
+    .scrollContentBackground(.hidden).background(Palette.ink)
+    .navigationTitle("Time zone").navigationBarTitleDisplayMode(.inline)
   }
 }
 
