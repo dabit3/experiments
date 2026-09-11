@@ -236,7 +236,7 @@ class _BoardColumn extends StatelessWidget {
   /// the board takes the full height.
   final bool showCards;
 
-  static double cardHeight(bool compact) => compact ? 56.0 : 68.0;
+  static double cardHeight(bool compact) => compact ? 60.0 : 68.0;
   static double _gap(bool compact) => compact ? GcSpace.sm : GcSpace.md;
 
   static double _boardSize(
