@@ -37,6 +37,7 @@ final class LightingView: SCNView {
     super.init(frame: .zero, options: nil)
     scene = stage
     backgroundColor = NSColor(red: 0.025, green: 0.033, blue: 0.047, alpha: 1)
+    stage.background.contents = NSColor(red: 0.025, green: 0.033, blue: 0.047, alpha: 1)
     antialiasingMode = .multisampling4X
     autoenablesDefaultLighting = false
     rendersContinuously = false
@@ -53,8 +54,10 @@ final class LightingView: SCNView {
     -> SCNMaterial
   {
     let material = SCNMaterial()
-    material.lightingModel = .physicallyBased
+    material.lightingModel = .blinn
     material.diffuse.contents = color
+    material.specular.contents = NSColor(white: metallic * 0.25, alpha: 1)
+    material.shininess = 0.35
     material.metalness.contents = metallic
     material.roughness.contents = roughness
     return material
@@ -77,18 +80,26 @@ final class LightingView: SCNView {
     ambient.light = SCNLight()
     ambient.light?.type = .ambient
     ambient.light?.color = NSColor(red: 0.52, green: 0.61, blue: 0.8, alpha: 1)
-    ambient.light?.intensity = 105
+    ambient.light?.intensity = 360
     stage.rootNode.addChildNode(ambient)
 
+    let workLight = SCNNode()
+    workLight.light = SCNLight()
+    workLight.light?.type = .directional
+    workLight.light?.color = NSColor(red: 0.55, green: 0.65, blue: 0.85, alpha: 1)
+    workLight.light?.intensity = 180
+    workLight.eulerAngles = .init(-0.8, -0.5, 0)
+    stage.rootNode.addChildNode(workLight)
+
     cameraNode.camera = SCNCamera()
-    cameraNode.camera?.fieldOfView = 42
+    cameraNode.camera?.fieldOfView = 40
     cameraNode.camera?.zNear = 0.1
     cameraNode.camera?.zFar = 80
     cameraNode.camera?.wantsHDR = true
-    cameraNode.camera?.exposureOffset = 0.1
-    cameraNode.camera?.bloomIntensity = 0.45
-    cameraNode.camera?.bloomThreshold = 0.95
-    cameraNode.camera?.bloomBlurRadius = 9
+    cameraNode.camera?.exposureOffset = -0.25
+    cameraNode.camera?.bloomIntensity = 0.08
+    cameraNode.camera?.bloomThreshold = 1.2
+    cameraNode.camera?.bloomBlurRadius = 5
     stage.rootNode.addChildNode(cameraNode)
     pointOfView = cameraNode
 
@@ -212,8 +223,8 @@ final class LightingView: SCNView {
       cameraNode.camera?.usesOrthographicProjection = camera == .overhead
       cameraNode.camera?.orthographicScale = 9
       switch camera {
-      case .perspective: cameraNode.position = .init(12.5, 10, 17)
-      case .front: cameraNode.position = .init(0, 8, 23)
+      case .perspective: cameraNode.position = .init(10.5, 8.5, 14.5)
+      case .front: cameraNode.position = .init(0, 7.2, 20)
       case .overhead: cameraNode.position = .init(0, 24, 0.01)
       }
       cameraNode.look(at: camera == .overhead ? .init(0, 0, 0) : .init(0, 2.2, -0.2))
@@ -224,7 +235,7 @@ final class LightingView: SCNView {
       rig.position = fixture.position.scn
       rig.look(at: fixture.target.scn)
       rig.light?.color = fixture.color.nsColor
-      rig.light?.intensity = fixture.intensity * 1800
+      rig.light?.intensity = fixture.intensity * 750
       rig.light?.spotInnerAngle = CGFloat(fixture.beam * 0.55)
       rig.light?.spotOuterAngle = CGFloat(fixture.beam)
       if let lens = rig.childNode(withName: "lens", recursively: false) {
@@ -244,7 +255,7 @@ final class LightingView: SCNView {
       let beamMaterial = SCNMaterial()
       beamMaterial.lightingModel = .constant
       beamMaterial.diffuse.contents = fixture.color.nsColor.withAlphaComponent(
-        0.042 * fixture.intensity)
+        0.065 * fixture.intensity)
       beamMaterial.blendMode = .add
       beamMaterial.writesToDepthBuffer = false
       beamMaterial.readsFromDepthBuffer = true
