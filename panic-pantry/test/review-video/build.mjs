@@ -114,7 +114,10 @@ function ff(argv) {
 function duration(file) {
   const r = spawnSync('ffprobe', ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', file], { encoding: 'utf8' });
   const d = Number(r.stdout.trim());
-  return Number.isFinite(d) ? d : 0;
+  if (r.status !== 0 || !Number.isFinite(d) || d <= 0) {
+    throw new Error(`Cannot read a positive media duration: ${file}`);
+  }
+  return d;
 }
 
 // --- HTML cards -------------------------------------------------------------
@@ -128,7 +131,7 @@ ${fontFace('Nunito', 'Nunito-Bold.ttf', 700)}
 ${fontFace('Nunito', 'Nunito-ExtraBold.ttf', 800)}
 ${fontFace('Nunito', 'Nunito-Black.ttf', 900)}
 ${fontFace('Mono', 'JetBrainsMono-Medium.ttf', 500)}
-:root{--cream:#FFF6E7;--cream2:#F6E6C9;--ink:#244A7A;--ink2:#17335A;--coin:#F2B531;--coin2:#C98A12;--paprika:#E8593C;--basil:#3E9D5A;--text:#2B2118;--text2:#6B5A48;--text3:#9A8A76}
+:root{--cream:#FFF7E7;--cream2:#F0E5CF;--ink:#102F35;--ink2:#193E44;--coin:#FFD363;--coin2:#C98A12;--paprika:#EF593D;--basil:#248875;--text:#102F35;--text2:#193E44;--text3:#6D736D}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:${W}px;height:${H}px;overflow:hidden;font-family:'Nunito',sans-serif;color:var(--text)}
 body.card{background:var(--cream);background-image:radial-gradient(circle at 12% 0%,rgba(242,181,49,.35),transparent 42%),radial-gradient(circle at 100% 100%,rgba(232,89,60,.22),transparent 48%)}

@@ -32,6 +32,7 @@ const lines = [];
 const checks = [];
 const children = [];
 let browser;
+let context;
 let webServer;
 let videoStartedAt = null;
 
@@ -106,7 +107,7 @@ async function main() {
   // into the edited review reel using the timestamps in smoke.log.
   const videoDir = join(OUT, 'video');
   rmSync(videoDir, { recursive: true, force: true });
-  const context = await browser.newContext({ viewport: VIEWPORT, recordVideo: { dir: videoDir, size: VIEWPORT } });
+  context = await browser.newContext({ viewport: VIEWPORT, recordVideo: { dir: videoDir, size: VIEWPORT } });
   const page = await context.newPage();
   videoStartedAt = new Date().toISOString();
   log(`browser recording started -> ${join(OUT, 'browser-smoke.webm')}`);
@@ -196,6 +197,7 @@ async function main() {
 
 async function cleanup() {
   try {
+    await context?.close();
     await browser?.close();
     const videoDir = join(OUT, 'video');
     const webm = existsSync(videoDir) ? readdirSync(videoDir).find((f) => f.endsWith('.webm')) : null;
