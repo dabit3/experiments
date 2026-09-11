@@ -85,6 +85,10 @@ if lsof -iTCP:"$PORT" -sTCP:LISTEN >/dev/null 2>&1; then
   log "FAIL: port $PORT already in use; stop the other server or set NT_PORT."
   exit 3
 fi
+if have web && lsof -iTCP:"$WEB_PORT" -sTCP:LISTEN >/dev/null 2>&1; then
+  log "FAIL: port $WEB_PORT already in use; stop the other web server or set NT_WEB_PORT."
+  exit 3
+fi
 [[ -d "$TEST_DIR/node_modules/playwright" ]] || (cd "$TEST_DIR" && npm install --no-audit --no-fund >"$OUT/logs/npm.log" 2>&1)
 
 # ------------------------------------------------------------------- builds
@@ -101,14 +105,14 @@ APK="$APP/build/app/outputs/flutter-apk/app-release.apk"
 
 # ------------------------------------------------------------------- server
 log "starting server on :$PORT (seed $SEED)"
-(cd "$SERVER_PKG" && dart run bin/nitro_server.dart --port "$PORT" --seed "$SEED" -v >"$OUT/logs/server.log" 2>&1) &
+(cd "$SERVER_PKG" && exec dart run bin/nitro_server.dart --port "$PORT" --seed "$SEED" -v >"$OUT/logs/server.log" 2>&1) &
 PIDS+=($!)
 for _ in $(seq 1 60); do curl -sf "$SERVER_HTTP/health" >/dev/null && break; sleep 1; done
 curl -sf "$SERVER_HTTP/health" >"$OUT/logs/health.json" || { log "FAIL: server did not start"; exit 4; }
 log "server healthy: $(cat "$OUT/logs/health.json")"
 
 if have web; then
-  (cd "$APP/build/web" && python3 -m http.server "$WEB_PORT" --bind 127.0.0.1 >"$OUT/logs/web_server.log" 2>&1) &
+  (cd "$APP/build/web" && exec python3 -m http.server "$WEB_PORT" --bind 127.0.0.1 >"$OUT/logs/web_server.log" 2>&1) &
   PIDS+=($!)
   for _ in $(seq 1 30); do curl -sf "$APP_URL" >/dev/null && break; sleep 1; done
 fi
@@ -166,7 +170,7 @@ fi
 
 if have web; then
   log "launching web client (Playwright)"
-  (cd "$TEST_DIR" && node web_client.mjs "$APP_URL?test=1&room=$ROOM&players=$PLAYERS&laps=$LAPS&cup=$CUP&port=$PORT" \
+  (cd "$TEST_DIR" && exec node web_client.mjs "$APP_URL?test=1&room=$ROOM&players=$PLAYERS&laps=$LAPS&cup=$CUP&port=$PORT" \
       "$SERVER_HTTP" "$ROOM" "$OUT/screenshots" "0,30,800,560" >"$OUT/logs/web.log" 2>&1) &
   PIDS+=($!)
 fi
