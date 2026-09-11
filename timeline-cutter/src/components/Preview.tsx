@@ -54,10 +54,6 @@ export function Preview({ project, time, duration, ...transport }: Props) {
           <span className={`live-dot ${speed !== 0 ? 'on' : ''}`}>{speed !== 0 ? 'PLAYING' : 'PAUSED'}</span>
         </span>
       </header>
-      <div className="monitor-info">
-        <span><i className="status-dot" />1280 × 720 <span className="dim">/ 30 fps</span></span>
-        <span>CANVAS · sRGB</span>
-      </div>
       <div className="preview-stage">
         <div className="frame-container">
           <canvas ref={ref} width={W} height={H} className="preview-canvas" />
@@ -75,10 +71,6 @@ export function Preview({ project, time, duration, ...transport }: Props) {
         <Transport {...transport} />
         <button className={`icon-btn ${guides ? 'active' : ''}`} onClick={() => setGuides(!guides)} aria-label="Toggle safe margins" aria-pressed={guides} title="Toggle safe margins"><Icon name="guides" size={18} /></button>
       </div>
-      <footer className="monitor-status">
-        <span><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd> Shuttle playback</span>
-        <span><kbd>Space</kbd> Play / pause</span>
-      </footer>
     </section>
   )
 }
