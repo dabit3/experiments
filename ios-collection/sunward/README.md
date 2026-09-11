@@ -28,8 +28,12 @@ xcrun swift format lint --strict --recursive Sources Tests Tools
 - Tap the location heading to choose a world city or enter coordinates and
   an explicit IANA civil time zone. No GPS permission is needed.
 - Choose a calendar date or move one day with the arrows.
-- Drag the sky path or time slider to explore the selected local day.
-  North is at the top; east is right. Center is zenith, outer circle is horizon.
+- Hold near the sky path, then drag; or move the time slider to explore the day.
+  A ring, caption and light haptic confirm active scrubbing. Ordinary vertical
+  swipes scroll the page. North is at the top; east is right. Center is zenith,
+  inner disk rim is the horizon. The outer blue band compresses below-horizon
+  positions to keep the sun visible throughout the entire day.
+- Tap the golden/polar summary above the dial to reveal the daily windows.
 - Tap a golden window to move to its midpoint. Altitude and azimuth are
   recomputed for the selected instant.
 - Save a shoot with a name and field notes. The bookmark opens saved shoots;
@@ -48,7 +52,8 @@ north. Civil time formatting uses Foundation IANA time zones with DST.
 Event times are obtained by sampling the actual civil day every five minutes,
 then bisecting threshold crossings 16 times. Sunrise/sunset use −0.833°;
 golden windows use −4° to +6°. Blue hour is −6° to −4°. Windows are clipped at
-civil midnight, including polar windows. DST days have 23 or 25 hours.
+civil midnight, including polar windows; a clipped end is shown as 24:00.
+DST days have 23 or 25 hours, with timeline labels derived from actual civil time.
 Polar day/night is detected from whether the sun ever crosses the sunrise
 threshold; missing events remain absent rather than invented.
 

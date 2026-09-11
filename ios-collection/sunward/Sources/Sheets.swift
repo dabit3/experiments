@@ -112,6 +112,8 @@ struct LocationSheet: View {
       }
       .scrollContentBackground(.hidden).background(Palette.ink)
       .scrollDismissesKeyboard(.interactively)
+      .onChange(of: latitude) { error = "" }
+      .onChange(of: longitude) { error = "" }
       .navigationTitle(manual ? "Coordinates" : "Find your light")
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -196,20 +198,21 @@ struct DateSheet: View {
   }
   var body: some View {
     NavigationStack {
-      VStack(alignment: .leading, spacing: 24) {
-        Text("Every day has\nits own light.").font(.system(size: 34, design: .serif))
-          .foregroundStyle(Palette.cream)
-        DatePicker("Shoot date", selection: $selection, in: dateRange, displayedComponents: .date)
-          .datePickerStyle(.graphical).tint(Palette.copper)
-          .environment(\.timeZone, planner.place.zone)
-          .environment(\.calendar, planner.place.calendar)
-        Button("Today in \(planner.place.name)") { selection = Date() }.frame(minHeight: 44)
-        Text(
-          "Dates and times use \(planner.place.zoneID). Daylight saving time is included automatically."
-        )
-        .font(.subheadline).foregroundStyle(Palette.muted)
-        Spacer()
-      }.padding(24).background(Palette.ink)
+      ScrollView {
+        VStack(alignment: .leading, spacing: 16) {
+          Text("Every day has\nits own light.").font(.system(.largeTitle, design: .serif))
+            .foregroundStyle(Palette.cream)
+          DatePicker("Shoot date", selection: $selection, in: dateRange, displayedComponents: .date)
+            .datePickerStyle(.graphical).tint(Palette.copper)
+            .environment(\.timeZone, planner.place.zone)
+            .environment(\.calendar, planner.place.calendar)
+          Button("Today in \(planner.place.name)") { selection = Date() }.frame(minHeight: 44)
+          Text(
+            "Dates and times use \(planner.place.zoneID). Daylight saving time is included automatically."
+          )
+          .font(.subheadline).foregroundStyle(Palette.muted)
+        }.padding(24)
+      }.background(Palette.ink)
         .navigationTitle("Choose a date").navigationBarTitleDisplayMode(.inline)
         .toolbar {
           ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
@@ -237,6 +240,7 @@ struct SaveShootSheet: View {
   @Environment(\.dismiss) private var dismiss
   @State private var title = ""
   @State private var notes = ""
+  @FocusState private var fieldFocused: Bool
 
   var body: some View {
     NavigationStack {
@@ -250,25 +254,34 @@ struct SaveShootSheet: View {
                 + Solar.time(editing?.date ?? planner.date, in: editing?.place ?? planner.place)
             )
             .font(.system(.subheadline, design: .monospaced)).foregroundStyle(Palette.copper)
+            let place = editing?.place ?? planner.place
+            let position = Solar.position(at: editing?.date ?? planner.date, place: place)
+            Text("\(position.phase) · \(String(format: "%+.1f°", position.altitude)) altitude")
+              .font(.subheadline).foregroundStyle(Palette.muted)
           }.padding(.vertical, 12)
-        }
+        }.listRowBackground(Color.clear)
         Section("Shoot name") {
-          TextField("Name this shoot", text: $title)
-        }
+          TextField("Name this shoot", text: $title).focused($fieldFocused)
+        }.listRowBackground(Palette.line)
         Section("Field notes") {
           TextField("Lens, composition, a place to meet…", text: $notes, axis: .vertical)
-            .lineLimit(4...8)
-        }
+            .lineLimit(4...8).focused($fieldFocused)
+        }.listRowBackground(Palette.line)
         Section {
           Text("Saved on this iPhone, ready whenever the light is.")
             .font(.subheadline).foregroundStyle(Palette.muted)
-        }
+        }.listRowBackground(Color.clear)
       }
       .scrollContentBackground(.hidden).background(Palette.ink)
+      .scrollDismissesKeyboard(.interactively)
       .navigationTitle(editing == nil ? "Keep this light" : "Edit shoot")
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+        ToolbarItemGroup(placement: .keyboard) {
+          Spacer()
+          Button("Done") { fieldFocused = false }
+        }
         ToolbarItem(placement: .confirmationAction) {
           Button("Save") {
             if var shoot = editing {
@@ -360,7 +373,7 @@ struct GuideSheet: View {
           Text("A little closer\nto the sun.").font(.system(size: 36, design: .serif))
           guide(
             "Read the sky",
-            "The dial looks up at the sky: north at the top, east to the right. The outer circle is the horizon; the center is directly overhead. Copper traces the sun’s path. Drag it or use the time slider to explore your day."
+            "The dial looks up at the sky: north at the top, east to the right. The inner disk is the visible sky; its rim is the 0° horizon and its center is 90° overhead. The blue outer band compresses below-horizon positions to keep the whole day visible. Hold near the path, then drag to scrub. A ring and caption confirm scrubbing. Or use the time slider."
           )
           guide(
             "Find the softer light",

@@ -9,81 +9,96 @@ struct PlannerView: View {
   @Bindable var planner: Planner
   @State private var sheet: PlannerSheet?
   @State private var saved = false
+  @State private var isScrubbing = false
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @ScaledMetric(relativeTo: .largeTitle) private var locationSize = 32
 
   private var sun: SunPosition { Solar.position(at: planner.date, place: planner.place) }
+  private var skyColor: Color {
+    sun.altitude < -6
+      ? Color(red: 0.12, green: 0.17, blue: 0.29)
+      : Color(red: 0.29, green: 0.21, blue: 0.25)
+  }
 
   var body: some View {
     ZStack {
       Palette.ink.ignoresSafeArea()
       LinearGradient(
-        colors: [Color(red: 0.29, green: 0.21, blue: 0.25), Palette.ink, Palette.ink],
+        colors: [skyColor, Palette.ink, Palette.ink],
         startPoint: .topLeading, endPoint: .bottomTrailing
       ).ignoresSafeArea()
-      ScrollView {
-        VStack(spacing: 16) {
-          header
-          location
-          dateBar
-          VStack(spacing: 0) {
-            windowSummary
-            SunDial(
-              day: planner.day, place: planner.place, date: planner.date,
-              onScrub: { planner.scrub($0) }
-            )
-            .frame(height: 266)
-            Text(sun.altitude < 0 ? "BELOW HORIZON · OUTER BAND" : "HOLD THE PATH TO SCRUB")
-              .technical(10).foregroundStyle(Palette.muted).padding(.bottom, 8)
-            HStack(alignment: .firstTextBaseline) {
-              Text(Solar.time(planner.date, in: planner.place))
-                .font(.system(size: 42, weight: .light, design: .rounded)).monospacedDigit()
-              Spacer()
-              VStack(alignment: .trailing, spacing: 5) {
-                Text(sun.phase).font(.system(.headline, design: .serif)).foregroundStyle(
-                  Palette.copper)
-                Text(planner.place.zone.abbreviation(for: planner.date) ?? planner.place.zoneID)
-                  .technical()
+      ScrollViewReader { proxy in
+        ScrollView {
+          VStack(spacing: 16) {
+            header
+            location
+            dateBar
+            VStack(spacing: 0) {
+              Button {
+                withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.3)) {
+                  proxy.scrollTo("windows", anchor: .top)
+                }
+              } label: {
+                windowSummary.frame(minHeight: 44).contentShape(Rectangle())
+              }.accessibilityHint("Show all golden windows and sunrise and sunset")
+              SunDial(
+                day: planner.day, place: planner.place, date: planner.date,
+                onScrub: { planner.scrub($0) }, isScrubbing: $isScrubbing
+              )
+              .frame(height: 250)
+              Text(isScrubbing ? "SCRUBBING · RELEASE TO FINISH" : "HOLD THE PATH TO SCRUB")
+                .technical(10).foregroundStyle(Palette.muted).padding(.bottom, 8)
+              HStack(alignment: .firstTextBaseline) {
+                Text(Solar.time(planner.date, in: planner.place))
+                  .font(.system(size: 42, weight: .light, design: .rounded)).monospacedDigit()
+                Spacer()
+                VStack(alignment: .trailing, spacing: 5) {
+                  Text(sun.phase).font(.system(.headline, design: .serif)).foregroundStyle(
+                    Palette.copper)
+                  Text(planner.place.zone.abbreviation(for: planner.date) ?? planner.place.zoneID)
+                    .technical()
+                }
               }
+              Slider(
+                value: Binding(
+                  get: { planner.day.fraction(at: planner.date) }, set: { planner.scrub($0) }),
+                in: 0...0.999_99
+              )
+              .accessibilityLabel("Time of day")
+              .accessibilityValue(Solar.time(planner.date, in: planner.place))
+              HStack {
+                Text("00")
+                Spacer()
+                Text(timelineLabel(0.25))
+                Spacer()
+                Text(timelineLabel(0.5))
+                Spacer()
+                Text(timelineLabel(0.75))
+                Spacer()
+                Text("24")
+              }.technical(10).foregroundStyle(Palette.muted)
+              HStack(spacing: 0) {
+                metric("ALTITUDE", value: String(format: "%+.1f°", sun.altitude))
+                Spacer()
+                Rectangle().fill(Palette.line).frame(width: 1, height: 30)
+                Spacer()
+                metric("AZIMUTH", value: String(format: "%.1f°", sun.azimuth))
+              }.padding(.top, 14)
             }
-            Slider(
-              value: Binding(
-                get: { planner.day.fraction(at: planner.date) }, set: { planner.scrub($0) }),
-              in: 0...0.999_99
-            )
-            .accessibilityLabel("Time of day")
-            .accessibilityValue(Solar.time(planner.date, in: planner.place))
+            lightWindows.id("windows")
             HStack {
-              Text("00")
+              event("Sunrise", icon: "sunrise", date: planner.day.sunrise)
               Spacer()
-              Text(timelineLabel(0.25))
-              Spacer()
-              Text(timelineLabel(0.5))
-              Spacer()
-              Text(timelineLabel(0.75))
-              Spacer()
-              Text("24")
-            }.technical(10).foregroundStyle(Palette.muted)
-            HStack(spacing: 0) {
-              metric("ALTITUDE", value: String(format: "%+.1f°", sun.altitude))
-              Spacer()
-              Rectangle().fill(Palette.line).frame(width: 1, height: 30)
-              Spacer()
-              metric("AZIMUTH", value: String(format: "%.1f°", sun.azimuth))
-            }.padding(.top, 14)
+              event("Sunset", icon: "sunset", date: planner.day.sunset)
+            }
+            .padding(.vertical, 18)
+            .overlay(alignment: .top) { Rectangle().fill(Palette.line).frame(height: 1) }
+            Text("LOCAL TIME · TRUE NORTH · MADE FOR THE LIGHT")
+              .technical(9).foregroundStyle(Palette.muted).padding(.bottom, 12)
           }
-          lightWindows
-          HStack {
-            event("Sunrise", icon: "sunrise", date: planner.day.sunrise)
-            Spacer()
-            event("Sunset", icon: "sunset", date: planner.day.sunset)
-          }
-          .padding(.vertical, 18)
-          .overlay(alignment: .top) { Rectangle().fill(Palette.line).frame(height: 1) }
-          Text("LOCAL TIME · TRUE NORTH · MADE FOR THE LIGHT")
-            .technical(9).foregroundStyle(Palette.muted).padding(.bottom, 12)
-        }
-        .padding(.horizontal, 24)
-        .padding(.top, 4)
+          .padding(.horizontal, 24)
+          .padding(.top, 4)
+        }.clipped()
       }
     }
     .foregroundStyle(Palette.cream)
@@ -283,7 +298,7 @@ struct PlannerView: View {
         Text("NO GOLDEN WINDOW TODAY").technical(10)
       }
       Spacer()
-      Text("SKY DIAL").technical(10).foregroundStyle(Palette.muted)
+      Image(systemName: "chevron.down").font(.caption).foregroundStyle(Palette.muted)
     }.foregroundStyle(Palette.copper)
   }
 }

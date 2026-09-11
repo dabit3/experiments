@@ -1,10 +1,12 @@
 import SwiftUI
+import UIKit
 
 struct SunDial: View {
   let day: SunDay
   let place: Place
   let date: Date
   let onScrub: (Double) -> Void
+  @Binding var isScrubbing: Bool
 
   private func point(_ position: SunPosition, size: CGSize) -> CGPoint {
     let radius = min(size.width, size.height) * 0.33
@@ -19,6 +21,7 @@ struct SunDial: View {
   var body: some View {
     GeometryReader { geometry in
       Canvas { context, size in
+        let sun = Solar.position(at: date, place: place)
         let center = CGPoint(x: size.width / 2, y: size.height / 2)
         let radius = min(size.width, size.height) * 0.33
         let outer = radius * 1.28
@@ -34,7 +37,10 @@ struct SunDial: View {
           Path(ellipseIn: circle),
           with: .radialGradient(
             Gradient(colors: [
-              Palette.copper.opacity(0.42), Color(red: 0.16, green: 0.19, blue: 0.30).opacity(0.7),
+              sun.altitude < -6
+                ? Color(red: 0.16, green: 0.23, blue: 0.39)
+                : Palette.copper.opacity(0.42),
+              Color(red: 0.16, green: 0.19, blue: 0.30).opacity(0.7),
             ]),
             center: CGPoint(x: center.x, y: center.y + radius * 0.65), startRadius: 0,
             endRadius: radius * 1.7))
@@ -94,8 +100,12 @@ struct SunDial: View {
               lineWidth: golden ? 3 : 1.5, lineCap: .round,
               dash: b.position.altitude < -4 ? [2, 3] : []))
         }
-        let sun = Solar.position(at: date, place: place)
         let p = point(sun, size: size)
+        if isScrubbing {
+          context.stroke(
+            Path(ellipseIn: CGRect(x: p.x - 15, y: p.y - 15, width: 30, height: 30)),
+            with: .color(Palette.cream), lineWidth: 1)
+        }
         for r in [20.0, 12.0, 6.0] {
           context.fill(
             Path(ellipseIn: CGRect(x: p.x - r, y: p.y - r, width: r * 2, height: r * 2)),
@@ -104,24 +114,26 @@ struct SunDial: View {
                 r == 6 ? 1 : r == 12 ? 0.15 : 0.05)))
         }
       }
-      .simultaneousGesture(
-        LongPressGesture(minimumDuration: 0.25)
-          .sequenced(before: DragGesture(minimumDistance: 0))
-          .onChanged { value in
-            guard case .second(true, let drag?) = value else { return }
-            let startIsOnPath = day.samples.contains {
+      .overlay {
+        DialTouchSurface(
+          shouldBegin: { location in
+            day.samples.contains {
               let p = point($0.position, size: geometry.size)
-              return hypot(p.x - drag.startLocation.x, p.y - drag.startLocation.y) < 24
+              return hypot(p.x - location.x, p.y - location.y) < 24
             }
-            guard startIsOnPath else { return }
+          },
+          onMove: { location in
             let closest = day.samples.min {
               let a = point($0.position, size: geometry.size)
               let b = point($1.position, size: geometry.size)
-              return hypot(a.x - drag.location.x, a.y - drag.location.y)
-                < hypot(b.x - drag.location.x, b.y - drag.location.y)
+              return hypot(a.x - location.x, a.y - location.y)
+                < hypot(b.x - location.x, b.y - location.y)
             }
             if let closest { onScrub(day.fraction(at: closest.date)) }
-          })
+          },
+          onActive: { isScrubbing = $0 }
+        )
+      }
     }
     .accessibilityElement(children: .ignore)
     .accessibilityLabel("Interactive sun path, compass sky projection")
@@ -133,6 +145,51 @@ struct SunDial: View {
     )
     .accessibilityAdjustableAction { direction in
       onScrub(day.fraction(at: date) + (direction == .increment ? 900 : -900) / day.duration)
+    }
+  }
+}
+
+private struct DialTouchSurface: UIViewRepresentable {
+  let shouldBegin: (CGPoint) -> Bool
+  let onMove: (CGPoint) -> Void
+  let onActive: (Bool) -> Void
+
+  func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+  func makeUIView(context: Context) -> UIView {
+    let view = UIView()
+    let press = UILongPressGestureRecognizer(
+      target: context.coordinator, action: #selector(Coordinator.handle(_:)))
+    press.minimumPressDuration = 0.25
+    press.allowableMovement = 10
+    press.delegate = context.coordinator
+    view.addGestureRecognizer(press)
+    return view
+  }
+
+  func updateUIView(_ uiView: UIView, context: Context) {
+    context.coordinator.parent = self
+  }
+
+  final class Coordinator: NSObject, UIGestureRecognizerDelegate {
+    var parent: DialTouchSurface
+    init(_ parent: DialTouchSurface) { self.parent = parent }
+
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+      parent.shouldBegin(gestureRecognizer.location(in: gestureRecognizer.view))
+    }
+
+    @objc func handle(_ recognizer: UILongPressGestureRecognizer) {
+      switch recognizer.state {
+      case .began:
+        parent.onActive(true)
+        UISelectionFeedbackGenerator().selectionChanged()
+        parent.onMove(recognizer.location(in: recognizer.view))
+      case .changed:
+        parent.onMove(recognizer.location(in: recognizer.view))
+      default:
+        parent.onActive(false)
+      }
     }
   }
 }
