@@ -1,0 +1,58 @@
+{
+  "video": "review.mp4",
+  "size": "1280x800",
+  "durationSec": 49.0,
+  "source": "four-way.mov",
+  "chapters": [
+    {
+      "title": "Title",
+      "start": 0.0,
+      "seconds": 3.5
+    },
+    {
+      "title": "Lobby",
+      "start": 3.5,
+      "seconds": 4.0
+    },
+    {
+      "title": "Drop",
+      "start": 7.5,
+      "seconds": 5.0
+    },
+    {
+      "title": "Gameplay",
+      "start": 12.5,
+      "seconds": 8.0
+    },
+    {
+      "title": "Storm",
+      "start": 20.5,
+      "seconds": 6.0
+    },
+    {
+      "title": "Match Over",
+      "start": 26.5,
+      "seconds": 4.0
+    },
+    {
+      "title": "Results",
+      "start": 30.5,
+      "seconds": 6.0
+    },
+    {
+      "title": "Compare: gameplay",
+      "start": 36.5,
+      "seconds": 4.0
+    },
+    {
+      "title": "Compare: results",
+      "start": 40.5,
+      "seconds": 4.0
+    },
+    {
+      "title": "Verdict",
+      "start": 44.5,
+      "seconds": 4.5
+    }
+  ]
+}

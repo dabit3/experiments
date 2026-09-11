@@ -1,6 +1,9 @@
 # Visual comparison: web baseline vs macOS (normalized cross-platform parity)
 
-Captured from `evidence/tests/e2e-20260910-071751` (the final passing partial run).
+Historical captures from `evidence/tests/e2e-20260910-071751`, before the arcade
+redesign. These counts do not measure the current revision. Current web/iOS
+responsive comparisons and their limits are in `evidence/audits/arcade-review.md`
+and `evidence/tests/manual-arcade/report.md`.
 
 Reference-access boundary: the original game cannot be run here, so no comparison
 against the original is possible or claimed. The visual items in `state.json` compare the

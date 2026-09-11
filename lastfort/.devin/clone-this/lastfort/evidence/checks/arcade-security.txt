@@ -1,0 +1,139 @@
+lastfort/client/assets/island-keyart.webp
+lastfort/client/lib/app/arcade_art.dart
+lastfort/client/lib/app/theme.dart
+lastfort/client/lib/app/widgets.dart
+lastfort/client/lib/game/lastfort_game.dart
+lastfort/client/lib/main.dart
+lastfort/client/lib/screens/hub_screen.dart
+lastfort/client/lib/screens/hud.dart
+lastfort/client/lib/screens/hud_panels.dart
+lastfort/client/lib/screens/lobby_play.dart
+lastfort/client/lib/screens/pass_screen.dart
+lastfort/client/lib/screens/results_screen.dart
+lastfort/client/lib/screens/touch_controls.dart
+lastfort/client/pubspec.yaml
+lastfort/client/test/rendering_test.dart
+lastfort/test/review_video.py
+server/lib/src/server.dart:295:        if (room.isFull) {
+core/lib/src/protocol.dart:36:  static const notHost = 'not_host';
+core/lib/src/cosmetics.dart:284:int tierForXp(int xp) => (xp ~/ xpPerTier).clamp(0, passTiers.length);
+core/lib/src/bots.dart:582:        mx: (dx * 0.3 + sx).clamp(-1, 1),
+core/lib/src/bots.dart:583:        my: (dy * 0.3 + sy).clamp(-1, 1)
+core/lib/src/input.dart:86:        moveX: (j['mx'] as num? ?? 0).toDouble().clamp(-1, 1),
+core/lib/src/input.dart:87:        moveY: (j['my'] as num? ?? 0).toDouble().clamp(-1, 1),
+core/lib/src/sim.dart:46:      rules.stormPhases[phase.clamp(0, rules.stormPhases.length - 1)];
+core/lib/src/sim.dart:48:      rules.stormPhases[(phase + 1).clamp(0, rules.stormPhases.length - 1)];
+core/lib/src/sim.dart:89:    final t = total <= 0 ? 1.0 : (phaseTime / total).clamp(0.0, 1.0);
+core/lib/src/sim.dart:214:          (ticksSincePhaseStart * dt / rules.busDuration).clamp(0.0, 1.0),
+core/lib/src/sim.dart:1041:        .clamp(rules.tileSize, rules.mapSize - rules.tileSize);
+core/lib/src/sim.dart:1043:        .clamp(rules.tileSize, rules.mapSize - rules.tileSize);
+core/lib/src/sim.dart:1456:                  .clamp(0, 999)),
+server/lib/src/room.dart:82:  bool get isFull => members.length >= rules.maxPlayers;
+server/lib/src/room.dart:294:        (fill ?? rules.maxPlayers).clamp(humans.length, rules.maxPlayers);
+server/lib/src/room.dart:516:        final n = (m['n'] as num? ?? 1).toInt().clamp(1, 20000);
+server/lib/src/room.dart:517:        final every = (m['every'] as num? ?? 1).toInt().clamp(1, 100);
+server/lib/src/room.dart:555:        return {'op': op, 'error': 'unknown op'};
+Dart SDK 3.13.3
+Flutter SDK 3.47.3
+lastfort 1.0.0+1
+
+dependencies:
+- cupertino_icons 1.0.9
+- flame 1.38.2 [collection flutter meta ordered_set vector_math]
+- flutter 0.0.0 [characters collection material_color_utilities meta vector_math sky_engine]
+- lastfort_core 1.0.0
+- shared_preferences 2.5.5 [flutter shared_preferences_android shared_preferences_foundation shared_preferences_linux shared_preferences_platform_interface shared_preferences_web shared_preferences_windows]
+- web_socket_channel 3.0.3 [async crypto stream_channel web web_socket]
+
+dev dependencies:
+- flutter_lints 6.0.0 [lints]
+- flutter_test 0.0.0 [flutter test_api matcher path fake_async clock stack_trace vector_math leak_tracker_flutter_testing collection meta stream_channel]
+
+transitive dependencies:
+- async 2.13.1 [collection meta]
+- boolean_selector 2.1.2 [source_span string_scanner]
+- characters 1.4.1
+- clock 1.1.3
+- collection 1.19.1
+- crypto 3.0.7 [typed_data]
+- fake_async 1.3.3 [clock collection]
+- ffi 2.2.0
+- file 7.0.1 [meta path]
+- flutter_web_plugins 0.0.0 [flutter]
+- leak_tracker 11.0.2 [clock collection meta path vm_service]
+- leak_tracker_flutter_testing 3.0.10 [flutter leak_tracker leak_tracker_testing matcher meta]
+- leak_tracker_testing 3.0.2 [leak_tracker matcher meta]
+- lints 6.1.0
+- matcher 0.12.20 [async meta stack_trace term_glyph test_api]
+- material_color_utilities 0.13.0 [collection]
+- meta 1.18.3
+- ordered_set 8.0.1
+- path 1.9.1
+- path_provider_linux 2.2.2 [ffi flutter path path_provider_platform_interface xdg_directories]
+- path_provider_platform_interface 2.1.3 [flutter platform plugin_platform_interface]
+- path_provider_windows 2.3.0 [ffi flutter path path_provider_platform_interface]
+- platform 3.2.0 [meta]
+- plugin_platform_interface 2.1.8 [meta]
+- shared_preferences_android 2.4.28 [flutter meta shared_preferences_platform_interface]
+- shared_preferences_foundation 2.5.7 [flutter meta shared_preferences_platform_interface]
+- shared_preferences_linux 2.4.1 [file flutter path path_provider_linux path_provider_platform_interface shared_preferences_platform_interface]
+- shared_preferences_platform_interface 2.4.2 [flutter plugin_platform_interface]
+- shared_preferences_web 2.4.3 [flutter flutter_web_plugins shared_preferences_platform_interface web]
+- shared_preferences_windows 2.4.1 [file flutter path path_provider_platform_interface path_provider_windows shared_preferences_platform_interface]
+- sky_engine 0.0.0
+- source_span 1.10.2 [collection path term_glyph]
+- stack_trace 1.12.2 [path]
+- stream_channel 2.1.4 [async]
+- string_scanner 1.4.1 [source_span]
+- term_glyph 1.2.2
+- test_api 0.7.12 [async boolean_selector collection meta source_span stack_trace stream_channel string_scanner term_glyph]
+- typed_data 1.4.0 [collection]
+- vector_math 2.4.0
+- vm_service 15.3.0
+- web 1.1.1
+- web_socket 1.0.1 [web]
+- xdg_directories 1.1.0 [meta path]
+found 0 vulnerabilities
+client/android/app/src/debug/AndroidManifest.xml
+client/android/app/src/main/AndroidManifest.xml
+client/android/app/src/profile/AndroidManifest.xml
+client/assets/fonts/OFL-Rajdhani.txt
+client/assets/fonts/Rajdhani-Bold.ttf
+client/assets/fonts/Rajdhani-Medium.ttf
+client/assets/fonts/Rajdhani-Regular.ttf
+client/assets/fonts/Rajdhani-SemiBold.ttf
+client/assets/island-keyart.webp
+client/ios/Flutter/AppFrameworkInfo.plist
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png
+client/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png
+client/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json
+client/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png
+client/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png
+client/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png
+client/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md
+client/ios/Runner/Info.plist
+client/macos/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json
+client/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_1024.png
+client/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_128.png
+client/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_16.png
+client/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_256.png
+client/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_32.png
+client/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_512.png
+client/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_64.png
+client/macos/Runner/Info.plist
+client/web/index.html
+client/web/manifest.json

@@ -3,9 +3,9 @@
   "source": "Fortnite",
   "clone_name": "Lastfort",
   "clone_root": "/Users/devin/repos/experiments/lastfort",
-  "status": "active",
-  "iteration": 4,
-  "revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+  "status": "blocked",
+  "iteration": 6,
+  "revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
   "frontier": [
     "Android runtime leg of journey-four-platform-match (blocked: no virtualization on this host)",
     "Renderer-independent visual capture so visual-*-parity can reach zero differing pixels"
@@ -14,7 +14,8 @@
     {
       "id": "android-runtime",
       "affected": [
-        "journey-four-platform-match"
+        "journey-four-platform-match",
+        "journey-ui-polish"
       ],
       "missing": "An Android emulator or device. The macOS VM exposes no nested virtualization (kern.hv_support=0); the arm64 Android emulator requires Hypervisor.framework and has no software fallback.",
       "attempted": [
@@ -36,310 +37,345 @@
       "kind": "route",
       "label": "Hub \u2192 Play: create/join room, mode chips, ready-up, host start, member list on every platform",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/tests/e2e-20260910-071751/all-lobby.png",
-        "evidence/tests/e2e-20260910-071751/web-lobby.png",
-        "evidence/tests/e2e-20260910-071751/ios-lobby.png",
-        "evidence/tests/e2e-20260910-071751/macos-lobby.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "route-locker",
       "kind": "route",
       "label": "Locker: equipped outfit/tool/glider/banner, rarity chips, tier-locked originals",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/screens/web-desktop-light-locker.png",
-        "evidence/screens/web-desktop-dark-locker.png",
-        "evidence/screens/web-phone-light-locker.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "route-pass",
       "kind": "route",
       "label": "Season pass: XP bar, reward track with tier locks, claimable badge, career stats",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/screens/web-desktop-light-pass.png",
-        "evidence/screens/web-desktop-dark-pass.png",
-        "evidence/screens/web-phone-dark-pass.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "route-match",
       "kind": "route",
       "label": "Match screen: bus, drop, HUD, building, storm, spectate, match-over overlay",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/tests/e2e-20260910-071751/all-bus.png",
-        "evidence/tests/e2e-20260910-071751/all-gameplay.png",
-        "evidence/tests/e2e-20260910-071751/all-midgame.png",
-        "evidence/tests/e2e-20260910-071751/all-matchover.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "route-results",
       "kind": "route",
       "label": "Results: placement, personal stats, XP gain/tier, scoreboard, continue to lobby",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/tests/e2e-20260910-071751/all-results.png",
-        "evidence/tests/e2e-20260910-071751/web-results.png",
-        "evidence/tests/e2e-20260910-071751/ios-results.png",
-        "evidence/tests/e2e-20260910-071751/macos-results.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "route-settings",
       "kind": "route",
       "label": "Settings: profile name, theme (system/dark/light), reduce motion, haptics, server URL, controls reference",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/screens/web-desktop-light-settings.png",
-        "evidence/screens/web-phone-light-settings.png",
-        "evidence/screens/web-phone-dark-settings.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-rooms",
       "kind": "feature",
       "label": "Rooms with 5-letter join codes, host controls, lobby \u2192 match \u2192 results lifecycle",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/tests/e2e-20260910-071751/server.log",
-        "evidence/tests/e2e-20260910-071751/server-summary.json",
-        "evidence/checks/static-checks.txt"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-bus-drop",
       "kind": "feature",
       "label": "Battle bus along a seeded line, jump/forced drop, glide to ground",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/all-bus.png",
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-storm",
       "kind": "feature",
       "label": "Shrinking storm with timed phases and growing damage; timer and next-circle on minimap",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/all-midgame.png",
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/checks/static-checks.txt"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-health-shield",
       "kind": "feature",
       "label": "100 HP + 100 shield, potions/bandages/medkits with caps",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-loot",
       "kind": "feature",
       "label": "Chests and floor loot with rarity tiers, ammo and materials",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/tests/e2e-20260910-071751/server-summary.json"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-harvest",
       "kind": "feature",
       "label": "Harvest wood/stone/metal from seeded nodes, 500 cap each",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/tests/e2e-20260910-071751/server-summary.json"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-building",
       "kind": "feature",
       "label": "Walls/floors/ramps/roofs cost 10 materials, block movement, editable (door/window), server-validated",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-combat",
       "kind": "feature",
       "label": "Server-authoritative hit detection, weapons per rarity, elimination feed",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-squads",
       "kind": "feature",
       "label": "Solo/Duos/Squads; humans share one squad in tests; bots complete partial squads",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-bots",
       "kind": "feature",
       "label": "Deterministic seeded bots fill open slots and play the full loop",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/checks/clean-checkout-builds.txt"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-hud",
       "kind": "feature",
       "label": "HUD: health/shield, hotbar, materials, minimap+compass, storm timer, feed, players left, squad panel",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/all-gameplay.png",
-        "evidence/tests/e2e-20260910-071751/all-midgame.png",
-        "evidence/tests/e2e-20260910-071751/all-matchover.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-spectate",
       "kind": "feature",
       "label": "Eliminated players spectate teammates; interest focus follows the spectated player",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260910-071751/all-matchover.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-progression",
       "kind": "feature",
       "label": "XP from placement/elims/damage/survival \u2192 tiers \u2192 cosmetic unlocks; persisted profile",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/all-results.png",
-        "evidence/screens/web-desktop-light-pass.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-input",
       "kind": "feature",
       "label": "Keyboard+mouse (web/macOS), touch controls (iOS/Android), deterministic autopilot for tests",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/screens/web-desktop-light-settings.png",
-        "evidence/tests/e2e-20260910-071751/ios-gameplay.png",
-        "evidence/tests/e2e-20260910-071751/harness.log"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-reconnect",
       "kind": "feature",
       "label": "Session token reconnect within 60 s grace; reconnecting banner; timeout removes player",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/screens/state-reconnecting-banner.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-prediction",
       "kind": "feature",
       "label": "Client movement prediction with server reconciliation; interest-managed snapshots (r=90)",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260910-071751/harness.log",
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "feature-themes",
       "kind": "feature",
       "label": "Light and dark themes from one token set, system-following, reduced motion",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/screens/web-desktop-dark-play.png",
-        "evidence/screens/web-desktop-light-play.png",
-        "evidence/screens/web-phone-dark-play.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "journey-four-platform-match",
@@ -348,11 +384,9 @@
       "status": "blocked",
       "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/tests/e2e-20260910-071751/harness.log",
-        "evidence/blockers/android-emulator-boot-attempt.log",
-        "evidence/blockers/android-emulator-accel-check.txt"
+        "evidence/tests/e2e-20260910-194927/report.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/blockers/android-emulator-boot-attempt.log"
       ],
       "provenance": "inferred",
       "note": "web/ios/macos verified with identical digest CA0FF4A2 (2332 snapshots each) in the final run; the Android leg builds (clean-checkout APK) but cannot run: the host VM has no nested virtualization (kern.hv_support=0, HVF HV_UNSUPPORTED)."
@@ -362,70 +396,76 @@
       "kind": "journey",
       "label": "A single human starts a match that is filled with bots and reaches results",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/checks/clean-checkout-builds.txt"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "journey-elimination-spectate",
       "kind": "journey",
       "label": "Eliminated human spectates, match ends, results show placement and scoreboard",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260910-071751/all-matchover.png",
-        "evidence/tests/e2e-20260910-071751/all-results.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "journey-ui-polish",
       "kind": "journey",
       "label": "Every platform screenshot reviewed for alignment, contrast, overlap and unfinished states after each polish pass",
-      "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "status": "blocked",
+      "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/all-lobby.png",
-        "evidence/tests/e2e-20260910-071751/all-results.png",
-        "evidence/tests/e2e-20260910-071751/all-matchover.png",
-        "evidence/tests/e2e-20260910-080805/all-gameplay.png",
-        "evidence/screens/web-desktop-dark-play.png",
-        "evidence/screens/web-phone-light-play.png",
-        "evidence/screens/web-desktop-light-locker.png",
-        "evidence/screens/web-phone-dark-pass.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches.",
+      "note": "The requested arcade pass is verified on web and iOS. Every-platform screenshot review remains incomplete: Android cannot run and current macOS UI was not manually re-exercised."
     },
     {
       "id": "asset-original-art",
       "kind": "asset",
       "label": "Original wordmark, avatars, cosmetics, bot names; OFL font; no proprietary assets",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/assets.md",
-        "evidence/screens/web-desktop-light-locker.png"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "integration-server-protocol",
       "kind": "integration",
       "label": "JSON-over-WebSocket protocol documented in PROTOCOL.md and exercised by all clients",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt",
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/tests/e2e-20260910-071751/server.log",
-        "evidence/tests/e2e-20260910-071751/server-summary.json"
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/audits/arcade-review.md",
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/tests/e2e-20260910-194927/report.md"
       ],
-      "provenance": "inferred"
+      "provenance": "inferred",
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     },
     {
       "id": "visual-lobby-parity",
@@ -434,9 +474,8 @@
       "status": "pending",
       "verified_revision": null,
       "evidence": [
-        "evidence/visual/web-vs-macos.jsonl",
-        "evidence/visual/README.md",
-        "evidence/tests/e2e-20260910-071751/visual.jsonl"
+        "evidence/audits/arcade-review.md",
+        "evidence/visual/README.md"
       ],
       "provenance": "inferred",
       "comparison": {
@@ -447,7 +486,8 @@
         "different_pixels": 358576,
         "total_pixels": 364210,
         "normalization_evidence": "evidence/visual/README.md"
-      }
+      },
+      "note": "Stored comparison counts are historical, predating the arcade redesign. Current web/iOS captures have different viewports and player data; they do not establish zero-difference parity."
     },
     {
       "id": "visual-hud-parity",
@@ -456,9 +496,8 @@
       "status": "pending",
       "verified_revision": null,
       "evidence": [
-        "evidence/visual/web-vs-macos.jsonl",
-        "evidence/visual/README.md",
-        "evidence/tests/e2e-20260910-071751/visual.jsonl"
+        "evidence/audits/arcade-review.md",
+        "evidence/visual/README.md"
       ],
       "provenance": "inferred",
       "comparison": {
@@ -469,7 +508,8 @@
         "different_pixels": 361367,
         "total_pixels": 364210,
         "normalization_evidence": "evidence/visual/README.md"
-      }
+      },
+      "note": "Stored comparison counts are historical, predating the arcade redesign. Current web/iOS captures have different viewports and player data; they do not establish zero-difference parity."
     },
     {
       "id": "visual-results-parity",
@@ -478,9 +518,8 @@
       "status": "pending",
       "verified_revision": null,
       "evidence": [
-        "evidence/visual/web-vs-macos.jsonl",
-        "evidence/visual/README.md",
-        "evidence/tests/e2e-20260910-071751/visual.jsonl"
+        "evidence/audits/arcade-review.md",
+        "evidence/visual/README.md"
       ],
       "provenance": "inferred",
       "comparison": {
@@ -491,107 +530,122 @@
         "different_pixels": 290835,
         "total_pixels": 364210,
         "normalization_evidence": "evidence/visual/README.md"
-      }
+      },
+      "note": "Stored comparison counts are historical, predating the arcade redesign. Current web/iOS captures have different viewports and player data; they do not establish zero-difference parity."
     },
     {
       "id": "journey-web-ios-parallel",
       "kind": "journey",
       "label": "Web (Chromium/Playwright) and iOS Simulator play one server-authoritative match in parallel from the same room, with an edited programmatic review video cut from the run",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/tests/e2e-20260910-080805/report.md",
-        "evidence/tests/e2e-20260910-080805/result.json",
-        "evidence/tests/e2e-20260910-080805/harness.log",
-        "evidence/tests/e2e-20260910-080805/review.mp4",
-        "evidence/tests/e2e-20260910-080805/review.mp4.chapters.json",
-        "evidence/tests/e2e-20260910-080805/timeline.jsonl",
-        "evidence/tests/e2e-20260910-080805/all-lobby.png",
-        "evidence/tests/e2e-20260910-080805/all-gameplay.png",
-        "evidence/tests/e2e-20260910-080805/all-matchover.png",
-        "evidence/tests/e2e-20260910-080805/all-results.png"
-      ]
+        "evidence/tests/e2e-20260910-194927/report.md",
+        "evidence/tests/e2e-20260910-194927/result.json",
+        "evidence/tests/e2e-20260910-194927/harness.log",
+        "evidence/tests/e2e-20260910-194927/run.json",
+        "evidence/tests/e2e-20260910-194927/review.mp4",
+        "evidence/tests/e2e-20260910-194927/review.mp4.chapters.json",
+        "evidence/tests/e2e-20260910-194927/timeline.jsonl",
+        "evidence/tests/e2e-20260910-194927/phase-lobby.json",
+        "evidence/tests/e2e-20260910-194927/phase-bus.json",
+        "evidence/tests/e2e-20260910-194927/all-lobby.png",
+        "evidence/tests/e2e-20260910-194927/all-bus.png",
+        "evidence/tests/e2e-20260910-194927/all-gameplay.png",
+        "evidence/tests/e2e-20260910-194927/all-results.png"
+      ],
+      "verification_scope": "Current shared code, core/server regression suites, and web/iOS UI observations. Android runtime remains blocked; macOS current revision is build-verified, with historical runtime evidence. The manual report records unexercised branches."
     }
   ],
   "audits": [
     {
       "id": "source",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/source.md"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md"
       ]
     },
     {
       "id": "navigation",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/navigation.md"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md"
       ]
     },
     {
       "id": "roles",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/roles.md"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md"
       ]
     },
     {
       "id": "states",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/states.md"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md"
       ]
     },
     {
       "id": "responsive",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/responsive.md"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md"
       ]
     },
     {
       "id": "data",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/data.md"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md"
       ]
     },
     {
       "id": "assets",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/assets.md"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md"
       ]
     },
     {
       "id": "accessibility",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/accessibility.md"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md"
       ]
     },
     {
       "id": "reliability",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/reliability.md"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md"
       ]
     },
     {
       "id": "rebrand",
       "status": "verified",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/audits/rebrand.md"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md"
       ]
     }
   ],
@@ -601,53 +655,55 @@
       "status": "failed",
       "verified_revision": null,
       "evidence": [
-        "evidence/tests/e2e-20260910-071751/report.md",
-        "evidence/tests/e2e-20260910-071751/result.json",
-        "evidence/checks/static-checks.txt",
-        "evidence/blockers/android-emulator-boot-attempt.log"
+        "evidence/tests/e2e-20260910-194927/result.json",
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/checks/arcade-clean-builds.txt"
       ],
-      "note": "Unit/integration suites pass (core 4, server 7 incl. same-token supersession and consecutive-match regressions, client 2, web determinism identical); the web+iOS+macOS journey passes with identical digests CA0FF4A2; the required four-platform journey cannot run without an Android runtime."
+      "note": "Web+iOS and all unit suites pass; four-platform runtime remains blocked."
     },
     {
       "id": "visual",
       "status": "failed",
       "verified_revision": null,
       "evidence": [
-        "evidence/visual/README.md",
-        "evidence/visual/web-vs-macos.jsonl",
-        "evidence/tests/e2e-20260910-071751/visual.jsonl"
+        "evidence/audits/arcade-review.md",
+        "evidence/tests/manual-arcade/report.md",
+        "evidence/visual/README.md"
       ],
-      "note": "web\u2192macOS pixel comparison at the final run: lobby 227264, match-over 361952, results 297974 differing of 364210 (tolerance 0); 23861 at tolerance 32. Renderer rasterisation (CanvasKit vs Impeller) and per-client content; disclosed in evidence/visual/README.md."
+      "note": "Arcade web/iOS review passed; strict cross-renderer pixel equality is unverified."
     },
     {
       "id": "build",
       "status": "passed",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/clean-checkout-builds.txt",
-        "evidence/checks/native-artifacts.txt"
+        "evidence/checks/arcade-clean-builds.txt"
       ]
     },
     {
       "id": "quality",
       "status": "passed",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/static-checks.txt"
+        "evidence/checks/arcade-clean-builds.txt",
+        "evidence/checks/arcade-final-client.txt",
+        "evidence/checks/arcade-final-scripts.txt",
+        "evidence/checks/arcade-determinism-sweep.txt"
       ]
     },
     {
       "id": "security",
       "status": "passed",
-      "verified_revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "verified_revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "evidence": [
-        "evidence/checks/security.txt"
+        "evidence/checks/arcade-security.txt",
+        "evidence/audits/arcade-review.md"
       ]
     }
   ],
   "sweeps": [
     {
-      "revision": "sha256:eacd49df0994e43f686233f1ee5625a6d5815d696bed3cade8085e3b010c6305",
+      "revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
       "new_items": 0,
       "frontier_empty": false,
       "audit_ids": [
@@ -663,9 +719,29 @@
         "rebrand"
       ],
       "evidence": [
-        "evidence/discovery/sweep-007.md"
+        "evidence/discovery/sweep-008.md"
+      ]
+    },
+    {
+      "revision": "sha256:12c38dceff1887918e4cec2451a13daedef1aa29605ac2c36adf1cdd3a8c82a1",
+      "new_items": 0,
+      "frontier_empty": false,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-009.md"
       ]
     }
   ],
-  "next_action": "Commit + push, update PR #40, final report; resume Android leg on a host with a working AVD."
+  "next_action": "Resume four-platform runtime on an Android-capable host and complete equivalent normalized visual captures; review remaining manual branches."
 }
