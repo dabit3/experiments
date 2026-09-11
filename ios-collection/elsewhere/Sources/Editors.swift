@@ -67,6 +67,7 @@ struct JourneyEditor: View {
 struct MemoryEditor: View {
   @EnvironmentObject private var journal: Journal
   @Environment(\.dismiss) private var dismiss
+  @ScaledMetric(relativeTo: .body) private var noteHeight = 180.0
   var journeyID: UUID
   var existing: Memory?
   @State private var place = ""
@@ -89,8 +90,16 @@ struct MemoryEditor: View {
           DatePicker("Date", selection: $date, displayedComponents: .date)
         }
         Section {
-          TextField("What do you want to remember?", text: $note, axis: .vertical)
-            .lineLimit(5...10).accessibilityLabel("Memory note")
+          TextEditor(text: $note)
+            .frame(height: min(noteHeight, 280))
+            .overlay(alignment: .topLeading) {
+              if note.isEmpty {
+                Text("What do you want to remember?")
+                  .foregroundStyle(.tertiary).padding(.top, 8).padding(.leading, 5)
+                  .allowsHitTesting(false).accessibilityHidden(true)
+              }
+            }
+            .accessibilityLabel("Memory note")
             .onChange(of: note) { _, value in note = String(value.prefix(4000)) }
         } header: {
           Text("The little details")
