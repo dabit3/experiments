@@ -5,7 +5,7 @@ struct ContentView: View {
   @EnvironmentObject var studio: Studio
   var body: some View {
     VStack(spacing: 0) {
-      header
+      header.fixedSize(horizontal: false, vertical: true)
       HStack(spacing: 0) {
         library.frame(width: 194)
         Rectangle().fill(Ink.line).frame(width: 1)
@@ -42,14 +42,14 @@ struct ContentView: View {
                 .padding(.horizontal, 24).padding(.bottom, 8)
               }
               canvasLegend
-            }.padding(.bottom, 18)
+            }.frame(maxWidth: .infinity).padding(.bottom, 18)
           }
           metrics
         }
         Rectangle().fill(Ink.line).frame(width: 1)
         inspector.frame(width: 250)
-      }
-      footer
+      }.frame(maxHeight: .infinity).clipped()
+      footer.fixedSize(horizontal: false, vertical: true)
     }
     .background(Ink.paper).foregroundStyle(Ink.navy)
     .buttonStyle(.plain)
@@ -84,9 +84,10 @@ struct ContentView: View {
         Button("Vector drawing · SVG") { studio.export(report: false) }
       } label: {
         Label("Export", systemImage: "square.and.arrow.up").font(.system(size: 12, weight: .medium))
+          .foregroundColor(.white)
           .padding(.horizontal, 14).padding(.vertical, 10)
           .background(.white.opacity(0.12), in: RoundedRectangle(cornerRadius: 5))
-      }.menuStyle(.borderlessButton).fixedSize()
+      }.menuStyle(.borderlessButton).tint(.white).fixedSize()
     }
     .foregroundStyle(.white).padding(.leading, 28).padding(.trailing, 22).padding(.top, 26).padding(
       .bottom, 19
@@ -103,6 +104,16 @@ struct ContentView: View {
   }
 
   private var library: some View {
+    GeometryReader { geometry in
+      ScrollView {
+        libraryContent
+          .padding(20)
+          .frame(minHeight: geometry.size.height, alignment: .topLeading)
+      }
+    }.background(Color.white.opacity(0.32))
+  }
+
+  private var libraryContent: some View {
     VStack(alignment: .leading, spacing: 20) {
       eyebrow("DESIGN LIBRARY")
       VStack(spacing: 10) {
@@ -127,7 +138,7 @@ struct ContentView: View {
         Text("A local, offline engineering desk.\nNo two spans need be the same.")
           .font(.system(size: 10)).foregroundStyle(Ink.muted).lineSpacing(4)
       }
-    }.padding(20).background(Color.white.opacity(0.32))
+    }.fixedSize(horizontal: false, vertical: true)
   }
 
   private func exampleCard(_ number: String, title: String, detail: String, height: Double)

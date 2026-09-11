@@ -4,7 +4,7 @@ A native macOS structural playground: shape a small truss, apply a nodal load, a
 
 ## Run
 
-Prerequisites: macOS 14 or newer, Xcode with Swift 6.0+ selected by `xcode-select`. Verified on Apple Silicon macOS 26.5 with Xcode 26.6 / Swift 6.3.3. No packages, generator, network, account, signing identity, or simulator is required.
+Prerequisites: macOS 14 or newer, Xcode with Swift 6.0+ selected by `xcode-select`. Verified on Apple Silicon macOS 26.5.2 with Xcode 26.6 / Swift 6.3.3. No packages, generator, network, account, signing identity, or simulator is required.
 
 ```sh
 cd native-demos/macos/keystone
@@ -27,7 +27,7 @@ This reproducible Swift Package builds a native SwiftUI/AppKit executable, creat
 - **Thicken all +5 cm²:** improve stiffness while seeing the mass/cost tradeoff. The first successful Apply load establishes a session reference for deflection improvement. The reference can be reset; example/open resets the comparison.
 - **Undo / redo:** toolbar or ⌘Z / ⇧⌘Z, with up to 100 design edits. View preferences and file operations are not undoable. The history is session-only.
 
-The drafting window has a 1120×720 minimum size. The inspector scrolls on smaller screens. Node editing bounds are −6…24 m horizontally and −3…12 m vertically. Imported documents support coordinates up to ±100 m; the view fits their extent. Version 1 supports up to 100 nodes and 300 members.
+The drafting window has a 1120×720 minimum size. Both sidebars scroll on smaller screens while the header, canvas controls and status footer stay visible. Node editing bounds are −6…24 m horizontally and −3…12 m vertically. Imported documents support coordinates up to ±100 m; the view fits their extent. Version 1 supports up to 100 nodes and 300 members.
 
 ## Save, reopen and export
 
