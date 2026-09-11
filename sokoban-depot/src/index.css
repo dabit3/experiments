@@ -1,0 +1,83 @@
+@import '@fontsource/lilita-one/latin-400.css';
+@import '@fontsource/nunito/latin-500.css';
+@import '@fontsource/nunito/latin-700.css';
+@import '@fontsource/nunito/latin-800.css';
+@import '@fontsource/nunito/latin-900.css';
+
+:root {
+  --bg: #f5f1e6;
+  --panel: #fffdf5;
+  --border: #d5d4c7;
+  --text: #243b48;
+  --text-2: #57666c;
+  --text-3: #687574;
+  --accent: #e95032;
+  --gold: #ffc455;
+  --danger: #b13525;
+  --success: #27705c;
+  --hazard: repeating-linear-gradient(-45deg, #edc061 0 10px, #243b48 10px 20px);
+  --display: 'Lilita One', 'Arial Black', Impact, sans-serif;
+  --sans: 'Nunito', 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--text);
+  background-color: var(--bg);
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background-image: radial-gradient(#243b480d 0.7px, transparent 0.7px);
+  background-size: 5px 5px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+strong {
+  font-weight: 800;
+}
+
+:focus-visible {
+  outline: 3px solid #007d9a;
+  outline-offset: 4px;
+}
+
+::selection {
+  background: rgba(255, 176, 32, 0.35);
+}
