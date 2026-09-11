@@ -13,6 +13,7 @@ final class GardenStore: ObservableObject {
   @Published var selectedID: UUID?
   @Published var pendingTerminal: Terminal?
   @Published var selectedWireID: UUID?
+  @Published var dragOffsets: [UUID: CGSize] = [:]
   @Published var notice = "Tap a part to explore. Tap two brass terminals to wire."
   @Published var projects: [SavedProject] = []
   @Published var error: String?
@@ -74,6 +75,7 @@ final class GardenStore: ObservableObject {
     selectedID = nil
     selectedWireID = nil
     pendingTerminal = nil
+    dragOffsets.removeAll()
   }
 
   func load(_ next: Circuit) {

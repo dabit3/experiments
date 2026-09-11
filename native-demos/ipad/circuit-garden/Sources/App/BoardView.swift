@@ -120,8 +120,10 @@ struct BoardView: View {
   private func point(_ terminal: Terminal, size: CGSize) -> CGPoint? {
     guard let component = store.circuit.components.first(where: { $0.id == terminal.componentID })
     else { return nil }
+    let offset = store.dragOffsets[component.id, default: .zero]
     return CGPoint(
-      x: component.x * size.width + (terminal.side == 0 ? -85 : 85), y: component.y * size.height)
+      x: component.x * size.width + (terminal.side == 0 ? -85 : 85) + offset.width,
+      y: component.y * size.height + offset.height)
   }
 
   private func wirePath(from: CGPoint, to: CGPoint, wire: Wire) -> Path {
@@ -230,6 +232,13 @@ struct ComponentView: View {
     }
     .frame(width: 200, height: 112)
     .offset(dragOffset)
+    .onChange(of: dragOffset) { _, offset in
+      if offset == .zero {
+        store.dragOffsets.removeValue(forKey: component.id)
+      } else {
+        store.dragOffsets[component.id] = offset
+      }
+    }
   }
 
   private var valueLabel: String {
@@ -310,6 +319,7 @@ struct SchematicSymbol: View {
             style: StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
         }
       }
+      .frame(width: width, height: height)
     }
     .animation(.easeInOut(duration: 0.25), value: brightness)
   }
