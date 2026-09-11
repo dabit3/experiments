@@ -47,6 +47,7 @@ struct Eyebrow: View {
       .font(.system(.caption2, design: .monospaced, weight: .medium))
       .tracking(2.2)
       .foregroundStyle(Gallery.muted)
+      .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
   }
 }
 
@@ -99,6 +100,7 @@ struct Vessel: View {
   var symbols = false
   var selected = false
   var height: CGFloat = 154
+  var capacityMarks = false
 
   var body: some View {
     GeometryReader { geometry in
@@ -162,6 +164,14 @@ struct Vessel: View {
           .fill(.white.opacity(0.48))
           .frame(width: 3, height: height * 0.70)
           .offset(x: -width * 0.32, y: -height * 0.15)
+        if capacityMarks {
+          ForEach(1...4, id: \.self) { slot in
+            Capsule()
+              .fill(Gallery.ink.opacity(0.38))
+              .frame(width: 7, height: 1)
+              .offset(x: width / 2 - 3, y: -CGFloat(slot) * unit - 5)
+          }
+        }
         Ellipse()
           .strokeBorder(Gallery.ink.opacity(0.18), lineWidth: 1)
           .background(Ellipse().fill(.white.opacity(0.2)))

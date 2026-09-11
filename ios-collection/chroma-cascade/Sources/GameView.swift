@@ -107,21 +107,17 @@ struct GameView: View {
           if puzzle.isSolved {
             PrimaryButton(title: "View your finished study") { result = true }
           }
-          Eyebrow(text: "One color per vessel. Room to breathe.")
-            .frame(maxWidth: .infinity)
-            .padding(.top, 9)
-            .padding(.bottom, 20)
         }
         .padding(.horizontal, 26)
         .padding(.top, 10)
+        .padding(.bottom, 24)
       }
       .scrollIndicators(.hidden)
     }
     .foregroundStyle(Gallery.ink)
     .toolbar(.hidden, for: .navigationBar)
     .onAppear { store.open(id) }
-    .confirmationDialog("Begin this study again?", isPresented: $restart, titleVisibility: .visible)
-    {
+    .alert("Begin this study again?", isPresented: $restart) {
       Button("Restart study", role: .destructive) { resetStudy() }
       Button("Keep arranging", role: .cancel) {}
     } message: {
@@ -145,23 +141,27 @@ struct GameView: View {
     let rows = stride(from: 0, to: puzzle.vessels.count, by: columns).map {
       Array($0..<min($0 + columns, puzzle.vessels.count))
     }
-    return VStack(spacing: 30) {
+    return VStack(spacing: 22) {
       ForEach(rows, id: \.self) { row in
         HStack(spacing: columns == 2 ? 52 : 23) {
           ForEach(row, id: \.self) { index in
             Button {
               tap(index)
             } label: {
-              VStack(spacing: 16) {
+              VStack(spacing: 13) {
                 Vessel(
                   colors: puzzle.vessels[index], symbols: store.saved.symbols,
-                  selected: selected == index, height: 143
+                  selected: selected == index, height: 133, capacityMarks: true
                 )
                 .rotationEffect(.degrees(flight?.source == index ? -9 : 0))
                 .offset(y: selected == index ? -10 : 0)
-                Text(String(format: "%02d", index + 1))
-                  .font(.system(.caption2, design: .monospaced))
-                  .foregroundStyle(selected == index ? Gallery.accent : Gallery.muted)
+                Text(
+                  String(format: "%02d", index + 1) + " · "
+                    + (puzzle.vessels[index].isEmpty ? "empty" : "\(puzzle.vessels[index].count)/4")
+                )
+                .font(.system(.caption2, design: .monospaced))
+                .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                .foregroundStyle(selected == index ? Gallery.accent : Gallery.muted)
               }
               .frame(width: columns == 2 ? 85 : (columns == 3 ? 76 : 62))
               .contentShape(Rectangle())
@@ -379,10 +379,14 @@ struct ResultView: View {
         VStack(spacing: 22) {
           Eyebrow(text: "Study \(Study.all[id].number) / complete")
             .padding(.top, 40)
-          HStack(alignment: .bottom, spacing: 20) {
-            Vessel(colors: [0, 0, 0, 0], height: 103).frame(width: 52)
-            Vessel(colors: [1, 1, 1, 1], height: 131).frame(width: 58)
-            Vessel(colors: [2, 2, 2, 2], height: 103).frame(width: 52)
+          HStack(alignment: .bottom, spacing: 16) {
+            ForEach(0..<Study.all[id].pigmentCount, id: \.self) { pigment in
+              Vessel(
+                colors: Array(repeating: pigment, count: 4),
+                symbols: store.saved.symbols, height: pigment.isMultiple(of: 2) ? 113 : 133
+              )
+              .frame(width: Study.all[id].pigmentCount > 3 ? 43 : 58)
+            }
           }
           .padding(.vertical, 20)
           Text("In perfect\nbalance.")

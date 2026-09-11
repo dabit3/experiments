@@ -80,6 +80,7 @@ struct HomeView: View {
       .toolbar(.hidden, for: .navigationBar)
       .navigationDestination(for: Int.self) { id in
         GameView(id: id) { next in path = [next] }
+          .id(id)
       }
       .sheet(isPresented: $chapters) {
         ChaptersView { id in
@@ -184,12 +185,14 @@ struct SettingsView: View {
             Spacer()
             CircleControl(icon: "xmark", label: "Close settings") { dismiss() }
           }
-          Text("Your studio").font(.system(size: 43, design: .serif))
+          Text("Your studio")
+            .font(.system(.largeTitle, design: .serif))
+            .accessibilityAddTraits(.isHeader)
           VStack(alignment: .leading, spacing: 20) {
             Toggle(
               "Color symbols",
               isOn: Binding(get: { store.saved.symbols }, set: { store.setSymbols($0) }))
-            Text("A unique shape marks every pigment, so color is never the only clue.")
+            Text("Identify every pigment by shape as well as color.")
               .font(.subheadline)
               .foregroundStyle(Gallery.muted)
             Divider()
@@ -229,7 +232,7 @@ struct SettingsView: View {
       }
     }
     .foregroundStyle(Gallery.ink)
-    .confirmationDialog("Clear your collection?", isPresented: $reset, titleVisibility: .visible) {
+    .alert("Clear your collection?", isPresented: $reset) {
       Button("Reset all progress", role: .destructive) { store.resetCollection() }
       Button("Keep my progress", role: .cancel) {}
     } message: {
