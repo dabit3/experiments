@@ -2,6 +2,8 @@
 
 A tablet-style restaurant point of sale ("Ember POS") built with Vite + React + TypeScript. Everything runs in memory from a deterministic seeded demo state — no backend, no network calls.
 
+Designed for a fine-dining service: warm ivory surfaces, forest-green controls, restrained brass details, a serif Ember wordmark, and an architectural floor plan. Cormorant Garamond, Inter, and JetBrains Mono are bundled locally. Live check cards and searchable menus keep the service workflow close at hand; the floor remains scrollable and usable on tablets.
+
 **What it does**
 
 - **Floor plan** with 12 tables. Tap a table to seat a party or open its check. Toggle **Edit layout** to drag tables around a snapping grid.
@@ -34,23 +36,25 @@ Reset state with **Reset demo** (or reload the page) so the seeded state is iden
 | # | Step | Expected result |
 |---|------|-----------------|
 | 1 | On the floor plan, click **Table 4**, pick **6**, click **Seat party of 6**. | Order view for Table 4 opens showing `Party of 6` and an `18% auto-gratuity` chip; six empty seat tabs. |
-| 2 | With Seat 1 selected, click **Ribeye Steak** → choose **Medium rare** + **Grilled asparagus** → **Add to Seat 1**. | Line added to Seat 1 at $45.00 (42 + 3). The Add button was disabled until both required groups were chosen. |
-| 3 | Select Seat 2, click **Ember Burger** → **Medium** + **Truffle fries** → add. | Seat 2 shows Ember Burger $22.00 (18 + 4). |
-| 4 | Select Seat 3, click **Customize** on **Mushroom Risotto**, type a note (e.g. `Extra parmesan, no truffle oil`) → add. | Seat 3 shows the risotto with the note printed under it. |
-| 5 | Add at least four more items across Seats 1–4 from Starters/Drinks (e.g. Burrata, Craft IPA, Old Fashioned, Sparkling Water). | ≥ 7 active lines across 4 seats; subtotal, tax, gratuity and total update live. |
-| 6 | Click **Fire course 1**. | Course-1 lines change status to `Fired`; the Kitchen badge count increases by 1. |
-| 7 | Hover a line → **Void** → choose a reason (e.g. *Guest changed mind*) → **Void item**. | The line is struck through with the reason shown and excluded from the totals. |
-| 8 | Click **Split & pay** → **By seat**. | One card per seat with items; each card shows its own tax and 18% gratuity. The verification bar reads `Seat 1 + Seat 2 + Seat 3 + Seat 4 = table total ✓`. |
-| 9 | Click **Pay $…** on each seat card, optionally pick a tip, **Charge**. | Each card flips to `Paid`; the header shows `4/4 paid`; **Close table** becomes enabled. |
-| 10 | Manually check: sum the four seat totals and compare to the table total. | They match to the cent (tax and gratuity are allocated with largest-remainder rounding). |
-| 11 | Click **Receipt** on a paid seat → **Print receipt**. | A thermal-style receipt shows items, modifiers, note, tax, gratuity, tip and amount charged; the print preview contains only the receipt. |
-| 12 | Click **Kitchen** in the top bar. | The fired course-1 ticket for Table 4 lists the fired starters with seat numbers (modifiers and notes print on the ticket for the course they belong to). |
+| 2 | Seat 1: **Ribeye Steak** → **Medium rare** + **Hand-cut fries**, note `No butter, sauce on the side` → add. Add **Craft IPA**. | Required modifiers gate the Add button. Steak is $42.00; Seat 1 subtotal is $50.00, with the note visible. |
+| 3 | Seat 2: **Ember Burger** → **Medium** + **Truffle fries** → add. Add **Old Fashioned**. | Burger is $22.00 (18 + 4); Seat 2 subtotal is $37.00. |
+| 4 | Seat 3: add **Cedar Plank Salmon**, **Sparkling Water**, and **Pappardelle Bolognese**. Seat 4: add **Crispy Calamari**. | Eight ordered lines across four seats. |
+| 5 | Click **Fire course 1**. | Four first-course lines change to `Fired`; Kitchen badge increases from 4 to 5. |
+| 6 | Void **Pappardelle Bolognese** with reason **Guest changed mind**. | Pasta is struck through with its reason, excluded from totals; seven active lines remain. |
+| 7 | Click **Fire course 2**. | Steak, burger, and salmon fire; Kitchen badge reaches 6. |
+| 8 | Click **Split & pay** → **By seat**. Read each subtotal, tax, gratuity and total. | Four seat totals are $63.44, $46.94, $41.87, $16.49. Their sum is $168.74, matching $133.00 subtotal + $11.80 tax + $23.94 gratuity. Green reconciliation chip is visible. |
+| 9 | Pay Seat 1 by card with a **20%** additional tip; pay Seats 2–4 by card with no additional tip. | Seat 1 adds $10.00 and charges $73.44; other charges match their split totals. Header shows `4/4 paid`; **Close table** enables. |
+| 10 | Open Seat 1's **Receipt**, then click **Print receipt**. | Receipt shows modifiers, note, $63.44 total, $10.00 extra tip, and $73.44 charged. Actual Chrome print preview shows one page with the complete receipt and barcode. Cancel the print dialog and close the receipt. |
+| 11 | Open **Kitchen** and locate both Table 4 tickets. | Four first-course lines and three mains show their seat assignments; steak modifiers/note are present, voided pasta is absent. |
+| 12 | Return to Table 4's payment view and click **Close table**. | Table 4 becomes available, disappears from active check cards, and floor KPIs return to 3/12 occupied and 15 guests. |
 
 ## Recording
 
-**Recording:** https://app.devin.ai/attachments/fc952764-d2d6-49d4-8a4b-3b9abcfb2cec/restaurant-pos-showcase.mp4
+**Recording:** https://app.devin.ai/attachments/683fad6c-3e6e-4f60-8cee-756197464f05/ember4-final-showcase-edited.mp4
 
-![Animated preview](https://app.devin.ai/attachments/fffda5ec-9c69-4909-9755-dd50c62d324e/restaurant-pos-preview.webp)
+![Animated preview](https://app.devin.ai/attachments/bb36237e-9541-4bc4-a0f6-d9d444333c50/restaurant-pos-preview.webp)
+
+Devin tested the complete scenario by hand in maximized Chrome at 1600×1200 with recording annotations and eight full screenshots. Separate preflight checks covered floor dragging, sidebar navigation, menu search, and 1024×768 tablet ordering/modals. Testing caught and fixed overly small tablet floor targets and a barcode omitted by default print settings; the final scenario passed after both fixes.
 
 Numbers from the recorded run (party of 6 at Table 4, 8 items ordered, 1 voided):
 
