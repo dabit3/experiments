@@ -3,6 +3,11 @@ import XCTest
 @testable import Switchyard
 
 final class RailwayTests: XCTestCase {
+  func testAppIconIsIncludedInHostBundle() {
+    XCTAssertNotNil(Bundle.main.url(forResource: "Assets", withExtension: "car"))
+    XCTAssertNotNil(Bundle.main.object(forInfoDictionaryKey: "CFBundleIcons"))
+  }
+
   func testSignalHoldsAndReleases() {
     let railway = Railway(scenario: Scenario.all[0])
     railway.westOpen = false

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		231D1667555B0451051D050A /* RailwayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE647F561CCE0BEEDBE1DF32 /* RailwayTests.swift */; };
 		4881F855AD55ABFB4CA42562 /* SwitchyardApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2569CC9A72C4323085EBDB /* SwitchyardApp.swift */; };
+		581ADBCEC7074C00C0DAC4CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C9CE5A6ED1CCE7CE448815A /* Assets.xcassets */; };
 		B7C563388A0240B8FA1E77A1 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2DD7C88E473862BF66DF3A /* BoardView.swift */; };
 		D9088E6303936798D12F7609 /* Railway.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF87E82F7432B21C2F5F052 /* Railway.swift */; };
 /* End PBXBuildFile section */
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		65AF1A8188378682BA0FCA20 /* SwitchyardTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SwitchyardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E2569CC9A72C4323085EBDB /* SwitchyardApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchyardApp.swift; sourceTree = "<group>"; };
+		8C9CE5A6ED1CCE7CE448815A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BA2DD7C88E473862BF66DF3A /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		D713ECFE034EBAB2C6DEF084 /* Switchyard.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Switchyard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDF87E82F7432B21C2F5F052 /* Railway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Railway.swift; sourceTree = "<group>"; };
@@ -53,6 +55,7 @@
 		9161B607F9FFFC2B3E3B892C = {
 			isa = PBXGroup;
 			children = (
+				8C9CE5A6ED1CCE7CE448815A /* Assets.xcassets */,
 				93D1B85D31908FFADD0B9355 /* Sources */,
 				1E81794AF8624D5B7476DCD4 /* Tests */,
 				886FE883ABCF34ABBAE44F03 /* Products */,
@@ -95,6 +98,7 @@
 			buildConfigurationList = 00C031E8C6FE656AE70442F7 /* Build configuration list for PBXNativeTarget "Switchyard" */;
 			buildPhases = (
 				EDE513A28C85C52FB5AA8C55 /* Sources */,
+				90A8FC2CC5C24DABE5597B08 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -137,6 +141,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		90A8FC2CC5C24DABE5597B08 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				581ADBCEC7074C00C0DAC4CA /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		72B589F23AE87AC4DA8B3B9F /* Sources */ = {
