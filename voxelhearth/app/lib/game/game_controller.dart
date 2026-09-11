@@ -297,7 +297,7 @@ class GameController extends ChangeNotifier {
       sprint =
           _key([LogicalKeyboardKey.controlLeft, LogicalKeyboardKey.controlRight, LogicalKeyboardKey.metaLeft]) ||
           touchSprint;
-      fwd += -joyY;
+      fwd += joyY;
       strafe += joyX;
       if (flying) {
         if (jump || touchUp) flyUp += 1;
