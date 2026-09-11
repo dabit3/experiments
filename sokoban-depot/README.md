@@ -41,7 +41,7 @@ result per level is kept.
   still earn stars" possible.
 - **Corner deadlocks are detected and surfaced.** A crate that is off-target and wedged
   against two perpendicular walls can never move again; the crate glows red and a banner
-  under the board says to press `Z` or `R`. The player is never blocked from continuing — it
+  under the board says to press `Z`. The player is never blocked from continuing — it
   is a hint, not a game-over.
 - **Par values are machine-verified.** `scripts/verify-levels.mjs` is a dependency-free BFS
   solver; the `par` in `src/game/levels.ts` is the optimal move count it reports.
@@ -53,7 +53,7 @@ result per level is kept.
   Tokens live in `src/index.css`; component styles live in `src/App.css`.
 - **A board that fits its cabinet.** `ResizeObserver` derives the tile size from available
   width and height, including narrow screens. Walls, targets, crates and the worker remain
-  distinct at every size. Matched crates gain check badges; stuck crates gain warning badges.
+  distinct across the tested desktop and mobile widths. Matched crates gain check badges; stuck crates gain warning badges.
   Reduced-motion preferences disable animation and transitions.
 
 ## Computer-use showcase
@@ -64,7 +64,7 @@ and carrying on through a sequence of levels. After building it, Devin opened th
 maximised Chrome window and performed the following scenario end to end while recording:
 
 1. Opened the level-select screen (fresh progress: 0 of 8 cleared, levels 2–8 locked) and
-   clicked **01 · Loading Dock**.
+   entered **Loading Dock**.
 2. Deliberately made a mistake: pushed the upper crate up against the top wall and then left
    into the top-left corner. **Expected:** the crate is outlined red and the "Crate wedged in
    a corner" banner appears under the board (7 moves, 3 pushes).
@@ -76,28 +76,56 @@ maximised Chrome window and performed the following scenario end to end while re
    (16 moves → 3 stars).
 6. Pressed `Enter`, solved level 3 (Corner Store) with the arrow keys in par (33 moves → 3 stars).
 7. Pressed `Enter`, solved level 4 (Long Haul) in par (23 moves → 3 stars).
-8. Clicked **Levels** on the win card. **Expected:** levels 1–4 show *cleared* badges and
+8. Pressed Tab → Enter to activate **Replay**, then solved Long Haul again at par.
+   **Expected:** replay stays on level 4 and resets its counters; the second completion also earns 3 stars.
+9. Pressed Tab twice → Enter to activate **Levels** on the win card. **Expected:** levels 1–4 show *cleared* badges and
    their stars (2 + 3 + 3 + 3 = 11 / 24), level 5 is unlocked, levels 6–8 remain locked.
-9. Reloaded the page. **Expected:** the same 4 / 8 cleared and 11 / 24 stars are restored
+10. Reloaded the page. **Expected:** the same 4 / 8 cleared and 11 / 24 stars are restored
    from `localStorage`.
 
-All nine steps passed on the recorded run; no app defects were found during the showcase.
+All ten steps passed on the latest recorded run.
+
+Exact key sequences (`U/D/L/R` are arrow presses):
+
+| Stage | Keyboard sequence | Final moves / pushes / stars |
+|---|---|---|
+| Loading Dock | `DRURULL`, five `Z`, then `LURRDLLLDRRR` | 14 / 5 / 2 |
+| Two-Bay | `dssadwwaswwaassd` (WASD) | 16 / 3 / 3 |
+| Corner Store | `DLURRRDLULLDDRULURUULDRDDRRULDLUU` | 33 / 8 / 3 |
+| Long Haul | `ULLDLDRUURRDLLRRDDLURUL` | 23 / 7 / 3 |
+
+Supplemental Chrome checks passed at 390×844 and 320×740: responsive cabinet and victory
+layout, direction pad, undo, restart, help keyboard isolation, reset confirmation/cancel,
+victory focus and reload persistence. Testing found that opening a stage from a scrolled
+mobile lobby retained the old scroll offset; screen navigation now resets to the top, and
+the original reproduction passed on retest. Levels 5–8 were solver-verified rather than
+completed in the browser; physical touch hardware was not tested.
 
 ### Recording
 
-**[Watch the full recording (mp4, ~73s)](https://app.devin.ai/attachments/7513829d-9141-401c-81a4-5cb768a3f200/sokoban-depot-showcase-v2-edited.mp4)**
+**[Watch the full recording (mp4, 104 seconds)](https://app.devin.ai/attachments/087d747f-5957-434b-8819-ad315b8992fa/showcase.mp4)**
 
-![Animated preview of the recording](docs/showcase.webp)
+![Animated preview of the recording at 3× speed](docs/showcase.webp)
+
+[Supplemental responsive and control checks](https://app.devin.ai/attachments/777f6713-6e75-4430-a8e1-59fd3df68b55/responsive-checks.mp4)
 
 ### Key moments
 
-| Crate wedged in the corner on level 1 | Five undos later: back to move 2 |
+| Fresh arcade lobby | Crate wedged in the corner on level 1 |
 |---|---|
-| ![Corner deadlock banner](docs/level1-corner-deadlock.png) | ![Recovered via undo](docs/level1-after-undo.png) |
+| ![Fresh arcade lobby](docs/fresh-lobby.png) | ![Corner deadlock banner](docs/level1-corner-deadlock.png) |
 
-| Level 1 cleared with 2 stars after the recovery | Level select after levels 1–4: 11 / 24 stars |
+| Five undos later: back to move 2 | Level 1 cleared with 2 stars after the recovery |
 |---|---|
-| ![Level 1 cleared](docs/level1-cleared-2-stars.png) | ![Level select with stars](docs/level-select-stars.png) |
+| ![Recovered via undo](docs/level1-after-undo.png) | ![Level 1 cleared](docs/level1-cleared-2-stars.png) |
+
+| Two-Bay cleared with WASD at par | Corner Store: planning the next push |
+|---|---|
+| ![Two-Bay cleared](docs/level2-cleared.png) | ![Corner Store gameplay](docs/level3-gameplay.png) |
+
+| Long Haul cleared at par | Level select after levels 1–4: 11 / 24 stars |
+|---|---|
+| ![Long Haul cleared](docs/level4-cleared.png) | ![Level select with stars](docs/level-select-stars.png) |
 
 ## Project layout
 
