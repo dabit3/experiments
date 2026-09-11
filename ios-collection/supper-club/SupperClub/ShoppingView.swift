@@ -149,30 +149,37 @@ struct ExtraView: View {
 
   var body: some View {
     NavigationStack {
-      VStack(alignment: .leading, spacing: 22) {
-        Eyebrow(text: "The little things").foregroundStyle(Palette.red)
-        Text(item == nil ? "Anything else?" : "Make it yours.").font(.editorial(36))
-        Text(
-          "A loaf of bread, something to drink, flowers for the table. Add quantities in the name if useful."
-        )
-        .foregroundStyle(Palette.muted).lineSpacing(4)
-        TextField("e.g. 1 loaf of sourdough", text: $name)
-          .textFieldStyle(.roundedBorder).focused($focused)
-          .submitLabel(.done).onSubmit(save)
-          .accessibilityLabel("Extra item")
-        MainButton(
-          title: item == nil ? "Add to the list" : "Save extra", symbol: "checkmark", action: save
-        )
-        .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-        .opacity(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1)
-        if let item {
-          Button("Delete extra", role: .destructive) {
-            store.deleteCustom(item.id)
-            dismiss()
-          }.frame(minHeight: 44)
+      ScrollView {
+        VStack(alignment: .leading, spacing: 22) {
+          Eyebrow(text: "The little things").foregroundStyle(Palette.red)
+          Text(item == nil ? "Anything else?" : "Make it yours.").font(.editorial(36))
+            .fixedSize(horizontal: false, vertical: true)
+          Text(
+            "A loaf of bread, something to drink, flowers for the table. Add quantities in the name if useful."
+          )
+          .foregroundStyle(Palette.muted).lineSpacing(4)
+          .fixedSize(horizontal: false, vertical: true)
+          TextField("e.g. 1 loaf of sourdough", text: $name)
+            .textFieldStyle(.roundedBorder).focused($focused)
+            .submitLabel(.done).onSubmit(save)
+            .accessibilityLabel("Extra item")
+          if let item {
+            Button("Delete extra", role: .destructive) {
+              store.deleteCustom(item.id)
+              dismiss()
+            }.frame(minHeight: 44)
+          }
+        }.padding(24)
+      }.scrollDismissesKeyboard(.interactively)
+        .background(Palette.paper).foregroundStyle(Palette.ink)
+        .safeAreaInset(edge: .bottom) {
+          MainButton(
+            title: item == nil ? "Add to the list" : "Save extra", symbol: "checkmark", action: save
+          )
+          .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+          .opacity(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? 0.5 : 1)
+          .padding(.horizontal, 24).padding(.vertical, 12).background(Palette.paper)
         }
-        Spacer()
-      }.padding(24).background(Palette.paper)
         .toolbar {
           ToolbarItem(placement: .topBarTrailing) { Button("Cancel") { dismiss() } }
         }
@@ -180,7 +187,7 @@ struct ExtraView: View {
           name = item?.name ?? ""
           focused = true
         }
-    }
+    }.preferredColorScheme(.light)
   }
 
   private func save() {

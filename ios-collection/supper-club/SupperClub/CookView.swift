@@ -350,9 +350,10 @@ struct TimerEditor: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
           ToolbarItem(placement: .topBarTrailing) { Button("Cancel") { dismiss() } }
-          ToolbarItemGroup(placement: .keyboard) {
-            Spacer()
-            Button("Done") { nameFocused = false }
+          ToolbarItem(placement: .topBarLeading) {
+            if nameFocused {
+              Button("Done") { nameFocused = false }
+            }
           }
         }
         .safeAreaInset(edge: .bottom) {
