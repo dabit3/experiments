@@ -1,0 +1,69 @@
+security check 2026-09-10T01:06:02Z rev 5f87b21
+
+## secrets scan (tracked files under lastfort/)
+client/lib/app/profile.dart:147:  String? get sessionToken => _prefs.getString('token');
+client/lib/app/profile.dart:148:  Future<void> saveSessionToken(String? token) async {
+client/lib/app/profile.dart:149:    if (token == null) {
+client/lib/app/profile.dart:150:      await _prefs.remove('token');
+client/lib/app/profile.dart:152:      await _prefs.setString('token', token);
+client/lib/app/theme.dart:4:/// Lastfort design tokens. Everything visual derives from these so the four
+client/lib/app/theme.dart:6:class LfTokens {
+client/lib/app/theme.dart:7:  const LfTokens._();
+client/lib/app/theme.dart:118:    bg: LfTokens.dBg,
+client/lib/app/theme.dart:119:    surface: LfTokens.dSurface,
+client/lib/app/theme.dart:120:    surface2: LfTokens.dSurface2,
+client/lib/app/theme.dart:121:    line: LfTokens.dLine,
+client/lib/app/theme.dart:122:    text: LfTokens.dText,
+client/lib/app/theme.dart:123:    muted: LfTokens.dMuted,
+client/lib/app/theme.dart:130:    bg: LfTokens.lBg,
+client/lib/app/theme.dart:131:    surface: LfTokens.lSurface,
+client/lib/app/theme.dart:132:    surface2: LfTokens.lSurface2,
+client/lib/app/theme.dart:133:    line: LfTokens.lLine,
+client/lib/app/theme.dart:134:    text: LfTokens.lText,
+client/lib/app/theme.dart:135:    muted: LfTokens.lMuted,
+(matches above are reviewed: none are credentials)
+
+## server bind + limits
+server/lib/src/room.dart:82:  bool get isFull => members.length >= rules.maxPlayers;
+server/lib/src/room.dart:191:      'maxPlayers': rules.maxPlayers,
+server/lib/src/room.dart:293:        (fill ?? rules.maxPlayers).clamp(humans.length, rules.maxPlayers);
+server/lib/src/server.dart:369:    return trimmed.length > 16 ? trimmed.substring(0, 16) : trimmed;
+
+## input validation on the wire (unknown / malformed messages)
+server/lib/src/room.dart:513:        if (sim == null) return {'op': op, 'error': 'no match'};
+server/lib/src/room.dart:550:        return {'op': op, 'error': 'unknown op'};
+
+## dependency inventory
+bash: line 1: dart: command not found
+dependencies:
+  flutter:
+    sdk: flutter
+  lastfort_core:
+    path: ../core
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+  flame: ^1.38.2
+  web_socket_channel: ^3.0.3
+  shared_preferences: ^2.5.5
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^6.0.0
+
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/fonts/OFL-Rajdhani.txt
+  fonts:
+    - family: Rajdhani
+
+## test-control endpoints

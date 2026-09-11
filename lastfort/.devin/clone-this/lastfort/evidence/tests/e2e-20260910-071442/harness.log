@@ -1,0 +1,72 @@
+[07:14:42] starting server on :8790
+Monitoring boot status for iPhone 17 (113E2F1A-A37A-4546-A7AE-8A9CA23C7F89).
+Device already booted, nothing to do.
+
+[07:14:44] ios simulator ready: 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[07:14:44] starting 2-way screen recording (twoup layout)
+[07:14:45] launching web client
+[["Web", "web"]]
+[07:14:47] launching ios client
+com.lastfort.lastfort: 5071
+[07:14:58] waiting for 2 humans in room LFE2E
+[["Web", "web"], ["Ios", "ios"]]
+[07:14:59] screenshots: lobby
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/ios-lobby.png
+[07:14:59] waiting for the match to start
+bus
+[07:15:03] screenshots: bus
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/ios-bus.png
+playing
+[07:15:18] screenshots: gameplay
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/ios-gameplay.png
+[07:15:44] screenshots: midgame
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/ios-midgame.png
+[07:15:44] waiting for all 2 clients to report the final summary
+ios,web
+[07:16:58] screenshots: matchover
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/ios-matchover.png
+[07:17:03] screenshots: results
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/ios-results.png
+# Lastfort four-way multiplayer match
+
+Room `LFE2E` — PASS
+
+| platform | player | digest | snapshots |
+|---|---|---|---|
+| web | Web (#1) | `5B0FF7B1` | 2331 |
+| ios | Ios (#2) | `5B0FF7B1` | 2331 |
+
+| placement | name | platform | team | elims | dmg | harvested | built | chests | survived s |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | Gale | bot | 1 | 4 | 306 | 146 | 12 | 3 | 117 |
+| 1 | Rook | bot | 1 | 1 | 125 | 226 | 8 | 1 | 117 |
+| 1 | Ashfall | bot | 1 | 1 | 67 | 194 | 12 | 1 | 117 |
+| 1 | Tarn | bot | 1 | 4 | 639 | 286 | 12 | 1 | 102 |
+| 2 | Web | web | 0 | 0 | 64 | 112 | 6 | 0 | 108 |
+| 2 | Ios | ios | 0 | 1 | 78 | 190 | 7 | 1 | 108 |
+| 2 | Marrow | bot | 0 | 0 | 0 | 72 | 3 | 1 | 117 |
+| 2 | Juniper | bot | 0 | 0 | 27 | 248 | 6 | 0 | 115 |
+| 3 | Ivory | bot | 2 | 1 | 189 | 79 | 3 | 0 | 36 |
+| 3 | Hollow | bot | 2 | 0 | 12 | 89 | 3 | 0 | 38 |
+| 3 | Ember | bot | 2 | 0 | 72 | 0 | 6 | 1 | 41 |
+| 3 | Sable | bot | 2 | 0 | 0 | 211 | 6 | 0 | 97 |
+| 4 | Pike | bot | 3 | 0 | 0 | 186 | 4 | 0 | 51 |
+| 4 | Nettle | bot | 3 | 0 | 125 | 0 | 0 | 0 | 13 |
+| 4 | Flint | bot | 3 | 0 | 0 | 100 | 2 | 0 | 38 |
+| 4 | Dusk | bot | 3 | 0 | 0 | 16 | 0 | 0 | 15 |
+[07:17:04] cutting review video
+review video: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/review.mp4 (45.1s, 10 chapters)
+[07:17:12] PASS (PARTIAL: web,ios only) — evidence in /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442
+[07:17:12] cleaning up

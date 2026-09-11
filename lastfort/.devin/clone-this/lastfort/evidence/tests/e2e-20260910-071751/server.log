@@ -1,0 +1,10 @@
+[2026-09-10T07:19:32.956591] lastfort server listening on ws://0.0.0.0:8790/ws
+[2026-09-10T07:19:37.089928] hello Web [web] token=ftdhd4
+[2026-09-10T07:19:37.350892] room LFE2E created by Web (mode=squads fast=true seed=4242)
+[2026-09-10T07:19:44.039193] hello Ios [ios] token=g5gz5t
+[2026-09-10T07:19:45.954260] hello Mac [macos] token=desjz9
+[2026-09-10T07:21:53.259911] report LFE2E web digest=CA0FF4A2
+[2026-09-10T07:21:53.299056] report LFE2E macos digest=CA0FF4A2
+[2026-09-10T07:21:53.324352] report LFE2E ios digest=CA0FF4A2
+[2026-09-10T07:22:40.576297] disconnected Web (ftdhd4)
+[2026-09-10T07:22:41.142676] disconnected Ios (g5gz5t)

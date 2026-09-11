@@ -1,0 +1,95 @@
+[07:17:52] building web
+Compiling lib/main.dart for the Web...                          
+Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+Use --no-wasm-dry-run to disable these warnings.
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 17112 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Font asset "CupertinoIcons.ttf" was tree-shaken, reducing it from 257628 to 1472 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Compiling lib/main.dart for the Web...                             24.9s
+✓ Built build/web
+[07:18:18] building ios (simulator)
+Building com.lastfort.lastfort for simulator (ios)...
+Running Xcode build...                                          
+Xcode build done.                                           13.6s
+✓ Built build/ios/iphonesimulator/Runner.app
+[07:18:43] building macos
+Building macOS application...                                   
+✓ Built build/macos/Build/Products/Release/Lastfort.app (46.6MB)
+[07:19:31] starting server on :8790
+Monitoring boot status for iPhone 17 (113E2F1A-A37A-4546-A7AE-8A9CA23C7F89).
+Device already booted, nothing to do.
+
+[07:19:33] ios simulator ready: 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[07:19:33] starting 3-way screen recording (quad layout)
+[07:19:34] launching web client
+[["Web", "web"]]
+[07:19:37] launching ios client
+com.lastfort.lastfort: 6239
+[07:19:41] launching macos client
+[07:19:59] waiting for 3 humans in room LFE2E
+[["Web", "web"], ["Ios", "ios"], ["Mac", "macos"]]
+[07:20:00] screenshots: lobby
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/ios-lobby.png
+[07:20:03] waiting for the match to start
+playing
+[07:20:07] screenshots: bus
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/ios-bus.png
+playing
+[07:20:22] screenshots: gameplay
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/ios-gameplay.png
+[07:20:49] screenshots: midgame
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/ios-midgame.png
+[07:20:50] waiting for all 3 clients to report the final summary
+ios,macos,web
+[07:21:55] screenshots: matchover
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/ios-matchover.png
+[07:22:01] screenshots: results
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/ios-results.png
+[07:22:02] visual comparison web -> macos
+{"mode": "exact", "reference": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/web-lobby.png", "actual": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/macos-lobby.png", "diff": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/diff-web-macos-lobby.png", "different_pixels": 358576, "total_pixels": 364210, "masked_pixels": 0, "tolerance": 0, "max_delta": 230, "region": {"width": 770, "height": 473, "ref_offset": [0, 0], "act_offset": [0, 28]}}
+{"mode": "exact", "reference": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/web-results.png", "actual": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/macos-results.png", "diff": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/diff-web-macos-results.png", "different_pixels": 290835, "total_pixels": 364210, "masked_pixels": 0, "tolerance": 0, "max_delta": 223, "region": {"width": 770, "height": 473, "ref_offset": [0, 0], "act_offset": [0, 28]}}
+{"mode": "exact", "reference": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/web-matchover.png", "actual": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/macos-matchover.png", "diff": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/diff-web-macos-matchover.png", "different_pixels": 361367, "total_pixels": 364210, "masked_pixels": 0, "tolerance": 0, "max_delta": 235, "region": {"width": 770, "height": 473, "ref_offset": [0, 0], "act_offset": [0, 28]}}
+{"mode": "normalized", "reference": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/web-results.png", "actual": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/macos-results.png", "diff": "/Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/diff-web-macos-results-tol32.png", "different_pixels": 30835, "total_pixels": 364210, "masked_pixels": 0, "tolerance": 32, "max_delta": 223, "region": {"width": 770, "height": 473, "ref_offset": [0, 0], "act_offset": [0, 28]}}
+# Lastfort four-way multiplayer match
+
+Room `LFE2E` — PASS
+
+| platform | player | digest | snapshots |
+|---|---|---|---|
+| web | Web (#1) | `CA0FF4A2` | 2332 |
+| ios | Ios (#2) | `CA0FF4A2` | 2332 |
+| macos | Mac (#3) | `CA0FF4A2` | 2332 |
+
+| placement | name | platform | team | elims | dmg | harvested | built | chests | survived s |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | Juniper | bot | 1 | 3 | 306 | 164 | 14 | 3 | 117 |
+| 1 | Gale | bot | 1 | 0 | 0 | 236 | 8 | 1 | 117 |
+| 1 | Rook | bot | 1 | 1 | 55 | 204 | 10 | 1 | 117 |
+| 1 | Ashfall | bot | 1 | 4 | 480 | 262 | 12 | 1 | 117 |
+| 2 | Web | web | 0 | 0 | 0 | 250 | 7 | 0 | 110 |
+| 2 | Ios | ios | 0 | 0 | 0 | 98 | 2 | 1 | 117 |
+| 2 | Mac | macos | 0 | 1 | 150 | 271 | 9 | 1 | 105 |
+| 2 | Marrow | bot | 0 | 0 | 0 | 87 | 2 | 1 | 115 |
+| 3 | Tarn | bot | 2 | 1 | 189 | 79 | 3 | 0 | 36 |
+| 3 | Ivory | bot | 2 | 0 | 12 | 89 | 3 | 0 | 38 |
+| 3 | Hollow | bot | 2 | 0 | 72 | 0 | 6 | 1 | 41 |
+| 3 | Ember | bot | 2 | 0 | 0 | 151 | 4 | 0 | 59 |
+| 4 | Sable | bot | 3 | 0 | 0 | 186 | 4 | 0 | 51 |
+| 4 | Pike | bot | 3 | 0 | 125 | 0 | 0 | 0 | 13 |
+| 4 | Nettle | bot | 3 | 0 | 0 | 100 | 2 | 0 | 38 |
+| 4 | Flint | bot | 3 | 0 | 0 | 16 | 0 | 0 | 15 |
+[07:22:14] cutting review video
+review video: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751/review.mp4 (49.0s, 10 chapters)
+[07:22:40] PASS (PARTIAL: web,ios,macos only) — evidence in /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071751
+[07:22:40] cleaning up

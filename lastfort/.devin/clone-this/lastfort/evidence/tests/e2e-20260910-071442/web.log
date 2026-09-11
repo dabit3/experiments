@@ -1,0 +1,7 @@
+web client ready http://127.0.0.1:8790/?server=ws://127.0.0.1:8790/ws&room=LFE2E&auto=1&autostart=2&seed=4242&fast=1&mode=squads&theme=light&name=Web&test=e2e-LFE2E-4242
+web screenshot /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/web-lobby.png
+web screenshot /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/web-bus.png
+web screenshot /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/web-gameplay.png
+web screenshot /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/web-midgame.png
+web screenshot /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/web-matchover.png
+web screenshot /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-071442/web-results.png

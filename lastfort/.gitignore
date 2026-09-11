@@ -1,0 +1,11 @@
+**/.dart_tool/
+**/.DS_Store
+
+# Large binary clone-this evidence (screenshots, recordings) is attached to
+# the PR instead of committed; logs, reports, and the manifest stay in git.
+.devin/clone-this/lastfort/evidence/**/*.png
+.devin/clone-this/lastfort/evidence/**/*.mov
+.devin/clone-this/lastfort/evidence/**/*.mp4
+# Harness runtime scratch (control flags, compiled window-id helper)
+.devin/clone-this/lastfort/evidence/tests/*/ctl/
+.devin/clone-this/lastfort/evidence/tests/*/window_id

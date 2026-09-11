@@ -1,0 +1,12 @@
+Formatted 7 files (0 changed) in 2.11 seconds.
+Analyzing server...
+No issues found!
+00:00 +0: loading test/server_test.dart
+00:00 +0: test/server_test.dart: rooms: create, join by code, errors, host start with bots
+00:00 +1: test/server_test.dart: four platforms in one squad finish a match with identical summaries
+00:04 +2: test/server_test.dart: bots complete a partial human squad before forming their own
+00:04 +3: test/server_test.dart: reconnect resumes the same player mid-match
+00:04 +4: test/server_test.dart: a room can play a second match after the first ends
+00:09 +5: test/server_test.dart: a second connection with the same token supersedes the first
+00:09 +6: test/server_test.dart: disconnected players time out and the match still ends
+00:09 +7: All tests passed!
