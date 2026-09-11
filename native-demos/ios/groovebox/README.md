@@ -10,6 +10,7 @@ instrument. No accounts, internet, sound downloads or external packages.
 - An installed iOS Simulator runtime (developed with iOS 26.5).
 - An iPhone Simulator; the app targets iOS 17+, portrait, iPhone only.
 - Swift and `swift-format` are included in Xcode. No project generator required.
+- A working host audio output route is required for live Simulator playback.
 
 ## Build and run
 
@@ -27,6 +28,26 @@ Open `Groovebox.xcodeproj` in Xcode to build interactively. The scripts use the
 committed project and do not require signing. The output is
 `build/Build/Products/Release-iphonesimulator/Groovebox.app`.
 This is a **Simulator-only** build, not an installable signed iPhone release.
+
+### Audio on a macOS VM
+
+Check `system_profiler SPAudioDataType` for an active default output. On a VM
+without audio hardware, the official Homebrew `blackhole-2ch` cask provides a
+virtual loopback route (version 0.7.1 was verified):
+
+```sh
+brew install --cask blackhole-2ch
+sudo -n killall coreaudiod
+system_profiler SPAudioDataType
+```
+
+After installing the driver, fully shut down and reboot the Simulator before
+launching the app. An app-only relaunch can retain the invalid old route and
+return AVFAudio error -10851. During first route initialization the Simulator
+also produced an AVFAudio abort; refreshing the bridge restored live playback.
+Grant SimulatorTrampoline's native microphone permission if prompted.
+BlackHole permits actual PCM capture but does not provide a physical speaker;
+offline WAV rendering does not require any host audio device.
 
 ## Play
 

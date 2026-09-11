@@ -157,7 +157,8 @@ struct InstrumentView: View {
         Button {
           model.edit { $0.bpm = max(50, $0.bpm - 1) }
         } label: {
-          Image(systemName: "minus").frame(width: 38, height: 57)
+          Image(systemName: "minus").frame(width: 44, height: 57)
+            .contentShape(Rectangle())
         }.accessibilityLabel("Decrease tempo")
         VStack(spacing: 2) {
           Text("\(Int(model.pattern.bpm))")
@@ -171,7 +172,8 @@ struct InstrumentView: View {
         Button {
           model.edit { $0.bpm = min(200, $0.bpm + 1) }
         } label: {
-          Image(systemName: "plus").frame(width: 38, height: 57)
+          Image(systemName: "plus").frame(width: 44, height: 57)
+            .contentShape(Rectangle())
         }.accessibilityLabel("Increase tempo")
       }
       .background(Panel.surface, in: RoundedRectangle(cornerRadius: 12))
