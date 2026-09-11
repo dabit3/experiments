@@ -33,6 +33,8 @@ struct CollectionEditor: View {
       .scrollContentBackground(.hidden).background(MuseumStyle.paper)
       .navigationTitle(existing == nil ? "New collection" : "Edit collection")
       .navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(MuseumStyle.paper, for: .navigationBar)
+      .toolbarBackground(.visible, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
         ToolbarItem(placement: .confirmationAction) {
@@ -79,7 +81,7 @@ struct ObjectEditor: View {
               color: MuseumStyle.cobalt)
             Text(existing == nil ? "Give it a place." : "Continue its story.")
               .font(MuseumStyle.serif(30))
-          }.padding(.vertical, 4)
+          }.padding(.vertical, 16).padding(.horizontal, 12)
         }.listRowBackground(Color.clear).listRowInsets(
           EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
         Section("The exhibit label") {
@@ -155,6 +157,8 @@ struct ObjectEditor: View {
       .scrollContentBackground(.hidden).background(MuseumStyle.paper)
       .navigationTitle(existing == nil ? "New object" : "Edit object")
       .navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(MuseumStyle.paper, for: .navigationBar)
+      .toolbarBackground(.visible, for: .navigationBar)
       .toolbar {
         ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
         ToolbarItem(placement: .confirmationAction) {

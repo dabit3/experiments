@@ -243,6 +243,8 @@ struct LabelExport: View {
           }
         }
         .navigationTitle("Museum label").navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(MuseumStyle.paper, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         .onAppear { generate() }
     }
