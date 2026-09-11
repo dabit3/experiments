@@ -273,16 +273,17 @@ struct ConfigureView: View {
       }
       .scrollDismissesKeyboard(.interactively)
       .safeAreaInset(edge: .bottom, spacing: 0) {
-        VStack(spacing: 0) {
-          Rectangle().fill(Palette.line).frame(height: 0.75)
-          PrimaryButton(
-            title: preview ? "Begin preview · 20 sec" : "Plant \(minutes) minutes", icon: "leaf"
-          ) {
-            editing = false
-            if store.start(intention: intention, minutes: minutes, preview: preview) { dismiss() }
-          }.padding(.horizontal, 26).padding(.vertical, 12)
+        if !editing {
+          VStack(spacing: 0) {
+            Rectangle().fill(Palette.line).frame(height: 0.75)
+            PrimaryButton(
+              title: preview ? "Begin preview · 20 sec" : "Plant \(minutes) minutes", icon: "leaf"
+            ) {
+              if store.start(intention: intention, minutes: minutes, preview: preview) { dismiss() }
+            }.padding(.horizontal, 26).padding(.vertical, 12)
+          }
+          .background(Palette.paper)
         }
-        .background(Palette.paper)
       }
       .modifier(Paper())
       .navigationTitle("Your ritual")

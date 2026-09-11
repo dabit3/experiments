@@ -61,6 +61,8 @@ At accessibility text sizes the intention choices, archive and session metadata
 stack vertically; intention fields expand to multiple lines. The start action
 stays anchored above the safe area. Screens remain scrollable. Reduce Motion
 shows the mature plant throughout a ritual.
+While the intention field is focused, the start action yields space to the
+keyboard; use the keyboard’s Done control to restore it.
 No sound or animation is necessary to understand session status.
 
 The iOS 17 minimum supports SwiftUI sensory feedback and the two-value
