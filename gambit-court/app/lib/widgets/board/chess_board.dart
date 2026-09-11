@@ -575,14 +575,6 @@ class _SquaresPainter extends CustomPainter {
         // Files along the bottom row, ranks along the left column.
         final fileIndex = orientation == PieceColor.white ? i : 7 - i;
         final rankIndex = orientation == PieceColor.white ? 7 - i : i;
-        final bottomSquare = Square.of(
-          fileIndex,
-          orientation == PieceColor.white ? 0 : 7,
-        );
-        final leftSquare = Square.of(
-          orientation == PieceColor.white ? 0 : 7,
-          rankIndex,
-        );
         _label(
           canvas,
           'abcdefgh'[fileIndex],
@@ -590,14 +582,14 @@ class _SquaresPainter extends CustomPainter {
             (i + 1) * squareSize - fontSize * 0.75,
             size.height - fontSize * 1.25,
           ),
-          Square.isDark(bottomSquare) ? colors.boardLight : colors.boardDark,
+          colors.pieceBlackInk,
           fontSize,
         );
         _label(
           canvas,
           '${rankIndex + 1}',
           Offset(squareSize * 0.08, i * squareSize + squareSize * 0.06),
-          Square.isDark(leftSquare) ? colors.boardLight : colors.boardDark,
+          colors.pieceBlackInk,
           fontSize,
         );
       }
@@ -612,7 +604,7 @@ class _SquaresPainter extends CustomPainter {
           fontFamily: GcFonts.mono,
           fontSize: size,
           fontWeight: FontWeight.w600,
-          color: color.withValues(alpha: 0.9),
+          color: color,
         ),
       ),
       textDirection: TextDirection.ltr,
