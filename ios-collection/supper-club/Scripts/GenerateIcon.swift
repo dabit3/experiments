@@ -1,8 +1,14 @@
 import AppKit
 
 let size = 1024
-let image = NSImage(size: NSSize(width: size, height: size))
-image.lockFocus()
+guard
+  let context = CGContext(
+    data: nil, width: size, height: size, bitsPerComponent: 8, bytesPerRow: size * 4,
+    space: CGColorSpaceCreateDeviceRGB(),
+    bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue)
+else { fatalError("Could not allocate icon context") }
+NSGraphicsContext.saveGraphicsState()
+NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
 let red = NSColor(srgbRed: 0.76, green: 0.19, blue: 0.12, alpha: 1)
 let cream = NSColor(srgbRed: 0.98, green: 0.96, blue: 0.91, alpha: 1)
 red.setFill()
@@ -29,17 +35,13 @@ leaf.curve(
   controlPoint2: NSPoint(x: 657, y: 660))
 NSColor(srgbRed: 0.23, green: 0.35, blue: 0.22, alpha: 1).setFill()
 leaf.fill()
-image.unlockFocus()
-guard
-  let bitmap = NSBitmapImageRep(
-    bitmapDataPlanes: nil, pixelsWide: size, pixelsHigh: size,
-    bitsPerSample: 8, samplesPerPixel: 3, hasAlpha: false, isPlanar: false,
-    colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0)
-else { fatalError("Could not allocate icon") }
-NSGraphicsContext.saveGraphicsState()
-NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: bitmap)
-image.draw(in: NSRect(x: 0, y: 0, width: size, height: size))
 NSGraphicsContext.restoreGraphicsState()
+guard let rendered = context.makeImage(), let pixels = context.data else {
+  fatalError("Could not render icon")
+}
+let bytes = pixels.assumingMemoryBound(to: UInt8.self)
+precondition(bytes[0] > 100 && bytes[1] < 100, "Icon background must be tomato red")
+let bitmap = NSBitmapImageRep(cgImage: rendered)
 guard let png = bitmap.representation(using: .png, properties: [:])
 else { fatalError("Could not encode icon") }
 try png.write(to: URL(fileURLWithPath: "SupperClub/Assets.xcassets/AppIcon.appiconset/AppIcon.png"))
