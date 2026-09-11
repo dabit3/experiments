@@ -117,15 +117,17 @@ struct PDFPreview: View {
   var body: some View {
     NavigationStack {
       NativePDF(url: export.url)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+          Label("Saved in On My iPad → Shotboard → Exports", systemImage: "checkmark.circle")
+            .font(.system(size: 12)).foregroundStyle(Palette.muted)
+            .frame(maxWidth: .infinity).padding(.vertical, 14).background(Palette.panel)
+        }
         .navigationTitle("Production storyboard")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
           ToolbarItem(placement: .topBarLeading) { Button("Done") { dismiss() } }
           ToolbarItem(placement: .topBarTrailing) {
             ShareLink(item: export.url) { Label("Share PDF", systemImage: "square.and.arrow.up") }
-          }
-          ToolbarItem(placement: .bottomBar) {
-            Text("Saved in On My iPad → Shotboard → Exports").font(.system(size: 12))
           }
         }
     }

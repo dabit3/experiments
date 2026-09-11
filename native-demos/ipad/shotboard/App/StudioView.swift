@@ -40,7 +40,7 @@ struct StudioView: View {
     .sheet(isPresented: $showLibrary) { ProjectLibrary() }
     .sheet(isPresented: $showScene) { SceneSheet() }
     .sheet(isPresented: $showTitle) { ProjectTitleSheet() }
-    .sheet(item: $pdf) { export in PDFPreview(export: export) }
+    .fullScreenCover(item: $pdf) { export in PDFPreview(export: export) }
     .fullScreenCover(isPresented: $presenting) { PresentationView(project: store.project) }
     .confirmationDialog(
       "Clear all artwork in this frame?", isPresented: $clearConfirm, titleVisibility: .visible
@@ -81,7 +81,7 @@ struct StudioView: View {
         showTitle = true
       } label: {
         HStack(spacing: 10) {
-          Text(store.project.title).font(.system(size: 17, weight: .medium))
+          Text(store.project.title).font(.system(size: 17, weight: .medium)).lineLimit(1)
           Image(systemName: "chevron.down").font(.system(size: 10))
         }
       }.buttonStyle(.plain).accessibilityLabel("Edit film title")
