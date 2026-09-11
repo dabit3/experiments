@@ -1,0 +1,10 @@
+# Node (Playwright harness)
+test/node_modules/
+
+# Large binary evidence stays out of git; it is attached to the PR instead.
+.devin/clone-this/*/evidence/**/*.png
+.devin/clone-this/*/evidence/**/*.mov
+.devin/clone-this/*/evidence/**/*.mp4
+.devin/clone-this/*/evidence/**/*.webm
+.devin/clone-this/*/evidence/**/*.gif
+.devin/clone-this/*/evidence/**/*.apk

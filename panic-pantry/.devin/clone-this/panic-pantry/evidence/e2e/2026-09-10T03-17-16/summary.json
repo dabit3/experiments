@@ -1,0 +1,333 @@
+{
+  "room": "E2E4",
+  "seed": 23,
+  "level": "corner-cafe",
+  "speed": 1,
+  "requested": [
+    "web",
+    "ios",
+    "android",
+    "macos"
+  ],
+  "joined": [
+    {
+      "platform": "web",
+      "name": "Webby",
+      "slot": 0,
+      "id": "pgdot4k"
+    },
+    {
+      "platform": "ios",
+      "name": "Pip",
+      "slot": 1,
+      "id": "p9z9tjw"
+    },
+    {
+      "platform": "android",
+      "name": "Andi",
+      "slot": 2,
+      "id": "pf38cy8"
+    },
+    {
+      "platform": "macos",
+      "name": "Mac",
+      "slot": 3,
+      "id": "pa9912h"
+    }
+  ],
+  "missing": {},
+  "screenshots": {
+    "web": {
+      "lobby": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/web-lobby.png",
+      "gameplay": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/web-gameplay.png",
+      "gameplay-late": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/web-gameplay-late.png",
+      "results": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/web-results.png"
+    },
+    "ios": {
+      "lobby": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/ios-lobby.png",
+      "gameplay": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/ios-gameplay.png",
+      "gameplay-late": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/ios-gameplay-late.png",
+      "results": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/ios-results.png"
+    },
+    "android": {
+      "lobby": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/android-lobby.png",
+      "gameplay": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/android-gameplay.png",
+      "gameplay-late": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/android-gameplay-late.png",
+      "results": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/android-results.png"
+    },
+    "macos": {
+      "lobby": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/macos-lobby.png",
+      "gameplay": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/macos-gameplay.png",
+      "gameplay-late": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/macos-gameplay-late.png",
+      "results": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16/macos-results.png"
+    }
+  },
+  "evidenceDir": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T03-17-16",
+  "startedAt": "2026-09-10T03:17:16.408Z",
+  "expected": {
+    "levelId": "corner-cafe",
+    "score": 426,
+    "stars": 1,
+    "thresholds": [
+      240,
+      480,
+      760
+    ],
+    "served": 11,
+    "expired": 1,
+    "tips": 216,
+    "bestCombo": 4,
+    "wrongServes": 0,
+    "burntPots": 0,
+    "servedByDish": {
+      "tomatoSoup": 6,
+      "onionSoup": 3,
+      "mushroomSoup": 2
+    },
+    "players": 4,
+    "tick": 3061
+  },
+  "midMatch": {
+    "web": {
+      "type": "test.report",
+      "platform": "web",
+      "screen": "game",
+      "screenAgeMs": 34512,
+      "framesSinceScreen": 1073,
+      "view": {
+        "width": 800,
+        "height": 520,
+        "dpr": 1,
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "platformRegions": {},
+      "code": "E2E4",
+      "phase": "playing",
+      "tick": 537,
+      "score": 36,
+      "stars": 0,
+      "results": null,
+      "resultsMatch": -1,
+      "lastError": null,
+      "rtt": 29,
+      "automated": false,
+      "receivedAt": "2026-09-09T20:18:38.829893"
+    },
+    "ios": {
+      "type": "test.report",
+      "platform": "ios",
+      "screen": "game",
+      "screenAgeMs": 34472,
+      "framesSinceScreen": 1204,
+      "view": {
+        "width": 402,
+        "height": 874,
+        "dpr": 3,
+        "padding": {
+          "top": 62,
+          "bottom": 34,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "platformRegions": {},
+      "code": "E2E4",
+      "phase": "playing",
+      "tick": 537,
+      "score": 36,
+      "stars": 0,
+      "results": null,
+      "resultsMatch": -1,
+      "lastError": null,
+      "rtt": 29,
+      "automated": false,
+      "receivedAt": "2026-09-09T20:18:38.830912"
+    },
+    "android": {
+      "type": "test.report",
+      "platform": "android",
+      "screen": "game",
+      "screenAgeMs": 4503,
+      "framesSinceScreen": 2,
+      "view": {
+        "width": 1024,
+        "height": 720,
+        "dpr": 1,
+        "padding": {
+          "top": 24,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "platformRegions": {},
+      "code": "E2E4",
+      "phase": "playing",
+      "tick": 537,
+      "score": 36,
+      "stars": 0,
+      "results": null,
+      "resultsMatch": -1,
+      "lastError": null,
+      "rtt": 5,
+      "automated": false,
+      "receivedAt": "2026-09-09T20:18:39.062598"
+    },
+    "macos": {
+      "type": "test.report",
+      "platform": "macos",
+      "screen": "game",
+      "screenAgeMs": 34522,
+      "framesSinceScreen": 586,
+      "view": {
+        "width": 800,
+        "height": 508,
+        "dpr": 1,
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "platformRegions": {},
+      "code": "E2E4",
+      "phase": "playing",
+      "tick": 537,
+      "score": 36,
+      "stars": 0,
+      "results": null,
+      "resultsMatch": -1,
+      "lastError": null,
+      "rtt": 1,
+      "automated": false,
+      "receivedAt": "2026-09-09T20:18:38.830188"
+    }
+  },
+  "results": {
+    "web": {
+      "levelId": "corner-cafe",
+      "score": 426,
+      "stars": 1,
+      "thresholds": [
+        240,
+        480,
+        760
+      ],
+      "served": 11,
+      "expired": 1,
+      "tips": 216,
+      "bestCombo": 4,
+      "wrongServes": 0,
+      "burntPots": 0,
+      "servedByDish": {
+        "tomatoSoup": 6,
+        "onionSoup": 3,
+        "mushroomSoup": 2
+      },
+      "players": 4,
+      "tick": 3061
+    },
+    "ios": {
+      "levelId": "corner-cafe",
+      "score": 426,
+      "stars": 1,
+      "thresholds": [
+        240,
+        480,
+        760
+      ],
+      "served": 11,
+      "expired": 1,
+      "tips": 216,
+      "bestCombo": 4,
+      "wrongServes": 0,
+      "burntPots": 0,
+      "servedByDish": {
+        "tomatoSoup": 6,
+        "onionSoup": 3,
+        "mushroomSoup": 2
+      },
+      "players": 4,
+      "tick": 3061
+    },
+    "android": {
+      "levelId": "corner-cafe",
+      "score": 426,
+      "stars": 1,
+      "thresholds": [
+        240,
+        480,
+        760
+      ],
+      "served": 11,
+      "expired": 1,
+      "tips": 216,
+      "bestCombo": 4,
+      "wrongServes": 0,
+      "burntPots": 0,
+      "servedByDish": {
+        "tomatoSoup": 6,
+        "onionSoup": 3,
+        "mushroomSoup": 2
+      },
+      "players": 4,
+      "tick": 3061
+    },
+    "macos": {
+      "levelId": "corner-cafe",
+      "score": 426,
+      "stars": 1,
+      "thresholds": [
+        240,
+        480,
+        760
+      ],
+      "served": 11,
+      "expired": 1,
+      "tips": 216,
+      "bestCombo": 4,
+      "wrongServes": 0,
+      "burntPots": 0,
+      "servedByDish": {
+        "tomatoSoup": 6,
+        "onionSoup": 3,
+        "mushroomSoup": 2
+      },
+      "players": 4,
+      "tick": 3061
+    }
+  },
+  "server": {
+    "levelId": "corner-cafe",
+    "score": 426,
+    "stars": 1,
+    "thresholds": [
+      240,
+      480,
+      760
+    ],
+    "served": 11,
+    "expired": 1,
+    "tips": 216,
+    "bestCombo": 4,
+    "wrongServes": 0,
+    "burntPots": 0,
+    "servedByDish": {
+      "tomatoSoup": 6,
+      "onionSoup": 3,
+      "mushroomSoup": 2
+    },
+    "players": 4,
+    "tick": 3061,
+    "phase": "finished"
+  },
+  "problems": [],
+  "passed": true,
+  "finishedAt": "2026-09-10T03:21:18.302Z"
+}

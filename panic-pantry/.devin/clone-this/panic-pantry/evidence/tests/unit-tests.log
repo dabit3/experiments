@@ -1,0 +1,66 @@
+# 2026-09-11T03:58:38Z unit tests
+## core dart test
+00:00 +0: loading test/simulation_test.dart
+00:00 +0: test/simulation_test.dart: levels parse and have spawns for four chefs
+00:00 +1: test/simulation_test.dart: snapshot round-trips
+00:00 +2: test/simulation_test.dart: bot rounds are deterministic and score
+training: score=392 stars=3 served=8 expired=0 burnt=0 wrong=0 tick=3733
+corner-cafe: score=230 stars=0 served=8 expired=2 burnt=1 wrong=0 tick=3061
+conveyor-canteen: score=235 stars=1 served=8 expired=2 burnt=0 wrong=0 tick=3061
+split-shift: score=304 stars=1 served=10 expired=1 burnt=0 wrong=0 tick=3260
+drift-deck: score=120 stars=0 served=6 expired=5 burnt=0 wrong=0 tick=3260
+00:05 +3: test/simulation_test.dart: gimmick levels: bots ship across belts, hatches and ferries
+00:06 +4: test/simulation_test.dart: moving platform tiles are walkable at both ends of travel
+00:06 +5: test/simulation_test.dart: scoring tiers
+00:06 +6: test/simulation_test.dart: chopping needs the action input held across ticks
+00:06 +7: All tests passed!
+exit=0
+## server dart test
+00:00 +0: loading test/server_test.dart
+00:00 +0: test/server_test.dart: hello, create, join, ready, start, results and rematch
+[server] listening on ws://127.0.0.1:53496/ws (test harness enabled)
+[server] room FAST created (seed 99, level training)
+[server] Ada joined FAST (1/4)
+[server] Bo joined FAST (2/4)
+[server] room FAST starting training with 4 chefs
+[server] Ada disconnected from FAST
+[server] Bo disconnected from FAST
+00:18 +1: test/server_test.dart: reconnect with token resumes seat mid-match
+[server] listening on ws://127.0.0.1:53616/ws (test harness enabled)
+[server] room DVXJ created (seed 105046169, level training)
+[server] Ada joined DVXJ (1/4)
+[server] room DVXJ starting training with 2 chefs
+[server] Ada disconnected from DVXJ
+[server] Ada resumed DVXJ
+[server] Ada disconnected from DVXJ
+00:18 +2: test/server_test.dart: test harness: fixed code/seed room, server-side scripted input, client test channel
+[server] listening on ws://127.0.0.1:53619/ws (test harness enabled)
+[server] room ZZZZ created (seed 4242, level training)
+[server] Web joined ZZZZ (2/4)
+[server] Web disconnected from ZZZZ
+00:22 +3: test/server_test.dart: test harness reaches connected clients outside a room
+[server] listening on ws://127.0.0.1:53655/ws (test harness enabled)
+00:23 +4: test/server_test.dart: test harness routes are absent unless enabled
+[server] listening on ws://127.0.0.1:53662/ws (test harness enabled)
+[server] listening on ws://127.0.0.1:53663/ws
+00:23 +5: All tests passed!
+exit=0
+## app flutter test
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/devin/repos/experiments/panic-pantry/app/test/arcade_layout_test.dart
+00:00 +0: staggered entrances finish fully visible
+00:00 +1: focused arcade button activates once for Enter and Space
+00:00 +2: landscape touch kitchen stays playable and controls clear both notches
+00:00 +3: tablet touch clock stays at the right safe edge
+00:00 +4: Training coach clears a full combo HUD at Size(402.0, 874.0)
+00:00 +5: Training coach clears a full combo HUD at Size(874.0, 402.0)
+00:00 +6: All tests passed!
+exit=0

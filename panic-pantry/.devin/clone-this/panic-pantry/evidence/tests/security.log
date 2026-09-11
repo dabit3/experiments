@@ -1,0 +1,33 @@
+# 2026-09-11T03:59:12Z current-source security verification
+
+# Node test-harness dependency advisories
+found 0 vulnerabilities
+
+# Production test-route isolation regression
+00:00 +0: loading test/server_test.dart
+00:00 +0: test/server_test.dart: test harness routes are absent unless enabled
+[server] listening on ws://127.0.0.1:53703/ws (test harness enabled)
+[server] listening on ws://127.0.0.1:53704/ws
+00:00 +1: All tests passed!
+
+# Tracked/new credential-file names (expected: none)
+No credential files found.
+
+# Shipped web script references
+44:  <script src="flutter_bootstrap.js" async></script>
+
+# Platform capabilities
+2:    <uses-permission android:name="android.permission.INTERNET"/>
+app/macos/Runner/DebugProfile.entitlements:5:	<key>com.apple.security.app-sandbox</key>
+app/macos/Runner/DebugProfile.entitlements:7:	<key>com.apple.security.network.client</key>
+app/macos/Runner/DebugProfile.entitlements:9:	<key>com.apple.security.cs.allow-jit</key>
+app/macos/Runner/DebugProfile.entitlements:11:	<key>com.apple.security.network.server</key>
+app/macos/Runner/Release.entitlements:5:	<key>com.apple.security.app-sandbox</key>
+app/macos/Runner/Release.entitlements:7:	<key>com.apple.security.network.client</key>
+
+# Commercial branding in shipped source (expected: none)
+No commercial-brand references found.
+
+# Scope: local anonymous game; cleartext localhost/LAN transport is intentional.
+# This is not a deployment security assessment or a Dart vulnerability database scan.
+# PASS: dependency advisory query, production route isolation and source/capability review.

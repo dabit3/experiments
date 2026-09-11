@@ -1,0 +1,60 @@
+[   0.9s] server: [server] listening on ws://0.0.0.0:8787/ws (test harness enabled)
+[   1.0s] server :8787, web reference :8080, platforms [ios, android, macos], states [home, lobby, results]
+[   1.1s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[   5.3s] server: [server] Chef joined VIS1 (1/4)
+[  13.0s] server: [server] Chef disconnected from VIS1
+[  13.0s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  14.5s] server: [server] Chef joined VIS1 (1/4)
+[  21.2s] server: [server] Chef disconnected from VIS1
+[  21.5s] PASS ios     lobby   raw 1206x2334 0.12% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 2 mask(s)
+[  21.5s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  22.6s] server: [server] Chef joined VIS1 (1/4)
+[  51.5s] server: [server] Chef disconnected from VIS1
+[  51.5s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  52.4s] server: [server] Chef joined VIS1 (1/4)
+[  81.3s] server: [server] Chef disconnected from VIS1
+[  81.8s] PASS ios     results raw 1206x2334 0.18% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 2 mask(s)
+[  81.8s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  88.9s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  96.6s] PASS ios     home    raw 1206x2334 0.24% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 0 mask(s)
+[  96.6s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 115.3s] server: [server] Chef joined VIS1 (1/4)
+[ 142.9s] server: [server] Chef disconnected from VIS1
+[ 143.0s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 143.7s] server: [server] Chef joined VIS1 (1/4)
+[ 150.4s] server: [server] Chef disconnected from VIS1
+[ 150.6s] PASS android lobby   raw 1024x696 0.02% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 2 mask(s)
+[ 150.6s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 162.4s] server: [server] Chef joined VIS1 (1/4)
+[ 199.5s] server: [server] Chef disconnected from VIS1
+[ 199.5s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 200.3s] server: [server] Chef joined VIS1 (1/4)
+[ 229.4s] PASS android results raw 1024x696 0.10% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 2 mask(s)
+[ 229.4s] server: [server] Chef disconnected from VIS1
+[ 229.4s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 260.4s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 267.6s] PASS android home    raw 1024x696 0.00% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 0 mask(s)
+[ 267.6s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 269.4s] server: [server] Chef joined VIS1 (1/4)
+[ 269.4s] macos: flutter: The Dart VM service is listening on http://127.0.0.1:58467/3o5bXQh5aIM=/
+[ 269.4s] macos! [IMPORTANT:flutter/shell/platform/darwin/macos/framework/Source/FlutterEngine.mm(685)] Using the Skia rendering backend (Metal).
+[ 274.2s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 274.2s] server: [server] Chef disconnected from VIS1
+[ 275.0s] server: [server] Chef joined VIS1 (1/4)
+[ 281.9s] PASS macos   lobby   raw 960x608 0.21% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 6 mask(s)
+[ 281.9s] server: [server] Chef disconnected from VIS1
+[ 281.9s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 282.0s] macos! [IMPORTANT:flutter/shell/platform/darwin/macos/framework/Source/FlutterEngine.mm(685)] Using the Skia rendering backend (Metal).
+[ 282.0s] macos: flutter: The Dart VM service is listening on http://127.0.0.1:58559/rZIGK0V-eVA=/
+[ 282.4s] server: [server] Chef joined VIS1 (1/4)
+[ 312.0s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 312.0s] server: [server] Chef disconnected from VIS1
+[ 313.1s] server: [server] Chef joined VIS1 (1/4)
+[ 342.0s] server: [server] Chef disconnected from VIS1
+[ 342.2s] PASS macos   results raw 960x608 0.44% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 1 <= 2 (group 1 <= 3); 6 mask(s)
+[ 342.2s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 342.3s] macos! [IMPORTANT:flutter/shell/platform/darwin/macos/framework/Source/FlutterEngine.mm(685)] Using the Skia rendering backend (Metal).
+[ 342.3s] macos: flutter: The Dart VM service is listening on http://127.0.0.1:59046/hiepK3r4tg4=/
+[ 350.0s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 357.1s] PASS macos   home    raw 960x608 0.25% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 4 mask(s)
+[ 357.3s] PASS: 9/9 comparisons within threshold

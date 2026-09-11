@@ -1,0 +1,177 @@
+{
+  "generatedAt": "2026-09-10T15:51:10.905Z",
+  "output": {
+    "video": ".devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/review-video.mp4",
+    "gif": ".devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/review-video.gif",
+    "durationSeconds": 92.37,
+    "size": "1280x720",
+    "fps": 30
+  },
+  "inputs": {
+    "e2e": ".devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04",
+    "recording": ".devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov",
+    "smoke": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke",
+    "smokeVideo": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm"
+  },
+  "e2ePassed": true,
+  "smokePassed": true,
+  "segments": [
+    {
+      "kind": "title",
+      "duration": 4,
+      "title": "Title"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov",
+      "sourceStart": 27.2,
+      "duration": 6,
+      "title": "4 clients joined room E2E4",
+      "sub": "Webby(web, slot 0), Pip(ios, slot 1), Andi(android, slot 2), Mac(macos, slot 3)"
+    },
+    {
+      "kind": "board",
+      "duration": 4,
+      "title": "Lobby board"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov",
+      "sourceStart": 35.4,
+      "duration": 7,
+      "title": "Match started — countdown, then the scripted shift",
+      "sub": "3061 ticks, expected score 405, 1 star(s)"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov",
+      "sourceStart": 57,
+      "duration": 6,
+      "title": "Mid-match: every client at tick 511, score 36",
+      "sub": "web: tick=511 score=36 rtt=1ms   ios: tick=511 score=36 rtt=1ms   android: tick=511 score=36 rtt=8ms   macos: tick=511 score=36 rtt=1ms"
+    },
+    {
+      "kind": "board",
+      "duration": 4,
+      "title": "Gameplay board"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov",
+      "sourceStart": 88.1,
+      "duration": 6,
+      "title": "Late shift — combos, tips and expiring tickets",
+      "sub": "expected 11 served, best combo x4, 0 expired"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov",
+      "sourceStart": 188.8,
+      "duration": 7,
+      "title": "Time's up — results on all four clients",
+      "sub": "score 405 · 1 star(s) · 11 served · tips 185"
+    },
+    {
+      "kind": "board",
+      "duration": 4,
+      "title": "Results board"
+    },
+    {
+      "kind": "assertion",
+      "duration": 6,
+      "title": "Assertion table"
+    },
+    {
+      "kind": "title",
+      "duration": 3,
+      "title": "Browser smoke title"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm",
+      "sourceStart": 0.88,
+      "duration": 2.8,
+      "title": "auto-host lands in lobby",
+      "sub": "room XUQL",
+      "check": "auto-host lands in lobby"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm",
+      "sourceStart": 4.18,
+      "duration": 2.8,
+      "title": "leave returns to home",
+      "check": "leave returns to home"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm",
+      "sourceStart": 4.19,
+      "duration": 2.8,
+      "title": "empty room is closed on leave",
+      "sub": "0 room(s) left",
+      "check": "empty room is closed on leave"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm",
+      "sourceStart": 6.21,
+      "duration": 2.8,
+      "title": "how-to-play sheet keeps the home route underneath",
+      "check": "how-to-play sheet keeps the home route underneath"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm",
+      "sourceStart": 7.59,
+      "duration": 2.8,
+      "title": "joining a missing room stays on home with an error",
+      "sub": "No kitchen with code ZZZZ",
+      "check": "joining a missing room stays on home with an error"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm",
+      "sourceStart": 8.37,
+      "duration": 2.8,
+      "title": "joining a full room is rejected",
+      "sub": "That kitchen is full",
+      "check": "joining a full room is rejected"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm",
+      "sourceStart": 14.14,
+      "duration": 2.8,
+      "title": "host from home opens a lobby on the requested level",
+      "sub": "level drift-deck",
+      "check": "host from home opens a lobby on the requested level"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm",
+      "sourceStart": 16.85,
+      "duration": 2.8,
+      "title": "second leave returns to home",
+      "check": "second leave returns to home"
+    },
+    {
+      "kind": "clip",
+      "source": ".devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm",
+      "sourceStart": 16.85,
+      "duration": 2.8,
+      "title": "web console has no errors",
+      "check": "web console has no errors"
+    },
+    {
+      "kind": "assertion",
+      "duration": 5,
+      "title": "Smoke checks"
+    },
+    {
+      "kind": "verdict",
+      "duration": 5,
+      "title": "Verdict"
+    }
+  ]
+}
