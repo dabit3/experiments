@@ -108,16 +108,18 @@ struct PondHome: View {
           .padding(.bottom, 8)
           .background {
             GeometryReader { panel in
-              Color.clear.preference(key: PondPanelHeight.self, value: panel.size.height)
+              Color.clear.preference(
+                key: PondPanelTop.self, value: panel.frame(in: .named("pond")).minY)
             }
           }
         }
       }
-      .onPreferenceChange(PondPanelHeight.self) { height in
+      .coordinateSpace(name: "pond")
+      .onPreferenceChange(PondPanelTop.self) { top in
         let fullHeight =
           geometry.size.height + geometry.safeAreaInsets.top + geometry.safeAreaInsets.bottom
         editingMaxY = min(
-          0.78, max(0.40, 1 - (height + geometry.safeAreaInsets.bottom + 38) / fullHeight))
+          0.78, max(0.20, (top + geometry.safeAreaInsets.top - 52) / fullHeight))
       }
     }
     .background(PondPalette.jade)
@@ -338,9 +340,11 @@ struct PondHome: View {
   }
 }
 
-private struct PondPanelHeight: PreferenceKey {
+private struct PondPanelTop: PreferenceKey {
   static let defaultValue: CGFloat = 0
-  static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
+  static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+    value = max(value, nextValue())
+  }
 }
 
 struct PearlBalance: View {
