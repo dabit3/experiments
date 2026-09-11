@@ -26,7 +26,7 @@ The build creates an ad-hoc signed `dist/Wavecraft.app`. Open it with Finder or 
 6. **Export WAV** writes the entire edited document at its original sample rate as stereo/mono 16-bit PCM. Choose the destination in the native save panel. **Reveal export** shows the result in Finder.
 7. **Open audio** reopens that WAV or imports a WAV/AIFF. Quit and reopen Wavecraft to resume your last document and selection.
 
-Keyboard shortcuts: Space plays/stops; Command-O opens audio; Command-E exports; Command-A selects all; Command-T trims; Command-Z / Shift-Command-Z undo/redo. Text fields retain normal native text-editing behavior while focused.
+Keyboard shortcuts: Space plays/stops; Command-O opens audio; Command-E exports; Command-T trims; Command-Z / Shift-Command-Z undo/redo. Command-A retains native text selection while a field is focused. Use **Select all** or **Audio → Select Entire Waveform** to select the whole sound.
 
 Zoom buttons provide 1×, 2×, 4× and 8× magnification. Scroll horizontally with the trackpad or the horizontal scrollbar. The waveform selection remains in absolute audio time when zoom changes.
 
