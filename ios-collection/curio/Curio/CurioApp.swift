@@ -29,7 +29,7 @@ struct Eyebrow: View {
   var text: String
   var color: Color = MuseumStyle.muted
   var body: some View {
-    Text(text.uppercased()).font(.caption2.weight(.semibold)).tracking(2)
+    Text(text.uppercased()).font(.caption.weight(.semibold)).tracking(1.5)
       .foregroundStyle(color)
   }
 }
@@ -56,24 +56,7 @@ struct MuseumHome: View {
   var body: some View {
     NavigationStack {
       ScrollView {
-        VStack(alignment: .leading, spacing: 30) {
-          HStack(alignment: .center) {
-            HStack(spacing: 11) {
-              BrandMark()
-              Text("Curio").font(MuseumStyle.serif(29))
-            }
-            Spacer()
-            Button {
-              showSearch = true
-            } label: {
-              Image(systemName: "magnifyingglass").frame(width: 44, height: 44)
-            }.accessibilityLabel("Search all objects")
-            Button {
-              showAbout = true
-            } label: {
-              Image(systemName: "info.circle").frame(width: 36, height: 44)
-            }.accessibilityLabel("About your museum")
-          }
+        VStack(alignment: .leading, spacing: 24) {
           VStack(alignment: .leading, spacing: 12) {
             Eyebrow(text: "A personal museum", color: MuseumStyle.cobalt)
             Text("Good things.\nKept close.")
@@ -84,7 +67,9 @@ struct MuseumHome: View {
               .fixedSize(horizontal: false, vertical: true)
           }
 
-          if let featured = museum.collections.first {
+          if let featured = museum.collections.first(where: { !$0.isSample })
+            ?? museum.collections.first
+          {
             NavigationLink {
               CollectionGallery(collectionID: featured.id)
             } label: {
@@ -150,9 +135,27 @@ struct MuseumHome: View {
           HStack(spacing: 7) {
             Image(systemName: "lock").font(.caption2)
             Text("PRIVATE BY DESIGN. YOURS TO KEEP.")
-              .font(.system(size: 9, weight: .medium)).tracking(1.5)
+              .font(.caption2.weight(.medium)).tracking(1)
           }.foregroundStyle(MuseumStyle.muted).frame(maxWidth: .infinity).padding(.bottom, 14)
-        }.padding(.horizontal, 25).padding(.top, 8)
+        }.padding(.horizontal, 25).padding(.top, 18)
+      }
+      .safeAreaInset(edge: .top, spacing: 0) {
+        HStack(spacing: 10) {
+          BrandMark()
+          Text("Curio").font(MuseumStyle.serif(29))
+          Spacer()
+          Button {
+            showSearch = true
+          } label: {
+            Image(systemName: "magnifyingglass").frame(width: 44, height: 44)
+          }.accessibilityLabel("Search all objects")
+          Button {
+            showAbout = true
+          } label: {
+            Image(systemName: "info.circle").frame(width: 44, height: 44)
+          }.accessibilityLabel("About your museum")
+        }.padding(.horizontal, 25).padding(.vertical, 4)
+          .background(MuseumStyle.paper)
       }
       .background(MuseumStyle.paper)
       .foregroundStyle(MuseumStyle.ink)
@@ -175,16 +178,16 @@ struct FeaturedExhibition: View {
         Eyebrow(text: collection.isSample ? "The sample exhibition" : "In your museum")
         Spacer()
         Text(String(format: "%02d", objects.count)).font(.caption.monospacedDigit())
-      }.padding(20)
+      }.padding(18)
       ZStack {
         Ellipse().fill(.white.opacity(0.45)).frame(width: 245, height: 160).blur(radius: 24)
         if objects.isEmpty {
           ExhibitArtwork(artifact: .vase).frame(width: 240, height: 220)
         } else {
           ExhibitArtwork(artifact: objects.first?.artifact ?? .camera, photo: objects.first?.photo)
-            .frame(height: 228).padding(.horizontal, 25)
+            .frame(height: 195).padding(.horizontal, 25)
         }
-      }.frame(maxWidth: .infinity, minHeight: 230)
+      }.frame(maxWidth: .infinity, minHeight: 195)
       HStack(alignment: .bottom) {
         VStack(alignment: .leading, spacing: 8) {
           Text(collection.title).font(MuseumStyle.serif(32)).tracking(-0.7)

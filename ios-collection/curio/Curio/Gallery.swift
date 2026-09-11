@@ -77,12 +77,12 @@ struct ObjectBrowser: View {
 
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 22) {
-        VStack(alignment: .leading, spacing: 10) {
+      VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 8) {
           Eyebrow(
             text: collectionID.flatMap { museum.collection($0) }?.isSample == true
               ? "Sample exhibition · No. 01" : "Your private exhibition", color: MuseumStyle.cobalt)
-          Text(title).font(MuseumStyle.serif(38)).tracking(-1)
+          Text(title).font(MuseumStyle.serif(34)).tracking(-1)
             .fixedSize(horizontal: false, vertical: true)
           if !subtitle.isEmpty {
             Text(subtitle).font(.subheadline).foregroundStyle(MuseumStyle.muted)
@@ -170,7 +170,7 @@ struct ObjectBrowser: View {
             }
           }
         }
-      }.padding(.horizontal, 25).padding(.top, 15).padding(.bottom, 30)
+      }.padding(.horizontal, 25).padding(.top, 9).padding(.bottom, 30)
     }
     .scrollDismissesKeyboard(.interactively)
     .background(MuseumStyle.paper).foregroundStyle(MuseumStyle.ink)
@@ -226,7 +226,7 @@ struct ObjectTile: View {
       Text(object.title).font(detailed ? MuseumStyle.serif(28) : .system(.body, design: .serif))
         .fixedSize(horizontal: false, vertical: true)
       Text(object.maker.isEmpty ? "From your collection" : object.maker)
-        .font(.caption).foregroundStyle(MuseumStyle.muted)
+        .font(.footnote).foregroundStyle(MuseumStyle.muted)
         .fixedSize(horizontal: false, vertical: true)
       if detailed {
         Text(object.story).font(.subheadline).foregroundStyle(MuseumStyle.muted).lineLimit(3)

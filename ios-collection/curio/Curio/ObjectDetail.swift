@@ -199,22 +199,26 @@ struct LabelExport: View {
               .shadow(color: .black.opacity(0.1), radius: 12, x: 0, y: 5)
               .accessibilityLabel("Museum label preview for \(object.title)")
           }
-          if let fileURL {
-            ShareLink(
-              item: fileURL,
-              preview: SharePreview(object.title, image: Image(uiImage: preview ?? UIImage()))
-            ) {
-              Label("Share museum label", systemImage: "square.and.arrow.up")
-            }.buttonStyle(MuseumButton())
-            Text("High-resolution PNG · Share or save to Files")
-              .font(.caption).foregroundStyle(MuseumStyle.muted).frame(maxWidth: .infinity)
-          }
           if let error {
             Text(error).foregroundStyle(.red)
             Button("Try again") { generate() }.buttonStyle(MuseumButton())
           }
         }.padding(25)
       }.background(MuseumStyle.stone)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+          if let fileURL, let preview {
+            VStack(spacing: 9) {
+              ShareLink(
+                item: fileURL, preview: SharePreview(object.title, image: Image(uiImage: preview))
+              ) {
+                Label("Share museum label", systemImage: "square.and.arrow.up")
+              }.buttonStyle(MuseumButton())
+              Text("High-resolution PNG · Share or save to Files")
+                .font(.caption).foregroundStyle(MuseumStyle.muted)
+            }.padding(.horizontal, 25).padding(.top, 12).padding(.bottom, 8)
+              .frame(maxWidth: .infinity).background(MuseumStyle.paper)
+          }
+        }
         .navigationTitle("Museum label").navigationBarTitleDisplayMode(.inline)
         .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
         .onAppear { generate() }
