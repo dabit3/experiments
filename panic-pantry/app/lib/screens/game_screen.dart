@@ -231,6 +231,7 @@ class _GameScreenState extends State<GameScreen> {
                     children: [
                       if (!landscapeTouch && touchCoach != null) ...[touchCoach, const SizedBox(height: 8)],
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(
                             flex: 3,

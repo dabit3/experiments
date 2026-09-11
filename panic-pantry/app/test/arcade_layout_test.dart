@@ -73,6 +73,39 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
+  testWidgets('tablet touch clock stays at the right safe edge', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    addTearDown(() => debugDefaultTargetPlatformOverride = null);
+    tester.view.physicalSize = const Size(1024, 768);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+    final client = GameClient(platform: 'android')
+      ..game = (GameState(levelById('corner-cafe'), playerCount: 4)
+        ..phase = Phase.playing
+        ..score = 36
+        ..combo = 2);
+    addTearDown(client.dispose);
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: buildTheme(Brightness.light),
+        home: MediaQuery(
+          data: const MediaQueryData(size: Size(1024, 768), padding: EdgeInsets.fromLTRB(0, 24, 0, 48)),
+          child: GameScreen(client: client, onToggleTheme: () {}),
+        ),
+      ),
+    );
+    await tester.pump(const Duration(seconds: 1));
+    final clock = tester.getRect(find.byKey(const ValueKey('clock-hud')));
+    final score = tester.getRect(find.byKey(const ValueKey('score-hud')));
+    expect(clock.right, closeTo(1012, 0.1));
+    expect(clock.overlaps(score), isFalse);
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump();
+    debugDefaultTargetPlatformOverride = null;
+  });
+
   for (final size in [const Size(402, 874), const Size(874, 402)]) {
     testWidgets('Training coach clears a full combo HUD at $size', (tester) async {
       debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
