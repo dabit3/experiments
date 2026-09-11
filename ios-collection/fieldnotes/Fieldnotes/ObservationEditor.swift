@@ -30,9 +30,16 @@ struct ObservationEditor: View {
     NavigationStack {
       Form {
         Section {
-          TextField("What did you notice?", text: $draft.title, axis: .vertical)
+          VStack(alignment: .leading, spacing: 8) {
+            Text("Observation name").font(.caption).foregroundStyle(FieldStyle.muted)
+            TextField(
+              "What did you notice?", text: $draft.title,
+              prompt: Text("What did you notice?").foregroundStyle(FieldStyle.muted),
+              axis: .vertical
+            )
             .font(.system(.title2, design: .serif)).focused($focused)
             .accessibilityLabel("Observation name")
+          }.padding(.vertical, 6)
           Picker("Category", selection: $draft.category) {
             ForEach(SpecimenCategory.allCases) { category in
               Label(category.rawValue, systemImage: category.symbol).tag(category)
@@ -49,19 +56,36 @@ struct ObservationEditor: View {
           Text("A common name or your own description. No identification needed.")
         }
         Section {
-          TextField("Place or trail (optional)", text: $draft.location)
+          VStack(alignment: .leading, spacing: 8) {
+            Text("Location · optional").font(.caption).foregroundStyle(FieldStyle.muted)
+            TextField(
+              "Place or trail", text: $draft.location,
+              prompt: Text("Place or trail").foregroundStyle(FieldStyle.muted)
+            )
             .accessibilityLabel("Location").focused($focused)
-          TextField("woodland, morning, rain", text: $tags, axis: .vertical)
+          }.padding(.vertical, 6)
+          VStack(alignment: .leading, spacing: 8) {
+            Text("Tags · optional").font(.caption).foregroundStyle(FieldStyle.muted)
+            TextField(
+              "woodland, morning, rain", text: $tags,
+              prompt: Text("woodland, morning, rain").foregroundStyle(FieldStyle.muted),
+              axis: .vertical
+            )
             .textInputAutocapitalization(.never).autocorrectionDisabled()
             .accessibilityLabel("Tags, separated by commas").focused($focused)
+          }.padding(.vertical, 6)
         } header: {
           Eyebrow(text: "Out in the world")
         } footer: {
           Text("Separate tags with commas. Up to 8 tags. Location is text only.")
         }
         Section {
-          TextField("Color, shape, sound. What made you stop?", text: $draft.notes, axis: .vertical)
-            .lineLimit(5...12).focused($focused).accessibilityLabel("Observation notes")
+          TextField(
+            "Color, shape, sound. What made you stop?", text: $draft.notes,
+            prompt: Text("Color, shape, sound. What made you stop?").foregroundStyle(
+              FieldStyle.muted), axis: .vertical
+          )
+          .lineLimit(5...12).focused($focused).accessibilityLabel("Observation notes")
         } header: {
           Eyebrow(text: "Field notes")
         }

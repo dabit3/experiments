@@ -127,7 +127,7 @@ struct JournalView: View {
               .font(.system(.caption2, design: .monospaced)).tracking(2)
               .foregroundStyle(FieldStyle.muted).frame(maxWidth: .infinity).padding(.vertical, 10)
           }.padding(.horizontal, 24).padding(.bottom, 24)
-        }
+        }.clipped()
       }.foregroundStyle(FieldStyle.ink)
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $adding) { ObservationEditor() }
@@ -152,6 +152,7 @@ struct ObservationRow: View {
             }
           }
           Text(entry.title).font(.system(.title3, design: .serif)).multilineTextAlignment(.leading)
+            .fixedSize(horizontal: false, vertical: true)
           Text(
             entry.isSample
               ? "SAMPLE OBSERVATION" : entry.date.formatted(date: .abbreviated, time: .omitted)
@@ -230,8 +231,11 @@ struct CollectionView: View {
             }
             HStack {
               Image(systemName: "magnifyingglass")
-              TextField("Search notes, places, tags", text: $query)
-                .autocorrectionDisabled()
+              TextField(
+                "Search notes, places, tags", text: $query,
+                prompt: Text("Search notes, places, tags").foregroundStyle(FieldStyle.muted)
+              )
+              .autocorrectionDisabled()
               if !query.isEmpty {
                 Button {
                   query = ""
@@ -242,14 +246,7 @@ struct CollectionView: View {
               }
             }.padding(.horizontal, 14).frame(minHeight: 50).background(.white.opacity(0.55))
               .overlay(Rectangle().stroke(FieldStyle.rule, lineWidth: 0.5))
-            ScrollView(.horizontal, showsIndicators: false) {
-              HStack(spacing: 8) {
-                FilterChip(text: "All", selected: category == nil) { category = nil }
-                ForEach(SpecimenCategory.allCases) { item in
-                  FilterChip(text: item.rawValue, selected: category == item) { category = item }
-                }
-              }
-            }
+            CategoryFilter(selection: $category)
             HStack {
               Text("\(filtered.count) \(filtered.count == 1 ? "observation" : "observations")")
                 .font(.subheadline).foregroundStyle(FieldStyle.muted)
@@ -289,7 +286,7 @@ struct CollectionView: View {
               }
             }
           }.padding(24)
-        }.scrollDismissesKeyboard(.interactively)
+        }.scrollDismissesKeyboard(.interactively).clipped()
       }.foregroundStyle(FieldStyle.ink)
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $adding) { ObservationEditor() }
@@ -303,10 +300,29 @@ struct FilterChip: View {
   let action: () -> Void
   var body: some View {
     Button(action: action) {
-      Text(text).font(.subheadline).padding(.horizontal, 18).frame(minHeight: 44)
+      Text(text).font(.subheadline).padding(.horizontal, 12)
+        .frame(maxWidth: .infinity, minHeight: 44)
         .foregroundStyle(selected ? FieldStyle.paper : FieldStyle.ink)
         .background(selected ? FieldStyle.ink : FieldStyle.wash.opacity(0.6), in: Capsule())
     }.buttonStyle(.plain).accessibilityAddTraits(selected ? .isSelected : [])
+  }
+}
+
+struct CategoryFilter: View {
+  @Binding var selection: SpecimenCategory?
+  @Environment(\.dynamicTypeSize) private var typeSize
+
+  var body: some View {
+    LazyVGrid(
+      columns: Array(
+        repeating: GridItem(.flexible(), spacing: 8),
+        count: typeSize.isAccessibilitySize ? 2 : 3), spacing: 8
+    ) {
+      FilterChip(text: "All", selected: selection == nil) { selection = nil }
+      ForEach(SpecimenCategory.allCases) { item in
+        FilterChip(text: item.rawValue, selected: selection == item) { selection = item }
+      }
+    }.accessibilityElement(children: .contain).accessibilityLabel("Category filters")
   }
 }
 
@@ -323,17 +339,10 @@ struct GuideView: View {
             Text("The field guide").font(FieldStyle.serif(38))
             Text("A little knowledge.\nA deeper kind of looking.")
               .font(.system(.title3, design: .serif)).foregroundStyle(FieldStyle.muted)
-            ScrollView(.horizontal, showsIndicators: false) {
-              HStack(spacing: 8) {
-                FilterChip(text: "All", selected: category == nil) { category = nil }
-                ForEach(SpecimenCategory.allCases) { item in
-                  FilterChip(text: item.rawValue, selected: category == item) { category = item }
-                }
-              }
-            }
+            CategoryFilter(selection: $category)
             LazyVGrid(
               columns: Array(
-                repeating: GridItem(.flexible(), spacing: 16),
+                repeating: GridItem(.flexible(), spacing: 16, alignment: .top),
                 count: typeSize.isAccessibilitySize ? 1 : 2), spacing: 26
             ) {
               ForEach(GuideSubject.all.filter { category == nil || $0.category == category }) {
@@ -347,6 +356,8 @@ struct GuideView: View {
                     Eyebrow(text: subject.category.rawValue)
                     Text(subject.name).font(.system(.title3, design: .serif))
                       .multilineTextAlignment(.leading)
+                      .lineLimit(2, reservesSpace: !typeSize.isAccessibilitySize)
+                      .fixedSize(horizontal: false, vertical: true)
                     Text(subject.latin).font(.system(.caption, design: .serif)).italic()
                       .foregroundStyle(FieldStyle.muted).multilineTextAlignment(.leading)
                   }.frame(maxWidth: .infinity, alignment: .topLeading)
@@ -358,7 +369,7 @@ struct GuideView: View {
             )
             .font(.footnote).foregroundStyle(FieldStyle.muted).padding(.top, 8)
           }.padding(24)
-        }
+        }.clipped()
       }.foregroundStyle(FieldStyle.ink).toolbar(.hidden, for: .navigationBar)
     }
   }
@@ -400,18 +411,23 @@ struct GuideDetail: View {
             )
             .font(.footnote).foregroundStyle(FieldStyle.rust)
           }
-          Button {
-            observing = true
-          } label: {
-            Label("I noticed this", systemImage: "plus").font(.headline)
-              .frame(maxWidth: .infinity).padding(18).background(FieldStyle.ink).foregroundStyle(
-                FieldStyle.paper)
-          }.buttonStyle(.plain)
           Text("Stylized illustration · Offline field guide").font(.caption).foregroundStyle(
             FieldStyle.muted)
         }.padding(24)
       }
     }.foregroundStyle(FieldStyle.ink).navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(FieldStyle.paper, for: .navigationBar)
+      .toolbarBackground(.visible, for: .navigationBar)
+      .safeAreaInset(edge: .bottom) {
+        Button {
+          observing = true
+        } label: {
+          Label("I noticed this", systemImage: "plus").font(.headline)
+            .frame(maxWidth: .infinity).padding(18).background(FieldStyle.ink)
+            .foregroundStyle(FieldStyle.paper)
+        }.buttonStyle(.plain).padding(.horizontal, 24).padding(.vertical, 12)
+          .background(FieldStyle.paper)
+      }
       .sheet(isPresented: $observing) {
         ObservationEditor(
           initial: ObservationEntry(
@@ -506,6 +522,8 @@ struct ObservationDetail: View {
         }
       }
     }.foregroundStyle(FieldStyle.ink).navigationBarTitleDisplayMode(.inline)
+      .toolbarBackground(FieldStyle.paper, for: .navigationBar)
+      .toolbarBackground(.visible, for: .navigationBar)
       .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Edit") { editing = true } } }
       .sensoryFeedback(.selection, trigger: favoriteFeedback)
       .sheet(isPresented: $editing) {
