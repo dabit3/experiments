@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct Inspector: View {
@@ -126,11 +127,8 @@ struct Inspector: View {
     VStack(alignment: .leading, spacing: 9) {
       Text(label).font(.system(size: 9, weight: .semibold)).tracking(1.5).foregroundStyle(
         Palette.muted)
-      TextField(label, value: value, format: .number.precision(.fractionLength(2)))
-        .textFieldStyle(.plain).font(.system(size: 16, weight: .medium, design: .monospaced))
-        .controlSize(.large)
+      TrimInput(value: value, label: "\(label) seconds")
         .frame(height: 28)
-        .accessibilityLabel("\(label) seconds")
       HStack {
         Button {
           value.wrappedValue = max(0, value.wrappedValue - 0.5)
@@ -156,5 +154,51 @@ struct Inspector: View {
     synchronizeTrim()
     title = editor.project.title
     subtitle = editor.project.subtitle
+  }
+}
+
+struct TrimInput: NSViewRepresentable {
+  @Binding var value: Double
+  let label: String
+
+  func makeCoordinator() -> Coordinator {
+    Coordinator(value: $value)
+  }
+
+  func makeNSView(context: Context) -> NSTextField {
+    let field = NSTextField()
+    field.isBezeled = false
+    field.isBordered = false
+    field.drawsBackground = false
+    field.font = .monospacedSystemFont(ofSize: 16, weight: .medium)
+    field.textColor = .white
+    field.focusRingType = .none
+    field.cell?.usesSingleLineMode = true
+    field.cell?.isScrollable = true
+    field.delegate = context.coordinator
+    field.setAccessibilityLabel(label)
+    return field
+  }
+
+  func updateNSView(_ field: NSTextField, context: Context) {
+    context.coordinator.value = $value
+    if field.currentEditor() == nil, value.isFinite {
+      field.stringValue = String(format: "%.2f", locale: Locale.current, value)
+    }
+  }
+
+  final class Coordinator: NSObject, NSTextFieldDelegate {
+    var value: Binding<Double>
+
+    init(value: Binding<Double>) {
+      self.value = value
+    }
+
+    func controlTextDidChange(_ notification: Notification) {
+      guard let field = notification.object as? NSTextField else { return }
+      let normalized = field.stringValue.replacingOccurrences(
+        of: Locale.current.decimalSeparator ?? ".", with: ".")
+      value.wrappedValue = Double(normalized) ?? .nan
+    }
   }
 }

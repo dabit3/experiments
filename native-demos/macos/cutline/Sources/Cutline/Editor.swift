@@ -166,6 +166,14 @@ final class Editor: ObservableObject {
     scheduleRebuild()
   }
 
+  func undoFromMenu() {
+    if let textView = NSApp.keyWindow?.firstResponder as? NSTextView, textView.isEditable {
+      if textView.undoManager?.canUndo == true { textView.undoManager?.undo() }
+    } else {
+      undo()
+    }
+  }
+
   func removeSelected() {
     guard let selected else { return }
     change { $0.clips.removeAll { $0.id == selected } }
@@ -180,7 +188,7 @@ final class Editor: ObservableObject {
   func saveAs() {
     let panel = NSSavePanel()
     panel.title = "Save Cutline project"
-    panel.nameFieldStringValue = "\(project.name).cutline"
+    panel.nameFieldStringValue = project.name
     panel.allowedContentTypes = [UTType(filenameExtension: "cutline", conformingTo: .data) ?? .data]
     panel.allowsOtherFileTypes = false
     guard panel.runModal() == .OK, let url = panel.url else { return }

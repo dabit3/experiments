@@ -25,7 +25,7 @@ struct CutlineApp: App {
         Button("Import Video…", action: editor.importMedia).keyboardShortcut("i")
       }
       CommandGroup(replacing: .undoRedo) {
-        Button("Undo Edit", action: editor.undo).keyboardShortcut("z").disabled(!editor.canUndo)
+        Button("Undo", action: editor.undoFromMenu).keyboardShortcut("z")
       }
     }
   }
