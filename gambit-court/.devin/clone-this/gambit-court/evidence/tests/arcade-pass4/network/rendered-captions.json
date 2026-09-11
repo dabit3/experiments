@@ -1,0 +1,55 @@
+{
+  "events": [
+    [
+      0,
+      6,
+      "SETUP",
+      "Settled separate windows: web top-left, macOS bottom-left, iOS right"
+    ],
+    [
+      6,
+      12,
+      "TEST",
+      "It should seat macOS White versus web Black with iOS spectating"
+    ],
+    [
+      22,
+      29,
+      "PASS",
+      "U8LZ5W: correct seats; iOS active scoreboard is clean"
+    ],
+    [
+      32,
+      39,
+      "TEST",
+      "It should synchronize all 33 plies through the final checkmate"
+    ],
+    [
+      47,
+      53,
+      "PASS",
+      "Spectator history was browsed while retaining the live move list"
+    ],
+    [
+      59,
+      67,
+      "PASS",
+      "All three show checkmate 1-0; final FEN, SAN, clocks and PGN match"
+    ],
+    [
+      70,
+      75,
+      "PASS",
+      "Rematch swaps colours and resets moves/clocks; iOS scoreboard stays clean"
+    ],
+    [
+      75,
+      80,
+      "AUDIT",
+      "Post-run logs: 58/58 + 4 parity checks passed. Android: virtualization blocked"
+    ]
+  ],
+  "trimEndSeconds": 80,
+  "playback": "real time",
+  "captionTiming": "postprocessed"
+}

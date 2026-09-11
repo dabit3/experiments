@@ -1,0 +1,594 @@
+{
+  "schema_version": 1,
+  "source": "Chess",
+  "clone_name": "Gambit Court",
+  "clone_root": "/Users/devin/repos/experiments/gambit-court",
+  "status": "active",
+  "iteration": 5,
+  "revision": "sha256:98257eae21b750008b86eec9ec737c66267d2ac43234cedd932636ffc376389b",
+  "frontier": [],
+  "blockers": [
+    {
+      "id": "android-emulator-runtime",
+      "affects": [
+        "journey-android-runtime",
+        "journey-four-way-match"
+      ],
+      "summary": "The Android emulator cannot run on the verification host: kern.hv_support=0 (no hardware virtualization) and the arm64-v8a AVD hangs its QEMU CPU threads and crashes with EXC_BAD_ACCESS/SIGSEGV on every launch. The Android APK builds from a clean checkout, and the client is the same Flutter code + automation bridge as the three verified platforms.",
+      "attempted": [
+        "-gpu swiftshader_indirect / host / off",
+        "-no-window -no-audio -no-boot-anim",
+        "feature flags off",
+        "cold boot without snapshot",
+        "waiting > 4 minutes for adb device to come online"
+      ],
+      "resume_condition": "On a host with virtualization: `WHITE=macos BLACK=android ./test/multiplayer-e2e.sh` (or PLATFORMS=web,ios,android,macos) and re-run the final suite.",
+      "evidence": [
+        "evidence/tests/android/android-blocker.txt",
+        "evidence/tests/android/emulator-launch-tail.txt",
+        "evidence/tests/build/clean-checkout-build.txt"
+      ]
+    }
+  ],
+  "unverified_assumptions": [],
+  "items": [
+    {
+      "id": "route-lobby",
+      "kind": "route",
+      "label": "Lobby screen: identity, theme, quick-pair, create/join by invite code, open tables, bot level",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/web-lobby.png",
+        "evidence/tests/e2e/ios-lobby.png",
+        "evidence/tests/e2e/macos-lobby.png"
+      ],
+      "platforms": [
+        "web",
+        "ios",
+        "macos"
+      ]
+    },
+    {
+      "id": "route-game",
+      "kind": "route",
+      "label": "Game screen: board, player cards, clocks, move list, offers, history browsing",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/web-midgame.png",
+        "evidence/tests/e2e/ios-midgame.png",
+        "evidence/tests/e2e/macos-midgame.png",
+        "evidence/tests/e2e/ios-history.png"
+      ]
+    },
+    {
+      "id": "route-results",
+      "kind": "route",
+      "label": "Results overlay: outcome, reason, score, PGN export, rematch, back to lobby",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/web-results.png",
+        "evidence/tests/e2e/ios-results.png",
+        "evidence/tests/e2e/macos-results.png"
+      ]
+    },
+    {
+      "id": "route-review",
+      "kind": "route",
+      "label": "PGN review mode reached from import (read-only board + move list)",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/parity/web-review-ios.png",
+        "evidence/tests/e2e/parity/ios-review.png",
+        "evidence/tests/e2e/parity/macos-review.png"
+      ]
+    },
+    {
+      "id": "feature-rules-fide",
+      "kind": "feature",
+      "label": "Legal move generation incl. castling, en passant, promotion, check, checkmate, stalemate (perft + rule unit tests)",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/quality/quality.txt"
+      ]
+    },
+    {
+      "id": "feature-rules-draws",
+      "kind": "feature",
+      "label": "Threefold repetition, fifty-move rule, insufficient material, stalemate detection",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/quality/quality.txt"
+      ]
+    },
+    {
+      "id": "feature-promotion-picker",
+      "kind": "feature",
+      "label": "Promotion requires an explicit piece choice (picker in UI, `Promotion piece required` from server)",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/quality/quality.txt",
+        "evidence/tests/e2e/result.json"
+      ]
+    },
+    {
+      "id": "feature-san-pgn",
+      "kind": "feature",
+      "label": "SAN move list; PGN export/import round trip",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/quality/quality.txt",
+        "evidence/tests/e2e/result.json"
+      ]
+    },
+    {
+      "id": "feature-clocks",
+      "kind": "feature",
+      "label": "Server-owned clocks with bullet/blitz/rapid/classical presets and custom increment; first move per side untimed; frozen-clock determinism",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/quality/quality.txt",
+        "evidence/tests/e2e/result.json"
+      ]
+    },
+    {
+      "id": "feature-resign-draw-takeback",
+      "kind": "feature",
+      "label": "Resign, draw offers/accept/decline, takeback by agreement, rematch with colour swap",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/quality/quality.txt",
+        "evidence/tests/e2e/result.json"
+      ]
+    },
+    {
+      "id": "feature-board-input",
+      "kind": "feature",
+      "label": "Drag and tap-tap input, last-move/legal-move/check highlights, premove, board flip, keyboard history browsing",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/quality/quality.txt",
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/web-midgame.png"
+      ]
+    },
+    {
+      "id": "feature-lobby-multiplayer",
+      "kind": "feature",
+      "label": "Quick-pair, six-character invite codes, open tables, spectators, seat retention across reconnect",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/macos-waiting.png",
+        "evidence/tests/e2e/ios-reconnecting.png"
+      ]
+    },
+    {
+      "id": "feature-bot",
+      "kind": "feature",
+      "label": "Server-side alpha-beta engine bot with four strengths, deterministic under --seed",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/quality/quality.txt",
+        "evidence/tests/e2e/server-stdout.txt"
+      ]
+    },
+    {
+      "id": "feature-themes",
+      "kind": "feature",
+      "label": "Dark and light themes on every platform",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/web-light.png",
+        "evidence/tests/e2e/ios-light.png",
+        "evidence/tests/e2e/macos-light.png"
+      ]
+    },
+    {
+      "id": "feature-automation-bridge",
+      "kind": "feature",
+      "label": "Deterministic test-input channel (ui_command/ui_report) and /control endpoints, opt-in via --control",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/harness-stdout.txt"
+      ]
+    },
+    {
+      "id": "journey-four-way-match",
+      "kind": "journey",
+      "label": "macOS and web play while iOS and Android spectate the same room; Android runtime is unavailable",
+      "status": "blocked",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/harness-stdout.txt",
+        "evidence/tests/e2e/four-way-match.mov"
+      ],
+      "assertions": 58,
+      "platforms_verified": [
+        "web",
+        "ios",
+        "macos"
+      ]
+    },
+    {
+      "id": "journey-reconnect",
+      "kind": "journey",
+      "label": "Spectator drops its socket mid-game and resumes the same room/game",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/ios-reconnecting.png"
+      ]
+    },
+    {
+      "id": "journey-history-review",
+      "kind": "journey",
+      "label": "Browse earlier plies while the live move list stays intact; PGN import opens review mode",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/ios-history.png"
+      ]
+    },
+    {
+      "id": "visual-lobby-ios",
+      "kind": "visual",
+      "label": "lobby screen: ios matches the web baseline at 402x812 logical px (normalized)",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/parity/lobby-ios-normalization.json",
+        "evidence/tests/e2e/parity/web-lobby-ios.png",
+        "evidence/tests/e2e/parity/ios-lobby.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/tests/e2e/parity/lobby-ios-reference.png",
+        "actual": "evidence/tests/e2e/parity/lobby-ios-actual.png",
+        "diff": "evidence/tests/e2e/parity/lobby-ios-diff.png",
+        "different_pixels": 0,
+        "total_pixels": 800,
+        "normalization_evidence": "evidence/tests/e2e/parity/lobby-ios-normalization.json",
+        "unit": "20x20 logical-pixel block (coverage + mean colour)"
+      }
+    },
+    {
+      "id": "visual-review-ios",
+      "kind": "visual",
+      "label": "review screen: ios matches the web baseline at 402x812 logical px (normalized)",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/parity/review-ios-normalization.json",
+        "evidence/tests/e2e/parity/web-review-ios.png",
+        "evidence/tests/e2e/parity/ios-review.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/tests/e2e/parity/review-ios-reference.png",
+        "actual": "evidence/tests/e2e/parity/review-ios-actual.png",
+        "diff": "evidence/tests/e2e/parity/review-ios-diff.png",
+        "different_pixels": 0,
+        "total_pixels": 800,
+        "normalization_evidence": "evidence/tests/e2e/parity/review-ios-normalization.json",
+        "unit": "20x20 logical-pixel block (coverage + mean colour)"
+      }
+    },
+    {
+      "id": "visual-lobby-macos",
+      "kind": "visual",
+      "label": "lobby screen: macos matches the web baseline at 1000x488 logical px (normalized)",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/parity/lobby-macos-normalization.json",
+        "evidence/tests/e2e/parity/web-lobby-macos.png",
+        "evidence/tests/e2e/parity/macos-lobby.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/tests/e2e/parity/lobby-macos-reference.png",
+        "actual": "evidence/tests/e2e/parity/lobby-macos-actual.png",
+        "diff": "evidence/tests/e2e/parity/lobby-macos-diff.png",
+        "different_pixels": 0,
+        "total_pixels": 1200,
+        "normalization_evidence": "evidence/tests/e2e/parity/lobby-macos-normalization.json",
+        "unit": "20x20 logical-pixel block (coverage + mean colour)"
+      }
+    },
+    {
+      "id": "visual-review-macos",
+      "kind": "visual",
+      "label": "review screen: macos matches the web baseline at 1000x488 logical px (normalized)",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/parity/review-macos-normalization.json",
+        "evidence/tests/e2e/parity/web-review-macos.png",
+        "evidence/tests/e2e/parity/macos-review.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/tests/e2e/parity/review-macos-reference.png",
+        "actual": "evidence/tests/e2e/parity/review-macos-actual.png",
+        "diff": "evidence/tests/e2e/parity/review-macos-diff.png",
+        "different_pixels": 0,
+        "total_pixels": 1200,
+        "normalization_evidence": "evidence/tests/e2e/parity/review-macos-normalization.json",
+        "unit": "20x20 logical-pixel block (coverage + mean colour)"
+      }
+    },
+    {
+      "id": "asset-original-art",
+      "kind": "asset",
+      "label": "Original vector piece set, brand mark, app icons; no third-party or trademarked artwork",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/security/secret-scan.txt",
+        "evidence/tests/e2e/web-lobby.png"
+      ]
+    },
+    {
+      "id": "asset-original-audio",
+      "kind": "asset",
+      "label": "Original generated sound effects (app/tool/make_sfx.py)",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/fingerprint-list.txt"
+      ]
+    },
+    {
+      "id": "integration-websocket-server",
+      "kind": "integration",
+      "label": "Authoritative Dart WebSocket server; JSON protocol documented in PROTOCOL.md",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/server-stdout.txt",
+        "evidence/tests/quality/quality.txt"
+      ]
+    },
+    {
+      "id": "journey-android-runtime",
+      "kind": "journey",
+      "label": "Android emulator client joins the four-way match (build verified; runtime blocked on this host)",
+      "status": "blocked",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/build/clean-checkout-build.txt",
+        "evidence/tests/android/android-blocker.txt",
+        "evidence/tests/android/emulator-launch-tail.txt"
+      ]
+    }
+  ],
+  "audits": [
+    {
+      "id": "source",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/audits/source.md",
+        "evidence/reference/source-reference.md",
+        "evidence/tests/quality/quality.txt"
+      ]
+    },
+    {
+      "id": "navigation",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/audits/navigation.md",
+        "evidence/tests/e2e/result.json"
+      ]
+    },
+    {
+      "id": "roles",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/audits/roles.md",
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/security/secret-scan.txt"
+      ]
+    },
+    {
+      "id": "states",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/audits/states.md",
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/macos-waiting.png",
+        "evidence/tests/e2e/ios-reconnecting.png",
+        "evidence/tests/e2e/web-results.png",
+        "evidence/tests/e2e/web-light.png"
+      ]
+    },
+    {
+      "id": "responsive",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/audits/responsive.md",
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/ios-results.png",
+        "evidence/tests/e2e/macos-results.png"
+      ]
+    },
+    {
+      "id": "data",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/audits/data.md",
+        "evidence/tests/e2e/result.json"
+      ]
+    },
+    {
+      "id": "assets",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/audits/assets.md",
+        "evidence/discovery/fingerprint-list.txt"
+      ]
+    },
+    {
+      "id": "accessibility",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/audits/accessibility.md",
+        "evidence/tests/e2e/web-light.png",
+        "evidence/tests/e2e/ios-light.png"
+      ]
+    },
+    {
+      "id": "reliability",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/audits/reliability.md",
+        "evidence/discovery/fingerprint-list.txt",
+        "evidence/tests/build/clean-checkout-build.txt",
+        "evidence/tests/e2e/result.json"
+      ]
+    },
+    {
+      "id": "rebrand",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/discovery/audits/rebrand.md",
+        "evidence/tests/security/secret-scan.txt",
+        "evidence/tests/e2e/web-lobby.png"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "functional",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/harness-stdout.txt",
+        "evidence/tests/quality/quality.txt"
+      ]
+    },
+    {
+      "id": "visual",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/e2e/result.json",
+        "evidence/tests/e2e/parity/lobby-ios-normalization.json",
+        "evidence/tests/e2e/parity/review-ios-normalization.json",
+        "evidence/tests/e2e/parity/lobby-macos-normalization.json",
+        "evidence/tests/e2e/parity/review-macos-normalization.json"
+      ]
+    },
+    {
+      "id": "build",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/build/clean-checkout-build.txt"
+      ]
+    },
+    {
+      "id": "quality",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/quality/quality.txt"
+      ]
+    },
+    {
+      "id": "security",
+      "status": "in_progress",
+      "verified_revision": null,
+      "evidence": [
+        "evidence/tests/security/secret-scan.txt",
+        "evidence/tests/security/dependencies.txt",
+        "evidence/tests/security/review.md"
+      ]
+    }
+  ],
+  "sweeps": [
+    {
+      "revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "new_items": 0,
+      "frontier_empty": true,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-001.json"
+      ]
+    },
+    {
+      "revision": "sha256:221b49e453f4998c69eedc8c6d1975f491980834545aca020fdf8e334d2b8f87",
+      "new_items": 0,
+      "frontier_empty": true,
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-002.json"
+      ]
+    }
+  ],
+  "next_action": "Complete arcade-pass3 verification after increasing compact scoreboard height to 60; inspect current captures and index fresh results.",
+  "git_head": "e32b2282c49549cad700457e173e58a9068ed9f6",
+  "reference_access": "Commercial source not run or purchased; public FIDE/PGN/SAN documentation is the reference. Visual parity is normalized parity between Gambit Court's own clients with web as baseline; no claim of parity with the commercial title.",
+  "stack_decision": "Flutter for all four clients with a custom widget/CustomPainter board instead of Flame: the board is a static 8x8 grid with short piece slides, so Flutter's animation framework gives 60fps without a game-loop dependency; server is Dart shelf + web_socket_channel."
+}

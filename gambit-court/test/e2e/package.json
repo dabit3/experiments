@@ -1,0 +1,12 @@
+{
+  "name": "gambit-court-e2e",
+  "private": true,
+  "type": "module",
+  "description": "Four-platform multiplayer end-to-end harness for Gambit Court.",
+  "scripts": {
+    "e2e": "node run.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "1.52.0"
+  }
+}

@@ -1,0 +1,43 @@
+INFO         |   androidboot.qemu.camera_protocol_ver=1
+INFO         |   androidboot.qemu.cpuvulkan.version=4206592
+INFO         |   androidboot.qemu.gltransport.drawFlushInterval=800
+INFO         |   androidboot.qemu.gltransport.name=pipe
+INFO         |   androidboot.qemu.hwcodec.avcdec=2
+INFO         |   androidboot.qemu.hwcodec.hevcdec=2
+INFO         |   androidboot.qemu.hwcodec.vpxdec=2
+INFO         |   androidboot.qemu.settings.system.screen_off_timeout=2147483647
+INFO         |   androidboot.qemu.skin=1080x2400
+INFO         |   androidboot.qemu.virtiowifi=1
+INFO         |   androidboot.qemu.vsync=60
+INFO         |   androidboot.serialno=EMULATOR37X1X11X0
+INFO         |   androidboot.vbmeta.digest=d86517453be30669cdb7a7b57307f2ae3122a095509b92c7256b9a3665c7d025
+INFO         |   androidboot.vbmeta.hash_alg=sha256
+INFO         |   androidboot.vbmeta.size=6720
+INFO         |   androidboot.veritymode=enforcing
+INFO         | Monitoring duration of emulator setup.
+WARNING      | The emulator now requires a signed jwt token for gRPC access! Use the -grpc flag if you really want an open unprotected grpc port
+INFO         | Using security allow list from: /opt/homebrew/share/android-commandlinetools/emulator/lib/emulator_access.json
+INFO         | The active JSON Web Key Sets can be found here: /Users/devin/Library/Caches/TemporaryItems/avd/running/29722/jwks/2eda31cc-ef04-414b-9684-f638fbcb8442/active.jwk
+INFO         | Scanning /Users/devin/Library/Caches/TemporaryItems/avd/running/29722/jwks/2eda31cc-ef04-414b-9684-f638fbcb8442 for jwk keys.
+INFO         | Started GRPC server at 127.0.0.1:8554, security: Local, auth: +token
+INFO         | Advertising in: /Users/devin/Library/Caches/TemporaryItems/avd/running/pid_29722.ini
+INFO         | Successfully initialized netsim WiFi
+INFO         | Activated packet streamer for bluetooth emulation
+INFO         | Setting display: 0 configuration to: 1080x2400, dpi: 420x420 
+INFO         | setDisplayActiveConfig: id:0, 1080x2400
+INFO         | emulatorSetupEnvironment: Environment scene is not required
+INFO         | Loading snapshot 'default_boot'...
+WARNING      | Device 'encrypt' does not have the requested snapshot 'default_boot'
+
+WARNING      | Failed to load snapshot 'default_boot'
+USER_INFO    | The emulator is performing a cold boot without a saved state because there's no snapshot and you have configured it not to save on exit.
+ERROR        | detected a hanging thread 'QEMU2 main loop'. No response for 15039 ms
+ERROR        | detected a hanging thread 'QEMU2 CPU0 thread'. No response for 15041 ms
+ERROR        | detected a hanging thread 'QEMU2 CPU1 thread'. No response for 15041 ms
+ERROR        | detected a hanging thread 'QEMU2 CPU2 thread'. No response for 15041 ms
+ERROR        | detected a hanging thread 'QEMU2 CPU3 thread'. No response for 15041 ms
+ERROR        | detected a hanging thread 'QEMU2 main loop'. No response for 15023 ms
+[29725:241316:20260909,164539.695319:WARNING process_memory_mac.cc:94] mach_vm_read(0x16fad0000, 0x8000): (os/kern) invalid address (1)
+  "exception" : {"codes":"0x0000000000000001, 0x0000000000000000","rawCodes":[1,0],"type":"EXC_BAD_ACCESS","signal":"SIGSEGV","subtype":"KERN_INVALID_ADDRESS at 0x0000000000000000"},
+  "termination" : {"flags":0,"code":11,"namespace":"SIGNAL","indicator":"Segmentation fault: 11","byProc":"exc handler","byPid":29722},
+  "faultingThread" : 4,

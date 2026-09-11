@@ -1,0 +1,39 @@
+android runtime blocker evidence, 2026-09-09T23:40:44Z
+== sysctl kern.hv_support
+kern.hv_support: 0
+== emulator -accel-check
+accel:
+0
+Hypervisor.Framework OS X Version 26.5
+accel
+accel-check exit=0
+== emulator -list-avds
+gambit
+== adb devices
+List of devices attached
+
+== emulator launch attempt (30s)
+INFO         | Android emulator version 37.1.11.0 (build_id 15917651) (CL:N/A)
+INFO         | Graphics backend: gfxstream
+INFO         | Found systemPath /opt/homebrew/share/android-commandlinetools/system-images/android-35/google_apis/arm64-v8a/
+INFO         | Increasing RAM size to 2560MB
+INFO         | Guest GLES Driver: Auto (ext controls)
+INFO         | emuglConfig_init: vulkan_mode_selected:swiftshader gles_mode_selected:swangle
+INFO         | Checking system compatibility:
+INFO         |   Checking: hasSufficientDiskSpace
+INFO         |      Ok: Disk space requirements to run avd: `gambit` are met
+INFO         |   Checking: hasSufficientHwGpu
+INFO         |      Ok: Hardware GPU compatibility checks are not required
+INFO         |   Checking: hasSufficientSystem
+INFO         |      Ok: System requirements to run avd: `gambit` are met
+INFO         | Storing crashdata in: /tmp/android-devin/emu-crash-37.1.11.db, detection is enabled for process: 29696
+INFO         | No consent for crashreport 385b4ca3-642f-49ef-8f5b-58d7cb9e92d0, deleting.
+INFO         | Initializing gfxstream backend
+INFO         | startOpenglesRendererImpl: gpu info
+INFO         | 
+INFO         | initIcdPaths: ICD set to 'swiftshader', using Swiftshader ICD
+INFO         | Setting ICD filenames for the loader = /opt/homebrew/share/android-commandlinetools/emulator/lib64/vulkan/vk_swiftshader_icd.json
+== crash reports
+qemu-system-aarch64-2026-09-09-154303.ips
+qemu-system-aarch64-2026-09-09-152812.ips
+qemu-system-aarch64-2026-09-09-152524.ips

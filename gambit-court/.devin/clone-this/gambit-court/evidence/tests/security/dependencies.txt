@@ -1,0 +1,45 @@
+dependency review at 3eefaa6ed97fc77c84b09b1d7986a133ed6c35ba
+== packages/gambit_court_core
+Showing outdated packages.
+[*] indicates versions that are not the latest available.
+
+Found no outdated packages
+== server
+Showing outdated packages.
+[*] indicates versions that are not the latest available.
+
+Found no outdated packages
+== app
+Showing outdated packages.
+[*] indicates versions that are not the latest available.
+
+Package Name              Current  Upgradable  Resolvable  Latest  
+
+direct dependencies: all up-to-date.
+
+transitive dependencies: 
+code_assets               *1.2.1   2.0.0       2.0.0       2.0.0   
+hooks                     *2.0.2   2.2.0       2.2.0       2.2.0   
+material_color_utilities  *0.13.0  *0.13.0     *0.13.0     0.13.1  
+meta                      *1.18.3  1.19.0      1.19.0      1.19.0  
+objective_c               *9.5.0   9.6.0       9.6.0       9.6.0   
+record_use                *0.6.0   1.1.1       1.1.1       1.1.1   
+vector_math               *2.4.0   2.4.2       2.4.2       2.4.2   
+
+6 upgradable dependencies are locked (in pubspec.lock) to older versions.
+To update these dependencies, use `dart pub upgrade`.
+all dependencies are up-to-date.
+== test/e2e (node harness)
+{
+  "name": "gambit-court-e2e",
+  "private": true,
+  "type": "module",
+  "description": "Four-platform multiplayer end-to-end harness for Gambit Court.",
+  "scripts": {
+    "e2e": "node run.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "1.52.0"
+  }
+}
+found 0 vulnerabilities

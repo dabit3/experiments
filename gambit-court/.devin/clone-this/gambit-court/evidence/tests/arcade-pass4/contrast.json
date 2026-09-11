@@ -1,0 +1,190 @@
+{
+  "method": "WCAG relative luminance from current source tokens; static normal text, live badges, board coordinates and primary buttons. Does not certify all rendered combinations or disabled controls.",
+  "results": [
+    {
+      "label": "dark text/bg",
+      "contrast": 15.616,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark textMuted/bg",
+      "contrast": 9.996,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark textFaint/bg",
+      "contrast": 6.628,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark live badge/bg",
+      "contrast": 7.446,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark text/surface",
+      "contrast": 13.756,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark textMuted/surface",
+      "contrast": 8.805,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark textFaint/surface",
+      "contrast": 5.838,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark live badge/surface",
+      "contrast": 6.495,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark text/surfaceRaised",
+      "contrast": 11.37,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark textMuted/surfaceRaised",
+      "contrast": 7.278,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark textFaint/surfaceRaised",
+      "contrast": 4.825,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark live badge/surfaceRaised",
+      "contrast": 5.422,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark text/surfaceSunken",
+      "contrast": 16.501,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark textMuted/surfaceSunken",
+      "contrast": 10.562,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark textFaint/surfaceSunken",
+      "contrast": 7.003,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark live badge/surfaceSunken",
+      "contrast": 7.921,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark coordinate/boardLight",
+      "contrast": 14.65,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark coordinate/boardDark",
+      "contrast": 4.542,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light text/bg",
+      "contrast": 14.793,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light textMuted/bg",
+      "contrast": 5.393,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light textFaint/bg",
+      "contrast": 5.006,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light live badge/bg",
+      "contrast": 5.218,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light text/surface",
+      "contrast": 15.869,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light textMuted/surface",
+      "contrast": 5.786,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light textFaint/surface",
+      "contrast": 5.37,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light live badge/surface",
+      "contrast": 5.567,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light text/surfaceRaised",
+      "contrast": 16.571,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light textMuted/surfaceRaised",
+      "contrast": 6.042,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light textFaint/surfaceRaised",
+      "contrast": 5.608,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light live badge/surfaceRaised",
+      "contrast": 5.795,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light text/surfaceSunken",
+      "contrast": 13.769,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light textMuted/surfaceSunken",
+      "contrast": 5.02,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light textFaint/surfaceSunken",
+      "contrast": 4.66,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light live badge/surfaceSunken",
+      "contrast": 4.884,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light coordinate/boardLight",
+      "contrast": 14.65,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light coordinate/boardDark",
+      "contrast": 4.542,
+      "normal_text_aa": true
+    },
+    {
+      "label": "primary button",
+      "contrast": 11.582,
+      "normal_text_aa": true
+    }
+  ]
+}
