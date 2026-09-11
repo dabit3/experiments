@@ -2,7 +2,14 @@ import AVFoundation
 import MediaPlayer
 
 @MainActor
-final class SoundEngine {
+protocol AudioPlayback {
+  func start() throws
+  func update(mix: Mix, gain: Double)
+  func stop()
+}
+
+@MainActor
+final class SoundEngine: AudioPlayback {
   private let engine = AVAudioEngine()
   private var players: [AVAudioPlayerNode] = []
   private var buffers: [AVAudioPCMBuffer] = []

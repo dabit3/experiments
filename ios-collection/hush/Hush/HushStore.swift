@@ -11,28 +11,32 @@ final class HushStore: ObservableObject {
   @Published var isPlaying = false
   @Published var isMuted = false
   @Published var countdown: SleepCountdown?
+  @Published var timerFinished = false
   @Published var now = Date()
   @Published var fadeStarted: Date?
   @Published var message: String?
   @Published var error: String?
   private let defaults: UserDefaults
-  private let audio = SoundEngine()
+  private let audio: AudioPlayback
   private var ticker: AnyCancellable?
   private var started: Date?
   private var currentGain = 0.0
 
-  init(defaults: UserDefaults = .standard) {
+  init(defaults: UserDefaults = .standard, audio: AudioPlayback? = nil) {
     self.defaults = defaults
+    self.audio = audio ?? SoundEngine()
     preferences = Preferences.load(from: defaults)
     ticker = Timer.publish(every: 0.1, on: .main, in: .common)
       .autoconnect().sink { [weak self] date in self?.tick(date) }
-    MPRemoteCommandCenter.shared().playCommand.addTarget { [weak self] _ in
-      Task { @MainActor in self?.play() }
-      return .success
-    }
-    MPRemoteCommandCenter.shared().pauseCommand.addTarget { [weak self] _ in
-      Task { @MainActor in self?.pause() }
-      return .success
+    if audio == nil {
+      MPRemoteCommandCenter.shared().playCommand.addTarget { [weak self] _ in
+        Task { @MainActor in self?.play() }
+        return .success
+      }
+      MPRemoteCommandCenter.shared().pauseCommand.addTarget { [weak self] _ in
+        Task { @MainActor in self?.pause() }
+        return .success
+      }
     }
   }
 
@@ -74,6 +78,7 @@ final class HushStore: ObservableObject {
       fadeStarted = nil
       started = Date()
       message = nil
+      timerFinished = false
       updateNowPlaying()
       haptic()
     } catch {
@@ -100,6 +105,7 @@ final class HushStore: ObservableObject {
     if let countdown, countdown.remaining(at: date) <= 0 {
       pause()
       self.countdown = nil
+      timerFinished = true
       message = "The night is yours. Timer complete."
     }
     guard isPlaying else { return }
@@ -123,6 +129,7 @@ final class HushStore: ObservableObject {
     guard isPlaying else { return }
     fadeStarted = nil
     countdown = SleepCountdown(now: Date(), duration: seconds)
+    timerFinished = false
     message = nil
     haptic()
   }
@@ -156,6 +163,7 @@ final class HushStore: ObservableObject {
     preferences.mix = Mix(levels: [0, 0, 0, 0], master: mix.master)
     preferences.sceneName = "Your quiet place"
     countdown = nil
+    timerFinished = false
     pause()
     message = "A blank canvas. Bring a sound in."
   }

@@ -95,6 +95,13 @@ struct SceneLibrary: View {
           Text(scene.name).font(.system(.title3, design: .serif))
             .foregroundStyle(HushStyle.silver)
           Text(scene.note).font(.caption).foregroundStyle(HushStyle.muted)
+          Text(
+            Layer.allCases.filter { scene.mix.level($0) > 0 }.map {
+              "\($0 == .brown ? "Brown" : $0.title) \(Int(scene.mix.level($0) * 100))"
+            }.joined(separator: " · ")
+          )
+          .font(.system(size: 11, design: .monospaced))
+          .foregroundStyle(HushStyle.lavender)
         }
         Spacer(minLength: 0)
         Image(systemName: "arrow.up.right").font(.caption).foregroundStyle(HushStyle.lavender)
@@ -164,9 +171,14 @@ struct TimerView: View {
   var body: some View {
     SheetShell(title: "Sleep timer") {
       VStack(alignment: .leading, spacing: 12) {
-        Text("Let the night take over.").font(.system(.largeTitle, design: .serif))
-        Text("Your soundscape gently fades over the final 10 seconds, then stops.")
-          .font(.subheadline).foregroundStyle(HushStyle.muted)
+        Text(store.timerFinished ? "A softer landing." : "Let the night take over.")
+          .font(.system(.largeTitle, design: .serif))
+        Text(
+          store.timerFinished
+            ? "Your sounds have faded away. Stay a little longer, or begin again."
+            : "Your soundscape gently fades over the final 10 seconds, then stops."
+        )
+        .font(.subheadline).foregroundStyle(HushStyle.muted)
       }
       ZStack {
         Circle().stroke(HushStyle.lavender.opacity(0.10), lineWidth: 1)
@@ -176,17 +188,36 @@ struct TimerView: View {
         VStack(spacing: 10) {
           Image(systemName: "moon.zzz").font(.system(size: 25, weight: .ultraLight))
             .foregroundStyle(HushStyle.lavender)
-          Text(store.countdown == nil ? displayDuration : store.timerLabel)
-            .font(.system(size: 48, weight: .ultraLight, design: .rounded)).monospacedDigit()
           Text(
-            store.isFading
-              ? "FADING TO QUIET" : store.countdown == nil ? "UNTIL QUIET" : "REMAINING"
+            store.timerFinished
+              ? "Quiet" : store.countdown == nil ? displayDuration : store.timerLabel
           )
-          .font(.system(size: 9, design: .monospaced)).tracking(2)
-          .foregroundStyle(HushStyle.muted)
+          .font(.system(size: 48, weight: .ultraLight, design: .rounded)).monospacedDigit()
+          Text(
+            store.timerFinished
+              ? "TIMER COMPLETE"
+              : store.isFading
+                ? "FADING TO QUIET" : store.countdown == nil ? "UNTIL QUIET" : "REMAINING"
+          )
+          .font(.system(size: 12, weight: .medium, design: .monospaced)).tracking(1.3)
+          .foregroundStyle(HushStyle.lavender)
         }
       }.frame(width: 236, height: 236).frame(maxWidth: .infinity).padding(.vertical, 12)
-      if store.countdown == nil {
+      if store.timerFinished {
+        Button {
+          store.play()
+          dismiss()
+        } label: {
+          Text("Listen again").font(.headline).frame(maxWidth: .infinity, minHeight: 56)
+            .foregroundStyle(HushStyle.ink).background(HushStyle.lavender, in: Capsule())
+        }
+        Button {
+          store.timerFinished = false
+          store.message = nil
+        } label: {
+          Text("Set another timer").frame(maxWidth: .infinity, minHeight: 48)
+        }
+      } else if store.countdown == nil {
         HStack(spacing: 10) {
           ForEach([15.0, 30.0, 60.0], id: \.self) { minutes in
             Button {
@@ -223,17 +254,21 @@ struct TimerView: View {
             .background(.white.opacity(0.07), in: Capsule())
         }
       }
-      if let message = store.message {
+      if let message = store.message, !store.timerFinished {
         Text(message).font(.subheadline).foregroundStyle(HushStyle.lavender)
       }
-      Text("The timer keeps counting when playback is paused. No alarm, no abrupt ending.")
-        .font(.footnote).foregroundStyle(HushStyle.muted)
+      Text(
+        store.timerFinished
+          ? "No alarm. Nothing to do. Just quiet."
+          : "The timer keeps counting when playback is paused. No alarm, no abrupt ending."
+      )
+      .font(.footnote).foregroundStyle(HushStyle.muted)
     }
   }
 
   private var displayDuration: String { "\(Int(duration / 60)) min" }
   private var progress: Double {
-    guard let timer = store.countdown else { return 1 }
+    guard let timer = store.countdown else { return store.timerFinished ? 0 : 1 }
     return timer.remaining(at: store.now) / timer.duration
   }
 }
@@ -252,11 +287,25 @@ struct SettingsView: View {
         Text("Fade to quiet").font(.headline)
         Text("How slowly the master fade button brings your soundscape to silence.")
           .font(.subheadline).foregroundStyle(HushStyle.muted)
-        Picker("Master fade duration", selection: $store.preferences.fadeSeconds) {
-          Text("3 sec").tag(3.0)
-          Text("8 sec").tag(8.0)
-          Text("15 sec").tag(15.0)
-        }.pickerStyle(.segmented)
+        HStack(spacing: 10) {
+          ForEach([3.0, 8.0, 15.0], id: \.self) { seconds in
+            Button {
+              store.preferences.fadeSeconds = seconds
+              store.haptic()
+            } label: {
+              Text("\(Int(seconds)) sec")
+                .font(.subheadline).frame(maxWidth: .infinity, minHeight: 50)
+                .foregroundStyle(
+                  store.preferences.fadeSeconds == seconds ? HushStyle.ink : HushStyle.silver
+                )
+                .background(
+                  store.preferences.fadeSeconds == seconds
+                    ? HushStyle.lavender : .white.opacity(0.06), in: Capsule())
+            }
+            .accessibilityLabel("Master fade \(Int(seconds)) seconds")
+            .accessibilityAddTraits(store.preferences.fadeSeconds == seconds ? .isSelected : [])
+          }
+        }
       }
       Divider().overlay(.white.opacity(0.08))
       Toggle("Gentle haptics", isOn: $store.preferences.haptics).tint(HushStyle.lavender)

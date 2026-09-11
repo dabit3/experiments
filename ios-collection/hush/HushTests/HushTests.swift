@@ -83,4 +83,70 @@ final class HushTests: XCTestCase {
     XCTAssertFalse(restored.isPlaying)
     XCTAssertNil(restored.countdown)
   }
+
+  @MainActor
+  func testPlaybackMuteTimerCompletionAndManualFade() throws {
+    let suite = "hush.control.\(UUID().uuidString)"
+    let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let audio = TestAudio()
+    let store = HushStore(defaults: defaults, audio: audio)
+    store.play()
+    store.tick(Date().addingTimeInterval(2))
+    XCTAssertTrue(store.isPlaying)
+    XCTAssertEqual(audio.gain, 1)
+    store.isMuted = true
+    store.tick(Date().addingTimeInterval(3))
+    XCTAssertEqual(audio.gain, 0)
+    store.isMuted = false
+    store.startTimer(seconds: 30)
+    let deadline = try XCTUnwrap(store.countdown).end
+    store.tick(deadline.addingTimeInterval(-5))
+    XCTAssertEqual(audio.gain, 0.5, accuracy: 0.001)
+    store.tick(deadline)
+    XCTAssertFalse(store.isPlaying)
+    XCTAssertTrue(store.timerFinished)
+    XCTAssertNil(store.countdown)
+    XCTAssertFalse(audio.running)
+    store.play()
+    XCTAssertFalse(store.timerFinished)
+    store.preferences.fadeSeconds = 3
+    store.fadeOut()
+    store.tick(try XCTUnwrap(store.fadeStarted).addingTimeInterval(4))
+    XCTAssertFalse(store.isPlaying)
+    store.resetMix()
+    store.play()
+    XCTAssertFalse(store.isPlaying)
+    XCTAssertNotNil(store.message)
+  }
+
+  @MainActor
+  func testEditingRetainsSceneIdentityAndReportsAudioFailure() throws {
+    let suite = "hush.errors.\(UUID().uuidString)"
+    let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let audio = TestAudio()
+    audio.shouldFail = true
+    let store = HushStore(defaults: defaults, audio: audio)
+    store.setLevel(.rain, 0.2)
+    XCTAssertEqual(store.preferences.sceneName, "Moonlit shore")
+    XCTAssertTrue(store.isEdited)
+    store.play()
+    XCTAssertNotNil(store.error)
+    XCTAssertFalse(store.isPlaying)
+  }
+}
+
+@MainActor
+private final class TestAudio: AudioPlayback {
+  enum Failure: Error { case unavailable }
+  var gain = 0.0
+  var running = false
+  var shouldFail = false
+  func start() throws {
+    if shouldFail { throw Failure.unavailable }
+    running = true
+  }
+  func update(mix: Mix, gain: Double) { self.gain = gain }
+  func stop() { running = false }
 }

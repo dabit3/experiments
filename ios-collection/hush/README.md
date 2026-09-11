@@ -56,7 +56,14 @@ Regenerate the original icon with `swift Scripts/GenerateIcon.swift`.
 
 XCTest covers gain clamping, malformed persisted levels, persistence round-trip
 and corrupt-data fallback, timer boundaries, save/recall/reset, and deterministic,
-non-silent, bounded audio synthesis for all four layers.
+non-silent, bounded audio synthesis for all four layers. A test audio adapter also
+verifies mute, real timer completion, manual fade, empty-mix rejection, edited
+scene identity and audio-start failure behavior.
+
+Simulator playback requires a working host output device. This macOS VM uses
+BlackHole 2ch 0.7.1 as its virtual output for testing and recording. If the host
+has no audio device, AVAudioEngine cannot start; a physical Mac's normal output
+does not need BlackHole. Restart the simulator after changing host audio routes.
 
 This is a simulator-tested V1, not an App Store submission. No physical-device,
 production-signing, or medical validation. The sounds are stylized synthesis,

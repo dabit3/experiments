@@ -9,19 +9,27 @@ struct MixerView: View {
   var body: some View {
     ZStack {
       HushStyle.ink.ignoresSafeArea()
-      ScrollView {
+      GeometryReader { geometry in
         VStack(spacing: 0) {
-          header
-          hero
-          mixer
+          ScrollView {
+            VStack(spacing: 0) {
+              header
+              hero(
+                height: typeSize.isAccessibilitySize
+                  ? 260 : max(174, min(242, geometry.size.height - 550)))
+              mixer(
+                faderHeight: typeSize.isAccessibilitySize
+                  ? 150 : min(138, max(112, geometry.size.height * 0.17)))
+            }
+            .padding(.bottom, 18)
+          }
+          .scrollIndicators(.visible)
+          playbackDock
         }
-        .padding(.bottom, 16)
       }
-      .scrollIndicators(.hidden)
     }
     .foregroundStyle(HushStyle.silver)
     .tint(HushStyle.lavender)
-    .safeAreaInset(edge: .bottom, spacing: 0) { playbackDock }
     .sheet(item: $sheet) { item in
       switch item {
       case .scenes: SceneLibrary()
@@ -81,10 +89,10 @@ struct MixerView: View {
     .padding(.horizontal, 24).padding(.top, 8).padding(.bottom, 8)
   }
 
-  private var hero: some View {
+  private func hero(height: CGFloat) -> some View {
     ZStack(alignment: .bottomLeading) {
       Landscape(mix: store.mix, animated: store.isPlaying)
-        .frame(height: typeSize.isAccessibilitySize ? 250 : 252)
+        .frame(height: height)
       LinearGradient(colors: [.clear, HushStyle.ink], startPoint: .center, endPoint: .bottom)
       VStack(alignment: .leading, spacing: 10) {
         Text("A LITTLE LESS WORLD")
@@ -97,11 +105,13 @@ struct MixerView: View {
           Circle().fill(store.isPlaying ? HushStyle.lavender : HushStyle.muted)
             .frame(width: 5, height: 5)
           Text(
-            store.isMuted
-              ? "Muted · your mix is still here"
-              : store.isPlaying ? "Here, for a while." : "Make room for quiet."
+            store.message
+              ?? (store.isMuted
+                ? "Muted · your mix is still here"
+                : store.isPlaying ? "Here, for a while." : "Make room for quiet.")
           )
           .font(.subheadline).foregroundStyle(HushStyle.muted)
+          .fixedSize(horizontal: false, vertical: true)
           if store.isEdited {
             Text("Edited").font(.caption)
               .padding(.horizontal, 8).padding(.vertical, 4)
@@ -112,8 +122,8 @@ struct MixerView: View {
     }
   }
 
-  private var mixer: some View {
-    VStack(spacing: 16) {
+  private func mixer(faderHeight: CGFloat) -> some View {
+    VStack(spacing: 14) {
       HStack {
         Text("THE ELEMENTS")
           .font(.system(size: 11, weight: .medium, design: .monospaced)).tracking(1.8)
@@ -132,24 +142,25 @@ struct MixerView: View {
             .font(.subheadline).frame(minHeight: 44)
         }.accessibilityLabel("Save scene")
       }
-      HStack(alignment: .top, spacing: 12) {
+      LazyVGrid(
+        columns: Array(
+          repeating: GridItem(.flexible(), spacing: 12), count: typeSize.isAccessibilitySize ? 2 : 4
+        ),
+        spacing: 26
+      ) {
         ForEach(Layer.allCases) { layer in
           SoundFader(
             layer: layer,
+            height: faderHeight,
             level: Binding(get: { store.mix.level(layer) }, set: { store.setLevel(layer, $0) }))
         }
-      }
-      if let message = store.message {
-        Text(message).font(.footnote).foregroundStyle(HushStyle.lavender)
-          .frame(maxWidth: .infinity, alignment: .leading)
-          .accessibilityLabel(message)
       }
     }
     .padding(.horizontal, 28)
   }
 
   private var playbackDock: some View {
-    VStack(spacing: 13) {
+    VStack(spacing: 4) {
       HStack(spacing: 12) {
         Button {
           store.isMuted.toggle()
@@ -169,7 +180,10 @@ struct MixerView: View {
           .font(.system(.caption, design: .monospaced))
           .foregroundStyle(HushStyle.muted).frame(width: 30)
       }
-      HStack(spacing: 12) {
+      let controls =
+        typeSize.isAccessibilitySize
+        ? AnyLayout(VStackLayout(spacing: 8)) : AnyLayout(HStackLayout(spacing: 12))
+      controls {
         Button {
           sheet = .timer
         } label: {
@@ -214,7 +228,7 @@ struct MixerView: View {
         }
       }
     }
-    .padding(.horizontal, 24).padding(.top, 12).padding(.bottom, 6)
+    .padding(.horizontal, 24).padding(.top, 6).padding(.bottom, 2)
     .background {
       HushStyle.ink.opacity(0.97).ignoresSafeArea(edges: .bottom)
         .overlay(alignment: .top) { Rectangle().fill(.white.opacity(0.09)).frame(height: 0.5) }
@@ -229,11 +243,12 @@ enum HushSheet: String, Identifiable {
 
 struct SoundFader: View {
   let layer: Layer
+  var height: CGFloat = 138
   @Binding var level: Double
   @EnvironmentObject private var store: HushStore
 
   var body: some View {
-    VStack(spacing: 12) {
+    VStack(spacing: 10) {
       Image(systemName: layer.symbol)
         .font(.system(size: 21, weight: .ultraLight))
         .foregroundStyle(level > 0 ? HushStyle.lavender : HushStyle.muted)
@@ -265,7 +280,7 @@ struct SoundFader: View {
             .onEnded { _ in store.haptic() }
         )
       }
-      .frame(width: 48, height: 150)
+      .frame(width: 48, height: height)
       .accessibilityElement()
       .accessibilityLabel("\(layer.title) volume")
       .accessibilityValue("\(Int(level * 100)) percent")
@@ -277,8 +292,8 @@ struct SoundFader: View {
         }
       }
       VStack(spacing: 4) {
-        Text(layer.title).font(.subheadline).lineLimit(2).multilineTextAlignment(.center)
-          .frame(minHeight: 38, alignment: .top)
+        Text(layer.title).font(.footnote.weight(.medium)).lineLimit(2)
+          .minimumScaleFactor(0.9).multilineTextAlignment(.center)
         Text(level > 0 ? "\(Int(level * 100))%" : "OFF")
           .font(.system(size: 12, weight: .medium, design: .monospaced))
           .tracking(1).foregroundStyle(HushStyle.muted)
