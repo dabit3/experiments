@@ -3,6 +3,7 @@ import SwiftUI
 struct RecipeShelf: View {
   @EnvironmentObject private var library: LibraryStore
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var typeSize
   @State private var renaming: Recipe?
   @State private var deleting: Recipe?
   @State private var newName = ""
@@ -106,17 +107,8 @@ struct RecipeShelf: View {
         .accessibilityHidden(true)
         VStack(alignment: .leading, spacing: 6) {
           Text(recipe.name).font(.system(.title2, design: .serif)).foregroundStyle(Palette.silver)
-          Text(
-            recipe.settings.film.title + " / "
-              + String(format: "%+.2f EV", recipe.settings.exposure)
-          )
-          .font(.system(.caption, design: .monospaced)).foregroundStyle(Palette.muted)
-          Text(
-            String(
-              format: "Contrast %.2f · Warmth %+.0f", recipe.settings.contrast,
-              recipe.settings.warmth * 100)
-          )
-          .font(.caption).foregroundStyle(Palette.muted)
+            .fixedSize(horizontal: false, vertical: true)
+          if !typeSize.isAccessibilitySize { recipeSummary(recipe) }
         }
         Spacer(minLength: 0)
         Menu {
@@ -132,6 +124,7 @@ struct RecipeShelf: View {
         }
         .accessibilityLabel("Manage \(recipe.name)")
       }
+      if typeSize.isAccessibilitySize { recipeSummary(recipe) }
       if let onApply {
         Button {
           onApply(recipe)
@@ -147,5 +140,22 @@ struct RecipeShelf: View {
       }
       Hairline()
     }
+  }
+
+  private func recipeSummary(_ recipe: Recipe) -> some View {
+    VStack(alignment: .leading, spacing: 6) {
+      Text(
+        recipe.settings.film.title + " / "
+          + String(format: "%+.2f EV", recipe.settings.exposure)
+      )
+      .font(.system(.caption, design: .monospaced))
+      Text(
+        String(
+          format: "Contrast %.2f · Warmth %+.0f", recipe.settings.contrast,
+          recipe.settings.warmth * 100)
+      )
+      .font(.caption)
+    }
+    .foregroundStyle(Palette.muted).fixedSize(horizontal: false, vertical: true)
   }
 }

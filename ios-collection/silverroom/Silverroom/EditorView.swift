@@ -38,6 +38,7 @@ struct EditorView: View {
   @EnvironmentObject private var library: LibraryStore
   @Environment(\.dismiss) private var dismiss
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @Environment(\.dynamicTypeSize) private var typeSize
   @StateObject private var room: Darkroom
   let negative: Negative
   @State private var tab: ToolTab = .looks
@@ -56,18 +57,24 @@ struct EditorView: View {
   }
 
   var body: some View {
-    GeometryReader { geometry in
-      ScrollView {
-        VStack(spacing: 0) {
-          toolbar
-          photo(height: max(250, geometry.size.height - 370))
-          imageCaption
-          tools
-          footer
+    VStack(spacing: 0) {
+      toolbar
+        .background(Palette.background)
+      GeometryReader { geometry in
+        ScrollView {
+          VStack(spacing: 0) {
+            photo(
+              height: typeSize.isAccessibilitySize
+                ? 180 : max(200, geometry.size.height - (tab == .adjust ? 410 : 365)))
+            imageCaption
+            tools
+            footer
+          }
+          .padding(.bottom, 12)
         }
-        .padding(.bottom, 12)
+        .scrollIndicators(.hidden)
+        .clipped()
       }
-      .scrollIndicators(.hidden)
     }
     .background(Palette.background)
     .foregroundStyle(Palette.silver)
@@ -135,6 +142,7 @@ struct EditorView: View {
         Text("Darkroom").font(.system(.title3, design: .serif))
         Eyebrow(text: negative.title)
       }
+      .lineLimit(1).minimumScaleFactor(0.75)
       Spacer()
       Button {
         Task {
@@ -193,12 +201,15 @@ struct EditorView: View {
   }
 
   private var imageCaption: some View {
-    HStack {
+    let layout =
+      typeSize.isAccessibilitySize
+      ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+      : AnyLayout(HStackLayout())
+    return layout {
       Eyebrow(text: "\(Int(room.outputSize.width)) × \(Int(room.outputSize.height))")
-      Spacer()
-      Text(comparing ? "Original" : "Hold to compare")
-        .font(.system(.caption, design: .monospaced))
-      Image(systemName: "square.on.square").font(.caption)
+      if !typeSize.isAccessibilitySize { Spacer() }
+      Label(comparing ? "Original" : "Hold to compare", systemImage: "square.on.square")
+        .font(.system(.caption, design: .monospaced)).fixedSize(horizontal: false, vertical: true)
     }
     .foregroundStyle(comparing ? Palette.amber : Palette.muted)
     .frame(minHeight: 46).contentShape(Rectangle())
@@ -209,6 +220,7 @@ struct EditorView: View {
     .accessibilityAddTraits(.isButton)
     .accessibilityAction { comparing.toggle() }
     .padding(.horizontal, 24)
+    .padding(.vertical, typeSize.isAccessibilitySize ? 12 : 0)
   }
 
   private var tools: some View {
@@ -219,7 +231,7 @@ struct EditorView: View {
             withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.18)) { tab = item }
           } label: {
             VStack(spacing: 11) {
-              Text(item.rawValue).font(.subheadline)
+              Text(item.rawValue).font(.subheadline).lineLimit(1).minimumScaleFactor(0.8)
               Rectangle().fill(tab == item ? Palette.amber : .clear).frame(height: 2)
             }
             .foregroundStyle(tab == item ? Palette.amber : Palette.muted)
@@ -293,17 +305,37 @@ struct EditorView: View {
 
   private var adjustmentPanel: some View {
     VStack(spacing: 15) {
-      HStack(spacing: 8) {
-        ForEach(Adjustment.allCases, id: \.self) { item in
-          Button {
-            adjustment = item
-          } label: {
-            Text(item.rawValue).font(.subheadline)
-              .frame(maxWidth: .infinity, minHeight: 44)
-              .background(adjustment == item ? Palette.panel : .clear, in: Capsule())
-              .foregroundStyle(adjustment == item ? Palette.silver : Palette.muted)
+      if typeSize.isAccessibilitySize {
+        Menu {
+          Picker("Adjustment", selection: $adjustment) {
+            ForEach(Adjustment.allCases, id: \.self) { item in
+              Text(item.rawValue).tag(item)
+            }
           }
-          .accessibilityAddTraits(adjustment == item ? .isSelected : [])
+        } label: {
+          HStack {
+            Text(adjustment.rawValue)
+            Spacer()
+            Image(systemName: "chevron.up.chevron.down")
+          }
+          .font(.subheadline).foregroundStyle(Palette.silver)
+          .padding(12).background(Palette.panel, in: RoundedRectangle(cornerRadius: 5))
+        }
+        .accessibilityLabel("Choose adjustment")
+        .accessibilityValue(adjustment.rawValue)
+      } else {
+        HStack(spacing: 8) {
+          ForEach(Adjustment.allCases, id: \.self) { item in
+            Button {
+              adjustment = item
+            } label: {
+              Text(item.rawValue).font(.subheadline).lineLimit(1).minimumScaleFactor(0.8)
+                .frame(maxWidth: .infinity, minHeight: 44)
+                .background(adjustment == item ? Palette.panel : .clear, in: Capsule())
+                .foregroundStyle(adjustment == item ? Palette.silver : Palette.muted)
+            }
+            .accessibilityAddTraits(adjustment == item ? .isSelected : [])
+          }
         }
       }
       HStack {
@@ -311,7 +343,7 @@ struct EditorView: View {
           adjustmentBinding.wrappedValue = adjustment.neutral
         } label: {
           Label("Neutral", systemImage: "arrow.uturn.backward")
-            .font(.caption).frame(minHeight: 32)
+            .font(.caption).frame(minHeight: 44)
         }
         .foregroundStyle(Palette.muted)
         .accessibilityLabel("Reset \(adjustment.rawValue.lowercased()) to neutral")
@@ -374,8 +406,11 @@ struct EditorView: View {
   }
 
   private var framePanel: some View {
-    VStack(spacing: 17) {
-      HStack(spacing: 12) {
+    let layout =
+      typeSize.isAccessibilitySize
+      ? AnyLayout(VStackLayout(spacing: 12)) : AnyLayout(HStackLayout(spacing: 12))
+    return VStack(spacing: 17) {
+      layout {
         frameButton("rotate.right", title: "Rotate 90°", active: false) {
           room.settings.quarterTurns = (room.settings.quarterTurns + 1) % 4
         }
@@ -397,12 +432,16 @@ struct EditorView: View {
   private func frameButton(
     _ symbol: String, title: String, active: Bool, action: @escaping () -> Void
   ) -> some View {
-    Button(action: action) {
-      VStack(spacing: 12) {
+    let layout =
+      typeSize.isAccessibilitySize
+      ? AnyLayout(HStackLayout(spacing: 16)) : AnyLayout(VStackLayout(spacing: 12))
+    return Button(action: action) {
+      layout {
         Image(systemName: symbol).font(.title2)
-        Text(title).font(.caption)
+        Text(title).font(.caption).fixedSize(horizontal: false, vertical: true)
       }
-      .frame(maxWidth: .infinity, minHeight: 86)
+      .padding(.horizontal, 12)
+      .frame(maxWidth: .infinity, minHeight: typeSize.isAccessibilitySize ? 64 : 86)
       .foregroundStyle(active ? Palette.amber : Palette.silver)
       .background(Palette.panel, in: RoundedRectangle(cornerRadius: 5))
     }
@@ -410,37 +449,49 @@ struct EditorView: View {
   }
 
   private var footer: some View {
-    VStack(spacing: 0) {
+    let layout =
+      typeSize.isAccessibilitySize
+      ? AnyLayout(VStackLayout(alignment: .leading, spacing: 4))
+      : AnyLayout(HStackLayout(spacing: 4))
+    return VStack(spacing: 0) {
       Hairline()
-      HStack(spacing: 4) {
+      layout {
         Button {
           showRecipes = true
         } label: {
-          Label("Recipes", systemImage: "bookmark").font(.subheadline).frame(minHeight: 46)
+          Label("Recipes", systemImage: "bookmark").font(.subheadline)
+            .fixedSize(horizontal: false, vertical: true).frame(minHeight: 46)
         }
-        Spacer()
+        if !typeSize.isAccessibilitySize { Spacer() }
         Button {
           recipeName = "\(room.settings.film.title) study"
           showSave = true
         } label: {
-          Label(saved ? "Save another" : "Save recipe", systemImage: "plus").font(.subheadline)
+          Label("Save recipe", systemImage: "plus").font(.subheadline)
+            .fixedSize(horizontal: false, vertical: true)
             .frame(minHeight: 46)
         }
-        Spacer()
+        if !typeSize.isAccessibilitySize { Spacer() }
         Button {
           showReset = true
         } label: {
-          Image(systemName: "arrow.counterclockwise").frame(width: 44, height: 46)
+          if typeSize.isAccessibilitySize {
+            Label("Reset edits", systemImage: "arrow.counterclockwise")
+              .font(.subheadline).frame(minHeight: 46)
+          } else {
+            Image(systemName: "arrow.counterclockwise").frame(width: 44, height: 46)
+          }
         }
         .accessibilityLabel("Reset edits")
       }
+      .frame(maxWidth: .infinity, alignment: .leading)
       .foregroundStyle(Palette.muted).padding(.horizontal, 24)
       Label(
         library.error == nil ? "Edits saved on this device" : "Edits could not be saved",
         systemImage: library.error == nil ? "checkmark" : "exclamationmark.circle"
       )
-      .font(.caption2).foregroundStyle(Palette.muted)
-      .padding(.bottom, 6)
+      .font(.caption2).foregroundStyle(Palette.muted).fixedSize(horizontal: false, vertical: true)
+      .padding(.horizontal, 24).padding(.bottom, 6)
     }
   }
 }

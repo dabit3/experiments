@@ -60,7 +60,11 @@ xcrun swift Scripts/GenerateIcon.swift Silverroom/Assets.xcassets/AppIcon.appico
 Tap a contact-sheet frame to edit it. Changes save automatically; Back returns
 to the library. **Looks** changes the film, **Adjust** exposes the three sliders,
 and **Frame** rotates or crops. Hold the comparison row to see the original.
+Holding the photograph also compares. Each adjustment has a **Neutral** reset.
+At accessibility text sizes, the adjustment selector becomes a menu and frame
+and recipe actions stack vertically; the darkroom toolbar remains fixed.
 The bookmark opens recipes; **Save recipe** names the current settings.
+Recipe previews include all saved adjustment values; deletion requires confirmation.
 Long-press an imported photograph in the library to remove its local copy.
 
 The pipeline applies EXIF orientation once, then exposure, temperature, film
@@ -82,3 +86,5 @@ deletes this local library; there is no sync or account recovery.
 - iOS 17 deployment compatibility is compiler-checked; runtime UI validation
   uses installed iOS 26.5 simulators. Physical hardware, production signing,
   and App Store submission are not part of this build.
+- Original imports and generated exports consume local storage. Exports remain
+  in the app sandbox; V1 does not include automatic export-cache cleanup.
