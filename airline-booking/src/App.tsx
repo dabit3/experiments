@@ -47,7 +47,17 @@ function makePassengers(search: SearchParams, existing: Passenger[]): Passenger[
 }
 
 function blankPassenger(id: number, type: Passenger['type']): Passenger {
-  return { id, type, title: '', firstName: '', lastName: '', dob: '', nationality: '', passport: '', passportExpiry: '' }
+  return {
+    id,
+    type,
+    title: '',
+    firstName: '',
+    lastName: '',
+    dob: '',
+    nationality: '',
+    passport: '',
+    passportExpiry: '',
+  }
 }
 
 export default function App() {
@@ -94,7 +104,9 @@ export default function App() {
 
   const onSearch = (params: SearchParams) => {
     const routeChanged =
-      params.from?.code !== search.from?.code || params.to?.code !== search.to?.code || params.roundTrip !== search.roundTrip
+      params.from?.code !== search.from?.code ||
+      params.to?.code !== search.to?.code ||
+      params.roundTrip !== search.roundTrip
     setSearch(params)
     if (routeChanged) {
       setSelections({})
@@ -106,7 +118,8 @@ export default function App() {
 
   const onFlightsChanged = (sel: Partial<Record<Leg, FlightSelection>>) => {
     const changed =
-      sel.outbound?.flight.id !== selections.outbound?.flight.id || sel.return?.flight.id !== selections.return?.flight.id
+      sel.outbound?.flight.id !== selections.outbound?.flight.id ||
+      sel.return?.flight.id !== selections.return?.flight.id
     setSelections(sel)
     if (changed) setSeats(EMPTY_SEATS)
   }
@@ -143,37 +156,57 @@ export default function App() {
 
   return (
     <div className="app">
-      <div className="backdrop" aria-hidden>
-        <span className="aurora aurora-1" />
-        <span className="aurora aurora-2" />
-        <span className="aurora aurora-3" />
-        <span className="grain" />
-      </div>
-      <header className="topbar">
-        <button className="brand" onClick={restart} title="Start over">
-          <span className="brand-mark" aria-hidden>
-            <svg viewBox="0 0 64 64" width="26" height="26">
-              <path
-                d="M10 36l14-4 12-16c2-2.6 5.4-2.8 6.2-1.2.9 1.6-.4 4.8-2.8 7.2L30 32l6 14-4 2-8-12-8 4-2 8-3 1 1-9-6-4z"
-                fill="currentColor"
-              />
-            </svg>
-          </span>
-          <span className="brand-name">Contrail Air</span>
-        </button>
-        <Stepper current={step} onSelect={goTo} locked={Boolean(booking)} />
-        <div className="topbar-right">
-          <span className="step-count">
-            Step {step + 1} <span className="muted">of {STEPS.length}</span>
-          </span>
-          <button className="btn btn-ghost btn-sm" onClick={restart}>
-            Start over
+      <a className="skip-link" href="#main-content">
+        Skip to booking
+      </a>
+      <header className="site-header">
+        <div className="topbar">
+          <button className="brand" onClick={restart} title="Start over">
+            <span className="brand-mark" aria-hidden>
+              <svg viewBox="0 0 48 48" width="44" height="44">
+                <path d="M6 34 39 9 25 35l-5-11z" fill="currentColor" />
+                <path d="m7 40 17-9" fill="none" stroke="currentColor" strokeWidth="1.5" />
+              </svg>
+            </span>
+            <span className="brand-name">
+              Contrail<span>Air</span>
+            </span>
           </button>
+          <span className="brand-promise">A little further. A little closer.</span>
+          <div className="topbar-right">
+            <span className="locale">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                aria-hidden
+              >
+                <circle cx="12" cy="12" r="9" />
+                <ellipse cx="12" cy="12" rx="4" ry="9" />
+                <path d="M3 12h18" />
+              </svg>
+              English <span>·</span> USD
+            </span>
+            <button className="btn btn-ghost btn-sm" onClick={restart}>
+              Start over
+            </button>
+          </div>
         </div>
-        <span className="topbar-progress" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} aria-hidden />
+        <div className="journey-bar">
+          <div className="journey-bar-inner">
+            <span className="journey-label">Your booking</span>
+            <Stepper current={step} onSelect={goTo} locked={Boolean(booking)} />
+            <span className="step-count">
+              {String(step + 1).padStart(2, '0')} <span>/ {String(STEPS.length).padStart(2, '0')}</span>
+            </span>
+          </div>
+        </div>
       </header>
 
-      <main className={`content ${showSummary ? 'with-summary' : ''} step-${STEPS[step].id}`}>
+      <main id="main-content" className={`content ${showSummary ? 'with-summary' : ''} step-${STEPS[step].id}`}>
         <section className="main-col step-panel" key={step}>
           {step === 0 && <SearchStep initial={search} onSearch={onSearch} />}
           {step === 1 && (
@@ -235,6 +268,12 @@ export default function App() {
           </aside>
         )}
       </main>
+      <footer className="site-footer">
+        <span className="footer-brand">
+          Contrail Air <span>A better journey begins here.</span>
+        </span>
+        <span>Demo booking experience · No real tickets or charges</span>
+      </footer>
     </div>
   )
 }

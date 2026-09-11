@@ -1,5 +1,13 @@
 import { useMemo, useState, type FormEvent } from 'react'
-import type { Extras, FlightSelection, Leg, Passenger, PaymentDetails, SearchParams, SeatAssignments } from '../../types'
+import type {
+  Extras,
+  FlightSelection,
+  Leg,
+  Passenger,
+  PaymentDetails,
+  SearchParams,
+  SeatAssignments,
+} from '../../types'
 import { EXTRA_PRICES, bookingReference, computePrice, money } from '../../lib/booking'
 import {
   CARD_LABEL,
@@ -45,8 +53,7 @@ export function PaymentStep({ search, selections, passengers, seats, extras, onE
   const cardType = detectCardType(digits)
   const expectedLen = cardType === 'amex' ? 15 : 16
   const numberComplete = digits.length === expectedLen
-  const liveNumberError =
-    numberComplete && !luhnValid(digits) ? 'Invalid card number — failed checksum' : undefined
+  const liveNumberError = numberComplete && !luhnValid(digits) ? 'Invalid card number — failed checksum' : undefined
 
   const update = (patch: Partial<PaymentDetails>) => {
     setPayment((p) => {
@@ -87,13 +94,18 @@ export function PaymentStep({ search, selections, passengers, seats, extras, onE
       <div className="step-heading">
         <div>
           <p className="eyebrow">Step 5 · Extras & payment</p>
-          <h2>Almost there</h2>
-          <p className="muted">Add any extras, then pay securely. This is a demo — no real charge is made.</p>
+          <h2>The finishing touches</h2>
+          <p className="muted">
+            Make the journey your own, then confirm your booking. No real charge is made in this demo.
+          </p>
         </div>
       </div>
 
       <section className="card extras-card">
-        <h3>Extras</h3>
+        <div className="section-intro">
+          <h3>Enhance your journey</h3>
+          <p className="muted">A few thoughtful additions, entirely up to you.</p>
+        </div>
         <div className="extras-grid">
           <div className="extra-row">
             <CountStepper
@@ -132,7 +144,7 @@ export function PaymentStep({ search, selections, passengers, seats, extras, onE
 
       <section className="card payment-form">
         <div className="payment-head">
-          <h3>Payment</h3>
+          <h3>Payment details</h3>
           <div className="card-brands" aria-hidden>
             {(['visa', 'mastercard', 'amex', 'discover'] as CardType[]).map((t) => (
               <CardIcon key={t} type={t} dim={cardType !== 'unknown' && cardType !== t} />
@@ -140,93 +152,106 @@ export function PaymentStep({ search, selections, passengers, seats, extras, onE
           </div>
         </div>
         <div className="payment-body">
-        <CardPreview payment={payment} cardType={cardType} valid={numberComplete && !liveNumberError} />
-        <div className="form-grid">
-          <Field id="card-name" label="Name on card" error={errors.name} className="col-12">
-            <input
-              className="input"
-              autoComplete="off"
-              value={payment.name}
-              onChange={(e) => update({ name: e.target.value })}
-              onBlur={() => blur('name')}
-              {...fieldProps('card-name', errors.name)}
-            />
-          </Field>
-          <Field
-            id="card-number"
-            label="Card number"
-            error={errors.number ?? liveNumberError}
-            hint={cardType !== 'unknown' ? `${CARD_LABEL[cardType]} detected` : 'Visa, Mastercard, Amex or Discover'}
-            className="col-12"
-          >
-            <div className={`card-input ${cardType}`}>
+          <CardPreview payment={payment} cardType={cardType} valid={numberComplete && !liveNumberError} />
+          <div className="form-grid">
+            <Field id="card-name" label="Name on card" error={errors.name} className="col-12">
+              <input
+                className="input"
+                autoComplete="off"
+                value={payment.name}
+                onChange={(e) => update({ name: e.target.value })}
+                onBlur={() => blur('name')}
+                {...fieldProps('card-name', errors.name)}
+              />
+            </Field>
+            <Field
+              id="card-number"
+              label="Card number"
+              error={errors.number ?? liveNumberError}
+              hint={cardType !== 'unknown' ? `${CARD_LABEL[cardType]} detected` : 'Visa, Mastercard, Amex or Discover'}
+              className="col-12"
+            >
+              <div className={`card-input ${cardType}`}>
+                <input
+                  className="input mono"
+                  inputMode="numeric"
+                  autoComplete="off"
+                  placeholder="1234 5678 9012 3456"
+                  value={payment.number}
+                  onChange={(e) => update({ number: formatCardNumber(e.target.value) })}
+                  onBlur={() => blur('number')}
+                  {...fieldProps('card-number', errors.number ?? liveNumberError)}
+                />
+                <span className="card-input-icon">
+                  <CardIcon type={cardType} />
+                </span>
+                {numberComplete && !liveNumberError && (
+                  <span className="card-input-check" aria-label="Valid card number">
+                    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
+                      <path
+                        d="M3 8.5l3 3 7-7"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                )}
+              </div>
+            </Field>
+            <Field id="card-expiry" label="Expiry" error={errors.expiry} className="col-4">
               <input
                 className="input mono"
                 inputMode="numeric"
                 autoComplete="off"
-                placeholder="1234 5678 9012 3456"
-                value={payment.number}
-                onChange={(e) => update({ number: formatCardNumber(e.target.value) })}
-                onBlur={() => blur('number')}
-                {...fieldProps('card-number', errors.number ?? liveNumberError)}
+                placeholder="MM/YY"
+                value={payment.expiry}
+                onChange={(e) => update({ expiry: formatExpiry(e.target.value) })}
+                onBlur={() => blur('expiry')}
+                {...fieldProps('card-expiry', errors.expiry)}
               />
-              <span className="card-input-icon">
-                <CardIcon type={cardType} />
-              </span>
-              {numberComplete && !liveNumberError && (
-                <span className="card-input-check" aria-label="Valid card number">
-                  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden>
-                    <path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </span>
-              )}
-            </div>
-          </Field>
-          <Field id="card-expiry" label="Expiry" error={errors.expiry} className="col-4">
-            <input
-              className="input mono"
-              inputMode="numeric"
-              autoComplete="off"
-              placeholder="MM/YY"
-              value={payment.expiry}
-              onChange={(e) => update({ expiry: formatExpiry(e.target.value) })}
-              onBlur={() => blur('expiry')}
-              {...fieldProps('card-expiry', errors.expiry)}
-            />
-          </Field>
-          <Field id="card-cvv" label={cardType === 'amex' ? 'CID' : 'CVV'} error={errors.cvv} className="col-4">
-            <input
-              className="input mono"
-              inputMode="numeric"
-              autoComplete="off"
-              placeholder={cardType === 'amex' ? '1234' : '123'}
-              maxLength={cardType === 'amex' ? 4 : 3}
-              value={payment.cvv}
-              onChange={(e) => update({ cvv: e.target.value.replace(/\D/g, '') })}
-              onBlur={() => blur('cvv')}
-              {...fieldProps('card-cvv', errors.cvv)}
-            />
-          </Field>
-          <Field id="card-zip" label="Billing ZIP" error={errors.zip} className="col-4">
-            <input
-              className="input mono"
-              inputMode="numeric"
-              autoComplete="off"
-              placeholder="94103"
-              maxLength={5}
-              value={payment.zip}
-              onChange={(e) => update({ zip: e.target.value.replace(/\D/g, '') })}
-              onBlur={() => blur('zip')}
-              {...fieldProps('card-zip', errors.zip)}
-            />
-          </Field>
-        </div>
+            </Field>
+            <Field id="card-cvv" label={cardType === 'amex' ? 'CID' : 'CVV'} error={errors.cvv} className="col-4">
+              <input
+                className="input mono"
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder={cardType === 'amex' ? '1234' : '123'}
+                maxLength={cardType === 'amex' ? 4 : 3}
+                value={payment.cvv}
+                onChange={(e) => update({ cvv: e.target.value.replace(/\D/g, '') })}
+                onBlur={() => blur('cvv')}
+                {...fieldProps('card-cvv', errors.cvv)}
+              />
+            </Field>
+            <Field id="card-zip" label="Billing ZIP" error={errors.zip} className="col-4">
+              <input
+                className="input mono"
+                inputMode="numeric"
+                autoComplete="off"
+                placeholder="94103"
+                maxLength={5}
+                value={payment.zip}
+                onChange={(e) => update({ zip: e.target.value.replace(/\D/g, '') })}
+                onBlur={() => blur('zip')}
+                {...fieldProps('card-zip', errors.zip)}
+              />
+            </Field>
+          </div>
         </div>
         <p className="secure-note">
           <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden>
-            <path d="M6 10V8a6 6 0 1 1 12 0v2m-13 0h14v10H5z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+            <path
+              d="M6 10V8a6 6 0 1 1 12 0v2m-13 0h14v10H5z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            />
           </svg>
-          Encrypted demo checkout · nothing is stored or charged
+          Demo checkout · no real charge · card details are not saved
         </p>
       </section>
 
@@ -242,7 +267,13 @@ export function PaymentStep({ search, selections, passengers, seats, extras, onE
           ) : (
             <>
               <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
-                <path d="M6 10V8a6 6 0 1 1 12 0v2m-13 0h14v10H5z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+                <path
+                  d="M6 10V8a6 6 0 1 1 12 0v2m-13 0h14v10H5z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinejoin="round"
+                />
               </svg>
               Pay {money(price.total)}
             </>
@@ -316,7 +347,16 @@ export function CardIcon({ type, dim = false }: { type: CardType; dim?: boolean 
       return (
         <svg className={cls} viewBox="0 0 48 32" width="40" height="26" aria-label="Visa">
           <rect width="48" height="32" rx="5" fill="#1a1f71" />
-          <text x="24" y="21" textAnchor="middle" fontFamily="Arial Black, Arial, sans-serif" fontWeight="900" fontStyle="italic" fontSize="14" fill="#fff">
+          <text
+            x="24"
+            y="21"
+            textAnchor="middle"
+            fontFamily="Arial Black, Arial, sans-serif"
+            fontWeight="900"
+            fontStyle="italic"
+            fontSize="14"
+            fill="#fff"
+          >
             VISA
           </text>
         </svg>
@@ -333,7 +373,15 @@ export function CardIcon({ type, dim = false }: { type: CardType; dim?: boolean 
       return (
         <svg className={cls} viewBox="0 0 48 32" width="40" height="26" aria-label="American Express">
           <rect width="48" height="32" rx="5" fill="#2e77bb" />
-          <text x="24" y="20" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="10" fill="#fff">
+          <text
+            x="24"
+            y="20"
+            textAnchor="middle"
+            fontFamily="Arial, sans-serif"
+            fontWeight="700"
+            fontSize="10"
+            fill="#fff"
+          >
             AMEX
           </text>
         </svg>
@@ -343,7 +391,15 @@ export function CardIcon({ type, dim = false }: { type: CardType; dim?: boolean 
         <svg className={cls} viewBox="0 0 48 32" width="40" height="26" aria-label="Discover">
           <rect width="48" height="32" rx="5" fill="#f5f5f5" />
           <circle cx="36" cy="16" r="7" fill="#f76f20" />
-          <text x="16" y="20" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="8" fill="#222">
+          <text
+            x="16"
+            y="20"
+            textAnchor="middle"
+            fontFamily="Arial, sans-serif"
+            fontWeight="700"
+            fontSize="8"
+            fill="#222"
+          >
             DISC
           </text>
         </svg>

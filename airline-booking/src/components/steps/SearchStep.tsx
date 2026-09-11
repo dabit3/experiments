@@ -42,50 +42,68 @@ export function SearchStep({ initial, onSearch }: Props) {
 
   return (
     <div className="search-hero">
-      <svg className="hero-art" viewBox="0 0 1200 420" aria-hidden preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="contrail" x1="0" x2="1">
-            <stop offset="0" stopColor="#7cc4ff" stopOpacity="0" />
-            <stop offset="0.55" stopColor="#7cc4ff" stopOpacity="0.55" />
-            <stop offset="1" stopColor="#ffd58a" stopOpacity="0.9" />
-          </linearGradient>
-        </defs>
-        <path className="hero-path" d="M-40 360 C 260 330, 520 120, 820 96 S 1180 70, 1260 40" fill="none" stroke="url(#contrail)" strokeWidth="2" strokeDasharray="6 10" />
-        <path className="hero-path hero-path-2" d="M-40 400 C 300 372, 560 200, 860 160 S 1180 118, 1260 92" fill="none" stroke="url(#contrail)" strokeWidth="1" opacity="0.5" />
-        <g className="hero-plane">
-          <path d="M0 0l-22 6 6-6-6-6z" fill="#ffd58a" />
-        </g>
-      </svg>
-      <div className="hero-copy">
-        <p className="eyebrow">
-          <span className="eyebrow-dot" /> Fly with Contrail Air
-        </p>
-        <h1>
-          Where to <em>next?</em>
-        </h1>
-        <p className="lede">Search 60 airports, pick your seats, and walk away with boarding passes — all in one flow.</p>
+      <div className="hero-scene">
+        <img
+          className="hero-image"
+          src={`${import.meta.env.BASE_URL}contrail-coast.webp`}
+          alt="Sunlit cliffs meeting the Pacific along the California coast"
+          width="1536"
+          height="1024"
+          fetchPriority="high"
+        />
+        <div className="hero-copy">
+          <p className="eyebrow">The art of getting there</p>
+          <h1>
+            Where to <em>next?</em>
+          </h1>
+          <p className="lede">
+            For the places you've dreamed of.
+            <br />
+            And the people you can't wait to see.
+          </p>
+        </div>
+        <div className="hero-caption">
+          <span>Find your perspective</span>
+          <strong>The Pacific Coast, California</strong>
+        </div>
       </div>
 
       <form className="card search-card" onSubmit={submit} noValidate>
-        <div className="segmented" role="radiogroup" aria-label="Trip type">
-          <button
-            type="button"
-            role="radio"
-            aria-checked={params.roundTrip}
-            className={params.roundTrip ? 'active' : ''}
-            onClick={() => update({ roundTrip: true })}
-          >
-            Round trip
-          </button>
-          <button
-            type="button"
-            role="radio"
-            aria-checked={!params.roundTrip}
-            className={!params.roundTrip ? 'active' : ''}
-            onClick={() => update({ roundTrip: false, ret: null })}
-          >
-            One way
-          </button>
+        <div className="search-card-head">
+          <div className="search-card-title">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              aria-hidden
+            >
+              <path d="m3 17 18-7-2-2-6 1-4-5-2 1 2 6-4 2-3-2-1 1zM3 21h18" strokeLinejoin="round" />
+            </svg>
+            <h2>Book a flight</h2>
+          </div>
+          <div className="segmented" role="radiogroup" aria-label="Trip type">
+            <button
+              type="button"
+              role="radio"
+              aria-checked={params.roundTrip}
+              className={params.roundTrip ? 'active' : ''}
+              onClick={() => update({ roundTrip: true })}
+            >
+              Round trip
+            </button>
+            <button
+              type="button"
+              role="radio"
+              aria-checked={!params.roundTrip}
+              className={!params.roundTrip ? 'active' : ''}
+              onClick={() => update({ roundTrip: false, ret: null })}
+            >
+              One way
+            </button>
+          </div>
         </div>
 
         <div className="search-row airports-row">
@@ -98,9 +116,22 @@ export function SearchStep({ initial, onSearch }: Props) {
             error={errors.from}
             onChange={(ap) => update({ from: ap })}
           />
-          <button type="button" className="swap-btn" onClick={swap} aria-label="Swap origin and destination" title="Swap">
+          <button
+            type="button"
+            className="swap-btn"
+            onClick={swap}
+            aria-label="Swap origin and destination"
+            title="Swap"
+          >
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
-              <path d="M7 7h11m0 0l-3-3m3 3l-3 3M17 17H6m0 0l3 3m-3-3l3-3" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M7 7h11m0 0l-3-3m3 3l-3 3M17 17H6m0 0l3 3m-3-3l3-3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
           <AirportAutocomplete
@@ -152,50 +183,83 @@ export function SearchStep({ initial, onSearch }: Props) {
         </div>
 
         <div className="search-actions">
-          <span className="muted">
+          <span className="search-recap">
             {paxTotal} passenger{paxTotal === 1 ? '' : 's'} · {params.roundTrip ? 'Round trip' : 'One way'} · Economy
           </span>
           <button type="submit" className="btn btn-primary btn-lg">
             Search flights
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden>
-              <path d="M5 12h14m0 0l-6-6m6 6l-6 6" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M5 12h14m0 0l-6-6m6 6l-6 6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
         </div>
       </form>
 
+      <div className="experience-heading">
+        <span className="eyebrow">Considered, from the start</span>
+        <h2>
+          A journey that feels like <em>yours.</em>
+        </h2>
+      </div>
       <ul className="hero-perks">
         <li>
           <span className="perk-icon">
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
-              <path d="M4 7h16v10H4zM4 11h16M8 15h3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M4 7h16v10H4zM4 11h16M8 15h3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </span>
           <span className="perk-text">
-            <strong>No hidden fees</strong>
-            <span>Taxes shown before you pay</span>
+            <strong>A little more clarity</strong>
+            <span>Compare fares with confidence. Every tax and fee, clearly shown before you pay.</span>
           </span>
         </li>
         <li>
           <span className="perk-icon">
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
-              <path d="M7 4h10v9H7zM5 13h14v4H5zM8 17v3M16 17v3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              <path
+                d="M7 4h10v9H7zM5 13h14v4H5zM8 17v3M16 17v3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </span>
           <span className="perk-text">
-            <strong>Pick any seat</strong>
-            <span>Live seat map for every flight</span>
+            <strong>Your favourite place on board</strong>
+            <span>A window to the world or room to stretch. Choose your seat on every flight.</span>
           </span>
         </li>
         <li>
           <span className="perk-icon">
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden>
-              <path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h3v3h-3zM17 17h3v3h-3zM17 13h3M13 20h3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+              <path
+                d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h3v3h-3zM17 17h3v3h-3zM17 13h3M13 20h3"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinejoin="round"
+              />
             </svg>
           </span>
           <span className="perk-text">
-            <strong>Instant boarding passes</strong>
-            <span>QR codes and a calendar file</span>
+            <strong>Ready for what comes next</strong>
+            <span>Your boarding passes and itinerary, together. One less thing to think about.</span>
           </span>
         </li>
       </ul>

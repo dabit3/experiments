@@ -16,16 +16,24 @@ export function TripSummary({ search, selections, passengers, seats, price }: Pr
   const legs: Leg[] = search.roundTrip ? ['outbound', 'return'] : ['outbound']
   return (
     <div className="card trip-summary">
-      <h3>Your trip</h3>
-      <div className="summary-route">
-        <span className="summary-code">{search.from?.code}</span>
-        <span className="summary-arrow">{search.roundTrip ? '⇄' : '→'}</span>
-        <span className="summary-code">{search.to?.code}</span>
+      <div className="summary-heading">
+        <h3>Your trip</h3>
+        <div className="summary-route">
+          <div>
+            <span className="summary-code">{search.from?.code}</span>
+            <span className="summary-city">{search.from?.city}</span>
+          </div>
+          <span className="summary-arrow">{search.roundTrip ? '⇄' : '→'}</span>
+          <div>
+            <span className="summary-code">{search.to?.code}</span>
+            <span className="summary-city">{search.to?.city}</span>
+          </div>
+        </div>
+        <p className="muted">
+          {formatMedium(search.depart)}
+          {search.roundTrip && ` – ${formatMedium(search.ret)}`} · {paxCount} passenger{paxCount === 1 ? '' : 's'}
+        </p>
       </div>
-      <p className="muted">
-        {formatMedium(search.depart)}
-        {search.roundTrip && ` – ${formatMedium(search.ret)}`} · {paxCount} passenger{paxCount === 1 ? '' : 's'}
-      </p>
 
       <ul className="summary-legs">
         {legs.map((leg) => {
@@ -97,10 +105,20 @@ export function TripSummary({ search, selections, passengers, seats, price }: Pr
           </div>
         )}
         <div className="total">
-          <dt>Total</dt>
-          <dd>{money(price.total)}</dd>
+          <dt>
+            Total{' '}
+            <small>
+              {paxCount} traveller{paxCount === 1 ? '' : 's'} · USD
+            </small>
+          </dt>
+          <dd aria-live="polite">{money(price.total)}</dd>
         </div>
       </dl>
+      <p className="summary-note">
+        All prices in US dollars.
+        <br />
+        Taxes and selected extras included in your total.
+      </p>
     </div>
   )
 }
