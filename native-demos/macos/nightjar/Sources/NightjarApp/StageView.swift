@@ -56,6 +56,7 @@ final class LightingView: SCNView {
     let material = SCNMaterial()
     material.lightingModel = .blinn
     material.diffuse.contents = color
+    material.emission.contents = color.blended(withFraction: 0.86, of: .black)
     material.specular.contents = NSColor(white: metallic * 0.25, alpha: 1)
     material.shininess = 0.35
     material.metalness.contents = metallic
@@ -95,8 +96,8 @@ final class LightingView: SCNView {
     cameraNode.camera?.fieldOfView = 40
     cameraNode.camera?.zNear = 0.1
     cameraNode.camera?.zFar = 80
-    cameraNode.camera?.wantsHDR = true
-    cameraNode.camera?.exposureOffset = -0.25
+    cameraNode.camera?.wantsHDR = false
+    cameraNode.camera?.wantsExposureAdaptation = false
     cameraNode.camera?.bloomIntensity = 0.08
     cameraNode.camera?.bloomThreshold = 1.2
     cameraNode.camera?.bloomBlurRadius = 5
@@ -235,7 +236,7 @@ final class LightingView: SCNView {
       rig.position = fixture.position.scn
       rig.look(at: fixture.target.scn)
       rig.light?.color = fixture.color.nsColor
-      rig.light?.intensity = fixture.intensity * 750
+      rig.light?.intensity = fixture.intensity * 950
       rig.light?.spotInnerAngle = CGFloat(fixture.beam * 0.55)
       rig.light?.spotOuterAngle = CGFloat(fixture.beam)
       if let lens = rig.childNode(withName: "lens", recursively: false) {
