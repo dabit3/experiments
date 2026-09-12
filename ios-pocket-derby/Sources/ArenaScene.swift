@@ -19,7 +19,7 @@ final class ArenaScene: SKScene {
     init(store: GameStore) {
         self.store = store
         super.init(size: CGSize(width: 1100, height: 480))
-        scaleMode = .aspectFit
+        scaleMode = .resizeFill
         backgroundColor = .clear
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
         buildArena()
@@ -40,6 +40,12 @@ final class ArenaScene: SKScene {
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func didChangeSize(_: CGSize) {
+        let scale = min(size.width / 1020, size.height / 396)
+        arena.xScale = scale
+        arena.yScale = scale * 0.9
     }
 
     private func shape(

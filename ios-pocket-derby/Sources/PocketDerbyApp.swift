@@ -127,7 +127,7 @@ struct DerbyView: View {
                     Spacer()
                     capsule("90 SEC", color: cyan)
                 }.padding(.horizontal, 22)
-                SpriteView(scene: scene, options: [.allowsTransparency])
+                ArenaView(scene: scene)
                     .allowsHitTesting(false)
                     .frame(maxHeight: 235)
                     .rotationEffect(.degrees(-5))
@@ -142,7 +142,7 @@ struct DerbyView: View {
         .padding(.vertical, 15)
     }
 
-    private func match(scene: ArenaScene, compact: Bool) -> some View {
+    private func match(scene: ArenaScene, compact _: Bool) -> some View {
         VStack(spacing: 0) {
             HStack {
                 HStack(spacing: 7) {
@@ -159,9 +159,9 @@ struct DerbyView: View {
                 }.accessibilityLabel("Pause match").accessibilityIdentifier("pause")
             }
             .padding(.horizontal, 22)
-            .frame(height: compact ? 45 : 52)
+            .frame(height: 45)
             ZStack {
-                SpriteView(scene: scene, options: [.allowsTransparency])
+                ArenaView(scene: scene)
                     .accessibilityLabel("Arena. Tap a location to drive there.")
                     .accessibilityIdentifier("arena")
                 if store.engine.phase == .kickoff {
@@ -187,7 +187,7 @@ struct DerbyView: View {
                 }
             }
             HStack(spacing: 18) {
-                Joystick(store: store).frame(width: 100, height: compact ? 76 : 90)
+                Joystick(store: store).frame(width: 78, height: 70)
                 VStack(alignment: .leading, spacing: 5) {
                     Text("STEER & DRIVE").font(.system(size: 10, weight: .heavy)).tracking(1.2)
                     Text("Drag the stick, or tap the pitch.").font(.system(size: 11)).foregroundStyle(muted)
@@ -226,7 +226,7 @@ struct DerbyView: View {
                 .accessibilityLabel("Boost").accessibilityIdentifier("boost")
             }
             .padding(.horizontal, 28)
-            .frame(height: compact ? 77 : 92)
+            .frame(height: 73)
         }.padding(.bottom, 3)
     }
 
@@ -450,5 +450,26 @@ private struct Joystick: View {
 extension Color {
     init(hex: UInt32) {
         self.init(uiColor: UIColor(hex: hex))
+    }
+}
+
+private struct ArenaView: UIViewRepresentable {
+    let scene: ArenaScene
+
+    func makeUIView(context _: Context) -> SKView {
+        let view = SKView()
+        view.backgroundColor = .clear
+        view.isOpaque = false
+        view.allowsTransparency = true
+        view.ignoresSiblingOrder = true
+        view.preferredFramesPerSecond = 60
+        view.presentScene(scene)
+        return view
+    }
+
+    func updateUIView(_ uiView: SKView, context _: Context) {
+        if uiView.scene !== scene {
+            uiView.presentScene(scene)
+        }
     }
 }
