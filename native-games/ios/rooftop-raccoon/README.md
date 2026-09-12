@@ -44,7 +44,7 @@ cp Assets.xcassets/AppIcon.appiconset/AppIcon.png Assets.xcassets/LaunchRaccoon.
 - Each move or **Wait** costs one beat. There is no reaction timer.
 - Mint **HIDE** roofs are safe. **WATCHED** forecasts danger on the **next** action, including waiting on that roof. Windows sweep for two beats out of four; cats wake for one. Garden cover always wins.
 - Collect distinct snacks, then reach the striped water tower at the top right. The first district needs four snacks, the next five, the last six. Every district has seven, and a perfect seven-snack route is possible.
-- Three sightings ends the run. The beat budget ends at sunrise. Escaping on the last beat still counts. Retry is immediate; pause can restart, show field notes, or return home.
+- Three sightings ends the run. The beat budget ends at sunrise. Escaping on the last beat still counts. Retry is immediate; pause can restart after confirmation, show field notes, or return home.
 - Score on escape = `120 × snacks + 25 × remaining beats − 150 × sightings`, minimum zero. Zero sightings earns “Silent & Snacky”; all seven without a sighting earns “The Snack Phantom.”
 - Escapes unlock the next district. Personal bests, unlocks, tutorial completion and audio/haptic settings persist locally with `UserDefaults`.
 - Results create a 880×1380 wanted-poster image and descriptive text for the real iOS share sheet.

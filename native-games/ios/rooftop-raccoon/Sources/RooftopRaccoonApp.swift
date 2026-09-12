@@ -586,6 +586,7 @@ struct TutorialView: View {
 
 struct PauseView: View {
   @Bindable var store: GameStore
+  @State private var confirmRestart = false
   var body: some View {
     ZStack {
       Palette.ink.ignoresSafeArea()
@@ -597,7 +598,7 @@ struct PauseView: View {
           .foregroundStyle(Palette.cream)
         PrimaryButton(title: "BACK TO MISCHIEF", symbol: "play.fill") { store.paused = false }
           .accessibilityIdentifier("resume")
-        Button("Restart this heist") { store.start() }
+        Button("Restart this heist") { confirmRestart = true }
           .accessibilityIdentifier("restart")
         Button("Field notes") {
           store.tutorialPage = 0
@@ -612,6 +613,14 @@ struct PauseView: View {
       .buttonStyle(.borderless)
       .padding(30)
       .frame(maxWidth: 430)
+    }
+    .alert("Restart this heist?", isPresented: $confirmRestart) {
+      Button("Restart", role: .destructive) { store.start() }
+        .accessibilityIdentifier("confirm-restart")
+      Button("Keep playing", role: .cancel) {}
+        .accessibilityIdentifier("cancel-restart")
+    } message: {
+      Text("Your current snacks and moves will be lost. Your best scores stay saved.")
     }
     .accessibilityAddTraits(.isModal)
   }
