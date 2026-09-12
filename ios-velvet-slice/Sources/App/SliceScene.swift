@@ -214,7 +214,7 @@ final class SliceScene: SKScene {
                 rules.hitBomb()
                 burst(at: item.node.position, color: UIColor.systemRed, count: 25)
                 label("BOMB  −25", at: item.node.position, color: UIColor(red: 1, green: 0.47, blue: 0.4, alpha: 1))
-                flash(UIColor(red: 1, green: 0.35, blue: 0.3, alpha: 0.22))
+                flash(UIColor(red: 1, green: 0.35, blue: 0.3, alpha: 0.55))
                 store?.sound.play(bomb: true)
             } else {
                 rules.slice()
@@ -336,9 +336,10 @@ final class SliceScene: SKScene {
     }
 
     private func stain(at point: CGPoint, color: UIColor, angle: CGFloat) {
-        let stain = SKShapeNode(ellipseOf: CGSize(width: 96, height: 30))
-        stain.fillColor = color.withAlphaComponent(0.2)
-        stain.strokeColor = .clear
+        let stain = SKSpriteNode(texture: FruitArt.splatter, size: CGSize(width: 150, height: 70))
+        stain.color = color
+        stain.colorBlendFactor = 1
+        stain.alpha = 0.55
         stain.position = point
         stain.zRotation = angle
         stain.zPosition = 1
@@ -352,7 +353,10 @@ final class SliceScene: SKScene {
 
     private func flash(_ color: UIColor) {
         guard !UIAccessibility.isReduceMotionEnabled else { return }
-        let flash = SKSpriteNode(color: color, size: size)
+        let flash = SKSpriteNode(texture: FruitArt.vignette, size: CGSize(width: size.width * 1.4, height: size.height * 1.4))
+        flash.color = color
+        flash.colorBlendFactor = 1
+        flash.alpha = color.cgColor.alpha
         flash.position = CGPoint(x: size.width / 2, y: size.height / 2)
         flash.zPosition = 60
         addChild(flash)

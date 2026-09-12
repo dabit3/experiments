@@ -1,3 +1,4 @@
+import SpriteKit
 import UIKit
 
 enum FruitKind: Int, CaseIterable {
@@ -16,6 +17,8 @@ enum FruitKind: Int, CaseIterable {
 enum FruitArt {
     static let images = FruitKind.allCases.map { draw($0) }
     static let bomb = drawBomb()
+    static let splatter = SKTexture(image: drawSplatter())
+    static let vignette = SKTexture(image: drawVignette())
 
     static func image(_ kind: FruitKind) -> UIImage {
         images[kind.rawValue]
@@ -145,6 +148,32 @@ enum FruitArt {
                 c.addLine(to: CGPoint(x: 46, y: -109))
                 c.strokePath()
             }
+        }
+    }
+
+    static func drawSplatter() -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: 300, height: 140)).image { renderer in
+            let c = renderer.cgContext
+            c.translateBy(x: 150, y: 70)
+            let fade: [CGColor] = [UIColor.white.cgColor, UIColor.white.withAlphaComponent(0).cgColor]
+            guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: fade as CFArray, locations: [0.15, 1]) else { return }
+            let blobs: [(CGFloat, CGFloat, CGFloat, CGFloat)] = [(0, 0, 70, 24), (-58, 6, 32, 14), (54, -7, 38, 15), (-96, -4, 16, 8), (98, 9, 18, 9), (22, 17, 20, 9), (-30, -18, 18, 8)]
+            for (x, y, w, h) in blobs {
+                c.saveGState()
+                c.translateBy(x: x, y: y)
+                c.scaleBy(x: w / 24, y: h / 24)
+                c.drawRadialGradient(gradient, startCenter: .zero, startRadius: 0, endCenter: .zero, endRadius: 24, options: [])
+                c.restoreGState()
+            }
+        }
+    }
+
+    static func drawVignette() -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: 256, height: 256)).image { renderer in
+            let c = renderer.cgContext
+            let fade: [CGColor] = [UIColor.white.cgColor, UIColor.white.withAlphaComponent(0.35).cgColor, UIColor.white.withAlphaComponent(0).cgColor]
+            guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: fade as CFArray, locations: [0, 0.45, 1]) else { return }
+            c.drawRadialGradient(gradient, startCenter: CGPoint(x: 128, y: 128), startRadius: 0, endCenter: CGPoint(x: 128, y: 128), endRadius: 128, options: [])
         }
     }
 
