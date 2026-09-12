@@ -1,0 +1,403 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3252E8F2FB93F32AB7B5E907 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD5E284D03EB2507DFD2A95 /* GameModel.swift */; };
+		87814C11C9BA9F79136E4930 /* LaneArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370FE8E7404D20F6043245D /* LaneArtwork.swift */; };
+		A725A4EF1FDCE2DEF2B7216C /* LucidLanesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B1162D119D0DCD68BB2DE5 /* LucidLanesApp.swift */; };
+		D55F8B7B7DAD3AE132452528 /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AE1BE9047A66F0CC0AE8F8 /* Rules.swift */; };
+		D85FAF5E09468A970DAFE607 /* RulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42CA22D4060207F6D360BE6 /* RulesTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DCFCEE640DB30A64778A154F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E30D968F5CC2E276D8DA501 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F88DF4877139AE40BEBC9D8C;
+			remoteInfo = LucidLanes;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0370FE8E7404D20F6043245D /* LaneArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaneArtwork.swift; sourceTree = "<group>"; };
+		1354FE0846CFA2978820EDB1 /* LucidLanesTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LucidLanesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		21E0245C25D264BEE3352138 /* LucidLanes.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LucidLanes.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		34AE1BE9047A66F0CC0AE8F8 /* Rules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rules.swift; sourceTree = "<group>"; };
+		A7B1162D119D0DCD68BB2DE5 /* LucidLanesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LucidLanesApp.swift; sourceTree = "<group>"; };
+		ABD5E284D03EB2507DFD2A95 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		D42CA22D4060207F6D360BE6 /* RulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0C9788D9CCD0F1B6D28D1D96 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				D42CA22D4060207F6D360BE6 /* RulesTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		BF3F5E7D7BFB64E3CA7B6514 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				ABD5E284D03EB2507DFD2A95 /* GameModel.swift */,
+				0370FE8E7404D20F6043245D /* LaneArtwork.swift */,
+				A7B1162D119D0DCD68BB2DE5 /* LucidLanesApp.swift */,
+				34AE1BE9047A66F0CC0AE8F8 /* Rules.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		DC1ECC455E12B4DE5DC1054A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				21E0245C25D264BEE3352138 /* LucidLanes.app */,
+				1354FE0846CFA2978820EDB1 /* LucidLanesTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EF476113E458F0C360F0E96E = {
+			isa = PBXGroup;
+			children = (
+				BF3F5E7D7BFB64E3CA7B6514 /* Sources */,
+				0C9788D9CCD0F1B6D28D1D96 /* Tests */,
+				DC1ECC455E12B4DE5DC1054A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B37224844C8D20E04485D486 /* LucidLanesTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2EDF15DFAC6E8CE14F533721 /* Build configuration list for PBXNativeTarget "LucidLanesTests" */;
+			buildPhases = (
+				0DC9E045F2A4B1298871257F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6688CD1A32C5E1EE6B6AD798 /* PBXTargetDependency */,
+			);
+			name = LucidLanesTests;
+			packageProductDependencies = (
+			);
+			productName = LucidLanesTests;
+			productReference = 1354FE0846CFA2978820EDB1 /* LucidLanesTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		F88DF4877139AE40BEBC9D8C /* LucidLanes */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 833D78E403F652B805FD01AB /* Build configuration list for PBXNativeTarget "LucidLanes" */;
+			buildPhases = (
+				A9BEE7390E7AA14996AE87C3 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LucidLanes;
+			packageProductDependencies = (
+			);
+			productName = LucidLanes;
+			productReference = 21E0245C25D264BEE3352138 /* LucidLanes.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3E30D968F5CC2E276D8DA501 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 60EFC2AB9C56FED6EA0D15C1 /* Build configuration list for PBXProject "LucidLanes" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = EF476113E458F0C360F0E96E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = DC1ECC455E12B4DE5DC1054A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F88DF4877139AE40BEBC9D8C /* LucidLanes */,
+				B37224844C8D20E04485D486 /* LucidLanesTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0DC9E045F2A4B1298871257F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D85FAF5E09468A970DAFE607 /* RulesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A9BEE7390E7AA14996AE87C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3252E8F2FB93F32AB7B5E907 /* GameModel.swift in Sources */,
+				87814C11C9BA9F79136E4930 /* LaneArtwork.swift in Sources */,
+				A725A4EF1FDCE2DEF2B7216C /* LucidLanesApp.swift in Sources */,
+				D55F8B7B7DAD3AE132452528 /* Rules.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6688CD1A32C5E1EE6B6AD798 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F88DF4877139AE40BEBC9D8C /* LucidLanes */;
+			targetProxy = DCFCEE640DB30A64778A154F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		7F68BA797BE99CEC6FC2B557 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit.lucidlanes.LucidLanesTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LucidLanes.app/LucidLanes";
+			};
+			name = Release;
+		};
+		953947C7AEFE6897FF7E8730 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit.lucidlanes.LucidLanesTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LucidLanes.app/LucidLanes";
+			};
+			name = Debug;
+		};
+		C2D017D06F65D331C00862F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		CFCDFA79B013163DE0A60140 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit.lucidlanes;
+				PRODUCT_NAME = LucidLanes;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E2F7088F049B3B10F0BDCB70 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit.lucidlanes;
+				PRODUCT_NAME = LucidLanes;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EDF238F5974958FE80DE755D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2EDF15DFAC6E8CE14F533721 /* Build configuration list for PBXNativeTarget "LucidLanesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				953947C7AEFE6897FF7E8730 /* Debug */,
+				7F68BA797BE99CEC6FC2B557 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		60EFC2AB9C56FED6EA0D15C1 /* Build configuration list for PBXProject "LucidLanes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C2D017D06F65D331C00862F1 /* Debug */,
+				EDF238F5974958FE80DE755D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		833D78E403F652B805FD01AB /* Build configuration list for PBXNativeTarget "LucidLanes" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CFCDFA79B013163DE0A60140 /* Debug */,
+				E2F7088F049B3B10F0BDCB70 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3E30D968F5CC2E276D8DA501 /* Project object */;
+}

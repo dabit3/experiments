@@ -1,0 +1,49 @@
+import AppKit
+import Foundation
+
+let size = 1024
+let bitmap = NSBitmapImageRep(
+    bitmapDataPlanes: nil, pixelsWide: size, pixelsHigh: size, bitsPerSample: 8,
+    samplesPerPixel: 3, hasAlpha: false, isPlanar: false, colorSpaceName: .deviceRGB,
+    bytesPerRow: 0, bitsPerPixel: 0)!
+NSGraphicsContext.saveGraphicsState()
+NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: bitmap)
+let ink = NSColor(srgbRed: 0.055, green: 0.058, blue: 0.13, alpha: 1)
+let peach = NSColor(srgbRed: 1, green: 0.73, blue: 0.61, alpha: 1)
+let mint = NSColor(srgbRed: 0.64, green: 0.96, blue: 0.91, alpha: 1)
+ink.setFill()
+NSBezierPath(rect: NSRect(x: 0, y: 0, width: size, height: size)).fill()
+for i in 0..<4 {
+    let inset = CGFloat(i) * 56
+    let path = NSBezierPath()
+    path.move(to: CGPoint(x: 156 + inset, y: 100))
+    path.line(to: CGPoint(x: 156 + inset, y: 540 - inset / 2))
+    path.curve(
+        to: CGPoint(x: 868 - inset, y: 540 - inset / 2),
+        controlPoint1: CGPoint(x: 156 + inset, y: 1010 - inset),
+        controlPoint2: CGPoint(x: 868 - inset, y: 1010 - inset))
+    path.line(to: CGPoint(x: 868 - inset, y: 100))
+    peach.withAlphaComponent(0.28 + CGFloat(i) * 0.2).setStroke()
+    path.lineWidth = i == 0 ? 12 : 6
+    path.stroke()
+}
+for i in 0..<7 {
+    let path = NSBezierPath()
+    path.move(to: CGPoint(x: 110 + CGFloat(i) * 134, y: 0))
+    path.line(to: CGPoint(x: 440 + CGFloat(i) * 24, y: 465))
+    peach.withAlphaComponent(0.2).setStroke()
+    path.lineWidth = 2
+    path.stroke()
+}
+let ball = NSBezierPath(ovalIn: NSRect(x: 329, y: 163, width: 366, height: 366))
+NSGradient(colors: [.white, mint, NSColor(srgbRed: 0.1, green: 0.42, blue: 0.5, alpha: 1)])!
+    .draw(in: ball, relativeCenterPosition: NSPoint(x: -0.35, y: 0.5))
+ink.setFill()
+for point in [CGPoint(x: 462, y: 415), CGPoint(x: 525, y: 404), CGPoint(x: 485, y: 352)] {
+    NSBezierPath(ovalIn: NSRect(x: point.x, y: point.y, width: 26, height: 32)).fill()
+}
+NSGraphicsContext.restoreGraphicsState()
+let output =
+    CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "Assets.xcassets/AppIcon.appiconset/AppIcon.png"
+try bitmap.representation(using: .png, properties: [:])!.write(to: URL(fileURLWithPath: output))
+print("Generated \(output)")
