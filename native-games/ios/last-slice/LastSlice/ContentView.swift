@@ -290,7 +290,9 @@ struct ContentView: View {
                 ? "\(verdict.accuracy)% PRECISION"
                 : "\(verdict.passedCount) OF \(model.dinner.guests.count) GUESTS HAPPY")
             Spacer()
-            Text("\(model.cuts.count) / \(model.dinner.budget) cuts").font(
+            Text(
+              "\(model.cuts.count) / \(model.dinner.budget) \(model.dinner.budget == 1 ? "cut" : "cuts")"
+            ).font(
               .system(size: 12, weight: .medium))
           }.padding(.horizontal, 25).padding(.vertical, 12)
           VStack(spacing: 0) {
@@ -469,7 +471,9 @@ struct ContentView: View {
               ).foregroundStyle(Palette.red)
               VStack(alignment: .leading, spacing: 4) {
                 Text(dinner.title).font(Palette.serif(20))
-                Text("\(dinner.guests.count) guests · \(dinner.budget) cuts").font(
+                Text(
+                  "\(dinner.guests.count) guests · \(dinner.budget) \(dinner.budget == 1 ? "cut" : "cuts")"
+                ).font(
                   .system(size: 11))
               }
               Spacer()
@@ -567,7 +571,7 @@ struct ContentView: View {
     share = SharePayload(
       image: image,
       text:
-        "Last Slice · \(model.dinner.title). \(verdict.passedCount)/\(model.dinner.guests.count) happy guests, \(model.cuts.count) cuts, \(verdict.accuracy)% precision. \(verdict.success ? "Tutti felici!" : "Another round, chef.")"
+        "Last Slice · \(model.dinner.title). \(verdict.passedCount)/\(model.dinner.guests.count) happy guests, \(model.cuts.count) \(model.cuts.count == 1 ? "cut" : "cuts"), \(verdict.accuracy)% precision. \(verdict.success ? "Tutti felici!" : "Another round, chef.")"
     )
   }
 }
@@ -612,7 +616,7 @@ struct ResultPostcard: View {
         height: 310)
       Text(dinner.title).font(Palette.serif(26))
       Text(
-        "\(verdict.passedCount)/\(dinner.guests.count) happy guests · \(cuts.count) cuts · \(verdict.accuracy)% precision"
+        "\(verdict.passedCount)/\(dinner.guests.count) happy guests · \(cuts.count) \(cuts.count == 1 ? "cut" : "cuts") · \(verdict.accuracy)% precision"
       )
       .font(.system(size: 12)).padding(.top, 9)
       HStack(spacing: 19) {

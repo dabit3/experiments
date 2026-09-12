@@ -48,7 +48,8 @@ xcodebuild -project LastSlice.xcodeproj -scheme LastSlice \
 The builds typecheck all Swift. XCTest covers polygon area conservation, reversed
 lines, degenerate/tangent/tiny cuts, topping boundary ownership, all twelve
 solvable dinners, optimal guest assignment, tolerance, excess/missing portions,
-UTC daily stability, undo/reset/budget and saved progress.
+UTC daily stability, undo/reset/budget, saved progress, result snapshots during
+retry, topping separation and label clearance on different board sizes.
 
 The icon is original AppKit vector artwork, reproducible with:
 
@@ -69,6 +70,9 @@ swift Tools/GenerateIcon.swift LastSlice/Assets.xcassets/AppIcon.appiconset/AppI
   polygon, once only.
 - Live labels show area and topping counts. Serving assigns portions to guests to
   maximize satisfied requests, then minimize mismatch. Every piece needs a guest.
+- Percentage badges use clear space inside a portion and are omitted when there
+  is no room without covering toppings. Guest feedback always shows the assigned
+  percentage and requested topping count.
 - Undo/reset cost nothing. **Chef's hint** draws the next line of a known solution;
   it does not perform the cut or change the score. After diverging from that
   solution, reset before following the full guide.
