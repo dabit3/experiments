@@ -45,7 +45,10 @@ struct AnglerView: View {
     }
     .preferredColorScheme(.dark)
     .sheet(item: $panel) { item in
-      FieldPanel(store: store, panel: item)
+      FieldPanel(store: store, panel: item) {
+        panel = nil
+        showTutorial = true
+      }
     }
     .onReceive(clock) { _ in store.tick(0.05) }
     .onChange(of: scenePhase) { _, phase in
@@ -130,6 +133,9 @@ struct AnglerView: View {
           Text(store.phase == .duel ? store.duel.species.name : "Follow the ripples")
             .font(.system(size: 23, design: .serif))
         }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(Ink.night.opacity(0.72), in: RoundedRectangle(cornerRadius: 6))
         Spacer()
         Button {
           store.pause()
@@ -310,7 +316,7 @@ struct AnglerView: View {
           Eyebrow(text: "03 / THE DUEL")
           Spacer()
           Text("\(Int(store.duel.landed * 100))% LANDED")
-            .font(.system(size: 10, weight: .semibold, design: .monospaced))
+            .font(.system(size: 12, weight: .semibold, design: .monospaced))
         }
         GeometryReader { g in
           ZStack(alignment: .leading) {
@@ -325,7 +331,7 @@ struct AnglerView: View {
             store.duel.surging
               ? "SURGE · RELEASE" : store.duel.warning ? "SURGE APPROACHING" : "STEADY · REEL IN"
           )
-          .font(.system(size: 11, weight: .semibold, design: .monospaced))
+          .font(.system(size: 12, weight: .semibold, design: .monospaced))
           Spacer()
         }
         .foregroundStyle(store.duel.surging || store.duel.warning ? Ink.gold : Ink.mint)
@@ -335,7 +341,7 @@ struct AnglerView: View {
             ? "Too much slack — reel now"
             : store.holding ? "Reeling · watch your tension" : "Release to soften • hold to reel"
         )
-        .font(.system(size: 12)).foregroundStyle(
+        .font(.system(size: 14)).foregroundStyle(
           store.duel.slack > 1 ? Ink.gold : Ink.cream.opacity(0.8))
         Text(store.holding ? "REELING" : "HOLD TO REEL")
           .font(.system(size: 15, weight: .bold)).tracking(2)
@@ -366,7 +372,7 @@ struct AnglerView: View {
         Text(store.duel.tension > 0.8 ? "DANGER" : store.duel.tension < 0.1 ? "SLACK" : "BALANCED")
           .foregroundStyle(store.duel.tension > 0.8 ? Ink.coral : Ink.mint)
       }
-      .font(.system(size: 10, weight: .semibold, design: .monospaced)).tracking(1.5)
+      .font(.system(size: 11, weight: .semibold, design: .monospaced)).tracking(1.5)
       GeometryReader { g in
         ZStack(alignment: .leading) {
           Capsule().fill(

@@ -176,6 +176,7 @@ final class CatchShareItem: NSObject, UIActivityItemSource {
 struct FieldPanel: View {
   @ObservedObject var store: GameStore
   let panel: AnglerView.Panel
+  let replayTutorial: () -> Void
   @Environment(\.dismiss) private var dismiss
   var title: String {
     switch panel {
@@ -292,6 +293,10 @@ struct FieldPanel: View {
         "haptic-toggle")
       Divider()
       Text("A field guide to fishing").font(.system(size: 23, design: .serif))
+      CapsuleAction(title: "Replay tutorial", icon: "book") {
+        dismiss()
+        replayTutorial()
+      }
       Text(
         "Aim at a fish and cast. When the float dips, tap HOOK. Hold the reel to bring your catch closer. Release before the fish surges; the amber warning gives you time. A full tension bar snaps the line. Five seconds of slack lets the fish escape."
       )

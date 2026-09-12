@@ -87,4 +87,33 @@ final class GameRulesTests: XCTestCase {
     for _ in 0..<31 { store.tick(0.05) }
     XCTAssertEqual(store.phase, .bite)
   }
+
+  @MainActor
+  func testCatchIsSavedOnceDuringLeapAndSurvivesRelaunch() throws {
+    let suite = "DuskAnglerTests-\(UUID().uuidString)"
+    let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let store = GameStore(defaults: defaults)
+    store.sound = false
+    store.haptics = false
+    store.begin()
+    store.cast()
+    for _ in 0..<31 { store.tick(0.05) }
+    store.hook()
+    for _ in 0..<900 where store.phase == .duel {
+      store.holding = !store.duel.surging && store.duel.tension < 0.65
+      store.tick(0.05)
+    }
+    XCTAssertEqual(store.phase, .landing)
+    XCTAssertEqual(store.progress.total, 1)
+    for _ in 0..<100 { store.tick(0.05) }
+    XCTAssertEqual(store.phase, .caught)
+    XCTAssertEqual(store.progress.total, 1)
+    let reopened = GameStore(defaults: defaults)
+    XCTAssertEqual(reopened.progress.catches.first?.id, store.latest?.id)
+    XCTAssertEqual(reopened.progress.best, store.latest?.score)
+    XCTAssertFalse(reopened.sound)
+    XCTAssertFalse(reopened.haptics)
+    XCTAssertEqual(reopened.phase, .home)
+  }
 }

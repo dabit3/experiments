@@ -170,8 +170,8 @@ struct Eyebrow: View {
   var color = Ink.cream
   var body: some View {
     Text(text.uppercased())
-      .font(.system(size: 10, weight: .semibold, design: .monospaced))
-      .tracking(3)
+      .font(.system(size: 11, weight: .semibold, design: .monospaced))
+      .tracking(2.4)
       .foregroundStyle(color)
   }
 }
