@@ -257,25 +257,27 @@ struct PowderlineView: View {
       VStack {
         Spacer()
         VStack(spacing: 10) {
-          if !store.engine.grounded {
-            HStack(spacing: 7) {
-              Image(systemName: "arrow.counterclockwise")
-              Text(landingHint)
+          Group {
+            if !store.engine.grounded {
+              HStack(spacing: 7) {
+                Image(systemName: "arrow.counterclockwise")
+                Text(landingHint)
+              }
+              .font(.system(size: 10, weight: .semibold))
+              .tracking(1)
+            } else {
+              Text(
+                store.engine.mode == .practice
+                  ? "GENTLE PACE · FALLS ARE FORGIVEN" : "FIND AIR. CHASE THE HORIZON."
+              )
+              .font(.system(size: 8, weight: .medium))
+              .tracking(1.8)
             }
-            .font(.system(size: 10, weight: .semibold))
-            .tracking(1)
-            .foregroundStyle(ink)
-            .frame(height: 20)
-          } else {
-            Text(
-              store.engine.mode == .practice
-                ? "GENTLE PACE · FALLS ARE FORGIVEN" : "FIND AIR. CHASE THE HORIZON."
-            )
-            .font(.system(size: 8, weight: .medium))
-            .tracking(1.8)
-            .foregroundStyle(ink.opacity(0.65))
-            .frame(height: 20)
           }
+          .foregroundStyle(ink)
+          .frame(height: 20)
+          .padding(.horizontal, 10)
+          .background(cream, in: Capsule())
           HoldControl(onPress: store.press, onRelease: store.release)
             .frame(height: 56)
         }
@@ -554,7 +556,7 @@ struct HoldControl: View {
 
   var body: some View {
     ZStack {
-      Capsule().fill(Color(hex: 0x1B3C50).opacity(0.10))
+      Capsule().fill(Color(hex: 0xF5EEDD))
       Capsule().stroke(Color(hex: 0x1B3C50).opacity(0.17), lineWidth: 1)
       HStack(spacing: 11) {
         Image(systemName: "hand.tap").font(.system(size: 16))
