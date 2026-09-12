@@ -27,7 +27,7 @@ is a loss; undo or repack immediately. There is no real-time countdown.
 
 ## Build and run
 
-Requirements: macOS with Xcode 15+ and an iOS 17+ simulator. Development verified
+Requirements: macOS with Xcode 16+ and an iOS 17+ simulator. Development verified
 with Xcode **26.6 (17F113)** and the **iOS 26.5** runtime on Apple Silicon.
 
 The checked-in `BentoCircuit.xcodeproj` and shared **BentoCircuit** scheme are

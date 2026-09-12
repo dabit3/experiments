@@ -14,7 +14,8 @@ struct NativeShareSheet: UIViewControllerRepresentable {
     let configuration = UIActivityItemsConfiguration(objects: [
       parcel.image, parcel.text as NSString,
     ])
-    configuration.metadataProvider = { key in
+    configuration.perItemMetadataProvider = { index, key in
+      guard index == 0 else { return nil }
       if key == .linkPresentationMetadata {
         let metadata = LPLinkMetadata()
         metadata.title = "Bento Circuit · Packed with care"

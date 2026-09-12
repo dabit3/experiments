@@ -73,6 +73,17 @@ struct BoardView: View {
               y: CGFloat(cell.y + placement.anchor.y) * cellSize + 2)
         }
         .allowsHitTesting(false)
+        if let marked = piece.rotated(placement.turns).first {
+          Text(piece.id)
+            .font(.system(size: max(10, cellSize * 0.24), weight: .bold, design: .monospaced))
+            .foregroundStyle(Palette.paper)
+            .padding(4).background(valid ? Palette.ink : Palette.orange, in: Circle())
+            .offset(
+              x: CGFloat(marked.x + placement.anchor.x) * cellSize + 3,
+              y: CGFloat(marked.y + placement.anchor.y) * cellSize + 3
+            )
+            .allowsHitTesting(false)
+        }
       }
     }
     .frame(width: CGFloat(lunch.width) * cellSize, height: CGFloat(lunch.height) * cellSize)
@@ -230,7 +241,8 @@ struct GameView: View {
       Spacer()
       HStack(spacing: 8) {
         Image(systemName: "tram.fill")
-        Text("\(max(0, lunch.moveLimit - game.moves)) MOVES LEFT")
+        let remaining = max(0, lunch.moveLimit - game.moves)
+        Text("\(remaining) \(remaining == 1 ? "MOVE" : "MOVES") LEFT")
           .font(.system(size: 11, weight: .bold, design: .monospaced)).tracking(0.5)
       }
       .foregroundStyle(game.isFailed(lunch) ? Palette.orange : Palette.ink)
