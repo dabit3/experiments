@@ -112,16 +112,24 @@ struct HarborView: View {
               "\(contract.cargo.count) cargo · \(Int(contract.seconds)) sec · \(Int(contract.cargo.reduce(0) { $0 + $1.weight })) t total"
             )
             .font(HarborType.caption).foregroundStyle(HarborPalette.muted)
-            HStack(spacing: HarborSpacing.row) {
-              ForEach(Array(contract.cargo.enumerated()), id: \.offset) { _, cargo in
-                Image(cargo.assetName).resizable().scaledToFit()
-                  .frame(maxWidth: .infinity).frame(height: 42)
-                  .accessibilityLabel("\(cargo.title), \(Int(cargo.weight)) tonnes")
+            if geometry.size.height >= 750 {
+              VStack(spacing: 0) {
+                ForEach(Array(contract.cargo.enumerated()), id: \.offset) { _, cargo in
+                  CargoRow(kind: cargo)
+                }
               }
-            }
-            .padding(.vertical, HarborSpacing.row)
-            .overlay(alignment: .bottom) {
-              Rectangle().fill(HarborPalette.rule).frame(height: 1)
+            } else {
+              HStack(spacing: HarborSpacing.row) {
+                ForEach(Array(contract.cargo.enumerated()), id: \.offset) { _, cargo in
+                  Image(cargo.assetName).resizable().scaledToFit()
+                    .frame(maxWidth: .infinity).frame(height: 42)
+                    .accessibilityLabel("\(cargo.title), \(Int(cargo.weight)) tonnes")
+                }
+              }
+              .padding(.vertical, HarborSpacing.row)
+              .overlay(alignment: .bottom) {
+                Rectangle().fill(HarborPalette.rule).frame(height: 1)
+              }
             }
             if selectedContract == game.unlocked && game.unlocked < Contract.all.count - 1 {
               Text("Clear this contract to open the next route.")
@@ -500,18 +508,7 @@ struct ManifestCard: View {
       .accessibilityLabel("Cargo tower with \(stack.count) treasures on the Small Wonder")
       VStack(alignment: .leading, spacing: 0) {
         ForEach(stack) { item in
-          HStack(spacing: 12) {
-            Image(item.kind.assetName).resizable().scaledToFit()
-              .frame(width: 32, height: 28).accessibilityHidden(true)
-            Text(item.kind.title)
-            Spacer()
-            Text("\(Int(item.kind.weight)) t").monospacedDigit()
-          }
-          .font(HarborType.body)
-          .padding(.vertical, HarborSpacing.row)
-          .overlay(alignment: .bottom) {
-            Rectangle().fill(HarborPalette.rule).frame(height: 0.5)
-          }
+          CargoRow(kind: item.kind)
         }
         if stack.isEmpty {
           Text("No cargo aboard. Try again and catch your first lift.")
@@ -522,6 +519,25 @@ struct ManifestCard: View {
         .font(HarborType.caption).foregroundStyle(HarborPalette.muted)
     }
     .foregroundStyle(HarborPalette.ink)
+  }
+}
+
+struct CargoRow: View {
+  let kind: CargoKind
+
+  var body: some View {
+    HStack(spacing: 12) {
+      Image(kind.assetName).resizable().scaledToFit()
+        .frame(width: 32, height: 28).accessibilityHidden(true)
+      Text(kind.title)
+      Spacer()
+      Text("\(Int(kind.weight)) t").monospacedDigit()
+    }
+    .font(HarborType.body)
+    .padding(.vertical, HarborSpacing.row)
+    .overlay(alignment: .bottom) {
+      Rectangle().fill(HarborPalette.rule).frame(height: 0.5)
+    }
   }
 }
 
