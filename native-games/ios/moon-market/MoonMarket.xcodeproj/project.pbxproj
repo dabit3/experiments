@@ -1,0 +1,422 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3C53D1D9ECD616ED6C242C13 /* MarketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6E6BA0FD66A5286448E99DB /* MarketTests.swift */; };
+		6D05098A48211CE75E85349A /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8BB3DCB6B177AAB6443FAF /* Artwork.swift */; };
+		99550F391C5B7683B06032BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DB14F4368B969B7BAA181C8 /* Assets.xcassets */; };
+		B6A440FA96CAB8C1659BCCB4 /* Market.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19DAF516264AE60C9E245A1A /* Market.swift */; };
+		B9EB22F054B1BDA6B688B2DD /* MoonMarketApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5143202354997715A43C4C60 /* MoonMarketApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A28A73F82772A4786F82EFF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0BC8D7571F88E5ED2C5FF8A2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E658EAEFB6496A1F955370D2;
+			remoteInfo = MoonMarket;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		012BABE4805715AD39BAD4B5 /* MoonMarket.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MoonMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		19DAF516264AE60C9E245A1A /* Market.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Market.swift; sourceTree = "<group>"; };
+		2DB14F4368B969B7BAA181C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5143202354997715A43C4C60 /* MoonMarketApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonMarketApp.swift; sourceTree = "<group>"; };
+		64B31DF7947D094401F972EB /* MoonMarketTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MoonMarketTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A6E6BA0FD66A5286448E99DB /* MarketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarketTests.swift; sourceTree = "<group>"; };
+		EC8BB3DCB6B177AAB6443FAF /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		084181A2F357E9C3F1575C0E /* MoonMarket */ = {
+			isa = PBXGroup;
+			children = (
+				EC8BB3DCB6B177AAB6443FAF /* Artwork.swift */,
+				2DB14F4368B969B7BAA181C8 /* Assets.xcassets */,
+				19DAF516264AE60C9E245A1A /* Market.swift */,
+				5143202354997715A43C4C60 /* MoonMarketApp.swift */,
+			);
+			path = MoonMarket;
+			sourceTree = "<group>";
+		};
+		0C3E8F937F18F6328D4C29DA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				012BABE4805715AD39BAD4B5 /* MoonMarket.app */,
+				64B31DF7947D094401F972EB /* MoonMarketTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		39971717787CF4C0AF2B1B7B = {
+			isa = PBXGroup;
+			children = (
+				084181A2F357E9C3F1575C0E /* MoonMarket */,
+				B82ACFDE162B6ED116E246CE /* MoonMarketTests */,
+				0C3E8F937F18F6328D4C29DA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B82ACFDE162B6ED116E246CE /* MoonMarketTests */ = {
+			isa = PBXGroup;
+			children = (
+				A6E6BA0FD66A5286448E99DB /* MarketTests.swift */,
+			);
+			path = MoonMarketTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C8AA40C2A1F580E3F5919C5D /* MoonMarketTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F0A841C79D3ED6993200D427 /* Build configuration list for PBXNativeTarget "MoonMarketTests" */;
+			buildPhases = (
+				47E02F73A7C12B616E70E122 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7B471D2B9179BF33A2923C33 /* PBXTargetDependency */,
+			);
+			name = MoonMarketTests;
+			packageProductDependencies = (
+			);
+			productName = MoonMarketTests;
+			productReference = 64B31DF7947D094401F972EB /* MoonMarketTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		E658EAEFB6496A1F955370D2 /* MoonMarket */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDE79952B188F78D35544173 /* Build configuration list for PBXNativeTarget "MoonMarket" */;
+			buildPhases = (
+				74A924AC661000E4DAA42320 /* Sources */,
+				3C7C95DB36AEA51A7BDBAE9D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MoonMarket;
+			packageProductDependencies = (
+			);
+			productName = MoonMarket;
+			productReference = 012BABE4805715AD39BAD4B5 /* MoonMarket.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0BC8D7571F88E5ED2C5FF8A2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 09A31491F7CEE34A6E52DC0A /* Build configuration list for PBXProject "MoonMarket" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 39971717787CF4C0AF2B1B7B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 0C3E8F937F18F6328D4C29DA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E658EAEFB6496A1F955370D2 /* MoonMarket */,
+				C8AA40C2A1F580E3F5919C5D /* MoonMarketTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3C7C95DB36AEA51A7BDBAE9D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				99550F391C5B7683B06032BE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		47E02F73A7C12B616E70E122 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C53D1D9ECD616ED6C242C13 /* MarketTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		74A924AC661000E4DAA42320 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6D05098A48211CE75E85349A /* Artwork.swift in Sources */,
+				B6A440FA96CAB8C1659BCCB4 /* Market.swift in Sources */,
+				B9EB22F054B1BDA6B688B2DD /* MoonMarketApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7B471D2B9179BF33A2923C33 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E658EAEFB6496A1F955370D2 /* MoonMarket */;
+			targetProxy = A28A73F82772A4786F82EFF3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1F3F2BE405AEAF7454EC3C1D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Moon Market";
+				INFOPLIST_KEY_UILaunchScreen_BackgroundColor = LaunchInk;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.nativegames.moonmarket;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		25FF609A0F29C31D90225114 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.nativegames.MoonMarketTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MoonMarket.app/MoonMarket";
+			};
+			name = Release;
+		};
+		3348198F2C130A5028756441 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		59135A228D0758874E43EC67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Moon Market";
+				INFOPLIST_KEY_UILaunchScreen_BackgroundColor = LaunchInk;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.nativegames.moonmarket;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		9D8DB1B8C3ACE37DF8E6CF78 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		CAC5A8ABE0445F3FE6EFDA13 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.nativegames.MoonMarketTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MoonMarket.app/MoonMarket";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		09A31491F7CEE34A6E52DC0A /* Build configuration list for PBXProject "MoonMarket" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3348198F2C130A5028756441 /* Debug */,
+				9D8DB1B8C3ACE37DF8E6CF78 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		BDE79952B188F78D35544173 /* Build configuration list for PBXNativeTarget "MoonMarket" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1F3F2BE405AEAF7454EC3C1D /* Debug */,
+				59135A228D0758874E43EC67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F0A841C79D3ED6993200D427 /* Build configuration list for PBXNativeTarget "MoonMarketTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAC5A8ABE0445F3FE6EFDA13 /* Debug */,
+				25FF609A0F29C31D90225114 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0BC8D7571F88E5ED2C5FF8A2 /* Project object */;
+}
