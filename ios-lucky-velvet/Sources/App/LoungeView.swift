@@ -177,7 +177,7 @@ struct LoungeView: View {
   }
 
   private var table: some View {
-    VStack(spacing: 9) {
+    VStack(spacing: 8) {
       HStack(spacing: 12) {
         Eyebrow(text: "Ante \(game.run.ante) / 3")
         Spacer()
@@ -210,12 +210,12 @@ struct LoungeView: View {
           Button {
             sheet = .charms
           } label: {
-            CharmTile(charm: charm).frame(maxWidth: .infinity).frame(height: 52)
+            CharmTile(charm: charm).frame(maxWidth: .infinity).frame(height: 46)
           }.accessibilityLabel("\(charm.name), \(charm.detail)")
         }
         ForEach(0..<max(0, 5 - game.run.charms.count), id: \.self) { _ in
           Text("✦").font(.system(size: 13)).foregroundStyle(Palette.gold.opacity(0.3))
-            .frame(maxWidth: .infinity).frame(height: 52)
+            .frame(maxWidth: .infinity).frame(height: 46)
             .background(
               Palette.ink.opacity(0.3), in: RoundedRectangle(cornerRadius: 12, style: .continuous)
             )
@@ -294,7 +294,7 @@ struct LoungeView: View {
           Palette.muted)
       }.font(.system(size: 12.5, design: .serif)).monospacedDigit()
     }
-    .padding(.horizontal, 16).padding(.vertical, 14)
+    .padding(.horizontal, 16).padding(.vertical, 12)
     .decoFrame(radius: 20, fill: Palette.ink.opacity(0.62))
   }
 
@@ -348,7 +348,7 @@ struct LoungeView: View {
           Text("Tap one to five cards to preview your score.").font(.system(size: 12.5))
             .foregroundStyle(Palette.muted)
           Spacer()
-        }
+        }.frame(minHeight: 26)
       }
     }
     .padding(.horizontal, 14).padding(.vertical, 12)
