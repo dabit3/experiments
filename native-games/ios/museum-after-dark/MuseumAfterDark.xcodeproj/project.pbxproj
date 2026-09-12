@@ -11,7 +11,10 @@
 		2AD5371EE1DDA8BA8DA062F3 /* MuseumArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156892211F3A1DE5B7C1E6FF /* MuseumArt.swift */; };
 		2EBA78C6C0739C8422F3E82E /* HeistStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D54CCAE2F4C60440142A95 /* HeistStore.swift */; };
 		51ED7669DCA66D976DC59C37 /* HeistEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81E093455A09988156119D3 /* HeistEngine.swift */; };
+		6480EB1F7D56A17A7A34D64B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C8F73EFF63DBFA6689335056 /* LaunchScreen.storyboard */; };
+		82DA4231E001A4B2D0616573 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E563820F5F66F599DDA5E6D3 /* Assets.xcassets */; };
 		86B7F339F019FF40E8377EC8 /* HeistEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C44917303C4C862698CD44 /* HeistEngineTests.swift */; };
+		BFE3934690656D029E313EEB /* ArtifactShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B9F44C027FAA8FEFAE3184 /* ArtifactShape.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,11 +29,14 @@
 
 /* Begin PBXFileReference section */
 		156892211F3A1DE5B7C1E6FF /* MuseumArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumArt.swift; sourceTree = "<group>"; };
+		31B9F44C027FAA8FEFAE3184 /* ArtifactShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtifactShape.swift; sourceTree = "<group>"; };
 		68F6B383C3FBA2E90D2B36C8 /* MuseumAfterDark.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MuseumAfterDark.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81D54CCAE2F4C60440142A95 /* HeistStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeistStore.swift; sourceTree = "<group>"; };
 		A81E093455A09988156119D3 /* HeistEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeistEngine.swift; sourceTree = "<group>"; };
 		A82B256E81A2651F640B0A6C /* MuseumAfterDarkTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = MuseumAfterDarkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8F73EFF63DBFA6689335056 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E5116932757183F713E9E67B /* MuseumAfterDarkApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuseumAfterDarkApp.swift; sourceTree = "<group>"; };
+		E563820F5F66F599DDA5E6D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F3C44917303C4C862698CD44 /* HeistEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeistEngineTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -38,12 +44,22 @@
 		3B31228B091040AE70E80976 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				31B9F44C027FAA8FEFAE3184 /* ArtifactShape.swift */,
 				A81E093455A09988156119D3 /* HeistEngine.swift */,
 				81D54CCAE2F4C60440142A95 /* HeistStore.swift */,
 				E5116932757183F713E9E67B /* MuseumAfterDarkApp.swift */,
 				156892211F3A1DE5B7C1E6FF /* MuseumArt.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		A0F2DAF5676ED8FE5EC52CC8 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E563820F5F66F599DDA5E6D3 /* Assets.xcassets */,
+				C8F73EFF63DBFA6689335056 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		BA201E9CF33D5BD5D633ADD6 /* Products */ = {
@@ -66,6 +82,7 @@
 		D0E88FBF0AAE1173006FC4FD = {
 			isa = PBXGroup;
 			children = (
+				A0F2DAF5676ED8FE5EC52CC8 /* Resources */,
 				3B31228B091040AE70E80976 /* Sources */,
 				CB61A4CD51E7A0685E2F4D5C /* Tests */,
 				BA201E9CF33D5BD5D633ADD6 /* Products */,
@@ -80,6 +97,7 @@
 			buildConfigurationList = 4A6DC88AA7CCAF1B1C2392B0 /* Build configuration list for PBXNativeTarget "MuseumAfterDark" */;
 			buildPhases = (
 				E43992B5538C94E936955CE4 /* Sources */,
+				968A1AFFC9A22C3C4E7DA9D6 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -147,6 +165,18 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		968A1AFFC9A22C3C4E7DA9D6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82DA4231E001A4B2D0616573 /* Assets.xcassets in Resources */,
+				6480EB1F7D56A17A7A34D64B /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		A1499FC44D30DE3DC6DFC02D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -160,6 +190,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFE3934690656D029E313EEB /* ArtifactShape.swift in Sources */,
 				51ED7669DCA66D976DC59C37 /* HeistEngine.swift in Sources */,
 				2EBA78C6C0739C8422F3E82E /* HeistStore.swift in Sources */,
 				1F0117F3F37753BC4D6E37F9 /* MuseumAfterDarkApp.swift in Sources */,
@@ -186,7 +217,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Museum After Dark";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -196,7 +227,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.museum.afterdark;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -350,7 +381,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Museum After Dark";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -360,7 +391,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.museum.afterdark;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};

@@ -256,7 +256,7 @@ struct PlayView: View {
             Text(store.room.title).font(.system(size: 27, design: .serif)).minimumScaleFactor(0.8)
               .lineLimit(1)
             Spacer(minLength: 4)
-            Text("PAR \(store.room.par)").font(.system(size: 10, design: .monospaced))
+            Text("PAR \(store.room.par)").font(.system(size: 11, design: .monospaced))
               .foregroundStyle(Palette.gold)
           }
         }
@@ -268,8 +268,8 @@ struct PlayView: View {
               ? "ARTIFACT SECURED  ·  RETURN TO EXIT" : "ACQUIRE THE ARTIFACT  ·  THEN EXIT")
           Spacer(minLength: 0)
         }
-        .font(.system(size: 9, weight: .medium, design: .monospaced))
-        .tracking(0.6)
+        .font(.system(size: 10, weight: .medium, design: .monospaced))
+        .tracking(0.2)
         .foregroundStyle(store.state.hasArtifact ? Palette.mint : Palette.gold)
         .frame(height: 24)
         ZStack {
@@ -283,8 +283,12 @@ struct PlayView: View {
           }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, -14)
         HStack(spacing: 14) {
-          legend("circle.fill", text: "YOU", color: Palette.paper)
+          HStack(spacing: 4) {
+            ThiefFigure().frame(width: 18, height: 20)
+            Text("YOU").font(.system(size: 10, design: .monospaced)).foregroundStyle(Palette.paper)
+          }.accessibilityHidden(true)
           legend("line.diagonal", text: "LASER", color: Palette.ruby)
           if !store.room.sentries.isEmpty {
             legend("square.dashed", text: "NEXT SWEEP", color: Palette.amber)
@@ -294,7 +298,7 @@ struct PlayView: View {
         VStack(alignment: .leading, spacing: 5) {
           Eyebrow(text: instructionTitle)
           Text(instruction)
-            .font(.system(size: 12)).lineSpacing(3).foregroundStyle(Palette.muted)
+            .font(.system(size: 13)).lineSpacing(3).foregroundStyle(Palette.muted)
             .frame(maxWidth: .infinity, alignment: .leading)
             .fixedSize(horizontal: false, vertical: true)
             .accessibilityIdentifier("context-instruction")
@@ -360,7 +364,7 @@ struct PlayView: View {
   private func legend(_ symbol: String, text: String, color: Color) -> some View {
     HStack(spacing: 5) {
       Image(systemName: symbol).font(.system(size: 8))
-      Text(text).font(.system(size: 8, design: .monospaced)).tracking(0.7)
+      Text(text).font(.system(size: 10, design: .monospaced)).tracking(0.5)
     }.foregroundStyle(color.opacity(0.8))
   }
 
@@ -402,7 +406,7 @@ struct PlayView: View {
 
   private var artifactReveal: some View {
     VStack(spacing: 9) {
-      Jewel(size: 84)
+      Jewel(size: 84, artifactID: store.room.id).overlay(AcquisitionParticles())
       Eyebrow(text: "ACQUIRED")
       Text(store.room.artifactName).font(.system(size: 27, design: .serif))
       Text("Now, disappear.").font(.system(size: 13)).foregroundStyle(Palette.muted)
@@ -495,7 +499,7 @@ struct DossierView: View {
         Circle().stroke(Palette.gold.opacity(0.18), lineWidth: 1).frame(width: compact ? 134 : 210)
         Circle().stroke(Palette.gold.opacity(0.1), style: StrokeStyle(lineWidth: 1, dash: [2, 5]))
           .frame(width: compact ? 158 : 245)
-        Jewel(size: compact ? 112 : 185)
+        Jewel(size: compact ? 112 : 185, artifactID: room.id)
       }
       .frame(height: compact ? 165 : 270)
       VStack(spacing: 7) {

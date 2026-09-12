@@ -25,20 +25,23 @@ struct Diamond: Shape {
 
 struct Jewel: View {
   var size: CGFloat = 100
-  var color: Color = Palette.ruby
+  var artifactID = 1
+  var color: Color { ArtifactShape.color(artifactID) }
   var body: some View {
     ZStack {
       Circle().fill(color.opacity(0.12)).blur(radius: size * 0.2)
-      Diamond().fill(
+      ArtifactShape(id: artifactID).fill(
         LinearGradient(
           colors: [color, color.opacity(0.35), Palette.ink], startPoint: .topLeading,
           endPoint: .bottomTrailing)
       )
-      .overlay(Diamond().stroke(Palette.paper.opacity(0.7), lineWidth: 1))
+      .overlay(ArtifactShape(id: artifactID).stroke(Palette.paper.opacity(0.7), lineWidth: 1))
       .frame(width: size * 0.62, height: size * 0.88)
-      Diamond().stroke(Palette.paper.opacity(0.35), lineWidth: 0.7)
-        .frame(width: size * 0.3, height: size * 0.88)
-      Rectangle().fill(Palette.paper.opacity(0.5)).frame(width: size * 0.62, height: 0.6)
+      if artifactID == 1 {
+        Diamond().stroke(Palette.paper.opacity(0.35), lineWidth: 0.7)
+          .frame(width: size * 0.3, height: size * 0.88)
+        Rectangle().fill(Palette.paper.opacity(0.5)).frame(width: size * 0.62, height: 0.6)
+      }
       Circle().fill(Palette.paper).frame(width: 4, height: 4).offset(
         x: -size * 0.15, y: -size * 0.22)
     }
@@ -191,12 +194,21 @@ struct MuseumBoard: View {
       if interactive && state.outcome == .playing && state.player.distance(to: tile) == 1
         && room.walkable(tile)
       {
+        let unsafe = field.danger.contains(tile) || next.danger.contains(tile)
+        let marker =
+          field.danger.contains(tile) ? Palette.ruby : (unsafe ? Palette.amber : Palette.mint)
         context.stroke(
           Path(roundedRect: rect.insetBy(dx: 3, dy: 3), cornerRadius: 5),
-          with: .color(Palette.mint.opacity(0.55)), lineWidth: 1.2)
-        context.fill(
-          Path(ellipseIn: CGRect(x: c.x - 2, y: c.y - 2, width: 4, height: 4)),
-          with: .color(Palette.mint))
+          with: .color(marker.opacity(0.7)), lineWidth: 1.2)
+        if unsafe {
+          context.draw(
+            Text("×").font(.system(size: cell * 0.28, weight: .light)).foregroundColor(marker),
+            at: CGPoint(x: c.x, y: c.y + cell * 0.22))
+        } else {
+          context.fill(
+            Path(ellipseIn: CGRect(x: c.x - 2, y: c.y - 2, width: 4, height: 4)),
+            with: .color(marker))
+        }
       }
     }
     for segment in field.segments {
@@ -227,8 +239,8 @@ struct MuseumBoard: View {
           Path(roundedRect: rect, cornerRadius: 5), with: .color(Palette.mint.opacity(0.8)),
           style: StrokeStyle(lineWidth: 1.5, dash: [4, 2]))
         context.draw(
-          Text("EXIT").font(.system(size: cell * 0.15, weight: .bold, design: .monospaced))
-            .foregroundColor(Palette.mint), at: CGPoint(x: c.x, y: c.y + cell * 0.38))
+          Text("EXIT").font(.system(size: cell * 0.18, weight: .bold, design: .monospaced))
+            .foregroundColor(Palette.mint), at: CGPoint(x: c.x, y: c.y + cell * 0.4))
       }
       if tile == room.artifact {
         context.drawLayer { light in
@@ -248,13 +260,17 @@ struct MuseumBoard: View {
           let jewel = rect.insetBy(dx: cell * 0.1, dy: cell * 0.04).offsetBy(
             dx: 0, dy: -cell * 0.08)
           context.fill(
-            Diamond().path(in: jewel),
+            ArtifactShape(id: room.id).path(in: jewel),
             with: .linearGradient(
-              Gradient(colors: [Palette.paper, Palette.ruby, Palette.ruby.opacity(0.4)]),
+              Gradient(colors: [
+                Palette.paper, ArtifactShape.color(room.id),
+                ArtifactShape.color(room.id).opacity(0.4),
+              ]),
               startPoint: CGPoint(x: jewel.minX, y: jewel.minY),
               endPoint: CGPoint(x: jewel.maxX, y: jewel.maxY)))
           context.stroke(
-            Diamond().path(in: jewel), with: .color(Palette.paper.opacity(0.7)), lineWidth: 0.7)
+            ArtifactShape(id: room.id).path(in: jewel), with: .color(Palette.paper.opacity(0.7)),
+            lineWidth: 0.7)
         }
       }
       if let index = room.mirrors.firstIndex(of: tile) {
@@ -280,7 +296,7 @@ struct MuseumBoard: View {
           with: .color(active ? Palette.gold : Palette.mint), lineWidth: 1.5)
         context.draw(
           Text(room.circuit(at: tile) == 0 ? "I" : "II").font(
-            .system(size: cell * 0.26, weight: .semibold, design: .serif)
+            .system(size: cell * 0.30, weight: .semibold, design: .serif)
           ).foregroundColor(active ? Palette.gold : Palette.mint), at: c)
         context.fill(
           Path(ellipseIn: CGRect(x: c.x - 2, y: rect.maxY - 6, width: 4, height: 4)),
@@ -316,9 +332,16 @@ struct ThiefFigure: View {
       let w = geo.size.width
       let h = geo.size.height
       ZStack {
+        Circle().fill(Palette.paper.opacity(0.13)).blur(radius: 4).frame(width: w * 1.1)
+        Circle().stroke(Palette.paper.opacity(0.65), lineWidth: 1).frame(width: w * 0.92).offset(
+          y: h * 0.03)
         Ellipse().fill(.black.opacity(0.5)).frame(width: w * 0.8, height: h * 0.25).offset(
           y: h * 0.3)
-        Capsule().fill(Color(red: 0.045, green: 0.065, blue: 0.075)).frame(
+        Capsule().fill(
+          LinearGradient(
+            colors: [Palette.paper.opacity(0.7), Palette.stone, Palette.ink],
+            startPoint: .topLeading, endPoint: .bottomTrailing)
+        ).frame(
           width: w * 0.55, height: h * 0.62
         ).offset(y: h * 0.13)
         Capsule().fill(Palette.gold).frame(width: w * 0.12, height: h * 0.38).rotationEffect(

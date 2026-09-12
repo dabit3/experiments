@@ -184,7 +184,7 @@ enum Rooms {
     Room(
       id: 1, title: "The quiet entrance", collection: "EAST WING", artifactName: "The Night Ruby",
       briefing:
-        "Reach the brass power node. Tap it from a neighboring tile to darken the ruby laser.",
+        "Tap a mint-outlined neighbor to step. Reach the brass node and tap it to darken the laser.",
       map: [
         "#######", "#..A..#", "#.....#", "#>....#", "#.....#", "#.0...#", "#E....#", "#######",
       ],
@@ -200,7 +200,7 @@ enum Rooms {
         "#######", "#.A...#", "#.....#", "#>./..#", "###..##", "#.....#", "#E....#", "#######",
       ],
       emitters: [Emitter(tile: Tile(x: 1, y: 3), direction: .east, circuit: 0)], sentries: [],
-      par: 17
+      par: 22
     ),
     Room(
       id: 3, title: "The watchful eye", collection: "SCULPTURE COURT", artifactName: "Golden Orbit",
@@ -209,7 +209,7 @@ enum Rooms {
       map: [
         "#######", "#...A.#", "#.....#", "#..G..#", "#.....#", "#.....#", "#E....#", "#######",
       ],
-      emitters: [], sentries: [Sentry(tile: Tile(x: 3, y: 3), facing: .north)], par: 16
+      emitters: [], sentries: [Sentry(tile: Tile(x: 3, y: 3), facing: .north)], par: 17
     ),
     Room(
       id: 4, title: "Velvet divide", collection: "NORTH GALLERY", artifactName: "Velvet Moon",
@@ -221,7 +221,7 @@ enum Rooms {
       emitters: [
         Emitter(tile: Tile(x: 1, y: 2), direction: .east, circuit: 1),
         Emitter(tile: Tile(x: 5, y: 4), direction: .west, circuit: 0),
-      ], sentries: [], par: 19
+      ], sentries: [], par: 16
     ),
     Room(
       id: 5, title: "Borrowed light", collection: "MIRROR CHAMBER", artifactName: "Silver Echo",
@@ -231,7 +231,7 @@ enum Rooms {
         "#######", "#A....#", "#.....#", "#>./..#", "###..##", "#.....#", "#E....#", "#######",
       ],
       emitters: [Emitter(tile: Tile(x: 1, y: 3), direction: .east, circuit: 0)], sentries: [],
-      par: 19
+      par: 24
     ),
     Room(
       id: 6, title: "The long shadow", collection: "MARBLE ATRIUM", artifactName: "Ivory Sentinel",
@@ -253,7 +253,7 @@ enum Rooms {
       sentries: [
         Sentry(tile: Tile(x: 2, y: 2), facing: .west),
         Sentry(tile: Tile(x: 4, y: 5), facing: .east),
-      ], par: 16
+      ], par: 18
     ),
     Room(
       id: 8, title: "The red thread", collection: "WEST ANNEX", artifactName: "Crimson Ribbon",
@@ -265,7 +265,7 @@ enum Rooms {
       emitters: [
         Emitter(tile: Tile(x: 1, y: 2), direction: .east, circuit: 1),
         Emitter(tile: Tile(x: 1, y: 4), direction: .east, circuit: 0),
-      ], sentries: [], par: 21
+      ], sentries: [], par: 29
     ),
     Room(
       id: 9, title: "An impeccable alibi", collection: "PRIVATE COLLECTION",
@@ -276,7 +276,7 @@ enum Rooms {
         "#######", "#A....#", "#.G...#", "#.....#", "#>./..#", "###..##", "#E....#", "#######",
       ],
       emitters: [Emitter(tile: Tile(x: 1, y: 4), direction: .east, circuit: 0)],
-      sentries: [Sentry(tile: Tile(x: 2, y: 2), facing: .west)], par: 19
+      sentries: [Sentry(tile: Tile(x: 2, y: 2), facing: .west)], par: 26
     ),
     Room(
       id: 10, title: "The final acquisition", collection: "MIDNIGHT VAULT",
@@ -289,7 +289,7 @@ enum Rooms {
       emitters: [
         Emitter(tile: Tile(x: 1, y: 2), direction: .east, circuit: 1),
         Emitter(tile: Tile(x: 5, y: 4), direction: .west, circuit: 0),
-      ], sentries: [Sentry(tile: Tile(x: 2, y: 4), facing: .north)], par: 21
+      ], sentries: [Sentry(tile: Tile(x: 2, y: 4), facing: .north)], par: 19
     ),
   ]
 }

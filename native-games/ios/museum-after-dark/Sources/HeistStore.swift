@@ -58,7 +58,7 @@ final class HeistStore: ObservableObject {
 
   func act(_ action: HeistAction) {
     guard let next = HeistEngine.applying(action, to: state, in: room) else {
-      message = "One tile at a time. Choose a lit neighbor."
+      message = "One tile at a time. Choose a mint-outlined neighbor."
       return
     }
     let acquired = next.hasArtifact && !state.hasArtifact
@@ -92,7 +92,7 @@ final class HeistStore: ObservableObject {
     } else if let direction = Direction.allCases.first(where: { state.player.moved($0) == tile }) {
       act(.move(direction))
     } else {
-      message = "Tap a lit neighbor to move one tile."
+      message = "Tap a mint-outlined neighbor to move one tile."
     }
   }
 

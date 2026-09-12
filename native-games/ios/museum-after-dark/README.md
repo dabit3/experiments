@@ -14,8 +14,8 @@ xcodebuild -project MuseumAfterDark.xcodeproj -scheme MuseumAfterDark -configura
 xcrun simctl list devices available
 # Substitute an available simulator UUID:
 xcodebuild -project MuseumAfterDark.xcodeproj -scheme MuseumAfterDark -destination 'platform=iOS Simulator,id=SIMULATOR_UUID' -derivedDataPath build CODE_SIGNING_ALLOWED=NO test
-xcrun simctl install booted build/Build/Products/Debug-iphonesimulator/MuseumAfterDark.app
-xcrun simctl launch booted ai.devin.museum.afterdark
+xcrun simctl install SIMULATOR_UUID build/Build/Products/Debug-iphonesimulator/MuseumAfterDark.app
+xcrun simctl launch SIMULATOR_UUID ai.devin.museum.afterdark
 ```
 
 No third-party app dependencies. If changing project settings, install XcodeGen (`brew install xcodegen`) then run `xcodegen generate`; `project.yml` is the source of project configuration.
@@ -29,6 +29,7 @@ swift Scripts/GenerateIcon.swift Resources/Assets.xcassets/AppIcon.appiconset/Ap
 ## Controls and rules
 
 - Tap a mint-outlined neighbor to move one tile. The tiny hat-and-coat figure is you.
+- Ruby or amber crosses mark neighboring tiles that are unsafe now or after the next sweep.
 - Tap an adjacent brass node (I or II) to toggle the corresponding laser circuit.
 - Tap an adjacent round mirror to swap its diagonal. Mirrors reflect beams by 90 degrees.
 - Searchlights rotate clockwise after **every** valid action, including Wait, node toggles and mirror rotations. Dotted amber tiles forecast the next sweep.
