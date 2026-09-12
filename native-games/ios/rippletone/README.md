@@ -30,7 +30,16 @@ xcrun swift-format lint --strict --recursive Rippletone Tests Tools
 The checked-in project needs no generator. To regenerate after changing targets,
 install XcodeGen (`brew install xcodegen`) and run `xcodegen generate`.
 Regenerate the original opaque 1024px icon with
-`swift Tools/GenerateIcon.swift`. Build outputs are ignored.
+the same SwiftUI illustration used in the app:
+
+```sh
+mkdir -p .build
+xcrun swiftc -parse-as-library Rippletone/Rhythm.swift Rippletone/PondArt.swift \
+  Tools/GenerateIcon.swift -o .build/generate-icon
+.build/generate-icon
+```
+
+Build outputs are ignored.
 
 ## Play
 

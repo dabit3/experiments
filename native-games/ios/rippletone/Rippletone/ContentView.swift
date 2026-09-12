@@ -19,9 +19,9 @@ struct ContentView: View {
         { context in
           PondArt(
             time: context.date.timeIntervalSinceReferenceDate,
-            hero: game.screen == .home || game.screen == .results,
             celebration: game.elapsed - game.bloomTime < 4,
-            reducedMotion: reducedMotion)
+            reducedMotion: reducedMotion,
+            atmosphereOnly: game.screen == .home || game.screen == .results)
         }
         .ignoresSafeArea()
         if game.screen == .playing || game.screen == .tutorial {
@@ -64,48 +64,71 @@ struct ContentView: View {
   private func home(compact: Bool) -> some View {
     VStack(spacing: 0) {
       HStack {
-        eyebrow("A MOONLIT RHYTHM RITUAL")
+        RippleSeal()
+        Text("SOUND & STILLNESS")
+          .font(.system(size: 9, weight: .medium)).tracking(2).foregroundStyle(Ink.muted)
+          .padding(.leading, 6)
         Spacer()
         iconButton("slider.horizontal.3", label: "Settings", id: "settings") { settings = true }
       }
-      .padding(.top, 8)
-      VStack(spacing: 8) {
-        Text("Rippletone").font(.system(size: compact ? 49 : 57, weight: .regular, design: .serif))
-          .tracking(-2)
+      .padding(.top, compact ? 0 : 8)
+      VStack(spacing: compact ? 2 : 5) {
+        Text("Rippletone").font(Ink.display(compact ? 48 : 62)).tracking(-1.8)
         Text("Touch the water. Wake the music.")
-          .font(.system(size: 13)).foregroundStyle(Ink.muted)
+          .font(Ink.italic(compact ? 14 : 16)).foregroundStyle(Ink.muted)
       }
-      .padding(.top, compact ? 10 : 20)
-      Spacer(minLength: compact ? 110 : 150)
-      VStack(spacing: 0) {
-        HStack {
-          eyebrow("CHOOSE A COMPOSITION")
-          Spacer()
-          Text("\(game.clearedCount) / 3 IN BLOOM").font(.system(size: 9, weight: .medium))
-            .tracking(1.2).foregroundStyle(Ink.gold)
+      .padding(.top, compact ? 0 : 14)
+      pondIllustration
+        .frame(minHeight: compact ? 100 : 170, maxHeight: .infinity)
+        .overlay(alignment: .bottom) {
+          if !compact {
+            Text("A STUDY IN THREE MOVEMENTS")
+              .font(.system(size: 8, weight: .medium)).tracking(2.4)
+              .foregroundStyle(Ink.muted).padding(.bottom, 8)
+          }
         }
-        .padding(.bottom, 10)
+      VStack(spacing: 0) {
+        HStack(alignment: .firstTextBaseline) {
+          Text("The nocturne collection").font(Ink.italic(compact ? 17 : 19))
+          Spacer()
+          HStack(spacing: 5) {
+            ForEach(0..<3) { index in
+              Circle().fill(index < game.clearedCount ? Ink.gold : Ink.gold.opacity(0.15))
+                .frame(width: 4, height: 4)
+            }
+            Text("\(game.clearedCount)/3").font(.system(size: 9, design: .monospaced)).padding(
+              .leading, 4)
+          }
+          .foregroundStyle(Ink.gold)
+          .accessibilityElement(children: .ignore)
+          .accessibilityLabel("\(game.clearedCount) of 3 compositions in bloom")
+        }
+        .padding(.bottom, compact ? 9 : 14)
+        Rectangle().fill(Ink.gold.opacity(0.35)).frame(height: 0.5)
         ForEach(Composition.all) { song in
           Button {
             game.start(song)
           } label: {
-            HStack(spacing: 14) {
-              Text(String(format: "%02d", song.id + 1)).font(.system(size: 14, design: .serif))
-                .foregroundStyle(Ink.gold)
-                .frame(width: 26)
-              VStack(alignment: .leading, spacing: 4) {
-                Text(song.name).font(.system(size: 21, design: .serif))
-                Text(song.tempo).font(.system(size: 10, weight: .medium)).tracking(1)
+            HStack(spacing: 13) {
+              Text(["I", "II", "III"][song.id]).font(Ink.italic(17))
+                .foregroundStyle(Ink.gold).frame(width: 23)
+              VStack(alignment: .leading, spacing: 3) {
+                Text(song.name).font(Ink.display(compact ? 22 : 25))
+                Text(song.tempo).font(.system(size: 9)).tracking(0.8)
                   .foregroundStyle(Ink.muted)
               }
               Spacer()
-              if let best = game.bestFor(song.id) {
-                Text("\(best.accuracy)%").font(.system(size: 12, design: .monospaced))
-                  .foregroundStyle(Ink.gold)
+              VStack(spacing: 4) {
+                RhythmSignature(composition: song).frame(width: 39, height: 17)
+                if let best = game.bestFor(song.id) {
+                  Text("\(best.accuracy)%").font(.system(size: 9, design: .monospaced))
+                    .foregroundStyle(Ink.muted)
+                }
               }
-              Image(systemName: "arrow.up.right").font(.system(size: 13)).foregroundStyle(Ink.gold)
+              Image(systemName: "arrow.up.right").font(.system(size: 11, weight: .light))
+                .foregroundStyle(Ink.gold).padding(.leading, 8)
             }
-            .frame(minHeight: compact ? 58 : 65)
+            .frame(minHeight: compact ? 56 : 70)
             .contentShape(Rectangle())
           }
           .buttonStyle(.plain)
@@ -114,17 +137,16 @@ struct ContentView: View {
           Rectangle().fill(Ink.jade.opacity(0.17)).frame(height: 0.5)
         }
       }
-      .padding(18)
-      .background(Ink.background.opacity(0.82), in: RoundedRectangle(cornerRadius: 4))
       Button {
         game.tutorial()
       } label: {
-        HStack(spacing: 8) {
-          Image(systemName: "hand.tap").font(.system(size: 13))
-          Text("First time? Find your rhythm").font(.system(size: 12))
+        HStack(spacing: 9) {
+          Text("First time?").foregroundStyle(Ink.muted)
+          Text("Find your rhythm")
+          Image(systemName: "arrow.right").font(.system(size: 10))
         }
-        .foregroundStyle(Ink.gold)
-        .frame(maxWidth: .infinity, minHeight: 46)
+        .font(Ink.italic(15)).foregroundStyle(Ink.pearl)
+        .frame(maxWidth: .infinity, minHeight: compact ? 44 : 54)
       }
       .accessibilityIdentifier("tutorial")
       HStack(spacing: 6) {
@@ -132,10 +154,18 @@ struct ContentView: View {
         Text(game.forgiving ? "GENTLE TIMING" : "PRECISE TIMING")
         Text("·  HEADPHONES OPTIONAL")
       }
-      .font(.system(size: 9, weight: .medium)).tracking(0.7).foregroundStyle(Ink.muted)
-      .padding(.bottom, 10)
+      .font(.system(size: 8, weight: .medium)).tracking(0.9).foregroundStyle(Ink.muted)
+      .padding(.bottom, compact ? 8 : 14)
     }
-    .padding(.horizontal, 23)
+    .padding(.horizontal, compact ? 25 : 31)
+  }
+
+  private var pondIllustration: some View {
+    TimelineView(.animation(minimumInterval: reducedMotion ? 1 : 1.0 / 30)) { context in
+      PondArt(
+        time: context.date.timeIntervalSinceReferenceDate, hero: true,
+        reducedMotion: reducedMotion, transparent: true)
+    }
   }
 
   private func playfield(size: CGSize) -> some View {
@@ -146,7 +176,7 @@ struct ContentView: View {
           eyebrow(
             tutorial ? "THE ART OF LISTENING" : "COMPOSITION 0\(game.engine.composition.id + 1)")
           Text(tutorial ? "Find your rhythm" : game.engine.composition.name)
-            .font(.system(size: 29, design: .serif))
+            .font(Ink.display(32))
         }
         Spacer()
         iconButton("pause", label: "Pause", id: "pause") { game.pause() }
@@ -154,7 +184,7 @@ struct ContentView: View {
       .padding(.top, 16)
       if !tutorial {
         HStack(alignment: .firstTextBaseline) {
-          Text("\(game.engine.combo)").font(.system(size: 38, weight: .light, design: .serif))
+          Text("\(game.engine.combo)").font(Ink.display(43))
             .contentTransition(.numericText())
           eyebrow("COMBO")
           Spacer()
@@ -204,7 +234,7 @@ struct ContentView: View {
             }
             if !tutorial && game.feedbackLane == lane && game.elapsed - game.feedbackTime < 0.9 {
               Text(game.feedback)
-                .font(.system(size: 14, weight: .medium, design: .serif))
+                .font(Ink.italic(17))
                 .foregroundStyle(game.feedback == "Let it go" ? Ink.peach : Ink.gold)
                 .position(x: points[lane].x, y: points[lane].y + 76)
                 .allowsHitTesting(false)
@@ -213,7 +243,7 @@ struct ContentView: View {
           if game.elapsed - game.bloomTime < 4 && !tutorial {
             VStack(spacing: 7) {
               eyebrow("PERFECT PHRASE")
-              Text("The pond awakens").font(.system(size: 25, design: .serif))
+              Text("The pond awakens").font(Ink.italic(27))
             }
             .padding(.vertical, 14)
             .frame(maxWidth: .infinity)
@@ -229,7 +259,7 @@ struct ContentView: View {
       }
       VStack(spacing: 12) {
         Text(statusText)
-          .font(.system(size: 22, weight: .regular, design: .serif))
+          .font(Ink.italic(25))
           .foregroundStyle(Ink.gold).frame(height: 30)
           .accessibilityIdentifier("timing-feedback")
         if tutorial {
@@ -307,18 +337,17 @@ struct ContentView: View {
       if let result = game.result {
         VStack(spacing: 8) {
           Text(result.cleared ? "The pond is awake." : "Every ripple teaches.")
-            .font(.system(size: compact ? 31 : 35, design: .serif)).multilineTextAlignment(.center)
+            .font(Ink.display(compact ? 31 : 38)).multilineTextAlignment(.center)
           Text("\(game.engine.composition.name)  /  \(result.forgiving ? "Gentle" : "Precise")")
             .font(.system(size: 11)).foregroundStyle(Ink.muted)
         }
         .padding(.top, compact ? 12 : 24)
-        Spacer(minLength: compact ? 105 : 170)
-        VStack(spacing: 16) {
+        pondIllustration.frame(height: compact ? 144 : 255).padding(.vertical, compact ? 4 : 8)
+        VStack(spacing: compact ? 13 : 18) {
           eyebrow(result.rank.uppercased())
           HStack(alignment: .firstTextBaseline, spacing: 2) {
-            Text("\(result.accuracy)").font(
-              .system(size: compact ? 66 : 78, weight: .light, design: .serif))
-            Text("%").font(.system(size: 24, design: .serif)).foregroundStyle(Ink.gold)
+            Text("\(result.accuracy)").font(Ink.display(compact ? 67 : 86))
+            Text("%").font(Ink.italic(29)).foregroundStyle(Ink.gold)
           }
           .accessibilityElement(children: .ignore).accessibilityLabel(
             "\(result.accuracy) percent accuracy")
@@ -333,18 +362,18 @@ struct ContentView: View {
             Spacer()
             stat("\(result.maxCombo)", "BEST COMBO")
           }
+          .padding(.top, 7)
           Rectangle().fill(Ink.gold.opacity(0.2)).frame(height: 0.5)
           Text(
             result.cleared
               ? "A composition in bloom. Return whenever you need a little quiet."
               : "Bloom with 60% accuracy and 70% of notes caught.\nThe water always gives you another chance."
           )
-          .font(.system(size: 11)).foregroundStyle(Ink.muted).lineSpacing(4).multilineTextAlignment(
+          .font(Ink.italic(14)).foregroundStyle(Ink.muted).lineSpacing(3).multilineTextAlignment(
             .center)
         }
-        .padding(20)
-        .background(Ink.background.opacity(0.88), in: RoundedRectangle(cornerRadius: 4))
-        .padding(.bottom, 14)
+        .padding(.horizontal, 8)
+        .padding(.bottom, compact ? 16 : 24)
         primaryButton(result.cleared ? "Play again" : "Try again", id: "replay") {
           game.start(game.engine.composition)
         }
@@ -374,9 +403,10 @@ struct ContentView: View {
     ZStack {
       Ink.background.opacity(0.96).ignoresSafeArea()
       VStack(spacing: 25) {
+        RippleSeal()
         eyebrow("A BREATH BETWEEN NOTES")
-        Text("Still water").font(.system(size: 48, design: .serif))
-        Text("Your rhythm will be here.").font(.system(size: 14)).foregroundStyle(Ink.muted)
+        Text("Still water").font(Ink.display(52))
+        Text("Your rhythm will be here.").font(Ink.italic(18)).foregroundStyle(Ink.muted)
         primaryButton("Continue", id: "resume") { game.resume() }
         Button("Start over") {
           if game.screen == .tutorial {
@@ -448,8 +478,8 @@ struct ContentView: View {
 
   private func stat(_ value: String, _ title: String) -> some View {
     VStack(spacing: 7) {
-      Text(value).font(.system(size: 22, design: .serif))
-      Text(title).font(.system(size: 7, weight: .medium)).tracking(0.7).foregroundStyle(Ink.muted)
+      Text(value).font(Ink.display(25))
+      Text(title).font(.system(size: 8, weight: .medium)).tracking(0.7).foregroundStyle(Ink.muted)
     }
   }
 
@@ -458,12 +488,12 @@ struct ContentView: View {
     Button(action: action) {
       HStack {
         Spacer()
-        Text(title).font(.system(size: 15, weight: .medium))
+        Text(title).font(Ink.display(20))
         Spacer()
         Image(systemName: "arrow.right").font(.system(size: 14))
       }
       .foregroundStyle(Ink.background).padding(.horizontal, 20)
-      .frame(minHeight: 52).background(Ink.gold, in: RoundedRectangle(cornerRadius: 3))
+      .frame(minHeight: 52).background(Ink.pearl, in: Capsule())
     }
     .accessibilityIdentifier(id)
   }
@@ -510,26 +540,37 @@ struct PerformanceArtwork: View {
   let title: String
   var body: some View {
     ZStack {
-      PondArt(hero: true, heroPosition: 0.29, heroScale: 0.86, reducedMotion: true)
-      VStack(spacing: 14) {
-        Text("R I P P L E T O N E").font(.system(size: 15, design: .serif))
-        Text("A MOMENT ON THE MOONLIT POND").font(.system(size: 8)).tracking(2).foregroundStyle(
-          Ink.gold)
-        Spacer().frame(height: 240)
-        Text(performance.rank).font(.system(size: 34, design: .serif))
+      PondArt(reducedMotion: true, atmosphereOnly: true)
+      Rectangle().stroke(Ink.gold.opacity(0.35), lineWidth: 0.5).padding(18)
+      VStack(spacing: 0) {
+        Text("Rippletone").font(Ink.display(37)).tracking(-0.8)
+        Text("A MOMENT ON THE MOONLIT POND").font(.system(size: 8)).tracking(2.2)
+          .foregroundStyle(Ink.gold).padding(.top, 10)
+        PondArt(hero: true, reducedMotion: true, transparent: true)
+          .frame(height: 249).padding(.top, 8)
+        Text(performance.rank).font(Ink.italic(28)).padding(.top, 7)
         VStack(spacing: 0) {
-          Text("\(performance.accuracy)%").font(.system(size: 76, weight: .light, design: .serif))
-          Text("ACCURACY").font(.system(size: 10, weight: .medium)).tracking(2).foregroundStyle(
-            Ink.gold)
+          HStack(alignment: .firstTextBaseline, spacing: 2) {
+            Text("\(performance.accuracy)").font(Ink.display(80))
+            Text("%").font(Ink.italic(30)).foregroundStyle(Ink.gold)
+          }
+          Text("ACCURACY").font(.system(size: 9, weight: .medium)).tracking(2).foregroundStyle(
+            Ink.muted)
         }
-        Text("\(title)  ·  \(performance.maxCombo) best combo").font(.system(size: 15))
+        .padding(.top, 8)
+        Text("\(title)  ·  \(performance.maxCombo) best combo").font(Ink.display(17)).padding(
+          .top, 20)
         Text(performance.forgiving ? "GENTLE TIMING" : "PRECISE TIMING")
-          .font(.system(size: 9)).tracking(2).foregroundStyle(Ink.gold)
-        Rectangle().fill(Ink.gold.opacity(0.4)).frame(width: 60, height: 1).padding(.vertical, 10)
-        Text("Touch the water. Wake the music.").font(.system(size: 12, design: .serif))
-          .foregroundStyle(Ink.muted)
+          .font(.system(size: 8)).tracking(2).foregroundStyle(Ink.gold).padding(.top, 9)
+        HStack(spacing: 15) {
+          Rectangle().fill(Ink.gold.opacity(0.3)).frame(width: 35, height: 0.5)
+          RippleSeal()
+          Rectangle().fill(Ink.gold.opacity(0.3)).frame(width: 35, height: 0.5)
+        }.padding(.top, 22)
+        Text("Touch the water. Wake the music.").font(Ink.italic(13))
+          .foregroundStyle(Ink.muted).padding(.top, 14)
       }
-      .padding(.vertical, 40)
+      .padding(.vertical, 38)
     }
     .foregroundStyle(Ink.pearl)
     .frame(width: 400, height: 720)

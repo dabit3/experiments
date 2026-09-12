@@ -1,198 +1,288 @@
 import SwiftUI
 
 enum Ink {
-  static let background = Color(red: 0.025, green: 0.065, blue: 0.070)
-  static let deep = Color(red: 0.045, green: 0.13, blue: 0.13)
-  static let jade = Color(red: 0.30, green: 0.64, blue: 0.51)
-  static let gold = Color(red: 0.81, green: 0.72, blue: 0.47)
-  static let pearl = Color(red: 0.94, green: 0.93, blue: 0.84)
-  static let peach = Color(red: 0.97, green: 0.65, blue: 0.49)
-  static let muted = Color(red: 0.65, green: 0.74, blue: 0.69)
+  static let background = Color(red: 0.025, green: 0.070, blue: 0.070)
+  static let deep = Color(red: 0.055, green: 0.15, blue: 0.14)
+  static let jade = Color(red: 0.39, green: 0.64, blue: 0.53)
+  static let gold = Color(red: 0.76, green: 0.68, blue: 0.48)
+  static let pearl = Color(red: 0.94, green: 0.92, blue: 0.85)
+  static let peach = Color(red: 0.85, green: 0.47, blue: 0.32)
+  static let muted = Color(red: 0.65, green: 0.73, blue: 0.67)
+  static func display(_ size: CGFloat) -> Font { .custom("Baskerville", fixedSize: size) }
+  static func italic(_ size: CGFloat) -> Font { .custom("Baskerville-Italic", fixedSize: size) }
 }
 
 struct PondArt: View {
   var time: Double = 0
   var hero = false
-  var heroPosition = 0.40
-  var heroScale = 1.0
   var celebration = false
   var reducedMotion = false
+  var atmosphereOnly = false
+  var transparent = false
 
   var body: some View {
     Canvas { context, size in
       let t = reducedMotion ? 0 : time
-      let width = size.width
-      let height = size.height
-      context.fill(
-        Path(CGRect(origin: .zero, size: size)),
-        with: .linearGradient(
-          Gradient(colors: [Ink.background, Ink.deep, Ink.background]),
-          startPoint: .zero, endPoint: CGPoint(x: width, y: height)
-        )
-      )
-      for index in 0..<55 {
-        let x = CGFloat((index * 137 + 19) % 997) / 997 * width
-        let y = CGFloat((index * 271 + 23) % 991) / 991 * height
-        let shimmer = 0.12 + 0.15 * (sin(t * 0.6 + Double(index)) + 1) / 2
-        let radius: CGFloat = index % 7 == 0 ? 1.4 : 0.7
-        context.fill(
-          Path(ellipseIn: CGRect(x: x, y: y, width: radius * 2, height: radius * 2)),
-          with: .color(Ink.gold.opacity(shimmer)))
-      }
-      let center = CGPoint(x: width * 0.5, y: height * (hero ? heroPosition : 0.47))
-      for index in 0..<7 {
-        let radius = width * (0.22 + Double(index) * 0.097)
-        let shift = sin(t * 0.25 + Double(index)) * 4
-        context.stroke(
-          Path(
-            ellipseIn: CGRect(
-              x: center.x - radius, y: center.y - radius * 0.72 + shift,
-              width: radius * 2, height: radius * 1.44)),
-          with: .color(Ink.jade.opacity(index % 2 == 0 ? 0.075 : 0.035)), lineWidth: 0.8
-        )
-      }
-      lily(
-        context, at: CGPoint(x: width * 0.08, y: height * 0.62), radius: width * 0.16, angle: -20)
-      lily(
-        context, at: CGPoint(x: width * 0.91, y: height * 0.22), radius: width * 0.13, angle: 130)
-      lily(context, at: CGPoint(x: width * 0.97, y: height * 0.73), radius: width * 0.09, angle: 40)
+      if !transparent { water(context, size: size, time: t) }
+      guard !atmosphereOnly else { return }
       if hero {
-        moon(context, center: center, radius: width * 0.265 * heroScale)
+        let center = CGPoint(x: size.width * 0.5, y: size.height * 0.5)
+        let radius = min(size.width * 0.38, size.height * 0.44)
+        moon(context, center: center, radius: radius)
         koi(
-          context, at: CGPoint(x: width * 0.37 + sin(t * 0.3) * 9, y: center.y + width * 0.09),
-          length: width * 0.36 * heroScale, angle: -41 + sin(t * 0.4) * 4, color: Ink.peach)
+          context, at: CGPoint(x: center.x - radius * 0.25, y: center.y + radius * 0.22),
+          length: radius * 1.18, angle: -68 + sin(t * 0.22) * 5,
+          warm: true, phase: t * 0.8)
         koi(
-          context, at: CGPoint(x: width * 0.65, y: center.y - width * 0.03 + sin(t * 0.3) * 7),
-          length: width * 0.27 * heroScale, angle: 133, color: Ink.pearl)
+          context, at: CGPoint(x: center.x + radius * 0.39, y: center.y - radius * 0.14),
+          length: radius * 0.91, angle: 114 + sin(t * 0.22 + 2) * 6,
+          warm: false, phase: t * 0.8 + 2)
+        leaf(
+          context, at: CGPoint(x: center.x - radius * 1.04, y: center.y + radius * 0.36),
+          radius: radius * 0.23, angle: -35, opacity: 0.65)
         blossom(
-          context, at: CGPoint(x: width * 0.81, y: center.y + width * 0.24), radius: width * 0.045)
+          context, at: CGPoint(x: center.x + radius * 0.93, y: center.y + radius * 0.61),
+          radius: radius * 0.11)
       } else {
-        let count = celebration ? 7 : 2
-        for index in 0..<count {
-          let angle = t * 0.09 + Double(index) * 2.4
-          let x = width * (0.5 + 0.35 * cos(angle))
-          let y = height * (0.49 + 0.24 * sin(angle))
+        for index in 0..<(celebration ? 7 : 2) {
+          let angle = t * 0.075 + Double(index) * 2.4
+          let point = CGPoint(
+            x: size.width * (0.5 + 0.36 * cos(angle)), y: size.height * (0.51 + 0.22 * sin(angle)))
+          var submerged = context
+          submerged.opacity = celebration ? 0.6 : 0.22
           koi(
-            context, at: CGPoint(x: x, y: y), length: width * (celebration ? 0.19 : 0.16),
-            angle: angle * 180 / .pi + 90,
-            color: index % 2 == 0 ? Ink.peach.opacity(0.66) : Ink.pearl.opacity(0.5))
+            submerged, at: point, length: size.width * (celebration ? 0.21 : 0.18),
+            angle: angle * 180 / .pi + 90, warm: index.isMultiple(of: 2), phase: t + Double(index))
         }
       }
     }
     .accessibilityHidden(true)
   }
 
-  private func moon(_ source: GraphicsContext, center: CGPoint, radius: Double) {
-    var context = source
-    context.addFilter(.shadow(color: Ink.gold.opacity(0.12), radius: 22))
-    context.stroke(
-      Path(
-        ellipseIn: CGRect(
-          x: center.x - radius, y: center.y - radius,
-          width: radius * 2, height: radius * 2)),
-      with: .color(Ink.gold.opacity(0.75)), lineWidth: 0.8)
-    context.stroke(
-      Path(
-        ellipseIn: CGRect(
-          x: center.x - radius - 5, y: center.y - radius - 5,
-          width: radius * 2 + 10, height: radius * 2 + 10)),
-      with: .color(Ink.gold.opacity(0.14)), lineWidth: 0.6)
-    for index in 0..<9 {
-      let angle = Double(index) * 0.35 - 1.8
-      context.fill(
-        Path(
-          ellipseIn: CGRect(
-            x: center.x + cos(angle) * radius - 1.5,
-            y: center.y + sin(angle) * radius - 1.5, width: 3, height: 3)),
-        with: .color(Ink.pearl.opacity(0.8)))
+  private func water(_ context: GraphicsContext, size: CGSize, time: Double) {
+    let bounds = Path(CGRect(origin: .zero, size: size))
+    context.fill(bounds, with: .color(Ink.background))
+    context.fill(
+      bounds,
+      with: .radialGradient(
+        Gradient(colors: [Ink.deep.opacity(0.8), Ink.background.opacity(0)]),
+        center: CGPoint(x: size.width * 0.35, y: size.height * 0.40),
+        startRadius: 0, endRadius: size.height * 0.7))
+    for index in 0..<38 {
+      let y = size.height * CGFloat(index) / 37
+      var current = Path()
+      current.move(to: CGPoint(x: -30, y: y))
+      current.addCurve(
+        to: CGPoint(x: size.width + 30, y: y - 35),
+        control1: CGPoint(x: size.width * 0.35, y: y - 32 + sin(time * 0.13) * 7),
+        control2: CGPoint(x: size.width * 0.6, y: y + 45))
+      context.stroke(
+        current, with: .color(Ink.jade.opacity(index % 3 == 0 ? 0.025 : 0.012)), lineWidth: 0.5)
     }
+    for index in 0..<90 {
+      let x = CGFloat((index * 137 + 19) % 997) / 997 * size.width
+      let y = CGFloat((index * 271 + 23) % 991) / 991 * size.height
+      let alpha = 0.035 + 0.055 * (sin(time * 0.4 + Double(index)) + 1) / 2
+      context.fill(
+        Path(ellipseIn: CGRect(x: x, y: y, width: 0.7, height: 0.7)),
+        with: .color(Ink.pearl.opacity(alpha)))
+    }
+    leaf(
+      context, at: CGPoint(x: size.width * 1.02, y: size.height * 0.2), radius: size.width * 0.18,
+      angle: 140, opacity: 0.25)
+    leaf(
+      context, at: CGPoint(x: -size.width * 0.03, y: size.height * 0.72), radius: size.width * 0.2,
+      angle: -30, opacity: 0.2)
   }
 
-  private func lily(_ source: GraphicsContext, at point: CGPoint, radius: Double, angle: Double) {
+  private func moon(_ source: GraphicsContext, center: CGPoint, radius: Double) {
     var context = source
-    context.translateBy(x: point.x, y: point.y)
-    context.rotate(by: .degrees(angle))
-    var path = Path()
-    path.move(to: .zero)
-    path.addArc(
-      center: .zero, radius: radius, startAngle: .degrees(8), endAngle: .degrees(352),
-      clockwise: false)
-    path.closeSubpath()
+    context.translateBy(x: center.x, y: center.y)
     context.fill(
-      path,
-      with: .linearGradient(
-        Gradient(colors: [Ink.jade.opacity(0.30), Ink.deep]),
-        startPoint: CGPoint(x: -radius, y: -radius),
-        endPoint: CGPoint(x: radius, y: radius)))
-    context.stroke(path, with: .color(Ink.jade.opacity(0.28)), lineWidth: 0.8)
-    for index in 1...10 {
-      let angle = Double(index) * 0.55
-      var vein = Path()
-      vein.move(to: .zero)
-      vein.addQuadCurve(
-        to: CGPoint(x: cos(angle) * radius * 0.9, y: sin(angle) * radius * 0.9),
-        control: CGPoint(x: cos(angle + 0.2) * radius * 0.5, y: sin(angle + 0.2) * radius * 0.5))
-      context.stroke(vein, with: .color(Ink.jade.opacity(0.11)), lineWidth: 0.5)
+      Path(ellipseIn: CGRect(x: -radius, y: -radius, width: radius * 2, height: radius * 2)),
+      with: .radialGradient(
+        Gradient(colors: [Ink.jade.opacity(0.07), Ink.pearl.opacity(0.015), .clear]),
+        center: CGPoint(x: -radius * 0.3, y: -radius * 0.3), startRadius: 0, endRadius: radius * 1.2
+      ))
+    for index in 0..<3 {
+      var arc = Path()
+      arc.addArc(
+        center: .zero, radius: radius + Double(index) * 5,
+        startAngle: .degrees(-113 + Double(index) * 16),
+        endAngle: .degrees(196 - Double(index) * 24), clockwise: false)
+      context.stroke(
+        arc, with: .color(Ink.gold.opacity(index == 0 ? 0.60 : 0.14)),
+        style: StrokeStyle(lineWidth: index == 0 ? 0.7 : 0.45, lineCap: .round))
+    }
+    for index in 0..<35 {
+      let angle = Double(index) * 0.032 - 1.85
+      let outer = radius + (index.isMultiple(of: 5) ? 6.0 : 3.0)
+      var tick = Path()
+      tick.move(to: CGPoint(x: cos(angle) * radius, y: sin(angle) * radius))
+      tick.addLine(to: CGPoint(x: cos(angle) * outer, y: sin(angle) * outer))
+      context.stroke(tick, with: .color(Ink.gold.opacity(0.35)), lineWidth: 0.45)
     }
   }
 
   private func koi(
-    _ source: GraphicsContext, at point: CGPoint, length: Double, angle: Double, color: Color
+    _ source: GraphicsContext, at point: CGPoint, length: Double, angle: Double, warm: Bool,
+    phase: Double
   ) {
     var context = source
     context.translateBy(x: point.x, y: point.y)
     context.rotate(by: .degrees(angle))
-    context.scaleBy(x: length / 100, y: length / 100)
-    context.addFilter(.shadow(color: color.opacity(0.18), radius: 8))
+    context.scaleBy(x: length, y: length)
+    let sway = sin(phase) * 0.035
+    let pigment = warm ? Ink.peach : Ink.jade
+    var tail = Path()
+    tail.move(to: CGPoint(x: -0.42, y: 0.035))
+    tail.addCurve(
+      to: CGPoint(x: -0.92, y: -0.24 + sway), control1: CGPoint(x: -0.60, y: 0.08),
+      control2: CGPoint(x: -0.75, y: -0.29))
+    tail.addCurve(
+      to: CGPoint(x: -0.73, y: 0.06 + sway), control1: CGPoint(x: -0.92, y: -0.07),
+      control2: CGPoint(x: -0.76, y: -0.02))
+    tail.addCurve(
+      to: CGPoint(x: -0.83, y: 0.38 + sway), control1: CGPoint(x: -0.69, y: 0.17),
+      control2: CGPoint(x: -0.80, y: 0.25))
+    tail.addCurve(
+      to: CGPoint(x: -0.42, y: 0.035), control1: CGPoint(x: -0.61, y: 0.29),
+      control2: CGPoint(x: -0.61, y: 0.08))
+    context.fill(
+      tail,
+      with: .linearGradient(
+        Gradient(colors: [Ink.pearl.opacity(0.10), pigment.opacity(0.65), Ink.pearl.opacity(0.7)]),
+        startPoint: CGPoint(x: -0.9, y: 0), endPoint: CGPoint(x: -0.4, y: 0)))
+    context.stroke(tail, with: .color(Ink.pearl.opacity(0.38)), lineWidth: 0.003)
+    for side in [-1.0, 1.0] {
+      var fin = Path()
+      fin.move(to: CGPoint(x: 0.20, y: side * 0.08))
+      fin.addCurve(
+        to: CGPoint(x: -0.17, y: side * 0.32), control1: CGPoint(x: 0.06, y: side * 0.14),
+        control2: CGPoint(x: 0.02, y: side * 0.33))
+      fin.addCurve(
+        to: CGPoint(x: -0.02, y: side * 0.08), control1: CGPoint(x: -0.16, y: side * 0.18),
+        control2: CGPoint(x: -0.09, y: side * 0.16))
+      fin.closeSubpath()
+      context.fill(fin, with: .color(Ink.pearl.opacity(0.30)))
+      context.stroke(fin, with: .color(Ink.pearl.opacity(0.35)), lineWidth: 0.003)
+      var finDetail = context
+      finDetail.clip(to: fin)
+      for index in 0..<5 {
+        var ray = Path()
+        ray.move(to: CGPoint(x: 0.14, y: side * 0.09))
+        ray.addQuadCurve(
+          to: CGPoint(x: -0.13 + Double(index) * 0.045, y: side * (0.27 - Double(index) * 0.017)),
+          control: CGPoint(x: -0.02, y: side * 0.16))
+        finDetail.stroke(ray, with: .color(Ink.pearl.opacity(0.24)), lineWidth: 0.002)
+      }
+    }
     var body = Path()
-    body.move(to: CGPoint(x: -45, y: 0))
+    body.move(to: CGPoint(x: 0.46, y: -0.015))
     body.addCurve(
-      to: CGPoint(x: 42, y: 0), control1: CGPoint(x: -4, y: -35), control2: CGPoint(x: 44, y: -20))
+      to: CGPoint(x: 0.32, y: -0.118), control1: CGPoint(x: 0.455, y: -0.073),
+      control2: CGPoint(x: 0.405, y: -0.118))
     body.addCurve(
-      to: CGPoint(x: -45, y: 0), control1: CGPoint(x: 45, y: 21), control2: CGPoint(x: -10, y: 22))
+      to: CGPoint(x: -0.44, y: 0.04), control1: CGPoint(x: 0.02, y: -0.17),
+      control2: CGPoint(x: -0.22, y: 0.06))
+    body.addCurve(
+      to: CGPoint(x: 0.32, y: 0.101), control1: CGPoint(x: -0.10, y: 0.04),
+      control2: CGPoint(x: 0.11, y: 0.15))
+    body.addCurve(
+      to: CGPoint(x: 0.46, y: -0.015), control1: CGPoint(x: 0.41, y: 0.097),
+      control2: CGPoint(x: 0.462, y: 0.035))
     context.fill(
       body,
       with: .linearGradient(
-        Gradient(colors: [color, color.opacity(0.45)]),
-        startPoint: CGPoint(x: 0, y: -19), endPoint: CGPoint(x: 0, y: 21)))
-    var tail = Path()
-    tail.move(to: CGPoint(x: -40, y: 0))
-    tail.addQuadCurve(to: CGPoint(x: -69, y: -22), control: CGPoint(x: -55, y: -4))
-    tail.addQuadCurve(to: CGPoint(x: -60, y: 1), control: CGPoint(x: -58, y: -9))
-    tail.addQuadCurve(to: CGPoint(x: -68, y: 22), control: CGPoint(x: -58, y: 8))
-    tail.addQuadCurve(to: CGPoint(x: -40, y: 0), control: CGPoint(x: -46, y: 14))
-    context.fill(tail, with: .color(color.opacity(0.66)))
-    for sign in [-1.0, 1.0] {
-      var fin = Path()
-      fin.move(to: CGPoint(x: 13, y: 11 * sign))
-      fin.addQuadCurve(to: CGPoint(x: -11, y: 32 * sign), control: CGPoint(x: 13, y: 30 * sign))
-      fin.addQuadCurve(to: CGPoint(x: -4, y: 12 * sign), control: CGPoint(x: -10, y: 22 * sign))
-      context.fill(fin, with: .color(color.opacity(0.5)))
+        Gradient(colors: [Ink.pearl, Ink.pearl.opacity(0.88), pigment.opacity(0.8)]),
+        startPoint: CGPoint(x: 0.1, y: -0.15), endPoint: CGPoint(x: 0.1, y: 0.16)))
+    var markings = context
+    markings.clip(to: body)
+    for index in 0..<4 {
+      let x = 0.29 - Double(index) * 0.17
+      var patch = Path()
+      patch.move(to: CGPoint(x: x, y: -0.17))
+      patch.addCurve(
+        to: CGPoint(x: x - 0.08, y: 0.11), control1: CGPoint(x: x + 0.13, y: -0.02),
+        control2: CGPoint(x: x - 0.03, y: -0.015))
+      patch.addCurve(
+        to: CGPoint(x: x - 0.14, y: -0.13), control1: CGPoint(x: x - 0.19, y: 0.06),
+        control2: CGPoint(x: x - 0.15, y: -0.01))
+      patch.closeSubpath()
+      markings.fill(patch, with: .color(pigment.opacity(warm ? 0.83 : 0.22)))
     }
-    for index in 0..<5 {
-      var scale = Path()
-      let x = Double(index) * 10 - 26
-      scale.move(to: CGPoint(x: x, y: -9))
-      scale.addQuadCurve(to: CGPoint(x: x + 1, y: 10), control: CGPoint(x: x + 9, y: 0))
-      context.stroke(scale, with: .color(Ink.background.opacity(0.15)), lineWidth: 0.65)
+    for row in 0..<3 {
+      for column in 0..<8 {
+        let x = -0.27 + Double(column) * 0.069 + Double(row % 2) * 0.03
+        let y = -0.07 + Double(row) * 0.048
+        var scale = Path()
+        scale.move(to: CGPoint(x: x, y: y))
+        scale.addQuadCurve(
+          to: CGPoint(x: x, y: y + 0.043), control: CGPoint(x: x - 0.043, y: y + 0.022))
+        markings.stroke(scale, with: .color(Ink.background.opacity(0.12)), lineWidth: 0.0025)
+      }
     }
+    var spine = Path()
+    spine.move(to: CGPoint(x: 0.34, y: -0.06))
+    spine.addCurve(
+      to: CGPoint(x: -0.41, y: 0.039), control1: CGPoint(x: 0.13, y: -0.03),
+      control2: CGPoint(x: -0.16, y: -0.02))
+    context.stroke(spine, with: .color(Ink.pearl.opacity(0.48)), lineWidth: 0.006)
+    for side in [-1.0, 1.0] {
+      context.fill(
+        Path(ellipseIn: CGRect(x: 0.367, y: side * 0.055 - 0.0065, width: 0.013, height: 0.013)),
+        with: .color(Ink.background))
+    }
+    var tailDetail = context
+    tailDetail.clip(to: tail)
+    for index in 0..<7 {
+      var ray = Path()
+      ray.move(to: CGPoint(x: -0.44, y: 0.04))
+      ray.addQuadCurve(
+        to: CGPoint(x: -0.83 + Double(index) * 0.017, y: -0.17 + Double(index) * 0.077 + sway),
+        control: CGPoint(x: -0.65, y: 0.01 + Double(index) * 0.017))
+      tailDetail.stroke(ray, with: .color(Ink.pearl.opacity(0.24)), lineWidth: 0.002)
+    }
+  }
+
+  private func leaf(
+    _ source: GraphicsContext, at point: CGPoint, radius: Double, angle: Double, opacity: Double
+  ) {
+    var context = source
+    context.translateBy(x: point.x, y: point.y)
+    context.rotate(by: .degrees(angle))
+    context.opacity = opacity
+    let rect = CGRect(x: -radius, y: -radius, width: radius * 2, height: radius * 2)
+    let path = LilyShape().path(in: rect)
     context.fill(
-      Path(ellipseIn: CGRect(x: 28, y: -7, width: 3.2, height: 3.2)), with: .color(Ink.background))
+      path,
+      with: .linearGradient(
+        Gradient(colors: [Ink.jade.opacity(0.32), Ink.deep]),
+        startPoint: CGPoint(x: -radius, y: -radius), endPoint: CGPoint(x: radius, y: radius)))
+    context.stroke(path, with: .color(Ink.jade.opacity(0.5)), lineWidth: 0.5)
+    context.stroke(
+      LilyVeins().path(in: rect), with: .color(Ink.jade.opacity(0.22)), lineWidth: 0.45)
   }
 
   private func blossom(_ source: GraphicsContext, at point: CGPoint, radius: Double) {
     var context = source
     context.translateBy(x: point.x, y: point.y)
-    for index in 0..<7 {
+    for index in 0..<9 {
       var petal = context
-      petal.rotate(by: .degrees(Double(index) * 360 / 7))
-      petal.fill(
-        Path(
-          ellipseIn: CGRect(
-            x: -radius * 0.38, y: -radius, width: radius * 0.76, height: radius * 1.4)),
-        with: .color(Ink.pearl.opacity(0.8)))
+      petal.rotate(by: .degrees(Double(index) * 137.5))
+      var shape = Path()
+      shape.move(to: .zero)
+      shape.addCurve(
+        to: CGPoint(x: 0, y: -radius), control1: CGPoint(x: -radius * 0.6, y: -radius * 0.4),
+        control2: CGPoint(x: -radius * 0.3, y: -radius * 0.8))
+      shape.addCurve(
+        to: .zero, control1: CGPoint(x: radius * 0.35, y: -radius * 0.8),
+        control2: CGPoint(x: radius * 0.6, y: -radius * 0.3))
+      petal.fill(shape, with: .color(Ink.pearl.opacity(0.22 + Double(index) * 0.07)))
+      petal.stroke(shape, with: .color(Ink.pearl.opacity(0.25)), lineWidth: 0.4)
     }
-    context.fill(Path(ellipseIn: CGRect(x: -3, y: -3, width: 6, height: 6)), with: .color(Ink.gold))
+    context.fill(
+      Path(ellipseIn: CGRect(x: -1.5, y: -1.5, width: 3, height: 3)), with: .color(Ink.gold))
   }
 }
 
@@ -208,20 +298,22 @@ struct LilyTarget: View {
   var body: some View {
     Button(action: action) {
       ZStack {
-        Circle().fill(Ink.background.opacity(0.80)).frame(width: 98, height: 98)
-        Circle().stroke(
-          Ink.gold.opacity(active ? 0.9 : 0.42),
-          style: StrokeStyle(lineWidth: active ? 1.8 : 0.8)
-        )
-        .frame(width: 100, height: 100)
+        Circle().fill(Ink.background.opacity(0.84)).frame(width: 106, height: 106)
+        Circle().stroke(Ink.gold.opacity(active ? 0.9 : 0.42), lineWidth: active ? 1.8 : 0.8).frame(
+          width: 100, height: 100)
+        ForEach(0..<4) { index in
+          Rectangle().fill(Ink.gold.opacity(active ? 0.8 : 0.35)).frame(width: 1, height: 4)
+            .offset(y: -53).rotationEffect(.degrees(Double(index) * 90))
+        }
         LilyShape()
           .fill(
             LinearGradient(
-              colors: [Ink.jade.opacity(active ? 0.72 : 0.37), Ink.deep], startPoint: .topLeading,
+              colors: [Ink.jade.opacity(active ? 0.6 : 0.3), Ink.deep], startPoint: .topLeading,
               endPoint: .bottomTrailing)
           )
-          .overlay(LilyShape().stroke(Ink.jade.opacity(0.5), lineWidth: 0.8))
-          .frame(width: 66, height: 66)
+          .overlay(LilyShape().stroke(Ink.jade.opacity(0.5), lineWidth: 0.6))
+          .overlay(LilyVeins().stroke(Ink.pearl.opacity(0.09), lineWidth: 0.5))
+          .frame(width: 73, height: 73)
           .rotationEffect(.degrees(Double(lane) * 120 - 25))
         if let progress {
           Circle().stroke(ready ? Ink.pearl : Ink.gold, lineWidth: ready ? 3 : 2)
@@ -232,20 +324,16 @@ struct LilyTarget: View {
             .shadow(color: Ink.gold.opacity(0.6), radius: ready ? 12 : 4)
         }
         VStack(spacing: 3) {
-          Text(["I", "II", "III"][lane]).font(.system(size: 19, weight: .light, design: .serif))
+          Text(["I", "II", "III"][lane]).font(Ink.display(20))
           if ready { Text("TAP").font(.system(size: 8, weight: .bold)).tracking(2) }
         }
         .foregroundStyle(active ? Ink.pearl : Ink.muted)
         if flash {
-          Circle().stroke(Ink.peach.opacity(0.7), lineWidth: 1).frame(width: 120, height: 120)
-          ForEach(0..<8) { index in
-            Circle().fill(Ink.gold).frame(width: 3, height: 3)
-              .offset(x: cos(Double(index) * .pi / 4) * 63, y: sin(Double(index) * .pi / 4) * 63)
-          }
+          Circle().stroke(Ink.gold.opacity(0.65), lineWidth: 0.8).frame(width: 120, height: 120)
+          Circle().stroke(Ink.jade.opacity(0.3), lineWidth: 0.5).frame(width: 133, height: 133)
         }
       }
-      .frame(width: 124, height: 124)
-      .contentShape(Circle())
+      .frame(width: 124, height: 124).contentShape(Circle())
     }
     .buttonStyle(.plain)
     .accessibilityLabel("Lily \(lane + 1), \(label)")
@@ -256,12 +344,76 @@ struct LilyTarget: View {
 struct LilyShape: Shape {
   func path(in rect: CGRect) -> Path {
     var path = Path()
-    let center = CGPoint(x: rect.midX, y: rect.midY)
-    path.move(to: center)
-    path.addArc(
-      center: center, radius: rect.width / 2, startAngle: .degrees(9), endAngle: .degrees(351),
-      clockwise: false)
+    path.move(to: CGPoint(x: 0.51, y: 0.55))
+    path.addLine(to: CGPoint(x: 0.80, y: 0.13))
+    path.addCurve(
+      to: CGPoint(x: 0.98, y: 0.48), control1: CGPoint(x: 0.92, y: 0.20),
+      control2: CGPoint(x: 0.96, y: 0.31))
+    path.addCurve(
+      to: CGPoint(x: 0.58, y: 0.98), control1: CGPoint(x: 1.02, y: 0.79),
+      control2: CGPoint(x: 0.82, y: 0.92))
+    path.addCurve(
+      to: CGPoint(x: 0.03, y: 0.62), control1: CGPoint(x: 0.28, y: 1.01),
+      control2: CGPoint(x: 0.06, y: 0.90))
+    path.addCurve(
+      to: CGPoint(x: 0.34, y: 0.04), control1: CGPoint(x: -0.02, y: 0.36),
+      control2: CGPoint(x: 0.10, y: 0.07))
+    path.addCurve(
+      to: CGPoint(x: 0.75, y: 0.10), control1: CGPoint(x: 0.46, y: 0.00),
+      control2: CGPoint(x: 0.66, y: 0.01))
     path.closeSubpath()
+    return path.applying(
+      CGAffineTransform(a: rect.width, b: 0, c: 0, d: rect.height, tx: rect.minX, ty: rect.minY))
+  }
+}
+
+struct LilyVeins: Shape {
+  func path(in rect: CGRect) -> Path {
+    var path = Path()
+    let center = CGPoint(x: rect.minX + rect.width * 0.51, y: rect.minY + rect.height * 0.55)
+    for index in 0..<9 {
+      let angle = Double(index) * 0.58 - 0.5
+      let edge = CGPoint(
+        x: rect.midX + cos(angle) * rect.width * 0.42,
+        y: rect.midY + sin(angle) * rect.height * 0.42)
+      path.move(to: center)
+      path.addQuadCurve(
+        to: edge, control: CGPoint(x: (center.x + edge.x) / 2 - 3, y: (center.y + edge.y) / 2 + 4))
+    }
     return path
+  }
+}
+
+struct RippleSeal: View {
+  var body: some View {
+    ZStack {
+      Circle().trim(from: 0.10, to: 0.86).stroke(Ink.gold.opacity(0.8), lineWidth: 0.8)
+        .rotationEffect(.degrees(-75))
+      Circle().trim(from: 0.15, to: 0.93).stroke(Ink.gold.opacity(0.45), lineWidth: 0.6).padding(4)
+        .rotationEffect(.degrees(70))
+      Capsule().fill(Ink.pearl).frame(width: 3, height: 9).rotationEffect(.degrees(32))
+    }
+    .frame(width: 28, height: 28).accessibilityHidden(true)
+  }
+}
+
+struct RhythmSignature: View {
+  let composition: Composition
+  var body: some View {
+    Canvas { context, size in
+      let notes = Array(composition.notes.prefix(7))
+      var path = Path()
+      for (index, note) in notes.enumerated() {
+        let point = CGPoint(
+          x: Double(index) / Double(max(1, notes.count - 1)) * size.width,
+          y: size.height * (0.2 + Double(note.lane) * 0.3))
+        if index == 0 { path.move(to: point) } else { path.addLine(to: point) }
+        context.fill(
+          Path(ellipseIn: CGRect(x: point.x - 1.4, y: point.y - 1.4, width: 2.8, height: 2.8)),
+          with: .color(Ink.gold))
+      }
+      context.stroke(path, with: .color(Ink.gold.opacity(0.25)), lineWidth: 0.5)
+    }
+    .accessibilityHidden(true)
   }
 }
