@@ -1,10 +1,20 @@
 # Breakwater
 
-A native iPhone harbor rescue game made with SwiftUI and a procedural Canvas diorama.
+A native iPhone harbor rescue game made with SwiftUI and a textured Canvas diorama.
 Draw a route for a coral tug, gather the rope-linked fleet, and bring every boat to
 the lighthouse. Four authored rescues unlock in order. Daily harbor provides an
 endless series of watches with a stable UTC date seed, mirrored charts and tightening
 fuel budgets. Scores and campaign progress stay on the device.
+
+## Art direction
+
+The coastal rescue identity pairs Baskerville lettering, a custom lighthouse seal,
+brass chart instruments, ivory voyage reports and a framed rescue postcard.
+Bundled original generated illustrations provide the home portrait, limestone
+islands, coral tug, lighthouse and water texture. Native Canvas adds moving
+surface glints, shoreline foam, current streamlines, wakes, routes and the towing
+simulation. Artwork is local in `Assets.xcassets`; no image service runs in the app.
+Island footprints retain the circular reef geometry used by the collision rules.
 
 ## Build and run
 

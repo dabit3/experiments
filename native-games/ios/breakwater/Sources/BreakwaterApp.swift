@@ -31,7 +31,7 @@ struct BreakwaterView: View {
       HarborPalette.ink.ignoresSafeArea()
       if inGame { voyage } else { home }
     }
-    .font(.system(.body, design: .rounded))
+    .font(.system(.body))
     .foregroundStyle(HarborPalette.ivory)
     .onReceive(timer) { _ in
       if scenePhase == .active { model.step(1.0 / 30) }
@@ -60,54 +60,79 @@ struct BreakwaterView: View {
   private var home: some View {
     GeometryReader { geometry in
       ZStack {
-        HarborSea(model: model, decorative: true)
-          .frame(width: geometry.size.width, height: geometry.size.height * 0.76)
-          .offset(y: geometry.size.height * 0.04)
+        Image("HarborPortrait")
+          .resizable()
+          .scaledToFill()
+          .frame(width: geometry.size.width, height: geometry.size.height * 0.85)
+          .clipped()
+          .mask(
+            LinearGradient(
+              stops: [
+                .init(color: .clear, location: 0), .init(color: .black, location: 0.12),
+                .init(color: .black, location: 1),
+              ], startPoint: .top, endPoint: .bottom)
+          )
+          .offset(y: geometry.size.height * 0.02)
+          .accessibilityHidden(true)
+        HarborAtmosphere()
+          .allowsHitTesting(false)
         LinearGradient(
           stops: [
-            .init(color: HarborPalette.ink, location: 0),
-            .init(color: HarborPalette.ink.opacity(0.7), location: 0.17),
-            .init(color: .clear, location: 0.4),
-            .init(color: HarborPalette.ink.opacity(0.2), location: 0.66),
+            .init(color: HarborPalette.ink.opacity(0.55), location: 0),
+            .init(color: .clear, location: 0.25),
+            .init(color: .clear, location: 0.50),
+            .init(color: HarborPalette.ink.opacity(0.85), location: 0.70),
             .init(color: HarborPalette.ink, location: 0.89),
           ],
           startPoint: .top, endPoint: .bottom
         )
         .allowsHitTesting(false)
         VStack(alignment: .leading, spacing: 0) {
-          HStack {
-            eyebrow("A SMALL HARBOR. A BIG RESCUE.")
+          HStack(spacing: 9) {
+            RescueSeal().frame(width: 30, height: 30)
+            Text("COASTAL RESCUE SERVICE")
+              .font(.system(size: 8, weight: .medium, design: .monospaced))
+              .tracking(1.5)
+              .foregroundStyle(HarborPalette.ivory.opacity(0.8))
             Spacer()
             iconButton("slider.horizontal.3", label: "Settings", id: "settings") { settings = true }
           }
           .padding(.top, 8)
           Text("Breakwater")
-            .font(
-              .system(size: min(geometry.size.width * 0.133, 62), weight: .regular, design: .serif)
-            )
-            .tracking(-2.5)
-            .padding(.top, 12)
+            .font(.custom("Baskerville", size: min(geometry.size.width * 0.154, 70)))
+            .tracking(-2)
+            .padding(.top, 13)
             .accessibilityAddTraits(.isHeader)
-          HStack(spacing: 8) {
-            Rectangle().fill(HarborPalette.brass).frame(width: 26, height: 1)
-            Text("Bring every boat home.")
-              .font(.system(size: 14, weight: .medium))
-              .foregroundStyle(HarborPalette.muted)
-          }.padding(.top, 9)
+          Text("A little courage.\nA safe way home.")
+            .font(.custom("Baskerville-Italic", size: 19))
+            .lineSpacing(2)
+            .foregroundStyle(HarborPalette.ivory.opacity(0.83))
+            .padding(.top, 3)
           Spacer()
-          VStack(alignment: .leading, spacing: 16) {
+          VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .bottom) {
               VStack(alignment: .leading, spacing: 5) {
-                eyebrow("THE RESCUE CHARTS")
-                Text("\(min(model.unlocked, 4)) / 4 harbors open")
-                  .font(.system(size: 13))
-                  .foregroundStyle(HarborPalette.muted)
+                eyebrow("YOUR NEXT CROSSING")
+                Text(HarborChart.campaign[min(3, model.unlocked - 1)].name)
+                  .font(.custom("Baskerville", size: 24))
               }
               Spacer()
-              Text("EST. 2026")
-                .font(.system(size: 9, design: .monospaced))
-                .tracking(1.5)
-                .foregroundStyle(HarborPalette.brass.opacity(0.6))
+              VStack(alignment: .trailing, spacing: 8) {
+                HStack(spacing: 4) {
+                  ForEach(0..<4) { index in
+                    Capsule()
+                      .fill(
+                        index < model.unlocked
+                          ? HarborPalette.brass : HarborPalette.muted.opacity(0.2)
+                      )
+                      .frame(width: 14, height: 3)
+                  }
+                }.accessibilityHidden(true)
+                Text("\(min(model.unlocked, 4)) OF 4 CHARTS")
+                  .font(.system(size: 8, design: .monospaced))
+                  .tracking(0.7)
+                  .foregroundStyle(HarborPalette.muted)
+              }.padding(.bottom, 4)
             }
             primaryButton(
               model.hasLearned ? "Return to sea" : "Begin the rescue", icon: "arrow.up.right",
@@ -132,15 +157,15 @@ struct BreakwaterView: View {
               }
               .accessibilityIdentifier("dailyHarbor")
             }
-            .font(.system(size: 13, weight: .medium))
+            .font(.system(size: 12, weight: .medium))
             .foregroundStyle(HarborPalette.ivory)
-            Text("DRAW A ROUTE  ·  GATHER YOUR TOW  ·  FIND THE LIGHT")
-              .font(.system(size: 8, weight: .medium, design: .monospaced))
-              .tracking(0.8)
+            Text("PLOT A COURSE.  LEAVE NO ONE BEHIND.")
+              .font(.system(size: 7, weight: .medium, design: .monospaced))
+              .tracking(1.2)
               .foregroundStyle(HarborPalette.muted.opacity(0.65))
               .frame(maxWidth: .infinity)
           }
-          .padding(.bottom, 16)
+          .padding(.bottom, 12)
         }
         .padding(.horizontal, 26)
       }
@@ -159,7 +184,7 @@ struct BreakwaterView: View {
           eyebrow(
             model.chart.dailySeed.map { "\($0) · WATCH \(model.chart.shift + 1)" }
               ?? "RESCUE CHART 0\(model.chart.chapter)")
-          Text(model.chart.name).font(.system(size: 23, weight: .regular, design: .serif))
+          Text(model.chart.name).font(.custom("Baskerville", size: 25))
             .accessibilityAddTraits(.isHeader)
         }
         Spacer(minLength: 0)
@@ -173,27 +198,39 @@ struct BreakwaterView: View {
       .padding(.horizontal, 12)
       .padding(.top, 5)
       HStack(alignment: .center) {
-        HStack(spacing: 6) {
+        HStack(spacing: 5) {
           ForEach(model.chart.boats.indices, id: \.self) { index in
             Image(
               systemName: model.convoy.contains(where: { $0.index == index })
-                ? "checkmark.circle.fill" : "circle"
+                ? "smallcircle.filled.circle.fill" : "circle"
             )
             .foregroundStyle(
               model.convoy.contains(where: { $0.index == index })
                 ? HarborPalette.brass : HarborPalette.muted
             )
-            .font(.system(size: 15))
+            .font(.system(size: 10))
           }
           Text("\(model.convoy.count)/\(model.chart.boats.count) TOW")
-            .font(.system(size: 12, weight: .semibold, design: .monospaced))
+            .font(.system(size: 11, weight: .medium, design: .monospaced))
             .lineLimit(1)
             .fixedSize(horizontal: true, vertical: false)
         }
         Spacer()
-        Text("FUEL \(Int(model.phase == .plotting ? model.chart.fuel : model.remaining))")
-          .font(.system(size: 12, weight: .semibold, design: .monospaced))
-          .foregroundStyle(model.remaining < 100 ? HarborPalette.coral : HarborPalette.brass)
+        HStack(spacing: 7) {
+          HStack(alignment: .bottom, spacing: 2) {
+            ForEach(0..<8) { index in
+              Rectangle()
+                .fill(
+                  Double(index) / 8 < model.remaining / model.chart.fuel
+                    ? HarborPalette.brass : HarborPalette.muted.opacity(0.2)
+                )
+                .frame(width: 2, height: index % 3 == 0 ? 11 : 7)
+            }
+          }.accessibilityHidden(true)
+          Text("FUEL \(Int(model.phase == .plotting ? model.chart.fuel : model.remaining))")
+            .font(.system(size: 10, weight: .medium, design: .monospaced))
+            .foregroundStyle(model.remaining < 100 ? HarborPalette.coral : HarborPalette.brass)
+        }
       }
       .padding(.horizontal, 24)
       .padding(.vertical, 12)
@@ -220,6 +257,7 @@ struct BreakwaterView: View {
           if model.resultReady { resultOverlay }
         }
         .clipped()
+        .animation(reducedMotion ? nil : .easeOut(duration: 0.35), value: model.resultReady)
       }
       .overlay(alignment: .top) {
         Rectangle().fill(HarborPalette.brass.opacity(0.3)).frame(height: 1)
@@ -330,19 +368,25 @@ struct BreakwaterView: View {
   private var resultOverlay: some View {
     VStack {
       Spacer()
-      VStack(alignment: .leading, spacing: 12) {
-        HStack {
-          eyebrow(model.phase == .won ? "SAFE IN THE HARBOR" : "A LESSON FROM THE SEA")
+      VStack(alignment: .leading, spacing: 13) {
+        HStack(spacing: 10) {
+          Text(model.phase == .won ? "RESCUE COMPLETE" : "VOYAGE REPORT")
+            .font(.system(size: 8, weight: .semibold, design: .monospaced))
+            .tracking(1.8)
+            .foregroundStyle(HarborPalette.coral)
           Spacer()
-          Image(systemName: model.phase == .won ? "sun.max" : "water.waves")
-            .foregroundStyle(HarborPalette.brass)
+          RescueSeal().frame(width: 33, height: 33).foregroundStyle(HarborPalette.coral)
         }
         Text(model.phase == .won ? "Every light, home." : "Try another line.")
-          .font(.system(size: 31, weight: .regular, design: .serif))
+          .font(.custom("Baskerville", size: 34))
           .minimumScaleFactor(0.7)
           .lineLimit(1)
           .accessibilityIdentifier("resultTitle")
         if model.phase == .won {
+          StitchRule().stroke(
+            HarborPalette.ink.opacity(0.2),
+            style: StrokeStyle(lineWidth: 0.7, dash: [2, 4])
+          ).frame(height: 1)
           HStack(alignment: .firstTextBaseline, spacing: 26) {
             resultMetric("\(model.convoy.count)", label: "BOATS RESCUED")
             resultMetric("\(model.score)", label: "POINTS")
@@ -354,19 +398,24 @@ struct BreakwaterView: View {
           )
           .font(.system(size: 9, weight: .medium, design: .monospaced))
           .tracking(0.7)
-          .foregroundStyle(HarborPalette.brass)
+          .foregroundStyle(HarborPalette.ink.opacity(0.6))
         } else {
           Text(model.failure)
             .font(.system(size: 13))
-            .foregroundStyle(HarborPalette.muted)
+            .foregroundStyle(HarborPalette.ink.opacity(0.72))
             .fixedSize(horizontal: false, vertical: true)
         }
       }
       .padding(23)
-      .background(HarborPalette.ink.opacity(0.96))
-      .overlay(alignment: .top) { Rectangle().fill(HarborPalette.brass).frame(height: 2) }
+      .foregroundStyle(HarborPalette.ink)
+      .background(HarborPalette.ivory, in: RoundedRectangle(cornerRadius: 3))
+      .overlay(alignment: .top) {
+        Rectangle().fill(HarborPalette.coral).frame(height: 3).padding(.horizontal, 23)
+      }
+      .shadow(color: HarborPalette.ink.opacity(0.5), radius: 20, y: 10)
       .padding(18)
     }
+    .transition(.move(edge: .bottom).combined(with: .opacity))
   }
 
   private var resultControls: some View {
@@ -483,8 +532,12 @@ struct BreakwaterView: View {
     NavigationStack {
       ScrollView {
         VStack(alignment: .leading, spacing: 0) {
+          eyebrow("THE CAPTAIN’S ATLAS").padding(.bottom, 14)
           Text("Four crossings.\nOne safe harbor.")
-            .font(.system(size: 35, design: .serif)).padding(.bottom, 28)
+            .font(.custom("Baskerville", size: 37)).padding(.bottom, 12)
+          Text("Small waters. Extraordinary little rescues.")
+            .font(.custom("Baskerville-Italic", size: 17))
+            .foregroundStyle(HarborPalette.muted).padding(.bottom, 15)
           ForEach(HarborChart.campaign.indices, id: \.self) { index in
             let chart = HarborChart.campaign[index]
             let open = index < model.unlocked
@@ -493,20 +546,24 @@ struct BreakwaterView: View {
               start(chart)
             } label: {
               HStack(spacing: 18) {
-                Text("0\(index + 1)")
-                  .font(.system(size: 29, design: .serif))
-                  .foregroundStyle(HarborPalette.brass)
+                ChartPreview(chart: chart)
+                  .frame(width: 54, height: 76)
+                  .overlay(Rectangle().stroke(HarborPalette.brass.opacity(0.4), lineWidth: 0.5))
+                  .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 6) {
-                  Text(chart.name).font(.system(size: 20, design: .serif))
+                  eyebrow("CROSSING 0\(index + 1)")
+                  Text(chart.name).font(.custom("Baskerville", size: 23))
                   Text(
                     model.best[chart.id].map { "BEST \($0) · \(chart.boats.count) BOATS HOME" }
                       ?? (open ? chart.subtitle : "Complete the previous rescue")
                   )
-                  .font(.system(size: 11))
+                  .font(.system(size: 10))
                   .foregroundStyle(HarborPalette.muted)
                 }
                 Spacer()
                 Image(systemName: open ? "arrow.up.right" : "lock")
+                  .font(.system(size: 12))
+                  .foregroundStyle(HarborPalette.brass)
               }
               .padding(.vertical, 22)
               .contentShape(Rectangle())
@@ -541,9 +598,9 @@ struct BreakwaterView: View {
 
   private func resultMetric(_ value: String, label: String) -> some View {
     VStack(alignment: .leading, spacing: 3) {
-      Text(value).font(.system(size: 33, design: .serif))
+      Text(value).font(.custom("Baskerville", size: 39))
       Text(label).font(.system(size: 8, weight: .semibold, design: .monospaced))
-        .tracking(0.7).foregroundStyle(HarborPalette.muted)
+        .tracking(0.7).foregroundStyle(HarborPalette.ink.opacity(0.6))
     }
   }
 
@@ -593,14 +650,25 @@ func primaryButton(_ title: String, icon: String, id: String, action: @escaping 
     HStack {
       Text(title).font(.system(size: 15, weight: .semibold))
       Spacer()
-      Image(systemName: icon).font(.system(size: 16, weight: .medium))
+      Image(systemName: icon).font(.system(size: 14, weight: .medium))
+        .frame(width: 30, height: 30)
+        .overlay(Circle().stroke(HarborPalette.ink.opacity(0.2), lineWidth: 0.7))
     }
     .padding(.horizontal, 20)
     .frame(height: 53)
-    .background(HarborPalette.brass, in: RoundedRectangle(cornerRadius: 4))
+    .background(
+      LinearGradient(
+        colors: [HarborPalette.ivory, Color(red: 0.87, green: 0.81, blue: 0.67)],
+        startPoint: .topLeading, endPoint: .bottomTrailing),
+      in: RoundedRectangle(cornerRadius: 5)
+    )
+    .overlay(
+      RoundedRectangle(cornerRadius: 5).stroke(HarborPalette.ivory.opacity(0.5), lineWidth: 0.7)
+    )
     .foregroundStyle(HarborPalette.ink)
     .contentShape(Rectangle())
   }
+  .buttonStyle(HarborPressStyle())
   .accessibilityIdentifier(id)
 }
 
@@ -611,18 +679,22 @@ struct HarborPostcard: View {
     VStack(spacing: 0) {
       HStack(alignment: .top) {
         VStack(alignment: .leading, spacing: 8) {
-          Text("Breakwater").font(.system(size: 35, design: .serif))
-          Text("A POSTCARD FROM THE HARBOR")
+          Text("Breakwater").font(.custom("Baskerville", size: 38))
+          Text("COASTAL RESCUE SERVICE")
             .font(.system(size: 8, weight: .semibold, design: .monospaced)).tracking(1.7)
         }
         Spacer()
-        Image(systemName: "sun.max").font(.system(size: 29))
+        RescueSeal().frame(width: 48, height: 48)
+          .foregroundStyle(HarborPalette.coral)
       }
       .padding(24)
       .foregroundStyle(HarborPalette.ink)
       HarborSea(model: model, postcard: true).frame(height: 455)
+        .clipped()
+        .overlay(Rectangle().stroke(HarborPalette.ink.opacity(0.2), lineWidth: 1))
+        .padding(.horizontal, 14)
       VStack(alignment: .leading, spacing: 9) {
-        Text("Every light, home.").font(.system(size: 30, design: .serif))
+        Text("Every light, home.").font(.custom("Baskerville-Italic", size: 32))
         Text("\(model.convoy.count) BOATS RESCUED  /  \(model.score) POINTS")
           .font(.system(size: 11, weight: .semibold, design: .monospaced))
         Text(
@@ -631,6 +703,12 @@ struct HarborPostcard: View {
         )
         .font(.system(size: 9, design: .monospaced))
         .foregroundStyle(HarborPalette.ink.opacity(0.65))
+        StitchRule().stroke(
+          HarborPalette.ink.opacity(0.25),
+          style: StrokeStyle(lineWidth: 1, dash: [2, 5])
+        ).frame(height: 1).padding(.top, 9)
+        Text("A SMALL HARBOR. A BIG RESCUE.")
+          .font(.system(size: 7, design: .monospaced)).tracking(1.5).padding(.top, 4)
       }
       .frame(maxWidth: .infinity, alignment: .leading)
       .padding(24)
