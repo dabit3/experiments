@@ -46,10 +46,11 @@ xcrun swift-format lint --strict --recursive PocketPeloton PocketPelotonTests To
 # Use a UUID from `xcrun simctl list devices available`:
 xcodebuild -project PocketPeloton.xcodeproj -scheme PocketPeloton \
   -configuration Debug -destination 'platform=iOS Simulator,id=YOUR_IPHONE_UUID' \
+  -parallel-testing-enabled NO \
   -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO test
 ```
 
-The XCTest suite covers drafting boundaries and recovery, sprint exhaustion/recovery, valid slingshots, obstacle lane/collision behavior, frame-rate tolerance, actual finish gaps, achievable wins on all courses, state freezing after finish, interrupted-frame limits, pause and persistence. The simulator build typechecks all Swift source. There is no separate third-party linter.
+The XCTest suite covers drafting boundaries and recovery, sprint exhaustion/recovery, valid slingshots, obstacle lane/collision behavior, frame-rate tolerance, actual finish gaps, achievable wins on all courses, state freezing after finish, interrupted-frame limits, pause and persistence. The simulator build typechecks all Swift source. There is no separate third-party linter. On resource-constrained VMs, finish XCTest before interactive testing and boot only one simulator at a time.
 
 ## Artwork
 
