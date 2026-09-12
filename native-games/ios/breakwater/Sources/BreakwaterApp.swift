@@ -179,14 +179,14 @@ struct BreakwaterView: View {
               model.convoy.contains(where: { $0.index == index })
                 ? HarborPalette.brass : HarborPalette.muted
             )
-            .font(.system(size: 13))
+            .font(.system(size: 15))
           }
           Text("\(model.convoy.count)/\(model.chart.boats.count) TOW")
-            .font(.system(size: 10, weight: .medium, design: .monospaced))
+            .font(.system(size: 12, weight: .semibold, design: .monospaced))
         }
         Spacer()
         Text("FUEL \(Int(model.phase == .plotting ? model.chart.fuel : model.remaining))")
-          .font(.system(size: 10, weight: .medium, design: .monospaced))
+          .font(.system(size: 12, weight: .semibold, design: .monospaced))
           .foregroundStyle(model.remaining < 100 ? HarborPalette.coral : HarborPalette.brass)
       }
       .padding(.horizontal, 24)
@@ -221,15 +221,18 @@ struct BreakwaterView: View {
       .overlay(alignment: .bottom) {
         Rectangle().fill(HarborPalette.brass.opacity(0.3)).frame(height: 1)
       }
-      if model.phase == .plotting || model.phase == .sailing {
-        controls
-      } else if model.phase == .paused {
-        Text("The harbor can wait.")
-          .font(.system(size: 13, design: .serif)).italic()
-          .foregroundStyle(HarborPalette.muted).frame(height: 65)
-      } else {
-        resultControls
+      Group {
+        if model.phase == .plotting || model.phase == .sailing {
+          controls
+        } else if model.phase == .paused {
+          Text("The harbor can wait.")
+            .font(.system(size: 13, design: .serif)).italic()
+            .foregroundStyle(HarborPalette.muted)
+        } else {
+          resultControls
+        }
       }
+      .frame(height: 120)
     }
   }
 
@@ -253,6 +256,11 @@ struct BreakwaterView: View {
           } label: {
             Image(systemName: model.showGuide ? "eye.fill" : "eye")
               .frame(width: 44, height: 30)
+              .background(
+                model.showGuide ? HarborPalette.brass.opacity(0.18) : .clear,
+                in: Capsule()
+              )
+              .foregroundStyle(model.showGuide ? HarborPalette.brass : HarborPalette.ivory)
           }
           .accessibilityLabel(model.showGuide ? "Hide chart assist" : "Show chart assist")
           .accessibilityIdentifier("chartAssist")

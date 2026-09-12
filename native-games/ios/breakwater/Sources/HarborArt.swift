@@ -37,7 +37,7 @@ struct HarborSea: View {
 
 extension HarborSea {
   private func drawSea(_ ctx: inout GraphicsContext, time: Double) {
-    let chart = model.chart
+    let chart = decorative ? HarborChart.campaign[0] : model.chart
     let rect = CGRect(x: 0, y: 0, width: 360, height: 520)
     ctx.fill(
       Path(rect),
@@ -93,7 +93,7 @@ extension HarborSea {
 
     for reef in chart.reefs { drawReef(reef, time: time, ctx: &ctx) }
     drawHarbor(time: time, ctx: &ctx)
-    drawJetty(ctx: &ctx)
+    if !decorative { drawJetty(ctx: &ctx) }
     compass(at: SeaPoint(x: 302, y: 459), ctx: &ctx)
     label(
       "SOUNDINGS IN FATHOMS", at: .init(x: 177, y: 506), size: 6,
@@ -103,11 +103,16 @@ extension HarborSea {
     label(
       "12", at: .init(x: 290, y: 414), size: 8, color: HarborPalette.foam.opacity(0.28), ctx: &ctx)
 
-    if model.showGuide && model.phase == .plotting && !decorative {
+    if decorative {
+      drawHomeFleet(time: time, ctx: &ctx)
+      return
+    }
+    if model.showGuide && model.phase == .plotting {
       let guide = routePath(chart.guide)
+      ctx.stroke(guide, with: .color(HarborPalette.ink.opacity(0.4)), lineWidth: 5)
       ctx.stroke(
-        guide, with: .color(HarborPalette.foam.opacity(0.35)),
-        style: StrokeStyle(lineWidth: 1, lineCap: .round, dash: [2, 7]))
+        guide, with: .color(HarborPalette.ivory.opacity(0.65)),
+        style: StrokeStyle(lineWidth: 1.8, lineCap: .round, dash: [2, 6]))
     }
     if model.route.count > 1 && !decorative {
       let path = routePath(model.route)
@@ -138,8 +143,8 @@ extension HarborSea {
         at: point, angle: -.pi / 2 + sin(time * 0.8 + Double(index)) * 0.06,
         tug: false, ctx: &ctx)
       let badge = point + SeaPoint(x: 17, y: -19)
-      ctx.fill(circle(badge, 8), with: .color(HarborPalette.brass))
-      label("\(index + 1)", at: badge, size: 9, color: HarborPalette.ink, ctx: &ctx)
+      ctx.fill(circle(badge, 9.5), with: .color(HarborPalette.brass))
+      label("\(index + 1)", at: badge, size: 11, color: HarborPalette.ink, ctx: &ctx)
     }
     var previous = model.tug
     for offset in model.convoy.indices {
@@ -173,6 +178,35 @@ extension HarborSea {
         ctx.fill(circle(point, 1.5), with: .color(HarborPalette.ivory.opacity(model.pickupFlash)))
       }
     }
+  }
+
+  private func drawHomeFleet(time: Double, ctx: inout GraphicsContext) {
+    let course: [SeaPoint] = [
+      .init(x: 73, y: 372), .init(x: 121, y: 355),
+      .init(x: 166, y: 333), .init(x: 206, y: 299), .init(x: 231, y: 254),
+    ]
+    let wake = routePath(course)
+    ctx.stroke(
+      wake, with: .color(HarborPalette.foam.opacity(0.07)),
+      style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+    ctx.stroke(
+      wake, with: .color(HarborPalette.foam.opacity(0.3)),
+      style: StrokeStyle(lineWidth: 1.2, lineCap: .round, dash: [2, 5]))
+    let bob = sin(time * 0.7) * 1.2
+    let fleet: [SeaPoint] = [
+      .init(x: 231, y: 254 + bob), .init(x: 215, y: 284 + bob),
+      .init(x: 191, y: 313 + bob), .init(x: 160, y: 335 + bob),
+    ]
+    ctx.stroke(
+      routePath(fleet), with: .color(HarborPalette.brass),
+      style: StrokeStyle(lineWidth: 1.6, lineCap: .round, lineJoin: .round))
+    for index in fleet.indices.reversed() {
+      let angle = index < 2 ? -1.08 : -0.67
+      boat(at: fleet[index], angle: angle, tug: index == 0, scale: 1.3, ctx: &ctx)
+    }
+    label(
+      "THE LITTLE FLEET", at: .init(x: 190, y: 380), size: 8,
+      color: HarborPalette.brass.opacity(0.7), ctx: &ctx)
   }
 
   private func drawReef(_ reef: Reef, time: Double, ctx: inout GraphicsContext) {
@@ -219,9 +253,9 @@ extension HarborSea {
   }
 
   private func drawHarbor(time: Double, ctx: inout GraphicsContext) {
-    let p = model.chart.home
+    let p = decorative ? HarborChart.campaign[0].home : model.chart.home
     let side = p.x > 180 ? 1.0 : -1.0
-    let light = p + SeaPoint(x: side * 35, y: -32)
+    let light = SeaPoint(x: p.x + side * 35, y: max(49, p.y - 32))
     var dock = Path()
     dock.move(to: CGPoint(x: p.x + side * 21, y: p.y + 19))
     dock.addLine(to: CGPoint(x: p.x + side * 41, y: p.y + 19))
@@ -234,7 +268,7 @@ extension HarborSea {
         circle(p + SeaPoint(x: side * 41, y: 15 - Double(index * 8)), 1.3),
         with: .color(HarborPalette.brass))
     }
-    let lit = model.phase == .won || model.allRescued
+    let lit = decorative || model.phase == .won || model.allRescued
     ctx.fill(circle(p, 29), with: .color(HarborPalette.brass.opacity(lit ? 0.18 : 0.06)))
     ctx.stroke(
       circle(p, 29), with: .color(HarborPalette.brass.opacity(0.78)),
@@ -302,10 +336,14 @@ extension HarborSea {
     }
   }
 
-  private func boat(at point: SeaPoint, angle: Double, tug: Bool, ctx: inout GraphicsContext) {
+  private func boat(
+    at point: SeaPoint, angle: Double, tug: Bool, scale: Double = 1,
+    ctx: inout GraphicsContext
+  ) {
     var boat = ctx
     boat.translateBy(x: point.x, y: point.y)
     boat.rotate(by: .radians(angle + .pi / 2))
+    boat.scaleBy(x: scale, y: scale)
     let hull = Path { p in
       p.move(to: CGPoint(x: 0, y: -14))
       p.addCurve(

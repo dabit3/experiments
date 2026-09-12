@@ -124,7 +124,7 @@ final class HarborVoyageTests: XCTestCase {
     var points = [model.chart.start]
     for _ in 0..<12 {
       points.append(.init(x: 240, y: 450))
-      points.append(model.chart.start + .init(x: 0, y: -2))
+      points.append(.init(x: 110, y: 448))
     }
     plot(points, model: model)
     XCTAssertFalse(model.routeFits)
