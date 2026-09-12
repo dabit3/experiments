@@ -170,10 +170,14 @@ struct ContentView: View {
               .foregroundStyle(
                 journey.position.delivered.contains(home.square) ? Winter.amber : Winter.powder
               )
-              .overlay(alignment: .topTrailing) {
-                if index == 0 && !journey.position.delivered.contains(home.square) {
-                  Circle().fill(Winter.cranberry).frame(width: 5, height: 5).offset(x: 4, y: -3)
-                }
+              .overlay(alignment: .bottomTrailing) {
+                Text("\(index + 1)")
+                  .font(.system(size: 8, weight: .bold, design: .rounded))
+                  .foregroundStyle(Winter.cream)
+                  .frame(width: 12, height: 12)
+                  .background(index == 0 ? Winter.cranberry : Winter.ink)
+                  .clipShape(Circle())
+                  .offset(x: 5, y: 3)
               }
             }
           }
@@ -186,7 +190,7 @@ struct ContentView: View {
           "\(journey.fuelLeft) fuel remaining. \(journey.position.delivered.count) of 3 parcels delivered."
         )
         VillageArt(journey: journey, selected: selected)
-          .frame(width: min(size.width - 22, size.height * 0.43))
+          .frame(width: min(size.width - 22, size.height * 0.47))
           .padding(.bottom, -5)
         Text(note)
           .font(.system(size: 12, weight: .medium))
@@ -590,7 +594,7 @@ struct ContentView: View {
   private func undo() {
     guard var value = journey else { return }
     value.undo()
-    journey = value
+    withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.25)) { journey = value }
     store.save(value)
     saved = value
     note = "One turn back. Snow, parcels and fuel restored."

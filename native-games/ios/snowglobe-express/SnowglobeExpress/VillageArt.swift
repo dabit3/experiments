@@ -36,12 +36,33 @@ struct WinterBackdrop: View {
   }
 }
 
-struct VillageArt: View {
+struct VillageArt: View, Animatable {
   let journey: Journey
   var selected: Direction?
   var illuminated = false
   var animate = true
+  var vanColumn: Double
+  var vanRow: Double
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+  init(
+    journey: Journey, selected: Direction? = nil, illuminated: Bool = false, animate: Bool = true
+  ) {
+    self.journey = journey
+    self.selected = selected
+    self.illuminated = illuminated
+    self.animate = animate
+    vanColumn = Double(journey.position.van.column)
+    vanRow = Double(journey.position.van.row)
+  }
+
+  var animatableData: AnimatablePair<Double, Double> {
+    get { AnimatablePair(vanColumn, vanRow) }
+    set {
+      vanColumn = newValue.first
+      vanRow = newValue.second
+    }
+  }
 
   var body: some View {
     TimelineView(.animation(minimumInterval: 1.0 / 24, paused: reduceMotion || !animate)) {
@@ -77,7 +98,7 @@ struct VillageArt: View {
       startAngle: .degrees(202), endAngle: .degrees(247), clockwise: false)
     context.stroke(
       glint, with: .color(.white.opacity(0.58)), style: StrokeStyle(lineWidth: 3, lineCap: .round))
-    let ground = CGRect(x: w * 0.12, y: w * 0.42, width: w * 0.76, height: w * 0.32)
+    let ground = CGRect(x: w * 0.09, y: w * 0.43, width: w * 0.82, height: w * 0.32)
     context.fill(
       Path(ellipseIn: ground.offsetBy(dx: 0, dy: 12)), with: .color(.black.opacity(0.13)))
     context.fill(
@@ -85,12 +106,12 @@ struct VillageArt: View {
       with: .linearGradient(
         Gradient(colors: [Winter.cream, Winter.powder]),
         startPoint: .zero, endPoint: CGPoint(x: 0, y: w)))
-    let sx = w * 0.076
-    let sy = w * 0.044
+    let sx = w * 0.080
+    let sy = w * 0.051
     func point(_ square: Square) -> CGPoint {
       CGPoint(
         x: w * 0.5 + CGFloat(square.column - square.row) * sx,
-        y: w * 0.31 + CGFloat(square.column + square.row) * sy)
+        y: w * 0.28 + CGFloat(square.column + square.row) * sy)
     }
     for diagonal in 0...8 {
       for row in 0..<5 {
@@ -99,7 +120,7 @@ struct VillageArt: View {
         let square = Square(column: column, row: row)
         let p = point(square)
         let depth = journey.position.snow[square.index]
-        var tile = diamond(p, x: sx - 1.5, y: sy - 1)
+        let tile = diamond(p, x: sx - 1.5, y: sy - 1)
         context.fill(
           tile.offsetBy(dx: 0, dy: 4), with: .color(Color(red: 0.50, green: 0.68, blue: 0.77)))
         let tileColor = depth > 0 ? Winter.cream : Color(red: 0.61, green: 0.77, blue: 0.83)
@@ -126,23 +147,74 @@ struct VillageArt: View {
               Path(ellipseIn: drift),
               with: .color(layer == depth - 1 ? .white : Winter.powder))
           }
-          drawText(
-            "\(depth)", at: CGPoint(x: p.x, y: p.y + sy * 0.30),
-            size: max(9, w * 0.027), color: Winter.ink, context: &context, weight: .bold)
         }
         if journey.puzzle.trees.contains(square) {
-          drawTree(p, scale: w / 380, context: &context)
+          drawTree(p, scale: w / 420, context: &context)
         }
         if let home = journey.puzzle.homes.first(where: { $0.square == square }) {
           drawHouse(
-            p, scale: w / 380, index: journey.puzzle.homes.firstIndex(of: home) ?? 0,
+            p, scale: w / 410, index: journey.puzzle.homes.firstIndex(of: home) ?? 0,
             lit: illuminated || journey.position.delivered.contains(square),
-            priority: home.priority && !journey.position.delivered.contains(square),
             context: &context)
         }
-        if journey.position.van == square {
-          drawVan(p, scale: w / 380, context: &context)
-        }
+      }
+    }
+    let doorstep =
+      journey.puzzle.homes.map { home in
+        max(0, 1 - hypot(vanColumn - Double(home.square.column), vanRow - Double(home.square.row)))
+      }.max() ?? 0
+    let van = CGPoint(
+      x: w * 0.5 + CGFloat(vanColumn - vanRow) * sx - CGFloat(doorstep) * w * 0.02,
+      y: w * 0.28 + CGFloat(vanColumn + vanRow) * sy + CGFloat(doorstep) * w * 0.05)
+    drawVan(van, scale: w / 400, context: &context)
+    for (index, home) in journey.puzzle.homes.enumerated() {
+      let p = point(home.square)
+      let s = w / 400
+      let lit = illuminated || journey.position.delivered.contains(home.square)
+      let badge = CGPoint(x: p.x - 25 * s, y: p.y - 12 * s)
+      context.fill(
+        Path(
+          ellipseIn: CGRect(x: badge.x - 9 * s, y: badge.y - 9 * s, width: 18 * s, height: 18 * s)),
+        with: .color(lit ? Winter.amber : home.priority ? Winter.cranberry : Winter.ink))
+      context.stroke(
+        Path(
+          ellipseIn: CGRect(x: badge.x - 9 * s, y: badge.y - 9 * s, width: 18 * s, height: 18 * s)),
+        with: .color(Winter.cream), lineWidth: 1)
+      drawText(
+        lit ? "✓" : "\(index + 1)", at: badge, size: 11 * s,
+        color: lit ? Winter.ink : .white, context: &context, weight: .bold)
+    }
+    for index in 0..<25 where journey.position.snow[index] > 0 {
+      let p = point(Square(column: index % 5, row: index / 5))
+      let s = w / 400
+      let center = CGPoint(x: p.x, y: p.y + sy * 0.72)
+      context.fill(
+        Path(
+          roundedRect: CGRect(
+            x: center.x - 12 * s, y: center.y - 6 * s, width: 24 * s, height: 12 * s),
+          cornerRadius: 6 * s),
+        with: .color(Winter.ink))
+      var snowflake = Path()
+      for arm in 0..<3 {
+        let angle = Double(arm) * .pi / 3
+        let dx = cos(angle) * 3 * s
+        let dy = sin(angle) * 3 * s
+        snowflake.move(to: CGPoint(x: center.x - 5 * s - dx, y: center.y - dy))
+        snowflake.addLine(to: CGPoint(x: center.x - 5 * s + dx, y: center.y + dy))
+      }
+      context.stroke(snowflake, with: .color(Winter.powder), lineWidth: 1)
+      drawText(
+        "\(journey.position.snow[index])", at: CGPoint(x: center.x + 5 * s, y: center.y),
+        size: 9 * s, color: .white, context: &context, weight: .bold)
+    }
+    if illuminated {
+      for index in 0..<12 {
+        let angle = Double(index) * .pi / 6 + time * 0.06
+        let x = w * 0.5 + CGFloat(cos(angle)) * w * 0.37
+        let y = w * 0.43 + CGFloat(sin(angle)) * w * 0.31
+        context.fill(
+          Path(ellipseIn: CGRect(x: x, y: y, width: 3, height: 3)),
+          with: .color(Winter.amber.opacity(0.65)))
       }
     }
     for index in 0..<34 {
@@ -194,7 +266,7 @@ struct VillageArt: View {
   }
 
   private func drawHouse(
-    _ p: CGPoint, scale: CGFloat, index: Int, lit: Bool, priority: Bool,
+    _ p: CGPoint, scale: CGFloat, index: Int, lit: Bool,
     context: inout GraphicsContext
   ) {
     let s = scale
@@ -243,14 +315,6 @@ struct VillageArt: View {
         roundedRect: CGRect(x: x - 2 * s, y: y - 8 * s, width: 6 * s, height: 14 * s),
         cornerRadius: 2),
       with: .color(Winter.cranberry))
-    let badge = CGPoint(x: x, y: y - 59 * s)
-    context.fill(
-      Path(
-        ellipseIn: CGRect(x: badge.x - 9 * s, y: badge.y - 9 * s, width: 18 * s, height: 18 * s)),
-      with: .color(lit ? Winter.amber : priority ? Winter.cranberry : Winter.ink))
-    drawText(
-      lit ? "✓" : priority ? "1" : "\(index + 1)", at: badge, size: 11 * s,
-      color: lit ? Winter.ink : .white, context: &context, weight: .bold)
   }
 
   private func drawTree(_ p: CGPoint, scale s: CGFloat, context: inout GraphicsContext) {
