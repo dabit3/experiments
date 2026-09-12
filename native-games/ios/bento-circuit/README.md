@@ -7,7 +7,7 @@ UIKit sharing, local persistence, and no third-party runtime dependencies.
 
 Pack every square before the move budget runs out. Savory food stays left of the
 divider; fruit stays right. Select an ingredient, rotate it, then tap the board
-square corresponding to the **top-left of its bounding box**. Alternatively,
+square where the piece's **letter-marked cell** should go. Alternatively,
 drag an ingredient from the tray into the lunchbox; the dotted preview marks
 its destination. Packed pieces can be selected from the tray and repositioned.
 

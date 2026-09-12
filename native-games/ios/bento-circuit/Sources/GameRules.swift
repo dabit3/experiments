@@ -26,6 +26,11 @@ struct FoodPiece: Identifiable, Codable, Equatable {
   let cells: [Cell]
   let solution: Cell
 
+  func anchor(placingMarkedCellAt target: Cell, turns: Int) -> Cell {
+    let marked = rotated(turns).first ?? Cell(x: 0, y: 0)
+    return Cell(x: target.x - marked.x, y: target.y - marked.y)
+  }
+
   func rotated(_ turns: Int) -> [Cell] {
     var result = cells
     for _ in 0..<((turns % 4 + 4) % 4) {

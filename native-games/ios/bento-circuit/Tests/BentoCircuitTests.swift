@@ -49,6 +49,17 @@ final class BentoCircuitTests: XCTestCase {
       Set(piece.rotated(1)), Set([Cell(x: 0, y: 0), Cell(x: 1, y: 0), Cell(x: 1, y: 1)]))
   }
 
+  func testMarkedCellPlacementHandlesEmptyBoundingCornerAndRotation() {
+    let piece = LunchBook.all[0].pieces[1]
+    XCTAssertEqual(piece.anchor(placingMarkedCellAt: Cell(x: 1, y: 1), turns: 0), Cell(x: 0, y: 1))
+    for turns in 0..<4 {
+      let marked = piece.rotated(turns)[0]
+      let target = Cell(x: 3, y: 2)
+      let anchor = piece.anchor(placingMarkedCellAt: target, turns: turns)
+      XCTAssertEqual(Cell(x: anchor.x + marked.x, y: anchor.y + marked.y), target)
+    }
+  }
+
   func testInvalidPlacementsDoNotSpendMoves() {
     let lunch = LunchBook.all[0]
     var game = PackingGame(lunch: lunch)

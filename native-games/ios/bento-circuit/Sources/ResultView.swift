@@ -1,3 +1,4 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -10,8 +11,21 @@ struct ShareParcel: Identifiable {
 struct NativeShareSheet: UIViewControllerRepresentable {
   let parcel: ShareParcel
   func makeUIViewController(context: Context) -> UIActivityViewController {
-    UIActivityViewController(
-      activityItems: [parcel.image, parcel.text], applicationActivities: nil)
+    let configuration = UIActivityItemsConfiguration(objects: [
+      parcel.image, parcel.text as NSString,
+    ])
+    configuration.metadataProvider = { key in
+      if key == .linkPresentationMetadata {
+        let metadata = LPLinkMetadata()
+        metadata.title = "Bento Circuit · Packed with care"
+        metadata.imageProvider = NSItemProvider(object: parcel.image)
+        metadata.iconProvider = NSItemProvider(object: parcel.image)
+        return metadata
+      }
+      if key == .title { return "Bento Circuit postcard" }
+      return nil
+    }
+    return UIActivityViewController(activityItemsConfiguration: configuration)
   }
   func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }
@@ -42,10 +56,12 @@ struct LunchPostcard: View {
           )
           .rotationEffect(.degrees(7))
       }
-      BoardView(lunch: lunch, game: game, cellSize: (width - 76) / CGFloat(lunch.width))
-        .rotationEffect(.degrees(-3))
-        .padding(.vertical, 13)
-        .accessibilityHidden(true)
+      BoardView(
+        lunch: lunch, game: game, cellSize: (width - 76) / CGFloat(lunch.width), showLetters: false
+      )
+      .rotationEffect(.degrees(-3))
+      .padding(.vertical, 13)
+      .accessibilityHidden(true)
       VStack(spacing: 8) {
         HStack(spacing: 9) {
           ForEach(0..<3) { index in

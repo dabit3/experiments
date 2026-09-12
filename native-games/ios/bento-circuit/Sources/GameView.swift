@@ -7,6 +7,7 @@ struct BoardView: View {
   var selectedID: String?
   var ghost: (FoodPiece, Placement)?
   var onCell: ((Cell) -> Void)?
+  var showLetters = true
 
   var body: some View {
     ZStack(alignment: .topLeading) {
@@ -43,7 +44,7 @@ struct BoardView: View {
         if let placement = game.placements[piece.id] {
           PolyominoArt(
             piece: piece, turns: placement.turns, cellSize: cellSize,
-            selected: selectedID == piece.id, showLetter: true
+            selected: selectedID == piece.id, showLetter: showLetters
           )
           .offset(
             x: CGFloat(placement.anchor.x) * cellSize, y: CGFloat(placement.anchor.y) * cellSize
@@ -180,7 +181,7 @@ struct GameView: View {
           status
           tray(cellSize: cellSize, compact: geometry.size.width < 390)
           controls
-          Text("Tap a piece, then its top-left square. Or drag to fit.")
+          Text("Tap a piece, then where its letter should go. Or drag to fit.")
             .font(.system(size: 11)).foregroundStyle(Palette.muted)
             .multilineTextAlignment(.center)
         }
@@ -283,7 +284,8 @@ struct GameView: View {
           .font(.system(size: 9, weight: .medium, design: .monospaced)).foregroundStyle(
             Palette.muted)
       }
-      let columns = lunch.pieces.count > 8 ? 4 : 3
+      let columns = lunch.pieces.count == 4 ? 2 : (lunch.pieces.count > 8 ? 4 : 3)
+      let artHeight: CGFloat = columns == 2 ? 60 : 48
       LazyVGrid(
         columns: Array(repeating: GridItem(.flexible(), spacing: 7), count: columns), spacing: 8
       ) {
@@ -302,18 +304,22 @@ struct GameView: View {
               ZStack {
                 PolyominoArt(
                   piece: piece, turns: displayTurns,
-                  cellSize: min(21, 48 / shapeHeight, (compact ? 65 : 76) / shapeWidth)
+                  cellSize: min(
+                    columns == 2 ? 28 : 22, artHeight / shapeHeight,
+                    (columns == 2 ? 110 : (compact ? 65 : 76)) / shapeWidth),
+                  showLetter: !placed
                 )
                 .opacity(placed ? 0.30 : 1)
                 if placed {
                   Image(systemName: "checkmark.circle.fill").font(.system(size: 20))
                     .foregroundStyle(Palette.ink).background(Palette.paper, in: Circle())
                 }
-              }.frame(height: 49)
+              }.frame(height: artHeight + 1)
               Text("\(piece.id) · \(piece.ingredient.name)")
-                .font(.system(size: 9, weight: .medium)).lineLimit(1).minimumScaleFactor(0.65)
+                .font(.system(size: columns == 2 ? 11 : 9, weight: .medium)).lineLimit(1)
+                .minimumScaleFactor(0.65)
             }
-            .frame(maxWidth: .infinity).frame(height: 74)
+            .frame(maxWidth: .infinity).frame(height: artHeight + 26)
             .background(
               selectedID == piece.id ? Palette.sage.opacity(0.35) : Color.white.opacity(0.35),
               in: RoundedRectangle(cornerRadius: 11)
@@ -421,13 +427,13 @@ struct GameView: View {
     selectedID = piece.id
     turns = game.placements[piece.id]?.turns ?? lunch.initialTurns
     guide = false
-    message = "\(piece.ingredient.name) \(piece.id) selected. Rotate, then find its place."
+    message = "\(piece.ingredient.name) \(piece.id): tap where its letter should go."
     store.feedback()
   }
 
   private func tapCell(_ cell: Cell) {
     if let selected {
-      place(selected, anchor: cell)
+      place(selected, anchor: selected.anchor(placingMarkedCellAt: cell, turns: turns))
     } else if let piece = lunch.pieces.first(where: { piece in
       guard let placement = game.placements[piece.id] else { return false }
       return game.cells(for: piece, at: placement).contains(cell)
@@ -485,14 +491,18 @@ struct TutorialView: View {
         .tracking(-1.5)
       HStack {
         Spacer()
-        PolyominoArt(piece: LunchBook.all[0].pieces[0], cellSize: 50)
+        PolyominoArt(piece: LunchBook.all[0].pieces[1], cellSize: 50, showLetter: true)
         Image(systemName: "arrow.right").padding(20).foregroundStyle(Palette.orange)
-        Image(systemName: "square.grid.2x2").font(.system(size: 72, weight: .ultraLight))
+        ZStack(alignment: .topTrailing) {
+          Image(systemName: "square.grid.2x2").font(.system(size: 72, weight: .ultraLight))
+          Text("B").font(.system(size: 14, weight: .bold, design: .monospaced))
+            .foregroundStyle(Palette.paper).padding(7).background(Palette.orange, in: Circle())
+        }
         Spacer()
       }
       instruction(
         "01", "Choose, turn, tuck.",
-        "Tap an ingredient, rotate if needed, then tap its top-left square. You can also drag it into the box."
+        "Tap an ingredient, rotate if needed, then tap where its letter-marked square should go. Or drag it into the box."
       )
       instruction(
         "02", "Sweet stays separate.",

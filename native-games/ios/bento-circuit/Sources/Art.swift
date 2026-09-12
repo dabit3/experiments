@@ -212,13 +212,13 @@ struct PolyominoArt: View {
           path, with: .color(selected ? Palette.orange : Palette.ink.opacity(0.40)),
           style: StrokeStyle(lineWidth: selected ? 3 : 1.5, lineCap: .round, lineJoin: .round))
       }
-      if showLetter {
+      if showLetter, let marked = cells.first {
         Text(piece.id).font(
           .system(size: max(9, cellSize * 0.20), weight: .bold, design: .monospaced)
         )
         .foregroundStyle(Palette.paper).padding(3)
         .background(Palette.ink, in: Circle())
-        .offset(x: 3, y: 3)
+        .offset(x: CGFloat(marked.x) * cellSize + 3, y: CGFloat(marked.y) * cellSize + 3)
       }
     }
     .frame(width: CGFloat(width) * cellSize, height: CGFloat(height) * cellSize)

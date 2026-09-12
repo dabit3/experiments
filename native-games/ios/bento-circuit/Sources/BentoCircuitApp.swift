@@ -100,6 +100,13 @@ struct RootView: View {
         home
       }
     }
+    .overlay(alignment: .top) {
+      GeometryReader { proxy in
+        Palette.paper.frame(height: proxy.safeAreaInsets.top)
+          .ignoresSafeArea(edges: .top)
+      }
+      .allowsHitTesting(false)
+    }
     .sheet(isPresented: $showSettings) { SettingsView(store: store) }
   }
 
