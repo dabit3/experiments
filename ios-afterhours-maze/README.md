@@ -26,7 +26,7 @@ The project is generated from `project.yml`; generated metadata and build produc
 
 ## Play
 
-The title screen runs a live attract-mode demo (an autopilot comet playing a real game); tap it to jump straight in. Select Blue Hour or Velvet Circuit, then **Enter the maze**. Swipe anywhere on the board or tap a wedge of the steering dial below it (the dial's comet points along the queued direction). Turns queue until the next legal corner; the opposite direction reverses immediately. Your comet moves automatically, stopping at walls. Side tunnels wrap to the opposite edge.
+The title screen runs a live attract-mode demo (an autopilot comet playing a real game); tap it to jump straight in. Select Blue Hour or Velvet Circuit, then **Enter the maze**. Swipe anywhere on the board or tap a wedge of (or flick across) the steering dial below it (the dial's comet points along the queued direction). Turns queue until the next legal corner; the opposite direction reverses immediately. Your comet moves automatically, stopping at walls. Side tunnels wrap to the opposite edge.
 
 - Pearl: **10** points. Power orb: **50**.
 - Power lasts 10 seconds initially, with a gentle reduction on later circuits. Frightened rivals turn mint and slow down; their final two seconds flash.

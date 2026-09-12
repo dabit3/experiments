@@ -232,9 +232,9 @@ struct ArcadeView: View {
         HStack(spacing: 12) {
           rule
           Text("M A Z E").font(.system(size: 13, weight: .semibold, design: .monospaced))
-            .tracking(6).foregroundStyle(Palette.blue)
+            .tracking(6).foregroundStyle(Palette.blue).fixedSize()
           rule
-        }.frame(width: 190)
+        }.frame(width: 230)
       }
       .accessibilityElement(children: .combine)
       .accessibilityIdentifier("title")
@@ -242,8 +242,14 @@ struct ArcadeView: View {
         .font(.system(size: 14, weight: .regular, design: .serif)).italic()
         .foregroundStyle(Palette.muted).padding(.top, compact ? 8 : 12)
       attract
-        .frame(height: min(size.height * (compact ? 0.28 : 0.31), 275))
-        .padding(.top, compact ? 12 : 18)
+        .aspectRatio(0.98, contentMode: .fit)
+        .frame(height: min(size.height * (compact ? 0.30 : 0.36), 330))
+        .padding(.top, compact ? 10 : 16)
+      HStack(spacing: 6) {
+        Circle().fill(Palette.mint).frame(width: 5, height: 5)
+          .shadow(color: Palette.mint, radius: 4)
+        micro("LIVE ATTRACT MODE · TAP TO PLAY", color: Palette.muted)
+      }.padding(.top, 10)
       HStack(spacing: 8) {
         Image(systemName: "sparkle").font(.system(size: 11)).foregroundStyle(Palette.gold)
         micro("YOUR BEST")
@@ -252,10 +258,10 @@ struct ArcadeView: View {
         Spacer()
         micro("DEEPEST  \(String(format: "%02d", arcade.deepest))")
       }
-      .padding(.horizontal, 4).padding(.top, compact ? 12 : 18).padding(.bottom, compact ? 10 : 14)
+      .padding(.horizontal, 4).padding(.top, compact ? 10 : 14).padding(.bottom, compact ? 10 : 12)
       HStack(spacing: 10) {
-        mazeChoice(1, name: "Blue Hour", label: "01 · THE ORIGINAL")
-        mazeChoice(2, name: "Velvet Circuit", label: "02 · THE DETOUR")
+        mazeChoice(1, name: "Blue Hour", label: "01 · ORIGINAL")
+        mazeChoice(2, name: "Velvet Circuit", label: "02 · DETOUR")
       }
       .padding(.bottom, compact ? 10 : 14)
       primary("Enter the maze", icon: "arrow.right", id: "start") { arcade.start() }
@@ -291,16 +297,8 @@ struct ArcadeView: View {
         .padding(10)
       RoundedRectangle(cornerRadius: 22).fill(
         RadialGradient(
-          colors: [.clear, .clear, Palette.ink.opacity(0.55)], center: .center,
-          startRadius: 40, endRadius: 190))
-      VStack {
-        Spacer()
-        HStack(spacing: 6) {
-          Circle().fill(Palette.mint).frame(width: 5, height: 5)
-            .shadow(color: Palette.mint, radius: 4)
-          micro("ATTRACT MODE · TAP TO PLAY", color: Palette.muted)
-        }.padding(.bottom, 12)
-      }
+          colors: [.clear, .clear, Palette.ink.opacity(0.45)], center: .center,
+          startRadius: 90, endRadius: 240))
     }
     .overlay(RoundedRectangle(cornerRadius: 22).stroke(Palette.rim, lineWidth: 1))
     .shadow(color: Palette.blue.opacity(0.22), radius: 30, y: 10)
@@ -321,19 +319,19 @@ struct ArcadeView: View {
     } label: {
       HStack(spacing: 12) {
         MazeThumbnail(index: number - 1)
-          .frame(width: 40, height: 44)
-          .padding(6)
+          .frame(width: 34, height: 38)
+          .padding(5)
           .background(Palette.ink.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
           .accessibilityHidden(true)
         VStack(alignment: .leading, spacing: 4) {
-          micro(label, color: selected ? accent : Palette.muted.opacity(0.8))
+          micro(label, color: selected ? accent : Palette.muted.opacity(0.8)).lineLimit(1)
           Text(name).font(.system(size: 15, weight: .semibold, design: .serif)).italic()
             .foregroundStyle(selected ? Palette.pearl : Palette.muted)
-            .lineLimit(1).minimumScaleFactor(0.8)
+            .lineLimit(1).minimumScaleFactor(0.6)
         }
         Spacer(minLength: 0)
       }
-      .padding(.horizontal, 12).padding(.vertical, 11)
+      .padding(.leading, 10).padding(.trailing, 6).padding(.vertical, 11)
       .frame(maxWidth: .infinity, alignment: .leading)
       .background(
         selected ? accent.opacity(0.16) : Palette.panel.opacity(0.55),
@@ -345,8 +343,8 @@ struct ArcadeView: View {
       )
       .overlay(alignment: .topTrailing) {
         if selected {
-          Circle().fill(accent).frame(width: 8, height: 8)
-            .shadow(color: accent, radius: 5).padding(9)
+          Circle().fill(accent).frame(width: 6, height: 6)
+            .shadow(color: accent, radius: 5).padding(7)
         }
       }
     }
@@ -420,7 +418,7 @@ struct ArcadeView: View {
               .foregroundStyle(Palette.pearl)
             Text(
               arcade.game.phase == .lifeLost
-                ? "A fresh start. Find a new route." : "Swipe the board · or turn the dial"
+                ? "A fresh start. Find a new route." : "Swipe the board · or tap the dial"
             )
             .font(.system(size: 12)).foregroundStyle(Palette.muted)
           }
@@ -511,6 +509,13 @@ struct ArcadeView: View {
     }
     .frame(width: 196, height: 196)
     .shadow(color: Palette.blue.opacity(0.18), radius: 24, y: 8)
+    .simultaneousGesture(
+      DragGesture(minimumDistance: 14).onEnded { value in
+        let dx = value.translation.width
+        let dy = value.translation.height
+        arcade.steer(abs(dx) > abs(dy) ? (dx > 0 ? .right : .left) : (dy > 0 ? .down : .up))
+      }
+    )
     .accessibilityElement(children: .contain)
     .accessibilityLabel("Steering dial")
   }
@@ -581,14 +586,7 @@ struct ArcadeView: View {
     let cleared = arcade.game.phase == .cleared
     let record = arcade.game.score >= arcade.best && arcade.best > 0
     return modal {
-      ZStack {
-        Circle().stroke(Palette.rim, lineWidth: 1).frame(width: 76, height: 76)
-        Circle().stroke(
-          Palette.blue.opacity(0.18), style: StrokeStyle(lineWidth: 1, dash: [2, 6])
-        ).frame(width: 96, height: 96)
-        Image(systemName: cleared ? "sparkles" : "moon.stars")
-          .font(.system(size: 30, weight: .light)).foregroundStyle(Palette.pearlGradient)
-      }.padding(.bottom, 6)
+      resultEmblem(cleared: cleared).padding(.bottom, 6)
       micro(cleared ? "EVERY LIGHT, FOUND" : "UNTIL NEXT TIME", color: Palette.blue)
       Text(cleared ? "Night, illuminated." : "A beautiful run.")
         .font(.system(size: 32, weight: .medium, design: .serif)).italic()
@@ -636,7 +634,7 @@ struct ArcadeView: View {
       guideRow(
         "hand.draw", title: "Swipe before the corner",
         detail:
-          "Your next turn is queued. Turn the dial if you prefer; opposite turns reverse instantly."
+          "Your next turn is queued. Tap or flick the dial if you prefer; opposite turns reverse instantly."
       )
       guideRow(
         "circle.dotted", title: "Find every little light",
@@ -652,8 +650,8 @@ struct ArcadeView: View {
             SpiritShape(identity: index).fill(Palette.rivals[index]).frame(width: 27, height: 30)
               .shadow(color: Palette.rivals[index].opacity(0.6), radius: 6)
             Text(["HUNTS", "AMBUSH", "FLANKS", "SHY"][index])
-              .font(.system(size: 8, weight: .bold, design: .monospaced)).foregroundStyle(
-                Palette.muted)
+              .font(.system(size: 10, weight: .bold, design: .monospaced)).foregroundStyle(
+                Palette.pearl.opacity(0.8))
           }.frame(maxWidth: .infinity)
         }
       }.padding(.vertical, 12)
@@ -670,10 +668,38 @@ struct ArcadeView: View {
       VStack(alignment: .leading, spacing: 5) {
         Text(title).font(.system(size: 15, weight: .semibold, design: .serif)).italic()
           .foregroundStyle(Palette.pearl)
-        Text(detail).font(.system(size: 13)).foregroundStyle(Palette.muted).fixedSize(
+        Text(detail).font(.system(size: 14)).foregroundStyle(Palette.muted).fixedSize(
           horizontal: false, vertical: true)
       }
     }.padding(.vertical, 6)
+  }
+
+  private func resultEmblem(cleared: Bool) -> some View {
+    ZStack {
+      Circle().stroke(Palette.rim, lineWidth: 1).frame(width: 84, height: 84)
+      Circle().stroke(
+        Palette.blue.opacity(0.22), style: StrokeStyle(lineWidth: 1, dash: [2, 6])
+      ).frame(width: 104, height: 104)
+      ForEach(0..<3) { index in
+        Circle().fill(Palette.gold.opacity(0.22 - Double(index) * 0.06))
+          .frame(width: 14 - CGFloat(index) * 3, height: 14 - CGFloat(index) * 3)
+          .offset(x: -30 - CGFloat(index) * 12)
+      }
+      CometShape(mouth: cleared ? 0.2 : 0.62).fill(Palette.pearlGradient)
+        .frame(width: 40, height: 40).shadow(color: Palette.gold.opacity(0.6), radius: 14)
+      Circle().fill(Palette.ink).frame(width: 5, height: 5).offset(x: -2, y: -9)
+      if cleared {
+        ForEach(0..<3) { index in
+          Image(systemName: "sparkle").font(.system(size: 9 + CGFloat(index) * 2))
+            .foregroundStyle(Palette.pearl)
+            .offset(x: 32 + CGFloat(index) * 12, y: -14 + CGFloat(index) * 9)
+        }
+      } else {
+        SpiritShape(identity: 1).fill(Palette.rivals[1].opacity(0.9))
+          .frame(width: 22, height: 24).offset(x: 40, y: 4)
+          .shadow(color: Palette.rivals[1].opacity(0.6), radius: 8)
+      }
+    }.frame(height: 108).accessibilityHidden(true)
   }
 
   private func resultStat(_ label: String, value: String) -> some View {
@@ -744,7 +770,7 @@ struct ArcadeView: View {
   }
 
   private func micro(_ text: String, color: Color = Palette.muted) -> some View {
-    Text(text).font(.system(size: 10, weight: .bold, design: .monospaced)).tracking(0.8)
+    Text(text).font(.system(size: 11, weight: .bold, design: .monospaced)).tracking(0.8)
       .foregroundStyle(color)
   }
 }
