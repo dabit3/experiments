@@ -2,6 +2,10 @@
 
 A native, offline iPhone cycling sprint. SwiftUI + Canvas, an illustrated Mediterranean coast, four riders and three short roads. No packages, services, accounts, or signing credentials are needed for simulator builds.
 
+## Interface
+
+The interface follows race equipment: system sans-serif type, tabular timing, navy instruments, vermilion race/sprint actions and yellow energy/attack feedback. Home compares route distance, road blocks and best time in rows beside an always-reachable named Race action. Results show placing, time and gap on a matching coastal race slip, followed by drafting, slingshots, collisions, replay and native sharing. The race simulation and saved results are independent of these presentation choices.
+
 ## Open and run
 
 Open `PocketPeloton.xcodeproj` in Xcode. Select the shared **PocketPeloton** scheme, choose an iPhone simulator and run. Requires Xcode 16 or newer with the iOS 17+ SDK; validated here with Xcode 26.6 and iOS 26.5. Portrait iPhone is the intended platform.
@@ -28,7 +32,7 @@ xcrun simctl launch booted com.pocketsports.peloton
 ## Race craft
 
 - Swipe horizontally on the road, or use the large left/right buttons, to change between three positions.
-- Hold **SPRINT** to attack. Release to recover. The tutorial and settings include **tap-to-toggle sprint** for mouse and one-tap use.
+- Hold **Sprint** to attack. Release to recover. The tutorial and settings include **tap-to-toggle sprint** for mouse and one-tap use.
 - Follow within 4–42 meters of a rider in your lane without sprinting to draft. The pale trail is their slipstream. Drafting restores energy twice as fast.
 - After 1.8 seconds in the draft, switch lanes for a 2.6-second slingshot.
 - The inside lane of a bend is slightly faster. Striped road blocks cause a short slowdown and cost energy.
@@ -74,5 +78,7 @@ xcrun swift Tools/GenerateArtwork.swift PocketPeloton/Assets.xcassets
 ## Accessibility and limitations
 
 Interactive controls have accessibility names/identifiers. Tap-to-toggle sprint avoids prolonged pressing; buttons provide an alternative to swipe steering. Reduce Motion suppresses rider sway, lane interpolation and speed particles. Tutorial, settings and results can scroll on smaller displays.
+
+Home, tutorial, settings and result text support Dynamic Type. Accessibility sizes stack result details and actions, replacing the fixed poster preview with scalable timing/gap text; the shared image retains its fixed print composition. Live gameplay labels scale up to XXXL to preserve a visible road, while timing instruments use fixed 30-point digits. The decorative cover cannot intercept touch input, and Settings has an explicit 44-point hit area.
 
 This is a visual reflex game: live spatial obstacles are not fully playable with VoiceOver alone. Haptics and sound effects have independent settings, but physical-device audio, vibration, performance, signing and App Store submission are not validated by simulator evidence. No daily/online ranking, multiplayer, purchases or cloud sync are implied. See the accompanying QA/design report for the specific simulator runs and visual revisions.

@@ -7,7 +7,8 @@
 - Native SwiftUI/Canvas iPhone application, offline and dependency-free.
 - PR: https://github.com/dabit3/experiments/pull/109
 - Original V1 application revision tested: `3fc9afae13a6ccc8c60388f2990f7691bacf9116`.
-- Latest redesigned application revision tested: `ddb8cf6aea3bd59680d9e6474e8fc65e8b289715`. The subsequent documentation commit changes only this report and README.
+- Latest application revision tested: `56249623e09d164097f005b2f7f6b49d9574face`. The subsequent documentation commit changes only this report and README.
+- The sections below retain historical outcomes and revision boundaries. The current sans-serif review appears after the earlier coastal-art reviews.
 
 ## Automated verification
 
@@ -120,6 +121,51 @@ Final Max native testing verified opaque rider detail over draft cones, clean he
 ### Remaining visual and validation limits
 
 Road blockers and slipstream trails remain deliberately simple for recognition. The upper road can be spacious when leading, and trailing rivals can pass under the bottom controls. Secondary typography remains compact, with the existing limited Dynamic Type support. Frame pacing has not been quantitatively benchmarked.
+
+## Current refinement — sans-serif race equipment
+
+The player is choosing a short race, reading the road at speed and improving a finish. The direction was established before implementation: native system sans-serif type, tabular times, navy instruments, vermilion actions and butter-yellow energy/attack cues, retaining the illustrated coast.
+
+The five highest-impact changes were removing oversized serif headings, replacing tiny tracked labels with shared semantic type, turning the promotional home into comparable route rows, reducing capsules/shadows, and leading results with placing/time/gap and replay. Shared `RaceType`, `RaceLayout`, rules and button styling keep the screens consistent. No simulation or persistence changes were made. Launch artwork was regenerated with a system sans-serif monogram; source scans found no serif font declarations.
+
+### Review 7 — task hierarchy (`e51e47f`)
+
+Actual 17e home, tutorial, gameplay, result and full native poster were reviewed. Empty history, all three selections and named race actions passed. A Riviera win at 41.65s with a 3.18s margin verified drafting, charged attack, tap sprint and steering. Largest text exposed fragmented result statistics and Share poster text; fixed-size poster timing did not enlarge with surrounding content.
+
+### Review 8 — adaptive results (`4373dc0`)
+
+Stacked statistics and secondary actions at accessibility sizes, replaced the fixed preview with scalable result text, freed space in route/tutorial rows and capped only live gameplay labels at XXXL. Largest 17e timing/actions and long route names passed. A Headland win at 53.08s with a 2.46s margin, pause/resume, replay/restart/leave, steering and relaunch persistence passed.
+
+The next check exposed Settings taps not reaching the control. The portrait decorative cover was scaled into a short banner; its invisible overflow remained eligible for hit testing.
+
+### Review 9 — hit targets (`dbb2234`)
+
+Disabled hit testing on `CoastalCover` and gave Settings an explicit 44-point rectangle. Normal/largest center and near-edge taps then opened Settings. Largest race-book rows wrapped correctly. The largest tutorial exposed an unbounded `ScrollView`: later instructions and dismissal could not be reached.
+
+### Review 10 — constrained scrolling (`5624962`)
+
+Bounded overlay scrolling to the available safe-area height while centering short content. Final native testing ran serially on 17e and 17 Pro Max:
+
+| Check | Observed outcome |
+| --- | --- |
+| Largest 17e tutorial | Scrolls to step 3, mode toggle and Got it; dismissal works |
+| Normal tutorial/pause | Centered, with actions visible |
+| Sound/haptics | Isolated normal/largest taps work; settings survive relaunch |
+| Max normal home/gameplay/results | Fit below Dynamic Island; final screenshots inspected directly |
+| Golden Hour 900m | Fourth, 64.57s, 1.43s behind; result screenshot records 21.5s drafting, 3 slingshots and 4 collisions |
+| Hold/release | Short release returns Sprint at 85% energy before exhaustion, then recovers to 100% |
+| Native sharing | First sheet shows actions/thumbnail; expanded Print preview shows the complete matching poster |
+| Largest Max results/settings | Scaled timing, stacked statistics/actions and race-book rows remain readable |
+| Persistence | 5 finishes/4 wins and prior Golden best 61.55s retained; slower finish does not overwrite best |
+| Reduce Motion | Attack, hold sprint and steering work without speed streaks; subtle sway difference inconclusive |
+
+One Sound tap immediately after sheet presentation was missed. Later isolated taps worked at both sizes and persisted; a state failure was not reproduced. No reproducible material blocker remained. Earlier revision checks are supplemental, not represented as repeated on every later revision.
+
+Strict formatting and Debug/Release simulator builds passed at the final application revision. All 10 serial XCTest tests passed with zero failures at `4373dc0`; the later changes affect hit testing and overlay geometry only. The exact test command above was rerun with `SansAdaptiveTests.xcresult`. No tests were changed.
+
+Final evidence: original annotated `peloton-scroll-final-17e`, `peloton-native-final-max` and `peloton-short-hold-release-max` edited recordings, plus full home/gameplay/result and accessibility screenshots. The app remains running at Max home with normal text and motion restored. No desktop/web layout is claimed for this portrait iPhone app.
+
+Remaining boundaries: live gameplay type is capped and secondary labels remain compact; Max home keeps space above the thumb-reachable action. Largest Max tutorial/racing, VoiceOver, physical feedback, quantitative FPS, Release runtime and external delivery/Save to Files were not verified in this refinement. The share-rendering failure alert was implemented but its failure branch was not artificially triggered.
 
 ## Limits
 
