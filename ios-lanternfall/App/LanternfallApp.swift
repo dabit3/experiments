@@ -140,9 +140,13 @@ struct LanternfallView: View {
         .ignoresSafeArea()
       VStack {
         LinearGradient(
-          colors: [Palette.ink.opacity(0.78), .clear], startPoint: .top, endPoint: .bottom
+          stops: [
+            .init(color: Palette.ink.opacity(0.94), location: 0),
+            .init(color: Palette.ink.opacity(0.82), location: 0.55),
+            .init(color: .clear, location: 1),
+          ], startPoint: .top, endPoint: .bottom
         )
-        .frame(height: 165)
+        .frame(height: store.game.bossSpawned && !store.game.bossDefeated ? 250 : 200)
         Spacer()
         LinearGradient(
           colors: [.clear, Palette.ink.opacity(0.72)], startPoint: .top, endPoint: .bottom
