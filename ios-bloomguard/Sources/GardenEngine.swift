@@ -75,6 +75,7 @@ struct Pest: Identifiable, Sendable {
   let lane: Int
   var x: Double = 7.4
   var health: Double
+  var strength: Double = 1
   var slow: Double = 0
   var bite: Double = 0
 }
@@ -104,7 +105,7 @@ struct Spawn: Sendable {
   let kind: PestKind
 }
 
-enum GardenPhase: Sendable { case playing, paused, won, lost }
+enum GardenPhase: Sendable { case playing, paused, won, lost, retired }
 
 struct Chapter: Sendable {
   let title: String
@@ -113,16 +114,16 @@ struct Chapter: Sendable {
   static let all: [Chapter] = [
     Chapter(
       title: "Morning light", subtitle: "THE COTTAGE",
-      lesson: "Sunbells build your economy. Cover all five lanes."),
+      lesson: "Grow sunshine. Cover five lanes."),
     Chapter(
       title: "Copper parade", subtitle: "THE ORCHARD",
-      lesson: "Quick skitters arrive. Brambles buy you time."),
+      lesson: "Quick skitters! Brambles buy time."),
     Chapter(
       title: "Kettle trouble", subtitle: "THE GREENHOUSE",
-      lesson: "Armored kettles are tough. Frostbells slow them down."),
+      lesson: "Slow armored kettles with Frostbells."),
     Chapter(
       title: "Moonlit siege", subtitle: "THE OLD GATE",
-      lesson: "Mix your defenders. Emberbuds clear nearby crowds."),
+      lesson: "Mix defenders. Blast crowds with Emberbuds."),
   ]
 }
 
@@ -150,6 +151,7 @@ struct Garden: Sendable {
   var rescuers: Set<Int> = Set(0..<5)
   var notice = "Plant Sunbells, then Peapipers in every lane."
   var noticeTime = 6.0
+  var noticeIsError = false
   private var serial = 0
   private var seed: Int
 
@@ -165,7 +167,11 @@ struct Garden: Sendable {
     return serial
   }
   var title: String { endless ? "The wild garden" : Chapter.all[level].title }
-  var finished: Bool { phase == .won || phase == .lost }
+  var finished: Bool { phase == .won || phase == .lost || phase == .retired }
+  var pressure: Double {
+    if endless { return 1 + Double(max(0, wave - 4)) * 0.22 }
+    return 1 + Double(level) * 0.16 + Double(max(0, wave - 1)) * Double(level) * 0.08
+  }
   var waveLabel: String { endless ? "WAVE \(wave)" : "WAVE \(wave) / 3" }
 
   func unavailable(_ type: Seed, lane: Int, column: Int) -> String? {
@@ -173,6 +179,11 @@ struct Garden: Sendable {
     if !(0..<5).contains(lane) || !(0..<7).contains(column) { return "Plant inside the garden." }
     if plants.contains(where: { $0.lane == lane && $0.column == column }) {
       return "This plot is planted. Use the shovel to clear it."
+    }
+    if type != .ember
+      && pests.contains(where: { $0.lane == lane && abs($0.x - Double(column) - 0.5) < 0.7 })
+    {
+      return "A clockwork occupies this plot. Plant farther left."
     }
     if sunshine < type.cost {
       return "Need \(type.cost - sunshine) more sunshine for \(type.name)."
@@ -186,7 +197,7 @@ struct Garden: Sendable {
   @discardableResult
   mutating func plant(_ type: Seed, lane: Int, column: Int) -> Bool {
     if let reason = unavailable(type, lane: lane, column: column) {
-      notify(reason)
+      notify(reason, error: true)
       return false
     }
     sunshine -= type.cost
@@ -199,7 +210,7 @@ struct Garden: Sendable {
   mutating func remove(lane: Int, column: Int) {
     guard phase == .playing else { return }
     guard let index = plants.firstIndex(where: { $0.lane == lane && $0.column == column }) else {
-      notify("Choose a planted plot to compost it.")
+      notify("Choose a planted plot to compost it.", error: true)
       return
     }
     let refund = plants[index].seed.cost / 2
@@ -215,9 +226,14 @@ struct Garden: Sendable {
     drops.removeAll { id == nil || $0.id == id }
   }
 
-  mutating func notify(_ text: String) {
+  mutating func notify(_ text: String, error: Bool = false) {
     notice = text
     noticeTime = 4
+    noticeIsError = error
+  }
+  mutating func retire() {
+    guard endless, phase == .paused else { return }
+    phase = .retired
   }
   mutating func togglePause() {
     if phase == .playing { phase = .paused } else if phase == .paused { phase = .playing }
@@ -264,7 +280,9 @@ struct Garden: Sendable {
     while let spawn = schedule.first, spawn.time <= waveTime {
       schedule.removeFirst()
       pests.append(
-        Pest(id: nextID(), kind: spawn.kind, lane: spawn.lane, health: spawn.kind.health))
+        Pest(
+          id: nextID(), kind: spawn.kind, lane: spawn.lane, health: spawn.kind.health * pressure,
+          strength: pressure))
     }
 
     for index in plants.indices {
@@ -275,7 +293,7 @@ struct Garden: Sendable {
         if plant.timer >= 10 {
           plants[index].timer = 0
           drops.append(
-            Sunshine(id: nextID(), lane: plant.lane, x: Double(plant.column) + 0.6, amount: 25))
+            Sunshine(id: nextID(), lane: plant.lane, x: Double(plant.column) + 0.98, amount: 25))
         }
       case .peashooter, .frost:
         let interval = plant.seed == .frost ? 2.2 : 1.4
@@ -323,12 +341,14 @@ struct Garden: Sendable {
       let pest = pests[index]
       if let victim = plants.indices.filter({
         plants[$0].health > 0 && plants[$0].lane == pest.lane
-          && pest.x - Double(plants[$0].column) - 0.5 < 0.55 && pest.x >= Double(plants[$0].column)
+          && pest.x - Double(plants[$0].column) - 0.5 < 0.68 && pest.x >= Double(plants[$0].column)
       }).max(by: { plants[$0].column < plants[$1].column }) {
         plants[victim].health -= dt * (pest.kind == .kettle ? 38 : 26)
         pests[index].bite += dt
       } else {
-        pests[index].x -= dt * pest.kind.speed * (pest.slow > 0 ? 0.45 : 1)
+        pests[index].x -=
+          dt * pest.kind.speed * min(1.8, 1 + (pest.strength - 1) * 0.32)
+          * (pest.slow > 0 ? 0.45 : 1)
       }
       if pests[index].x < -0.1 {
         if rescuers.contains(pest.lane) {

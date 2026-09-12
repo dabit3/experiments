@@ -13,10 +13,15 @@ struct BloomguardApp: App {
 
 @MainActor @Observable
 final class GardenStore {
+  struct Plot: Equatable {
+    let lane: Int
+    let column: Int
+  }
   var garden = Garden()
   var screen = "home"
   var selected: Seed = .peashooter
   var shovel = false
+  var emberTarget: Plot?
   var guide = false
   var unlocked: Int
   var best: Int
@@ -39,6 +44,7 @@ final class GardenStore {
     garden = Garden(level: level, endless: endless)
     selected = .peashooter
     shovel = false
+    emberTarget = nil
     screen = "game"
     savedResult = false
     tone(523)
@@ -73,7 +79,22 @@ final class GardenStore {
       tone(294)
       return
     }
+    if selected == .ember {
+      if let reason = garden.unavailable(.ember, lane: lane, column: column) {
+        garden.notify(reason, error: true)
+        tone(180)
+        return
+      }
+      let target = Plot(lane: lane, column: column)
+      if emberTarget != target {
+        emberTarget = target
+        garden.notify("Blast preview · tap this plot again to plant, or choose another.")
+        tone(330)
+        return
+      }
+    }
     let success = garden.plant(selected, lane: lane, column: column)
+    if success { emberTarget = nil }
     if success { UIImpactFeedbackGenerator(style: .soft).impactOccurred() }
     tone(success ? 440 : 180)
   }
@@ -241,7 +262,8 @@ struct BloomguardView: View {
                 index > store.unlocked
                   ? "Clear chapter \(index) to unlock" : Chapter.all[index].lesson
               )
-              .font(.system(size: 10)).lineSpacing(2).frame(height: 32, alignment: .topLeading)
+              .font(.system(size: 10)).lineSpacing(2).fixedSize(horizontal: false, vertical: true)
+              .frame(minHeight: 32, alignment: .topLeading)
               HStack(spacing: 4) {
                 ForEach(0..<3) { star in
                   Image(systemName: star < store.medals[index] ? "star.fill" : "star")
@@ -312,6 +334,7 @@ struct BloomguardView: View {
           ForEach(Seed.allCases, id: \.self) { seed in seedPacket(seed) }
           Button {
             store.shovel.toggle()
+            store.emberTarget = nil
           } label: {
             VStack(spacing: 3) {
               ShovelArt().frame(width: 27, height: 27)
@@ -325,12 +348,17 @@ struct BloomguardView: View {
           }.accessibilityIdentifier("shovel")
         }
         HStack {
+          if store.garden.noticeTime > 0 && store.garden.noticeIsError {
+            Image(systemName: "exclamationmark.circle.fill").foregroundStyle(Color.gold)
+          }
           Text(
             store.garden.noticeTime > 0
               ? store.garden.notice
               : store.shovel
                 ? "Tap a guardian to compost it for half its cost."
-                : "\(store.selected.name) · \(store.selected.detail). Tap an empty plot."
+                : store.selected == .ember
+                  ? "Emberbud · tap to preview its reach, then tap again to plant."
+                  : "\(store.selected.name) · \(store.selected.detail). Tap an empty plot."
           )
           .lineLimit(1).minimumScaleFactor(0.7)
           Spacer(minLength: 0)
@@ -349,13 +377,17 @@ struct BloomguardView: View {
     return Button {
       store.selected = seed
       store.shovel = false
+      store.emberTarget = nil
       if store.garden.sunshine < seed.cost {
         store.garden.notify(
-          "Need \(seed.cost - store.garden.sunshine) more sunshine for \(seed.name).")
+          "Need \(seed.cost - store.garden.sunshine) more sunshine for \(seed.name).", error: true)
       } else if cooldown > 0 {
-        store.garden.notify("\(seed.name) is resting for \(Int(ceil(cooldown)))s.")
+        store.garden.notify("\(seed.name) is resting for \(Int(ceil(cooldown)))s.", error: true)
       } else {
-        store.garden.notify("\(seed.name) · \(seed.detail). Choose an empty plot.")
+        store.garden.notify(
+          seed == .ember
+            ? "Emberbud · tap to preview its reach, then tap again to plant."
+            : "\(seed.name) · \(seed.detail). Choose an empty plot.")
       }
     } label: {
       HStack(spacing: 1) {
@@ -404,28 +436,46 @@ struct BloomguardView: View {
             store.sound ? "Sound on" : "Sound off",
             systemImage: store.sound ? "speaker.wave.2" : "speaker.slash")
         }
-        Button("Leave garden") { store.screen = "home" }
+        if store.garden.endless {
+          Button("Finish & save record") {
+            store.garden.retire()
+            store.tick()
+          }
+        } else {
+          Button("Leave garden") { store.screen = "home" }
+        }
       }.font(.system(size: 12, weight: .semibold)).padding(.top, 10)
-      Text("Leaving ends this attempt. Your completed chapters stay saved.")
-        .font(.system(size: 9)).foregroundStyle(Color.moss)
+      Text(
+        store.garden.endless
+          ? "Finish saves the points and waves you have earned."
+          : "Leaving ends this attempt. Your completed chapters stay saved."
+      )
+      .font(.system(size: 9)).foregroundStyle(Color.moss)
     }
   }
 
   private var results: some View {
     let won = store.garden.phase == .won
+    let retired = store.garden.phase == .retired
     return modal {
       HStack(spacing: 14) {
-        GardenArt(seed: won ? .marigold : .bramble).frame(width: 79, height: 79)
+        GardenArt(seed: won || retired ? .marigold : .bramble).frame(width: 79, height: 79)
         VStack(alignment: .leading, spacing: 4) {
-          Text(won ? "THE GARDEN IS YOURS" : "EVERY GARDENER GROWS")
-            .font(.system(size: 9, weight: .bold, design: .monospaced)).tracking(2).foregroundStyle(
-              Color.moss)
-          Text(won ? "Beautifully defended." : "A little overgrown.")
-            .font(.system(size: 31, weight: .semibold, design: .serif))
+          Text(
+            won ? "THE GARDEN IS YOURS" : retired ? "YOUR RECORD IS SAVED" : "EVERY GARDENER GROWS"
+          )
+          .font(.system(size: 9, weight: .bold, design: .monospaced)).tracking(2).foregroundStyle(
+            Color.moss)
+          Text(
+            won ? "Beautifully defended." : retired ? "A well-earned rest." : "A little overgrown."
+          )
+          .font(.system(size: 31, weight: .semibold, design: .serif))
           Text(
             won
               ? "The cottage is safe. Another morning awaits."
-              : "Try Sunbells early, then cover all five lanes."
+              : retired
+                ? "Every wave earned. Come back and grow a little further."
+                : "Try Sunbells early, then cover all five lanes."
           )
           .font(.system(size: 12)).foregroundStyle(Color.moss)
         }
@@ -499,7 +549,7 @@ struct BloomguardView: View {
         )
         .font(.system(size: 11, weight: .medium)).lineSpacing(5)
         Text(
-          "Each lane has one last-chance robin. A second breach ends the run.\nEmberbuds burst in 1.5s across nearby plots and adjacent lanes. Frost slows armor."
+          "Each lane has one last-chance robin. A second breach ends the run.\nEmberbuds: tap to preview, tap again to plant. Burst in 1.5s. Frost slows armor."
         )
         .font(.system(size: 10)).foregroundStyle(Color.moss).lineSpacing(3)
       }.padding(20).frame(maxWidth: 650).background(

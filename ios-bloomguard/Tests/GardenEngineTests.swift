@@ -102,3 +102,52 @@ import Testing
   #expect(endless.phase == .playing)
   #expect(!endless.schedule.isEmpty)
 }
+
+@Test func occupiedEnemyPlotsRejectPlantingAndBlockersKeepSeparation() {
+  var game = Garden(seed: 0)
+  game.pests = [Pest(id: 90, kind: .beetle, lane: 0, x: 4.3, health: 105)]
+  let blocked = game.plant(.bramble, lane: 0, column: 4)
+  #expect(!blocked)
+  #expect(game.sunshine == 250)
+  #expect(game.noticeIsError)
+  let planted = game.plant(.bramble, lane: 0, column: 3)
+  #expect(planted)
+  for _ in 0..<40 { game.tick(0.1) }
+  #expect(game.pests[0].x > 4.1)
+  #expect(game.plants[0].health < Seed.bramble.health)
+  #expect(game.plants[0].health > 0)
+}
+
+@Test func pressureAppliesToNewSpawnsWithoutChangingTheirRewards() {
+  var game = Garden(endless: true, seed: 0)
+  game.wave = 8
+  game.scheduleWave()
+  game.schedule = [Spawn(time: 0, lane: 0, kind: .kettle)]
+  game.tick(0.1)
+  #expect(game.pests[0].health == PestKind.kettle.health * game.pressure)
+  #expect(game.pests[0].strength > 1)
+  #expect(game.pests[0].kind.points == 90)
+  #expect(Garden(level: 3, seed: 0).pressure > Garden(level: 0, seed: 0).pressure)
+}
+
+@Test func retiringRequiresPausedEndlessAndDoesNotAwardBonusOrAdvanceTime() {
+  var campaign = Garden(seed: 0)
+  campaign.togglePause()
+  campaign.retire()
+  #expect(campaign.phase == .paused)
+  var endless = Garden(endless: true, seed: 0)
+  endless.retire()
+  #expect(endless.phase == .playing)
+  endless.tick(0.1)
+  endless.togglePause()
+  let score = endless.score
+  let elapsed = endless.elapsed
+  let waves = endless.wavesCleared
+  endless.retire()
+  endless.tick(0.1)
+  #expect(endless.finished)
+  #expect(endless.phase == .retired)
+  #expect(endless.score == score)
+  #expect(endless.wavesCleared == waves)
+  #expect(endless.elapsed == elapsed)
+}

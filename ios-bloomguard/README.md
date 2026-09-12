@@ -31,6 +31,8 @@ cloud backend or entitlement is needed for Simulator play.
 - Sunbell (50) produces 25 sunshine every 10 seconds. Peapiper (100) fires lane
   shots. Bramble (75) absorbs damage. Emberbud (125) explodes after 1.5 seconds
   within two plots and adjacent lanes. Frostbell (125) slows enemies.
+- Emberbud placement previews its blast area on the first tap. Tap that same
+  plot again to plant, or choose another plot to move the preview.
 - Every packet shows its cost and cooldown. Selecting or placing an unavailable
   seed explains why. Shovel a plant to return half its cost.
 - Each lane's robin rescues one breach. A second breach in that lane ends the
@@ -39,8 +41,11 @@ cloud backend or entitlement is needed for Simulator play.
   Completed chapters, stars, endless best score/waves, and sound preferences
   persist locally. In-progress attempts persist while backgrounded, but not
   across process termination.
+- In Endless, pause and choose **Finish & save record** to bank the real points
+  and completed waves earned so far. This ends the attempt without a victory bonus.
 - Beetles are steady, skitters are fast, and armored kettles require sustained
-  damage, slowing or a well-timed Emberbud. Endless pressure scales by wave.
+  damage, slowing or a well-timed Emberbud. Later chapters increase enemy strength;
+  Endless health and speed increase from wave five, as spawn pressure grows.
 
 ## Checks
 

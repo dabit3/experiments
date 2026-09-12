@@ -52,6 +52,29 @@ struct GardenBoard: View {
               with: .color(Color(red: 0.72, green: 0.67, blue: 0.47)))
           }
         }
+        if let target = store.emberTarget {
+          Rectangle().fill(Color.orange.opacity(0.20))
+            .overlay(
+              Rectangle().strokeBorder(
+                Color.cream.opacity(0.8), style: StrokeStyle(lineWidth: 2, dash: [5, 4]))
+            )
+            .frame(width: cell * 4, height: laneHeight * 3)
+            .position(
+              x: inset + (Double(target.column) + 0.5) * cell,
+              y: (Double(target.lane) + 0.5) * laneHeight
+            )
+            .allowsHitTesting(false)
+          RoundedRectangle(cornerRadius: 8).stroke(Color.gold, lineWidth: 3)
+            .overlay {
+              Image(systemName: "scope").foregroundStyle(Color.cream).font(.system(size: 21))
+            }
+            .frame(width: cell - 6, height: laneHeight - 8)
+            .position(
+              x: inset + (Double(target.column) + 0.5) * cell,
+              y: (Double(target.lane) + 0.5) * laneHeight
+            )
+            .allowsHitTesting(false)
+        }
         VStack(spacing: 3) {
           Text("HOME").font(.system(size: 7, weight: .bold, design: .monospaced)).tracking(1)
           Cottage().frame(width: 45, height: 42)
@@ -86,11 +109,12 @@ struct GardenBoard: View {
           VStack(spacing: 0) {
             GardenArt(seed: plant.seed).frame(width: laneHeight * 1.04, height: laneHeight * 0.92)
             if plant.health < plant.seed.health {
-              Capsule().fill(Color.ink.opacity(0.3)).frame(width: 30, height: 3)
+              Capsule().fill(Color.ink.opacity(0.7)).frame(width: 34, height: 4)
                 .overlay(alignment: .leading) {
                   Capsule().fill(Color.gold).frame(
-                    width: 30 * max(0, plant.health / plant.seed.health), height: 3)
+                    width: 34 * max(0, plant.health / plant.seed.health), height: 4)
                 }
+                .overlay(Capsule().stroke(Color.cream.opacity(0.8), lineWidth: 0.6))
             }
           }.position(
             x: inset + (Double(plant.column) + 0.5) * cell,
@@ -107,7 +131,8 @@ struct GardenBoard: View {
                 Capsule().fill(
                   pest.slow > 0 ? Color.cyan : Color(red: 0.59, green: 0.24, blue: 0.19)
                 )
-                .frame(width: 25 * max(0, pest.health / pest.kind.health), height: 2)
+                .frame(
+                  width: 25 * max(0, pest.health / (pest.kind.health * pest.strength)), height: 2)
               }
           }.position(x: inset + pest.x * cell, y: (Double(pest.lane) + 0.5) * laneHeight)
             .allowsHitTesting(false)
