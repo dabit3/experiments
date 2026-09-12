@@ -108,7 +108,7 @@ struct ContentView: View {
               .frame(width: 5, height: 5)
           }
           Text("\(store.completed) / 8 WORLDS COMPLETE")
-            .font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(1)
+            .font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(0.5)
             .padding(.leading, 7)
         }
         .foregroundStyle(Palette.muted)
@@ -474,7 +474,7 @@ struct ContentView: View {
   private func metric(_ value: String, caption: String) -> some View {
     VStack(alignment: .leading, spacing: 2) {
       Text(value).font(.system(size: 26, weight: .regular, design: .serif))
-      Text(caption).font(.system(size: 8, weight: .semibold, design: .monospaced)).tracking(1)
+      Text(caption).font(.system(size: 10, weight: .semibold, design: .monospaced)).tracking(0.5)
     }
     .foregroundStyle(Palette.ink)
   }

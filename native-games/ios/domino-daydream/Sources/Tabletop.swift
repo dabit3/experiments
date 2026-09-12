@@ -142,7 +142,7 @@ struct TablePainter {
       text(
         &context, "\(row + 1)",
         at: CGPoint(x: layout.origin.x - u * 0.66, y: layout.point(Cell(x: 0, y: row)).y),
-        size: u * 0.22, color: Palette.ink.opacity(0.68))
+        size: max(10, u * 0.22), color: Palette.ink.opacity(0.68))
     }
     for column in 0..<7 {
       text(
@@ -150,7 +150,7 @@ struct TablePainter {
         at: CGPoint(
           x: layout.point(Cell(x: column, y: 0)).x,
           y: layout.origin.y - u * 0.65),
-        size: u * 0.22, color: Palette.ink.opacity(0.68))
+        size: max(10, u * 0.22), color: Palette.ink.opacity(0.68))
     }
     for water in puzzle.water {
       let p = layout.point(water)
@@ -323,7 +323,7 @@ struct TablePainter {
     arrow.closeSubpath()
     context.fill(arrow, with: .color(Palette.cream))
     text(
-      &context, "START", at: CGPoint(x: p.x, y: p.y + u * 0.51), size: u * 0.19,
+      &context, "START", at: CGPoint(x: p.x, y: p.y + u * 0.51), size: max(9, u * 0.19),
       color: Color(hex: 0x98513F))
   }
 
@@ -354,7 +354,7 @@ struct TablePainter {
     circle(&context, p, radius: u * 0.035, color: Palette.walnut)
     text(
       &context, active ? "RUNG" : "BELL \(number)", at: CGPoint(x: p.x, y: p.y + u * 0.5),
-      size: u * 0.19, color: Palette.ink)
+      size: max(9, u * 0.19), color: Palette.ink)
   }
 
   private func scenery(_ context: inout GraphicsContext, layout: BoardLayout) {
