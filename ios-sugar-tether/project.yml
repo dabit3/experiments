@@ -12,8 +12,7 @@ targets:
   SugarTether:
     type: application
     platform: iOS
-    sources: [Sources]
-    resources: [Resources]
+    sources: [Sources, Resources]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: studio.pocketconfections.sugartether
