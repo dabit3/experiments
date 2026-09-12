@@ -26,7 +26,7 @@ struct RootView: View {
 
   var body: some View {
     ZStack {
-      CityBackdrop()
+      CityBackdrop(dawn: store.mission?.phase == .dawn)
       if let mission = store.mission {
         if mission.phase == .playing {
           PlayView(store: store, mission: mission)
@@ -392,6 +392,14 @@ struct PlayView: View {
   private var waitingDanger: Bool {
     mission.district.roofs[mission.position].danger(on: mission.beat + 1)
   }
+  private var guidance: String {
+    if mission.district.roofs[mission.position].danger(on: mission.beat) {
+      return mission.message
+        + (waitingDanger ? " Move away; waiting is risky." : " Next beat: safe here.")
+    }
+    return waitingDanger
+      ? "Watched next beat! Move away; waiting here risks a sighting." : mission.message
+  }
 
   var body: some View {
     VStack(spacing: 0) {
@@ -443,7 +451,7 @@ struct PlayView: View {
           width: 5, height: 5)
         Text("watched")
         Spacer()
-        Text("\(mission.remaining) beats left")
+        Text("\(mission.remaining) \(mission.remaining == 1 ? "beat" : "beats") left")
           .foregroundStyle(mission.remaining <= 4 ? Palette.coral : Palette.cream)
       }
       .font(.system(size: 10, weight: .medium, design: .monospaced))
@@ -457,15 +465,12 @@ struct PlayView: View {
           Image(systemName: mission.canEscape ? "flag.checkered" : "sparkle")
             .foregroundStyle(Palette.mint)
             .font(.system(size: 14))
-          Text(
-            waitingDanger
-              ? "Watched next beat! Move away; waiting here risks a sighting." : mission.message
-          )
-          .font(.system(size: 12, weight: .medium, design: .rounded))
-          .foregroundStyle(Palette.cream)
-          .lineSpacing(3)
-          .frame(maxWidth: .infinity, minHeight: 34, alignment: .topLeading)
-          .accessibilityIdentifier("game-guidance")
+          Text(guidance)
+            .font(.system(size: 12, weight: .medium, design: .rounded))
+            .foregroundStyle(Palette.cream)
+            .lineSpacing(3)
+            .frame(maxWidth: .infinity, minHeight: 34, alignment: .topLeading)
+            .accessibilityIdentifier("game-guidance")
         }
         .padding(.horizontal, 4)
         HStack(spacing: 8) {
@@ -583,7 +588,7 @@ struct PauseView: View {
   @Bindable var store: GameStore
   var body: some View {
     ZStack {
-      Palette.ink.opacity(0.95).ignoresSafeArea()
+      Palette.ink.ignoresSafeArea()
       VStack(spacing: 22) {
         Eyebrow(text: "PAWS FOR A MOMENT")
         RaccoonArt(snacks: 0, happy: true).frame(width: 150, height: 150)
@@ -667,15 +672,19 @@ struct ResultView: View {
           RoundButton(symbol: "xmark", label: "Return home", id: "result-home") { store.home() }
         }
         .padding(.top, 8)
-        Text(escaped ? "A clean\ngetaway." : "One snack\ntoo far.")
-          .font(.system(size: min(geometry.size.width * 0.14, 57), weight: .black, design: .serif))
-          .tracking(-1.7)
-          .lineSpacing(-5)
-          .multilineTextAlignment(.center)
-          .foregroundStyle(Palette.cream)
-          .padding(.top, 10)
-          .accessibilityIdentifier("result-title")
-        HeroScene(celebration: escaped, snacks: max(1, mission.loot))
+        Text(
+          escaped
+            ? "A clean\ngetaway."
+            : mission.phase == .dawn ? "Up past\nbedtime." : "One snack\ntoo far."
+        )
+        .font(.system(size: min(geometry.size.width * 0.14, 57), weight: .black, design: .serif))
+        .tracking(-1.7)
+        .lineSpacing(-5)
+        .multilineTextAlignment(.center)
+        .foregroundStyle(Palette.cream)
+        .padding(.top, 10)
+        .accessibilityIdentifier("result-title")
+        HeroScene(celebration: escaped, snacks: mission.loot)
           .frame(maxHeight: .infinity)
           .layoutPriority(-1)
         VStack(spacing: 16) {
@@ -878,24 +887,30 @@ final class PosterActivitySource: NSObject, UIActivityItemSource {
 
 struct SnackBurst: View {
   @State private var expanded = false
+  @State private var faded = false
   var body: some View {
     ZStack {
       ForEach(0..<8) { index in
         let angle = Double(index) * .pi / 4
         Capsule()
           .fill(index.isMultiple(of: 2) ? Palette.cream : Palette.mint)
-          .frame(width: 3, height: 8)
+          .frame(width: 4, height: 10)
           .rotationEffect(.radians(angle))
           .offset(x: cos(angle) * (expanded ? 46 : 12), y: sin(angle) * (expanded ? 46 : 12))
       }
       Text("+1")
-        .font(.system(size: 15, weight: .black, design: .rounded))
+        .font(.system(size: 17, weight: .black, design: .rounded))
         .foregroundStyle(Palette.cream)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .background(Palette.ink, in: Capsule())
         .offset(y: expanded ? -52 : -15)
     }
-    .opacity(expanded ? 0 : 1)
+    .shadow(color: Palette.ink, radius: 3)
+    .opacity(faded ? 0 : 1)
     .onAppear {
-      withAnimation(.easeOut(duration: 0.8)) { expanded = true }
+      withAnimation(.easeOut(duration: 0.55)) { expanded = true }
+      withAnimation(.easeOut(duration: 0.35).delay(0.6)) { faded = true }
     }
     .accessibilityHidden(true)
   }

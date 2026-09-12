@@ -163,9 +163,11 @@ struct Mission {
       phase = .dawn
       message = "Sunrise! Even snack bandits need a bedtime."
     } else if spotted {
-      message = "Spotted! \(3 - alarm) chances left. Mint roofs are always safe."
+      message = "Spotted! \(3 - alarm) \(alarm == 2 ? "chance" : "chances") left."
     } else if position == 2 {
-      message = "The tower needs \(district.requiredLoot - loot) more snacks. Keep exploring."
+      let needed = district.requiredLoot - loot
+      message =
+        "The tower needs \(needed) more \(needed == 1 ? "snack" : "snacks"). Keep exploring."
     } else if newSnack {
       message =
         canEscape

@@ -241,11 +241,17 @@ struct RaccoonArt: View {
 }
 
 struct CityBackdrop: View {
+  var dawn = false
   var body: some View {
     GeometryReader { geometry in
       ZStack {
         LinearGradient(
-          colors: [Palette.ink, Palette.sky, Color(red: 0.23, green: 0.29, blue: 0.44)],
+          colors: [
+            Palette.ink, Palette.sky,
+            dawn
+              ? Color(red: 0.56, green: 0.35, blue: 0.39)
+              : Color(red: 0.23, green: 0.29, blue: 0.44),
+          ],
           startPoint: .top, endPoint: .bottom)
         Canvas { context, size in
           let p = Pen(context: context)
