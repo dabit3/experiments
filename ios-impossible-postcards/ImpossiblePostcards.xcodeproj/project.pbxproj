@@ -11,6 +11,7 @@
 		4E8B8684AA5EA9E4896B96B9 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A2C7BAE22CBFE489F72EC5 /* Puzzle.swift */; };
 		57165943F08196499E9C3507 /* ImpossiblePostcardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD2A533DC1140DCEC154822D /* ImpossiblePostcardsApp.swift */; };
 		757D43A98C802100DB2AB5DB /* PostcardArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E15E2A6EA98AED756D45343 /* PostcardArt.swift */; };
+		C6ED98067DC08968994C6192 /* PostcardChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB8E007F1D260584008F29A /* PostcardChrome.swift */; };
 		D891A5C5B9F98AC710E29AE7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6A6F2AA9D368D9738111ABD /* Assets.xcassets */; };
 		FE50BE346BA19874AC94D233 /* GameModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1122020479CA3E21D063F8A /* GameModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -27,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		1B90717658C7A615E981DE1B /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		1CB8E007F1D260584008F29A /* PostcardChrome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostcardChrome.swift; sourceTree = "<group>"; };
 		1E15E2A6EA98AED756D45343 /* PostcardArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostcardArt.swift; sourceTree = "<group>"; };
 		494B7C9363BA5CBCA470D3A0 /* ImpossiblePostcards.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ImpossiblePostcards.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1122020479CA3E21D063F8A /* GameModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModelTests.swift; sourceTree = "<group>"; };
@@ -53,6 +55,7 @@
 				1B90717658C7A615E981DE1B /* GameModel.swift */,
 				FD2A533DC1140DCEC154822D /* ImpossiblePostcardsApp.swift */,
 				1E15E2A6EA98AED756D45343 /* PostcardArt.swift */,
+				1CB8E007F1D260584008F29A /* PostcardChrome.swift */,
 				6D1FC5CB19548DED0249039A /* Core */,
 			);
 			path = Sources;
@@ -181,6 +184,7 @@
 				4AD88A1B8DAA7AE9AAF9FE8A /* GameModel.swift in Sources */,
 				57165943F08196499E9C3507 /* ImpossiblePostcardsApp.swift in Sources */,
 				757D43A98C802100DB2AB5DB /* PostcardArt.swift in Sources */,
+				C6ED98067DC08968994C6192 /* PostcardChrome.swift in Sources */,
 				4E8B8684AA5EA9E4896B96B9 /* Puzzle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -73,6 +73,13 @@ III. **Two Skies** — lavender; two bridges, a rising stair and a seal-locked m
 
 IV. **The Last Light** — evening rose; two bridge geometries and three seals.
 
+The visual identity is stationery: perforated chapter stamps, circular
+postmarks for move counts and collected postcards, cancellation lines, a
+Baskerville display face, ivory postcard cards and custom turn dials whose arm
+mirrors each bridge's alignment. Worlds are procedurally drawn in Canvas with
+gradient stone, cornices, balustrades, gilded seals, lantern and cypress
+details, an animated sky with drifting clouds and a warm, slow scene drift.
+
 Architecture and bridge alignment are rendered isometrically, and the same
 orientation state drives graph connectivity. Movement never teleports across
 disconnected geometry. There is no timer or death state: an unreachable tap
