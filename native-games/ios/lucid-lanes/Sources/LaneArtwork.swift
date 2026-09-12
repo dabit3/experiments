@@ -55,7 +55,7 @@ final class LaneStage {
     private var lastHero = false
     private let brass = LaneStage.material(UIColor(Dream.peach), metal: 0.78, roughness: 0.25)
     private let stone = LaneStage.material(UIColor(red: 0.82, green: 0.48, blue: 0.37, alpha: 1), roughness: 0.4)
-    private let porcelain = LaneStage.material(UIColor(Dream.cream), roughness: 0.16)
+    private let porcelain = LaneStage.material(UIColor(red: 0.75, green: 0.78, blue: 0.75, alpha: 1), roughness: 0.34)
     private let dark = LaneStage.material(UIColor(Dream.ink), roughness: 0.6)
     private let glow = LaneStage.material(UIColor(Dream.mint), emission: 0.8)
 
@@ -71,8 +71,8 @@ final class LaneStage {
         camera.camera?.zFar = 60
         camera.camera?.wantsHDR = true
         camera.camera?.exposureOffset = -0.1
-        camera.camera?.bloomIntensity = 0.35
-        camera.camera?.bloomThreshold = 1.0
+        camera.camera?.bloomIntensity = 0.15
+        camera.camera?.bloomThreshold = 1.8
         camera.camera?.bloomBlurRadius = 7
         camera.camera?.vignettingIntensity = 0.35
         scene.rootNode.addChildNode(camera)
@@ -257,11 +257,12 @@ final class LaneStage {
     private func buildPins() {
         let geometry = Self.pinGeometry()
         geometry.materials = [porcelain]
+        let stripeMaterial = Self.material(UIColor(red: 0.48, green: 0.12, blue: 0.11, alpha: 1), roughness: 0.4)
         for id in 0..<10 {
             let pin = SCNNode(geometry: geometry)
             pin.name = "pin-\(id)"
             for height in [0.57, 0.62] {
-                let stripe = node(SCNTorus(ringRadius: 0.079, pipeRadius: 0.014), material: stone)
+                let stripe = node(SCNTorus(ringRadius: 0.079, pipeRadius: 0.018), material: stripeMaterial)
                 stripe.position.y = Float(height)
                 pin.addChildNode(stripe)
             }

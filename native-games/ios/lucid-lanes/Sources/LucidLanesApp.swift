@@ -153,16 +153,14 @@ struct ContentView: View {
                     .foregroundStyle(Dream.lavender).padding(.horizontal, 24).padding(.top, 14)
                     .allowsHitTesting(false)
             }
-            .overlay(alignment: .bottom) {
-                Text(model.dragging ? "POWER  \(Int(model.power * 100))%" : model.message.uppercased())
-                    .font(model.phase == "settling" ? Dream.display(29) : Dream.label(10))
-                    .tracking(model.phase == "settling" ? 2 : 1.5)
-                    .foregroundStyle(model.phase == "settling" ? Dream.peach : Dream.mint)
-                    .padding(.horizontal, 20).padding(.vertical, 10)
-                    .background(Dream.ink.opacity(0.88), in: Capsule())
-                    .padding(.bottom, 12)
-                    .accessibilityIdentifier("shot-status").allowsHitTesting(false)
-            }
+            Text(model.dragging ? "POWER  \(Int(model.power * 100))%" : model.message.uppercased())
+                .font(model.phase == "settling" ? Dream.display(27) : Dream.label(10))
+                .tracking(model.phase == "settling" ? 2 : 1.5)
+                .foregroundStyle(model.phase == "settling" ? Dream.peach : Dream.mint)
+                .lineLimit(1).minimumScaleFactor(0.7)
+                .frame(maxWidth: .infinity).frame(height: 44)
+                .background(Dream.velvet.opacity(0.35))
+                .accessibilityIdentifier("shot-status").allowsHitTesting(false)
             playControls
         }
     }
@@ -380,7 +378,7 @@ struct ContentView: View {
                                 Spacer()
                                 Image(systemName: lane.id <= model.unlocked ? "arrow.up.right" : "lock")
                                     .font(.system(size: 14)).foregroundStyle(Dream.lavender)
-                            }.padding(.vertical, 20)
+                            }.padding(.vertical, 20).contentShape(Rectangle())
                         }
                         .disabled(lane.id > model.unlocked)
                         .accessibilityLabel(
@@ -494,12 +492,14 @@ struct ContentView: View {
                 Image(systemName: "arrow.up.right").font(.system(size: 10))
             }.frame(maxWidth: .infinity, minHeight: 44)
                 .overlay(alignment: .bottom) { Rectangle().fill(Dream.lavender.opacity(0.25)).frame(height: 0.5) }
+                .contentShape(Rectangle())
         }.buttonStyle(PressStyle()).accessibilityIdentifier(id)
     }
 
     private func iconButton(_ symbol: String, label: String, id: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: symbol).font(.system(size: 15)).frame(width: 44, height: 44)
+                .contentShape(Circle())
                 .overlay(Circle().stroke(Dream.lavender.opacity(0.2), lineWidth: 0.5))
         }
         .accessibilityLabel(label).accessibilityIdentifier(id)
