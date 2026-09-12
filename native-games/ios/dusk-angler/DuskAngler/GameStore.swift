@@ -3,7 +3,7 @@ import SwiftUI
 import UIKit
 
 enum GamePhase {
-  case home, aiming, waiting, bite, duel, caught, failed
+  case home, aiming, waiting, bite, duel, landing, caught, failed
 }
 
 @MainActor
@@ -120,7 +120,7 @@ final class GameStore: ObservableObject {
         latest = record
         progress.add(record)
         save()
-        phase = .caught
+        phase = .landing
         phaseTime = 0
         holding = false
         feedback(strong: true)
@@ -137,6 +137,11 @@ final class GameStore: ObservableObject {
           "Back to the deep", detail: "This fish outlasted you. Reel more often between its surges."
         )
       case .active: break
+      }
+    case .landing:
+      if phaseTime >= 1.3 {
+        phase = .caught
+        phaseTime = 0
       }
     default: break
     }

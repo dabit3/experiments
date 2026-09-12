@@ -1,3 +1,4 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -18,17 +19,20 @@ struct CatchView: View {
         Button(action: home) { Image(systemName: "xmark").frame(width: 44, height: 44) }
           .accessibilityLabel("Back to the shore").accessibilityIdentifier("result-home")
       }
-      Spacer(minLength: 0)
-      CatchCard(record: record)
-        .scaleEffect(arrived || reduceMotion ? 1 : 0.85)
-        .opacity(arrived ? 1 : 0)
-      Text(
-        total == 3
-          ? "Violet Reach unlocked. A new shore awaits."
-          : "+\(record.species.rare ? 2 : 1) glow bait · saved to your field journal"
-      )
-      .font(.system(size: 12)).multilineTextAlignment(.center)
-      Spacer(minLength: 0)
+      ScrollView {
+        VStack(spacing: 16) {
+          CatchCard(record: record)
+            .scaleEffect(arrived || reduceMotion ? 1 : 0.85)
+            .opacity(arrived ? 1 : 0)
+          Text(
+            total == 3
+              ? "Violet Reach unlocked. A new shore awaits."
+              : "+\(record.species.rare ? 2 : 1) glow bait · saved to your field journal"
+          )
+          .font(.system(size: 12)).multilineTextAlignment(.center)
+        }
+      }
+      .scrollIndicators(.hidden)
       CapsuleAction(title: "One more cast", icon: "arrow.up.right", action: again)
       Button {
         let renderer = ImageRenderer(
@@ -129,9 +133,44 @@ struct ShareSheet: UIViewControllerRepresentable {
   let payload: SharePayload
   func makeUIViewController(context: Context) -> UIActivityViewController {
     UIActivityViewController(
-      activityItems: [payload.image, payload.text], applicationActivities: nil)
+      activityItems: [CatchShareItem(payload: payload)], applicationActivities: nil)
   }
   func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+final class CatchShareItem: NSObject, UIActivityItemSource {
+  let payload: SharePayload
+  init(payload: SharePayload) { self.payload = payload }
+
+  func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController)
+    -> Any
+  {
+    payload.image
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    itemForActivityType activityType: UIActivity.ActivityType?
+  ) -> Any? {
+    payload.image
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    subjectForActivityType activityType: UIActivity.ActivityType?
+  ) -> String {
+    payload.text
+  }
+
+  func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController)
+    -> LPLinkMetadata?
+  {
+    let metadata = LPLinkMetadata()
+    metadata.title = payload.text
+    metadata.imageProvider = NSItemProvider(object: payload.image)
+    metadata.iconProvider = NSItemProvider(object: payload.image)
+    return metadata
+  }
 }
 
 struct FieldPanel: View {

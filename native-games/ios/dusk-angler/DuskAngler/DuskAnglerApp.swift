@@ -32,6 +32,8 @@ struct AnglerView: View {
           }
         } else if store.phase == .failed {
           failure
+        } else if store.phase == .landing {
+          landing
         } else {
           gameplay(height: geometry.size.height)
         }
@@ -121,7 +123,7 @@ struct AnglerView: View {
   }
 
   private func gameplay(height: CGFloat) -> some View {
-    VStack(spacing: 0) {
+    ZStack(alignment: .top) {
       HStack {
         VStack(alignment: .leading, spacing: 5) {
           Eyebrow(text: store.lake.name)
@@ -140,16 +142,23 @@ struct AnglerView: View {
       }
       .padding(.horizontal, 24)
       .padding(.top, 8)
-      Spacer(minLength: 8)
+      .padding(.bottom, 24)
+      .background(
+        LinearGradient(
+          colors: [Ink.night.opacity(0.6), .clear], startPoint: .top, endPoint: .bottom
+        )
+        .ignoresSafeArea(edges: .top))
       if store.phase == .duel {
-        duelStage.frame(height: max(180, height * 0.38))
+        duelStage.frame(height: height * 0.26).offset(y: height * 0.36)
       } else {
-        castingStage.frame(height: max(185, height * 0.38))
+        castingStage.frame(height: height * 0.28).offset(y: height * 0.39)
       }
-      Spacer(minLength: 12)
-      controlDeck
-        .padding(.horizontal, 24)
-        .padding(.bottom, 16)
+      VStack {
+        Spacer()
+        controlDeck
+          .padding(.horizontal, 24)
+          .padding(.bottom, 16)
+      }
     }
   }
 
@@ -234,14 +243,6 @@ struct AnglerView: View {
     ZStack {
       WaterSparkles(time: reduceMotion ? 0 : store.duel.elapsed)
       VStack(spacing: 14) {
-        Eyebrow(
-          text: store.duel.surging
-            ? "Surge · release the line"
-            : store.duel.warning ? "Surge approaching" : "Steady water · reel in",
-          color: store.duel.surging ? Ink.gold : Ink.cream
-        )
-        .padding(.horizontal, 18).padding(.vertical, 12)
-        .background(Ink.night.opacity(0.75), in: Capsule())
         ZStack {
           Ellipse().stroke(Ink.cream.opacity(0.24), lineWidth: 1)
             .frame(width: 270, height: 75).offset(y: 48)
@@ -318,6 +319,16 @@ struct AnglerView: View {
           }
         }
         .frame(height: 3)
+        HStack {
+          Image(systemName: store.duel.surging || store.duel.warning ? "wind" : "water.waves")
+          Text(
+            store.duel.surging
+              ? "SURGE · RELEASE" : store.duel.warning ? "SURGE APPROACHING" : "STEADY · REEL IN"
+          )
+          .font(.system(size: 11, weight: .semibold, design: .monospaced))
+          Spacer()
+        }
+        .foregroundStyle(store.duel.surging || store.duel.warning ? Ink.gold : Ink.mint)
         tensionMeter
         Text(
           store.duel.slack > 1
@@ -398,7 +409,7 @@ struct AnglerView: View {
 
   private var pauseOverlay: some View {
     ZStack {
-      Ink.night.opacity(0.9).ignoresSafeArea()
+      Ink.night.ignoresSafeArea()
       VStack(spacing: 24) {
         Eyebrow(text: "A moment of stillness")
         Text("The lake can wait.").font(.system(size: 34, design: .serif))
@@ -417,7 +428,7 @@ struct AnglerView: View {
 
   private var tutorial: some View {
     ZStack {
-      Ink.night.opacity(0.95).ignoresSafeArea()
+      Ink.night.ignoresSafeArea()
       VStack(alignment: .leading, spacing: 26) {
         Eyebrow(text: "Your first evening")
         Text("A little patience.\nA little instinct.")
@@ -445,6 +456,30 @@ struct AnglerView: View {
       VStack(alignment: .leading, spacing: 6) {
         Text(title).font(.system(size: 20, design: .serif))
         Text(text).font(.system(size: 14)).lineSpacing(4).foregroundStyle(Ink.cream.opacity(0.7))
+      }
+    }
+  }
+
+  private var landing: some View {
+    GeometryReader { geometry in
+      let leap = reduceMotion ? 0.5 : sin(min(1, store.phaseTime / 1.3) * .pi)
+      ZStack {
+        WaterSparkles(time: reduceMotion ? 0 : store.phaseTime * 8)
+          .frame(height: 260).offset(y: geometry.size.height * 0.2)
+        Ellipse().stroke(Ink.gold.opacity(0.8), lineWidth: 2)
+          .frame(width: 120 + store.phaseTime * 110, height: 40 + store.phaseTime * 30)
+          .position(x: geometry.size.width * 0.5, y: geometry.size.height * 0.66)
+        FishArt(species: store.duel.species)
+          .frame(width: 290, height: 170)
+          .rotationEffect(.degrees(-25 * leap))
+          .shadow(color: Ink.gold.opacity(0.6), radius: 24)
+          .position(x: geometry.size.width * 0.5, y: geometry.size.height * 0.64 - leap * 150)
+        VStack {
+          Spacer()
+          Eyebrow(text: store.duel.species.rare ? "A rare moment" : "Yours for a moment")
+          Text("Out of the deep.").font(.system(size: 38, design: .serif))
+          Spacer().frame(height: 70)
+        }
       }
     }
   }
