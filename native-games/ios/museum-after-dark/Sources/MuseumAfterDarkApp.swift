@@ -537,10 +537,15 @@ struct DossierView: View {
   }
 }
 
+struct SharedDossier: Identifiable {
+  let id = UUID()
+  let image: UIImage
+  let text: String
+}
+
 struct ResultView: View {
   @EnvironmentObject private var store: HeistStore
-  @State private var shareImage: UIImage?
-  @State private var showShare = false
+  @State private var dossier: SharedDossier?
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 20) {
@@ -576,8 +581,13 @@ struct ResultView: View {
               content: DossierView(room: store.room, moves: store.state.turn).frame(width: 600)
                 .padding(30).background(Palette.ink))
             renderer.scale = 2
-            shareImage = renderer.uiImage
-            showShare = shareImage != nil
+            if let image = renderer.uiImage {
+              dossier = SharedDossier(
+                image: image,
+                text:
+                  "I acquired \(store.room.artifactName) in \(store.state.turn) moves. Museum After Dark — gallery \(store.room.id) of 10."
+              )
+            }
           } label: {
             Label("Share dossier", systemImage: "square.and.arrow.up").frame(
               maxWidth: .infinity, minHeight: 44)
@@ -594,14 +604,8 @@ struct ResultView: View {
       .padding(24)
     }
     .scrollIndicators(.hidden)
-    .sheet(isPresented: $showShare) {
-      if let image = shareImage {
-        ShareSheet(
-          image: image,
-          text:
-            "I acquired \(store.room.artifactName) in \(store.state.turn) moves. Museum After Dark — gallery \(store.room.id) of 10."
-        )
-      }
+    .sheet(item: $dossier) { item in
+      ShareSheet(image: item.image, text: item.text)
     }
   }
 }
