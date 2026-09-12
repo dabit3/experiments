@@ -153,9 +153,12 @@ struct GameView: View {
             Label("ACORN GUARD", systemImage: "shield.fill")
               .font(.system(size: 9, weight: .bold)).foregroundStyle(honey)
           }
-          Text("HOLD TO JUMP HIGHER").tracking(1.5)
-            .font(.system(size: 8, weight: .bold)).foregroundStyle(cream.opacity(0.65))
-        }.padding(.bottom, 12)
+          Text("HOLD JUMP FOR HEIGHT").tracking(1)
+            .font(.system(size: 10, weight: .semibold)).foregroundStyle(cream.opacity(0.9))
+        }
+        .padding(.horizontal, 14).padding(.vertical, 9)
+        .background(ink.opacity(0.85), in: Capsule())
+        .padding(.bottom, 14)
         Spacer()
         HoldControl(symbol: "arrow.up", label: "Jump", tint: honey, size: 76) {
           model.jump($0)
@@ -290,16 +293,30 @@ struct GameView: View {
   }
 
   private var result: some View {
-    VStack(spacing: 11) {
+    VStack(spacing: 10) {
       eyebrow(model.lastWasBest ? "A NEW PERSONAL BEST" : "CHAPTER COMPLETE")
       Text(model.snapshot.levelIndex == 2 ? "You brought the light home." : "Wonder, well earned.")
-        .font(.custom("Georgia-Bold", size: 33))
-      HStack(spacing: 12) {
+        .font(.custom("Georgia-Bold", size: 30))
+      Text(
+        "CHAPTER 0\(model.snapshot.levelIndex + 1)  ·  \(model.snapshot.level.name.uppercased())"
+      )
+      .tracking(1.5).font(.system(size: 10, weight: .semibold))
+      .foregroundStyle(cream.opacity(0.8))
+      HStack(spacing: 0) {
         ForEach(0..<3) { star in
-          Image(systemName: star < model.snapshot.stars ? "star.fill" : "star")
-            .font(.system(size: 26)).foregroundStyle(honey)
+          VStack(spacing: 5) {
+            Image(systemName: model.snapshot.starGoals[star] ? "star.fill" : "star")
+              .font(.system(size: 24)).foregroundStyle(honey)
+            Text(["Trail complete", "Half the buttons", "All three hearts"][star])
+              .font(.system(size: 10, weight: .medium))
+              .foregroundStyle(cream.opacity(model.snapshot.starGoals[star] ? 0.95 : 0.55))
+          }.frame(maxWidth: .infinity)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(
+              "\(["Trail complete", "Half the buttons", "All three hearts"][star]): \(model.snapshot.starGoals[star] ? "earned" : "not earned")"
+            )
         }
-      }.padding(.vertical, 3)
+      }.frame(width: 440).padding(.vertical, 2)
       HStack(spacing: 0) {
         metric("SCORE", value: model.snapshot.score.formatted())
         metric("BUTTONS", value: "\(model.snapshot.coinCount)/\(model.snapshot.level.coins.count)")
@@ -307,8 +324,6 @@ struct GameView: View {
       }
       .padding(.vertical, 10).frame(width: 440)
       .background(cream.opacity(0.07), in: RoundedRectangle(cornerRadius: 18))
-      Text("Finish · collect half the buttons · keep all three hearts")
-        .font(.system(size: 10)).foregroundStyle(cream.opacity(0.5))
       HStack(spacing: 15) {
         Button("Replay") { model.start(model.snapshot.levelIndex) }
           .font(.system(size: 13)).frame(width: 70, height: 48)
@@ -334,6 +349,9 @@ struct GameView: View {
         }.accessibilityLabel("Back to title")
       }.padding(.top, 3)
     }
+    .padding(.horizontal, 27).padding(.vertical, 20)
+    .background(ink.opacity(0.92), in: RoundedRectangle(cornerRadius: 28))
+    .overlay(RoundedRectangle(cornerRadius: 28).stroke(honey.opacity(0.22)))
   }
 
   private func metric(_ title: String, value: String) -> some View {
@@ -346,7 +364,8 @@ struct GameView: View {
   private func instruction(_ icon: String, title: String, text: String) -> some View {
     VStack(spacing: 9) {
       Image(systemName: icon).font(.system(size: 26, weight: .light)).foregroundStyle(honey)
-      Text(title).font(.custom("Georgia-Bold", size: 17))
+        .frame(height: 34)
+      Text(title).font(.custom("Georgia-Bold", size: 17)).frame(height: 24)
       Text(text).font(.system(size: 11)).multilineTextAlignment(.center)
         .foregroundStyle(cream.opacity(0.7)).lineSpacing(5)
     }.frame(maxWidth: 230)

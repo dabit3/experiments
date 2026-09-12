@@ -128,4 +128,16 @@ final class GameTests: XCTestCase {
       XCTAssertTrue(level.ledges.contains { $0.travel > 0 })
     }
   }
+
+  func testStarGoalsRequireAtLeastHalfOfOddButtonCount() {
+    var game = Game(levelIndex: 0)
+    game.collected = Set(0..<15)
+    game.lives = 2
+    game.player = game.level.goal
+    game.step(1.0 / 120)
+    XCTAssertEqual(game.starGoals, [true, false, false])
+    game.collected.insert(15)
+    XCTAssertEqual(game.starGoals, [true, true, false])
+    XCTAssertEqual(game.stars, 2)
+  }
 }

@@ -27,6 +27,7 @@ final class GameModel: ObservableObject {
   private var audio = SoundBox()
   private var toastTask: Task<Void, Never>?
   private var helpReturn = Screen.home
+  private var fieldNotes: Set<Int> = []
 
   init(defaults: UserDefaults = .standard) {
     self.defaults = defaults
@@ -49,6 +50,7 @@ final class GameModel: ObservableObject {
   var totalBest: Int { records.values.reduce(0) { $0 + $1.score } }
 
   func start(_ index: Int) {
+    fieldNotes = []
     scene.load(index)
     snapshot = scene.game
     screen = .playing
@@ -57,6 +59,18 @@ final class GameModel: ObservableObject {
 
   func receive(_ game: Game, events: [GameEvent]) {
     snapshot = game
+    if game.levelIndex == 0, records["0"] == nil, game.phase == .playing {
+      let tips = [
+        (300.0, "Beetles ahead • jump onto their backs to bounce."),
+        (970.0, "An acorn awaits above • leap up for a protective guard."),
+        (1700.0, "Light the lantern ahead to save your place."),
+      ]
+      for (index, tip) in tips.enumerated()
+      where game.player.x >= tip.0 && !fieldNotes.contains(index) {
+        fieldNotes.insert(index)
+        announce(tip.1, duration: 4)
+      }
+    }
     for event in events {
       if sound { audio.play(event) }
       if event != .jump {

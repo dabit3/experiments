@@ -144,7 +144,7 @@ final class ForestScene: SKScene {
       night
       ? [0x142F39, 0x426B6A, 0xACAD87]
       : (game.level.palette == 1
-        ? [0x244C4C, 0x81A491, 0xD6D4A2] : [0x2C6158, 0x9BB995, 0xE5DBA6])
+        ? [0x234750, 0x70A1A3, 0xCBD4B5] : [0x2C6158, 0x9BB995, 0xE5DBA6])
     let renderer = UIGraphicsImageRenderer(size: CGSize(width: 2, height: 500))
     let image = renderer.image { context in
       let colors = palette.map { UIColor(hex: $0).cgColor }
@@ -204,13 +204,14 @@ final class ForestScene: SKScene {
       ray.alpha = night ? 0.02 : 0.045
       middle.addChild(ray)
     }
-    for i in -1..<28 {
+    for i in -1..<19 {
       let fern = ForestArt.fern(
-        x: CGFloat(i) * 185, y: -32,
-        scale: 2.5 + CGFloat((i + 2) % 3) * 0.5,
+        x: CGFloat(i) * 290 + CGFloat((i + 3) % 4) * 29, y: -35,
+        scale: 0.8 + CGFloat((i + 2) % 3) * 0.25,
         color: night ? 0x153A38 : 0x244E3E)
       foreground.addChild(fern)
     }
+    addChapterScenery()
     for i in 0..<26 {
       let mote = ForestArt.oval(i % 4 == 0 ? 4 : 2.5, i % 4 == 0 ? 4 : 2.5, 0xFAE7A0)
       mote.alpha = 0.55
@@ -218,6 +219,49 @@ final class ForestScene: SKScene {
       mote.zPosition = 1
       cameraNode.addChild(mote)
       motes.append(mote)
+    }
+  }
+
+  private func addChapterScenery() {
+    if game.level.palette == 1 {
+      let water = ForestArt.rect(6000, 100, 0x528D90, x: 2500, y: 5)
+      water.alpha = 0.9
+      middle.addChild(water)
+      for i in 0..<45 {
+        let shimmer = ForestArt.rect(
+          CGFloat(20 + i * 17 % 70), 2, 0xAECBC0, x: CGFloat(i * 119),
+          y: CGFloat(i * 13 % 75) - 30, radius: 1)
+        shimmer.alpha = 0.6
+        middle.addChild(shimmer)
+      }
+      for i in 0..<7 {
+        let wheel = ForestArt.gear(radius: 65 + CGFloat(i % 2) * 20)
+        wheel.position = CGPoint(x: 500 + i * 510, y: 145)
+        wheel.alpha = 0.48
+        middle.addChild(wheel)
+        let channel = ForestArt.rect(13, 175, 0xBDD7C7, x: CGFloat(590 + i * 510), y: 160)
+        channel.alpha = 0.22
+        middle.addChild(channel)
+        middle.addChild(
+          ForestArt.line(
+            [
+              CGPoint(x: 385 + i * 510, y: 225), CGPoint(x: 594 + i * 510, y: 225),
+            ], 0x6C806A, width: 8))
+      }
+    } else if game.level.palette == 2 {
+      for i in 0..<18 {
+        let x = CGFloat(i * 207 + 150)
+        let lantern = ForestArt.lantern(active: true)
+        lantern.position = CGPoint(x: x, y: 145 + CGFloat(i % 3) * 36)
+        lantern.setScale(0.65)
+        lantern.alpha = 0.6
+        middle.addChild(lantern)
+        middle.addChild(
+          ForestArt.line(
+            [
+              CGPoint(x: x + 16, y: 500), CGPoint(x: x + 16, y: lantern.position.y + 66),
+            ], 0x5B8272, width: 1.5))
+      }
     }
   }
 

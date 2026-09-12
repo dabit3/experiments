@@ -40,8 +40,12 @@ struct Game {
   var coinCount: Int { collected.count }
   var progress: Double { min(1, max(0, player.x / level.goal.x)) }
   var stars: Int {
-    guard phase == .completed else { return 0 }
-    return 1 + (coinCount >= level.coins.count / 2 ? 1 : 0) + (lives == 3 ? 1 : 0)
+    starGoals.filter { $0 }.count
+  }
+
+  var starGoals: [Bool] {
+    guard phase == .completed else { return [false, false, false] }
+    return [true, coinCount * 2 >= level.coins.count, lives == 3]
   }
 
   mutating func pressJump() {
