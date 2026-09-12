@@ -30,39 +30,39 @@ struct Lane: Identifiable {
         Lane(
             id: 2, name: "Velvet Hour", subtitle: "Nothing stays still",
             advice: "The arch drifts. Release when its opening approaches the center.",
-            gates: [Gate(y: 4.6, center: 0, width: 1.15, amplitude: 0.38, speed: 0.8)],
+            gates: [Gate(y: 4.6, center: 0, width: 1.02, amplitude: 0.5, speed: 0.8)],
             bumper: true, bronze: 10, silver: 24, gold: 40),
         Lane(
             id: 3, name: "Chrome Reverie", subtitle: "Take the scenic route",
             advice: "Bank off the chrome rails, then let the curve bring you home.",
-            gates: [Gate(y: 3.2, center: -0.3, width: 1.05)], bumper: true, bronze: 10, silver: 24, gold: 40),
+            gates: [Gate(y: 3.2, center: -0.43, width: 0.9)], bumper: true, bronze: 10, silver: 24, gold: 40),
         Lane(
             id: 4, name: "Double Dream", subtitle: "Two doors. One line.",
-            advice: "A gentle right curve connects the two offset archways.",
+            advice: "Aim left with a right curve to connect the two offset archways.",
             gates: [
-                Gate(y: 3, center: -0.28, width: 1.2),
-                Gate(y: 5.5, center: 0.24, width: 1.2),
+                Gate(y: 3, center: -0.32, width: 0.82),
+                Gate(y: 5.5, center: 0.32, width: 0.82),
             ],
             bumper: true, bronze: 10, silver: 22, gold: 38),
         Lane(
             id: 5, name: "Night Swimming", subtitle: "Beyond the silver edge",
             advice: "No bumpers tonight. Keep your line inside the luminous edges.",
-            gates: [Gate(y: 4, center: 0, width: 1.2, amplitude: 0.25, speed: 0.7)],
+            gates: [Gate(y: 4, center: 0, width: 1.05, amplitude: 0.45, speed: 0.7)],
             bumper: false, bronze: 8, silver: 22, gold: 36),
         Lane(
             id: 6, name: "The Pendulum", subtitle: "Find a moment of stillness",
             advice: "Two moving doors. Watch a cycle, then commit to your line.",
             gates: [
-                Gate(y: 3.2, center: 0, width: 1.25, amplitude: 0.25, speed: 0.7),
-                Gate(y: 5.4, center: 0, width: 1.25, amplitude: -0.3, speed: 0.9),
+                Gate(y: 3.2, center: 0, width: 1.05, amplitude: 0.45, speed: 0.7),
+                Gate(y: 5.4, center: 0, width: 1.05, amplitude: -0.45, speed: 0.9),
             ],
             bumper: true, bronze: 8, silver: 22, gold: 36),
         Lane(
             id: 7, name: "Lucid Suite", subtitle: "The corridor at the end of sleep",
             advice: "Begin left, curl right through both arches. Make the dream yours.",
             gates: [
-                Gate(y: 3.1, center: -0.22, width: 1.15, amplitude: 0.12, speed: 0.6),
-                Gate(y: 5.6, center: 0.22, width: 1.15, amplitude: 0.12, speed: 0.6),
+                Gate(y: 3.1, center: -0.32, width: 0.95, amplitude: 0.12, speed: 0.6),
+                Gate(y: 5.6, center: 0.32, width: 0.95, amplitude: 0.12, speed: 0.6),
             ],
             bumper: false, bronze: 8, silver: 20, gold: 34),
     ]
@@ -97,6 +97,15 @@ struct BowlingGame {
         if current.isEmpty { return true }
         if frames.count < frameCount { return false }
         return pins == 10 || (current.count == 2 && current[0] != 10 && current.reduce(0, +) == 10)
+    }
+
+    var nextRollCaption: String {
+        let current = frames.last ?? []
+        if frames.count == frameCount && !current.isEmpty {
+            if current[0] == 10 { return "Bonus roll \(current.count) of 2" }
+            if current.count == 2 && current.reduce(0, +) == 10 { return "One bonus dream" }
+        }
+        return current.isEmpty ? "A fresh possibility" : "Make it a spare"
     }
 
     var score: Int {
@@ -160,6 +169,7 @@ struct Ball {
 }
 
 struct BowlingPhysics {
+    static let curveAcceleration = 1.25
     var ball = Ball()
     var pins = rack()
     var curve = 0.0
@@ -194,7 +204,7 @@ struct BowlingPhysics {
         guard ball.active else { return }
         elapsed += dt
         let oldY = ball.y
-        ball.vx += curve * 0.52 * dt
+        ball.vx += curve * Self.curveAcceleration * dt
         ball.x += ball.vx * dt
         ball.y += ball.vy * dt
         ball.vy *= pow(0.98, dt)

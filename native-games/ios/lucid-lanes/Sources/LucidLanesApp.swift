@@ -140,7 +140,7 @@ struct ContentView: View {
                 HStack(spacing: 0) {
                     ForEach(0..<3) { i in
                         VStack(spacing: 6) {
-                            Text("FRAME \(i + 1)").font(.system(size: 8, weight: .medium)).tracking(1.4)
+                            Text("FRAME \(i + 1)").font(.system(size: 10, weight: .medium)).tracking(1)
                                 .foregroundStyle(Dream.muted)
                             Text(model.game.symbols(for: i)).font(
                                 .system(size: 20, weight: .medium, design: .monospaced)
@@ -151,7 +151,7 @@ struct ContentView: View {
                     Rectangle().fill(Dream.lavender.opacity(0.25)).frame(width: 1, height: 36)
                     VStack(spacing: 2) {
                         Text("\(model.game.score)").font(.system(size: 29, weight: .light, design: .serif))
-                        Text("SCORE").font(.system(size: 8)).tracking(1.4).foregroundStyle(Dream.muted)
+                        Text("SCORE").font(.system(size: 10)).tracking(1).foregroundStyle(Dream.muted)
                     }.frame(maxWidth: .infinity)
                 }
                 .padding(.vertical, 13).padding(.horizontal, 20)
@@ -161,14 +161,14 @@ struct ContentView: View {
                     Spacer()
                     Text("BRONZE \(model.lane.bronze) · GOLD \(model.lane.gold)")
                 }
-                .font(.system(size: 8, weight: .medium)).tracking(1)
+                .font(.system(size: 10, weight: .medium)).tracking(0.5)
                 .foregroundStyle(Dream.lavender).padding(.horizontal, 27).padding(.top, 10)
                 Spacer()
                 VStack(spacing: 12) {
                     Text(model.dragging ? "POWER \(Int(model.power * 100))%" : model.message.uppercased())
                         .font(
                             .system(
-                                size: model.phase == "settling" ? 25 : 10, weight: .medium,
+                                size: model.phase == "settling" ? 25 : 11, weight: .medium,
                                 design: model.phase == "settling" ? .serif : .default)
                         )
                         .tracking(model.phase == "settling" ? 5 : 2)
@@ -199,7 +199,7 @@ struct ContentView: View {
                         model.phase == "ready"
                             ? "Drag up to aim & bowl · longer drag, more power" : "Let the corridor do its work"
                     )
-                    .font(.system(size: 10)).foregroundStyle(Dream.muted)
+                    .font(.system(size: 11)).foregroundStyle(Dream.lavender)
                 }
                 .padding(.horizontal, 27).padding(.bottom, 16).padding(.top, 16)
                 .background(

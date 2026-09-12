@@ -61,17 +61,17 @@ struct LaneArtwork: View {
             context.fill(
                 floor,
                 with: .linearGradient(
-                    Gradient(colors: [Dream.lavender.opacity(0.5), Dream.lavender.opacity(0.9), Dream.velvet]),
+                    Gradient(colors: [Dream.lavender.opacity(0.42), Dream.lavender.opacity(0.78), Dream.velvet]),
                     startPoint: p.point(0, 9), endPoint: p.point(0, -0.2)))
             for x in [-0.96, -0.75, -0.50, -0.25, 0, 0.25, 0.50, 0.75, 0.96] {
                 line(
                     &context, from: p.point(x, 0), to: p.point(x, 9),
-                    color: Dream.cream.opacity(x == -0.96 || x == 0.96 ? 0.65 : 0.12), width: 1)
+                    color: Dream.cream.opacity(x == -0.96 || x == 0.96 ? 0.65 : 0.07), width: 1)
             }
             for y in stride(from: 0.5, through: 9.0, by: 0.7) {
                 line(
                     &context, from: p.point(-1, y), to: p.point(1, y),
-                    color: Dream.ink.opacity(0.15), width: 0.8)
+                    color: Dream.ink.opacity(0.08), width: 0.8)
             }
             for i in 0..<310 {
                 let x = Double((i * 71 + 23) % 997) / 997 * 1.9 - 0.95
@@ -83,6 +83,30 @@ struct LaneArtwork: View {
                     CGPoint(x: point.x - radius, y: point.y + radius * 2),
                 ])
                 context.fill(chip, with: .color((i % 3 == 0 ? Dream.peach : Dream.ink).opacity(0.24)))
+            }
+            var lighting = context
+            lighting.clip(to: floor)
+            for (depth, tint) in [(7.8, Dream.peach), (4.6, Dream.mint), (1.6, Dream.lavender)] {
+                let center = p.point(0, depth)
+                let radius = size.width * 0.38 * p.scale(depth)
+                var light = lighting
+                light.translateBy(x: center.x, y: center.y)
+                light.scaleBy(x: 1.6, y: 0.6)
+                light.fill(
+                    Path(ellipseIn: CGRect(x: -radius, y: -radius, width: radius * 2, height: radius * 2)),
+                    with: .radialGradient(
+                        Gradient(colors: [tint.opacity(0.48), .clear]),
+                        center: .zero, startRadius: 0, endRadius: radius))
+            }
+            for side in [-1.0, 1.0] {
+                lighting.fill(
+                    polygon([
+                        p.point(side * 0.98, 8.8), p.point(side * 0.86, 8.8),
+                        p.point(side * 0.75, 0), p.point(side * 0.98, 0),
+                    ]),
+                    with: .linearGradient(
+                        Gradient(colors: [Dream.peach.opacity(0.18), .clear]),
+                        startPoint: p.point(0, 8.8), endPoint: p.point(0, 0)))
             }
             for side in [-1.0, 1.0] {
                 let rail = polygon([
@@ -126,7 +150,7 @@ struct LaneArtwork: View {
                 let vy = 3.5 + model.power * 3
                 for i in 0..<26 {
                     let t = Double(i) / 26 * 0.75
-                    let q = p.point(vx * t + model.curve * 0.26 * t * t, 0.35 + vy * t)
+                    let q = p.point(vx * t + model.curve * BowlingPhysics.curveAcceleration / 2 * t * t, 0.35 + vy * t)
                     if i == 0 { path.move(to: q) } else { path.addLine(to: q) }
                 }
                 context.stroke(
@@ -189,6 +213,19 @@ struct LaneArtwork: View {
                         Path(ellipseIn: CGRect(x: q.x, y: q.y, width: 2, height: 3)),
                         with: .color(Dream.cream.opacity(0.7)))
                 }
+            }
+        }
+        .overlay(alignment: .top) {
+            GeometryReader { geometry in
+                LinearGradient(
+                    stops: [
+                        .init(color: Dream.ink, location: 0),
+                        .init(color: Dream.ink.opacity(0.96), location: 0.68),
+                        .init(color: Dream.ink.opacity(0), location: 1),
+                    ],
+                    startPoint: .top, endPoint: .bottom
+                )
+                .frame(height: geometry.size.height * (hero ? 0.29 : 0.27))
             }
         }
         .accessibilityHidden(true)

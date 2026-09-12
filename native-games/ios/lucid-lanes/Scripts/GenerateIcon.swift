@@ -2,12 +2,11 @@ import AppKit
 import Foundation
 
 let size = 1024
-let bitmap = NSBitmapImageRep(
-    bitmapDataPlanes: nil, pixelsWide: size, pixelsHigh: size, bitsPerSample: 8,
-    samplesPerPixel: 3, hasAlpha: false, isPlanar: false, colorSpaceName: .deviceRGB,
-    bytesPerRow: 0, bitsPerPixel: 0)!
+let context = CGContext(
+    data: nil, width: size, height: size, bitsPerComponent: 8, bytesPerRow: size * 4,
+    space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
 NSGraphicsContext.saveGraphicsState()
-NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: bitmap)
+NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
 let ink = NSColor(srgbRed: 0.055, green: 0.058, blue: 0.13, alpha: 1)
 let peach = NSColor(srgbRed: 1, green: 0.73, blue: 0.61, alpha: 1)
 let mint = NSColor(srgbRed: 0.64, green: 0.96, blue: 0.91, alpha: 1)
@@ -43,6 +42,7 @@ for point in [CGPoint(x: 462, y: 415), CGPoint(x: 525, y: 404), CGPoint(x: 485, 
     NSBezierPath(ovalIn: NSRect(x: point.x, y: point.y, width: 26, height: 32)).fill()
 }
 NSGraphicsContext.restoreGraphicsState()
+let bitmap = NSBitmapImageRep(cgImage: context.makeImage()!)
 let output =
     CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "Assets.xcassets/AppIcon.appiconset/AppIcon.png"
 try bitmap.representation(using: .png, properties: [:])!.write(to: URL(fileURLWithPath: output))

@@ -54,6 +54,17 @@ final class RulesTests: XCTestCase {
         XCTAssertEqual(game.frames[1], [8, 2])
     }
 
+    func testBonusGuidanceMatchesEarnedDelivery() {
+        var game = BowlingGame()
+        for pins in [10, 10, 10] { game.roll(pins) }
+        XCTAssertEqual(game.nextRollCaption, "Bonus roll 1 of 2")
+        game.roll(10)
+        XCTAssertEqual(game.nextRollCaption, "Bonus roll 2 of 2")
+        var spare = BowlingGame()
+        for pins in [0, 0, 0, 0, 4, 6] { spare.roll(pins) }
+        XCTAssertEqual(spare.nextRollCaption, "One bonus dream")
+    }
+
     func testMovingGateHasStableBoundedOpening() {
         let gate = Gate(y: 4, center: 0.1, width: 1, amplitude: 0.3, speed: 0.8)
         XCTAssertEqual(gate.opening(at: 0).lowerBound, -0.4, accuracy: 0.0001)
@@ -119,5 +130,28 @@ final class RulesTests: XCTestCase {
             physics.step(dt: 1.0 / 120, lane: lane, time: Double(step) / 120)
         }
         return physics
+    }
+
+    func testEveryCorridorHasANinePinOrBetterRoute() {
+        for lane in Lane.all {
+            var best = 0
+            search: for delay in [0.0, 2.0, 4.0] {
+                for aim in stride(from: -0.8, through: 0.8, by: 0.1) {
+                    for curve in stride(from: -1.0, through: 1.0, by: 0.2) {
+                        var physics = BowlingPhysics()
+                        physics.launch(aim: aim, power: 0.65, curve: curve)
+                        for step in 0..<510 {
+                            physics.step(dt: 1.0 / 120, lane: lane, time: delay + Double(step) / 120)
+                        }
+                        best = max(best, physics.pins.filter(\.down).count)
+                        if best >= 9 {
+                            print("Room \(lane.id + 1): aim \(aim), curve \(curve), delay \(delay), pins \(best)")
+                            break search
+                        }
+                    }
+                }
+            }
+            XCTAssertGreaterThanOrEqual(best, 9, "No strong route through \(lane.name)")
+        }
     }
 }

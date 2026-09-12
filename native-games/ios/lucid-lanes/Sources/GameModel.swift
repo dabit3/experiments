@@ -85,7 +85,8 @@ final class GameModel: ObservableObject {
         time += dt
         if phase == "rolling" {
             let before = physics.pins.filter(\.down).count
-            for _ in 0..<3 { physics.step(dt: dt / 3, lane: lane, time: time) }
+            let cascadeSpeed = physics.ball.y > 6.8 && !reduceMotion ? 0.62 : 1.0
+            for _ in 0..<3 { physics.step(dt: dt / 3 * cascadeSpeed, lane: lane, time: time) }
             if physics.pins.filter(\.down).count > before { feedback(success: true) }
             if !physics.ball.active {
                 phase = "settling"
@@ -122,7 +123,7 @@ final class GameModel: ObservableObject {
         }
         phase = "ready"
         aim = 0
-        message = game.frames.last?.isEmpty == true ? "A fresh possibility" : "Make it a spare"
+        message = game.nextRollCaption
     }
 
     func feedback(success: Bool) {
