@@ -88,7 +88,12 @@ Ordinary Off/On taps passed on Pro Max and 17e; Off persisted through both sheet
 reopening and actual process termination/relaunch. The native segmented controls
 inherited the game's dark scheme, causing pale labels against the cream panel.
 Cream panels now request a light color scheme for readable native controls.
-Final contrast and golden-path recording verification is pending.
+Final contrast and Off/On taps passed on both 17e and Pro Max. The final native
+recording repeats tutorial, previews, Drive, first-move Undo, delivery Undo, the
+three-star completion and native share open/reopen, with seven passed assertions.
+Recorded frames show intermediate van positions for both Drive and Undo; earlier
+Reduce Motion frames show direct transitions with correct fuel. Motion inspection
+is sampled at 15 fps. The app is left running at the Pro Max result.
 
 ## Shell checks
 
@@ -117,8 +122,25 @@ plutil -lint SnowglobeExpress/Info.plist
 git diff --check
 ```
 
-All passed. The final sharing correction was built in both configurations.
-XCTest reported 9 tests and 0 failures; the rules and persistence implementation
-has not changed since that run. Build checks also typecheck the SwiftUI code.
+All passed again on the final implementation (`37439682`), including Debug and
+Release, strict formatting, and XCTest with 9 tests and 0 failures. Build checks
+also typecheck the SwiftUI code.
 Use a UUID from `xcrun simctl list devices available` on another VM.
 PR checks report no configured CI jobs; these are local native verification results.
+
+## Evidence and limitations
+
+Final recording: `snowglobe-final-v5`, 66.54 seconds, with native setup, test-start,
+passed-assertion and input-action annotations. The original edited MP4 is attached
+to the session alongside full-phone gameplay/result screenshots and the tester's
+consolidated report; generated evidence is not committed.
+
+The broader v2/v4 runs verified unchanged failure/retry, replay, pause/Continue,
+relaunch persistence, daily/second-route play and postcard export. Historical
+failures in those diagnostic recordings were fixed and superseded by v5.
+
+Physical-device audio/haptics, external-recipient sharing, full VoiceOver traversal
+and rendering-failure injection were not tested. Every authored route has a
+three-star unit-tested solution; GUI completion was not exhaustive across routes.
+The share header uses a generic text icon, while its exported image is correct.
+Daily play is deterministic from the UTC date, without a dated subtitle in the UI.
