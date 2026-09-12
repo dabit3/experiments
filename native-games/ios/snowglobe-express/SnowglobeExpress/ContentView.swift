@@ -644,8 +644,8 @@ private struct SettingsControls: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
       Text("Settle into the snowfall.").font(.system(size: 15))
-      Toggle("Delivery chime", isOn: $sound).accessibilityIdentifier("sound-toggle")
-      Toggle("Gentle haptics", isOn: $haptics).accessibilityIdentifier("haptics-toggle")
+      preference("Delivery chime", isOn: $sound, id: "sound-toggle")
+      preference("Gentle haptics", isOn: $haptics, id: "haptics-toggle")
       Text(
         "Motion follows your iPhone’s Reduce Motion setting. Your stars and current route stay on this device."
       )
@@ -654,7 +654,21 @@ private struct SettingsControls: View {
         .frame(minHeight: 44)
         .accessibilityIdentifier("settings-tutorial")
     }
-    .toggleStyle(.switch)
+  }
+
+  private func preference(_ title: String, isOn: Binding<Bool>, id: String) -> some View {
+    HStack {
+      Text(title)
+      Spacer()
+      Picker(title, selection: isOn) {
+        Text("Off").tag(false)
+        Text("On").tag(true)
+      }
+      .pickerStyle(.segmented)
+      .frame(width: 130)
+      .accessibilityIdentifier(id)
+    }
+    .frame(minHeight: 44)
   }
 }
 

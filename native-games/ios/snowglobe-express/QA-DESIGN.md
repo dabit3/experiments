@@ -81,7 +81,10 @@ Ordinary app switch taps did not visibly change state on either device, although
 thumb drags did. System Settings switches accepted the same ordinary taps. The
 settings controls were moved into a dedicated View owning its own `@AppStorage`
 observation and bindings, rather than reading the parent properties only inside
-the sheet closure. A focused native regression will verify this correction.
+the sheet closure. The tap failure persisted after that change; state ownership
+was not sufficient to resolve it. Replaced the switch affordances with native
+segmented Off/On pickers, giving each preference two explicit targets.
+A focused native regression will verify selection and persistence.
 
 ## Shell checks
 
