@@ -1,0 +1,52 @@
+name: Breakwater
+options:
+  bundleIdPrefix: com.dabit.breakwater
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    CODE_SIGNING_ALLOWED: NO
+    DEVELOPMENT_TEAM: ""
+    SWIFT_STRICT_CONCURRENCY: complete
+targets:
+  Breakwater:
+    type: application
+    platform: iOS
+    sources:
+      - Sources
+      - Assets.xcassets
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: Breakwater
+        UILaunchScreen:
+          UIColorName: LaunchColor
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dabit.breakwater
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Breakwater
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_UIRequiresFullScreen: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+  BreakwaterTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests]
+    dependencies:
+      - target: Breakwater
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  Breakwater:
+    build:
+      targets:
+        Breakwater: all
+    test:
+      targets: [BreakwaterTests]
