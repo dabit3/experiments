@@ -338,7 +338,9 @@ struct TheaterArt: View {
     context.stroke(path, with: .color(Palette.brassDark), lineWidth: 1.2)
   }
 
-  private func drawBucket(_ context: inout GraphicsContext) {
+  private func drawBucket(_ outer: inout GraphicsContext) {
+    var context = outer
+    context.clip(to: Path(roundedRect: frameRect.insetBy(dx: 2, dy: 2), cornerRadius: 148))
     let x = decorative ? 195 : game.bucketX
     context.fill(
       Path(ellipseIn: CGRect(x: x - 48, y: 528, width: 96, height: 16)),

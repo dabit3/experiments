@@ -339,8 +339,8 @@ struct PlayView: View {
   func metric(_ title: String, value: String, accent: Bool = false) -> some View {
     VStack(spacing: 3) {
       Text(title).font(Type.demi(9.5)).tracking(1.6).foregroundStyle(Palette.gold)
-      Text(value).font(Type.display(24)).monospacedDigit()
-        .foregroundStyle(accent ? AnyShapeStyle(Palette.goldText) : AnyShapeStyle(Palette.ink))
+      Text(value).font(accent ? Type.displayBold(24) : Type.display(24)).monospacedDigit()
+        .foregroundStyle(accent ? Palette.brassDark : Palette.ink)
     }.frame(maxWidth: .infinity)
   }
 }
