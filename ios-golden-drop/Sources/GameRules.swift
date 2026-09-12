@@ -113,7 +113,7 @@ enum PlayPhase: Equatable {
 }
 
 struct GameEvent {
-  enum Kind { case peg, catchBall, finale, finished }
+  enum Kind { case peg, catchBall, multiplier, settled, finale, finished }
   var kind: Kind
   var position: Vector
   var text: String
@@ -180,7 +180,7 @@ struct GameRules {
       finaleRemaining = remaining - dt
       delta *= 0.2
       if remaining <= 0 {
-        score += 2500 + balls * 1000
+        score += shotScore * max(0, shotHits - 1) + 2500 + balls * 1000
         phase = .won
         events.append(.init(kind: .finished, position: ball, text: "GOLDEN HOUR"))
         return
@@ -219,6 +219,7 @@ struct GameRules {
         if abs(velocity.x) < 18 { velocity.x += dx >= 0 ? 24 : -24 }
       }
       if !pegs[index].hit {
+        let previousMultiplier = multiplier
         pegs[index].hit = true
         shotHits += 1
         let points = pegs[index].kind.points * multiplier
@@ -229,6 +230,10 @@ struct GameRules {
           .init(
             kind: .peg, position: pegs[index].position,
             text: pegs[index].kind == .green ? "+1 BALL" : "+\(points)"))
+        if multiplier > previousMultiplier {
+          events.append(
+            .init(kind: .multiplier, position: ball, text: "GOLDEN BOOST  ×\(multiplier)"))
+        }
         if remainingGold == 0 && finaleRemaining == nil {
           finaleRemaining = 1.8
           events.append(.init(kind: .finale, position: ball, text: "EVERY WISH, GRANTED"))
@@ -256,6 +261,11 @@ struct GameRules {
         .init(kind: .catchBall, position: .init(x: bucketX, y: 490), text: "LOVELY CATCH! +1"))
     }
     score += shotScore * max(0, shotHits - 1)
+    events.append(
+      .init(
+        kind: .settled, position: ball,
+        text: "\(shotHits) pegs × \(shotScore) = \(shotScore * shotHits)"
+          + (catchBall ? " · catch +500" : "")))
     pegs.removeAll { $0.hit }
     phase = balls > 0 ? .aiming : .lost
     if phase == .lost {

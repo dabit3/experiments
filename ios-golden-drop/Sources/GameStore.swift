@@ -17,6 +17,7 @@ final class GameStore: ObservableObject {
   @Published var records: [String: BoardRecord] = [:]
   @Published var toast = ""
   @Published var toastLife = 0.0
+  @Published var lastShotSummary = ""
   @Published var particles: [Spark] = []
   var clock: Timer?
   var lastTick: CFTimeInterval?
@@ -56,6 +57,7 @@ final class GameStore: ObservableObject {
     screen = .play
     paused = false
     toast = ""
+    lastShotSummary = ""
     particles = []
     lastTick = nil
     if !UserDefaults.standard.bool(forKey: "golden.learned") { help = true }
@@ -74,6 +76,8 @@ final class GameStore: ObservableObject {
 
   func fire() {
     guard !paused, !help else { return }
+    lastShotSummary = ""
+    toastLife = 0
     game.launch()
     feedback(.soft)
     tone("launch")
@@ -116,6 +120,11 @@ final class GameStore: ObservableObject {
         toastLife = 3
         tone("catch")
         feedback(.medium)
+      case .multiplier:
+        toast = event.text
+        toastLife = 2.5
+      case .settled:
+        lastShotSummary = event.text
       case .finale:
         toast = event.text
         toastLife = 2.5

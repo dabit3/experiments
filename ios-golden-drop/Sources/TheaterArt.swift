@@ -24,14 +24,24 @@ struct TheaterArt: View {
       drawStage(&context)
       if game.phase == .aiming && !decorative {
         for (index, point) in game.preview().enumerated() where index % 2 == 0 {
-          circle(&context, point.x, point.y, 2.1, Palette.gold.opacity(0.6 - Double(index) / 95))
+          circle(&context, point.x, point.y, 2.6, Palette.ink.opacity(0.72 - Double(index) / 110))
+        }
+        for point in game.preview() where point.x == 20 || point.x == 370 {
+          context.stroke(
+            Path(ellipseIn: CGRect(x: point.x - 6, y: point.y - 6, width: 12, height: 12)),
+            with: .color(Palette.gold), lineWidth: 1.6)
+        }
+        if let point = game.preview().last {
+          context.stroke(
+            Path(ellipseIn: CGRect(x: point.x - 5, y: point.y - 5, width: 10, height: 10)),
+            with: .color(Palette.ink.opacity(0.6)), lineWidth: 1.3)
         }
       }
       for peg in game.pegs { drawPeg(&context, peg) }
       if !decorative {
         for (index, point) in game.trail.enumerated() {
           circle(
-            &context, point.x, point.y, Double(index) / 8, Palette.gold.opacity(Double(index) / 140)
+            &context, point.x, point.y, Double(index) / 7, Palette.ink.opacity(Double(index) / 105)
           )
         }
         if game.phase == .flying { drawBall(&context, game.ball) }
@@ -156,6 +166,7 @@ struct TheaterArt: View {
       with: .radialGradient(
         Gradient(colors: [.white, Palette.paper, Palette.gold]),
         center: .init(x: point.x - 2, y: point.y - 2), startRadius: 0, endRadius: 10))
+    context.stroke(path, with: .color(Palette.gold), lineWidth: 1.5)
   }
 
   private func drawBucket(_ context: inout GraphicsContext) {

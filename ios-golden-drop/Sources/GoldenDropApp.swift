@@ -169,6 +169,16 @@ struct PlayView: View {
         Rectangle().fill(Palette.gold.opacity(0.2)).frame(width: 1, height: 29)
         metric("MULTIPLIER", value: "×\(store.game.multiplier)")
       }.padding(.vertical, 8).padding(.horizontal, 16)
+      Text(
+        store.toastLife > 0
+          ? store.toast
+          : (store.lastShotSummary.isEmpty
+            ? "A little aim. A lovely possibility." : store.lastShotSummary)
+      )
+      .font(.system(size: 12, weight: store.toastLife > 0 ? .semibold : .regular))
+      .foregroundStyle(store.toastLife > 0 ? Palette.gold : Palette.ink.opacity(0.8))
+      .frame(height: 24).frame(maxWidth: .infinity)
+      .background(Palette.gold.opacity(0.06), in: Capsule()).padding(.horizontal, 26)
       GeometryReader { geometry in
         let scale = min(geometry.size.width / 390, geometry.size.height / 560)
         TheaterArt(game: store.game, sparks: store.particles)
@@ -190,31 +200,23 @@ struct PlayView: View {
               1.2, max(-1.2, store.game.angle + (direction == .increment ? 0.08 : -0.08)))
           }
           .accessibilityIdentifier("aim-field")
-          .overlay(alignment: .bottom) {
-            if store.toastLife > 0 {
-              Text(store.toast).font(.system(size: 11, weight: .bold)).tracking(1.2)
-                .foregroundStyle(Palette.paper).padding(.horizontal, 18).padding(.vertical, 11)
-                .background(Palette.ink, in: Capsule()).offset(y: -38)
-                .allowsHitTesting(false)
-            }
-          }
       }.padding(.horizontal, 14)
       VStack(spacing: 10) {
         HStack {
           HStack(spacing: 5) {
             Image(systemName: "circle.inset.filled").foregroundStyle(Palette.gold)
             Text("\(store.game.balls)").fontWeight(.bold).monospacedDigit()
-            Text("balls left").foregroundStyle(Palette.ink.opacity(0.65))
-          }.font(.system(size: 13))
+            Text("balls left").foregroundStyle(Palette.ink.opacity(0.8))
+          }.font(.system(size: 14))
           Spacer()
           Text(
             store.game.phase == .flying
               ? "\(store.game.shotHits) PEGS  ·  +\(store.game.shotScore)" : "DRAG TO AIM"
           )
-          .font(.system(size: 10, weight: .semibold)).tracking(1.5).foregroundStyle(Palette.gold)
+          .font(.system(size: 12, weight: .semibold)).foregroundStyle(Palette.ink.opacity(0.8))
         }
         HStack(spacing: 10) {
-          RoundButton(symbol: "minus", label: "Aim left") { nudge(-0.06) }
+          RoundButton(symbol: "chevron.left", label: "Aim left") { nudge(-0.06) }
             .disabled(store.game.phase != .aiming)
           PrimaryButton(
             title: store.game.phase == .flying ? "A little gravity…" : "Drop the ball",
@@ -222,11 +224,11 @@ struct PlayView: View {
           ) { store.fire() }
           .disabled(store.game.phase != .aiming)
           .accessibilityIdentifier("launch")
-          RoundButton(symbol: "plus", label: "Aim right") { nudge(0.06) }
+          RoundButton(symbol: "chevron.right", label: "Aim right") { nudge(0.06) }
             .disabled(store.game.phase != .aiming)
         }
-        Text("Clear every gold peg. Catch the cup for a free ball.")
-          .font(.system(size: 10)).foregroundStyle(Palette.ink.opacity(0.62))
+        Text("Gold clears the garden. The cup gifts a ball.")
+          .font(.system(size: 12)).foregroundStyle(Palette.ink.opacity(0.8))
       }.padding(.horizontal, 25).padding(.bottom, 8)
     }.padding(.top, 5)
   }
@@ -238,7 +240,7 @@ struct PlayView: View {
 
   func metric(_ title: String, value: String) -> some View {
     VStack(spacing: 4) {
-      Text(title).font(.system(size: 9, weight: .semibold)).tracking(1.7).foregroundStyle(
+      Text(title).font(.system(size: 11, weight: .semibold)).tracking(0.7).foregroundStyle(
         Palette.gold)
       Text(value).font(.custom("Georgia", size: 23)).monospacedDigit()
     }.frame(maxWidth: .infinity)
@@ -256,7 +258,7 @@ struct InstructionsView: View {
         .multilineTextAlignment(.center)
       VStack(alignment: .leading, spacing: 22) {
         instruction(
-          "hand.draw", title: "Aim, then let go",
+          "hand.draw", title: "Aim, then tap Drop",
           text: "Drag across the garden to aim. Tap Drop the ball to launch.")
         instruction(
           "circle.inset.filled", title: "Gold is the goal",
