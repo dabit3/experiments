@@ -2,6 +2,10 @@
 
 A native, offline iPhone stealth puzzle in SwiftUI. Ten authored museum rooms, ruby security lasers, rotating amber searchlights, mirrors, independent power circuits, unlimited undo, par medals and a locally saved collection.
 
+## Art direction
+
+A nocturnal Art Deco museum: champagne brass, oxblood velvet, veined stone and ruby light. The bespoke generated museum illustration is bundled locally as `MuseumHero`; the playable architecture, artifacts, engraved controls and acquisition certificate are drawn natively in SwiftUI. No image service is called at runtime. Home framing and button motion follow Reduce Motion, as do acquisition effects. The shared dossier renders the same native certificate as the result screen.
+
 ## Build and run
 
 Requires macOS with Xcode 26.6 (tested), iOS 17+ deployment target, no signing credentials or external services. The checked-in Xcode project and shared `MuseumAfterDark` scheme run directly in Xcode: choose an iPhone simulator and Run.
@@ -47,4 +51,4 @@ No daily mode, online leaderboard, account, advertising, analytics, purchases, o
 
 ## Verification
 
-`HeistEngineTests` covers all reflection directions, illegal actions, independent circuits, current and next-turn hazards, wall occlusion, artifact/exit gating, persistent undo/settings, unlocks, and breadth-first search for an achievable par solution in every authored room. UI evidence and three visual review passes are documented in the accompanying QA/design report.
+`HeistEngineTests` covers all reflection directions, illegal actions, independent circuits, current and next-turn hazards, wall occlusion, artifact/exit gating, persistent undo/settings, unlocks, and breadth-first search for an achievable par solution in every authored room. UI evidence, the original three visual review passes, and the subsequent Art Deco redesign are documented in the accompanying QA/design reports.

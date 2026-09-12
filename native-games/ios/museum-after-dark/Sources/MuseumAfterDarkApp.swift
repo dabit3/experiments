@@ -179,6 +179,7 @@ struct HomeView: View {
       }
       .background(Palette.ink)
       .scrollIndicators(.hidden)
+      .clipped()
     }
   }
 }
@@ -240,6 +241,7 @@ struct RoomsView: View {
         }
       }
       .scrollIndicators(.hidden)
+      .clipped()
     }
     .padding(.horizontal, 24)
     .padding(.top, 10)
@@ -292,10 +294,12 @@ struct PlayView: View {
           Image(systemName: store.state.hasArtifact ? "checkmark.diamond.fill" : "diamond")
           Text(
             store.state.hasArtifact
-              ? "ARTIFACT SECURED" : "ACQUIRE THE ARTIFACT")
+              ? "ARTIFACT SECURED" : "ACQUIRE THE ARTIFACT"
+          )
+          .fixedSize(horizontal: true, vertical: false)
           Rectangle().fill(Palette.gold.opacity(0.3)).frame(height: 0.5)
           Image(systemName: "arrow.down.left")
-          Text("EXIT")
+          Text("EXIT").fixedSize(horizontal: true, vertical: false)
           Spacer(minLength: 0)
         }
         .font(.system(size: 9, weight: .medium, design: .monospaced))
@@ -673,6 +677,7 @@ struct ResultView: View {
       .padding(24)
     }
     .scrollIndicators(.hidden)
+    .clipped()
     .sheet(item: $dossier) { item in
       ShareSheet(image: item.image, text: item.text)
     }

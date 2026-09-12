@@ -439,7 +439,7 @@ struct MuseumBoard: View {
           Path(roundedRect: rect.insetBy(dx: 3, dy: 3), cornerRadius: 5),
           with: .color(Palette.gold.opacity(0.5)), lineWidth: 1)
         context.fill(
-          Path(ellipseIn: rect.insetBy(dx: 10, dy: 10)),
+          Path(ellipseIn: rect.insetBy(dx: cell * 0.16, dy: cell * 0.16)),
           with: .color(active ? Palette.ruby : Palette.muted))
       }
       if let sentry = room.sentries.first(where: { $0.tile == tile }) {
