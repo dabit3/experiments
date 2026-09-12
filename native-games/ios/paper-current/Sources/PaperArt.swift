@@ -260,3 +260,31 @@ struct CanalDrawing: View {
     }
   }
 }
+
+struct StampBurst: View {
+  @State private var expanded = false
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+  var body: some View {
+    GeometryReader { geometry in
+      ZStack {
+        ForEach(0..<8) { index in
+          let angle = Double(index) * .pi / 4
+          RoundedRectangle(cornerRadius: 1)
+            .fill(Ink.gold)
+            .frame(width: 4, height: 7)
+            .rotationEffect(.radians(angle))
+            .offset(
+              x: cos(angle) * (expanded ? geometry.size.width * 0.44 : 8),
+              y: sin(angle) * (expanded ? geometry.size.height * 0.44 : 8)
+            )
+            .opacity(expanded ? 0 : 1)
+        }
+      }
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .onAppear {
+        withAnimation(reduceMotion ? nil : .easeOut(duration: 0.75)) { expanded = true }
+      }
+    }.accessibilityHidden(true)
+  }
+}

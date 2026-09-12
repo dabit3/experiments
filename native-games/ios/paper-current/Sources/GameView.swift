@@ -36,6 +36,16 @@ struct GameView: View {
     guard let voyage, !voyage.cells.isEmpty, sailing || finished else { return level.start }
     return voyage.cells[min(cursor, voyage.cells.count - 1)]
   }
+  private var boatHeading: Double {
+    guard sailing, let voyage, cursor > 0, cursor < voyage.cells.count else { return 0 }
+    let direction = voyage.cells[cursor - 1].direction(to: voyage.cells[cursor])
+    switch direction {
+    case .north: return -90
+    case .east: return 0
+    case .south: return 90
+    case .west: return 180
+    }
+  }
 
   var body: some View {
     ZStack {
@@ -135,6 +145,7 @@ struct GameView: View {
         returnToPlanning()
         puzzle = PuzzleState(level: level)
       }
+      Button("Keep planning", role: .cancel) {}
     } message: {
       Text("Your best delivery stays saved. This plan starts over.")
     }
@@ -182,6 +193,8 @@ struct GameView: View {
       level: level, canals: puzzle.canals, lit: Set(visited), boat: boat,
       collected: sailing || finished ? Set(visited) : [],
       interactive: !sailing && !finished,
+      boatHeading: boatHeading,
+      sparkling: sailing && puzzle.canals.contains { $0.cell == boat && $0.hasStamp },
       rotate: { cell in
         Feedback.tap()
         withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.2)) { puzzle.rotate(cell) }
@@ -297,6 +310,8 @@ struct BoardView: View {
   let boat: Cell
   let collected: Set<Cell>
   var interactive: Bool
+  var boatHeading: Double = 0
+  var sparkling = false
   var failure: Cell? = nil
   var rotate: (Cell) -> Void = { _ in }
   var toggle: (Cell) -> Void = { _ in }
@@ -320,12 +335,23 @@ struct BoardView: View {
         }
         PaperBoat()
           .frame(width: step * 0.66, height: step * 0.48)
+          .rotationEffect(.degrees(boatHeading))
           .shadow(color: Ink.night.opacity(0.3), radius: 4, y: 4)
           .offset(
             x: inset + CGFloat(boat.col) * step + step * 0.17,
             y: inset + CGFloat(boat.row) * step + step * 0.26
           )
           .allowsHitTesting(false)
+        if sparkling {
+          StampBurst()
+            .id(boat)
+            .frame(width: step, height: step)
+            .offset(
+              x: inset + CGFloat(boat.col) * step,
+              y: inset + CGFloat(boat.row) * step
+            )
+            .allowsHitTesting(false)
+        }
       }
     }
   }

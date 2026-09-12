@@ -1,12 +1,11 @@
 import AppKit
 
 let size = 1024
-let bitmap = NSBitmapImageRep(
-  bitmapDataPlanes: nil, pixelsWide: size, pixelsHigh: size, bitsPerSample: 8,
-  samplesPerPixel: 3, hasAlpha: false, isPlanar: false, colorSpaceName: .deviceRGB,
-  bytesPerRow: 0, bitsPerPixel: 0)!
+let context = CGContext(
+  data: nil, width: size, height: size, bitsPerComponent: 8, bytesPerRow: size * 4,
+  space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
 NSGraphicsContext.saveGraphicsState()
-NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: bitmap)
+NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
 let blue = NSColor(srgbRed: 0.08, green: 0.19, blue: 0.24, alpha: 1)
 let cream = NSColor(srgbRed: 0.97, green: 0.93, blue: 0.83, alpha: 1)
 let red = NSColor(srgbRed: 0.77, green: 0.23, blue: 0.16, alpha: 1)
@@ -61,5 +60,6 @@ shape(
   NSColor(srgbRed: 0.73, green: 0.72, blue: 0.63, alpha: 1))
 shape([(457, 445), (555, 460), (566, 381), (468, 366)], red)
 NSGraphicsContext.restoreGraphicsState()
+let bitmap = NSBitmapImageRep(cgImage: context.makeImage()!)
 let url = URL(fileURLWithPath: CommandLine.arguments[1])
 try bitmap.representation(using: .png, properties: [:])!.write(to: url)
