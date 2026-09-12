@@ -8,6 +8,7 @@ final class GameStore: NSObject, ObservableObject {
   private(set) var engine = RunnerEngine()
   private(set) var record: RunSnapshot
   private(set) var newBest = false
+  private(set) var shieldBreakTime = 0.0
   @Published var showGuide = false
   @Published var sound: Bool {
     didSet { defaults.set(sound, forKey: "boardwalk.sound") }
@@ -41,6 +42,7 @@ final class GameStore: NSObject, ObservableObject {
     engine = RunnerEngine()
     engine.start()
     newBest = false
+    shieldBreakTime = 0
     showGuide = false
     previousTime = 0
     objectWillChange.send()
@@ -77,8 +79,15 @@ final class GameStore: NSObject, ObservableObject {
     previousTime = link.timestamp
     let oldCoins = engine.coins
     let oldShield = engine.shieldsCollected
+    let oldGrace = engine.graceTime
     let oldPhase = engine.phase
     engine.advance(delta)
+    if engine.phase == .running { shieldBreakTime = max(0, shieldBreakTime - delta) }
+    if engine.graceTime > oldGrace {
+      shieldBreakTime = 2
+      tone(230, duration: 0.18)
+      UINotificationFeedbackGenerator().notificationOccurred(.warning)
+    }
     if engine.phase != .paused && engine.phase != .finished { animationTime += delta }
     world.update(engine, time: animationTime, reducedMotion: reducedMotion)
     if engine.coins > oldCoins { tone(880, duration: 0.045) }

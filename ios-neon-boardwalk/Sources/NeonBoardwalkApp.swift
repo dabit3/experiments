@@ -207,7 +207,7 @@ struct BoardwalkView: View {
       }
       .padding(.top, 14)
       Spacer()
-      if game.engine.distance < 122 {
+      if game.engine.distance < 122 || game.shieldBreakTime > 0 {
         Text(coaching)
           .font(.system(size: 13, weight: .semibold))
           .padding(.horizontal, 16).padding(.vertical, 10)
@@ -229,6 +229,8 @@ struct BoardwalkView: View {
   }
 
   private var coaching: String {
+    if game.shieldBreakTime > 0 { return "Shield saved you · keep riding!" }
+    if game.engine.isShielded { return "Shield ready · one hit protected." }
     if game.engine.distance < 46 { return "Amber barriers? Swipe up to jump." }
     if game.engine.distance < 83 { return "Pink signs? Swipe down to slide." }
     return "Catch the turquoise ring for a shield."

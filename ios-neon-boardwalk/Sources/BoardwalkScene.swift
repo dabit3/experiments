@@ -35,7 +35,7 @@ final class BoardwalkScene {
     camera.camera?.zFar = 210
     camera.camera?.wantsHDR = true
     camera.camera?.bloomIntensity = 0.55
-    camera.camera?.bloomThreshold = 0.85
+    camera.camera?.bloomThreshold = 1.1
     camera.camera?.bloomBlurRadius = 8
     camera.camera?.exposureOffset = -0.15
     camera.position = SCNVector3(0, 8.2, 16.5)
@@ -45,13 +45,13 @@ final class BoardwalkScene {
     ambient.light = SCNLight()
     ambient.light?.type = .ambient
     ambient.light?.color = UIColor(red: 0.58, green: 0.52, blue: 0.75, alpha: 1)
-    ambient.light?.intensity = 780
+    ambient.light?.intensity = 400
     scene.rootNode.addChildNode(ambient)
     let key = SCNNode()
     key.light = SCNLight()
     key.light?.type = .omni
     key.light?.color = UIColor(red: 1, green: 0.66, blue: 0.59, alpha: 1)
-    key.light?.intensity = 1100
+    key.light?.intensity = 650
     key.position = SCNVector3(-6, 15, 5)
     scene.rootNode.addChildNode(key)
     createCoast()
@@ -107,19 +107,13 @@ final class BoardwalkScene {
   }
 
   private func createCoast() {
-    let sun = SCNNode(geometry: SCNSphere(radius: 9))
-    sun.geometry?.materials = [
-      material(UIColor(red: 1, green: 0.52, blue: 0.46, alpha: 1), glow: 0.9)
-    ]
-    sun.position = SCNVector3(-15, 13, -122)
+    let sun = SCNNode(geometry: SCNSphere(radius: 6.4))
+    let sunlight = material(UIColor(red: 1, green: 0.60, blue: 0.39, alpha: 1), glow: 0.7)
+    sunlight.lightingModel = .constant
+    sun.geometry?.materials = [sunlight]
+    sun.position = SCNVector3(-11, 11, -85)
     sun.scale.z = 0.1
     world.addChildNode(sun)
-    for index in 0..<5 {
-      box(
-        world, SCNVector3(19, 0.25 + Float(index) * 0.12, 0.2),
-        SCNVector3(-15, 9 - Float(index) * 1.2, -120),
-        UIColor(red: 0.40, green: 0.20, blue: 0.35, alpha: 1), radius: 0)
-    }
     box(
       world, SCNVector3(180, 0.15, 200), SCNVector3(-42, -0.6, -70),
       UIColor(red: 0.055, green: 0.16, blue: 0.25, alpha: 1), radius: 0)
@@ -142,12 +136,36 @@ final class BoardwalkScene {
       }
       box(block, SCNVector3(0.13, 1.4, 0.13), SCNVector3(-5.15, 0.7, -4), teal, glow: 0.2)
       box(block, SCNVector3(0.1, 0.1, 18), SCNVector3(-5.15, 1.25, -8), teal, glow: 0.25)
-      for strip in 0..<8 {
+      for strip in 0..<3 {
         let tint = index % 2 == 0 ? pink : teal
-        box(
-          block, SCNVector3(0.35 + Float(strip % 3) * 0.24, 0.012, 1.5),
-          SCNVector3(3.6 + Float(strip % 3) * 0.27, 0.03, -Float(strip) * 1.8),
-          tint.withAlphaComponent(0.1), glow: 0.2, radius: 0)
+        let surface = SCNPlane(width: 1.8, height: CGFloat(6 + strip))
+        let reflected = SCNMaterial()
+        reflected.lightingModel = .constant
+        reflected.diffuse.contents = reflection(tint)
+        reflected.writesToDepthBuffer = false
+        surface.materials = [reflected]
+        let patch = SCNNode(geometry: surface)
+        patch.eulerAngles.x = -.pi / 2
+        patch.position = SCNVector3(
+          3.3 + Float((index + strip) % 3) * 0.3, 0.025, -Float(strip) * 5.4)
+        block.addChildNode(patch)
+      }
+    }
+  }
+
+  private func reflection(_ color: UIColor) -> UIImage {
+    UIGraphicsImageRenderer(size: CGSize(width: 128, height: 128)).image { context in
+      let colors = [color.withAlphaComponent(0.20).cgColor, color.withAlphaComponent(0).cgColor]
+      if let gradient = CGGradient(
+        colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray, locations: [0, 1])
+      {
+        context.cgContext.drawRadialGradient(
+          gradient, startCenter: CGPoint(x: 64, y: 64), startRadius: 0,
+          endCenter: CGPoint(x: 64, y: 64), endRadius: 64, options: [])
+      }
+      context.cgContext.setBlendMode(.clear)
+      for index in 0..<12 {
+        context.cgContext.fill(CGRect(x: 0, y: index * 11, width: 128, height: 2))
       }
     }
   }
@@ -163,6 +181,14 @@ final class BoardwalkScene {
     let accent = index % 2 == 0 ? pink : teal
     box(parent, SCNVector3(7, height, 12), SCNVector3(9.1, height / 2, -6), color)
     box(parent, SCNVector3(7.2, 0.10, 12.2), SCNVector3(9.1, height, -6), accent, glow: 1)
+    if index % 3 != 0 {
+      box(
+        parent, SCNVector3(4.3, 1.3 + Float(index % 2), 7),
+        SCNVector3(10.2, height + 0.65, -7), color)
+      box(
+        parent, SCNVector3(4.4, 0.08, 7.1),
+        SCNVector3(10.2, height + 1.3 + Float(index % 2) * 0.5, -7), accent, glow: 0.4)
+    }
     box(
       parent, SCNVector3(0.12, height - 0.4, 0.12), SCNVector3(5.52, height / 2, -0.1), accent,
       glow: 1)
@@ -227,17 +253,22 @@ final class BoardwalkScene {
     for x: Float in [-4.65, 4.65] {
       box(world, SCNVector3(0.09, 0.04, 180), SCNVector3(x, 0.01, -70), teal, glow: 0.8)
     }
-    for index in 0..<100 {
+    for index in 0..<220 {
       let plank = SCNNode()
-      let z = -Float(index) * 1.65
+      let z = -Float(index) * 0.75
+      let grain = Double((index * 7) % 5) * 0.006
       box(
-        plank, SCNVector3(9.2, 0.04, 1.58), SCNVector3(0, -0.03, 0),
-        UIColor(red: 0.085, green: 0.12 + Double(index % 2) * 0.009, blue: 0.20, alpha: 1),
+        plank, SCNVector3(9.2, 0.04, 0.71), SCNVector3(0, -0.03, 0),
+        UIColor(red: 0.13 + grain, green: 0.12 + grain, blue: 0.19 + grain, alpha: 1),
         radius: 0)
+      box(
+        plank, SCNVector3(0.025, 0.005, 0.71),
+        SCNVector3(Float(index % 4) * 2.1 - 3.2, -0.006, 0), ink, radius: 0)
       for x: Float in [-1.5, 1.5] {
-        box(
-          plank, SCNVector3(0.035, 0.02, 0.95), SCNVector3(x, 0.01, 0),
-          teal.withAlphaComponent(0.28), glow: 0.15)
+        let guide = box(
+          plank, SCNVector3(0.025, 0.01, 0.74), SCNVector3(x, 0.002, 0),
+          teal, glow: 0.1)
+        guide.opacity = 0.18
       }
       plank.position.z = z
       world.addChildNode(plank)
@@ -280,8 +311,9 @@ final class BoardwalkScene {
     }
     rider.addChildNode(upperBody)
     upperBody.pivot = SCNMatrix4MakeTranslation(0, 1.25, 0)
+    let fabric = UIColor(red: 0.07, green: 0.63, blue: 0.53, alpha: 1)
     let jacket = capsule(
-      rider, radius: 0.39, height: 1.12, color: teal, position: SCNVector3(0, 1.65, 0))
+      rider, radius: 0.39, height: 1.12, color: fabric, position: SCNVector3(0, 1.65, 0))
     jacket.scale.z = 0.76
     box(rider, SCNVector3(0.13, 0.50, 0.05), SCNVector3(0, 1.7, 0.31), pink, glow: 0.15)
     let skin = UIColor(red: 0.72, green: 0.40, blue: 0.29, alpha: 1)
@@ -292,9 +324,9 @@ final class BoardwalkScene {
     helmet.scale.z = 1.08
     box(rider, SCNVector3(0.12, 0.035, 0.61), SCNVector3(0, 2.82, -0.04), teal, glow: 0.5)
     leftArm = capsule(
-      rider, radius: 0.13, height: 0.8, color: teal, position: SCNVector3(-0.56, 1.68, 0))
+      rider, radius: 0.13, height: 0.8, color: fabric, position: SCNVector3(-0.56, 1.68, 0))
     rightArm = capsule(
-      rider, radius: 0.13, height: 0.8, color: teal, position: SCNVector3(0.56, 1.68, 0))
+      rider, radius: 0.13, height: 0.8, color: fabric, position: SCNVector3(0.56, 1.68, 0))
     leftArm.eulerAngles.z = -0.60
     rightArm.eulerAngles.z = 0.60
     for x: Float in [-0.76, 0.76] {
