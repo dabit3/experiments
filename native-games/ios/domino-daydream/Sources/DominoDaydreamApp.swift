@@ -1,3 +1,4 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -7,7 +8,7 @@ struct DominoDaydreamApp: App {
   var body: some Scene {
     WindowGroup {
       ContentView(store: store)
-        .preferredColorScheme(.light)
+        .preferredColorScheme(.dark)
     }
   }
 }
@@ -21,8 +22,7 @@ struct ContentView: View {
   @State private var showSettings = false
   @State private var showHelp = false
   @State private var showReset = false
-  @State private var shareImage: UIImage?
-  @State private var showShare = false
+  @State private var sharePayload: SharePayload?
 
   var body: some View {
     ZStack {
@@ -30,17 +30,11 @@ struct ContentView: View {
       if playing { game } else { home }
     }
     .tint(Palette.coral)
-    .sheet(isPresented: $showCollection) { collection }
-    .sheet(isPresented: $showSettings) { settings }
-    .sheet(isPresented: $showHelp) { instructions }
-    .sheet(isPresented: $showShare) {
-      if let shareImage {
-        ShareSheet(
-          image: shareImage,
-          text:
-            "A little nudge, a lovely ripple. \(store.result?.chainLength ?? 0) dominoes · \(store.currentScore) points in Domino Daydream."
-        )
-      }
+    .sheet(isPresented: $showCollection) { collection.preferredColorScheme(.light) }
+    .sheet(isPresented: $showSettings) { settings.preferredColorScheme(.light) }
+    .sheet(isPresented: $showHelp) { instructions.preferredColorScheme(.light) }
+    .sheet(item: $sharePayload) { payload in
+      ShareSheet(image: payload.image, text: payload.text).preferredColorScheme(.light)
     }
     .confirmationDialog(
       "Clear your placed pieces?", isPresented: $showReset, titleVisibility: .visible
@@ -84,9 +78,9 @@ struct ContentView: View {
           puzzle: Puzzle.all[7], pieces: Puzzle.all[7].solution,
           guides: false, interactive: false
         )
-        .frame(maxHeight: geometry.size.height * (compact ? 0.40 : 0.43))
+        .frame(maxHeight: geometry.size.height * (compact ? 0.43 : 0.48))
         .rotationEffect(.degrees(-3))
-        .padding(.horizontal, 19)
+        .padding(.horizontal, 8)
         .accessibilityLabel("Miniature porcelain domino town with a winding spiral and brass bells")
         VStack(spacing: 7) {
           Text("Small pieces. Wonderful possibilities.")
@@ -156,7 +150,7 @@ struct ContentView: View {
             Label("\(store.bellsRung) / \(store.puzzle.targets.count) bells", systemImage: "bell")
             Text(store.best == 0 ? "Make a little magic" : "Best \(store.best)")
           }
-          .font(.system(size: 10, weight: .medium)).foregroundStyle(Palette.muted)
+          .font(.system(size: 12, weight: .medium)).foregroundStyle(Palette.muted)
         }
         TabletopView(
           puzzle: store.puzzle, pieces: store.allPieces, selected: store.selected,
@@ -168,7 +162,7 @@ struct ContentView: View {
             }
           }
         )
-        .frame(maxHeight: .infinity)
+        .frame(height: max(245, geometry.size.height - (compact ? 346 : 372)))
         .layoutPriority(1)
         if store.phase == .result {
           resultPanel
@@ -177,6 +171,7 @@ struct ContentView: View {
         } else {
           editingPanel(compact: compact)
         }
+        Spacer(minLength: 0)
       }
       .padding(.horizontal, 18)
       .padding(.bottom, 10)
@@ -189,9 +184,9 @@ struct ContentView: View {
         Image(systemName: "lightbulb").font(.system(size: 12)).foregroundStyle(Palette.brass)
           .padding(.top, 2)
         Text(store.message)
-          .font(.system(size: 11)).lineSpacing(2)
+          .font(.system(size: 13)).lineSpacing(2)
           .foregroundStyle(Palette.cream.opacity(0.86))
-          .frame(maxWidth: .infinity, minHeight: 30, alignment: .leading)
+          .frame(maxWidth: .infinity, minHeight: 36, alignment: .leading)
           .fixedSize(horizontal: false, vertical: true)
           .accessibilityIdentifier("context-message")
       }
@@ -206,13 +201,13 @@ struct ContentView: View {
                 Text(store.puzzle.sandbox ? "∞" : "\(store.remaining(kind))")
                   .font(.system(size: 11, weight: .semibold, design: .monospaced))
               }
-              Text(kind.title).font(.system(size: 10, weight: .semibold))
+              Text(kind.title).font(.system(size: 12, weight: .semibold))
             }
             .frame(maxWidth: .infinity)
             .frame(height: compact ? 51 : 58)
             .foregroundStyle(
               store.tool == kind
-                ? Palette.ink : Palette.cream.opacity(store.remaining(kind) == 0 ? 0.35 : 0.85)
+                ? Palette.ink : Palette.cream.opacity(store.remaining(kind) == 0 ? 0.55 : 0.85)
             )
             .background(
               store.tool == kind ? Palette.cream : Palette.cream.opacity(0.07),
@@ -360,7 +355,7 @@ struct ContentView: View {
                 VStack(alignment: .leading, spacing: 4) {
                   Text(puzzle.title).font(.system(size: 17, weight: .medium, design: .serif))
                   Text(locked ? "Complete the previous world to open" : progressCaption(puzzle))
-                    .font(.system(size: 10)).foregroundStyle(.secondary)
+                    .font(.system(size: 12)).foregroundStyle(.secondary)
                 }
                 Spacer()
                 Image(
@@ -471,14 +466,9 @@ struct ContentView: View {
   }
 
   private func share() {
-    let renderer = ImageRenderer(
-      content: ResultCard(
-        puzzle: store.puzzle, pieces: store.allPieces, result: store.result,
-        score: store.currentScore
-      ).frame(width: 600, height: 860))
-    renderer.scale = 2
-    shareImage = renderer.uiImage
-    showShare = shareImage != nil
+    sharePayload = SharePayload.make(
+      puzzle: store.puzzle, pieces: store.allPieces, result: store.result, score: store.currentScore
+    )
   }
 
   private func metric(_ value: String, caption: String) -> some View {
@@ -504,11 +494,11 @@ struct ContentView: View {
   ) -> some View {
     Button(action: action) {
       HStack(spacing: 4) {
-        Image(systemName: symbol).font(.system(size: 12))
-        Text(label).font(.system(size: 10))
+        Image(systemName: symbol).font(.system(size: 13))
+        Text(label).font(.system(size: 12, weight: .medium))
       }
-      .frame(maxWidth: .infinity, minHeight: 38)
-      .foregroundStyle(Palette.cream.opacity(disabled ? 0.27 : 0.85))
+      .frame(maxWidth: .infinity, minHeight: 44)
+      .foregroundStyle(Palette.cream.opacity(disabled ? 0.5 : 0.85))
     }
     .disabled(disabled).accessibilityLabel(label).accessibilityIdentifier(id)
   }
@@ -579,7 +569,41 @@ struct ShareSheet: UIViewControllerRepresentable {
   let image: UIImage
   let text: String
   func makeUIViewController(context: Context) -> UIActivityViewController {
-    UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
+    let configuration = UIActivityItemsConfiguration(objects: [image])
+    let metadata = LPLinkMetadata()
+    metadata.title = text
+    metadata.imageProvider = NSItemProvider(object: image)
+    configuration.metadataProvider = { key in
+      switch key {
+      case .title, .messageBody: return text
+      case .linkPresentationMetadata: return metadata
+      default: return nil
+      }
+    }
+    configuration.previewProvider = { _, _, _ in NSItemProvider(object: image) }
+    return UIActivityViewController(activityItemsConfiguration: configuration)
   }
   func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
+}
+
+struct SharePayload: Identifiable {
+  let id = UUID()
+  let image: UIImage
+  let text: String
+
+  @MainActor
+  static func make(puzzle: Puzzle, pieces: [Cell: Piece], result: ChainResult?, score: Int)
+    -> SharePayload?
+  {
+    let renderer = ImageRenderer(
+      content: ResultCard(puzzle: puzzle, pieces: pieces, result: result, score: score)
+        .frame(width: 600, height: 860))
+    renderer.scale = 2
+    guard let image = renderer.uiImage else { return nil }
+    return SharePayload(
+      image: image,
+      text:
+        "A little nudge, a lovely ripple. \(result?.chainLength ?? 0) dominoes · \(score) points in Domino Daydream."
+    )
+  }
 }

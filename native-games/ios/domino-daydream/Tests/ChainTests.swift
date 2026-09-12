@@ -112,6 +112,20 @@ final class ChainTests: XCTestCase {
   }
 
   @MainActor
+  func testSharePayloadRendersFullResolutionArtworkAndMatchingScore() throws {
+    let puzzle = Puzzle.all[7]
+    let result = ChainEngine.run(puzzle: puzzle, placed: puzzle.solution)
+    let score = result.score(hints: 0, attempts: 1)
+    let payload = try XCTUnwrap(
+      SharePayload.make(puzzle: puzzle, pieces: puzzle.solution, result: result, score: score))
+    XCTAssertEqual(payload.image.cgImage?.width, 1200)
+    XCTAssertEqual(payload.image.cgImage?.height, 1720)
+    XCTAssertGreaterThan(try XCTUnwrap(payload.image.pngData()).count, 50_000)
+    XCTAssertTrue(payload.text.contains("\(result.chainLength) dominoes"))
+    XCTAssertTrue(payload.text.contains("\(score) points"))
+  }
+
+  @MainActor
   func testSandboxAllowsOffBlueprintEditingWithoutInventoryLimit() {
     let name = "DominoTests.\(UUID().uuidString)"
     let defaults = UserDefaults(suiteName: name)!

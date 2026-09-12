@@ -10,6 +10,7 @@
 		449FAC65CBE76212D0AE44B9 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4A953A908B6DDC88A113C0 /* GameStore.swift */; };
 		636F4DBA479CE2A8B8D39AA1 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC14F0AC70CBB9426528BDE2 /* Puzzle.swift */; };
 		9740E351DDAF27237E9F5369 /* DominoDaydreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D72C352D3603A4A22F9115 /* DominoDaydreamApp.swift */; };
+		BBEA0CB71C3B260F3762F942 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2209E08039FC50B110CC1347 /* LaunchScreen.storyboard */; };
 		C4E3C1626D03B7D2B8EDB793 /* ChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC9047AC501AEF90EA736A /* ChainTests.swift */; };
 		EF48D804BEEB198F96656F27 /* Tabletop.swift in Sources */ = {isa = PBXBuildFile; fileRef = B977734B331443DDDBF1265B /* Tabletop.swift */; };
 		EFF2F17850D203DB75400CC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4394EE38827AEC3FD3DD3A38 /* Assets.xcassets */; };
@@ -27,6 +28,7 @@
 
 /* Begin PBXFileReference section */
 		02D72C352D3603A4A22F9115 /* DominoDaydreamApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DominoDaydreamApp.swift; sourceTree = "<group>"; };
+		2209E08039FC50B110CC1347 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4394EE38827AEC3FD3DD3A38 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		47B686D4015E455259EF3AC4 /* DominoDaydreamTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DominoDaydreamTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C4A953A908B6DDC88A113C0 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				4394EE38827AEC3FD3DD3A38 /* Assets.xcassets */,
+				2209E08039FC50B110CC1347 /* LaunchScreen.storyboard */,
 				1C61C21761EF091243E8C394 /* Sources */,
 				A53896BB6752BB8162F51AB2 /* Tests */,
 				4A2FC751EE80FDB9C15D2215 /* Products */,
@@ -151,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EFF2F17850D203DB75400CC0 /* Assets.xcassets in Resources */,
+				BBEA0CB71C3B260F3762F942 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,8 +213,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_KEY_CFBundleDisplayName = "Domino Daydream";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save your finished domino board card to Photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -228,8 +233,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_KEY_CFBundleDisplayName = "Domino Daydream";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save your finished domino board card to Photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
