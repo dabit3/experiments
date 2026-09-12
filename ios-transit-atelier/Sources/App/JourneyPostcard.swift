@@ -45,28 +45,28 @@ struct JourneyPostcard: View {
       }
       .padding(28)
       .background(Ink.header)
-      ZStack(alignment: .topTrailing) {
-        MapDrawing(game: game, selected: 0)
-          .frame(height: 360)
-          .clipped()
-        stamp.padding(14)
-      }
-      .background(Ink.paper)
-      .overlay(PaperGrain())
+      MapDrawing(game: game, selected: 0)
+        .frame(height: 360)
+        .clipped()
+        .background(Ink.paper)
+        .overlay(PaperGrain())
       Rectangle().fill(Ink.rule).frame(height: 1)
-      HStack(alignment: .firstTextBaseline, spacing: 14) {
-        Text("\(game.delivered)")
-          .font(.system(size: 62, weight: .regular, design: .serif))
-          .tracking(-2)
-        VStack(alignment: .leading, spacing: 6) {
-          Eyebrow("PASSENGERS DELIVERED", size: 9)
-          Text(
-            "Local best \(best)  ·  \(game.stations.count) stations  ·  \(Int(game.elapsed / 60))m \(Int(game.elapsed) % 60)s"
-          )
-          .font(.system(size: 11, design: .monospaced))
-          .foregroundStyle(Ink.muted)
+      HStack(spacing: 14) {
+        HStack(alignment: .firstTextBaseline, spacing: 14) {
+          Text("\(game.delivered)")
+            .font(.system(size: 62, weight: .regular, design: .serif))
+            .tracking(-2)
+          VStack(alignment: .leading, spacing: 6) {
+            Eyebrow("PASSENGERS DELIVERED", size: 9)
+            Text(
+              "Local best \(best)  ·  \(game.stations.count) stations  ·  \(Int(game.elapsed / 60))m \(Int(game.elapsed) % 60)s"
+            )
+            .font(.system(size: 11, design: .monospaced))
+            .foregroundStyle(Ink.muted)
+          }
         }
         Spacer()
+        stamp
       }
       .padding(.horizontal, 28)
       .padding(.vertical, 20)

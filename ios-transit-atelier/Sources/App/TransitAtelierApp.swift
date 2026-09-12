@@ -568,9 +568,12 @@ struct AtelierView: View {
           } label: {
             HStack(spacing: 7) {
               Roundel(number: route.id + 1, color: Ink.routes[route.id], filled: active, size: 26)
-              Text("\(route.capacity)")
-                .font(.system(size: 11, weight: .semibold, design: .monospaced))
-                .foregroundStyle(active ? Ink.routes[route.id] : Ink.muted)
+              HStack(spacing: 2) {
+                Image(systemName: "person.fill").font(.system(size: 8))
+                Text("\(route.capacity)")
+                  .font(.system(size: 12, weight: .bold, design: .monospaced))
+              }
+              .foregroundStyle(active ? Ink.routes[route.id] : Ink.muted)
             }
             .frame(maxWidth: .infinity, minHeight: 46)
             .background(active ? Ink.paperLight : Ink.paper.opacity(0.5))

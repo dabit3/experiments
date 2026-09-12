@@ -466,15 +466,15 @@ struct MapDrawing: View {
         Text("CROWDED").font(.system(size: 7, weight: .bold)).foregroundStyle(Ink.paperLight),
         at: CGPoint(x: center.x, y: center.y - 30.5))
     }
-    let idLabel = CGRect(x: center.x - 26, y: center.y + 12, width: 21, height: 12)
+    let idLabel = CGRect(x: center.x - 27, y: center.y + 12, width: 23, height: 13)
     context.fill(Path(roundedRect: idLabel, cornerRadius: 3), with: .color(Ink.paperLight))
     context.stroke(
-      Path(roundedRect: idLabel, cornerRadius: 3), with: .color(Ink.rule), lineWidth: 0.5)
+      Path(roundedRect: idLabel, cornerRadius: 3), with: .color(Ink.rule), lineWidth: 0.6)
     context.draw(
       Text(String(format: "%02d", station.id + 1)).font(
-        .system(size: 8.5, weight: .semibold, design: .monospaced)
-      ).foregroundStyle(failed ? Ink.routes[0] : Ink.muted),
-      at: CGPoint(x: center.x - 15.5, y: center.y + 18))
+        .system(size: 9.5, weight: .bold, design: .monospaced)
+      ).foregroundStyle(failed ? Ink.routes[0] : Ink.navy.opacity(0.8)),
+      at: CGPoint(x: center.x - 15.5, y: center.y + 18.5))
     let rightSpace = size.width - center.x
     let startX = rightSpace < 65 ? center.x - 48 : center.x + 19
     if !station.waiting.isEmpty {
