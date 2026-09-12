@@ -94,7 +94,7 @@ struct LandscapeCard: View {
         .foregroundStyle(Earth.muted)
       Rectangle().fill(Earth.copper.opacity(0.3)).frame(height: 1).padding(.vertical, 15)
       HStack {
-        Text("\(moves) SHIFTS")
+        Text("\(moves) \(moves == 1 ? "SHIFT" : "SHIFTS")")
         Spacer()
         Text("\(level.fossils.count) AMBER")
         Spacer()

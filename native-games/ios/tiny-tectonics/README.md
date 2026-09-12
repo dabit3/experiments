@@ -16,16 +16,22 @@ Minimum iOS: 17. Portrait iPhone only.
 cd native-games/ios/tiny-tectonics
 xcodebuild -project TinyTectonics.xcodeproj -scheme TinyTectonics \
   -configuration Debug -sdk iphonesimulator \
-  -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO build
+  -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- build
 xcodebuild -project TinyTectonics.xcodeproj -scheme TinyTectonics \
   -configuration Release -sdk iphonesimulator \
-  -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO build
+  -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- build
 xcrun simctl list devices available
 xcodebuild -project TinyTectonics.xcodeproj -scheme TinyTectonics \
   -destination 'platform=iOS Simulator,id=YOUR_DEVICE_UUID' \
-  -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO test
+  -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- test
 xcrun swift-format lint --strict --recursive Sources Tests Tools
 ```
+
+Simulator builds use a local ad-hoc signature (`-`), which needs no Apple account,
+certificate or provisioning profile. This seals the launch storyboard resources
+so iOS 26.5 can display the cream launch screen. Completely unsigned builds also
+compile, but that runtime rejects their launch snapshot resource validation and
+shows a black launch transition.
 
 The project can be regenerated with XcodeGen 2.46.0: `xcodegen generate`.
 The procedural icon can be regenerated with:
