@@ -179,14 +179,32 @@ final class SliceScene: SKScene {
         let path = CGMutablePath()
         path.move(to: start)
         path.addLine(to: end)
+        let halo = SKShapeNode(path: path)
+        halo.strokeColor = UIColor(red: 0.55, green: 0.95, blue: 0.85, alpha: 0.35)
+        halo.lineWidth = 12
+        halo.glowWidth = 14
+        halo.zPosition = 29
+        halo.lineCap = .round
+        halo.blendMode = .add
+        addChild(halo)
+        halo.run(.sequence([.fadeOut(withDuration: 0.3), .removeFromParent()]))
         let trail = SKShapeNode(path: path)
-        trail.strokeColor = UIColor(red: 0.78, green: 1, blue: 0.94, alpha: 1)
-        trail.lineWidth = 3
-        trail.glowWidth = 7
+        trail.strokeColor = UIColor(red: 0.98, green: 0.99, blue: 0.94, alpha: 1)
+        trail.lineWidth = 2.4
+        trail.glowWidth = 3
         trail.zPosition = 30
         trail.lineCap = .round
         addChild(trail)
-        trail.run(.sequence([.fadeOut(withDuration: 0.22), .removeFromParent()]))
+        trail.run(.sequence([.fadeOut(withDuration: 0.18), .removeFromParent()]))
+        let tip = SKShapeNode(circleOfRadius: 3)
+        tip.fillColor = .white
+        tip.strokeColor = .clear
+        tip.glowWidth = 6
+        tip.position = end
+        tip.zPosition = 31
+        tip.blendMode = .add
+        addChild(tip)
+        tip.run(.sequence([.group([.scale(to: 0.2, duration: 0.2), .fadeOut(withDuration: 0.2)]), .removeFromParent()]))
         let hits = fruit.filter {
             !$0.node.isHidden && SliceGeometry.intersects(from: Point2D(x: start.x, y: start.y), to: Point2D(x: end.x, y: end.y), center: Point2D(x: $0.node.position.x, y: $0.node.position.y - 3), radius: $0.isBomb ? 28 : 34)
         }
@@ -196,6 +214,7 @@ final class SliceScene: SKScene {
                 rules.hitBomb()
                 burst(at: item.node.position, color: UIColor.systemRed, count: 25)
                 label("BOMB  −25", at: item.node.position, color: UIColor(red: 1, green: 0.47, blue: 0.4, alpha: 1))
+                flash(UIColor(red: 1, green: 0.35, blue: 0.3, alpha: 0.22))
                 store?.sound.play(bomb: true)
             } else {
                 rules.slice()
@@ -205,6 +224,7 @@ final class SliceScene: SKScene {
                 chainCount += 1
                 lastSlice = item.node.position
                 split(item)
+                stain(at: item.node.position, color: item.kind.juice, angle: atan2(end.y - start.y, end.x - start.x))
                 burst(at: item.node.position, color: item.kind.juice, count: 16)
                 label("+10", at: CGPoint(x: item.node.position.x, y: item.node.position.y + 18), color: UIColor(red: 0.88, green: 0.96, blue: 0.83, alpha: 0.85), small: true)
                 store?.sound.play()
@@ -224,7 +244,7 @@ final class SliceScene: SKScene {
     private func flushCombo() {
         if chainCount >= 3 {
             let bonus = rules.combo(chainCount)
-            label("\(chainCount) FRUIT COMBO  +\(bonus)", at: CGPoint(x: size.width / 2, y: min(size.height - 50, max(70, lastSlice.y + 65))), color: UIColor(red: 0.76, green: 0.98, blue: 0.75, alpha: 1))
+            comboBanner(count: chainCount, bonus: bonus, at: CGPoint(x: size.width / 2, y: min(size.height - 70, max(90, lastSlice.y + 70))))
             store?.sound.play(combo: true)
             store?.round = rules
         }
@@ -272,6 +292,71 @@ final class SliceScene: SKScene {
                 .fadeOut(withDuration: 0.45),
             ]), .removeFromParent()]))
         }
+    }
+
+    private func comboBanner(count: Int, bonus: Int, at point: CGPoint) {
+        let banner = SKNode()
+        banner.position = point
+        banner.zPosition = 45
+        let headline = SKLabelNode(fontNamed: "Baskerville-Italic")
+        headline.text = "\(count) fruit combo"
+        headline.fontSize = 32
+        headline.fontColor = UIColor(red: 0.99, green: 0.95, blue: 0.86, alpha: 1)
+        headline.verticalAlignmentMode = .center
+        banner.addChild(headline)
+        let bonusLabel = SKLabelNode(fontNamed: "AvenirNext-DemiBold")
+        bonusLabel.text = "+\(bonus)  BONUS"
+        bonusLabel.fontSize = 13
+        bonusLabel.fontColor = UIColor(red: 0.87, green: 0.72, blue: 0.44, alpha: 1)
+        bonusLabel.position.y = -28
+        bonusLabel.verticalAlignmentMode = .center
+        banner.addChild(bonusLabel)
+        for side in [-1.0, 1.0] {
+            let rule = SKShapeNode(rectOf: CGSize(width: 36, height: 1))
+            rule.fillColor = UIColor(red: 0.87, green: 0.72, blue: 0.44, alpha: 0.8)
+            rule.strokeColor = .clear
+            rule.position = CGPoint(x: side * (headline.frame.width / 2 + 30), y: 0)
+            banner.addChild(rule)
+        }
+        let glow = SKShapeNode(ellipseOf: CGSize(width: headline.frame.width + 140, height: 90))
+        glow.fillColor = UIColor(red: 0.72, green: 0.93, blue: 0.78, alpha: 0.12)
+        glow.strokeColor = .clear
+        glow.blendMode = .add
+        glow.zPosition = -1
+        banner.addChild(glow)
+        banner.setScale(0.7)
+        banner.alpha = 0
+        addChild(banner)
+        banner.run(.sequence([
+            .group([.scale(to: 1, duration: 0.22), .fadeIn(withDuration: 0.16)]),
+            .wait(forDuration: 0.55),
+            .group([.moveBy(x: 0, y: 26, duration: 0.5), .fadeOut(withDuration: 0.5)]),
+            .removeFromParent(),
+        ]))
+    }
+
+    private func stain(at point: CGPoint, color: UIColor, angle: CGFloat) {
+        let stain = SKShapeNode(ellipseOf: CGSize(width: 96, height: 30))
+        stain.fillColor = color.withAlphaComponent(0.2)
+        stain.strokeColor = .clear
+        stain.position = point
+        stain.zRotation = angle
+        stain.zPosition = 1
+        stain.blendMode = .add
+        addChild(stain)
+        stain.run(.sequence([
+            .group([.scaleX(to: 1.5, y: 0.75, duration: 0.5), .sequence([.wait(forDuration: 0.5), .fadeOut(withDuration: 1.6)])]),
+            .removeFromParent(),
+        ]))
+    }
+
+    private func flash(_ color: UIColor) {
+        guard !UIAccessibility.isReduceMotionEnabled else { return }
+        let flash = SKSpriteNode(color: color, size: size)
+        flash.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        flash.zPosition = 60
+        addChild(flash)
+        flash.run(.sequence([.fadeOut(withDuration: 0.3), .removeFromParent()]))
     }
 
     private func label(_ text: String, at point: CGPoint, color: UIColor, small: Bool = false) {

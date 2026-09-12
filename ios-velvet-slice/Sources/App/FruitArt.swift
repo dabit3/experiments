@@ -32,6 +32,14 @@ enum FruitArt {
             c.setFillColor((kind == .kiwi ? UIColor(red: 0.4, green: 0.27, blue: 0.1, alpha: 1) : kind.juice).cgColor)
             c.fillEllipse(in: outer)
             c.setShadow(offset: .zero, blur: 0)
+            if kind == .kiwi {
+                for i in 0 ..< 90 {
+                    let angle = CGFloat(i) * 2.39996
+                    let r: CGFloat = 84 + CGFloat(i % 4)
+                    c.setFillColor(UIColor(red: 0.55, green: 0.4, blue: 0.2, alpha: 0.9).cgColor)
+                    c.fillEllipse(in: CGRect(x: cos(angle) * r - 1.5, y: sin(angle) * r - 1, width: 3, height: 2))
+                }
+            }
             if kind == .dragon {
                 for i in 0 ..< 9 {
                     let angle = CGFloat(i) * .pi * 2 / 9
@@ -107,8 +115,21 @@ enum FruitArt {
                 }
             }
             c.restoreGState()
-            c.setStrokeColor(UIColor.white.withAlphaComponent(0.4).cgColor)
-            c.setLineWidth(2)
+            c.saveGState()
+            c.addEllipse(in: CGRect(x: -76, y: -79, width: 152, height: 154))
+            c.clip()
+            let shading: [CGColor] = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.22).cgColor]
+            if let rim = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: shading as CFArray, locations: [0.62, 1]) {
+                c.drawRadialGradient(rim, startCenter: CGPoint(x: -10, y: -14), startRadius: 0, endCenter: .zero, endRadius: 82, options: .drawsAfterEndLocation)
+            }
+            let gleam: [CGColor] = [UIColor.white.withAlphaComponent(0.42).cgColor, UIColor.white.withAlphaComponent(0).cgColor]
+            if let highlight = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gleam as CFArray, locations: [0, 1]) {
+                c.drawRadialGradient(highlight, startCenter: CGPoint(x: -34, y: -42), startRadius: 0, endCenter: CGPoint(x: -30, y: -38), endRadius: 46, options: [])
+            }
+            c.restoreGState()
+            c.setStrokeColor(UIColor.white.withAlphaComponent(0.55).cgColor)
+            c.setLineWidth(2.4)
+            c.setLineCap(.round)
             c.addArc(center: CGPoint(x: 0, y: -2), radius: 84, startAngle: .pi * 1.12, endAngle: .pi * 1.68, clockwise: false)
             c.strokePath()
             if kind != .dragon {
