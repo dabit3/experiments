@@ -73,6 +73,9 @@ struct PostcardWorld: View {
     let chapter: Chapter
     let state: PuzzleState
     var interactive = false
+    var rejectedTile: Int?
+    var feedbackTick = 0
+    var focusedMechanism: Int?
     var onTile: (Int) -> Void = { _ in }
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var angles = [Double]()
@@ -87,6 +90,30 @@ struct PostcardWorld: View {
                     angle1: currentAngles.count > 1 ? currentAngles[1] : 0
                 )
                 .accessibilityHidden(true)
+                if let focusedMechanism {
+                    let tile = chapter.tiles[chapter.mechanisms[focusedMechanism].center]
+                    Ellipse()
+                        .stroke(PostcardPalette.chapter(chapter.id).deep.opacity(0.75), lineWidth: 2)
+                        .frame(width: 41 * projection.scale, height: 23 * projection.scale)
+                        .position(projection.point(tile.point))
+                        .allowsHitTesting(false)
+                        .accessibilityHidden(true)
+                }
+                if let rejectedTile {
+                    Ellipse()
+                        .stroke(PostcardPalette.chapter(chapter.id).deep, lineWidth: 2)
+                        .frame(width: 40 * projection.scale, height: 23 * projection.scale)
+                        .phaseAnimator([false, true, false], trigger: feedbackTick) { content, expanded in
+                            content
+                                .scaleEffect(expanded ? 1.4 : 0.9)
+                                .opacity(expanded ? 0.95 : 0)
+                        } animation: { _ in
+                            reduceMotion ? .linear(duration: 0.1) : .easeInOut(duration: 0.3)
+                        }
+                        .position(projection.point(chapter.tiles[rejectedTile].point))
+                        .allowsHitTesting(false)
+                        .accessibilityHidden(true)
+                }
                 if interactive {
                     ForEach(chapter.tiles) { tile in
                         Button { onTile(tile.id) } label: {
@@ -189,8 +216,8 @@ struct Architecture: View, Animatable {
                     painter.seal(tile.point, lit: state.switches & (1 << bit) != 0)
                 case .destination:
                     painter.portal(tile.point, open: state.switches == chapter.requiredSwitches)
-                case .pivot:
-                    painter.pivot(tile.point)
+                case let .pivot(index):
+                    painter.pivot(tile.point, index: index, numbered: chapter.mechanisms.count > 1)
                 case .start:
                     painter.marker(tile.point, color: palette.accent)
                 case .floor:
@@ -347,12 +374,21 @@ struct WorldPainter {
         }
     }
 
-    mutating func pivot(_ world: WorldPoint) {
+    mutating func pivot(_ world: WorldPoint, index: Int, numbered: Bool) {
         let p = projection.point(world)
         let rect = CGRect(x: p.x - 11 * scale, y: p.y - 6 * scale, width: 22 * scale, height: 12 * scale)
         context.fill(Path(ellipseIn: rect), with: .color(palette.accent.opacity(0.16)))
         context.stroke(Path(ellipseIn: rect), with: .color(palette.accent), lineWidth: 1.3 * scale)
-        marker(world, color: palette.deep)
+        if numbered {
+            context.draw(
+                Text(index == 0 ? "I" : "II")
+                    .font(.system(size: 9 * scale, weight: .semibold, design: .serif))
+                    .foregroundColor(palette.deep),
+                at: p
+            )
+        } else {
+            marker(world, color: palette.deep)
+        }
     }
 
     mutating func marker(_ world: WorldPoint, color: Color) {

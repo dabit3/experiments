@@ -17,6 +17,9 @@ final class GameModel: ObservableObject {
     @Published var paused = false
     @Published var walking = false
     @Published var showingHint = false
+    @Published var rejectedTile: Int?
+    @Published var feedbackTick = 0
+    @Published var focusedMechanism: Int?
     @Published var message = "Tap a landing. Find a different way."
     private var walkTask: Task<Void, Never>?
     private let tones = PostcardTones()
@@ -75,6 +78,8 @@ final class GameModel: ObservableObject {
         }
         paused = false
         showingHint = false
+        rejectedTile = nil
+        focusedMechanism = nil
         message = "Tap a landing to walk. Turn a bridge to connect it."
         page = chapter.hasArrived(state) ? .result : .game
         save()
@@ -84,6 +89,8 @@ final class GameModel: ObservableObject {
         guard page == .game, !paused, !walking else { return }
         guard let path = chapter.path(to: tile, state: state), !path.isEmpty else {
             if tile != state.tile {
+                rejectedTile = tile
+                feedbackTick += 1
                 if tile == chapter.destination, seals != totalSeals {
                     message = "Wake every sun seal to open the arch."
                 } else {
@@ -93,6 +100,10 @@ final class GameModel: ObservableObject {
             }
             return
         }
+        focusedMechanism = nil
+        message = seals == totalSeals
+            ? "The arch is open. Your postcard is waiting."
+            : "One step closer. Follow the connected landings."
         walking = true
         walkTask = Task { [weak self] in
             guard let self else { return }
@@ -121,10 +132,13 @@ final class GameModel: ObservableObject {
     func rotate(_ index: Int) {
         guard page == .game, !paused, !walking else { return }
         guard let next = chapter.applying(.rotate(index), to: state) else {
+            rejectedTile = chapter.mechanisms[index].center
+            feedbackTick += 1
             message = "Find the first sun seal to wake this bridge."
             feedback(.warning)
             return
         }
+        focusedMechanism = index
         state = next
         message = "A new alignment. Tap a connected landing."
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()

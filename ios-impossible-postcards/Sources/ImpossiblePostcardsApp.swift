@@ -165,13 +165,17 @@ struct PostcardsView: View {
             }
             .padding(.horizontal, 34)
             .padding(.top, 21)
-            PostcardWorld(chapter: game.chapter, state: game.state, interactive: true, onTile: game.walk)
-                .id(game.chapter.id)
-                .frame(maxHeight: .infinity)
-                .padding(.horizontal, 8)
+            PostcardWorld(
+                chapter: game.chapter, state: game.state, interactive: true,
+                rejectedTile: game.rejectedTile, feedbackTick: game.feedbackTick,
+                focusedMechanism: game.focusedMechanism, onTile: game.walk
+            )
+            .id(game.chapter.id)
+            .frame(maxHeight: .infinity)
+            .padding(.horizontal, 8)
             VStack(spacing: 17) {
                 Text(game.message)
-                    .font(.system(size: 12))
+                    .font(.system(size: 13, weight: .medium))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(PostcardPalette.ink.opacity(0.77))
                     .frame(height: 34)
@@ -186,15 +190,15 @@ struct PostcardsView: View {
                 HStack {
                     Button { game.showingHint = true } label: {
                         Label("A little guidance", systemImage: "sparkle")
-                            .font(.system(size: 11))
+                            .font(.system(size: 12))
                             .frame(minHeight: 44)
                     }.buttonStyle(.plain)
                     Spacer()
                     if let best = game.journal.best[game.chapter.id] {
                         Text("BEST  \(best)").font(.system(size: 10, weight: .medium, design: .monospaced))
                     } else {
-                        Text("NO HURRY. JUST WONDER.")
-                            .font(.system(size: 8, weight: .medium)).tracking(1.1)
+                        Text("Take your time.")
+                            .font(.system(size: 11))
                     }
                 }
                 .padding(.horizontal, 30)
@@ -274,7 +278,7 @@ struct PostcardsView: View {
                     .font(.custom("Baskerville", size: height < 700 ? 30 : 34))
                     .minimumScaleFactor(0.8).lineLimit(1)
                 Text("POSTCARD \(roman(game.chapter.id))  ·  \(game.chapter.title.uppercased())")
-                    .font(.system(size: 9, weight: .medium)).tracking(1.4)
+                    .font(.system(size: 10, weight: .medium)).tracking(1.1)
             }.padding(.top, 25).padding(.horizontal, 18)
             PostcardWorld(chapter: game.chapter, state: game.state)
                 .frame(maxHeight: .infinity)
@@ -393,12 +397,19 @@ struct PostcardsView: View {
         let enabled = game.chapter.canRotate(index, state: game.state)
         return Button { game.rotate(index) } label: {
             HStack(spacing: 9) {
-                Image(systemName: enabled ? "arrow.clockwise" : "lock")
-                    .font(.system(size: 21, weight: .light))
+                if game.chapter.mechanisms.count > 1 {
+                    Text(index == 0 ? "I" : "II")
+                        .font(.system(size: 14, weight: .medium, design: .serif))
+                        .frame(width: 26, height: 26)
+                        .overlay(Circle().stroke(palette.deep.opacity(0.7), lineWidth: 1))
+                } else {
+                    Image(systemName: enabled ? "arrow.clockwise" : "lock")
+                        .font(.system(size: 21, weight: .light))
+                }
                 VStack(alignment: .leading, spacing: 3) {
                     Text(mechanism.name).font(.system(size: 12, weight: .medium))
-                    Text(enabled ? "TURN 90°" : "WAKE A SUN SEAL")
-                        .font(.system(size: 8, weight: .medium)).tracking(1)
+                    Label(enabled ? "Turn 90°" : "Seal locked", systemImage: enabled ? "arrow.clockwise" : "lock")
+                        .font(.system(size: 10, weight: .medium))
                 }
                 if game.chapter.mechanisms
                     .count == 1
@@ -444,20 +455,20 @@ struct PostcardsView: View {
     }
 
     private func eyebrow(_ text: String) -> some View {
-        Text(text).font(.system(size: 8, weight: .medium)).tracking(1.8)
+        Text(text).font(.system(size: 10, weight: .medium)).tracking(1.3)
     }
 
     private func instructionIcon(_ symbol: String, title: String) -> some View {
         VStack(spacing: 8) {
             Image(systemName: symbol).font(.system(size: 21, weight: .ultraLight)).frame(height: 23)
-            Text(title).font(.system(size: 9))
+            Text(title).font(.system(size: 11))
         }
     }
 
     private func resultMetric(_ value: String, label: String) -> some View {
         VStack(spacing: 4) {
             Text(value).font(.custom("Baskerville", size: 30))
-            Text(label).font(.system(size: 8, weight: .medium)).tracking(1)
+            Text(label).font(.system(size: 10, weight: .medium)).tracking(0.5)
         }.frame(maxWidth: .infinity)
     }
 

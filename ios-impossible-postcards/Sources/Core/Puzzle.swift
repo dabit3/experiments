@@ -187,7 +187,7 @@ enum Chapters {
         Chapter(
             id: 0, title: "The Quiet Crossing", subtitle: "A small change in perspective.",
             letter: "I found a bridge that remembered\nanother way to be.",
-            hint: "Walk onto the round bridge. Turn it to reach the sun seal, then turn again to reach the arch.",
+            hint: "Walk onto the round bridge. Turn to reach the sun seal. Return to the round bridge, then turn again to reach the arch.",
             tiles: [
                 Tile(id: 0, name: "Arrival steps", point: WorldPoint(x: -3, y: 0, z: 0.4), kind: .start),
                 Tile(id: 1, name: "West landing", point: WorldPoint(x: -2, y: 0), kind: .floor),
