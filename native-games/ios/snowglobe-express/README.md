@@ -1,6 +1,6 @@
 # Snowglobe Express
 
-A native, offline iOS route puzzle made with SwiftUI and procedural Canvas artwork.
+A native, offline iOS route puzzle made with SwiftUI and a sculpted SceneKit miniature.
 Drive a cranberry snowplow through a porcelain winter village, deliver three parcels,
 and light every window inside the glass globe.
 
@@ -83,10 +83,16 @@ and result text. Settings control the synthesized delivery chime and haptics.
 Motion respects Reduce Motion. Interactive controls have accessibility names and
 identifiers; the game can be played through the labeled directional controls.
 
+The village uses physically based ceramic materials, directional shadows, ambient
+occlusion, brass pedestal rings, layered snow and emissive cottage windows.
+The live scene runs at 30 fps; Reduce Motion pauses snowfall and removes movement
+interpolation. Postcards use an offscreen SceneKit snapshot of the actual completed
+board, composed into the native SwiftUI postcard.
+
 ## State and limitations
 
 Progress, the current route and its complete undo history are stored in
-`UserDefaults`. Relaunch opens home with **Continue your route**. Data stays local
+`UserDefaults`. Relaunch opens home with **Continue your journey**. Data stays local
 and is removed by uninstalling. No analytics, purchases, cloud sync or backend.
 
 Simulator builds do not validate physical-device haptic feel, silent-switch

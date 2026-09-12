@@ -5,13 +5,13 @@ let root = URL(fileURLWithPath: CommandLine.arguments[1])
 let size = CGSize(width: 1024, height: 1024)
 let image = NSImage(size: size)
 image.lockFocus()
-let ink = NSColor(srgbRed: 0.07, green: 0.19, blue: 0.27, alpha: 1)
-let powder = NSColor(srgbRed: 0.78, green: 0.90, blue: 0.95, alpha: 1)
-let cream = NSColor(srgbRed: 0.98, green: 0.97, blue: 0.90, alpha: 1)
-let cranberry = NSColor(srgbRed: 0.67, green: 0.16, blue: 0.27, alpha: 1)
-let amber = NSColor(srgbRed: 1, green: 0.78, blue: 0.4, alpha: 1)
+let ink = NSColor(srgbRed: 0.045, green: 0.105, blue: 0.12, alpha: 1)
+let powder = NSColor(srgbRed: 0.65, green: 0.77, blue: 0.77, alpha: 1)
+let cream = NSColor(srgbRed: 0.96, green: 0.94, blue: 0.87, alpha: 1)
+let cranberry = NSColor(srgbRed: 0.53, green: 0.15, blue: 0.21, alpha: 1)
+let amber = NSColor(srgbRed: 0.83, green: 0.69, blue: 0.43, alpha: 1)
 let full = NSBezierPath(rect: CGRect(origin: .zero, size: size))
-NSGradient(starting: ink, ending: NSColor(srgbRed: 0.22, green: 0.40, blue: 0.49, alpha: 1))!
+NSGradient(starting: ink, ending: NSColor(srgbRed: 0.16, green: 0.28, blue: 0.29, alpha: 1))!
   .draw(in: full, angle: 45)
 
 func fill(_ path: NSBezierPath, _ color: NSColor) {

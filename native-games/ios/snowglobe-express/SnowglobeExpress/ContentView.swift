@@ -64,35 +64,44 @@ struct ContentView: View {
 
   private func home(size: CGSize) -> some View {
     ScrollView {
-      VStack(spacing: 12) {
+      VStack(spacing: 16) {
         HStack {
-          eyebrow("A LITTLE WARMTH, DELIVERED")
+          HStack(spacing: 8) {
+            Image(systemName: "shippingbox").font(.system(size: 12, weight: .light))
+            eyebrow("THE WINTER POST")
+          }
           Spacer()
           iconButton("gearshape", label: "Settings", id: "settings") { panel = .settings }
         }
         .padding(.top, 6)
-        VStack(spacing: 1) {
+        VStack(spacing: 3) {
           Text("Snowglobe")
-            .font(.system(size: 46, weight: .regular, design: .serif))
-            .tracking(-1.5)
-          Text("EXPRESS")
-            .font(.system(size: 17, weight: .semibold, design: .rounded))
-            .tracking(8)
-            .foregroundStyle(Winter.amber)
+            .font(.system(size: 49, weight: .regular, design: .serif))
+            .tracking(-2)
+          HStack(spacing: 16) {
+            Rectangle().frame(width: 26, height: 0.5)
+            Text("E X P R E S S")
+              .font(.system(size: 10, weight: .medium))
+              .tracking(3)
+            Rectangle().frame(width: 26, height: 0.5)
+          }
+          .foregroundStyle(Winter.amber)
         }
-        VillageArt(journey: Journey(puzzle: .routes[0]), illuminated: true)
-          .frame(width: min(size.width - 14, size.height * 0.48))
-          .padding(.top, 2)
+        VillageArt(journey: Journey(puzzle: .routes[0]), illuminated: true, showsMarkers: false)
+          .frame(width: min(size.width - 48, size.height * 0.48))
+          .padding(.vertical, -10)
         VStack(spacing: 6) {
-          Text("Winter is waiting at the doorstep.")
-            .font(.system(size: 19, weight: .regular, design: .serif))
-          Text("Clear a path. Carry a parcel. Light a village.")
-            .font(.system(size: 13))
+          Text("A little warmth, delivered.")
+            .font(.system(size: 23, weight: .regular, design: .serif))
+            .italic()
+          Text("Clear the snow. Find a way home.")
+            .font(.system(size: 12))
+            .tracking(0.3)
             .foregroundStyle(Winter.powder)
         }
-        .padding(.bottom, 12)
+        .padding(.bottom, 6)
         primary(
-          saved != nil ? "Continue your route" : "Let’s make a delivery", symbol: "arrow.right",
+          saved != nil ? "Continue your journey" : "Begin your journey", symbol: "arrow.right",
           id: "start"
         ) {
           if let saved {
@@ -102,29 +111,46 @@ struct ContentView: View {
             start(nextPuzzle)
           }
         }
-        HStack(spacing: 12) {
+        HStack(spacing: 18) {
           Button {
             panel = .routes
           } label: {
-            Label("Village routes", systemImage: "map")
-              .frame(maxWidth: .infinity, minHeight: 48)
+            VStack(alignment: .leading, spacing: 6) {
+              eyebrow("THE COLLECTION")
+              HStack {
+                Text("Six village routes")
+                Spacer()
+                Image(systemName: "arrow.up.right").font(.system(size: 11))
+              }
+            }
+            .frame(maxWidth: .infinity, minHeight: 48)
           }
           .accessibilityIdentifier("routes")
+          Rectangle().fill(Winter.powder.opacity(0.2)).frame(width: 0.5, height: 30)
           Button {
             start(.daily())
           } label: {
-            Label("Daily dispatch", systemImage: "sun.horizon")
-              .frame(maxWidth: .infinity, minHeight: 48)
+            VStack(alignment: .leading, spacing: 6) {
+              eyebrow("ONE QUIET CHALLENGE")
+              HStack {
+                Text("Daily dispatch")
+                Spacer()
+                Image(systemName: "arrow.up.right").font(.system(size: 11))
+              }
+            }
+            .frame(maxWidth: .infinity, minHeight: 48)
           }
           .accessibilityIdentifier("daily")
         }
-        .font(.system(size: 13, weight: .semibold))
+        .font(.system(size: 12, weight: .medium))
+        .padding(.top, 3)
         .buttonStyle(.plain)
+        Rectangle().fill(Winter.powder.opacity(0.18)).frame(height: 0.5)
         HStack(spacing: 7) {
           Image(systemName: "star.fill").foregroundStyle(Winter.amber)
           Text("\(totalStars) / 18 village stars")
           Text("·").padding(.horizontal, 3)
-          Text("Made for a quiet moment")
+          Text("Collected with care")
         }
         .font(.system(size: 10, weight: .medium))
         .foregroundStyle(Winter.powder.opacity(0.85))
@@ -140,79 +166,113 @@ struct ContentView: View {
   private func play(_ journey: Journey, size: CGSize) -> some View {
     let preview = journey.preview(selected)
     return ScrollView {
-      VStack(spacing: 8) {
+      VStack(spacing: 10) {
         HStack(alignment: .center) {
           VStack(alignment: .leading, spacing: 4) {
             eyebrow(
               journey.puzzle.id.hasPrefix("daily")
                 ? "DAILY DISPATCH" : "VILLAGE ROUTE 0\(journey.puzzle.number)")
             Text(journey.puzzle.name)
-              .font(.system(size: 26, weight: .regular, design: .serif))
+              .font(.system(size: 28, weight: .regular, design: .serif))
+              .tracking(-0.7)
           }
           Spacer()
           iconButton("questionmark", label: "How to play", id: "help") { panel = .tutorial }
           iconButton("pause.fill", label: "Pause route", id: "pause") { panel = .pause }
         }
         .padding(.top, 8)
-        HStack {
-          Label("\(journey.fuelLeft)", systemImage: "fuelpump.fill")
-            .font(.system(size: 23, weight: .semibold, design: .rounded))
-            .foregroundStyle(journey.fuelLeft < 5 ? Winter.amber : Winter.cream)
-            .contentTransition(.numericText())
-          Text("FUEL").font(.system(size: 10, weight: .bold)).foregroundStyle(Winter.powder)
+        HStack(alignment: .center, spacing: 15) {
+          HStack(alignment: .firstTextBaseline, spacing: 5) {
+            Text("\(journey.fuelLeft)")
+              .font(.system(size: 29, weight: .regular, design: .serif))
+              .foregroundStyle(journey.fuelLeft < 5 ? Winter.amber : Winter.cream)
+              .contentTransition(.numericText())
+            Text("/ \(journey.puzzle.fuel)")
+              .font(.system(size: 12, weight: .light))
+              .foregroundStyle(Winter.powder)
+          }
+          VStack(alignment: .leading, spacing: 6) {
+            eyebrow("FUEL REMAINING")
+            HStack(spacing: 3) {
+              ForEach(0..<12) { index in
+                Capsule()
+                  .fill(
+                    Double(index) / 12 < Double(journey.fuelLeft) / Double(journey.puzzle.fuel)
+                      ? Winter.amber : Winter.powder.opacity(0.14)
+                  )
+                  .frame(width: 4, height: 9)
+              }
+            }
+          }
           Spacer()
-          HStack(spacing: 8) {
+          HStack(spacing: 7) {
             ForEach(Array(journey.puzzle.homes.enumerated()), id: \.offset) { index, home in
-              Image(
-                systemName: journey.position.delivered.contains(home.square)
-                  ? "house.fill" : "house"
+              Group {
+                if journey.position.delivered.contains(home.square) {
+                  Image(systemName: "checkmark").font(.system(size: 10, weight: .semibold))
+                } else {
+                  Text("\(index + 1)").font(.system(size: 13, weight: .regular, design: .serif))
+                }
+              }
+              .frame(width: 25, height: 25)
+              .background(
+                journey.position.delivered.contains(home.square)
+                  ? Winter.amber.opacity(0.13) : .clear
+              )
+              .clipShape(Circle())
+              .overlay(
+                Circle().strokeBorder(
+                  index == 0 && journey.position.delivered.isEmpty
+                    ? Winter.cranberry : Winter.amber.opacity(0.45),
+                  lineWidth: 0.7)
               )
               .foregroundStyle(
                 journey.position.delivered.contains(home.square) ? Winter.amber : Winter.powder
               )
-              .overlay(alignment: .bottomTrailing) {
-                Text("\(index + 1)")
-                  .font(.system(size: 8, weight: .bold, design: .rounded))
-                  .foregroundStyle(Winter.cream)
-                  .frame(width: 12, height: 12)
-                  .background(index == 0 ? Winter.cranberry : Winter.ink)
-                  .clipShape(Circle())
-                  .offset(x: 5, y: 3)
-              }
             }
           }
-          Text("\(journey.position.delivered.count)/3")
-            .font(.system(size: 12, weight: .semibold, design: .rounded))
         }
-        .padding(.top, 9)
+        .padding(.vertical, 10)
+        .overlay(alignment: .top) {
+          Rectangle().fill(Winter.powder.opacity(0.2)).frame(height: 0.5)
+        }
+        .overlay(alignment: .bottom) {
+          Rectangle().fill(Winter.powder.opacity(0.2)).frame(height: 0.5)
+        }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(
           "\(journey.fuelLeft) fuel remaining. \(journey.position.delivered.count) of 3 parcels delivered."
         )
         VillageArt(journey: journey, selected: selected)
-          .frame(width: min(size.width - 22, size.height * 0.47))
-          .padding(.bottom, -5)
+          .frame(width: min(size.width - 48, size.height * 0.45))
+          .padding(.vertical, -8)
         Text(note)
-          .font(.system(size: 12, weight: .medium))
+          .font(.system(size: 12, weight: .regular, design: .serif))
+          .italic()
           .foregroundStyle(Winter.powder)
           .multilineTextAlignment(.center)
-          .frame(minHeight: 32)
+          .frame(minHeight: 28)
           .accessibilityIdentifier("route-message")
-        HStack(spacing: 10) {
-          VStack(spacing: 7) {
-            HStack(spacing: 7) {
+        HStack(spacing: 18) {
+          VStack(spacing: 5) {
+            HStack(spacing: 5) {
               directionButton(.west, journey: journey)
               directionButton(.north, journey: journey)
             }
-            HStack(spacing: 7) {
+            HStack(spacing: 5) {
               directionButton(.south, journey: journey)
               directionButton(.east, journey: journey)
             }
           }
+          .padding(6)
+          .background(Winter.midnight.opacity(0.4), in: RoundedRectangle(cornerRadius: 28))
+          .overlay(
+            RoundedRectangle(cornerRadius: 28).strokeBorder(
+              Winter.amber.opacity(0.2), lineWidth: 0.6))
           VStack(alignment: .leading, spacing: 6) {
-            eyebrow("MOVE PREVIEW")
+            eyebrow("NEXT TURN · \(selected.rawValue.uppercased())")
             Text(preview.allowed ? "\(preview.cost) fuel" : "Lane blocked")
-              .font(.system(size: 21, weight: .semibold, design: .rounded))
+              .font(.system(size: 25, weight: .regular, design: .serif))
             Text(
               preview.reason
                 ?? (preview.depth > 0
@@ -224,12 +284,10 @@ struct ContentView: View {
             .fixedSize(horizontal: false, vertical: true)
           }
           .frame(maxWidth: .infinity, alignment: .leading)
-          .padding(.leading, 4)
         }
-        .padding(.vertical, 8)
+        .padding(.bottom, 4)
         primary(
-          preview.allowed
-            ? "Drive \(selected.rawValue) · \(preview.cost) fuel" : "Choose another direction",
+          preview.allowed ? "Drive \(selected.rawValue)" : "Choose another direction",
           symbol: "arrow.right", id: "drive", disabled: !preview.allowed
         ) { drive() }
         HStack {
@@ -243,7 +301,7 @@ struct ContentView: View {
           .accessibilityIdentifier("undo")
           Spacer()
           Text("3 stars in ≤ \(journey.puzzle.par) fuel")
-            .font(.system(size: 11))
+            .font(.system(size: 10))
             .foregroundStyle(Winter.powder)
           Spacer()
           Button {
@@ -268,22 +326,25 @@ struct ContentView: View {
 
   private func results(_ journey: Journey, size: CGSize) -> some View {
     ScrollView {
-      VStack(spacing: 13) {
+      VStack(spacing: 14) {
         eyebrow(journey.won ? "EVERY PARCEL IS HOME" : "THE VILLAGE CAN WAIT")
           .padding(.top, 25)
-        Text(journey.won ? "And then, there was light." : "A little short on fuel.")
-          .font(.system(size: 31, weight: .regular, design: .serif))
+        Text(journey.won ? "You brought\nwinter to life." : "A little short on fuel.")
+          .font(.system(size: 39, weight: .regular, design: .serif))
+          .tracking(-1.2)
           .multilineTextAlignment(.center)
           .accessibilityIdentifier("result-title")
-        VillageArt(journey: journey, illuminated: journey.won)
-          .frame(width: min(size.width - 18, size.height * 0.43))
+        VillageArt(journey: journey, illuminated: journey.won, showsMarkers: false)
+          .frame(width: min(size.width - 48, size.height * 0.43))
+          .padding(.vertical, -10)
         if journey.won {
-          stars(journey.stars, size: 29)
+          stars(journey.stars, size: 20)
           HStack(alignment: .firstTextBaseline, spacing: 8) {
             Text("\(journey.score)")
-              .font(.system(size: 44, weight: .light, design: .rounded))
+              .font(.system(size: 47, weight: .regular, design: .serif))
             Text("EFFICIENCY POINTS")
-              .font(.system(size: 9, weight: .bold))
+              .font(.system(size: 9, weight: .medium))
+              .tracking(1.2)
               .foregroundStyle(Winter.powder)
           }
           Text(
@@ -291,7 +352,7 @@ struct ContentView: View {
           )
           .font(.system(size: 12))
           .foregroundStyle(Winter.powder)
-          primary("Share this little light", symbol: "square.and.arrow.up", id: "share") {
+          primary("Send a winter postcard", symbol: "square.and.arrow.up", id: "share") {
             createShare(journey)
           }
           HStack(spacing: 20) {
@@ -346,20 +407,20 @@ struct ContentView: View {
           .system(size: 15, weight: .semibold))
         Text(String(direction.title.prefix(1))).font(.system(size: 11, weight: .bold))
       }
-      .frame(width: 65, height: 44)
+      .frame(width: 58, height: 44)
       .background(
-        selected == direction ? Winter.amber : Winter.powder.opacity(allowed ? 0.16 : 0.05)
+        selected == direction ? Winter.cream : Winter.powder.opacity(allowed ? 0.07 : 0.02)
       )
       .foregroundStyle(
         selected == direction
           ? Winter.midnight : allowed ? Winter.cream : Winter.powder.opacity(0.45)
       )
-      .clipShape(RoundedRectangle(cornerRadius: 13))
+      .clipShape(RoundedRectangle(cornerRadius: 18))
       .overlay {
-        RoundedRectangle(cornerRadius: 13).strokeBorder(Winter.powder.opacity(0.15), lineWidth: 1)
+        RoundedRectangle(cornerRadius: 18).strokeBorder(Winter.powder.opacity(0.12), lineWidth: 0.5)
       }
     }
-    .buttonStyle(.plain)
+    .buttonStyle(DispatchButtonStyle())
     .accessibilityLabel("Preview \(direction.rawValue)")
     .accessibilityValue(
       selected == direction
@@ -478,8 +539,8 @@ struct ContentView: View {
 
   private func eyebrow(_ text: String) -> some View {
     Text(text)
-      .font(.system(size: 9, weight: .semibold))
-      .tracking(1.7)
+      .font(.system(size: 8, weight: .medium))
+      .tracking(1.6)
       .foregroundStyle(Winter.amber)
   }
 
@@ -516,15 +577,27 @@ struct ContentView: View {
         Text(title)
         Spacer()
         Image(systemName: symbol)
+          .font(.system(size: 14, weight: .medium))
+          .frame(width: 30, height: 30)
+          .overlay(Circle().strokeBorder(Winter.ink.opacity(0.25), lineWidth: 0.6))
       }
-      .font(.system(size: 15, weight: .semibold))
-      .padding(.horizontal, 20)
-      .frame(minHeight: 54)
-      .background(disabled ? Winter.powder.opacity(0.18) : Winter.amber)
+      .font(.system(size: 15, weight: .medium))
+      .padding(.leading, 24)
+      .padding(.trailing, 13)
+      .frame(minHeight: 56)
+      .background {
+        Capsule().fill(
+          LinearGradient(
+            colors: disabled
+              ? [Winter.ink, Winter.ink]
+              : [Winter.cream, Color(red: 0.86, green: 0.82, blue: 0.68)],
+            startPoint: .topLeading, endPoint: .bottomTrailing))
+      }
       .foregroundStyle(disabled ? Winter.powder : Winter.midnight)
-      .clipShape(RoundedRectangle(cornerRadius: 17))
+      .overlay(Capsule().strokeBorder(.white.opacity(disabled ? 0.05 : 0.45), lineWidth: 0.7))
+      .shadow(color: .black.opacity(0.15), radius: 12, y: 6)
     }
-    .buttonStyle(.plain)
+    .buttonStyle(DispatchButtonStyle())
     .disabled(disabled)
     .accessibilityIdentifier(id)
   }
@@ -637,6 +710,17 @@ struct ContentView: View {
   }
 }
 
+private struct DispatchButtonStyle: ButtonStyle {
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .opacity(configuration.isPressed ? 0.82 : 1)
+      .scaleEffect(configuration.isPressed && !reduceMotion ? 0.98 : 1)
+      .animation(reduceMotion ? nil : .easeOut(duration: 0.16), value: configuration.isPressed)
+  }
+}
+
 private struct SettingsControls: View {
   @AppStorage("village.sound") private var sound = true
   @AppStorage("village.haptics") private var haptics = true
@@ -685,17 +769,21 @@ struct Postcard: View {
     ZStack {
       WinterBackdrop()
       VStack(spacing: 14) {
-        Text("A LITTLE WARMTH, DELIVERED")
-          .font(.system(size: 10, weight: .bold)).tracking(2).foregroundStyle(Winter.amber)
-        Text("And then,\nthere was light.")
-          .font(.system(size: 37, weight: .regular, design: .serif))
+        Text("THE WINTER POST  /  SNOWGLOBE EXPRESS")
+          .font(.system(size: 8, weight: .medium)).tracking(1.5).foregroundStyle(Winter.amber)
+        Text("A little warmth,\ndelivered.")
+          .font(.system(size: 39, weight: .regular, design: .serif))
+          .tracking(-0.8)
           .multilineTextAlignment(.center)
-        VillageArt(journey: journey, illuminated: true, animate: false).frame(width: 350)
+        VillageArt(journey: journey, illuminated: true, animate: false).frame(width: 370)
+          .padding(.vertical, -14)
+        Rectangle().fill(Winter.amber.opacity(0.4)).frame(width: 300, height: 0.5)
         Text("\(journey.score) efficiency points")
-          .font(.system(size: 25, weight: .light, design: .rounded))
+          .font(.system(size: 26, weight: .regular, design: .serif))
         Text("\(journey.puzzle.name) · \(journey.position.fuelUsed) fuel · \(journey.stars) stars")
           .font(.system(size: 12)).foregroundStyle(Winter.powder)
-        Text("SNOWGLOBE EXPRESS").font(.system(size: 11, weight: .semibold)).tracking(3)
+        Text("A village worth keeping.").font(.system(size: 14, weight: .regular, design: .serif))
+          .italic()
           .padding(.top, 12)
       }
       .foregroundStyle(Winter.cream)
