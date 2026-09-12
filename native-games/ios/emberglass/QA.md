@@ -138,7 +138,32 @@ exhibition view.
 thickness; the top guide is straight in the orthographic tracing view.
 Reduced tracing exposure slightly, made gallery portrait rows lazy, and added
 a regression test that rejects the old imaginary rounded base.
-Final post-refinement Simulator regression is pending.
+
+**Final rendered review (`a740cb0`):** native annotated computer-use recordings
+on Pro Max and SE3 verified eight matched points at 97% and 98% form respectively,
+including the corrected flat foot and top. Pro Max earned 74 Collectible; SE3
+earned 81 Exquisite. Home, tutorial, heat, rotation and results fit both devices.
+Pro Max's first Share exported a complete print and caption, viewed in native
+Preview. Gallery opening and scrolling showed no noticeable prolonged stall;
+this is observation, not a latency measurement. Orchid's distinct pink glass and
+broad hollow rim fit the exhibition. Reset cleared partial shape coverage from
+3/8 and 37% to 0/8 and 0%; a 23 Study result, retry, pause/background, restart,
+and persistence of gallery/best/unlock/haptics preference passed. No app failure
+was observed in the executed scope.
+
+**Final automated checks:** strict recursive `swift-format` passed. Debug XCTest
+on Pro Max executed **14 tests with zero failures**, and the unsigned Release
+simulator build passed. The separate Debug simulator build also passed. Commands
+are the same as above, with Pro Max destination
+`607A62B2-D5BF-40A7-B59F-1A5B65CB2DE1`. The final documentation commit does not
+change the tested executable.
+
+**Remaining scope:** final compact sharing was not repeated; the prior SE3
+redesign export supports that path. Icon/launch identity built successfully but
+was not separately captured in the last UI recording. Shaping remains brighter
+than exhibition while retaining visible color detail. Physical-device haptics,
+performance, VoiceOver, hardware printing and exhaustive commission combinations
+remain untested. The app was left running on SE3 home with best 81.
 
 The testing agent uses native Simulator computer interaction and Devin's native
 recording tools, including structured setup, test-start and assertion annotations.
