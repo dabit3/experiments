@@ -103,7 +103,13 @@ final class GameStore: ObservableObject {
   func editAgain() {
     travel = 0
     phase = .editing
-    selected = min(outcome.reached + 1, heights.count - 1)
+    if outcome.fault != nil {
+      let next = min(outcome.reached + 1, heights.count - 1)
+      selected = level.fixed.contains(next) ? outcome.reached : next
+    }
+    if level.fixed.contains(selected) {
+      selected = heights.indices.first { !level.fixed.contains($0) } ?? selected
+    }
   }
 
   func feedback(success: Bool = false) {

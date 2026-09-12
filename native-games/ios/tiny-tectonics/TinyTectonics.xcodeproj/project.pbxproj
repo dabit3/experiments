@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1425C680A88B0E146C7D10D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 602D399C1BD790711AB8610D /* Assets.xcassets */; };
 		1C7E8C9763416320B4E954E9 /* Diorama.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C41F5E9781EFF3EA5BB4E56 /* Diorama.swift */; };
+		2B69E609FEA2739DBF0D7BAF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6C7CC6D8FAAC176F7743C1D8 /* LaunchScreen.storyboard */; };
 		9EEDDEF1240B1085FE203064 /* TinyTectonicsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0B8D52993BFF9E1DC328EE /* TinyTectonicsApp.swift */; };
 		AF37DB14FEFECC00EC1431E0 /* PuzzleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0CFE05E86A511497A27035 /* PuzzleTests.swift */; };
 		BBB40031C32810E70038163A /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44A8C923C06643B20213A36 /* Puzzle.swift */; };
@@ -31,6 +33,8 @@
 		1C8C4CE2E45CC6191CB4A667 /* Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sharing.swift; sourceTree = "<group>"; };
 		4190892CDE9760078390A7ED /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
 		4C41F5E9781EFF3EA5BB4E56 /* Diorama.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diorama.swift; sourceTree = "<group>"; };
+		602D399C1BD790711AB8610D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6C7CC6D8FAAC176F7743C1D8 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		71D2BDED608CCF34B2E7BAEC /* TinyTectonicsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TinyTectonicsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0CFE05E86A511497A27035 /* PuzzleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleTests.swift; sourceTree = "<group>"; };
 		D44A8C923C06643B20213A36 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
@@ -40,6 +44,7 @@
 		1802CBE69B06D34A131CD214 = {
 			isa = PBXGroup;
 			children = (
+				602D399C1BD790711AB8610D /* Assets.xcassets */,
 				FB3AAAA29266F086497D3516 /* Sources */,
 				FD34FB13562D7FA57E6A1683 /* Tests */,
 				1E46F0454D976C382510C842 /* Products */,
@@ -60,6 +65,7 @@
 			children = (
 				4C41F5E9781EFF3EA5BB4E56 /* Diorama.swift */,
 				4190892CDE9760078390A7ED /* GameStore.swift */,
+				6C7CC6D8FAAC176F7743C1D8 /* LaunchScreen.storyboard */,
 				D44A8C923C06643B20213A36 /* Puzzle.swift */,
 				1C8C4CE2E45CC6191CB4A667 /* Sharing.swift */,
 				1A0B8D52993BFF9E1DC328EE /* TinyTectonicsApp.swift */,
@@ -83,6 +89,7 @@
 			buildConfigurationList = 1F3D13E0E34B2C7E520AAB92 /* Build configuration list for PBXNativeTarget "TinyTectonics" */;
 			buildPhases = (
 				EEBF7792917B07C1B169C338 /* Sources */,
+				6A9C0521747121A0324B312C /* Resources */,
 			);
 			buildRules = (
 			);
@@ -144,6 +151,18 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		6A9C0521747121A0324B312C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1425C680A88B0E146C7D10D4 /* Assets.xcassets in Resources */,
+				2B69E609FEA2739DBF0D7BAF /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		3A4C3834BF2258255D5EA9D5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -185,7 +204,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Tiny Tectonics";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -194,7 +213,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dabit3.tinytectonics;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -224,7 +243,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Tiny Tectonics";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -233,7 +252,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.dabit3.tinytectonics;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

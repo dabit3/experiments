@@ -60,6 +60,54 @@ final class PuzzleTests: XCTestCase {
   }
 
   @MainActor
+  func testAllTenLandscapeSolutionsWinWithinTheirMoveLimits() {
+    let solutions = [
+      [3, 2, 2, 1, 0],
+      [4, 3, 3, 2, 1, 0],
+      [4, 3, 2, 2, 1, 0],
+      [4, 3, 3, 2, 1, 1, 0],
+      [3, 2, 2, 2, 2, 1, 0],
+      [5, 4, 3, 2, 2, 1, 0],
+      [5, 4, 4, 3, 3, 2, 1, 0],
+      [5, 4, 3, 3, 2, 2, 1, 0],
+      [5, 4, 3, 2, 1, 1, 1, 0, 0],
+      [5, 4, 3, 3, 2, 1, 1, 0, 0],
+    ]
+    let store = GameStore(defaults: UserDefaults(suiteName: UUID().uuidString)!)
+    for (index, solution) in solutions.enumerated() {
+      store.load(index)
+      for plate in solution.indices {
+        store.selected = plate
+        let delta = solution[plate] - store.heights[plate]
+        for _ in 0..<abs(delta) { store.adjust(delta > 0 ? 1 : -1) }
+      }
+      XCTAssertEqual(store.heights, solution, store.level.name)
+      XCTAssertGreaterThanOrEqual(store.remaining, 0)
+      store.simulate()
+      store.tick(20)
+      XCTAssertEqual(store.phase, .won, store.level.name)
+      XCTAssertEqual(store.collected, store.level.fossils.count)
+    }
+    XCTAssertEqual(store.completed, 10)
+    XCTAssertEqual(store.unlocked, 9)
+  }
+
+  @MainActor
+  func testReturningFromValidSimulationPreservesEditableSelection() {
+    let store = GameStore(defaults: UserDefaults(suiteName: UUID().uuidString)!)
+    store.selected = 1
+    store.adjust(1)
+    store.simulate()
+    store.tick(2)
+    store.togglePause()
+    store.editAgain()
+    XCTAssertEqual(store.selected, 1)
+    XCTAssertTrue(store.canAdjust(-1))
+    XCTAssertEqual(store.moves, 1)
+    XCTAssertEqual(store.travel, 0)
+  }
+
+  @MainActor
   func testPauseFailureReplayAndPersistentBest() {
     let defaults = UserDefaults(suiteName: UUID().uuidString)!
     let store = GameStore(defaults: defaults)

@@ -1,17 +1,66 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
+import UniformTypeIdentifiers
 
 struct SharedLandscape: Identifiable {
   let id = UUID()
   let image: UIImage
+  let title: String
+  let fileURL: URL
+
+  init(image: UIImage, title: String) throws {
+    self.image = image
+    self.title = title
+    fileURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+      .appendingPathComponent("Tiny Tectonics - \(title).png")
+    guard let data = image.pngData() else { throw CocoaError(.fileWriteUnknown) }
+    try data.write(to: fileURL, options: .atomic)
+  }
+}
+
+final class LandscapeActivityItem: NSObject, UIActivityItemSource {
+  let landscape: SharedLandscape
+
+  init(landscape: SharedLandscape) { self.landscape = landscape }
+
+  func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController)
+    -> Any
+  {
+    landscape.fileURL
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    itemForActivityType activityType: UIActivity.ActivityType?
+  ) -> Any? {
+    landscape.fileURL
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?
+  ) -> String {
+    UTType.png.identifier
+  }
+
+  func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController)
+    -> LPLinkMetadata?
+  {
+    let metadata = LPLinkMetadata()
+    metadata.title = "\(landscape.title) · Tiny Tectonics"
+    metadata.imageProvider = NSItemProvider(object: landscape.image)
+    metadata.iconProvider = NSItemProvider(object: landscape.image)
+    return metadata
+  }
 }
 
 struct NativeShare: UIViewControllerRepresentable {
-  let image: UIImage
-  let caption: String
+  let landscape: SharedLandscape
 
   func makeUIViewController(context: Context) -> UIActivityViewController {
-    UIActivityViewController(activityItems: [image, caption], applicationActivities: nil)
+    UIActivityViewController(
+      activityItems: [LandscapeActivityItem(landscape: landscape)], applicationActivities: nil)
   }
 
   func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}

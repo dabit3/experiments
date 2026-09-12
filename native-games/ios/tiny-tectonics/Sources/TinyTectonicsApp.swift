@@ -20,6 +20,7 @@ struct ExpeditionView: View {
   @State private var settings = false
   @State private var restartConfirmation = false
   @State private var shareImage: SharedLandscape?
+  @State private var shareFailure = false
   @Environment(\.scenePhase) private var scenePhase
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   private let clock = Timer.publish(every: 1.0 / 30, on: .main, in: .common).autoconnect()
@@ -42,12 +43,13 @@ struct ExpeditionView: View {
     .font(.system(.body, design: .rounded))
     .sheet(isPresented: $settings) { settingsSheet }
     .sheet(item: $shareImage) { item in
-      NativeShare(
-        image: item.image,
-        caption:
-          "I shaped \(game.level.name) in \(game.moves) moves. Tiny Tectonics — a world in balance."
-      )
-      .presentationDetents([.medium, .large])
+      NativeShare(landscape: item)
+        .presentationDetents([.medium, .large])
+    }
+    .alert("Could not prepare the landscape card", isPresented: $shareFailure) {
+      Button("OK", role: .cancel) {}
+    } message: {
+      Text("Please try sharing again.")
     }
     .confirmationDialog(
       "Reset this landscape?", isPresented: $restartConfirmation, titleVisibility: .visible
@@ -463,7 +465,15 @@ struct ExpeditionView: View {
       content: LandscapeCard(
         level: game.level, heights: game.heights, moves: game.moves, stars: game.stars))
     renderer.scale = 2
-    if let image = renderer.uiImage { shareImage = SharedLandscape(image: image) }
+    if let image = renderer.uiImage {
+      do {
+        shareImage = try SharedLandscape(image: image, title: game.level.name)
+      } catch {
+        shareFailure = true
+      }
+    } else {
+      shareFailure = true
+    }
   }
 
   private func adjustButton(delta: Int) -> some View {
