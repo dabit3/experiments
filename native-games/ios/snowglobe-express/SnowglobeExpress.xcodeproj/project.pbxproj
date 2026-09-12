@@ -1,0 +1,475 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		056621152EF97FE89B32F74A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCC3978BE71FB1212A8970E6 /* Assets.xcassets */; };
+		091287280C2258324CF1E2DE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5200E3E813E7F164B82D3EEF /* ContentView.swift */; };
+		314EC9ED55C8B84320E7AF1B /* delivery.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6BBF1D5D703C2F6774E935F2 /* delivery.wav */; };
+		5AB30A325F867F853853763B /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678E7668D4B6AF19483C75B1 /* GameEngine.swift */; };
+		608BFFAB267345295ABBB0B2 /* SnowglobeExpressApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D2E6854F657874241A56BA /* SnowglobeExpressApp.swift */; };
+		96CA7FBEE751C2CB5D1F1AF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D2C0916FA22BD059470B312 /* Foundation.framework */; };
+		D7B5146B63650FA018A55B9B /* VillageArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CC436318C0CBD69E92AECD /* VillageArt.swift */; };
+		E274D87DBC44EE5FFA761698 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D2C0916FA22BD059470B312 /* Foundation.framework */; };
+		E8A47D3C2C66998B71F8965B /* GameEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE6F6109D55EEB4319B6598 /* GameEngineTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E98D2379CEBE47877DC516DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4F1B139A3DE9657ED6B6120D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8AA42ADCF8998DBB77CB914D;
+			remoteInfo = SnowglobeExpress;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4CE6F6109D55EEB4319B6598 /* GameEngineTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameEngineTests.swift; sourceTree = "<group>"; };
+		50E449225101876CAB8EE74E /* SnowglobeExpressTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnowglobeExpressTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5200E3E813E7F164B82D3EEF /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		678E7668D4B6AF19483C75B1 /* GameEngine.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
+		6BBF1D5D703C2F6774E935F2 /* delivery.wav */ = {isa = PBXFileReference; includeInIndex = 1; path = delivery.wav; sourceTree = "<group>"; };
+		7D2C0916FA22BD059470B312 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		B3D2E6854F657874241A56BA /* SnowglobeExpressApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SnowglobeExpressApp.swift; sourceTree = "<group>"; };
+		CCC3978BE71FB1212A8970E6 /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EEAA80149A9C2F640C6138FC /* SnowglobeExpress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnowglobeExpress.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8CC436318C0CBD69E92AECD /* VillageArt.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VillageArt.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5197AE1142F3BEDC0F0257D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96CA7FBEE751C2CB5D1F1AF9 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F97B89EC3D1F4884D625D5DD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E274D87DBC44EE5FFA761698 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0B339196A7459E45337E27FA /* SnowglobeExpressTests */ = {
+			isa = PBXGroup;
+			children = (
+				4CE6F6109D55EEB4319B6598 /* GameEngineTests.swift */,
+			);
+			name = SnowglobeExpressTests;
+			path = SnowglobeExpressTests;
+			sourceTree = "<group>";
+		};
+		3E9087DD45BDF36819D78F7A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6CDE20146215E86FC4993CC1 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6CDE20146215E86FC4993CC1 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				7D2C0916FA22BD059470B312 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		ACEA46F1977B105C0083AFDD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EEAA80149A9C2F640C6138FC /* SnowglobeExpress.app */,
+				50E449225101876CAB8EE74E /* SnowglobeExpressTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E3122E626AEF024C0FE11062 /* SnowglobeExpress */ = {
+			isa = PBXGroup;
+			children = (
+				5200E3E813E7F164B82D3EEF /* ContentView.swift */,
+				678E7668D4B6AF19483C75B1 /* GameEngine.swift */,
+				B3D2E6854F657874241A56BA /* SnowglobeExpressApp.swift */,
+				F8CC436318C0CBD69E92AECD /* VillageArt.swift */,
+				CCC3978BE71FB1212A8970E6 /* Assets.xcassets */,
+				6BBF1D5D703C2F6774E935F2 /* delivery.wav */,
+			);
+			name = SnowglobeExpress;
+			path = SnowglobeExpress;
+			sourceTree = "<group>";
+		};
+		FCEBFA7569515757AECD49CA = {
+			isa = PBXGroup;
+			children = (
+				ACEA46F1977B105C0083AFDD /* Products */,
+				3E9087DD45BDF36819D78F7A /* Frameworks */,
+				E3122E626AEF024C0FE11062 /* SnowglobeExpress */,
+				0B339196A7459E45337E27FA /* SnowglobeExpressTests */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8AA42ADCF8998DBB77CB914D /* SnowglobeExpress */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 97B3AD1CDBF8EEA394466A38 /* Build configuration list for PBXNativeTarget "SnowglobeExpress" */;
+			buildPhases = (
+				E654B1E5C9AE132602AB07F2 /* Sources */,
+				5197AE1142F3BEDC0F0257D6 /* Frameworks */,
+				2DA4165193E0F47727D489FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SnowglobeExpress;
+			productName = SnowglobeExpress;
+			productReference = EEAA80149A9C2F640C6138FC /* SnowglobeExpress.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D81E4516292E963EF30301E9 /* SnowglobeExpressTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4D2AEC0D39AA01301BA6CCC9 /* Build configuration list for PBXNativeTarget "SnowglobeExpressTests" */;
+			buildPhases = (
+				5B52F61586221260ED9CB38D /* Sources */,
+				F97B89EC3D1F4884D625D5DD /* Frameworks */,
+				FC91EC41050D1BCEC98820FE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				282D9073883D14028E6925AC /* PBXTargetDependency */,
+			);
+			name = SnowglobeExpressTests;
+			productName = SnowglobeExpressTests;
+			productReference = 50E449225101876CAB8EE74E /* SnowglobeExpressTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4F1B139A3DE9657ED6B6120D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+			};
+			buildConfigurationList = 81744FD209D8A32B1CAC8692 /* Build configuration list for PBXProject "SnowglobeExpress" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FCEBFA7569515757AECD49CA;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = ACEA46F1977B105C0083AFDD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8AA42ADCF8998DBB77CB914D /* SnowglobeExpress */,
+				D81E4516292E963EF30301E9 /* SnowglobeExpressTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2DA4165193E0F47727D489FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				056621152EF97FE89B32F74A /* Assets.xcassets in Resources */,
+				314EC9ED55C8B84320E7AF1B /* delivery.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC91EC41050D1BCEC98820FE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5B52F61586221260ED9CB38D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E8A47D3C2C66998B71F8965B /* GameEngineTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E654B1E5C9AE132602AB07F2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				091287280C2258324CF1E2DE /* ContentView.swift in Sources */,
+				5AB30A325F867F853853763B /* GameEngine.swift in Sources */,
+				608BFFAB267345295ABBB0B2 /* SnowglobeExpressApp.swift in Sources */,
+				D7B5146B63650FA018A55B9B /* VillageArt.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		282D9073883D14028E6925AC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SnowglobeExpress;
+			target = 8AA42ADCF8998DBB77CB914D /* SnowglobeExpress */;
+			targetProxy = E98D2379CEBE47877DC516DB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		483AAA1A8A2A5DD9645B2D38 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SnowglobeExpress/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Snowglobe Express";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.snowglobeexpress;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6C20D84814B489DABBB4F8C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SnowglobeExpress/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Snowglobe Express";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.snowglobeexpress;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7B924EA88B3185C72308C3FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		AE8A26282760AF2410491EB3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.snowglobeexpress.tests;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SnowglobeExpress.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SnowglobeExpress";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B11D28EFC02A9BBC499C629B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		EB47D82E048A1A6EA5141E0D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.snowglobeexpress.tests;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SnowglobeExpress.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SnowglobeExpress";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4D2AEC0D39AA01301BA6CCC9 /* Build configuration list for PBXNativeTarget "SnowglobeExpressTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE8A26282760AF2410491EB3 /* Release */,
+				EB47D82E048A1A6EA5141E0D /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		81744FD209D8A32B1CAC8692 /* Build configuration list for PBXProject "SnowglobeExpress" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B924EA88B3185C72308C3FE /* Debug */,
+				B11D28EFC02A9BBC499C629B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		97B3AD1CDBF8EEA394466A38 /* Build configuration list for PBXNativeTarget "SnowglobeExpress" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				483AAA1A8A2A5DD9645B2D38 /* Release */,
+				6C20D84814B489DABBB4F8C6 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4F1B139A3DE9657ED6B6120D /* Project object */;
+}
