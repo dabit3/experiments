@@ -25,6 +25,7 @@ struct PelotonView: View {
         if store.showGuide { guideOverlay }
       }
       .foregroundStyle(Ink.navy)
+      .buttonStyle(ClubButtonStyle())
       .sheet(isPresented: $store.showSettings) { settings }
       .sheet(item: $sharePayload) { payload in
         ShareSheet(image: payload.image, text: payload.text)
@@ -38,88 +39,115 @@ struct PelotonView: View {
 
   private func home(size: CGSize) -> some View {
     ZStack(alignment: .top) {
-      CoastArtwork(race: RaceState(course: store.course), hero: true, reducedMotion: reducedMotion)
+      CoastalCover()
         .ignoresSafeArea()
       LinearGradient(
-        colors: [Ink.cream, Ink.cream.opacity(0.92), .clear],
+        colors: [Ink.cream.opacity(0.92), Ink.cream.opacity(0.4), .clear],
         startPoint: .top, endPoint: .bottom
       )
-      .frame(height: size.height * 0.48)
+      .frame(height: size.height * 0.34)
       .ignoresSafeArea(edges: .top)
       VStack(alignment: .leading, spacing: 0) {
         HStack {
-          eyebrow("THE POCKET SPORTS CLUB")
+          ClubEmblem()
+          Text("POCKET SPORTS CLUB")
+            .font(.system(size: 9, weight: .bold)).tracking(2)
           Spacer()
           Button {
             store.showSettings = true
           } label: {
-            Image(systemName: "slider.horizontal.3").font(.system(size: 19, weight: .medium))
+            Image(systemName: "slider.horizontal.3").font(.system(size: 17, weight: .medium))
               .frame(width: 44, height: 44)
+              .background(Ink.cream.opacity(0.7), in: Circle())
+              .overlay(Circle().strokeBorder(Ink.navy.opacity(0.12)))
           }
           .accessibilityLabel("Settings")
           .accessibilityIdentifier("settingsButton")
         }
-        HStack(alignment: .top) {
-          Text("Pocket\nPeloton.")
-            .font(.system(size: min(size.width * 0.168, 76), weight: .black, design: .serif))
-            .tracking(-3).lineSpacing(-12)
-            .fixedSize(horizontal: false, vertical: true)
-          Spacer()
-          VStack(spacing: 3) {
-            Text("01—03").font(.system(size: 11, weight: .heavy, design: .monospaced))
-            Rectangle().frame(width: 38, height: 1)
-            Text("COAST\nSERIES").font(.system(size: 9, weight: .bold)).tracking(1)
-          }.padding(.top, 17)
-        }
-        Text("Little roads. Legendary finishes.")
-          .font(.system(size: 14, weight: .medium)).padding(.top, 11)
-        Spacer(minLength: 10)
+        Text("Pocket Peloton")
+          .font(.system(size: min(size.width * 0.119, 54), weight: .bold, design: .serif).italic())
+          .tracking(-2.6)
+          .lineLimit(1).minimumScaleFactor(0.8)
+          .padding(.top, 14)
+        HStack(spacing: 10) {
+          RaceStripe()
+          Text("LITTLE ROADS. LEGENDARY FINISHES.")
+            .font(.system(size: 8, weight: .bold)).tracking(1.1)
+            .lineLimit(1).minimumScaleFactor(0.8)
+        }.padding(.top, 10)
+        Spacer(minLength: 22)
         HStack(alignment: .bottom) {
-          VStack(alignment: .leading, spacing: 4) {
-            Text("DRAFT.\nATTACK.\nDISAPPEAR.")
-              .font(.system(size: 20, weight: .black, design: .rounded))
-              .tracking(-0.5)
-            Rectangle().fill(Ink.red).frame(width: 34, height: 4)
+          VStack(alignment: .leading, spacing: 6) {
+            Text("THE COASTAL COLLECTION")
+              .font(.system(size: 8, weight: .heavy)).tracking(1.6)
+            Text("Sea air.\nRace legs.")
+              .font(.system(size: 29, weight: .medium, design: .serif).italic())
+              .tracking(-0.8)
           }
+          .padding(14)
+          .background(Ink.cream.opacity(0.93), in: RoundedRectangle(cornerRadius: 3))
           Spacer()
-          Text("SEA AIR.\nRACE LEGS.")
-            .font(.system(size: 9, weight: .heavy)).tracking(1.2)
-            .fixedSize()
-            .rotationEffect(.degrees(-90)).frame(width: 25, height: 94)
         }
-        Spacer(minLength: 10)
+        .padding(.bottom, 16)
         VStack(alignment: .leading, spacing: 14) {
           HStack {
-            eyebrow("CHOOSE YOUR ROAD")
+            eyebrow("YOUR NEXT ESCAPE")
             Spacer()
-            Text("\(store.results.filter { $0.rank == 1 }.count) WINS")
+            Image(systemName: "laurel.leading")
+            Text("\(store.results.filter { $0.rank == 1 }.count)")
               .font(.system(size: 10, weight: .bold, design: .monospaced))
+            Image(systemName: "laurel.trailing")
           }
-          HStack(spacing: 7) {
+          .font(.system(size: 14, weight: .medium))
+          HStack(spacing: 0) {
             ForEach(Course.allCases) { course in
               Button {
                 store.course = course
               } label: {
-                VStack(alignment: .leading, spacing: 6) {
-                  Text("0\(course.rawValue + 1)").font(
-                    .system(size: 12, weight: .bold, design: .monospaced))
-                  Text(course.title).font(.system(size: 13, weight: .bold)).lineLimit(1)
-                    .minimumScaleFactor(0.7)
-                  Text("\(Int(course.length)) m").font(.system(size: 11, weight: .medium))
+                VStack(spacing: 8) {
+                  HStack(spacing: 5) {
+                    Text("0\(course.rawValue + 1)")
+                      .foregroundStyle(store.course == course ? Ink.red : Ink.navy.opacity(0.4))
+                    Text(["RIVIERA", "HEADLAND", "GOLDEN"][course.rawValue])
+                  }
+                  .font(.system(size: 9, weight: .bold)).tracking(0.5)
+                  .lineLimit(1).minimumScaleFactor(0.8)
+                  Rectangle()
+                    .fill(store.course == course ? Ink.red : Ink.navy.opacity(0.12))
+                    .frame(height: store.course == course ? 2 : 1)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading).padding(11)
-                .background(store.course == course ? Ink.navy : Ink.navy.opacity(0.05))
-                .foregroundStyle(store.course == course ? Ink.cream : Ink.navy)
+                .frame(maxWidth: .infinity, minHeight: 44)
+                .contentShape(Rectangle())
               }
               .accessibilityLabel("\(course.title), \(Int(course.length)) meters")
               .accessibilityAddTraits(store.course == course ? .isSelected : [])
               .accessibilityIdentifier("route\(course.rawValue)")
             }
           }
+          HStack(alignment: .center, spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+              Text(store.course.title)
+                .font(.system(size: 25, weight: .medium, design: .serif)).tracking(-0.8)
+              Text(
+                [
+                  "Salt air & sweeping bends", "High roads & brave attacks",
+                  "One last ride into the sun",
+                ][store.course.rawValue]
+              )
+              .font(.system(size: 11, weight: .medium))
+              .foregroundStyle(Ink.navy.opacity(0.68))
+            }
+            Spacer(minLength: 0)
+            VStack(spacing: 2) {
+              CourseTrace(course: store.course).frame(width: 65, height: 29)
+              Text("\(Int(store.course.length)) M")
+                .font(.system(size: 10, weight: .bold, design: .monospaced)).tracking(1)
+            }
+          }
           HStack {
             Text(
-              store.best(for: store.course).map { "PERSONAL BEST  \($0.timeLabel)" }
-                ?? "YOUR FIRST FINISH IS WAITING"
+              store.best(for: store.course).map { "BEST  \($0.timeLabel)" }
+                ?? "MAKE YOUR FIRST MARK"
             )
             .font(.system(size: 10, weight: .bold, design: .monospaced))
             Spacer()
@@ -127,12 +155,13 @@ struct PelotonView: View {
           }
           primary("RIDE THE COAST", icon: "arrow.right", id: "startRace") { store.start() }
         }
-        .padding(18)
-        .background(Ink.cream)
-        .padding(.horizontal, -8)
+        .padding(20)
+        .background(Ink.cream, in: RoundedRectangle(cornerRadius: 18))
+        .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(.white.opacity(0.7)))
+        .shadow(color: Ink.navy.opacity(0.18), radius: 24, x: 0, y: 10)
         .padding(.bottom, 8)
       }
-      .padding(.horizontal, 24)
+      .padding(.horizontal, 22)
     }
   }
 
@@ -147,45 +176,66 @@ struct PelotonView: View {
             }
           })
       VStack(spacing: 12) {
-        HStack(alignment: .center, spacing: 12) {
-          HStack(alignment: .firstTextBaseline, spacing: 0) {
-            Text("\(store.race.rank)").font(.system(size: 46, weight: .black, design: .serif))
-            Text("/4").font(.system(size: 17, weight: .bold))
-          }
-          .accessibilityLabel("Position \(store.race.rank) of 4")
-          Rectangle().fill(Ink.navy.opacity(0.2)).frame(width: 1, height: 38)
-          VStack(alignment: .leading, spacing: 5) {
+        VStack(spacing: 8) {
+          HStack {
+            RaceStripe()
             eyebrow(store.course.title.uppercased())
-            Text(String(format: "%05.1f", store.race.elapsed) + "  /  \(store.race.remaining)m")
-              .font(.system(size: 15, weight: .bold, design: .monospaced))
-              .contentTransition(.numericText())
+            Spacer()
+            Button {
+              store.pause()
+            } label: {
+              Image(systemName: "pause.fill").font(.system(size: 13))
+                .frame(width: 44, height: 44)
+                .background(Ink.cream.opacity(0.08), in: Circle())
+            }
+            .accessibilityLabel("Pause race")
+            .accessibilityIdentifier("pauseRace")
           }
-          Spacer(minLength: 0)
-          Button {
-            store.pause()
-          } label: {
-            Image(systemName: "pause.fill").font(.system(size: 18))
-              .frame(width: 44, height: 44)
+          HStack(alignment: .firstTextBaseline, spacing: 18) {
+            VStack(alignment: .leading, spacing: 2) {
+              HStack(alignment: .firstTextBaseline, spacing: 2) {
+                Text("\(store.race.rank)")
+                  .font(.system(size: 37, weight: .medium, design: .serif).italic())
+                Text("/ 4").font(.system(size: 13, weight: .medium))
+                  .foregroundStyle(Ink.cream.opacity(0.5))
+              }
+              eyebrow("POSITION")
+            }
+            .accessibilityLabel("Position \(store.race.rank) of 4")
+            Spacer(minLength: 0)
+            raceMetric(String(format: "%05.1f", store.race.elapsed), "TIME / SEC")
+            Spacer(minLength: 0)
+            raceMetric("\(store.race.remaining)", "METERS LEFT")
           }
-          .accessibilityLabel("Pause race")
-          .accessibilityIdentifier("pauseRace")
+          GeometryReader { geo in
+            ZStack(alignment: .leading) {
+              Capsule().fill(Ink.cream.opacity(0.16))
+              Capsule().fill(Ink.sea).frame(width: geo.size.width * store.race.progress)
+              Circle().fill(Ink.butter).frame(width: 7, height: 7)
+                .offset(x: max(0, (geo.size.width - 7) * store.race.progress))
+            }
+          }.frame(height: 3).padding(.top, 7)
         }
-        .padding(.horizontal, 16).padding(.vertical, 9)
-        .background(Ink.cream)
-        GeometryReader { geo in
-          ZStack(alignment: .leading) {
-            Rectangle().fill(Ink.navy.opacity(0.12))
-            Rectangle().fill(Ink.red).frame(width: geo.size.width * store.race.progress)
-          }
-        }.frame(height: 4).padding(.top, -12)
+        .foregroundStyle(Ink.cream)
+        .padding(.horizontal, 20).padding(.top, 4).padding(.bottom, 18)
+        .background(
+          LinearGradient(
+            colors: [Ink.navy, Ink.navy.opacity(0.95)], startPoint: .topLeading,
+            endPoint: .bottomTrailing),
+          in: RoundedRectangle(cornerRadius: 24)
+        )
+        .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(Ink.cream.opacity(0.18)))
+        .shadow(color: Ink.navy.opacity(0.2), radius: 12, y: 7)
         HStack(spacing: 8) {
           Image(systemName: statusIcon)
           Text(statusTitle).tracking(0.7)
         }
-        .font(.system(size: 11, weight: .heavy))
-        .padding(.horizontal, 15).padding(.vertical, 10)
-        .background(store.race.collisionRemaining > 0 ? Ink.red : Ink.navy, in: Capsule())
-        .foregroundStyle(Ink.cream)
+        .font(.system(size: 9, weight: .bold))
+        .lineLimit(1).minimumScaleFactor(0.8)
+        .padding(.horizontal, 15).padding(.vertical, 11)
+        .background(store.race.collisionRemaining > 0 ? Ink.red : Ink.cream, in: Capsule())
+        .foregroundStyle(store.race.collisionRemaining > 0 ? Ink.cream : Ink.navy)
+        .shadow(color: Ink.navy.opacity(0.12), radius: 8, y: 3)
         .accessibilityIdentifier("raceStatus")
         Spacer()
         if store.race.attackReady {
@@ -197,6 +247,15 @@ struct PelotonView: View {
         controls
       }
       .padding(.horizontal, 16).padding(.bottom, 8)
+    }
+  }
+
+  private func raceMetric(_ value: String, _ label: String) -> some View {
+    VStack(alignment: .leading, spacing: 6) {
+      Text(value)
+        .font(.system(size: 27, weight: .medium, design: .rounded))
+        .monospacedDigit()
+      eyebrow(label).foregroundStyle(Ink.cream.opacity(0.62))
     }
   }
 
@@ -222,21 +281,25 @@ struct PelotonView: View {
   }
 
   private var controls: some View {
-    VStack(spacing: 12) {
+    VStack(spacing: 14) {
       HStack {
-        eyebrow(store.race.drafting ? "RECHARGING IN THE DRAFT" : "ENERGY")
+        Image(systemName: store.race.drafting ? "wind" : "bolt.heart")
+          .font(.system(size: 12, weight: .medium)).foregroundStyle(Ink.sea)
+        eyebrow(store.race.drafting ? "RECHARGING IN THE DRAFT" : "POWER RESERVE")
         Spacer()
         Text("\(Int(store.race.energy))%").font(
           .system(size: 13, weight: .black, design: .monospaced))
       }
-      GeometryReader { geo in
-        ZStack(alignment: .leading) {
-          Capsule().fill(Ink.navy.opacity(0.10))
-          Capsule().fill(store.race.energy < 28 ? Ink.red : Ink.navy)
-            .frame(width: max(0, geo.size.width * store.race.energy / 100))
+      HStack(spacing: 3) {
+        ForEach(0..<24) { segment in
+          RoundedRectangle(cornerRadius: 1.5)
+            .fill(
+              Double(segment) < store.race.energy / 100 * 24
+                ? (store.race.energy < 28 ? Ink.red : Ink.butter)
+                : Ink.cream.opacity(0.12))
         }
-      }.frame(height: 7).accessibilityLabel("Energy \(Int(store.race.energy)) percent")
-      HStack(spacing: 10) {
+      }.frame(height: 6).accessibilityLabel("Energy \(Int(store.race.energy)) percent")
+      HStack(spacing: 12) {
         laneButton(-1)
         Group {
           if tapSprint {
@@ -269,9 +332,14 @@ struct PelotonView: View {
           : "HOLD TO SPRINT  ·  ARROWS OR SWIPE TO STEER"
       )
       .font(.system(size: 8, weight: .bold)).tracking(0.5)
+      .foregroundStyle(Ink.cream.opacity(0.62))
       .lineLimit(1).minimumScaleFactor(0.8)
     }
-    .padding(16).background(Ink.cream)
+    .foregroundStyle(Ink.cream)
+    .padding(18)
+    .background(Ink.navy, in: RoundedRectangle(cornerRadius: 28))
+    .overlay(RoundedRectangle(cornerRadius: 28).strokeBorder(Ink.cream.opacity(0.18)))
+    .shadow(color: Ink.navy.opacity(0.24), radius: 16, y: 8)
   }
 
   private var sprintLabel: some View {
@@ -282,10 +350,19 @@ struct PelotonView: View {
         .lineLimit(1).minimumScaleFactor(0.8)
     }
     .font(.system(size: 15, weight: .black))
-    .frame(maxWidth: .infinity).frame(height: 56)
-    .background(store.race.sprintHeld ? Ink.navy : Ink.red)
+    .frame(maxWidth: .infinity).frame(height: 58)
+    .background(
+      LinearGradient(
+        colors: store.race.exhausted
+          ? [Ink.road, Ink.road]
+          : [store.race.sprintHeld ? Ink.red : Ink.red.opacity(0.95), Ink.red.opacity(0.72)],
+        startPoint: .top, endPoint: .bottom),
+      in: Capsule()
+    )
+    .overlay(Capsule().strokeBorder(Ink.cream.opacity(0.28), lineWidth: 1))
+    .shadow(color: .black.opacity(0.2), radius: 0, y: store.race.sprintHeld ? 1 : 4)
     .foregroundStyle(Ink.cream)
-    .contentShape(Rectangle())
+    .contentShape(Capsule())
   }
 
   private func laneButton(_ direction: Int) -> some View {
@@ -293,9 +370,10 @@ struct PelotonView: View {
       store.move(direction)
     } label: {
       Image(systemName: direction < 0 ? "arrow.left" : "arrow.right")
-        .font(.system(size: 22, weight: .medium))
-        .frame(width: 52, height: 56)
-        .background(Ink.navy.opacity(0.08))
+        .font(.system(size: 19, weight: .medium))
+        .frame(width: 54, height: 58)
+        .background(Ink.cream.opacity(0.08), in: Capsule())
+        .overlay(Capsule().strokeBorder(Ink.cream.opacity(0.16)))
     }
     .accessibilityLabel(direction < 0 ? "Move left" : "Move right")
     .accessibilityIdentifier(direction < 0 ? "moveLeft" : "moveRight")
@@ -358,7 +436,11 @@ struct PelotonView: View {
       Ink.navy.opacity(0.68).ignoresSafeArea()
       ScrollView {
         VStack(alignment: .leading, spacing: 20, content: content)
-          .padding(26).background(Ink.cream).padding(22)
+          .padding(26)
+          .background(Ink.cream, in: RoundedRectangle(cornerRadius: 26))
+          .overlay(alignment: .topLeading) { RaceStripe().padding(.leading, 26).padding(.top, 12) }
+          .shadow(color: Ink.navy.opacity(0.25), radius: 30, y: 16)
+          .padding(22)
       }
       .fixedSize(horizontal: false, vertical: true)
     }
@@ -376,7 +458,9 @@ struct PelotonView: View {
         Text(result.headline).font(.system(size: 42, weight: .black, design: .serif)).tracking(-1.7)
           .minimumScaleFactor(0.7).lineLimit(1)
         RacePoster(result: result, compact: true)
-          .frame(height: 330).clipped()
+          .frame(height: 330)
+          .clipShape(RoundedRectangle(cornerRadius: 18))
+          .shadow(color: Ink.navy.opacity(0.15), radius: 15, y: 8)
           .accessibilityLabel(
             "\(ordinal(result.rank)) place, \(result.timeLabel), gap \(result.gapLabel)")
         HStack(alignment: .top) {
@@ -409,14 +493,14 @@ struct PelotonView: View {
           } label: {
             Label("Share poster", systemImage: "square.and.arrow.up")
               .font(.system(size: 14, weight: .bold)).frame(maxWidth: .infinity, minHeight: 48)
-              .background(Ink.navy.opacity(0.07))
+              .background(Ink.navy.opacity(0.06), in: Capsule())
           }.accessibilityIdentifier("shareResult")
           Button {
             store.screen = .home
           } label: {
             Label("Clubhouse", systemImage: "house")
               .font(.system(size: 14, weight: .bold)).frame(maxWidth: .infinity, minHeight: 48)
-              .background(Ink.navy.opacity(0.07))
+              .background(Ink.navy.opacity(0.06), in: Capsule())
           }.accessibilityIdentifier("backHome")
         }
       }.padding(24)
@@ -488,7 +572,15 @@ struct PelotonView: View {
       }
       .font(.system(size: 13, weight: .heavy))
       .padding(.horizontal, 20).frame(height: 54)
-      .background(Ink.red).foregroundStyle(Ink.cream)
+      .background(
+        LinearGradient(
+          colors: [Ink.red, Ink.red.opacity(0.9)], startPoint: .topLeading,
+          endPoint: .bottomTrailing),
+        in: Capsule()
+      )
+      .overlay(Capsule().strokeBorder(.white.opacity(0.22)))
+      .shadow(color: Ink.red.opacity(0.2), radius: 8, y: 4)
+      .foregroundStyle(Ink.cream)
     }
     .accessibilityIdentifier(id)
   }
@@ -508,32 +600,48 @@ struct RacePoster: View {
   var compact = false
 
   var body: some View {
-    GeometryReader { geo in
+    GeometryReader { geometry in
       ZStack {
-        CoastArtwork(race: RaceState(course: result.course), hero: true, reducedMotion: true)
+        CoastalCover()
         LinearGradient(
-          colors: [Ink.navy.opacity(0.94), Ink.navy.opacity(0.20), .clear],
-          startPoint: .topLeading, endPoint: .bottomTrailing)
-        VStack(alignment: .leading, spacing: compact ? 4 : 12) {
-          Text("POCKET PELOTON   /   RACE CLUB")
-            .font(.system(size: compact ? 8 : 13, weight: .heavy)).tracking(2)
-          HStack(alignment: .firstTextBaseline, spacing: 0) {
-            Text("\(result.rank)")
-              .font(.system(size: compact ? 104 : 190, weight: .black, design: .serif))
-              .tracking(-8)
-            Text(["", "ST", "ND", "RD", "TH"][result.rank])
-              .font(.system(size: compact ? 25 : 44, weight: .black, design: .serif))
+          colors: [Ink.cream.opacity(0.8), .clear, Ink.navy.opacity(0.2)],
+          startPoint: .top, endPoint: .bottom)
+        VStack(alignment: .leading, spacing: compact ? 10 : 22) {
+          HStack {
+            ClubEmblem(size: compact ? 25 : 42)
+            Text("POCKET PELOTON")
+              .font(.system(size: compact ? 9 : 16, weight: .bold)).tracking(2)
+            Spacer()
+            RaceStripe()
           }
-          .foregroundStyle(Ink.butter)
-          Text(result.course.title.uppercased())
-            .font(.system(size: compact ? 12 : 24, weight: .black)).tracking(1)
+          VStack(alignment: .leading, spacing: compact ? 8 : 16) {
+            Text(result.course.title)
+              .font(.system(size: compact ? 26 : 47, weight: .medium, design: .serif).italic())
+              .tracking(-1)
+            Text("COAST SERIES  /  FINISH No. 0\(result.course.rawValue + 1)")
+              .font(.system(size: compact ? 7 : 11, weight: .bold)).tracking(1.5)
+          }
+          ZStack {
+            Circle().fill(Ink.navy)
+            Circle().strokeBorder(Ink.butter.opacity(0.7), lineWidth: 1).padding(5)
+            HStack(alignment: .firstTextBaseline, spacing: 1) {
+              Text("\(result.rank)")
+                .font(.system(size: compact ? 43 : 77, weight: .medium, design: .serif).italic())
+              Text(["", "ST", "ND", "RD", "TH"][result.rank])
+                .font(.system(size: compact ? 11 : 18, weight: .bold, design: .serif))
+            }
+            .foregroundStyle(Ink.butter)
+          }
+          .frame(width: compact ? 85 : 154, height: compact ? 85 : 154)
+          .rotationEffect(.degrees(-8))
+          .shadow(color: Ink.navy.opacity(0.18), radius: 10, y: 5)
           Spacer()
           HStack(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 3) {
               Text("FINISH TIME").font(.system(size: compact ? 8 : 11, weight: .heavy)).tracking(
                 1.5)
               Text(result.timeLabel).font(
-                .system(size: compact ? 29 : 56, weight: .black, design: .serif))
+                .system(size: compact ? 29 : 56, weight: .medium, design: .serif))
             }
             Spacer()
             VStack(alignment: .trailing, spacing: 3) {
@@ -543,17 +651,21 @@ struct RacePoster: View {
                 .font(.system(size: compact ? 23 : 42, weight: .bold, design: .serif))
             }
           }
-          .padding(compact ? 13 : 22)
+          .foregroundStyle(Ink.cream)
+          .padding(compact ? 15 : 26)
           .background(Ink.navy)
-          .padding(compact ? -8 : -12)
+          .padding(.horizontal, compact ? -18 : -36)
+          .padding(.bottom, compact ? -18 : -36)
         }
-        .padding(compact ? 22 : 42)
-        .foregroundStyle(Ink.cream)
+        .padding(compact ? 18 : 36)
+        .foregroundStyle(Ink.navy)
         if !compact {
-          Text("LITTLE ROADS. LEGENDARY FINISHES.")
-            .font(.system(size: 12, weight: .bold)).tracking(2)
+          Text("RIDE WELL. FINISH BEAUTIFULLY.")
+            .font(.system(size: 10, weight: .bold)).tracking(2)
+            .padding(.horizontal, 16).padding(.vertical, 10)
+            .background(Ink.cream)
             .rotationEffect(.degrees(-90))
-            .position(x: geo.size.width - 25, y: geo.size.height * 0.46)
+            .position(x: geometry.size.width - 24, y: geometry.size.height * 0.46)
             .foregroundStyle(Ink.navy)
         }
       }
