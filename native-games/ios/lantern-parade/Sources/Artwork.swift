@@ -158,6 +158,7 @@ struct TownMap: View {
   var procession: Double = 0
   var hint = false
   var decorative = false
+  var nextSteps: Set<Tile> = []
 
   var body: some View {
     Canvas { context, size in
@@ -168,11 +169,27 @@ struct TownMap: View {
         for x in 0..<puzzle.size - 1 {
           let p = geo.point(Tile(x: x, y: y))
           let seed = x * 13 + y * 7
+          let narrow = seed % 3 == 1
           Art.roof(
             &context,
             rect: CGRect(
-              x: p.x + step * 0.22, y: p.y + step * 0.24, width: step * 0.56, height: step * 0.48),
+              x: p.x + step * (narrow ? 0.31 : 0.2), y: p.y + step * (seed % 2 == 0 ? 0.22 : 0.32),
+              width: step * (narrow ? 0.4 : 0.58), height: step * (narrow ? 0.57 : 0.4)),
             seed: seed, lit: lit || (route.contains(Tile(x: x, y: y)) && seed % 2 == 0))
+          if seed % 4 == 1 {
+            Art.line(
+              &context, from: CGPoint(x: p.x + step * 0.22, y: p.y + step * 0.74),
+              to: CGPoint(x: p.x + step * 0.72, y: p.y + step * 0.74),
+              color: Ink.gold.opacity(0.25), width: 1)
+            for i in 0..<3 {
+              context.fill(
+                Path(
+                  CGRect(
+                    x: p.x + step * (0.25 + Double(i) * 0.18), y: p.y + step * 0.76, width: 3,
+                    height: 4)),
+                with: .color([Ink.gold, Ink.rose, Ink.jade][i].opacity(0.45)))
+            }
+          }
           if seed % 3 == 0 {
             Art.blossom(
               &context, at: CGPoint(x: p.x + step * 0.8, y: p.y + step * 0.72), scale: step * 0.16)
@@ -197,6 +214,14 @@ struct TownMap: View {
           context.fill(
             Path(ellipseIn: CGRect(x: p.x - 3.5, y: p.y - 3.5, width: 7, height: 7)),
             with: .color(Ink.muted.opacity(0.4)))
+          if nextSteps.contains(tile) {
+            context.stroke(
+              Path(ellipseIn: CGRect(x: p.x - 8, y: p.y - 8, width: 16, height: 16)),
+              with: .color(Ink.gold.opacity(0.55)), lineWidth: 1)
+            context.fill(
+              Path(ellipseIn: CGRect(x: p.x - 3, y: p.y - 3, width: 6, height: 6)),
+              with: .color(Ink.gold.opacity(0.8)))
+          }
         }
       }
       if hint {
@@ -236,19 +261,19 @@ struct TownMap: View {
       for (tile, gate) in puzzle.gates {
         let p = geo.point(tile)
         let open = route.compactMap { puzzle.lanterns[$0] }.contains(gate)
-        let color = gate.ink.opacity(open ? 0.4 : 1)
+        let color = gate.ink.opacity(open ? 0.75 : 1)
         for x in [-1.0, 1.0] {
           Art.line(
-            &context, from: CGPoint(x: p.x + x * 10, y: p.y - 9),
-            to: CGPoint(x: p.x + x * 10, y: p.y + 10), color: color, width: 3)
+            &context, from: CGPoint(x: p.x + x * (open ? 14 : 10), y: p.y - 9),
+            to: CGPoint(x: p.x + x * (open ? 14 : 10), y: p.y + 10), color: color, width: 3)
         }
         Art.line(
-          &context, from: CGPoint(x: p.x - 14, y: p.y - 10),
-          to: CGPoint(x: p.x + 14, y: p.y - 10), color: color, width: 4)
+          &context, from: CGPoint(x: p.x - 18, y: p.y - (open ? 16 : 10)),
+          to: CGPoint(x: p.x + 18, y: p.y - (open ? 16 : 10)), color: color, width: 4)
         context.draw(
           Text(Image(systemName: open ? "checkmark" : gate.symbol)).font(.system(size: 9))
             .foregroundColor(color),
-          at: CGPoint(x: p.x, y: p.y + 1))
+          at: CGPoint(x: p.x, y: p.y + (open ? -25 : 1)))
       }
       for (tile, lantern) in puzzle.lanterns {
         let p = geo.point(tile)
@@ -321,6 +346,7 @@ struct TownMap: View {
 
 struct GoldButtonStyle: ButtonStyle {
   var secondary = false
+  @Environment(\.isEnabled) private var isEnabled
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .font(.system(size: 16, weight: .semibold))
@@ -331,7 +357,65 @@ struct GoldButtonStyle: ButtonStyle {
         RoundedRectangle(cornerRadius: 18).stroke(
           Ink.gold.opacity(secondary ? 0.2 : 0), lineWidth: 1)
       )
-      .opacity(configuration.isPressed ? 0.7 : 1)
+      .opacity(!isEnabled ? 0.35 : configuration.isPressed ? 0.7 : 1)
+  }
+}
+
+struct FestivalVignette: View {
+  var body: some View {
+    Canvas { context, size in
+      let w = size.width
+      let h = size.height
+      var river = Path()
+      river.move(to: CGPoint(x: -20, y: h * 0.84))
+      river.addCurve(
+        to: CGPoint(x: w + 20, y: h * 0.3),
+        control1: CGPoint(x: w * 0.4, y: h * 0.7),
+        control2: CGPoint(x: w * 0.55, y: h * 0.38))
+      context.stroke(river, with: .color(Ink.jade.opacity(0.045)), lineWidth: 42)
+      context.stroke(river, with: .color(Ink.jade.opacity(0.1)), lineWidth: 1)
+      for index in 0..<27 {
+        let row = index / 7
+        let col = index % 7
+        let x = CGFloat(col) * w * 0.14 + CGFloat(row % 2) * 17 - 5
+        let y = h * 0.25 + CGFloat(row) * h * 0.155 + sin(Double(col) * 0.8) * 12
+        let width = w * (index % 3 == 0 ? 0.13 : 0.11)
+        Art.roof(
+          &context, rect: CGRect(x: x, y: y, width: width, height: width * 0.86), seed: index,
+          lit: index % 3 == 0)
+        if index % 4 == 0 {
+          Art.blossom(&context, at: CGPoint(x: x + width, y: y + width * 0.8), scale: 10)
+        }
+      }
+      var ribbon = Path()
+      ribbon.move(to: CGPoint(x: w * 0.1, y: h * 0.88))
+      ribbon.addCurve(
+        to: CGPoint(x: w * 0.87, y: h * 0.5),
+        control1: CGPoint(x: w * 0.13, y: h * 0.51),
+        control2: CGPoint(x: w * 0.65, y: h * 0.96))
+      context.stroke(ribbon, with: .color(Ink.gold.opacity(0.13)), lineWidth: 14)
+      context.stroke(
+        ribbon, with: .color(Ink.gold.opacity(0.85)),
+        style: StrokeStyle(lineWidth: 2, lineCap: .round))
+      for strand in 0..<2 {
+        var wire = Path()
+        wire.move(to: CGPoint(x: -15, y: h * (0.06 + Double(strand) * 0.11)))
+        wire.addQuadCurve(
+          to: CGPoint(x: w + 15, y: h * (0.03 + Double(strand) * 0.09)),
+          control: CGPoint(x: w * 0.55, y: h * (0.3 + Double(strand) * 0.13)))
+        context.stroke(wire, with: .color(Ink.gold.opacity(0.25)), lineWidth: 1)
+        for i in 0..<6 {
+          let t = Double(i + 1) / 7
+          let y =
+            pow(1 - t, 2) * h * (0.06 + Double(strand) * 0.11)
+            + 2 * (1 - t) * t * h * (0.3 + Double(strand) * 0.13)
+            + t * t * h * (0.03 + Double(strand) * 0.09)
+          Art.lantern(
+            &context, at: CGPoint(x: t * (w + 30) - 15, y: y + 8),
+            radius: strand == 0 ? 6 : 4, color: [Ink.gold, Ink.rose, Ink.gold][i % 3])
+        }
+      }
+    }.accessibilityHidden(true)
   }
 }
 

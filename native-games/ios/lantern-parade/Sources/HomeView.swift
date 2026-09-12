@@ -41,9 +41,7 @@ struct HomeView: View {
               }.padding(.trailing, 8)
             }.padding(.top, 16)
             ZStack {
-              TownMap(
-                puzzle: Towns.all[0], route: Towns.all[0].solution,
-                procession: 0.6, decorative: true)
+              FestivalVignette()
               VStack {
                 Spacer()
                 HStack(spacing: 8) {

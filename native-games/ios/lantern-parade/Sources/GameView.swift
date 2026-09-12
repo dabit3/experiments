@@ -25,6 +25,17 @@ struct GameView: View {
   }
 
   private var colors: [LanternColor] { parade.collected(in: puzzle) }
+  private var nextSteps: Set<Tile> {
+    guard let head = parade.route.last, !parade.completed else { return [] }
+    return Set(
+      [
+        Tile(x: head.x - 1, y: head.y), Tile(x: head.x + 1, y: head.y),
+        Tile(x: head.x, y: head.y - 1), Tile(x: head.x, y: head.y + 1),
+      ].filter {
+        (0..<puzzle.size).contains($0.x) && (0..<puzzle.size).contains($0.y)
+          && !parade.route.contains($0) && parade.rejection(for: $0, in: puzzle) == nil
+      })
+  }
   private var chapter: String {
     if puzzle.id.hasPrefix("daily") { return "Daily light · \(String(puzzle.id.dropFirst(6)))" }
     return
@@ -43,7 +54,7 @@ struct GameView: View {
                 Text(puzzle.title).font(.system(size: 32, design: .serif))
                   .foregroundStyle(Ink.cream).minimumScaleFactor(0.7).lineLimit(1)
                 Spacer()
-                Text("PAR \(puzzle.par)").font(.system(size: 11, design: .monospaced))
+                Text("PAR \(puzzle.par)").font(.system(size: 12, design: .monospaced))
                   .foregroundStyle(Ink.muted)
               }.padding(.top, 18)
               Text(puzzle.subtitle).font(.system(size: 12)).foregroundStyle(Ink.muted)
@@ -62,23 +73,29 @@ struct GameView: View {
                 Text(parade.completed ? "The town is coming to life…" : notice)
                   .foregroundStyle(Ink.cream)
               }
-              .font(.system(size: 12)).multilineTextAlignment(.center)
+              .font(.system(size: 14)).multilineTextAlignment(.center)
               .frame(minHeight: 38)
               .accessibilityIdentifier("route-notice")
               .padding(.horizontal, 4)
               HStack {
                 Label("\(parade.route.count - 1) steps", systemImage: "shoeprints.fill")
                 Spacer()
-                Text("A single, unbroken ribbon")
-              }.font(.system(size: 10, design: .monospaced)).foregroundStyle(Ink.muted).padding(
+                Text("Keep the ribbon together")
+              }.font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.muted).padding(
                 .top, 14)
               Divider().overlay(Ink.muted.opacity(0.1)).padding(.vertical, 16)
-              controls
+              if parade.completed {
+                Label("The procession is on its way", systemImage: "sparkles")
+                  .font(.system(size: 16, design: .serif)).foregroundStyle(Ink.gold).frame(
+                    height: 54)
+              } else {
+                controls
+              }
               HStack(spacing: 16) {
                 Label("Start", systemImage: "flag.fill")
                 Label("Gate", systemImage: "door.left.hand.closed")
                 Label("Square", systemImage: "sparkles")
-              }.font(.system(size: 10)).foregroundStyle(Ink.muted)
+              }.font(.system(size: 12)).foregroundStyle(Ink.muted)
                 .padding(.top, 20).padding(.bottom, 22)
             }.padding(.horizontal, 24)
           }
@@ -143,13 +160,13 @@ struct GameView: View {
               .font(.system(size: 12)).foregroundStyle(color.ink)
           }
           VStack(alignment: .leading, spacing: 2) {
-            Text("\(color.rawValue + 1)  \(color.name)").font(.system(size: 11, weight: .semibold))
+            Text("\(color.rawValue + 1)  \(color.name)").font(.system(size: 12, weight: .semibold))
               .foregroundStyle(Ink.cream)
             Text(
               colors.contains(color)
                 ? "collected" : (colors.count == color.rawValue ? "collect next" : "then collect")
             )
-            .font(.system(size: 9)).foregroundStyle(Ink.muted)
+            .font(.system(size: 11)).foregroundStyle(Ink.muted)
           }
         }.frame(maxWidth: .infinity, alignment: .leading)
           .accessibilityElement(children: .combine)
@@ -169,7 +186,8 @@ struct GameView: View {
           let elapsed = celebrationStart.map { timeline.date.timeIntervalSince($0) } ?? 0
           TownMap(
             puzzle: puzzle, route: parade.route, celebrating: parade.completed,
-            procession: reduceMotion ? 1 : min(elapsed / 3.8, 1), hint: showingHint
+            procession: reduceMotion ? 1 : min(elapsed / 3.8, 1), hint: showingHint,
+            nextSteps: nextSteps
           )
           .onChange(of: elapsed > 4.8) { _, done in
             if done { withAnimation { showingResult = true } }
@@ -269,7 +287,9 @@ struct GameView: View {
       progress.feedback()
       if let color = puzzle.lanterns[tile] {
         notice =
-          "\(color.name) joins the parade. \(colors.count == 3 ? "Bring them to the square." : "Keep the ribbon together.")"
+          "\(color.name) joins! \(colors.count == 3 ? "Bring every light to the square." : "The \(color.name) gate is open.")"
+      } else if let color = puzzle.gates[tile] {
+        notice = "Through the \(color.name) gate. The parade stays together."
       } else if colors.count == 3 {
         notice = "All three lights! Lead them to the festival square."
       } else {
@@ -316,8 +336,17 @@ struct GameView: View {
       Eyebrow(text: "Carry the light")
       Text("One unbroken parade.")
         .font(.system(size: 28, design: .serif)).foregroundStyle(Ink.cream)
+      HStack(spacing: 8) {
+        Image(systemName: "flag.fill")
+        Image(systemName: "arrow.right")
+        Image(systemName: "1.circle.fill")
+        Image(systemName: "arrow.right")
+        Image(systemName: "door.left.hand.open")
+        Image(systemName: "arrow.right")
+        Image(systemName: "sparkles")
+      }.font(.system(size: 18)).foregroundStyle(Ink.gold).accessibilityHidden(true)
       VStack(alignment: .leading, spacing: 16) {
-        tutorialLine("hand.draw", "Draw along the streets, or tap neighboring lights.")
+        tutorialLine("hand.draw", "Draw along the streets, or tap adjacent street junctions.")
         tutorialLine(
           "1.circle", "Collect Amber, Rose, then Jade. Each color opens its matching gate.")
         tutorialLine(
@@ -406,7 +435,7 @@ struct ResultView: View {
             Text(
               "\(parade.route.count - 1) STEPS  ·  \(parade.mistakes) MISSTEPS  ·  \(parade.hints) GUIDES"
             )
-            .font(.system(size: 10, design: .monospaced)).tracking(1).foregroundStyle(Ink.muted)
+            .font(.system(size: 12, design: .monospaced)).foregroundStyle(Ink.muted)
             Text(
               parade.stars(in: puzzle) == 3
                 ? "A perfect ribbon. A radiant square."
@@ -426,17 +455,13 @@ struct ResultView: View {
                 .accessibilityIdentifier("result-home")
             }
             Text("BEST  \(progress.best[puzzle.id] ?? 0) / 3 STARS · SAVED ON THIS IPHONE")
-              .font(.system(size: 9, design: .monospaced)).foregroundStyle(Ink.muted)
+              .font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.muted)
           }.padding(.horizontal, 24).padding(.bottom, 24)
         }
       }
     }
     .sheet(item: $share) { payload in
-      ActivitySheet(
-        image: payload.image,
-        text:
-          "I illuminated \(puzzle.title) in Lantern Parade — \(parade.stars(in: puzzle))/3 stars, \(parade.route.count - 1) steps. One ribbon. A thousand little lights."
-      )
+      PosterPreview(image: payload.image, title: puzzle.title)
     }
     .alert("Couldn’t prepare the poster", isPresented: $shareError) {
       Button("OK", role: .cancel) {}
@@ -485,11 +510,31 @@ struct SharePayload: Identifiable {
   let image: UIImage
 }
 
-struct ActivitySheet: UIViewControllerRepresentable {
+struct PosterPreview: View {
   let image: UIImage
-  let text: String
-  func makeUIViewController(context: Context) -> UIActivityViewController {
-    UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
+  let title: String
+  @Environment(\.dismiss) private var dismiss
+  var body: some View {
+    NavigationStack {
+      ZStack {
+        Ink.night.ignoresSafeArea()
+        VStack(spacing: 18) {
+          Image(uiImage: image).resizable().scaledToFit()
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .accessibilityLabel(
+              "Lantern Parade poster showing the completed route through \(title)")
+          ShareLink(
+            item: Image(uiImage: image),
+            subject: Text("Lantern Parade · \(title)"),
+            message: Text("I brought \(title) to life. One ribbon. A thousand little lights."),
+            preview: SharePreview("Lantern Parade · \(title)", image: Image(uiImage: image))
+          ) {
+            Label("Share poster", systemImage: "square.and.arrow.up")
+          }.buttonStyle(GoldButtonStyle()).accessibilityIdentifier("share-poster")
+        }.padding(24)
+      }
+      .navigationTitle("Your festival poster").navigationBarTitleDisplayMode(.inline)
+      .toolbar { Button("Done") { dismiss() }.accessibilityIdentifier("close-poster") }
+    }
   }
-  func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }
