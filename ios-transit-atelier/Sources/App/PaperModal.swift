@@ -39,12 +39,13 @@ struct PaperModal<Content: View>: View {
             ViewThatFits(in: .vertical) {
               content().padding(26)
               ScrollView { content().padding(26) }
+                .frame(height: max(120, geometry.size.height - 44 - (dismiss == nil ? 4 : 49)))
             }
           }
-          .frame(maxHeight: max(120, geometry.size.height - 44))
         }
         .frame(maxWidth: 420)
         .padding(.horizontal, 18)
+        .padding(.vertical, 22)
         .scaleEffect(revealed || reduceMotion ? 1 : 0.94)
         .opacity(revealed || reduceMotion ? 1 : 0)
       }

@@ -180,24 +180,27 @@ struct AtelierView: View {
   private let timer = Timer.publish(every: 1.0 / 30, on: .main, in: .common).autoconnect()
 
   var body: some View {
-    ZStack {
-      Ink.header.ignoresSafeArea()
-      if let game = desk.game {
-        gameView(game)
-      } else {
-        titleView
-      }
-      if desk.showGuide {
-        PaperModal(title: "FIELD GUIDE", dismiss: { desk.showGuide = false }) { guide }
-      } else if let game = desk.game {
-        if game.isOver, !showNetwork {
-          PaperModal { result(game) }
-        } else if game.upgradePending, showInvestment {
-          PaperModal(title: "CITY INVESTMENT", dismiss: { showInvestment = false }) {
-            upgrade(game)
+    GeometryReader { geometry in
+      ZStack {
+        Ink.header.ignoresSafeArea()
+        if let game = desk.game {
+          gameView(game)
+        } else {
+          titleView
+        }
+        if desk.showGuide {
+          PaperModal(title: "FIELD GUIDE", dismiss: { desk.showGuide = false }) { guide }
+        } else if let game = desk.game {
+          if game.isOver, !showNetwork {
+            PaperModal { result(game, compact: geometry.size.height < 700) }
+          } else if game.upgradePending, showInvestment {
+            PaperModal(title: "CITY INVESTMENT", dismiss: { showInvestment = false }) {
+              upgrade(game)
+            }
           }
         }
       }
+      .frame(width: geometry.size.width, height: geometry.size.height)
     }
     .foregroundStyle(Ink.navy)
     .onReceive(timer) { _ in desk.tick() }
@@ -723,11 +726,11 @@ struct AtelierView: View {
 
   // MARK: Results
 
-  private func result(_ game: TransitSimulation) -> some View {
-    VStack(alignment: .leading, spacing: 16) {
+  private func result(_ game: TransitSimulation, compact: Bool) -> some View {
+    VStack(alignment: .leading, spacing: compact ? 12 : 16) {
       ZStack(alignment: .topTrailing) {
         MapDrawing(game: game, selected: 0, decorative: true)
-          .frame(height: 118)
+          .frame(height: compact ? 82 : 118)
           .background(Ink.paper)
           .clipShape(RoundedRectangle(cornerRadius: 14))
           .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(Ink.rule, lineWidth: 1))
@@ -740,8 +743,9 @@ struct AtelierView: View {
           .padding(8)
       }
       Eyebrow(game.completed ? "THE LAST TRAIN HOME" : "TIME TO REDRAW", tone: Ink.routes[0])
-      Text(game.completed ? "A city in motion." : "Every city\nis a lesson.")
-        .font(.system(size: 36, design: .serif)).tracking(-1)
+      Text(game.completed ? "A city in motion." : "Every city is a lesson.")
+        .font(.system(size: compact ? 28 : 34, design: .serif)).tracking(-1)
+        .lineLimit(2).minimumScaleFactor(0.8)
       Text(
         game.completed
           ? "Five minutes. Countless connections."
@@ -752,7 +756,7 @@ struct AtelierView: View {
       Line().stroke(Ink.rule, style: StrokeStyle(lineWidth: 1, dash: [3, 3])).frame(height: 1)
       HStack(alignment: .firstTextBaseline, spacing: 12) {
         Text("\(game.delivered)")
-          .font(.system(size: 72, design: .serif))
+          .font(.system(size: compact ? 54 : 68, design: .serif))
           .tracking(-3)
         VStack(alignment: .leading, spacing: 4) {
           Eyebrow("PASSENGERS\nDELIVERED")
@@ -760,28 +764,22 @@ struct AtelierView: View {
             Eyebrow("NEW LOCAL BEST", tone: Ink.gold, size: 7)
           }
         }
-      }
-      HStack {
-        resultStat("LOCAL BEST", value: "\(desk.best(game.city))")
         Spacer()
-        resultStat("NETWORK", value: "\(game.stations.count) stations")
-        Spacer()
-        resultStat("TIME", value: elapsed(game.elapsed))
+        VStack(alignment: .trailing, spacing: 6) {
+          resultStat("LOCAL BEST", value: "\(desk.best(game.city))")
+          resultStat("NETWORK", value: "\(game.stations.count) stations · \(elapsed(game.elapsed))")
+        }
       }
       Line().stroke(Ink.rule, style: StrokeStyle(lineWidth: 1, dash: [3, 3])).frame(height: 1)
-      Button {
-        showNetwork = true
-      } label: {
-        HStack {
-          Image(systemName: "map")
-          Text("Admire your network")
-          Spacer()
-          Image(systemName: "arrow.up.right")
-        }.font(.system(size: 13, weight: .medium)).frame(minHeight: 44)
-      }
       Button("Draw another journey") { desk.start() }.buttonStyle(PaperButton(tone: .coral))
       HStack {
         Button("Choose city") { desk.home() }
+        Spacer()
+        Button {
+          showNetwork = true
+        } label: {
+          Label("Admire network", systemImage: "map")
+        }
         Spacer()
         if let image = postcard(game) {
           ShareLink(
@@ -789,10 +787,12 @@ struct AtelierView: View {
             preview: SharePreview(
               "Transit Atelier · \(game.delivered) delivered", image: image.preview)
           ) {
-            Label("Share journey", systemImage: "square.and.arrow.up")
+            Label("Share", systemImage: "square.and.arrow.up")
           }
         }
-      }.font(.system(size: 12, weight: .medium)).frame(minHeight: 44)
+      }
+      .font(.system(size: 12, weight: .medium))
+      .frame(minHeight: 44)
     }
   }
 
@@ -806,9 +806,9 @@ struct AtelierView: View {
   }
 
   private func resultStat(_ label: String, value: String) -> some View {
-    VStack(alignment: .leading, spacing: 7) {
-      Eyebrow(label)
-      Text(value).font(.system(size: 13, weight: .semibold, design: .monospaced))
+    VStack(alignment: .trailing, spacing: 3) {
+      Eyebrow(label, size: 7)
+      Text(value).font(.system(size: 12, weight: .semibold, design: .monospaced))
     }
   }
 
