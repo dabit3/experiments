@@ -148,11 +148,13 @@ struct PondArt: View {
     tail.addCurve(
       to: CGPoint(x: -0.42, y: 0.067), control1: CGPoint(x: -0.61, y: 0.29),
       control2: CGPoint(x: -0.61, y: 0.08))
-    tail.closeSubpath()
     context.fill(
       tail,
       with: .linearGradient(
-        Gradient(colors: [Ink.pearl.opacity(0.10), pigment.opacity(0.65), Ink.pearl.opacity(0.7)]),
+        Gradient(colors: [
+          Ink.pearl.opacity(0.10), pigment.opacity(0.65),
+          (warm ? pigment : Ink.pearl).opacity(0.85),
+        ]),
         startPoint: CGPoint(x: -0.9, y: 0), endPoint: CGPoint(x: -0.4, y: 0)))
     context.stroke(tail, with: .color(Ink.pearl.opacity(0.38)), lineWidth: 0.003)
     for side in [-1.0, 1.0] {
@@ -200,8 +202,7 @@ struct PondArt: View {
         startPoint: CGPoint(x: 0.1, y: -0.15), endPoint: CGPoint(x: 0.1, y: 0.16)))
     var markings = context
     markings.clip(to: body)
-    for index in 0..<4 {
-      let x = 0.29 - Double(index) * 0.17
+    for x in [0.29, 0.08, -0.12, -0.34] {
       var patch = Path()
       patch.move(to: CGPoint(x: x, y: -0.17))
       patch.addCurve(
@@ -230,9 +231,15 @@ struct PondArt: View {
       to: CGPoint(x: -0.41, y: 0.039), control1: CGPoint(x: 0.13, y: -0.03),
       control2: CGPoint(x: -0.16, y: -0.02))
     context.stroke(spine, with: .color(Ink.pearl.opacity(0.48)), lineWidth: 0.006)
+    var eyes = source
+    eyes.translateBy(x: point.x, y: point.y)
+    eyes.rotate(by: .degrees(angle))
     for side in [-1.0, 1.0] {
-      context.fill(
-        Path(ellipseIn: CGRect(x: 0.367, y: side * 0.055 - 0.0065, width: 0.013, height: 0.013)),
+      eyes.fill(
+        Path(
+          ellipseIn: CGRect(
+            x: 0.367 * length, y: (side * 0.055 - 0.0065) * length,
+            width: 0.013 * length, height: 0.013 * length)),
         with: .color(Ink.background))
     }
     var tailDetail = context
@@ -300,7 +307,7 @@ struct LilyTarget: View {
   var body: some View {
     Button(action: action) {
       ZStack {
-        Circle().fill(Ink.background.opacity(0.84)).frame(width: 106, height: 106)
+        Circle().fill(Ink.background).frame(width: 106, height: 106)
         Circle().stroke(Ink.gold.opacity(active ? 0.9 : 0.42), lineWidth: active ? 1.8 : 0.8).frame(
           width: 100, height: 100)
         ForEach(0..<4) { index in

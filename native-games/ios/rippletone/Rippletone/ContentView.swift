@@ -236,6 +236,8 @@ struct ContentView: View {
               Text(game.feedback)
                 .font(Ink.italic(17))
                 .foregroundStyle(game.feedback == "Let it go" ? Ink.peach : Ink.gold)
+                .padding(.horizontal, 10).padding(.vertical, 3)
+                .background(Ink.background, in: Capsule())
                 .position(x: points[lane].x, y: points[lane].y + 76)
                 .allowsHitTesting(false)
             }
