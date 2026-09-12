@@ -106,7 +106,7 @@ struct RootView: View {
                     .accessibilityHidden(true)
                 HStack(spacing: 8) {
                     Image(systemName: "crown").foregroundStyle(orange)
-                    Text("PERSONAL BEST").tracking(1.7)
+                    Text("ARCADE BEST").tracking(1.7)
                     Text("\(store.best)").foregroundStyle(cream).font(.custom("AvenirNext-DemiBold", size: 14))
                 }
                 .font(.custom("AvenirNext-Medium", size: 10))
@@ -265,7 +265,7 @@ struct RootView: View {
             VStack(alignment: .leading, spacing: 22) {
                 ruleRow("hand.draw", title: "Make your move", text: "Drag a finger through airborne fruit. Each slice earns 10 points.")
                 ruleRow("sparkles", title: "Find a beautiful line", text: "Slice 3 or more fruit quickly in one swipe for a bonus of 5 per fruit.")
-                ruleRow("xmark.circle", title: "Keep your edge", text: "Bombs cost 25 points. Three end your run. Missed fruit cost 2 points.")
+                ruleRow("xmark.circle", title: "Keep your edge", text: "Avoid red-ringed bombs: −25 points. Three end your run. Missed fruit: −2.", showBomb: true)
                 ruleRow("leaf", title: "Or, just unwind", text: "Practice has no bombs, timer or penalties. Finish from the pause menu.")
             }.padding(.vertical, 12)
             actionButton("Let’s slice", subtitle: "YOU HAVE 60 SECONDS", system: "arrow.up.right", primary: true) {
@@ -276,9 +276,15 @@ struct RootView: View {
         }
     }
 
-    private func ruleRow(_ icon: String, title: String, text: String) -> some View {
+    private func ruleRow(_ icon: String, title: String, text: String, showBomb: Bool = false) -> some View {
         HStack(alignment: .top, spacing: 15) {
-            Image(systemName: icon).font(.system(size: 21, weight: .light)).foregroundStyle(orange).frame(width: 26)
+            Group {
+                if showBomb {
+                    Image(uiImage: FruitArt.bomb).resizable().scaledToFit().frame(height: 42)
+                } else {
+                    Image(systemName: icon).font(.system(size: 21, weight: .light)).foregroundStyle(orange)
+                }
+            }.frame(width: 30).accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 4) {
                 Text(title).font(.custom("AvenirNext-DemiBold", size: 14))
                 Text(text).font(.custom("AvenirNext-Regular", size: 12)).foregroundStyle(muted).fixedSize(horizontal: false, vertical: true)

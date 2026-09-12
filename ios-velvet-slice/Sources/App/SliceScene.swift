@@ -206,6 +206,7 @@ final class SliceScene: SKScene {
                 lastSlice = item.node.position
                 split(item)
                 burst(at: item.node.position, color: item.kind.juice, count: 16)
+                label("+10", at: CGPoint(x: item.node.position.x, y: item.node.position.y + 18), color: UIColor(red: 0.88, green: 0.96, blue: 0.83, alpha: 0.85), small: true)
                 store?.sound.play()
             }
             item.node.removeFromParent()
@@ -278,11 +279,12 @@ final class SliceScene: SKScene {
         label.text = text
         label.fontSize = small ? 16 : 19
         label.fontColor = color
-        label.position = CGPoint(x: min(size.width - 90, max(90, point.x)), y: point.y)
+        let inset = label.frame.width / 2 + 12
+        label.position = CGPoint(x: min(size.width - inset, max(inset, point.x)), y: point.y)
         label.zPosition = 40
         addChild(label)
         label.run(.sequence([
-            .group([.moveBy(x: 0, y: 25, duration: 0.9), .sequence([.wait(forDuration: 0.45), .fadeOut(withDuration: 0.45)])]),
+            .group([.moveBy(x: 0, y: 25, duration: small ? 0.65 : 0.9), .sequence([.wait(forDuration: small ? 0.2 : 0.45), .fadeOut(withDuration: 0.45)])]),
             .removeFromParent(),
         ]))
     }
