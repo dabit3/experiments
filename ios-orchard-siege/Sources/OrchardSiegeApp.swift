@@ -423,11 +423,9 @@ struct OrchardView: View {
                   ], center: .center, startRadius: 10, endRadius: 70)
               )
               .frame(width: 140, height: 140)
-            Image(
-              uiImage: UIImage(cgImage: OrchardArt.fruit(result.won ? .apple : .plum).cgImage())
-            )
-            .resizable().scaledToFit().frame(width: 100, height: 111)
-            .shadow(color: Palette.ink.opacity(0.2), radius: 8, y: 6)
+            Image(uiImage: OrchardArt.fruitImage(result.won ? .apple : .plum))
+              .resizable().scaledToFit().frame(width: 100, height: 111)
+              .shadow(color: Palette.ink.opacity(0.2), radius: 8, y: 6)
           }
           .frame(height: 120)
           ResultStars(count: result.stars, reduceMotion: reduceMotion)
@@ -541,7 +539,7 @@ struct OrchardView: View {
   }
 
   private func fruitIcon(_ kind: Fruit, size: CGFloat) -> some View {
-    Image(uiImage: UIImage(cgImage: OrchardArt.fruit(kind).cgImage()))
+    Image(uiImage: OrchardArt.fruitImage(kind))
       .resizable().scaledToFit().frame(width: size, height: size * 1.1)
   }
 

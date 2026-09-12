@@ -4,6 +4,14 @@ import UIKit
 enum OrchardArt {
   static let ink = UIColor(hex: 0x293E32)
   static var cache: [String: SKTexture] = [:]
+  static var imageCache: [Fruit: UIImage] = [:]
+
+  static func fruitImage(_ kind: Fruit) -> UIImage {
+    if let cached = imageCache[kind] { return cached }
+    let result = UIImage(cgImage: fruit(kind).cgImage())
+    imageCache[kind] = result
+    return result
+  }
 
   static func image(size: CGSize, draw: (CGContext) -> Void) -> UIImage {
     let format = UIGraphicsImageRendererFormat()
