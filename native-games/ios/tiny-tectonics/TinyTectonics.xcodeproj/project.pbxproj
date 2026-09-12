@@ -1,0 +1,413 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1C7E8C9763416320B4E954E9 /* Diorama.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C41F5E9781EFF3EA5BB4E56 /* Diorama.swift */; };
+		9EEDDEF1240B1085FE203064 /* TinyTectonicsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0B8D52993BFF9E1DC328EE /* TinyTectonicsApp.swift */; };
+		AF37DB14FEFECC00EC1431E0 /* PuzzleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0CFE05E86A511497A27035 /* PuzzleTests.swift */; };
+		BBB40031C32810E70038163A /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44A8C923C06643B20213A36 /* Puzzle.swift */; };
+		E2F9B1D80E745041F36F54D9 /* Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8C4CE2E45CC6191CB4A667 /* Sharing.swift */; };
+		EEFB1F175D64C56057DDA2E6 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4190892CDE9760078390A7ED /* GameStore.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A747A47D1BA17D47EB7655EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 06CB0815B217FF334EE6F4E4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6700653932C9563FE554042E;
+			remoteInfo = TinyTectonics;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0CAE73E289DF8DE8DB6B4A70 /* TinyTectonics.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TinyTectonics.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0B8D52993BFF9E1DC328EE /* TinyTectonicsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TinyTectonicsApp.swift; sourceTree = "<group>"; };
+		1C8C4CE2E45CC6191CB4A667 /* Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sharing.swift; sourceTree = "<group>"; };
+		4190892CDE9760078390A7ED /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		4C41F5E9781EFF3EA5BB4E56 /* Diorama.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diorama.swift; sourceTree = "<group>"; };
+		71D2BDED608CCF34B2E7BAEC /* TinyTectonicsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TinyTectonicsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0CFE05E86A511497A27035 /* PuzzleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleTests.swift; sourceTree = "<group>"; };
+		D44A8C923C06643B20213A36 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1802CBE69B06D34A131CD214 = {
+			isa = PBXGroup;
+			children = (
+				FB3AAAA29266F086497D3516 /* Sources */,
+				FD34FB13562D7FA57E6A1683 /* Tests */,
+				1E46F0454D976C382510C842 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1E46F0454D976C382510C842 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0CAE73E289DF8DE8DB6B4A70 /* TinyTectonics.app */,
+				71D2BDED608CCF34B2E7BAEC /* TinyTectonicsTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FB3AAAA29266F086497D3516 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4C41F5E9781EFF3EA5BB4E56 /* Diorama.swift */,
+				4190892CDE9760078390A7ED /* GameStore.swift */,
+				D44A8C923C06643B20213A36 /* Puzzle.swift */,
+				1C8C4CE2E45CC6191CB4A667 /* Sharing.swift */,
+				1A0B8D52993BFF9E1DC328EE /* TinyTectonicsApp.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		FD34FB13562D7FA57E6A1683 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				AA0CFE05E86A511497A27035 /* PuzzleTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6700653932C9563FE554042E /* TinyTectonics */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1F3D13E0E34B2C7E520AAB92 /* Build configuration list for PBXNativeTarget "TinyTectonics" */;
+			buildPhases = (
+				EEBF7792917B07C1B169C338 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TinyTectonics;
+			packageProductDependencies = (
+			);
+			productName = TinyTectonics;
+			productReference = 0CAE73E289DF8DE8DB6B4A70 /* TinyTectonics.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E7173DC281E2173576441265 /* TinyTectonicsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 13622BDFF8F7B194CECCC2F6 /* Build configuration list for PBXNativeTarget "TinyTectonicsTests" */;
+			buildPhases = (
+				3A4C3834BF2258255D5EA9D5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3BE41FC91778F1E37607E4F2 /* PBXTargetDependency */,
+			);
+			name = TinyTectonicsTests;
+			packageProductDependencies = (
+			);
+			productName = TinyTectonicsTests;
+			productReference = 71D2BDED608CCF34B2E7BAEC /* TinyTectonicsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		06CB0815B217FF334EE6F4E4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 82725CFAD8601539B0E6C72D /* Build configuration list for PBXProject "TinyTectonics" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 1802CBE69B06D34A131CD214;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1E46F0454D976C382510C842 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6700653932C9563FE554042E /* TinyTectonics */,
+				E7173DC281E2173576441265 /* TinyTectonicsTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3A4C3834BF2258255D5EA9D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF37DB14FEFECC00EC1431E0 /* PuzzleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EEBF7792917B07C1B169C338 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1C7E8C9763416320B4E954E9 /* Diorama.swift in Sources */,
+				EEFB1F175D64C56057DDA2E6 /* GameStore.swift in Sources */,
+				BBB40031C32810E70038163A /* Puzzle.swift in Sources */,
+				E2F9B1D80E745041F36F54D9 /* Sharing.swift in Sources */,
+				9EEDDEF1240B1085FE203064 /* TinyTectonicsApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3BE41FC91778F1E37607E4F2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6700653932C9563FE554042E /* TinyTectonics */;
+			targetProxy = A747A47D1BA17D47EB7655EC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1A76136D31DA89DE4B63A5EF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tiny Tectonics";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit3.tinytectonics;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1C6AEF81C5C5697D503F377E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit3.TinyTectonicsTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinyTectonics.app/TinyTectonics";
+			};
+			name = Debug;
+		};
+		42ABAA5849872A91AC7DDBCA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Tiny Tectonics";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit3.tinytectonics;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4C934527ADE6ECE2958275D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit3.TinyTectonicsTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TinyTectonics.app/TinyTectonics";
+			};
+			name = Release;
+		};
+		6724196403C65D97F4C7B2EF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		9AA05EBA90E79BD0FCCC99FA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		13622BDFF8F7B194CECCC2F6 /* Build configuration list for PBXNativeTarget "TinyTectonicsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C6AEF81C5C5697D503F377E /* Debug */,
+				4C934527ADE6ECE2958275D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		1F3D13E0E34B2C7E520AAB92 /* Build configuration list for PBXNativeTarget "TinyTectonics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A76136D31DA89DE4B63A5EF /* Debug */,
+				42ABAA5849872A91AC7DDBCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		82725CFAD8601539B0E6C72D /* Build configuration list for PBXProject "TinyTectonics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6724196403C65D97F4C7B2EF /* Debug */,
+				9AA05EBA90E79BD0FCCC99FA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 06CB0815B217FF334EE6F4E4 /* Project object */;
+}
