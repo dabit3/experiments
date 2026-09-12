@@ -1,0 +1,342 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6F8A49E3212C1DD13DB92A7F /* finale.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2AC64C312A003DEFA4D7C331 /* finale.wav */; };
+		737A7DF5C7270D648A238D90 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FEA0F14FDB28C00F5F3F5E98 /* Assets.xcassets */; };
+		9F0A1B8641C687C9A3CFCE40 /* GoldenDropApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDA205D3D2F5D685F508FE3 /* GoldenDropApp.swift */; };
+		ACD0CDF2ED272162BD1133B3 /* catch.wav in Resources */ = {isa = PBXBuildFile; fileRef = EAFB40D66D2A59E2242D9DF3 /* catch.wav */; };
+		D7FB1F0E939656751D301091 /* TheaterArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5368B36D3F4302BC4EC6F384 /* TheaterArt.swift */; };
+		DD71EEC281D628A3F7560858 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2ECB75A3A16B8F25C44575 /* GameStore.swift */; };
+		EA3D9CD9146E946240480DE2 /* launch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 30D58113E26B9BB29868DA28 /* launch.wav */; };
+		F3B53C7DFE08AB7C8373489A /* peg.wav in Resources */ = {isa = PBXBuildFile; fileRef = CF3101C37D52FB55C43F9D4D /* peg.wav */; };
+		FE1ED8B34D2A99FBC20BD05B /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C62D1A189A112FBEF9375 /* GameRules.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1A156ADBB92E51DAA461CB17 /* GoldenDrop.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GoldenDrop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AC64C312A003DEFA4D7C331 /* finale.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = finale.wav; sourceTree = "<group>"; };
+		303C62D1A189A112FBEF9375 /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
+		30D58113E26B9BB29868DA28 /* launch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = launch.wav; sourceTree = "<group>"; };
+		5368B36D3F4302BC4EC6F384 /* TheaterArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheaterArt.swift; sourceTree = "<group>"; };
+		5B2ECB75A3A16B8F25C44575 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		CF3101C37D52FB55C43F9D4D /* peg.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = peg.wav; sourceTree = "<group>"; };
+		EAFB40D66D2A59E2242D9DF3 /* catch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = catch.wav; sourceTree = "<group>"; };
+		ECDA205D3D2F5D685F508FE3 /* GoldenDropApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldenDropApp.swift; sourceTree = "<group>"; };
+		FEA0F14FDB28C00F5F3F5E98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		8BF2495A8B2F933B3739DA74 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A156ADBB92E51DAA461CB17 /* GoldenDrop.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A0F7964A46C37987FAB33E19 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FEA0F14FDB28C00F5F3F5E98 /* Assets.xcassets */,
+				EAFB40D66D2A59E2242D9DF3 /* catch.wav */,
+				2AC64C312A003DEFA4D7C331 /* finale.wav */,
+				30D58113E26B9BB29868DA28 /* launch.wav */,
+				CF3101C37D52FB55C43F9D4D /* peg.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E4B5426C877FAA9B27BF1995 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				303C62D1A189A112FBEF9375 /* GameRules.swift */,
+				5B2ECB75A3A16B8F25C44575 /* GameStore.swift */,
+				ECDA205D3D2F5D685F508FE3 /* GoldenDropApp.swift */,
+				5368B36D3F4302BC4EC6F384 /* TheaterArt.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		F4C76463C5FBEDFBB5BA98C8 = {
+			isa = PBXGroup;
+			children = (
+				A0F7964A46C37987FAB33E19 /* Resources */,
+				E4B5426C877FAA9B27BF1995 /* Sources */,
+				8BF2495A8B2F933B3739DA74 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5C4D0B50CF5FD122A7788C1E /* GoldenDrop */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 658C18CD07EFF2229E156119 /* Build configuration list for PBXNativeTarget "GoldenDrop" */;
+			buildPhases = (
+				D5B615DFC59157CB89D36E56 /* Sources */,
+				CE7B2BB3EF7C60A55279CB73 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GoldenDrop;
+			packageProductDependencies = (
+			);
+			productName = GoldenDrop;
+			productReference = 1A156ADBB92E51DAA461CB17 /* GoldenDrop.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AEC9D8C77F6A897149CB9410 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					5C4D0B50CF5FD122A7788C1E = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 7980FD967E16D39EFD02A146 /* Build configuration list for PBXProject "GoldenDrop" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F4C76463C5FBEDFBB5BA98C8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8BF2495A8B2F933B3739DA74 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5C4D0B50CF5FD122A7788C1E /* GoldenDrop */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CE7B2BB3EF7C60A55279CB73 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				737A7DF5C7270D648A238D90 /* Assets.xcassets in Resources */,
+				ACD0CDF2ED272162BD1133B3 /* catch.wav in Resources */,
+				6F8A49E3212C1DD13DB92A7F /* finale.wav in Resources */,
+				EA3D9CD9146E946240480DE2 /* launch.wav in Resources */,
+				F3B53C7DFE08AB7C8373489A /* peg.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D5B615DFC59157CB89D36E56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE1ED8B34D2A99FBC20BD05B /* GameRules.swift in Sources */,
+				DD71EEC281D628A3F7560858 /* GameStore.swift in Sources */,
+				9F0A1B8641C687C9A3CFCE40 /* GoldenDropApp.swift in Sources */,
+				D7FB1F0E939656751D301091 /* TheaterArt.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		387695983753F2EA5AA64CF6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		78EA81C0D29FAF49217B3CDE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BAA97CB80D16258AF6946DE5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.celestial.goldendrop;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		F9B6871CD48A76031941DA9B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				INFOPLIST_FILE = Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.celestial.goldendrop;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		658C18CD07EFF2229E156119 /* Build configuration list for PBXNativeTarget "GoldenDrop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BAA97CB80D16258AF6946DE5 /* Debug */,
+				F9B6871CD48A76031941DA9B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7980FD967E16D39EFD02A146 /* Build configuration list for PBXProject "GoldenDrop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				78EA81C0D29FAF49217B3CDE /* Debug */,
+				387695983753F2EA5AA64CF6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AEC9D8C77F6A897149CB9410 /* Project object */;
+}
