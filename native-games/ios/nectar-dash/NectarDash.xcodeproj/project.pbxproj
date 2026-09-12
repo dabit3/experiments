@@ -1,0 +1,448 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		18CB4E963679D379A3A8B52E /* PlayGardenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B55E48006C1216724803AB /* PlayGardenView.swift */; };
+		27AB410BA6D4B2A37E697C3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CA9D5C1BBCF8188CAFDC947 /* LaunchScreen.storyboard */; };
+		35EB3D47F44A7ACF3D9283FD /* BotanicalArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C98D2E213BADB644FB12D3B /* BotanicalArt.swift */; };
+		46BECC6B302A8437E4E91B0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1894560B54B4CA2A56AF57F /* Assets.xcassets */; };
+		5C9EC04450130DB647EAF9A9 /* GardenStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E3D3C7DE94E1FFE14447C0 /* GardenStoreTests.swift */; };
+		650389C80B403AC50AD9EE58 /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA0FDE5EB7376546D0BAE5F /* GameRules.swift */; };
+		964868426254CA3E59F45D7A /* NectarDashApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA72672057F2BEC8585325A /* NectarDashApp.swift */; };
+		BA6635840E1C2F89FFCC9B0F /* GardenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46252E7B2FEC96CC350B088 /* GardenStore.swift */; };
+		F0ACD0A48FF43038D5A37F8D /* GardenRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 658E1BCC9C3250DA9F3E902E /* GardenRulesTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FE1A7636958C2CBC0D1E6890 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B7B2847EBCE4EED729520A5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 572DD9DE274E363C7809DEAD;
+			remoteInfo = NectarDash;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02B55E48006C1216724803AB /* PlayGardenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayGardenView.swift; sourceTree = "<group>"; };
+		475A30AD9171D5FD00E500D3 /* NectarDash.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NectarDash.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		658E1BCC9C3250DA9F3E902E /* GardenRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenRulesTests.swift; sourceTree = "<group>"; };
+		6C98D2E213BADB644FB12D3B /* BotanicalArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotanicalArt.swift; sourceTree = "<group>"; };
+		707114873601C8DDD1AC111C /* NectarDashTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = NectarDashTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		90E3D3C7DE94E1FFE14447C0 /* GardenStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenStoreTests.swift; sourceTree = "<group>"; };
+		9CA9D5C1BBCF8188CAFDC947 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9DA0FDE5EB7376546D0BAE5F /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
+		B1894560B54B4CA2A56AF57F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D46252E7B2FEC96CC350B088 /* GardenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenStore.swift; sourceTree = "<group>"; };
+		DEA72672057F2BEC8585325A /* NectarDashApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NectarDashApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		7A02C3DA35C41F10E392C13E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				475A30AD9171D5FD00E500D3 /* NectarDash.app */,
+				707114873601C8DDD1AC111C /* NectarDashTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8E5440E79D3E5F2A86D19EFF /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				6C98D2E213BADB644FB12D3B /* BotanicalArt.swift */,
+				9DA0FDE5EB7376546D0BAE5F /* GameRules.swift */,
+				D46252E7B2FEC96CC350B088 /* GardenStore.swift */,
+				9CA9D5C1BBCF8188CAFDC947 /* LaunchScreen.storyboard */,
+				DEA72672057F2BEC8585325A /* NectarDashApp.swift */,
+				02B55E48006C1216724803AB /* PlayGardenView.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		AF35C291C436E2ED6F7EBD0C = {
+			isa = PBXGroup;
+			children = (
+				B1894560B54B4CA2A56AF57F /* Assets.xcassets */,
+				8E5440E79D3E5F2A86D19EFF /* Sources */,
+				EA44CABD350D3C9CF1E41C25 /* Tests */,
+				7A02C3DA35C41F10E392C13E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EA44CABD350D3C9CF1E41C25 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				658E1BCC9C3250DA9F3E902E /* GardenRulesTests.swift */,
+				90E3D3C7DE94E1FFE14447C0 /* GardenStoreTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		572DD9DE274E363C7809DEAD /* NectarDash */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DE5CE9D2291A8A9BBD3C5525 /* Build configuration list for PBXNativeTarget "NectarDash" */;
+			buildPhases = (
+				B94068203A93BCFDBD1575B3 /* Sources */,
+				0FBB8C617467BE27CA2ADC7C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NectarDash;
+			packageProductDependencies = (
+			);
+			productName = NectarDash;
+			productReference = 475A30AD9171D5FD00E500D3 /* NectarDash.app */;
+			productType = "com.apple.product-type.application";
+		};
+		91781D5807A0B350247F3D05 /* NectarDashTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 09FED54371F243E6B2CAB86A /* Build configuration list for PBXNativeTarget "NectarDashTests" */;
+			buildPhases = (
+				44855B9434A844650E9245FB /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D5DA47D4F8F0E383F38474A4 /* PBXTargetDependency */,
+			);
+			name = NectarDashTests;
+			packageProductDependencies = (
+			);
+			productName = NectarDashTests;
+			productReference = 707114873601C8DDD1AC111C /* NectarDashTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B7B2847EBCE4EED729520A5C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					572DD9DE274E363C7809DEAD = {
+						DevelopmentTeam = "";
+					};
+					91781D5807A0B350247F3D05 = {
+						DevelopmentTeam = "";
+					};
+				};
+			};
+			buildConfigurationList = F55906D4B284A60EEF4BEC70 /* Build configuration list for PBXProject "NectarDash" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = AF35C291C436E2ED6F7EBD0C;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 7A02C3DA35C41F10E392C13E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				572DD9DE274E363C7809DEAD /* NectarDash */,
+				91781D5807A0B350247F3D05 /* NectarDashTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0FBB8C617467BE27CA2ADC7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46BECC6B302A8437E4E91B0D /* Assets.xcassets in Resources */,
+				27AB410BA6D4B2A37E697C3B /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		44855B9434A844650E9245FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F0ACD0A48FF43038D5A37F8D /* GardenRulesTests.swift in Sources */,
+				5C9EC04450130DB647EAF9A9 /* GardenStoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B94068203A93BCFDBD1575B3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35EB3D47F44A7ACF3D9283FD /* BotanicalArt.swift in Sources */,
+				650389C80B403AC50AD9EE58 /* GameRules.swift in Sources */,
+				BA6635840E1C2F89FFCC9B0F /* GardenStore.swift in Sources */,
+				964868426254CA3E59F45D7A /* NectarDashApp.swift in Sources */,
+				18CB4E963679D379A3A8B52E /* PlayGardenView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D5DA47D4F8F0E383F38474A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 572DD9DE274E363C7809DEAD /* NectarDash */;
+			targetProxy = FE1A7636958C2CBC0D1E6890 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		52C21C62E6B2CE75FFB7C399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.nectardash.NectarDashTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NectarDash.app/NectarDash";
+			};
+			name = Debug;
+		};
+		53AE41C1ECCD6D7614D53AD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		8B085C2298E55CC2DDB7D7AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		8B092C2F8EAB54A1D2758456 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Nectar Dash";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save your garden snapshot to your photo library.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.nectardash.game;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		ABFBF73C978443E4892929E7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.nectardash.NectarDashTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NectarDash.app/NectarDash";
+			};
+			name = Release;
+		};
+		DB1BF87CDD6F4B8227898224 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Nectar Dash";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Save your garden snapshot to your photo library.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.nectardash.game;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		09FED54371F243E6B2CAB86A /* Build configuration list for PBXNativeTarget "NectarDashTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52C21C62E6B2CE75FFB7C399 /* Debug */,
+				ABFBF73C978443E4892929E7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DE5CE9D2291A8A9BBD3C5525 /* Build configuration list for PBXNativeTarget "NectarDash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB1BF87CDD6F4B8227898224 /* Debug */,
+				8B092C2F8EAB54A1D2758456 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F55906D4B284A60EEF4BEC70 /* Build configuration list for PBXProject "NectarDash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53AE41C1ECCD6D7614D53AD9 /* Debug */,
+				8B085C2298E55CC2DDB7D7AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B7B2847EBCE4EED729520A5C /* Project object */;
+}
