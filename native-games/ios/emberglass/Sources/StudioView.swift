@@ -198,17 +198,7 @@ struct StudioView: View {
       if studio.stage == .shape {
         shaping
       } else {
-        ZStack(alignment: .bottom) {
-          centerpiece(profile: studio.commission.radii, commission: studio.commission, molten: true)
-          Text(
-            studio.stage == .heat
-              ? "\(Int(studio.temperature * 900 + 500))°" : "\(Int(studio.rotation * 50 + 10)) RPM"
-          )
-          .font(.system(size: 20, weight: .light, design: .monospaced))
-          .foregroundStyle(Palette.ember)
-          .padding(.bottom, 50)
-          .shadow(color: .black, radius: 5)
-        }
+        centerpiece(profile: studio.commission.radii, commission: studio.commission, molten: true)
       }
       stageControls
     }
@@ -218,7 +208,7 @@ struct StudioView: View {
     switch studio.stage {
     case .heat: "Hold to warm. Release to cool. Follow the glow."
     case .spin: "Slide the dial into the moving balance window."
-    case .shape: "Draw down the dotted right edge, from lip to base."
+    case .shape: "Trace the right edge. Amber dots need refining."
     default: ""
     }
   }
@@ -244,10 +234,15 @@ struct StudioView: View {
         ForEach(0..<8) { index in
           let x = origin + width / 2 + width * 0.48 * studio.commission.radii[index]
           let y = top + Double(index) * step
+          let touched = studio.touched.contains(index)
+          let matched =
+            touched && abs(studio.profile[index] - studio.commission.radii[index]) <= 0.04
+          let color = matched ? Palette.mint : touched ? Palette.ember : Palette.cream
           Circle()
-            .fill(studio.touched.contains(index) ? Palette.mint : Palette.cream)
+            .fill(matched ? color : Palette.background)
             .frame(width: 8, height: 8)
-            .overlay(Circle().stroke(Palette.mint.opacity(0.2), lineWidth: 7))
+            .overlay(Circle().stroke(color, lineWidth: 2))
+            .overlay(Circle().stroke(color.opacity(0.2), lineWidth: 7))
             .position(x: x, y: y)
             .accessibilityHidden(true)
         }
@@ -278,6 +273,15 @@ struct StudioView: View {
       HStack {
         eyebrow(studio.stage == .shape ? "FORM ACCURACY" : "LIVE PRECISION")
         Spacer()
+        if studio.stage != .shape {
+          Text(
+            studio.stage == .heat
+              ? "\(Int(studio.temperature * 900 + 500))°" : "\(Int(studio.rotation * 50 + 10)) RPM"
+          )
+          .font(.system(size: 13, design: .monospaced))
+          .foregroundStyle(Palette.ember)
+          Spacer()
+        }
         Text("\(studio.liveQuality)%")
           .font(.system(size: 13, weight: .medium, design: .monospaced))
           .foregroundStyle(studio.liveQuality >= 55 ? Palette.mint : Palette.ember)
@@ -323,7 +327,10 @@ struct StudioView: View {
         }.font(.system(size: 9, design: .monospaced)).tracking(2).foregroundStyle(Palette.muted)
       } else {
         HStack {
-          Text("\(studio.touched.count) / 8 points traced")
+          let matched = studio.touched.filter {
+            abs(studio.profile[$0] - studio.commission.radii[$0]) <= 0.04
+          }.count
+          Text("\(matched) matched · \(studio.touched.count)/8 traced")
             .font(.system(size: 12)).foregroundStyle(Palette.muted)
           Spacer()
           Button("Reset curve") {

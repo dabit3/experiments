@@ -8,7 +8,7 @@ enum Commission: Int, CaseIterable, Codable {
   var title: String {
     switch self {
     case .tide: "Tide vessel"
-    case .bloom: "Orchid bowl"
+    case .bloom: "Orchid vessel"
     case .spire: "Ember spire"
     }
   }
