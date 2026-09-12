@@ -11,6 +11,11 @@ struct PollenParticle: Identifiable {
   let created: Double
 }
 
+struct HazardFeedback {
+  let hazard: Hazard
+  let created: Double
+}
+
 @MainActor
 final class GardenStore: ObservableObject {
   @Published var screen = GardenScreen.home
@@ -25,6 +30,7 @@ final class GardenStore: ObservableObject {
   @Published var beeVisual = GardenPoint.hive
   @Published var flightPath: [GardenPoint] = []
   @Published var particles: [PollenParticle] = []
+  @Published var hazardFeedback: HazardFeedback?
   @Published var clock = 0.0
   @Published var waveAge = 10.0
   @Published var haptics: Bool {
@@ -64,6 +70,7 @@ final class GardenStore: ObservableObject {
     beeVisual = .hive
     flightPath = []
     particles = []
+    hazardFeedback = nil
     paused = false
     showTutorial = !defaults.bool(forKey: "nectar.tutorialSeen")
     toast = "Begin with a gold bloom · look for 1"
@@ -121,6 +128,9 @@ final class GardenStore: ObservableObject {
     toastAge += delta
     waveAge += delta
     particles.removeAll { clock - $0.created > 1.5 }
+    if let feedback = hazardFeedback, clock - feedback.created > 2.5 {
+      hazardFeedback = nil
+    }
     if isFlying {
       flightElapsed += delta
       let amount = min(1, flightElapsed / flightDuration)
@@ -128,6 +138,14 @@ final class GardenStore: ObservableObject {
       if amount >= 1 {
         let color = rules.expected
         let event = rules.fly(along: flightPath)
+        if event == .web || event == .wind {
+          let kind: HazardKind = event == .web ? .web : .wind
+          if let hazard = rules.hazards.first(where: {
+            $0.kind == kind && GardenRules.touches($0, along: flightPath)
+          }) {
+            hazardFeedback = HazardFeedback(hazard: hazard, created: clock)
+          }
+        }
         flightPath = []
         beeVisual = rules.bee
         respond(to: event, color: color)

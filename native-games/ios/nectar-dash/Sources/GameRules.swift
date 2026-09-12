@@ -152,6 +152,10 @@ struct GardenRules {
 
   var multiplier: Int { pollen >= 3 ? 2 : 1 }
   var windActive: Bool { Int(mode.duration - timeRemaining) % 9 < 5 }
+  var windChangeIn: Int {
+    let phase = (mode.duration - timeRemaining).truncatingRemainder(dividingBy: 9)
+    return Int(ceil((windActive ? 5 : 9) - phase))
+  }
 
   mutating func tick(_ delta: Double) {
     guard end == nil, delta > 0 else { return }

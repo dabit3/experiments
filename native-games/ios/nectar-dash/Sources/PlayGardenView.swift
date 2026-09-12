@@ -236,6 +236,12 @@ struct PlayGardenView: View {
             gust, with: .color(NectarPalette.cream.opacity(store.rules.windActive ? 0.45 : 0.12)),
             style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
         }
+        context.draw(
+          Text("\(store.rules.windActive ? "GUST" : "LULL") · \(store.rules.windChangeIn)s")
+            .font(.system(size: 9, weight: .semibold)).tracking(0.5)
+            .foregroundColor(
+              store.rules.windActive ? NectarPalette.cream : NectarPalette.sage),
+          at: CGPoint(x: p.x, y: p.y + 28))
       }
     }
     if store.rules.route.count > 1 {
@@ -279,6 +285,24 @@ struct PlayGardenView: View {
       }
     }
     BotanicalDrawing.bee(in: context, at: point(store.beeVisual), size: 15, time: time)
+    if let feedback = store.hazardFeedback {
+      let origin = point(feedback.hazard.position)
+      let center = CGPoint(
+        x: min(size.width - 51, max(51, origin.x)), y: origin.y - 45)
+      let rect = CGRect(x: center.x - 50, y: center.y - 21, width: 100, height: 42)
+      context.fill(
+        Path(roundedRect: rect, cornerRadius: 12),
+        with: .color(NectarPalette.ink.opacity(0.95)))
+      let isWeb = feedback.hazard.kind == .web
+      context.draw(
+        Text(isWeb ? "−1 LIFE" : "−5 SECONDS")
+          .font(.system(size: 11, weight: .bold)).foregroundColor(NectarPalette.petal(.rose)),
+        at: CGPoint(x: center.x, y: center.y - 7))
+      context.draw(
+        Text(isWeb ? "Pollen lost" : "Headwind")
+          .font(.system(size: 10)).foregroundColor(NectarPalette.cream),
+        at: CGPoint(x: center.x, y: center.y + 8))
+    }
     if store.waveAge < 2.4 {
       context.draw(
         Text("BLOSSOM WAVE").font(.system(size: 25, weight: .regular, design: .serif)).tracking(3)
@@ -309,7 +333,7 @@ struct GardenSnapshot: View {
 
   var body: some View {
     Canvas { context, size in
-      let radius = min(size.width * 0.105, size.height * 0.12)
+      let radius = min(size.width * 0.085, size.height * 0.088)
       let inset = radius + 4
       let inner = CGSize(width: size.width - 16, height: max(1, size.height - inset * 2))
       var garden = context
