@@ -48,7 +48,8 @@ Builds perform Swift typechecking. XCTest covers the solvability and inventories
 all nine boards, stops at empty/closed edges, bridge water crossings, branching,
 deterministic event order, exact domino counts, scoring penalties, rotation,
 inventory restoration, undo/reset, sandbox, draft persistence, share artwork,
-and projected touch coordinates for every grid cell on compact and large viewports.
+projected touch coordinates for every grid cell on compact and large viewports,
+and unobstructed column labels across all nine boards.
 
 ## Play
 

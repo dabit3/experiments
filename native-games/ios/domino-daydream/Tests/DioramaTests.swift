@@ -5,6 +5,35 @@ import XCTest
 
 final class DioramaTests: XCTestCase {
   @MainActor
+  func testColumnLabelsAreVisibleAboveSceneryOnEveryBoard() throws {
+    for puzzle in Puzzle.all {
+      for size in [CGSize(width: 375, height: 277), CGSize(width: 440, height: 480)] {
+        let view = DioramaView(frame: CGRect(origin: .zero, size: size))
+        let model = Diorama(puzzle: puzzle, labels: true)
+        view.model = model
+        view.scene = model.scene
+        view.pointOfView = model.camera
+        model.update(
+          pieces: puzzle.fixed, selected: nil, result: nil, beat: -1,
+          guides: true, reduceMotion: true)
+        _ = view.snapshot()
+        for letter in "ABCDEFG" {
+          let name = "lettering-\(letter)"
+          let node = try XCTUnwrap(
+            model.scene.rootNode.childNode(withName: name, recursively: false))
+          let point = view.projectPoint(node.position)
+          let hits = view.hitTest(
+            CGPoint(x: CGFloat(point.x), y: CGFloat(point.y)),
+            options: [.searchMode: SCNHitTestSearchMode.closest.rawValue])
+          XCTAssertEqual(
+            hits.first?.node.name, name,
+            "\(puzzle.title): column \(letter) is obscured at \(size)")
+        }
+      }
+    }
+  }
+
+  @MainActor
   func testBoardProjectionFindsEveryCellOnCompactAndLargeViewports() {
     for size in [CGSize(width: 375, height: 300), CGSize(width: 440, height: 440)] {
       let view = DioramaView(frame: CGRect(origin: .zero, size: size))

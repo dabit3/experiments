@@ -142,6 +142,7 @@ final class Diorama {
     let shape = SCNPlane(width: extent.width * scale, height: extent.height * scale)
     shape.materials = [ink]
     let node = SCNNode(geometry: shape)
+    node.name = "lettering-\(text)"
     node.eulerAngles.x = -.pi / 2
     node.position = SCNVector3(position.0, position.1, position.2 - Float(shape.height / 2))
     scene.rootNode.addChildNode(node)
@@ -230,7 +231,7 @@ final class Diorama {
       (Cell(x: center.x, y: center.y - 1), true),
     ]
     for (index, entry) in candidates.enumerated() {
-      guard puzzle.contains(entry.0), !occupied.contains(entry.0) else { continue }
+      guard puzzle.contains(entry.0), entry.0.y > 0, !occupied.contains(entry.0) else { continue }
       let town = SCNNode()
       town.position = point(entry.0)
       scene.rootNode.addChildNode(town)
