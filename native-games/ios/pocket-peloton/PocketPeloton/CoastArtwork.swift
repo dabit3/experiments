@@ -28,9 +28,9 @@ struct CoastArtwork: View {
       func world(_ y: Double) -> Double { travelled + (playerY - y) / scale }
       func center(_ y: Double) -> Double {
         w * (hero ? 0.59 : 0.54)
-          + sin(world(y) / 65) * w * 0.065 * race.course.curveAmount
+          + sin(world(y) / 65) * w * 0.085 * race.course.curveAmount
       }
-      func roadWidth(_ y: Double) -> Double { w * (0.48 + 0.12 * y / h) }
+      func roadWidth(_ y: Double) -> Double { w * (0.40 + 0.24 * y / h) }
       func laneX(_ lane: Int, _ y: Double) -> Double {
         center(y) + Double(lane - 1) * roadWidth(y) * 0.29
       }
@@ -64,8 +64,9 @@ struct CoastArtwork: View {
       context.fill(band(-0.475, -0.468), with: .color(Ink.cream.opacity(0.8)))
       context.fill(band(0.468, 0.475), with: .color(Ink.cream.opacity(0.8)))
       for fleck in 0..<450 {
-        let depth = Double((fleck * 173) % 1009) / 1009
-        let fraction = Double((fleck * 71) % 997) / 997 - 0.5
+        let seed = (fleck * 73_856_093) ^ 19_349_663
+        let depth = Double(seed % 1009) / 1009
+        let fraction = Double((seed / 1009) % 997) / 997 - 0.5
         let y = (depth * h + travelled * scale).truncatingRemainder(dividingBy: h)
         let x = center(y) + fraction * roadWidth(y) * 0.9
         context.fill(
@@ -118,6 +119,16 @@ struct CoastArtwork: View {
         }
       }
       if !hero {
+        for remaining in stride(from: 100, through: Int(race.course.length), by: 100) {
+          let y = playerY - (race.course.length - Double(remaining) - travelled) * scale
+          if y > -40 && y < h + 40 {
+            context.draw(
+              Text("\(remaining) M")
+                .font(.system(size: 26, weight: .black, design: .rounded))
+                .tracking(4).foregroundColor(Ink.cream.opacity(0.2)),
+              at: CGPoint(x: center(y), y: y))
+          }
+        }
         let finishY = playerY - (race.course.length - travelled) * scale
         if finishY > -80 && finishY < h + 80 {
           let width = roadWidth(finishY)
@@ -192,7 +203,8 @@ struct CoastArtwork: View {
             ))
           rider(
             &context, at: CGPoint(x: x, y: y),
-            jersey: [Ink.sea, Ink.butter, Color.white][rival.id], phase: travelled, player: false)
+            asset: ["RiderTeal", "RiderYellow", "RiderIvory"][rival.id], phase: travelled,
+            player: false)
         }
       }
       let visualLane = hero ? 1 : (reducedMotion ? Double(race.lane) : riderLane)
@@ -212,16 +224,16 @@ struct CoastArtwork: View {
         }
       }
       rider(
-        &context, at: CGPoint(x: x, y: playerY), jersey: Ink.red, phase: travelled, player: true)
+        &context, at: CGPoint(x: x, y: playerY), asset: "RiderRed", phase: travelled, player: true)
       if !hero {
         context.fill(
           Path(
-            roundedRect: CGRect(x: x - 16, y: playerY + 32, width: 32, height: 16), cornerRadius: 8),
+            roundedRect: CGRect(x: x - 16, y: playerY + 49, width: 32, height: 16), cornerRadius: 8),
           with: .color(Ink.cream))
         context.draw(
           Text("YOU").font(.system(size: 9, weight: .black, design: .rounded)).foregroundColor(
             Ink.navy),
-          at: CGPoint(x: x, y: playerY + 40)
+          at: CGPoint(x: x, y: playerY + 57)
         )
       }
     }
@@ -234,86 +246,22 @@ struct CoastArtwork: View {
   }
 
   private func rider(
-    _ ctx: inout GraphicsContext, at p: CGPoint, jersey: Color, phase: Double, player: Bool
+    _ ctx: inout GraphicsContext, at p: CGPoint, asset: String, phase: Double, player: Bool
   ) {
     var c = ctx
     c.translateBy(x: p.x, y: p.y)
-    c.scaleBy(x: 0.78, y: 0.78)
     if player {
-      c.fill(
-        Path(ellipseIn: CGRect(x: -19, y: -38, width: 38, height: 76)),
-        with: .color(Ink.cream.opacity(0.72)))
+      c.stroke(
+        Path(ellipseIn: CGRect(x: -19, y: -46, width: 38, height: 92)),
+        with: .color(Ink.butter.opacity(0.6)), lineWidth: 1)
     }
-    c.fill(
-      Path(ellipseIn: CGRect(x: -9, y: -23, width: 25, height: 61)),
-      with: .color(.black.opacity(0.28)))
-    for y in [-24.0, 20] {
-      c.fill(
-        Path(roundedRect: CGRect(x: -3, y: y - 9, width: 6, height: 20), cornerRadius: 3),
-        with: .color(Ink.navy))
-      c.fill(Path(CGRect(x: -0.6, y: y - 7, width: 1.2, height: 16)), with: .color(Ink.cream))
-    }
-    var frame = Path()
-    frame.move(to: CGPoint(x: 0, y: -17))
-    frame.addLine(to: CGPoint(x: 0, y: 20))
-    frame.move(to: CGPoint(x: -12, y: -15))
-    frame.addQuadCurve(to: CGPoint(x: 12, y: -15), control: CGPoint(x: 0, y: -21))
-    c.stroke(
-      frame, with: .color(player ? Ink.red : Ink.navy),
-      style: StrokeStyle(lineWidth: 3, lineCap: .round))
-    let pedal = reducedMotion ? 0 : sin(phase * 1.8) * 4
-    for side in [-1.0, 1] {
-      let leg = CGRect(x: side < 0 ? -9 : 3, y: 10 + pedal * side, width: 6, height: 12)
-      c.fill(Path(roundedRect: leg, cornerRadius: 3), with: .color(Ink.navy))
-      let arm = CGRect(x: side < 0 ? -14 : 8, y: -14, width: 6, height: 13)
-      c.fill(Path(roundedRect: arm, cornerRadius: 3), with: .color(Ink.cream))
-    }
-    c.fill(
-      Path(roundedRect: CGRect(x: -10, y: -12, width: 20, height: 27), cornerRadius: 8),
-      with: .color(jersey))
-    c.fill(
-      Path(CGRect(x: -10, y: 3, width: 20, height: 4)), with: .color(player ? Ink.butter : Ink.sea))
-    c.fill(Path(ellipseIn: CGRect(x: -7, y: -23, width: 14, height: 17)), with: .color(Ink.cream))
-    for xx in [-3.0, 1] {
-      c.fill(
-        Path(roundedRect: CGRect(x: xx, y: -21, width: 2, height: 11), cornerRadius: 1),
-        with: .color(jersey))
-    }
+    if !reducedMotion { c.rotate(by: .degrees(sin(phase * 1.8) * 1.4)) }
+    c.addFilter(.shadow(color: .black.opacity(0.32), radius: 1.2, x: 5, y: 7))
+    c.draw(Image(asset), in: CGRect(x: -13, y: -44, width: 26, height: 88))
   }
 
   private func tree(_ ctx: inout GraphicsContext, at p: CGPoint) {
-    var c = ctx
-    c.translateBy(x: p.x, y: p.y)
-    c.fill(
-      Path(ellipseIn: CGRect(x: -8, y: -4, width: 46, height: 55)),
-      with: .color(Ink.navy.opacity(0.13)))
-    var trunk = Path()
-    trunk.move(to: CGPoint(x: 3, y: 22))
-    trunk.addLine(to: CGPoint(x: 0, y: -5))
-    trunk.move(to: CGPoint(x: 1, y: 11))
-    trunk.addLine(to: CGPoint(x: -11, y: -3))
-    trunk.move(to: CGPoint(x: 1, y: 6))
-    trunk.addLine(to: CGPoint(x: 14, y: -7))
-    c.stroke(
-      trunk, with: .color(Ink.navy.opacity(0.65)),
-      style: StrokeStyle(lineWidth: 3, lineCap: .round))
-    for i in 0..<7 {
-      let a = Double(i) / 7 * .pi * 2
-      let x = cos(a) * 13
-      let y = sin(a) * 10 - 11
-      c.fill(
-        Path(ellipseIn: CGRect(x: x - 12, y: y - 8, width: 25, height: 19)),
-        with: .color(Ink.navy.opacity(0.7)))
-      c.fill(
-        Path(ellipseIn: CGRect(x: x - 12, y: y - 11, width: 23, height: 17)),
-        with: .color(
-          i.isMultiple(of: 2)
-            ? Color(red: 0.40, green: 0.51, blue: 0.34) : Color(red: 0.49, green: 0.59, blue: 0.40))
-      )
-      c.fill(
-        Path(ellipseIn: CGRect(x: x - 8, y: y - 9, width: 8, height: 3)),
-        with: .color(Ink.butter.opacity(0.13)))
-    }
+    scenery(&ctx, asset: "ScenicPine", at: p, size: CGSize(width: 80, height: 78))
   }
 
   private func rock(_ ctx: inout GraphicsContext, at p: CGPoint, variant: Int) {
@@ -322,101 +270,35 @@ struct CoastArtwork: View {
     c.rotate(by: .degrees(Double(variant * 31)))
     let scale = 0.7 + Double(variant) * 0.2
     c.scaleBy(x: scale, y: scale)
-    c.fill(
-      Path(ellipseIn: CGRect(x: -18, y: -21, width: 33, height: 49)),
-      with: .color(Ink.cream.opacity(0.45)))
-    var stone = Path()
-    stone.move(to: CGPoint(x: -12, y: -14))
-    stone.addLine(to: CGPoint(x: 5, y: -19))
-    stone.addLine(to: CGPoint(x: 14, y: -2))
-    stone.addLine(to: CGPoint(x: 9, y: 18))
-    stone.addLine(to: CGPoint(x: -10, y: 21))
-    stone.addLine(to: CGPoint(x: -17, y: 5))
-    stone.closeSubpath()
-    c.fill(stone, with: .color(Ink.stone))
-    var face = Path()
-    face.move(to: CGPoint(x: -12, y: -14))
-    face.addLine(to: CGPoint(x: 5, y: -19))
-    face.addLine(to: CGPoint(x: 7, y: 1))
-    face.addLine(to: CGPoint(x: -10, y: 9))
-    face.addLine(to: CGPoint(x: -17, y: 5))
-    face.closeSubpath()
-    c.fill(face, with: .color(Ink.cream))
+    scenery(&c, asset: "ScenicRocks", at: .zero, size: CGSize(width: 40, height: 40))
   }
 
   private func house(_ ctx: inout GraphicsContext, at p: CGPoint) {
-    var c = ctx
-    c.translateBy(x: p.x, y: p.y)
-    c.fill(
-      Path(roundedRect: CGRect(x: -23, y: -26, width: 54, height: 70), cornerRadius: 4),
-      with: .color(Ink.cream.opacity(0.4)))
-    c.fill(
-      Path(CGRect(x: -10, y: -7, width: 45, height: 49)),
-      with: .color(Ink.navy.opacity(0.17)))
-    c.fill(Path(CGRect(x: -20, y: -25, width: 38, height: 51)), with: .color(Ink.stone))
-    c.fill(Path(CGRect(x: -20, y: -25, width: 33, height: 45)), with: .color(Ink.cream))
-    c.fill(
-      Path(CGRect(x: -24, y: -27, width: 44, height: 34)),
-      with: .color(Ink.red.opacity(0.75)))
-    c.fill(
-      Path(CGRect(x: -24, y: -27, width: 22, height: 34)),
-      with: .color(Ink.butter.opacity(0.22)))
-    for row in 0..<7 {
-      var tile = Path()
-      let y = -24.0 + Double(row) * 4.5
-      tile.move(to: CGPoint(x: -24, y: y))
-      tile.addLine(to: CGPoint(x: 20, y: y))
-      c.stroke(tile, with: .color(Ink.cream.opacity(0.25)), lineWidth: 0.7)
-    }
-    for column in 0..<9 {
-      var tile = Path()
-      let x = -22.0 + Double(column) * 5
-      tile.move(to: CGPoint(x: x, y: -27))
-      tile.addLine(to: CGPoint(x: x, y: 7))
-      c.stroke(tile, with: .color(Ink.navy.opacity(0.13)), lineWidth: 0.7)
-    }
-    c.fill(Path(CGRect(x: -3, y: -29, width: 2, height: 38)), with: .color(Ink.cream.opacity(0.4)))
-    c.fill(Path(CGRect(x: -16, y: -32, width: 6, height: 9)), with: .color(Ink.cream))
-    for x in [-13.0, 5] {
-      c.fill(Path(CGRect(x: x, y: 11, width: 5, height: 7)), with: .color(Ink.navy))
-      c.fill(Path(CGRect(x: x - 2, y: 11, width: 2, height: 7)), with: .color(Ink.sea))
-    }
-    c.fill(
-      Path(roundedRect: CGRect(x: -4, y: 12, width: 7, height: 11), cornerRadius: 3),
-      with: .color(Ink.navy.opacity(0.7)))
+    scenery(&ctx, asset: "ScenicVilla", at: p, size: CGSize(width: 70, height: 80))
   }
 
   private func boat(_ ctx: inout GraphicsContext, at p: CGPoint, angle: Double) {
     var c = ctx
     c.translateBy(x: p.x, y: p.y)
     c.rotate(by: .radians(angle))
-    c.fill(
-      Path(ellipseIn: CGRect(x: -1, y: -12, width: 19, height: 40)),
-      with: .color(Ink.navy.opacity(0.15)))
     var wake = Path()
     wake.move(to: CGPoint(x: -7, y: 5))
     wake.addQuadCurve(to: CGPoint(x: -13, y: 43), control: CGPoint(x: -8, y: 30))
     wake.move(to: CGPoint(x: 7, y: 5))
     wake.addQuadCurve(to: CGPoint(x: 13, y: 43), control: CGPoint(x: 8, y: 30))
     c.stroke(wake, with: .color(Ink.cream.opacity(0.3)), lineWidth: 1)
-    c.fill(Path(ellipseIn: CGRect(x: -6, y: -16, width: 12, height: 35)), with: .color(Ink.cream))
-    c.fill(Path(ellipseIn: CGRect(x: -3, y: -9, width: 6, height: 20)), with: .color(Ink.stone))
-    var sail = Path()
-    sail.move(to: CGPoint(x: 0, y: -24))
-    sail.addQuadCurve(to: CGPoint(x: 20, y: 9), control: CGPoint(x: 14, y: -13))
-    sail.addLine(to: CGPoint(x: 0, y: 12))
-    sail.closeSubpath()
-    c.fill(sail, with: .color(Ink.cream))
-    var jib = Path()
-    jib.move(to: CGPoint(x: -2, y: -18))
-    jib.addLine(to: CGPoint(x: -2, y: 7))
-    jib.addLine(to: CGPoint(x: -13, y: 7))
-    jib.closeSubpath()
-    c.fill(jib, with: .color(Ink.butter))
-    c.stroke(
-      Path {
-        $0.move(to: CGPoint(x: 0, y: -23))
-        $0.addLine(to: CGPoint(x: 0, y: 13))
-      }, with: .color(Ink.navy), lineWidth: 1)
+    scenery(&c, asset: "ScenicBoat", at: .zero, size: CGSize(width: 31, height: 57))
+  }
+
+  private func scenery(
+    _ context: inout GraphicsContext, asset: String, at point: CGPoint, size: CGSize
+  ) {
+    var shadowed = context
+    shadowed.addFilter(.shadow(color: Ink.navy.opacity(0.23), radius: 2, x: 8, y: 12))
+    shadowed.draw(
+      Image(asset),
+      in: CGRect(
+        x: point.x - size.width / 2, y: point.y - size.height / 2,
+        width: size.width, height: size.height))
   }
 }

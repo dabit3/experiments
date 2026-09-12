@@ -230,7 +230,7 @@ struct PelotonView: View {
           Image(systemName: statusIcon)
           Text(statusTitle).tracking(0.7)
         }
-        .font(.system(size: 9, weight: .bold))
+        .font(.system(size: 10, weight: .bold))
         .lineLimit(1).minimumScaleFactor(0.8)
         .padding(.horizontal, 15).padding(.vertical, 11)
         .background(store.race.collisionRemaining > 0 ? Ink.red : Ink.cream, in: Capsule())
@@ -331,7 +331,7 @@ struct PelotonView: View {
           ? "TAP SPRINT TO TOGGLE  ·  ARROWS OR SWIPE TO STEER"
           : "HOLD TO SPRINT  ·  ARROWS OR SWIPE TO STEER"
       )
-      .font(.system(size: 8, weight: .bold)).tracking(0.5)
+      .font(.system(size: 9, weight: .bold)).tracking(0.4)
       .foregroundStyle(Ink.cream.opacity(0.62))
       .lineLimit(1).minimumScaleFactor(0.8)
     }
@@ -558,7 +558,7 @@ struct PelotonView: View {
   }
 
   private func eyebrow(_ text: String) -> some View {
-    Text(text).font(.system(size: 9, weight: .heavy)).tracking(1.2)
+    Text(text).font(.system(size: 10, weight: .heavy)).tracking(1.1)
   }
 
   private func primary(_ text: String, icon: String, id: String, action: @escaping () -> Void)
