@@ -103,6 +103,7 @@ struct CoastalCover: View {
         .frame(width: geometry.size.width, height: geometry.size.height)
         .clipped()
     }
+    .allowsHitTesting(false)
     .accessibilityHidden(true)
   }
 }

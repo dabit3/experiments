@@ -58,6 +58,7 @@ struct PelotonView: View {
           } label: {
             Image(systemName: "slider.horizontal.3").font(.system(size: 17, weight: .medium))
               .frame(width: 44, height: 44)
+              .contentShape(Rectangle())
           }
           .accessibilityLabel("Settings")
           .accessibilityIdentifier("settingsButton")
