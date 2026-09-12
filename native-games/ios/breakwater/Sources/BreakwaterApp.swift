@@ -1,3 +1,4 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -156,7 +157,8 @@ struct BreakwaterView: View {
         }
         VStack(alignment: .leading, spacing: 4) {
           eyebrow(
-            model.chart.dailySeed.map { "DAILY · \($0)" } ?? "RESCUE CHART 0\(model.chart.chapter)")
+            model.chart.dailySeed.map { "\($0) · WATCH \(model.chart.shift + 1)" }
+              ?? "RESCUE CHART 0\(model.chart.chapter)")
           Text(model.chart.name).font(.system(size: 23, weight: .regular, design: .serif))
             .accessibilityAddTraits(.isHeader)
         }
@@ -185,6 +187,8 @@ struct BreakwaterView: View {
           }
           Text("\(model.convoy.count)/\(model.chart.boats.count) TOW")
             .font(.system(size: 12, weight: .semibold, design: .monospaced))
+            .lineLimit(1)
+            .fixedSize(horizontal: true, vertical: false)
         }
         Spacer()
         Text("FUEL \(Int(model.phase == .plotting ? model.chart.fuel : model.remaining))")
@@ -642,8 +646,43 @@ struct HarborShare: UIViewControllerRepresentable {
   let text: String
 
   func makeUIViewController(context: Context) -> UIActivityViewController {
-    UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
+    UIActivityViewController(
+      activityItems: [HarborPostcardItem(image: image, text: text), text],
+      applicationActivities: nil)
   }
 
   func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+final class HarborPostcardItem: NSObject, UIActivityItemSource {
+  let image: UIImage
+  let text: String
+
+  init(image: UIImage, text: String) {
+    self.image = image
+    self.text = text
+  }
+
+  func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController)
+    -> Any
+  {
+    image
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    itemForActivityType activityType: UIActivity.ActivityType?
+  ) -> Any? {
+    image
+  }
+
+  func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController)
+    -> LPLinkMetadata?
+  {
+    let metadata = LPLinkMetadata()
+    metadata.title = text
+    metadata.imageProvider = NSItemProvider(object: image)
+    metadata.iconProvider = NSItemProvider(object: image)
+    return metadata
+  }
 }
