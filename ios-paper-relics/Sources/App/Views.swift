@@ -291,10 +291,8 @@ struct BattleView: View {
                 "\(run.hp)/\(run.maxHP)",
                 systemImage: run.hp * 3 <= run.maxHP ? "heart.slash.fill" : "heart.fill"
               )
-              .foregroundStyle(Ink.red)
+              .foregroundStyle(Ink.red).fixedSize()
               Label("\(run.block)", systemImage: "shield.fill").foregroundStyle(Ink.paper)
-              if run.weak > 0 { Text("Weak \(run.weak)").foregroundStyle(Ink.copper) }
-              if run.strength > 0 { Text("+\(run.strength) STR").foregroundStyle(Ink.copper) }
               Spacer(minLength: 0)
               HStack(spacing: 5) {
                 Image(systemName: "sparkle")
@@ -302,10 +300,15 @@ struct BattleView: View {
                 Text("ENERGY").font(.system(size: 8, weight: .bold)).tracking(1)
               }.foregroundStyle(Ink.copper)
             }
-            Text(store.playerFeedback)
-              .font(.system(size: 10, weight: .bold, design: .rounded)).tracking(1)
-              .foregroundStyle(store.playerHurt ? Ink.red : Ink.paper)
-              .frame(height: 13)
+            HStack(spacing: 8) {
+              if run.weak > 0 { Text("Weak \(run.weak)").foregroundStyle(Ink.copper) }
+              if run.strength > 0 { Text("+\(run.strength) STR").foregroundStyle(Ink.copper) }
+              Spacer(minLength: 0)
+              Text(store.playerFeedback)
+                .foregroundStyle(store.playerHurt ? Ink.red : Ink.paper)
+            }
+            .font(.system(size: 10, weight: .bold, design: .rounded))
+            .lineLimit(1).minimumScaleFactor(0.85).frame(height: 13)
           }
           .font(.system(size: 13, weight: .medium))
           .padding(.horizontal, 16).padding(.vertical, 12)
