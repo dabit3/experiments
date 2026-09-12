@@ -38,6 +38,7 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
 
   private func prepare() {
     removeAllChildren()
+    camera = nil
     world.removeAllChildren()
     effects.removeAllChildren()
     trajectory.removeAllChildren()
@@ -127,6 +128,13 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
   func start(_ level: Level) {
     self.level = level
     prepare()
+    if level.targets.allSatisfy({ $0.y < 440 }) {
+      let framing = SKCameraNode()
+      framing.position = CGPoint(x: 700, y: 295)
+      framing.setScale(0.88)
+      addChild(framing)
+      camera = framing
+    }
     fruitIndex = 0
     for spec in level.blocks { blocks.append(makeBlock(spec)) }
     for target in level.targets {
@@ -150,10 +158,6 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
     }
     makeSling()
     loadFruit()
-    label("PULL BACK", at: CGPoint(x: 219, y: 79), size: 13, color: UIColor(hex: 0xF1DAB5))
-    label(
-      "THE ORCHARD IS COUNTING ON YOU", at: CGPoint(x: 982, y: 79), size: 12,
-      color: UIColor(hex: 0xEACBA4))
   }
 
   @discardableResult
@@ -352,6 +356,12 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
 
   func didBegin(_ contact: SKPhysicsContact) {
     guard flying, elapsed > 0.02 else { return }
+    for (body, other) in [(contact.bodyA, contact.bodyB), (contact.bodyB, contact.bodyA)] {
+      if body.categoryBitMask == 8 && other.categoryBitMask == 1 {
+        body.linearDamping = 1.4
+        body.angularDamping = 1.8
+      }
+    }
     if contact.collisionImpulse > 0.5 { quietTime = 0 }
     for (body, other) in [(contact.bodyA, contact.bodyB), (contact.bodyB, contact.bodyA)] {
       guard let node = body.node as? FortBody else { continue }

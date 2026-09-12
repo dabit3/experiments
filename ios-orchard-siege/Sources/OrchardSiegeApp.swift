@@ -70,7 +70,10 @@ struct OrchardView: View {
           .fixedSize()
         Text("Small fruit. Glorious destruction.")
           .font(.custom("Georgia-Italic", size: 15))
-          .foregroundStyle(Palette.muted)
+          .foregroundStyle(Palette.ink)
+          .padding(.horizontal, 12)
+          .padding(.vertical, 7)
+          .background(Palette.cream.opacity(0.93), in: Capsule())
         HStack(spacing: 10) {
           primary("Let’s play", icon: "arrow.right", identifier: "play") {
             game.start(game.unlocked)
@@ -133,6 +136,8 @@ struct OrchardView: View {
                   .foregroundStyle(locked ? Palette.muted : Palette.coral)
                 VStack(alignment: .leading, spacing: 7) {
                   Text(level.name).font(.system(size: 14, weight: .bold))
+                    .lineLimit(1).minimumScaleFactor(0.8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                   if locked {
                     Label("Clear the previous fort", systemImage: "lock.fill")
                       .font(.system(size: 9))
@@ -142,10 +147,11 @@ struct OrchardView: View {
                       .font(.system(size: 9, weight: .bold)).tracking(0.6)
                   }
                 }
-                Spacer(minLength: 0)
               }
               .padding(13)
-              .frame(maxWidth: .infinity, minHeight: 90, alignment: .leading)
+              .frame(maxWidth: .infinity, alignment: .leading)
+              .frame(height: 94)
+              .multilineTextAlignment(.leading)
               .background(
                 locked ? Color.white.opacity(0.3) : Color.white.opacity(0.68),
                 in: RoundedRectangle(cornerRadius: 18)
@@ -288,7 +294,7 @@ struct OrchardView: View {
             .font(.system(size: 36, weight: .bold, design: .rounded)).monospacedDigit()
           Text(
             result.won
-              ? "\(result.shots) shots used · \(game.shotsRemaining) fruit saved"
+              ? "\(result.shots) \(result.shots == 1 ? "shot" : "shots") used · \(game.shotsRemaining) fruit saved"
               : "Aim lower at the supports, or burst a plum nearby."
           )
           .font(.system(size: 12)).foregroundStyle(Palette.muted)
