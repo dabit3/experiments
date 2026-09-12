@@ -151,3 +151,85 @@ import Testing
   #expect(endless.wavesCleared == waves)
   #expect(endless.elapsed == elapsed)
 }
+
+@Test func endlessCapacityPreservesUncollectedValueAndBoundsCredits() {
+  var game = Garden(endless: true, seed: 0)
+  game.sunshine = 490
+  game.drops = [Sunshine(id: 90, lane: 0, x: 0.5, amount: 25)]
+  game.collect(90)
+  #expect(game.sunshine == 500)
+  #expect(game.drops.first?.amount == 15)
+  game.collect()
+  #expect(game.drops.first?.amount == 15)
+  let planted = game.plant(.marigold, lane: 0, column: 0)
+  #expect(planted)
+  game.collect()
+  #expect(game.sunshine == 465)
+  #expect(game.drops.isEmpty)
+  game.sunshine = 495
+  game.remove(lane: 0, column: 0)
+  #expect(game.sunshine == 500)
+  game.schedule = []
+  game.tick(0.1)
+  #expect(game.sunshine == 500)
+  #expect(game.wavesCleared == 1)
+
+  var campaign = Garden(seed: 0)
+  campaign.sunshine = 490
+  campaign.drops = [Sunshine(id: 90, lane: 0, x: 0.5, amount: 50)]
+  campaign.collect()
+  #expect(campaign.sunshine == 540)
+}
+
+@Test func endlessPacksEscalateAcrossEveryLaneWithoutReadingTheGarden() {
+  for seed in 0..<5 {
+    var earlier = Garden(endless: true, seed: seed)
+    earlier.wave = 4
+    earlier.scheduleWave()
+    var later = Garden(endless: true, seed: seed)
+    later.wave = 10
+    later.scheduleWave()
+    for game in [earlier, later] {
+      #expect(Set(game.schedule.map(\.lane)) == Set(0..<5))
+      #expect(game.schedule[0].lane == game.schedule[1].lane)
+      #expect(game.schedule[1].time - game.schedule[0].time < 1)
+      #expect(game.schedule.first?.time == 6)
+      #expect(game.schedule.last!.time < 50)
+    }
+    #expect(later.schedule.count > earlier.schedule.count * 2)
+    #expect(later.pressure > earlier.pressure * 3)
+    let earlierArmor = earlier.schedule.filter { $0.kind == .kettle }.count
+    let laterArmor = later.schedule.filter { $0.kind == .kettle }.count
+    #expect(laterArmor > earlierArmor * 2)
+    let lanes = later.schedule.map(\.lane)
+    later.sunshine = 0
+    later.plants = [
+      Defender(id: 100, seed: .bramble, lane: 4, column: 4, health: 650)
+    ]
+    later.scheduleWave()
+    #expect(later.schedule.map(\.lane) == lanes)
+  }
+}
+
+@Test func leanEndlessSkyPreservesSunbellProductionAndCampaignEconomy() {
+  var endless = Garden(endless: true, seed: 0)
+  endless.wave = 4
+  endless.skyTime = 0
+  endless.tick(0.1)
+  #expect(endless.drops.first?.amount == 25)
+  #expect(endless.skyTime == 9)
+  endless.plants = [
+    Defender(id: 100, seed: .marigold, lane: 0, column: 0, health: 140, timer: 9.95)
+  ]
+  endless.tick(0.1)
+  #expect(endless.drops.last?.amount == 25)
+  for level in 0..<4 {
+    var campaign = Garden(level: level, seed: 0)
+    campaign.wave = 3
+    campaign.skyTime = 0
+    campaign.tick(0.1)
+    #expect(campaign.drops.first?.amount == 50)
+    #expect(campaign.skyTime == 6.5)
+    #expect(abs(campaign.pressure - (1 + Double(level) * 0.32)) < 0.0001)
+  }
+}

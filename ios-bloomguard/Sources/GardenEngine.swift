@@ -90,7 +90,7 @@ struct Sunshine: Identifiable, Sendable {
   let lane: Int
   let x: Double
   var lifetime: Double = 14
-  let amount: Int
+  var amount: Int
 }
 struct Burst: Identifiable, Sendable {
   let id: Int
@@ -159,6 +159,9 @@ struct Garden: Sendable {
     self.level = min(3, max(0, level))
     self.endless = endless
     self.seed = seed
+    if endless {
+      notice = "Store up to 500 sunshine. Swarms and leaner sky drops begin at wave 4."
+    }
     scheduleWave()
   }
 
@@ -168,8 +171,12 @@ struct Garden: Sendable {
   }
   var title: String { endless ? "The wild garden" : Chapter.all[level].title }
   var finished: Bool { phase == .won || phase == .lost || phase == .retired }
+  var sunshineCapacity: Int { endless ? 500 : Int.max }
   var pressure: Double {
-    if endless { return 1 + Double(max(0, wave - 4)) * 0.22 }
+    if endless {
+      let growth = Double(max(0, wave - 3))
+      return 1 + growth * 0.25 + growth * growth * 0.035
+    }
     return 1 + Double(level) * 0.16 + Double(max(0, wave - 1)) * Double(level) * 0.08
   }
   var waveLabel: String { endless ? "WAVE \(wave)" : "WAVE \(wave) / 3" }
@@ -213,7 +220,7 @@ struct Garden: Sendable {
       notify("Choose a planted plot to compost it.", error: true)
       return
     }
-    let refund = plants[index].seed.cost / 2
+    let refund = min(plants[index].seed.cost / 2, sunshineCapacity - sunshine)
     sunshine += refund
     plants.remove(at: index)
     notify("Composted · \(refund) sunshine returned")
@@ -221,9 +228,15 @@ struct Garden: Sendable {
 
   mutating func collect(_ id: Int? = nil) {
     guard phase == .playing else { return }
-    let gathered = drops.filter { id == nil || $0.id == id }
-    sunshine += gathered.reduce(0) { $0 + $1.amount }
-    drops.removeAll { id == nil || $0.id == id }
+    for index in drops.indices where id == nil || drops[index].id == id {
+      let gathered = min(drops[index].amount, sunshineCapacity - sunshine)
+      sunshine += gathered
+      drops[index].amount -= gathered
+    }
+    drops.removeAll { $0.amount == 0 }
+    if sunshine == sunshineCapacity {
+      notify("Sun satchel full · plant before gathering more.")
+    }
   }
 
   mutating func notify(_ text: String, error: Bool = false) {
@@ -241,6 +254,22 @@ struct Garden: Sendable {
 
   mutating func scheduleWave() {
     waveTime = 0
+    if endless && wave >= 4 {
+      let count = min(70, 5 + (wave - 1) * 3)
+      let packSize = min(5, 2 + (wave - 4) / 3)
+      let armorInterval = max(2, 5 - (wave - 4) / 3)
+      schedule = (0..<count).map { index in
+        let pack = index / packSize
+        let lane = (pack * 3 + seed + wave) % Self.lanes
+        let kind: PestKind =
+          index % armorInterval == armorInterval - 1
+          ? .kettle : (index % 3 == 1 ? .skitter : .beetle)
+        return Spawn(
+          time: 6 + Double(pack) * 4.5 + Double(index % packSize) * 0.75,
+          lane: lane, kind: kind)
+      }
+      return
+    }
     let intensity = endless ? min(wave - 1, 18) : level * 2 + wave - 1
     let count = 5 + min(10, intensity)
     let spacing = max(1.8, 5.3 - Double(intensity) * 0.28)
@@ -268,10 +297,12 @@ struct Garden: Sendable {
     for type in Seed.allCases { cooldowns[type] = max(0, (cooldowns[type] ?? 0) - dt) }
     skyTime -= dt
     if skyTime <= 0 {
-      skyTime = 6.5
+      let leanSky = endless && wave >= 4
+      skyTime = leanSky ? 9 : 6.5
       drops.append(
         Sunshine(
-          id: nextID(), lane: (serial + seed) % 5, x: Double((serial * 3) % 6) + 0.45, amount: 50))
+          id: nextID(), lane: (serial + seed) % 5, x: Double((serial * 3) % 6) + 0.45,
+          amount: leanSky ? 25 : 50))
     }
     for index in drops.indices { drops[index].lifetime -= dt }
     drops.removeAll { $0.lifetime <= 0 }
@@ -375,8 +406,12 @@ struct Garden: Sendable {
           return
         }
         nextWave = 5
-        sunshine += 75
-        notify("Wave secured! +75 sunshine · a moment to replant")
+        let reward = min(75, sunshineCapacity - sunshine)
+        sunshine += reward
+        notify(
+          reward > 0
+            ? "Wave secured! +\(reward) sunshine · a moment to replant"
+            : "Wave secured! Satchel full · a moment to replant")
       } else {
         nextWave -= dt
         if nextWave <= 0 {

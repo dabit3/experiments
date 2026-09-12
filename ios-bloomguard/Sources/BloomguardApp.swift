@@ -300,7 +300,8 @@ struct BloomguardView: View {
                 .system(size: 21, weight: .bold, design: .serif)
               ).monospacedDigit()
               VStack(alignment: .leading, spacing: 0) {
-                Text("SUNSHINE").font(.system(size: 7, weight: .bold)).tracking(1)
+                Text(store.garden.endless ? "SUNSHINE / 500" : "SUNSHINE")
+                  .font(.system(size: 7, weight: .bold)).tracking(1)
                 Text(store.garden.drops.isEmpty ? "tap gold drops" : "TAP TO GATHER").font(
                   .system(size: 7, weight: .bold)
                 ).foregroundStyle(Color.gold)
@@ -320,7 +321,10 @@ struct BloomguardView: View {
             store.garden.nextWave > 0
               ? "A breath between waves"
               : store.garden.wave == 1 && store.garden.pests.isEmpty && store.garden.waveTime < 17
-                ? "Plant your first guardians" : "\(store.garden.pests.count) CLOCKWORKS"
+                ? "Plant your first guardians"
+                : store.garden.endless && store.garden.wave >= 4 && !store.garden.schedule.isEmpty
+                  ? "NEXT: LANE \((store.garden.schedule.first?.lane ?? 0) + 1)"
+                  : "\(store.garden.pests.count) CLOCKWORKS"
           )
           .font(.system(size: 9, weight: .medium, design: .monospaced)).foregroundStyle(
             Color.cream.opacity(0.7)
@@ -552,6 +556,12 @@ struct BloomguardView: View {
           "Each lane has one last-chance robin. A second breach ends the run.\nEmberbuds: tap to preview, tap again to plant. Burst in 1.5s. Frost slows armor."
         )
         .font(.system(size: 10)).foregroundStyle(Color.moss).lineSpacing(3)
+        if store.garden.endless {
+          Text(
+            "Endless: store 500 sunshine. Wave 4 brings packs and smaller sky drops. Watch the next lane."
+          )
+          .font(.system(size: 10, weight: .medium)).foregroundStyle(Color.moss)
+        }
       }.padding(20).frame(maxWidth: 650).background(
         Color.cream, in: RoundedRectangle(cornerRadius: 24)
       ).padding(15)

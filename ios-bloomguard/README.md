@@ -45,7 +45,12 @@ cloud backend or entitlement is needed for Simulator play.
   and completed waves earned so far. This ends the attempt without a victory bonus.
 - Beetles are steady, skitters are fast, and armored kettles require sustained
   damage, slowing or a well-timed Emberbud. Later chapters increase enemy strength;
-  Endless health and speed increase from wave five, as spawn pressure grows.
+  Endless introduces concentrated packs from wave four, with increasing pack size,
+  armor share and health pressure. The HUD announces the next threatened lane.
+- Endless holds at most 500 sunshine. Pickups retain any amount that will not fit
+  until collected or expired; refunds and wave rewards respect the same capacity.
+  From wave four, sky drops give 25 sunshine every nine seconds, making Sunbells
+  and timely reinvestment important. Campaign economy and enemy rules are unchanged.
 
 ## Checks
 
