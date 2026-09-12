@@ -1,7 +1,7 @@
 # Domino Daydream
 
-A native SwiftUI tabletop puzzle game for iPhone. Build tiny porcelain machines
-on a walnut desk, then send a deterministic domino ripple through a miniature
+A native SwiftUI and SceneKit tabletop puzzle game for iPhone. Build tiny porcelain machines
+on a walnut-and-brass tray, then send a deterministic domino ripple through a miniature
 town. No packages, network services, accounts, purchases or signing credentials
 are required for simulator use.
 
@@ -82,13 +82,18 @@ seconds. Later worlds add turns, bridges and multiple branches.
 ## Accessibility and limits
 
 Every control and board cell has a spoken label and stable accessibility ID.
-System Reduce Motion removes intermediate falling and particles. The app supports
+System Reduce Motion removes intermediate falling, placement motion and bell wobble. The app supports
 small/large portrait iPhones and safe areas; gameplay uses fixed-size typography
 to protect grid geometry. Full Dynamic Type reflow and nonvisual spatial puzzle
 navigation are not provided.
 
+The orthographic 3D diorama uses beveled porcelain, enamel rails, sculpted plants,
+miniature buildings, brass bells and directional shadows. Touches project onto the
+board plane; accessibility frames project from the same cell coordinates. Share
+cards snapshot the actual SceneKit scene before composing the printable artwork.
+
 This is a deterministic tile-collision simulation with staggered domino falls,
-shadows, dust and bell ripples; it is not a general rigid-body physics sandbox.
+shadows and bell ripples; it is not a general rigid-body physics sandbox.
 Fixed tiles cannot be moved, and boards intentionally use guided sockets.
 No daily challenge or online leaderboard is advertised.
 

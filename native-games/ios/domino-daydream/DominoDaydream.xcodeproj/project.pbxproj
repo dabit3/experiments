@@ -9,11 +9,14 @@
 /* Begin PBXBuildFile section */
 		449FAC65CBE76212D0AE44B9 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4A953A908B6DDC88A113C0 /* GameStore.swift */; };
 		636F4DBA479CE2A8B8D39AA1 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC14F0AC70CBB9426528BDE2 /* Puzzle.swift */; };
+		95CCD74AFBD307CDF6097A13 /* DioramaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5E8A850E4AC930150585070 /* DioramaTests.swift */; };
 		9740E351DDAF27237E9F5369 /* DominoDaydreamApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D72C352D3603A4A22F9115 /* DominoDaydreamApp.swift */; };
 		BBEA0CB71C3B260F3762F942 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2209E08039FC50B110CC1347 /* LaunchScreen.storyboard */; };
 		C4E3C1626D03B7D2B8EDB793 /* ChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DC9047AC501AEF90EA736A /* ChainTests.swift */; };
+		C69BFBFB22AB0E422B39AD05 /* Diorama.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3FFE240FD9252011798B95 /* Diorama.swift */; };
 		EF48D804BEEB198F96656F27 /* Tabletop.swift in Sources */ = {isa = PBXBuildFile; fileRef = B977734B331443DDDBF1265B /* Tabletop.swift */; };
 		EFF2F17850D203DB75400CC0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4394EE38827AEC3FD3DD3A38 /* Assets.xcassets */; };
+		F757CE51E4D29BA599D0D774 /* WorkshopDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA4971AAF39CBAED901A6EF /* WorkshopDetails.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,18 +37,23 @@
 		5C4A953A908B6DDC88A113C0 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
 		AA8BCADB434BB933D85A7303 /* DominoDaydream.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DominoDaydream.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B977734B331443DDDBF1265B /* Tabletop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tabletop.swift; sourceTree = "<group>"; };
+		CAA4971AAF39CBAED901A6EF /* WorkshopDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkshopDetails.swift; sourceTree = "<group>"; };
 		D3DC9047AC501AEF90EA736A /* ChainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChainTests.swift; sourceTree = "<group>"; };
 		DC14F0AC70CBB9426528BDE2 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
+		DF3FFE240FD9252011798B95 /* Diorama.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diorama.swift; sourceTree = "<group>"; };
+		F5E8A850E4AC930150585070 /* DioramaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DioramaTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		1C61C21761EF091243E8C394 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				DF3FFE240FD9252011798B95 /* Diorama.swift */,
 				02D72C352D3603A4A22F9115 /* DominoDaydreamApp.swift */,
 				5C4A953A908B6DDC88A113C0 /* GameStore.swift */,
 				DC14F0AC70CBB9426528BDE2 /* Puzzle.swift */,
 				B977734B331443DDDBF1265B /* Tabletop.swift */,
+				CAA4971AAF39CBAED901A6EF /* WorkshopDetails.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -74,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				D3DC9047AC501AEF90EA736A /* ChainTests.swift */,
+				F5E8A850E4AC930150585070 /* DioramaTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -166,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C4E3C1626D03B7D2B8EDB793 /* ChainTests.swift in Sources */,
+				95CCD74AFBD307CDF6097A13 /* DioramaTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,10 +183,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C69BFBFB22AB0E422B39AD05 /* Diorama.swift in Sources */,
 				9740E351DDAF27237E9F5369 /* DominoDaydreamApp.swift in Sources */,
 				449FAC65CBE76212D0AE44B9 /* GameStore.swift in Sources */,
 				636F4DBA479CE2A8B8D39AA1 /* Puzzle.swift in Sources */,
 				EF48D804BEEB198F96656F27 /* Tabletop.swift in Sources */,
+				F757CE51E4D29BA599D0D774 /* WorkshopDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

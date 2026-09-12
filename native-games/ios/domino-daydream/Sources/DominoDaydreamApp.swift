@@ -54,74 +54,90 @@ struct ContentView: View {
   private var home: some View {
     GeometryReader { geometry in
       let compact = geometry.size.height < 720
-      VStack(spacing: compact ? 10 : 16) {
+      VStack(spacing: compact ? 8 : 12) {
         HStack {
-          Label("THE AFTERNOON COLLECTION", systemImage: "sun.max")
-            .font(.system(size: 10, weight: .semibold, design: .monospaced)).tracking(1.3)
+          DominoMark().frame(width: 28, height: 30)
+          Text("OBJECTS OF\nLITTLE WONDER")
+            .font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(1.5)
           Spacer()
           iconButton("slider.horizontal.3", label: "Settings", id: "settings") {
             showSettings = true
           }
         }
-        .foregroundStyle(Palette.muted)
+        .foregroundStyle(Palette.brass)
         .padding(.top, 4)
-        VStack(spacing: 3) {
-          Text("Domino").font(.system(size: compact ? 43 : 49, weight: .regular, design: .serif))
-          Text("Daydream").font(.system(size: compact ? 43 : 49, weight: .regular, design: .serif))
-            .italic()
+        VStack(alignment: .leading, spacing: -8) {
+          Text("Domino").font(.custom("Baskerville", size: compact ? 54 : 72))
+          HStack(alignment: .lastTextBaseline) {
+            Text("Daydream").font(.custom("Baskerville-Italic", size: compact ? 54 : 72))
+            Spacer(minLength: 0)
+            Image(systemName: "sun.max").font(.system(size: compact ? 24 : 33, weight: .ultraLight))
+              .foregroundStyle(Palette.brass)
+          }
         }
-        .lineSpacing(-7)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .foregroundStyle(Palette.cream)
         .accessibilityElement(children: .combine)
-        .padding(.top, -8)
+        .padding(.top, compact ? 0 : 8)
+        HStack {
+          Text("THE AFTERNOON COLLECTION")
+          Spacer()
+          Text("VOL. 01")
+        }
+        .font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(1.5)
+        .foregroundStyle(Palette.muted)
+        .padding(.top, 6)
+        .overlay(alignment: .top) {
+          Rectangle().fill(Palette.brass.opacity(0.3)).frame(height: 0.5)
+        }
         TabletopView(
           puzzle: Puzzle.all[7], pieces: Puzzle.all[7].solution,
           guides: false, labels: false, interactive: false
         )
-        .frame(maxHeight: geometry.size.height * (compact ? 0.43 : 0.48))
-        .rotationEffect(.degrees(-3))
-        .padding(.horizontal, 8)
+        .frame(maxHeight: .infinity)
+        .padding(.horizontal, -26)
         .accessibilityLabel("Miniature porcelain domino town with a winding spiral and brass bells")
-        VStack(spacing: 7) {
-          Text("Small pieces. Wonderful possibilities.")
-            .font(.system(size: 17, weight: .regular, design: .serif))
+        VStack(spacing: 5) {
+          Text("A little nudge. A lovely ripple.")
+            .font(.custom("Baskerville-Italic", size: compact ? 21 : 24))
             .foregroundStyle(Palette.cream)
-          Text("Build a tiny machine. Set a daydream in motion.")
+          Text("Build something wonderful. Then let it go.")
             .font(.system(size: 11)).foregroundStyle(Palette.muted)
         }
-        Spacer(minLength: 0)
+        .padding(.bottom, compact ? 4 : 10)
         primaryButton(
-          store.completed == 0 ? "Begin the daydream" : "Back to the workshop",
+          store.completed == 0 ? "Begin the daydream" : "Return to the workshop",
           icon: "arrow.right", id: "begin"
         ) {
           start(store.unlocked)
         }
         HStack(spacing: 12) {
-          secondaryButton("8 little worlds", icon: "square.grid.2x2", id: "collection") {
+          secondaryButton("The collection", icon: "square.grid.2x2", id: "collection") {
             showCollection = true
           }
           secondaryButton("Open table", icon: "sparkles", id: "sandbox") { start(8) }
         }
         HStack(spacing: 6) {
           ForEach(0..<8, id: \.self) { index in
-            Circle().fill(index < store.completed ? Palette.brass : Palette.cream.opacity(0.15))
-              .frame(width: 5, height: 5)
+            RoundedRectangle(cornerRadius: 1)
+              .fill(index < store.completed ? Palette.brass : Palette.cream.opacity(0.15))
+              .frame(width: 4, height: 10)
           }
           Text("\(store.completed) / 8 WORLDS COMPLETE")
-            .font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(0.5)
+            .font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(1)
             .padding(.leading, 7)
         }
         .foregroundStyle(Palette.muted)
         .padding(.bottom, 8)
       }
-      .padding(.horizontal, 24)
+      .padding(.horizontal, 28)
     }
   }
 
   private var game: some View {
     GeometryReader { geometry in
       let compact = geometry.size.height < 720
-      VStack(spacing: compact ? 8 : 12) {
+      VStack(spacing: compact ? 6 : 10) {
         HStack {
           iconButton("arrow.left", label: "Return to workshop", id: "home") {
             store.pause()
@@ -129,28 +145,42 @@ struct ContentView: View {
             playing = false
           }
           Spacer()
-          Text(
-            store.puzzle.sandbox
-              ? "OPEN TABLE" : "WORLD \(String(format: "%02d", store.puzzle.id + 1)) / 08"
-          )
-          .font(.system(size: 10, weight: .semibold, design: .monospaced)).tracking(2)
+          HStack(spacing: 9) {
+            Rectangle().fill(Palette.brass.opacity(0.4)).frame(width: 22, height: 0.5)
+            Text(
+              store.puzzle.sandbox
+                ? "OPEN TABLE" : "WORLD \(String(format: "%02d", store.puzzle.id + 1)) / 08"
+            )
+            .font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(2)
+            Rectangle().fill(Palette.brass.opacity(0.4)).frame(width: 22, height: 0.5)
+          }
           Spacer()
           iconButton("questionmark", label: "How to play", id: "help") {
             store.pause()
             showHelp = true
           }
         }
-        .foregroundStyle(Palette.muted)
+        .foregroundStyle(Palette.brass)
         VStack(spacing: 4) {
           Text(store.puzzle.title)
-            .font(.system(size: compact ? 25 : 29, weight: .regular, design: .serif))
+            .font(.custom("Baskerville", size: compact ? 29 : 36))
             .foregroundStyle(Palette.cream)
             .minimumScaleFactor(0.75).lineLimit(1)
-          HStack(spacing: 18) {
-            Label("\(store.bellsRung) / \(store.puzzle.targets.count) bells", systemImage: "bell")
-            Text(store.best == 0 ? "Make a little magic" : "Best \(store.best)")
+          HStack(spacing: 7) {
+            ForEach(0..<store.puzzle.targets.count, id: \.self) { index in
+              Image(systemName: index < store.bellsRung ? "bell.fill" : "bell")
+                .foregroundStyle(index < store.bellsRung ? Palette.brass : Palette.muted)
+            }
+            Text("\(store.bellsRung) / \(store.puzzle.targets.count)")
+            Text("·").padding(.horizontal, 4)
+            Text(store.best == 0 ? "RING EVERY BELL" : "BEST \(store.best)")
           }
-          .font(.system(size: 12, weight: .medium)).foregroundStyle(Palette.muted)
+          .font(.system(size: 9, weight: .medium, design: .monospaced))
+          .tracking(1).foregroundStyle(Palette.muted)
+          .accessibilityElement(children: .ignore)
+          .accessibilityLabel(
+            "\(store.bellsRung) of \(store.puzzle.targets.count) bells rung. Best score \(store.best)"
+          )
         }
         TabletopView(
           puzzle: store.puzzle, pieces: store.allPieces, selected: store.selected,
@@ -162,7 +192,8 @@ struct ContentView: View {
             }
           }
         )
-        .frame(height: max(245, geometry.size.height - (compact ? 346 : 372)))
+        .frame(height: max(255, geometry.size.height - (compact ? 330 : 378)))
+        .padding(.horizontal, -18)
         .layoutPriority(1)
         if store.phase == .result {
           resultPanel
@@ -179,43 +210,46 @@ struct ContentView: View {
   }
 
   private func editingPanel(compact: Bool) -> some View {
-    VStack(spacing: compact ? 8 : 10) {
+    VStack(spacing: compact ? 6 : 10) {
       HStack(alignment: .top, spacing: 8) {
-        Image(systemName: "lightbulb").font(.system(size: 12)).foregroundStyle(Palette.brass)
-          .padding(.top, 2)
+        Rectangle().fill(Palette.brass).frame(width: 2, height: 30)
         Text(store.message)
-          .font(.system(size: 13)).lineSpacing(2)
+          .font(.system(size: compact ? 12 : 13)).lineSpacing(2)
           .foregroundStyle(Palette.cream.opacity(0.86))
           .frame(maxWidth: .infinity, minHeight: 36, alignment: .leading)
           .fixedSize(horizontal: false, vertical: true)
           .accessibilityIdentifier("context-message")
       }
-      HStack(spacing: 7) {
+      HStack(spacing: 6) {
         ForEach(PieceKind.allCases) { kind in
           Button {
             store.choose(kind)
           } label: {
-            VStack(spacing: 5) {
-              HStack(spacing: 5) {
-                Image(systemName: kind.symbol).font(.system(size: 17, weight: .medium))
+            VStack(spacing: 3) {
+              HStack(alignment: .top, spacing: 5) {
+                PieceGlyph(kind: kind).frame(width: 34, height: compact ? 24 : 30)
+                Spacer(minLength: 0)
                 Text(store.puzzle.sandbox ? "∞" : "\(store.remaining(kind))")
                   .font(.system(size: 11, weight: .semibold, design: .monospaced))
               }
-              Text(kind.title).font(.system(size: 12, weight: .semibold))
+              Text(kind.title.uppercased())
+                .font(.system(size: 9, weight: .semibold, design: .monospaced)).tracking(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .padding(.horizontal, 10)
             .frame(maxWidth: .infinity)
-            .frame(height: compact ? 51 : 58)
+            .frame(height: compact ? 56 : 66)
             .foregroundStyle(
               store.tool == kind
                 ? Palette.ink : Palette.cream.opacity(store.remaining(kind) == 0 ? 0.55 : 0.85)
             )
             .background(
-              store.tool == kind ? Palette.cream : Palette.cream.opacity(0.07),
-              in: RoundedRectangle(cornerRadius: 13)
+              store.tool == kind ? Palette.cream : Color.black.opacity(0.17),
+              in: RoundedRectangle(cornerRadius: 6)
             )
             .overlay(
-              RoundedRectangle(cornerRadius: 13).strokeBorder(
-                store.tool == kind ? Palette.brass : .clear, lineWidth: 1.5))
+              RoundedRectangle(cornerRadius: 6).strokeBorder(
+                store.tool == kind ? Palette.brass : Palette.cream.opacity(0.14), lineWidth: 1))
           }
           .buttonStyle(.plain)
           .accessibilityLabel(
@@ -272,10 +306,18 @@ struct ContentView: View {
   private var resultPanel: some View {
     let won = store.result?.won == true
     return VStack(spacing: 10) {
+      HStack {
+        Text(won ? "THE CHAIN IS COMPLETE" : "BACK TO THE DRAWING BOARD")
+          .font(.system(size: 8, weight: .semibold, design: .monospaced)).tracking(1.4)
+        Spacer()
+        Text(String(format: "№ %02d", store.puzzle.id + 1))
+          .font(.system(size: 10, design: .monospaced))
+      }
+      .foregroundStyle(Palette.ink.opacity(0.7))
       HStack(alignment: .top) {
         VStack(alignment: .leading, spacing: 5) {
-          Text(won ? "A lovely chain reaction." : "Almost a daydream.")
-            .font(.system(size: 23, weight: .regular, design: .serif))
+          Text(won ? "Beautifully set in motion." : "One more little nudge.")
+            .font(.custom("Baskerville-Italic", size: 26))
             .minimumScaleFactor(0.8).lineLimit(1)
           Text(
             won
@@ -286,8 +328,8 @@ struct ContentView: View {
           .font(.system(size: 11)).fixedSize(horizontal: false, vertical: true).lineSpacing(2)
         }
         Spacer(minLength: 0)
-        Image(systemName: won ? "sparkle" : "arrow.triangle.turn.up.right.diamond")
-          .font(.system(size: 23)).foregroundStyle(won ? Palette.brass : Palette.coral)
+        Image(systemName: won ? "seal" : "arrow.triangle.turn.up.right.diamond")
+          .font(.system(size: 27, weight: .ultraLight)).foregroundStyle(Palette.ink)
       }
       .foregroundStyle(Palette.ink)
       HStack {
@@ -322,7 +364,8 @@ struct ContentView: View {
             } label: {
               Label("Next", systemImage: "arrow.right")
                 .font(.system(size: 12, weight: .semibold)).frame(width: 83, height: 43)
-                .background(Palette.ink, in: Capsule()).foregroundStyle(Palette.cream)
+                .background(Palette.ink, in: RoundedRectangle(cornerRadius: 5))
+                .foregroundStyle(Palette.cream)
             }
             .accessibilityIdentifier("next")
           }
@@ -330,7 +373,12 @@ struct ContentView: View {
       }
     }
     .padding(17)
-    .background(Palette.cream, in: RoundedRectangle(cornerRadius: 22))
+    .background(Palette.cream, in: RoundedRectangle(cornerRadius: 7))
+    .overlay(
+      RoundedRectangle(cornerRadius: 4).strokeBorder(Palette.brass.opacity(0.6), lineWidth: 0.7)
+        .padding(5)
+        .allowsHitTesting(false)
+    )
     .accessibilityIdentifier(won ? "success-result" : "failure-result")
   }
 
@@ -338,7 +386,7 @@ struct ContentView: View {
     NavigationStack {
       ScrollView {
         VStack(alignment: .leading, spacing: 0) {
-          Text("Eight little worlds.").font(.system(size: 34, weight: .regular, design: .serif))
+          Text("The afternoon\ncollection.").font(.custom("Baskerville", size: 42))
             .padding(.bottom, 8)
           Text("A quiet collection of small, satisfying machines.")
             .font(.system(size: 13)).foregroundStyle(.secondary).padding(.bottom, 24)
@@ -483,7 +531,7 @@ struct ContentView: View {
     -> some View
   {
     Button(action: action) {
-      Image(systemName: symbol).font(.system(size: 16)).frame(width: 44, height: 36)
+      Image(systemName: symbol).font(.system(size: 16, weight: .light)).frame(width: 44, height: 44)
     }
     .buttonStyle(.plain).accessibilityLabel(label).accessibilityIdentifier(id)
   }
@@ -495,7 +543,7 @@ struct ContentView: View {
     Button(action: action) {
       HStack(spacing: 4) {
         Image(systemName: symbol).font(.system(size: 13))
-        Text(label).font(.system(size: 12, weight: .medium))
+        Text(label).font(.system(size: 11, weight: .medium))
       }
       .frame(maxWidth: .infinity, minHeight: 44)
       .foregroundStyle(Palette.cream.opacity(disabled ? 0.5 : 0.85))
@@ -507,15 +555,27 @@ struct ContentView: View {
     _ title: String, icon: String, id: String, action: @escaping () -> Void
   ) -> some View {
     Button(action: action) {
-      HStack {
-        Text(title).font(.system(size: 15, weight: .semibold))
+      HStack(spacing: 14) {
+        Circle().fill(Palette.ink.opacity(0.3)).frame(width: 4, height: 4)
+        Text(title).font(.system(size: 14, weight: .semibold)).tracking(0.3)
         Spacer()
-        Image(systemName: icon).font(.system(size: 13, weight: .semibold))
+        Image(systemName: icon).font(.system(size: 14, weight: .medium))
+          .frame(width: 30, height: 30)
+          .overlay(Circle().stroke(Palette.ink.opacity(0.25), lineWidth: 0.7))
       }
-      .foregroundStyle(Palette.cream).padding(.horizontal, 22).frame(height: 52)
-      .background(Palette.coral, in: Capsule())
+      .foregroundStyle(Palette.ink).padding(.horizontal, 17).frame(height: 54)
+      .background(
+        LinearGradient(
+          colors: [Color(hex: 0xF1C08F), Palette.coral],
+          startPoint: .top, endPoint: .bottom),
+        in: RoundedRectangle(cornerRadius: 7)
+      )
+      .overlay(
+        RoundedRectangle(cornerRadius: 7).strokeBorder(Palette.cream.opacity(0.4), lineWidth: 0.7)
+      )
+      .shadow(color: .black.opacity(0.23), radius: 0, x: 0, y: 4)
     }
-    .buttonStyle(.plain).accessibilityIdentifier(id)
+    .buttonStyle(WorkshopPressStyle()).accessibilityIdentifier(id)
   }
 
   private func secondaryButton(
@@ -526,8 +586,9 @@ struct ContentView: View {
         .font(.system(size: 12, weight: .medium))
         .frame(maxWidth: .infinity, minHeight: 45)
         .foregroundStyle(Palette.cream)
-        .background(Palette.cream.opacity(0.07), in: Capsule())
-        .overlay(Capsule().strokeBorder(Palette.cream.opacity(0.13), lineWidth: 1))
+        .overlay(alignment: .bottom) {
+          Rectangle().fill(Palette.brass.opacity(0.25)).frame(height: 0.5)
+        }
     }
     .buttonStyle(.plain).accessibilityIdentifier(id)
   }
@@ -538,29 +599,44 @@ struct ResultCard: View {
   let pieces: [Cell: Piece]
   let result: ChainResult?
   let score: Int
+  let artwork: UIImage
   var body: some View {
     ZStack {
-      WalnutBackground()
-      VStack(spacing: 16) {
-        Text("A LITTLE NUDGE, A LOVELY RIPPLE")
-          .font(.system(size: 11, weight: .medium, design: .monospaced)).tracking(3)
-          .foregroundStyle(Palette.muted)
-        Text("Domino Daydream").font(.system(size: 39, weight: .regular, design: .serif))
-          .foregroundStyle(Palette.cream)
-        TabletopView(
-          puzzle: puzzle, pieces: pieces, result: result, beat: 1000, guides: false,
-          interactive: false
-        )
-        .frame(width: 420, height: 500)
-        Text(puzzle.title).font(.system(size: 24, weight: .regular, design: .serif))
-          .foregroundStyle(Palette.cream)
-        Text("\(result?.chainLength ?? 0) DOMINOES  ·  \(score) POINTS  ·  EVERY BELL RUNG")
-          .font(.system(size: 11, weight: .semibold, design: .monospaced)).tracking(1)
-          .foregroundStyle(Palette.muted)
-        Text("Made by hand. Set in motion.").font(.system(size: 15, design: .serif)).italic()
-          .foregroundStyle(Palette.cream)
+      Palette.cream
+      VStack(spacing: 12) {
+        HStack {
+          DominoMark().frame(width: 35, height: 35)
+          Spacer()
+          Text("THE AFTERNOON COLLECTION\nA MACHINE BY YOU")
+            .font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(2)
+            .multilineTextAlignment(.trailing)
+        }
+        Rectangle().fill(Palette.ink.opacity(0.25)).frame(height: 0.7)
+        Text("Domino Daydream").font(.custom("Baskerville", size: 45))
+          .frame(maxWidth: .infinity, alignment: .leading)
+        Image(uiImage: artwork).resizable().scaledToFit().frame(width: 510, height: 490)
+        Text(puzzle.title).font(.custom("Baskerville-Italic", size: 30))
+        HStack {
+          cardMetric("\(result?.chainLength ?? 0)", label: "DOMINOES")
+          Spacer()
+          cardMetric("\(score)", label: "POINTS")
+          Spacer()
+          cardMetric("\(result?.reached.count ?? 0)", label: "BELLS RUNG")
+        }
+        .padding(.horizontal, 25)
+        Rectangle().fill(Palette.ink.opacity(0.25)).frame(height: 0.7)
+        Text("Made by hand. Set in motion.").font(.custom("Baskerville-Italic", size: 17))
       }
-      .padding(30)
+      .foregroundStyle(Palette.ink)
+      .padding(36)
+    }
+    .overlay(Rectangle().strokeBorder(Palette.brass, lineWidth: 1).padding(16))
+  }
+
+  private func cardMetric(_ value: String, label: String) -> some View {
+    VStack(spacing: 3) {
+      Text(value).font(.custom("Baskerville", size: 36))
+      Text(label).font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(2)
     }
   }
 }
@@ -595,9 +671,16 @@ struct SharePayload: Identifiable {
   static func make(puzzle: Puzzle, pieces: [Cell: Piece], result: ChainResult?, score: Int)
     -> SharePayload?
   {
+    let diorama = Diorama(puzzle: puzzle, labels: false)
+    diorama.update(
+      pieces: pieces, selected: nil, result: result, beat: 1000,
+      guides: false, reduceMotion: true)
+    let artwork = diorama.snapshot(size: CGSize(width: 1020, height: 980))
     let renderer = ImageRenderer(
-      content: ResultCard(puzzle: puzzle, pieces: pieces, result: result, score: score)
-        .frame(width: 600, height: 860))
+      content: ResultCard(
+        puzzle: puzzle, pieces: pieces, result: result, score: score, artwork: artwork
+      )
+      .frame(width: 600, height: 860))
     renderer.scale = 2
     guard let image = renderer.uiImage else { return nil }
     return SharePayload(
