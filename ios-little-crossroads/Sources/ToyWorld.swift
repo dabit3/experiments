@@ -25,6 +25,7 @@ final class ToyWorld {
     private var movingNodes: [Int: [SCNNode]] = [:]
     private var coins: [Int: SCNNode] = [:]
     private var cameraRow: Double = 1.5
+    private var cameraX: Double = 0
     private var lastSeed: UInt64?
     private var lastPlumage: Plumage?
     private var lastDirection: Direction = .forward
@@ -103,6 +104,7 @@ final class ToyWorld {
             coins.removeAll()
             lastSeed = game.course.seed
             cameraRow = 1.5
+            cameraX = game.state == .ready ? 0 : -0.8
             lastDirection = .forward
             impactProgress = 0
         }
@@ -134,10 +136,12 @@ final class ToyWorld {
             node.eulerAngles.y = reducedMotion ? 0 : Float(time * 1.8)
             node.position.y = 0.46 + (reducedMotion ? 0 : Float(sin(time * 3 + Double(row))) * 0.05)
         }
-        let target = max(1.5, Double(game.furthest) + 1.9)
+        let target = max(1.5, game.visibleRow + 1.9)
         cameraRow += (target - cameraRow) * min(1, delta * 5)
-        camera.position = SCNVector3(6.8, 12.5, Float(10 - cameraRow))
-        camera.look(at: SCNVector3(0, 0, Float(-cameraRow)))
+        let targetX = game.state == .ready ? 0 : max(-3.4, min(2, game.visibleX * 0.8 - 0.8))
+        cameraX += (targetX - cameraX) * min(1, delta * 9)
+        camera.position = SCNVector3(Float(6.8 + cameraX), 12.5, Float(10 - cameraRow))
+        camera.look(at: SCNVector3(Float(cameraX), 0, Float(-cameraRow)))
         duck.position = SCNVector3(Float(game.visibleX), Float(game.height + 0.10), Float(-game.visibleRow))
         let angle: Float = switch lastDirection {
         case .forward: 0

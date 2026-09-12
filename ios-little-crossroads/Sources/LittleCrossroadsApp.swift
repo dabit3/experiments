@@ -143,7 +143,7 @@ struct CrossroadsView: View {
     private var gameHeader: some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 5) {
-                Text("COINS FOUND").font(.system(size: 8, weight: .heavy)).tracking(1)
+                Text("COINS").font(.system(size: 11, weight: .heavy)).tracking(1)
                 Label("\(store.runCoins)", systemImage: "circle.inset.filled")
                     .font(.system(size: 18, weight: .black, design: .rounded))
             }
@@ -152,7 +152,7 @@ struct CrossroadsView: View {
                 Text("\(store.score)").font(.system(size: 49, weight: .black, design: .rounded))
                     .contentTransition(.numericText())
                     .accessibilityIdentifier("scoreValue")
-                Text("HOPS").font(.system(size: 9, weight: .black)).tracking(2)
+                Text("HOPS").font(.system(size: 11, weight: .black)).tracking(2)
             }
             .frame(maxWidth: .infinity)
             VStack(spacing: 5) {
@@ -163,7 +163,7 @@ struct CrossroadsView: View {
                         .background(Palette.mint.opacity(0.45), in: Circle())
                 }
                 .accessibilityLabel("Pause game").accessibilityIdentifier("pauseGame").buttonStyle(SoftPress())
-                Text("BEST \(store.best)").font(.system(size: 9, weight: .bold))
+                Text("BEST \(store.best)").font(.system(size: 11, weight: .bold))
             }
             .frame(maxWidth: .infinity, alignment: .trailing)
         }
