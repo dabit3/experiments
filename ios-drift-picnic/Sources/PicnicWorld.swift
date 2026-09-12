@@ -22,26 +22,25 @@ final class PicnicWorld {
     karts = [Palette.butter, Palette.pink, Palette.blue, UIColor.white].enumerated().map {
       Self.kart(color: $0.element, animal: $0.offset)
     }
-    scene.background.contents = UIColor(red: 0.76, green: 0.88, blue: 0.81, alpha: 1)
-    scene.fogColor = UIColor(red: 0.76, green: 0.88, blue: 0.81, alpha: 1)
-    scene.fogStartDistance = 150
-    scene.fogEndDistance = 240
+    scene.background.contents = UIColor(red: 0.78, green: 0.90, blue: 0.84, alpha: 1)
+    scene.fogColor = UIColor(red: 0.78, green: 0.90, blue: 0.84, alpha: 1)
+    scene.fogStartDistance = 210
+    scene.fogEndDistance = 350
     camera.camera = SCNCamera()
     camera.camera?.fieldOfView = 57
     camera.camera?.zFar = 350
-    camera.camera?.wantsHDR = true
-    camera.camera?.exposureOffset = 0.1
+    camera.camera?.wantsHDR = false
     scene.rootNode.addChildNode(camera)
     let ambient = SCNNode()
     ambient.light = SCNLight()
     ambient.light?.type = .ambient
-    ambient.light?.intensity = 650
-    ambient.light?.color = Palette.cream
+    ambient.light?.intensity = 800
+    ambient.light?.color = UIColor.white
     scene.rootNode.addChildNode(ambient)
     let sun = SCNNode()
     sun.light = SCNLight()
     sun.light?.type = .directional
-    sun.light?.intensity = 1450
+    sun.light?.intensity = 1100
     sun.light?.color = UIColor(red: 1, green: 0.94, blue: 0.81, alpha: 1)
     sun.light?.castsShadow = true
     sun.light?.shadowMode = .deferred
@@ -54,7 +53,26 @@ final class PicnicWorld {
     buildGround()
     buildTrack()
     buildScenery()
-    for kart in karts { scene.rootNode.addChildNode(kart) }
+    for kart in karts {
+      let shadow = Self.node(
+        SCNCylinder(radius: 1, height: 0.015), UIColor.black.withAlphaComponent(0.17))
+      shadow.geometry?.firstMaterial?.lightingModel = .constant
+      shadow.scale = SCNVector3(0.8, 1, 1.3)
+      shadow.position.y = -0.005
+      kart.addChildNode(shadow)
+      scene.rootNode.addChildNode(kart)
+    }
+    let marker = Self.node(SCNPlane(width: 1.3, height: 0.5), Palette.butter)
+    marker.position.y = 2.7
+    marker.constraints = [SCNBillboardConstraint()]
+    marker.geometry?.firstMaterial?.lightingModel = .constant
+    let markerText = SCNText(string: "YOU", extrusionDepth: 0)
+    markerText.font = UIFont.systemFont(ofSize: 0.30, weight: .black)
+    let markerLabel = Self.node(markerText, Palette.green)
+    markerLabel.geometry?.firstMaterial?.lightingModel = .constant
+    markerLabel.position = SCNVector3(-0.34, -0.17, 0.02)
+    marker.addChildNode(markerLabel)
+    karts[0].addChildNode(marker)
     for index in 0..<3 {
       let distance = Double(index) * circuit.length / 3 + 38
       let group = SCNNode()
@@ -71,6 +89,7 @@ final class PicnicWorld {
     for _ in 0..<2 {
       let glow = Self.node(SCNCone(topRadius: 0.08, bottomRadius: 0.3, height: 1.8), Palette.butter)
       glow.eulerAngles.x = -.pi / 2
+      glow.geometry?.firstMaterial?.lightingModel = .constant
       glow.isHidden = true
       karts[0].addChildNode(glow)
       boostNodes.append(glow)
@@ -83,7 +102,9 @@ final class PicnicWorld {
   {
     let material = SCNMaterial()
     material.diffuse.contents = color
-    material.lightingModel = .physicallyBased
+    material.lightingModel = .blinn
+    material.specular.contents = UIColor(white: 0.18, alpha: 1)
+    material.shininess = 0.3
     material.roughness.contents = roughness
     geometry.materials = [material]
     return SCNNode(geometry: geometry)
@@ -132,7 +153,10 @@ final class PicnicWorld {
       }
     }
     let geometry = SCNGeometry(
-      sources: [SCNGeometrySource(vertices: vertices)],
+      sources: [
+        SCNGeometrySource(vertices: vertices),
+        SCNGeometrySource(normals: Array(repeating: SCNVector3(0, 1, 0), count: vertices.count)),
+      ],
       elements: [SCNGeometryElement(indices: indices, primitiveType: .triangles)])
     let road = Self.node(geometry, color)
     road.geometry?.firstMaterial?.isDoubleSided = true
@@ -143,7 +167,7 @@ final class PicnicWorld {
     ribbon(inner: -7.2, outer: 7.2, height: 0.00, color: Palette.green)
     ribbon(
       inner: -6.5, outer: 6.5, height: 0.04,
-      color: UIColor(red: 0.66, green: 0.69, blue: 0.53, alpha: 1))
+      color: UIColor(red: 0.43, green: 0.57, blue: 0.45, alpha: 1))
     ribbon(inner: -6.0, outer: -5.85, height: 0.055, color: Palette.cream)
     ribbon(inner: 5.85, outer: 6.0, height: 0.055, color: Palette.cream)
     for i in 0..<120 {
@@ -359,11 +383,12 @@ final class PicnicWorld {
       }
     }
     if racing {
+      camera.camera?.usesOrthographicProjection = false
       let driver = race.player
       let target = SCNVector3(
-        driver.point.x - sin(driver.heading) * 11,
-        7.8,
-        driver.point.z - cos(driver.heading) * 11)
+        driver.point.x - sin(driver.heading) * 9.5,
+        6.4,
+        driver.point.z - cos(driver.heading) * 9.5)
       let blend: Float = cameraReady ? 0.11 : 1
       camera.position = SCNVector3(
         camera.position.x + (target.x - camera.position.x) * blend,
@@ -371,12 +396,17 @@ final class PicnicWorld {
         camera.position.z + (target.z - camera.position.z) * blend)
       camera.look(
         at: SCNVector3(
-          driver.point.x + sin(driver.heading) * 7, 0.3, driver.point.z + cos(driver.heading) * 7))
+          driver.point.x + sin(driver.heading) * 6, 0.3, driver.point.z + cos(driver.heading) * 6),
+        up: SCNVector3(0, 1, 0), localFront: SCNVector3(0, 0, -1))
       cameraReady = true
     } else {
       cameraReady = false
-      camera.position = SCNVector3(-85, 87, 103)
-      camera.look(at: SCNVector3(0, 0, -4))
+      camera.camera?.usesOrthographicProjection = true
+      camera.camera?.orthographicScale = 77
+      camera.position = SCNVector3(-70, 105, 105)
+      camera.look(
+        at: SCNVector3(0, 0, 0),
+        up: SCNVector3(0, 1, 0), localFront: SCNVector3(0, 0, -1))
     }
   }
 }

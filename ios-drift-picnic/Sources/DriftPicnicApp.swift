@@ -25,7 +25,14 @@ struct PicnicView: View {
   var body: some View {
     GeometryReader { geometry in
       ZStack {
-        NativeScene(game: game).ignoresSafeArea()
+        if game.phase == .title {
+          HStack(spacing: 0) {
+            forest.frame(width: min(365, geometry.size.width * 0.43))
+            NativeScene(game: game)
+          }.ignoresSafeArea()
+        } else {
+          NativeScene(game: game).ignoresSafeArea()
+        }
         if game.phase == .title {
           title(geometry.size)
         } else if game.phase == .results {
@@ -71,6 +78,7 @@ struct PicnicView: View {
           Text("Picnic").foregroundStyle(butter)
         }
         .font(.system(size: size.height < 370 ? 59 : 71, weight: .black, design: .serif))
+        .fontDesign(.serif)
         .italic()
         Text("Small wheels. Sweeter victories.")
           .font(.system(size: 13, weight: .medium))
@@ -187,15 +195,17 @@ struct PicnicView: View {
             .frame(width: 44, height: 44).background(cream, in: Circle())
         }.accessibilityLabel("Pause race").accessibilityIdentifier("pauseRace")
       }
-      Spacer()
-      if game.race.feedbackRemaining > 0 && game.phase == .racing {
-        Text(game.race.feedback)
-          .font(.system(size: 12, weight: .heavy)).tracking(1.1)
-          .padding(.horizontal, 20).padding(.vertical, 11)
-          .background(butter, in: Capsule())
-          .padding(.bottom, 8)
-          .accessibilityIdentifier("raceFeedback")
+      ZStack {
+        if game.race.feedbackRemaining > 0 && game.phase == .racing {
+          Text(game.race.feedback)
+            .font(.system(size: 11, weight: .heavy)).tracking(1.1)
+            .padding(.horizontal, 18).padding(.vertical, 8)
+            .background(butter, in: Capsule())
+            .accessibilityIdentifier("raceFeedback")
+        }
       }
+      .frame(height: 36).padding(.top, 4)
+      Spacer()
       HStack(alignment: .bottom) {
         HStack(spacing: 12) {
           steeringButton(-1, icon: "arrow.turn.up.left", label: "Steer left")
@@ -204,7 +214,8 @@ struct PicnicView: View {
         VStack(alignment: .leading, spacing: 3) {
           Text("\(Int(game.race.player.speed * 3.6))")
             .font(.system(size: 26, weight: .black)).monospacedDigit()
-          Text("KM/H").font(.system(size: 8, weight: .heavy)).tracking(1)
+          Text(game.race.player.boost > 0 ? "BOOST!" : "KM/H")
+            .font(.system(size: 8, weight: .heavy)).tracking(1)
         }
         .foregroundStyle(cream).shadow(color: forest, radius: 4).padding(.leading, 7)
         Spacer()
@@ -284,6 +295,7 @@ struct PicnicView: View {
         HStack {
           VStack(alignment: .leading, spacing: 4) {
             Text("A quick pit stop.").font(.system(size: 32, weight: .black, design: .serif))
+              .fontDesign(.serif)
               .italic()
             Text("Three little tricks for a sweet first race.").font(.system(size: 13))
           }
@@ -338,8 +350,11 @@ struct PicnicView: View {
       forest.opacity(0.75).ignoresSafeArea()
       VStack(spacing: 13) {
         Image(systemName: "sun.haze.fill").font(.system(size: 30)).foregroundStyle(butter)
-        Text("Take a breather.").font(.system(size: 34, weight: .black, design: .serif)).italic()
+        Text("Take a breather.").font(.system(size: 34, weight: .black, design: .serif))
+          .fontDesign(.serif).italic()
         Text("Your picnic will be right here.").font(.system(size: 13)).opacity(0.8)
+        Text("PAUSED AT  \(raceTime(game.race.elapsed))")
+          .font(.system(size: 10, weight: .heavy)).monospacedDigit().tracking(1)
         Button("Back to the race", action: game.resume).buttonStyle(PicnicButtonStyle())
           .accessibilityIdentifier("resumeRace")
         HStack(spacing: 24) {
@@ -365,6 +380,7 @@ struct PicnicView: View {
               : (game.race.position == 1 ? "Oh, sweet\nvictory!" : "A lovely\nlittle race.")
           )
           .font(.system(size: size.height < 370 ? 38 : 46, weight: .black, design: .serif))
+          .fontDesign(.serif)
           .italic().lineSpacing(-6).foregroundStyle(cream)
           HStack(alignment: .firstTextBaseline, spacing: 8) {
             Text(game.mode == .trial ? "3" : "\(game.race.position)")
@@ -384,7 +400,16 @@ struct PicnicView: View {
           }
         }.frame(maxWidth: 305, alignment: .leading)
         VStack(spacing: 12) {
-          if game.mode == .picnic { podium }
+          if game.mode == .picnic {
+            podium
+            HStack {
+              Image(systemName: "hare.fill")
+              Text("Clover · YOU")
+              Spacer()
+              Text("\(game.race.position) / 4")
+            }
+            .font(.system(size: 11, weight: .heavy)).foregroundStyle(butter)
+          }
           HStack {
             metric("RACE TIME", raceTime(game.race.elapsed))
             Spacer()
@@ -417,8 +442,7 @@ struct PicnicView: View {
     return HStack(alignment: .bottom, spacing: 8) {
       ForEach([1, 0, 2], id: \.self) { rank in
         VStack(spacing: 5) {
-          Image(systemName: sorted[rank] == 0 ? "hare.fill" : "pawprint.fill")
-            .font(.system(size: rank == 0 ? 28 : 23)).foregroundStyle(rank == 0 ? butter : cream)
+          CharacterBadge(driver: sorted[rank]).frame(width: 37, height: 37)
           Text(names[sorted[rank]] + (sorted[rank] == 0 ? " · YOU" : ""))
             .font(.system(size: 9, weight: .heavy)).foregroundStyle(cream)
           Text("\(rank + 1)")
@@ -429,6 +453,36 @@ struct PicnicView: View {
               in: UnevenRoundedRectangle(topLeadingRadius: 12, topTrailingRadius: 12))
         }
       }
+    }
+  }
+}
+
+struct CharacterBadge: View {
+  let driver: Int
+  private var fur: Color {
+    [
+      cream, Color(red: 0.77, green: 0.49, blue: 0.32), Color(red: 0.71, green: 0.82, blue: 0.85),
+      Color(white: 0.86),
+    ][driver]
+  }
+  var body: some View {
+    GeometryReader { geometry in
+      let width = geometry.size.width
+      ZStack {
+        ForEach([-1.0, 1.0], id: \.self) { side in
+          Capsule().fill(fur)
+            .frame(width: width * 0.25, height: width * (driver == 0 ? 0.49 : 0.29))
+            .rotationEffect(.degrees(side * 12))
+            .offset(x: width * side * 0.24, y: -width * 0.26)
+        }
+        Ellipse().fill(fur).frame(width: width * 0.84, height: width * 0.70)
+        HStack(spacing: width * 0.25) {
+          Circle().fill(forest).frame(width: width * 0.08)
+          Circle().fill(forest).frame(width: width * 0.08)
+        }.offset(y: -width * 0.01)
+        Ellipse().fill(Color(uiColor: Palette.pink))
+          .frame(width: width * 0.12, height: width * 0.07).offset(y: width * 0.13)
+      }.frame(width: width, height: geometry.size.height)
     }
   }
 }
