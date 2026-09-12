@@ -16,7 +16,10 @@ struct HarborCanvas: View {
 
   var body: some View {
     Canvas { context, size in
-      let scale = size.width / 390
+      let minimumHeight = decorative ? 290.0 : 254.0 + Double(game.contract.cargo.count) * 36
+      let scale = min(size.width / 390, size.height / minimumHeight)
+      context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(HarborPalette.sky))
+      context.translateBy(x: (size.width - 390 * scale) / 2, y: 0)
       context.scaleBy(x: scale, y: scale)
       let height = size.height / scale
       let deck = height - 109
@@ -131,7 +134,7 @@ struct HarborCanvas: View {
       HarborArt.cargo(&context, kind: game.cargo, x: dropX, y: dropY)
     }
     if phase == .settling {
-      let rewardY = max(125, deck - Double(game.stack.count) * 36 - 38)
+      let rewardY = max(65, deck - Double(game.stack.count) * 36 - 38)
       context.draw(
         Text("+\(game.lastAward)").font(.system(size: 29, weight: .regular, design: .serif))
           .foregroundStyle(HarborPalette.ink), at: CGPoint(x: 255, y: rewardY))

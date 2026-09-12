@@ -338,7 +338,7 @@ struct HarborView: View {
         Text("Two moves.\nOne steady ship.")
           .font(.system(size: 36, weight: .regular, design: .serif))
           .tracking(-1)
-        LiftDiagram().frame(height: 87)
+        LiftDiagram().aspectRatio(330.0 / 84.0, contentMode: .fit)
         tutorialStep("01", "Catch the treasure", "Tap Drop hook as it swings over the left dock.")
         tutorialStep(
           "02", "Make a soft landing",
