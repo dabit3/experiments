@@ -7,6 +7,7 @@ struct PelotonView: View {
   @EnvironmentObject private var store: GameStore
   @Environment(\.scenePhase) private var scenePhase
   @Environment(\.accessibilityReduceMotion) private var reducedMotion
+  @Environment(\.dynamicTypeSize) private var textSize
   @AppStorage("tapSprint") private var tapSprint = false
   @State private var sharePayload: RaceShare?
   @State private var shareFailed = false
@@ -69,9 +70,9 @@ struct PelotonView: View {
               Ink.sea.frame(width: 28)
             }.frame(height: 4).accessibilityHidden(true)
           }
-        HStack(alignment: .firstTextBaseline) {
+        adaptiveRow {
           Text("Choose your route").font(RaceType.heading)
-          Spacer()
+          if !textSize.isAccessibilitySize { Spacer() }
           Text("4 riders").font(RaceType.caption)
         }
         VStack(spacing: 0) {
@@ -105,10 +106,12 @@ struct PelotonView: View {
       store.course = course
     } label: {
       HStack(spacing: 14) {
-        Text(String(format: "%02d", course.rawValue + 1))
-          .font(RaceType.heading).monospacedDigit()
-          .foregroundStyle(store.course == course ? Ink.red : Ink.navy)
-          .frame(width: 30)
+        if !textSize.isAccessibilitySize {
+          Text(String(format: "%02d", course.rawValue + 1))
+            .font(RaceType.heading).monospacedDigit()
+            .foregroundStyle(store.course == course ? Ink.red : Ink.navy)
+            .frame(width: 30)
+        }
         VStack(alignment: .leading, spacing: 4) {
           Text(course.title).font(RaceType.label)
           Text("\(Int(course.length)) m · \(course.obstacles.count) road blocks")
@@ -201,6 +204,7 @@ struct PelotonView: View {
         controls
       }
       .padding(.horizontal, 16).padding(.bottom, 8)
+      .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
   }
 
@@ -386,8 +390,10 @@ struct PelotonView: View {
 
   private func guideRow(_ number: String, _ title: String, _ subtitle: String) -> some View {
     HStack(alignment: .top, spacing: 13) {
-      Text(number).font(RaceType.label).monospacedDigit()
-        .frame(width: 28).foregroundStyle(Ink.red)
+      if !textSize.isAccessibilitySize {
+        Text(number).font(RaceType.label).monospacedDigit()
+          .frame(width: 28).foregroundStyle(Ink.red)
+      }
       VStack(alignment: .leading, spacing: 3) {
         Text(title).font(RaceType.label)
         Text(subtitle).font(RaceType.body).fixedSize(horizontal: false, vertical: true)
@@ -400,7 +406,7 @@ struct PelotonView: View {
       Ink.navy.opacity(0.68).ignoresSafeArea()
       ScrollView {
         VStack(alignment: .leading, spacing: 20, content: content)
-          .padding(24)
+          .padding(textSize.isAccessibilitySize ? 16 : 24)
           .background(Ink.paper, in: RoundedRectangle(cornerRadius: RaceLayout.corner))
           .padding(RaceLayout.gutter)
       }
@@ -412,23 +418,30 @@ struct PelotonView: View {
     ScrollView {
       VStack(alignment: .leading, spacing: 18) {
         Text(result.headline).font(RaceType.title).tracking(-0.6)
-        RacePoster(result: result, compact: true)
-          .frame(height: 330)
-          .clipped()
-          .accessibilityElement(children: .ignore)
-          .accessibilityLabel(
-            "\(ordinal(result.rank)) place, \(result.timeLabel), gap \(result.gapLabel)")
+        if textSize.isAccessibilitySize {
+          Text(result.course.title).font(RaceType.heading)
+          resultStat("Place", "\(ordinal(result.rank)) of 4")
+          resultStat("Finish time", result.timeLabel)
+          resultStat(
+            result.rank == 1 ? "Winning gap" : "To winner",
+            String(format: "%.2fs", abs(result.gap)))
+        } else {
+          RacePoster(result: result, compact: true)
+            .frame(height: 330)
+            .clipped()
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(
+              "\(ordinal(result.rank)) place, \(result.timeLabel), gap \(result.gapLabel)")
+        }
         RaceRule()
-        HStack(alignment: .top) {
+        adaptiveRow {
           resultStat("Drafting", String(format: "%.1fs", result.draftSeconds))
-          Spacer()
           resultStat("Slingshots", "\(result.attacks)")
-          Spacer()
           resultStat("Collisions", "\(result.collisions)")
         }
         RaceRule()
         primary("Race again", icon: "arrow.clockwise", id: "raceAgain") { store.start() }
-        HStack(spacing: 10) {
+        adaptiveRow {
           Button {
             let renderer = ImageRenderer(
               content: RacePoster(result: result).frame(width: 600, height: 820))
@@ -463,6 +476,16 @@ struct PelotonView: View {
       Text(title).font(RaceType.caption)
       Text(value).font(RaceType.heading).monospacedDigit()
     }
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .fixedSize(horizontal: false, vertical: true)
+  }
+
+  private func adaptiveRow<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+    let layout =
+      textSize.isAccessibilitySize
+      ? AnyLayout(VStackLayout(alignment: .leading, spacing: 18))
+      : AnyLayout(HStackLayout(alignment: .firstTextBaseline, spacing: 12))
+    return layout(content)
   }
 
   private var settings: some View {
