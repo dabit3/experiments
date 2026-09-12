@@ -125,16 +125,25 @@ final class Diorama {
   private func lettering(
     _ text: String, at position: (Float, Float, Float), size: Float, material: SCNMaterial
   ) {
-    let shape = SCNText(string: text, extrusionDepth: 0)
-    shape.font = UIFont.monospacedSystemFont(ofSize: 10, weight: .medium)
-    shape.flatness = 0.4
-    shape.materials = [material]
+    let font = UIFont.monospacedSystemFont(ofSize: 64, weight: .medium)
+    let attributes: [NSAttributedString.Key: NSObject] = [
+      .font: font, .foregroundColor: UIColor.white,
+    ]
+    let extent = (text as NSString).size(withAttributes: attributes)
+    let image = UIGraphicsImageRenderer(size: extent).image { _ in
+      (text as NSString).draw(at: .zero, withAttributes: attributes)
+    }
+    let ink = SCNMaterial()
+    ink.lightingModel = .constant
+    ink.diffuse.contents = image
+    ink.multiply.contents = material.diffuse.contents
+    ink.writesToDepthBuffer = false
+    let scale = CGFloat(size) / font.pointSize
+    let shape = SCNPlane(width: extent.width * scale, height: extent.height * scale)
+    shape.materials = [ink]
     let node = SCNNode(geometry: shape)
-    let bounds = node.boundingBox
-    node.pivot = SCNMatrix4MakeTranslation((bounds.min.x + bounds.max.x) / 2, 0, 0)
-    node.scale = SCNVector3(size / 10, size / 10, size / 10)
     node.eulerAngles.x = -.pi / 2
-    node.position = SCNVector3(position.0, position.1, position.2)
+    node.position = SCNVector3(position.0, position.1, position.2 - Float(shape.height / 2))
     scene.rootNode.addChildNode(node)
   }
 
