@@ -1,11 +1,17 @@
 import SceneKit
 import UIKit
+import simd
 
 final class BoardwalkScene {
   let scene = SCNScene()
   let camera = SCNNode()
   private let skater = SCNNode()
   private let rider = SCNNode()
+  private let upperBody = SCNNode()
+  private var legs: [(SCNNode, SCNNode, Float)] = []
+  private var crouch: Float = 0
+  private var landing: Float = 0
+  private var previousHeight = 0.0
   private let shadow = SCNNode()
   private let shield = SCNNode()
   private let world = SCNNode()
@@ -25,14 +31,14 @@ final class BoardwalkScene {
     scene.fogEndDistance = 140
     scene.rootNode.addChildNode(world)
     camera.camera = SCNCamera()
-    camera.camera?.fieldOfView = 63
+    camera.camera?.fieldOfView = 69
     camera.camera?.zFar = 210
     camera.camera?.wantsHDR = true
     camera.camera?.bloomIntensity = 0.55
     camera.camera?.bloomThreshold = 0.85
     camera.camera?.bloomBlurRadius = 8
     camera.camera?.exposureOffset = -0.15
-    camera.position = SCNVector3(0, 7.4, 12.6)
+    camera.position = SCNVector3(0, 8.2, 16.5)
     camera.look(at: SCNVector3(0, 1.1, -20))
     scene.rootNode.addChildNode(camera)
     let ambient = SCNNode()
@@ -267,11 +273,13 @@ final class BoardwalkScene {
     }
     let pants = UIColor(red: 0.16, green: 0.12, blue: 0.30, alpha: 1)
     for x: Float in [-0.23, 0.23] {
-      let leg = capsule(
-        rider, radius: 0.16, height: 0.95, color: pants, position: SCNVector3(x, 0.88, x))
-      leg.eulerAngles.x = x > 0 ? -0.25 : 0.25
+      let thigh = capsule(rider, radius: 0.16, height: 1, color: pants, position: SCNVector3Zero)
+      let shin = capsule(rider, radius: 0.135, height: 1, color: pants, position: SCNVector3Zero)
+      legs.append((thigh, shin, x))
       box(rider, SCNVector3(0.33, 0.18, 0.53), SCNVector3(x, 0.43, x - 0.08), .white, radius: 0.07)
     }
+    rider.addChildNode(upperBody)
+    upperBody.pivot = SCNMatrix4MakeTranslation(0, 1.25, 0)
     let jacket = capsule(
       rider, radius: 0.39, height: 1.12, color: teal, position: SCNVector3(0, 1.65, 0))
     jacket.scale.z = 0.76
@@ -291,6 +299,11 @@ final class BoardwalkScene {
     rightArm.eulerAngles.z = 0.60
     for x: Float in [-0.76, 0.76] {
       _ = capsule(rider, radius: 0.13, height: 0.23, color: skin, position: SCNVector3(x, 1.38, 0))
+    }
+    let lowerBody = Set(legs.flatMap { [$0.0, $0.1] })
+    for node in rider.childNodes
+    where node !== upperBody && !lowerBody.contains(node) && node.position.y > 1 {
+      upperBody.addChildNode(node)
     }
     let ellipse = SCNCylinder(radius: 0.68, height: 0.008)
     ellipse.materials = [material(UIColor.black.withAlphaComponent(0.45))]
@@ -384,16 +397,32 @@ final class BoardwalkScene {
     }
     skater.position.x = Float((engine.lanePosition - 1) * 3)
     skater.position.y = Float(engine.jumpHeight)
+    skater.position.z = engine.phase == .ready ? -6.5 : 0
     skater.eulerAngles.z = Float((engine.lanePosition - Double(engine.lane)) * 0.35)
-    rider.scale.y = engine.isSliding ? 0.46 : 1
-    rider.position.z = engine.isSliding ? 0.25 : 0
-    rider.eulerAngles.x = engine.isSliding ? -0.32 : 0.06
+    if engine.phase != .paused && engine.phase != .finished {
+      if previousHeight > 0 && engine.jumpHeight == 0 { landing = 0.22 }
+      landing *= 0.84
+      previousHeight = engine.jumpHeight
+      let tuck = Float(engine.jumpHeight / 2.3) * 0.24
+      let target: Float = engine.isSliding ? 0.72 : tuck + landing
+      crouch += (target - crouch) * 0.28
+    }
+    upperBody.position = SCNVector3(0, 1.25 - crouch, crouch * 0.18)
+    upperBody.eulerAngles.x = -crouch * 0.65
+    for (thigh, shin, x) in legs {
+      let hip = SIMD3<Float>(x, 1.3 - crouch, crouch * 0.18)
+      let knee = SIMD3<Float>(x, 0.86 - crouch * 0.22, x - 0.08 - crouch * 0.8)
+      let ankle = SIMD3<Float>(x, 0.46, x - 0.08)
+      poseBone(thigh, from: hip, to: knee)
+      poseBone(shin, from: knee, to: ankle)
+    }
     if !reducedMotion && engine.phase != .paused && engine.phase != .finished {
       rider.position.y = Float(sin(time * 6) * 0.025)
       leftArm.eulerAngles.x = Float(sin(time * 3) * 0.15)
       rightArm.eulerAngles.x = -Float(sin(time * 3) * 0.15)
     }
     shadow.position.x = skater.position.x
+    shadow.position.z = skater.position.z
     shadow.opacity = CGFloat(0.65 - engine.jumpHeight * 0.15)
     shield.isHidden = !engine.isShielded
     shield.eulerAngles.y = Float(time * 0.4)
@@ -427,5 +456,12 @@ final class BoardwalkScene {
     for id in Array(pickups.keys) where !engine.pickups.contains(where: { $0.id == id }) {
       pickups.removeValue(forKey: id)?.removeFromParentNode()
     }
+  }
+
+  private func poseBone(_ node: SCNNode, from start: SIMD3<Float>, to end: SIMD3<Float>) {
+    let direction = end - start
+    node.simdPosition = (start + end) / 2
+    node.simdScale = SIMD3<Float>(1, simd_length(direction), 1)
+    node.simdOrientation = simd_quatf(from: SIMD3<Float>(0, 1, 0), to: simd_normalize(direction))
   }
 }

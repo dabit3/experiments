@@ -61,11 +61,11 @@ struct BoardwalkView: View {
         soundButton
       }
       .padding(.top, 8)
-      Spacer().frame(height: 30)
+      Spacer().frame(height: 17)
       VStack(alignment: .leading, spacing: 4) {
         eyebrow("THE COAST IS YOURS", color: Palette.mint)
         Text("NEON")
-          .font(.system(size: 66, weight: .black, design: .rounded))
+          .font(.system(size: 60, weight: .black, design: .rounded))
           .italic()
           .tracking(-3)
           .lineSpacing(-5)
@@ -76,8 +76,11 @@ struct BoardwalkView: View {
           .foregroundStyle(Palette.mint)
         Text("Chase the glow. Find your flow.")
           .font(.system(size: 15, weight: .medium))
-          .foregroundStyle(Palette.muted)
-          .padding(.top, 10)
+          .foregroundStyle(.white.opacity(0.92))
+          .padding(.horizontal, 12)
+          .padding(.vertical, 9)
+          .background(Palette.navy.opacity(0.82), in: Capsule())
+          .padding(.top, 6)
       }
       .frame(maxWidth: .infinity, alignment: .leading)
       Spacer(minLength: 20)
