@@ -28,6 +28,9 @@ final class ToyWorld {
     private var lastSeed: UInt64?
     private var lastPlumage: Plumage?
     private var lastDirection: Direction = .forward
+    private var impactProgress = 0.0
+    private let contactShadow = SCNNode()
+    private let impactRing = SCNNode()
 
     init() {
         scene.background.contents = ToyColor.mint
@@ -36,20 +39,20 @@ final class ToyWorld {
         scene.fogEndDistance = 44
         camera.camera = SCNCamera()
         camera.camera?.usesOrthographicProjection = true
-        camera.camera?.orthographicScale = 8.6
+        camera.camera?.orthographicScale = 7.2
         camera.camera?.zFar = 70
         camera.camera?.wantsHDR = false
         scene.rootNode.addChildNode(camera)
         let ambient = SCNNode()
         ambient.light = SCNLight()
         ambient.light?.type = .ambient
-        ambient.light?.intensity = 850
+        ambient.light?.intensity = 600
         ambient.light?.color = UIColor(red: 0.93, green: 0.97, blue: 1, alpha: 1)
         scene.rootNode.addChildNode(ambient)
         let sun = SCNNode()
         sun.light = SCNLight()
         sun.light?.type = .directional
-        sun.light?.intensity = 1100
+        sun.light?.intensity = 850
         sun.light?.castsShadow = true
         sun.light?.shadowMode = .deferred
         sun.light?.shadowRadius = 5
@@ -59,6 +62,33 @@ final class ToyWorld {
         sun.light?.shadowMapSize = CGSize(width: 2048, height: 2048)
         sun.eulerAngles = SCNVector3(-Float.pi / 3, -Float.pi / 4, 0)
         scene.rootNode.addChildNode(sun)
+        let shadowImage = UIGraphicsImageRenderer(size: CGSize(width: 128, height: 128)).image { context in
+            let colors = [ToyColor.dark.withAlphaComponent(0.24).cgColor, UIColor.clear.cgColor]
+            if let gradient = CGGradient(
+                colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                colors: colors as CFArray,
+                locations: [0, 1]
+            ) {
+                context.cgContext.drawRadialGradient(
+                    gradient, startCenter: CGPoint(x: 64, y: 64), startRadius: 10,
+                    endCenter: CGPoint(x: 64, y: 64), endRadius: 64, options: []
+                )
+            }
+        }
+        let plane = SCNPlane(width: 1.2, height: 1.05)
+        let shadowMaterial = SCNMaterial()
+        shadowMaterial.diffuse.contents = shadowImage
+        shadowMaterial.lightingModel = .constant
+        shadowMaterial.writesToDepthBuffer = false
+        plane.materials = [shadowMaterial]
+        contactShadow.geometry = plane
+        contactShadow.eulerAngles.x = -.pi / 2
+        scene.rootNode.addChildNode(contactShadow)
+        let ring = SCNTorus(ringRadius: 0.45, pipeRadius: 0.035)
+        ring.materials = [material(ToyColor.cream)]
+        impactRing.geometry = ring
+        impactRing.isHidden = true
+        scene.rootNode.addChildNode(impactRing)
     }
 
     func face(_ direction: Direction) {
@@ -74,10 +104,12 @@ final class ToyWorld {
             lastSeed = game.course.seed
             cameraRow = 1.5
             lastDirection = .forward
+            impactProgress = 0
         }
         if lastPlumage != plumage {
             duck.removeFromParentNode()
             duck = makeDuck(plumage)
+            duck.scale = SCNVector3(1.13, 1.13, 1.13)
             scene.rootNode.addChildNode(duck)
             lastPlumage = plumage
         }
@@ -102,7 +134,7 @@ final class ToyWorld {
             node.eulerAngles.y = reducedMotion ? 0 : Float(time * 1.8)
             node.position.y = 0.46 + (reducedMotion ? 0 : Float(sin(time * 3 + Double(row))) * 0.05)
         }
-        let target = max(1.5, Double(game.furthest) + 1)
+        let target = max(1.5, Double(game.furthest) + 1.9)
         cameraRow += (target - cameraRow) * min(1, delta * 5)
         camera.position = SCNVector3(6.8, 12.5, Float(10 - cameraRow))
         camera.look(at: SCNVector3(0, 0, Float(-cameraRow)))
@@ -113,10 +145,18 @@ final class ToyWorld {
         case .left: .pi / 2
         case .right: -.pi / 2
         }
-        duck.eulerAngles.y = angle
+        duck.eulerAngles.y = game.state == .ready ? .pi * 0.86 : angle
+        let onWater = game.course.lane(game.row).kind == .river
+        contactShadow.position = SCNVector3(Float(game.visibleX), onWater ? 0.235 : 0.005, Float(-game.visibleRow))
+        impactRing.isHidden = game.state != .finished || game.endReason == "A well-earned rest"
         if game.state == .finished {
-            duck.eulerAngles.z = -.pi / 8
-            duck.position.y = game.endReason.contains("splash") ? -0.16 : 0.08
+            impactProgress = min(1, impactProgress + delta / 0.6)
+            duck.eulerAngles.z = -Float.pi / 2 * Float(reducedMotion ? 1 : min(1, impactProgress * 2))
+            duck.position.y = game.endReason.contains("splash") ? -Float(impactProgress) * 0.2 : 0.08
+            impactRing.position = SCNVector3(Float(game.visibleX), 0.09, Float(-game.visibleRow))
+            let scale = Float(reducedMotion ? 1 : 0.6 + impactProgress * 1.5)
+            impactRing.scale = SCNVector3(scale, scale, scale)
+            impactRing.opacity = CGFloat(1 - impactProgress * 0.8)
         } else {
             duck.eulerAngles.z = 0
         }

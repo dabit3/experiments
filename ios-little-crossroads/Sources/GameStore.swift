@@ -22,11 +22,13 @@ final class GameStore: NSObject, ObservableObject {
     @Published var showGuide = false
     @Published private(set) var newBest = false
     @Published private(set) var unlockedNames: [String] = []
+    @Published private(set) var showResults = false
     let world = ToyWorld()
     private(set) var game: GameRules
     private let defaults: UserDefaults
     private var displayLink: CADisplayLink?
     private var lastTick: CFTimeInterval = 0
+    private var finishElapsed = 0.0
     private let audio = ToyAudio()
     var reducedMotion = false
 
@@ -54,6 +56,8 @@ final class GameStore: NSObject, ObservableObject {
         runCoins = 0
         newBest = false
         unlockedNames = []
+        showResults = false
+        finishElapsed = 0
         game.start()
         state = game.state
         if sound {
@@ -66,6 +70,7 @@ final class GameStore: NSObject, ObservableObject {
         state = .ready
         score = 0
         runCoins = 0
+        showResults = false
     }
 
     func move(_ direction: Direction) {
@@ -120,6 +125,12 @@ final class GameStore: NSObject, ObservableObject {
                 UINotificationFeedbackGenerator().notificationOccurred(.warning)
             }
             state = game.state
+        }
+        if state == .finished, !showResults {
+            finishElapsed += dt
+            if finishElapsed >= 0.6 {
+                showResults = true
+            }
         }
         world.update(game, plumage: selected, delta: dt, reducedMotion: reducedMotion)
     }

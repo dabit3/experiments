@@ -26,6 +26,20 @@ struct CrossroadsView: View {
             ZStack {
                 NativeWorld(store: store).ignoresSafeArea()
                     .accessibilityLabel("Little Crossroads countryside")
+                VStack {
+                    LinearGradient(
+                        stops: [
+                            .init(color: Palette.cream, location: 0),
+                            .init(color: Palette.cream.opacity(0.98), location: 0.60),
+                            .init(color: Palette.cream.opacity(0.78), location: 0.78),
+                            .init(color: Palette.cream.opacity(0), location: 1),
+                        ],
+                        startPoint: .top, endPoint: .bottom
+                    )
+                    .frame(height: geometry.size.height * (store.state == .ready ? 0.43 : 0.17))
+                    Spacer()
+                }
+                .ignoresSafeArea().allowsHitTesting(false)
                 VStack(spacing: 0) {
                     if store.state == .ready {
                         titleHeader
@@ -45,7 +59,7 @@ struct CrossroadsView: View {
                 if store.state == .paused {
                     pauseCard
                 }
-                if store.state == .finished {
+                if store.state == .finished, store.showResults {
                     resultCard
                 }
             }
@@ -127,31 +141,34 @@ struct CrossroadsView: View {
     }
 
     private var gameHeader: some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 5) {
-                Text("LITTLE CROSSROADS").font(.system(size: 8, weight: .heavy)).tracking(1.4)
+                Text("COINS FOUND").font(.system(size: 8, weight: .heavy)).tracking(1)
                 Label("\(store.runCoins)", systemImage: "circle.inset.filled")
                     .font(.system(size: 18, weight: .black, design: .rounded))
-                    .padding(.vertical, 8).padding(.horizontal, 12)
-                    .background(Palette.cream.opacity(0.95), in: Capsule())
             }
-            Spacer(minLength: 6)
+            .frame(maxWidth: .infinity, alignment: .leading)
             VStack(spacing: -1) {
-                Text("\(store.score)").font(.system(size: 57, weight: .black, design: .rounded))
+                Text("\(store.score)").font(.system(size: 49, weight: .black, design: .rounded))
                     .contentTransition(.numericText())
                     .accessibilityIdentifier("scoreValue")
                 Text("HOPS").font(.system(size: 9, weight: .black)).tracking(2)
-                Text("BEST \(store.best)").font(.system(size: 9, weight: .bold)).padding(.top, 6)
             }
-            Spacer(minLength: 6)
-            Button { store.pause() } label: {
-                Image(systemName: "pause.fill")
-                    .font(.system(size: 18, weight: .bold))
-                    .frame(width: 47, height: 47)
-                    .background(Palette.cream.opacity(0.95), in: Circle())
+            .frame(maxWidth: .infinity)
+            VStack(spacing: 5) {
+                Button { store.pause() } label: {
+                    Image(systemName: "pause.fill")
+                        .font(.system(size: 16, weight: .bold))
+                        .frame(width: 44, height: 44)
+                        .background(Palette.mint.opacity(0.45), in: Circle())
+                }
+                .accessibilityLabel("Pause game").accessibilityIdentifier("pauseGame").buttonStyle(SoftPress())
+                Text("BEST \(store.best)").font(.system(size: 9, weight: .bold))
             }
-            .accessibilityLabel("Pause game").accessibilityIdentifier("pauseGame").buttonStyle(SoftPress())
+            .frame(maxWidth: .infinity, alignment: .trailing)
         }
+        .padding(.horizontal, 17).padding(.vertical, 12)
+        .background(Palette.cream.opacity(0.97), in: RoundedRectangle(cornerRadius: 25))
     }
 
     private var controls: some View {
