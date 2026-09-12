@@ -92,7 +92,7 @@ board, composed into the native SwiftUI postcard.
 ## State and limitations
 
 Progress, the current route and its complete undo history are stored in
-`UserDefaults`. Relaunch opens home with **Continue your journey**. Data stays local
+`UserDefaults`. Relaunch opens home with **Resume route**. Data stays local
 and is removed by uninstalling. No analytics, purchases, cloud sync or backend.
 
 Simulator builds do not validate physical-device haptic feel, silent-switch

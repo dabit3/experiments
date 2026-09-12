@@ -11,27 +11,26 @@ enum Winter {
   static let cranberry = Color(red: 0.53, green: 0.15, blue: 0.21)
 }
 
+enum DispatchType {
+  static let title = Font.system(.title2, design: .rounded).weight(.bold)
+  static let heading = Font.system(.headline)
+  static let body = Font.system(.subheadline)
+  static let label = Font.system(.subheadline).weight(.semibold)
+  static let caption = Font.system(.footnote)
+  static let number = Font.system(.title2, design: .rounded).weight(.semibold)
+  static let score = Font.system(.largeTitle, design: .rounded).weight(.semibold)
+}
+
+enum DispatchLayout {
+  static let gutter: CGFloat = 24
+  static let corner: CGFloat = 12
+  static let wideThreshold: CGFloat = 760
+  static let maxWidth: CGFloat = 1040
+}
+
 struct WinterBackdrop: View {
   var body: some View {
-    GeometryReader { geometry in
-      ZStack {
-        Winter.midnight
-        RadialGradient(
-          colors: [Color(red: 0.16, green: 0.28, blue: 0.29), Winter.midnight],
-          center: UnitPoint(x: 0.5, y: 0.37), startRadius: 0,
-          endRadius: geometry.size.height * 0.65)
-        Canvas { context, size in
-          for index in 0..<1800 {
-            let x = CGFloat((index * 97 + 21) % 997) / 997 * size.width
-            let y = CGFloat((index * 137 + 49) % 991) / 991 * size.height
-            context.fill(
-              Path(ellipseIn: CGRect(x: x, y: y, width: 0.7, height: 0.7)),
-              with: .color(Winter.cream.opacity(0.045)))
-          }
-        }
-      }
-    }
-    .ignoresSafeArea()
+    Winter.midnight.ignoresSafeArea()
   }
 }
 

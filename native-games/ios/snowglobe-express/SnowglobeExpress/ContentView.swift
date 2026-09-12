@@ -5,6 +5,7 @@ import UIKit
 struct ContentView: View {
   @Environment(\.scenePhase) private var scenePhase
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @Environment(\.dynamicTypeSize) private var typeSize
   @AppStorage("village.sound") private var sound = true
   @AppStorage("village.haptics") private var haptics = true
   @AppStorage("village.learned") private var learned = false
@@ -44,7 +45,8 @@ struct ContentView: View {
       panelView(panel)
         .preferredColorScheme(.light)
         .presentationDragIndicator(.visible)
-        .presentationDetents(panel == .routes ? [.large] : [.medium, .large])
+        .presentationDetents(
+          panel == .routes || panel == .tutorial ? [.large] : [.medium, .large])
     }
     .sheet(item: $sharedPostcard) { postcard in
       ActivitySheet(image: postcard.image, text: postcard.text)
@@ -63,334 +65,350 @@ struct ContentView: View {
   }
 
   private func home(size: CGSize) -> some View {
-    ScrollView {
+    let current = saved ?? Journey(puzzle: nextPuzzle)
+    let wide = size.width >= DispatchLayout.wideThreshold
+    return ScrollView {
       VStack(spacing: 16) {
         HStack {
-          HStack(spacing: 8) {
-            Image(systemName: "shippingbox").font(.system(size: 12, weight: .light))
-            eyebrow("THE WINTER POST")
-          }
+          Text("Snowglobe Express").font(DispatchType.title)
           Spacer()
           iconButton("gearshape", label: "Settings", id: "settings") { panel = .settings }
         }
         .padding(.top, 6)
-        VStack(spacing: 3) {
-          Text("Snowglobe")
-            .font(.system(size: 49, weight: .regular, design: .serif))
-            .tracking(-2)
-          HStack(spacing: 16) {
-            Rectangle().frame(width: 26, height: 0.5)
-            Text("E X P R E S S")
-              .font(.system(size: 10, weight: .medium))
-              .tracking(3)
-            Rectangle().frame(width: 26, height: 0.5)
-          }
-          .foregroundStyle(Winter.amber)
-        }
-        VillageArt(journey: Journey(puzzle: .routes[0]), illuminated: true, showsMarkers: false)
-          .frame(width: min(size.width - 48, size.height * 0.48))
-          .padding(.vertical, -10)
-        VStack(spacing: 6) {
-          Text("A little warmth, delivered.")
-            .font(.system(size: 23, weight: .regular, design: .serif))
-            .italic()
-          Text("Clear the snow. Find a way home.")
-            .font(.system(size: 12))
-            .tracking(0.3)
-            .foregroundStyle(Winter.powder)
-        }
-        .padding(.bottom, 6)
-        primary(
-          saved != nil ? "Continue your journey" : "Begin your journey", symbol: "arrow.right",
-          id: "start"
-        ) {
-          if let saved {
-            self.journey = saved
-            selectAvailable(saved)
-          } else {
-            start(nextPuzzle)
-          }
-        }
-        HStack(spacing: 18) {
-          Button {
-            panel = .routes
-          } label: {
-            VStack(alignment: .leading, spacing: 6) {
-              eyebrow("THE COLLECTION")
-              HStack {
-                Text("Six village routes")
-                Spacer()
-                Image(systemName: "arrow.up.right").font(.system(size: 11))
-              }
+        if wide {
+          HStack(spacing: 32) {
+            VillageArt(journey: current, showsMarkers: false)
+              .frame(width: min(size.width * 0.48, 510))
+            VStack(alignment: .leading, spacing: 20) {
+              routeBriefing(current)
+              startButton
+              routeChoices
             }
-            .frame(maxWidth: .infinity, minHeight: 48)
+            .frame(maxWidth: 400)
           }
-          .accessibilityIdentifier("routes")
-          Rectangle().fill(Winter.powder.opacity(0.2)).frame(width: 0.5, height: 30)
-          Button {
-            start(.daily())
-          } label: {
-            VStack(alignment: .leading, spacing: 6) {
-              eyebrow("ONE QUIET CHALLENGE")
-              HStack {
-                Text("Daily dispatch")
-                Spacer()
-                Image(systemName: "arrow.up.right").font(.system(size: 11))
-              }
-            }
-            .frame(maxWidth: .infinity, minHeight: 48)
-          }
-          .accessibilityIdentifier("daily")
+        } else {
+          routeBriefing(current)
+          VillageArt(journey: current, showsMarkers: false)
+            .frame(width: min(size.width - 48, size.height * 0.42))
+          startButton
+          routeChoices
         }
-        .font(.system(size: 12, weight: .medium))
-        .padding(.top, 3)
-        .buttonStyle(.plain)
-        Rectangle().fill(Winter.powder.opacity(0.18)).frame(height: 0.5)
-        HStack(spacing: 7) {
-          Image(systemName: "star.fill").foregroundStyle(Winter.amber)
-          Text("\(totalStars) / 18 village stars")
-          Text("·").padding(.horizontal, 3)
-          Text("Collected with care")
-        }
-        .font(.system(size: 10, weight: .medium))
-        .foregroundStyle(Winter.powder.opacity(0.85))
       }
-      .padding(.horizontal, 24)
+      .padding(.horizontal, DispatchLayout.gutter)
       .padding(.bottom, 20)
-      .frame(maxWidth: 520)
+      .frame(maxWidth: wide ? DispatchLayout.maxWidth : 520)
       .frame(maxWidth: .infinity)
     }
     .scrollIndicators(.hidden)
   }
 
+  private func routeBriefing(_ current: Journey) -> some View {
+    VStack(alignment: .leading, spacing: 6) {
+      metadata(
+        saved == nil ? "Your next delivery · \(routeLabel(current.puzzle))" : "Route in progress")
+      Text(current.puzzle.name).font(DispatchType.heading)
+      Text(
+        saved == nil
+          ? "\(current.puzzle.fuel) fuel · Deliver to the bakery first"
+          : "\(current.fuelLeft) fuel left · \(current.position.delivered.count) of 3 delivered"
+      )
+      .font(DispatchType.body)
+      .foregroundStyle(Winter.powder)
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
+  }
+
+  private var startButton: some View {
+    primary(saved != nil ? "Resume route" : "Start route", symbol: "arrow.right", id: "start") {
+      if let saved {
+        self.journey = saved
+        selectAvailable(saved)
+        note = "Route resumed. Choose a direction to preview."
+      } else {
+        start(nextPuzzle)
+      }
+    }
+  }
+
+  private var routeChoices: some View {
+    let daily = Puzzle.daily()
+    let key = daily.id.dropFirst(6)
+    let date = "\(key.prefix(4))-\(key.dropFirst(4).prefix(2))-\(key.suffix(2)) UTC"
+    return VStack(spacing: 0) {
+      rule
+      navigationRow(
+        "Village routes",
+        detail: totalStars == 0
+          ? "6 routes · Earn stars by saving fuel" : "6 routes · \(totalStars) of 18 stars",
+        id: "routes"
+      ) { panel = .routes }
+      rule
+      navigationRow(
+        "Daily dispatch",
+        detail: "\(date) · Best \(progress[daily.id]?.score ?? 0)",
+        id: "daily"
+      ) { start(daily) }
+    }
+  }
+
+  private func navigationRow(
+    _ title: String, detail: String, id: String, action: @escaping () -> Void
+  ) -> some View {
+    Button(action: action) {
+      HStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 5) {
+          Text(title).font(DispatchType.heading)
+          Text(detail).font(DispatchType.caption).foregroundStyle(Winter.powder)
+        }
+        Spacer(minLength: 0)
+        Image(systemName: "chevron.right").font(DispatchType.label)
+      }
+      .padding(.vertical, 16)
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .contentShape(Rectangle())
+    }
+    .buttonStyle(DispatchButtonStyle())
+    .accessibilityIdentifier(id)
+  }
+
+  private func routeLabel(_ puzzle: Puzzle) -> String {
+    puzzle.id.hasPrefix("daily") ? "Daily dispatch" : "Route \(puzzle.number) of 6"
+  }
+
   private func play(_ journey: Journey, size: CGSize) -> some View {
-    let preview = journey.preview(selected)
+    let wide = size.width >= DispatchLayout.wideThreshold
     return ScrollView {
-      VStack(spacing: 10) {
-        HStack(alignment: .center) {
+      VStack(spacing: 12) {
+        HStack(spacing: 8) {
           VStack(alignment: .leading, spacing: 4) {
-            eyebrow(
-              journey.puzzle.id.hasPrefix("daily")
-                ? "DAILY DISPATCH" : "VILLAGE ROUTE 0\(journey.puzzle.number)")
-            Text(journey.puzzle.name)
-              .font(.system(size: 28, weight: .regular, design: .serif))
-              .tracking(-0.7)
+            metadata(routeLabel(journey.puzzle))
+            Text(journey.puzzle.name).font(DispatchType.title)
+              .fixedSize(horizontal: false, vertical: true)
           }
-          Spacer()
+          .frame(maxWidth: .infinity, alignment: .leading)
           iconButton("questionmark", label: "How to play", id: "help") { panel = .tutorial }
           iconButton("pause.fill", label: "Pause route", id: "pause") { panel = .pause }
         }
         .padding(.top, 8)
-        HStack(alignment: .center, spacing: 15) {
-          HStack(alignment: .firstTextBaseline, spacing: 5) {
-            Text("\(journey.fuelLeft)")
-              .font(.system(size: 29, weight: .regular, design: .serif))
-              .foregroundStyle(journey.fuelLeft < 5 ? Winter.amber : Winter.cream)
-              .contentTransition(.numericText())
-            Text("/ \(journey.puzzle.fuel)")
-              .font(.system(size: 12, weight: .light))
-              .foregroundStyle(Winter.powder)
-          }
-          VStack(alignment: .leading, spacing: 6) {
-            eyebrow("FUEL REMAINING")
-            HStack(spacing: 3) {
-              ForEach(0..<12) { index in
-                Capsule()
-                  .fill(
-                    Double(index) / 12 < Double(journey.fuelLeft) / Double(journey.puzzle.fuel)
-                      ? Winter.amber : Winter.powder.opacity(0.14)
-                  )
-                  .frame(width: 4, height: 9)
-              }
+        if wide {
+          HStack(spacing: 32) {
+            VillageArt(journey: journey, selected: selected)
+              .frame(width: min(size.width * 0.48, 510))
+            VStack(spacing: 16) {
+              routeStatus(journey)
+              playControls(journey)
             }
+            .frame(maxWidth: 400)
           }
-          Spacer()
-          HStack(spacing: 7) {
-            ForEach(Array(journey.puzzle.homes.enumerated()), id: \.offset) { index, home in
-              Group {
-                if journey.position.delivered.contains(home.square) {
-                  Image(systemName: "checkmark").font(.system(size: 10, weight: .semibold))
-                } else {
-                  Text("\(index + 1)").font(.system(size: 13, weight: .regular, design: .serif))
-                }
-              }
-              .frame(width: 25, height: 25)
-              .background(
-                journey.position.delivered.contains(home.square)
-                  ? Winter.amber.opacity(0.13) : .clear
-              )
-              .clipShape(Circle())
-              .overlay(
-                Circle().strokeBorder(
-                  index == 0 && journey.position.delivered.isEmpty
-                    ? Winter.cranberry : Winter.amber.opacity(0.45),
-                  lineWidth: 0.7)
-              )
-              .foregroundStyle(
-                journey.position.delivered.contains(home.square) ? Winter.amber : Winter.powder
-              )
-            }
-          }
+        } else {
+          routeStatus(journey)
+          VillageArt(journey: journey, selected: selected)
+            .frame(width: min(size.width - 48, size.height * 0.42))
+          playControls(journey)
         }
-        .padding(.vertical, 10)
-        .overlay(alignment: .top) {
-          Rectangle().fill(Winter.powder.opacity(0.2)).frame(height: 0.5)
-        }
-        .overlay(alignment: .bottom) {
-          Rectangle().fill(Winter.powder.opacity(0.2)).frame(height: 0.5)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(
-          "\(journey.fuelLeft) fuel remaining. \(journey.position.delivered.count) of 3 parcels delivered."
-        )
-        VillageArt(journey: journey, selected: selected)
-          .frame(width: min(size.width - 48, size.height * 0.45))
-          .padding(.vertical, -8)
-        Text(note)
-          .font(.system(size: 12, weight: .regular, design: .serif))
-          .italic()
-          .foregroundStyle(Winter.powder)
-          .multilineTextAlignment(.center)
-          .frame(minHeight: 28)
-          .accessibilityIdentifier("route-message")
-        HStack(spacing: 18) {
-          VStack(spacing: 5) {
-            HStack(spacing: 5) {
-              directionButton(.west, journey: journey)
-              directionButton(.north, journey: journey)
-            }
-            HStack(spacing: 5) {
-              directionButton(.south, journey: journey)
-              directionButton(.east, journey: journey)
-            }
-          }
-          .padding(6)
-          .background(Winter.midnight.opacity(0.4), in: RoundedRectangle(cornerRadius: 28))
-          .overlay(
-            RoundedRectangle(cornerRadius: 28).strokeBorder(
-              Winter.amber.opacity(0.2), lineWidth: 0.6))
-          VStack(alignment: .leading, spacing: 6) {
-            eyebrow("NEXT TURN · \(selected.rawValue.uppercased())")
-            Text(preview.allowed ? "\(preview.cost) fuel" : "Lane blocked")
-              .font(.system(size: 25, weight: .regular, design: .serif))
-            Text(
-              preview.reason
-                ?? (preview.depth > 0
-                  ? "Push \(preview.depth) snow ahead.\nLeave a clear lane behind."
-                  : "A clear lane.\nOne quiet step closer.")
-            )
-            .font(.system(size: 11))
-            .foregroundStyle(Winter.powder)
-            .fixedSize(horizontal: false, vertical: true)
-          }
-          .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(.bottom, 4)
-        primary(
-          preview.allowed ? "Drive \(selected.rawValue)" : "Choose another direction",
-          symbol: "arrow.right", id: "drive", disabled: !preview.allowed
-        ) { drive() }
-        HStack {
-          Button {
-            undo()
-          } label: {
-            Label("Undo", systemImage: "arrow.uturn.backward")
-              .frame(minHeight: 44)
-          }
-          .disabled(journey.history.isEmpty)
-          .accessibilityIdentifier("undo")
-          Spacer()
-          Text("3 stars in ≤ \(journey.puzzle.par) fuel")
-            .font(.system(size: 10))
-            .foregroundStyle(Winter.powder)
-          Spacer()
-          Button {
-            start(journey.puzzle, showTutorial: false)
-          } label: {
-            Image(systemName: "arrow.counterclockwise")
-              .frame(width: 44, height: 44)
-          }
-          .accessibilityLabel("Restart route")
-          .accessibilityIdentifier("restart")
-        }
-        .buttonStyle(.plain)
-        .font(.system(size: 13, weight: .medium))
       }
-      .padding(.horizontal, 24)
-      .padding(.bottom, 10)
-      .frame(maxWidth: 520)
+      .padding(.horizontal, DispatchLayout.gutter)
+      .padding(.bottom, 12)
+      .frame(maxWidth: wide ? DispatchLayout.maxWidth : 520)
       .frame(maxWidth: .infinity)
     }
     .scrollIndicators(.hidden)
   }
 
-  private func results(_ journey: Journey, size: CGSize) -> some View {
-    ScrollView {
-      VStack(spacing: 14) {
-        eyebrow(journey.won ? "EVERY PARCEL IS HOME" : "THE VILLAGE CAN WAIT")
-          .padding(.top, 25)
-        Text(journey.won ? "You brought\nwinter to life." : "A little short on fuel.")
-          .font(.system(size: 39, weight: .regular, design: .serif))
-          .tracking(-1.2)
-          .multilineTextAlignment(.center)
-          .accessibilityIdentifier("result-title")
-        VillageArt(journey: journey, illuminated: journey.won, showsMarkers: false)
-          .frame(width: min(size.width - 48, size.height * 0.43))
-          .padding(.vertical, -10)
-        if journey.won {
-          stars(journey.stars, size: 20)
-          HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text("\(journey.score)")
-              .font(.system(size: 47, weight: .regular, design: .serif))
-            Text("EFFICIENCY POINTS")
-              .font(.system(size: 9, weight: .medium))
-              .tracking(1.2)
-              .foregroundStyle(Winter.powder)
+  private func routeStatus(_ journey: Journey) -> some View {
+    VStack(spacing: 10) {
+      rule
+      HStack(alignment: .top, spacing: 24) {
+        VStack(alignment: .leading, spacing: 5) {
+          metadata("Fuel left")
+          HStack(alignment: .firstTextBaseline, spacing: 5) {
+            Text("\(journey.fuelLeft)")
+              .font(DispatchType.number).monospacedDigit()
+              .foregroundStyle(journey.fuelLeft < 5 ? Winter.amber : Winter.cream)
+              .contentTransition(.numericText())
+            Text("/ \(journey.puzzle.fuel)")
+              .font(DispatchType.body).foregroundStyle(Winter.powder)
           }
-          Text(
-            "\(journey.position.moves) moves  ·  \(journey.position.fuelUsed) fuel used  ·  Best \(progress[journey.puzzle.id]?.score ?? journey.score)"
-          )
-          .font(.system(size: 12))
-          .foregroundStyle(Winter.powder)
-          primary("Send a winter postcard", symbol: "square.and.arrow.up", id: "share") {
-            createShare(journey)
-          }
-          HStack(spacing: 20) {
-            Button("Replay route") { start(journey.puzzle, showTutorial: false) }
-              .accessibilityIdentifier("replay")
-            if !journey.puzzle.id.hasPrefix("daily") && journey.puzzle.number < 6 {
-              Button("Next village →") {
-                start(.routes[journey.puzzle.number], showTutorial: false)
-              }
-              .accessibilityIdentifier("next-route")
-            }
-          }
-          .frame(minHeight: 44)
-        } else {
-          Text("No affordable lane remains. Undo a turn,\nor begin again with a different path.")
-            .font(.system(size: 14))
-            .foregroundStyle(Winter.powder)
-            .multilineTextAlignment(.center)
-          primary("Try the route again", symbol: "arrow.counterclockwise", id: "retry") {
-            start(journey.puzzle, showTutorial: false)
-          }
-          Button("Undo the last move") { undo() }
-            .frame(minHeight: 44)
-            .accessibilityIdentifier("undo-failure")
+          ProgressView(value: Double(journey.fuelLeft), total: Double(journey.puzzle.fuel))
+            .tint(Winter.amber)
+            .accessibilityHidden(true)
         }
-        Button("Back to the snow globe") { goHome() }
-          .foregroundStyle(Winter.powder)
-          .frame(minHeight: 44)
-          .accessibilityIdentifier("home")
+        .frame(maxWidth: .infinity, alignment: .leading)
+        VStack(alignment: .leading, spacing: 5) {
+          metadata("Parcels delivered")
+          Text("\(journey.position.delivered.count) / \(journey.puzzle.homes.count)")
+            .font(DispatchType.number).monospacedDigit()
+          Text(journey.position.delivered.isEmpty ? "Bakery first" : "Remaining homes in any order")
+            .font(DispatchType.caption)
+            .foregroundStyle(Winter.powder)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
       }
-      .font(.system(size: 14, weight: .semibold))
+      .accessibilityElement(children: .combine)
+      rule
+    }
+  }
+
+  private func playControls(_ journey: Journey) -> some View {
+    let preview = journey.preview(selected)
+    let layout =
+      typeSize.isAccessibilitySize
+      ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
+      : AnyLayout(HStackLayout(alignment: .center, spacing: 20))
+    return VStack(spacing: 12) {
+      layout {
+        VStack(spacing: 8) {
+          HStack(spacing: 8) {
+            directionButton(.west, journey: journey)
+            directionButton(.north, journey: journey)
+          }
+          HStack(spacing: 8) {
+            directionButton(.south, journey: journey)
+            directionButton(.east, journey: journey)
+          }
+        }
+        .frame(maxWidth: typeSize.isAccessibilitySize ? .infinity : 148)
+        VStack(alignment: .leading, spacing: 5) {
+          metadata("Preview · \(selected.title)")
+          Text(preview.allowed ? "\(preview.cost) fuel" : "Lane blocked")
+            .font(DispatchType.heading).monospacedDigit()
+          Text(
+            preview.reason
+              ?? (preview.depth > 0 ? "Push \(preview.depth) snow ahead" : "Clear lane")
+          )
+          .font(DispatchType.caption)
+          .foregroundStyle(Winter.powder)
+          .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+      }
+      primary(
+        preview.allowed ? "Drive \(selected.rawValue)" : "Choose another direction",
+        symbol: "arrow.right", id: "drive", disabled: !preview.allowed
+      ) { drive() }
+      Text(note)
+        .font(DispatchType.caption)
+        .foregroundStyle(Winter.powder)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize(horizontal: false, vertical: true)
+        .accessibilityIdentifier("route-message")
+      HStack(spacing: 12) {
+        Button {
+          undo()
+        } label: {
+          Label("Undo", systemImage: "arrow.uturn.backward")
+            .frame(minHeight: 44)
+        }
+        .disabled(journey.history.isEmpty)
+        .opacity(journey.history.isEmpty ? 0.45 : 1)
+        .accessibilityIdentifier("undo")
+        Spacer(minLength: 0)
+        Text("3 stars: ≤ \(journey.puzzle.par) fuel")
+          .font(DispatchType.caption)
+          .foregroundStyle(Winter.powder)
+        iconButton("arrow.counterclockwise", label: "Restart route", id: "restart") {
+          start(journey.puzzle, showTutorial: false)
+        }
+      }
       .buttonStyle(.plain)
-      .padding(.horizontal, 24)
-      .padding(.bottom, 15)
-      .frame(maxWidth: 520)
+      .font(DispatchType.label)
+    }
+  }
+
+  private func results(_ journey: Journey, size: CGSize) -> some View {
+    let wide = size.width >= DispatchLayout.wideThreshold
+    return ScrollView {
+      VStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 5) {
+          metadata(journey.puzzle.name)
+          Text(journey.won ? "Village delivered" : "No moves left")
+            .font(DispatchType.title)
+            .accessibilityIdentifier("result-title")
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.top, 24)
+        if wide {
+          HStack(spacing: 32) {
+            VillageArt(journey: journey, illuminated: journey.won, showsMarkers: false)
+              .frame(width: min(size.width * 0.48, 510))
+            resultDetails(journey).frame(maxWidth: 400)
+          }
+        } else {
+          VillageArt(journey: journey, illuminated: journey.won, showsMarkers: false)
+            .frame(width: min(size.width - 48, size.height * 0.42))
+          resultDetails(journey)
+        }
+      }
+      .padding(.horizontal, DispatchLayout.gutter)
+      .padding(.bottom, 16)
+      .frame(maxWidth: wide ? DispatchLayout.maxWidth : 520)
       .frame(maxWidth: .infinity)
     }
     .scrollIndicators(.hidden)
+  }
+
+  private func resultDetails(_ journey: Journey) -> some View {
+    VStack(spacing: 12) {
+      if journey.won {
+        HStack(alignment: .center) {
+          VStack(alignment: .leading, spacing: 0) {
+            Text("\(journey.score)").font(DispatchType.score).monospacedDigit()
+            metadata("Efficiency points")
+          }
+          Spacer()
+          stars(journey.stars, size: 20)
+        }
+        rule
+        resultRow("Fuel used", value: "\(journey.position.fuelUsed) of \(journey.puzzle.fuel)")
+        resultRow("Moves", value: "\(journey.position.moves)")
+        resultRow("Personal best", value: "\(progress[journey.puzzle.id]?.score ?? journey.score)")
+        Text("3 stars: use \(journey.puzzle.par) fuel or less")
+          .font(DispatchType.caption).foregroundStyle(Winter.powder)
+          .frame(maxWidth: .infinity, alignment: .leading)
+        if !journey.puzzle.id.hasPrefix("daily") && journey.puzzle.number < 6 {
+          primary("Next route", symbol: "arrow.right", id: "next-route") {
+            start(.routes[journey.puzzle.number], showTutorial: false)
+          }
+          Button("Replay route") { start(journey.puzzle, showTutorial: false) }
+            .frame(minHeight: 44).accessibilityIdentifier("replay")
+        } else {
+          primary("Replay route", symbol: "arrow.counterclockwise", id: "replay") {
+            start(journey.puzzle, showTutorial: false)
+          }
+        }
+        Button {
+          createShare(journey)
+        } label: {
+          Label("Share postcard", systemImage: "square.and.arrow.up")
+            .frame(maxWidth: .infinity, minHeight: 44)
+        }
+        .accessibilityIdentifier("share")
+      } else {
+        Text("No affordable lane remains. Undo a move or retry with a different route.")
+          .font(DispatchType.body).foregroundStyle(Winter.powder)
+          .frame(maxWidth: .infinity, alignment: .leading)
+        primary("Retry route", symbol: "arrow.counterclockwise", id: "retry") {
+          start(journey.puzzle, showTutorial: false)
+        }
+        Button("Undo last move") { undo() }
+          .frame(minHeight: 44).accessibilityIdentifier("undo-failure")
+      }
+      Button("Back to routes") { goHome() }
+        .foregroundStyle(Winter.powder)
+        .frame(minHeight: 44).accessibilityIdentifier("home")
+    }
+    .font(DispatchType.label)
+    .buttonStyle(.plain)
+  }
+
+  private func resultRow(_ title: String, value: String) -> some View {
+    HStack(alignment: .firstTextBaseline) {
+      Text(title).foregroundStyle(Winter.powder)
+      Spacer()
+      Text(value).monospacedDigit()
+    }
+    .font(DispatchType.body)
+    .accessibilityElement(children: .combine)
   }
 
   private func directionButton(_ direction: Direction, journey: Journey) -> some View {
@@ -402,30 +420,27 @@ struct ContentView: View {
     return Button {
       selected = direction
     } label: {
-      HStack(spacing: 7) {
-        Image(systemName: arrows[direction] ?? direction.symbol).font(
-          .system(size: 15, weight: .semibold))
-        Text(String(direction.title.prefix(1))).font(.system(size: 11, weight: .bold))
+      HStack(spacing: 6) {
+        Image(systemName: arrows[direction] ?? direction.symbol)
+          .font(.system(size: 18, weight: .semibold))
+        Text(String(direction.title.prefix(1))).font(DispatchType.label)
       }
-      .frame(width: 58, height: 44)
-      .background(
-        selected == direction ? Winter.cream : Winter.powder.opacity(allowed ? 0.07 : 0.02)
-      )
+      .frame(maxWidth: .infinity, minHeight: 50)
+      .background(selected == direction ? Winter.cream : Winter.ink)
       .foregroundStyle(
         selected == direction
-          ? Winter.midnight : allowed ? Winter.cream : Winter.powder.opacity(0.45)
+          ? Winter.midnight : allowed ? Winter.cream : Winter.powder.opacity(0.65)
       )
-      .clipShape(RoundedRectangle(cornerRadius: 18))
-      .overlay {
-        RoundedRectangle(cornerRadius: 18).strokeBorder(Winter.powder.opacity(0.12), lineWidth: 0.5)
-      }
+      .clipShape(RoundedRectangle(cornerRadius: DispatchLayout.corner))
     }
     .buttonStyle(DispatchButtonStyle())
     .accessibilityLabel("Preview \(direction.rawValue)")
     .accessibilityValue(
       selected == direction
-        ? "Selected. \(journey.preview(direction).cost) fuel" : allowed ? "Available" : "Blocked"
+        ? (allowed ? "Selected. \(journey.preview(direction).cost) fuel" : "Selected. Blocked")
+        : allowed ? "\(journey.preview(direction).cost) fuel" : "Blocked"
     )
+    .accessibilityAddTraits(selected == direction ? .isSelected : [])
     .accessibilityIdentifier("direction-\(direction.rawValue)")
   }
 
@@ -437,14 +452,14 @@ struct ContentView: View {
         VStack(alignment: .leading, spacing: 20) {
           HStack {
             Text(panelTitle(panel))
-              .font(.system(size: 30, weight: .regular, design: .serif))
+              .font(DispatchType.title)
             Spacer()
             iconButton("xmark", label: "Close", id: "close-panel") { self.panel = nil }
           }
           switch panel {
           case .routes:
-            Text("Six small villages. Eighteen little stars.\nReplay any route to use less fuel.")
-              .font(.system(size: 14)).foregroundStyle(Winter.ink.opacity(0.75))
+            Text("Replay any route to save fuel and earn more stars.")
+              .font(DispatchType.body).foregroundStyle(Winter.ink)
             ForEach(Puzzle.routes) { puzzle in
               Button {
                 self.panel = nil
@@ -452,15 +467,15 @@ struct ContentView: View {
               } label: {
                 HStack(spacing: 16) {
                   Text(String(format: "%02d", puzzle.number))
-                    .font(.system(size: 25, weight: .light, design: .serif))
+                    .font(DispatchType.number).monospacedDigit()
                     .foregroundStyle(Winter.cranberry)
                   VStack(alignment: .leading, spacing: 5) {
-                    Text(puzzle.name).font(.system(size: 17, weight: .semibold))
+                    Text(puzzle.name).font(DispatchType.heading)
                     Text("\(puzzle.fuel) fuel · 3 stars in ≤ \(puzzle.par)")
-                      .font(.system(size: 11)).foregroundStyle(Winter.ink.opacity(0.7))
+                      .font(DispatchType.caption).foregroundStyle(Winter.ink)
                   }
                   Spacer()
-                  stars(progress[puzzle.id]?.stars ?? 0, size: 10)
+                  stars(progress[puzzle.id]?.stars ?? 0, size: 12, onLight: true)
                 }
                 .padding(.vertical, 12)
                 .contentShape(Rectangle())
@@ -472,28 +487,27 @@ struct ContentView: View {
             SettingsControls { self.panel = .tutorial }
           case .tutorial:
             tutorialStep(
-              "1", title: "The bakery gets the first parcel.",
+              "1", title: "Deliver to the bakery first",
               text: "Reach the red 1 home first. Then visit homes 2 and 3 in either order.")
             tutorialStep(
-              "2", title: "Preview, then drive.",
+              "2", title: "Preview, then drive",
               text:
                 "N, E, S and W follow the diagonal lanes. Choose a direction; the gold tile shows your next stop."
             )
             tutorialStep(
-              "3", title: "Snow goes one square ahead.",
+              "3", title: "Push snow one square ahead",
               text:
                 "Driving costs 1 fuel plus the snow depth. Drifts hold up to 3. Trees block pushes; snow at the village edge falls away."
             )
             Text("Undo is free. Every route is solvable. Save fuel for more stars.")
-              .font(.system(size: 13, weight: .semibold))
-            primary("Ready for the snow", symbol: "arrow.right", id: "tutorial-done") {
+              .font(DispatchType.label)
+            primary("Got it", symbol: "arrow.right", id: "tutorial-done") {
               learned = true
               self.panel = nil
             }
           case .pause:
-            Text("The parcels are safe.\nTake a moment; winter is in no hurry.")
-              .font(.system(size: 17, weight: .regular, design: .serif))
-            primary("Back to the route", symbol: "play.fill", id: "resume") { self.panel = nil }
+            Text("Your route is saved on this device.").font(DispatchType.body)
+            primary("Resume route", symbol: "play.fill", id: "resume") { self.panel = nil }
             if let journey {
               Button("Restart this route") {
                 self.panel = nil
@@ -501,12 +515,13 @@ struct ContentView: View {
               }
               .frame(minHeight: 44).accessibilityIdentifier("pause-restart")
             }
-            Button("Save & return home") { goHome() }
+            Button("Save & return to routes") { goHome() }
               .frame(minHeight: 44).accessibilityIdentifier("save-home")
           }
         }
         .padding(26)
         .padding(.top, 10)
+        .font(DispatchType.body)
         .foregroundStyle(Winter.ink)
         .tint(Winter.cranberry)
         .buttonStyle(.plain)
@@ -517,38 +532,43 @@ struct ContentView: View {
   private func tutorialStep(_ number: String, title: String, text: String) -> some View {
     HStack(alignment: .top, spacing: 15) {
       Text(number)
-        .font(.system(size: 17, weight: .bold, design: .rounded))
-        .frame(width: 32, height: 32)
-        .background(Winter.powder)
-        .clipShape(Circle())
+        .font(DispatchType.number)
+        .foregroundStyle(Winter.cranberry)
+        .frame(width: 32)
       VStack(alignment: .leading, spacing: 5) {
-        Text(title).font(.system(size: 16, weight: .semibold))
-        Text(text).font(.system(size: 13)).foregroundStyle(Winter.ink.opacity(0.8))
+        Text(title).font(DispatchType.heading)
+        Text(text).font(DispatchType.body).foregroundStyle(Winter.ink)
       }
     }
   }
 
   private func panelTitle(_ panel: Panel) -> String {
     switch panel {
-    case .routes: "The village routes"
-    case .settings: "A quieter winter"
-    case .tutorial: "Your first delivery"
-    case .pause: "A moment of stillness"
+    case .routes: "Village routes"
+    case .settings: "Settings"
+    case .tutorial: "How to deliver"
+    case .pause: "Route paused"
     }
   }
 
-  private func eyebrow(_ text: String) -> some View {
+  private func metadata(_ text: String) -> some View {
     Text(text)
-      .font(.system(size: 8, weight: .medium))
-      .tracking(1.6)
-      .foregroundStyle(Winter.amber)
+      .font(DispatchType.caption)
+      .foregroundStyle(Winter.powder)
   }
 
-  private func stars(_ count: Int, size: CGFloat) -> some View {
+  private var rule: some View {
+    Rectangle().fill(Winter.powder.opacity(0.24)).frame(height: 1)
+  }
+
+  private func stars(_ count: Int, size: CGFloat, onLight: Bool = false) -> some View {
     HStack(spacing: size * 0.25) {
       ForEach(0..<3) { index in
         Image(systemName: index < count ? "star.fill" : "star")
-          .foregroundStyle(index < count ? Winter.amber : Winter.powder.opacity(0.5))
+          .foregroundStyle(
+            index < count
+              ? (onLight ? Winter.cranberry : Winter.amber)
+              : (onLight ? Winter.ink.opacity(0.65) : Winter.powder))
       }
     }
     .font(.system(size: size))
@@ -577,25 +597,15 @@ struct ContentView: View {
         Text(title)
         Spacer()
         Image(systemName: symbol)
-          .font(.system(size: 14, weight: .medium))
-          .frame(width: 30, height: 30)
-          .overlay(Circle().strokeBorder(Winter.ink.opacity(0.25), lineWidth: 0.6))
+          .font(DispatchType.label)
       }
-      .font(.system(size: 15, weight: .medium))
-      .padding(.leading, 24)
-      .padding(.trailing, 13)
-      .frame(minHeight: 56)
-      .background {
-        Capsule().fill(
-          LinearGradient(
-            colors: disabled
-              ? [Winter.ink, Winter.ink]
-              : [Winter.cream, Color(red: 0.86, green: 0.82, blue: 0.68)],
-            startPoint: .topLeading, endPoint: .bottomTrailing))
-      }
-      .foregroundStyle(disabled ? Winter.powder : Winter.midnight)
-      .overlay(Capsule().strokeBorder(.white.opacity(disabled ? 0.05 : 0.45), lineWidth: 0.7))
-      .shadow(color: .black.opacity(0.15), radius: 12, y: 6)
+      .font(DispatchType.heading)
+      .padding(.horizontal, 18)
+      .padding(.vertical, 14)
+      .frame(minHeight: 52)
+      .background(disabled ? Winter.ink : Winter.cranberry)
+      .foregroundStyle(disabled ? Winter.powder : Winter.cream)
+      .clipShape(RoundedRectangle(cornerRadius: DispatchLayout.corner))
     }
     .buttonStyle(DispatchButtonStyle())
     .disabled(disabled)
@@ -632,8 +642,8 @@ struct ContentView: View {
     if value.position.delivered.count > previous {
       note =
         value.won
-        ? "Every window is glowing. Beautifully delivered."
-        : "A parcel delivered. A window comes to life."
+        ? "All three parcels delivered."
+        : "Parcel delivered. Visit the remaining homes in any order."
       feedback(delivered: true)
     } else if value.puzzle.homes.contains(where: { $0.square == value.position.van && !$0.priority }
     )
@@ -645,7 +655,7 @@ struct ContentView: View {
       note =
         value.fuelLeft < 5
         ? "Fuel is low. Preview carefully; undo is always free."
-        : "A clear lane behind you. A warm doorstep ahead."
+        : "Move complete. Preview your next direction."
       feedback(delivered: false)
     }
     store.save(value)
@@ -705,7 +715,7 @@ struct ContentView: View {
     sharedPostcard = SharedPostcard(
       image: image,
       text:
-        "A little warmth, delivered. \(journey.score) points in Snowglobe Express · \(journey.puzzle.name)."
+        "Village delivered. \(journey.score) points in Snowglobe Express · \(journey.puzzle.name)."
     )
   }
 }
@@ -728,13 +738,14 @@ private struct SettingsControls: View {
 
   var body: some View {
     VStack(alignment: .leading, spacing: 20) {
-      Text("Settle into the snowfall.").font(.system(size: 15))
       preference("Delivery chime", isOn: $sound, id: "sound-toggle")
-      preference("Gentle haptics", isOn: $haptics, id: "haptics-toggle")
+      Divider()
+      preference("Haptics", isOn: $haptics, id: "haptics-toggle")
+      Divider()
       Text(
-        "Motion follows your iPhone’s Reduce Motion setting. Your stars and current route stay on this device."
+        "Motion follows your device’s Reduce Motion setting. Stars and the current route are saved on this device."
       )
-      .font(.system(size: 13)).foregroundStyle(Winter.ink.opacity(0.75))
+      .font(DispatchType.caption).foregroundStyle(Winter.ink)
       Button("How to play", action: showTutorial)
         .frame(minHeight: 44)
         .accessibilityIdentifier("settings-tutorial")
@@ -742,18 +753,29 @@ private struct SettingsControls: View {
   }
 
   private func preference(_ title: String, isOn: Binding<Bool>, id: String) -> some View {
-    HStack {
-      Text(title)
-      Spacer()
-      Picker(title, selection: isOn) {
-        Text("Off").tag(false)
-        Text("On").tag(true)
+    ViewThatFits(in: .horizontal) {
+      HStack(spacing: 16) {
+        Text(title).fixedSize()
+        Spacer()
+        preferencePicker(title, isOn: isOn, id: id)
       }
-      .pickerStyle(.segmented)
-      .frame(width: 130)
-      .accessibilityIdentifier(id)
+      VStack(alignment: .leading, spacing: 10) {
+        Text(title)
+        preferencePicker(title, isOn: isOn, id: id)
+      }
     }
+    .font(DispatchType.body)
     .frame(minHeight: 44)
+  }
+
+  private func preferencePicker(_ title: String, isOn: Binding<Bool>, id: String) -> some View {
+    Picker(title, selection: isOn) {
+      Text("Off").tag(false)
+      Text("On").tag(true)
+    }
+    .pickerStyle(.segmented)
+    .frame(width: 130)
+    .accessibilityIdentifier(id)
   }
 }
 
@@ -768,27 +790,28 @@ struct Postcard: View {
   var body: some View {
     ZStack {
       WinterBackdrop()
-      VStack(spacing: 14) {
-        Text("THE WINTER POST  /  SNOWGLOBE EXPRESS")
-          .font(.system(size: 8, weight: .medium)).tracking(1.5).foregroundStyle(Winter.amber)
-        Text("A little warmth,\ndelivered.")
-          .font(.system(size: 39, weight: .regular, design: .serif))
-          .tracking(-0.8)
-          .multilineTextAlignment(.center)
+      VStack(spacing: 16) {
+        Text("Snowglobe Express").font(DispatchType.heading)
+          .foregroundStyle(Winter.powder)
+        Text("Village delivered").font(DispatchType.title)
         VillageArt(journey: journey, illuminated: true, animate: false).frame(width: 370)
           .padding(.vertical, -14)
-        Rectangle().fill(Winter.amber.opacity(0.4)).frame(width: 300, height: 0.5)
+        HStack(spacing: 6) {
+          ForEach(0..<3) { index in
+            Image(systemName: index < journey.stars ? "star.fill" : "star")
+          }
+        }
+        .font(DispatchType.heading).foregroundStyle(Winter.amber)
         Text("\(journey.score) efficiency points")
-          .font(.system(size: 26, weight: .regular, design: .serif))
-        Text("\(journey.puzzle.name) · \(journey.position.fuelUsed) fuel · \(journey.stars) stars")
-          .font(.system(size: 12)).foregroundStyle(Winter.powder)
-        Text("A village worth keeping.").font(.system(size: 14, weight: .regular, design: .serif))
-          .italic()
-          .padding(.top, 12)
+          .font(DispatchType.number).monospacedDigit()
+        Text(journey.puzzle.name).font(DispatchType.heading)
+        Text("\(journey.position.moves) moves · \(journey.position.fuelUsed) fuel used")
+          .font(DispatchType.body).foregroundStyle(Winter.powder)
       }
       .foregroundStyle(Winter.cream)
     }
     .frame(width: 390, height: 660)
+    .dynamicTypeSize(.large)
   }
 }
 
