@@ -74,7 +74,7 @@ struct Level {
       ], par: 2),
     Level(
       name: "The long table", subtitle: "A CHAIN REACTION",
-      hint: "The burst plum is ready. Tap during flight to send a shockwave.",
+      hint: "Break the table’s supports to start a chain reaction.",
       fruit: [.plum, .apple, .pear],
       blocks: [
         Block(x: 850, y: 183, width: 22, height: 94, material: .glass),
@@ -90,7 +90,7 @@ struct Level {
       ], par: 2),
     Level(
       name: "Stone & stem", subtitle: "THE OLD ORCHARD",
-      hint: "The pear hits hard. Wood beneath stone is the weak point.",
+      hint: "Wood beneath stone is the weak point.",
       fruit: [.pear, .plum, .apple],
       blocks: tower(940) + [
         Block(x: 880, y: 286, width: 34, height: 76, material: .stone),
@@ -104,7 +104,7 @@ struct Level {
       ], par: 2),
     Level(
       name: "Twin boughs", subtitle: "DIVIDE & TOPPLE",
-      hint: "Two towers, one orchard. Burst between them for a bigger collapse.",
+      hint: "Two towers, one orchard. Aim between them for a bigger collapse.",
       fruit: [.plum, .pear, .plum, .apple],
       blocks: tower(860, glass: true) + tower(1130, glass: true)
         + [Block(x: 995, y: 271, width: 165, height: 24, material: .glass)],
@@ -115,7 +115,7 @@ struct Level {
       ], par: 3),
     Level(
       name: "Golden crown", subtitle: "ONE LAST HARVEST",
-      hint: "A tall crown on fragile feet. Save a plum for the heart of the fort.",
+      hint: "A tall crown on fragile feet. Aim for the heart of the fort.",
       fruit: [.pear, .plum, .plum, .apple],
       blocks: tower(995, glass: true) + tower(995, 259)
         + [

@@ -216,7 +216,7 @@ struct OrchardView: View {
           }
           .accessibilityIdentifier("burst")
         } else {
-          Text(game.inFlight ? "Watch the garden tumble…" : Level.all[game.currentLevel].hint)
+          Text(game.inFlight ? "Watch the garden tumble…" : launchHint)
             .font(.system(size: 11, weight: .medium))
             .foregroundStyle(Palette.cream.opacity(0.92))
             .lineLimit(2)
@@ -225,9 +225,19 @@ struct OrchardView: View {
           game.start(game.currentLevel)
         }
       }
+      .opacity(game.result == nil ? 1 : 0)
+      .allowsHitTesting(game.result == nil)
     }
     .padding(.horizontal, 16)
     .padding(.vertical, 8)
+  }
+
+  private var launchHint: String {
+    switch game.currentFruit {
+    case .apple: return Level.all[game.currentLevel].hint
+    case .plum: return "Pull, release, then tap Burst now near the fort."
+    case .pear: return "Pull the heavy pear back. Aim for lower supports."
+    }
   }
 
   private var pausePanel: some View {

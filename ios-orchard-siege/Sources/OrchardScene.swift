@@ -130,7 +130,7 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
     prepare()
     if level.targets.allSatisfy({ $0.y < 440 }) {
       let framing = SKCameraNode()
-      framing.position = CGPoint(x: 700, y: 295)
+      framing.position = CGPoint(x: 650, y: 295)
       framing.setScale(0.88)
       addChild(framing)
       camera = framing
