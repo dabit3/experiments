@@ -11,7 +11,7 @@ struct RootView: View {
         TitleView()
       } else if let run = store.archive.run {
         VStack(spacing: 0) {
-          toolbar(run)
+          if run.stage != .victory && run.stage != .defeat { toolbar(run) }
           switch run.stage {
           case .map: MapView(run: run)
           case .battle: BattleView(run: run)
@@ -254,8 +254,22 @@ struct BattleView: View {
             .padding(.horizontal, 16).padding(.vertical, 8)
             .background(Ink.copper.opacity(0.1), in: Capsule())
             EnemyArt(kind: enemy.kind)
-              .frame(height: max(132, min(205, geometry.size.height * 0.26)))
+              .frame(height: max(120, min(185, geometry.size.height * 0.24)))
               .id(enemy.kind)
+              .phaseAnimator([false, true, false], trigger: store.pulse) { content, phase in
+                content.scaleEffect(reduceMotion ? 1 : phase ? 0.96 : 1)
+              } animation: { _ in
+                .easeOut(duration: 0.12)
+              }
+              .overlay(alignment: .bottomTrailing) {
+                if !store.feedback.isEmpty {
+                  Text(store.feedback).font(.system(size: 12, weight: .bold, design: .rounded))
+                    .tracking(1).foregroundStyle(Ink.paper)
+                    .padding(.horizontal, 12).padding(.vertical, 8)
+                    .background(Ink.green, in: Capsule())
+                    .padding(.trailing, 27)
+                }
+              }
             VStack(spacing: 8) {
               Text(enemy.kind.title).font(Ink.serif(25))
               HStack(spacing: 10) {
@@ -267,11 +281,16 @@ struct BattleView: View {
                 if enemy.block > 0 { Label("\(enemy.block) block", systemImage: "shield") }
                 if enemy.poison > 0 { Label("\(enemy.poison) poison", systemImage: "drop") }
                 if enemy.weak > 0 { Text("\(enemy.weak) weak") }
-              }.font(.system(size: 11)).foregroundStyle(Ink.faded).frame(height: 12)
+              }.font(.system(size: 12, weight: .medium)).foregroundStyle(Ink.faded).frame(
+                height: 14)
             }
           }
           HStack(spacing: 12) {
-            Label("\(run.hp)/\(run.maxHP)", systemImage: "heart.fill").foregroundStyle(Ink.red)
+            Label(
+              "\(run.hp)/\(run.maxHP)",
+              systemImage: run.hp * 3 <= run.maxHP ? "heart.slash.fill" : "heart.fill"
+            )
+            .foregroundStyle(Ink.red)
             Label("\(run.block)", systemImage: "shield.fill").foregroundStyle(Ink.paper)
             if run.weak > 0 { Text("Weak \(run.weak)").foregroundStyle(Ink.copper) }
             if run.strength > 0 { Text("+\(run.strength) STR").foregroundStyle(Ink.copper) }
@@ -285,9 +304,13 @@ struct BattleView: View {
           .font(.system(size: 13, weight: .medium))
           .padding(.horizontal, 16).padding(.vertical, 12)
           .background(Ink.paper.opacity(0.045), in: RoundedRectangle(cornerRadius: 12))
+          .overlay(
+            RoundedRectangle(cornerRadius: 12).stroke(
+              run.hp * 3 <= run.maxHP ? Ink.red : .clear, lineWidth: 1.5)
+          )
           .padding(.horizontal, 22)
-          Text(run.lastMessage).font(.system(size: 11)).foregroundStyle(Ink.faded)
-            .lineLimit(2).multilineTextAlignment(.center).frame(height: 28).padding(.horizontal, 22)
+          Text(run.lastMessage).font(.system(size: 12, weight: .medium)).foregroundStyle(Ink.paper)
+            .lineLimit(2).multilineTextAlignment(.center).frame(height: 32).padding(.horizontal, 22)
             .accessibilityIdentifier("battleMessage")
           ScrollView(.horizontal) {
             HStack(spacing: 11) {
@@ -295,7 +318,9 @@ struct BattleView: View {
                 Button {
                   store.play(card)
                 } label: {
-                  CardFace(kind: card.kind, affordable: run.energy >= card.kind.cost)
+                  CardFace(
+                    kind: card.kind, affordable: run.energy >= card.kind.cost,
+                    text: run.cardText(card.kind))
                 }
                 .buttonStyle(CardPressStyle())
                 .accessibilityIdentifier("card-\(card.id)")
@@ -312,7 +337,7 @@ struct BattleView: View {
                 "Draw \(run.drawPile.count)  /  Discard \(run.discard.count)  /  Exhaust \(run.exhaust.count)"
               )
               .foregroundStyle(Ink.copper.opacity(0.85))
-            }.font(.system(size: 10))
+            }.font(.system(size: 11))
             Spacer()
             Button {
               store.act { $0.endTurn() }
@@ -374,9 +399,9 @@ struct RewardView: View {
   var run: Run
   var body: some View {
     ScrollView {
-      VStack(spacing: 23) {
-        Eyebrow(text: "The spoils of your story").padding(.top, 24)
-        Image(systemName: "sparkles").font(.system(size: 46, weight: .ultraLight)).foregroundStyle(
+      VStack(spacing: 16) {
+        Eyebrow(text: "The spoils of your story").padding(.top, 6)
+        Image(systemName: "sparkles").font(.system(size: 30, weight: .ultraLight)).foregroundStyle(
           Ink.copper)
         Text("A new page.").font(Ink.serif(38))
         Text("Choose one art to add to your deck.").font(.system(size: 14)).foregroundStyle(
@@ -396,15 +421,18 @@ struct RewardView: View {
         }
         if let relic = run.offeredRelic {
           VStack(alignment: .leading, spacing: 13) {
-            Eyebrow(text: "A keepsake, yours to keep")
+            Eyebrow(text: "Included with either choice")
             RelicRow(relic: relic)
           }.frame(maxWidth: .infinity, alignment: .leading).padding(20)
             .background(Ink.copper.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
         }
-        Button("Skip card & continue") { store.act { $0.claimReward(nil) } }
-          .font(.system(size: 13)).foregroundStyle(Ink.faded).frame(height: 44)
       }.padding(26)
-    }.scrollIndicators(.hidden)
+    }.scrollIndicators(.visible)
+      .safeAreaInset(edge: .bottom) {
+        Button("Skip card & continue") { store.act { $0.claimReward(nil) } }
+          .font(.system(size: 14, weight: .medium)).foregroundStyle(Ink.copper)
+          .frame(maxWidth: .infinity, minHeight: 48).background(Ink.deep)
+      }
   }
 }
 
@@ -528,7 +556,7 @@ struct ResultView: View {
   private func resultStat(_ value: String, label: String) -> some View {
     VStack(spacing: 8) {
       Text(value).font(Ink.serif(29))
-      Text(label).font(.system(size: 8, weight: .bold)).tracking(1.4).foregroundStyle(Ink.faded)
+      Text(label).font(.system(size: 10, weight: .bold)).tracking(1).foregroundStyle(Ink.faded)
     }.frame(maxWidth: .infinity)
   }
 }
@@ -542,36 +570,51 @@ struct RulesView: View {
       ScrollView {
         VStack(alignment: .leading, spacing: 23) {
           Eyebrow(text: "The art of playing")
-          Text("Read. Fold.\nStrike.").font(Ink.serif(42))
+          Text("Read. Fold. Strike.").font(Ink.serif(31))
+          HStack(spacing: 13) {
+            Label("Attack 6", systemImage: "bolt.fill")
+            Image(systemName: "arrow.right")
+            Label("Block 6", systemImage: "shield.fill")
+          }.font(.system(size: 13, weight: .semibold)).foregroundStyle(Ink.copper)
+            .frame(maxWidth: .infinity).padding(.vertical, 18)
+            .background(Ink.copper.opacity(0.08), in: RoundedRectangle(cornerRadius: 12))
           rule(
             "01", "Read the intent",
-            "The badge above your foe shows their next action. Block prevents damage, but expires at the start of your next turn."
+            "The badge shows the enemy's next action. Match an attack with block to protect your health."
           )
           rule(
             "02", "Play your hand",
-            "Tap a card to play it immediately. Swipe to see the rest. Each turn gives 3 energy and 5 cards; the number on a card is its cost."
+            "Start with 3 energy and 5 cards. Tap a card to play; swipe to see more. The corner number is its energy cost."
           )
           rule(
             "03", "Turn the page",
-            "End turn lets the enemy act. Unplayed cards are discarded. An empty draw pile shuffles your discard. Exhausted cards stay out until the next battle."
-          )
-          rule(
-            "04", "Make the ink work",
-            "Poison deals its amount through block before the foe acts, then drops by 1. Weak reduces attacks by 25% (rounded down); it counts down after acting. Strength adds damage to each hit."
-          )
-          rule(
-            "05", "Rewrite the ending",
-            "Choose routes, collect one reward per duel, and heal or shop between fights. Defeat the String Queen in chapter 7. Your run saves after every action."
-          )
-          rule(
-            "06", "Keep a better story",
-            "Score = 100 per duel + 5 per remaining health + gold + 500 for victory. Relics work automatically. Best score and wins stay on this device."
+            "End turn lets the enemy act. Your block expires, your hand is discarded, then energy and cards refill."
           )
           PrimaryButton(title: "Let the story begin", symbol: "sparkle") {
             store.archive.hasReadRules = true
             store.save()
             dismiss()
           }
+          DisclosureGroup("The finer arts · statuses, piles & scoring") {
+            VStack(alignment: .leading, spacing: 20) {
+              rule(
+                "04", "The life of a card",
+                "An empty draw pile shuffles your discard. Exhausted cards stay out until the next battle."
+              )
+              rule(
+                "05", "Make the ink work",
+                "Poison deals its amount through block before the foe acts, then drops by 1. Weak reduces attacks by 25% (rounded down); it counts down after acting. Strength adds damage to each hit. Hand cards show adjusted damage."
+              )
+              rule(
+                "06", "Rewrite the ending",
+                "Choose routes, collect rewards, and heal or shop between fights. Defeat the String Queen in chapter 7. Relics work automatically. Your run saves after every action."
+              )
+              rule(
+                "07", "Keep a better story",
+                "Score = 100 per duel + 5 per remaining health + gold + 500 for victory. Best score and wins stay on this device."
+              )
+            }.padding(.top, 20)
+          }.font(.system(size: 13)).tint(Ink.copper)
         }.padding(28).padding(.vertical, 15)
       }
     }.foregroundStyle(Ink.paper).presentationDragIndicator(.visible)

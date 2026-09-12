@@ -75,6 +75,19 @@ enum CardKind: String, Codable, CaseIterable {
   var isDefense: Bool { [.guardCard, .bastion, .sanctuary, .mend].contains(self) }
   var exhausts: Bool { [.mend, .kindle, .eclipse, .thorn].contains(self) }
   var category: String { exhausts ? "EXHAUST" : isDefense ? "WARD" : "ART" }
+  var attack: Int? {
+    switch self {
+    case .strike: 7
+    case .needle: 4
+    case .echo: 5
+    case .riposte: 6
+    case .sever: 18
+    case .harvest: 10
+    case .flourish: 8
+    case .eclipse: 25
+    default: nil
+    }
+  }
 }
 
 struct Card: Codable, Identifiable, Equatable {
@@ -103,7 +116,7 @@ enum Relic: String, Codable, CaseIterable {
   var symbol: String {
     switch self {
     case .spool: "circle.hexagongrid"
-    case .feather: "feather"
+    case .feather: "pencil.tip.crop.circle"
     case .candle: "flame"
     case .thimble: "shield"
     }
@@ -342,9 +355,19 @@ struct Run: Codable {
     }
   }
 
+  func attackDamage(_ amount: Int) -> Int {
+    weak > 0 ? (amount + strength) * 3 / 4 : amount + strength
+  }
+
+  func cardText(_ kind: CardKind) -> String {
+    guard let base = kind.attack else { return kind.text }
+    return kind.text.replacingOccurrences(
+      of: "\(base) damage", with: "\(attackDamage(base)) damage")
+  }
+
   mutating func hit(_ amount: Int) {
     guard var foe = enemy else { return }
-    let damage = weak > 0 ? (amount + strength) * 3 / 4 : amount + strength
+    let damage = attackDamage(amount)
     let absorbed = min(foe.block, damage)
     foe.block -= absorbed
     let inflicted = min(foe.hp, damage - absorbed)

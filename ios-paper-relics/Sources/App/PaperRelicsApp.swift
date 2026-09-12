@@ -10,6 +10,7 @@ final class GameStore: ObservableObject {
   @Published var rules = false
   @Published var deckOpen = false
   @Published var pulse = 0
+  @Published var feedback = ""
   private var player: AVAudioPlayer?
   private let saveURL: URL
 
@@ -34,7 +35,24 @@ final class GameStore: ObservableObject {
 
   func act(_ action: (inout Run) -> Void) {
     guard !paused, var run = archive.run else { return }
+    let before = run
     action(&run)
+    let damage = run.damageDealt - before.damageDealt
+    let health = run.hp - before.hp
+    let block = run.block - before.block
+    if health < 0 {
+      feedback = "−\(-health) HEALTH"
+    } else if damage > 0 {
+      feedback = "−\(damage) INK"
+    } else if block > 0 {
+      feedback = "+\(block) BLOCK"
+    } else if health > 0 {
+      feedback = "+\(health) HEALTH"
+    } else if run.turns > before.turns {
+      feedback = "PERFECT FOLD"
+    } else {
+      feedback = ""
+    }
     archive.run = run
     pulse += 1
     save()
@@ -42,6 +60,7 @@ final class GameStore: ObservableObject {
 
   func start() {
     archive.start()
+    feedback = ""
     home = false
     paused = false
     if !archive.hasReadRules { rules = true }

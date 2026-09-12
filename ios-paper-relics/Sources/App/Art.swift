@@ -209,6 +209,7 @@ struct Flourish: View {
 struct CardFace: View {
   var kind: CardKind
   var affordable = true
+  var text: String?
   var body: some View {
     VStack(spacing: 8) {
       HStack {
@@ -216,7 +217,8 @@ struct CardFace: View {
           .frame(width: 26, height: 26).background(Ink.forest, in: Circle()).foregroundStyle(
             Ink.paper)
         Spacer()
-        Text(kind.category).font(.system(size: 8, weight: .bold)).tracking(1)
+        Text(affordable ? kind.category : "NO ENERGY").font(.system(size: 8, weight: .bold))
+          .tracking(0.5)
       }
       Image(systemName: kind.symbol).font(.system(size: 29, weight: .ultraLight))
         .frame(height: 38)
@@ -226,7 +228,7 @@ struct CardFace: View {
       Text(kind.title).font(Ink.serif(15)).multilineTextAlignment(.center).frame(height: 36)
         .minimumScaleFactor(0.8)
       Rectangle().fill(Ink.copper.opacity(0.5)).frame(height: 0.5)
-      Text(kind.text).font(.system(size: 12, weight: .medium)).lineSpacing(2)
+      Text(text ?? kind.text).font(.system(size: 12, weight: .medium)).lineSpacing(2)
         .multilineTextAlignment(.center).frame(maxHeight: .infinity, alignment: .top)
     }
     .padding(10)
@@ -240,9 +242,12 @@ struct CardFace: View {
     .overlay(
       RoundedRectangle(cornerRadius: 8).stroke(Ink.copper.opacity(0.5), lineWidth: 0.8).padding(4)
     )
-    .opacity(affordable ? 1 : 0.48)
+    .saturation(affordable ? 1 : 0.3)
+    .opacity(affordable ? 1 : 0.82)
     .shadow(color: .black.opacity(0.25), radius: 5, x: 0, y: 4)
     .accessibilityElement(children: .ignore)
-    .accessibilityLabel("\(kind.title), \(kind.cost) energy. \(kind.text)")
+    .accessibilityLabel(
+      "\(kind.title), \(kind.cost) energy. \(text ?? kind.text)\(affordable ? "" : " Not enough energy.")"
+    )
   }
 }
