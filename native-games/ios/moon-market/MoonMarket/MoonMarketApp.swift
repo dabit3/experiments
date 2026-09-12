@@ -260,6 +260,7 @@ struct MarketRoot: View {
         .padding(.bottom, 14)
       }
       .scrollIndicators(.visible)
+      .clipped()
     }
     .safeAreaInset(edge: .bottom, spacing: 0) { orderBar }
   }
@@ -729,9 +730,10 @@ struct ReceiptView: View {
         Spacer()
         Text("8 NIGHTS")
       }.font(.system(size: 10, design: .monospaced))
-      HStack {
+      HStack(spacing: 0) {
         ForEach(0..<35) { index in
           Rectangle().frame(width: index % 3 == 0 ? 3 : 1, height: 19)
+            .frame(maxWidth: .infinity)
         }
       }.opacity(0.65).accessibilityHidden(true)
       Text("\(run.daily ? "DAILY ORBIT" : "ORBIT") / \(run.seed)")
