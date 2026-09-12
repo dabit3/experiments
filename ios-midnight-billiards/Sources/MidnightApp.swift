@@ -71,7 +71,7 @@ struct ClubView: View {
                 HStack(spacing: 18) {
                     stat("\(session.wins)", label: "MATCHES WON")
                     Rectangle().fill(Club.gold.opacity(0.2)).frame(width: 1, height: 27)
-                    stat("\(session.best)", label: "PERSONAL BEST")
+                    stat(session.best.formatted(), label: "PERSONAL BEST")
                 }
                 .padding(.top, 8)
                 HStack(spacing: 15) {
@@ -239,7 +239,7 @@ struct ClubView: View {
                 Text(group.map { "\(name) · \($0.rawValue.uppercased())" } ?? name)
                     .font(.system(size: 11, weight: .semibold)).tracking(0.7)
                     .foregroundStyle(active ? Club.ivory : Club.muted)
-                if let group {
+                if group != nil {
                     HStack(spacing: 3) {
                         if remaining.isEmpty {
                             BallBadge(number: 8, size: 18)
@@ -279,7 +279,12 @@ struct ClubView: View {
                 .minimumScaleFactor(0.8)
                 .frame(height: 46, alignment: .topLeading)
             Rectangle().fill(Club.gold.opacity(0.18)).frame(height: 1)
-            if game.ballInHand && game.turn == 0 {
+            if game.finished {
+                Text("Session complete")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(Club.muted)
+                Spacer(minLength: 0)
+            } else if game.ballInHand && game.turn == 0 {
                 Text("BALL IN HAND").font(.system(size: 11, weight: .semibold)).tracking(0.8).foregroundStyle(
                     Club.gold)
                 Text("Tap clear felt to move the cue ball.")
@@ -397,6 +402,7 @@ struct ClubView: View {
                 VStack(spacing: 10) {
                     actionButton("Back to the table", icon: "play.fill") { session.setPaused(false) }
                     secondaryButton("How to play") { session.showRules = true }
+                    Rectangle().fill(Club.gold.opacity(0.2)).frame(height: 1)
                     secondaryButton("Start a fresh rack") {
                         if let mode = session.game?.mode { session.start(mode) }
                     }

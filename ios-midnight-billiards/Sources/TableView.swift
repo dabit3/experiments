@@ -252,7 +252,10 @@ struct BallBadge: View {
         ZStack {
             Circle().fill(number > 8 ? Club.ivory : Club.ballColor(number))
             if number > 8 {
-                Rectangle().fill(Club.ballColor(number)).frame(height: size * 0.57).clipShape(Circle())
+                Rectangle().fill(Club.ballColor(number))
+                    .frame(width: size, height: size * 0.57)
+                    .frame(width: size, height: size)
+                    .clipShape(Circle())
             }
             Circle().fill(
                 RadialGradient(
