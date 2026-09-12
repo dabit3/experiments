@@ -62,6 +62,26 @@ enum Upgrade: String, CaseIterable, Identifiable {
 enum RunPhase: Equatable { case playing, choosing, paused, victory, defeat }
 enum EnemyKind: Int { case shade, moth, thorn, boss }
 
+enum DefeatCause {
+  case thorns, shade, moth, thorn, boss, dawn, ended
+  var advice: String {
+    switch self {
+    case .thorns: return "Caught in a thorn bloom.\nLeave the rose ring before its countdown ends."
+    case .shade:
+      return "A wandering shade caught your light.\nKeep circling and gather the gems behind you."
+    case .moth: return "A dusk moth caught your light.\nMake space when the violet wings approach."
+    case .thorn:
+      return "An ancient thorn caught your light.\nKeep your distance from the heavy guardians."
+    case .boss:
+      return "The Hollow Gardener caught your light.\nCircle the crown and let your weapons work."
+    case .dawn:
+      return
+        "Dawn arrived, but the Gardener still stood.\nFollow the golden arrow and finish the fight."
+    case .ended: return "You set down the lantern.\nThe garden will wait for your return."
+    }
+  }
+}
+
 struct Enemy: Identifiable {
   let id: Int
   var position: V2
@@ -137,6 +157,7 @@ struct GameModel {
   var novaFlash: Double = 0
   var hurtFlash: Double = 0
   var shotsFired = 0
+  var defeatCause: DefeatCause?
   private(set) var nextGiftIn: Double = 0
   private var random: SeededRandom
   private var nextID = 0
@@ -146,6 +167,7 @@ struct GameModel {
   private var contactClock: Double = 0
   private var orbitClock: Double = 0
   private var bloomClock: Double = 45
+  private var lastDamage: DefeatCause?
   static let duration: Double = 300
   static let boundary: Double = 1100
   var neededExperience: Double { Double(10 + level * 6 + level * level) }
@@ -238,6 +260,7 @@ struct GameModel {
         && contactClock <= 0
       {
         health -= 16
+        lastDamage = .thorns
         contactClock = 0.8
         hurtFlash = 0.4
       }
@@ -254,6 +277,12 @@ struct GameModel {
         && contactClock <= 0
       {
         health -= kind == .boss ? 22 : kind == .thorn ? 15 : 10
+        switch kind {
+        case .shade: lastDamage = .shade
+        case .moth: lastDamage = .moth
+        case .thorn: lastDamage = .thorn
+        case .boss: lastDamage = .boss
+        }
         hurtFlash = 0.4
         contactClock = 0.8
         enemies[index].position = enemies[index].position - direction * 32
@@ -357,10 +386,12 @@ struct GameModel {
     sparks.removeAll { $0.life <= 0 }
     if health <= 0 {
       health = 0
+      defeatCause = lastDamage
       phase = .defeat
     } else if elapsed >= Self.duration {
       elapsed = Self.duration
       phase = bossDefeated ? .victory : .defeat
+      if !bossDefeated { defeatCause = .dawn }
     } else {
       checkLevel()
     }

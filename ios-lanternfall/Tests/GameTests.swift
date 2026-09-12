@@ -127,4 +127,18 @@ final class GameTests: XCTestCase {
     XCTAssertEqual(still.health, 84)
     XCTAssertEqual(moving.health, 100)
   }
+  func testDefeatExplainsTheLethalDamageSource() {
+    var bloom = GameModel(seed: 1)
+    bloom.health = 10
+    bloom.blooms = [ThornBloom(id: 99, position: .zero, age: ThornBloom.warning)]
+    bloom.tick(0.01)
+    XCTAssertEqual(bloom.phase, .defeat)
+    XCTAssertEqual(bloom.defeatCause, .thorns)
+    var enemy = GameModel(seed: 1)
+    enemy.health = 10
+    enemy.enemies = [Enemy(id: 99, position: .zero, health: 50, maxHealth: 50, kind: .moth)]
+    enemy.tick(0.01)
+    XCTAssertEqual(enemy.phase, .defeat)
+    XCTAssertEqual(enemy.defeatCause, .moth)
+  }
 }

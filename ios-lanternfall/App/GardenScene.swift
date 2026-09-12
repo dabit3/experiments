@@ -139,6 +139,7 @@ final class GardenScene: SKScene {
   private let keeper = SKSpriteNode(texture: GardenArt.texture("keeper"))
   private var entities: [Int: SKSpriteNode] = [:]
   private var bloomNodes: [Int: SKShapeNode] = [:]
+  private let lowHealth = SKNode()
   private var terrain: [String: SKNode] = [:]
   private var textures: [String: SKTexture] = [:]
   private var previousTime: Double = 0
@@ -172,6 +173,23 @@ final class GardenScene: SKScene {
     keeper.size = CGSize(width: 49, height: 49)
     keeper.zPosition = 20
     world.addChild(keeper)
+    let dangerRing = SKShapeNode(circleOfRadius: 29)
+    dangerRing.strokeColor = UIColor(red: 1, green: 0.45, blue: 0.58, alpha: 0.9)
+    dangerRing.lineWidth = 2
+    lowHealth.addChild(dangerRing)
+    let dangerPanel = SKShapeNode(rectOf: CGSize(width: 164, height: 22), cornerRadius: 11)
+    dangerPanel.fillColor = backgroundColor
+    dangerPanel.strokeColor = dangerRing.strokeColor.withAlphaComponent(0.3)
+    dangerPanel.position.y = -44
+    lowHealth.addChild(dangerPanel)
+    let dangerText = SKLabelNode(fontNamed: "AvenirNext-DemiBold")
+    dangerText.text = "LOW LIGHT · FIND ROSE GEMS"
+    dangerText.fontSize = 8
+    dangerText.fontColor = dangerRing.strokeColor
+    dangerText.verticalAlignmentMode = .center
+    dangerPanel.addChild(dangerText)
+    lowHealth.zPosition = 25
+    world.addChild(lowHealth)
     nova.strokeColor = GardenArt.gold
     nova.fillColor = GardenArt.gold.withAlphaComponent(0.035)
     nova.lineWidth = 2
@@ -192,6 +210,8 @@ final class GardenScene: SKScene {
   private func render() {
     let player = CGPoint(x: model.player.x, y: model.player.y)
     keeper.position = player
+    lowHealth.position = player
+    lowHealth.isHidden = model.health > model.maxHealth * 0.3
     keeper.alpha = model.hurtFlash > 0 ? 0.55 + 0.45 * abs(sin(model.elapsed * 35)) : 1
     keeper.zRotation = model.movement.length > 0.1 ? sin(model.elapsed * 12) * 0.045 : 0
     cameraNode.position = CGPoint(x: player.x, y: player.y + 65)
@@ -248,23 +268,40 @@ final class GardenScene: SKScene {
       } else {
         node = SKShapeNode(circleOfRadius: ThornBloom.radius)
         node.lineWidth = 2
-        node.zPosition = 7
+        node.zPosition = 21
         world.addChild(node)
         bloomNodes[bloom.id] = node
         let symbol = SKLabelNode(fontNamed: "AvenirNext-Medium")
-        symbol.text = "✧"
-        symbol.fontSize = 40
+        symbol.name = "countdown"
+        symbol.fontSize = 10
+        symbol.position.y = 72
         symbol.verticalAlignmentMode = .center
         symbol.fontColor = UIColor(red: 1, green: 0.5, blue: 0.7, alpha: 1)
         node.addChild(symbol)
+        let path = CGMutablePath()
+        for index in 0..<32 {
+          let angle = Double(index) * .pi / 16
+          let radius: Double = index.isMultiple(of: 2) ? ThornBloom.radius : ThornBloom.radius - 12
+          let point = CGPoint(x: cos(angle) * radius, y: sin(angle) * radius)
+          if index == 0 { path.move(to: point) } else { path.addLine(to: point) }
+        }
+        path.closeSubpath()
+        let thorns = SKShapeNode(path: path)
+        thorns.name = "thorns"
+        thorns.strokeColor = symbol.fontColor ?? .systemPink
+        thorns.lineWidth = 3
+        node.addChild(thorns)
       }
       let armed = bloom.age >= ThornBloom.warning
       let rose = UIColor(red: 0.95, green: 0.36, blue: 0.57, alpha: 1)
       node.strokeColor = rose.withAlphaComponent(armed ? 0.9 : 0.6)
-      node.fillColor = rose.withAlphaComponent(armed ? 0.23 : 0.06)
+      node.fillColor = rose.withAlphaComponent(armed ? 0.16 : 0.04)
       node.position = CGPoint(x: bloom.position.x, y: bloom.position.y)
-      node.setScale(armed ? 1 : 0.65 + 0.35 * bloom.age / ThornBloom.warning)
-      node.zRotation = armed ? bloom.age * 0.2 : 0
+      node.childNode(withName: "thorns")?.isHidden = !armed
+      if let label = node.childNode(withName: "countdown") as? SKLabelNode {
+        label.text =
+          armed ? "THORNS" : String(format: "MOVE · %.1fs", ThornBloom.warning - bloom.age)
+      }
     }
     nova.position = player
     nova.isHidden = model.novaFlash <= 0

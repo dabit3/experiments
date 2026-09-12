@@ -310,6 +310,7 @@ struct LanternfallView: View {
         }
         .font(.system(size: 13)).foregroundStyle(Palette.muted).frame(height: 44)
         Button("End this run") {
+          store.game.defeatCause = .ended
           store.game.phase = .defeat
           store.finish()
         }
@@ -333,9 +334,7 @@ struct LanternfallView: View {
           Text(
             store.game.phase == .victory
               ? "The Hollow Gardener falls. The flowers open."
-              : store.game.elapsed >= 300
-                ? "Dawn arrived, but the Gardener still stood."
-                : "The garden is patient. Return a little brighter."
+              : store.game.defeatCause?.advice ?? "The garden is patient. Return a little brighter."
           )
           .font(.system(size: 13)).foregroundStyle(Palette.muted)
           .multilineTextAlignment(.center).lineSpacing(4)
