@@ -31,6 +31,7 @@ final class SliceScene: SKScene {
     private var chainCount = 0
     private var chainAge: Double = 0
     private var lastSlice = CGPoint.zero
+    private weak var activeBanner: SKNode?
     private var hudClock: Double = 0
     private var rules = RoundRules(mode: .arcade)
     private let gravity: CGFloat = 410
@@ -295,7 +296,10 @@ final class SliceScene: SKScene {
     }
 
     private func comboBanner(count: Int, bonus: Int, at point: CGPoint) {
+        activeBanner?.removeAllActions()
+        activeBanner?.run(.sequence([.fadeOut(withDuration: 0.08), .removeFromParent()]))
         let banner = SKNode()
+        activeBanner = banner
         banner.position = point
         banner.zPosition = 45
         let headline = SKLabelNode(fontNamed: "Baskerville-Italic")
