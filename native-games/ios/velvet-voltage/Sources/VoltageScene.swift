@@ -131,28 +131,28 @@ final class VoltageScene: SKScene {
       buildBumper(index: index, center: center)
     }
     let plaque = SKShapeNode(
-      rect: CGRect(x: 121, y: 254, width: 148, height: 49), cornerRadius: 5)
-    plaque.fillColor = Ink.background.withAlphaComponent(0.92)
+      rect: CGRect(x: 100, y: 246, width: 190, height: 66), cornerRadius: 5)
+    plaque.fillColor = Ink.background.withAlphaComponent(0.97)
     plaque.strokeColor = Ink.brass.withAlphaComponent(0.65)
     addChild(plaque)
-    label("M I D N I G H T   C I R C U I T", x: 195, y: 288, size: 10, color: Ink.cream)
-    progressLabel = label("FOLLOW THE LIGHT", x: 195, y: 273, size: 8, color: Ink.brass)
+    label("M I D N I G H T   C I R C U I T", x: 195, y: 293, size: 12, color: Ink.cream)
+    progressLabel = label("FOLLOW THE LIGHT", x: 195, y: 272, size: 12, color: Ink.cream)
     for index in 0..<3 {
       progressLights.append(
         circle(
-          radius: 2.5, at: CGPoint(x: 183 + index * 12, y: 262),
+          radius: 4, at: CGPoint(x: 175 + index * 20, y: 257),
           fill: Ink.background, stroke: Ink.brass, width: 0.5))
     }
     label("Velvet", x: 195, y: 215, size: 25, color: Ink.cream, font: "Baskerville-Italic")
     label("V O L T A G E", x: 195, y: 198, size: 13, color: Ink.cream)
-    label("ELECTRIC PINBALL • No. 01", x: 195, y: 180, size: 7, color: Ink.brass)
+    label("ELECTRIC PINBALL • No. 01", x: 195, y: 180, size: 9, color: Ink.brass)
     leftNode = makeFlipper()
     rightNode = makeFlipper()
     for x in [114.0, 276.0] { screw(x: x, y: 101, z: 8) }
     line(
       [CGPoint(x: 144, y: 34), CGPoint(x: 246, y: 34)],
       color: Ink.brass.withAlphaComponent(0.6), width: 1)
-    label("T H E   N I G H T   I S   Y O U R S", x: 195, y: 20, size: 7, color: Ink.brass)
+    label("T H E   N I G H T   I S   Y O U R S", x: 195, y: 20, size: 9, color: Ink.brass)
     for index in 0..<10 {
       let dot = circle(
         radius: CGFloat(1 + Double(index) * 0.4), at: .zero,
@@ -230,13 +230,13 @@ final class VoltageScene: SKScene {
       parent: cap)
     label(
       "0\(index + 1)", x: 0, y: -8, size: 25, color: Ink.cream, font: "Baskerville", parent: cap)
-    let tab = SKShapeNode(rect: CGRect(x: -35, y: -51, width: 70, height: 15), cornerRadius: 3)
+    let tab = SKShapeNode(rect: CGRect(x: -44, y: -57, width: 88, height: 21), cornerRadius: 3)
     tab.fillColor = Ink.background
     tab.strokeColor = Ink.brass.withAlphaComponent(0.5)
     tab.lineWidth = 0.5
     cap.addChild(tab)
     label(
-      ["ARCADE", "SPIRE", "RIVIERA"][index], x: 0, y: -47, size: 10, color: Ink.cream, parent: cap)
+      ["ARCADE", "SPIRE", "RIVIERA"][index], x: 0, y: -52, size: 14, color: Ink.cream, parent: cap)
     districtCaps.append(cap)
   }
 

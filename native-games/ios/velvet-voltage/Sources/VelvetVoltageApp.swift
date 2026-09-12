@@ -125,13 +125,13 @@ struct VoltageView: View {
               Circle().fill(
                 ball >= game.ballNumber ? Color(Ink.cream) : Color(Ink.brass).opacity(0.25)
               )
-              .frame(width: 5, height: 5)
+              .frame(width: 6, height: 6)
             }
           }
           Text("BALL \(game.ballNumber)/3").font(
-            .system(size: 8, weight: .medium, design: .monospaced)
+            .system(size: 11, weight: .medium, design: .monospaced)
           )
-          .foregroundStyle(Color(Ink.brass)).accessibilityIdentifier("ballCount")
+          .foregroundStyle(Color(Ink.cream)).accessibilityIdentifier("ballCount")
         }
         Button {
           game.pause()
@@ -192,7 +192,7 @@ struct VoltageView: View {
       DecoRule().frame(height: 8)
       lesson(
         "01", title: "Launch. Then play both sides.",
-        text: "Tap the coral pads to flip. Hold a pad to keep its flipper raised.")
+        text: "Tap the flipper pads to flip. Hold a pad to keep its flipper raised.")
       lesson(
         "02", title: "Follow the cyan light.",
         text:
