@@ -18,6 +18,7 @@ final class GameSession: ObservableObject {
   @Published var best: Int
   @Published var lifetimeCircuits: Int
   @Published var gamesPlayed: Int
+  @Published var newRecord = false
   @Published var sound: Bool { didSet { defaults.set(sound, forKey: "sound") } }
   @Published var haptics: Bool { didSet { defaults.set(haptics, forKey: "haptics") } }
   var reducedMotion = false
@@ -26,6 +27,7 @@ final class GameSession: ObservableObject {
   private var player: AVAudioPlayer?
   private var lastSound = 0.0
   private var recordedResult = false
+  private var startingBest = 0
 
   init(defaults: UserDefaults = .standard) {
     self.defaults = defaults
@@ -52,6 +54,8 @@ final class GameSession: ObservableObject {
     inFlight = false
     paused = false
     recordedResult = false
+    startingBest = best
+    newRecord = false
     banner = "LAUNCH TO LIGHT THE CITY"
     screen = .playing
   }
@@ -61,7 +65,7 @@ final class GameSession: ObservableObject {
     engine.launch()
     inFlight = engine.inFlight
     ballNumber = engine.ballsUsed
-    banner = "HIT 01 · THE ARCADE"
+    banner = "HIT 0\(score.nextDistrict + 1) · \(Self.districtNames[score.nextDistrict])"
     feedback(frequency: 240)
   }
 
@@ -110,6 +114,7 @@ final class GameSession: ObservableObject {
   private func finish() {
     guard !recordedResult else { return }
     recordedResult = true
+    newRecord = score.points > startingBest
     gamesPlayed += 1
     lifetimeCircuits += score.circuits
     defaults.set(gamesPlayed, forKey: "games")

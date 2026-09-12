@@ -49,6 +49,7 @@ struct VoltageView: View {
         if game.paused, game.screen == .playing { pauseOverlay }
       }
     }
+    .tint(Color(Ink.brass))
     .onAppear {
       scene = VoltageScene(session: game)
       game.reducedMotion = reduceMotion
@@ -131,7 +132,7 @@ struct VoltageView: View {
           Text("\(game.score.multiplier)×").font(.custom("Didot-Italic", size: 27)).foregroundStyle(
             Color(Ink.cyan))
           Text("BALL \(game.ballNumber) / 3").font(
-            .system(size: 10, weight: .medium, design: .monospaced)
+            .system(size: 12, weight: .medium, design: .monospaced)
           )
           .foregroundStyle(Color(Ink.brass)).accessibilityIdentifier("ballCount")
         }
@@ -143,7 +144,7 @@ struct VoltageView: View {
       }
       HStack {
         Circle().fill(Color(Ink.cyan)).frame(width: 4, height: 4)
-        Text(game.banner).font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(
+        Text(game.banner).font(.system(size: 12, weight: .medium, design: .monospaced)).tracking(
           0.7
         )
         .foregroundStyle(Color(Ink.cyan)).lineLimit(1).minimumScaleFactor(0.7)
@@ -169,8 +170,8 @@ struct VoltageView: View {
         }.accessibilityIdentifier("launchButton")
       } else {
         Text("TAP OR HOLD A SIDE TO FLIP")
-          .font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(1.3)
-          .foregroundStyle(Color(Ink.brass)).frame(height: 16)
+          .font(.system(size: 11, weight: .medium, design: .monospaced)).tracking(1)
+          .foregroundStyle(Color(Ink.brass)).frame(height: 46)
       }
       HStack(spacing: 12) {
         FlipperControl(left: true, game: game)
@@ -234,7 +235,7 @@ struct VoltageView: View {
 
   private var results: some View {
     VStack(spacing: 16) {
-      ScorePoster(score: game.score, best: game.best)
+      ScorePoster(score: game.score, best: game.best, newRecord: game.newRecord)
         .frame(maxHeight: .infinity)
       VStack(spacing: 10) {
         primary("ONE MORE NIGHT", icon: "arrow.clockwise", identifier: "replayButton") {
@@ -260,7 +261,8 @@ struct VoltageView: View {
 
   private func share() {
     let renderer = ImageRenderer(
-      content: ScorePoster(score: game.score, best: game.best).frame(width: 390, height: 620))
+      content: ScorePoster(score: game.score, best: game.best, newRecord: game.newRecord).frame(
+        width: 390, height: 620))
     renderer.scale = 3
     guard let image = renderer.uiImage else { return }
     shareImage = image
@@ -365,6 +367,7 @@ struct FlipperControl: View {
 struct ScorePoster: View {
   let score: ScoreCard
   let best: Int
+  var newRecord = false
   var body: some View {
     GeometryReader { proxy in
       VStack(spacing: 0) {
@@ -373,7 +376,7 @@ struct ScorePoster: View {
         ).tracking(2).padding(.top, 22)
         Spacer(minLength: 12)
         Text("What a\nnight.").font(
-          .custom("Didot-Italic", size: min(69, proxy.size.height * 0.12))
+          .custom("Didot-Italic", size: min(57, proxy.size.height * 0.10))
         )
         .lineSpacing(-7).multilineTextAlignment(.center).foregroundStyle(Color(Ink.cream))
         Text(score.circuits > 0 ? "YOU BROUGHT THE CITY TO LIFE" : "THE CITY WANTS AN ENCORE")
@@ -383,7 +386,7 @@ struct ScorePoster: View {
         CitySilhouette().frame(height: min(125, proxy.size.height * 0.23)).padding(.horizontal, 18)
         Rectangle().fill(Color(Ink.brass)).frame(height: 1).padding(.horizontal, 12)
         Text(score.points.formatted()).font(
-          .system(size: 48, weight: .ultraLight, design: .monospaced)
+          .system(size: 62, weight: .ultraLight, design: .monospaced)
         )
         .foregroundStyle(Color(Ink.cyan)).padding(.top, 15).accessibilityIdentifier("resultScore")
         Text("V O L T S  G E N E R A T E D").font(
@@ -392,8 +395,10 @@ struct ScorePoster: View {
           Text("\(score.circuits) CIRCUITS")
           Text("\(score.multiplier)× POWER")
         }.font(.system(size: 10, weight: .medium, design: .monospaced)).padding(.top, 22)
-        Text("PERSONAL BEST  \(best.formatted()) V").font(.system(size: 9, design: .monospaced))
-          .padding(.top, 10)
+        Text(newRecord ? "NEW PERSONAL BEST" : "PERSONAL BEST  \(best.formatted()) V").font(
+          .system(size: 11, design: .monospaced)
+        )
+        .padding(.top, 10)
         Spacer(minLength: 12)
         Text("Velvet Voltage").font(.custom("Didot", size: 25)).foregroundStyle(Color(Ink.cream))
         Text("POWER THE NIGHT").font(.system(size: 7, weight: .medium, design: .monospaced))

@@ -3,6 +3,39 @@ import XCTest
 @testable import VelvetVoltage
 
 final class VoltageTests: XCTestCase {
+  @MainActor
+  func testRelaunchInstructionRetainsDistrictProgress() {
+    let suite = "voltage-relaunch-\(UUID().uuidString)"
+    let defaults = UserDefaults(suiteName: suite)!
+    defer { defaults.removePersistentDomain(forName: suite) }
+    let session = GameSession(defaults: defaults)
+    session.sound = false
+    session.haptics = false
+    session.newGame()
+    session.launch()
+    for _ in 0..<18000 where session.engine.inFlight {
+      session.consume(session.engine.advance(1 / 120))
+    }
+    XCTAssertEqual(session.score.nextDistrict, 1)
+    session.launch()
+    XCTAssertEqual(session.banner, "HIT 02 · THE SPIRE")
+  }
+
+  func testBallRemainsInsideSideRailsThroughoutAPlayedGame() {
+    let engine = PinballEngine()
+    for frame in 0..<15000 {
+      if !engine.inFlight { engine.launch() }
+      engine.leftPressed = frame % 90 < 45
+      engine.rightPressed = frame % 75 < 30
+      _ = engine.advance(1 / 120)
+      XCTAssertGreaterThan(engine.ball.x, 0)
+      XCTAssertLessThan(engine.ball.x, 390)
+      if engine.finished { break }
+    }
+    XCTAssertTrue(engine.finished)
+    XCTAssertGreaterThan(engine.score.circuits, 0)
+  }
+
   func testOrderedCircuitAndMultiplierScoring() {
     var score = ScoreCard()
     XCTAssertFalse(score.hit(2))

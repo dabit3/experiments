@@ -22,6 +22,7 @@ final class VoltageScene: SKScene {
   private var lastTime = 0.0
   private var trailClock = 0
   private var lastCircuit = 0
+  private var progressLabel = SKLabelNode()
 
   init(session: GameSession) {
     self.session = session
@@ -120,11 +121,11 @@ final class VoltageScene: SKScene {
       label("0\(index + 1)", x: center.x, y: center.y - 7, size: 23, color: Ink.cream)
       label(
         ["ARCADE", "SPIRE", "RIVIERA"][index],
-        x: center.x, y: center.y - 49, size: 9, color: Ink.brass)
+        x: center.x, y: center.y - 49, size: 11, color: Ink.cream)
     }
     label("V / V", x: 195, y: 335, size: 36, color: Ink.brass, font: "Didot")
     label("POWER THE NIGHT", x: 195, y: 307, size: 10, color: Ink.cream)
-    label("01  →  02  →  03", x: 195, y: 284, size: 10, color: Ink.brass)
+    progressLabel = label("0 / 3 DISTRICTS", x: 195, y: 281, size: 11, color: Ink.cyan)
     for rail in PinballEngine.rails {
       let points = [CGPoint(x: rail.a.x, y: rail.a.y), CGPoint(x: rail.b.x, y: rail.b.y)]
       line(points, color: .black.withAlphaComponent(0.5), width: 9)
@@ -183,7 +184,7 @@ final class VoltageScene: SKScene {
         [28, 43, 34, 65, 48, 76, 53, 66, 88, 108, 71, 82, 56, 70, 45, 62, 37, 46, 25][index])
       let building = SKShapeNode(rect: CGRect(x: x, y: 490, width: 12, height: height))
       building.fillColor = Ink.background
-      building.strokeColor = Ink.brass.withAlphaComponent(0.35)
+      building.strokeColor = Ink.brass.withAlphaComponent(0.65)
       building.lineWidth = 0.75
       addChild(building)
       for row in 0..<Int(height / 8 - 1) {
@@ -193,7 +194,7 @@ final class VoltageScene: SKScene {
               x: x + 3 + Double(column) * 4, y: 497 + Double(row) * 8, width: 1.7, height: 3))
           window.fillColor = (row + column + index) % 3 == 0 ? Ink.cyan : Ink.brass
           window.strokeColor = .clear
-          window.alpha = 0.3
+          window.alpha = 0.6
           addChild(window)
           windows.append(window)
         }
@@ -233,6 +234,7 @@ final class VoltageScene: SKScene {
       session.consume(events)
     }
     let engine = session.engine
+    progressLabel.text = "\(engine.score.nextDistrict) / 3 DISTRICTS"
     drawFlipper(leftNode, rail: engine.flipper(left: true))
     drawFlipper(rightNode, rail: engine.flipper(left: false))
     ballNode.position = CGPoint(x: engine.ball.x, y: engine.ball.y)
@@ -257,7 +259,7 @@ final class VoltageScene: SKScene {
     }
     if lastCircuit != engine.score.circuits {
       lastCircuit = engine.score.circuits
-      for window in windows { window.alpha = lastCircuit > 0 ? 1 : 0.3 }
+      for window in windows { window.alpha = lastCircuit > 0 ? 1 : 0.6 }
     }
   }
 
