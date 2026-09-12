@@ -1,4 +1,5 @@
 import Combine
+import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -571,7 +572,15 @@ struct ShareSheet: UIViewControllerRepresentable {
   let text: String
 
   func makeUIViewController(context: Context) -> UIActivityViewController {
-    UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
+    let items = UIActivityItemsConfiguration(objects: [image, text as NSString])
+    items.perItemMetadataProvider = { index, key in
+      guard index == 0, key == .linkPresentationMetadata else { return nil }
+      let metadata = LPLinkMetadata()
+      metadata.title = text
+      metadata.imageProvider = NSItemProvider(object: image)
+      return metadata
+    }
+    return UIActivityViewController(activityItemsConfiguration: items)
   }
 
   func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}

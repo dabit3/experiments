@@ -143,7 +143,11 @@ struct CoastArtwork: View {
           let crowded = riders.contains {
             $0.id != rival.id && $0.lane == rival.lane && abs($0.distance - rival.distance) < 12
           }
-          let x = laneX(rival.lane, y) + (crowded ? (rival.id.isMultiple(of: 2) ? -10.0 : 10.0) : 0)
+          let nearPlayer =
+            !hero && rival.lane == race.lane
+            && abs(rival.distance - travelled) < 14
+          let offset = nearPlayer ? 24.0 : (crowded ? 18.0 : 0)
+          let x = laneX(rival.lane, y) + (rival.id.isMultiple(of: 2) ? -offset : offset)
           var slip = Path()
           slip.move(to: CGPoint(x: x - 8, y: y + 22))
           slip.addLine(to: CGPoint(x: x - 25, y: y + 110))
@@ -180,10 +184,14 @@ struct CoastArtwork: View {
       rider(
         &context, at: CGPoint(x: x, y: playerY), jersey: Ink.red, phase: travelled, player: true)
       if !hero {
+        context.fill(
+          Path(
+            roundedRect: CGRect(x: x - 16, y: playerY + 32, width: 32, height: 16), cornerRadius: 8),
+          with: .color(Ink.cream))
         context.draw(
           Text("YOU").font(.system(size: 9, weight: .black, design: .rounded)).foregroundColor(
             Ink.navy),
-          at: CGPoint(x: x, y: playerY + 48)
+          at: CGPoint(x: x, y: playerY + 40)
         )
       }
     }
@@ -200,6 +208,12 @@ struct CoastArtwork: View {
   ) {
     var c = ctx
     c.translateBy(x: p.x, y: p.y)
+    c.scaleBy(x: 0.78, y: 0.78)
+    if player {
+      c.fill(
+        Path(ellipseIn: CGRect(x: -19, y: -38, width: 38, height: 76)),
+        with: .color(Ink.cream.opacity(0.72)))
+    }
     c.fill(
       Path(ellipseIn: CGRect(x: -9, y: -23, width: 25, height: 61)),
       with: .color(Ink.navy.opacity(0.14)))
