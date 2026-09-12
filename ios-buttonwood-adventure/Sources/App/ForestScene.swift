@@ -174,6 +174,17 @@ final class ForestScene: SKScene {
       glow.alpha = 0.055
       far.addChild(glow)
     }
+    for i in -2..<16 {
+      let x = CGFloat(i) * 260
+      let ridge = ForestArt.path(
+        [
+          CGPoint(x: x - 160, y: 150), CGPoint(x: x - 60, y: 262 + CGFloat(i % 2) * 34),
+          CGPoint(x: x + 30, y: 236), CGPoint(x: x + 120, y: 292 + CGFloat(i % 3) * 20),
+          CGPoint(x: x + 220, y: 150),
+        ], night ? 0x1E4048 : 0x6F9494)
+      ridge.alpha = night ? 0.7 : 0.55
+      far.addChild(ridge)
+    }
     for i in -2..<25 {
       let x = CGFloat(i) * 167
       let hill = ForestArt.oval(
@@ -187,6 +198,11 @@ final class ForestScene: SKScene {
       tree.alpha = 0.7
       far.addChild(tree)
     }
+    let mist = SKSpriteNode(
+      texture: mistTexture(night: night), size: CGSize(width: 6000, height: 190))
+    mist.position = CGPoint(x: 2500, y: 150)
+    mist.alpha = night ? 0.5 : 0.62
+    far.addChild(mist)
     for i in -1..<20 {
       let tree = ForestArt.tree(
         x: CGFloat(i) * 247 + 130,
@@ -220,6 +236,24 @@ final class ForestScene: SKScene {
       cameraNode.addChild(mote)
       motes.append(mote)
     }
+  }
+
+  private func mistTexture(night: Bool) -> SKTexture {
+    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 2, height: 190))
+    let image = renderer.image { context in
+      let tint = UIColor(hex: night ? 0x9CB8B2 : 0xF2EDD3)
+      let colors = [
+        tint.withAlphaComponent(0).cgColor, tint.cgColor, tint.withAlphaComponent(0).cgColor,
+      ]
+      if let gradient = CGGradient(
+        colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray,
+        locations: [0, 0.55, 1])
+      {
+        context.cgContext.drawLinearGradient(
+          gradient, start: .zero, end: CGPoint(x: 0, y: 190), options: [])
+      }
+    }
+    return SKTexture(image: image)
   }
 
   private func addChapterScenery() {
