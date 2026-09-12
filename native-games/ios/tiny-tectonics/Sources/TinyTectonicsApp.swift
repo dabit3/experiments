@@ -264,7 +264,7 @@ struct ExpeditionView: View {
         success
       } else {
         Text(instruction)
-          .font(.system(size: 12, weight: .regular))
+          .font(.system(size: 13, weight: .regular))
           .foregroundStyle(Earth.muted)
           .multilineTextAlignment(.center)
           .frame(maxWidth: .infinity, minHeight: 46)
@@ -315,21 +315,23 @@ struct ExpeditionView: View {
         Image(systemName: "circle").foregroundStyle(Earth.teal)
         Text("EXIT")
       }
-      .font(.system(size: 8, weight: .medium, design: .monospaced))
-      .tracking(1)
-      .foregroundStyle(Earth.muted)
+      .font(.system(size: 10, weight: .medium, design: .monospaced))
+      .tracking(0.3)
+      .foregroundStyle(Earth.paper.opacity(0.8))
       .padding(.horizontal, 8)
       .padding(.bottom, 2)
       HStack(spacing: 12) {
         adjustButton(delta: -1)
         VStack(spacing: 6) {
-          eyebrow("PLATE \(String(format: "%02d", game.selected + 1))")
+          Text("PLATE \(String(format: "%02d", game.selected + 1))")
+            .font(.system(size: 11, weight: .medium, design: .monospaced))
+            .tracking(1.4).foregroundStyle(Earth.muted)
           HStack(alignment: .firstTextBaseline, spacing: 6) {
             Text("\(game.heights[game.selected])")
               .font(.custom("Georgia", size: 31))
               .contentTransition(.numericText())
             Text(game.level.fixed.contains(game.selected) ? "anchored" : "elevation")
-              .font(.system(size: 10)).foregroundStyle(Earth.muted)
+              .font(.system(size: 12)).foregroundStyle(Earth.paper.opacity(0.8))
           }
           HStack(spacing: 4) {
             ForEach(0...5, id: \.self) { height in
@@ -363,7 +365,7 @@ struct ExpeditionView: View {
       Text(
         "Best route: \(game.level.par) \(game.level.par == 1 ? "shift" : "shifts") · Ends are anchored"
       )
-      .font(.system(size: 10, weight: .regular))
+      .font(.system(size: 11, weight: .regular))
       .foregroundStyle(Earth.muted)
     }
   }
@@ -543,7 +545,7 @@ struct ExpeditionView: View {
         Image(systemName: delta > 0 ? "arrow.up" : "arrow.down")
           .font(.system(size: 21, weight: .light))
         Text(delta > 0 ? "LIFT" : "LOWER")
-          .font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(1.2)
+          .font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(0.8)
       }
       .frame(width: 65, height: 70)
       .background(
