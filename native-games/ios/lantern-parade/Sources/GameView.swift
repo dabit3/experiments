@@ -44,6 +44,7 @@ struct GameView: View {
 
   var body: some View {
     GeometryReader { geometry in
+      let compact = geometry.size.height < 720
       ZStack {
         NightBackground()
         VStack(spacing: 0) {
@@ -56,14 +57,18 @@ struct GameView: View {
                 Spacer()
                 Text("PAR \(puzzle.par)").font(.system(size: 12, design: .monospaced))
                   .foregroundStyle(Ink.muted)
-              }.padding(.top, 18)
-              Text(puzzle.subtitle).font(.system(size: 12)).foregroundStyle(Ink.muted)
-                .frame(maxWidth: .infinity, alignment: .leading).padding(.top, 7)
-              collectionRow.padding(.top, 22)
+              }.padding(.top, compact ? 8 : 18)
+              if !compact {
+                Text(puzzle.subtitle).font(.system(size: 12)).foregroundStyle(Ink.muted)
+                  .frame(maxWidth: .infinity, alignment: .leading).padding(.top, 7)
+              }
+              collectionRow.padding(.top, compact ? 12 : 22)
               playableMap
-                .frame(width: min(geometry.size.width - 24, 440))
+                .frame(
+                  width: min(geometry.size.width - 24, max(280, geometry.size.height * 0.45), 440)
+                )
                 .padding(.horizontal, -12)
-                .padding(.top, 12)
+                .padding(.top, compact ? 4 : 12)
               HStack(spacing: 7) {
                 Image(
                   systemName: parade.completed
@@ -74,7 +79,7 @@ struct GameView: View {
                   .foregroundStyle(Ink.cream)
               }
               .font(.system(size: 14)).multilineTextAlignment(.center)
-              .frame(minHeight: 38)
+              .frame(minHeight: compact ? 32 : 38)
               .accessibilityIdentifier("route-notice")
               .padding(.horizontal, 4)
               HStack {
@@ -82,8 +87,8 @@ struct GameView: View {
                 Spacer()
                 Text("Keep the ribbon together")
               }.font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.muted).padding(
-                .top, 14)
-              Divider().overlay(Ink.muted.opacity(0.1)).padding(.vertical, 16)
+                .top, compact ? 4 : 14)
+              Divider().overlay(Ink.muted.opacity(0.1)).padding(.vertical, compact ? 8 : 16)
               if parade.completed {
                 Label("The procession is on its way", systemImage: "sparkles")
                   .font(.system(size: 16, design: .serif)).foregroundStyle(Ink.gold).frame(
@@ -96,10 +101,10 @@ struct GameView: View {
                 Label("Gate", systemImage: "door.left.hand.closed")
                 Label("Square", systemImage: "sparkles")
               }.font(.system(size: 12)).foregroundStyle(Ink.muted)
-                .padding(.top, 20).padding(.bottom, 22)
+                .padding(.top, compact ? 10 : 20).padding(.bottom, compact ? 10 : 22)
             }.padding(.horizontal, 24)
           }
-        }
+        }.accessibilityHidden(tutorial || paused || tangled || showingResult)
         if tutorial { tutorialOverlay }
         if paused { pauseOverlay }
         if tangled { tangleOverlay }
@@ -253,6 +258,12 @@ struct GameView: View {
           try? await Task.sleep(for: .seconds(5))
           guard !Task.isCancelled else { return }
           showingHint = false
+          if notice == "A possible route, traced in starlight." {
+            notice =
+              colors.count == 3
+              ? "All three lights! Lead them to the festival square."
+              : "Collect \(LanternColor.allCases[colors.count].name) next. Follow the glowing junctions."
+          }
         }
       } label: {
         Label("Guide", systemImage: "wand.and.stars")
@@ -417,6 +428,12 @@ struct ResultView: View {
   @EnvironmentObject private var progress: Progress
   @State private var share: SharePayload?
   @State private var shareError = false
+  private var advice: String {
+    if parade.stars(in: puzzle) == 3 { return "A perfect ribbon. A radiant square." }
+    if parade.hints > 0 { return "Try again without a guide to earn a brighter star." }
+    if parade.mistakes > 0 { return "Try a route without missteps for three stars." }
+    return "Try reaching the square in \(puzzle.par) steps or fewer."
+  }
 
   var body: some View {
     GeometryReader { geometry in
@@ -433,15 +450,11 @@ struct ResultView: View {
               .frame(width: min(geometry.size.width - 48, geometry.size.height * 0.42))
             Text(puzzle.title).font(.system(size: 25, design: .serif)).foregroundStyle(Ink.cream)
             Text(
-              "\(parade.route.count - 1) STEPS  ·  \(parade.mistakes) MISSTEPS  ·  \(parade.hints) GUIDES"
+              "\(parade.route.count - 1) STEPS  ·  \(parade.mistakes) \(parade.mistakes == 1 ? "MISSTEP" : "MISSTEPS")  ·  \(parade.hints) \(parade.hints == 1 ? "GUIDE" : "GUIDES")"
             )
             .font(.system(size: 12, design: .monospaced)).foregroundStyle(Ink.muted)
-            Text(
-              parade.stars(in: puzzle) == 3
-                ? "A perfect ribbon. A radiant square."
-                : "Every light arrived. A cleaner ribbon earns more stars."
-            )
-            .font(.system(size: 12)).foregroundStyle(Ink.muted).multilineTextAlignment(.center)
+            Text(advice)
+              .font(.system(size: 12)).foregroundStyle(Ink.muted).multilineTextAlignment(.center)
             Button {
               createShare()
             } label: {
