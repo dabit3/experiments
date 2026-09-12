@@ -7,7 +7,7 @@ enum Ink {
   static let gold = Color(red: 0.81, green: 0.72, blue: 0.47)
   static let pearl = Color(red: 0.94, green: 0.93, blue: 0.84)
   static let peach = Color(red: 0.97, green: 0.65, blue: 0.49)
-  static let muted = Color(red: 0.57, green: 0.68, blue: 0.64)
+  static let muted = Color(red: 0.65, green: 0.74, blue: 0.69)
 }
 
 struct PondArt: View {
@@ -113,7 +113,7 @@ struct PondArt: View {
     var path = Path()
     path.move(to: .zero)
     path.addArc(
-      center: .zero, radius: radius, startAngle: .degrees(18), endAngle: .degrees(342),
+      center: .zero, radius: radius, startAngle: .degrees(8), endAngle: .degrees(352),
       clockwise: false)
     path.closeSubpath()
     context.fill(
@@ -208,8 +208,8 @@ struct LilyTarget: View {
       ZStack {
         Circle().fill(Ink.background.opacity(0.80)).frame(width: 98, height: 98)
         Circle().stroke(
-          Ink.gold.opacity(active ? 0.9 : 0.20),
-          style: StrokeStyle(lineWidth: active ? 1.8 : 0.7, dash: active ? [] : [2, 5])
+          Ink.gold.opacity(active ? 0.9 : 0.42),
+          style: StrokeStyle(lineWidth: active ? 1.8 : 0.8)
         )
         .frame(width: 100, height: 100)
         LilyShape()
@@ -257,7 +257,7 @@ struct LilyShape: Shape {
     let center = CGPoint(x: rect.midX, y: rect.midY)
     path.move(to: center)
     path.addArc(
-      center: center, radius: rect.width / 2, startAngle: .degrees(20), endAngle: .degrees(340),
+      center: center, radius: rect.width / 2, startAngle: .degrees(9), endAngle: .degrees(351),
       clockwise: false)
     path.closeSubpath()
     return path

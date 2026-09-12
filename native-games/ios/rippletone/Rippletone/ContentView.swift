@@ -22,6 +22,18 @@ struct ContentView: View {
             reducedMotion: reducedMotion)
         }
         .ignoresSafeArea()
+        if game.screen == .playing || game.screen == .tutorial {
+          VStack {
+            LinearGradient(
+              colors: [Ink.background, Ink.background.opacity(0.95), .clear],
+              startPoint: .top, endPoint: .bottom
+            )
+            .frame(height: 290)
+            Spacer()
+          }
+          .ignoresSafeArea()
+          .allowsHitTesting(false)
+        }
         switch game.screen {
         case .home: home(compact: geometry.size.height < 720)
         case .playing, .tutorial: playfield(size: geometry.size)
@@ -78,7 +90,7 @@ struct ContentView: View {
                 .frame(width: 26)
               VStack(alignment: .leading, spacing: 4) {
                 Text(song.name).font(.system(size: 21, design: .serif))
-                Text(song.tempo).font(.system(size: 8, weight: .medium)).tracking(1.4)
+                Text(song.tempo).font(.system(size: 10, weight: .medium)).tracking(1)
                   .foregroundStyle(Ink.muted)
               }
               Spacer()
@@ -115,7 +127,7 @@ struct ContentView: View {
         Text(game.forgiving ? "GENTLE TIMING" : "PRECISE TIMING")
         Text("·  HEADPHONES OPTIONAL")
       }
-      .font(.system(size: 8, weight: .medium)).tracking(1.1).foregroundStyle(Ink.muted)
+      .font(.system(size: 9, weight: .medium)).tracking(0.7).foregroundStyle(Ink.muted)
       .padding(.bottom, 10)
     }
     .padding(.horizontal, 23)
@@ -141,8 +153,8 @@ struct ContentView: View {
             .contentTransition(.numericText())
           eyebrow("COMBO")
           Spacer()
-          Text("\(game.engine.judgements.count) / \(game.engine.composition.notes.count)")
-            .font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.muted)
+          Text("Notes \(game.engine.judgements.count) / \(game.engine.composition.notes.count)")
+            .font(.system(size: 12, design: .monospaced)).foregroundStyle(Ink.muted)
         }
         .padding(.top, 24)
         GeometryReader { proxy in
@@ -172,12 +184,26 @@ struct ContentView: View {
             LilyTarget(
               lane: lane, progress: progress, active: progress != nil,
               flash: game.elapsed - game.feedbackTime < 0.45 && game.feedbackLane == lane
-                && game.feedback != "Wait for the ring",
+                && (game.feedback == "Perfect" || game.feedback == "Lovely"),
               label: progress == nil ? "waiting" : "tap when ring meets edge"
             ) {
               game.tap(lane)
             }
             .position(points[lane])
+            if tutorial && game.tutorialStep == lane {
+              Text("Tap lily \(["I", "II", "III"][lane])")
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(Ink.gold)
+                .position(x: points[lane].x, y: points[lane].y + 78)
+                .allowsHitTesting(false)
+            }
+            if !tutorial && game.feedbackLane == lane && game.elapsed - game.feedbackTime < 0.9 {
+              Text(game.feedback)
+                .font(.system(size: 14, weight: .medium, design: .serif))
+                .foregroundStyle(game.feedback == "Let it go" ? Ink.peach : Ink.gold)
+                .position(x: points[lane].x, y: points[lane].y + 76)
+                .allowsHitTesting(false)
+            }
           }
           if game.elapsed - game.bloomTime < 4 && !tutorial {
             VStack(spacing: 7) {
@@ -201,18 +227,21 @@ struct ContentView: View {
                 width: 5, height: 5)
             }
           }
-          primaryButton(
-            game.tutorialStep >= 3 ? "Play First light" : "Skip to First light", id: "tutorial-play"
-          ) {
-            game.start(Composition.all[0])
+          if game.tutorialStep >= 3 {
+            primaryButton("Play First light", id: "tutorial-play") {
+              game.start(Composition.all[0])
+            }
+          } else {
+            Button("Skip practice") { game.start(Composition.all[0]) }
+              .font(.system(size: 12)).foregroundStyle(Ink.muted)
+              .frame(minHeight: 44).accessibilityIdentifier("tutorial-skip")
           }
         } else {
           eyebrow("TAP AS THE RINGS MEET")
           Text(
-            game.engine.rules.forgiving
-              ? "Gentle timing · 60% accuracy to bloom" : "Precise timing · 60% accuracy to bloom"
+            "Bloom: 60% accuracy · catch 70% of notes"
           )
-          .font(.system(size: 10)).foregroundStyle(Ink.muted)
+          .font(.system(size: 11)).foregroundStyle(Ink.muted)
         }
       }
       .padding(.bottom, 22)
@@ -223,7 +252,7 @@ struct ContentView: View {
   private var statusText: String {
     if game.screen == .tutorial {
       if game.tutorialStep >= 3 { return "You’re ready" }
-      return "Tap lily \(["I", "II", "III"][game.tutorialStep])"
+      return "Step \(game.tutorialStep + 1) of 3"
     }
     if game.elapsed < 1.2 { return "Let the water settle" }
     if game.elapsed - game.feedbackTime < 1.2 { return game.feedback }
@@ -390,7 +419,7 @@ struct ContentView: View {
   }
 
   private func eyebrow(_ text: String) -> some View {
-    Text(text).font(.system(size: 9, weight: .medium)).tracking(1.8).foregroundStyle(Ink.gold)
+    Text(text).font(.system(size: 10, weight: .medium)).tracking(1.4).foregroundStyle(Ink.gold)
   }
 
   private func stat(_ value: String, _ title: String) -> some View {

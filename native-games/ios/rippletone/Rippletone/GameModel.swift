@@ -102,8 +102,12 @@ final class GameModel: ObservableObject {
     guard screen == .playing || screen == .tutorial, !paused else { return }
     elapsed = ProcessInfo.processInfo.systemUptime - startedAt
     guard screen == .playing else { return }
+    let expiringLane = engine.composition.notes.last {
+      engine.judgements[$0.id] == nil && elapsed > $0.time + engine.rules.hitWindow
+    }?.lane
     if engine.expire(at: elapsed) > 0 {
       feedback = "Let it go"
+      feedbackLane = expiringLane ?? 0
       feedbackTime = elapsed
     }
     if elapsed >= engine.composition.duration {
@@ -149,6 +153,7 @@ final class GameModel: ObservableObject {
       if engine.perfectPhrases > phrases { bloomTime = elapsed }
     } else {
       feedback = "Wait for the ring"
+      feedbackLane = lane
       feedbackTime = elapsed
     }
   }
