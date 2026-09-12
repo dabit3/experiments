@@ -24,12 +24,13 @@ struct StudioView: View {
           case .result: result(compact: geometry.size.height < 730)
           }
         }
-        .padding(.horizontal, 26)
+        .padding(.horizontal, geometry.size.width < 390 ? 22 : 28)
         .padding(.bottom, 12)
         if studio.tutorial { tutorial }
         if studio.paused { pause }
       }
       .foregroundStyle(Palette.cream)
+      .font(StudioType.body(14))
     }
     .onReceive(timer) { date in
       let delta = date.timeIntervalSince(previousTick)
@@ -55,19 +56,24 @@ struct StudioView: View {
 
   private var navigation: some View {
     HStack {
-      HStack(spacing: 8) {
-        Image(systemName: "flame")
-          .font(.system(size: 16, weight: .light))
-          .foregroundStyle(Palette.ember)
-        Text("E / G").font(.system(size: 13, weight: .medium, design: .serif)).tracking(3)
+      HStack(spacing: 9) {
+        MakerMark().stroke(Palette.brass, lineWidth: 1.1).frame(width: 25, height: 29)
+        Text("THE GLASS STUDIO").font(StudioType.label(8)).tracking(2)
+          .foregroundStyle(Palette.muted)
       }
       .accessibilityElement(children: .ignore)
       .accessibilityLabel("Emberglass studio")
       Spacer()
       if studio.stage.isPlaying {
-        Text("\(studio.remaining)s").font(.system(size: 14, design: .monospaced))
-          .foregroundStyle(Palette.muted)
-          .contentTransition(.numericText())
+        ZStack {
+          Circle().stroke(Palette.surface, lineWidth: 2)
+          Circle().trim(from: 0, to: Double(studio.remaining) / studio.stage.duration)
+            .stroke(Palette.brass, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+            .rotationEffect(.degrees(-90))
+          Text("\(studio.remaining)").font(.system(size: 12, weight: .medium, design: .monospaced))
+            .contentTransition(.numericText())
+        }.frame(width: 34, height: 34)
+          .accessibilityLabel("\(studio.remaining) seconds remaining")
         icon("pause", label: "Pause session", identifier: "pauseButton") { studio.suspend() }
       } else {
         icon("square.grid.2x2", label: "Open gallery", identifier: "galleryButton") {
@@ -78,36 +84,45 @@ struct StudioView: View {
         }
       }
     }
-    .frame(height: 54)
+    .frame(height: 48)
   }
 
   private func home(compact: Bool) -> some View {
-    VStack(spacing: compact ? 10 : 16) {
-      VStack(spacing: 8) {
-        eyebrow("THE GLASSBLOWING STUDIO")
+    VStack(spacing: compact ? 8 : 14) {
+      VStack(spacing: 3) {
         Text("Emberglass")
-          .font(.system(size: compact ? 44 : 49, weight: .regular, design: .serif))
-          .tracking(-2)
-        Text("Made of fire. Finished by hand.")
-          .font(.system(size: 13)).foregroundStyle(Palette.muted)
+          .font(StudioType.display(compact ? 42 : 51))
+          .tracking(-2.5)
+        HStack(spacing: 12) {
+          Rectangle().fill(Palette.brass.opacity(0.45)).frame(width: 24, height: 0.5)
+          Text("fire into form").font(StudioType.italic(17)).foregroundStyle(Palette.brass)
+          Rectangle().fill(Palette.brass.opacity(0.45)).frame(width: 24, height: 0.5)
+        }
       }
-      .padding(.top, compact ? 4 : 14)
+      .padding(.top, compact ? 2 : 8)
       centerpiece(profile: studio.commission.radii, commission: studio.commission, molten: false)
         .frame(maxHeight: .infinity)
-      VStack(spacing: 13) {
+      VStack(spacing: compact ? 10 : 14) {
         HStack {
-          eyebrow(
-            "COMMISSION \(String(format: "%02d", studio.commission.rawValue + 1))",
-            color: Palette.ember)
+          HStack(spacing: 5) {
+            ForEach(Commission.allCases, id: \.rawValue) { commission in
+              Capsule()
+                .fill(commission == studio.commission ? Palette.brass : Palette.surface)
+                .frame(width: commission == studio.commission ? 20 : 5, height: 3)
+            }
+          }
           Spacer()
           Text(studio.archive.best > 0 ? "BEST \(studio.archive.best)" : "FIRST FIRING")
-            .font(.system(size: 10, weight: .medium, design: .monospaced))
-            .tracking(1).foregroundStyle(Palette.muted)
+            .font(StudioType.label(9)).tracking(1.5).foregroundStyle(Palette.muted)
         }
-        HStack {
-          VStack(alignment: .leading, spacing: 5) {
-            Text(studio.commission.title).font(.system(size: 27, design: .serif))
-            Text(studio.commission.subtitle).font(.system(size: 12)).foregroundStyle(Palette.muted)
+        HStack(spacing: 13) {
+          Text(String(format: "%02d", studio.commission.rawValue + 1))
+            .font(StudioType.display(34)).foregroundStyle(Palette.brass.opacity(0.65))
+          Rectangle().fill(Palette.brass.opacity(0.3)).frame(width: 1, height: 35)
+          VStack(alignment: .leading, spacing: 4) {
+            Text(studio.commission.title).font(StudioType.display(27))
+            Text(studio.commission.subtitle).font(StudioType.body(11))
+              .foregroundStyle(Palette.muted).fixedSize(horizontal: false, vertical: true)
           }
           Spacer(minLength: 4)
           Button {
@@ -117,7 +132,8 @@ struct StudioView: View {
           } label: {
             Image(systemName: studio.archive.unlocked == 0 ? "lock" : "arrow.right")
               .font(.system(size: 15)).frame(width: 44, height: 44)
-              .overlay(Circle().stroke(Palette.cream.opacity(0.22), lineWidth: 1))
+              .background(Circle().fill(Palette.surface.opacity(0.5)))
+              .overlay(Circle().stroke(Palette.brass.opacity(0.25), lineWidth: 0.7))
           }
           .disabled(studio.archive.unlocked == 0)
           .accessibilityLabel(
@@ -126,68 +142,61 @@ struct StudioView: View {
           )
           .accessibilityIdentifier("nextCommissionButton")
         }
-        primary("Enter the furnace", symbol: "arrow.up.right", identifier: "startButton") {
+        primary("Begin firing", symbol: "arrow.right", identifier: "startButton") {
           studio.start()
         }
-        HStack(spacing: 10) {
-          Text("HEAT").foregroundStyle(Palette.ember)
-          Text("—")
-          Text("SPIN")
-          Text("—")
-          Text("SHAPE")
+        HStack(spacing: 6) {
+          Text("Heat").foregroundStyle(Palette.ember)
+          Text("·")
+          Text("Spin")
+          Text("·")
+          Text("Shape")
           Spacer()
-          Text("~ 1 MIN")
+          Image(systemName: "clock").font(.system(size: 9))
+          Text("One minute of craft")
         }
-        .font(.system(size: 9, weight: .medium, design: .monospaced))
-        .tracking(1.5).foregroundStyle(Palette.muted)
+        .font(StudioType.body(11)).foregroundStyle(Palette.muted)
       }
     }
   }
 
   private func centerpiece(profile: [Double], commission: Commission, molten: Bool) -> some View {
     GeometryReader { geometry in
-      TimelineView(.animation(minimumInterval: 1.0 / 24, paused: reduceMotion || studio.paused)) {
-        timeline in
-        let phase = reduceMotion ? 0 : timeline.date.timeIntervalSinceReferenceDate * 0.55
-        let vesselHeight = geometry.size.height - 25
-        let vesselWidth = min(geometry.size.width * 0.84, vesselHeight * 0.80)
-        let baseY = vesselHeight * 0.94
-        ZStack {
-          Plinth().frame(width: geometry.size.width * 0.80)
-            .position(x: geometry.size.width / 2, y: baseY + 3)
-          Ellipse().fill(.black.opacity(0.70))
-            .frame(width: vesselWidth * (profile.last ?? 0.4), height: 9)
-            .blur(radius: 4)
-            .position(x: geometry.size.width / 2, y: baseY + 1)
-          VesselArt(profile: profile, molten: molten, phase: phase, commission: commission)
-            .frame(width: vesselWidth, height: vesselHeight)
-            .position(x: geometry.size.width / 2, y: vesselHeight / 2)
-          Text(molten ? "MOLTEN / WORK IN PROGRESS" : commission.collection)
-            .font(.system(size: 8, weight: .medium, design: .monospaced))
-            .tracking(2).foregroundStyle(Palette.muted)
-            .position(x: geometry.size.width / 2, y: geometry.size.height - 2)
-        }
-        .frame(width: geometry.size.width, height: geometry.size.height)
+      ZStack(alignment: .bottom) {
+        ExhibitionNiche(warm: molten)
+          .padding(.horizontal, 4).padding(.bottom, 20)
+        GlassDisplay(
+          profile: profile, commission: commission, molten: molten,
+          paused: reduceMotion || studio.paused || studio.tutorial || scenePhase != .active
+        ).padding(.bottom, 16)
+        Text(molten ? "FURNACE • \(Int(studio.temperature * 900 + 500))°" : commission.collection)
+          .font(StudioType.label(8)).tracking(2.1).foregroundStyle(Palette.muted)
+          .padding(.bottom, 2)
       }
+      .frame(width: geometry.size.width, height: geometry.size.height)
     }
   }
 
   private var play: some View {
-    VStack(spacing: 14) {
-      HStack(spacing: 5) {
+    VStack(spacing: 12) {
+      HStack(spacing: 8) {
         ForEach([Stage.heat, .spin, .shape], id: \.rawValue) { stage in
-          Rectangle()
-            .fill(stage == studio.stage ? Palette.ember : Palette.cream.opacity(0.15))
-            .frame(height: 2)
+          HStack(spacing: 6) {
+            Circle().fill(stage == studio.stage ? Palette.ember : Palette.surface)
+              .frame(width: 4, height: 4)
+            Text(stage.rawValue.capitalized).font(StudioType.label(10))
+              .foregroundStyle(stage == studio.stage ? Palette.cream : Palette.muted)
+            Rectangle().fill(stage == studio.stage ? Palette.brass : Palette.surface)
+              .frame(height: 0.5)
+          }
         }
       }
       VStack(spacing: 7) {
-        eyebrow(studio.stage.step, color: Palette.ember)
-        Text(studio.stage.title).font(.system(size: 34, design: .serif)).tracking(-1)
-        Text(instruction).font(.system(size: 13)).foregroundStyle(Palette.muted)
+        Text(studio.stage.title).font(StudioType.display(34)).tracking(-1)
+        Text(instruction).font(StudioType.body(12)).foregroundStyle(Palette.muted)
           .multilineTextAlignment(.center)
       }
-      .padding(.top, 10)
+      .padding(.top, 4)
       if studio.stage == .shape {
         shaping
       } else {
@@ -214,9 +223,9 @@ struct StudioView: View {
       let top = height * 0.09
       let step = height * 0.79 / 7
       ZStack {
-        VesselArt(
-          profile: studio.profile, molten: false,
-          phase: reduceMotion ? 0 : studio.elapsed * 0.12, commission: studio.commission
+        GlassDisplay(
+          profile: studio.profile, commission: studio.commission,
+          paused: true, tracing: true
         )
         .frame(width: width, height: height)
         .position(x: geometry.size.width / 2, y: height / 2)
@@ -239,8 +248,12 @@ struct StudioView: View {
             .position(x: x, y: y)
             .accessibilityHidden(true)
         }
-        Text("LIP").position(x: geometry.size.width / 2 - 18, y: top - 15)
-        Text("BASE").position(x: geometry.size.width / 2 - 18, y: top + 7 * step + 23)
+        Text("LIP").position(x: 24, y: top)
+        Text("BASE").position(x: 24, y: top + 7 * step)
+        Path { path in
+          path.move(to: CGPoint(x: 24, y: top + 16))
+          path.addLine(to: CGPoint(x: 24, y: top + 7 * step - 16))
+        }.stroke(Palette.brass.opacity(0.2), style: StrokeStyle(lineWidth: 0.5, dash: [2, 4]))
       }
       .font(.system(size: 8, design: .monospaced)).tracking(2).foregroundStyle(Palette.muted)
       .contentShape(Rectangle())
@@ -262,7 +275,7 @@ struct StudioView: View {
 
   @ViewBuilder
   private var stageControls: some View {
-    VStack(spacing: 14) {
+    VStack(spacing: 12) {
       HStack {
         eyebrow(studio.stage == .shape ? "FORM ACCURACY" : "LIVE PRECISION")
         Spacer()
@@ -281,43 +294,46 @@ struct StudioView: View {
       }
       if studio.stage == .heat {
         gauge(value: studio.temperature, target: studio.heatTarget)
-        Text(studio.holding ? "HEATING  •  RELEASE TO COOL" : "HOLD TO HEAT")
-          .font(.system(size: 12, weight: .semibold)).tracking(2)
-          .frame(maxWidth: .infinity).frame(height: 58)
-          .background(studio.holding ? Palette.ember : Palette.ember.opacity(0.13))
-          .foregroundStyle(studio.holding ? Palette.background : Palette.ember)
-          .overlay(RoundedRectangle(cornerRadius: 4).stroke(Palette.ember.opacity(0.5)))
-          .clipShape(RoundedRectangle(cornerRadius: 4))
-          .contentShape(Rectangle())
-          .gesture(
-            DragGesture(minimumDistance: 0).onChanged { _ in
-              studio.holding = true
-            }.onEnded { _ in studio.holding = false }
-          )
-          .accessibilityElement()
-          .accessibilityLabel(
-            studio.holding ? "Heating, activate to cool" : "Hold to heat, activate to toggle"
-          )
-          .accessibilityAddTraits(.isButton)
-          .accessibilityAction { studio.holding.toggle() }
-          .accessibilityIdentifier("heatControl")
+        HStack(spacing: 12) {
+          ZStack {
+            Circle().stroke(Palette.ember.opacity(0.6), lineWidth: 1).frame(width: 28, height: 28)
+            Circle().fill(Palette.ember).frame(width: 8, height: 8)
+              .shadow(color: Palette.ember.opacity(studio.holding ? 1 : 0), radius: 9)
+          }
+          Text(studio.holding ? "Release to cool" : "Hold to heat")
+            .font(StudioType.label(14))
+          Spacer()
+          Image(systemName: studio.holding ? "arrow.down" : "arrow.up")
+            .font(.system(size: 15, weight: .medium))
+        }
+        .padding(.horizontal, 19).frame(height: 60)
+        .frame(maxWidth: .infinity)
+        .background(
+          LinearGradient(
+            colors: [Palette.ember.opacity(studio.holding ? 0.28 : 0.12), Palette.surface],
+            startPoint: .topLeading, endPoint: .bottomTrailing)
+        )
+        .foregroundStyle(Palette.cream)
+        .overlay(
+          RoundedRectangle(cornerRadius: 15).stroke(Palette.ember.opacity(0.5), lineWidth: 0.8)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .contentShape(Rectangle())
+        .gesture(
+          DragGesture(minimumDistance: 0).onChanged { _ in
+            studio.holding = true
+          }.onEnded { _ in studio.holding = false }
+        )
+        .accessibilityElement()
+        .accessibilityLabel(
+          studio.holding ? "Heating, activate to cool" : "Hold to heat, activate to toggle"
+        )
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAction { studio.holding.toggle() }
+        .accessibilityIdentifier("heatControl")
       } else if studio.stage == .spin {
         gauge(value: studio.rotation, target: studio.spinTarget)
-        Slider(value: $studio.rotation, in: 0...1)
-          .tint(Palette.ember)
-          .accessibilityLabel("Rotation speed")
-          .accessibilityValue(
-            "\(Int(studio.rotation * 100)) percent. Target \(Int(studio.spinTarget * 100)) percent"
-          )
-          .accessibilityIdentifier("rotationSlider")
-          .frame(height: 44)
-        HStack {
-          Text("SLOW")
-          Spacer()
-          Image(systemName: "arrow.left.and.right")
-          Spacer()
-          Text("FAST")
-        }.font(.system(size: 9, design: .monospaced)).tracking(2).foregroundStyle(Palette.muted)
+        RotationControl(value: $studio.rotation, target: studio.spinTarget)
       } else {
         HStack {
           let matched = studio.touched.filter {
@@ -334,7 +350,9 @@ struct StudioView: View {
           .frame(minHeight: 44)
           .accessibilityIdentifier("resetCurveButton")
         }
-        primary("Cool & reveal", symbol: "sparkle", identifier: "finishButton") { studio.finish() }
+        primary("Cool & reveal", symbol: "arrow.right", identifier: "finishButton") {
+          studio.finish()
+        }
         accessibleShaping
       }
     }
@@ -364,19 +382,34 @@ struct StudioView: View {
   private func gauge(value: Double, target: Double) -> some View {
     GeometryReader { geometry in
       ZStack(alignment: .leading) {
-        Capsule().fill(Palette.cream.opacity(0.10)).frame(height: 7)
-        Capsule()
-          .fill(Palette.mint.opacity(0.32))
-          .overlay(Capsule().stroke(Palette.mint.opacity(0.7), lineWidth: 1))
-          .frame(width: geometry.size.width * 0.20, height: 18)
+        Canvas { context, size in
+          for index in 0...40 {
+            let x = Double(index) / 40 * size.width
+            var line = Path()
+            line.move(to: CGPoint(x: x, y: index % 5 == 0 ? 10 : 16))
+            line.addLine(to: CGPoint(x: x, y: 30))
+            context.stroke(
+              line, with: .color(Palette.muted.opacity(index % 5 == 0 ? 0.6 : 0.25)),
+              lineWidth: 1)
+          }
+        }
+        RoundedRectangle(cornerRadius: 4)
+          .fill(Palette.mint.opacity(0.16))
+          .overlay(
+            RoundedRectangle(cornerRadius: 4).stroke(Palette.mint.opacity(0.7), lineWidth: 0.8)
+          )
+          .frame(width: geometry.size.width * 0.20, height: 34)
           .offset(x: geometry.size.width * (target - 0.1))
-        Capsule().fill(Palette.cream).frame(width: 4, height: 26)
-          .shadow(color: .white.opacity(0.5), radius: 6)
-          .offset(x: (geometry.size.width - 4) * value)
+        VStack(spacing: 2) {
+          Rectangle().fill(Palette.cream).frame(width: 6, height: 6).rotationEffect(.degrees(45))
+          Rectangle().fill(Palette.cream).frame(width: 1.5, height: 25)
+        }
+        .shadow(color: Palette.cream.opacity(0.3), radius: 4)
+        .offset(x: (geometry.size.width - 6) * value)
       }
-      .frame(height: 26)
+      .frame(height: 38)
     }
-    .frame(height: 26)
+    .frame(height: 38)
     .accessibilityLabel("Precision gauge")
     .accessibilityValue("\(Int(value * 100)), target \(Int(target * 100))")
   }
@@ -384,28 +417,29 @@ struct StudioView: View {
   @ViewBuilder
   private func result(compact: Bool) -> some View {
     if let piece = studio.result {
-      VStack(spacing: compact ? 8 : 13) {
+      VStack(spacing: compact ? 7 : 12) {
         eyebrow(
           piece.collected ? "A NEW PIECE FOR YOUR GALLERY" : "EVERY MASTER BEGINS WITH A STUDY",
-          color: Palette.mint
+          color: Palette.brass
         )
         .padding(.top, 8)
         Text(piece.collected ? "From fire, a jewel." : "Return to the fire.")
-          .font(.system(size: compact ? 33 : 37, design: .serif)).tracking(-1)
+          .font(StudioType.display(compact ? 31 : 38)).tracking(-1)
         centerpiece(profile: piece.profile, commission: piece.commission, molten: false)
           .frame(maxHeight: .infinity)
-          .scaleEffect(reveal || reduceMotion ? 1 : 0.86)
-          .opacity(reveal || reduceMotion ? 1 : 0.2)
-        HStack(alignment: .center) {
+          .scaleEffect(reveal || reduceMotion ? 1 : 0.96)
+          .opacity(reveal || reduceMotion ? 1 : 0.35)
+        HStack(alignment: .center, spacing: 14) {
+          GradeSeal(score: piece.score).frame(width: 65, height: 65)
           VStack(alignment: .leading, spacing: 5) {
-            eyebrow(piece.grade, color: Palette.mint)
-            Text(piece.commission.title).font(.system(size: 26, design: .serif))
+            eyebrow(piece.grade, color: piece.collected ? Palette.brass : Palette.muted)
+            Text(piece.commission.title).font(StudioType.display(27))
+            Text("Firing \(piece.id.uuidString.prefix(6).uppercased())")
+              .font(StudioType.body(10)).foregroundStyle(Palette.muted)
           }
           Spacer()
-          Text("\(piece.score)").font(.system(size: 45, weight: .light, design: .serif))
-          Text("/100").font(.system(size: 10, design: .monospaced)).foregroundStyle(Palette.muted)
         }
-        Rectangle().fill(Palette.cream.opacity(0.18)).frame(height: 1)
+        Rectangle().fill(Palette.brass.opacity(0.25)).frame(height: 0.5)
         HStack {
           metric("HEAT", value: piece.heat)
           Spacer()
@@ -414,7 +448,7 @@ struct StudioView: View {
           metric("FORM", value: piece.shape)
         }
         Text(resultAdvice(piece))
-          .font(.system(size: 12)).foregroundStyle(Palette.muted)
+          .font(StudioType.body(12)).foregroundStyle(Palette.muted)
           .multilineTextAlignment(.center).frame(minHeight: 32)
         HStack(spacing: 12) {
           primary("Fire again", symbol: "arrow.clockwise", identifier: "retryButton") {
@@ -425,7 +459,10 @@ struct StudioView: View {
           } label: {
             Image(systemName: "square.and.arrow.up")
               .font(.system(size: 19)).frame(width: 56, height: 56)
-              .overlay(RoundedRectangle(cornerRadius: 4).stroke(Palette.cream.opacity(0.3)))
+              .background(RoundedRectangle(cornerRadius: 15).fill(Palette.surface))
+              .overlay(
+                RoundedRectangle(cornerRadius: 15).stroke(
+                  Palette.brass.opacity(0.3), lineWidth: 0.7))
           }
           .accessibilityLabel("Share finished vessel").accessibilityIdentifier("shareButton")
         }
@@ -451,7 +488,17 @@ struct StudioView: View {
   private func metric(_ title: String, value: Int) -> some View {
     VStack(alignment: .leading, spacing: 5) {
       eyebrow(title)
-      Text("\(value)%").font(.system(size: 17, design: .monospaced))
+      HStack(alignment: .firstTextBaseline, spacing: 2) {
+        Text("\(value)").font(StudioType.body(21))
+        Text("%").font(StudioType.body(10)).foregroundStyle(Palette.muted)
+      }
+      GeometryReader { geometry in
+        Capsule().fill(Palette.surface)
+          .overlay(alignment: .leading) {
+            Capsule().fill(Palette.brass.opacity(0.65))
+              .frame(width: geometry.size.width * Double(value) / 100)
+          }
+      }.frame(width: 72, height: 2)
     }
   }
 
@@ -461,11 +508,11 @@ struct StudioView: View {
       VStack(alignment: .leading, spacing: 22) {
         HStack(spacing: 16) {
           Text(studio.stage == .heat ? "I" : studio.stage == .spin ? "II" : "III")
-            .font(.system(size: 36, weight: .light, design: .serif))
-            .foregroundStyle(Palette.ember)
+            .font(StudioType.display(36))
+            .foregroundStyle(Palette.brass)
           eyebrow("YOUR FIRST \(studio.stage.rawValue.uppercased())")
         }
-        Text(studio.stage.title).font(.system(size: 39, design: .serif))
+        Text(studio.stage.title).font(StudioType.display(39))
         if studio.stage != .shape {
           gauge(value: 0.5, target: 0.5)
           HStack {
@@ -477,7 +524,7 @@ struct StudioView: View {
           .accessibilityHidden(true)
         }
         Text(tutorialCopy)
-          .font(.system(size: 17)).lineSpacing(5).foregroundStyle(Palette.muted)
+          .font(StudioType.body(16)).lineSpacing(5).foregroundStyle(Palette.muted)
         Rectangle().fill(Palette.cream.opacity(0.2)).frame(height: 1)
         Text(
           studio.stage == .shape
@@ -499,7 +546,7 @@ struct StudioView: View {
   private var tutorialCopy: String {
     switch studio.stage {
     case .heat:
-      "Hold the orange pad to raise the white temperature marker. Release to let it fall.\n\nKeep that marker inside the moving green window for 14 seconds."
+      "Hold the heat pad to raise the white temperature marker. Release to let it fall.\n\nKeep that marker inside the moving green window for 14 seconds."
     case .spin:
       "Slide the rotation dial left or right. Keep the white marker inside the moving green window.\n\nA steady hand gives the glass its symmetry."
     case .shape:
@@ -513,7 +560,8 @@ struct StudioView: View {
       Palette.background.opacity(0.97).ignoresSafeArea()
       VStack(spacing: 23) {
         eyebrow("THE FIRE CAN WAIT", color: Palette.ember)
-        Text("A moment of stillness.").font(.system(size: 31, design: .serif))
+        MakerMark().stroke(Palette.brass, lineWidth: 1).frame(width: 38, height: 48)
+        Text("A moment of stillness.").font(StudioType.display(31))
         primary("Resume", symbol: "play", identifier: "resumeButton") {
           previousTick = Date()
           studio.paused = false
@@ -532,23 +580,25 @@ struct StudioView: View {
     NavigationStack {
       ScrollView {
         VStack(alignment: .leading, spacing: 24) {
-          Text("The collection").font(.system(size: 36, design: .serif))
+          Text("The collection").font(StudioType.display(36))
           Text("Your last 24 firings. Collect at 55. Master at 90.")
             .font(.system(size: 13)).foregroundStyle(Palette.muted)
           if studio.archive.pieces.isEmpty {
-            VesselArt(profile: Commission.tide.radii, commission: .tide)
-              .frame(height: 250).opacity(0.45)
+            Image(uiImage: GlassStudio.portrait(profile: Commission.tide.radii, commission: .tide))
+              .resizable().scaledToFit().frame(maxWidth: .infinity).frame(height: 250).opacity(0.65)
             Text("A place for things you make.")
-              .font(.system(size: 25, design: .serif))
+              .font(StudioType.display(25))
             Text("Your first vessel is waiting in the fire.").foregroundStyle(Palette.muted)
           }
           ForEach(studio.archive.pieces) { piece in
             HStack(spacing: 24) {
-              VesselArt(profile: piece.profile, commission: piece.commission)
-                .frame(width: 84, height: 120)
+              Image(
+                uiImage: GlassStudio.portrait(profile: piece.profile, commission: piece.commission)
+              )
+              .resizable().scaledToFit().frame(width: 96, height: 130)
               VStack(alignment: .leading, spacing: 9) {
                 eyebrow(piece.collected ? piece.grade : "STUDY", color: Palette.mint)
-                Text(piece.commission.title).font(.system(size: 24, design: .serif))
+                Text(piece.commission.title).font(StudioType.display(24))
                 Text(
                   "\(piece.score) / 100  ·  \(piece.date.formatted(date: .abbreviated, time: .omitted))"
                 )
@@ -620,7 +670,8 @@ struct StudioView: View {
     _ symbol: String, label: String, identifier: String, action: @escaping () -> Void
   ) -> some View {
     Button(action: action) {
-      Image(systemName: symbol).font(.system(size: 17, weight: .light)).frame(width: 44, height: 44)
+      Image(systemName: symbol).font(.system(size: 16, weight: .light)).frame(width: 42, height: 44)
+        .foregroundStyle(Palette.cream)
     }
     .accessibilityLabel(label).accessibilityIdentifier(identifier)
   }
@@ -630,20 +681,30 @@ struct StudioView: View {
   ) -> some View {
     Button(action: action) {
       HStack {
-        Text(title).font(.system(size: 15, weight: .medium))
+        Text(title).font(StudioType.label(15))
         Spacer()
-        Image(systemName: symbol).font(.system(size: 16))
+        Image(systemName: symbol).font(.system(size: 14, weight: .medium))
+          .frame(width: 29, height: 29)
+          .overlay(Circle().stroke(Palette.background.opacity(0.25), lineWidth: 0.7))
       }
       .padding(.horizontal, 19).frame(height: 56)
-      .background(Palette.ember).foregroundStyle(Palette.background)
-      .clipShape(RoundedRectangle(cornerRadius: 4))
+      .background(
+        LinearGradient(
+          colors: [Palette.cream, Palette.brass], startPoint: .topLeading, endPoint: .bottomTrailing
+        )
+      )
+      .foregroundStyle(Palette.background)
+      .overlay(
+        RoundedRectangle(cornerRadius: 15).stroke(Palette.cream.opacity(0.5), lineWidth: 0.7)
+      )
+      .clipShape(RoundedRectangle(cornerRadius: 15))
     }
-    .buttonStyle(.plain).accessibilityIdentifier(identifier)
+    .buttonStyle(PressStyle()).accessibilityIdentifier(identifier)
   }
 
   private func eyebrow(_ title: String, color: Color = Palette.muted) -> some View {
-    Text(title).font(.system(size: 9, weight: .medium, design: .monospaced))
-      .tracking(1.6).foregroundStyle(color)
+    Text(title).font(StudioType.label(9))
+      .tracking(1.4).foregroundStyle(color)
   }
 }
 
@@ -651,30 +712,28 @@ struct ResultPrint: View {
   let piece: GalleryPiece
 
   var body: some View {
-    VStack(spacing: 18) {
-      Text("E M B E R G L A S S").font(.system(size: 15, design: .serif))
-      Text("MADE OF FIRE. FINISHED BY HAND.")
-        .font(.system(size: 8, design: .monospaced)).tracking(2).foregroundStyle(Palette.muted)
-      ZStack {
-        Plinth().frame(width: 270)
-          .position(x: 135, y: 327)
-        Ellipse().fill(.black.opacity(0.70))
-          .frame(width: 270 * (piece.profile.last ?? 0.4), height: 9)
-          .blur(radius: 4)
-          .position(x: 135, y: 325)
-        VesselArt(profile: piece.profile, phase: 1, commission: piece.commission)
-          .frame(width: 270, height: 345)
-          .position(x: 135, y: 172.5)
+    VStack(spacing: 12) {
+      MakerMark().stroke(Palette.brass, lineWidth: 1).frame(width: 24, height: 30)
+      Text("Emberglass").font(StudioType.display(32)).tracking(-1)
+      Text("fire into form").font(StudioType.italic(16)).foregroundStyle(Palette.brass)
+      Image(uiImage: GlassStudio.portrait(profile: piece.profile, commission: piece.commission))
+        .resizable().scaledToFit().frame(width: 310, height: 330)
+      HStack(spacing: 15) {
+        GradeSeal(score: piece.score).frame(width: 65, height: 65)
+        VStack(alignment: .leading, spacing: 5) {
+          Text(piece.grade).font(StudioType.label(9)).tracking(1.8).foregroundStyle(Palette.brass)
+          Text(piece.commission.title).font(StudioType.display(26))
+          Text("FIRING \(piece.id.uuidString.prefix(6).uppercased())")
+            .font(StudioType.body(9)).tracking(1).foregroundStyle(Palette.muted)
+        }
       }
-      .frame(width: 270, height: 355)
-      Text(piece.commission.title).font(.system(size: 33, design: .serif))
-      Text("\(piece.grade)  /  \(piece.score)")
-        .font(.system(size: 13, design: .monospaced)).tracking(2).foregroundStyle(Palette.mint)
-      Text("FIRING \(piece.id.uuidString.prefix(6).uppercased())")
-        .font(.system(size: 9, design: .monospaced)).foregroundStyle(Palette.muted)
+      Rectangle().fill(Palette.brass.opacity(0.3)).frame(height: 0.5).padding(.top, 8)
+      Text("Made of fire. Finished by hand.")
+        .font(StudioType.body(11)).foregroundStyle(Palette.muted)
     }
     .padding(30).frame(width: 390, height: 680)
     .foregroundStyle(Palette.cream).background(Palette.background)
+    .overlay(Rectangle().stroke(Palette.brass.opacity(0.25), lineWidth: 0.5).padding(14))
   }
 }
 

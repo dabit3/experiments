@@ -14,6 +14,8 @@
 		9C3F5C8CFA6D2A2179356694 /* StudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9010720AC829E76414644F /* StudioView.swift */; };
 		B7343957693A7BFAD14F4548 /* CraftRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F184F4FE17F5A59C11E4C339 /* CraftRulesTests.swift */; };
 		BEB4FA0E4F4F91B7594CF426 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86819C20AC5CE0FF215355C2 /* LaunchScreen.storyboard */; };
+		CF9483A445C85C116366FEB5 /* GlassContourTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5073D85C11E5CF2CC65E1083 /* GlassContourTests.swift */; };
+		E62EE3E1FD43B892B33FCCA9 /* GlassScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8C9803115B2056D882F70F5 /* GlassScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,9 +32,11 @@
 		0B9010720AC829E76414644F /* StudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudioView.swift; sourceTree = "<group>"; };
 		24E3DC7912E5C775009A99A0 /* GlassArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassArt.swift; sourceTree = "<group>"; };
 		2E80F2EB1FCFDF1800AC1A25 /* EmberglassApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberglassApp.swift; sourceTree = "<group>"; };
+		5073D85C11E5CF2CC65E1083 /* GlassContourTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassContourTests.swift; sourceTree = "<group>"; };
 		7BAF42A64D74B7D18AC430C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		86819C20AC5CE0FF215355C2 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B1BA0DD327B683E8E6760DE3 /* Emberglass.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Emberglass.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8C9803115B2056D882F70F5 /* GlassScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassScene.swift; sourceTree = "<group>"; };
 		F184F4FE17F5A59C11E4C339 /* CraftRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftRulesTests.swift; sourceTree = "<group>"; };
 		FCBEE96193FEDE1358C1F26D /* EmberglassTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = EmberglassTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FE0B456B22028FC2C4F18975 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
@@ -43,6 +47,7 @@
 			isa = PBXGroup;
 			children = (
 				F184F4FE17F5A59C11E4C339 /* CraftRulesTests.swift */,
+				5073D85C11E5CF2CC65E1083 /* GlassContourTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -53,6 +58,7 @@
 				2E80F2EB1FCFDF1800AC1A25 /* EmberglassApp.swift */,
 				FE0B456B22028FC2C4F18975 /* GameModel.swift */,
 				24E3DC7912E5C775009A99A0 /* GlassArt.swift */,
+				D8C9803115B2056D882F70F5 /* GlassScene.swift */,
 				86819C20AC5CE0FF215355C2 /* LaunchScreen.storyboard */,
 				0B9010720AC829E76414644F /* StudioView.swift */,
 			);
@@ -168,6 +174,7 @@
 				6F3AB1DE0E34F9FA8A6F59B9 /* EmberglassApp.swift in Sources */,
 				65C6BD57A07FB9B8616318E1 /* GameModel.swift in Sources */,
 				1B14207E4FE6E2DAF8F6C81C /* GlassArt.swift in Sources */,
+				E62EE3E1FD43B892B33FCCA9 /* GlassScene.swift in Sources */,
 				9C3F5C8CFA6D2A2179356694 /* StudioView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -177,6 +184,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7343957693A7BFAD14F4548 /* CraftRulesTests.swift in Sources */,
+				CF9483A445C85C116366FEB5 /* GlassContourTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

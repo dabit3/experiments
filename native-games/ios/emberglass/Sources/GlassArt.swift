@@ -1,11 +1,20 @@
 import SwiftUI
 
 enum Palette {
-  static let background = Color(red: 0.035, green: 0.042, blue: 0.048)
-  static let cream = Color(red: 0.94, green: 0.90, blue: 0.81)
-  static let muted = Color(red: 0.60, green: 0.63, blue: 0.61)
-  static let ember = Color(red: 1, green: 0.40, blue: 0.20)
-  static let mint = Color(red: 0.46, green: 0.90, blue: 0.80)
+  static let background = Color(red: 0.043, green: 0.063, blue: 0.071)
+  static let surface = Color(red: 0.106, green: 0.141, blue: 0.149)
+  static let cream = Color(red: 0.933, green: 0.910, blue: 0.851)
+  static let muted = Color(red: 0.588, green: 0.643, blue: 0.635)
+  static let brass = Color(red: 0.808, green: 0.678, blue: 0.471)
+  static let ember = Color(red: 0.957, green: 0.494, blue: 0.271)
+  static let mint = Color(red: 0.510, green: 0.784, blue: 0.725)
+}
+
+enum StudioType {
+  static func display(_ size: CGFloat) -> Font { .custom("Didot", fixedSize: size) }
+  static func italic(_ size: CGFloat) -> Font { .custom("Didot-Italic", fixedSize: size) }
+  static func body(_ size: CGFloat) -> Font { .custom("AvenirNext-Regular", fixedSize: size) }
+  static func label(_ size: CGFloat) -> Font { .custom("AvenirNext-DemiBold", fixedSize: size) }
 }
 
 struct VesselShape: Shape {
@@ -57,115 +66,6 @@ struct VesselShape: Shape {
   }
 }
 
-struct VesselArt: View {
-  var profile: [Double]
-  var molten = false
-  var phase = 0.0
-  var commission: Commission = .tide
-
-  private var colors: [Color] {
-    if molten {
-      return [
-        Color(red: 0.20, green: 0.025, blue: 0.015), .orange,
-        Color(red: 1, green: 0.82, blue: 0.41), Palette.ember,
-        Color(red: 0.37, green: 0.025, blue: 0.08),
-      ]
-    }
-    switch commission {
-    case .tide:
-      return [
-        Color(red: 0.01, green: 0.11, blue: 0.15), .cyan.opacity(0.72),
-        Palette.mint.opacity(0.60), Color(red: 0.19, green: 0.20, blue: 0.55),
-        Color(red: 0.03, green: 0.09, blue: 0.11),
-      ]
-    case .bloom:
-      return [.purple.opacity(0.3), .pink.opacity(0.75), .orange.opacity(0.7), .purple, .indigo]
-    case .spire:
-      return [.brown, .orange, .yellow.opacity(0.8), .red.opacity(0.7), .purple.opacity(0.4)]
-    }
-  }
-
-  var body: some View {
-    GeometryReader { geometry in
-      let size = geometry.size
-      let vessel = VesselShape(profile: profile)
-      ZStack {
-        vessel
-          .fill(
-            LinearGradient(
-              colors: colors, startPoint: .leading, endPoint: .trailing
-            )
-          )
-        vessel.fill(
-          LinearGradient(
-            colors: [.white.opacity(0.04), .clear, .black.opacity(0.55)],
-            startPoint: .top, endPoint: .bottom
-          )
-        )
-        vessel.fill(
-          RadialGradient(
-            colors: [Palette.cream.opacity(0.28), .clear],
-            center: UnitPoint(x: 0.38, y: 0.87),
-            startRadius: 0, endRadius: size.width * 0.50
-          )
-        )
-        Canvas { context, canvas in
-          context.clip(to: vessel.path(in: CGRect(origin: .zero, size: canvas)))
-          for line in 0..<34 {
-            let y = canvas.height * (0.1 + Double(line) * 0.024)
-            var wave = Path()
-            wave.move(to: CGPoint(x: 0, y: y))
-            wave.addCurve(
-              to: CGPoint(x: canvas.width, y: y + 28 * sin(Double(line) * 0.35 + phase)),
-              control1: CGPoint(x: canvas.width * 0.30, y: y + 35),
-              control2: CGPoint(x: canvas.width * 0.65, y: y - 25)
-            )
-            context.stroke(
-              wave, with: .color((line % 3 == 0 ? Palette.cream : Palette.mint).opacity(0.15)),
-              lineWidth: line % 3 == 0 ? 1.7 : 0.6
-            )
-          }
-          for fleck in 0..<52 {
-            let x = canvas.width * Double((fleck * 73 + 19) % 100) / 100
-            let y = canvas.height * Double((fleck * 31 + 7) % 100) / 100
-            context.fill(
-              Path(ellipseIn: CGRect(x: x, y: y, width: 1.5, height: 1.5)),
-              with: .color(.white.opacity(0.25))
-            )
-          }
-        }
-        HStack(spacing: size.width * 0.035) {
-          Capsule().fill(.white.opacity(0.12)).frame(width: size.width * 0.065)
-          Capsule().fill(.white.opacity(0.70)).frame(width: size.width * 0.012)
-          Spacer()
-          Capsule().fill(.white.opacity(0.12)).frame(width: size.width * 0.05)
-        }
-        .padding(.horizontal, size.width * 0.23)
-        .padding(.vertical, size.height * 0.18)
-        .blur(radius: 3)
-        .offset(x: sin(phase) * size.width * 0.045)
-        .mask(vessel)
-        vessel.stroke(
-          LinearGradient(
-            colors: [
-              Palette.cream.opacity(0.85), .white.opacity(0.10), Palette.mint.opacity(0.55),
-            ],
-            startPoint: .topLeading, endPoint: .bottomTrailing
-          ), lineWidth: 1.2
-        )
-        let lipWidth = size.width * 0.96 * (profile.first ?? 0.4)
-        Ellipse()
-          .fill(Color.black.opacity(0.6))
-          .overlay(Ellipse().stroke(Palette.cream.opacity(0.8), lineWidth: 1.5))
-          .frame(width: lipWidth, height: max(5, lipWidth * 0.095))
-          .position(x: size.width / 2, y: size.height * 0.09)
-      }
-      .shadow(color: (molten ? Palette.ember : Palette.mint).opacity(0.20), radius: 26)
-    }
-    .accessibilityHidden(true)
-  }
-}
-
 struct StudioBackdrop: View {
   var warm = false
 
@@ -181,22 +81,15 @@ struct StudioBackdrop: View {
           endRadius: geometry.size.width * 0.85
         )
         Canvas { context, size in
-          for index in 0..<55 {
-            let x = Double((index * 47 + 9) % 100) / 100 * size.width
-            let y = Double((index * 29 + 3) % 100) / 100 * size.height
-            context.fill(
-              Path(ellipseIn: CGRect(x: x, y: y, width: 1, height: 1)),
-              with: .color(Palette.cream.opacity(0.12))
-            )
+          for index in 0..<180 {
+            let x = Double(index) / 180 * size.width
+            var line = Path()
+            line.move(to: CGPoint(x: x, y: 0))
+            line.addLine(to: CGPoint(x: x, y: size.height))
+            context.stroke(
+              line, with: .color(Palette.cream.opacity(index % 3 == 0 ? 0.018 : 0.008)),
+              lineWidth: 0.5)
           }
-          let rect = CGRect(
-            x: size.width * 0.07, y: size.height * 0.19,
-            width: size.width * 0.86, height: size.width * 1.10
-          )
-          context.stroke(
-            Path(roundedRect: rect, cornerRadius: size.width * 0.43),
-            with: .color(Palette.cream.opacity(0.065)), lineWidth: 1
-          )
         }
       }
     }
@@ -205,30 +98,152 @@ struct StudioBackdrop: View {
   }
 }
 
-struct Plinth: View {
+struct MakerMark: Shape {
+  func path(in rect: CGRect) -> Path {
+    var path = Path()
+    let x = rect.midX
+    let w = rect.width
+    let h = rect.height
+    path.move(to: CGPoint(x: x, y: 0))
+    path.addLine(to: CGPoint(x: x, y: h * 0.37))
+    path.move(to: CGPoint(x: x - w * 0.16, y: h * 0.29))
+    path.addLine(to: CGPoint(x: x + w * 0.16, y: h * 0.29))
+    path.move(to: CGPoint(x: x, y: h * 0.34))
+    path.addCurve(
+      to: CGPoint(x: x, y: h),
+      control1: CGPoint(x: x - w * 0.82, y: h * 0.75),
+      control2: CGPoint(x: x - w * 0.25, y: h))
+    path.addCurve(
+      to: CGPoint(x: x, y: h * 0.34),
+      control1: CGPoint(x: x + w * 0.52, y: h),
+      control2: CGPoint(x: x + w * 0.47, y: h * 0.77))
+    path.move(to: CGPoint(x: x, y: h * 0.57))
+    path.addCurve(
+      to: CGPoint(x: x, y: h),
+      control1: CGPoint(x: x - w * 0.2, y: h * 0.81),
+      control2: CGPoint(x: x + w * 0.30, y: h * 0.86))
+    return path
+  }
+}
+
+struct ExhibitionNiche: View {
+  var warm = false
+
+  var body: some View {
+    GeometryReader { geometry in
+      let arch = UnevenRoundedRectangle(
+        topLeadingRadius: geometry.size.width / 2, bottomLeadingRadius: 4,
+        bottomTrailingRadius: 4, topTrailingRadius: geometry.size.width / 2)
+      ZStack {
+        arch.fill(
+          LinearGradient(
+            colors: [Palette.surface.opacity(0.65), Palette.background.opacity(0)],
+            startPoint: .top, endPoint: .bottom))
+        arch.stroke(
+          LinearGradient(
+            colors: [Palette.brass.opacity(0.22), Palette.brass.opacity(0.04), .clear],
+            startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 0.75)
+        RadialGradient(
+          colors: [(warm ? Palette.ember : Palette.mint).opacity(warm ? 0.16 : 0.045), .clear],
+          center: UnitPoint(x: 0.5, y: 0.55), startRadius: 0, endRadius: geometry.size.width * 0.58
+        )
+        .clipShape(arch)
+        VStack {
+          HStack {
+            Rectangle().fill(Palette.brass.opacity(0.3)).frame(width: 15, height: 0.5)
+            Spacer()
+            Rectangle().fill(Palette.brass.opacity(0.3)).frame(width: 15, height: 0.5)
+          }
+          Spacer()
+        }.padding(.top, geometry.size.height * 0.52).padding(.horizontal, 9)
+      }
+    }.accessibilityHidden(true)
+  }
+}
+
+struct GradeSeal: View {
+  let score: Int
+
   var body: some View {
     ZStack {
-      Ellipse()
-        .fill(.black.opacity(0.7))
-        .frame(height: 32)
-        .blur(radius: 12)
-        .offset(y: 22)
-      RoundedRectangle(cornerRadius: 5)
-        .fill(
-          LinearGradient(
-            colors: [Color(white: 0.16), Color(white: 0.045)], startPoint: .top, endPoint: .bottom)
-        )
-        .frame(height: 26)
-        .offset(y: 10)
-      Ellipse()
-        .fill(
-          LinearGradient(
-            colors: [Color(white: 0.22), Color(white: 0.075)], startPoint: .top, endPoint: .bottom)
-        )
-        .overlay(Ellipse().stroke(.white.opacity(0.18), lineWidth: 0.8))
-        .frame(height: 24)
+      Circle().stroke(Palette.brass.opacity(0.65), lineWidth: 0.6)
+      Circle().stroke(Palette.brass.opacity(0.22), lineWidth: 0.6).padding(4)
+      VStack(spacing: -1) {
+        Text("\(score)").font(StudioType.display(29))
+        Text("OF 100").font(StudioType.label(6)).tracking(1.5).foregroundStyle(Palette.brass)
+      }
     }
-    .frame(height: 40)
-    .accessibilityHidden(true)
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel("Score \(score) out of 100")
+  }
+}
+
+struct PressStyle: ButtonStyle {
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .brightness(configuration.isPressed ? -0.08 : 0)
+      .scaleEffect(configuration.isPressed && !reduceMotion ? 0.985 : 1)
+      .animation(reduceMotion ? nil : .easeOut(duration: 0.14), value: configuration.isPressed)
+  }
+}
+
+struct RotationControl: View {
+  @Binding var value: Double
+  let target: Double
+
+  var body: some View {
+    GeometryReader { geometry in
+      let travel = max(1, geometry.size.width - 56)
+      ZStack(alignment: .leading) {
+        RoundedRectangle(cornerRadius: 15)
+          .fill(
+            LinearGradient(
+              colors: [Palette.surface, Palette.background],
+              startPoint: .top, endPoint: .bottom)
+          )
+          .overlay(
+            RoundedRectangle(cornerRadius: 15).stroke(Palette.brass.opacity(0.25), lineWidth: 0.7))
+        HStack {
+          Image(systemName: "minus")
+          Spacer()
+          Image(systemName: "plus")
+        }.font(.system(size: 9)).foregroundStyle(Palette.muted).padding(.horizontal, 14)
+        Capsule().fill(Palette.brass.opacity(0.2)).frame(height: 1).padding(.horizontal, 30)
+        ZStack {
+          Circle().fill(
+            LinearGradient(
+              colors: [Palette.cream, Palette.brass, Palette.brass.opacity(0.7)],
+              startPoint: .topLeading, endPoint: .bottomTrailing))
+          Circle().stroke(Palette.background.opacity(0.25), lineWidth: 0.5).padding(5)
+          HStack(spacing: 3) {
+            ForEach(0..<3) { _ in
+              Capsule().fill(Palette.background.opacity(0.5)).frame(width: 1, height: 13)
+            }
+          }
+        }
+        .frame(width: 42, height: 42)
+        .shadow(color: .black.opacity(0.5), radius: 4, y: 3)
+        .offset(x: 7 + travel * value)
+      }
+      .contentShape(Rectangle())
+      .gesture(
+        DragGesture(minimumDistance: 0).onChanged { gesture in
+          value = CraftRules.clamp((gesture.location.x - 28) / travel)
+        })
+    }
+    .frame(height: 56)
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel("Rotation speed")
+    .accessibilityValue("\(Int(value * 100)) percent. Target \(Int(target * 100)) percent")
+    .accessibilityAdjustableAction { direction in
+      switch direction {
+      case .increment: value = CraftRules.clamp(value + 0.05)
+      case .decrement: value = CraftRules.clamp(value - 0.05)
+      @unknown default: break
+      }
+    }
+    .accessibilityIdentifier("rotationSlider")
   }
 }
