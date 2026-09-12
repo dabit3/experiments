@@ -3,6 +3,43 @@ import XCTest
 @testable import LastSlice
 
 final class LastSliceTests: XCTestCase {
+  func testAuthoredToppingsStaySeparatedAndInsideTheirSlice() {
+    for dinner in Menu.dinners {
+      for portion in Rules.portions(cuts: dinner.solution, toppings: dinner.toppings) {
+        for topping in portion.toppings {
+          XCTAssertTrue(portion.polygon.contains(topping.point, margin: 0.13), dinner.title)
+          for other in dinner.toppings where other.id != topping.id {
+            XCTAssertGreaterThan((topping.point - other.point).length, 0.27, dinner.title)
+          }
+        }
+      }
+    }
+  }
+
+  func testPortionLabelsNeverCoverToppingsAcrossBoardSizes() {
+    for radius in [94.0, 120, 172] {
+      for dinner in Menu.dinners {
+        for piece in Rules.polygons(cuts: dinner.solution) {
+          if let anchor = FoodLayout.labelPosition(
+            in: piece, toppings: dinner.toppings, halfWidth: 20 / radius, halfHeight: 11 / radius)
+          {
+            for topping in dinner.toppings {
+              let dx = max(0, abs(topping.point.x - anchor.x) - 20 / radius)
+              let dy = max(0, abs(topping.point.y - anchor.y) - 11 / radius)
+              XCTAssertGreaterThan(hypot(dx, dy), 0.16, dinner.title)
+            }
+          }
+        }
+      }
+    }
+    let first = Menu.dinners[0]
+    for piece in Rules.polygons(cuts: first.solution) {
+      XCTAssertNotNil(
+        FoodLayout.labelPosition(
+          in: piece, toppings: first.toppings, halfWidth: 20 / 120, halfHeight: 11 / 120))
+    }
+  }
+
   func testClippingConservesAreaAcrossObliqueCuts() {
     let cuts = [Cut.line(angle: 0.71, offset: 0.21), Cut.line(angle: -0.49, offset: -0.3)]
     let pieces = Rules.polygons(cuts: cuts)

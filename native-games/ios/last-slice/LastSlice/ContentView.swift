@@ -214,19 +214,27 @@ struct ContentView: View {
         VStack(spacing: 4) {
           GuestPortrait(id: guest.id, happy: match?.passed == true).frame(width: 46, height: 46)
           Text(guest.name.uppercased()).font(.system(size: 10, weight: .bold)).tracking(1.2)
-          Text("\(guest.percent)%").font(Palette.serif(25))
+          Text("WANTS \(guest.percent)%").font(.system(size: 13, weight: .heavy)).padding(.top, 2)
           HStack(spacing: 2) {
             Text("\(guest.count) ×").font(.system(size: 12, weight: .semibold))
             ToppingIcon(kind: guest.topping)
           }
           if !model.cuts.isEmpty || model.preview != nil {
-            Text(
-              match?.portionIndex != nil
-                ? "\(match?.percent ?? 0)% · \(match?.count ?? 0) \(match?.passed == true ? "✓" : "×")"
-                : "No slice"
-            )
-            .font(.system(size: 10, weight: .bold))
+            VStack(spacing: 3) {
+              Text(model.preview == nil ? "ON THE PLATE" : "PREVIEW")
+                .font(.system(size: 8, weight: .heavy)).tracking(0.8)
+              HStack(spacing: 3) {
+                Text(
+                  match?.portionIndex == nil
+                    ? "—" : "\(match?.percent ?? 0)% · \(match?.count ?? 0)")
+                Image(systemName: match?.passed == true ? "checkmark.circle.fill" : "xmark.circle")
+              }.font(.system(size: 13, weight: .bold))
+            }
             .foregroundStyle(match?.passed == true ? Palette.olive : Palette.red)
+            .padding(.vertical, 6).frame(maxWidth: .infinity)
+            .background(
+              (match?.passed == true ? Palette.olive : Palette.red).opacity(0.07),
+              in: RoundedRectangle(cornerRadius: 7))
           } else {
             Text(guest.topping.title).font(.system(size: 10)).foregroundStyle(Palette.olive)
           }
@@ -334,37 +342,39 @@ struct ContentView: View {
     VStack(spacing: 0) {
       Rectangle().fill(Palette.line).frame(height: 0.7)
       HStack(spacing: 12) {
-        GuestPortrait(id: match.guest.id, happy: match.passed).frame(width: 46, height: 46)
+        GuestPortrait(id: match.guest.id, happy: match.passed).frame(width: 48, height: 48)
         VStack(alignment: .leading, spacing: 4) {
           HStack(spacing: 6) {
-            Text(match.guest.name).font(Palette.serif(19))
-            Text(match.passed ? "DELIZIOSO" : "NOT YET").font(.system(size: 8, weight: .black))
+            Text(match.guest.name).font(Palette.serif(22))
+            Text(match.passed ? "DELIZIOSO" : "NOT YET").font(.system(size: 9, weight: .black))
               .tracking(1)
               .foregroundStyle(match.passed ? Palette.olive : Palette.red)
           }
           if match.portionIndex != nil {
-            Text(
-              "\(match.percent)% / wants \(match.guest.percent)%  ·  \(match.count) / wants \(match.guest.count) \(match.guest.topping.title)"
-            )
-            .font(.system(size: 11)).foregroundStyle(Palette.olive)
+            Text("\(match.percent)% area · wants \(match.guest.percent)%")
+              .font(.system(size: 13)).foregroundStyle(Palette.olive)
+            Text("\(match.count) \(match.guest.topping.title) · wants \(match.guest.count)")
+              .font(.system(size: 13)).foregroundStyle(Palette.olive)
           } else {
             Text(
               "No portion. Wants \(match.guest.percent)% + \(match.guest.count) \(match.guest.topping.title)."
             )
-            .font(.system(size: 11)).foregroundStyle(Palette.red)
+            .font(.system(size: 13)).foregroundStyle(Palette.red)
           }
           if !match.passed, match.portionIndex != nil {
             Text(
               !match.areaPass
                 ? "Area is outside the ±5 point tolerance." : "Topping count must match exactly."
             )
-            .font(.system(size: 10, weight: .semibold)).foregroundStyle(Palette.red)
+            .font(.system(size: 12, weight: .semibold)).foregroundStyle(Palette.red)
           }
         }
         Spacer(minLength: 0)
-        Image(systemName: match.passed ? "checkmark.seal.fill" : "arrow.uturn.backward")
-          .foregroundStyle(match.passed ? Palette.olive : Palette.red)
-      }.padding(.vertical, 10)
+        if let portionIndex = match.portionIndex {
+          ServedPlate(portion: model.portions[portionIndex], index: match.guest.id)
+            .frame(width: 58, height: 58)
+        }
+      }.padding(.vertical, 14)
     }.accessibilityElement(children: .combine)
   }
 
@@ -384,7 +394,7 @@ struct ContentView: View {
         "One portion per guest. We find the best assignment. Toppings belong where their centers fall; a center on a cut goes to one side."
       )
       Text(
-        "Undo and reset are free. Chef's hint reveals a suggested cut. The small numbers under guests are your live preview."
+        "Undo and reset are free. Chef's hint reveals a suggested cut. The preview under each guest shows their current area and topping count."
       )
       .font(.system(size: 12)).foregroundStyle(Palette.olive).padding(.vertical, 12)
       primaryButton("Let's cook", symbol: "arrow.right", id: "tutorialDone") {

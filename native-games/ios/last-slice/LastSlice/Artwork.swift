@@ -169,10 +169,15 @@ enum PizzaPainter {
   static func pizza(in context: GraphicsContext, toppings: [Topping]) {
     let crust = Color(red: 0.75, green: 0.39, blue: 0.14)
     let cheese = Color(red: 0.98, green: 0.77, blue: 0.34)
-    context.fill(Path(ellipseIn: CGRect(x: -1, y: -1, width: 2, height: 2)), with: .color(crust))
-    context.fill(
-      Path(ellipseIn: CGRect(x: -0.975, y: -0.975, width: 1.95, height: 1.95)),
-      with: .color(Color(red: 0.91, green: 0.63, blue: 0.30)))
+    let edge = Polygon(
+      vertices: (0..<120).map { index in
+        let angle = Double(index) * .pi * 2 / 120
+        let radius = 0.98 + sin(angle * 9) * 0.011 + cos(angle * 17) * 0.007
+        return Point(x: cos(angle) * radius, y: sin(angle) * radius)
+      })
+    context.fill(path(edge), with: .color(crust))
+    let innerEdge = Polygon(vertices: edge.vertices.map { $0 * 0.983 })
+    context.fill(path(innerEdge), with: .color(Color(red: 0.91, green: 0.63, blue: 0.30)))
     for index in 0..<76 {
       let angle = Double(index) * 2 * .pi / 76
       let radius = 0.937 + sin(Double(index) * 9) * 0.009
@@ -251,16 +256,20 @@ struct PizzaArt: View {
         sliceContext.translateBy(x: piece.center.x * displacement, y: piece.center.y * displacement)
         sliceContext.clip(to: PizzaPainter.path(piece))
         PizzaPainter.pizza(in: sliceContext, toppings: toppings)
-        if labels, pieces.count > 1 {
-          let center = piece.center
+        if labels, pieces.count > 1,
+          let center = FoodLayout.labelPosition(
+            in: piece, toppings: toppings, halfWidth: 20 / radius, halfHeight: 11 / radius)
+        {
           let text = Text("\(Int((piece.area / Polygon.pizza.area * 100).rounded()))%")
-            .font(.system(size: 13, weight: .bold, design: .rounded))
+            .font(.system(size: 12, weight: .bold, design: .rounded))
             .foregroundStyle(Palette.paper)
           var labelContext = context
-          labelContext.translateBy(x: center.x * 1.04, y: center.y * 1.04)
+          labelContext.translateBy(
+            x: center.x + piece.center.x * displacement, y: center.y + piece.center.y * displacement
+          )
           labelContext.scaleBy(x: 1 / radius, y: 1 / radius)
           labelContext.fill(
-            Path(roundedRect: CGRect(x: -23, y: -12, width: 46, height: 24), cornerRadius: 12),
+            Path(roundedRect: CGRect(x: -20, y: -11, width: 40, height: 22), cornerRadius: 11),
             with: .color(Palette.portionColors[index % 4]))
           labelContext.draw(text, at: .zero)
         }
@@ -295,6 +304,43 @@ struct PizzaArt: View {
     .accessibilityLabel(
       "Pizza with \(toppings.filter { $0.kind == .tomato }.count) tomatoes, \(toppings.filter { $0.kind == .basil }.count) basil leaves, and \(toppings.filter { $0.kind == .olive }.count) olives. \(Rules.polygons(cuts: cuts).count) portions."
     )
+  }
+}
+
+struct ServedPlate: View {
+  let portion: Portion
+  let index: Int
+  @State private var arrived = false
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+  var body: some View {
+    ZStack {
+      Circle().fill(Palette.paper)
+      Circle().strokeBorder(Palette.olive.opacity(0.55), lineWidth: 1).padding(2)
+      Canvas { context, size in
+        let vertices = portion.polygon.vertices
+        let width = (vertices.map(\.x).max() ?? 1) - (vertices.map(\.x).min() ?? -1)
+        let height = (vertices.map(\.y).max() ?? 1) - (vertices.map(\.y).min() ?? -1)
+        let scale = size.width * 0.67 / max(width, height)
+        context.translateBy(x: size.width / 2, y: size.height / 2)
+        context.scaleBy(x: scale, y: scale)
+        context.translateBy(x: -portion.polygon.center.x, y: -portion.polygon.center.y)
+        context.clip(to: PizzaPainter.path(portion.polygon))
+        PizzaPainter.pizza(in: context, toppings: portion.toppings)
+      }
+      .offset(x: arrived ? 0 : -70, y: arrived ? 0 : -35)
+      .rotationEffect(.degrees(arrived ? 0 : -25))
+      .opacity(arrived ? 1 : 0)
+    }
+    .accessibilityHidden(true)
+    .onAppear {
+      withAnimation(
+        reduceMotion
+          ? nil : .spring(response: 0.6, dampingFraction: 0.72).delay(Double(index) * 0.12)
+      ) {
+        arrived = true
+      }
+    }
   }
 }
 

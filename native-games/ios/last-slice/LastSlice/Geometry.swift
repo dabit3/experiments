@@ -93,6 +93,16 @@ struct Polygon: Equatable {
         .side(of: point) >= -0.0000001
     }
   }
+
+  func contains(_ point: Point, margin: Double) -> Bool {
+    guard vertices.count >= 3 else { return false }
+    return vertices.indices.allSatisfy { index in
+      let a = vertices[index]
+      let b = vertices[(index + 1) % vertices.count]
+      let length = (b - a).length
+      return length < 0.000001 || Cut(start: a, end: b).side(of: point) / length >= margin
+    }
+  }
 }
 
 enum ToppingKind: String, Codable, CaseIterable {
@@ -285,19 +295,17 @@ enum Menu {
       let polygons = Rules.polygons(cuts: recipe.2)
       var toppings: [Topping] = []
       for (pieceIndex, polygon) in polygons.enumerated() {
-        let center = polygon.center
         let kind = ToppingKind.allCases[(index + pieceIndex) % 3]
         let count = 1 + ((index + pieceIndex) % 2)
-        for toppingIndex in 0..<count {
-          let point =
-            center + Point(x: count == 1 ? 0 : (toppingIndex == 0 ? -0.08 : 0.08), y: 0.04)
+        let accent = ToppingKind.allCases[(index + pieceIndex + 1) % 3]
+        let positions = FoodLayout.toppingPositions(
+          in: polygon, count: count + 1, existing: toppings)
+        for (toppingKind, point) in zip(Array(repeating: kind, count: count) + [accent], positions)
+        {
           toppings.append(
-            Topping(id: toppings.count, kind: kind, point: polygon.contains(point) ? point : center)
+            Topping(id: toppings.count, kind: toppingKind, point: point)
           )
         }
-        let accent = ToppingKind.allCases[(index + pieceIndex + 1) % 3]
-        let point = center * 0.72 + polygon.vertices[polygon.vertices.count / 2] * 0.28
-        toppings.append(Topping(id: toppings.count, kind: accent, point: point))
       }
       let portions = Rules.portions(cuts: recipe.2, toppings: toppings)
       let guests = portions.enumerated().map { pieceIndex, portion in
@@ -318,5 +326,61 @@ enum Menu {
     calendar.timeZone = TimeZone(secondsFromGMT: 0)!
     let day = calendar.ordinality(of: .day, in: .era, for: date) ?? 1
     return day % dinners.count
+  }
+}
+
+enum FoodLayout {
+  static let grid = (-10...10).flatMap { row in
+    (-10...10).map { column in Point(x: Double(column) * 0.08, y: Double(row) * 0.08) }
+  }
+
+  static func toppingPositions(in polygon: Polygon, count: Int, existing: [Topping]) -> [Point] {
+    let candidates = grid.filter { $0.length <= 0.84 && polygon.contains($0, margin: 0.14) }
+    var best = Array(repeating: polygon.center, count: count)
+    var bestScore = -Double.infinity
+    for seed in candidates {
+      var layout = [seed]
+      while layout.count < count {
+        let occupied = existing.map(\.point) + layout
+        let next =
+          candidates.max { lhs, rhs in
+            let left = occupied.map { ($0 - lhs).length }.min() ?? 0
+            let right = occupied.map { ($0 - rhs).length }.min() ?? 0
+            return left < right
+          } ?? polygon.center
+        layout.append(next)
+      }
+      let separation =
+        layout.enumerated().flatMap { index, point in
+          (Array(layout.dropFirst(index + 1)) + existing.map(\.point)).map { ($0 - point).length }
+        }.min() ?? 0
+      let score =
+        min(separation, 0.55) - layout.reduce(0) { $0 + ($1 - polygon.center).length } * 0.02
+      if score > bestScore {
+        best = layout
+        bestScore = score
+      }
+    }
+    return best
+  }
+
+  static func labelPosition(
+    in polygon: Polygon, toppings: [Topping], halfWidth: Double, halfHeight: Double
+  ) -> Point? {
+    let candidates = grid.filter { point in
+      let corners = [
+        Point(x: -halfWidth, y: -halfHeight), Point(x: halfWidth, y: -halfHeight),
+        Point(x: -halfWidth, y: halfHeight), Point(x: halfWidth, y: halfHeight),
+      ]
+      guard corners.allSatisfy({ polygon.contains(point + $0, margin: 0.035) }) else {
+        return false
+      }
+      return toppings.allSatisfy { topping in
+        let dx = max(0, abs(topping.point.x - point.x) - halfWidth)
+        let dy = max(0, abs(topping.point.y - point.y) - halfHeight)
+        return hypot(dx, dy) > 0.16
+      }
+    }
+    return candidates.min { ($0 - polygon.center).length < ($1 - polygon.center).length }
   }
 }
