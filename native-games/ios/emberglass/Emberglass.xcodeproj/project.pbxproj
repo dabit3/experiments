@@ -1,0 +1,428 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1B14207E4FE6E2DAF8F6C81C /* GlassArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E3DC7912E5C775009A99A0 /* GlassArt.swift */; };
+		1D3B263DC9FB39AA76F2B19F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BAF42A64D74B7D18AC430C4 /* Assets.xcassets */; };
+		65C6BD57A07FB9B8616318E1 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE0B456B22028FC2C4F18975 /* GameModel.swift */; };
+		6F3AB1DE0E34F9FA8A6F59B9 /* EmberglassApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E80F2EB1FCFDF1800AC1A25 /* EmberglassApp.swift */; };
+		9C3F5C8CFA6D2A2179356694 /* StudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B9010720AC829E76414644F /* StudioView.swift */; };
+		B7343957693A7BFAD14F4548 /* CraftRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F184F4FE17F5A59C11E4C339 /* CraftRulesTests.swift */; };
+		BEB4FA0E4F4F91B7594CF426 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86819C20AC5CE0FF215355C2 /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F78D165D4D65C342349FE067 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABFDE9DBE0025614A3875EF0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2435FFB09F75830ADFEF2072;
+			remoteInfo = Emberglass;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0B9010720AC829E76414644F /* StudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudioView.swift; sourceTree = "<group>"; };
+		24E3DC7912E5C775009A99A0 /* GlassArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassArt.swift; sourceTree = "<group>"; };
+		2E80F2EB1FCFDF1800AC1A25 /* EmberglassApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmberglassApp.swift; sourceTree = "<group>"; };
+		7BAF42A64D74B7D18AC430C4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		86819C20AC5CE0FF215355C2 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B1BA0DD327B683E8E6760DE3 /* Emberglass.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Emberglass.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F184F4FE17F5A59C11E4C339 /* CraftRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CraftRulesTests.swift; sourceTree = "<group>"; };
+		FCBEE96193FEDE1358C1F26D /* EmberglassTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = EmberglassTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE0B456B22028FC2C4F18975 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		08E687A495E8BF5045790525 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				F184F4FE17F5A59C11E4C339 /* CraftRulesTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		323FDE649607CF07DA7220C1 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				2E80F2EB1FCFDF1800AC1A25 /* EmberglassApp.swift */,
+				FE0B456B22028FC2C4F18975 /* GameModel.swift */,
+				24E3DC7912E5C775009A99A0 /* GlassArt.swift */,
+				86819C20AC5CE0FF215355C2 /* LaunchScreen.storyboard */,
+				0B9010720AC829E76414644F /* StudioView.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		688D7C27B779261F1BE01441 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B1BA0DD327B683E8E6760DE3 /* Emberglass.app */,
+				FCBEE96193FEDE1358C1F26D /* EmberglassTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D73EAAB870E6F18426A19261 = {
+			isa = PBXGroup;
+			children = (
+				7BAF42A64D74B7D18AC430C4 /* Assets.xcassets */,
+				323FDE649607CF07DA7220C1 /* Sources */,
+				08E687A495E8BF5045790525 /* Tests */,
+				688D7C27B779261F1BE01441 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2435FFB09F75830ADFEF2072 /* Emberglass */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9BF313A9D5BA969CC87823D8 /* Build configuration list for PBXNativeTarget "Emberglass" */;
+			buildPhases = (
+				3E64E4B16F7C1E195B9805F1 /* Sources */,
+				66F1EAF49DCECF5563D0EE86 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Emberglass;
+			packageProductDependencies = (
+			);
+			productName = Emberglass;
+			productReference = B1BA0DD327B683E8E6760DE3 /* Emberglass.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A0BD6E08ED8310189203F6E5 /* EmberglassTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3465C97438857252A3DA7CBE /* Build configuration list for PBXNativeTarget "EmberglassTests" */;
+			buildPhases = (
+				8D49ADD6D687B792E5B6A951 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E9B0DD6E3F3BB940AED5AE68 /* PBXTargetDependency */,
+			);
+			name = EmberglassTests;
+			packageProductDependencies = (
+			);
+			productName = EmberglassTests;
+			productReference = FCBEE96193FEDE1358C1F26D /* EmberglassTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ABFDE9DBE0025614A3875EF0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 3AC1F3AA5A999216AEA68FEB /* Build configuration list for PBXProject "Emberglass" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = D73EAAB870E6F18426A19261;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 688D7C27B779261F1BE01441 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2435FFB09F75830ADFEF2072 /* Emberglass */,
+				A0BD6E08ED8310189203F6E5 /* EmberglassTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		66F1EAF49DCECF5563D0EE86 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D3B263DC9FB39AA76F2B19F /* Assets.xcassets in Resources */,
+				BEB4FA0E4F4F91B7594CF426 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3E64E4B16F7C1E195B9805F1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F3AB1DE0E34F9FA8A6F59B9 /* EmberglassApp.swift in Sources */,
+				65C6BD57A07FB9B8616318E1 /* GameModel.swift in Sources */,
+				1B14207E4FE6E2DAF8F6C81C /* GlassArt.swift in Sources */,
+				9C3F5C8CFA6D2A2179356694 /* StudioView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8D49ADD6D687B792E5B6A951 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B7343957693A7BFAD14F4548 /* CraftRulesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E9B0DD6E3F3BB940AED5AE68 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2435FFB09F75830ADFEF2072 /* Emberglass */;
+			targetProxy = F78D165D4D65C342349FE067 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0E141C7B04602E5BED9FA6A7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_CFBundleDisplayName = Emberglass;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.emberglass.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		41CAB87F107C70DFE1F8A545 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		8EBBF859526039A8E2F2F159 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		93685F18824FA275F3FFA1A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_CFBundleDisplayName = Emberglass;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.emberglass.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9C40237BF77D8BBB0A93976D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.emberglass.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Emberglass.app/Emberglass";
+			};
+			name = Release;
+		};
+		CF62CECBA2E5039D91FE7825 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.emberglass.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Emberglass.app/Emberglass";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3465C97438857252A3DA7CBE /* Build configuration list for PBXNativeTarget "EmberglassTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF62CECBA2E5039D91FE7825 /* Debug */,
+				9C40237BF77D8BBB0A93976D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3AC1F3AA5A999216AEA68FEB /* Build configuration list for PBXProject "Emberglass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EBBF859526039A8E2F2F159 /* Debug */,
+				41CAB87F107C70DFE1F8A545 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9BF313A9D5BA969CC87823D8 /* Build configuration list for PBXNativeTarget "Emberglass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				93685F18824FA275F3FFA1A7 /* Debug */,
+				0E141C7B04602E5BED9FA6A7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ABFDE9DBE0025614A3875EF0 /* Project object */;
+}
