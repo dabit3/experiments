@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1DC735991D68877ACA7C2EFD /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86E82CE3EA9655FD0E47537 /* Feedback.swift */; };
 		2AFC9AE1798BE5EF9354675D /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD5CAC6188E7F0F2D7BE5C2 /* GameModel.swift */; };
+		2B42207FE69C82CF12524E47 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4ACA8EA90D48B2C670969EC /* Assets.xcassets */; };
+		50F7865548F47C6BE7DED67F /* ArtworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434EF1BC1D6E9A5596F46505 /* ArtworkTests.swift */; };
 		61EAB7B7FA4BB3C08E9B1134 /* HarborArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59E5EDACB53BF9AE4D97052 /* HarborArt.swift */; };
 		95FECAAD90BF99AB455B732A /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642E59DC6E725A4871412F96 /* Rules.swift */; };
 		9BBB1DE6A0EB7C8C9F8063C3 /* RulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CEF85CCA05620BBC4E9691E /* RulesTests.swift */; };
@@ -27,11 +29,13 @@
 
 /* Begin PBXFileReference section */
 		3386BC89331E526E9D426AF5 /* SkyhookSalvage.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SkyhookSalvage.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		434EF1BC1D6E9A5596F46505 /* ArtworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkTests.swift; sourceTree = "<group>"; };
 		470A658551F90E7BD0A55C24 /* SkyhookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyhookApp.swift; sourceTree = "<group>"; };
 		642E59DC6E725A4871412F96 /* Rules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rules.swift; sourceTree = "<group>"; };
 		7CEF85CCA05620BBC4E9691E /* RulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesTests.swift; sourceTree = "<group>"; };
 		98DE9B580A9957991D7C20C7 /* SkyhookSalvageTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SkyhookSalvageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C86E82CE3EA9655FD0E47537 /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
+		F4ACA8EA90D48B2C670969EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F59E5EDACB53BF9AE4D97052 /* HarborArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HarborArt.swift; sourceTree = "<group>"; };
 		FBD5CAC6188E7F0F2D7BE5C2 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -40,6 +44,7 @@
 		63A4C225A78EE637B0E1D6C3 = {
 			isa = PBXGroup;
 			children = (
+				F4ACA8EA90D48B2C670969EC /* Assets.xcassets */,
 				7ECE3827C7AC46A202A385B8 /* Sources */,
 				884FDA996C5CECBE10AFA457 /* Tests */,
 				703A7EBF5864C1226C46E352 /* Products */,
@@ -70,6 +75,7 @@
 		884FDA996C5CECBE10AFA457 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				434EF1BC1D6E9A5596F46505 /* ArtworkTests.swift */,
 				7CEF85CCA05620BBC4E9691E /* RulesTests.swift */,
 			);
 			path = Tests;
@@ -83,6 +89,7 @@
 			buildConfigurationList = F1795BAD11BEECCE445DEA55 /* Build configuration list for PBXNativeTarget "SkyhookSalvage" */;
 			buildPhases = (
 				CF7DB200A047CE3551E1FBF8 /* Sources */,
+				7FE5B8B761501C7E6C8D6DFE /* Resources */,
 			);
 			buildRules = (
 			);
@@ -144,6 +151,17 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		7FE5B8B761501C7E6C8D6DFE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B42207FE69C82CF12524E47 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CF7DB200A047CE3551E1FBF8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -161,6 +179,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50F7865548F47C6BE7DED67F /* ArtworkTests.swift in Sources */,
 				9BBB1DE6A0EB7C8C9F8063C3 /* RulesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

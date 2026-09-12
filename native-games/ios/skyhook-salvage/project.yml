@@ -20,8 +20,7 @@ targets:
   SkyhookSalvage:
     type: application
     platform: iOS
-    sources: [Sources]
-    resources: [Assets.xcassets]
+    sources: [Sources, Assets.xcassets]
     info:
       path: Info.plist
       properties:
