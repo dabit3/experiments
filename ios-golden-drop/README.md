@@ -45,7 +45,8 @@ python3 Scripts/generate_sounds.py
 
 1. Start **Cloud Nine**, or select any of the six gardens.
 2. Drag anywhere inside the theater to aim; the dotted line previews the first
-   bounce. Use **− / +** for fine adjustments (also available to VoiceOver).
+   bounce. Use the **left / right chevrons** for fine adjustments (also available
+   to VoiceOver).
 3. Tap **Drop the ball**. Clear every orange/gold peg within your supply of balls.
 4. Blue glass scores points. Green glass grants one extra ball per peg.
    A moving brass cup catches a ball for a refund and 500 points.

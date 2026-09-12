@@ -264,8 +264,9 @@ struct GameRules {
     events.append(
       .init(
         kind: .settled, position: ball,
-        text: "\(shotHits) pegs × \(shotScore) = \(shotScore * shotHits)"
-          + (catchBall ? " · catch +500" : "")))
+        text:
+          "\(shotScore.formatted()) pts ×\(shotHits) combo = \((shotScore * shotHits).formatted())"
+          + (catchBall ? " · +500 catch" : "")))
     pegs.removeAll { $0.hit }
     phase = balls > 0 ? .aiming : .lost
     if phase == .lost {

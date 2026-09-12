@@ -18,6 +18,7 @@ final class GameStore: ObservableObject {
   @Published var toast = ""
   @Published var toastLife = 0.0
   @Published var lastShotSummary = ""
+  @Published var newRecord = false
   @Published var particles: [Spark] = []
   var clock: Timer?
   var lastTick: CFTimeInterval?
@@ -58,6 +59,7 @@ final class GameStore: ObservableObject {
     paused = false
     toast = ""
     lastShotSummary = ""
+    newRecord = false
     particles = []
     lastTick = nil
     if !UserDefaults.standard.bool(forKey: "golden.learned") { help = true }
@@ -121,7 +123,9 @@ final class GameStore: ObservableObject {
         tone("catch")
         feedback(.medium)
       case .multiplier:
-        toast = event.text
+        toast =
+          toastLife > 0 && toast.contains("GIFT")
+          ? "GIFT +1 BALL  ·  BOOST ×\(game.multiplier)" : event.text
         toastLife = 2.5
       case .settled:
         lastShotSummary = event.text
@@ -140,6 +144,7 @@ final class GameStore: ObservableObject {
   func save() {
     let key = String(game.board.id)
     let old = records[key] ?? .init(score: 0, stars: 0)
+    newRecord = game.score > old.score
     records[key] = .init(score: max(old.score, game.score), stars: max(old.stars, game.stars))
     if let data = try? JSONEncoder().encode(records) {
       UserDefaults.standard.set(data, forKey: "golden.records")

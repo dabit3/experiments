@@ -103,6 +103,29 @@ final class GameRulesTests: XCTestCase {
     XCTAssertEqual(game.score, finalScore)
   }
 
+  func testMultiPegWinningShotReceivesComboExactlyOnce() {
+    let board = Board(
+      id: 9, name: "Final combo", subtitle: "", symbol: "",
+      pegs: [
+        Peg(id: 0, position: .init(x: 195, y: 180), kind: .blue),
+        Peg(id: 1, position: .init(x: 300, y: 250), kind: .gold),
+      ], balls: 10)
+    var game = GameRules(board: board)
+    game.launch()
+    for point in [Vector(x: 195, y: 165), Vector(x: 300, y: 235)] {
+      game.ball = point
+      game.velocity = .init(x: 0, y: 150)
+      game.step(1.0 / 120)
+    }
+    XCTAssertEqual(game.shotHits, 2)
+    XCTAssertEqual(game.shotScore, 520)
+    for _ in 0..<250 { game.step(1.0 / 120) }
+    XCTAssertEqual(game.phase, .won)
+    XCTAssertEqual(game.score, 520 * 2 + 2500 + 9 * 1000)
+    for _ in 0..<250 { game.step(1.0 / 120) }
+    XCTAssertEqual(game.score, 12540)
+  }
+
   func testEveryShotSettlesWithoutInvalidPhysics() {
     for board in Board.all {
       for angle in stride(from: -1.2, through: 1.2, by: 0.12) {

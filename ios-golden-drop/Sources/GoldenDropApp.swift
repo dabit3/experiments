@@ -120,18 +120,16 @@ struct GardensView: View {
               store.start(board)
             } label: {
               HStack(spacing: 16) {
-                Image(systemName: board.symbol).font(.system(size: 27, weight: .light))
-                  .foregroundStyle(Palette.gold).frame(width: 56, height: 65)
-                  .background(Palette.gold.opacity(0.08), in: RoundedRectangle(cornerRadius: 22))
+                GardenThumbnail(board: board)
                 VStack(alignment: .leading, spacing: 7) {
                   Text("GARDEN 0\(board.id + 1)").font(.system(size: 9, weight: .semibold))
                     .tracking(2).foregroundStyle(Palette.gold)
                   Text(board.name).font(.custom("Georgia", size: 21))
                   HStack(spacing: 4) {
-                    StarRow(count: store.records[String(board.id)]?.stars ?? 0, size: 11)
+                    StarRow(count: store.records[String(board.id)]?.stars ?? 0, size: 12)
                     if let record = store.records[String(board.id)] {
-                      Text(" · \(record.score.formatted()) best").font(.system(size: 10))
-                        .foregroundStyle(Palette.ink.opacity(0.65))
+                      Text(" · \(record.score.formatted()) best").font(.system(size: 12))
+                        .foregroundStyle(Palette.ink.opacity(0.85))
                     }
                   }
                 }
@@ -173,10 +171,13 @@ struct PlayView: View {
         store.toastLife > 0
           ? store.toast
           : (store.lastShotSummary.isEmpty
-            ? "A little aim. A lovely possibility." : store.lastShotSummary)
+            ? (store.game.phase == .flying
+              ? "Ball in play · let the garden work its magic"
+              : "A little aim. A lovely possibility.") : store.lastShotSummary)
       )
       .font(.system(size: 12, weight: store.toastLife > 0 ? .semibold : .regular))
       .foregroundStyle(store.toastLife > 0 ? Palette.gold : Palette.ink.opacity(0.8))
+      .lineLimit(1).minimumScaleFactor(0.85)
       .frame(height: 24).frame(maxWidth: .infinity)
       .background(Palette.gold.opacity(0.06), in: Capsule()).padding(.horizontal, 26)
       GeometryReader { geometry in
@@ -314,11 +315,23 @@ struct PauseView: View {
 struct ResultsView: View {
   @EnvironmentObject private var store: GameStore
   var won: Bool { store.game.phase == .won }
+  var starDescription: String {
+    switch store.game.stars {
+    case 3: return "Three stars · saved 7+ balls"
+    case 2: return "Two stars · saved 3+ balls"
+    case 1: return "Garden cleared · save 3 balls for two stars"
+    default: return "Clear the gold to earn your first star."
+    }
+  }
   var body: some View {
     ModalCard {
       Image(systemName: won ? "sun.max" : "moon.stars")
-        .font(.system(size: 48, weight: .ultraLight)).foregroundStyle(Palette.gold)
-      eyebrow(won ? "EVERY WISH, GRANTED" : "THE STARS WILL WAIT")
+        .font(.system(size: 32, weight: .ultraLight)).foregroundStyle(Palette.gold)
+      Text(
+        store.newRecord
+          ? "NEW PERSONAL BEST" : (won ? "EVERY WISH, GRANTED" : "THE STARS WILL WAIT")
+      )
+      .font(.system(size: 11, weight: .semibold)).tracking(1.3).foregroundStyle(Palette.gold)
       Text(won ? "Golden hour." : "One more wish?").font(.custom("Georgia", size: 37)).tracking(-1)
       Text(
         won
@@ -326,22 +339,29 @@ struct ResultsView: View {
           : "\(store.game.remainingGold) gold pegs left. A new angle awaits."
       )
       .font(.system(size: 13)).foregroundStyle(Palette.ink.opacity(0.7))
-      StarRow(count: store.game.stars, size: 26).padding(.vertical, 5)
+      VStack(spacing: 8) {
+        StarRow(count: store.game.stars, size: 26)
+        Text(starDescription).font(.system(size: 12)).foregroundStyle(Palette.ink.opacity(0.85))
+      }
       VStack(spacing: 5) {
         Text(store.game.score.formatted()).font(.custom("Georgia", size: 49)).monospacedDigit()
-        eyebrow("POINTS OF PURE DELIGHT")
+        if !store.newRecord {
+          Text(
+            "Personal best · \(store.records[String(store.game.board.id)]?.score.formatted() ?? "0")"
+          )
+          .font(.system(size: 12)).foregroundStyle(Palette.gold)
+        }
       }
-      HStack {
-        resultMetric("\(store.game.caught)", "LOVELY CATCHES")
-        Spacer()
-        resultMetric(
-          "\(store.records[String(store.game.board.id)]?.score.formatted() ?? "0")", "PERSONAL BEST"
-        )
-      }.padding(16).background(Palette.gold.opacity(0.07), in: RoundedRectangle(cornerRadius: 18))
-      if won {
-        Text("Sunlight bonus +2,500 · \(store.game.balls) saved balls × 1,000")
-          .font(.system(size: 11)).foregroundStyle(Palette.gold)
-      }
+      VStack(spacing: 7) {
+        resultLine(
+          "Pegs & combos",
+          store.game.score - store.game.caught * 500 - (won ? 2500 + store.game.balls * 1000 : 0))
+        resultLine("Lovely catches · \(store.game.caught)", store.game.caught * 500)
+        if won {
+          resultLine("Sunlight bonus", 2500)
+          resultLine("Saved balls · \(store.game.balls) × 1,000", store.game.balls * 1000)
+        }
+      }.padding(14).background(Palette.gold.opacity(0.07), in: RoundedRectangle(cornerRadius: 18))
       PrimaryButton(title: won ? "Next garden" : "Try a new angle", symbol: "arrow.right") {
         store.start(won ? Board.all[(store.game.board.id + 1) % Board.all.count] : store.game.board)
       }
@@ -359,12 +379,12 @@ struct ResultsView: View {
       }.font(.system(size: 13, weight: .medium)).frame(minHeight: 44)
     }
   }
-  func resultMetric(_ value: String, _ label: String) -> some View {
-    VStack(spacing: 5) {
-      Text(value).font(.custom("Georgia", size: 21))
-      Text(label).font(.system(size: 8, weight: .semibold)).tracking(1).foregroundStyle(
-        Palette.gold)
-    }
+  func resultLine(_ title: String, _ value: Int) -> some View {
+    HStack {
+      Text(title)
+      Spacer()
+      Text(value.formatted()).fontWeight(.medium).monospacedDigit()
+    }.font(.system(size: 13)).foregroundStyle(Palette.ink.opacity(0.9))
   }
 }
 
@@ -438,7 +458,7 @@ struct StarRow: View {
     HStack(spacing: size * 0.36) {
       ForEach(0..<3) { index in
         Image(systemName: index < count ? "star.fill" : "star")
-          .foregroundStyle(index < count ? Palette.gold : Palette.gold.opacity(0.35))
+          .foregroundStyle(index < count ? Palette.gold : Palette.gold.opacity(0.65))
       }
     }.font(.system(size: size)).accessibilityLabel("\(count) of 3 stars")
   }

@@ -8,6 +8,17 @@ enum Palette {
   static let orange = Color(red: 0.95, green: 0.53, blue: 0.20)
   static let teal = Color(red: 0.34, green: 0.66, blue: 0.66)
   static let green = Color(red: 0.27, green: 0.56, blue: 0.39)
+
+  static func sky(for board: Int) -> Color {
+    [
+      Color(red: 0.88, green: 0.89, blue: 0.82),
+      Color(red: 0.85, green: 0.85, blue: 0.93),
+      Color(red: 0.94, green: 0.86, blue: 0.79),
+      Color(red: 0.83, green: 0.89, blue: 0.92),
+      Color(red: 0.83, green: 0.90, blue: 0.80),
+      Color(red: 0.95, green: 0.86, blue: 0.68),
+    ][board % 6]
+  }
 }
 
 struct TheaterArt: View {
@@ -57,12 +68,22 @@ struct TheaterArt: View {
       }
       drawLauncher(&context)
       drawBucket(&context)
-      if game.finaleRemaining != nil {
+      if let remaining = game.finaleRemaining {
+        let progress = reduceMotion ? 0.7 : min(1, (1.8 - remaining) / 1.8)
+        let radius = 24 + progress * 20
+        context.stroke(
+          Path(
+            ellipseIn: CGRect(
+              x: game.ball.x - radius, y: game.ball.y - radius,
+              width: radius * 2, height: radius * 2)),
+          with: .color(Palette.gold.opacity(0.8 - progress * 0.4)), lineWidth: 2)
         for i in 0..<32 {
           let a = Double(i) * 2.4
-          let r = 60 + Double(i % 9) * 24
+          let r = (60 + Double(i % 9) * 24) * (0.35 + progress)
           let y = 270 + sin(a) * r
-          star(&context, 195 + cos(a) * r, y, 4 + Double(i % 3) * 2, Palette.gold.opacity(0.6))
+          star(
+            &context, 195 + cos(a) * r, y, 4 + Double(i % 3) * 2,
+            Palette.gold.opacity(0.8 - progress * 0.3))
         }
       }
     }
@@ -75,7 +96,7 @@ struct TheaterArt: View {
     context.fill(
       arch,
       with: .linearGradient(
-        Gradient(colors: [Color(red: 0.88, green: 0.89, blue: 0.82), Palette.paper]),
+        Gradient(colors: [Palette.sky(for: game.board.id), Palette.paper]),
         startPoint: .init(x: 195, y: 0), endPoint: .init(x: 195, y: 560)))
     context.stroke(arch, with: .color(Palette.gold.opacity(0.35)), lineWidth: 1.2)
     let inner = Path(roundedRect: CGRect(x: 17, y: 15, width: 356, height: 528), cornerRadius: 145)
@@ -86,6 +107,11 @@ struct TheaterArt: View {
       star(&context, x, y, i % 3 == 0 ? 3 : 1.5, Palette.gold.opacity(0.24))
     }
     circle(&context, 195, 272, 102, Palette.paper.opacity(0.30))
+    context.draw(
+      Text(Image(systemName: game.board.symbol))
+        .font(.system(size: 125, weight: .ultraLight))
+        .foregroundStyle(Palette.gold.opacity(0.10)),
+      at: CGPoint(x: 195, y: 278))
     context.stroke(
       Path(ellipseIn: CGRect(x: 91, y: 168, width: 208, height: 208)),
       with: .color(Palette.gold.opacity(0.08)), lineWidth: 1)
@@ -96,8 +122,8 @@ struct TheaterArt: View {
       ray.addLine(to: .init(x: 195 + cos(a) * 98, y: 272 + sin(a) * 98))
       context.stroke(ray, with: .color(Palette.gold.opacity(0.10)), lineWidth: 1)
     }
-    cloud(&context, x: -14, y: 477, scale: 1.15, color: Color(red: 0.87, green: 0.89, blue: 0.81))
-    cloud(&context, x: 242, y: 477, scale: 1.15, color: Color(red: 0.87, green: 0.89, blue: 0.81))
+    cloud(&context, x: -14, y: 477, scale: 1.15, color: Palette.sky(for: game.board.id))
+    cloud(&context, x: 242, y: 477, scale: 1.15, color: Palette.sky(for: game.board.id))
     cloud(&context, x: -25, y: 498, scale: 1.2, color: Palette.paper)
     cloud(&context, x: 240, y: 498, scale: 1.2, color: Palette.paper)
     var floor = Path()
@@ -187,6 +213,24 @@ struct TheaterArt: View {
     context.fill(lip, with: .color(Palette.paper))
     context.stroke(lip, with: .color(Palette.gold), lineWidth: 1.3)
     star(&context, x, 525, 6, Palette.paper)
+  }
+}
+
+struct GardenThumbnail: View {
+  let board: Board
+  var body: some View {
+    Canvas { context, size in
+      for peg in board.pegs {
+        let x = peg.position.x / 390 * size.width
+        let y = (peg.position.y - 105) / 380 * size.height
+        let color =
+          peg.kind == .gold ? Palette.orange : (peg.kind == .green ? Palette.green : Palette.teal)
+        circle(&context, x, y, 2.3, color)
+      }
+    }
+    .padding(5).frame(width: 68, height: 70)
+    .background(Palette.sky(for: board.id).opacity(0.5), in: RoundedRectangle(cornerRadius: 22))
+    .accessibilityHidden(true)
   }
 }
 

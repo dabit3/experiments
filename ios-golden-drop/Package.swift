@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
   name: "GoldenDropRules",
+  platforms: [.macOS(.v12), .iOS(.v17)],
   products: [.library(name: "GoldenDropRules", targets: ["GoldenDropRules"])],
   targets: [
     .target(
