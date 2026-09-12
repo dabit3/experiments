@@ -781,28 +781,11 @@ struct AtelierView: View {
           Label("Admire network", systemImage: "map")
         }
         Spacer()
-        if let image = postcard(game) {
-          ShareLink(
-            item: image.file,
-            preview: SharePreview(
-              "Transit Atelier · \(game.delivered) delivered", image: image.preview)
-          ) {
-            Label("Share", systemImage: "square.and.arrow.up")
-          }
-        }
+        ShareJourneyButton(game: game, best: desk.best(game.city))
       }
       .font(.system(size: 12, weight: .medium))
       .frame(minHeight: 44)
     }
-  }
-
-  private func postcard(_ game: TransitSimulation) -> (preview: Image, file: JourneyExport)? {
-    let renderer = ImageRenderer(content: JourneyPostcard(game: game, best: desk.best(game.city)))
-    renderer.scale = 2
-    guard let image = renderer.uiImage, let data = image.pngData() else { return nil }
-    let name =
-      "Transit-Atelier-\(game.city.title.replacingOccurrences(of: " ", with: "-"))-\(game.delivered).png"
-    return (Image(uiImage: image), JourneyExport(png: data, filename: name))
   }
 
   private func resultStat(_ label: String, value: String) -> some View {
@@ -819,6 +802,37 @@ struct AtelierView: View {
 
   private func elapsed(_ seconds: Double) -> String {
     String(format: "%d:%02d", Int(seconds) / 60, Int(seconds) % 60)
+  }
+}
+
+/// Renders the journey postcard once, off the layout pass, then offers it through the native share sheet.
+struct ShareJourneyButton: View {
+  let game: TransitSimulation
+  let best: Int
+  @State private var export: (preview: Image, file: JourneyExport)?
+
+  var body: some View {
+    Group {
+      if let export {
+        ShareLink(
+          item: export.file,
+          preview: SharePreview(
+            "Transit Atelier · \(game.delivered) delivered", image: export.preview)
+        ) {
+          Label("Share", systemImage: "square.and.arrow.up")
+        }
+      } else {
+        Label("Share", systemImage: "square.and.arrow.up").opacity(0.4)
+      }
+    }
+    .task(id: game.delivered) {
+      let renderer = ImageRenderer(content: JourneyPostcard(game: game, best: best))
+      renderer.scale = 2
+      guard let image = renderer.uiImage, let data = image.pngData() else { return }
+      let name =
+        "Transit-Atelier-\(game.city.title.replacingOccurrences(of: " ", with: "-"))-\(game.delivered).png"
+      export = (Image(uiImage: image), JourneyExport(png: data, filename: name))
+    }
   }
 }
 
