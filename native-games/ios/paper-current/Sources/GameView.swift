@@ -49,29 +49,32 @@ struct GameView: View {
 
   var body: some View {
     ZStack {
-      Ink.night.ignoresSafeArea()
+      NightPaper()
       GeometryReader { geometry in
         ScrollView {
-          VStack(spacing: 18) {
+          VStack(spacing: 10) {
             header
             HStack(alignment: .top) {
-              VStack(alignment: .leading, spacing: 9) {
+              VStack(alignment: .leading, spacing: 6) {
                 Eyebrow(text: "LETTER \(String(format: "%02d", level.id + 1))  /  10")
-                Text(level.title).font(Ink.title(29))
+                Text(level.title).font(Ink.title(32)).tracking(-0.6)
                   .foregroundStyle(Ink.cream).minimumScaleFactor(0.75).lineLimit(1)
               }
               Spacer()
-              VStack(alignment: .trailing, spacing: 6) {
+              VStack(alignment: .trailing, spacing: 1) {
                 Text(String(format: "%02d", puzzle.moves))
-                  .font(.system(size: 30, weight: .light, design: .monospaced))
+                  .font(Ink.title(34))
                   .foregroundStyle(Ink.cream).contentTransition(.numericText())
                 Eyebrow(text: "MOVES")
               }
             }
             statusStrip
             board
-              .frame(width: min(geometry.size.width - 36, 440))
-              .aspectRatio(1, contentMode: .fit)
+              .frame(
+                width: min(geometry.size.width - 36, max(290, geometry.size.height - 394), 440),
+                height: min(geometry.size.width - 36, max(290, geometry.size.height - 394), 440)
+              )
+              .padding(.vertical, 5)
             instruction
             controls
             HStack {
@@ -81,9 +84,9 @@ struct GameView: View {
                   ? "Tide \(min(cursor + 1, level.tideLimit)) / \(level.tideLimit)"
                   : "Take your time. The tide can wait."
               )
-              .font(.system(size: 11, design: .monospaced))
+              .font(Ink.italic(13))
               Spacer()
-              Text("PAR \(puzzle.par)").font(.system(size: 11, design: .monospaced))
+              Text("PAR \(puzzle.par)").font(.system(size: 9, weight: .medium)).tracking(1)
             }.foregroundStyle(Ink.muted)
             if sailing {
               ProgressView(value: Double(cursor + 1), total: Double(level.tideLimit))
@@ -114,7 +117,8 @@ struct GameView: View {
         ResultView(
           level: level, puzzle: puzzle, voyage: voyage,
           retry: { returnToPlanning() },
-          next: next, home: home)
+          next: next, home: home
+        ).modifier(BookArrival())
       }
     }
     .task(id: sailing) {
@@ -165,13 +169,11 @@ struct GameView: View {
 
   private var statusStrip: some View {
     HStack {
-      HStack(spacing: 7) {
+      HStack(spacing: 6) {
         ForEach(0..<3) { index in
-          Image(systemName: index < collected ? "envelope.fill" : "envelope")
-            .font(.system(size: 15))
-            .foregroundStyle(index < collected ? Ink.gold : Ink.muted)
+          PaperStamp(filled: index < collected).frame(width: 20, height: 25)
         }
-        Text("\(collected)/3").font(.system(size: 11, design: .monospaced))
+        Text("\(collected)/3").font(.system(size: 10)).padding(.leading, 3)
           .foregroundStyle(Ink.paper)
       }.accessibilityElement(children: .ignore).accessibilityLabel(
         "\(collected) of 3 stamps collected")
@@ -179,12 +181,12 @@ struct GameView: View {
       HStack(spacing: 6) {
         Circle().fill(sailing ? Ink.gold : Ink.foam).frame(width: 5, height: 5)
         Text(sailing ? "SAILING" : (puzzle.preview.success ? "ROUTE CONNECTED" : "PAUSE & PLAN"))
-          .font(.system(size: 10, weight: .bold, design: .monospaced))
-          .tracking(1).foregroundStyle(Ink.foam)
+          .font(.system(size: 9, weight: .medium))
+          .tracking(1.3).foregroundStyle(Ink.foam)
       }
     }
-    .padding(.vertical, 12)
-    .overlay(alignment: .top) { Rectangle().fill(Ink.muted.opacity(0.2)).frame(height: 1) }
+    .padding(.top, 10).padding(.bottom, 2)
+    .overlay(alignment: .top) { Rectangle().fill(Ink.muted.opacity(0.25)).frame(height: 0.5) }
   }
 
   private var board: some View {
@@ -207,28 +209,28 @@ struct GameView: View {
   private var instruction: some View {
     HStack(alignment: .top, spacing: 10) {
       Image(systemName: sailing ? "wind" : "hand.tap")
-        .font(.system(size: 18, weight: .light)).foregroundStyle(Ink.gold)
-        .frame(width: 24)
+        .font(.system(size: 16, weight: .light)).foregroundStyle(Ink.gold)
+        .frame(width: 22).padding(.top, 3)
       Text(sailing ? "Follow your letter through the rain." : level.note)
-        .font(.system(size: 13)).lineSpacing(4).foregroundStyle(Ink.paper)
-        .frame(maxWidth: .infinity, minHeight: 38, alignment: .leading)
-    }
+        .font(.system(size: 12)).lineSpacing(4).foregroundStyle(Ink.paper)
+        .frame(maxWidth: .infinity, minHeight: 34, alignment: .leading)
+    }.padding(.top, 7)
   }
 
   private var controls: some View {
-    VStack(spacing: 12) {
+    VStack(spacing: 10) {
       HStack(spacing: 0) {
         tool("arrow.uturn.backward", "Undo", disabled: !puzzle.canUndo || sailing) { puzzle.undo() }
-        Spacer()
+        Rectangle().fill(Ink.muted.opacity(0.2)).frame(width: 0.5, height: 16)
         tool("arrow.counterclockwise", "Reset", disabled: sailing) { showReset = true }
-        Spacer()
+        Rectangle().fill(Ink.muted.opacity(0.2)).frame(width: 0.5, height: 16)
         tool("sparkle", "Hint", disabled: sailing || puzzle.preview.success) { puzzle.hint() }
       }
       if sailing {
         MainButton(title: "Return to planning", icon: "stop.fill") { returnToPlanning() }
           .accessibilityIdentifier("stopSailing")
       } else {
-        MainButton(title: "Release the boat", icon: "paperplane") {
+        MainButton(title: "Release the boat", icon: "arrow.right") {
           Feedback.tap()
           voyage = puzzle.preview
           cursor = 0
@@ -245,10 +247,10 @@ struct GameView: View {
       Feedback.tap()
       action()
     } label: {
-      Label(label, systemImage: icon).font(.system(size: 13, weight: .medium))
-        .foregroundStyle(Ink.paper).frame(minWidth: 86, minHeight: 44)
+      Label(label, systemImage: icon).font(.system(size: 12))
+        .foregroundStyle(Ink.paper).frame(maxWidth: .infinity, minHeight: 44)
     }
-    .buttonStyle(.plain).disabled(disabled).opacity(disabled ? 0.3 : 1)
+    .buttonStyle(PaperPressStyle()).disabled(disabled).opacity(disabled ? 0.3 : 1)
     .accessibilityIdentifier(label.lowercased())
   }
 
@@ -261,42 +263,45 @@ struct GameView: View {
   }
 
   private var help: some View {
-    NavigationStack {
-      ScrollView {
-        VStack(alignment: .leading, spacing: 24) {
-          Text("Make a way\nfor a small wonder.").font(Ink.title(32)).foregroundStyle(Ink.night)
-          helpRow(
-            "hand.tap", "Turn the canals",
-            "Tap a blue canal tile to rotate it clockwise. The pale water shows how far your connected route reaches."
-          )
-          helpRow(
-            "envelope", "Collect all three stamps",
-            "Amber envelopes sit along the route. Sail through each, then reach the red postbox.")
-          helpRow(
-            "lock.open", "Open the locks",
-            "Tap the small lock latch in a striped tile’s corner. The separate latch opens and closes the gate."
-          )
-          helpRow(
-            "arrow.up", "Follow the currents",
-            "White arrows are one way. Rotate these canals until the arrow points along your route."
-          )
-          helpRow(
-            "sparkle", "A little help",
-            "Hint fixes one tile. Three seals reward a delivery at par without hints; hints reduce your seal rating. Undo reverses your last move."
-          )
-        }.padding(24)
-      }.background(Ink.paper)
-        .navigationTitle("The art of delivery").navigationBarTitleDisplayMode(.inline)
-        .toolbar { Button("Got it") { showHelp = false } }
+    PaperSheet(
+      title: "The art of delivery", subtitle: "Make a way for a small wonder.",
+      closeLabel: "Got it"
+    ) {
+      showHelp = false
+    } content: {
+      VStack(alignment: .leading, spacing: 28) {
+        helpRow(
+          "hand.tap", "Turn the canals",
+          "Tap a blue canal tile to rotate it clockwise. The pale water shows how far your connected route reaches."
+        )
+        helpRow(
+          "envelope", "Collect all three stamps",
+          "Golden postage stamps sit along the route. Sail through each, then reach the red postbox."
+        )
+        helpRow(
+          "lock.open", "Open the locks",
+          "Tap the brass latch in a lock tile’s corner. The separate latch opens and closes its red gate."
+        )
+        helpRow(
+          "arrow.up", "Follow the currents",
+          "White arrows are one way. Rotate these canals until the arrow points along your route."
+        )
+        helpRow(
+          "sparkle", "A little help",
+          "Hint fixes one tile. Three seals reward a delivery at par without hints; hints reduce your seal rating. Undo reverses your last move."
+        )
+      }
     }
   }
 
   private func helpRow(_ icon: String, _ title: String, _ text: String) -> some View {
     HStack(alignment: .top, spacing: 15) {
-      Image(systemName: icon).foregroundStyle(Ink.red).frame(width: 24, height: 28)
+      Image(systemName: icon).font(.system(size: 19, weight: .light))
+        .foregroundStyle(Ink.red).frame(width: 36, height: 44)
+        .background(StampShape().fill(Ink.paper))
       VStack(alignment: .leading, spacing: 6) {
-        Text(title).font(.system(size: 16, weight: .semibold))
-        Text(text).font(.system(size: 14)).lineSpacing(4).foregroundStyle(Ink.blue)
+        Text(title).font(Ink.title(22)).foregroundStyle(Ink.night)
+        Text(text).font(.system(size: 13)).lineSpacing(5).foregroundStyle(Ink.blue)
       }
     }
   }
@@ -317,13 +322,23 @@ struct BoardView: View {
 
   var body: some View {
     GeometryReader { geometry in
-      let inset: CGFloat = 14
+      let inset: CGFloat = 15
       let step = (geometry.size.width - inset * 2) / CGFloat(level.size)
       ZStack(alignment: .topLeading) {
-        RoundedRectangle(cornerRadius: 4).fill(Color(red: 0.73, green: 0.71, blue: 0.62)).offset(
-          y: 7)
-        RoundedRectangle(cornerRadius: 4).fill(Ink.paper)
-        PaperTexture()
+        ForEach(0..<4) { layer in
+          RoundedRectangle(cornerRadius: 5)
+            .fill(
+              Color(
+                red: 0.55 + Double(layer) * 0.06, green: 0.55 + Double(layer) * 0.055,
+                blue: 0.48 + Double(layer) * 0.05)
+            )
+            .offset(y: CGFloat(4 - layer) * 2)
+        }
+        RoundedRectangle(cornerRadius: 5).fill(
+          LinearGradient(
+            colors: [Ink.cream, Ink.paper], startPoint: .topLeading, endPoint: .bottomTrailing))
+        RoundedRectangle(cornerRadius: 3).strokeBorder(Ink.blue.opacity(0.2), lineWidth: 0.6)
+          .padding(6)
         ForEach(0..<level.size, id: \.self) { row in
           ForEach(0..<level.size, id: \.self) { col in
             let cell = Cell(row: row, col: col)
@@ -332,6 +347,7 @@ struct BoardView: View {
               .offset(x: inset + CGFloat(col) * step, y: inset + CGFloat(row) * step)
           }
         }
+        PaperTexture()
         PaperBoat()
           .frame(width: step * 0.66, height: step * 0.48)
           .rotationEffect(.degrees(boatHeading))
@@ -351,7 +367,7 @@ struct BoardView: View {
             )
             .allowsHitTesting(false)
         }
-      }
+      }.shadow(color: .black.opacity(0.25), radius: 18, y: 14)
     }
   }
 
@@ -360,7 +376,8 @@ struct BoardView: View {
     if let canal = canals.first(where: { $0.cell == cell }) {
       let fixed = cell == level.start || cell == level.dock
       ZStack {
-        Rectangle().fill(Ink.cream.opacity(0.6)).padding(1)
+        Rectangle().fill(Ink.cream.opacity(0.8)).padding(0.7)
+          .overlay(Rectangle().strokeBorder(Ink.blue.opacity(0.13), lineWidth: 0.5).padding(0.7))
         Button {
           rotate(cell)
         } label: {
@@ -378,23 +395,15 @@ struct BoardView: View {
         .accessibilityHint("Rotate clockwise")
         .accessibilityIdentifier("canal-\(cell.row)-\(cell.col)")
         if canal.hasStamp && !collected.contains(cell) {
-          Image(systemName: "envelope.fill")
-            .font(.system(size: side * 0.16, weight: .medium))
-            .foregroundStyle(Ink.night)
-            .padding(5).background(Ink.gold, in: RoundedRectangle(cornerRadius: 3))
+          PaperStamp().frame(width: side * 0.28, height: side * 0.34)
             .rotationEffect(.degrees(-8))
+            .shadow(color: Ink.night.opacity(0.2), radius: 1, x: 1, y: 2)
             .offset(x: side * 0.22, y: -side * 0.24)
             .allowsHitTesting(false)
         }
         if cell == level.dock {
-          VStack(spacing: 1) {
-            Image(systemName: "envelope.fill").font(.system(size: side * 0.17))
-            Text("POST").font(.system(size: 7, weight: .black, design: .monospaced))
-          }
-          .foregroundStyle(Ink.cream).padding(6).background(
-            Ink.red, in: RoundedRectangle(cornerRadius: 4)
-          )
-          .offset(y: -side * 0.10).allowsHitTesting(false)
+          Postbox().frame(width: side * 0.3, height: side * 0.48)
+            .offset(x: side * 0.19, y: -side * 0.16).allowsHitTesting(false)
         }
         if canal.isLock {
           VStack {
@@ -403,17 +412,21 @@ struct BoardView: View {
               Button {
                 toggle(cell)
               } label: {
-                Image(systemName: canal.open ? "lock.open.fill" : "lock.fill")
-                  .font(.system(size: 13))
-                  .foregroundStyle(canal.open ? Ink.night : Ink.cream)
-                  .frame(width: 30, height: 28)
-                  .background(
-                    canal.open ? Ink.gold : Ink.red, in: RoundedRectangle(cornerRadius: 4)
+                Image(systemName: canal.open ? "lock.open" : "lock.fill")
+                  .font(.system(size: 13, weight: .medium))
+                  .foregroundStyle(Ink.night)
+                  .frame(width: 26, height: 29)
+                  .background(Ink.gold.gradient, in: RoundedRectangle(cornerRadius: 2))
+                  .overlay(
+                    RoundedRectangle(cornerRadius: 1).strokeBorder(
+                      Ink.cream.opacity(0.65), lineWidth: 0.7
+                    ).padding(2)
                   )
+                  .shadow(color: Ink.night.opacity(0.2), radius: 1, x: 1, y: 2)
                   .frame(width: 44, height: 44)
                   .contentShape(Rectangle())
               }
-              .allowsHitTesting(interactive)
+              .buttonStyle(PaperPressStyle()).allowsHitTesting(interactive)
               .accessibilityHidden(!interactive)
               .accessibilityLabel(
                 "\(canal.open ? "Close" : "Open") lock row \(cell.row + 1) column \(cell.col + 1)"
@@ -442,11 +455,7 @@ struct BoardView: View {
           &context, x: 20, y: 67, width: CGFloat(25 + (cell.row + cell.col) % 3 * 5),
           height: CGFloat(28 + (cell.row * 3 + cell.col) % 3 * 9),
           red: (cell.row + cell.col) % 3 == 0)
-        if (cell.row + cell.col) % 2 == 0 {
-          context.fill(
-            Path(ellipseIn: CGRect(x: 58, y: 56, width: 10, height: 13)),
-            with: .color(Ink.water.opacity(0.6)))
-        }
+        drawGarden(&context, x: 62, y: 67, variant: cell.row + cell.col)
       }.accessibilityHidden(true)
     }
   }
@@ -467,29 +476,30 @@ struct ResultView: View {
 
   var body: some View {
     ZStack {
-      Ink.night.ignoresSafeArea()
+      NightPaper()
       ScrollView {
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
           HStack {
             Eyebrow(text: voyage.success ? "DELIVERY CONFIRMED" : "A LETTER STILL ON ITS WAY")
             Spacer()
             IconButton(icon: "xmark", label: "Close result") { retry() }
           }
           Text(voyage.success ? "A little wonder,\ndelivered." : "Even paper boats\nmiss a turn.")
-            .font(Ink.title(36)).tracking(-1)
+            .font(Ink.italic(37)).tracking(-0.7)
             .foregroundStyle(Ink.cream).multilineTextAlignment(.center)
             .accessibilityIdentifier("resultTitle")
           if voyage.success {
             Postcard(level: level, puzzle: puzzle)
-              .rotationEffect(.degrees(-2))
-              .padding(.horizontal, 6).padding(.vertical, 6)
+              .rotationEffect(.degrees(-1.5))
+              .padding(.horizontal, 6).padding(.vertical, 7)
             HStack(spacing: 8) {
               ForEach(0..<3) { index in
-                Image(systemName: "seal.fill")
+                Image(systemName: "rosette")
+                  .font(.system(size: 19, weight: .light))
                   .foregroundStyle(index < puzzle.rating ? Ink.gold : Ink.muted.opacity(0.25))
               }
               Text("\(puzzle.moves) moves · \(hintSummary)")
-                .font(.system(size: 13)).foregroundStyle(Ink.paper)
+                .font(.system(size: 11)).foregroundStyle(Ink.paper)
             }.accessibilityLabel(
               "\(puzzle.rating) of 3 seals, \(puzzle.moves) moves, \(hintSummary)")
             MainButton(title: level.id == 9 ? "Back to the collection" : "The next letter") {
@@ -531,7 +541,7 @@ struct ResultView: View {
           Button("The letter collection", action: home)
             .font(.system(size: 12)).foregroundStyle(Ink.muted)
             .frame(minHeight: 44).accessibilityIdentifier("resultHome")
-        }.padding(24)
+        }.padding(.horizontal, 24).padding(.bottom, 20).padding(.top, 4)
       }.scrollIndicators(.hidden).clipped()
     }
     .sheet(item: $shareImage) { item in
@@ -547,39 +557,37 @@ struct Postcard: View {
   let level: Level
   let puzzle: PuzzleState
   var body: some View {
-    VStack(alignment: .leading, spacing: 12) {
+    VStack(alignment: .leading, spacing: 13) {
       HStack {
         VStack(alignment: .leading, spacing: 5) {
-          Eyebrow(text: "GREETINGS FROM", color: Ink.blue)
-          Text("Paper Current").font(Ink.title(27)).foregroundStyle(Ink.night)
+          Eyebrow(text: "A LETTER FROM", color: Ink.blue)
+          Text(level.title).font(Ink.italic(27)).foregroundStyle(Ink.night)
+            .minimumScaleFactor(0.7).lineLimit(1)
         }
         Spacer()
-        Image(systemName: "envelope.badge")
-          .font(.system(size: 25, weight: .light)).foregroundStyle(Ink.red)
-          .padding(9).overlay(
-            Rectangle().strokeBorder(Ink.red, style: StrokeStyle(lineWidth: 1, dash: [2, 2])))
+        PostalSeal(number: String(format: "%02d", level.id + 1), color: Ink.red)
+          .rotationEffect(.degrees(12))
       }
       BoardView(
         level: level, canals: puzzle.canals, lit: Set(level.route), boat: level.dock,
         collected: Set(level.route), interactive: false
       )
       .aspectRatio(1, contentMode: .fit)
-      .overlay(alignment: .bottomTrailing) {
-        Text("DELIVERED\nBY PAPER BOAT")
-          .font(.system(size: 9, weight: .heavy, design: .monospaced))
-          .tracking(1).multilineTextAlignment(.center).foregroundStyle(Ink.red)
-          .padding(9).overlay(Circle().stroke(Ink.red, lineWidth: 1.5))
-          .rotationEffect(.degrees(-15)).offset(x: 8, y: 4)
-      }
+      .padding(.bottom, 5)
+      PostalRule(color: Ink.blue)
       HStack {
-        Text("No. \(String(format: "%02d", level.id + 1)) · \(level.title)")
-          .font(Ink.title(12)).foregroundStyle(Ink.blue)
+        VStack(alignment: .leading, spacing: 4) {
+          Text("Paper Current").font(Ink.title(15)).foregroundStyle(Ink.night)
+          Text("DELIVERED BY PAPER BOAT").font(.system(size: 6, weight: .medium))
+            .tracking(1.3).foregroundStyle(Ink.blue)
+        }
         Spacer()
-        Text("\(puzzle.moves) moves · 3/3").font(.system(size: 10, design: .monospaced))
+        Text("\(puzzle.moves) moves · 3/3 stamps").font(.system(size: 9))
           .foregroundStyle(Ink.red)
       }.padding(.top, 3)
     }
     .padding(16).background(Ink.cream)
+    .overlay(Rectangle().strokeBorder(Ink.blue.opacity(0.14), lineWidth: 0.5).padding(5))
     .overlay(PaperTexture())
     .shadow(color: .black.opacity(0.2), radius: 12, y: 10)
   }

@@ -62,7 +62,12 @@ announced and stable test identifiers.
 Unit tests validate all ten route geometries and stamp collection, unsolved
 starting boards, hint solvability, distinct lock/current failures, undo and
 persistent best/unlocking. Builds provide Swift typechecking. No external Swift
-packages are used. Artwork is procedural SwiftUI Canvas; the icon can be
+packages are used. The playable town, canals, boat, stamps and postbox are
+native SwiftUI/Canvas artwork. The home uses an original generated papercraft
+harbor illustration, bundled locally as `Assets.xcassets/Harbor.imageset/Harbor.jpg`,
+with a native rain overlay; no remote images are fetched. Its art direction is
+cotton-paper canal architecture, warm windows, a cream origami boat and restrained
+vermilion details against dusk-blue water. The icon can be
 regenerated with `swift Tools/GenerateIcon.swift Assets.xcassets/AppIcon.appiconset/AppIcon.png`.
 
 See `QA.md` for observed simulator design iterations and evidence.
