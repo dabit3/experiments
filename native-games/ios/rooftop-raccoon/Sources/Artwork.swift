@@ -1,14 +1,14 @@
 import SwiftUI
 
 enum Palette {
-  static let ink = Color(red: 0.055, green: 0.082, blue: 0.18)
-  static let sky = Color(red: 0.12, green: 0.17, blue: 0.33)
-  static let cream = Color(red: 1, green: 0.92, blue: 0.72)
-  static let mint = Color(red: 0.55, green: 0.85, blue: 0.70)
+  static let ink = Color(red: 0.035, green: 0.075, blue: 0.12)
+  static let sky = Color(red: 0.09, green: 0.17, blue: 0.23)
+  static let cream = Color(red: 0.95, green: 0.90, blue: 0.77)
+  static let mint = Color(red: 0.60, green: 0.76, blue: 0.65)
   static let coral = Color(red: 0.98, green: 0.49, blue: 0.39)
-  static let brick = Color(red: 0.65, green: 0.31, blue: 0.29)
-  static let roof = Color(red: 0.84, green: 0.48, blue: 0.39)
-  static let muted = Color(red: 0.67, green: 0.73, blue: 0.82)
+  static let brick = Color(red: 0.46, green: 0.28, blue: 0.25)
+  static let roof = Color(red: 0.67, green: 0.43, blue: 0.33)
+  static let muted = Color(red: 0.61, green: 0.69, blue: 0.71)
 }
 
 struct Pen {
@@ -201,6 +201,19 @@ enum Illustration {
         CGPoint(x: w, y: 43),
       ],
       Palette.ink.opacity(0.6))
+    for row in 0..<6 {
+      let y = CGFloat(row * 7 + 4)
+      p.line(
+        [CGPoint(x: -w, y: y), CGPoint(x: w, y: y)], Palette.cream.opacity(0.07), width: 0.6)
+      for column in 0..<5 {
+        let x = -w + CGFloat(column) * 18 + (row.isMultiple(of: 2) ? 0 : 9)
+        if x < w {
+          p.line(
+            [CGPoint(x: x, y: y), CGPoint(x: x, y: y + 6)],
+            Palette.ink.opacity(0.17), width: 0.6)
+        }
+      }
+    }
     p.shape(
       [
         CGPoint(x: -w, y: -21), CGPoint(x: -w + 9, y: -29), CGPoint(x: w + 9, y: -29),
@@ -210,6 +223,13 @@ enum Illustration {
     p.box(
       CGRect(x: -w + 5, y: -23, width: width - 7, height: 19),
       garden ? Color(red: 0.28, green: 0.44, blue: 0.41) : Palette.brick, radius: 2)
+    for index in 0..<45 {
+      let x = -w + 6 + CGFloat((index * 17 + id * 7) % 101) / 101 * (width - 10)
+      let y = -22 + CGFloat((index * 13) % 17)
+      p.line(
+        [CGPoint(x: x, y: y), CGPoint(x: x + 2, y: y)],
+        Palette.cream.opacity(0.11), width: 0.7)
+    }
     p.line(
       [CGPoint(x: -w, y: 1), CGPoint(x: w, y: 1), CGPoint(x: w + 9, y: -7)],
       Palette.cream.opacity(0.42), width: 2)
@@ -234,7 +254,13 @@ struct RaccoonArt: View {
     Canvas { context, size in
       var c = context
       c.scaleBy(x: size.width / 100, y: size.height / 100)
-      Illustration.raccoon(c, snacks: snacks, happy: happy)
+      c.draw(Image("RaccoonPortrait"), in: CGRect(x: -5, y: 6, width: 96, height: 96))
+      for index in 0..<min(max(snacks, 0), 7) {
+        var snackContext = c
+        snackContext.translateBy(x: 79 + CGFloat(index % 2), y: 47 - CGFloat(index) * 7)
+        snackContext.scaleBy(x: 0.54, y: 0.54)
+        Illustration.snack(snackContext, kind: index)
+      }
     }
     .accessibilityHidden(true)
   }
@@ -250,11 +276,18 @@ struct CityBackdrop: View {
             Palette.ink, Palette.sky,
             dawn
               ? Color(red: 0.56, green: 0.35, blue: 0.39)
-              : Color(red: 0.23, green: 0.29, blue: 0.44),
+              : Color(red: 0.13, green: 0.23, blue: 0.27),
           ],
           startPoint: .top, endPoint: .bottom)
         Canvas { context, size in
           let p = Pen(context: context)
+          for index in 0..<2400 {
+            let x = CGFloat((index * 127 + 53) % 997) / 997 * size.width
+            let y = CGFloat((index * 331 + 71) % 991) / 991 * size.height
+            p.oval(
+              CGRect(x: x, y: y, width: 0.7, height: 0.7),
+              Palette.cream.opacity(index.isMultiple(of: 3) ? 0.055 : 0.025))
+          }
           for index in 0..<65 {
             let x = CGFloat((index * 79 + 13) % 397) / 397 * size.width
             let y = CGFloat((index * 47 + 23) % 431) / 800 * size.height
@@ -312,34 +345,23 @@ struct HeroScene: View {
       TimelineView(.animation(minimumInterval: 1.0 / 20, paused: reduceMotion)) { timeline in
         let time = reduceMotion ? 0 : timeline.date.timeIntervalSinceReferenceDate
         ZStack {
+          Image("TowerScene")
+            .resizable()
+            .scaledToFill()
+            .frame(width: w, height: h)
+            .clipped()
+            .mask {
+              LinearGradient(
+                stops: [
+                  .init(color: .clear, location: 0),
+                  .init(color: .white, location: 0.15),
+                  .init(color: .white, location: 0.85),
+                  .init(color: .clear, location: 1),
+                ], startPoint: .top, endPoint: .bottom)
+            }
           Canvas { context, size in
             let p = Pen(context: context)
-            Illustration.roof(
-              context, center: CGPoint(x: w * 0.20, y: h * 0.58), width: w * 0.32, garden: true,
-              id: 2)
-            Illustration.roof(
-              context, center: CGPoint(x: w * 0.83, y: h * 0.48), width: w * 0.32, garden: false,
-              id: 3)
-            var wire = Path()
-            wire.move(to: CGPoint(x: 0, y: h * 0.2))
-            wire.addQuadCurve(
-              to: CGPoint(x: w, y: h * 0.13), control: CGPoint(x: w * 0.50, y: h * 0.5))
-            context.stroke(wire, with: .color(Palette.ink), lineWidth: 1.4)
-            for index in 1..<10 {
-              let t = CGFloat(index) / 10
-              let y = (1 - t) * (1 - t) * h * 0.2 + 2 * (1 - t) * t * h * 0.5 + t * t * h * 0.13
-              p.oval(CGRect(x: w * t, y: y, width: 4, height: 7), Palette.cream.opacity(0.85))
-            }
-            Illustration.roof(
-              context, center: CGPoint(x: w * 0.50, y: h * 0.84), width: w * 0.63, garden: true,
-              id: 0)
-            Illustration.planter(context, x: w * 0.74, y: h * 0.80, scale: 0.9)
-            if celebration {
-              Illustration.tower(context, x: w * 0.32, y: h * 0.63, scale: w / 130)
-            } else {
-              Illustration.tower(context, x: w * 0.73, y: h * 0.28, scale: 0.9)
-            }
-            for index in 0..<13 {
+            for index in 0..<(celebration ? 13 : 5) {
               let phase = time * 0.3 + Double(index)
               let x = w * CGFloat(0.10 + Double((index * 31) % 80) / 100)
               let y = h * CGFloat(0.25 + Double((index * 17) % 60) / 100) + CGFloat(sin(phase)) * 5
@@ -349,9 +371,9 @@ struct HeroScene: View {
             }
           }
           RaccoonArt(snacks: snacks, happy: celebration)
-            .frame(width: w * 0.50, height: w * 0.50)
-            .rotationEffect(.degrees(reduceMotion ? 0 : sin(time * 1.7) * 1.4), anchor: .bottom)
-            .position(x: w * 0.49, y: h * (celebration ? 0.38 : 0.52))
+            .frame(width: min(w * 0.72, h * 0.95), height: min(w * 0.72, h * 0.95))
+            .rotationEffect(.degrees(reduceMotion ? 0 : sin(time * 1.7) * 0.8), anchor: .bottom)
+            .position(x: w * 0.48, y: h * 0.46)
         }
       }
     }

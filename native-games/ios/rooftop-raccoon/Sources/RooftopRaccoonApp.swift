@@ -52,8 +52,8 @@ struct Eyebrow: View {
   var color = Palette.mint
   var body: some View {
     Text(text)
-      .font(.system(size: 10, weight: .heavy, design: .monospaced))
-      .tracking(2.5)
+      .font(.system(size: 9, weight: .semibold))
+      .tracking(2.2)
       .foregroundStyle(color)
       .lineLimit(1)
       .minimumScaleFactor(0.75)
@@ -68,19 +68,38 @@ struct PrimaryButton: View {
     Button(action: action) {
       HStack {
         Text(title)
-          .font(.system(size: 15, weight: .heavy, design: .rounded))
-          .tracking(1)
+          .font(.system(size: 14, weight: .semibold))
+          .tracking(1.2)
         Spacer()
-        Image(systemName: symbol).font(.system(size: 17, weight: .bold))
+        Image(systemName: symbol)
+          .font(.system(size: 15, weight: .medium))
+          .frame(width: 32, height: 32)
+          .overlay(Circle().stroke(Palette.ink.opacity(0.2), lineWidth: 0.7))
       }
       .foregroundStyle(Palette.ink)
-      .padding(.horizontal, 23)
+      .padding(.horizontal, 21)
       .frame(height: 57)
-      .background(Palette.mint, in: RoundedRectangle(cornerRadius: 18))
+      .background(
+        LinearGradient(
+          colors: [Palette.cream, Color(red: 0.85, green: 0.79, blue: 0.64)],
+          startPoint: .topLeading, endPoint: .bottomTrailing),
+        in: RoundedRectangle(cornerRadius: 11)
+      )
       .overlay(
-        RoundedRectangle(cornerRadius: 18).stroke(.white.opacity(0.22), lineWidth: 1))
+        RoundedRectangle(cornerRadius: 8).stroke(Palette.ink.opacity(0.13), lineWidth: 0.7)
+          .padding(4))
     }
-    .buttonStyle(.plain)
+    .buttonStyle(QuietPressStyle())
+  }
+}
+
+struct QuietPressStyle: ButtonStyle {
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .opacity(configuration.isPressed ? 0.82 : 1)
+      .scaleEffect(configuration.isPressed && !reduceMotion ? 0.98 : 1)
+      .animation(reduceMotion ? nil : .easeOut(duration: 0.16), value: configuration.isPressed)
   }
 }
 
@@ -92,11 +111,11 @@ struct RoundButton: View {
   var body: some View {
     Button(action: action) {
       Image(systemName: symbol)
-        .font(.system(size: 17, weight: .semibold))
+        .font(.system(size: 16, weight: .regular))
         .frame(width: 46, height: 46)
         .foregroundStyle(Palette.cream)
-        .background(.white.opacity(0.07), in: Circle())
-        .overlay(Circle().stroke(.white.opacity(0.12), lineWidth: 1))
+        .background(Palette.ink.opacity(0.32), in: Circle())
+        .overlay(Circle().stroke(Palette.cream.opacity(0.22), lineWidth: 0.7))
     }
     .buttonStyle(.plain)
     .accessibilityLabel(label)
@@ -106,110 +125,192 @@ struct RoundButton: View {
 
 struct HomeView: View {
   @Bindable var store: GameStore
+  @State private var showDistricts = false
+
   var body: some View {
     GeometryReader { geometry in
+      let compact = geometry.size.height < 700
       VStack(spacing: 0) {
         HStack {
-          HStack(spacing: 7) {
-            Circle().fill(Palette.mint).frame(width: 5, height: 5)
-            Eyebrow(text: "THE CITY IS ASLEEP")
+          HStack(spacing: 9) {
+            Image(systemName: "moon")
+              .font(.system(size: 15, weight: .light))
+              .foregroundStyle(Palette.cream)
+            Eyebrow(text: "A LITTLE NIGHT MISCHIEF", color: Palette.cream.opacity(0.7))
           }
           Spacer()
           RoundButton(symbol: "slider.horizontal.3", label: "Settings", id: "settings") {
             store.showSettings = true
           }
         }
-        .padding(.top, 8)
-        VStack(spacing: 6) {
-          Text("Rooftop\nRaccoon")
-            .font(
-              .system(size: min(geometry.size.width * 0.15, 63), weight: .black, design: .serif)
-            )
-            .tracking(-2.2)
-            .lineSpacing(-7)
-            .multilineTextAlignment(.center)
-            .foregroundStyle(Palette.cream)
-            .accessibilityAddTraits(.isHeader)
-          Text("Small paws. Grand larceny.")
-            .font(.system(size: 14, weight: .medium, design: .rounded))
-            .foregroundStyle(Palette.muted)
-        }
-        .padding(.top, 7)
-        HeroScene()
-          .frame(maxHeight: .infinity)
-          .layoutPriority(-1)
-        VStack(spacing: 15) {
-          HStack {
-            Eyebrow(text: "CHOOSE YOUR NEIGHBORHOOD")
-            Spacer()
-            Text("\(store.progress.unlocked + 1) / 3")
-              .font(.system(size: 11, weight: .medium, design: .monospaced))
-              .foregroundStyle(Palette.muted)
+        .padding(.top, 4)
+        VStack(spacing: -8) {
+          Text("Rooftop")
+            .font(.custom("Baskerville-Italic", size: compact ? 44 : 51))
+            .tracking(0.5)
+          Text("Raccoon")
+            .font(.custom("Baskerville", size: min(geometry.size.width * 0.19, 81)))
+            .tracking(-2)
+          HStack(spacing: 12) {
+            Rectangle().frame(width: 24, height: 0.5)
+            Text("Small paws. Grand larceny.")
+              .font(.custom("Baskerville-Italic", size: 16))
+            Rectangle().frame(width: 24, height: 0.5)
           }
-          HStack(spacing: 8) {
-            ForEach(District.all) { district in
-              let unlocked = district.id <= store.progress.unlocked
-              Button {
-                store.selected = district.id
-              } label: {
-                VStack(alignment: .leading, spacing: 8) {
-                  HStack {
-                    Text(String(format: "%02d", district.id + 1))
-                      .font(.system(size: 11, weight: .bold, design: .monospaced))
-                    Spacer()
-                    Image(
-                      systemName: !unlocked
-                        ? "lock.fill"
-                        : store.progress.best[String(district.id)] != nil
-                          ? "checkmark.seal.fill" : "moon.stars.fill"
-                    )
-                    .font(.system(size: 11))
-                  }
-                  Text(district.name)
-                    .font(.system(size: 13, weight: .bold, design: .rounded))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(height: 33, alignment: .topLeading)
-                }
-                .foregroundStyle(
-                  !unlocked
-                    ? Palette.muted.opacity(0.9)
-                    : store.selected == district.id ? Palette.ink : Palette.cream
-                )
-                .padding(12)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(
-                  store.selected == district.id ? Palette.cream : .white.opacity(0.04),
-                  in: RoundedRectangle(cornerRadius: 13)
-                )
-                .overlay(
-                  RoundedRectangle(cornerRadius: 13)
-                    .stroke(.white.opacity(0.13), lineWidth: 1))
+          .foregroundStyle(Palette.cream.opacity(0.75))
+          .padding(.top, 18)
+        }
+        .foregroundStyle(Palette.cream)
+        .shadow(color: Palette.ink.opacity(0.4), radius: 12, y: 3)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
+        .padding(.top, compact ? 4 : 18)
+        Spacer(minLength: 24)
+        VStack(spacing: compact ? 12 : 17) {
+          Button {
+            showDistricts = true
+          } label: {
+            VStack(alignment: .leading, spacing: 9) {
+              HStack {
+                Eyebrow(text: "TONIGHT'S HEIST", color: Palette.cream.opacity(0.55))
+                Spacer()
+                Text(String(format: "%02d / 03", store.selected + 1))
+                  .font(.system(size: 10, weight: .medium, design: .monospaced))
+                  .foregroundStyle(Palette.cream.opacity(0.55))
               }
-              .disabled(!unlocked)
-              .buttonStyle(.plain)
-              .accessibilityLabel(
-                "\(district.name), \(unlocked ? "district \(district.id + 1)" : "locked, escape previous district to unlock")"
+              HStack(alignment: .center) {
+                VStack(alignment: .leading, spacing: 4) {
+                  Text(District.all[store.selected].name)
+                    .font(.custom("Baskerville", size: compact ? 27 : 31))
+                  Text(District.all[store.selected].subtitle)
+                    .font(.system(size: 11))
+                    .foregroundStyle(Palette.cream.opacity(0.65))
+                }
+                Spacer()
+                Image(systemName: "chevron.up.chevron.down")
+                  .font(.system(size: 14, weight: .light))
+                  .frame(width: 36, height: 44)
+              }
+              Rectangle().fill(Palette.cream.opacity(0.25)).frame(height: 0.5)
+                .padding(.top, 3)
+            }
+            .foregroundStyle(Palette.cream)
+          }
+          .buttonStyle(.plain)
+          .accessibilityLabel("Choose neighborhood, \(District.all[store.selected].name)")
+          .accessibilityIdentifier("choose-district")
+          PrimaryButton(title: "BEGIN THE HEIST") { store.start() }
+            .accessibilityIdentifier("start-heist")
+          HStack(spacing: 7) {
+            Image(systemName: "laurel.leading")
+            Text(
+              store.progress.best[String(store.selected)].map { "PERSONAL BEST  ·  \($0) PTS" }
+                ?? "THE CITY IS YOURS TONIGHT")
+            Image(systemName: "laurel.trailing")
+          }
+          .font(.system(size: 8, weight: .medium))
+          .tracking(1.8)
+          .foregroundStyle(Palette.cream.opacity(0.5))
+        }
+        .padding(.bottom, compact ? 12 : 20)
+      }
+      .padding(.horizontal, 30)
+      .frame(maxWidth: 520)
+      .frame(maxWidth: .infinity)
+    }
+    .background {
+      GeometryReader { geometry in
+        Image("NightCover")
+          .resizable()
+          .scaledToFill()
+          .frame(width: geometry.size.width, height: geometry.size.height)
+          .clipped()
+          .overlay(alignment: .bottom) {
+            LinearGradient(
+              stops: [
+                .init(color: .clear, location: 0),
+                .init(color: Palette.ink.opacity(0.75), location: 0.4),
+                .init(color: Palette.ink, location: 1),
+              ], startPoint: .top, endPoint: .bottom
+            )
+            .frame(height: geometry.size.height * 0.36)
+          }
+      }
+      .ignoresSafeArea()
+      .accessibilityHidden(true)
+    }
+    .sheet(isPresented: $showDistricts) {
+      DistrictPicker(store: store)
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
+    }
+  }
+}
+
+struct DistrictPicker: View {
+  @Bindable var store: GameStore
+  @Environment(\.dismiss) private var dismiss
+
+  var body: some View {
+    ScrollView {
+      VStack(alignment: .leading, spacing: 22) {
+        HStack {
+          VStack(alignment: .leading, spacing: 7) {
+            Eyebrow(text: "THREE NEIGHBORHOODS. ONE BANDIT.")
+            Text("Pick a rooftop.")
+              .font(.custom("Baskerville", size: 33))
+              .foregroundStyle(Palette.cream)
+          }
+          Spacer()
+          RoundButton(symbol: "xmark", label: "Close neighborhoods", id: "close-districts") {
+            dismiss()
+          }
+        }
+        ForEach(District.all) { district in
+          let unlocked = district.id <= store.progress.unlocked
+          Button {
+            store.selected = district.id
+            dismiss()
+          } label: {
+            HStack(spacing: 17) {
+              Text(String(format: "%02d", district.id + 1))
+                .font(.custom("Baskerville-Italic", size: 31))
+                .foregroundStyle(unlocked ? Palette.mint : Palette.muted)
+                .frame(width: 40)
+              VStack(alignment: .leading, spacing: 5) {
+                Text(district.name).font(.custom("Baskerville", size: 23))
+                Text(unlocked ? district.subtitle : "Escape the previous district to unlock")
+                  .font(.system(size: 11))
+                  .foregroundStyle(Palette.muted)
+              }
+              Spacer()
+              Image(
+                systemName: !unlocked
+                  ? "lock" : district.id == store.selected ? "checkmark" : "arrow.right"
               )
-              .accessibilityIdentifier("district-\(district.id)")
-              .accessibilityAddTraits(store.selected == district.id ? .isSelected : [])
+              .font(.system(size: 14, weight: .light))
+            }
+            .foregroundStyle(Palette.cream)
+            .padding(.vertical, 10)
+            .contentShape(Rectangle())
+            .overlay(alignment: .bottom) {
+              Rectangle().fill(Palette.cream.opacity(0.15)).frame(height: 0.5)
+                .offset(y: 8)
             }
           }
-          PrimaryButton(title: "LET'S GET SNACKS") { store.start() }
-            .accessibilityIdentifier("start-heist")
-          HStack(spacing: 5) {
-            Image(systemName: "sparkle")
-            Text(
-              store.progress.best[String(store.selected)].map { "PERSONAL BEST  \($0) PTS" }
-                ?? "COLLECT. OUTSMART. DISAPPEAR.")
-          }
-          .font(.system(size: 9, weight: .semibold, design: .monospaced))
-          .tracking(1.4)
-          .foregroundStyle(Palette.muted)
+          .buttonStyle(.plain)
+          .disabled(!unlocked)
+          .opacity(unlocked ? 1 : 0.55)
+          .accessibilityLabel(
+            "\(district.name), \(unlocked ? "district \(district.id + 1)" : "locked, escape previous district to unlock")"
+          )
+          .accessibilityIdentifier("district-\(district.id)")
+          .accessibilityAddTraits(district.id == store.selected ? .isSelected : [])
         }
-        .padding(.bottom, 16)
       }
-      .padding(.horizontal, 25)
+      .padding(28)
     }
+    .background(Palette.ink)
   }
 }
 
@@ -686,8 +787,8 @@ struct ResultView: View {
             ? "A clean\ngetaway."
             : mission.phase == .dawn ? "Up past\nbedtime." : "One snack\ntoo far."
         )
-        .font(.system(size: min(geometry.size.width * 0.14, 57), weight: .black, design: .serif))
-        .tracking(-1.7)
+        .font(.custom("Baskerville", size: min(geometry.size.width * 0.145, 61)))
+        .tracking(-1)
         .lineSpacing(-5)
         .multilineTextAlignment(.center)
         .foregroundStyle(Palette.cream)
@@ -697,10 +798,14 @@ struct ResultView: View {
           .frame(maxHeight: .infinity)
           .layoutPriority(-1)
         VStack(spacing: 16) {
-          Eyebrow(text: mission.rating, color: escaped ? Palette.mint : Palette.coral)
-            .padding(.vertical, 9)
-            .padding(.horizontal, 16)
-            .overlay(Capsule().stroke((escaped ? Palette.mint : Palette.coral).opacity(0.4)))
+          HStack(spacing: 10) {
+            Image(systemName: "laurel.leading")
+            Eyebrow(text: mission.rating, color: escaped ? Palette.mint : Palette.coral)
+            Image(systemName: "laurel.trailing")
+          }
+          .font(.system(size: 18, weight: .light))
+          .foregroundStyle(escaped ? Palette.mint : Palette.coral)
+          .padding(.vertical, 7)
           HStack(spacing: 0) {
             resultStat("\(mission.loot)", "SNACKS")
             Rectangle().fill(.white.opacity(0.17)).frame(width: 1, height: 32)
@@ -771,9 +876,9 @@ struct ResultView: View {
 
   private func resultStat(_ value: String, _ label: String) -> some View {
     VStack(spacing: 4) {
-      Text(value).font(.system(size: 29, weight: .bold, design: .serif)).foregroundStyle(
+      Text(value).font(.custom("Baskerville", size: 33)).foregroundStyle(
         Palette.cream)
-      Text(label).font(.system(size: 8, weight: .heavy, design: .monospaced)).tracking(1.5)
+      Text(label).font(.system(size: 8, weight: .medium)).tracking(1.8)
         .foregroundStyle(Palette.muted)
     }
     .frame(maxWidth: .infinity)
@@ -798,28 +903,38 @@ struct ResultView: View {
 struct WantedPoster: View {
   let mission: Mission
   var body: some View {
-    VStack(spacing: 15) {
+    VStack(spacing: 14) {
       Eyebrow(text: "SAFFRON CITY NIGHT WATCH", color: Palette.ink)
       Text("WANTED")
-        .font(.system(size: 66, weight: .black, design: .serif))
-        .tracking(6)
+        .font(.custom("Baskerville", size: 68))
+        .tracking(9)
       Text("FOR GRAND SNACK LARCENY")
-        .font(.system(size: 12, weight: .heavy, design: .monospaced))
+        .font(.system(size: 10, weight: .semibold))
         .tracking(2)
       ZStack {
-        Circle().fill(Palette.sky).frame(width: 280, height: 280)
-        RaccoonArt(snacks: mission.loot, happy: true).frame(width: 250, height: 250)
+        Image("TowerScene")
+          .resizable()
+          .scaledToFill()
+          .frame(width: 270, height: 280)
+          .clipShape(UnevenRoundedRectangle(topLeadingRadius: 135, topTrailingRadius: 135))
+        RaccoonArt(snacks: mission.loot, happy: true).frame(width: 270, height: 270)
       }
+      .overlay(
+        UnevenRoundedRectangle(topLeadingRadius: 138, topTrailingRadius: 138)
+          .stroke(Palette.ink.opacity(0.4), lineWidth: 0.7)
+          .frame(width: 280, height: 290)
+      )
+      .padding(.vertical, 5)
       Text("“THE ROOFTOP RACCOON”")
-        .font(.system(size: 23, weight: .black, design: .serif))
+        .font(.custom("Baskerville", size: 24))
       Text("\(mission.loot) STOLEN SNACKS  /  \(mission.score) POINTS")
-        .font(.system(size: 12, weight: .heavy, design: .monospaced))
+        .font(.system(size: 11, weight: .medium, design: .monospaced))
         .tracking(1)
       Text(mission.rating)
-        .font(.system(size: 18, weight: .bold, design: .rounded))
+        .font(.custom("Baskerville-Italic", size: 21))
         .padding(.horizontal, 24)
         .padding(.vertical, 10)
-        .overlay(Rectangle().stroke(Palette.brick, lineWidth: 2))
+        .overlay(Rectangle().stroke(Palette.brick.opacity(0.75), lineWidth: 0.7))
         .rotationEffect(.degrees(-3))
         .foregroundStyle(Palette.brick)
       Spacer(minLength: 0)
@@ -832,7 +947,8 @@ struct WantedPoster: View {
     .padding(28)
     .frame(width: 440, height: 690)
     .background(Palette.cream)
-    .overlay(Rectangle().strokeBorder(Palette.ink, lineWidth: 2).padding(12))
+    .overlay(Rectangle().strokeBorder(Palette.ink.opacity(0.7), lineWidth: 0.7).padding(12))
+    .overlay(Rectangle().strokeBorder(Palette.ink.opacity(0.25), lineWidth: 0.7).padding(17))
     .environment(\.colorScheme, .light)
   }
 }

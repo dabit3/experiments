@@ -30,7 +30,9 @@ brew install xcodegen
 xcodegen generate
 ```
 
-The icon is custom vector artwork. To regenerate it:
+The cover, character and water-tower artwork are bundled illustrations. Rooftops, snacks and
+forecasts remain procedural so they reflect the live mission. The icon and launch image
+are composited from the bundled illustrations. To regenerate them from this directory:
 
 ```sh
 swiftc Sources/Artwork.swift Scripts/GenerateIcon.swift -o build/generate-icon
@@ -63,6 +65,10 @@ Xcode builds typecheck all application code. XCTest covers grid boundaries, next
 ## Accessibility and lifecycle
 
 Portrait layout respects iPhone safe areas. Controls have explicit labels and identifiers, and movement has button alternatives to swiping. Rooftop forecasts use text as well as color. Reduced Motion stops decorative looping animation and disables movement springs. Backgrounding pauses the run; returning requires Resume. Relaunch opens home with saved bests and unlocks, rather than restoring an unfinished run.
+
+On the title screen, tap the neighborhood under “Tonight's heist” to open the chapter
+selector. Locked chapters explain how to unlock them. “Begin the heist” starts the selected
+district; settings remain in the upper-right corner.
 
 ## Limitations
 
