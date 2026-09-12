@@ -325,6 +325,7 @@ struct PlayView: View {
         .foregroundStyle(Palette.cyan)
         .padding(.horizontal, 24).padding(.bottom, 24)
       }.padding(.top, 6)
+        .accessibilityElement(children: .contain)
         .accessibilityHidden(
           model.resultReady || (model.engine.phase == .paused && model.resumeCount == 0)
         )
