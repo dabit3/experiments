@@ -276,7 +276,7 @@ struct PowderlineView: View {
         }
       }
       Text(store.engine.combo > 0 ? "FLOW \(store.engine.combo)×" : "FLOW")
-        .font(.system(size: 9, weight: .bold, design: .monospaced))
+        .font(.system(size: 11, weight: .bold, design: .monospaced))
         .tracking(1.4)
         .foregroundStyle(store.engine.combo > 0 ? Palette.amber : cream.opacity(0.5))
         .contentTransition(.numericText())
@@ -305,13 +305,14 @@ struct PowderlineView: View {
       if ahead < span {
         let fraction = max(0, ahead / span)
         VStack(spacing: 3) {
-          GlyphView(glyph: hazard.kind == .rock ? .rock : .flag, size: 11, weight: 1.4)
+          GlyphView(glyph: hazard.kind == .rock ? .rock : .flag, size: 13, weight: 1.5)
           Text(hazard.kind == .rock ? "ROCK" : "RAVINE")
-            .font(.system(size: 7, weight: .bold))
+            .font(.system(size: 8.5, weight: .bold))
             .tracking(1.6)
         }
         .foregroundStyle(ahead < 180 ? Palette.coral : Palette.amber)
-        .frame(width: 44)
+        .shadow(color: Palette.inkDeep.opacity(0.7), radius: 3)
+        .frame(width: 52)
         .offset(x: min(width - 22, 8 + fraction * (width - 30)) - 22, y: 13)
         .accessibilityIdentifier("hazardWarning")
         .accessibilityLabel(hazard.kind == .rock ? "Rock ahead" : "Ravine ahead")
@@ -425,7 +426,7 @@ struct PowderlineView: View {
         .frame(height: 46)
         .overlay(alignment: .topLeading) {
           eyebrow(store.engine.mode == .practice ? "PRACTICE SESSION" : "THIS DESCENT")
-            .foregroundStyle(ink.opacity(0.7))
+            .foregroundStyle(cream)
             .padding(.leading, 22)
             .padding(.top, 16)
         }
@@ -486,7 +487,7 @@ struct PowderlineView: View {
 
   private var guide: some View {
     ZStack {
-      Palette.inkDeep.opacity(0.97).ignoresSafeArea()
+      Palette.inkDeep.ignoresSafeArea()
       VStack(alignment: .leading, spacing: 20) {
         HStack {
           eyebrow("A FIELD GUIDE")

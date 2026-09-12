@@ -16,7 +16,7 @@ struct AlpineCanvas: View {
   var body: some View {
     Canvas { context, size in
       let scale = size.width / 480
-      let baseline = size.height * 0.72
+      let baseline = size.height * (isHome ? 0.655 : 0.72)
       let offset = travel - (isHome ? 60 : 124)
       sky(&context, size: size)
       ridges(&context, size: size, scale: scale)

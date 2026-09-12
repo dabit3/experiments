@@ -243,6 +243,15 @@ struct TrailLine: View {
 struct RidgeBand: View {
   var body: some View {
     Canvas { context, size in
+      context.fill(
+        Path(CGRect(origin: .zero, size: size)),
+        with: .linearGradient(
+          Gradient(colors: [Color(hex: 0x233B58), Palette.ink]),
+          startPoint: .zero, endPoint: CGPoint(x: 0, y: size.height)))
+      let sun = CGPoint(x: size.width * 0.78, y: size.height * 0.36)
+      context.fill(
+        Path(ellipseIn: CGRect(x: sun.x - 8, y: sun.y - 8, width: 16, height: 16)),
+        with: .color(Palette.amber))
       for layer in 0..<3 {
         var path = Path()
         path.move(to: CGPoint(x: 0, y: size.height))
@@ -256,12 +265,11 @@ struct RidgeBand: View {
         }
         path.addLine(to: CGPoint(x: size.width, y: size.height))
         path.closeSubpath()
-        context.fill(path, with: .color(Palette.ink.opacity(0.10 + Double(layer) * 0.12)))
+        context.fill(
+          path,
+          with: .color(
+            Color.mix(Palette.mist, Palette.ink, 0.35 + Double(layer) * 0.22).opacity(0.9)))
       }
-      let sun = CGPoint(x: size.width * 0.78, y: size.height * 0.34)
-      context.fill(
-        Path(ellipseIn: CGRect(x: sun.x - 7, y: sun.y - 7, width: 14, height: 14)),
-        with: .color(Palette.amber))
     }
   }
 }
