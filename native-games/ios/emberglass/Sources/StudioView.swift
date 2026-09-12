@@ -156,18 +156,25 @@ struct StudioView: View {
       TimelineView(.animation(minimumInterval: 1.0 / 24, paused: reduceMotion || studio.paused)) {
         timeline in
         let phase = reduceMotion ? 0 : timeline.date.timeIntervalSinceReferenceDate * 0.55
-        ZStack(alignment: .bottom) {
-          VStack(spacing: 0) {
-            VesselArt(profile: profile, molten: molten, phase: phase, commission: commission)
-              .frame(width: min(geometry.size.width * 0.74, geometry.size.height * 0.73))
-              .padding(.bottom, -6)
-            Plinth().frame(width: geometry.size.width * 0.74)
-          }
-          .padding(.bottom, 25)
+        let vesselHeight = geometry.size.height - 25
+        let vesselWidth = min(geometry.size.width * 0.84, vesselHeight * 0.80)
+        let baseY = vesselHeight * 0.94
+        ZStack {
+          Plinth().frame(width: geometry.size.width * 0.80)
+            .position(x: geometry.size.width / 2, y: baseY + 3)
+          Ellipse().fill(.black.opacity(0.70))
+            .frame(width: vesselWidth * (profile.last ?? 0.4), height: 9)
+            .blur(radius: 4)
+            .position(x: geometry.size.width / 2, y: baseY + 1)
+          VesselArt(profile: profile, molten: molten, phase: phase, commission: commission)
+            .frame(width: vesselWidth, height: vesselHeight)
+            .position(x: geometry.size.width / 2, y: vesselHeight / 2)
           Text(molten ? "MOLTEN / WORK IN PROGRESS" : commission.collection)
             .font(.system(size: 8, weight: .medium, design: .monospaced))
             .tracking(2).foregroundStyle(Palette.muted)
+            .position(x: geometry.size.width / 2, y: geometry.size.height - 2)
         }
+        .frame(width: geometry.size.width, height: geometry.size.height)
       }
     }
   }
@@ -452,11 +459,23 @@ struct StudioView: View {
     ZStack {
       Palette.background.opacity(0.94).ignoresSafeArea()
       VStack(alignment: .leading, spacing: 22) {
-        Text(studio.stage == .heat ? "I" : studio.stage == .spin ? "II" : "III")
-          .font(.system(size: 90, weight: .ultraLight, design: .serif))
-          .foregroundStyle(Palette.ember)
-        eyebrow("YOUR FIRST \(studio.stage.rawValue.uppercased())")
+        HStack(spacing: 16) {
+          Text(studio.stage == .heat ? "I" : studio.stage == .spin ? "II" : "III")
+            .font(.system(size: 36, weight: .light, design: .serif))
+            .foregroundStyle(Palette.ember)
+          eyebrow("YOUR FIRST \(studio.stage.rawValue.uppercased())")
+        }
         Text(studio.stage.title).font(.system(size: 39, design: .serif))
+        if studio.stage != .shape {
+          gauge(value: 0.5, target: 0.5)
+          HStack {
+            Image(systemName: studio.stage == .heat ? "hand.point.up.left" : "arrow.left.and.right")
+            Text(studio.stage == .heat ? "HOLD ↑  /  RELEASE ↓" : "SLIDE TO FOLLOW THE GLOW")
+          }
+          .font(.system(size: 11, design: .monospaced))
+          .foregroundStyle(Palette.mint)
+          .accessibilityHidden(true)
+        }
         Text(tutorialCopy)
           .font(.system(size: 17)).lineSpacing(5).foregroundStyle(Palette.muted)
         Rectangle().fill(Palette.cream.opacity(0.2)).frame(height: 1)

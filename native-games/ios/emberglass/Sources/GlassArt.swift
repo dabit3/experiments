@@ -18,6 +18,7 @@ struct VesselShape: Shape {
     let top = rect.minY + rect.height * 0.09
     let height = rect.height * 0.79
     let step = height / Double(profile.count - 1)
+    let tangents = CraftRules.contourTangents(profile)
     var path = Path()
     path.move(to: CGPoint(x: center + profile[0] * unit, y: top))
     for index in 1..<profile.count {
@@ -25,8 +26,11 @@ struct VesselShape: Shape {
       let y = top + Double(index) * step
       path.addCurve(
         to: CGPoint(x: center + profile[index] * unit, y: y),
-        control1: CGPoint(x: center + profile[index - 1] * unit, y: previousY + step * 0.5),
-        control2: CGPoint(x: center + profile[index] * unit, y: y - step * 0.5)
+        control1: CGPoint(
+          x: center + (profile[index - 1] + tangents[index - 1] / 3) * unit, y: previousY + step / 3
+        ),
+        control2: CGPoint(
+          x: center + (profile[index] - tangents[index] / 3) * unit, y: y - step / 3)
       )
     }
     let last = profile[profile.count - 1] * unit
@@ -38,8 +42,10 @@ struct VesselShape: Shape {
       let y = top + Double(index) * step
       path.addCurve(
         to: CGPoint(x: center - profile[index] * unit, y: y),
-        control1: CGPoint(x: center - profile[index + 1] * unit, y: y + step * 0.5),
-        control2: CGPoint(x: center - profile[index] * unit, y: y + step * 0.5)
+        control1: CGPoint(
+          x: center - (profile[index + 1] - tangents[index + 1] / 3) * unit, y: y + step * 2 / 3),
+        control2: CGPoint(
+          x: center - (profile[index] + tangents[index] / 3) * unit, y: y + step / 3)
       )
     }
     path.addQuadCurve(
@@ -94,6 +100,13 @@ struct VesselArt: View {
           LinearGradient(
             colors: [.white.opacity(0.04), .clear, .black.opacity(0.55)],
             startPoint: .top, endPoint: .bottom
+          )
+        )
+        vessel.fill(
+          RadialGradient(
+            colors: [Palette.cream.opacity(0.28), .clear],
+            center: UnitPoint(x: 0.38, y: 0.87),
+            startRadius: 0, endRadius: size.width * 0.50
           )
         )
         Canvas { context, canvas in

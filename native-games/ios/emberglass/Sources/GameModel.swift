@@ -73,6 +73,18 @@ enum Stage: String {
 struct CraftRules {
   static func clamp(_ value: Double) -> Double { min(1, max(0, value)) }
 
+  static func contourTangents(_ radii: [Double]) -> [Double] {
+    guard radii.count > 1 else { return radii.map { _ in 0 } }
+    let slopes = zip(radii.dropFirst(), radii).map { $0 - $1 }
+    return radii.indices.map { index in
+      if index == 0 { return slopes[0] }
+      if index == radii.count - 1 { return slopes[index - 1] }
+      let before = slopes[index - 1]
+      let after = slopes[index]
+      return before * after > 0 ? 2 * before * after / (before + after) : 0
+    }
+  }
+
   static func heatWindow(at time: Double) -> Double {
     0.54 + 0.15 * sin(time * 0.55)
   }

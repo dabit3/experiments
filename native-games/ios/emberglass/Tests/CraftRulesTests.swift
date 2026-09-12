@@ -3,6 +3,18 @@ import XCTest
 @testable import Emberglass
 
 final class CraftRulesTests: XCTestCase {
+  func testContourTangentsStaySmoothAtShoulderAndFlatAtExtrema() {
+    let radii = Commission.tide.radii
+    let tangents = CraftRules.contourTangents(radii)
+    XCTAssertEqual(tangents.count, radii.count)
+    XCTAssertEqual(tangents[1], 0)
+    XCTAssertEqual(tangents[5], 0)
+    XCTAssertGreaterThan(tangents[3], 0)
+    XCTAssertLessThan(tangents[3], 0.21)
+    XCTAssertEqual(CraftRules.contourTangents([]), [])
+    XCTAssertEqual(CraftRules.contourTangents([0.5]), [0])
+  }
+
   func testHeatingAndCoolingAreBoundedAndTimeBased() {
     XCTAssertEqual(
       CraftRules.heatStep(temperature: 0.4, holding: true, delta: 1), 0.58, accuracy: 0.001)
