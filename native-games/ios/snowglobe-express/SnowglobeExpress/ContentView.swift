@@ -104,23 +104,28 @@ struct ContentView: View {
   }
 
   private func routeBriefing(_ current: Journey) -> some View {
-    VStack(alignment: .leading, spacing: 6) {
-      metadata(
-        saved == nil ? "Your next delivery · \(routeLabel(current.puzzle))" : "Route in progress")
+    let status: String
+    let detail: String
+    if saved == nil {
+      status = "Your next delivery · \(routeLabel(current.puzzle))"
+      detail = "\(current.puzzle.fuel) fuel · Deliver to the bakery first"
+    } else if current.won {
+      status = "Completed route"
+      detail = "\(current.score) points · \(current.stars) stars"
+    } else {
+      status = current.stranded ? "No moves left" : "Route in progress"
+      detail = "\(current.fuelLeft) fuel left · \(current.position.delivered.count) of 3 delivered"
+    }
+    return VStack(alignment: .leading, spacing: 6) {
+      metadata(status)
       Text(current.puzzle.name).font(DispatchType.heading)
-      Text(
-        saved == nil
-          ? "\(current.puzzle.fuel) fuel · Deliver to the bakery first"
-          : "\(current.fuelLeft) fuel left · \(current.position.delivered.count) of 3 delivered"
-      )
-      .font(DispatchType.body)
-      .foregroundStyle(Winter.powder)
+      Text(detail).font(DispatchType.body).foregroundStyle(Winter.powder)
     }
     .frame(maxWidth: .infinity, alignment: .leading)
   }
 
   private var startButton: some View {
-    primary(saved != nil ? "Resume route" : "Start route", symbol: "arrow.right", id: "start") {
+    primary(startTitle, symbol: "arrow.right", id: "start") {
       if let saved {
         self.journey = saved
         selectAvailable(saved)
@@ -129,6 +134,12 @@ struct ContentView: View {
         start(nextPuzzle)
       }
     }
+  }
+
+  private var startTitle: String {
+    guard let saved else { return "Start route" }
+    if saved.won { return "View result" }
+    return saved.stranded ? "Undo or retry" : "Resume route"
   }
 
   private var routeChoices: some View {
