@@ -1,13 +1,15 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
+import UniformTypeIdentifiers
 
 struct ContentView: View {
   @StateObject private var game = GameModel()
   @Environment(\.scenePhase) private var scenePhase
   @Environment(\.accessibilityReduceMotion) private var reducedMotion
   @State private var settings = false
-  @State private var shareImage: UIImage?
-  @State private var sharing = false
+  @State private var sharePayload: SharePayload?
+  @State private var shareFailed = false
   private let timer = Timer.publish(every: 1.0 / 60, on: .main, in: .common).autoconnect()
 
   var body: some View {
@@ -47,11 +49,14 @@ struct ContentView: View {
         if phase != .active { game.pause() }
       }
       .sheet(isPresented: $settings) { settingsView }
-      .sheet(isPresented: $sharing) {
-        if let shareImage {
-          ShareSheet(image: shareImage, text: shareText)
-            .presentationDetents([.medium, .large])
-        }
+      .sheet(item: $sharePayload) { payload in
+        ShareSheet(payload: payload)
+          .presentationDetents([.medium, .large])
+      }
+      .alert("Couldn’t prepare your moment", isPresented: $shareFailed) {
+        Button("OK", role: .cancel) {}
+      } message: {
+        Text("Please try sharing again.")
       }
     }
   }
@@ -170,7 +175,7 @@ struct ContentView: View {
             : "An inner ring grows toward the gold edge.\nTap the lily as the two rings meet."
         )
         .font(.system(size: 15)).foregroundStyle(Ink.muted).lineSpacing(5)
-        .frame(maxWidth: .infinity, alignment: .leading).padding(.top, 20)
+        .frame(maxWidth: .infinity, minHeight: 48, alignment: .topLeading).padding(.top, 20)
       }
       GeometryReader { field in
         let points = [
@@ -210,6 +215,13 @@ struct ContentView: View {
               eyebrow("PERFECT PHRASE")
               Text("The pond awakens").font(.system(size: 25, design: .serif))
             }
+            .padding(.vertical, 14)
+            .frame(maxWidth: .infinity)
+            .background(
+              LinearGradient(
+                colors: [Ink.background.opacity(0.96), Ink.background.opacity(0.90), .clear],
+                startPoint: .top, endPoint: .bottom)
+            )
             .position(x: field.size.width * 0.5, y: field.size.height * 0.06)
             .allowsHitTesting(false)
           }
@@ -275,6 +287,16 @@ struct ContentView: View {
   }
 
   private func results(compact: Bool) -> some View {
+    GeometryReader { geometry in
+      ScrollView {
+        resultContent(compact: compact)
+          .frame(minHeight: geometry.size.height)
+      }
+      .scrollIndicators(.hidden)
+    }
+  }
+
+  private func resultContent(compact: Bool) -> some View {
     VStack(spacing: 0) {
       HStack {
         eyebrow("A MOMENT, CAPTURED")
@@ -300,6 +322,8 @@ struct ContentView: View {
           }
           .accessibilityElement(children: .ignore).accessibilityLabel(
             "\(result.accuracy) percent accuracy")
+          Text("ACCURACY").font(.system(size: 10, weight: .medium)).tracking(1.5)
+            .foregroundStyle(Ink.muted).padding(.top, -12)
           HStack {
             stat("\(result.perfect)", "PERFECT")
             Spacer()
@@ -467,9 +491,16 @@ struct ContentView: View {
     let renderer = ImageRenderer(
       content: PerformanceArtwork(performance: result, title: game.engine.composition.name))
     renderer.scale = 2
-    if let image = renderer.uiImage {
-      shareImage = image
-      sharing = true
+    if let image = renderer.uiImage, let data = image.pngData() {
+      sharePayload = SharePayload(
+        image: image, png: data,
+        title: "Rippletone · \(game.engine.composition.name)",
+        message: shareText,
+        filename:
+          "Rippletone-\(game.engine.composition.name.replacingOccurrences(of: " ", with: "-"))-\(result.forgiving ? "Gentle" : "Precise").png"
+      )
+    } else {
+      shareFailed = true
     }
   }
 }
@@ -479,14 +510,18 @@ struct PerformanceArtwork: View {
   let title: String
   var body: some View {
     ZStack {
-      PondArt(hero: true, reducedMotion: true)
-      VStack(spacing: 16) {
+      PondArt(hero: true, heroPosition: 0.29, heroScale: 0.86, reducedMotion: true)
+      VStack(spacing: 14) {
         Text("R I P P L E T O N E").font(.system(size: 15, design: .serif))
         Text("A MOMENT ON THE MOONLIT POND").font(.system(size: 8)).tracking(2).foregroundStyle(
           Ink.gold)
-        Spacer()
+        Spacer().frame(height: 240)
         Text(performance.rank).font(.system(size: 34, design: .serif))
-        Text("\(performance.accuracy)%").font(.system(size: 76, weight: .light, design: .serif))
+        VStack(spacing: 0) {
+          Text("\(performance.accuracy)%").font(.system(size: 76, weight: .light, design: .serif))
+          Text("ACCURACY").font(.system(size: 10, weight: .medium)).tracking(2).foregroundStyle(
+            Ink.gold)
+        }
         Text("\(title)  ·  \(performance.maxCombo) best combo").font(.system(size: 15))
         Text(performance.forgiving ? "GENTLE TIMING" : "PRECISE TIMING")
           .font(.system(size: 9)).tracking(2).foregroundStyle(Ink.gold)
@@ -494,18 +529,49 @@ struct PerformanceArtwork: View {
         Text("Touch the water. Wake the music.").font(.system(size: 12, design: .serif))
           .foregroundStyle(Ink.muted)
       }
-      .padding(.vertical, 45)
+      .padding(.vertical, 40)
     }
     .foregroundStyle(Ink.pearl)
-    .frame(width: 400, height: 640)
+    .frame(width: 400, height: 720)
   }
 }
 
-struct ShareSheet: UIViewControllerRepresentable {
+struct SharePayload: Identifiable {
+  let id = UUID()
   let image: UIImage
-  let text: String
+  let png: Data
+  let title: String
+  let message: String
+  let filename: String
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+  let payload: SharePayload
   func makeUIViewController(context: Context) -> UIActivityViewController {
-    UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
+    let provider = NSItemProvider()
+    provider.suggestedName = payload.filename
+    provider.registerDataRepresentation(forTypeIdentifier: UTType.png.identifier, visibility: .all)
+    { completion in
+      completion(payload.png, nil)
+      return nil
+    }
+    let configuration = UIActivityItemsConfiguration(itemProviders: [provider])
+    let metadata = LPLinkMetadata()
+    metadata.title = payload.title
+    metadata.imageProvider = NSItemProvider(object: payload.image)
+    configuration.metadataProvider = { key in
+      switch key {
+      case .title: return payload.title
+      case .messageBody: return payload.message
+      case .linkPresentationMetadata: return metadata
+      default: return nil
+      }
+    }
+    configuration.perItemMetadataProvider = { _, key in
+      key == .linkPresentationMetadata ? metadata : nil
+    }
+    configuration.previewProvider = { _, _, _ in NSItemProvider(object: payload.image) }
+    return UIActivityViewController(activityItemsConfiguration: configuration)
   }
   func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
 }

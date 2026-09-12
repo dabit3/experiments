@@ -13,6 +13,8 @@ enum Ink {
 struct PondArt: View {
   var time: Double = 0
   var hero = false
+  var heroPosition = 0.40
+  var heroScale = 1.0
   var celebration = false
   var reducedMotion = false
 
@@ -37,7 +39,7 @@ struct PondArt: View {
           Path(ellipseIn: CGRect(x: x, y: y, width: radius * 2, height: radius * 2)),
           with: .color(Ink.gold.opacity(shimmer)))
       }
-      let center = CGPoint(x: width * 0.5, y: height * (hero ? 0.40 : 0.47))
+      let center = CGPoint(x: width * 0.5, y: height * (hero ? heroPosition : 0.47))
       for index in 0..<7 {
         let radius = width * (0.22 + Double(index) * 0.097)
         let shift = sin(t * 0.25 + Double(index)) * 4
@@ -55,13 +57,13 @@ struct PondArt: View {
         context, at: CGPoint(x: width * 0.91, y: height * 0.22), radius: width * 0.13, angle: 130)
       lily(context, at: CGPoint(x: width * 0.97, y: height * 0.73), radius: width * 0.09, angle: 40)
       if hero {
-        moon(context, center: center, radius: width * 0.265)
+        moon(context, center: center, radius: width * 0.265 * heroScale)
         koi(
           context, at: CGPoint(x: width * 0.37 + sin(t * 0.3) * 9, y: center.y + width * 0.09),
-          length: width * 0.36, angle: -41 + sin(t * 0.4) * 4, color: Ink.peach)
+          length: width * 0.36 * heroScale, angle: -41 + sin(t * 0.4) * 4, color: Ink.peach)
         koi(
           context, at: CGPoint(x: width * 0.65, y: center.y - width * 0.03 + sin(t * 0.3) * 7),
-          length: width * 0.27, angle: 133, color: Ink.pearl)
+          length: width * 0.27 * heroScale, angle: 133, color: Ink.pearl)
         blossom(
           context, at: CGPoint(x: width * 0.81, y: center.y + width * 0.24), radius: width * 0.045)
       } else {
