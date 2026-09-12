@@ -46,6 +46,13 @@ xcrun simctl launch booted com.nader.velvetvoltage
 
 ## Implementation and limitations
 
+The Art Deco cabinet pairs an original generated architectural mural with native
+layered brass hardware, enamel inlays, reflective flippers and a chrome ball.
+The same bundled artwork anchors the icon and collectible result poster.
+A native dot-matrix score display and illuminated target rings keep live game
+information separate from the printed playfield. Artwork loads locally; no
+generation or download occurs at runtime.
+
 The table uses a bounded fixed-substep circle/segment collision solver with
 gravity, restitution, bumper impulses, friction, capped speed, and touch-driven
 flipper impulses; SpriteKit renders the table, ball trail and neon particles.
