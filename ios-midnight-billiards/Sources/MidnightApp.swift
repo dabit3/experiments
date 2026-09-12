@@ -390,6 +390,8 @@ struct ClubView: View {
                                 Text(session.spin == 0 ? "Center" : session.spin > 0 ? "Follow" : "Draw")
                                     .font(.system(size: 12, weight: .medium)).foregroundStyle(Club.ivory)
                             }
+                            .lineLimit(1)
+                            .fixedSize()
                         }
                         .frame(height: 44)
                     }
@@ -397,13 +399,15 @@ struct ClubView: View {
                         "Spin: \(session.spin == 0 ? "center" : session.spin > 0 ? "follow" : "draw"). Tap to change."
                     )
                     .disabled(game.shooting || game.turn == 1)
-                    Spacer()
+                    Spacer(minLength: 6)
                     VStack(alignment: .trailing, spacing: 1) {
                         Text("SHOTS").font(.system(size: 8, weight: .medium)).tracking(1.2)
                             .foregroundStyle(Club.muted)
                         Text("\(game.shots)").font(.system(size: 13, weight: .regular, design: .serif))
                             .monospacedDigit().foregroundStyle(Club.ivory)
                     }
+                    .lineLimit(1)
+                    .fixedSize()
                 }
                 Spacer(minLength: 0)
                 if game.canShoot && game.turn == 0 {
