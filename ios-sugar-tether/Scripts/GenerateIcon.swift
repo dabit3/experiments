@@ -121,13 +121,12 @@ for (x, y, radius) in [(207.0, 748.0, 53.0), (815.0, 708.0, 44.0)] {
   star.fill()
 }
 image.unlockFocus()
-let bitmap = NSBitmapImageRep(
-  bitmapDataPlanes: nil, pixelsWide: dimension, pixelsHigh: dimension,
-  bitsPerSample: 8, samplesPerPixel: 3, hasAlpha: false, isPlanar: false,
-  colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0)!
-NSGraphicsContext.saveGraphicsState()
-NSGraphicsContext.current = NSGraphicsContext(bitmapImageRep: bitmap)
-image.draw(in: NSRect(x: 0, y: 0, width: dimension, height: dimension))
-NSGraphicsContext.restoreGraphicsState()
-let png = bitmap.representation(using: .png, properties: [:])!
+let bitmap = NSBitmapImageRep(data: image.tiffRepresentation!)!
+let opaque = CGContext(
+  data: nil, width: dimension, height: dimension, bitsPerComponent: 8,
+  bytesPerRow: 0, space: CGColorSpaceCreateDeviceRGB(),
+  bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
+opaque.draw(bitmap.cgImage!, in: CGRect(x: 0, y: 0, width: dimension, height: dimension))
+let png = NSBitmapImageRep(cgImage: opaque.makeImage()!).representation(
+  using: .png, properties: [:])!
 try png.write(to: URL(fileURLWithPath: "Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png"))
