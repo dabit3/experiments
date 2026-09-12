@@ -490,38 +490,41 @@ struct GameView: View {
 struct TutorialView: View {
   let done: () -> Void
   var body: some View {
-    VStack(alignment: .leading, spacing: 24) {
-      Text("A SMALL PACKING RITUAL").font(.system(size: 11, weight: .bold, design: .monospaced))
-        .tracking(1.5).foregroundStyle(Palette.orange)
-      Text("Everything\nhas its place.").font(.system(size: 43, weight: .regular, design: .serif))
-        .tracking(-1.5)
-      HStack {
-        Spacer()
-        PolyominoArt(piece: LunchBook.all[0].pieces[1], cellSize: 50, showLetter: true)
-        Image(systemName: "arrow.right").padding(20).foregroundStyle(Palette.orange)
-        ZStack(alignment: .topTrailing) {
-          Image(systemName: "square.grid.2x2").font(.system(size: 72, weight: .ultraLight))
-          Text("B").font(.system(size: 14, weight: .bold, design: .monospaced))
-            .foregroundStyle(Palette.paper).padding(7).background(Palette.orange, in: Circle())
+    ScrollView {
+      VStack(alignment: .leading, spacing: 24) {
+        Text("A SMALL PACKING RITUAL").font(.system(size: 11, weight: .bold, design: .monospaced))
+          .tracking(1.5).foregroundStyle(Palette.orange)
+        Text("Everything\nhas its place.").font(.system(size: 43, weight: .regular, design: .serif))
+          .tracking(-1.5).fixedSize(horizontal: false, vertical: true)
+        HStack {
+          Spacer()
+          PolyominoArt(piece: LunchBook.all[0].pieces[1], cellSize: 50, showLetter: true)
+          Image(systemName: "arrow.right").padding(20).foregroundStyle(Palette.orange)
+          ZStack(alignment: .topTrailing) {
+            Image(systemName: "square.grid.2x2").font(.system(size: 72, weight: .ultraLight))
+            Text("B").font(.system(size: 14, weight: .bold, design: .monospaced))
+              .foregroundStyle(Palette.paper).padding(7).background(Palette.orange, in: Circle())
+          }
+          Spacer()
         }
-        Spacer()
+        instruction(
+          "01", "Choose, turn, tuck.",
+          "Tap an ingredient, rotate if needed, then tap where its letter-marked square should go. Or drag it into the box."
+        )
+        instruction(
+          "02", "Sweet stays separate.",
+          "Savory food on the left. Fruit on the right. Fill every square without crossing the divider."
+        )
+        instruction(
+          "03", "Make every move count.",
+          "Each placement uses a move. A perfect lunch places every piece once. Undo is free; Guide earns one star."
+        )
+        Button("Let’s pack") { done() }.buttonStyle(PrimaryButton()).accessibilityIdentifier(
+          "Finish tutorial")
       }
-      instruction(
-        "01", "Choose, turn, tuck.",
-        "Tap an ingredient, rotate if needed, then tap where its letter-marked square should go. Or drag it into the box."
-      )
-      instruction(
-        "02", "Sweet stays separate.",
-        "Savory food on the left. Fruit on the right. Fill every square without crossing the divider."
-      )
-      instruction(
-        "03", "Make every move count.",
-        "Each placement uses a move. A perfect lunch places every piece once. Undo is free; Guide earns one star."
-      )
-      Button("Let’s pack") { done() }.buttonStyle(PrimaryButton()).accessibilityIdentifier(
-        "Finish tutorial")
+      .padding(28)
     }
-    .padding(28).frame(maxHeight: .infinity).background(Palette.paper).foregroundStyle(Palette.ink)
+    .frame(maxHeight: .infinity).background(Palette.paper).foregroundStyle(Palette.ink)
   }
 
   private func instruction(_ number: String, _ title: String, _ body: String) -> some View {
