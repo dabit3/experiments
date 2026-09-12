@@ -184,7 +184,7 @@ struct ClubView: View {
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
                         Text("\(game.score)").font(.system(size: 29, weight: .regular, design: .serif))
                             .monospacedDigit()
-                        Text("POINTS").font(.system(size: 8, weight: .medium)).tracking(1)
+                        Text("POINTS").font(.system(size: 10, weight: .medium)).tracking(0.8)
                             .foregroundStyle(Club.muted)
                         if game.streak > 1 {
                             Text("×\(min(5, game.streak))").font(.system(size: 13, weight: .bold))
@@ -192,7 +192,7 @@ struct ClubView: View {
                         }
                     }
                     Spacer()
-                    Text("BEST  \(session.best)").font(.system(size: 9, weight: .medium)).tracking(1)
+                    Text("BEST  \(session.best)").font(.system(size: 11, weight: .medium)).tracking(0.7)
                         .foregroundStyle(Club.muted)
                     let seconds = Int(ceil(game.secondsRemaining))
                     Text(String(format: "%d:%02d", seconds / 60, seconds % 60))
@@ -201,8 +201,10 @@ struct ClubView: View {
                         .accessibilityIdentifier("challengeTimer")
                 }
                 Spacer(minLength: 0)
-                Text("MIDNIGHT").font(.system(size: 9, weight: .medium, design: .serif)).tracking(2)
-                    .foregroundStyle(Club.gold.opacity(0.7))
+                if game.mode == .challenge {
+                    Text("MIDNIGHT").font(.system(size: 9, weight: .medium, design: .serif)).tracking(2)
+                        .foregroundStyle(Club.gold.opacity(0.7))
+                }
             }
             .foregroundStyle(Club.ivory)
             HStack(spacing: 12) {
@@ -216,13 +218,13 @@ struct ClubView: View {
                         onTouch: session.touchTable)
                     Spacer(minLength: 0)
                     Text(game.detail)
-                        .font(.system(size: 10))
+                        .font(.system(size: 11))
                         .foregroundStyle(Club.muted)
                         .lineLimit(2)
                         .multilineTextAlignment(.center)
                         .frame(height: 25)
                 }
-                controls(game).frame(width: 164)
+                controls(game).frame(width: 174)
             }
         }
         .padding(.horizontal, 8)
@@ -234,22 +236,21 @@ struct ClubView: View {
         HStack(spacing: 7) {
             Circle().fill(active ? Club.teal : Club.muted.opacity(0.25)).frame(width: 5, height: 5)
             VStack(alignment: .leading, spacing: 5) {
-                Text(name).font(.system(size: 9, weight: .semibold)).tracking(1.3)
+                Text(group.map { "\(name) · \($0.rawValue.uppercased())" } ?? name)
+                    .font(.system(size: 11, weight: .semibold)).tracking(0.7)
                     .foregroundStyle(active ? Club.ivory : Club.muted)
                 if let group {
                     HStack(spacing: 3) {
                         if remaining.isEmpty {
-                            BallBadge(number: 8, size: 14)
-                            Text("CALL POCKET").font(.system(size: 7, weight: .medium)).foregroundStyle(
+                            BallBadge(number: 8, size: 18)
+                            Text("CALL POCKET").font(.system(size: 10, weight: .medium)).foregroundStyle(
                                 Club.gold)
                         } else {
-                            ForEach(remaining, id: \.self) { BallBadge(number: $0, size: 13) }
+                            ForEach(remaining, id: \.self) { BallBadge(number: $0, size: 18) }
                         }
-                        Text(group.rawValue.uppercased()).font(.system(size: 6, weight: .medium))
-                            .foregroundStyle(Club.muted)
                     }
                 } else {
-                    Text("OPEN TABLE").font(.system(size: 7, weight: .medium)).tracking(0.8).foregroundStyle(
+                    Text("OPEN TABLE").font(.system(size: 10, weight: .medium)).tracking(0.7).foregroundStyle(
                         Club.muted)
                 }
             }
@@ -258,16 +259,16 @@ struct ClubView: View {
     }
 
     private func controls(_ game: GameEngine) -> some View {
-        VStack(alignment: .leading, spacing: 9) {
+        VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text(game.mode == .match ? "HOUSE TABLE" : "SOLO SESSION")
-                    .font(.system(size: 8, weight: .semibold)).tracking(1.4).foregroundStyle(Club.gold)
+                    .font(.system(size: 10, weight: .semibold)).tracking(0.8).foregroundStyle(Club.gold)
                 Spacer()
                 Button {
                     session.toggleSound()
                 } label: {
                     Image(systemName: session.soundOn ? "speaker.wave.2" : "speaker.slash")
-                        .font(.system(size: 12)).frame(width: 30, height: 30)
+                        .font(.system(size: 13)).frame(width: 44, height: 34)
                 }
                 .accessibilityLabel(session.soundOn ? "Mute sound" : "Enable sound")
             }
@@ -276,10 +277,10 @@ struct ClubView: View {
                 .foregroundStyle(Club.ivory)
                 .lineLimit(2)
                 .minimumScaleFactor(0.8)
-                .frame(height: 49, alignment: .topLeading)
+                .frame(height: 46, alignment: .topLeading)
             Rectangle().fill(Club.gold.opacity(0.18)).frame(height: 1)
             if game.ballInHand && game.turn == 0 {
-                Text("BALL IN HAND").font(.system(size: 9, weight: .semibold)).tracking(1.2).foregroundStyle(
+                Text("BALL IN HAND").font(.system(size: 11, weight: .semibold)).tracking(0.8).foregroundStyle(
                     Club.gold)
                 Text("Tap clear felt to move the cue ball.")
                     .font(.system(size: 12)).foregroundStyle(Club.muted)
@@ -288,10 +289,10 @@ struct ClubView: View {
                     .accessibilityIdentifier("confirmPlacement")
             } else {
                 HStack {
-                    Text("POWER").font(.system(size: 8, weight: .medium)).tracking(1.3)
+                    Text("POWER").font(.system(size: 10, weight: .medium)).tracking(1)
                     Spacer()
                     Text("\(Int(session.power * 100))%").font(
-                        .system(size: 11, weight: .medium, design: .monospaced))
+                        .system(size: 12, weight: .medium, design: .monospaced))
                 }.foregroundStyle(Club.muted)
                 Slider(value: $session.power, in: 0.05...1)
                     .accessibilityLabel("Shot power")
@@ -302,14 +303,20 @@ struct ClubView: View {
                     Button {
                         session.angle -= .pi / 720
                     } label: {
-                        Image(systemName: "minus").frame(width: 44, height: 36)
+                        Image(systemName: "minus").frame(width: 44, height: 44)
                     }.accessibilityLabel("Aim counterclockwise")
-                    Text("FINE AIM").font(.system(size: 7, weight: .medium)).tracking(0.7)
-                        .frame(maxWidth: .infinity)
+                    VStack(spacing: 2) {
+                        Text("FINE AIM").font(.system(size: 9, weight: .medium)).tracking(0.5)
+                        Text(String(format: "%.2f°", session.angle * 180 / .pi))
+                            .font(.system(size: 10, weight: .medium, design: .monospaced))
+                            .foregroundStyle(Club.gold)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .accessibilityIdentifier("aimAngle")
                     Button {
                         session.angle += .pi / 720
                     } label: {
-                        Image(systemName: "plus").frame(width: 44, height: 36)
+                        Image(systemName: "plus").frame(width: 44, height: 44)
                     }.accessibilityLabel("Aim clockwise")
                 }
                 .font(.system(size: 12))
@@ -327,7 +334,7 @@ struct ClubView: View {
                                     y: -session.spin * 6)
                             }
                             Text(session.spin == 0 ? "CENTER" : session.spin > 0 ? "FOLLOW" : "DRAW")
-                                .font(.system(size: 8, weight: .medium)).tracking(1)
+                                .font(.system(size: 10, weight: .medium)).tracking(0.6)
                         }
                         .frame(height: 30)
                     }
@@ -336,20 +343,27 @@ struct ClubView: View {
                     )
                     .disabled(game.shooting || game.turn == 1)
                     Spacer()
-                    Text("\(game.shots) SHOTS").font(.system(size: 7)).foregroundStyle(Club.muted)
+                    Text("\(game.shots) SHOTS").font(.system(size: 10)).foregroundStyle(Club.muted)
                 }
                 Spacer(minLength: 0)
-                actionButton(
-                    game.shooting
-                        ? "Rolling…"
-                        : game.turn == 1
-                            ? "Avery’s turn"
-                            : game.requiresCall && game.calledPocket == nil ? "Call a pocket" : "Take shot",
-                    icon: game.shooting ? "ellipsis" : "arrow.right"
-                ) { session.strike() }
-                .disabled(!game.canShoot || game.turn == 1)
-                .opacity(game.canShoot && game.turn == 0 ? 1 : 0.45)
-                .accessibilityIdentifier("takeShot")
+                if game.canShoot && game.turn == 0 {
+                    actionButton("Take shot", icon: "arrow.right") { session.strike() }
+                        .accessibilityIdentifier("takeShot")
+                } else {
+                    HStack(spacing: 8) {
+                        Image(systemName: game.shooting ? "circle.dotted" : "scope")
+                        Text(
+                            game.shooting
+                                ? "Balls rolling" : game.turn == 1 ? "Avery’s turn" : "Call a pocket"
+                        )
+                        .font(.system(size: 13, weight: .medium))
+                    }
+                    .foregroundStyle(Club.ivory)
+                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .background(Club.ink.opacity(0.6), in: RoundedRectangle(cornerRadius: 9))
+                    .overlay(RoundedRectangle(cornerRadius: 9).stroke(Club.gold.opacity(0.3)))
+                    .accessibilityIdentifier("shotStatus")
+                }
             }
         }
         .padding(13)

@@ -154,7 +154,7 @@ struct TableView: View {
         context.draw(
             Text("M I D N I G H T").font(.system(size: 8, weight: .medium, design: .serif)).foregroundColor(
                 Club.gold.opacity(0.65)),
-            at: CGPoint(x: 330, y: 346))
+            at: CGPoint(x: 420, y: 346))
     }
 
     private func diamond(_ context: inout GraphicsContext, at center: CGPoint) {

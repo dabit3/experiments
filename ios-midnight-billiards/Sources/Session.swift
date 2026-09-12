@@ -57,7 +57,12 @@ final class GameSession: ObservableObject {
         if wasShooting && !engine.shooting {
             totalPots += engine.lastPots.count
             UserDefaults.standard.set(totalPots, forKey: "totalPots")
-            if engine.turn == 0 { angle = engine.bestShot().angle }
+            if engine.turn == 0 {
+                angle = engine.bestShot().angle
+                if !engine.ballInHand && !engine.requiresCall && !engine.finished {
+                    engine.detail = "Suggested line · refine your aim and power before shooting."
+                }
+            }
         }
         if engine.mode == .match && engine.turn == 1 && !engine.shooting && !engine.finished {
             aiDelay += dt
