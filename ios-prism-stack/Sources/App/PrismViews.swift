@@ -10,10 +10,9 @@ struct PrismRoot: View {
       PrismBackdrop()
       switch model.screen {
       case .title: TitleView(model: model)
-      case .playing, .paused, .result:
-        GameView(model: model)
-        if model.screen == .paused { PauseView(model: model) }
-        if model.screen == .result { ResultView(model: model) }
+      case .playing: GameView(model: model)
+      case .paused: PauseView(model: model)
+      case .result: ResultView(model: model)
       }
     }
     .foregroundStyle(PrismStyle.paper)
@@ -228,10 +227,10 @@ struct GameView: View {
       }
       Text(
         model.gestures
-          ? "DRAG TO MOVE · TAP TO ROTATE · FLICK DOWN TO DROP"
-          : "HOLD ARROWS TO GLIDE · TAP DROP TO PLACE"
+          ? "Drag to move · tap to turn · flick down to drop"
+          : "Hold arrows to glide · tap DROP to place"
       )
-      .font(.system(size: 8, weight: .medium)).tracking(1)
+      .font(.system(size: 10, weight: .medium)).tracking(0.25)
       .foregroundStyle(PrismStyle.mist).padding(.top, 2)
     }
   }
@@ -246,38 +245,42 @@ struct ControlButton: View {
   @State private var repeatTask: Task<Void, Never>?
 
   var body: some View {
-    Button(action: action) {
-      Image(systemName: symbol).font(.system(size: 19, weight: .medium))
-        .frame(maxWidth: .infinity).frame(height: 48)
-        .background(
-          .white.opacity(pressed ? 0.13 : 0.055), in: RoundedRectangle(cornerRadius: 12)
-        )
-        .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(.white.opacity(0.09)))
-    }
-    .buttonStyle(.plain).accessibilityLabel(name)
-    .onLongPressGesture(
-      minimumDuration: 0.22,
-      pressing: { isPressed in
-        pressed = isPressed
-        if !isPressed {
-          repeatTask?.cancel()
-          repeatTask = nil
-        }
-      },
-      perform: {
-        guard repeats else { return }
-        repeatTask = Task { @MainActor in
-          while !Task.isCancelled {
+    Image(systemName: symbol).font(.system(size: 19, weight: .medium))
+      .frame(maxWidth: .infinity).frame(height: 48)
+      .background(
+        .white.opacity(pressed ? 0.13 : 0.055), in: RoundedRectangle(cornerRadius: 12)
+      )
+      .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(.white.opacity(0.09)))
+      .contentShape(Rectangle())
+      .gesture(
+        DragGesture(minimumDistance: 0)
+          .onChanged { _ in
+            guard !pressed else { return }
+            pressed = true
             action()
-            try? await Task.sleep(for: .milliseconds(70))
+            guard repeats else { return }
+            repeatTask = Task { @MainActor in
+              try? await Task.sleep(for: .milliseconds(220))
+              while !Task.isCancelled {
+                action()
+                try? await Task.sleep(for: .milliseconds(70))
+              }
+            }
           }
-        }
+          .onEnded { _ in
+            pressed = false
+            repeatTask?.cancel()
+            repeatTask = nil
+          }
+      )
+      .accessibilityLabel(name)
+      .accessibilityAddTraits(.isButton)
+      .accessibilityAction { action() }
+      .onDisappear {
+        repeatTask?.cancel()
+        repeatTask = nil
+        pressed = false
       }
-    )
-    .onDisappear {
-      repeatTask?.cancel()
-      repeatTask = nil
-    }
   }
 }
 
@@ -363,7 +366,7 @@ struct PauseView: View {
 
   var body: some View {
     ZStack {
-      PrismStyle.ink.opacity(0.94).ignoresSafeArea()
+      PrismBackdrop()
       VStack(spacing: 24) {
         Image(systemName: "pause.circle").font(.system(size: 40, weight: .ultraLight))
           .foregroundStyle(PrismStyle.ice)
@@ -408,7 +411,7 @@ struct ResultView: View {
 
   var body: some View {
     ZStack {
-      PrismStyle.ink.opacity(0.94).ignoresSafeArea()
+      PrismBackdrop()
       VStack(spacing: 24) {
         Image(systemName: "sparkles").font(.system(size: 35, weight: .ultraLight))
           .foregroundStyle(PrismStyle.ice)

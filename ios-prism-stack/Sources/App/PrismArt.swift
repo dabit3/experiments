@@ -25,8 +25,8 @@ func drawGem(_ context: GraphicsContext, rect: CGRect, jewel: Jewel, ghost: Bool
   let inset = rect.insetBy(dx: 1.1, dy: 1.1)
   let path = Path(roundedRect: inset, cornerRadius: max(2, rect.width * 0.10))
   if ghost {
-    context.fill(path, with: .color(jewel.color.opacity(0.075)))
-    context.stroke(path, with: .color(jewel.color.opacity(0.6)), lineWidth: 1)
+    context.fill(path, with: .color(jewel.color.opacity(0.11)))
+    context.stroke(path, with: .color(jewel.color.opacity(0.85)), lineWidth: 1.4)
     return
   }
   context.fill(
