@@ -7,6 +7,6 @@ let package = Package(
     products: [.library(name: "PostcardRules", targets: ["PostcardRules"])],
     targets: [
         .target(name: "PostcardRules", path: "Sources/Core"),
-        .testTarget(name: "PostcardRulesTests", dependencies: ["PostcardRules"], path: "Tests"),
+        .testTarget(name: "PostcardRulesTests", dependencies: ["PostcardRules"], path: "Tests", exclude: ["App"]),
     ]
 )

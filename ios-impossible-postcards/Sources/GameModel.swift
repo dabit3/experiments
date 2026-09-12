@@ -16,19 +16,24 @@ final class GameModel: ObservableObject {
     @Published var page: Page = .cover
     @Published var paused = false
     @Published var walking = false
+    @Published var turning = false
+    @Published var movingTo: Int?
     @Published var showingHint = false
     @Published var rejectedTile: Int?
     @Published var feedbackTick = 0
     @Published var focusedMechanism: Int?
     @Published var message = "Tap a landing. Find a different way."
     private var walkTask: Task<Void, Never>?
+    private var turnTask: Task<Void, Never>?
     private let tones = PostcardTones()
     private let storageKey = "impossiblePostcards.journal.v1"
+    private let defaults: UserDefaults
 
     enum Page { case cover, collection, game, result }
 
-    init() {
-        let saved = UserDefaults.standard.data(forKey: storageKey)
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        let saved = defaults.data(forKey: storageKey)
         let decoded = saved.flatMap { try? JSONDecoder().decode(TravelJournal.self, from: $0) }
         var journal = decoded ?? TravelJournal()
         if !Chapters.all.indices.contains(journal.chapter) {
@@ -66,12 +71,13 @@ final class GameModel: ObservableObject {
     func save() {
         journal.journey = state
         if let data = try? JSONEncoder().encode(journal) {
-            UserDefaults.standard.set(data, forKey: storageKey)
+            defaults.set(data, forKey: storageKey)
         }
     }
 
     func start(_ index: Int, fresh: Bool = true) {
         cancelWalk()
+        cancelTurn()
         journal.chapter = index
         if fresh {
             state = chapter.initialState
@@ -85,8 +91,8 @@ final class GameModel: ObservableObject {
         save()
     }
 
-    func walk(to tile: Int) {
-        guard page == .game, !paused, !walking else { return }
+    func walk(to tile: Int, reduceMotion: Bool = false) {
+        guard page == .game, !paused, !walking, !turning else { return }
         guard let path = chapter.path(to: tile, state: state), !path.isEmpty else {
             if tile != state.tile {
                 rejectedTile = tile
@@ -110,8 +116,16 @@ final class GameModel: ObservableObject {
             for tile in path {
                 guard !Task.isCancelled, !paused,
                       let next = chapter.applying(.walk(tile), to: state) else { break }
+                movingTo = tile
+                do {
+                    try await Task.sleep(for: .milliseconds(reduceMotion ? 40 : 400))
+                } catch {
+                    return
+                }
+                guard !Task.isCancelled, !paused else { return }
                 let previousSeals = state.switches
                 state = next
+                movingTo = nil
                 if state.switches != previousSeals {
                     message = seals == totalSeals ? "The arch is open. Your postcard is waiting." : "A sun seal awakens."
                     feedback(.success)
@@ -120,7 +134,6 @@ final class GameModel: ObservableObject {
                     tone(330 + Double(tile % 4) * 55)
                 }
                 save()
-                do { try await Task.sleep(for: .milliseconds(380)) } catch { break }
             }
             walking = false
             if !Task.isCancelled, !paused, chapter.hasArrived(state) {
@@ -129,8 +142,8 @@ final class GameModel: ObservableObject {
         }
     }
 
-    func rotate(_ index: Int) {
-        guard page == .game, !paused, !walking else { return }
+    func rotate(_ index: Int, reduceMotion: Bool = false) {
+        guard page == .game, !paused, !walking, !turning else { return }
         guard let next = chapter.applying(.rotate(index), to: state) else {
             rejectedTile = chapter.mechanisms[index].center
             feedbackTick += 1
@@ -139,11 +152,20 @@ final class GameModel: ObservableObject {
             return
         }
         focusedMechanism = index
+        turning = true
         state = next
         message = "A new alignment. Tap a connected landing."
         UIImpactFeedbackGenerator(style: .soft).impactOccurred()
         tone(262)
         save()
+        turnTask = Task { [weak self] in
+            do {
+                try await Task.sleep(for: .milliseconds(reduceMotion ? 40 : 560))
+            } catch {
+                return
+            }
+            self?.turning = false
+        }
     }
 
     func setPaused(_ value: Bool) {
@@ -160,6 +182,7 @@ final class GameModel: ObservableObject {
 
     func showCollection() {
         cancelWalk()
+        cancelTurn()
         paused = false
         save()
         page = .collection
@@ -185,7 +208,14 @@ final class GameModel: ObservableObject {
     private func cancelWalk() {
         walkTask?.cancel()
         walkTask = nil
+        movingTo = nil
         walking = false
+    }
+
+    private func cancelTurn() {
+        turnTask?.cancel()
+        turnTask = nil
+        turning = false
     }
 
     private func tone(_ frequency: Double) {

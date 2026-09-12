@@ -30,11 +30,18 @@ changing target configuration. The asset generator recreates the original icon.
 ```sh
 swiftformat Sources Tests Scripts Package.swift --lint
 swift test
+xcodebuild -project ImpossiblePostcards.xcodeproj \
+  -scheme ImpossiblePostcards \
+  -destination 'platform=iOS Simulator,name=iPhone 17' \
+  -derivedDataPath build CODE_SIGNING_ALLOWED=NO test
 ```
 
 The deterministic rules suite checks authored solutions, changing connectivity,
 four-turn identity, disconnected input, gate/switch rules, move counting, save
 validation and that every reachable puzzle state can still finish.
+Four native model tests cover input during bridge rotation, delayed arrival
+effects, interruption persistence and cancellation across chapter restarts.
+Substitute an installed iPhone Simulator name in the native test command.
 
 ## Controls and progression
 
@@ -45,6 +52,8 @@ validation and that every reachable puzzle state can still finish.
 - **Turn** rotates the indicated colored bridge clockwise by 90 degrees, at the
   cost of one move. Round bridge centers are safe places to ride a rotation.
   The upper bridges in chapters III and IV awaken after the first seal.
+  Wait for the bridge to settle before walking. On two-bridge boards, I/II match
+  the controls; the occupied bridge control is outlined.
 - Wake all sun seals to open the final arch, then tap its landing to finish.
 - Pause, resume, restart and guidance are available during play. Audio can be
   toggled on the cover, collection or pause card. The app respects silent mode.

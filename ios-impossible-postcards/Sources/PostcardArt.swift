@@ -73,6 +73,7 @@ struct PostcardWorld: View {
     let chapter: Chapter
     let state: PuzzleState
     var interactive = false
+    var movingTo: Int?
     var rejectedTile: Int?
     var feedbackTick = 0
     var focusedMechanism: Int?
@@ -99,18 +100,21 @@ struct PostcardWorld: View {
                         .allowsHitTesting(false)
                         .accessibilityHidden(true)
                 }
-                if let rejectedTile {
+                ForEach(chapter.tiles) { tile in
                     Ellipse()
                         .stroke(PostcardPalette.chapter(chapter.id).deep, lineWidth: 2)
                         .frame(width: 40 * projection.scale, height: 23 * projection.scale)
-                        .phaseAnimator([false, true, false], trigger: feedbackTick) { content, expanded in
+                        .phaseAnimator(
+                            [false, true, false],
+                            trigger: rejectedTile == tile.id ? feedbackTick : 0
+                        ) { content, expanded in
                             content
                                 .scaleEffect(expanded ? 1.4 : 0.9)
                                 .opacity(expanded ? 0.95 : 0)
                         } animation: { _ in
                             reduceMotion ? .linear(duration: 0.1) : .easeInOut(duration: 0.3)
                         }
-                        .position(projection.point(chapter.tiles[rejectedTile].point))
+                        .position(projection.point(tile.point))
                         .allowsHitTesting(false)
                         .accessibilityHidden(true)
                 }
@@ -129,7 +133,10 @@ struct PostcardWorld: View {
                 Traveler(accent: PostcardPalette.chapter(chapter.id).deep)
                     .frame(width: 21 * projection.scale, height: 32 * projection.scale)
                     .position(travelerPosition(projection))
-                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.32), value: state.tile)
+                    .animation(
+                        reduceMotion || movingTo == nil ? nil : .easeInOut(duration: 0.32),
+                        value: movingTo ?? state.tile
+                    )
                     .allowsHitTesting(false)
                     .accessibilityHidden(true)
             }
@@ -149,7 +156,7 @@ struct PostcardWorld: View {
     }
 
     private func travelerPosition(_ projection: WorldProjection) -> CGPoint {
-        var point = projection.point(chapter.tiles[state.tile].point)
+        var point = projection.point(chapter.tiles[movingTo ?? state.tile].point)
         point.y -= 15 * projection.scale
         return point
     }
@@ -325,18 +332,7 @@ struct WorldPainter {
         polygon([top[2], top[3], bottom[3], bottom[2]], color: moving ? palette.deep : Color(hex: 0xD5C9B3))
         polygon(top, color: moving ? palette.accent : PostcardPalette.ivory)
         if abs(to.z - from.z) > 0.1 {
-            for step in 1 ..< 9 {
-                let t = Double(step) / 9
-                let p = WorldPoint(
-                    x: from.x + (to.x - from.x) * t,
-                    y: from.y + (to.y - from.y) * t,
-                    z: from.z + (to.z - from.z) * t
-                )
-                var line = Path()
-                line.move(to: projection.point(WorldPoint(x: p.x + nx, y: p.y + ny, z: p.z)))
-                line.addLine(to: projection.point(WorldPoint(x: p.x - nx, y: p.y - ny, z: p.z)))
-                context.stroke(line, with: .color(palette.deep.opacity(0.35)), lineWidth: 0.75 * scale)
-            }
+            stairs(from.z < to.z ? from : to, from.z < to.z ? to : from, moving: moving)
         } else {
             var seam = Path()
             seam.move(to: projection.point(from))
@@ -346,6 +342,39 @@ struct WorldPainter {
                 with: .color(.white.opacity(0.24)),
                 style: StrokeStyle(lineWidth: 0.7 * scale, dash: [2 * scale, 5 * scale])
             )
+        }
+    }
+
+    mutating func stairs(_ low: WorldPoint, _ high: WorldPoint, moving: Bool) {
+        let length = hypot(high.x - low.x, high.y - low.y)
+        let inset = min(0.52 / length, 0.4)
+        let dx = high.x - low.x
+        let dy = high.y - low.y
+        let nx = -dy / length * 0.28
+        let ny = dx / length * 0.28
+        let count = max(3, Int(ceil((high.z - low.z) * 7)))
+        let rise = (high.z - low.z) / Double(count)
+        let ordered = (0 ..< count).sorted { dx + dy > 0 ? $0 < $1 : $0 > $1 }
+        for step in ordered {
+            let start = inset + (1 - 2 * inset) * Double(step) / Double(count)
+            let end = inset + (1 - 2 * inset) * Double(step + 1) / Double(count)
+            let z = low.z + rise * Double(step + 1)
+            let near = WorldPoint(x: low.x + dx * start, y: low.y + dy * start, z: z)
+            let far = WorldPoint(x: low.x + dx * end, y: low.y + dy * end, z: z)
+            let top = [
+                WorldPoint(x: near.x + nx, y: near.y + ny, z: z),
+                WorldPoint(x: far.x + nx, y: far.y + ny, z: z),
+                WorldPoint(x: far.x - nx, y: far.y - ny, z: z),
+                WorldPoint(x: near.x - nx, y: near.y - ny, z: z),
+            ].map(projection.point)
+            let lowerLeft = projection.point(WorldPoint(x: near.x + nx, y: near.y + ny, z: z - rise))
+            let lowerRight = projection.point(WorldPoint(x: near.x - nx, y: near.y - ny, z: z - rise))
+            polygon([top[0], top[3], lowerRight, lowerLeft], color: moving ? palette.deep : Color(hex: 0xAAA991))
+            polygon(top, color: moving ? palette.accent : PostcardPalette.ivory)
+            var edge = Path()
+            edge.move(to: top[0])
+            edge.addLine(to: top[3])
+            context.stroke(edge, with: .color(palette.deep.opacity(0.6)), lineWidth: 0.8 * scale)
         }
     }
 

@@ -26,8 +26,21 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: studio.postcards.impossible
         INFOPLIST_KEY_CFBundleDisplayName: Impossible Postcards
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  PostcardMotionTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - Tests/App
+    dependencies:
+      - target: ImpossiblePostcards
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: studio.postcards.motiontests
 schemes:
   ImpossiblePostcards:
     build:
       targets:
         ImpossiblePostcards: all
+    test:
+      targets:
+        - PostcardMotionTests

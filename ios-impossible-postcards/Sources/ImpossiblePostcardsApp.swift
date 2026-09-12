@@ -166,9 +166,10 @@ struct PostcardsView: View {
             .padding(.horizontal, 34)
             .padding(.top, 21)
             PostcardWorld(
-                chapter: game.chapter, state: game.state, interactive: true,
+                chapter: game.chapter, state: game.state, interactive: true, movingTo: game.movingTo,
                 rejectedTile: game.rejectedTile, feedbackTick: game.feedbackTick,
-                focusedMechanism: game.focusedMechanism, onTile: game.walk
+                focusedMechanism: game.focusedMechanism,
+                onTile: { game.walk(to: $0, reduceMotion: reduceMotion) }
             )
             .id(game.chapter.id)
             .frame(maxHeight: .infinity)
@@ -395,13 +396,15 @@ struct PostcardsView: View {
     private func turnButton(_ index: Int) -> some View {
         let mechanism = game.chapter.mechanisms[index]
         let enabled = game.chapter.canRotate(index, state: game.state)
-        return Button { game.rotate(index) } label: {
+        let occupied = mechanism.center == (game.movingTo ?? game.state.tile)
+        return Button { game.rotate(index, reduceMotion: reduceMotion) } label: {
             HStack(spacing: 9) {
                 if game.chapter.mechanisms.count > 1 {
                     Text(index == 0 ? "I" : "II")
                         .font(.system(size: 14, weight: .medium, design: .serif))
                         .frame(width: 26, height: 26)
-                        .overlay(Circle().stroke(palette.deep.opacity(0.7), lineWidth: 1))
+                        .background(occupied ? palette.accent.opacity(0.22) : .clear, in: Circle())
+                        .overlay(Circle().stroke(palette.deep.opacity(0.7), lineWidth: occupied ? 2 : 1))
                 } else {
                     Image(systemName: enabled ? "arrow.clockwise" : "lock")
                         .font(.system(size: 21, weight: .light))
@@ -420,13 +423,19 @@ struct PostcardsView: View {
             .frame(maxWidth: .infinity, minHeight: 34)
             .padding(.horizontal, 17).padding(.vertical, 13)
             .background(PostcardPalette.paper.opacity(enabled ? 0.88 : 0.42), in: RoundedRectangle(cornerRadius: 13))
-            .overlay(RoundedRectangle(cornerRadius: 13).stroke(palette.deep.opacity(0.27), lineWidth: 1))
+            .overlay(RoundedRectangle(cornerRadius: 13).stroke(
+                palette.deep.opacity(occupied ? 0.65 : 0.27),
+                lineWidth: occupied ? 1.5 : 1
+            ))
         }
         .buttonStyle(.plain)
-        .disabled(game.walking)
-        .opacity(game.walking ? 0.6 : 1)
+        .disabled(game.walking || game.turning)
+        .opacity(game.walking || game.turning ? 0.6 : 1)
         .accessibilityLabel("Turn \(mechanism.name)")
-        .accessibilityValue(enabled ? "Quarter turn clockwise" : "Requires first sun seal")
+        .accessibilityValue(
+            enabled ? (occupied ? "Traveler aboard. Quarter turn clockwise" : "Quarter turn clockwise") :
+                "Requires first sun seal"
+        )
     }
 
     private var soundButton: some View {
