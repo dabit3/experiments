@@ -32,7 +32,9 @@ struct BreakwaterView: View {
     }
     .font(.system(.body, design: .rounded))
     .foregroundStyle(HarborPalette.ivory)
-    .onReceive(timer) { _ in model.step(1.0 / 30) }
+    .onReceive(timer) { _ in
+      if scenePhase == .active { model.step(1.0 / 30) }
+    }
     .onChange(of: scenePhase) { _, phase in
       if phase != .active { model.pause() }
     }
@@ -211,7 +213,7 @@ struct BreakwaterView: View {
             )
             .accessibilityIdentifier("routeSurface")
           if model.phase == .paused { pauseOverlay }
-          if model.phase == .won || model.phase == .lost { resultOverlay }
+          if model.resultReady { resultOverlay }
         }
         .clipped()
       }
@@ -229,7 +231,16 @@ struct BreakwaterView: View {
             .font(.system(size: 13, design: .serif)).italic()
             .foregroundStyle(HarborPalette.muted)
         } else {
-          resultControls
+          if model.resultReady {
+            resultControls
+          } else {
+            VStack(spacing: 10) {
+              eyebrow("THE LIGHT IS YOURS")
+              Text("Bringing the little fleet alongside…")
+                .font(.system(size: 15, design: .serif)).italic()
+                .foregroundStyle(HarborPalette.brass)
+            }
+          }
         }
       }
       .frame(height: 120)
@@ -241,7 +252,10 @@ struct BreakwaterView: View {
       HStack {
         Text(
           model.phase == .sailing
-            ? (model.allRescued ? "All aboard. Follow the light." : "Easy now. Let the tow follow.")
+            ? (model.inCurrent
+              ? "Tidal drift. Give the tow room."
+              : (model.allRescued
+                ? "All aboard. Follow the light." : "Easy now. Let the tow follow."))
             : (model.route.count > 1
               ? "Route \(Int(model.plottedLength)) / \(Int(model.chart.fuel)) fuel"
               : "Trace from the tug. Visit every beacon.")

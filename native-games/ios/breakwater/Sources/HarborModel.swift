@@ -26,6 +26,7 @@ final class HarborModel: ObservableObject {
   @Published var failure = ""
   @Published var showGuide = false
   @Published var pickupFlash = 0.0
+  @Published var harborArrival = 0.0
   @Published var unlocked: Int
   @Published var best: [String: Int]
   @Published var dailyBest: Int
@@ -57,6 +58,10 @@ final class HarborModel: ObservableObject {
   var allRescued: Bool { convoy.count == chart.boats.count }
   var routeFits: Bool { plottedLength <= chart.fuel }
   var canLaunch: Bool { phase == .plotting && route.count > 1 }
+  var resultReady: Bool { phase == .lost || (phase == .won && harborArrival >= 1) }
+  var inCurrent: Bool {
+    phase == .sailing && HarborRules.current(at: tug, chart: chart).length > 1
+  }
 
   func select(_ chart: HarborChart) {
     self.chart = chart
@@ -75,6 +80,7 @@ final class HarborModel: ObservableObject {
     failure = ""
     drawing = false
     pickupFlash = 0
+    harborArrival = 0
     if !keepRoute {
       route = [chart.start]
       strokeStarts = []
@@ -127,8 +133,12 @@ final class HarborModel: ObservableObject {
   }
 
   func step(_ elapsed: Double) {
-    guard phase == .sailing else { return }
     let dt = min(max(0, elapsed), 1.0 / 20)
+    if phase == .won {
+      harborArrival = min(1, harborArrival + dt / 3.2)
+      return
+    }
+    guard phase == .sailing else { return }
     pickupFlash = max(0, pickupFlash - dt)
     let length = plottedLength
     let old = tug
@@ -167,17 +177,38 @@ final class HarborModel: ObservableObject {
 
   func towPosition(_ offset: Int) -> SeaPoint {
     guard convoy.indices.contains(offset) else { return tug }
+    if phase == .won { return dockingPosition(offset, arrival: harborArrival) }
     let boat = convoy[offset]
     let distance = max(boat.pickupDistance, travelled - Double(offset + 1) * 22)
     return HarborRules.point(on: track, distance: distance)
   }
 
   func towHeading(_ offset: Int) -> Double {
+    if phase == .won {
+      let a = dockingPosition(offset, arrival: max(0, harborArrival - 0.01))
+      let b = towPosition(offset)
+      return a.distance(to: b) < 0.1 ? -Double.pi / 2 : atan2(b.y - a.y, b.x - a.x)
+    }
     let boat = convoy[offset]
     let distance = max(boat.pickupDistance, travelled - Double(offset + 1) * 22)
     let a = HarborRules.point(on: track, distance: max(0, distance - 3))
     let b = towPosition(offset)
     return atan2(b.y - a.y, b.x - a.x)
+  }
+
+  private func dockingPosition(_ offset: Int, arrival: Double) -> SeaPoint {
+    let distance = max(convoy[offset].pickupDistance, travelled - Double(offset + 1) * 22)
+    let approach = track + [chart.home]
+    let length = HarborRules.routeLength(approach)
+    let progress = min(1, max(0, arrival * 1.6 - Double(offset) * 0.12))
+    let point = HarborRules.point(
+      on: approach, distance: distance + (length - distance) * min(1, progress / 0.8))
+    let berth =
+      chart.home
+      + SeaPoint(
+        x: Double(offset % 3 - 1) * 15,
+        y: Double(offset / 3) * 19 - 9)
+    return point + (berth - point) * max(0, (progress - 0.8) / 0.2)
   }
 
   private func lose(_ reason: String) {

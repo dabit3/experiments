@@ -172,4 +172,23 @@ final class HarborVoyageTests: XCTestCase {
     XCTAssertFalse(second.haptics)
     XCTAssertTrue(second.hasLearned)
   }
+
+  func testResultsWaitForWholeFleetToDock() {
+    let model = model()
+    plot(model.chart.guide, model: model)
+    model.launch()
+    finish(model)
+    XCTAssertEqual(model.phase, .won)
+    XCTAssertFalse(model.resultReady)
+    for _ in 0..<110 { model.step(1.0 / 30) }
+    XCTAssertTrue(model.resultReady)
+    for offset in model.convoy.indices {
+      XCTAssertLessThan(
+        model.towPosition(offset).distance(to: model.chart.home),
+        HarborRules.dockRadius)
+    }
+    model.reset()
+    XCTAssertEqual(model.harborArrival, 0)
+    XCTAssertFalse(model.resultReady)
+  }
 }

@@ -68,6 +68,7 @@ extension HarborSea {
     }
 
     for current in chart.currents {
+      let active = model.inCurrent && model.tug.distance(to: current.center) < current.radius
       for row in -2...2 {
         for column in -2...2 {
           let center = current.center + SeaPoint(x: Double(column * 26), y: Double(row * 25))
@@ -82,7 +83,11 @@ extension HarborSea {
             path.move(to: CGPoint(x: 3 + offset, y: -3))
             path.addLine(to: CGPoint(x: 7 + offset, y: 0))
             path.addLine(to: CGPoint(x: 3 + offset, y: 3))
-            arrow.stroke(path, with: .color(HarborPalette.foam.opacity(0.22)), lineWidth: 1)
+            arrow.stroke(
+              path,
+              with: .color(
+                active ? HarborPalette.brass.opacity(0.62) : HarborPalette.foam.opacity(0.22)),
+              lineWidth: active ? 1.4 : 1)
           }
         }
       }
@@ -152,10 +157,14 @@ extension HarborSea {
       var rope = Path()
       rope.move(to: previous.cg)
       rope.addQuadCurve(to: point.cg, control: ((previous + point) * 0.5 + SeaPoint(x: 2, y: 2)).cg)
-      ctx.stroke(
-        rope, with: .color(HarborPalette.brass),
-        style: StrokeStyle(lineWidth: 1.4, lineCap: .round))
-      boat(at: point, angle: model.towHeading(offset), tug: false, ctx: &ctx)
+      if model.phase != .won {
+        ctx.stroke(rope, with: .color(HarborPalette.ink.opacity(0.5)), lineWidth: 3.5)
+        ctx.stroke(
+          rope, with: .color(HarborPalette.brass),
+          style: StrokeStyle(lineWidth: 1.6, lineCap: .round))
+      }
+      let dockScale = model.phase == .won ? 1 - 0.28 * model.harborArrival : 1
+      boat(at: point, angle: model.towHeading(offset), tug: false, scale: dockScale, ctx: &ctx)
       previous = point
     }
     if model.phase == .plotting || decorative {
@@ -166,7 +175,12 @@ extension HarborSea {
         "TUG", at: model.tug + SeaPoint(x: 0, y: 31), size: 8,
         color: HarborPalette.ivory.opacity(0.7), ctx: &ctx)
     }
-    boat(at: model.tug, angle: model.heading, tug: true, ctx: &ctx)
+    let tug =
+      model.phase == .won
+      ? model.tug + (chart.home + SeaPoint(x: 0, y: 32) - model.tug)
+        * min(1, model.harborArrival * 2)
+      : model.tug
+    boat(at: tug, angle: model.phase == .won ? -Double.pi / 2 : model.heading, tug: true, ctx: &ctx)
     if model.pickupFlash > 0 {
       let progress = 1 - model.pickupFlash
       ctx.stroke(
