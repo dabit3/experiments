@@ -49,7 +49,6 @@ func drawGem(_ context: GraphicsContext, rect: CGRect, jewel: Jewel, ghost: Bool
 
 struct PiecePreview: View {
   let jewel: Jewel?
-  var muted = false
 
   var body: some View {
     Canvas { context, size in
@@ -72,7 +71,6 @@ struct PiecePreview: View {
             width: unit, height: unit), jewel: jewel)
       }
     }
-    .opacity(muted ? 0.3 : 1)
     .accessibilityLabel(jewel.map { "\($0) piece" } ?? "Empty")
   }
 }

@@ -10,7 +10,8 @@ struct PrismRoot: View {
       PrismBackdrop()
       switch model.screen {
       case .title: TitleView(model: model)
-      case .playing: GameView(model: model)
+      case .playing, .ending:
+        GameView(model: model).allowsHitTesting(model.screen == .playing)
       case .paused: PauseView(model: model)
       case .result: ResultView(model: model)
       }
@@ -163,8 +164,14 @@ struct GameView: View {
         model.act(.hold)
       } label: {
         VStack(spacing: 10) {
-          Eyebrow(text: "HOLD")
-          PiecePreview(jewel: model.engine.held, muted: !model.engine.canHold)
+          HStack(spacing: 4) {
+            Eyebrow(text: "HOLD")
+            if !model.engine.canHold {
+              Image(systemName: "lock.fill").font(.system(size: 8))
+                .foregroundStyle(PrismStyle.mist)
+            }
+          }
+          PiecePreview(jewel: model.engine.held)
             .frame(height: 31)
         }
         .frame(width: 68, height: 72)
@@ -174,6 +181,7 @@ struct GameView: View {
       }
       .buttonStyle(.plain)
       .accessibilityLabel("Hold piece")
+      .accessibilityValue(model.engine.canHold ? "Ready" : "Available after placing this piece")
       .disabled(!model.engine.canHold)
       Eyebrow(text: "NEXT").padding(.top, 25).padding(.bottom, 14)
       ForEach(Array(model.engine.queue.prefix(3).enumerated()), id: \.offset) { item in
@@ -307,7 +315,7 @@ struct BoardView: View {
             }
           }
         }
-        if model.screen != .result {
+        if model.screen == .playing {
           if let ghost = model.engine.ghost {
             for cell in ghost.cells where cell.y >= 2 {
               drawGem(context, rect: rect(cell, unit), jewel: ghost.jewel, ghost: true)
@@ -342,7 +350,11 @@ struct BoardView: View {
             lineWidth: 1)
       }
       .overlay(alignment: .center) {
-        if clearAge < 1.1 && !model.clearText.isEmpty {
+        if model.screen == .ending {
+          Text("Stack reached the top").font(.system(size: 15, weight: .medium))
+            .foregroundStyle(PrismStyle.paper).padding(16)
+            .background(PrismStyle.ink.opacity(0.95), in: RoundedRectangle(cornerRadius: 10))
+        } else if clearAge < 1.1 && !model.clearText.isEmpty {
           Text(model.clearText).font(.system(size: 16, weight: .bold)).tracking(3)
             .foregroundStyle(PrismStyle.ice).padding(13)
             .background(PrismStyle.ink.opacity(0.9), in: RoundedRectangle(cornerRadius: 10))
@@ -419,6 +431,8 @@ struct ResultView: View {
           Eyebrow(
             text: model.engine.score > model.sessionBest ? "A NEW PERSONAL BEST" : "FLOW COMPLETE")
           Text("Beautifully played.").font(.system(size: 31, weight: .light))
+          Text("Your stack reached the top.").font(.system(size: 13))
+            .foregroundStyle(PrismStyle.mist)
         }
         VStack(spacing: 7) {
           Text(model.engine.score.formatted())

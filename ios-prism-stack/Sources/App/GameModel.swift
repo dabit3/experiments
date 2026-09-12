@@ -2,7 +2,7 @@ import AVFoundation
 import SwiftUI
 import UIKit
 
-enum GameScreen { case title, playing, paused, result }
+enum GameScreen { case title, playing, paused, ending, result }
 enum GameAction { case left, right, rotate, softDrop, hardDrop, hold }
 
 @MainActor @Observable
@@ -19,6 +19,7 @@ final class GameModel {
   var dropDate = Date.distantPast
   var sessionBest = 0
   private var lastTick = Date()
+  private var resultDate = Date.distantFuture
   private let audio = PrismAudio()
   private let impact = UIImpactFeedbackGenerator(style: .light)
 
@@ -67,6 +68,10 @@ final class GameModel {
   func tick(_ date: Date) {
     let elapsed = date.timeIntervalSince(lastTick)
     lastTick = date
+    if screen == .ending, date >= resultDate {
+      screen = .result
+      return
+    }
     guard screen == .playing else { return }
     let oldLock = engine.lockSerial
     engine.tick(elapsed)
@@ -116,7 +121,8 @@ final class GameModel {
       save()
     }
     if engine.isOver {
-      screen = .result
+      screen = .ending
+      resultDate = Date().addingTimeInterval(0.85)
       hasSavedGame = false
       UserDefaults.standard.removeObject(forKey: "prism.run")
       if sound { audio.play(.finish) }
