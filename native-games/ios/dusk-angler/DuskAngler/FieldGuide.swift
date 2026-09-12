@@ -20,19 +20,18 @@ struct CatchView: View {
           .accessibilityLabel("Back to the shore").accessibilityIdentifier("result-home")
       }
       ScrollView {
-        VStack(spacing: 16) {
-          CatchCard(record: record)
-            .scaleEffect(arrived || reduceMotion ? 1 : 0.85)
-            .opacity(arrived ? 1 : 0)
-          Text(
-            total == 3
-              ? "Violet Reach unlocked. A new shore awaits."
-              : "+\(record.species.rare ? 2 : 1) glow bait · saved to your field journal"
-          )
-          .font(TypeStyle.body(12)).multilineTextAlignment(.center)
-        }
+        CatchCard(record: record)
+          .scaleEffect(arrived || reduceMotion ? 1 : 0.85)
+          .opacity(arrived ? 1 : 0)
       }
-      .scrollIndicators(.hidden)
+      .scrollIndicators(.visible)
+      Text(
+        total == 3
+          ? "Violet Reach unlocked. A new shore awaits."
+          : "+\(record.species.rare ? 2 : 1) glow bait · saved to your field journal"
+      )
+      .font(TypeStyle.body(12)).multilineTextAlignment(.center)
+      .fixedSize(horizontal: false, vertical: true)
       PrimaryAction(title: "One more cast", icon: "arrow.up.right", action: again)
       Button {
         let renderer = ImageRenderer(
@@ -98,8 +97,8 @@ struct CatchCard: View {
         Text(record.species.latin).font(TypeStyle.specimen(15))
           .foregroundStyle(Ink.lake.opacity(0.7)).padding(.top, 1)
         FishArt(species: record.species)
-          .frame(maxWidth: .infinity).frame(height: 178)
-          .padding(.vertical, 12)
+          .frame(maxWidth: .infinity).frame(height: 160)
+          .padding(.vertical, 8)
         SpecimenRuler()
         HStack(alignment: .firstTextBaseline, spacing: 6) {
           Text("\(record.length)").font(TypeStyle.display(52)).tracking(-1)
