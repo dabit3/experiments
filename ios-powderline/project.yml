@@ -16,10 +16,11 @@ targets:
     platform: iOS
     sources:
       - Sources
-    resources:
-      - Resources
+      - path: Resources
+        buildPhase: resources
     settings:
       base:
+        TARGETED_DEVICE_FAMILY: "1"
         PRODUCT_BUNDLE_IDENTIFIER: studio.powderline.ios
         INFOPLIST_KEY_CFBundleDisplayName: Powderline
         MARKETING_VERSION: "1.0"
