@@ -51,6 +51,7 @@ outcomes, moving openings, curve, bumpers, gutters and medal thresholds.
 - Drag upward on the lane to bowl. Horizontal displacement aims; drag length
   sets power. The luminous dotted guide previews the opening line.
 - Set the curve slider **before** release. Each roll keeps that one curve.
+- The crosshair beside the slider resets curve precisely to straight.
 - The arrow button offers a no-drag bowl, with the current aim and power.
   VoiceOver users can adjust the playfield's aim with increment/decrement.
 - A match has three standard bowling frames: two rolls per frame, strike and

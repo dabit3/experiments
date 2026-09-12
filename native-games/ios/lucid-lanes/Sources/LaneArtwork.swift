@@ -57,7 +57,7 @@ struct LaneArtwork: View {
                     color: depth == 5 ? Dream.peach.opacity(0.68) : Dream.lavender.opacity(0.32),
                     solid: false)
             }
-            let floor = polygon([p.point(-1, 0), p.point(-1, 9.2), p.point(1, 9.2), p.point(1, 0)])
+            let floor = polygon([p.point(-1, -0.5), p.point(-1, 9.2), p.point(1, 9.2), p.point(1, -0.5)])
             context.fill(
                 floor,
                 with: .linearGradient(
@@ -65,7 +65,7 @@ struct LaneArtwork: View {
                     startPoint: p.point(0, 9), endPoint: p.point(0, -0.2)))
             for x in [-0.96, -0.75, -0.50, -0.25, 0, 0.25, 0.50, 0.75, 0.96] {
                 line(
-                    &context, from: p.point(x, 0), to: p.point(x, 9),
+                    &context, from: p.point(x, -0.5), to: p.point(x, 9),
                     color: Dream.cream.opacity(x == -0.96 || x == 0.96 ? 0.65 : 0.07), width: 1)
             }
             for y in stride(from: 0.5, through: 9.0, by: 0.7) {
@@ -110,8 +110,8 @@ struct LaneArtwork: View {
             }
             for side in [-1.0, 1.0] {
                 let rail = polygon([
-                    p.point(side * 1.02, 0), p.point(side * 1.02, 9.2),
-                    p.point(side * 1.15, 9.2), p.point(side * 1.15, 0),
+                    p.point(side * 1.02, -0.5), p.point(side * 1.02, 9.2),
+                    p.point(side * 1.15, 9.2), p.point(side * 1.15, -0.5),
                 ])
                 context.fill(
                     rail,
@@ -119,7 +119,7 @@ struct LaneArtwork: View {
                         Gradient(colors: [Dream.ink, Dream.lavender, Dream.ink]),
                         startPoint: p.point(side * 1.02, 0), endPoint: p.point(side * 1.15, 0)))
                 line(
-                    &context, from: p.point(side * 1.03, 0), to: p.point(side * 1.03, 9.2),
+                    &context, from: p.point(side * 1.03, -0.5), to: p.point(side * 1.03, 9.2),
                     color: model.lane.bumper || hero ? Dream.mint.opacity(0.8) : Dream.peach.opacity(0.8), width: 2)
                 for y in [1.0, 3.0, 5.0, 7.0] {
                     let spot = p.point(side * 1.20, y)

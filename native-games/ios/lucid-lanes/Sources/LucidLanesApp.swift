@@ -1,3 +1,4 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -15,8 +16,8 @@ struct ContentView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var showRooms = false
     @State private var showSettings = false
-    @State private var sharedImage: UIImage?
-    @State private var showShare = false
+    @State private var sharePayload: SharePayload?
+    @State private var shareFailed = false
     private let timer = Timer.publish(every: 1.0 / 60, on: .main, in: .common).autoconnect()
 
     var body: some View {
@@ -42,14 +43,13 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showRooms) { rooms }
         .sheet(isPresented: $showSettings) { settings }
-        .sheet(isPresented: $showShare) {
-            if let sharedImage {
-                NativeShare(
-                    image: sharedImage,
-                    text: "Lucid Lanes · \(model.lane.name) · \(model.game.score) points · \(model.medal)"
-                )
-                .presentationDetents([.large])
-            }
+        .sheet(item: $sharePayload) { payload in
+            NativeShare(payload: payload).presentationDetents([.large])
+        }
+        .alert("Your dream couldn't be prepared", isPresented: $shareFailed) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Please try sharing again.")
         }
     }
 
@@ -186,6 +186,16 @@ struct ContentView: View {
                                 .disabled(model.phase != "ready")
                         }
                         Button {
+                            model.curve = 0
+                        } label: {
+                            Image(systemName: "scope").font(.system(size: 20))
+                                .frame(width: 44, height: 44)
+                                .background(Dream.velvet, in: Circle())
+                                .foregroundStyle(Dream.lavender)
+                        }
+                        .accessibilityLabel("Reset curve to straight").accessibilityIdentifier("curve-reset")
+                        .disabled(model.phase != "ready")
+                        Button {
                             model.launch()
                         } label: {
                             Image(systemName: "arrow.up").font(.system(size: 22))
@@ -235,8 +245,14 @@ struct ContentView: View {
                     .frame(width: 390).padding(30).background(Dream.ink).environment(\.colorScheme, .dark)
                     let renderer = ImageRenderer(content: card)
                     renderer.scale = 3
-                    sharedImage = renderer.uiImage
-                    showShare = sharedImage != nil
+                    if let image = renderer.uiImage {
+                        sharePayload = SharePayload(
+                            image: image,
+                            text: "Lucid Lanes · \(model.lane.name) · \(model.game.score) points · \(model.medal)"
+                        )
+                    } else {
+                        shareFailed = true
+                    }
                 }
                 HStack(spacing: 12) {
                     secondary("Dream again", id: "replay") {
@@ -472,11 +488,43 @@ struct ResultCard: View {
     }
 }
 
-struct NativeShare: UIViewControllerRepresentable {
+struct SharePayload: Identifiable {
+    let id = UUID()
     let image: UIImage
     let text: String
+}
+
+final class ShareImage: NSObject, UIActivityItemSource {
+    let payload: SharePayload
+
+    init(payload: SharePayload) {
+        self.payload = payload
+    }
+
+    func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController) -> Any {
+        payload.image
+    }
+
+    func activityViewController(
+        _ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?
+    ) -> Any? {
+        payload.image
+    }
+
+    func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
+        let metadata = LPLinkMetadata()
+        metadata.title = payload.text
+        metadata.imageProvider = NSItemProvider(object: payload.image)
+        metadata.iconProvider = NSItemProvider(object: payload.image)
+        return metadata
+    }
+}
+
+struct NativeShare: UIViewControllerRepresentable {
+    let payload: SharePayload
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
+        UIActivityViewController(
+            activityItems: [ShareImage(payload: payload), payload.text], applicationActivities: nil)
     }
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
