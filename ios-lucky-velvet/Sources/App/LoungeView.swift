@@ -17,17 +17,26 @@ struct LoungeView: View {
       if !game.started {
         title
       } else {
-        ScrollView {
-          VStack(spacing: 20) {
-            header
-            switch game.run.phase {
-            case .playing: table
-            case .shop: shop
-            case .lost, .won: results
+        VStack(spacing: 8) {
+          header.padding(.horizontal, 22)
+          ScrollView {
+            Group {
+              switch game.run.phase {
+              case .playing: table
+              case .shop: shop
+              case .lost, .won: results
+              }
             }
-          }.padding(.horizontal, 22).padding(.top, 8).padding(.bottom, 26)
-            .frame(maxWidth: 540).frame(maxWidth: .infinity)
+            .padding(.horizontal, 22).padding(.top, 4).padding(.bottom, 12)
+          }
+          .clipped()
+          .id(game.run.phase)
+          if game.run.phase == .playing {
+            tableActions.padding(.horizontal, 22).padding(.vertical, 8)
+              .background(Palette.ink.opacity(0.95))
+          }
         }
+        .frame(maxWidth: 540).frame(maxWidth: .infinity)
       }
     }
     .foregroundStyle(Palette.cream)
@@ -153,7 +162,7 @@ struct LoungeView: View {
   }
 
   private var table: some View {
-    VStack(spacing: 16) {
+    VStack(spacing: 10) {
       HStack {
         Eyebrow(text: "Ante \(game.run.ante) / 3")
         Spacer()
@@ -169,7 +178,7 @@ struct LoungeView: View {
           .foregroundStyle(Palette.gold)
       }
       Panel {
-        VStack(spacing: 12) {
+        VStack(spacing: 9) {
           HStack {
             VStack(alignment: .leading, spacing: 5) {
               Eyebrow(
@@ -207,7 +216,7 @@ struct LoungeView: View {
         Button {
           sheet = .charms
         } label: {
-          Text("\(game.run.charms.count)/5  ·  View effects").font(.system(size: 11))
+          Text("\(game.run.charms.count)/5  ·  View effects").font(.system(size: 12))
             .foregroundStyle(Palette.muted)
             .frame(minHeight: 30)
         }
@@ -217,14 +226,14 @@ struct LoungeView: View {
           Button {
             sheet = .charms
           } label: {
-            CharmArt(charm: charm).frame(maxWidth: .infinity).frame(height: 61)
+            CharmArt(charm: charm).frame(maxWidth: .infinity).frame(height: 50)
               .background(Palette.ink.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
               .overlay(RoundedRectangle(cornerRadius: 10).stroke(Palette.gold.opacity(0.3)))
           }.accessibilityLabel("\(charm.name), \(charm.detail)")
         }
         ForEach(0..<max(0, 5 - game.run.charms.count), id: \.self) { _ in
           Text("✦").font(.system(size: 15)).foregroundStyle(Palette.gold.opacity(0.2))
-            .frame(maxWidth: .infinity).frame(height: 61)
+            .frame(maxWidth: .infinity).frame(height: 50)
             .overlay(
               RoundedRectangle(cornerRadius: 10).stroke(
                 Palette.gold.opacity(0.12), style: StrokeStyle(lineWidth: 1, dash: [3, 4])))
@@ -235,7 +244,7 @@ struct LoungeView: View {
         Text("YOUR HAND").font(.system(size: 10, weight: .bold)).tracking(1.6)
         Spacer()
         Text("\(game.selected.count)/5 selected · \(game.run.deck.count) in deck")
-          .font(.system(size: 10)).foregroundStyle(Palette.muted)
+          .font(.system(size: 12)).foregroundStyle(Palette.muted)
       }
       LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 9), count: 4), spacing: 10)
       {
@@ -253,23 +262,28 @@ struct LoungeView: View {
             .accessibilityIdentifier("card-\(card.id)")
         }
       }
-      HStack(spacing: 12) {
-        VStack(spacing: 5) {
-          QuietButton(title: "Discard", icon: "arrow.triangle.2.circlepath") { game.discard() }
-            .disabled(game.selected.isEmpty || game.run.discards == 0)
-            .opacity(game.selected.isEmpty || game.run.discards == 0 ? 0.4 : 1)
-          Text("\(game.run.discards) discards left").font(.system(size: 10)).foregroundStyle(
+    }
+  }
+
+  private var tableActions: some View {
+    HStack(spacing: 12) {
+      VStack(spacing: 5) {
+        QuietButton(title: "Discard", icon: "arrow.triangle.2.circlepath") { game.discard() }
+          .disabled(game.selected.isEmpty || game.run.discards == 0)
+          .opacity(game.selected.isEmpty || game.run.discards == 0 ? 0.4 : 1)
+        Text("\(game.run.discards) discards left").font(.system(size: 12, weight: .medium))
+          .foregroundStyle(
             Palette.muted)
-        }.frame(maxWidth: .infinity)
-        VStack(spacing: 5) {
-          GoldButton(title: "Play hand", icon: "suit.spade.fill", disabled: game.preview == nil) {
-            game.play()
-            sheet = .score
-          }.accessibilityIdentifier("playHand")
-          Text("\(game.run.hands) hands left").font(.system(size: 10)).foregroundStyle(
+      }.frame(maxWidth: .infinity)
+      VStack(spacing: 5) {
+        GoldButton(title: "Play hand", icon: "suit.spade.fill", disabled: game.preview == nil) {
+          game.play()
+          sheet = .score
+        }.accessibilityIdentifier("playHand")
+        Text("\(game.run.hands) hands left").font(.system(size: 12, weight: .medium))
+          .foregroundStyle(
             Palette.muted)
-        }.frame(maxWidth: .infinity)
-      }
+      }.frame(maxWidth: .infinity)
     }
   }
 
@@ -291,9 +305,9 @@ struct LoungeView: View {
           Spacer()
           Text("PREVIEW").font(.system(size: 8, weight: .bold)).tracking(1.4)
         } else {
-          Text("Tap 1–5 cards. Only matching cards score.")
+          Text("Tap 1–5 cards to preview your score.")
         }
-      }.font(.system(size: 11)).foregroundStyle(Palette.muted)
+      }.font(.system(size: 12)).foregroundStyle(Palette.muted)
     }.padding(15).background(Palette.green.opacity(0.65), in: RoundedRectangle(cornerRadius: 15))
       .overlay(RoundedRectangle(cornerRadius: 15).stroke(Palette.gold.opacity(0.2)))
   }
@@ -362,9 +376,9 @@ struct LoungeView: View {
   }
 
   private var results: some View {
-    VStack(spacing: 23) {
+    VStack(spacing: 16) {
       Eyebrow(text: game.run.phase == .won ? "The house applauds" : "Every fortune has a story")
-      CharmArt(charm: game.run.phase == .won ? .crown : .velvet).frame(width: 142, height: 142)
+      CharmArt(charm: game.run.phase == .won ? .crown : .velvet).frame(width: 110, height: 110)
       Text(game.run.phase == .won ? "An extraordinary run." : "Until next time.")
         .font(.system(size: 35, design: .serif)).multilineTextAlignment(.center)
       Text(
@@ -375,7 +389,7 @@ struct LoungeView: View {
       .font(.system(size: 14)).foregroundStyle(Palette.muted).multilineTextAlignment(.center)
       .lineSpacing(4)
       Panel {
-        VStack(spacing: 17) {
+        VStack(spacing: 13) {
           Eyebrow(text: "Your run score")
           Text(game.run.totalScore.formatted()).font(
             .system(size: 52, weight: .medium, design: .rounded)

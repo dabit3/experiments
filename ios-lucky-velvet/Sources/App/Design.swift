@@ -5,7 +5,7 @@ enum Palette {
   static let green = Color(red: 0.04, green: 0.24, blue: 0.19)
   static let gold = Color(red: 0.88, green: 0.73, blue: 0.43)
   static let cream = Color(red: 0.97, green: 0.93, blue: 0.82)
-  static let muted = Color(red: 0.62, green: 0.75, blue: 0.65)
+  static let muted = Color(red: 0.71, green: 0.81, blue: 0.73)
   static let ruby = Color(red: 0.64, green: 0.19, blue: 0.25)
 }
 
@@ -37,8 +37,8 @@ struct VelvetBackground: View {
 struct Eyebrow: View {
   let text: String
   var body: some View {
-    Text(text.uppercased()).font(.system(size: 10, weight: .bold, design: .rounded))
-      .tracking(2.3).foregroundStyle(Palette.gold)
+    Text(text.uppercased()).font(.system(size: 11, weight: .bold, design: .rounded))
+      .tracking(1.8).foregroundStyle(Palette.gold)
   }
 }
 
