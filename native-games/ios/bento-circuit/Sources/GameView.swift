@@ -88,11 +88,6 @@ struct BoardView: View {
   }
 }
 
-struct BoardFrameKey: PreferenceKey {
-  static let defaultValue = CGRect.zero
-  static func reduce(value: inout CGRect, nextValue: () -> CGRect) { value = nextValue() }
-}
-
 struct GameView: View {
   let lunch: Lunch
   let store: LunchStore
@@ -159,12 +154,11 @@ struct GameView: View {
           ) { cell in
             tapCell(cell)
           }
-          .background(
-            GeometryReader { proxy in
-              Color.clear.preference(
-                key: BoardFrameKey.self, value: proxy.frame(in: .named("game")))
-            }
-          )
+          .onGeometryChange(for: CGRect.self) { proxy in
+            proxy.frame(in: .global)
+          } action: { frame in
+            boardFrame = frame
+          }
           .overlay {
             if ribbon {
               ZStack {
@@ -190,9 +184,7 @@ struct GameView: View {
       }
       .scrollDisabled(dragAnchor != nil)
     }
-    .coordinateSpace(name: "game")
     .foregroundStyle(Palette.ink)
-    .onPreferenceChange(BoardFrameKey.self) { boardFrame = $0 }
     .onAppear { tutorial = !store.learned }
     .onChange(of: scenePhase) { _, phase in
       if phase != .active {
@@ -337,9 +329,11 @@ struct GameView: View {
           )
           .accessibilityIdentifier("Piece \(piece.id)")
           .simultaneousGesture(
-            DragGesture(minimumDistance: 8, coordinateSpace: .named("game"))
+            DragGesture(minimumDistance: 8, coordinateSpace: .global)
               .onChanged { value in
-                guard !game.isFailed(lunch), !game.isComplete(lunch) else { return }
+                guard !game.isFailed(lunch), !game.isComplete(lunch), !boardFrame.isEmpty else {
+                  return
+                }
                 if selectedID != piece.id { select(piece) }
                 guide = false
                 let shape = piece.rotated(turns)
