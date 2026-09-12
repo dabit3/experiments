@@ -1,12 +1,28 @@
 import SwiftUI
 
 enum HarborPalette {
-  static let ink = Color(red: 0.13, green: 0.25, blue: 0.29)
-  static let sky = Color(red: 0.73, green: 0.85, blue: 0.87)
-  static let cream = Color(red: 0.98, green: 0.95, blue: 0.86)
-  static let orange = Color(red: 0.91, green: 0.35, blue: 0.17)
-  static let brass = Color(red: 0.78, green: 0.58, blue: 0.29)
+  static let ink = Color(red: 0.12, green: 0.23, blue: 0.24)
+  static let sky = Color(red: 0.80, green: 0.86, blue: 0.84)
+  static let cream = Color(red: 0.96, green: 0.945, blue: 0.90)
+  static let orange = Color(red: 0.68, green: 0.29, blue: 0.16)
+  static let brass = Color(red: 0.60, green: 0.47, blue: 0.28)
   static let pale = Color(red: 0.87, green: 0.89, blue: 0.80)
+  static let paper = Color(red: 0.985, green: 0.975, blue: 0.94)
+  static let muted = Color(red: 0.39, green: 0.45, blue: 0.42)
+  static let sage = Color(red: 0.30, green: 0.44, blue: 0.37)
+  static let rule = Color(red: 0.78, green: 0.79, blue: 0.72)
+}
+
+extension CargoKind {
+  var assetName: String {
+    switch self {
+    case .trunk: "CargoTrunk"
+    case .clock: "CargoClock"
+    case .plant: "CargoPlant"
+    case .piano: "CargoPiano"
+    case .telescope: "CargoTelescope"
+    }
+  }
 }
 
 struct HarborCanvas: View {
@@ -18,14 +34,13 @@ struct HarborCanvas: View {
     Canvas { context, size in
       let minimumHeight = decorative ? 290.0 : 254.0 + Double(game.contract.cargo.count) * 36
       let scale = min(size.width / 390, size.height / minimumHeight)
-      context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(HarborPalette.sky))
+      context.draw(Image("HarborBackdrop"), in: CGRect(origin: .zero, size: size))
       context.translateBy(x: (size.width - 390 * scale) / 2, y: 0)
       context.scaleBy(x: scale, y: scale)
       let height = size.height / scale
       let deck = height - 109
       let dock = height - 57
       let clock = reducedMotion ? 0 : game.clock
-      HarborArt.background(&context, height: height, clock: clock)
       HarborArt.dock(&context, y: dock)
       let cargoStack =
         decorative
@@ -93,10 +108,10 @@ struct HarborCanvas: View {
       let width = pickup ? game.cargo.width + 20 : (game.stack.last?.kind.width ?? 150)
       let floor = pickup ? dock - 40 : targetY - 4
       let projected = game.projectedX
-      let guideColor = game.onTarget ? HarborPalette.orange : HarborPalette.ink.opacity(0.65)
+      let guideColor = game.onTarget ? HarborPalette.sage : HarborPalette.orange
       HarborArt.rounded(
         &context, rect: CGRect(x: target - width / 2, y: floor, width: width, height: 9),
-        radius: 4, color: guideColor.opacity(0.3))
+        radius: 2, color: guideColor.opacity(0.17))
       for edge in [-1.0, 1.0] {
         let edgeX = target + edge * width / 2
         HarborArt.line(
@@ -112,11 +127,11 @@ struct HarborCanvas: View {
       HarborArt.ellipse(
         &context, CGRect(x: projected - 6, y: floor - 2, width: 12, height: 5), guideColor)
       let captionX = pickup ? 267.0 : 102.0
-      HarborArt.label(
-        &context, pickup ? "01 / CATCH" : "02 / LAND", x: captionX, y: 96, size: 10)
-      HarborArt.label(
-        &context, pickup ? "THE DOCK IS YOUR TARGET" : "KEEP IT CENTERED",
-        x: captionX, y: 112, size: 6.8)
+      context.draw(
+        Text(pickup ? "The catch" : "The landing")
+          .font(.custom("Baskerville-Italic", size: 17))
+          .foregroundStyle(HarborPalette.muted), at: CGPoint(x: captionX, y: 85))
+      HarborArt.label(&context, pickup ? "01 / DOCK" : "02 / DECK", x: captionX, y: 103, size: 7)
     }
     HarborArt.crane(
       &context, anchor: anchor, hookX: x, hookY: y, height: dock,
@@ -133,7 +148,7 @@ struct HarborCanvas: View {
     if phase == .settling {
       let rewardY = max(65, deck - Double(game.stack.count) * 36 - 38)
       context.draw(
-        Text("+\(game.lastAward)").font(.system(size: 29, weight: .regular, design: .serif))
+        Text("+\(game.lastAward)").font(.custom("Baskerville", size: 29))
           .foregroundStyle(HarborPalette.ink), at: CGPoint(x: 255, y: rewardY))
       HarborArt.label(
         &context, game.preciseLanding ? "BEAUTIFUL LANDING" : "CARGO SECURED",
@@ -157,58 +172,6 @@ struct HarborCanvas: View {
 }
 
 enum HarborArt {
-  static func background(_ c: inout GraphicsContext, height: Double, clock: Double) {
-    let p = HarborPalette.self
-    c.fill(Path(CGRect(x: 0, y: 0, width: 390, height: height)), with: .color(p.sky))
-    ellipse(&c, CGRect(x: 275, y: 20, width: 62, height: 62), p.cream.opacity(0.7))
-    cloud(&c, x: 146 + sin(clock * 0.06) * 12, y: 63, scale: 0.8)
-    cloud(&c, x: 328 + sin(clock * 0.04) * 9, y: 142, scale: 0.75)
-    cloud(&c, x: 14, y: 171, scale: 0.6)
-    let horizon = height - 42
-    for index in 0..<13 {
-      let x = Double(index) * 34 - 10
-      let h = Double([40, 60, 46, 35, 81, 40, 55][index % 7])
-      rounded(
-        &c, rect: CGRect(x: x, y: horizon - h, width: 28, height: h), radius: 1,
-        color: p.ink.opacity(0.085))
-      if index % 3 == 0 {
-        line(
-          &c, from: CGPoint(x: x + 8, y: horizon - h),
-          to: CGPoint(x: x + 8, y: horizon - h - 20), color: p.ink.opacity(0.09), width: 3)
-      }
-    }
-    line(
-      &c, from: CGPoint(x: 0, y: horizon), to: CGPoint(x: 390, y: horizon),
-      color: p.ink.opacity(0.14))
-    for index in 0..<16 {
-      let x = Double((index * 67) % 390)
-      let y = horizon + 8 + Double(index % 4) * 9
-      line(
-        &c, from: CGPoint(x: x, y: y), to: CGPoint(x: x + 14 + Double(index % 3) * 8, y: y),
-        color: p.cream.opacity(0.5))
-    }
-    for index in 0..<3 {
-      let x = Double(index) * 14 + 210
-      let y = 123 - Double(index % 2) * 7
-      var bird = Path()
-      bird.move(to: CGPoint(x: x - 4, y: y))
-      bird.addQuadCurve(to: CGPoint(x: x, y: y + 2), control: CGPoint(x: x - 1, y: y - 2))
-      bird.addQuadCurve(to: CGPoint(x: x + 4, y: y), control: CGPoint(x: x + 1, y: y - 2))
-      c.stroke(bird, with: .color(p.ink.opacity(0.4)), lineWidth: 1)
-    }
-  }
-
-  static func cloud(_ c: inout GraphicsContext, x: Double, y: Double, scale: Double) {
-    var local = c
-    local.translateBy(x: x, y: y)
-    local.scaleBy(x: scale, y: scale)
-    for rect in [
-      CGRect(x: -42, y: 0, width: 92, height: 17),
-      CGRect(x: -20, y: -18, width: 38, height: 37),
-      CGRect(x: 4, y: -9, width: 32, height: 27),
-    ] { ellipse(&local, rect, HarborPalette.cream.opacity(0.7)) }
-  }
-
   static func dock(_ c: inout GraphicsContext, y: Double) {
     let p = HarborPalette.self
     rounded(&c, rect: CGRect(x: 0, y: y, width: 134, height: 11), radius: 1, color: p.ink)
@@ -238,6 +201,8 @@ enum HarborArt {
       line(
         &c, from: CGPoint(x: 18, y: y), to: CGPoint(x: 33, y: y + 31),
         color: p.ink.opacity(0.6), width: 1)
+      ellipse(&c, CGRect(x: 16.5, y: y - 1, width: 3, height: 3), p.brass)
+      ellipse(&c, CGRect(x: 31.5, y: y + 30, width: 3, height: 3), p.brass)
     }
     rounded(&c, rect: CGRect(x: 11, y: 18, width: 357, height: 12), radius: 2, color: p.ink)
     line(
@@ -255,10 +220,14 @@ enum HarborArt {
     ellipse(&c, CGRect(x: anchor + 2, y: 19, width: 7, height: 7), p.ink)
     line(
       &c, from: CGPoint(x: anchor, y: 35), to: CGPoint(x: hookX, y: hookY),
-      color: p.ink, width: 1.4)
-    rounded(
-      &c, rect: CGRect(x: hookX - 5, y: hookY - 7, width: 10, height: 10), radius: 2,
-      color: p.brass)
+      color: p.ink.opacity(0.85), width: 1)
+    line(
+      &c, from: CGPoint(x: anchor + 3, y: 35), to: CGPoint(x: hookX + 3, y: hookY),
+      color: p.brass.opacity(0.75), width: 0.7)
+    ellipse(&c, CGRect(x: hookX - 6, y: hookY - 8, width: 13, height: 16), p.brass)
+    c.stroke(
+      Path(ellipseIn: CGRect(x: hookX - 3, y: hookY - 5, width: 7, height: 10)),
+      with: .color(p.ink.opacity(0.7)), lineWidth: 0.8)
     var hook = Path()
     hook.move(to: CGPoint(x: hookX, y: hookY + 2))
     hook.addCurve(
@@ -278,48 +247,17 @@ enum HarborArt {
 
   static func airship(_ c: inout GraphicsContext, x: Double, y: Double, clock: Double) {
     let p = HarborPalette.self
-    var tail = Path()
-    tail.move(to: CGPoint(x: x + 64, y: y + 40))
-    tail.addLine(to: CGPoint(x: x + 111, y: y + 17))
-    tail.addLine(to: CGPoint(x: x + 100, y: y + 55))
-    tail.closeSubpath()
-    c.fill(tail, with: .color(p.orange))
-    c.stroke(tail, with: .color(p.ink), lineWidth: 1.5)
-    let hull = CGRect(x: x - 91, y: y + 7, width: 181, height: 65)
-    ellipse(&c, hull, p.brass)
-    ellipse(&c, CGRect(x: x - 81, y: y + 9, width: 161, height: 44), p.cream)
-    c.stroke(Path(ellipseIn: hull), with: .color(p.ink), lineWidth: 1.5)
-    for offset in [-52.0, 0.0, 52.0] {
-      var rib = Path()
-      rib.move(to: CGPoint(x: x + offset * 0.7, y: y + 10))
-      rib.addQuadCurve(
-        to: CGPoint(x: x + offset * 0.7, y: y + 69),
-        control: CGPoint(x: x + offset * 1.4, y: y + 39))
-      c.stroke(rib, with: .color(p.brass), lineWidth: 1)
-    }
-    line(
-      &c, from: CGPoint(x: x - 89, y: y + 40), to: CGPoint(x: x + 89, y: y + 40),
-      color: p.ink.opacity(0.4))
+    c.draw(Image("Airship"), in: CGRect(x: x - 115, y: y + 1, width: 236, height: 89))
     rounded(
-      &c, rect: CGRect(x: x - 88, y: y - 1, width: 176, height: 10), radius: 3, color: p.ink)
+      &c, rect: CGRect(x: x - 88, y: y - 1, width: 176, height: 7), radius: 1, color: p.ink)
     rounded(
-      &c, rect: CGRect(x: x - 84, y: y, width: 168, height: 3), radius: 1, color: p.orange)
-    for offset in [-71.0, 71.0] {
-      line(
-        &c, from: CGPoint(x: x + offset, y: y + 4),
-        to: CGPoint(x: x + offset * 0.65, y: y + 69), color: p.ink, width: 1.2)
+      &c, rect: CGRect(x: x - 87, y: y, width: 174, height: 2), radius: 0, color: p.brass)
+    for index in 0..<19 {
+      ellipse(&c, CGRect(x: x - 82 + Double(index) * 9, y: y + 3, width: 1, height: 1), p.brass)
     }
-    rounded(
-      &c, rect: CGRect(x: x - 33, y: y + 61, width: 63, height: 22), radius: 8, color: p.ink)
-    for offset in [-18.0, 0, 18] {
-      ellipse(&c, CGRect(x: x + offset - 4, y: y + 67, width: 8, height: 8), p.sky)
-    }
-    line(
-      &c, from: CGPoint(x: x + 31, y: y + 72), to: CGPoint(x: x + 53, y: y + 72),
-      color: p.ink, width: 3)
     ellipse(
-      &c, CGRect(x: x + 49, y: y + 59, width: 5, height: 26),
-      p.ink.opacity(0.65 + sin(clock * 14) * 0.15))
+      &c, CGRect(x: x + 116, y: y + 28, width: 2, height: 25),
+      p.brass.opacity(0.3 + abs(sin(clock * 14)) * 0.35))
   }
 
   static func balanceGauge(
@@ -328,6 +266,9 @@ enum HarborArt {
     rounded(
       &c, rect: CGRect(x: x - 34, y: y, width: 68, height: 18), radius: 9,
       color: HarborPalette.ink)
+    c.stroke(
+      Path(roundedRect: CGRect(x: x - 34, y: y, width: 68, height: 18), cornerRadius: 9),
+      with: .color(HarborPalette.brass), lineWidth: 0.8)
     line(
       &c, from: CGPoint(x: x - 24, y: y + 9), to: CGPoint(x: x + 24, y: y + 9),
       color: HarborPalette.cream.opacity(0.6))
@@ -340,108 +281,15 @@ enum HarborArt {
   }
 
   static func cargo(_ c: inout GraphicsContext, kind: CargoKind, x: Double, y: Double) {
-    let p = HarborPalette.self
-    var local = c
-    local.translateBy(x: x, y: y)
-    switch kind {
-    case .trunk:
-      rounded(
-        &local, rect: CGRect(x: -34, y: 5, width: 68, height: 31), radius: 4, color: p.orange)
-      outline(&local, CGRect(x: -34, y: 5, width: 68, height: 31), radius: 4)
-      for offset in [-22.0, 18] {
-        rounded(
-          &local, rect: CGRect(x: offset, y: 6, width: 5, height: 29), radius: 1, color: p.brass)
-      }
-      rounded(&local, rect: CGRect(x: -8, y: 0, width: 16, height: 7), radius: 3, color: p.ink)
-      rounded(&local, rect: CGRect(x: -3, y: 15, width: 6, height: 8), radius: 1, color: p.cream)
-      line(
-        &local, from: CGPoint(x: -32, y: 14), to: CGPoint(x: 32, y: 14),
-        color: p.ink.opacity(0.5))
-      label(&local, "07", x: 10, y: 28, size: 6)
-    case .clock:
-      rounded(&local, rect: CGRect(x: -27, y: 28, width: 54, height: 8), radius: 2, color: p.ink)
-      rounded(&local, rect: CGRect(x: -22, y: 0, width: 44, height: 34), radius: 15, color: p.brass)
-      ellipse(&local, CGRect(x: -15, y: 3, width: 30, height: 29), p.cream)
-      for index in 0..<12 {
-        let a = Double(index) * .pi / 6
-        line(
-          &local, from: CGPoint(x: sin(a) * 11, y: 17 + cos(a) * 11),
-          to: CGPoint(x: sin(a) * 12.5, y: 17 + cos(a) * 12.5), color: p.ink)
-      }
-      line(&local, from: CGPoint(x: 0, y: 17), to: CGPoint(x: 0, y: 8), color: p.ink, width: 1.5)
-      line(&local, from: CGPoint(x: 0, y: 17), to: CGPoint(x: 7, y: 21), color: p.ink, width: 1.5)
-    case .plant:
-      rounded(
-        &local, rect: CGRect(x: -32, y: 23, width: 64, height: 13), radius: 2, color: p.brass)
-      for offset in [-20.0, 0, 20] {
-        line(
-          &local, from: CGPoint(x: offset, y: 24), to: CGPoint(x: offset, y: 4),
-          color: p.ink, width: 1.3)
-        ellipse(&local, CGRect(x: offset - 13, y: 3, width: 14, height: 8), p.ink.opacity(0.85))
-        ellipse(&local, CGRect(x: offset, y: 9, width: 13, height: 8), p.ink.opacity(0.85))
-        ellipse(&local, CGRect(x: offset - 5, y: -3, width: 10, height: 10), p.orange)
-      }
-      for offset in [-22.0, -7, 8, 23] {
-        line(
-          &local, from: CGPoint(x: offset, y: 25), to: CGPoint(x: offset, y: 35),
-          color: p.cream.opacity(0.5))
-      }
-    case .piano:
-      var lid = Path()
-      lid.move(to: CGPoint(x: -41, y: 7))
-      lid.addLine(to: CGPoint(x: 28, y: -8))
-      lid.addQuadCurve(to: CGPoint(x: 40, y: 8), control: CGPoint(x: 46, y: -4))
-      lid.addLine(to: CGPoint(x: -41, y: 10))
-      lid.closeSubpath()
-      local.fill(lid, with: .color(p.ink))
-      line(
-        &local, from: CGPoint(x: 20, y: -4), to: CGPoint(x: 20, y: 18), color: p.brass, width: 2)
-      rounded(
-        &local, rect: CGRect(x: -41, y: 13, width: 82, height: 14), radius: 3, color: p.ink)
-      rounded(
-        &local, rect: CGRect(x: -37, y: 16, width: 58, height: 8), radius: 1, color: p.cream)
-      for index in 0..<13 {
-        let keyX = -35 + Double(index) * 4
-        line(
-          &local, from: CGPoint(x: keyX, y: 17), to: CGPoint(x: keyX, y: 23),
-          color: p.ink.opacity(0.5), width: 0.7)
-        if index % 3 != 0 {
-          rounded(
-            &local, rect: CGRect(x: keyX + 1, y: 16, width: 2, height: 4), radius: 0, color: p.ink)
-        }
-      }
-      for offset in [-33.0, 30] {
-        line(
-          &local, from: CGPoint(x: offset, y: 25), to: CGPoint(x: offset - 2, y: 34),
-          color: p.ink, width: 3)
-        ellipse(&local, CGRect(x: offset - 5, y: 32, width: 6, height: 4), p.brass)
-      }
-    case .telescope:
-      for offset in [-24.0, 24] {
-        line(
-          &local, from: CGPoint(x: 0, y: 14), to: CGPoint(x: offset, y: 35),
-          color: p.ink, width: 2)
-      }
-      local.rotate(by: .degrees(-12))
-      rounded(
-        &local, rect: CGRect(x: -33, y: 2, width: 58, height: 13), radius: 3, color: p.brass)
-      rounded(
-        &local, rect: CGRect(x: 18, y: -1, width: 12, height: 19), radius: 2, color: p.ink)
-      rounded(&local, rect: CGRect(x: 26, y: 2, width: 4, height: 13), radius: 1, color: p.sky)
-      rounded(
-        &local, rect: CGRect(x: -33, y: 4, width: 8, height: 9), radius: 1, color: p.ink)
-    }
+    c.draw(
+      Image(kind.assetName),
+      in: CGRect(x: x - kind.width / 2, y: y, width: kind.width, height: kind.height))
   }
 
   static func rounded(
     _ c: inout GraphicsContext, rect: CGRect, radius: Double, color: Color
   ) {
     c.fill(Path(roundedRect: rect, cornerRadius: radius), with: .color(color))
-  }
-
-  static func outline(_ c: inout GraphicsContext, _ rect: CGRect, radius: Double) {
-    c.stroke(
-      Path(roundedRect: rect, cornerRadius: radius), with: .color(HarborPalette.ink), lineWidth: 1)
   }
 
   static func ellipse(_ c: inout GraphicsContext, _ rect: CGRect, _ color: Color) {
@@ -461,7 +309,7 @@ enum HarborArt {
     _ c: inout GraphicsContext, _ text: String, x: Double, y: Double, size: Double
   ) {
     c.draw(
-      Text(text).font(.system(size: size, weight: .bold, design: .monospaced))
+      Text(text).font(.system(size: size, weight: .medium, design: .monospaced))
         .foregroundStyle(HarborPalette.ink), at: CGPoint(x: x, y: y))
   }
 }

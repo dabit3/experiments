@@ -27,7 +27,18 @@ xcrun simctl launch DEVICE_UUID com.skyhooksalvage.game
 
 The checked-in project needs no generator to build. After editing `project.yml`,
 regenerate with XcodeGen (validated with 2.46.0): `brew install xcodegen && xcodegen generate`.
-The original vector app icon is reproducible: `swift scripts/GenerateIcon.swift`.
+The maritime illustrations and sprites are bundled native assets. Source artwork
+is in `scripts/Artwork`; no image generation or network calls run in the app.
+Regenerate the image sets and opaque app icon with:
+
+```sh
+swift scripts/PrepareArtwork.swift
+swift scripts/GenerateIcon.swift
+```
+
+The first script isolates the six illustrated sprites from the source atlas.
+The interface uses Baskerville, fine brass rules and a custom adjustable crane
+trim dial; the same cargo artwork appears in play, onboarding and shared receipts.
 
 ## Play
 
