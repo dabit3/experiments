@@ -14,6 +14,14 @@ enum HarborPalette {
 }
 
 extension CargoKind {
+  var displayHeight: Double {
+    switch self {
+    case .clock, .piano, .telescope: 60
+    case .trunk: 40
+    case .plant: 36
+    }
+  }
+
   var assetName: String {
     switch self {
     case .trunk: "CargoTrunk"
@@ -32,7 +40,8 @@ struct HarborCanvas: View {
 
   var body: some View {
     Canvas { context, size in
-      let minimumHeight = decorative ? 290.0 : 254.0 + Double(game.contract.cargo.count) * 36
+      let minimumHeight =
+        decorative ? 340.0 : 254.0 + game.contract.cargo.reduce(0) { $0 + $1.displayHeight }
       let scale = min(size.width / 390, size.height / minimumHeight)
       context.draw(Image("HarborBackdrop"), in: CGRect(origin: .zero, size: size))
       context.translateBy(x: (size.width - 390 * scale) / 2, y: 0)
@@ -55,9 +64,11 @@ struct HarborCanvas: View {
       ship.rotate(by: .radians((decorative ? -0.025 : game.balance * 0.12) + wobble))
       ship.translateBy(x: -DockRules.shipX, y: -deck)
       HarborArt.airship(&ship, x: DockRules.shipX, y: deck, clock: clock)
-      for (index, item) in cargoStack.enumerated() {
+      var cargoY = deck
+      for item in cargoStack {
+        cargoY -= item.kind.displayHeight
         HarborArt.cargo(
-          &ship, kind: item.kind, x: item.x, y: deck - Double(index + 1) * item.kind.height)
+          &ship, kind: item.kind, x: item.x, y: cargoY)
       }
       HarborArt.balanceGauge(&ship, x: DockRules.shipX, y: deck + 16, balance: game.balance)
       if decorative {
@@ -82,23 +93,25 @@ struct HarborCanvas: View {
     let phase = game.phase
     let pickup = phase == .pickup || phase == .lowering
     let anchor = pickup ? DockRules.dockX : DockRules.shipX
-    let targetY = deck - Double(game.stack.count + 1) * 36
-    let suspensionY = max(58, min(deck * 0.42, targetY - 58))
+    let cargoHeight = game.cargo.displayHeight
+    let stackHeight = HarborArt.stackHeight(game.stack)
+    let targetY = deck - stackHeight - cargoHeight
+    let suspensionY = max(58, min(deck * 0.42, targetY - cargoHeight - 22))
     var x = game.hookX
     var y = suspensionY
     if phase == .lowering {
       x = game.actionX
-      y += (dock - 39 - suspensionY) * min(1, game.phaseTime / 0.6)
+      y += (dock - cargoHeight - 8 - suspensionY) * min(1, game.phaseTime / 0.6)
     } else if phase == .hoisting {
       let t = min(1, game.phaseTime / 1.1)
       let smooth = t * t * (3 - 2 * t)
       x = game.actionX + (game.hookX - game.actionX) * smooth
-      y = dock - 39 + (suspensionY - (dock - 39)) * smooth
+      y = dock - cargoHeight - 8 + (suspensionY - (dock - cargoHeight - 8)) * smooth
     } else if phase == .falling {
       x = game.actionStartX
     }
     if pickup {
-      HarborArt.cargo(&context, kind: game.cargo, x: DockRules.dockX, y: dock - 36)
+      HarborArt.cargo(&context, kind: game.cargo, x: DockRules.dockX, y: dock - cargoHeight)
       HarborArt.line(
         &context, from: CGPoint(x: 46, y: dock + 4), to: CGPoint(x: 120, y: dock + 4),
         color: HarborPalette.orange, width: 4)
@@ -106,7 +119,7 @@ struct HarborCanvas: View {
     if game.actionable {
       let target = pickup ? DockRules.dockX : game.targetX
       let width = pickup ? game.cargo.width + 20 : (game.stack.last?.kind.width ?? 150)
-      let floor = pickup ? dock - 40 : targetY - 4
+      let floor = pickup ? dock - cargoHeight - 4 : deck - stackHeight - 4
       let projected = game.projectedX
       let guideColor = game.onTarget ? HarborPalette.sage : HarborPalette.orange
       HarborArt.rounded(
@@ -119,7 +132,7 @@ struct HarborCanvas: View {
           to: CGPoint(x: edgeX, y: floor + 7), color: guideColor, width: 2)
       }
       var guide = Path()
-      guide.move(to: CGPoint(x: projected, y: y + (pickup ? 13 : 41)))
+      guide.move(to: CGPoint(x: projected, y: y + (pickup ? 13 : cargoHeight + 8)))
       guide.addLine(to: CGPoint(x: projected, y: floor))
       context.stroke(
         guide, with: .color(guideColor),
@@ -146,7 +159,7 @@ struct HarborCanvas: View {
       HarborArt.cargo(&context, kind: game.cargo, x: dropX, y: dropY)
     }
     if phase == .settling {
-      let rewardY = max(65, deck - Double(game.stack.count) * 36 - 38)
+      let rewardY = max(65, deck - stackHeight - 38)
       context.draw(
         Text("+\(game.lastAward)").font(.custom("Baskerville", size: 29))
           .foregroundStyle(HarborPalette.ink), at: CGPoint(x: 255, y: rewardY))
@@ -172,6 +185,10 @@ struct HarborCanvas: View {
 }
 
 enum HarborArt {
+  static func stackHeight(_ stack: [StackedCargo]) -> Double {
+    stack.reduce(0) { $0 + $1.kind.displayHeight }
+  }
+
   static func dock(_ c: inout GraphicsContext, y: Double) {
     let p = HarborPalette.self
     rounded(&c, rect: CGRect(x: 0, y: y, width: 134, height: 11), radius: 1, color: p.ink)
@@ -281,9 +298,30 @@ enum HarborArt {
   }
 
   static func cargo(_ c: inout GraphicsContext, kind: CargoKind, x: Double, y: Double) {
+    let image = c.resolve(Image(kind.assetName))
+    let scale = min(
+      (kind.width - 8) / image.size.width, (kind.displayHeight - 7) / image.size.height)
+    let width = image.size.width * scale
+    let height = image.size.height * scale
     c.draw(
-      Image(kind.assetName),
-      in: CGRect(x: x - kind.width / 2, y: y, width: kind.width, height: kind.height))
+      image,
+      in: CGRect(
+        x: x - width / 2, y: y + kind.displayHeight - height - 3, width: width, height: height))
+    for edge in [-1.0, 1.0] {
+      let railX = x + edge * (kind.width / 2 - 1)
+      line(
+        &c, from: CGPoint(x: railX, y: y + 1),
+        to: CGPoint(x: railX, y: y + kind.displayHeight - 2),
+        color: HarborPalette.brass.opacity(0.7), width: 0.8)
+    }
+    rounded(
+      &c, rect: CGRect(x: x - kind.width / 2, y: y, width: kind.width, height: 1.5),
+      radius: 0, color: HarborPalette.brass)
+    rounded(
+      &c,
+      rect: CGRect(
+        x: x - kind.width / 2, y: y + kind.displayHeight - 3, width: kind.width, height: 3),
+      radius: 0, color: HarborPalette.ink)
   }
 
   static func rounded(

@@ -503,23 +503,25 @@ struct ManifestCard: View {
       Canvas { context, size in
         let scale = size.width / 350
         context.scaleBy(x: scale, y: scale)
-        let deck = 36.0 + Double(max(3, stack.count)) * 31
+        let deck = 30.0 + max(100, HarborArt.stackHeight(stack) * 0.72)
         let shipX = 175.0
         context.draw(
           Image("HarborBackdrop"),
-          in: CGRect(x: 0, y: 0, width: 350, height: 135 + Double(max(3, stack.count)) * 31))
+          in: CGRect(x: 0, y: 0, width: 350, height: deck + 99))
         HarborArt.airship(&context, x: shipX, y: deck, clock: 0)
-        for (index, item) in stack.enumerated() {
+        var cargoY = 0.0
+        for item in stack {
           var cargoContext = context
           cargoContext.translateBy(x: shipX, y: deck)
-          cargoContext.scaleBy(x: 0.85, y: 0.85)
+          cargoContext.scaleBy(x: 0.72, y: 0.72)
+          cargoY -= item.kind.displayHeight
           HarborArt.cargo(
             &cargoContext, kind: item.kind, x: item.x - DockRules.shipX,
-            y: -Double(index + 1) * 36)
+            y: cargoY)
         }
         HarborArt.balanceGauge(&context, x: shipX, y: deck + 16, balance: DockRules.balance(stack))
       }
-      .aspectRatio(350.0 / Double(135 + max(3, stack.count) * 31), contentMode: .fit)
+      .aspectRatio(350.0 / (129 + max(100, HarborArt.stackHeight(stack) * 0.72)), contentMode: .fit)
       .accessibilityLabel("Cargo tower with \(stack.count) treasures on the Small Wonder")
       HStack(alignment: .firstTextBaseline) {
         VStack(alignment: .leading, spacing: 3) {
@@ -570,7 +572,7 @@ struct LiftDiagram: View {
       HarborArt.rounded(
         &context, rect: CGRect(x: 0, y: 0, width: 330, height: 84),
         radius: 2, color: HarborPalette.sky.opacity(0.55))
-      HarborArt.cargo(&context, kind: .trunk, x: 53, y: 24)
+      HarborArt.cargo(&context, kind: .trunk, x: 53, y: 61 - CargoKind.trunk.displayHeight)
       HarborArt.line(
         &context, from: CGPoint(x: 16, y: 61), to: CGPoint(x: 90, y: 61),
         color: HarborPalette.ink, width: 3)
@@ -578,7 +580,7 @@ struct LiftDiagram: View {
       HarborArt.line(
         &context, from: CGPoint(x: 166, y: 2), to: CGPoint(x: 166, y: 19),
         color: HarborPalette.ink)
-      HarborArt.cargo(&context, kind: .trunk, x: 277, y: 24)
+      HarborArt.cargo(&context, kind: .trunk, x: 277, y: 61 - CargoKind.trunk.displayHeight)
       HarborArt.line(
         &context, from: CGPoint(x: 235, y: 61), to: CGPoint(x: 318, y: 61),
         color: HarborPalette.ink, width: 3)
