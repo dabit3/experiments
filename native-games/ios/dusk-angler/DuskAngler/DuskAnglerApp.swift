@@ -41,6 +41,7 @@ struct AnglerView: View {
         if showTutorial { tutorial }
       }
       .foregroundStyle(Ink.cream)
+      .font(TypeStyle.body(15))
       .animation(reduceMotion ? nil : .easeInOut(duration: 0.35), value: store.phase)
     }
     .preferredColorScheme(.dark)
@@ -59,59 +60,69 @@ struct AnglerView: View {
   private var home: some View {
     VStack(spacing: 0) {
       HStack {
-        Image(systemName: "sun.horizon").font(.system(size: 25, weight: .ultraLight))
+        Eyebrow(text: "Last light club", color: Ink.gold)
         Spacer()
         Button {
           panel = .settings
         } label: {
           Image(systemName: "slider.horizontal.3").frame(width: 48, height: 48)
+            .background(Ink.night.opacity(0.4), in: Circle())
+            .overlay(Circle().strokeBorder(Ink.cream.opacity(0.18), lineWidth: 0.7))
         }
         .accessibilityLabel("Settings")
         .accessibilityIdentifier("settings")
       }
-      .padding(.bottom, 18)
-      VStack(alignment: .leading, spacing: 12) {
-        Eyebrow(text: "A quiet pursuit")
-        Text("Dusk\nAngler")
-          .font(.system(size: 72, weight: .regular, design: .serif))
-          .tracking(-3)
-          .lineSpacing(-9)
-          .shadow(color: Ink.night.opacity(0.18), radius: 12, y: 3)
-        Text("One more cast before the stars.")
-          .font(.system(size: 14, weight: .medium))
-          .foregroundStyle(Ink.cream.opacity(0.9))
+      .padding(.bottom, 12)
+      VStack(spacing: 0) {
+        AnglerSeal().frame(width: 46, height: 46).foregroundStyle(Ink.gold)
+          .padding(.bottom, 12)
+        Text("DUSK").font(TypeStyle.display(76)).tracking(9).padding(.leading, 9)
+          .padding(.bottom, -12)
+        Text("ANGLER").font(TypeStyle.display(35)).tracking(13).padding(.leading, 13)
+        Text("STILL WATER. WILD HEART.")
+          .font(TypeStyle.label(9)).tracking(2.6).padding(.top, 15)
+          .foregroundStyle(Ink.cream.opacity(0.8))
       }
-      .frame(maxWidth: .infinity, alignment: .leading)
-      Spacer(minLength: 35)
-      HStack(spacing: 12) {
-        Rectangle().fill(Ink.cream.opacity(0.3)).frame(height: 1)
-        Image(systemName: "sparkle").font(.system(size: 13))
-        Rectangle().fill(Ink.cream.opacity(0.3)).frame(height: 1)
+      .shadow(color: Ink.night.opacity(0.45), radius: 12, y: 3)
+      .frame(maxWidth: .infinity)
+      .accessibilityElement(children: .ignore)
+      .accessibilityLabel("Dusk Angler. Still water, wild heart.")
+      Spacer(minLength: 24)
+      VStack(alignment: .leading, spacing: 14) {
+        HStack(alignment: .center) {
+          VStack(alignment: .leading, spacing: 2) {
+            Eyebrow(text: "Your evening begins at", color: Ink.gold)
+            Text(store.lake.name).font(TypeStyle.display(31))
+          }
+          Spacer()
+          AnglerSeal().frame(width: 38, height: 38).foregroundStyle(Ink.gold.opacity(0.65))
+        }
+        PrimaryAction(title: "Begin fishing") {
+          if store.progress.tutorialSeen { store.begin() } else { showTutorial = true }
+        }
+        .accessibilityLabel("Cast at \(store.lake.name)")
+        .accessibilityIdentifier("Cast at \(store.lake.name)")
       }
-      .padding(.bottom, 22)
-      Eyebrow(text: store.lake.subtitle)
-        .padding(.bottom, 12)
-      CapsuleAction(title: "Cast at \(store.lake.name)") {
-        if store.progress.tutorialSeen { store.begin() } else { showTutorial = true }
-      }
-      HStack {
+      .modifier(InstrumentSurface())
+      HStack(spacing: 16) {
         navButton("Field journal", symbol: "book.closed", panel: .journal)
         Spacer()
         navButton("Other waters", symbol: "map", panel: .waters)
       }
-      .padding(.top, 18)
+      .padding(.top, 12)
       HStack {
         Text("\(store.progress.total) CATCHES")
         Spacer()
-        Text(store.progress.best == 0 ? "THE LAKE IS WAITING" : "BEST  \(store.progress.best)")
+        Text(
+          store.progress.best == 0
+            ? "MAKE YOUR FIRST MEMORY" : "PERSONAL BEST  \(store.progress.best)")
       }
-      .font(.system(size: 9, weight: .medium, design: .monospaced))
-      .tracking(2)
+      .font(TypeStyle.label(8)).tracking(1.3)
       .foregroundStyle(Ink.cream.opacity(0.6))
-      .padding(.top, 24)
-      .padding(.bottom, 16)
+      .padding(.top, 8)
+      .padding(.bottom, 14)
     }
-    .padding(.horizontal, 30)
+    .padding(.horizontal, 26)
   }
 
   private func navButton(_ title: String, symbol: String, panel item: Panel) -> some View {
@@ -119,7 +130,7 @@ struct AnglerView: View {
       panel = item
     } label: {
       Label(title, systemImage: symbol)
-        .font(.system(size: 13))
+        .font(TypeStyle.body(13))
         .frame(minHeight: 44)
     }
     .accessibilityIdentifier(title)
@@ -130,18 +141,19 @@ struct AnglerView: View {
       HStack {
         VStack(alignment: .leading, spacing: 5) {
           Eyebrow(text: store.lake.name)
-          Text(store.phase == .duel ? store.duel.species.name : "Follow the ripples")
-            .font(.system(size: 23, design: .serif))
+          Text(store.phase == .duel ? store.duel.species.name : "Find your fish")
+            .font(TypeStyle.display(25))
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
-        .background(Ink.night.opacity(0.72), in: RoundedRectangle(cornerRadius: 6))
+        .background(Ink.night.opacity(0.82), in: RoundedRectangle(cornerRadius: 12))
         Spacer()
         Button {
           store.pause()
         } label: {
           Image(systemName: "pause").frame(width: 48, height: 48)
-            .background(Ink.night.opacity(0.3), in: Circle())
+            .background(Ink.night.opacity(0.7), in: Circle())
+            .overlay(Circle().strokeBorder(Ink.gold.opacity(0.4), lineWidth: 0.7))
         }
         .accessibilityLabel("Pause fishing")
         .accessibilityIdentifier("pause")
@@ -155,7 +167,7 @@ struct AnglerView: View {
         )
         .ignoresSafeArea(edges: .top))
       if store.phase == .duel {
-        duelStage.frame(height: height * 0.26).offset(y: height * 0.36)
+        duelStage.frame(height: height * 0.22).offset(y: height * 0.30)
       } else {
         castingStage.frame(height: height * 0.28).offset(y: height * 0.39)
       }
@@ -189,10 +201,10 @@ struct AnglerView: View {
                 Ellipse().stroke(Ink.cream.opacity(0.4), lineWidth: 1)
                   .frame(width: 86, height: 26).offset(y: 16)
                 FishArt(species: store.lake.species[index], silhouette: true)
-                  .frame(width: 83, height: 45)
+                  .frame(width: 88, height: 48)
                   .shadow(color: Ink.gold.opacity(0.7), radius: 10)
                 if store.lake.species[index].rare {
-                  Image(systemName: "sparkle").font(.system(size: 14)).offset(x: 35, y: -18)
+                  Image(systemName: "sparkle").font(TypeStyle.body(14)).offset(x: 35, y: -18)
                 }
               }
               .frame(width: 100, height: 66)
@@ -206,8 +218,9 @@ struct AnglerView: View {
             .accessibilityLabel("Aim at \(store.lake.species[index].name)")
             .accessibilityIdentifier("fish-\(index)")
           }
-          Circle().stroke(Ink.gold, style: StrokeStyle(lineWidth: 1.5, dash: [5, 5]))
-            .frame(width: 100, height: 100)
+          Circle().trim(from: 0.04, to: 0.96)
+            .stroke(Ink.gold, style: StrokeStyle(lineWidth: 1, dash: [22, 8]))
+            .frame(width: 102, height: 76)
             .overlay {
               Image(systemName: "plus").font(.system(size: 13, weight: .light)).foregroundStyle(
                 Ink.gold)
@@ -248,15 +261,15 @@ struct AnglerView: View {
   private var duelStage: some View {
     ZStack {
       WaterSparkles(time: reduceMotion ? 0 : store.duel.elapsed)
-      VStack(spacing: 14) {
+      VStack(spacing: 8) {
         ZStack {
           Ellipse().stroke(Ink.cream.opacity(0.24), lineWidth: 1)
             .frame(width: 270, height: 75).offset(y: 48)
           Ellipse().stroke(Ink.cream.opacity(0.14), lineWidth: 1)
             .frame(width: 320, height: 105).offset(y: 48)
           FishArt(species: store.duel.species)
-            .frame(width: 235, height: 130)
-            .shadow(color: Ink.gold.opacity(0.35), radius: 30)
+            .frame(width: 265, height: 150)
+            .shadow(color: Ink.gold.opacity(0.24), radius: 20)
             .rotationEffect(
               .degrees(
                 reduceMotion
@@ -266,12 +279,6 @@ struct AnglerView: View {
             )
             .offset(y: reduceMotion ? 0 : sin(store.duel.elapsed * 2) * 6)
         }
-        Text(
-          store.duel.surging
-            ? "Let it run." : store.duel.warning ? "Ease off in a moment." : "Bring it closer."
-        )
-        .font(.system(size: 22, design: .serif))
-        .shadow(color: Ink.night, radius: 8)
       }
     }
     .accessibilityElement(children: .combine)
@@ -279,133 +286,110 @@ struct AnglerView: View {
 
   @ViewBuilder private var controlDeck: some View {
     if store.phase == .aiming {
-      VStack(spacing: 16) {
-        Text("01 / CAST").font(.system(size: 10, weight: .semibold, design: .monospaced)).tracking(
-          3)
-        Text(store.activeSpecies.name).font(.system(size: 28, design: .serif))
-        Text("Tap a silhouette to aim your cast.")
-          .font(.system(size: 13)).foregroundStyle(Ink.cream.opacity(0.75))
+      VStack(spacing: 12) {
+        HStack(spacing: 12) {
+          FishArt(species: store.activeSpecies).frame(width: 76, height: 45)
+          VStack(alignment: .leading, spacing: 2) {
+            Eyebrow(
+              text: store.activeSpecies.rare ? "Rare sighting" : "In your sights", color: Ink.gold)
+            Text(store.activeSpecies.name).font(TypeStyle.display(24))
+              .lineLimit(1).minimumScaleFactor(0.8)
+          }
+          Spacer(minLength: 0)
+        }
+        Text("Tap a silhouette to choose your cast.")
+          .font(TypeStyle.body(12)).foregroundStyle(Ink.cream.opacity(0.7))
+          .frame(maxWidth: .infinity, alignment: .leading)
         if store.progress.bait >= 2 {
           Toggle(isOn: $store.useBait) {
-            Text("Glow bait · 2 of \(store.progress.bait)").font(.system(size: 13))
+            Text("Glow bait  ·  2 of \(store.progress.bait)").font(TypeStyle.body(12))
           }
           .tint(Ink.gold)
           .accessibilityIdentifier("glow-bait")
         }
-        CapsuleAction(title: "Cast the line", icon: "arrow.up.right", action: store.cast)
+        PrimaryAction(title: "Cast the line", icon: "arrow.up.right", action: store.cast)
       }
+      .modifier(InstrumentSurface())
     } else if store.phase == .waiting || store.phase == .bite {
-      VStack(spacing: 18) {
-        Eyebrow(text: "02 / THE MOMENT")
-        Text(store.phase == .bite ? "Now. Set the hook." : "Watch the float…")
-          .font(.system(size: 29, design: .serif))
+      VStack(alignment: .leading, spacing: 10) {
+        Eyebrow(
+          text: store.phase == .bite ? "Take your moment" : "Line in the water", color: Ink.gold)
+        Text(store.phase == .bite ? "Set the hook." : "Watch the float…")
+          .font(TypeStyle.display(32))
         Text(
           store.phase == .bite
-            ? "Tap before the golden ring disappears." : "A bite is only a heartbeat away."
+            ? "Tap now, while the fish is biting." : "A bite is a heartbeat away."
         )
-        .font(.system(size: 13)).foregroundStyle(Ink.cream.opacity(0.75))
-        CapsuleAction(
+        .font(TypeStyle.body(12)).foregroundStyle(Ink.cream.opacity(0.7))
+        PrimaryAction(
           title: store.phase == .bite ? "HOOK" : "Wait for the bite", icon: "arrow.up",
           action: store.hook
         )
         .accessibilityIdentifier("hook")
       }
+      .modifier(InstrumentSurface())
     } else if store.phase == .duel {
-      VStack(spacing: 15) {
+      VStack(spacing: 7) {
         HStack {
-          Eyebrow(text: "03 / THE DUEL")
+          Eyebrow(text: "Bring it home", color: Ink.gold)
           Spacer()
-          Text("\(Int(store.duel.landed * 100))% LANDED")
-            .font(.system(size: 12, weight: .semibold, design: .monospaced))
+          Text("\(Int(store.duel.landed * 100))%").font(TypeStyle.label(13)).monospacedDigit()
         }
         GeometryReader { g in
           ZStack(alignment: .leading) {
             Capsule().fill(Ink.cream.opacity(0.15))
-            Capsule().fill(Ink.cream).frame(width: g.size.width * store.duel.landed)
+            Capsule().fill(Ink.gold).frame(width: g.size.width * store.duel.landed)
           }
         }
         .frame(height: 3)
-        HStack {
-          Image(systemName: store.duel.surging || store.duel.warning ? "wind" : "water.waves")
-          Text(
-            store.duel.surging
-              ? "SURGE · RELEASE" : store.duel.warning ? "SURGE APPROACHING" : "STEADY · REEL IN"
-          )
-          .font(.system(size: 12, weight: .semibold, design: .monospaced))
-          Spacer()
+        HStack(spacing: 6) {
+          ReelControl(
+            holding: $store.holding, tension: store.duel.tension,
+            elapsed: store.duel.elapsed)
+          VStack(alignment: .leading, spacing: 6) {
+            Text(store.duel.surging ? "RELEASE" : store.duel.warning ? "EASE OFF" : "REEL IN")
+              .font(TypeStyle.display(23))
+              .foregroundStyle(store.duel.surging || store.duel.warning ? Ink.gold : Ink.mint)
+            Text(
+              store.duel.surging
+                ? "Fish surging" : store.duel.warning ? "Surge ahead" : "Steady water"
+            )
+            .font(TypeStyle.body(11)).foregroundStyle(Ink.cream.opacity(0.7))
+            Rectangle().fill(Ink.gold.opacity(0.25)).frame(height: 1).padding(.vertical, 4)
+            Text("\(Int(store.duel.tension * 100))%").font(TypeStyle.display(30)).monospacedDigit()
+              .foregroundStyle(store.duel.tension > 0.8 ? Ink.coral : Ink.cream)
+            Text("TENSION").font(TypeStyle.label(8)).tracking(1.5)
+            Text(
+              store.duel.tension > 0.8 ? "Danger" : store.duel.tension < 0.1 ? "Slack" : "Balanced"
+            )
+            .font(TypeStyle.body(11))
+            .foregroundStyle(store.duel.tension > 0.8 ? Ink.coral : Ink.mint)
+          }
+          .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .foregroundStyle(store.duel.surging || store.duel.warning ? Ink.gold : Ink.mint)
-        tensionMeter
         Text(
           store.duel.slack > 1
-            ? "Too much slack — reel now"
-            : store.holding ? "Reeling · watch your tension" : "Release to soften • hold to reel"
+            ? "Too much slack. Reel now." : "Hold the reel. Release before a surge."
         )
-        .font(.system(size: 14)).foregroundStyle(
+        .font(TypeStyle.body(11)).foregroundStyle(
           store.duel.slack > 1 ? Ink.gold : Ink.cream.opacity(0.8))
-        Text(store.holding ? "REELING" : "HOLD TO REEL")
-          .font(.system(size: 15, weight: .bold)).tracking(2)
-          .frame(maxWidth: .infinity).frame(height: 66)
-          .foregroundStyle(Ink.night)
-          .background(store.holding ? Ink.gold : Ink.cream, in: Capsule())
-          .contentShape(Capsule())
-          .gesture(
-            DragGesture(minimumDistance: 0)
-              .onChanged { _ in store.holding = true }
-              .onEnded { _ in store.holding = false }
-          )
-          .accessibilityLabel("Reel")
-          .accessibilityValue(store.holding ? "Reeling" : "Released")
-          .accessibilityHint("Double tap to toggle reeling. Release before a surge.")
-          .accessibilityAddTraits(.isButton)
-          .accessibilityIdentifier("reel")
-          .accessibilityAction { store.holding.toggle() }
       }
-    }
-  }
-
-  private var tensionMeter: some View {
-    VStack(spacing: 8) {
-      HStack {
-        Text("LINE TENSION")
-        Spacer()
-        Text(store.duel.tension > 0.8 ? "DANGER" : store.duel.tension < 0.1 ? "SLACK" : "BALANCED")
-          .foregroundStyle(store.duel.tension > 0.8 ? Ink.coral : Ink.mint)
-      }
-      .font(.system(size: 11, weight: .semibold, design: .monospaced)).tracking(1.5)
-      GeometryReader { g in
-        ZStack(alignment: .leading) {
-          Capsule().fill(
-            LinearGradient(
-              stops: [
-                .init(color: Ink.cream.opacity(0.25), location: 0),
-                .init(color: Ink.mint, location: 0.15),
-                .init(color: Ink.mint, location: 0.62),
-                .init(color: Ink.gold, location: 0.78),
-                .init(color: Ink.coral, location: 1),
-              ], startPoint: .leading, endPoint: .trailing))
-          Capsule().fill(.white).frame(width: 5, height: 24)
-            .offset(x: max(0, (g.size.width - 5) * store.duel.tension))
-        }
-      }
-      .frame(height: 14)
-      .accessibilityLabel("Line tension")
-      .accessibilityValue("\(Int(store.duel.tension * 100)) percent")
+      .modifier(InstrumentSurface())
     }
   }
 
   private var failure: some View {
     VStack(spacing: 24) {
       Spacer()
-      Image(systemName: "water.waves").font(.system(size: 50, weight: .ultraLight))
+      AnglerSeal().frame(width: 72, height: 72).foregroundStyle(Ink.gold)
       Eyebrow(text: "The lake keeps its secrets")
       Text(store.failure.components(separatedBy: "|").first ?? "Gone")
-        .font(.system(size: 41, design: .serif)).multilineTextAlignment(.center)
+        .font(TypeStyle.display(41)).multilineTextAlignment(.center)
       Text(store.failure.components(separatedBy: "|").last ?? "")
-        .font(.system(size: 16)).lineSpacing(5).multilineTextAlignment(.center)
+        .font(TypeStyle.body(16)).lineSpacing(5).multilineTextAlignment(.center)
         .foregroundStyle(Ink.cream.opacity(0.85))
       Spacer()
-      CapsuleAction(title: "Cast again", icon: "arrow.counterclockwise", action: store.begin)
+      PrimaryAction(title: "Cast again", icon: "arrow.counterclockwise", action: store.begin)
       Button("Back to the shore") { store.phase = .home }
         .frame(minHeight: 44).accessibilityIdentifier("home")
     }
@@ -417,11 +401,13 @@ struct AnglerView: View {
     ZStack {
       Ink.night.ignoresSafeArea()
       VStack(spacing: 24) {
+        AnglerSeal().frame(width: 60, height: 60).foregroundStyle(Ink.gold)
         Eyebrow(text: "A moment of stillness")
-        Text("The lake can wait.").font(.system(size: 34, design: .serif))
-        CapsuleAction(title: "Resume", icon: "play") { store.paused = false }
-        CapsuleAction(
-          title: "Start a fresh cast", icon: "arrow.counterclockwise", action: store.begin)
+        Text("The lake can wait.").font(TypeStyle.display(34))
+        PrimaryAction(title: "Resume", icon: "play") { store.paused = false }
+        PrimaryAction(
+          title: "Start a fresh cast", icon: "arrow.counterclockwise", dark: true,
+          action: store.begin)
         Button("Back to the shore") {
           store.paused = false
           store.phase = .home
@@ -435,16 +421,20 @@ struct AnglerView: View {
   private var tutorial: some View {
     ZStack {
       Ink.night.ignoresSafeArea()
-      VStack(alignment: .leading, spacing: 26) {
-        Eyebrow(text: "Your first evening")
-        Text("A little patience.\nA little instinct.")
-          .font(.system(size: 36, design: .serif))
+      VStack(alignment: .leading, spacing: 22) {
+        HStack {
+          Eyebrow(text: "The angler’s field guide", color: Ink.gold)
+          Spacer()
+          AnglerSeal().frame(width: 44, height: 44).foregroundStyle(Ink.gold)
+        }
+        Text("INSTINCT.\nTHEN PATIENCE.")
+          .font(TypeStyle.display(39)).lineSpacing(-4)
         tutorialRow("01", title: "Find your fish", text: "Tap a silhouette in the lake, then cast.")
         tutorialRow("02", title: "Meet the moment", text: "When the float dips, tap HOOK.")
         tutorialRow(
           "03", title: "Feel the line",
           text: "Hold to reel. Release before a surge. Too tight snaps; too slack loses the fish.")
-        CapsuleAction(title: "Let’s fish", icon: "arrow.up.right") {
+        PrimaryAction(title: "Let’s fish", icon: "arrow.up.right") {
           store.progress.tutorialSeen = true
           store.save()
           showTutorial = false
@@ -457,11 +447,12 @@ struct AnglerView: View {
 
   private func tutorialRow(_ number: String, title: String, text: String) -> some View {
     HStack(alignment: .top, spacing: 18) {
-      Text(number).font(.system(size: 12, design: .monospaced)).foregroundStyle(Ink.gold).padding(
-        .top, 4)
+      Text(number).font(TypeStyle.display(24)).foregroundStyle(Ink.gold)
+        .frame(width: 38, height: 38)
+        .overlay(Circle().strokeBorder(Ink.gold.opacity(0.4), lineWidth: 0.7))
       VStack(alignment: .leading, spacing: 6) {
-        Text(title).font(.system(size: 20, design: .serif))
-        Text(text).font(.system(size: 14)).lineSpacing(4).foregroundStyle(Ink.cream.opacity(0.7))
+        Text(title).font(TypeStyle.display(20))
+        Text(text).font(TypeStyle.body(14)).lineSpacing(4).foregroundStyle(Ink.cream.opacity(0.7))
       }
     }
   }
@@ -483,7 +474,7 @@ struct AnglerView: View {
         VStack {
           Spacer()
           Eyebrow(text: store.duel.species.rare ? "A rare moment" : "Yours for a moment")
-          Text("Out of the deep.").font(.system(size: 38, design: .serif))
+          Text("Out of the deep.").font(TypeStyle.display(38))
           Spacer().frame(height: 70)
         }
       }

@@ -1,11 +1,21 @@
 import SwiftUI
 
 enum Ink {
-  static let night = Color(red: 0.10, green: 0.09, blue: 0.19)
-  static let cream = Color(red: 0.98, green: 0.91, blue: 0.79)
-  static let gold = Color(red: 1.0, green: 0.73, blue: 0.48)
-  static let mint = Color(red: 0.56, green: 0.85, blue: 0.76)
-  static let coral = Color(red: 1.0, green: 0.42, blue: 0.43)
+  static let night = Color(red: 0.035, green: 0.11, blue: 0.14)
+  static let lake = Color(red: 0.063, green: 0.176, blue: 0.208)
+  static let cream = Color(red: 0.933, green: 0.941, blue: 0.906)
+  static let gold = Color(red: 0.843, green: 0.718, blue: 0.478)
+  static let mint = Color(red: 0.569, green: 0.792, blue: 0.733)
+  static let coral = Color(red: 0.949, green: 0.459, blue: 0.396)
+}
+
+enum TypeStyle {
+  static func display(_ size: CGFloat) -> Font {
+    .custom("AvenirNextCondensed-DemiBold", size: size)
+  }
+  static func body(_ size: CGFloat) -> Font { .custom("AvenirNext-Regular", size: size) }
+  static func label(_ size: CGFloat) -> Font { .custom("AvenirNext-DemiBold", size: size) }
+  static func specimen(_ size: CGFloat) -> Font { .custom("Baskerville-Italic", size: size) }
 }
 
 struct LakeBackdrop: View {
@@ -20,8 +30,12 @@ struct LakeBackdrop: View {
         .overlay(violet ? Color.indigo.opacity(0.24) : Color.clear)
         .overlay {
           LinearGradient(
-            colors: [.black.opacity(0.12), .clear, Ink.night.opacity(0.1), Ink.night.opacity(0.7)],
-            startPoint: .top, endPoint: .bottom)
+            stops: [
+              .init(color: Ink.night.opacity(0.58), location: 0),
+              .init(color: .clear, location: 0.34),
+              .init(color: Ink.night.opacity(0.1), location: 0.58),
+              .init(color: Ink.night.opacity(0.96), location: 1),
+            ], startPoint: .top, endPoint: .bottom)
         }
     }
     .ignoresSafeArea()
@@ -30,94 +44,43 @@ struct LakeBackdrop: View {
 }
 
 struct FishArt: View {
-  var species: Species
+  let species: Species
   var silhouette = false
-
-  var color: Color {
-    switch species {
-    case .emberPerch: return Color(red: 0.91, green: 0.44, blue: 0.32)
-    case .ribbonTrout: return Color(red: 0.40, green: 0.67, blue: 0.63)
-    case .moonKoi: return Color(red: 0.75, green: 0.60, blue: 0.87)
-    case .glassChar: return Color(red: 0.36, green: 0.64, blue: 0.81)
-    }
+  var body: some View {
+    Image(species.rawValue)
+      .renderingMode(silhouette ? .template : .original)
+      .resizable()
+      .scaledToFit()
+      .foregroundStyle(Ink.night.opacity(0.9))
+      .accessibilityHidden(true)
   }
+}
 
+struct AnglerSeal: View {
   var body: some View {
     Canvas { context, size in
-      context.scaleBy(x: size.width / 300, y: size.height / 160)
-      let body = Path { p in
-        p.move(to: CGPoint(x: 251, y: 72))
-        p.addCurve(
-          to: CGPoint(x: 79, y: 57), control1: CGPoint(x: 211, y: 30),
-          control2: CGPoint(x: 132, y: 31))
-        p.addQuadCurve(to: CGPoint(x: 57, y: 76), control: CGPoint(x: 65, y: 65))
-        p.addCurve(
-          to: CGPoint(x: 17, y: 41), control1: CGPoint(x: 42, y: 54),
-          control2: CGPoint(x: 29, y: 47))
-        p.addQuadCurve(to: CGPoint(x: 23, y: 85), control: CGPoint(x: 29, y: 68))
-        p.addQuadCurve(to: CGPoint(x: 15, y: 128), control: CGPoint(x: 27, y: 111))
-        p.addCurve(
-          to: CGPoint(x: 58, y: 94), control1: CGPoint(x: 40, y: 119),
-          control2: CGPoint(x: 46, y: 104))
-        p.addCurve(
-          to: CGPoint(x: 247, y: 91), control1: CGPoint(x: 131, y: 141),
-          control2: CGPoint(x: 210, y: 123))
-        p.addQuadCurve(to: CGPoint(x: 277, y: 80), control: CGPoint(x: 264, y: 79))
-        p.addQuadCurve(to: CGPoint(x: 251, y: 72), control: CGPoint(x: 265, y: 75))
-        p.closeSubpath()
+      context.scaleBy(x: size.width / 60, y: size.height / 60)
+      context.stroke(
+        Path(ellipseIn: CGRect(x: 2, y: 2, width: 56, height: 56)),
+        with: .foreground, lineWidth: 0.8)
+      var sun = Path()
+      sun.addArc(
+        center: CGPoint(x: 30, y: 28), radius: 11,
+        startAngle: .degrees(180), endAngle: .degrees(0), clockwise: false)
+      context.stroke(sun, with: .foreground, lineWidth: 1)
+      var water = Path()
+      for row in 0..<3 {
+        let inset = CGFloat(row * 5)
+        water.move(to: CGPoint(x: 11 + inset, y: 31 + CGFloat(row * 6)))
+        water.addLine(to: CGPoint(x: 49 - inset, y: 31 + CGFloat(row * 6)))
       }
-      let dorsal = Path { p in
-        p.move(to: CGPoint(x: 105, y: 48))
-        p.addQuadCurve(to: CGPoint(x: 167, y: 14), control: CGPoint(x: 137, y: 12))
-        p.addQuadCurve(to: CGPoint(x: 194, y: 48), control: CGPoint(x: 170, y: 33))
-        p.closeSubpath()
-      }
-      let fin = Path { p in
-        p.move(to: CGPoint(x: 130, y: 112))
-        p.addQuadCurve(to: CGPoint(x: 172, y: 149), control: CGPoint(x: 144, y: 143))
-        p.addQuadCurve(to: CGPoint(x: 175, y: 106), control: CGPoint(x: 179, y: 126))
-        p.closeSubpath()
-      }
-      let fill = silhouette ? Ink.night.opacity(0.85) : color
-      context.fill(dorsal, with: .color(fill.opacity(0.85)))
-      context.fill(fin, with: .color(fill.opacity(0.75)))
-      context.fill(
-        body,
-        with: .linearGradient(
-          Gradient(colors: silhouette ? [fill, fill] : [color, Ink.cream, color.opacity(0.8)]),
-          startPoint: CGPoint(x: 150, y: 36), endPoint: CGPoint(x: 150, y: 140)))
-      if !silhouette {
-        context.stroke(body, with: .color(color.opacity(0.75)), lineWidth: 1.5)
-        for row in 0..<4 {
-          for column in 0..<12 {
-            let x = Double(80 + column * 12 + (row % 2) * 5)
-            let y = Double(58 + row * 13)
-            let dot = CGRect(x: x, y: y, width: species.rare ? 3 : 2, height: 2)
-            context.fill(Path(ellipseIn: dot), with: .color(color.opacity(0.6)))
-          }
-        }
-        let gill = Path { p in
-          p.move(to: CGPoint(x: 220, y: 57))
-          p.addQuadCurve(to: CGPoint(x: 211, y: 107), control: CGPoint(x: 190, y: 76))
-        }
-        context.stroke(gill, with: .color(color.opacity(0.7)), lineWidth: 2)
-        context.fill(
-          Path(ellipseIn: CGRect(x: 238, y: 65, width: 10, height: 10)), with: .color(Ink.night))
-        context.fill(
-          Path(ellipseIn: CGRect(x: 243, y: 66, width: 3, height: 3)), with: .color(.white))
-        for index in 0..<7 {
-          let ray = Path { p in
-            p.move(to: CGPoint(x: 59, y: 85))
-            p.addLine(to: CGPoint(x: 24, y: 53 + index * 10))
-          }
-          context.stroke(ray, with: .color(Ink.cream.opacity(0.45)), lineWidth: 1)
-        }
-        let sideFin = Path { p in
-          p.move(to: CGPoint(x: 199, y: 92))
-          p.addQuadCurve(to: CGPoint(x: 165, y: 126), control: CGPoint(x: 180, y: 128))
-          p.addQuadCurve(to: CGPoint(x: 175, y: 92), control: CGPoint(x: 169, y: 103))
-        }
-        context.fill(sideFin, with: .color(color.opacity(0.7)))
+      context.stroke(water, with: .foreground, lineWidth: 1)
+      for index in 0..<5 {
+        let angle = Double(index) * .pi / 4 + .pi
+        var ray = Path()
+        ray.move(to: CGPoint(x: 30 + cos(angle) * 16, y: 28 + sin(angle) * 16))
+        ray.addLine(to: CGPoint(x: 30 + cos(angle) * 20, y: 28 + sin(angle) * 20))
+        context.stroke(ray, with: .foreground, lineWidth: 1)
       }
     }
     .accessibilityHidden(true)
@@ -143,25 +106,61 @@ struct WaterSparkles: View {
   }
 }
 
-struct CapsuleAction: View {
+struct InstrumentSurface: ViewModifier {
+  func body(content: Content) -> some View {
+    content
+      .padding(18)
+      .background(
+        LinearGradient(
+          colors: [Ink.lake, Ink.night], startPoint: .topLeading, endPoint: .bottomTrailing),
+        in: RoundedRectangle(cornerRadius: 18)
+      )
+      .overlay {
+        RoundedRectangle(cornerRadius: 18).strokeBorder(Ink.gold.opacity(0.32), lineWidth: 0.8)
+      }
+      .shadow(color: .black.opacity(0.22), radius: 18, y: 8)
+  }
+}
+
+struct PrimaryAction: View {
   let title: String
   var icon = "arrow.up.right"
   var dark = false
   let action: () -> Void
   var body: some View {
     Button(action: action) {
-      HStack {
-        Text(title).font(.system(size: 16, weight: .semibold))
-        Spacer()
+      HStack(spacing: 14) {
+        Text(title).font(TypeStyle.label(16))
+        Spacer(minLength: 4)
         Image(systemName: icon).font(.system(size: 16, weight: .medium))
+          .frame(width: 30, height: 30)
+          .overlay(
+            Circle().strokeBorder((dark ? Ink.gold : Ink.night).opacity(0.25), lineWidth: 0.8))
       }
-      .padding(.horizontal, 24)
-      .frame(minHeight: 58)
-      .background(dark ? Ink.night : Ink.cream, in: Capsule())
+      .padding(.horizontal, 18)
+      .frame(minHeight: 56)
       .foregroundStyle(dark ? Ink.cream : Ink.night)
+      .background(
+        LinearGradient(
+          colors: dark
+            ? [Ink.lake, Ink.night] : [Color(red: 0.91, green: 0.81, blue: 0.61), Ink.gold],
+          startPoint: .topLeading, endPoint: .bottomTrailing),
+        in: RoundedRectangle(cornerRadius: 9)
+      )
+      .overlay(
+        RoundedRectangle(cornerRadius: 9).strokeBorder(Ink.gold.opacity(0.4), lineWidth: 0.7))
     }
-    .buttonStyle(.plain)
+    .buttonStyle(PressedActionStyle())
     .accessibilityIdentifier(title)
+  }
+}
+
+struct PressedActionStyle: ButtonStyle {
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .brightness(configuration.isPressed ? -0.08 : 0)
+      .scaleEffect(configuration.isPressed && !reduceMotion ? 0.985 : 1)
   }
 }
 
@@ -170,8 +169,112 @@ struct Eyebrow: View {
   var color = Ink.cream
   var body: some View {
     Text(text.uppercased())
-      .font(.system(size: 11, weight: .semibold, design: .monospaced))
-      .tracking(2.4)
+      .font(TypeStyle.label(10))
+      .tracking(1.8)
       .foregroundStyle(color)
+  }
+}
+
+struct ReelControl: View {
+  @Binding var holding: Bool
+  let tension: Double
+  let elapsed: Double
+  @State private var spoolAngle = 0.0
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+  var body: some View {
+    ZStack {
+      Canvas { context, size in
+        let center = CGPoint(x: size.width / 2, y: size.height / 2)
+        let radius = min(size.width, size.height) / 2 - 6
+        for index in 0...40 {
+          let fraction = Double(index) / 40
+          let angle = (140 + fraction * 260) * .pi / 180
+          let color = fraction > 0.8 ? Ink.coral : fraction < 0.15 ? Ink.gold : Ink.mint
+          let inner = radius - (index % 5 == 0 ? 11 : 6)
+          var tick = Path()
+          tick.move(to: CGPoint(x: center.x + cos(angle) * inner, y: center.y + sin(angle) * inner))
+          tick.addLine(
+            to: CGPoint(x: center.x + cos(angle) * radius, y: center.y + sin(angle) * radius))
+          context.stroke(tick, with: .color(color.opacity(0.85)), lineWidth: index % 5 == 0 ? 2 : 1)
+        }
+        let angle = (140 + min(1, max(0, tension)) * 260) * .pi / 180
+        let tip = CGPoint(
+          x: center.x + cos(angle) * (radius + 3), y: center.y + sin(angle) * (radius + 3))
+        var pointer = Path()
+        pointer.move(to: tip)
+        pointer.addLine(
+          to: CGPoint(
+            x: center.x + cos(angle - 0.055) * (radius - 15),
+            y: center.y + sin(angle - 0.055) * (radius - 15)))
+        pointer.addLine(
+          to: CGPoint(
+            x: center.x + cos(angle + 0.055) * (radius - 15),
+            y: center.y + sin(angle + 0.055) * (radius - 15)))
+        pointer.closeSubpath()
+        context.fill(pointer, with: .color(Ink.cream))
+      }
+      .allowsHitTesting(false)
+      ZStack {
+        Circle()
+          .fill(
+            LinearGradient(
+              colors: [Ink.gold, Ink.night, Ink.gold.opacity(0.7)],
+              startPoint: .topLeading, endPoint: .bottomTrailing))
+        Circle().fill(Ink.lake).padding(3)
+        Circle().strokeBorder(Ink.gold.opacity(0.45), lineWidth: 0.6).padding(9)
+        ZStack {
+          ForEach(0..<8) { index in
+            Capsule().fill(Ink.night)
+              .frame(width: 5, height: 18).offset(y: -44)
+              .rotationEffect(.degrees(Double(index) * 45))
+          }
+        }
+        .rotationEffect(.degrees(reduceMotion ? 0 : spoolAngle))
+        VStack(spacing: 1) {
+          Text(holding ? "REELING" : "HOLD").font(TypeStyle.display(25)).tracking(1)
+          Text(holding ? "FEEL THE LINE" : "TO REEL").font(TypeStyle.label(8)).tracking(1.7)
+        }
+        .foregroundStyle(holding ? Ink.gold : Ink.cream)
+      }
+      .frame(width: 128, height: 128)
+      .scaleEffect(holding && !reduceMotion ? 0.97 : 1)
+      .shadow(color: .black.opacity(0.4), radius: holding ? 2 : 8, y: holding ? 1 : 5)
+      .contentShape(Circle())
+      .gesture(
+        DragGesture(minimumDistance: 0)
+          .onChanged { _ in holding = true }
+          .onEnded { _ in holding = false }
+      )
+      .accessibilityLabel("Reel")
+      .accessibilityValue(
+        "\(holding ? "Reeling" : "Released"), tension \(Int(tension * 100)) percent"
+      )
+      .accessibilityHint("Double tap to toggle reeling. Release before a surge.")
+      .accessibilityAddTraits(.isButton)
+      .accessibilityIdentifier("reel")
+      .accessibilityAction { holding.toggle() }
+    }
+    .frame(width: 178, height: 178)
+    .onChange(of: elapsed) { old, new in
+      if holding && !reduceMotion { spoolAngle += max(0, new - old) * 80 }
+    }
+  }
+}
+
+struct SpecimenRuler: View {
+  var body: some View {
+    Canvas { context, size in
+      for index in 0...40 {
+        let x = size.width * Double(index) / 40
+        var tick = Path()
+        tick.move(to: CGPoint(x: x, y: 0))
+        tick.addLine(to: CGPoint(x: x, y: index % 5 == 0 ? 10 : 4))
+        context.stroke(
+          tick, with: .color(Ink.night.opacity(index % 5 == 0 ? 0.55 : 0.25)), lineWidth: 0.7)
+      }
+    }
+    .frame(height: 10)
+    .accessibilityHidden(true)
   }
 }

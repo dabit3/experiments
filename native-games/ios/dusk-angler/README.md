@@ -45,9 +45,10 @@ spending and pause timing.
 - Tap a fish silhouette to aim; tapping empty water changes the cast position.
   Cast within the visible reticle's reach of a fish.
 - Wait about 1.5 seconds, then tap **HOOK** in the 2.5-second bite window.
-- **Hold to reel**, release to soften the line. Watch the mint tension zone and
-  amber surge warning. Surges begin at 4.5 seconds in a 7-second behavior cycle.
-- Bring the landed meter to 100%. A full tension bar snaps; five seconds below
+- **Hold the circular reel**, release to soften the line. Its radial scale and
+  numeric readout show tension; brass warnings announce approaching surges.
+  Surges begin at 4.5 seconds in a 7-second behavior cycle.
+- Bring the landed meter to 100%. Reaching 100% tension snaps; five seconds below
   10% tension loses the fish; each duel has a 45-second limit.
 - Each catch earns a length, score, and 1 glow bait (2 for rare fish). Spend two
   bait to attract a rare fish to the selected target. Rare silhouettes can
@@ -59,13 +60,16 @@ spending and pause timing.
 
 Pause freezes gameplay. Backgrounding automatically pauses an active cast or
 duel. Relaunch returns to shore with saved catches and settings. Reduce Motion
-disables fish oscillation and the arrival spring. VoiceOver users can target fish
+disables fish oscillation, reel rotation, press scaling and the arrival spring. VoiceOver users can target fish
 buttons and activate Reel to toggle reeling. Sound/haptics can be disabled.
 
 ## Art and limitations
 
-Original generated gouache lake artwork, bespoke SwiftUI Canvas fish
-illustrations and ripples, locally synthesized soft sound effects. The fish and
+Original generated gouache lake and four natural-history fish illustrations;
+custom SwiftUI instrument dial, sunset seal, measurement ruler and water ripples.
+The interface uses native Avenir Next typography with specimen names in
+Baskerville. No font downloads or runtime asset services are required.
+Locally synthesized soft sound effects. The fish and
 scientific names are fictional. No daily or online modes, purchases, or analytics.
 Violet Reach shares the lake composition with a blue-hour treatment.
 

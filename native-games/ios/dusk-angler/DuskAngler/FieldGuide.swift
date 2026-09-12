@@ -12,9 +12,9 @@ struct CatchView: View {
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
   var body: some View {
-    VStack(spacing: 16) {
+    VStack(spacing: 12) {
       HStack {
-        Eyebrow(text: "An evening worth keeping")
+        Eyebrow(text: "A moment, collected", color: Ink.gold)
         Spacer()
         Button(action: home) { Image(systemName: "xmark").frame(width: 44, height: 44) }
           .accessibilityLabel("Back to the shore").accessibilityIdentifier("result-home")
@@ -29,11 +29,11 @@ struct CatchView: View {
               ? "Violet Reach unlocked. A new shore awaits."
               : "+\(record.species.rare ? 2 : 1) glow bait · saved to your field journal"
           )
-          .font(.system(size: 12)).multilineTextAlignment(.center)
+          .font(TypeStyle.body(12)).multilineTextAlignment(.center)
         }
       }
       .scrollIndicators(.hidden)
-      CapsuleAction(title: "One more cast", icon: "arrow.up.right", action: again)
+      PrimaryAction(title: "One more cast", icon: "arrow.up.right", action: again)
       Button {
         let renderer = ImageRenderer(
           content:
@@ -48,12 +48,12 @@ struct CatchView: View {
         }
       } label: {
         Label("Share this catch", systemImage: "square.and.arrow.up")
-          .font(.system(size: 14)).frame(maxWidth: .infinity, minHeight: 44)
+          .font(TypeStyle.label(13)).frame(maxWidth: .infinity, minHeight: 44)
       }
       .accessibilityIdentifier("share-catch")
     }
     .padding(.horizontal, 24).padding(.bottom, 12)
-    .background(Ink.night.opacity(0.48).ignoresSafeArea())
+    .background(Ink.night.opacity(0.85).ignoresSafeArea())
     .sheet(item: $share) { payload in ShareSheet(payload: payload) }
     .onAppear {
       withAnimation(reduceMotion ? nil : .spring(response: 0.65, dampingFraction: 0.68)) {
@@ -66,60 +66,68 @@ struct CatchView: View {
 struct CatchCard: View {
   let record: CatchRecord
   var body: some View {
-    VStack(spacing: 0) {
-      HStack {
-        Text("DUSK ANGLER")
-        Spacer()
-        Image(systemName: "sun.horizon")
-      }
-      .font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(2)
-      .padding(.bottom, 22)
-      Eyebrow(
-        text: record.species.rare ? "Rare specimen" : "A beautiful catch",
-        color: Ink.night.opacity(0.7))
-      Text(record.species.name).font(.system(size: 33, design: .serif))
-        .minimumScaleFactor(0.7).lineLimit(1).padding(.top, 10)
-      Text(record.species.latin).font(.system(size: 13, design: .serif)).italic()
-        .foregroundStyle(Ink.night.opacity(0.6)).padding(.top, 5)
-      ZStack {
-        Circle().stroke(Ink.night.opacity(0.08), lineWidth: 1).frame(width: 165, height: 165)
-        Circle().stroke(Ink.night.opacity(0.05), lineWidth: 1).frame(width: 200, height: 200)
-        FishArt(species: record.species).frame(height: 162)
-          .rotationEffect(.degrees(-8))
-        if record.species.rare {
-          Image(systemName: "sparkle").font(.system(size: 22, weight: .ultraLight))
-            .foregroundStyle(Color(red: 0.58, green: 0.36, blue: 0.5))
-            .offset(x: 110, y: -62)
+    VStack(alignment: .leading, spacing: 0) {
+      HStack(spacing: 10) {
+        AnglerSeal().frame(width: 30, height: 30)
+        VStack(alignment: .leading, spacing: 0) {
+          Text("DUSK ANGLER").font(TypeStyle.display(18)).tracking(2)
+          Text("THE EVENING COLLECTION").font(TypeStyle.label(7)).tracking(1.5)
         }
-      }
-      .frame(height: 210)
-      HStack(alignment: .firstTextBaseline, spacing: 4) {
-        Text("\(record.length)").font(.system(size: 48, weight: .regular, design: .serif))
-        Text("cm").font(.system(size: 17, design: .serif))
         Spacer()
-        VStack(alignment: .trailing, spacing: 6) {
-          Text("\(record.score)").font(.system(size: 24, design: .serif))
-          Text("CATCH SCORE").font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(
-            2)
+        Text(record.species.rare ? "RARE\nFIND" : "FIELD\nRECORD")
+          .font(TypeStyle.label(8)).tracking(1.1).multilineTextAlignment(.center)
+          .padding(7)
+          .overlay(Rectangle().strokeBorder(Ink.gold.opacity(0.7), lineWidth: 0.7))
+      }
+      .foregroundStyle(Ink.gold)
+      .padding(.horizontal, 20).padding(.vertical, 16)
+      .background(Ink.lake)
+      VStack(alignment: .leading, spacing: 0) {
+        HStack(alignment: .firstTextBaseline) {
+          Eyebrow(
+            text:
+              "Specimen \(String(format: "%02d", (Species.allCases.firstIndex(of: record.species) ?? 0) + 1))",
+            color: Ink.lake.opacity(0.6))
+          Spacer()
+          Text(record.date.formatted(.dateTime.month(.abbreviated).day()).uppercased())
+            .font(TypeStyle.label(9)).tracking(1)
         }
+        .padding(.top, 20)
+        Text(record.species.name.uppercased()).font(TypeStyle.display(35))
+          .minimumScaleFactor(0.7).lineLimit(1).padding(.top, 10)
+        Text(record.species.latin).font(TypeStyle.specimen(15))
+          .foregroundStyle(Ink.lake.opacity(0.7)).padding(.top, 1)
+        FishArt(species: record.species)
+          .frame(maxWidth: .infinity).frame(height: 178)
+          .padding(.vertical, 12)
+        SpecimenRuler()
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+          Text("\(record.length)").font(TypeStyle.display(52)).tracking(-1)
+          Text("cm").font(TypeStyle.body(15))
+          Spacer()
+          VStack(alignment: .trailing, spacing: 1) {
+            Text("\(record.score)").font(TypeStyle.display(35))
+            Text("CATCH SCORE").font(TypeStyle.label(8)).tracking(1.3)
+          }
+        }
+        .padding(.top, 8)
+        Rectangle().fill(Ink.night.opacity(0.15)).frame(height: 1).padding(.vertical, 15)
+        HStack {
+          VStack(alignment: .leading, spacing: 4) {
+            Text("CAUGHT & RELEASED").font(TypeStyle.label(7)).tracking(1.5)
+            Text(record.lake.name).font(TypeStyle.label(12))
+          }
+          Spacer()
+          AnglerSeal().frame(width: 33, height: 33).opacity(0.5)
+        }
+        .padding(.bottom, 20)
       }
-      Rectangle().fill(Ink.night.opacity(0.18)).frame(height: 1).padding(.vertical, 16)
-      HStack {
-        Label(record.lake.name, systemImage: "location")
-        Spacer()
-        Text(record.date.formatted(.dateTime.month(.abbreviated).day()))
-      }
-      .font(.system(size: 11, weight: .medium))
-      Text("Catch, admire, release.")
-        .font(.system(size: 11, design: .serif)).italic()
-        .foregroundStyle(Ink.night.opacity(0.6)).padding(.top, 15)
+      .padding(.horizontal, 20)
+      .foregroundStyle(Ink.night)
+      .background(Ink.cream)
     }
-    .padding(24)
-    .foregroundStyle(Ink.night)
-    .background(Ink.cream, in: RoundedRectangle(cornerRadius: 6))
-    .overlay {
-      RoundedRectangle(cornerRadius: 3).stroke(Ink.night.opacity(0.16), lineWidth: 1).padding(9)
-    }
+    .clipShape(RoundedRectangle(cornerRadius: 4))
+    .overlay(RoundedRectangle(cornerRadius: 4).strokeBorder(Ink.gold.opacity(0.4), lineWidth: 0.8))
   }
 }
 
@@ -204,6 +212,7 @@ struct FieldPanel: View {
       }
       .background(Ink.night)
       .foregroundStyle(Ink.cream)
+      .font(TypeStyle.body(15))
       .navigationTitle(title)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -218,32 +227,41 @@ struct FieldPanel: View {
 
   private var journal: some View {
     VStack(alignment: .leading, spacing: 24) {
-      Text("Small wonders,\ncarefully remembered.")
-        .font(.system(size: 30, design: .serif))
+      Text("THE EVENING\nCOLLECTION")
+        .font(TypeStyle.display(37)).lineSpacing(-2)
       ForEach(Species.allCases) { species in
         let records = store.progress.catches.filter { $0.species == species }
         let largest = records.map(\.length).max()
-        VStack(alignment: .leading, spacing: 8) {
-          HStack {
+        VStack(alignment: .leading, spacing: 12) {
+          ZStack(alignment: .topLeading) {
+            Ink.cream
             FishArt(species: species, silhouette: records.isEmpty)
-              .frame(width: 105, height: 64)
-              .background(Ink.cream.opacity(0.08), in: RoundedRectangle(cornerRadius: 4))
-            VStack(alignment: .leading, spacing: 6) {
-              Text(species.name).font(.system(size: 20, design: .serif))
-              Text(
-                largest.map { "Largest \($0) cm · \(records.count) recorded" } ?? "Not yet observed"
-              )
-              .font(.system(size: 11)).foregroundStyle(Ink.cream.opacity(0.6))
+              .padding(.horizontal, 25).padding(.vertical, 18)
+            Text(records.isEmpty ? "NOT YET OBSERVED" : species.rare ? "RARE FIND" : "COLLECTED")
+              .font(TypeStyle.label(8)).tracking(1.5).padding(10)
+              .foregroundStyle(Ink.night.opacity(0.55))
+          }
+          .frame(height: 150)
+          .clipShape(RoundedRectangle(cornerRadius: 4))
+          HStack(alignment: .firstTextBaseline) {
+            Text(species.name).font(TypeStyle.display(25))
+            Spacer()
+            if let largest {
+              Text("\(largest) cm").font(TypeStyle.display(23)).foregroundStyle(Ink.gold)
             }
           }
-          Text(species.behavior).font(.system(size: 13)).foregroundStyle(Ink.cream.opacity(0.7))
+          Text(species.behavior).font(TypeStyle.body(13)).foregroundStyle(Ink.cream.opacity(0.7))
+          if !records.isEmpty {
+            Text("\(records.count) recorded").font(TypeStyle.body(11)).foregroundStyle(
+              Ink.cream.opacity(0.6))
+          }
           Divider().overlay(Ink.cream.opacity(0.15)).padding(.top, 8)
         }
       }
       Text(
         "Every catch earns glow bait. Spend two to draw a rare fish to any silhouette. Your latest 100 catches are preserved."
       )
-      .font(.system(size: 13)).lineSpacing(4).foregroundStyle(Ink.cream.opacity(0.6))
+      .font(TypeStyle.body(13)).lineSpacing(4).foregroundStyle(Ink.cream.opacity(0.6))
     }
   }
 
@@ -255,19 +273,19 @@ struct FieldPanel: View {
           ZStack(alignment: .bottomLeading) {
             Image("Lake").resizable().scaledToFill().frame(height: 150).clipped()
               .overlay(lake == .violet ? Color.indigo.opacity(0.4) : Color.clear)
-            Text(lake.name).font(.system(size: 31, design: .serif)).padding(18)
+            Text(lake.name).font(TypeStyle.display(31)).padding(18)
               .shadow(color: Ink.night, radius: 8)
           }
           .clipShape(RoundedRectangle(cornerRadius: 5))
-          Text(lake.subtitle).font(.system(size: 15, design: .serif)).italic()
+          Text(lake.subtitle).font(TypeStyle.specimen(16))
           Text(
             locked
               ? "Opens after 3 catches · \(store.progress.total)/3"
               : lake.species.map(\.name).joined(separator: " · ")
           )
-          .font(.system(size: 12)).foregroundStyle(Ink.cream.opacity(0.65))
+          .font(TypeStyle.body(12)).foregroundStyle(Ink.cream.opacity(0.65))
           if !locked {
-            CapsuleAction(
+            PrimaryAction(
               title: store.lake == lake ? "Fish here again" : "Travel to \(lake.name)",
               icon: "arrow.right"
             ) {
@@ -277,7 +295,7 @@ struct FieldPanel: View {
             }
           } else {
             Label("Keep exploring Amber Lake", systemImage: "lock")
-              .font(.system(size: 13)).padding(.vertical, 10)
+              .font(TypeStyle.body(13)).padding(.vertical, 10)
           }
         }
       }
@@ -286,29 +304,29 @@ struct FieldPanel: View {
 
   private var settings: some View {
     VStack(alignment: .leading, spacing: 24) {
-      Text("Leave only ripples.").font(.system(size: 32, design: .serif))
+      Text("Leave only ripples.").font(TypeStyle.display(32))
       Toggle("Soft sound effects", isOn: $store.sound).tint(Ink.gold).accessibilityIdentifier(
         "sound-toggle")
       Toggle("Haptic feedback", isOn: $store.haptics).tint(Ink.gold).accessibilityIdentifier(
         "haptic-toggle")
       Divider()
-      Text("A field guide to fishing").font(.system(size: 23, design: .serif))
-      CapsuleAction(title: "Replay tutorial", icon: "book") {
+      Text("A field guide to fishing").font(TypeStyle.display(23))
+      PrimaryAction(title: "Replay tutorial", icon: "book") {
         dismiss()
         replayTutorial()
       }
       Text(
-        "Aim at a fish and cast. When the float dips, tap HOOK. Hold the reel to bring your catch closer. Release before the fish surges; the amber warning gives you time. A full tension bar snaps the line. Five seconds of slack lets the fish escape."
+        "Aim at a fish and cast. When the float dips, tap HOOK. Hold the reel to bring your catch closer. Release before the fish surges; the brass warning gives you time. The reel’s scale shows line tension: reaching 100% snaps the line. Five seconds of slack lets the fish escape."
       )
-      .font(.system(size: 15)).lineSpacing(5).foregroundStyle(Ink.cream.opacity(0.75))
+      .font(TypeStyle.body(15)).lineSpacing(5).foregroundStyle(Ink.cream.opacity(0.75))
       Text(
         "Designed for quiet evenings. All progress stays on this device. Fish and their scientific names are imagined."
       )
-      .font(.system(size: 13)).lineSpacing(4).foregroundStyle(Ink.cream.opacity(0.6))
+      .font(TypeStyle.body(13)).lineSpacing(4).foregroundStyle(Ink.cream.opacity(0.6))
       Text(
         "Accessibility: supports Reduce Motion. With VoiceOver, activate Reel to toggle holding and releasing."
       )
-      .font(.system(size: 13)).lineSpacing(4).foregroundStyle(Ink.cream.opacity(0.6))
+      .font(TypeStyle.body(13)).lineSpacing(4).foregroundStyle(Ink.cream.opacity(0.6))
     }
   }
 }
