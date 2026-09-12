@@ -25,7 +25,7 @@ struct MuseumRoot: View {
   @EnvironmentObject private var store: HeistStore
   var body: some View {
     ZStack {
-      Palette.ink.ignoresSafeArea()
+      MuseumAtmosphere()
       switch store.screen {
       case .home: HomeView()
       case .rooms: RoomsView()
@@ -50,18 +50,28 @@ struct Eyebrow: View {
 }
 
 struct GoldButton: ButtonStyle {
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .font(.system(size: 14, weight: .semibold))
-      .tracking(1)
+      .font(.system(size: 12, weight: .semibold))
+      .tracking(1.5)
       .foregroundStyle(Palette.ink)
       .frame(maxWidth: .infinity)
-      .frame(height: 54)
+      .frame(height: 58)
       .background(
-        configuration.isPressed ? Palette.paper : Palette.gold,
-        in: RoundedRectangle(cornerRadius: 4)
+        LinearGradient(
+          colors: [Palette.paper, Palette.gold.opacity(0.95)],
+          startPoint: .topLeading, endPoint: .bottomTrailing),
+        in: RoundedRectangle(cornerRadius: 2)
       )
+      .overlay {
+        Rectangle().stroke(Palette.ink.opacity(0.2), lineWidth: 0.7).padding(4)
+          .allowsHitTesting(false)
+      }
+      .shadow(color: Palette.gold.opacity(0.12), radius: 16, y: 5)
+      .brightness(configuration.isPressed ? -0.08 : 0)
       .scaleEffect(configuration.isPressed ? 0.985 : 1)
+      .animation(reduceMotion ? nil : .easeOut(duration: 0.18), value: configuration.isPressed)
   }
 }
 
@@ -73,7 +83,8 @@ struct IconButton: View {
     Button(action: action) {
       Image(systemName: symbol).font(.system(size: 17, weight: .light))
         .frame(width: 44, height: 44)
-        .overlay(Circle().stroke(Palette.gold.opacity(0.28), lineWidth: 1))
+        .background(Palette.ink.opacity(0.55), in: Circle())
+        .overlay(Circle().stroke(Palette.gold.opacity(0.35), lineWidth: 0.7))
     }
     .accessibilityLabel(label)
     .accessibilityIdentifier(label)
@@ -86,61 +97,55 @@ struct HomeView: View {
     GeometryReader { geo in
       ScrollView {
         VStack(spacing: 0) {
-          HStack {
-            Eyebrow(text: "A COLLECTION OF QUIET CRIMES")
-            Spacer()
-            IconButton(symbol: "slider.horizontal.3", label: "Settings") {
-              store.showSettings = true
-            }
-          }
-          .padding(.top, 8)
-          HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 1) {
-              Text("Museum").font(.system(size: 51, weight: .regular, design: .serif))
-              Text("After Dark").font(.system(size: 47, weight: .regular, design: .serif)).italic()
-                .foregroundStyle(Palette.gold)
-            }
-            Spacer()
-            VStack(spacing: 6) {
-              Rectangle().fill(Palette.gold.opacity(0.4)).frame(width: 1, height: 28)
-              Text("EST.\n00:00").font(.system(size: 9, design: .monospaced)).lineSpacing(5)
-            }
-            .padding(.top, 16)
-          }
-          .padding(.top, 23)
-          .padding(.bottom, 8)
           ZStack {
-            MuseumBoard(
-              room: Rooms.all[0], state: HeistEngine.initial(Rooms.all[0]), interactive: false
-            )
-            .rotationEffect(.degrees(-7))
-            .scaleEffect(1.08)
-            .padding(.horizontal, 16)
-            LinearGradient(
-              colors: [Palette.ink, .clear, .clear, Palette.ink], startPoint: .top,
-              endPoint: .bottom
-            )
-            .allowsHitTesting(false)
-            VStack {
-              Spacer()
-              HStack(spacing: 8) {
-                Circle().fill(Palette.ruby).frame(width: 4, height: 4)
-                Eyebrow(text: "SECURITY ACTIVE  /  YOU ARE INVITED", color: Palette.muted)
+            MuseumHero()
+            VStack(spacing: 0) {
+              HStack {
+                MuseumEmblem()
+                Spacer()
+                Eyebrow(text: "THE NIGHT COLLECTION")
+                Spacer()
+                IconButton(symbol: "slider.horizontal.3", label: "Settings") {
+                  store.showSettings = true
+                }
               }
+              .padding(.horizontal, 24)
+              .padding(.top, 10)
+              VStack(spacing: -4) {
+                Text("MUSEUM").font(MuseumType.display(48)).tracking(6)
+                Text("After Dark").font(MuseumType.italic(53)).foregroundStyle(Palette.paper)
+              }
+              .shadow(color: .black.opacity(0.8), radius: 15)
+              .padding(.top, 18)
+              HStack(spacing: 9) {
+                Rectangle().fill(Palette.gold.opacity(0.6)).frame(width: 19, height: 0.5)
+                Eyebrow(text: "TEN GALLERIES. ONE PERFECT CRIME.")
+                Rectangle().fill(Palette.gold.opacity(0.6)).frame(width: 19, height: 0.5)
+              }
+              .padding(.top, 13)
+              Spacer()
+              HStack(spacing: 7) {
+                Circle().fill(Palette.ruby).frame(width: 4, height: 4)
+                  .shadow(color: Palette.ruby, radius: 4)
+                Text("AFTER HOURS ACCESS")
+                  .font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(2)
+              }
+              .foregroundStyle(Palette.paper.opacity(0.75))
+              .padding(.bottom, 12)
             }
           }
-          .frame(height: max(220, min(360, geo.size.height - 380)))
-          .clipped()
-          VStack(alignment: .leading, spacing: 14) {
-            Text("Take nothing for granted.\nExcept the art.").font(
-              .system(size: 23, design: .serif)
-            ).lineSpacing(3)
-            Text("Ten galleries. One exquisite escape.").font(.system(size: 12)).foregroundStyle(
-              Palette.muted)
+          .frame(height: max(440, geo.size.height - 222))
+          VStack(spacing: 13) {
+            Text("An exquisite art. A quiet crime.")
+              .font(MuseumType.italic(23))
+            Text("Outwit the light. Acquire the extraordinary.")
+              .font(.system(size: 12)).foregroundStyle(Palette.muted)
             Button {
               store.begin(store.saved.roomIndex, fresh: store.state.outcome != .playing)
             } label: {
               HStack {
+                Image(systemName: "key.horizontal").font(.system(size: 18, weight: .light))
+                Spacer()
                 Text(
                   store.saved.state.turn > 0 && store.state.outcome == .playing
                     ? "CONTINUE THE HEIST" : "ENTER THE MUSEUM")
@@ -162,16 +167,17 @@ struct HomeView: View {
               .font(.system(size: 10, weight: .medium, design: .monospaced))
               .tracking(1.2)
               .frame(height: 44)
-              .foregroundStyle(Palette.muted)
+              .foregroundStyle(Palette.gold)
             }
             .accessibilityIdentifier("collection")
           }
-          .padding(.top, 18)
-          Spacer(minLength: 12)
+          .padding(.horizontal, 26)
+          .padding(.top, 2)
+          .padding(.bottom, 12)
         }
-        .padding(.horizontal, 26)
         .frame(minHeight: geo.size.height)
       }
+      .background(Palette.ink)
       .scrollIndicators(.hidden)
     }
   }
@@ -186,7 +192,7 @@ struct RoomsView: View {
         Spacer()
         Eyebrow(text: "\(store.medals) PERFECT HEISTS")
       }
-      Text("The collection").font(.system(size: 36, design: .serif))
+      Text("The collection").font(MuseumType.display(39))
       Text("Each acquisition opens another gallery.").font(.system(size: 13)).foregroundStyle(
         Palette.muted)
       ScrollView {
@@ -196,12 +202,19 @@ struct RoomsView: View {
               store.begin(index)
             } label: {
               HStack(spacing: 16) {
-                Text(String(format: "%02d", room.id)).font(
-                  .system(size: 26, weight: .light, design: .serif)
-                ).foregroundStyle(Palette.gold)
+                ZStack(alignment: .bottomTrailing) {
+                  Jewel(size: 58, artifactID: room.id)
+                    .frame(width: 74, height: 80)
+                    .background(Palette.stone.opacity(0.35))
+                    .overlay(EngravedFrame().stroke(Palette.gold.opacity(0.3), lineWidth: 0.5))
+                  Text(String(format: "%02d", room.id))
+                    .font(.system(size: 9, design: .monospaced))
+                    .foregroundStyle(Palette.gold)
+                    .padding(6)
+                }
                 VStack(alignment: .leading, spacing: 6) {
                   Eyebrow(text: room.collection, color: Palette.muted)
-                  Text(room.title).font(.system(size: 18, design: .serif)).foregroundStyle(
+                  Text(room.title).font(MuseumType.display(21)).foregroundStyle(
                     Palette.paper)
                   if let best = store.saved.best[room.id] {
                     Text("\(best) MOVES · \(best <= room.par ? "PERFECT" : "ACQUIRED")").font(
@@ -213,7 +226,7 @@ struct RoomsView: View {
                 Image(systemName: index >= store.unlocked ? "lock" : "arrow.up.right").font(
                   .system(size: 14))
               }
-              .padding(.vertical, 20)
+              .padding(.vertical, 15)
               .opacity(index >= store.unlocked ? 0.4 : 1)
               .overlay(alignment: .bottom) {
                 Rectangle().fill(Palette.gold.opacity(0.2)).frame(height: 1)
@@ -238,43 +251,60 @@ struct PlayView: View {
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   var body: some View {
     GeometryReader { geo in
-      VStack(spacing: 12) {
+      VStack(spacing: 10) {
         HStack {
           IconButton(symbol: "pause", label: "Pause heist") { store.showPause = true }
           Spacer()
-          Eyebrow(text: String(format: "GALLERY %02d / 10", store.room.id))
+          VStack(spacing: 5) {
+            Eyebrow(text: "THE NIGHT COLLECTION", color: Palette.muted)
+            HStack(spacing: 6) {
+              ForEach(1...10, id: \.self) { number in
+                Diamond().fill(number == store.room.id ? Palette.gold : Palette.gold.opacity(0.18))
+                  .frame(width: number == store.room.id ? 5 : 3, height: 5)
+              }
+            }.accessibilityLabel("Gallery \(store.room.id) of 10")
+          }
           Spacer()
-          Text(String(format: "%02d", store.state.turn)).font(
-            .system(size: 24, weight: .light, design: .monospaced)
-          )
+          VStack(spacing: 0) {
+            Text(String(format: "%02d", store.state.turn)).font(MuseumType.display(29))
+              .contentTransition(.numericText())
+            Text("MOVES").font(.system(size: 7, weight: .medium, design: .monospaced)).tracking(1.5)
+              .foregroundStyle(Palette.muted)
+          }
           .frame(width: 44, height: 44)
           .accessibilityLabel("\(store.state.turn) moves")
         }
-        VStack(alignment: .leading, spacing: 7) {
-          Eyebrow(text: store.room.collection, color: Palette.muted)
+        DecoRule().padding(.top, 1)
+        VStack(alignment: .leading, spacing: 5) {
+          HStack {
+            Eyebrow(text: String(format: "%02d  /  ", store.room.id) + store.room.collection)
+            Spacer()
+            Text("PAR \(store.room.par)").font(.system(size: 10, design: .monospaced))
+              .foregroundStyle(Palette.muted)
+          }
           HStack(alignment: .firstTextBaseline) {
-            Text(store.room.title).font(.system(size: 27, design: .serif)).minimumScaleFactor(0.8)
+            Text(store.room.title).font(MuseumType.display(31)).minimumScaleFactor(0.75)
               .lineLimit(1)
-            Spacer(minLength: 4)
-            Text("PAR \(store.room.par)").font(.system(size: 11, design: .monospaced))
-              .foregroundStyle(Palette.gold)
           }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         HStack(spacing: 8) {
-          Image(systemName: store.state.hasArtifact ? "arrow.down.left" : "diamond")
+          Image(systemName: store.state.hasArtifact ? "checkmark.diamond.fill" : "diamond")
           Text(
             store.state.hasArtifact
-              ? "ARTIFACT SECURED  ·  RETURN TO EXIT" : "ACQUIRE THE ARTIFACT  ·  THEN EXIT")
+              ? "ARTIFACT SECURED" : "ACQUIRE THE ARTIFACT")
+          Rectangle().fill(Palette.gold.opacity(0.3)).frame(height: 0.5)
+          Image(systemName: "arrow.down.left")
+          Text("EXIT")
           Spacer(minLength: 0)
         }
-        .font(.system(size: 10, weight: .medium, design: .monospaced))
-        .tracking(0.2)
+        .font(.system(size: 9, weight: .medium, design: .monospaced))
+        .tracking(0.7)
         .foregroundStyle(store.state.hasArtifact ? Palette.mint : Palette.gold)
-        .frame(height: 24)
+        .frame(height: 22)
         ZStack {
           MuseumBoard(room: store.room, state: store.state, tap: store.tap)
-            .frame(maxWidth: min(geo.size.width, max(245, (geo.size.height - 300) * 7 / 8)))
+            .frame(maxWidth: min(geo.size.width - 20, max(238, (geo.size.height - 315) * 7 / 8)))
           if store.state.outcome == .caught {
             caughtOverlay
           }
@@ -283,8 +313,8 @@ struct PlayView: View {
           }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.horizontal, -14)
-        HStack(spacing: 14) {
+        .padding(.horizontal, -10)
+        HStack(spacing: 12) {
           HStack(spacing: 4) {
             ThiefFigure().frame(width: 18, height: 20)
             Text("YOU").font(.system(size: 10, design: .monospaced)).foregroundStyle(Palette.paper)
@@ -296,21 +326,38 @@ struct PlayView: View {
           Spacer(minLength: 0)
         }
         VStack(alignment: .leading, spacing: 5) {
-          Eyebrow(text: instructionTitle)
+          HStack(spacing: 8) {
+            Image(systemName: "ear").font(.system(size: 10))
+            Eyebrow(text: instructionTitle)
+          }
           Text(instruction)
-            .font(.system(size: 13)).lineSpacing(3).foregroundStyle(Palette.muted)
+            .font(.system(size: 12)).lineSpacing(3).foregroundStyle(Palette.muted)
             .frame(maxWidth: .infinity, alignment: .leading)
             .fixedSize(horizontal: false, vertical: true)
             .accessibilityIdentifier("context-instruction")
         }
         .frame(minHeight: 48, alignment: .topLeading)
-        HStack(spacing: 10) {
+        .padding(.vertical, 9)
+        .padding(.horizontal, 12)
+        .background(Palette.stone.opacity(0.3))
+        .overlay(alignment: .leading) {
+          Rectangle().fill(Palette.gold.opacity(0.7)).frame(width: 1)
+        }
+        HStack(spacing: 0) {
           control("arrow.uturn.backward", text: "Undo", disabled: store.saved.history.isEmpty) {
             store.undo()
           }
+          Rectangle().fill(Palette.gold.opacity(0.25)).frame(width: 0.5, height: 20)
           control("clock.arrow.circlepath", text: "Wait") { store.act(.wait) }
+          Rectangle().fill(Palette.gold.opacity(0.25)).frame(width: 0.5, height: 20)
           control("arrow.counterclockwise", text: "Restart") { store.restart() }
         }
+        .background(
+          LinearGradient(
+            colors: [Palette.stone.opacity(0.6), Palette.ink],
+            startPoint: .top, endPoint: .bottom)
+        )
+        .overlay(EngravedFrame().stroke(Palette.gold.opacity(0.4), lineWidth: 0.5))
         .padding(.bottom, 8)
       }
       .padding(.horizontal, 22)
@@ -379,7 +426,6 @@ struct PlayView: View {
       .font(.system(size: 12))
       .frame(maxWidth: .infinity)
       .frame(height: 46)
-      .overlay(RoundedRectangle(cornerRadius: 4).stroke(Palette.gold.opacity(0.3), lineWidth: 1))
       .opacity(disabled ? 0.3 : 1)
     }
     .disabled(disabled || store.state.outcome != .playing)
@@ -389,7 +435,7 @@ struct PlayView: View {
   private var caughtOverlay: some View {
     VStack(spacing: 13) {
       Eyebrow(text: "SECURITY ALERT", color: Palette.ruby)
-      Text("Spotted.").font(.system(size: 42, design: .serif))
+      Text("Spotted.").font(MuseumType.display(46))
       Text("A beam found you.\nUndo your move, or try a fresh approach.")
         .font(.system(size: 13)).lineSpacing(4).multilineTextAlignment(.center).foregroundStyle(
           Palette.muted)
@@ -399,17 +445,17 @@ struct PlayView: View {
         .accessibilityIdentifier("restart-caught")
     }
     .padding(24)
-    .background(Palette.ink.opacity(0.97), in: RoundedRectangle(cornerRadius: 8))
-    .overlay(RoundedRectangle(cornerRadius: 8).stroke(Palette.ruby.opacity(0.5), lineWidth: 1))
+    .background(Palette.ink.opacity(0.97))
+    .overlay(EngravedFrame().stroke(Palette.ruby.opacity(0.5), lineWidth: 0.7))
     .padding(.horizontal, 12)
   }
 
   private var artifactReveal: some View {
     VStack(spacing: 9) {
-      Jewel(size: 84, artifactID: store.room.id).overlay(AcquisitionParticles())
+      ArtifactMount(artifactID: store.room.id, size: 110).overlay(AcquisitionParticles())
       Eyebrow(text: "ACQUIRED")
-      Text(store.room.artifactName).font(.system(size: 27, design: .serif))
-      Text("Now, disappear.").font(.system(size: 13)).foregroundStyle(Palette.muted)
+      Text(store.room.artifactName).font(MuseumType.display(32))
+      Text("Now, disappear.").font(MuseumType.italic(20)).foregroundStyle(Palette.muted)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(
@@ -426,7 +472,7 @@ struct PauseView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 22) {
       Eyebrow(text: "THE MUSEUM CAN WAIT")
-      Text("Hold your breath.").font(.system(size: 35, design: .serif))
+      Text("Hold your breath.").font(MuseumType.display(38))
       Text("Your heist is saved after every move.").font(.system(size: 14)).foregroundStyle(
         Palette.muted)
       Button("RESUME HEIST") { store.showPause = false }.buttonStyle(GoldButton())
@@ -490,51 +536,67 @@ struct DossierView: View {
   let moves: Int
   var compact = false
   var body: some View {
-    VStack(spacing: compact ? 15 : 24) {
-      HStack {
-        Eyebrow(text: "M / AD")
-        Spacer()
-        Eyebrow(text: String(format: "DOSSIER NO. %03d", room.id), color: Palette.muted)
-      }
-      Rectangle().fill(Palette.gold.opacity(0.4)).frame(height: 1)
-      ZStack {
-        Circle().stroke(Palette.gold.opacity(0.18), lineWidth: 1).frame(width: compact ? 134 : 210)
-        Circle().stroke(Palette.gold.opacity(0.1), style: StrokeStyle(lineWidth: 1, dash: [2, 5]))
-          .frame(width: compact ? 158 : 245)
-        Jewel(size: compact ? 112 : 185, artifactID: room.id)
-      }
-      .frame(height: compact ? 165 : 270)
-      VStack(spacing: 7) {
-        Eyebrow(text: "REMOVED FROM THE COLLECTION")
-        Text(room.artifactName).font(.system(size: compact ? 27 : 38, design: .serif))
-        Text(room.collection).font(.system(size: 9, design: .monospaced)).tracking(2)
-          .foregroundStyle(Palette.muted)
-      }
-      HStack(alignment: .lastTextBaseline) {
-        VStack(alignment: .leading, spacing: 4) {
-          Text("\(moves)").font(.system(size: compact ? 32 : 50, weight: .light, design: .serif))
-          Eyebrow(text: "MOVES", color: Palette.muted)
+    VStack(spacing: 0) {
+      VStack(spacing: compact ? 10 : 18) {
+        HStack {
+          Eyebrow(text: "M / AD")
+          Spacer()
+          Eyebrow(text: String(format: "DOSSIER %03d", room.id), color: Palette.muted)
         }
-        Spacer()
-        VStack(alignment: .trailing, spacing: 8) {
-          Image(systemName: moves <= room.par ? "seal" : "checkmark.seal").font(
-            .system(size: 22, weight: .ultraLight))
-          Eyebrow(text: moves <= room.par ? "PERFECT HEIST" : "CLEAN ESCAPE")
+        ArtifactMount(artifactID: room.id, size: compact ? 103 : 173)
+        Text(room.artifactName).font(MuseumType.display(compact ? 31 : 46))
+        Eyebrow(text: room.collection, color: Palette.muted)
+      }
+      .padding(compact ? 22 : 38)
+      .frame(maxWidth: .infinity)
+      .background {
+        LinearGradient(
+          colors: [Palette.stone, Palette.ink], startPoint: .topLeading, endPoint: .bottomTrailing)
+      }
+      VStack(spacing: compact ? 13 : 22) {
+        HStack(alignment: .center) {
+          VStack(alignment: .leading, spacing: 0) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+              Text(String(format: "%02d", moves)).font(MuseumType.display(compact ? 47 : 66))
+              Text("MOVES").font(.system(size: 9, weight: .semibold, design: .monospaced)).tracking(
+                1.5)
+            }
+            Text("WITHOUT A TRACE").font(.system(size: 8, design: .monospaced)).tracking(1.5)
+          }
+          Spacer()
+          VStack(spacing: 5) {
+            ZStack {
+              Circle().stroke(Palette.velvet.opacity(0.65), lineWidth: 0.8).frame(
+                width: 40, height: 40)
+              Circle().stroke(Palette.velvet.opacity(0.4), lineWidth: 0.5).frame(
+                width: 34, height: 34)
+              Image(systemName: moves <= room.par ? "star.fill" : "checkmark")
+                .font(.system(size: 16, weight: .light))
+            }
+            Text(moves <= room.par ? "PERFECT HEIST" : "CLEAN ESCAPE")
+              .font(.system(size: 8, weight: .semibold, design: .monospaced)).tracking(1)
+          }.foregroundStyle(Palette.velvet)
+        }
+        DecoRule(color: Palette.ink)
+        HStack {
+          Text("MUSEUM AFTER DARK")
+            .font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(1.5)
+          Spacer()
+          Text(String(format: "MAD—%02d—%03d", room.id, moves))
+            .font(.system(size: 8, design: .monospaced))
         }
       }
-      Rectangle().fill(Palette.gold.opacity(0.4)).frame(height: 1)
-      Text("MUSEUM AFTER DARK").font(.system(size: 9, design: .monospaced)).tracking(3)
-        .foregroundStyle(Palette.muted)
+      .foregroundStyle(Palette.ink)
+      .padding(compact ? 22 : 38)
+      .background {
+        LinearGradient(
+          colors: [Palette.paper, Color(red: 0.81, green: 0.75, blue: 0.62)],
+          startPoint: .topLeading, endPoint: .bottomTrailing)
+      }
     }
-    .padding(compact ? 22 : 42)
     .foregroundStyle(Palette.paper)
-    .background(
-      LinearGradient(
-        colors: [Palette.stone.opacity(0.8), Palette.ink], startPoint: .topLeading,
-        endPoint: .bottomTrailing)
-    )
-    .overlay(Rectangle().stroke(Palette.gold.opacity(0.55), lineWidth: 1))
-    .padding(1)
+    .overlay(EngravedFrame().stroke(Palette.gold.opacity(0.6), lineWidth: 0.7))
+    .padding(2)
     .background(Palette.ink)
   }
 }
@@ -558,9 +620,14 @@ struct ResultView: View {
           Spacer()
           IconButton(symbol: "xmark", label: "Close dossier") { store.screen = .rooms }
         }
-        Text("Gone by midnight.").font(.system(size: 35, design: .serif)).minimumScaleFactor(0.8)
-          .lineLimit(1)
+        VStack(alignment: .leading, spacing: 2) {
+          Text("Gone by midnight.").font(MuseumType.display(38)).minimumScaleFactor(0.8)
+            .lineLimit(1)
+          Text("The museum will never be the same.").font(MuseumType.italic(18))
+            .foregroundStyle(Palette.muted)
+        }
         DossierView(room: store.room, moves: store.state.turn, compact: true)
+          .shadow(color: .black.opacity(0.4), radius: 18, y: 10)
         HStack(spacing: 8) {
           Image(systemName: "lock.open").font(.system(size: 12))
           Text(
