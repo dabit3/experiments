@@ -85,3 +85,22 @@ func solve(_ index: Int) -> PhysicsGame {
   suspended.advance(20)
   #expect(suspended.position.y < 150)
 }
+
+@Test func lossFeedbackDistinguishesThornsFromEscapingBubbles() {
+  var bubble = PhysicsGame(puzzle: Puzzle.all[4])
+  bubble.cut(from: V(x: 30, y: 370), to: V(x: 330, y: 370))
+  for _ in 0..<1200 { bubble.advance(1.0 / 120) }
+  #expect(bubble.outcome == .missed)
+  #expect(bubble.lossReason == .bubbleEscaped)
+  let reason = bubble.lossReason
+  bubble.advance(20)
+  #expect(bubble.lossReason == reason)
+
+  var hazard = PhysicsGame(puzzle: Puzzle.all[5])
+  for _ in 0..<96 { hazard.advance(1.0 / 120) }
+  hazard.cut(from: V(x: 30, y: 100), to: V(x: 330, y: 100))
+  for _ in 0..<240 { hazard.advance(1.0 / 120) }
+  #expect(hazard.outcome == .missed)
+  #expect(hazard.lossReason == .thorn)
+  #expect(solve(4).lossReason == nil)
+}

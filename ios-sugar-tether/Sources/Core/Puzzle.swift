@@ -108,6 +108,10 @@ enum Outcome: Equatable, Sendable {
   case playing, fed, missed
 }
 
+enum LossReason: Equatable, Sendable {
+  case thorn, escaped, bubbleEscaped
+}
+
 struct PhysicsGame: Sendable {
   let puzzle: Puzzle
   var position: V
@@ -115,6 +119,7 @@ struct PhysicsGame: Sendable {
   var threads: [Thread]
   var collected: Set<Int> = []
   var outcome: Outcome = .playing
+  var lossReason: LossReason?
   var bubbleActive: Bool
   var bubbleAvailable: Bool
   var time: Double = 0
@@ -178,6 +183,7 @@ struct PhysicsGame: Sendable {
         abs(position.x - point.x) < thorn.width / 2 + 10
       {
         outcome = .missed
+        lossReason = .thorn
       }
     }
     if outcome == .playing, position.distance(puzzle.goal) < 37 {
@@ -185,6 +191,7 @@ struct PhysicsGame: Sendable {
     }
     if position.y > 590 || position.y < -55 || position.x < -45 || position.x > 405 {
       outcome = .missed
+      lossReason = bubbleActive ? .bubbleEscaped : .escaped
     }
   }
 

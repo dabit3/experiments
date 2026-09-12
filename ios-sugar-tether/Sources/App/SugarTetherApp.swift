@@ -31,6 +31,9 @@ final class GameStore: NSObject, ObservableObject {
   @Published var sound: Bool
   @Published var trail: [V] = []
   @Published var cutFlash = 0.0
+  @Published var puffFlash = 0.0
+  @Published var sparkles: [Int: Double] = [:]
+  @Published var hasBegun = false
   private var displayLink: CADisplayLink?
   private var previous: CFTimeInterval = 0
   private var ending = 0.0
@@ -61,6 +64,10 @@ final class GameStore: NSObject, ObservableObject {
     paused = false
     showResult = false
     trail = []
+    cutFlash = 0
+    puffFlash = 0
+    sparkles = [:]
+    hasBegun = false
     ending = 0
     previous = 0
     page = .game
@@ -83,6 +90,11 @@ final class GameStore: NSObject, ObservableObject {
     UserDefaults.standard.set(sound, forKey: "sugar.sound")
   }
 
+  func begin() {
+    guard !paused, !showResult else { return }
+    hasBegun = true
+  }
+
   func cut(from a: V, to b: V) {
     guard !paused, !showResult else { return }
     if game.cut(from: a, to: b) > 0 {
@@ -100,9 +112,13 @@ final class GameStore: NSObject, ObservableObject {
 
   func puff() {
     guard !paused, !showResult else { return }
+    begin()
     let count = game.puffs
     game.puff()
-    if game.puffs > count { feedback(.pop) }
+    if game.puffs > count {
+      puffFlash = 1
+      feedback(.pop)
+    }
   }
 
   func feedback(_ note: SweetAudio.Note) {
@@ -113,13 +129,18 @@ final class GameStore: NSObject, ObservableObject {
   @objc private func tick(_ link: CADisplayLink) {
     let delta = previous == 0 ? 0 : min(link.timestamp - previous, 0.05)
     previous = link.timestamp
-    guard !paused, !showResult else { return }
+    guard !paused, !showResult, hasBegun else { return }
     cutFlash = max(0, cutFlash - delta * 3)
+    puffFlash = max(0, puffFlash - delta * 1.6)
+    sparkles = sparkles.mapValues { $0 - delta * 1.7 }.filter { $0.value > 0 }
     if !trail.isEmpty { trail.removeFirst() }
-    let stars = game.collected.count
+    let stars = game.collected
     let priorOutcome = game.outcome
     game.advance(delta)
-    if game.collected.count > stars { feedback(.star) }
+    if game.collected != stars {
+      for index in game.collected.subtracting(stars) { sparkles[index] = 1 }
+      feedback(.star)
+    }
     if priorOutcome == .playing, game.outcome != .playing {
       if game.outcome == .fed {
         progress.record(level: level, stars: game.collected.count)
@@ -455,41 +476,49 @@ struct PlayView: View {
           let scale = min(geometry.size.width / 360, geometry.size.height / 560)
           let width = 360 * scale
           let height = 560 * scale
-          GameArt(game: store.game, trail: store.trail, cutFlash: store.cutFlash)
-            .frame(width: width, height: height)
-            .background(Color.white.opacity(0.3), in: RoundedRectangle(cornerRadius: 28))
-            .overlay(RoundedRectangle(cornerRadius: 28).stroke(Palette.ink.opacity(0.1)))
-            .contentShape(Rectangle())
-            .gesture(
-              DragGesture(minimumDistance: 0)
-                .onChanged { value in
-                  let point = V(x: value.location.x / scale, y: value.location.y / scale)
-                  if let previousPoint {
-                    store.cut(from: previousPoint, to: point)
-                  } else {
-                    firstPoint = point
-                  }
-                  previousPoint = point
+          GameArt(
+            game: store.game, trail: store.trail, cutFlash: store.cutFlash,
+            puffFlash: store.puffFlash, sparkles: store.sparkles, hasBegun: store.hasBegun
+          )
+          .frame(width: width, height: height)
+          .background(Color.white.opacity(0.3), in: RoundedRectangle(cornerRadius: 28))
+          .overlay(RoundedRectangle(cornerRadius: 28).stroke(Palette.ink.opacity(0.1)))
+          .contentShape(Rectangle())
+          .gesture(
+            DragGesture(minimumDistance: 0)
+              .onChanged { value in
+                store.begin()
+                let point = V(x: value.location.x / scale, y: value.location.y / scale)
+                if let previousPoint {
+                  store.cut(from: previousPoint, to: point)
+                } else {
+                  firstPoint = point
                 }
-                .onEnded { value in
-                  let point = V(x: value.location.x / scale, y: value.location.y / scale)
-                  if let firstPoint, firstPoint.distance(point) < 15 { store.pop(at: point) }
-                  previousPoint = nil
-                  firstPoint = nil
-                }
-            )
-            .accessibilityLabel(
-              "Puzzle playfield. Swipe across visible silk threads to cut. \(store.game.collected.count) stars collected."
-            )
-            .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                previousPoint = point
+              }
+              .onEnded { value in
+                let point = V(x: value.location.x / scale, y: value.location.y / scale)
+                if let firstPoint, firstPoint.distance(point) < 15 { store.pop(at: point) }
+                previousPoint = nil
+                firstPoint = nil
+              }
+          )
+          .accessibilityLabel(
+            "Puzzle playfield. Swipe across visible silk threads to cut. \(store.game.collected.count) stars collected."
+          )
+          .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
         }
         HStack(spacing: 12) {
           Image(systemName: store.game.bubbleActive ? "hand.tap" : "hand.draw")
             .font(.system(size: 22, weight: .light)).foregroundStyle(Palette.deepMint)
-          Text(store.game.puzzle.hint)
-            .font(.system(size: 14, design: .rounded))
-            .foregroundStyle(Palette.muted).lineSpacing(3)
-            .fixedSize(horizontal: false, vertical: true)
+          Text(
+            store.game.bubbleActive && store.game.collected.count == 3
+              ? "All three stars! Tap the bubble now to float down to Pip."
+              : store.game.puzzle.hint
+          )
+          .font(.system(size: 14, design: .rounded))
+          .foregroundStyle(Palette.muted).lineSpacing(3)
+          .fixedSize(horizontal: false, vertical: true)
           if store.game.puzzle.puff {
             Button {
               store.puff()
@@ -553,7 +582,7 @@ struct PlayView: View {
       Text(
         won
           ? "\(store.game.collected.count) stars for Pip. \(store.game.collected.count == 3 ? "Beautifully done." : "There’s more sweetness to find.")"
-          : "The pearl slipped away.\nTake a breath, then try a different moment."
+          : lossHint
       )
       .font(.system(size: 14, design: .rounded)).foregroundStyle(Palette.muted)
       .multilineTextAlignment(.center).lineSpacing(4)
@@ -582,6 +611,23 @@ struct PlayView: View {
       }
       Button("The puzzle box") { store.leave(.box) }
         .font(.system(size: 14, weight: .medium, design: .rounded)).frame(height: 35)
+    }
+  }
+
+  private var lossHint: String {
+    switch store.game.lossReason {
+    case .thorn:
+      return "A thorn caught the pearl.\nWait for a clear path, then snip."
+    case .bubbleEscaped:
+      return "The bubble floated away.\nTap it as soon as you collect the top star."
+    case .escaped, nil:
+      if store.game.puzzle.startsInBubble {
+        return "The pearl drifted past Pip.\nFree the threads together, then pop above him."
+      }
+      if store.game.puzzle.puff {
+        return "The pearl drifted past Pip.\nTry one puff just after cutting the silk."
+      }
+      return "The pearl slipped away.\nSnip as it turns back toward Pip."
     }
   }
 

@@ -7,7 +7,7 @@ audio. No web view, accounts, network services, or third-party assets.
 
 ## Build and run
 
-Requires macOS, Xcode 15 or newer, and XcodeGen (`brew install xcodegen`).
+Requires macOS, Xcode 16 or newer, and XcodeGen (`brew install xcodegen`).
 The checked-in `project.yml` is the source of truth; generated Xcode metadata is ignored.
 
 ```sh
@@ -26,6 +26,7 @@ Physical-device builds require choosing your own team and enabling signing.
 ## Controls and progression
 
 - Tap **Let’s play** to begin. Swipe across a silk thread to cut it.
+- Each puzzle waits while you read. Tap the board to start the swing, or swipe to start and cut.
 - A continuous swipe can cut multiple threads.
 - Let the candy swing to collect stars, then time the release toward Pip.
 - **PUFF** adds a rightward/upward impulse; it recharges in 0.8 seconds.
@@ -60,7 +61,7 @@ grain, stitched edges, silk highlights, and glass candy stripes.
 
 Eight compact authored puzzles, one creature, local-only progress, original sound and
 haptics. No ads, purchases, analytics, cloud saves, or commercial reference assets.
-Reduced Motion disables decorative button animation; essential physics remains visible.
+Reduced Motion disables decorative button and particle travel; essential physics remains visible.
 Controls require visual spatial interaction; VoiceOver labels cover navigation and status,
 but the puzzle canvas is not a nonvisual gameplay mode. iPad and landscape are not targets.
 Simulator haptics do not establish physical-device haptic quality. Store submission,

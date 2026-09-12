@@ -46,9 +46,13 @@ struct MiniPip: View {
 }
 
 struct GameArt: View {
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
   let game: PhysicsGame
   let trail: [V]
   let cutFlash: Double
+  let puffFlash: Double
+  let sparkles: [Int: Double]
+  let hasBegun: Bool
   var body: some View {
     Canvas { context, size in
       context.scaleBy(x: size.width / 360, y: size.height / 560)
@@ -75,8 +79,18 @@ struct GameArt: View {
       for (index, star) in game.puzzle.stars.enumerated() {
         if !game.collected.contains(index) {
           Art.star(&context, at: star, radius: 15, earned: false)
-        } else {
-          Art.star(&context, at: star, radius: 7, earned: true)
+        }
+      }
+      for (index, life) in sparkles {
+        let star = game.puzzle.stars[index]
+        var glow = context
+        glow.opacity = life
+        for ray in 0..<6 {
+          let angle = Double(ray) * .pi / 3
+          let radius = reduceMotion ? 22 : 17 + (1 - life) * 28
+          let point = star + V(x: cos(angle) * radius, y: sin(angle) * radius)
+          Art.ellipse(
+            &glow, CGRect(x: point.x - 2, y: point.y - 2, width: 4, height: 4), Palette.gold)
         }
       }
       for thorn in game.puzzle.thorns {
@@ -110,6 +124,30 @@ struct GameArt: View {
         Art.label(
           &context, "snip!", at: V(x: 305, y: 40), size: 14,
           color: Palette.pink.opacity(cutFlash), italic: true)
+      }
+      if puffFlash > 0 {
+        let offset = reduceMotion ? 0 : (1 - puffFlash) * 70
+        for index in 0..<4 {
+          let y = 334.0 + Double(index) * 18
+          var wind = Path()
+          wind.move(to: CGPoint(x: 32 + offset, y: y))
+          wind.addQuadCurve(
+            to: CGPoint(x: 111 + offset, y: y - 22),
+            control: CGPoint(x: 86 + offset, y: y + 2))
+          context.stroke(
+            wind, with: .color(Palette.deepMint.opacity(puffFlash * 0.6)),
+            style: StrokeStyle(lineWidth: 2, lineCap: .round))
+        }
+      }
+      if !hasBegun || (game.bubbleActive && game.collected.count == 3) {
+        let title = hasBegun ? "TAP THE BUBBLE" : "TAP TO BEGIN · SWIPE TO SNIP"
+        context.fill(
+          Path(roundedRect: CGRect(x: 62, y: 13, width: 236, height: 27), cornerRadius: 13),
+          with: .color(Palette.paper))
+        context.draw(
+          Text(title).font(.system(size: 10, weight: .semibold, design: .rounded))
+            .foregroundStyle(Palette.deepMint),
+          at: CGPoint(x: 180, y: 26))
       }
     }
   }
