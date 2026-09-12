@@ -8,7 +8,7 @@ struct GoldenDropApp: App {
     WindowGroup {
       RootView()
         .environmentObject(store)
-        .preferredColorScheme(.light)
+        .preferredColorScheme(store.screen == .home ? .dark : .light)
         .onAppear { store.startClock() }
         .onChange(of: scenePhase) { _, phase in
           if phase == .active { store.startClock() } else { store.background() }
