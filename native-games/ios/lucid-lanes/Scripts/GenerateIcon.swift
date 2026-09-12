@@ -7,11 +7,21 @@ let context = CGContext(
     space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
 NSGraphicsContext.saveGraphicsState()
 NSGraphicsContext.current = NSGraphicsContext(cgContext: context, flipped: false)
-let ink = NSColor(srgbRed: 0.055, green: 0.058, blue: 0.13, alpha: 1)
-let peach = NSColor(srgbRed: 1, green: 0.73, blue: 0.61, alpha: 1)
-let mint = NSColor(srgbRed: 0.64, green: 0.96, blue: 0.91, alpha: 1)
+let ink = NSColor(srgbRed: 0.035, green: 0.085, blue: 0.12, alpha: 1)
+let peach = NSColor(srgbRed: 0.91, green: 0.70, blue: 0.44, alpha: 1)
+let mint = NSColor(srgbRed: 0.63, green: 0.89, blue: 0.81, alpha: 1)
 ink.setFill()
 NSBezierPath(rect: NSRect(x: 0, y: 0, width: size, height: size)).fill()
+for i in 0..<25 {
+    let angle = Double(i) / 24 * .pi
+    let center = CGPoint(x: 512, y: 470)
+    let path = NSBezierPath()
+    path.move(to: CGPoint(x: center.x + cos(angle) * 360, y: center.y + sin(angle) * 360))
+    path.line(to: CGPoint(x: center.x + cos(angle) * 435, y: center.y + sin(angle) * 435))
+    peach.withAlphaComponent(0.3).setStroke()
+    path.lineWidth = i % 3 == 0 ? 3 : 1.5
+    path.stroke()
+}
 for i in 0..<4 {
     let inset = CGFloat(i) * 56
     let path = NSBezierPath()

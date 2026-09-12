@@ -1,8 +1,10 @@
 # Lucid Lanes
 
-A native iPhone precision-bowling game in an impossible art-deco hotel. SwiftUI
-draws a procedural perspective corridor, terrazzo floor, luminous ball and pin
-cascades. A deterministic fixed-substep simulation handles curve, chrome banks,
+A native iPhone precision-bowling game in an impossible art-deco hotel. A native
+SceneKit stage renders sculpted porcelain pins, marbled bowling balls, polished
+terrazzo, brass trim and dimensional peach archways with physical lighting.
+SwiftUI provides the hotel-key room directory, score display and shareable receipt.
+A deterministic fixed-substep simulation handles curve, chrome banks,
 moving archways, gutters and pin-to-pin impacts. No dependencies or network calls.
 
 ## Build and run

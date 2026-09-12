@@ -11,6 +11,7 @@
 		3252E8F2FB93F32AB7B5E907 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD5E284D03EB2507DFD2A95 /* GameModel.swift */; };
 		87814C11C9BA9F79136E4930 /* LaneArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0370FE8E7404D20F6043245D /* LaneArtwork.swift */; };
 		A725A4EF1FDCE2DEF2B7216C /* LucidLanesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7B1162D119D0DCD68BB2DE5 /* LucidLanesApp.swift */; };
+		D1840188FBB35354CDB2DD68 /* StageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D5C1C037D80D675F6C02D1E /* StageTests.swift */; };
 		D55F8B7B7DAD3AE132452528 /* Rules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AE1BE9047A66F0CC0AE8F8 /* Rules.swift */; };
 		D85FAF5E09468A970DAFE607 /* RulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42CA22D4060207F6D360BE6 /* RulesTests.swift */; };
 /* End PBXBuildFile section */
@@ -30,6 +31,7 @@
 		1354FE0846CFA2978820EDB1 /* LucidLanesTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LucidLanesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		21E0245C25D264BEE3352138 /* LucidLanes.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LucidLanes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34AE1BE9047A66F0CC0AE8F8 /* Rules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rules.swift; sourceTree = "<group>"; };
+		8D5C1C037D80D675F6C02D1E /* StageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StageTests.swift; sourceTree = "<group>"; };
 		A16C314B7A386BC2C5CAE171 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A7B1162D119D0DCD68BB2DE5 /* LucidLanesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LucidLanesApp.swift; sourceTree = "<group>"; };
 		ABD5E284D03EB2507DFD2A95 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
@@ -41,6 +43,7 @@
 			isa = PBXGroup;
 			children = (
 				D42CA22D4060207F6D360BE6 /* RulesTests.swift */,
+				8D5C1C037D80D675F6C02D1E /* StageTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -162,6 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D85FAF5E09468A970DAFE607 /* RulesTests.swift in Sources */,
+				D1840188FBB35354CDB2DD68 /* StageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
