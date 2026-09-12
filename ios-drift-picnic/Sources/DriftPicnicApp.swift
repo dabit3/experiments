@@ -54,7 +54,7 @@ struct PicnicView: View {
         if game.showGuide { guide(geometry.size) }
       }
       .foregroundStyle(forest)
-      .fontDesign(.rounded)
+      .font(.system(.body, design: .rounded))
       .onAppear { game.reducedMotion = reduceMotion }
       .onChange(of: reduceMotion) { _, value in game.reducedMotion = value }
       .onChange(of: scenePhase) { _, phase in
@@ -65,8 +65,9 @@ struct PicnicView: View {
   }
 
   private func title(_ size: CGSize) -> some View {
-    HStack(spacing: 0) {
-      VStack(alignment: .leading, spacing: 12) {
+    let compact = size.height < 420
+    return HStack(spacing: 0) {
+      VStack(alignment: .leading, spacing: compact ? 8 : 12) {
         HStack(spacing: 7) {
           Image(systemName: "sun.max.fill").foregroundStyle(butter)
           Text("THE LITTLE RACING CLUB").tracking(2.1)
@@ -77,9 +78,7 @@ struct PicnicView: View {
           Text("Drift").foregroundStyle(cream)
           Text("Picnic").foregroundStyle(butter)
         }
-        .font(.system(size: size.height < 370 ? 59 : 71, weight: .black, design: .serif))
-        .fontDesign(.serif)
-        .italic()
+        .font(.custom("Georgia-BoldItalic", size: compact ? 54 : 66))
         Text("Small wheels. Sweeter victories.")
           .font(.system(size: 13, weight: .medium))
           .foregroundStyle(cream.opacity(0.8))
@@ -111,7 +110,7 @@ struct PicnicView: View {
           }.frame(minHeight: 32)
         }.foregroundStyle(cream.opacity(0.7))
       }
-      .padding(.horizontal, 28).padding(.vertical, 20)
+      .padding(.horizontal, 28).padding(.vertical, compact ? 14 : 20)
       .frame(width: min(365, size.width * 0.43))
       .background(forest)
       Spacer(minLength: 0)
@@ -240,16 +239,27 @@ struct PicnicView: View {
           VStack(spacing: 5) {
             Image(systemName: game.race.drifting ? "bolt.fill" : "skew")
               .font(.system(size: 25, weight: .bold))
-            Text(game.race.drifting ? "RELEASE" : "DRIFT")
-              .font(.system(size: 10, weight: .heavy)).tracking(1)
-            Capsule().fill(forest.opacity(0.2)).frame(width: 53, height: 4)
+            Text(
+              game.race.player.driftCharge >= 0.65
+                ? "BOOST READY" : (game.race.drifting ? "CHARGING" : "DRIFT")
+            )
+            .font(.system(size: 10, weight: .heavy)).tracking(1)
+            Capsule().fill(forest.opacity(0.2)).frame(width: 65, height: 7)
               .overlay(alignment: .leading) {
-                Capsule().fill(forest).frame(
-                  width: 53 * min(1, game.race.player.driftCharge / 0.65), height: 4)
+                Capsule().fill(game.race.player.driftCharge >= 0.65 ? butter : forest).frame(
+                  width: 65 * min(1, game.race.player.driftCharge / 0.65), height: 7)
               }
           }
           .frame(width: 92, height: 88)
-          .background(game.race.drifting ? butter : cream, in: RoundedRectangle(cornerRadius: 25))
+          .background(
+            game.race.player.driftCharge >= 0.65 ? forest : (game.race.drifting ? butter : cream),
+            in: RoundedRectangle(cornerRadius: 25)
+          )
+          .foregroundStyle(game.race.player.driftCharge >= 0.65 ? butter : forest)
+          .overlay {
+            RoundedRectangle(cornerRadius: 25)
+              .strokeBorder(game.race.player.driftCharge >= 0.65 ? butter : .clear, lineWidth: 3)
+          }
         }
         .accessibilityLabel(game.race.drifting ? "Release drift boost" : "Start drift")
         .accessibilityIdentifier("drift")
@@ -294,9 +304,7 @@ struct PicnicView: View {
       VStack(alignment: .leading, spacing: 17) {
         HStack {
           VStack(alignment: .leading, spacing: 4) {
-            Text("A quick pit stop.").font(.system(size: 32, weight: .black, design: .serif))
-              .fontDesign(.serif)
-              .italic()
+            Text("A quick pit stop.").font(.custom("Georgia-BoldItalic", size: 32))
             Text("Three little tricks for a sweet first race.").font(.system(size: 13))
           }
           Spacer()
@@ -309,11 +317,11 @@ struct PicnicView: View {
         HStack(alignment: .top, spacing: 22) {
           tip(
             "01", "Steer your way",
-            "Hold the arrows to steer. We accelerate for you, with gentle corner assist.",
+            "Hold the arrows to steer. Cut close to the inside curb for a faster racing line.",
             "arrow.left.and.right")
           tip(
             "02", "Drift, then dash",
-            "Tap DRIFT into a bend. When the bar fills, tap RELEASE for a burst.", "bolt.fill")
+            "Tap DRIFT into a bend. Tap again when BOOST READY lights up for a burst.", "bolt.fill")
           tip(
             "03", "Sip. Zip. Repeat.",
             "Drive through a lemonade. Tap its button to boost past your friends.",
@@ -350,8 +358,7 @@ struct PicnicView: View {
       forest.opacity(0.75).ignoresSafeArea()
       VStack(spacing: 13) {
         Image(systemName: "sun.haze.fill").font(.system(size: 30)).foregroundStyle(butter)
-        Text("Take a breather.").font(.system(size: 34, weight: .black, design: .serif))
-          .fontDesign(.serif).italic()
+        Text("Take a breather.").font(.custom("Georgia-BoldItalic", size: 31))
         Text("Your picnic will be right here.").font(.system(size: 13)).opacity(0.8)
         Text("PAUSED AT  \(raceTime(game.race.elapsed))")
           .font(.system(size: 10, weight: .heavy)).monospacedDigit().tracking(1)
@@ -379,9 +386,8 @@ struct PicnicView: View {
               ? "Sweet time."
               : (game.race.position == 1 ? "Oh, sweet\nvictory!" : "A lovely\nlittle race.")
           )
-          .font(.system(size: size.height < 370 ? 38 : 46, weight: .black, design: .serif))
-          .fontDesign(.serif)
-          .italic().lineSpacing(-6).foregroundStyle(cream)
+          .font(.custom("Georgia-BoldItalic", size: size.height < 390 ? 34 : 42))
+          .lineSpacing(-6).foregroundStyle(cream)
           HStack(alignment: .firstTextBaseline, spacing: 8) {
             Text(game.mode == .trial ? "3" : "\(game.race.position)")
               .font(.system(size: 55, weight: .black))

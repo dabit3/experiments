@@ -171,6 +171,8 @@ struct RaceEngine {
       drivers[0].boost = max(drivers[0].boost, min(2.2, drivers[0].driftCharge))
       driftBoosts += 1
       notify("SWEET DRIFT!")
+    } else {
+      notify("HOLD YOUR DRIFT A LITTLE LONGER")
     }
     drivers[0].driftCharge = 0
     drifting = false

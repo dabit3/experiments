@@ -45,8 +45,9 @@ swift Scripts/GenerateIcon.swift Resources/Assets.xcassets/AppIcon.appiconset/Ap
 - The kart accelerates automatically. Hold the left/right arrows to steer
   continuously. Gentle corner assistance helps new drivers, but your inputs
   control the kart's heading and position; driving over the curbs slows you down.
-- Tap **Drift** before a bend, steer through it, then tap **Release** when the
-  charge bar fills. An earned drift grants a short speed boost.
+- Tap **Drift** before a bend, steer through it, then tap **Boost ready** when
+  the button turns green and gold. An earned drift grants a short speed boost.
+  The inside racing line is shorter; stay inside the painted boundary to retain speed.
 - Drive through a lemonade, then tap its item button for a stronger boost.
 - Complete all checkpoints across three laps. The Cup ranks four racers and
   shows a podium; Time Trial rewards your fastest three-lap time.

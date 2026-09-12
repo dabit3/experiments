@@ -34,16 +34,16 @@ final class PicnicWorld {
     let ambient = SCNNode()
     ambient.light = SCNLight()
     ambient.light?.type = .ambient
-    ambient.light?.intensity = 800
+    ambient.light?.intensity = 420
     ambient.light?.color = UIColor.white
     scene.rootNode.addChildNode(ambient)
     let sun = SCNNode()
     sun.light = SCNLight()
     sun.light?.type = .directional
-    sun.light?.intensity = 1100
+    sun.light?.intensity = 1000
     sun.light?.color = UIColor(red: 1, green: 0.94, blue: 0.81, alpha: 1)
     sun.light?.castsShadow = true
-    sun.light?.shadowMode = .deferred
+    sun.light?.shadowMode = .forward
     sun.light?.shadowColor = UIColor(red: 0.12, green: 0.25, blue: 0.16, alpha: 0.27)
     sun.light?.shadowRadius = 5
     sun.light?.shadowMapSize = CGSize(width: 2048, height: 2048)
@@ -70,7 +70,11 @@ final class PicnicWorld {
     markerText.font = UIFont.systemFont(ofSize: 0.30, weight: .black)
     let markerLabel = Self.node(markerText, Palette.green)
     markerLabel.geometry?.firstMaterial?.lightingModel = .constant
-    markerLabel.position = SCNVector3(-0.34, -0.17, 0.02)
+    let markerBounds = markerText.boundingBox
+    markerLabel.pivot = SCNMatrix4MakeTranslation(
+      (markerBounds.min.x + markerBounds.max.x) / 2,
+      (markerBounds.min.y + markerBounds.max.y) / 2, 0)
+    markerLabel.position = SCNVector3(0, 0, 0.02)
     marker.addChildNode(markerLabel)
     karts[0].addChildNode(marker)
     for index in 0..<3 {
@@ -207,14 +211,18 @@ final class PicnicWorld {
     let banner = Self.box(16, 2, 0.4, Palette.butter, radius: 0.25)
     banner.position.y = 7
     start.addChildNode(banner)
-    let text = SCNText(string: "DRIFT  PICNIC", extrusionDepth: 0.02)
-    text.font = UIFont.systemFont(ofSize: 1, weight: .black)
-    text.flatness = 0.1
-    let label = Self.node(text, Palette.green)
-    let bounds = text.boundingBox
-    let width = bounds.max.x - bounds.min.x
-    label.position = SCNVector3(-width / 2, 6.5, 0.25)
-    start.addChildNode(label)
+    for side in [-1.0, 1.0] {
+      let text = SCNText(string: "DRIFT  PICNIC", extrusionDepth: 0.02)
+      text.font = UIFont.systemFont(ofSize: 1, weight: .black)
+      text.flatness = 0.1
+      let label = Self.node(text, Palette.green)
+      let bounds = text.boundingBox
+      label.pivot = SCNMatrix4MakeTranslation(
+        (bounds.min.x + bounds.max.x) / 2, (bounds.min.y + bounds.max.y) / 2, 0)
+      label.position = SCNVector3(0, 7, side * 0.25)
+      label.eulerAngles.y = side < 0 ? .pi : 0
+      start.addChildNode(label)
+    }
     scene.rootNode.addChildNode(start)
   }
 
@@ -249,10 +257,23 @@ final class PicnicWorld {
     }
     for i in 0..<28 {
       let t = Double(i) / 28 * .pi * 2
-      let tree = Self.node(
-        SCNCapsule(capRadius: 3.5, height: 14),
-        UIColor(red: 0.30, green: 0.48, blue: 0.28, alpha: 1))
-      tree.position = SCNVector3(cos(t) * 110, 4, sin(t) * 92)
+      let tree = SCNNode()
+      tree.position = SCNVector3(cos(t) * 110, 0, sin(t) * 92)
+      let trunk = Self.node(
+        SCNCylinder(radius: 0.6, height: 6),
+        UIColor(red: 0.48, green: 0.31, blue: 0.20, alpha: 1))
+      trunk.position.y = 3
+      tree.addChildNode(trunk)
+      for layer in 0..<3 {
+        let foliage = Self.node(
+          SCNSphere(radius: 3.3 - Double(layer) * 0.4),
+          UIColor(
+            red: 0.26 + Double(layer) * 0.035, green: 0.47 + Double(layer) * 0.04,
+            blue: 0.26, alpha: 1))
+        foliage.position = SCNVector3(
+          layer == 1 ? 1.5 : -0.6, 6.0 + Double(layer) * 1.7, layer == 1 ? 0.6 : 0)
+        tree.addChildNode(foliage)
+      }
       scene.rootNode.addChildNode(tree)
     }
     for i in 0..<45 {
