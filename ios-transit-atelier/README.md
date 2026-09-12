@@ -34,9 +34,10 @@ The shared simulation is dependency-free Swift, tested on macOS through SwiftPM.
 - Trains shuttle automatically. Tiny shapes beside stations are passenger destinations; matching shapes are delivered. Connected lines allow transfers.
 - Tap a new station to extend the selected line. **Undo** removes the last stop; the eraser clears the line after confirmation. A redraw safely returns passengers aboard to their last station.
 - River-crossing segments consume tunnels. You begin with two lines, one six-seat train per line and three tunnels.
-- Every 50 simulation seconds, choose more seats, more tunnels, or another line and locomotive (up to four).
+- Every 50 simulation seconds the clock pauses and an investment ribbon appears. Tap **Review** to choose more seats, more tunnels, or another line and locomotive (up to four). The map stays available to inspect and edit before opening the choices.
 - New stations appear every 28 seconds. At 12 waiting passengers a station's red ring begins filling. Carry passengers away before 24 seconds of overcrowding end the run.
-- Deliver as many passengers as possible before the five-minute closing time. Use 1× / 2× speed, pause/resume, immediate replay, city selection and native result sharing.
+- Deliver as many passengers as possible before the five-minute closing time. Use 1× / 2× speed and pause/resume; paused maps remain editable. The **Journey menu** holds sound, instructions and **Save & leave**.
+- Results offer immediate replay, city selection, **Admire your network**, and native sharing of an actual network postcard with the achieved score.
 
 ## Persistence and lifecycle
 

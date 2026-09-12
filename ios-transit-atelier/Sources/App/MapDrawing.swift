@@ -90,11 +90,26 @@ struct MapDrawing: View {
     Canvas { context, size in
       grid(&context, size)
       water(&context, size)
-      for route in game.routes where route.stops.count > 1 {
+      let orderedRoutes = game.routes.sorted {
+        ($0.id == selected ? game.routes.count : $0.id)
+          < ($1.id == selected ? game.routes.count : $1.id)
+      }
+      for route in orderedRoutes where route.stops.count > 1 {
         var path = Path()
-        for (index, stop) in route.stops.enumerated() {
-          let point = position(game.stations[stop].point, size)
-          if index == 0 { path.move(to: point) } else { path.addLine(to: point) }
+        for (a, b) in zip(route.stops, route.stops.dropFirst()) {
+          let from = position(game.stations[a].point, size)
+          let to = position(game.stations[b].point, size)
+          let offset = segmentOffset(route.id, a, b, size)
+          path.move(to: from)
+          path.addLine(
+            to: CGPoint(
+              x: from.x + (to.x - from.x) * 0.15 + offset.x,
+              y: from.y + (to.y - from.y) * 0.15 + offset.y))
+          path.addLine(
+            to: CGPoint(
+              x: from.x + (to.x - from.x) * 0.85 + offset.x,
+              y: from.y + (to.y - from.y) * 0.85 + offset.y))
+          path.addLine(to: to)
         }
         context.stroke(
           path, with: .color(Ink.paper),
@@ -128,6 +143,20 @@ struct MapDrawing: View {
 
   private func position(_ point: MapPoint, _ size: CGSize) -> CGPoint {
     CGPoint(x: point.x * size.width, y: point.y * size.height)
+  }
+
+  private func segmentOffset(_ route: Int, _ a: Int, _ b: Int, _ size: CGSize) -> CGPoint {
+    let shared = game.routes.filter {
+      zip($0.stops, $0.stops.dropFirst()).contains { x, y in
+        (x == a && y == b) || (x == b && y == a)
+      }
+    }.map(\.id)
+    guard shared.count > 1, let index = shared.firstIndex(of: route) else { return .zero }
+    let from = position(game.stations[min(a, b)].point, size)
+    let to = position(game.stations[max(a, b)].point, size)
+    let distance = max(1, hypot(to.x - from.x, to.y - from.y))
+    let offset = (Double(index) - Double(shared.count - 1) / 2) * 7
+    return CGPoint(x: -(to.y - from.y) / distance * offset, y: (to.x - from.x) / distance * offset)
   }
 
   private func grid(_ context: inout GraphicsContext, _ size: CGSize) {
@@ -175,7 +204,32 @@ struct MapDrawing: View {
 
   private func drawStation(_ station: Station, context: inout GraphicsContext, size: CGSize) {
     let center = position(station.point, size)
-    let radius = decorative ? 7.0 : 9.0
+    let radius = decorative ? 7.0 : 10.0
+    if !decorative {
+      if game.routes.filter({ $0.stops.contains(station.id) }).count > 1 {
+        context.fill(
+          Path(ellipseIn: CGRect(x: center.x - 14, y: center.y - 14, width: 28, height: 28)),
+          with: .color(Ink.paper))
+        context.stroke(
+          Path(ellipseIn: CGRect(x: center.x - 14, y: center.y - 14, width: 28, height: 28)),
+          with: .color(Ink.navy.opacity(0.5)), lineWidth: 1)
+      }
+      if game.routes[selected].stops.last == station.id {
+        context.stroke(
+          Path(ellipseIn: CGRect(x: center.x - 19, y: center.y - 19, width: 38, height: 38)),
+          with: .color(Ink.routes[selected].opacity(0.5)),
+          style: StrokeStyle(lineWidth: 1.5, dash: [2, 4]))
+      }
+      if station.id >= 4, game.elapsed - Double(station.id - 3) * 28 < 9 {
+        let opacity = reduceMotion ? 0.6 : 0.4 + 0.2 * sin(game.elapsed * 3)
+        context.stroke(
+          Path(ellipseIn: CGRect(x: center.x - 22, y: center.y - 22, width: 44, height: 44)),
+          with: .color(Ink.routes[0].opacity(opacity)), lineWidth: 2)
+        context.draw(
+          Text("NEW").font(.system(size: 8, weight: .semibold)).foregroundStyle(Ink.routes[0]),
+          at: CGPoint(x: center.x, y: center.y - 30))
+      }
+    }
     if station.arrivalGlow > 0, !reduceMotion {
       context.stroke(
         Path(ellipseIn: CGRect(x: center.x - 18, y: center.y - 18, width: 36, height: 36)),
@@ -202,15 +256,15 @@ struct MapDrawing: View {
     if !decorative {
       context.draw(
         Text(String(format: "%02d", station.id + 1)).font(
-          .system(size: 7, weight: .medium, design: .monospaced)
+          .system(size: 9, weight: .medium, design: .monospaced)
         ).foregroundStyle(Ink.muted),
         at: CGPoint(x: center.x - 15, y: center.y + 18))
       let rightSpace = size.width - center.x
-      let startX = rightSpace < 65 ? center.x - 45 : center.x + 16
+      let startX = rightSpace < 65 ? center.x - 48 : center.x + 19
       for (index, kind) in station.waiting.prefix(12).enumerated() {
         let glyph = CGRect(
-          x: startX + Double(index % 4) * 7, y: center.y - 7 + Double(index / 4) * 8, width: 4.5,
-          height: 4.5)
+          x: startX + Double(index % 4) * 8, y: center.y - 8 + Double(index / 4) * 9, width: 6,
+          height: 6)
         context.fill(
           StationGlyph(kind: kind).path(in: glyph),
           with: .color(station.waiting.count >= 12 ? Ink.routes[0] : Ink.navy.opacity(0.8)))
@@ -226,11 +280,16 @@ struct MapDrawing: View {
   private func drawTrain(_ train: Train, context: inout GraphicsContext, size: CGSize) {
     let route = game.routes[train.route]
     guard route.stops.count > 1 else { return }
-    let center = position(game.trainPosition(train), size)
+    var center = position(game.trainPosition(train), size)
     let from = game.stations[route.stops[train.stopIndex]].point
     let nextIndex = train.stopIndex + train.direction
     guard route.stops.indices.contains(nextIndex) else { return }
     let to = game.stations[route.stops[nextIndex]].point
+    let offset = segmentOffset(
+      train.route, route.stops[train.stopIndex], route.stops[nextIndex], size)
+    let blend = min(1, min(train.progress / 0.15, (1 - train.progress) / 0.15))
+    center.x += offset.x * blend
+    center.y += offset.y * blend
     let angle = atan2((to.y - from.y) * size.height, (to.x - from.x) * size.width)
     var layer = context
     layer.translateBy(x: center.x, y: center.y)
