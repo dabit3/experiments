@@ -10,12 +10,14 @@
 		7A487624C19A1C7139C41C04 /* LittleCrossroadsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A8CB2BE19CF6DEF99F6413 /* LittleCrossroadsApp.swift */; };
 		A136DCEE66682CE0B8819911 /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6AC8CA31885C8AB540CD6 /* GameRules.swift */; };
 		C3A9AEF6D7B517894984995E /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B34AF2E2E18C779FAE7E29 /* GameStore.swift */; };
+		D2F02BA4782A5F8491059D50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 934061F5CF0255AA8C0C1EBB /* Assets.xcassets */; };
 		FAA413F144048116235C09E8 /* ToyWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDB49145D9CB0A4EEA437D6 /* ToyWorld.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		31B6AC8CA31885C8AB540CD6 /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
 		92B34AF2E2E18C779FAE7E29 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		934061F5CF0255AA8C0C1EBB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B9EEB54BD246644CFD58B218 /* LittleCrossroads.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LittleCrossroads.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4A8CB2BE19CF6DEF99F6413 /* LittleCrossroadsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LittleCrossroadsApp.swift; sourceTree = "<group>"; };
 		CBDB49145D9CB0A4EEA437D6 /* ToyWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToyWorld.swift; sourceTree = "<group>"; };
@@ -52,9 +54,18 @@
 		C8F278F4B9700A9FE6083C6E = {
 			isa = PBXGroup;
 			children = (
+				D637ACBC38B726D67B583CFD /* Resources */,
 				BAAB272E39E4F3F6E2D8C9DC /* Sources */,
 				14EC57C07BB962AD4F588E51 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		D637ACBC38B726D67B583CFD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				934061F5CF0255AA8C0C1EBB /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +76,7 @@
 			buildConfigurationList = E9DDCD05690CB9AF6D5FCB2D /* Build configuration list for PBXNativeTarget "LittleCrossroads" */;
 			buildPhases = (
 				3484B31B95AFA6241D0CBD18 /* Sources */,
+				7CE91D2D1801B4D30624F349 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -109,6 +121,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7CE91D2D1801B4D30624F349 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2F02BA4782A5F8491059D50 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3484B31B95AFA6241D0CBD18 /* Sources */ = {
