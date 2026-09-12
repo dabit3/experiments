@@ -1,0 +1,119 @@
+import Combine
+import SwiftUI
+import UIKit
+
+final class GameModel: ObservableObject {
+  @Published var selection = 0
+  @Published var practice = false
+  @Published var screenIsGame = false
+  @Published var engine = Engine(stage: Stage.all[0], practice: false)
+  @Published var attempts = 0
+  @Published var checkpointNotice = false
+  @Published var sound: Bool {
+    didSet {
+      defaults.set(sound, forKey: "sound")
+      if !sound { audio.stop() } else if engine.phase == .running { playAudio() }
+    }
+  }
+  @Published var bests: [Double]
+  @Published var practiceBests: [Double]
+  @Published var clears: [Bool]
+  let audio = PulseAudio()
+  private let defaults: UserDefaults
+  private var noticeTimer = 0.0
+  private let haptic = UINotificationFeedbackGenerator()
+
+  var stage: Stage { Stage.all[selection] }
+  var best: Double { practice ? practiceBests[selection] : bests[selection] }
+
+  init(defaults: UserDefaults = .standard) {
+    self.defaults = defaults
+    sound = defaults.object(forKey: "sound") as? Bool ?? true
+    bests = (0..<3).map { defaults.double(forKey: "best.\($0)") }
+    practiceBests = (0..<3).map { defaults.double(forKey: "practice.\($0)") }
+    clears = (0..<3).map { defaults.bool(forKey: "clear.\($0)") }
+  }
+
+  func enter() {
+    engine = Engine(stage: stage, practice: practice)
+    attempts = defaults.integer(forKey: "attempts.\(selection)")
+    checkpointNotice = false
+    audio.prepare(stage: stage)
+    screenIsGame = true
+  }
+
+  func tap() {
+    switch engine.phase {
+    case .ready:
+      attempts += 1
+      defaults.set(attempts, forKey: "attempts.\(selection)")
+      engine.start()
+      playAudio()
+    case .running:
+      engine.jump()
+    default: break
+    }
+  }
+
+  func tick(_ dt: Double) {
+    let previousPhase = engine.phase
+    let previousCheckpoint = engine.checkpoint
+    engine.advance(dt)
+    if engine.checkpoint > previousCheckpoint {
+      checkpointNotice = true
+      noticeTimer = 2
+      haptic.notificationOccurred(.success)
+    }
+    if engine.phase == .running && noticeTimer > 0 {
+      noticeTimer -= dt
+      if noticeTimer <= 0 { checkpointNotice = false }
+    }
+    if previousPhase == .running && engine.phase != .running {
+      saveResult()
+      audio.stop()
+      audio.effect(success: engine.phase == .cleared, enabled: sound)
+      haptic.notificationOccurred(engine.phase == .cleared ? .success : .error)
+    }
+  }
+
+  func pause() {
+    engine.pause()
+    audio.stop()
+  }
+
+  func resume() {
+    engine.resume()
+    playAudio()
+  }
+
+  func retry() {
+    engine.retry()
+    checkpointNotice = false
+    tap()
+  }
+
+  func home() {
+    if engine.phase == .running || engine.phase == .paused { saveResult() }
+    audio.stop()
+    screenIsGame = false
+  }
+
+  private func playAudio() {
+    audio.play(from: engine.x, stage: stage, enabled: sound)
+  }
+
+  private func saveResult() {
+    let value = engine.progress
+    if practice {
+      practiceBests[selection] = max(practiceBests[selection], value)
+      defaults.set(practiceBests[selection], forKey: "practice.\(selection)")
+    } else {
+      bests[selection] = max(bests[selection], value)
+      defaults.set(bests[selection], forKey: "best.\(selection)")
+      if engine.phase == .cleared {
+        clears[selection] = true
+        defaults.set(true, forKey: "clear.\(selection)")
+      }
+    }
+  }
+}
