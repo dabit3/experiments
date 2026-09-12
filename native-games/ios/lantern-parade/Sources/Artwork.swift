@@ -57,7 +57,7 @@ struct PaperLantern: View {
     Canvas { context, bounds in
       Art.lantern(
         &context, at: CGPoint(x: bounds.width / 2, y: bounds.height / 2), radius: size / 2,
-        color: color)
+        color: color, glowRadius: 1.7)
     }
     .frame(width: size * 1.8, height: size * 1.9)
     .accessibilityHidden(true)
@@ -75,13 +75,17 @@ enum Art {
   }
 
   static func lantern(
-    _ context: inout GraphicsContext, at p: CGPoint, radius r: CGFloat, color: Color
+    _ context: inout GraphicsContext, at p: CGPoint, radius r: CGFloat, color: Color,
+    glowRadius: CGFloat = 2.3
   ) {
     context.fill(
-      Path(ellipseIn: CGRect(x: p.x - r * 2.3, y: p.y - r * 2.3, width: r * 4.6, height: r * 4.6)),
+      Path(
+        ellipseIn: CGRect(
+          x: p.x - r * glowRadius, y: p.y - r * glowRadius, width: r * glowRadius * 2,
+          height: r * glowRadius * 2)),
       with: .radialGradient(
         Gradient(colors: [color.opacity(0.25), color.opacity(0)]),
-        center: p, startRadius: r * 0.3, endRadius: r * 2.3))
+        center: p, startRadius: r * 0.3, endRadius: r * glowRadius))
     let rect = CGRect(x: p.x - r, y: p.y - r * 1.13, width: r * 2, height: r * 2.26)
     context.fill(
       Path(ellipseIn: rect),
@@ -546,7 +550,7 @@ struct FestivalVignette: View {
     GeometryReader { geometry in
       Image("FestivalTown")
         .resizable().scaledToFill()
-        .frame(width: geometry.size.width, height: geometry.size.height)
+        .frame(width: geometry.size.width, height: geometry.size.height, alignment: .top)
         .clipped()
         .mask(
           LinearGradient(
@@ -571,11 +575,15 @@ struct Eyebrow: View {
 
 struct Stars: View {
   let count: Int
+  var onPaper = false
   var body: some View {
     HStack(spacing: 5) {
       ForEach(0..<3) { index in
         Image(systemName: index < count ? "star.fill" : "star")
-          .foregroundStyle(index < count ? Ink.gold : Ink.muted.opacity(0.4))
+          .foregroundStyle(
+            index < count
+              ? (onPaper ? Ink.night : Ink.gold)
+              : (onPaper ? Ink.night.opacity(0.45) : Ink.muted.opacity(0.8)))
       }
     }.accessibilityLabel("\(count) of 3 stars")
   }

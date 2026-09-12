@@ -30,13 +30,13 @@ struct HomeView: View {
               }.accessibilityLabel("Settings").accessibilityIdentifier("settings")
             }.padding(.horizontal, 28).padding(.top, 4)
             VStack(spacing: -12) {
-              Text("Lantern").font(TypeStyle.title(compact ? 59 : 72)).tracking(-1.5)
-              Text("Parade").font(TypeStyle.italic(compact ? 65 : 78)).tracking(-2)
+              Text("Lantern").font(TypeStyle.title(compact ? 52 : 72)).tracking(-1.5)
+              Text("Parade").font(TypeStyle.italic(compact ? 58 : 78)).tracking(-2)
             }.foregroundStyle(Ink.cream).padding(.top, compact ? 0 : 8)
               .accessibilityElement(children: .ignore).accessibilityLabel("Lantern Parade")
               .accessibilityAddTraits(.isHeader)
             FestivalVignette()
-              .frame(height: min(460, geometry.size.height * (compact ? 0.40 : 0.46)))
+              .frame(height: min(460, geometry.size.height * (compact ? 0.48 : 0.46)))
               .padding(.top, -10)
             VStack(spacing: 13) {
               Text("One ribbon. A thousand little lights.")
@@ -76,7 +76,7 @@ struct HomeView: View {
                 Text("\(progress.completedCount) of 12 towns aglow")
                 Circle().fill(Ink.gold).frame(width: 2, height: 2)
                 Text("\(progress.stars) / 36 stars")
-              }.font(.system(size: 10)).tracking(0.6).foregroundStyle(Ink.muted).padding(.top, 4)
+              }.font(.system(size: 11)).tracking(0.4).foregroundStyle(Ink.muted).padding(.top, 4)
             }.padding(.horizontal, 28).padding(.top, -5)
           }.padding(.bottom, 24)
         }.clipped()
@@ -133,7 +133,7 @@ struct TownList: View {
                   VStack(alignment: .trailing, spacing: 8) {
                     Image(systemName: "arrow.up.right").font(.system(size: 13, weight: .light))
                       .foregroundStyle(Ink.muted)
-                    Stars(count: progress.best[puzzle.id] ?? 0).font(.system(size: 8))
+                    Stars(count: progress.best[puzzle.id] ?? 0).font(.system(size: 10))
                   }
                 }.padding(.vertical, 16)
               }.accessibilityIdentifier("town-\(index + 1)")

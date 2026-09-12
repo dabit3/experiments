@@ -1,5 +1,6 @@
 DerivedData/
 build/
+build-ui/
 *.xcuserstate
 xcuserdata/
 *.mov

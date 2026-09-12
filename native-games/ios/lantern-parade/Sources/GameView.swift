@@ -85,7 +85,7 @@ struct GameView: View {
                 Text("\(parade.route.count - 1)  STEPS")
                 Spacer()
                 Text("PAR  \(puzzle.par)")
-              }.font(.system(size: 10, weight: .medium)).tracking(1.5).foregroundStyle(Ink.muted)
+              }.font(.system(size: 11, weight: .medium)).tracking(1).foregroundStyle(Ink.muted)
                 .padding(.top, compact ? 2 : 8)
               FestivalRule().padding(.top, compact ? 8 : 14)
               if parade.completed {
@@ -169,7 +169,7 @@ struct GameView: View {
               colors.contains(color)
                 ? "COLLECTED" : (colors.count == color.rawValue ? "NEXT LIGHT" : "THEN")
             )
-            .font(.system(size: 8, weight: .medium)).tracking(0.7).foregroundStyle(
+            .font(.system(size: 10, weight: .medium)).tracking(0.4).foregroundStyle(
               colors.count == color.rawValue ? Ink.gold : Ink.muted)
           }
         }.frame(maxWidth: .infinity, alignment: .leading)
@@ -438,15 +438,16 @@ struct ResultView: View {
 
   var body: some View {
     GeometryReader { geometry in
+      let compact = geometry.size.height < 720
       ZStack {
         NightBackground()
         ScrollView(showsIndicators: false) {
-          VStack(spacing: 16) {
-            Eyebrow(text: "One unbroken ribbon").padding(.top, 20)
+          VStack(spacing: compact ? 12 : 16) {
+            Eyebrow(text: "One unbroken ribbon").padding(.top, compact ? 16 : 20)
             Text("A town aglow.")
-              .font(TypeStyle.italic(44)).tracking(-0.5)
+              .font(TypeStyle.italic(compact ? 38 : 44)).tracking(-0.5)
               .foregroundStyle(Ink.cream)
-            VStack(spacing: 12) {
+            VStack(spacing: compact ? 8 : 12) {
               HStack {
                 Text("LANTERN PARADE").font(.system(size: 8, weight: .medium)).tracking(2)
                 Spacer()
@@ -454,9 +455,10 @@ struct ResultView: View {
               }.foregroundStyle(Ink.night.opacity(0.6))
               Text(puzzle.title).font(TypeStyle.title(30)).foregroundStyle(Ink.night)
               TownMap(puzzle: puzzle, route: parade.route, celebrating: true, procession: 0.8)
-                .frame(width: min(geometry.size.width - 76, geometry.size.height * 0.38))
-              Stars(count: parade.stars(in: puzzle)).font(.system(size: 14))
-                .colorMultiply(Ink.night)
+                .frame(
+                  width: min(
+                    geometry.size.width - 76, geometry.size.height * (compact ? 0.33 : 0.38)))
+              Stars(count: parade.stars(in: puzzle), onPaper: true).font(.system(size: 14))
               HStack(spacing: 0) {
                 resultStat("\(parade.route.count - 1)", "STEPS")
                 resultStat("\(parade.mistakes)", parade.mistakes == 1 ? "MISSTEP" : "MISSTEPS")
@@ -500,7 +502,7 @@ struct ResultView: View {
   private func resultStat(_ value: String, _ label: String) -> some View {
     VStack(spacing: 3) {
       Text(value).font(TypeStyle.title(25))
-      Text(label).font(.system(size: 8, weight: .medium)).tracking(1.2)
+      Text(label).font(.system(size: 10, weight: .medium)).tracking(0.8)
     }.foregroundStyle(Ink.night.opacity(0.8)).frame(maxWidth: .infinity)
   }
 
@@ -533,25 +535,25 @@ struct PosterView: View {
               ? "DAILY LIGHT"
               : "ROUTE № \(String(format: "%02d", (Towns.all.firstIndex { $0.id == puzzle.id } ?? 0) + 1))"
           )
-        }.font(.system(size: 9, weight: .medium)).tracking(1.6).padding(.bottom, 26)
+        }.font(.system(size: 10, weight: .medium)).tracking(1.6).padding(.bottom, 26)
         Text("Lantern Parade").font(TypeStyle.title(57)).tracking(-2)
-        Text("A little light, beautifully led.").font(TypeStyle.italic(22))
+        Text("A little light, beautifully led.").font(TypeStyle.italic(24))
           .padding(.top, 3).padding(.bottom, 27)
         TownMap(puzzle: puzzle, route: parade.route, celebrating: true, procession: 0.8)
           .frame(width: 440, height: 440)
         Text(puzzle.title).font(TypeStyle.title(35)).padding(.top, 25)
-        Stars(count: parade.stars(in: puzzle)).font(.system(size: 16)).colorMultiply(Ink.night)
+        Stars(count: parade.stars(in: puzzle), onPaper: true).font(.system(size: 16))
           .padding(.top, 12)
         Text("\(parade.route.count - 1) steps  ·  One unbroken ribbon")
-          .font(.system(size: 12)).tracking(1).padding(.top, 18)
+          .font(.system(size: 16)).tracking(0.5).padding(.top, 18)
         Spacer(minLength: 20)
         HStack {
           Rectangle().fill(Ink.night.opacity(0.3)).frame(height: 0.5)
-          Text("A TOWN, ILLUMINATED").font(.system(size: 9)).tracking(2).fixedSize()
+          Text("A TOWN, ILLUMINATED").font(.system(size: 11)).tracking(1.5).fixedSize()
           Rectangle().fill(Ink.night.opacity(0.3)).frame(height: 0.5)
         }
       }.foregroundStyle(Ink.night).padding(50)
-    }.frame(width: 540, height: 980).environment(\.colorScheme, .dark)
+    }.frame(width: 540, height: 860).environment(\.colorScheme, .dark)
   }
 }
 
