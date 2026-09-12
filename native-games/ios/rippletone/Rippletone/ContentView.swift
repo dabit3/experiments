@@ -78,15 +78,15 @@ struct ContentView: View {
           .font(Ink.italic(compact ? 14 : 16)).foregroundStyle(Ink.muted)
       }
       .padding(.top, compact ? 0 : 14)
-      pondIllustration
-        .frame(minHeight: compact ? 100 : 170, maxHeight: .infinity)
-        .overlay(alignment: .bottom) {
-          if !compact {
-            Text("A STUDY IN THREE MOVEMENTS")
-              .font(.system(size: 8, weight: .medium)).tracking(2.4)
-              .foregroundStyle(Ink.muted).padding(.bottom, 8)
-          }
+      VStack(spacing: 0) {
+        pondIllustration
+        if !compact {
+          Text("A STUDY IN THREE MOVEMENTS")
+            .font(.system(size: 8, weight: .medium)).tracking(2.4)
+            .foregroundStyle(Ink.muted).padding(.bottom, 12)
         }
+      }
+      .frame(minHeight: compact ? 100 : 170, maxHeight: .infinity)
       VStack(spacing: 0) {
         HStack(alignment: .firstTextBaseline) {
           Text("The nocturne collection").font(Ink.italic(compact ? 17 : 19))

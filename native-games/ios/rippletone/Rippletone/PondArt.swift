@@ -26,8 +26,8 @@ struct PondArt: View {
       if !transparent { water(context, size: size, time: t) }
       guard !atmosphereOnly else { return }
       if hero {
-        let center = CGPoint(x: size.width * 0.5, y: size.height * 0.5)
-        let radius = min(size.width * 0.38, size.height * 0.44)
+        let radius = min(size.width / 2.7, max(0, size.height - 24) / 2.5)
+        let center = CGPoint(x: size.width * 0.5, y: size.height * 0.5 - radius * 0.12)
         moon(context, center: center, radius: radius)
         koi(
           context, at: CGPoint(x: center.x - radius * 0.25, y: center.y + radius * 0.22),
@@ -135,7 +135,7 @@ struct PondArt: View {
     let sway = sin(phase) * 0.035
     let pigment = warm ? Ink.peach : Ink.jade
     var tail = Path()
-    tail.move(to: CGPoint(x: -0.42, y: 0.035))
+    tail.move(to: CGPoint(x: -0.42, y: 0.022))
     tail.addCurve(
       to: CGPoint(x: -0.92, y: -0.24 + sway), control1: CGPoint(x: -0.60, y: 0.08),
       control2: CGPoint(x: -0.75, y: -0.29))
@@ -146,8 +146,9 @@ struct PondArt: View {
       to: CGPoint(x: -0.83, y: 0.38 + sway), control1: CGPoint(x: -0.69, y: 0.17),
       control2: CGPoint(x: -0.80, y: 0.25))
     tail.addCurve(
-      to: CGPoint(x: -0.42, y: 0.035), control1: CGPoint(x: -0.61, y: 0.29),
+      to: CGPoint(x: -0.42, y: 0.067), control1: CGPoint(x: -0.61, y: 0.29),
       control2: CGPoint(x: -0.61, y: 0.08))
+    tail.closeSubpath()
     context.fill(
       tail,
       with: .linearGradient(
@@ -183,8 +184,9 @@ struct PondArt: View {
       to: CGPoint(x: 0.32, y: -0.118), control1: CGPoint(x: 0.455, y: -0.073),
       control2: CGPoint(x: 0.405, y: -0.118))
     body.addCurve(
-      to: CGPoint(x: -0.44, y: 0.04), control1: CGPoint(x: 0.02, y: -0.17),
+      to: CGPoint(x: -0.44, y: 0.023), control1: CGPoint(x: 0.02, y: -0.17),
       control2: CGPoint(x: -0.22, y: 0.06))
+    body.addLine(to: CGPoint(x: -0.44, y: 0.067))
     body.addCurve(
       to: CGPoint(x: 0.32, y: 0.101), control1: CGPoint(x: -0.10, y: 0.04),
       control2: CGPoint(x: 0.11, y: 0.15))
