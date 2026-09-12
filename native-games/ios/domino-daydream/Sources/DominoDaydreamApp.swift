@@ -573,7 +573,9 @@ struct ContentView: View {
       .overlay(
         RoundedRectangle(cornerRadius: 7).strokeBorder(Palette.cream.opacity(0.4), lineWidth: 0.7)
       )
-      .shadow(color: .black.opacity(0.23), radius: 0, x: 0, y: 4)
+      .background {
+        RoundedRectangle(cornerRadius: 7).fill(.black.opacity(0.23)).offset(y: 4)
+      }
     }
     .buttonStyle(WorkshopPressStyle()).accessibilityIdentifier(id)
   }

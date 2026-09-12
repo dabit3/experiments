@@ -16,8 +16,8 @@ final class Diorama {
   private var showingGuides = false
   private var failedCells: Set<Cell> = []
 
-  private let porcelain = Diorama.material(0xFFF4D9, shine: 0.3)
-  private let ivory = Diorama.material(0xDCD5B8)
+  private let porcelain = Diorama.material(0xFAF8F0, shine: 0.3)
+  private let ivory = Diorama.material(0xE1E2D8)
   private let wood = Diorama.material(0x694732, shine: 0.2)
   private let gold = Diorama.material(0xD5A353, shine: 0.8)
   private let forest = Diorama.material(0x2F6152)
@@ -42,7 +42,7 @@ final class Diorama {
     key.light = SCNLight()
     key.light?.type = .directional
     key.light?.intensity = 1050
-    key.light?.color = UIColor(red: 1, green: 0.9, blue: 0.75, alpha: 1)
+    key.light?.color = UIColor(red: 1, green: 0.97, blue: 0.91, alpha: 1)
     key.light?.castsShadow = true
     key.light?.shadowMode = .deferred
     key.light?.shadowColor = UIColor(red: 0.15, green: 0.22, blue: 0.18, alpha: 0.5)
@@ -56,7 +56,7 @@ final class Diorama {
     let fill = SCNNode()
     fill.light = SCNLight()
     fill.light?.type = .ambient
-    fill.light?.color = UIColor(red: 0.79, green: 0.87, blue: 0.82, alpha: 1)
+    fill.light?.color = UIColor(red: 0.85, green: 0.91, blue: 0.97, alpha: 1)
     fill.light?.intensity = 650
     scene.rootNode.addChildNode(fill)
 
@@ -193,6 +193,7 @@ final class Diorama {
     for (index, cell) in puzzle.targets.enumerated() {
       let bell = SCNNode()
       bell.position = point(cell)
+      bell.scale = SCNVector3(1.12, 1.12, 1.12)
       root.addChildNode(bell)
       cylinder(bell, radius: 0.32, height: 0.11, at: (0, 0.08, 0), material: wood)
       cylinder(bell, radius: 0.29, height: 0.05, at: (0, 0.17, 0), material: gold)
@@ -381,13 +382,13 @@ final class Diorama {
       let pivot = SCNNode()
       pivot.position = SCNVector3(Float(offset.0) * 0.27, 0.09, Float(offset.1) * 0.27)
       root.addChildNode(pivot)
-      let body = box(pivot, (0.13, 0.52, 0.3), (0, 0.26, 0), porcelain, bevel: 0.035)
+      let body = box(pivot, (0.15, 0.58, 0.33), (0, 0.29, 0), porcelain, bevel: 0.035)
       if offset.1 != 0 { body.eulerAngles.y = .pi / 2 }
       for sign: Float in [-1, 1] {
-        box(body, (0.004, 0.009, 0.24), (sign * 0.068, 0, 0), gold)
+        box(body, (0.004, 0.009, 0.27), (sign * 0.078, 0, 0), gold)
         for y: Float in [-0.13, 0.13] {
           sphere(
-            body, radius: 0.026, at: (sign * 0.07, y, 0), material: dark,
+            body, radius: 0.03, at: (sign * 0.08, y, 0), material: dark,
             scale: SCNVector3(0.12, 1, 1))
         }
       }
