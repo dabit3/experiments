@@ -28,7 +28,6 @@ struct ContentView: View {
   var body: some View {
     GeometryReader { geometry in
       ZStack {
-        WinterBackdrop()
         if let journey {
           if journey.won || journey.stranded {
             results(journey, size: geometry.size)
@@ -40,6 +39,8 @@ struct ContentView: View {
         }
       }
       .foregroundStyle(Winter.cream)
+      .clipped()
+      .background { WinterBackdrop() }
     }
     .sheet(item: $panel) { panel in
       panelView(panel)
@@ -134,6 +135,7 @@ struct ContentView: View {
     let daily = Puzzle.daily()
     let key = daily.id.dropFirst(6)
     let date = "\(key.prefix(4))-\(key.dropFirst(4).prefix(2))-\(key.suffix(2)) UTC"
+    let best = progress[daily.id].map { "Best \($0.score) points" } ?? "Not played"
     return VStack(spacing: 0) {
       rule
       navigationRow(
@@ -145,7 +147,7 @@ struct ContentView: View {
       rule
       navigationRow(
         "Daily dispatch",
-        detail: "\(date) · Best \(progress[daily.id]?.score ?? 0)",
+        detail: "\(date) · \(best)",
         id: "daily"
       ) { start(daily) }
     }
