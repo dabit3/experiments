@@ -5,6 +5,7 @@ struct AlpineCanvas: View {
   let time: Double
   let isHome: Bool
   let reduceMotion: Bool
+  let impactTime: Double
 
   private let ink = Color(hex: 0x17394A)
   private var travel: Double { isHome ? time * 8 : engine.x }
@@ -164,6 +165,34 @@ struct AlpineCanvas: View {
       cursor = max(cursor, gap.x + gap.width)
     }
     if cursor < finish { spans.append((cursor, finish)) }
+    for gap in chasms {
+      let left = (gap.x - offset) * scale
+      let right = (gap.x + gap.width - offset) * scale
+      let leftY = baseline - RideEngine.height(at: gap.x) * scale
+      let rightY = baseline - RideEngine.height(at: gap.x + gap.width) * scale
+      var depth = Path()
+      depth.addLines([
+        CGPoint(x: left, y: leftY), CGPoint(x: right, y: rightY),
+        CGPoint(x: right, y: size.height), CGPoint(x: left, y: size.height),
+      ])
+      depth.closeSubpath()
+      context.fill(
+        depth,
+        with: .linearGradient(
+          Gradient(colors: [Color(hex: 0x54738A), Color(hex: 0x17394A), Color(hex: 0x102B3D)]),
+          startPoint: CGPoint(x: left, y: min(leftY, rightY)),
+          endPoint: CGPoint(x: left, y: size.height)))
+      for index in 0..<3 {
+        let inset = Double(index + 1) * 12 * scale
+        var ledge = Path()
+        ledge.addLines([
+          CGPoint(x: left + inset, y: leftY + 32 * Double(index + 1)),
+          CGPoint(x: left + inset + 12 * scale, y: leftY + 80 * Double(index + 1)),
+          CGPoint(x: left + inset - 8 * scale, y: size.height),
+        ])
+        context.stroke(ledge, with: .color(.white.opacity(0.07)), lineWidth: 2 * scale)
+      }
+    }
     for (left, right) in spans where left < right {
       var top = Path()
       var fill = Path()
@@ -289,10 +318,25 @@ struct AlpineCanvas: View {
 
   private func rider(_ context: inout GraphicsContext, baseline: Double, scale: Double) {
     let riderY = isHome ? RideEngine.height(at: travel) : engine.y
-    let angle = isHome ? atan(RideEngine.slope(at: travel)) : engine.rotation
+    let impact = impactTime > 0 ? 1 - impactTime / 0.75 : 0
+    let angle =
+      (isHome ? atan(RideEngine.slope(at: travel)) : engine.rotation)
+      + (reduceMotion ? 0 : impact * 0.8)
     let center = CGPoint(x: (isHome ? 60 : 124) * scale, y: baseline - riderY * scale)
     if !isHome && engine.rescueTime > 0 {
       context.opacity = 0.55 + 0.35 * sin(time * 14)
+    }
+    if impactTime > 0 && !reduceMotion {
+      for index in 0..<12 {
+        let direction = Double(index) * .pi / 6
+        let radius = (18 + impact * 50) * scale
+        let point = CGPoint(
+          x: center.x + cos(direction) * radius,
+          y: center.y - 15 * scale + sin(direction) * radius * 0.7)
+        context.fill(
+          Path(ellipseIn: CGRect(x: point.x, y: point.y, width: 4 * scale, height: 3 * scale)),
+          with: .color(.white.opacity(1 - impact)))
+      }
     }
     if isHome || engine.grounded {
       for index in 0..<11 {
@@ -352,7 +396,7 @@ struct AlpineCanvas: View {
     rider.stroke(
       board, with: .color(Color(hex: 0xF2B886)), style: StrokeStyle(lineWidth: 1.4, lineCap: .round)
     )
-    if !isHome && !engine.grounded && engine.airtime > 0.25 {
+    if !isHome && engine.phase == .riding && !engine.grounded && engine.airtime > 0.25 {
       let level = RideEngine.isSafeLanding(
         rotation: engine.rotation, slope: RideEngine.slope(at: engine.x))
       let cue = CGPoint(x: center.x + 68 * scale, y: center.y - 47 * scale)

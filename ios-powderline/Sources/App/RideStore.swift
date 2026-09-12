@@ -22,6 +22,7 @@ final class RideStore: NSObject, ObservableObject {
   @Published var sceneryTime = 0.0
   @Published var newBest = false
   @Published var hasJumped = false
+  @Published var impactTime = 0.0
   var reduceMotion = false
   private var displayLink: CADisplayLink?
   private var lastFrame = 0.0
@@ -57,13 +58,14 @@ final class RideStore: NSObject, ObservableObject {
     savedCurrentRide = false
     newBest = false
     hasJumped = false
+    impactTime = 0
     lastFrame = 0
     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
     if soundEnabled { players["wind"]?.play() }
   }
 
   func press() {
-    guard screen == .riding else { return }
+    guard screen == .riding && impactTime == 0 else { return }
     let canJump = engine.grounded
     engine.press()
     if canJump {
@@ -78,7 +80,7 @@ final class RideStore: NSObject, ObservableObject {
   }
 
   func pause() {
-    guard screen == .riding else { return }
+    guard screen == .riding && impactTime == 0 else { return }
     engine.release()
     screen = .paused
     players["wind"]?.pause()
@@ -115,7 +117,12 @@ final class RideStore: NSObject, ObservableObject {
   }
 
   func background() {
-    pause()
+    if impactTime > 0 {
+      impactTime = 0
+      finish()
+    } else {
+      pause()
+    }
     players["wind"]?.pause()
     lastFrame = 0
   }
@@ -135,6 +142,11 @@ final class RideStore: NSObject, ObservableObject {
     lastFrame = link.timestamp
     if screen == .home && !reduceMotion { sceneryTime += delta }
     guard screen == .riding else { return }
+    if impactTime > 0 {
+      impactTime = max(0, impactTime - delta)
+      if impactTime == 0 { finish() }
+      return
+    }
     sceneryTime += delta
     engine.advance(delta)
     toastTime = max(0, toastTime - delta)
@@ -150,7 +162,10 @@ final class RideStore: NSObject, ObservableObject {
     case .crash:
       play("crash")
       UINotificationFeedbackGenerator().notificationOccurred(.warning)
-      finish()
+      engine.release()
+      saveRide()
+      players["wind"]?.pause()
+      impactTime = 0.75
     case .rescued:
       toast = "A SOFT LANDING"
       toastDetail = "Practice gives you another chance"

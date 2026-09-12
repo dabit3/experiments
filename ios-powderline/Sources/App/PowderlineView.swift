@@ -13,7 +13,8 @@ struct PowderlineView: View {
       ZStack {
         AlpineCanvas(
           engine: store.engine, time: store.sceneryTime,
-          isHome: store.screen == .home, reduceMotion: reduceMotion
+          isHome: store.screen == .home, reduceMotion: reduceMotion,
+          impactTime: store.impactTime
         )
         switch store.screen {
         case .home:
@@ -170,6 +171,7 @@ struct PowderlineView: View {
               .overlay(Circle().stroke(.white.opacity(0.18), lineWidth: 0.7))
           }
           .accessibilityLabel("Pause")
+          .disabled(store.impactTime > 0)
         }
         .padding(.horizontal, 27)
         .padding(.top, 12)
@@ -180,9 +182,23 @@ struct PowderlineView: View {
             .tracking(1.8)
           Spacer()
           if store.engine.combo > 0 {
-            Text("\(store.engine.combo)× FLOW")
-              .font(.system(size: 9, weight: .semibold))
-              .tracking(1.5)
+            HStack(spacing: 7) {
+              ZStack {
+                Circle().stroke(cream.opacity(0.25), lineWidth: 2)
+                Circle().trim(from: 0, to: store.engine.comboTime / 5.5)
+                  .stroke(cream, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                  .rotationEffect(.degrees(-90))
+              }
+              .frame(width: 14, height: 14)
+              Text("\(store.engine.combo)× FLOW")
+                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .tracking(0.8)
+            }
+            .foregroundStyle(cream)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 7)
+            .background(ink.opacity(0.55), in: Capsule())
+            .accessibilityLabel("\(store.engine.combo) times combo")
           }
         }
         .foregroundStyle(cream.opacity(0.65))
@@ -202,16 +218,27 @@ struct PowderlineView: View {
           .accessibilityIdentifier("hazardWarning")
         }
         Spacer()
-        if store.toastTime > 0 {
+        if store.impactTime > 0 {
+          Text(store.engine.crashReason)
+            .font(.system(size: 21, weight: .medium, design: .serif))
+            .padding(.horizontal, 20)
+            .padding(.vertical, 13)
+            .background(ink.opacity(0.85), in: Capsule())
+            .padding(.bottom, size.height * 0.26)
+            .allowsHitTesting(false)
+        } else if store.toastTime > 0 {
           VStack(spacing: 7) {
             Text(store.toast)
               .font(.system(size: 19, weight: .medium, design: .serif))
               .tracking(2)
             Text(store.toastDetail)
-              .font(.system(size: 10, weight: .medium, design: .monospaced))
+              .font(.system(size: 12, weight: .semibold, design: .monospaced))
           }
           .foregroundStyle(cream)
-          .shadow(color: ink.opacity(0.5), radius: 12)
+          .padding(.horizontal, 19)
+          .padding(.vertical, 13)
+          .background(ink.opacity(0.82), in: RoundedRectangle(cornerRadius: 15))
+          .overlay(RoundedRectangle(cornerRadius: 15).stroke(cream.opacity(0.18)))
           .padding(.bottom, size.height * 0.26)
           .allowsHitTesting(false)
           .accessibilityElement(children: .combine)
