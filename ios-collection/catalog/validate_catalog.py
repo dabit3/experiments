@@ -110,6 +110,10 @@ def main():
                 raise ValueError("Expected at least three screenshots.")
             for url in result["screenshot_urls"]:
                 external_url(url)
+            for video in result.get("supplementary_videos", []):
+                if not video["label"]:
+                    raise ValueError("Supplementary video is missing a label.")
+                external_url(video["url"])
             accepted += 1
         elif not args.allow_incomplete:
             raise ValueError(f"{app['slug']} has not passed revision-matched review.")
