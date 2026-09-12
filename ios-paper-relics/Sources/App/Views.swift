@@ -173,27 +173,30 @@ struct TitleView: View {
 
   var body: some View {
     GeometryReader { geometry in
+      let compact = geometry.size.height < 800
       ScrollView {
-        VStack(spacing: 14) {
-          Eyebrow(text: "A pocket paper theater").padding(.top, 22)
+        VStack(spacing: compact ? 10 : 14) {
+          Eyebrow(text: "A pocket paper theater").padding(.top, compact ? 12 : 22)
           Spacer(minLength: 0)
           Proscenium(kind: .moth)
-            .frame(height: min(geometry.size.height * 0.36, 300))
+            .frame(height: min(geometry.size.height * (compact ? 0.26 : 0.36), 300))
             .padding(.horizontal, 28)
             .offset(y: lit || reduceMotion ? 0 : 10)
             .opacity(lit || reduceMotion ? 1 : 0)
           VStack(spacing: -6) {
-            Text("Paper").font(Ink.display(60)).tracking(2)
-            Text("Relics").font(Ink.display(70)).tracking(2)
+            Text("Paper").font(Ink.display(compact ? 52 : 60)).tracking(2)
+            Text("Relics").font(Ink.display(compact ? 60 : 70)).tracking(2)
               .foregroundStyle(Ink.metal)
               .shadow(color: Ink.gilt.opacity(0.35), radius: 14, x: 0, y: 0)
           }
-          .padding(.top, 10)
+          .padding(.top, compact ? 4 : 10)
           Flourish().frame(width: 150)
           Text("Every card, a small rebellion.").font(Ink.italic(18)).foregroundStyle(Ink.faded)
-          Text("Build a deck. Break the strings.\nRewrite the final act.").font(Ink.serif(15))
-            .lineSpacing(4)
-            .multilineTextAlignment(.center).foregroundStyle(Ink.faded.opacity(0.85))
+          if !compact {
+            Text("Build a deck. Break the strings.\nRewrite the final act.").font(Ink.serif(15))
+              .lineSpacing(4)
+              .multilineTextAlignment(.center).foregroundStyle(Ink.faded.opacity(0.85))
+          }
           Spacer(minLength: 8)
           VStack(spacing: 8) {
             PrimaryButton(title: canContinue ? "Continue your story" : "Enter the theater") {
@@ -396,7 +399,7 @@ struct BattleView: View {
                 if enemy.block > 0 { Label("\(enemy.block) block", systemImage: "shield.fill") }
                 if enemy.poison > 0 {
                   Label("\(enemy.poison) poison", systemImage: "drop.fill").foregroundStyle(
-                    Ink.green)
+                    Ink.sage)
                 }
                 if enemy.weak > 0 { Label("\(enemy.weak) weak", systemImage: "eye") }
               }.font(Ink.serif(12)).foregroundStyle(Ink.faded).frame(height: 14)
@@ -546,6 +549,7 @@ struct RelicRow: View {
 struct CardFan: View {
   var kinds: [CardKind]
   var width: CGFloat
+  var unavailableLabel = "NO ENERGY"
   var footer: (CardKind) -> String
   var enabled: (CardKind) -> Bool
   var action: (CardKind) -> Void
@@ -559,7 +563,9 @@ struct CardFan: View {
           action(kind)
         } label: {
           VStack(spacing: 10) {
-            CardFace(kind: kind, affordable: enabled(kind), width: width)
+            CardFace(
+              kind: kind, affordable: enabled(kind), unavailableLabel: unavailableLabel,
+              width: width)
             Text(footer(kind)).font(Ink.bold(12)).foregroundStyle(
               enabled(kind) ? Ink.gilt : Ink.faded
             )
@@ -715,6 +721,7 @@ struct ShopView: View {
           }
           CardFan(
             kinds: [.sever, .sanctuary, .eclipse], width: min(124, (geometry.size.width - 60) / 3),
+            unavailableLabel: "NEED GOLD",
             footer: { _ in run.gold >= 45 ? "45 gold" : "Need \(45 - run.gold) more gold" },
             enabled: { _ in run.gold >= 45 }
           ) { kind in

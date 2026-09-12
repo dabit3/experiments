@@ -9,6 +9,7 @@ enum Ink {
   static let cream = Color(red: 0.97, green: 0.94, blue: 0.86)
   static let parchment = Color(red: 0.86, green: 0.80, blue: 0.65)
   static let faded = Color(red: 0.69, green: 0.72, blue: 0.61)
+  static let sage = Color(red: 0.58, green: 0.84, blue: 0.64)
   static let copper = Color(red: 0.82, green: 0.57, blue: 0.33)
   static let gilt = Color(red: 0.95, green: 0.78, blue: 0.52)
   static let bronze = Color(red: 0.55, green: 0.34, blue: 0.17)
@@ -824,6 +825,7 @@ struct CardIllustration: View {
 struct CardFace: View {
   var kind: CardKind
   var affordable = true
+  var unavailableLabel = "NO ENERGY"
   var text: String?
   var width: CGFloat = 128
   private var accent: Color {
@@ -856,7 +858,7 @@ struct CardFace: View {
       Text(text ?? kind.text).font(Ink.serif(width * 0.098)).lineSpacing(1)
         .multilineTextAlignment(.center).frame(maxHeight: .infinity, alignment: .center)
         .padding(.horizontal, 2)
-      Text(affordable ? kind.category : "NO ENERGY")
+      Text(affordable ? kind.category : unavailableLabel)
         .font(.system(size: width * 0.058, weight: .bold)).tracking(1.6)
         .foregroundStyle(affordable ? Ink.cream : Ink.paper)
         .padding(.horizontal, 8).padding(.vertical, 3)
