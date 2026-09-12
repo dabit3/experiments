@@ -171,32 +171,6 @@ final class GameDesk: ObservableObject {
   }
 }
 
-enum Ink {
-  static let paper = Color(red: 0.97, green: 0.955, blue: 0.918)
-  static let navy = Color(red: 0.10, green: 0.18, blue: 0.23)
-  static let muted = Color(red: 0.43, green: 0.47, blue: 0.45)
-  static let rule = Color(red: 0.84, green: 0.84, blue: 0.78)
-  static let routes: [Color] = [
-    Color(red: 0.86, green: 0.31, blue: 0.20),
-    Color(red: 0.08, green: 0.49, blue: 0.48),
-    Color(red: 0.78, green: 0.58, blue: 0.13),
-    Color(red: 0.44, green: 0.38, blue: 0.66),
-  ]
-}
-
-struct PaperButton: ButtonStyle {
-  var filled = true
-  func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .font(.system(size: 15, weight: .semibold))
-      .frame(maxWidth: .infinity, minHeight: 52)
-      .background(filled ? Ink.navy : Ink.rule.opacity(0.35))
-      .foregroundStyle(filled ? Ink.paper : Ink.navy)
-      .clipShape(RoundedRectangle(cornerRadius: 15))
-      .opacity(configuration.isPressed ? 0.7 : 1)
-  }
-}
-
 struct AtelierView: View {
   @StateObject private var desk = GameDesk()
   @Environment(\.scenePhase) private var scenePhase
@@ -207,19 +181,21 @@ struct AtelierView: View {
 
   var body: some View {
     ZStack {
-      Ink.paper.ignoresSafeArea()
+      Ink.header.ignoresSafeArea()
       if let game = desk.game {
         gameView(game)
       } else {
         titleView
       }
       if desk.showGuide {
-        modal { guide }
+        PaperModal(title: "FIELD GUIDE", dismiss: { desk.showGuide = false }) { guide }
       } else if let game = desk.game {
         if game.isOver, !showNetwork {
-          modal { result(game) }
+          PaperModal { result(game) }
         } else if game.upgradePending, showInvestment {
-          modal { upgrade(game) }
+          PaperModal(title: "CITY INVESTMENT", dismiss: { showInvestment = false }) {
+            upgrade(game)
+          }
         }
       }
     }
@@ -238,70 +214,75 @@ struct AtelierView: View {
     }
   }
 
+  // MARK: Title
+
   private var titleView: some View {
     GeometryReader { geometry in
+      let compact = geometry.size.height < 700
       ScrollView {
         VStack(alignment: .leading, spacing: 0) {
           HStack {
-            eyebrow("A SMALL STUDY IN CONNECTION")
+            Eyebrow("A SMALL STUDY IN CONNECTION", tone: Ink.gold)
             Spacer()
             Button {
               desk.toggleSound()
             } label: {
               Image(systemName: desk.sound ? "speaker.wave.2" : "speaker.slash")
+                .font(.system(size: 14))
                 .frame(width: 44, height: 44)
+                .foregroundStyle(Ink.paper)
             }.accessibilityLabel(desk.sound ? "Mute sound" : "Enable sound")
           }
-          Text("Transit\nAtelier")
-            .font(
-              .system(size: geometry.size.height < 700 ? 48 : 58, weight: .regular, design: .serif)
-            )
-            .tracking(-2.5)
-            .lineSpacing(-8)
-            .padding(.top, 12)
+          VStack(alignment: .leading, spacing: compact ? -12 : -16) {
+            Text("Transit")
+              .font(.system(size: compact ? 50 : 62, weight: .regular, design: .serif))
+            Text("Atelier")
+              .font(.system(size: compact ? 50 : 62, weight: .regular, design: .serif).italic())
+              .foregroundStyle(Ink.gold)
+          }
+          .tracking(-2)
+          .foregroundStyle(Ink.paperLight)
+          .padding(.top, 4)
           HStack(spacing: 10) {
-            Rectangle().fill(Ink.routes[0]).frame(width: 28, height: 2)
-            Text("Make room for a city in motion.")
-              .font(.system(size: 13))
-              .foregroundStyle(Ink.muted)
-          }.padding(.top, 14)
-          MapDrawing(game: demoMap, selected: 0, decorative: true)
-            .frame(height: geometry.size.height < 700 ? 130 : min(245, geometry.size.height * 0.30))
-            .padding(.vertical, 16)
-            .accessibilityHidden(true)
-          HStack {
-            eyebrow("CHOOSE YOUR CITY")
-            Spacer()
-            eyebrow("5 MIN / LOCAL BEST")
-          }.padding(.bottom, 10)
-          HStack(spacing: 10) {
-            ForEach(City.allCases, id: \.self) { city in
-              Button {
-                desk.selectedCity = city
-                desk.feedback()
-              } label: {
-                VStack(alignment: .leading, spacing: 9) {
-                  HStack {
-                    Text(city.number).font(.system(size: 11, design: .monospaced))
-                    Spacer()
-                    Image(
-                      systemName: desk.selectedCity == city ? "checkmark.circle.fill" : "circle")
-                  }
-                  Text(city.title).font(.system(size: 16, weight: .medium, design: .serif))
-                  Text(
-                    desk.best(city) == 0
-                      ? "An unwritten journey" : "Best: \(desk.best(city)) delivered"
-                  )
-                  .font(.system(size: 10))
-                  .foregroundStyle(Ink.muted)
+            Rectangle().fill(Ink.routes[0]).frame(width: 26, height: 2)
+            Text("Turn a growing coast into a living diagram.")
+              .font(.system(size: 13, design: .serif).italic())
+              .foregroundStyle(Ink.paper.opacity(0.78))
+          }.padding(.top, 12)
+          ZStack(alignment: .topLeading) {
+            RoundedRectangle(cornerRadius: 18)
+              .fill(Ink.paperDeep.opacity(0.35))
+              .rotationEffect(.degrees(-2.5))
+              .padding(.horizontal, 10)
+              .offset(y: 8)
+            Sheet(radius: 18) {
+              VStack(spacing: 0) {
+                MapDrawing(game: demoMap, selected: 0, decorative: true)
+                  .frame(height: compact ? 124 : min(220, geometry.size.height * 0.27))
+                  .clipped()
+                HStack(spacing: 6) {
+                  CompassRose().frame(width: 12, height: 12)
+                  Eyebrow("THE COASTAL COLLECTION", size: 7)
+                  Spacer()
+                  Eyebrow(desk.selectedCity.title.uppercased(), tone: Ink.routes[0], size: 7)
                 }
-                .padding(14)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(desk.selectedCity == city ? Color.white.opacity(0.55) : .clear)
-                .overlay(
-                  RoundedRectangle(cornerRadius: 13).stroke(
-                    desk.selectedCity == city ? Ink.navy : Ink.rule, lineWidth: 1))
-              }.accessibilityLabel("\(city.title), best \(desk.best(city))")
+                .padding(.horizontal, 14).frame(height: 28)
+                .background(Ink.paperLight)
+                .overlay(alignment: .top) { Rectangle().fill(Ink.rule).frame(height: 1) }
+              }
+            }
+          }
+          .padding(.top, compact ? 16 : 22)
+          .padding(.bottom, compact ? 16 : 22)
+          .accessibilityHidden(true)
+          HStack {
+            Eyebrow("CHOOSE YOUR CITY", tone: Ink.paper.opacity(0.7))
+            Spacer()
+            Eyebrow("FIVE MINUTES · LOCAL BEST", tone: Ink.paper.opacity(0.7))
+          }.padding(.bottom, 10)
+          HStack(spacing: 12) {
+            ForEach(City.allCases, id: \.self) { city in
+              cityTicket(city)
             }
           }
           Button {
@@ -313,26 +294,73 @@ struct AtelierView: View {
               Image(systemName: "arrow.right")
             }.padding(.horizontal, 20)
           }
-          .buttonStyle(PaperButton())
+          .buttonStyle(PaperButton(tone: .coral))
           .padding(.top, 18)
           HStack {
             Button("How to play") { desk.showGuide = true }
             Spacer()
             if desk.savedGame != nil {
-              Button("Continue journey") { desk.resumeSaved() }
+              Button {
+                desk.resumeSaved()
+              } label: {
+                Label("Continue journey", systemImage: "arrow.counterclockwise")
+              }
             } else {
-              Text("DESIGNED TO KEEP YOU MOVING")
-                .font(.system(size: 8, weight: .medium))
-                .tracking(1)
+              Eyebrow("DESIGNED TO KEEP YOU MOVING", tone: Ink.paper.opacity(0.45))
             }
           }
-          .font(.system(size: 12, weight: .medium))
+          .font(.system(size: 13, weight: .medium))
+          .foregroundStyle(Ink.paper)
           .frame(minHeight: 48)
         }
-        .padding(.horizontal, 26)
-        .padding(.top, 6)
+        .padding(.horizontal, 24)
+        .padding(.top, 4)
       }
     }
+  }
+
+  private func cityTicket(_ city: City) -> some View {
+    let selected = desk.selectedCity == city
+    return Button {
+      withAnimation(.spring(duration: 0.3)) { desk.selectedCity = city }
+      desk.feedback()
+    } label: {
+      VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: 6) {
+          HStack {
+            Eyebrow("SHEET \(city.number)", tone: selected ? Ink.routes[0] : Ink.muted)
+            Spacer()
+            Circle()
+              .fill(selected ? Ink.routes[0] : .clear)
+              .overlay(Circle().strokeBorder(selected ? Ink.routes[0] : Ink.rule, lineWidth: 1.5))
+              .frame(width: 14, height: 14)
+              .overlay {
+                if selected {
+                  Image(systemName: "checkmark").font(.system(size: 7, weight: .black))
+                    .foregroundStyle(Ink.paperLight)
+                }
+              }
+          }
+          Text(city.title).font(.system(size: 16, weight: .medium, design: .serif))
+            .lineLimit(1).minimumScaleFactor(0.8)
+        }
+        .padding(.horizontal, 13).padding(.top, 13).padding(.bottom, 12)
+        Line().stroke(Ink.rule, style: StrokeStyle(lineWidth: 1, dash: [3, 3]))
+          .frame(height: 1).padding(.horizontal, 6)
+        Text(desk.best(city) == 0 ? "An unwritten journey" : "Best \(desk.best(city)) delivered")
+          .font(.system(size: 10, weight: .medium, design: .monospaced))
+          .foregroundStyle(selected ? Ink.navy : Ink.muted)
+          .padding(.horizontal, 13).padding(.vertical, 9)
+      }
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .background(selected ? Ink.paperLight : Ink.paperDeep)
+      .overlay(PaperGrain().clipShape(TicketShape()))
+      .clipShape(TicketShape())
+      .overlay(TicketShape().stroke(selected ? Ink.routes[0] : Color.clear, lineWidth: 1.5))
+      .shadow(color: Ink.navyDeep.opacity(selected ? 0.35 : 0.15), radius: 10, y: 6)
+    }
+    .accessibilityLabel("\(city.title), best \(desk.best(city))")
+    .accessibilityAddTraits(selected ? .isSelected : [])
   }
 
   private var demoMap: TransitSimulation {
@@ -348,14 +376,17 @@ struct AtelierView: View {
     return game
   }
 
+  // MARK: Gameplay
+
   private func gameView(_ game: TransitSimulation) -> some View {
     VStack(spacing: 0) {
-      HStack {
-        VStack(alignment: .leading, spacing: 3) {
-          eyebrow("TRANSIT ATELIER / \(game.city.number)")
+      HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 4) {
+          Eyebrow("TRANSIT ATELIER · SHEET \(game.city.number)", tone: Ink.gold)
           Text(game.city.title)
-            .font(.system(size: 25, design: .serif))
+            .font(.system(size: 24, design: .serif))
             .tracking(-0.5)
+            .foregroundStyle(Ink.paperLight)
         }
         Spacer()
         Menu {
@@ -365,73 +396,90 @@ struct AtelierView: View {
           }
           Button("Save & leave", systemImage: "square.and.arrow.up") { desk.home() }
         } label: {
-          Image(systemName: "ellipsis").frame(width: 42, height: 44)
+          Image(systemName: "ellipsis")
+            .frame(width: 42, height: 42)
+            .foregroundStyle(Ink.paper)
+            .background(Color.white.opacity(0.08), in: Circle())
         }.accessibilityLabel("Journey menu")
         if game.isOver {
           Image(systemName: game.completed ? "checkmark" : "stop.fill")
-            .frame(width: 44, height: 44)
-            .background(Ink.rule.opacity(0.35), in: Circle())
+            .font(.system(size: 15, weight: .semibold))
+            .frame(width: 42, height: 42)
+            .foregroundStyle(Ink.navy)
+            .background(Ink.paperLight, in: Circle())
             .accessibilityLabel("Journey finished")
         } else {
           Button {
-            desk.paused.toggle()
+            withAnimation(.spring(duration: 0.3)) { desk.paused.toggle() }
+            desk.feedback()
           } label: {
             Image(systemName: desk.paused ? "play.fill" : "pause.fill")
-              .font(.system(size: 17))
-              .frame(width: 44, height: 44)
-              .background(Ink.rule.opacity(0.35), in: Circle())
+              .font(.system(size: 15, weight: .semibold))
+              .frame(width: 42, height: 42)
+              .foregroundStyle(desk.paused ? Ink.paperLight : Ink.navy)
+              .background(desk.paused ? Ink.routes[0] : Ink.paperLight, in: Circle())
           }.accessibilityLabel(desk.paused ? "Resume journey" : "Pause journey")
             .disabled(game.upgradePending)
         }
-      }.padding(.horizontal, 24).padding(.top, 8)
-      HStack(alignment: .firstTextBaseline, spacing: 0) {
+      }.padding(.horizontal, 22).padding(.top, 6)
+      HStack(alignment: .lastTextBaseline, spacing: 0) {
         Text("\(game.delivered)")
-          .font(.system(size: 48, weight: .light, design: .rounded))
+          .font(.system(size: 46, weight: .regular, design: .serif))
           .monospacedDigit()
-        Text("  DELIVERED")
-          .font(.system(size: 9, weight: .semibold))
-          .tracking(1.4)
-          .foregroundStyle(Ink.muted)
+          .tracking(-1.5)
+          .foregroundStyle(Ink.paperLight)
+          .contentTransition(.numericText())
+          .animation(.snappy, value: game.delivered)
+        Eyebrow("  DELIVERED", tone: Ink.paper.opacity(0.65), size: 9)
         Spacer()
-        VStack(alignment: .trailing, spacing: 5) {
+        VStack(alignment: .trailing, spacing: 4) {
           Text(game.isOver ? elapsed(game.elapsed) : time(game.elapsed))
-            .font(.system(size: 22, weight: .light, design: .monospaced))
-          eyebrow(
-            game.isOver ? "JOURNEY TIME" : (desk.planning ? "CONNECT TO BEGIN" : "UNTIL CLOSING"))
+            .font(.system(size: 24, weight: .light, design: .monospaced))
+            .foregroundStyle(Ink.paperLight)
+          Eyebrow(
+            game.isOver ? "JOURNEY TIME" : (desk.planning ? "CONNECT TO BEGIN" : "UNTIL CLOSING"),
+            tone: Ink.paper.opacity(0.65))
         }
-      }.padding(.horizontal, 24).padding(.top, 18).padding(.bottom, 14)
+      }.padding(.horizontal, 22).padding(.top, 10).padding(.bottom, 12)
       statusRibbon(game)
-      Rectangle().fill(Ink.rule).frame(height: 1).padding(.horizontal, 24)
       ZStack(alignment: .topLeading) {
+        Ink.paper
+        PaperGrain()
         InteractiveMap(game: game, selected: desk.selectedLine, tap: desk.station)
-        HStack(spacing: 5) {
-          Circle().fill(game.isOver || desk.planning || desk.paused ? Ink.muted : Ink.routes[1])
-            .frame(
-              width: 5, height: 5)
-          Text(
+        HStack(spacing: 6) {
+          Circle()
+            .fill(game.isOver || desk.planning || desk.paused ? Ink.muted : Ink.routes[1])
+            .frame(width: 6, height: 6)
+          Eyebrow(
             game.isOver
               ? "FINISHED NETWORK"
               : (desk.planning || desk.paused || game.upgradePending
-                ? "PLANNING TABLE" : "LIVE NETWORK")
-          )
-          .font(.system(size: 9, weight: .medium))
-          .tracking(1.5)
-        }.padding(.leading, 24).padding(.top, 12).allowsHitTesting(false)
+                ? "PLANNING TABLE" : "LIVE NETWORK"))
+        }
+        .padding(.horizontal, 9).padding(.vertical, 6)
+        .background(Ink.paperLight.opacity(0.9), in: Capsule())
+        .overlay(Capsule().strokeBorder(Ink.rule, lineWidth: 0.8))
+        .padding(.leading, 14).padding(.top, 12)
+        .allowsHitTesting(false)
       }
+      .clipShape(UnevenRoundedRectangle(topLeadingRadius: 24, topTrailingRadius: 24))
+      .shadow(color: Ink.navyDeep.opacity(0.4), radius: 16, y: -4)
       HStack {
         Label("\(game.tunnels - game.usedTunnels) tunnels", systemImage: "water.waves")
         Spacer()
-        Text("\(game.waitingCount) waiting · \(game.aboardCount) aboard")
+        Text("\(game.waitingCount) waiting  ·  \(game.aboardCount) aboard")
+          .monospacedDigit()
       }
       .font(.system(size: 11, weight: .medium))
       .foregroundStyle(Ink.muted)
-      .padding(.horizontal, 24)
-      .padding(.bottom, 12)
-      Rectangle().fill(Ink.rule).frame(height: 1).padding(.horizontal, 24)
+      .padding(.horizontal, 22)
+      .padding(.vertical, 10)
+      .background(Ink.paperDeep)
       if game.isOver {
         Button("Return to results") { showNetwork = false }
           .buttonStyle(PaperButton())
-          .padding(24)
+          .padding(.horizontal, 22).padding(.vertical, 16)
+          .background(Ink.paper)
       } else {
         controlPanel(game)
       }
@@ -439,25 +487,25 @@ struct AtelierView: View {
   }
 
   private func statusRibbon(_ game: TransitSimulation) -> some View {
-    HStack(spacing: 8) {
+    HStack(spacing: 9) {
       Image(
         systemName: game.upgradePending
           ? "sparkles"
           : (desk.paused ? "pause.circle" : "point.topleft.down.to.point.bottomright.curvepath")
       )
-      .foregroundStyle(Ink.routes[1])
+      .font(.system(size: 12))
+      .foregroundStyle(game.upgradePending ? Ink.gold : Ink.paper.opacity(0.8))
       if game.isOver {
         Text(
           game.completed
             ? "Closing bell · a city connected"
             : "Overcrowding · station \(String(format: "%02d", (game.failedStation?.id ?? 0) + 1))")
         Spacer()
-        Button("Results") { showNetwork = false }.fontWeight(.semibold)
+        ribbonAction("Results") { showNetwork = false }
       } else if game.upgradePending {
         Text("Investment ready · time paused")
         Spacer()
-        Button("Review") { showInvestment = true }.fontWeight(.semibold)
-          .frame(minWidth: 52, minHeight: 44)
+        ribbonAction("Review") { showInvestment = true }
       } else if desk.paused {
         Text("Time paused. Your map is free to edit.")
         Spacer()
@@ -469,80 +517,106 @@ struct AtelierView: View {
         Spacer()
       }
     }
-    .font(.system(size: 11))
-    .padding(.horizontal, 24)
-    .frame(height: 42)
-    .background(Ink.rule.opacity(0.16))
+    .font(.system(size: 12, design: .serif).italic())
+    .foregroundStyle(Ink.paper.opacity(0.9))
+    .padding(.horizontal, 22)
+    .frame(height: 44)
+    .background(Color.white.opacity(game.upgradePending ? 0.12 : 0.06))
+  }
+
+  private func ribbonAction(_ title: String, action: @escaping () -> Void) -> some View {
+    Button(action: action) {
+      Text(title)
+        .font(.system(size: 11, weight: .bold))
+        .tracking(0.5)
+        .foregroundStyle(Ink.navy)
+        .padding(.horizontal, 12)
+        .frame(height: 28)
+        .background(Ink.gold, in: Capsule())
+    }
+    .frame(minWidth: 52, minHeight: 44)
   }
 
   private func controlPanel(_ game: TransitSimulation) -> some View {
-    VStack(alignment: .leading, spacing: 12) {
+    VStack(alignment: .leading, spacing: 10) {
       HStack {
-        eyebrow("YOUR LINES")
+        Eyebrow("YOUR LINES")
         Spacer()
         Button {
           desk.undo()
         } label: {
           Label("Undo", systemImage: "arrow.uturn.backward")
+            .padding(.horizontal, 10)
+            .frame(height: 30)
+            .background(Ink.paperDeep, in: Capsule())
         }
         .disabled(game.routes[desk.selectedLine].stops.isEmpty)
         Button {
           confirmClear = true
         } label: {
-          Image(systemName: "eraser").frame(width: 38, height: 36)
+          Image(systemName: "eraser").frame(width: 38, height: 30)
+            .background(Ink.paperDeep, in: Capsule())
         }.disabled(game.routes[desk.selectedLine].stops.isEmpty)
           .accessibilityLabel("Redraw selected line")
-      }.font(.system(size: 11, weight: .medium)).frame(height: 30)
-      HStack(spacing: 8) {
+      }.font(.system(size: 11, weight: .semibold)).frame(height: 30)
+      HStack(spacing: 10) {
         ForEach(game.routes) { route in
+          let active = desk.selectedLine == route.id
           Button {
-            desk.selectedLine = route.id
+            withAnimation(.spring(duration: 0.3)) { desk.selectedLine = route.id }
             desk.feedback()
           } label: {
-            HStack(spacing: 8) {
-              Text("\(route.id + 1)").font(.system(size: 14, weight: .bold, design: .rounded))
-              Image(systemName: "tram.fill").font(.system(size: 12))
-              Text("\(route.capacity)").font(.system(size: 11, design: .monospaced))
+            HStack(spacing: 7) {
+              Roundel(number: route.id + 1, color: Ink.routes[route.id], filled: active, size: 26)
+              Text("\(route.capacity)")
+                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                .foregroundStyle(active ? Ink.routes[route.id] : Ink.muted)
             }
-            .frame(maxWidth: .infinity, minHeight: 45)
-            .background(
-              desk.selectedLine == route.id
-                ? Ink.routes[route.id] : Ink.routes[route.id].opacity(0.10)
+            .frame(maxWidth: .infinity, minHeight: 46)
+            .background(active ? Ink.paperLight : Ink.paper.opacity(0.5))
+            .clipShape(RoundedRectangle(cornerRadius: 14))
+            .overlay(
+              RoundedRectangle(cornerRadius: 14)
+                .strokeBorder(active ? Ink.routes[route.id] : Ink.rule, lineWidth: active ? 1.5 : 1)
             )
-            .foregroundStyle(desk.selectedLine == route.id ? Ink.paper : Ink.routes[route.id])
-            .clipShape(RoundedRectangle(cornerRadius: 13))
+            .shadow(color: Ink.navyDeep.opacity(active ? 0.14 : 0), radius: 6, y: 3)
           }.accessibilityLabel("Select line \(route.id + 1), \(route.capacity) seats")
         }
         Button {
-          desk.speed = desk.speed == 1 ? 2 : 1
+          withAnimation(.snappy) { desk.speed = desk.speed == 1 ? 2 : 1 }
         } label: {
-          Text("\(desk.speed)×")
-            .font(.system(size: 14, weight: .semibold, design: .monospaced))
-            .frame(width: 48, height: 45)
-            .background(Ink.rule.opacity(0.3), in: RoundedRectangle(cornerRadius: 13))
+          HStack(spacing: 2) {
+            Image(systemName: desk.speed == 2 ? "forward.fill" : "play.fill")
+              .font(.system(size: 8))
+            Text("\(desk.speed)×")
+              .font(.system(size: 13, weight: .bold, design: .monospaced))
+          }
+          .frame(width: 54, height: 46)
+          .foregroundStyle(desk.speed == 2 ? Ink.paperLight : Ink.navy)
+          .background(
+            desk.speed == 2 ? Ink.navy : Ink.paperDeep, in: RoundedRectangle(cornerRadius: 14))
         }.accessibilityLabel("Speed \(desk.speed) times")
       }
       Text(game.notice)
-        .font(.system(size: 12))
+        .font(.system(size: 12, design: .serif).italic())
         .foregroundStyle(Ink.muted)
         .lineLimit(2)
         .frame(height: 32, alignment: .topLeading)
         .accessibilityIdentifier("network-notice")
     }
-    .padding(.horizontal, 24)
+    .padding(.horizontal, 22)
     .padding(.top, 10)
-    .padding(.bottom, 8)
+    .padding(.bottom, 6)
+    .background(Ink.paper)
   }
 
-  private func modal<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
-    PaperModal(dismiss: desk.showGuide ? { desk.showGuide = false } : nil, content: content)
-  }
+  // MARK: Guide
 
   private var guide: some View {
     VStack(alignment: .leading, spacing: 20) {
-      eyebrow("THE ART OF GETTING THERE")
+      Eyebrow("THE ART OF GETTING THERE", tone: Ink.routes[0])
       Text("Every shape\nhas a destination.")
-        .font(.system(size: 34, design: .serif))
+        .font(.system(size: 32, design: .serif))
         .tracking(-1)
       HStack(spacing: 14) {
         VStack(spacing: 7) {
@@ -551,36 +625,37 @@ struct AtelierView: View {
               width: 23, height: 23)
             StationGlyph(kind: .triangle).fill(Ink.navy).frame(width: 8, height: 8)
           }
-          Text("waiting").font(.system(size: 10))
+          Eyebrow("WAITING", size: 7)
         }
-        Rectangle().fill(Ink.routes[0]).frame(height: 3)
+        Rectangle().fill(Ink.routes[0]).frame(height: 4).clipShape(Capsule())
         Image(systemName: "tram.fill").foregroundStyle(Ink.routes[0])
-        Rectangle().fill(Ink.routes[0]).frame(height: 3)
+        Rectangle().fill(Ink.routes[0]).frame(height: 4).clipShape(Capsule())
         VStack(spacing: 7) {
           StationGlyph(kind: .triangle).stroke(Ink.navy, lineWidth: 2.5).frame(
             width: 25, height: 23)
-          Text("home").font(.system(size: 10))
+          Eyebrow("HOME", size: 7)
         }
       }
-      .padding(15)
-      .background(Ink.rule.opacity(0.22), in: RoundedRectangle(cornerRadius: 12))
+      .padding(16)
+      .background(Ink.paperLight, in: RoundedRectangle(cornerRadius: 14))
+      .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(Ink.rule, lineWidth: 1))
       guideRow(
-        "01", title: "Draw a connection",
+        1, title: "Draw a connection",
         detail:
           "Choose a colored line. Tap stations in order, or drag from one station to the next. Trains start automatically."
       )
       guideRow(
-        "02", title: "Read your passengers",
+        2, title: "Read your passengers",
         detail:
           "Tiny shapes beside stations are waiting passengers. Trains take them to a matching station, transferring between connected lines."
       )
       guideRow(
-        "03", title: "Give the city room",
+        3, title: "Give the city room",
         detail:
           "Add new stations to your routes. River crossings use tunnels. At 12 waiting, a red ring fills: relieve it before 24 seconds pass."
       )
       guideRow(
-        "04", title: "Make it to closing",
+        4, title: "Make it to closing",
         detail:
           "Choose an upgrade every 50 seconds. Deliver as many as possible in five minutes. Pause to plan; Undo or the eraser edits a line."
       )
@@ -588,10 +663,9 @@ struct AtelierView: View {
     }
   }
 
-  private func guideRow(_ number: String, title: String, detail: String) -> some View {
+  private func guideRow(_ number: Int, title: String, detail: String) -> some View {
     HStack(alignment: .top, spacing: 14) {
-      Text(number).font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.routes[0])
-        .padding(.top, 3)
+      Roundel(number: number, color: Ink.routes[(number - 1) % 4], size: 24).padding(.top, 1)
       VStack(alignment: .leading, spacing: 5) {
         Text(title).font(.system(size: 15, weight: .semibold))
         Text(detail).font(.system(size: 12)).foregroundStyle(Ink.muted).fixedSize(
@@ -600,33 +674,42 @@ struct AtelierView: View {
     }
   }
 
+  // MARK: Investment
+
   private func upgrade(_ game: TransitSimulation) -> some View {
-    VStack(alignment: .leading, spacing: 17) {
-      eyebrow("CITY INVESTMENT / \(Int(game.elapsed / 50))")
+    VStack(alignment: .leading, spacing: 16) {
+      Eyebrow("INVESTMENT ROUND \(Int(game.elapsed / 50))", tone: Ink.routes[0])
       Text("A little room\nto grow.")
-        .font(.system(size: 38, design: .serif)).tracking(-1)
+        .font(.system(size: 36, design: .serif)).tracking(-1)
       Text("Choose one improvement. The network is paused.")
-        .font(.system(size: 12)).foregroundStyle(Ink.muted)
-      ForEach(Upgrade.allCases.filter { $0 != .line || game.canAddLine }, id: \.self) { item in
+        .font(.system(size: 13, design: .serif).italic()).foregroundStyle(Ink.muted)
+      ForEach(
+        Array(Upgrade.allCases.filter { $0 != .line || game.canAddLine }.enumerated()),
+        id: \.element
+      ) { index, item in
         Button {
           desk.choose(item)
           showInvestment = false
         } label: {
           HStack(spacing: 16) {
             Image(systemName: item.symbol)
-              .font(.system(size: 22, weight: .light))
-              .frame(width: 38)
-              .foregroundStyle(Ink.routes[1])
+              .font(.system(size: 18, weight: .medium))
+              .frame(width: 44, height: 44)
+              .foregroundStyle(Ink.paperLight)
+              .background(Ink.routes[(index + 1) % 4], in: Circle())
             VStack(alignment: .leading, spacing: 4) {
               Text(item.title).font(.system(size: 16, weight: .semibold))
-              Text(item.detail).font(.system(size: 11)).foregroundStyle(Ink.muted)
+              Text(item.detail).font(.system(size: 11, design: .monospaced)).foregroundStyle(
+                Ink.muted)
             }
             Spacer()
-            Image(systemName: "arrow.up.right").font(.system(size: 12))
+            Image(systemName: "arrow.up.right").font(.system(size: 12, weight: .semibold))
+              .foregroundStyle(Ink.muted)
           }
-          .padding(16)
-          .background(Color.white.opacity(0.6), in: RoundedRectangle(cornerRadius: 15))
-          .overlay(RoundedRectangle(cornerRadius: 15).stroke(Ink.rule, lineWidth: 1))
+          .padding(14)
+          .background(Ink.paperLight, in: RoundedRectangle(cornerRadius: 16))
+          .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(Ink.rule, lineWidth: 1))
+          .shadow(color: Ink.navyDeep.opacity(0.08), radius: 8, y: 4)
         }
       }
       Button("Back to the network") { showInvestment = false }
@@ -635,27 +718,45 @@ struct AtelierView: View {
     }
   }
 
+  // MARK: Results
+
   private func result(_ game: TransitSimulation) -> some View {
     VStack(alignment: .leading, spacing: 16) {
-      HStack {
-        eyebrow(game.completed ? "THE LAST TRAIN HOME" : "TIME TO REDRAW")
-        Spacer()
-        Image(systemName: game.completed ? "sun.horizon" : "arrow.triangle.branch")
-          .foregroundStyle(Ink.routes[0])
+      ZStack(alignment: .topTrailing) {
+        MapDrawing(game: game, selected: 0, decorative: true)
+          .frame(height: 118)
+          .background(Ink.paper)
+          .clipShape(RoundedRectangle(cornerRadius: 14))
+          .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(Ink.rule, lineWidth: 1))
+          .accessibilityHidden(true)
+        Image(systemName: game.completed ? "sun.horizon.fill" : "exclamationmark.triangle.fill")
+          .font(.system(size: 12))
+          .foregroundStyle(game.completed ? Ink.gold : Ink.routes[0])
+          .padding(7)
+          .background(Ink.paperLight, in: Circle())
+          .padding(8)
       }
+      Eyebrow(game.completed ? "THE LAST TRAIN HOME" : "TIME TO REDRAW", tone: Ink.routes[0])
       Text(game.completed ? "A city in motion." : "Every city\nis a lesson.")
-        .font(.system(size: 38, design: .serif)).tracking(-1)
+        .font(.system(size: 36, design: .serif)).tracking(-1)
       Text(
         game.completed
           ? "Five minutes. Countless connections."
-          : "Station \(String(format: "%02d", (game.failedStation?.id ?? 0) + 1)) (\(game.failedStation?.kind.name ?? "station")) became overcrowded.\nTry shorter lines and more connections."
+          : "Station \(String(format: "%02d", (game.failedStation?.id ?? 0) + 1)) (\(game.failedStation?.kind.name ?? "station")) became overcrowded. Try shorter lines and more connections."
       )
-      .font(.system(size: 12)).foregroundStyle(Ink.muted)
-      Rectangle().fill(Ink.rule).frame(height: 1).padding(.top, 5)
-      HStack(alignment: .firstTextBaseline) {
-        Text("\(game.delivered)").font(.system(size: 76, weight: .light, design: .rounded))
+      .font(.system(size: 13, design: .serif).italic()).foregroundStyle(Ink.muted)
+      .fixedSize(horizontal: false, vertical: true)
+      Line().stroke(Ink.rule, style: StrokeStyle(lineWidth: 1, dash: [3, 3])).frame(height: 1)
+      HStack(alignment: .firstTextBaseline, spacing: 12) {
+        Text("\(game.delivered)")
+          .font(.system(size: 72, design: .serif))
           .tracking(-3)
-        eyebrow("PASSENGERS\nDELIVERED")
+        VStack(alignment: .leading, spacing: 4) {
+          Eyebrow("PASSENGERS\nDELIVERED")
+          if game.delivered >= desk.best(game.city), game.delivered > 0 {
+            Eyebrow("NEW LOCAL BEST", tone: Ink.gold, size: 7)
+          }
+        }
       }
       HStack {
         resultStat("LOCAL BEST", value: "\(desk.best(game.city))")
@@ -664,7 +765,7 @@ struct AtelierView: View {
         Spacer()
         resultStat("TIME", value: elapsed(game.elapsed))
       }
-      Rectangle().fill(Ink.rule).frame(height: 1).padding(.bottom, 5)
+      Line().stroke(Ink.rule, style: StrokeStyle(lineWidth: 1, dash: [3, 3])).frame(height: 1)
       Button {
         showNetwork = true
       } label: {
@@ -675,7 +776,7 @@ struct AtelierView: View {
           Image(systemName: "arrow.up.right")
         }.font(.system(size: 13, weight: .medium)).frame(minHeight: 44)
       }
-      Button("Draw another journey") { desk.start() }.buttonStyle(PaperButton())
+      Button("Draw another journey") { desk.start() }.buttonStyle(PaperButton(tone: .coral))
       HStack {
         Button("Choose city") { desk.home() }
         Spacer()
@@ -703,13 +804,9 @@ struct AtelierView: View {
 
   private func resultStat(_ label: String, value: String) -> some View {
     VStack(alignment: .leading, spacing: 7) {
-      eyebrow(label)
-      Text(value).font(.system(size: 13, weight: .medium, design: .monospaced))
+      Eyebrow(label)
+      Text(value).font(.system(size: 13, weight: .semibold, design: .monospaced))
     }
-  }
-
-  private func eyebrow(_ text: String) -> some View {
-    Text(text).font(.system(size: 8, weight: .semibold)).tracking(1.3).foregroundStyle(Ink.muted)
   }
 
   private func time(_ seconds: Double) -> String {
@@ -719,5 +816,14 @@ struct AtelierView: View {
 
   private func elapsed(_ seconds: Double) -> String {
     String(format: "%d:%02d", Int(seconds) / 60, Int(seconds) % 60)
+  }
+}
+
+struct Line: Shape {
+  func path(in rect: CGRect) -> Path {
+    var path = Path()
+    path.move(to: CGPoint(x: rect.minX, y: rect.midY))
+    path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+    return path
   }
 }

@@ -18,39 +18,79 @@ struct JourneyExport: Transferable {
   }
 }
 
+/// Shareable result card: a navy masthead over a printed map sheet with a postage-style score stamp.
 struct JourneyPostcard: View {
   let game: TransitSimulation
   let best: Int
 
   var body: some View {
-    VStack(alignment: .leading, spacing: 12) {
-      HStack {
-        Text("TRANSIT ATELIER")
-        Spacer()
-        Text("CITY / \(game.city.number)")
+    VStack(spacing: 0) {
+      VStack(alignment: .leading, spacing: 10) {
+        HStack {
+          Eyebrow("TRANSIT ATELIER", tone: Ink.gold, size: 10)
+          Spacer()
+          Eyebrow("SHEET \(game.city.number)", tone: Ink.paper.opacity(0.7), size: 10)
+        }
+        HStack(alignment: .lastTextBaseline) {
+          Text(game.city.title)
+            .font(.system(size: 38, design: .serif))
+            .tracking(-1)
+            .foregroundStyle(Ink.paperLight)
+          Spacer()
+          CompassRose(color: Ink.paperLight).frame(width: 26, height: 26)
+        }
+        Text(game.city.subtitle)
+          .font(.system(size: 14, design: .serif).italic())
+          .foregroundStyle(Ink.paper.opacity(0.75))
       }
-      .font(.system(size: 10, weight: .semibold))
-      .tracking(2)
-      .foregroundStyle(Ink.muted)
-      Text(game.city.title).font(.system(size: 34, design: .serif))
-      MapDrawing(game: game, selected: 0)
-        .frame(height: 340)
-        .clipped()
+      .padding(28)
+      .background(Ink.header)
+      ZStack(alignment: .topTrailing) {
+        MapDrawing(game: game, selected: 0)
+          .frame(height: 360)
+          .clipped()
+        stamp.padding(14)
+      }
+      .background(Ink.paper)
+      .overlay(PaperGrain())
       Rectangle().fill(Ink.rule).frame(height: 1)
-      HStack(alignment: .firstTextBaseline) {
-        Text("\(game.delivered)").font(.system(size: 64, weight: .light, design: .rounded))
-        Text("passengers delivered").font(.system(size: 13))
+      HStack(alignment: .firstTextBaseline, spacing: 14) {
+        Text("\(game.delivered)")
+          .font(.system(size: 62, weight: .regular, design: .serif))
+          .tracking(-2)
+        VStack(alignment: .leading, spacing: 6) {
+          Eyebrow("PASSENGERS DELIVERED", size: 9)
+          Text(
+            "Local best \(best)  ·  \(game.stations.count) stations  ·  \(Int(game.elapsed / 60))m \(Int(game.elapsed) % 60)s"
+          )
+          .font(.system(size: 11, design: .monospaced))
+          .foregroundStyle(Ink.muted)
+        }
+        Spacer()
       }
-      Text(
-        "Local best \(best)  ·  \(game.stations.count) stations  ·  \(Int(game.elapsed / 60))m \(Int(game.elapsed) % 60)s"
-      )
-      .font(.system(size: 11, design: .monospaced))
-      .foregroundStyle(Ink.muted)
-      Text("A small study in connection.").font(.system(size: 16, design: .serif))
+      .padding(.horizontal, 28)
+      .padding(.vertical, 20)
+      .background(Ink.paperLight)
     }
-    .padding(28)
-    .frame(width: 420)
+    .frame(width: 440)
     .foregroundStyle(Ink.navy)
     .background(Ink.paper)
+  }
+
+  private var stamp: some View {
+    VStack(spacing: 2) {
+      Eyebrow(game.completed ? "CLOSING BELL" : "OVERCROWDED", tone: Ink.routes[0], size: 7)
+      Text(String(format: "%d:%02d", Int(game.elapsed) / 60, Int(game.elapsed) % 60))
+        .font(.system(size: 15, weight: .semibold, design: .monospaced))
+      Eyebrow("JOURNEY", tone: Ink.routes[0], size: 7)
+    }
+    .padding(.horizontal, 10)
+    .padding(.vertical, 8)
+    .background(Ink.paperLight.opacity(0.92))
+    .overlay(
+      RoundedRectangle(cornerRadius: 6)
+        .stroke(Ink.routes[0], style: StrokeStyle(lineWidth: 1.4, dash: [3, 3]))
+    )
+    .rotationEffect(.degrees(-6))
   }
 }

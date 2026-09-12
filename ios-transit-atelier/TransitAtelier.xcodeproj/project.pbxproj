@@ -12,6 +12,7 @@
 		5B9E010D0DF6F36A67302C0F /* PaperModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CA69F3AFCBD5DDC296999B /* PaperModal.swift */; };
 		81551C0A124F100FAAD321AF /* TransitAtelierApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C125C7AAB744786E033FCC /* TransitAtelierApp.swift */; };
 		97D4B24545540207DE78C11A /* JourneyPostcard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F772D0A3E199641C262480 /* JourneyPostcard.swift */; };
+		A051EA89BC5F89B7E3F85079 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16EC2A72FD2C9D0DBA8024D /* Theme.swift */; };
 		D8D135A1A26CD56164D11478 /* TransitSimulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D2B041DFF290A15194337F /* TransitSimulation.swift */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 		75C125C7AAB744786E033FCC /* TransitAtelierApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitAtelierApp.swift; sourceTree = "<group>"; };
 		BB5823367743AA9F264D0268 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BB7BDD4E180BBE461BB34378 /* TransitAtelier.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TransitAtelier.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E16EC2A72FD2C9D0DBA8024D /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		F77C53C65C811AF380446C97 /* MapDrawing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDrawing.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,6 +61,7 @@
 				50F772D0A3E199641C262480 /* JourneyPostcard.swift */,
 				F77C53C65C811AF380446C97 /* MapDrawing.swift */,
 				71CA69F3AFCBD5DDC296999B /* PaperModal.swift */,
+				E16EC2A72FD2C9D0DBA8024D /* Theme.swift */,
 				75C125C7AAB744786E033FCC /* TransitAtelierApp.swift */,
 			);
 			name = App;
@@ -145,6 +148,7 @@
 				97D4B24545540207DE78C11A /* JourneyPostcard.swift in Sources */,
 				0E38352EB6E01B34FC07290A /* MapDrawing.swift in Sources */,
 				5B9E010D0DF6F36A67302C0F /* PaperModal.swift in Sources */,
+				A051EA89BC5F89B7E3F85079 /* Theme.swift in Sources */,
 				81551C0A124F100FAAD321AF /* TransitAtelierApp.swift in Sources */,
 				D8D135A1A26CD56164D11478 /* TransitSimulation.swift in Sources */,
 			);
