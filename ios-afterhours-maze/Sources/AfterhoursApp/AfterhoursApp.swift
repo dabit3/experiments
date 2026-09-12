@@ -292,7 +292,8 @@ struct ArcadeView: View {
           VStack(spacing: 8) {
             micro(
               arcade.game.phase == .lifeLost
-                ? "\(arcade.game.lives) LIVES LEFT" : "THE NIGHT IS YOURS",
+                ? "\(arcade.game.lives) \(arcade.game.lives == 1 ? "LIFE" : "LIVES") LEFT"
+                : "THE NIGHT IS YOURS",
               color: Palette.pearl)
             Text(arcade.game.phase == .lifeLost ? "Try another path" : "Ready, comet?")
               .font(.system(size: 26, weight: .bold, design: .rounded))
@@ -322,11 +323,17 @@ struct ArcadeView: View {
       VStack(spacing: 8) {
         HStack(spacing: 8) {
           Image(systemName: arcade.game.frightened > 0 ? "sparkles" : "circle.dotted")
-          Text(arcade.game.frightened > 0 ? "CHASE THEM" : "\(arcade.game.remaining) LIGHTS LEFT")
-            .tracking(1)
+          Text(
+            arcade.game.frightened > 0
+              ? "CHASE · \(Int(ceil(arcade.game.frightened)))s"
+              : "\(arcade.game.remaining) LIGHTS LEFT"
+          )
+          .tracking(1)
           Spacer()
           Text(
-            arcade.game.frightened > 0 ? "\(Int(ceil(arcade.game.frightened)))s" : "10 pts / light"
+            arcade.game.bonusTime > 0
+              ? "+\(arcade.game.lastBonus) · \(arcade.game.combo)×"
+              : arcade.game.frightened > 0 ? "CATCH RIVALS" : "10 pts / light"
           )
           .monospacedDigit()
         }

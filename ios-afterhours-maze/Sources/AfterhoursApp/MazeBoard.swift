@@ -99,21 +99,26 @@ struct MazeBoard: View {
       context.draw(
         Text("✦").font(.system(size: cell * 0.7)).foregroundStyle(Palette.blue.opacity(0.25)),
         at: home)
-      for rival in game.rivals {
+      for rival in game.hitTime > 0.4 ? game.impactRivals : game.rivals {
         drawRival(context, rival, cell: cell)
       }
-      let position = game.player.position(width: game.maze.width)
+      let visiblePlayer = game.hitTime > 0.4 ? (game.lastHit ?? game.player) : game.player
+      let position = visiblePlayer.position(width: game.maze.width)
       var point = CGPoint(x: (position.x + 0.5) * cell, y: (position.y + 0.5) * cell)
       if point.x < 0 { point.x += size.width }
       if point.x > size.width { point.x -= size.width }
-      drawComet(context, at: point, cell: cell)
+      drawComet(context, at: point, cell: cell, runner: visiblePlayer)
       if point.x < cell {
-        drawComet(context, at: CGPoint(x: point.x + size.width, y: point.y), cell: cell)
+        drawComet(
+          context, at: CGPoint(x: point.x + size.width, y: point.y), cell: cell,
+          runner: visiblePlayer)
       }
       if point.x > size.width - cell {
-        drawComet(context, at: CGPoint(x: point.x - size.width, y: point.y), cell: cell)
+        drawComet(
+          context, at: CGPoint(x: point.x - size.width, y: point.y), cell: cell,
+          runner: visiblePlayer)
       }
-      if game.bonusTime > 0 {
+      if game.bonusTime > 1.6 {
         context.draw(
           Text("+\(game.lastBonus)").font(
             .system(size: cell * 0.7, weight: .black, design: .rounded)
@@ -152,13 +157,15 @@ struct MazeBoard: View {
     CGPoint(x: (CGFloat(tile.x) + 0.5) * cell, y: (CGFloat(tile.y) + 0.5) * cell)
   }
 
-  private func drawComet(_ context: GraphicsContext, at point: CGPoint, cell: CGFloat) {
+  private func drawComet(
+    _ context: GraphicsContext, at point: CGPoint, cell: CGFloat, runner: Runner
+  ) {
     var context = context
     context.translateBy(x: point.x, y: point.y)
-    context.rotate(by: .radians(game.player.direction.angle))
+    context.rotate(by: .radians(runner.direction.angle))
     let mouth =
-      game.player.next == nil || reducedMotion ? 0.40 : 0.20 + abs(sin(game.elapsed * 16)) * 0.50
-    if game.grace > 0 {
+      runner.next == nil || reducedMotion ? 0.40 : 0.20 + abs(sin(game.elapsed * 16)) * 0.50
+    if game.grace > 0 && game.hitTime <= 0.4 {
       context.stroke(
         Path(
           ellipseIn: CGRect(x: -cell * 0.55, y: -cell * 0.55, width: cell * 1.1, height: cell * 1.1)

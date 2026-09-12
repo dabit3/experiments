@@ -49,6 +49,7 @@ public struct Game: Sendable {
   public internal(set) var bonusTime = 0.0
   public internal(set) var hitTime = 0.0
   public internal(set) var lastHit: Runner?
+  public internal(set) var impactRivals: [Rival] = []
   private var random: UInt64
   private var beforePause: GamePhase = .playing
   public var scatter: Bool { elapsed.truncatingRemainder(dividingBy: 27) < 7 }
@@ -249,12 +250,13 @@ public struct Game: Sendable {
         combo += 1
         lastBonus = 200 * (1 << min(combo - 1, 3))
         score += lastBonus
-        bonusTime = 1.2
+        bonusTime = 2.8
         rivals[index].returning = true
         events.append(.rival(lastBonus))
       } else if grace <= 0 {
         lives -= 1
         lastHit = player
+        impactRivals = rivals
         hitTime = 1.1
         events.append(.hit)
         if lives == 0 {
