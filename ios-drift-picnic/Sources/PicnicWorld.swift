@@ -349,6 +349,8 @@ final class PicnicWorld {
     start.addChildNode(grid.flattenedClone())
     let gantry = SCNNode()
     gantry.position.z = 11
+    let signage = SCNNode()
+    signage.position.z = 11
     for x in [-7.9, 7.9] {
       let pillar = Self.node(SCNCylinder(radius: 0.28, height: 7.4), Palette.cream)
       pillar.position = SCNVector3(x, 3.7, 0)
@@ -382,7 +384,7 @@ final class PicnicWorld {
         (bounds.min.x + bounds.max.x) / 2, (bounds.min.y + bounds.max.y) / 2, 0)
       label.position = SCNVector3(0, 6.6, side * 0.18)
       label.eulerAngles.y = side < 0 ? .pi : 0
-      gantry.addChildNode(label)
+      signage.addChildNode(label)
     }
     for i in 0..<14 {
       let flag = Self.node(
@@ -394,6 +396,7 @@ final class PicnicWorld {
       gantry.addChildNode(flag)
     }
     start.addChildNode(gantry.flattenedClone())
+    start.addChildNode(signage)
     scene.rootNode.addChildNode(start)
   }
 
@@ -904,11 +907,11 @@ final class PicnicWorld {
     number.font = UIFont(name: "Georgia-BoldItalic", size: 0.3)
     let numberNode = node(number, Palette.green)
     let numberBounds = number.boundingBox
-    numberNode.pivot = SCNMatrix4MakeTranslation(
+    let numberCentre = SCNVector3(
       (numberBounds.min.x + numberBounds.max.x) / 2, (numberBounds.min.y + numberBounds.max.y) / 2,
       0)
     numberNode.eulerAngles.x = -.pi / 2
-    numberNode.position = SCNVector3(0, 0.965, 0.42)
+    numberNode.position = SCNVector3(-numberCentre.x, 0.965, 0.42 + numberCentre.y)
     body.addChildNode(numberNode)
     for x in [-0.74, 0.74] {
       let pod = glossy(SCNBox(width: 0.3, height: 0.3, length: 1.05, chamferRadius: 0.12), dark)
