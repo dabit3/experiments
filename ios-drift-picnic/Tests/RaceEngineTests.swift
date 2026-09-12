@@ -67,6 +67,30 @@ final class RaceEngineTests: XCTestCase {
     XCTAssertEqual(race.driftBoosts, 1)
   }
 
+  func testSteeringMatchesChaseCameraDirectionsAroundCircuit() {
+    for fraction in [0.0, 0.25, 0.5, 0.75] {
+      var centered = RaceEngine(mode: .trial)
+      let pose = centered.circuit.at(centered.circuit.length * fraction)
+      centered.drivers[0].point = pose.point
+      centered.drivers[0].heading = pose.heading
+      centered.drivers[0].speed = 17
+      var left = centered
+      var right = centered
+      left.steering = -1
+      right.steering = 1
+      for _ in 0..<30 {
+        centered.step(1.0 / 60)
+        left.step(1.0 / 60)
+        right.step(1.0 / 60)
+      }
+      let screenRight = Point(x: -cos(pose.heading), z: sin(pose.heading))
+      let rightShift = right.player.point - centered.player.point
+      let leftShift = left.player.point - centered.player.point
+      XCTAssertGreaterThan(rightShift.x * screenRight.x + rightShift.z * screenRight.z, 1)
+      XCTAssertLessThan(leftShift.x * screenRight.x + leftShift.z * screenRight.z, -1)
+    }
+  }
+
   func testLargeTimeStepsDoNotTeleportOrSkipCheckpoints() {
     var race = RaceEngine()
     race.step(100)

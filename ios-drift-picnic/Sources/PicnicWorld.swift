@@ -393,8 +393,8 @@ final class PicnicWorld {
       let driver = race.drivers[index]
       kart.position = SCNVector3(driver.point.x, 0.06, driver.point.z)
       kart.eulerAngles.y = Float(
-        driver.heading + (index == 0 && race.drifting ? race.steering * 0.22 : 0))
-      kart.eulerAngles.z = index == 0 ? Float(-race.steering * 0.06) : 0
+        driver.heading - (index == 0 && race.drifting ? race.steering * 0.22 : 0))
+      kart.eulerAngles.z = index == 0 ? Float(race.steering * 0.06) : 0
     }
     for node in boostNodes { node.isHidden = race.player.boost <= 0 }
     for (index, node) in itemNodes.enumerated() {

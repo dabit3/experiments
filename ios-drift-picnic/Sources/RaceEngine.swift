@@ -201,7 +201,7 @@ struct RaceEngine {
       let turn: Double
       if isPlayer {
         let assist = max(-0.70, min(0.70, angleDifference(desired, driver.heading) * 1.7))
-        turn = assist + steering * (drifting ? 1.65 : 1.30)
+        turn = assist - steering * (drifting ? 1.65 : 1.30)
       } else {
         turn = max(-1.6, min(1.6, angleDifference(desired, driver.heading) * 3.2))
       }
