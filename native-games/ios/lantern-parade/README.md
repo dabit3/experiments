@@ -34,6 +34,15 @@ The app icon is original procedural art. Regenerate it with:
 `swift Scripts/GenerateIcon.swift Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png`.
 Build products and recordings are excluded from git.
 
+## Visual direction
+
+The midnight festival uses an ink-and-parchment palette, Baskerville typography,
+engraved map frames and ticket-shaped actions. The bundled home illustration is
+an original AI-generated woodblock-style image; it loads locally without a
+network request. Gameplay architecture, foliage, lanterns, routes and procession
+are drawn natively in Canvas. Result posters use the actual completed route,
+rendered on a cream paper layout for native image sharing.
+
 ## Playing
 
 - Drag from the flag along adjacent streets, or tap each neighboring junction.

@@ -1,8 +1,8 @@
 # Lantern Parade — native validation
 
 Native SwiftUI / Canvas app tested on macOS arm64, Xcode 26.6 (17F113), iOS 26.5.
-Final tested application revision: `c4c54918b92dc1c49881cfd13eaa54e18e5408e8`.
-This report was added afterward without changing application code.
+Latest tested application revision: `d394699a74f231d89e62357a9faf47bfee4b4bcb`.
+The latest report update changes documentation only.
 
 ## Build and automated checks
 
@@ -50,7 +50,7 @@ scoring, touch geometry and saved route/best-star persistence.
    drawing now takes priority over street-button taps. Both defects were
    reproduced, fixed and retested.
 
-## Final native UI verdict
+## Initial native UI verdict
 
 No failures observed in the final iteration. SE forward drag retains Amber,
 backward drag undoes once, ordinary taps and longer drags remain usable, and
@@ -64,6 +64,57 @@ shows **20 steps, 0 missteps, 1 GUIDE, two stars** with accurate advice.
 The native share sheet displays the poster thumbnail; no external recipient was
 used. Pro Max score persists after force-quit. The app is left running on its
 Pro Max home screen.
+
+## Additional visual redesign following user review
+
+The user approved the testing but requested a more distinctive, finished visual
+identity. Revision `31d6979` replaced the procedural home vignette with an original
+bundled AI-generated woodblock-style illustration. The redesign introduces
+Baskerville roman/italic display type, a restrained petrol/cream palette,
+ticket-shaped actions, fine engraved map frames and quieter navigation.
+Native town art now has curved tiled roofs, timber facades, lit windows, hanging
+banners, pines, clustered blossoms and ponds. Route lighting is softer, lantern
+collection uses physical lantern illustrations, and result/share layouts become
+cream collectible prints.
+
+### Rendered review and correction
+
+The first redesign review on Pro Max and SE found a cropped moon on compact
+home, undersized secondary labels, faint atlas stars, excess poster whitespace,
+and compact replay below the initial result viewport. Inspection also showed
+square clipping around small lantern glows. Revision `d394699` corrected image
+alignment and compact proportions, enlarged metadata and star marks, contained
+the glow, tightened compact results and reduced poster height while enlarging
+its secondary typography.
+
+### Latest native UI verdict
+
+No failures were observed in the scoped final test on SE3 and iPhone 17 Pro Max.
+The full moon and bridge, wordmark, collection labels, compact result actions,
+poster typography and all four poster borders were inspected in rendered
+screenshots. Pro Max Settings and atlas fit; empty stars are more visible.
+
+- SE mixed taps and held drag: First Light completed in 12 steps, zero missteps
+  and zero guides, with three stars.
+- Replay, one-step Undo and confirmed Clear passed.
+- Pro Max 6×6 held drag retained 18 steps/all colors after release; completion
+  produced 20 steps, zero missteps, one guide and two stars with accurate advice.
+- Guide expired, re-enabled its button and restored the current objective.
+- Pause → home → Continue restored the two-step Amber route and welcome notice.
+- Native sharing showed the actual cream poster thumbnail and title; dismissal
+  returned correctly. No external recipient was used.
+
+The final original edited recording is `lantern-final-d394699-edited.mp4`, with
+native setup, test-start and assertion annotations. The detailed runtime report
+and full-screen compact/large screenshots are attached to the session.
+The app is left running on the Pro Max home screen.
+
+Debug and Release builds, strict formatting and all nine XCTest tests passed
+again on this application revision using the commands above. No PR CI checks
+were reported. This final redesign run did not repeat force-quit persistence,
+compact 6×6, Daily Light or exhaustive recovery/all-town coverage. Tutorial fit
+was verified at the immediately preceding redesign checkpoint; deeper
+persistence/recovery evidence remains in the initial three passes.
 
 ## Evidence and limits
 
