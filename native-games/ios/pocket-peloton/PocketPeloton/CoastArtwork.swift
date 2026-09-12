@@ -34,11 +34,12 @@ struct CoastArtwork: View {
       func laneX(_ lane: Int, _ y: Double) -> Double {
         center(y) + Double(lane - 1) * roadWidth(y) * 0.29
       }
-      func band(_ left: Double, _ right: Double) -> Path {
+      func band(_ left: Double, _ right: Double, shoreline: Bool = false) -> Path {
         var p = Path()
         for step in 0...60 {
           let y = h * Double(step) / 60
-          let pt = CGPoint(x: center(y) + roadWidth(y) * left, y: y)
+          let coast = shoreline ? sin(world(y) / 7) * 0.025 + sin(world(y) / 3) * 0.012 : 0
+          let pt = CGPoint(x: center(y) + roadWidth(y) * (left + coast), y: y)
           if step == 0 { p.move(to: pt) } else { p.addLine(to: pt) }
         }
         for step in (0...60).reversed() {
@@ -53,11 +54,11 @@ struct CoastArtwork: View {
         with: .linearGradient(
           Gradient(colors: [Ink.sea, Ink.lightSea]),
           startPoint: .zero, endPoint: CGPoint(x: w, y: h)))
-      context.fill(band(-0.88, 3), with: .color(Ink.lightSea.opacity(0.42)))
-      context.fill(band(-0.76, 3), with: .color(Ink.lightSea))
-      context.fill(band(-0.70, 3), with: .color(Ink.cream.opacity(0.8)))
-      context.fill(band(-0.66, 3), with: .color(Ink.stone))
-      context.fill(band(-0.59, 3), with: .color(Ink.land))
+      context.fill(band(-0.88, 3, shoreline: true), with: .color(Ink.lightSea.opacity(0.42)))
+      context.fill(band(-0.76, 3, shoreline: true), with: .color(Ink.lightSea))
+      context.fill(band(-0.70, 3, shoreline: true), with: .color(Ink.cream.opacity(0.8)))
+      context.fill(band(-0.66, 3, shoreline: true), with: .color(Ink.stone))
+      context.fill(band(-0.59, 3, shoreline: true), with: .color(Ink.land))
       context.fill(band(-0.57, 0.57), with: .color(Ink.cream))
       context.fill(band(-0.52, 0.54), with: .color(Ink.navy.opacity(0.28)))
       context.fill(band(-0.5, 0.5), with: .color(Ink.road))
@@ -87,14 +88,20 @@ struct CoastArtwork: View {
               line, with: .color(Ink.butter.opacity(0.8)),
               style: StrokeStyle(lineWidth: 2, lineCap: .round))
           }
-          let sceneryY = y + 25
+          let variation = sin(Double(marker) * 2.39)
+          let sceneryY = y + 25 + variation * 18
           let shoreX = center(sceneryY) - roadWidth(sceneryY) * 0.84
           if marker.isMultiple(of: 7) {
             boat(&context, at: CGPoint(x: max(12, shoreX - 26), y: sceneryY), angle: -0.3)
           }
-          rock(
-            &context, at: CGPoint(x: center(y) - roadWidth(y) * 0.68, y: y + 42),
-            variant: abs(marker) % 3)
+          if !marker.isMultiple(of: 3) {
+            rock(
+              &context,
+              at: CGPoint(
+                x: center(sceneryY) - roadWidth(sceneryY) * (0.70 + variation * 0.025),
+                y: sceneryY + variation * 13),
+              variant: abs(marker) % 3)
+          }
           for side in [-0.535, 0.535] {
             let x = center(y) + roadWidth(y) * side
             context.fill(
@@ -104,12 +111,16 @@ struct CoastArtwork: View {
               Path(roundedRect: CGRect(x: x - 2, y: y - 8, width: 4, height: 9), cornerRadius: 1),
               with: .color(Ink.cream))
           }
-          let right = center(sceneryY) + roadWidth(sceneryY) * 0.67
+          let right = center(sceneryY) + roadWidth(sceneryY) * (0.7 + variation * 0.08)
           if marker.isMultiple(of: 4) {
             house(&context, at: CGPoint(x: right + 8, y: sceneryY))
             tree(&context, at: CGPoint(x: right + 47, y: sceneryY + 24))
           } else {
-            tree(&context, at: CGPoint(x: right + Double(abs(marker) % 2) * 21, y: sceneryY))
+            var grove = context
+            grove.translateBy(x: right + Double(abs(marker) % 2) * 21, y: sceneryY)
+            let treeScale = 0.8 + Double(abs(marker) % 4) * 0.1
+            grove.scaleBy(x: treeScale, y: treeScale)
+            tree(&grove, at: .zero)
           }
           var ripple = Path()
           ripple.move(to: CGPoint(x: shoreX - 45, y: y + 30))
@@ -178,34 +189,40 @@ struct CoastArtwork: View {
           Rival(id: 2, distance: travelled + 61, lane: 2, pace: 0),
         ]
         : race.rivals
-      for rival in riders {
+      let visibleRiders: [(id: Int, point: CGPoint)] = riders.compactMap { rival in
         let y = playerY - (rival.distance - travelled) * scale
-        if y > -80 && y < h + 80 {
-          let crowded = riders.contains {
-            $0.id != rival.id && $0.lane == rival.lane && abs($0.distance - rival.distance) < 12
-          }
-          let nearPlayer =
-            !hero && rival.lane == race.lane
-            && abs(rival.distance - travelled) < 14
-          let offset = nearPlayer ? 24.0 : (crowded ? 18.0 : 0)
-          let x = laneX(rival.lane, y) + (rival.id.isMultiple(of: 2) ? -offset : offset)
-          var slip = Path()
-          slip.move(to: CGPoint(x: x - 8, y: y + 22))
-          slip.addLine(to: CGPoint(x: x - 25, y: y + 110))
-          slip.addQuadCurve(to: CGPoint(x: x + 25, y: y + 110), control: CGPoint(x: x, y: y + 120))
-          slip.addLine(to: CGPoint(x: x + 8, y: y + 22))
-          slip.closeSubpath()
-          context.fill(
-            slip,
-            with: .linearGradient(
-              Gradient(colors: [Ink.cream.opacity(0.50), Ink.cream.opacity(0.04)]),
-              startPoint: CGPoint(x: x, y: y + 22), endPoint: CGPoint(x: x, y: y + 120)
-            ))
-          rider(
-            &context, at: CGPoint(x: x, y: y),
-            asset: ["RiderTeal", "RiderYellow", "RiderIvory"][rival.id], phase: travelled,
-            player: false)
+        guard y > -100 && y < h + 100 else { return nil }
+        let crowded = riders.contains {
+          $0.id != rival.id && $0.lane == rival.lane && abs($0.distance - rival.distance) < 12
         }
+        let nearPlayer =
+          !hero && rival.lane == race.lane
+          && abs(rival.distance - travelled) < 14
+        let offset = nearPlayer ? 24.0 : (crowded ? 18.0 : 0)
+        let x = laneX(rival.lane, y) + (rival.id.isMultiple(of: 2) ? -offset : offset)
+        return (rival.id, CGPoint(x: x, y: y))
+      }
+      for rival in visibleRiders {
+        let x = rival.point.x
+        let y = rival.point.y
+        var slip = Path()
+        slip.move(to: CGPoint(x: x - 8, y: y + 22))
+        slip.addLine(to: CGPoint(x: x - 25, y: y + 110))
+        slip.addQuadCurve(to: CGPoint(x: x + 25, y: y + 110), control: CGPoint(x: x, y: y + 120))
+        slip.addLine(to: CGPoint(x: x + 8, y: y + 22))
+        slip.closeSubpath()
+        context.fill(
+          slip,
+          with: .linearGradient(
+            Gradient(colors: [Ink.cream.opacity(0.32), Ink.cream.opacity(0.02)]),
+            startPoint: CGPoint(x: x, y: y + 22), endPoint: CGPoint(x: x, y: y + 120)
+          ))
+      }
+      for rival in visibleRiders.sorted(by: { $0.point.y < $1.point.y }) {
+        rider(
+          &context, at: rival.point,
+          asset: ["RiderTeal", "RiderYellow", "RiderIvory"][rival.id], phase: travelled,
+          player: false)
       }
       let visualLane = hero ? 1 : (reducedMotion ? Double(race.lane) : riderLane)
       let x = center(playerY) + (visualLane - 1) * roadWidth(playerY) * 0.29

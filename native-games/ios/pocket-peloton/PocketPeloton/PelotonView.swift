@@ -360,6 +360,7 @@ struct PelotonView: View {
       in: Capsule()
     )
     .overlay(Capsule().strokeBorder(Ink.cream.opacity(0.28), lineWidth: 1))
+    .compositingGroup()
     .shadow(color: .black.opacity(0.2), radius: 0, y: store.race.sprintHeld ? 1 : 4)
     .foregroundStyle(Ink.cream)
     .contentShape(Capsule())
@@ -579,6 +580,7 @@ struct PelotonView: View {
         in: Capsule()
       )
       .overlay(Capsule().strokeBorder(.white.opacity(0.22)))
+      .compositingGroup()
       .shadow(color: Ink.red.opacity(0.2), radius: 8, y: 4)
       .foregroundStyle(Ink.cream)
     }
