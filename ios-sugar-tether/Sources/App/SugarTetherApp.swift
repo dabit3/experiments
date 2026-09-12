@@ -594,7 +594,7 @@ struct PuzzleBoxView: View {
                     .foregroundStyle(Palette.muted)
                 }
               }
-              .frame(maxWidth: .infinity).frame(height: 128)
+              .frame(maxWidth: .infinity).frame(height: 118)
               .felt(
                 unlocked ? .white : Palette.cream.opacity(0.7), corner: 24,
                 stitch: Palette.caramel.opacity(unlocked ? 0.35 : 0.18), lift: unlocked ? 6 : 2)
@@ -607,10 +607,12 @@ struct PuzzleBoxView: View {
         }
         .padding(.horizontal, 2)
         .padding(.top, 6)
-        .padding(.bottom, 14)
+        Text("Earn stars at your own pace. Replay any open puzzle.")
+          .font(.system(size: 12, weight: .medium, design: .rounded))
+          .foregroundStyle(Palette.muted)
+          .padding(.vertical, 14)
       }
-      Text("Earn stars at your own pace. Replay any open puzzle.")
-        .font(.system(size: 12, weight: .medium, design: .rounded)).foregroundStyle(Palette.muted)
+      .scrollIndicators(.visible)
     }
     .padding(.horizontal, 24).padding(.top, 10).padding(.bottom, 12)
   }
