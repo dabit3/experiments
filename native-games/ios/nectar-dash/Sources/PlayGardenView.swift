@@ -65,8 +65,9 @@ struct PlayGardenView: View {
 
       HStack(spacing: 9) {
         Text(store.rules.pollen == 6 ? "BANK NOW" : "NEXT BLOOM")
-          .font(.system(size: 8, weight: .medium)).tracking(1.4)
-          .foregroundStyle(NectarPalette.sage)
+          .font(.system(size: 10, weight: .semibold)).tracking(1)
+          .foregroundStyle(
+            store.rules.pollen == 6 ? NectarPalette.honey : NectarPalette.cream.opacity(0.8))
         ForEach(BloomColor.allCases, id: \.rawValue) { color in
           let active = store.rules.expected == color && store.rules.pollen < 6
           HStack(spacing: 5) {
@@ -75,7 +76,7 @@ struct PlayGardenView: View {
               .background(NectarPalette.petal(color).opacity(active ? 1 : 0.3), in: Circle())
               .foregroundStyle(active ? NectarPalette.ink : NectarPalette.cream.opacity(0.5))
             if active {
-              Text(color.name).font(.system(size: 11, weight: .medium)).foregroundStyle(
+              Text(color.name).font(.system(size: 13, weight: .medium)).foregroundStyle(
                 NectarPalette.petal(color))
             }
           }
@@ -153,13 +154,15 @@ struct PlayGardenView: View {
       }
       HStack(spacing: 12) {
         VStack(alignment: .leading, spacing: 7) {
-          eyebrow("POLLEN SATCHEL")
+          Text("POLLEN \(store.rules.pollen) / 6")
+            .font(.system(size: 10, weight: .medium)).tracking(1.5).foregroundStyle(
+              NectarPalette.sage)
           HStack(spacing: 5) {
             ForEach(0..<6, id: \.self) { index in
               Capsule().fill(
                 index < store.rules.pollen ? NectarPalette.honey : NectarPalette.sage.opacity(0.22)
               )
-              .frame(width: 18, height: 6)
+              .frame(width: 18, height: 8)
             }
           }
         }
@@ -251,10 +254,12 @@ struct PlayGardenView: View {
         openness: resting ? 0.35 : 1,
         active: !resting && flower.color == store.rules.expected && store.rules.pollen < 6)
     }
-    BotanicalDrawing.hive(in: context, at: point(.hive), size: 33, ready: store.rules.pollen > 0)
+    BotanicalDrawing.hive(
+      in: context, at: point(.hive), size: store.rules.pollen == 6 ? 39 : 33,
+      ready: store.rules.pollen > 0)
     context.draw(
       Text(store.rules.pollen > 0 ? "BANK HONEY" : "HOME")
-        .font(.system(size: 8, weight: .semibold)).tracking(1.8).foregroundColor(
+        .font(.system(size: 10, weight: .semibold)).tracking(1.3).foregroundColor(
           NectarPalette.honey),
       at: CGPoint(x: size.width * 0.5, y: size.height * 0.91 + 28))
     strokeRoute(store.flightPath, context: context, size: size, opacity: 0.6)
@@ -304,18 +309,24 @@ struct GardenSnapshot: View {
 
   var body: some View {
     Canvas { context, size in
-      strokeRoute(rules.route, context: context, size: size, opacity: 0.6)
+      let radius = min(size.width * 0.105, size.height * 0.12)
+      let inset = radius + 4
+      let inner = CGSize(width: size.width - 16, height: max(1, size.height - inset * 2))
+      var garden = context
+      garden.translateBy(x: 8, y: inset)
+      strokeRoute(rules.route, context: garden, size: inner, opacity: 0.6)
       for flower in rules.flowers {
         BotanicalDrawing.flower(
-          in: context,
-          at: CGPoint(x: flower.position.x * size.width, y: flower.position.y * size.height),
-          radius: min(size.width * 0.105, size.height * 0.18), color: flower.color,
+          in: garden,
+          at: CGPoint(x: flower.position.x * inner.width, y: flower.position.y * inner.height),
+          radius: radius, color: flower.color,
           rotation: Double(flower.id * 18), number: false)
       }
       BotanicalDrawing.hive(
-        in: context, at: CGPoint(x: size.width * 0.5, y: size.height * 0.91), size: 22, ready: true)
+        in: garden, at: CGPoint(x: inner.width * 0.5, y: inner.height * 0.91), size: 20, ready: true
+      )
       BotanicalDrawing.bee(
-        in: context, at: CGPoint(x: size.width * 0.62, y: size.height * 0.8), size: 13, time: 0)
+        in: garden, at: CGPoint(x: inner.width * 0.62, y: inner.height * 0.8), size: 13, time: 0)
     }
     .accessibilityLabel(
       "Your garden snapshot with \(rules.totalBlooms) pollinated blooms and your flight route")

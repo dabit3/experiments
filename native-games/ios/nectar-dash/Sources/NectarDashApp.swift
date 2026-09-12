@@ -89,19 +89,18 @@ struct NectarRootView: View {
 
         HeroGarden(time: artTime)
           .frame(maxHeight: .infinity)
-          .overlay(alignment: .bottomLeading) {
-            VStack(alignment: .leading, spacing: 6) {
-              Text("FLY · CHAIN · BLOOM").font(.system(size: 9, weight: .medium)).tracking(2.5)
-              HStack(spacing: 5) {
-                Image(systemName: "sparkle")
-                Text("Best harvest  \(store.progress.bestScore)")
-              }
-              .font(.system(size: 11))
-              .foregroundStyle(NectarPalette.sage)
-            }
-            .padding(.leading, 28)
-            .padding(.bottom, 4)
+        HStack {
+          Text("FLY · CHAIN · BLOOM").font(.system(size: 9, weight: .medium)).tracking(1.8)
+          Spacer()
+          HStack(spacing: 5) {
+            Image(systemName: "sparkle")
+            Text("Best  \(store.progress.bestScore)")
           }
+          .font(.system(size: 12))
+          .foregroundStyle(NectarPalette.sage)
+        }
+        .padding(.horizontal, 28)
+        .padding(.vertical, 8)
         VStack(spacing: 14) {
           HStack {
             VStack(alignment: .leading, spacing: 6) {
@@ -283,8 +282,18 @@ struct NectarRootView: View {
             "Repeat Gold → Rose → Iris. A chain of 3 doubles new pollen; 6 adds a +30 blossom bonus."
         )
         tutorialLine(
-          "house", title: "Bring the honey home",
+          "arrow.down.to.line", title: "Bring the honey home",
           text: "Tap the hive to bank. Webs cost a life and your pollen. Wind costs 5 seconds.")
+        HStack(spacing: 12) {
+          Canvas { context, size in
+            BotanicalDrawing.hive(
+              in: context, at: CGPoint(x: size.width / 2, y: size.height / 2), size: 29,
+              ready: true)
+          }
+          .frame(width: 60, height: 44)
+          Text("This is your hive.\nFind it at the foot of the garden.")
+            .font(.system(size: 12)).foregroundStyle(NectarPalette.cream.opacity(0.88))
+        }
         primaryButton(
           store.screen == .home ? "Lovely, let's fly" : "Ready to fly", symbol: "arrow.right",
           id: "tutorial-done"
@@ -343,8 +352,9 @@ struct NectarRootView: View {
         .foregroundStyle(NectarPalette.honey)
       VStack(alignment: .leading, spacing: 5) {
         Text(title).font(.system(size: 15, weight: .medium))
-        Text(text).font(.system(size: 13)).foregroundStyle(NectarPalette.sage).fixedSize(
-          horizontal: false, vertical: true)
+        Text(text).font(.system(size: 13)).foregroundStyle(NectarPalette.cream.opacity(0.78))
+          .fixedSize(
+            horizontal: false, vertical: true)
       }
     }
   }

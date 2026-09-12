@@ -36,6 +36,7 @@ final class GardenStore: ObservableObject {
   private let defaults: UserDefaults
   private var flightElapsed = 0.0
   private var flightDuration = 0.0
+  private var lastFrame = ProcessInfo.processInfo.systemUptime
   private var timer: AnyCancellable?
 
   init(defaults: UserDefaults = .standard) {
@@ -47,13 +48,18 @@ final class GardenStore: ObservableObject {
     calmMotion = defaults.bool(forKey: "nectar.calmMotion")
     timer = Timer.publish(every: 1.0 / 30.0, on: .main, in: .common)
       .autoconnect().sink { [weak self] _ in
-        self?.step(1.0 / 30.0)
+        guard let self else { return }
+        let now = ProcessInfo.processInfo.systemUptime
+        let elapsed = now - self.lastFrame
+        self.lastFrame = now
+        self.step(elapsed)
       }
   }
 
   var isFlying: Bool { !flightPath.isEmpty }
 
   func start(_ mode: GardenMode) {
+    lastFrame = ProcessInfo.processInfo.systemUptime
     rules = GardenRules(mode: mode)
     beeVisual = .hive
     flightPath = []
@@ -67,6 +73,7 @@ final class GardenStore: ObservableObject {
   }
 
   func dismissTutorial() {
+    lastFrame = ProcessInfo.processInfo.systemUptime
     defaults.set(true, forKey: "nectar.tutorialSeen")
     showTutorial = false
   }

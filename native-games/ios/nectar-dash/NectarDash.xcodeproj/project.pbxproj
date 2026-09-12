@@ -11,6 +11,7 @@
 		27AB410BA6D4B2A37E697C3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9CA9D5C1BBCF8188CAFDC947 /* LaunchScreen.storyboard */; };
 		35EB3D47F44A7ACF3D9283FD /* BotanicalArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C98D2E213BADB644FB12D3B /* BotanicalArt.swift */; };
 		46BECC6B302A8437E4E91B0D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1894560B54B4CA2A56AF57F /* Assets.xcassets */; };
+		5C9EC04450130DB647EAF9A9 /* GardenStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E3D3C7DE94E1FFE14447C0 /* GardenStoreTests.swift */; };
 		650389C80B403AC50AD9EE58 /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DA0FDE5EB7376546D0BAE5F /* GameRules.swift */; };
 		964868426254CA3E59F45D7A /* NectarDashApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEA72672057F2BEC8585325A /* NectarDashApp.swift */; };
 		BA6635840E1C2F89FFCC9B0F /* GardenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46252E7B2FEC96CC350B088 /* GardenStore.swift */; };
@@ -33,6 +34,7 @@
 		658E1BCC9C3250DA9F3E902E /* GardenRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenRulesTests.swift; sourceTree = "<group>"; };
 		6C98D2E213BADB644FB12D3B /* BotanicalArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BotanicalArt.swift; sourceTree = "<group>"; };
 		707114873601C8DDD1AC111C /* NectarDashTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = NectarDashTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		90E3D3C7DE94E1FFE14447C0 /* GardenStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenStoreTests.swift; sourceTree = "<group>"; };
 		9CA9D5C1BBCF8188CAFDC947 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9DA0FDE5EB7376546D0BAE5F /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
 		B1894560B54B4CA2A56AF57F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				658E1BCC9C3250DA9F3E902E /* GardenRulesTests.swift */,
+				90E3D3C7DE94E1FFE14447C0 /* GardenStoreTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -175,6 +178,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0ACD0A48FF43038D5A37F8D /* GardenRulesTests.swift in Sources */,
+				5C9EC04450130DB647EAF9A9 /* GardenStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

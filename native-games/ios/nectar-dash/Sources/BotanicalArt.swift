@@ -43,16 +43,18 @@ struct BotanicalBackdrop: View {
           Gradient(colors: [NectarPalette.sage.opacity(0.18), .clear]),
           center: CGPoint(x: size.width * 0.85, y: size.height * 0.15),
           startRadius: 0, endRadius: size.height * 0.7))
-      for index in 0..<11 {
-        let side = index % 2 == 0 ? -1.0 : 1.0
-        let x = side < 0 ? -14.0 : size.width + 14.0
-        let y = size.height * (0.15 + Double(index) * 0.083)
+      let branches: [(Double, Double, Double, Double)] = [
+        (-0.06, 0.08, -21, 85), (1.09, 0.35, 165, 130),
+        (-0.04, 0.57, -56, 165), (1.05, 0.72, 137, 115),
+        (-0.07, 0.89, -18, 125), (1.08, 1.00, 213, 165),
+      ]
+      for (index, location) in branches.enumerated() {
         var branch = context
-        branch.translateBy(x: x, y: y)
-        branch.rotate(by: .degrees(side < 0 ? -38 : 144))
+        branch.translateBy(x: location.0 * size.width, y: location.1 * size.height)
+        branch.rotate(by: .degrees(location.2))
         BotanicalDrawing.sprig(
-          in: branch, length: lush ? 155 : 100,
-          color: NectarPalette.sage.opacity(index % 3 == 0 ? 0.24 : 0.12))
+          in: branch, length: location.3 * (lush ? 1 : 0.8),
+          color: NectarPalette.sage.opacity(index % 2 == 0 ? 0.13 : 0.08))
       }
       for index in 0..<42 {
         let x =
@@ -303,13 +305,16 @@ struct HeroGarden: View {
     Canvas { context, size in
       let width = size.width
       BotanicalDrawing.flower(
-        in: context, at: CGPoint(x: width * 0.12, y: size.height * 0.60), radius: width * 0.25,
+        in: context, at: CGPoint(x: width * 0.14, y: size.height * 0.57),
+        radius: min(width * 0.25, size.height * 0.32),
         color: .rose, rotation: -24, number: false)
       BotanicalDrawing.flower(
-        in: context, at: CGPoint(x: width * 0.83, y: size.height * 0.41), radius: width * 0.24,
+        in: context, at: CGPoint(x: width * 0.83, y: size.height * 0.38),
+        radius: min(width * 0.24, size.height * 0.31),
         color: .gold, rotation: 16, number: false)
       BotanicalDrawing.flower(
-        in: context, at: CGPoint(x: width * 0.52, y: size.height * 0.9), radius: width * 0.15,
+        in: context, at: CGPoint(x: width * 0.52, y: size.height * 0.77),
+        radius: min(width * 0.14, size.height * 0.20),
         color: .iris, rotation: 4, number: false)
       var route = Path()
       route.move(to: CGPoint(x: width * 0.16, y: size.height * 0.50))
