@@ -187,7 +187,7 @@ struct HarborView: View {
       VStack(spacing: 9) {
         HStack(spacing: 9) {
           Circle().fill(HarborPalette.orange).frame(width: 5, height: 5)
-          Text(game.message)
+          Text(controlHint)
             .font(.system(size: 12, weight: .medium))
             .frame(maxWidth: .infinity, alignment: .leading)
             .frame(height: 32)
@@ -224,6 +224,21 @@ struct HarborView: View {
       .padding(.horizontal, 24)
       .padding(.top, 8)
       .padding(.bottom, 8)
+    }
+  }
+
+  private var controlHint: String {
+    switch game.phase {
+    case .pickup:
+      return game.onTarget
+        ? "In reach · drop now to catch the cargo."
+        : "Adjust trim · line up the hook with the left dock."
+    case .release:
+      return game.onTarget
+        ? "Safe to land · release cargo onto the stack."
+        : "Adjust trim · place cargo above the stack's center."
+    default:
+      return game.message
     }
   }
 

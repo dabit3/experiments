@@ -111,9 +111,6 @@ struct HarborCanvas: View {
         style: StrokeStyle(lineWidth: 1.5, dash: [4, 5]))
       HarborArt.ellipse(
         &context, CGRect(x: projected - 6, y: floor - 2, width: 12, height: 5), guideColor)
-      HarborArt.label(
-        &context, game.onTarget ? (pickup ? "IN REACH" : "SAFE TO LAND") : "ADJUST YOUR TRIM",
-        x: pickup ? 87 : DockRules.shipX, y: floor - 22, size: 8)
       let captionX = pickup ? 267.0 : 102.0
       HarborArt.label(
         &context, pickup ? "01 / CATCH" : "02 / LAND", x: captionX, y: 96, size: 10)
