@@ -117,32 +117,7 @@ enum Illustration {
   }
 
   static func snack(_ context: GraphicsContext, kind: Int = 0) {
-    let p = Pen(context: context)
-    if kind % 3 == 1 {
-      p.box(CGRect(x: 0, y: 1, width: 36, height: 18), Palette.cream, radius: 5)
-      p.box(CGRect(x: 2, y: 6, width: 32, height: 4), Palette.mint, radius: 2)
-      p.box(CGRect(x: 2, y: 12, width: 32, height: 3), Palette.coral, radius: 2)
-      p.oval(CGRect(x: 7, y: 2, width: 3, height: 2), Palette.brick)
-      p.oval(CGRect(x: 23, y: 2, width: 3, height: 2), Palette.brick)
-    } else if kind % 3 == 2 {
-      p.shape(
-        [CGPoint(x: 1, y: 18), CGPoint(x: 7, y: 0), CGPoint(x: 32, y: 5), CGPoint(x: 37, y: 18)],
-        Palette.cream)
-      p.line([CGPoint(x: 11, y: 4), CGPoint(x: 9, y: 12)], Palette.roof, width: 2)
-      p.line([CGPoint(x: 21, y: 6), CGPoint(x: 20, y: 13)], Palette.roof, width: 2)
-      p.oval(CGRect(x: 1, y: 15, width: 36, height: 5), Palette.roof)
-    } else {
-      p.oval(CGRect(x: 0, y: 1, width: 36, height: 22), Palette.cream)
-      p.oval(CGRect(x: 3, y: 2, width: 30, height: 15), Palette.coral)
-      p.oval(CGRect(x: 14, y: 6, width: 9, height: 7), Palette.brick)
-      for index in 0..<5 {
-        p.line(
-          [
-            CGPoint(x: CGFloat(index * 5 + 5), y: index % 2 == 0 ? 6 : 12),
-            CGPoint(x: CGFloat(index * 5 + 7), y: index % 2 == 0 ? 7 : 11),
-          ], Palette.cream, width: 1.5)
-      }
-    }
+    context.draw(Image("Snack\(kind % 3)"), in: CGRect(x: 0, y: 0, width: 36, height: 20))
   }
 
   static func planter(_ context: GraphicsContext, x: CGFloat, y: CGFloat, scale: CGFloat = 1) {
@@ -254,11 +229,12 @@ struct RaccoonArt: View {
     Canvas { context, size in
       var c = context
       c.scaleBy(x: size.width / 100, y: size.height / 100)
+      Pen(context: c).oval(CGRect(x: 40, y: 92, width: 28, height: 3), .black.opacity(0.25))
       c.draw(Image("RaccoonPortrait"), in: CGRect(x: -5, y: 6, width: 96, height: 96))
       for index in 0..<min(max(snacks, 0), 7) {
         var snackContext = c
-        snackContext.translateBy(x: 79 + CGFloat(index % 2), y: 47 - CGFloat(index) * 7)
-        snackContext.scaleBy(x: 0.54, y: 0.54)
+        snackContext.translateBy(x: 74 + CGFloat(index % 2), y: 39 - CGFloat(index) * 6.2)
+        snackContext.scaleBy(x: 0.66, y: 0.66)
         Illustration.snack(snackContext, kind: index)
       }
     }

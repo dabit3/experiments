@@ -195,6 +195,8 @@ struct HomeView: View {
                 .padding(.top, 3)
             }
             .foregroundStyle(Palette.cream)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
           }
           .buttonStyle(.plain)
           .accessibilityLabel("Choose neighborhood, \(District.all[store.selected].name)")
@@ -224,6 +226,7 @@ struct HomeView: View {
           .resizable()
           .scaledToFill()
           .frame(width: geometry.size.width, height: geometry.size.height)
+          .offset(x: -min(28, max(0, (geometry.size.height * 2 / 3 - geometry.size.width) / 2)))
           .clipped()
           .overlay(alignment: .bottom) {
             LinearGradient(
@@ -275,7 +278,7 @@ struct DistrictPicker: View {
             HStack(spacing: 17) {
               Text(String(format: "%02d", district.id + 1))
                 .font(.custom("Baskerville-Italic", size: 31))
-                .foregroundStyle(unlocked ? Palette.mint : Palette.muted)
+                .foregroundStyle(unlocked ? Palette.mint : Palette.cream.opacity(0.75))
                 .frame(width: 40)
               VStack(alignment: .leading, spacing: 5) {
                 Text(district.name).font(.custom("Baskerville", size: 23))
@@ -292,15 +295,15 @@ struct DistrictPicker: View {
             }
             .foregroundStyle(Palette.cream)
             .padding(.vertical, 10)
-            .contentShape(Rectangle())
             .overlay(alignment: .bottom) {
               Rectangle().fill(Palette.cream.opacity(0.15)).frame(height: 0.5)
                 .offset(y: 8)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
           }
-          .buttonStyle(.plain)
+          .buttonStyle(QuietPressStyle())
           .disabled(!unlocked)
-          .opacity(unlocked ? 1 : 0.55)
           .accessibilityLabel(
             "\(district.name), \(unlocked ? "district \(district.id + 1)" : "locked, escape previous district to unlock")"
           )
@@ -917,7 +920,9 @@ struct WantedPoster: View {
           .scaledToFill()
           .frame(width: 270, height: 280)
           .clipShape(UnevenRoundedRectangle(topLeadingRadius: 135, topTrailingRadius: 135))
-        RaccoonArt(snacks: mission.loot, happy: true).frame(width: 270, height: 270)
+        RaccoonArt(snacks: mission.loot, happy: true)
+          .frame(width: 220, height: 220)
+          .offset(x: -17, y: 10)
       }
       .overlay(
         UnevenRoundedRectangle(topLeadingRadius: 138, topTrailingRadius: 138)

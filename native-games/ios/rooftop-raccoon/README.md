@@ -30,8 +30,8 @@ brew install xcodegen
 xcodegen generate
 ```
 
-The cover, character and water-tower artwork are bundled illustrations. Rooftops, snacks and
-forecasts remain procedural so they reflect the live mission. The icon and launch image
+The cover, character, bakery snacks and water-tower artwork are bundled illustrations.
+Snack counts, rooftop geometry and forecasts reflect the live mission. The icon and launch image
 are composited from the bundled illustrations. To regenerate them from this directory:
 
 ```sh
