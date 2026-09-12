@@ -65,7 +65,7 @@ and projected touch coordinates for every grid cell on compact and large viewpor
   turns connect adjacent edges; splits send two branches. A bridge skips exactly
   one cell in its outgoing direction. Bells stop and receive a branch.
 - **Clear feedback:** an empty square or closed edge stops that branch and gets a
-  coral marker. Keep building returns immediately to editing. Pause preserves the
+  coral marker. Edit board returns immediately to editing. Pause preserves the
   exact point in the ripple; backgrounding automatically pauses.
 - **Scoring:** 20 points per fallen porcelain domino, 200 per bell, minus 75 per
   hint and 25 per attempt after the first. A successful score has a 100-point floor.
@@ -76,8 +76,9 @@ and projected touch coordinates for every grid cell on compact and large viewpor
 - **Share:** a completed board renders an original 1200×1720 result card and text
   into the native iOS share sheet.
 
-The home board previews the final spiral; the contextual first-world tutorial is
-two placements followed by a nudge. A satisfying first success takes about 30–60
+The home board previews the next unlocked puzzle and its saved placements. Choose a world
+opens the progression list; Free build opens the sandbox. The contextual first-world tutorial is
+two placements followed by Start chain. A satisfying first success takes about 30–60
 seconds. Later worlds add turns, bridges and multiple branches.
 
 ## Accessibility and limits
@@ -92,6 +93,12 @@ The orthographic 3D diorama uses beveled porcelain, enamel rails, sculpted plant
 miniature buildings, brass bells and directional shadows. Touches project onto the
 board plane; accessibility frames project from the same cell coordinates. Share
 cards snapshot the actual SceneKit scene before composing the printable artwork.
+
+The interface uses shared system sans-serif typography and flat workshop surfaces.
+Coral identifies the primary action, brass marks bell progress, and the selected
+piece has both an ivory surface and a checkmark. Navigation, help, results and
+share artwork use the same type hierarchy; board coordinates keep their functional
+monospaced lettering. The diorama supplies the visual detail while controls stay compact.
 
 This is a deterministic tile-collision simulation with staggered domino falls,
 shadows and bell ripples; it is not a general rigid-body physics sandbox.

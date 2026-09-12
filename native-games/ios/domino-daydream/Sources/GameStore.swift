@@ -165,7 +165,7 @@ final class GameStore: ObservableObject {
       selected.flatMap { puzzle.solution[$0] != nil && puzzle.fixed[$0] == nil ? $0 : nil }
       ?? puzzle.sockets.first { placed[$0] != puzzle.solution[$0] }
     guard let cell, let correct = puzzle.solution[cell] else {
-      message = "Everything is ready. Give it a nudge!"
+      message = "The route is ready. Tap Start chain."
       return
     }
     selected = cell
@@ -203,7 +203,7 @@ final class GameStore: ObservableObject {
     result = ChainEngine.run(puzzle: puzzle, placed: placed)
     phase = .running
     beat = -0.5
-    message = "A small nudge. A lovely ripple."
+    message = "Following the route to each bell."
     save()
     animate()
   }

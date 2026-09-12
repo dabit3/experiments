@@ -10,6 +10,10 @@ enum Palette {
   static let sage = Color(hex: 0x87A795)
   static let brass = Color(hex: 0xD5B573)
   static let blue = Color(hex: 0x81BBC1)
+  static let surface = Color(hex: 0x25473F)
+  static let separator = Color(hex: 0x46645A)
+  static let success = Color(hex: 0xB8D9BC)
+  static let failure = Color(hex: 0xFFB3A8)
 }
 
 extension Color {
@@ -20,36 +24,9 @@ extension Color {
   }
 }
 
-struct WalnutBackground: View {
+struct WorkshopBackground: View {
   var body: some View {
-    GeometryReader { geometry in
-      ZStack {
-        LinearGradient(
-          colors: [Color(hex: 0x36564A), Palette.walnut, Color(hex: 0x102B27)],
-          startPoint: .topLeading, endPoint: .bottomTrailing)
-        Canvas { context, size in
-          for index in 0..<90 {
-            let y = CGFloat(index) * size.height / 89
-            var line = Path()
-            line.move(to: CGPoint(x: 0, y: y))
-            line.addLine(to: CGPoint(x: size.width, y: y - size.width * 0.25))
-            context.stroke(line, with: .color(.white.opacity(0.016)), lineWidth: 0.5)
-          }
-          let center = CGPoint(x: size.width * 0.88, y: size.height * 0.3)
-          for radius in [size.width * 0.65, size.width * 0.69] {
-            context.stroke(
-              Path(
-                ellipseIn: CGRect(
-                  x: center.x - radius, y: center.y - radius,
-                  width: radius * 2, height: radius * 2)),
-              with: .color(Palette.brass.opacity(0.07)), lineWidth: 0.7)
-          }
-        }
-      }
-      .frame(width: geometry.size.width, height: geometry.size.height)
-    }
-    .ignoresSafeArea()
-    .accessibilityHidden(true)
+    Palette.walnut.ignoresSafeArea().accessibilityHidden(true)
   }
 }
 

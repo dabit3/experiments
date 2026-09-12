@@ -1,10 +1,27 @@
 import SwiftUI
 
+enum GameType {
+  static let heading = Font.system(size: 28, weight: .semibold)
+  static let title = Font.system(size: 22, weight: .semibold)
+  static let section = Font.system(size: 18, weight: .semibold)
+  static let body = Font.system(size: 15)
+  static let action = Font.system(size: 15, weight: .semibold)
+  static let label = Font.system(size: 13, weight: .medium)
+  static let caption = Font.system(size: 12)
+  static let number = Font.system(size: 26, weight: .medium, design: .monospaced)
+}
+
+enum GameLayout {
+  static let inset: CGFloat = 20
+  static let controlHeight: CGFloat = 50
+  static let cornerRadius: CGFloat = 8
+}
+
 struct WorkshopPressStyle: ButtonStyle {
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .offset(y: configuration.isPressed ? 3 : 0)
+      .offset(y: configuration.isPressed ? 1 : 0)
       .brightness(configuration.isPressed ? -0.05 : 0)
       .animation(reduceMotion ? nil : .easeOut(duration: 0.13), value: configuration.isPressed)
   }

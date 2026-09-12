@@ -23,10 +23,11 @@ struct ContentView: View {
   @State private var showHelp = false
   @State private var showReset = false
   @State private var sharePayload: SharePayload?
+  @State private var shareFailed = false
 
   var body: some View {
     ZStack {
-      WalnutBackground()
+      WorkshopBackground()
       if playing { game } else { home }
     }
     .tint(Palette.coral)
@@ -35,6 +36,11 @@ struct ContentView: View {
     .sheet(isPresented: $showHelp) { instructions.preferredColorScheme(.light) }
     .sheet(item: $sharePayload) { payload in
       ShareSheet(image: payload.image, text: payload.text).preferredColorScheme(.light)
+    }
+    .alert("Couldn’t create the board image", isPresented: $shareFailed) {
+      Button("OK", role: .cancel) {}
+    } message: {
+      Text("Your result is saved. Try Share again.")
     }
     .confirmationDialog(
       "Clear your placed pieces?", isPresented: $showReset, titleVisibility: .visible
@@ -54,135 +60,107 @@ struct ContentView: View {
   private var home: some View {
     GeometryReader { geometry in
       let compact = geometry.size.height < 720
-      VStack(spacing: compact ? 8 : 12) {
-        HStack {
-          DominoMark().frame(width: 28, height: 30)
-          Text("OBJECTS OF\nLITTLE WONDER")
-            .font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(1.5)
+      let puzzle = Puzzle.all[store.unlocked]
+      VStack(spacing: compact ? 10 : 16) {
+        HStack(spacing: 12) {
+          DominoMark().frame(width: 25, height: 28).foregroundStyle(Palette.brass)
+          Text("Domino Daydream").font(GameType.section)
           Spacer()
           iconButton("slider.horizontal.3", label: "Settings", id: "settings") {
             showSettings = true
           }
         }
-        .foregroundStyle(Palette.brass)
-        .padding(.top, 4)
-        VStack(alignment: .leading, spacing: -8) {
-          Text("Domino").font(.custom("Baskerville", size: compact ? 54 : 72))
-          HStack(alignment: .lastTextBaseline) {
-            Text("Daydream").font(.custom("Baskerville-Italic", size: compact ? 54 : 72))
-            Spacer(minLength: 0)
-            Image(systemName: "sun.max").font(.system(size: compact ? 24 : 33, weight: .ultraLight))
-              .foregroundStyle(Palette.brass)
+        .foregroundStyle(Palette.cream)
+        VStack(alignment: .leading, spacing: 6) {
+          HStack {
+            Text("World \(puzzle.id + 1) of 8")
+            Spacer()
+            Text("\(puzzle.targets.count) bells to connect")
           }
+          .font(GameType.label).foregroundStyle(Palette.muted)
+          Text(puzzle.title).font(GameType.heading).foregroundStyle(Palette.cream)
+            .lineLimit(2).fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .foregroundStyle(Palette.cream)
-        .accessibilityElement(children: .combine)
-        .padding(.top, compact ? 0 : 8)
-        HStack {
-          Text("THE AFTERNOON COLLECTION")
-          Spacer()
-          Text("VOL. 01")
-        }
-        .font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(1.5)
-        .foregroundStyle(Palette.muted)
-        .padding(.top, 6)
-        .overlay(alignment: .top) {
-          Rectangle().fill(Palette.brass.opacity(0.3)).frame(height: 0.5)
-        }
+        .padding(.top, compact ? 0 : 6)
         TabletopView(
-          puzzle: Puzzle.all[7], pieces: Puzzle.all[7].solution,
-          guides: false, labels: false, interactive: false
+          puzzle: puzzle, pieces: previewPieces(for: puzzle),
+          guides: true, labels: false, reduceMotion: reduceMotion, interactive: false
         )
         .frame(maxHeight: .infinity)
-        .padding(.horizontal, -26)
-        .accessibilityLabel("Miniature porcelain domino town with a winding spiral and brass bells")
-        VStack(spacing: 5) {
-          Text("A little nudge. A lovely ripple.")
-            .font(.custom("Baskerville-Italic", size: compact ? 21 : 24))
-            .foregroundStyle(Palette.cream)
-          Text("Build something wonderful. Then let it go.")
-            .font(.system(size: 11)).foregroundStyle(Palette.muted)
-        }
-        .padding(.bottom, compact ? 4 : 10)
+        .padding(.horizontal, -GameLayout.inset)
+        .accessibilityLabel("Preview of \(puzzle.title), with your saved pieces")
+        Text(puzzle.lesson)
+          .font(GameType.body).foregroundStyle(Palette.muted)
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .fixedSize(horizontal: false, vertical: true)
         primaryButton(
-          store.completed == 0 ? "Begin the daydream" : "Return to the workshop",
+          store.progress.drafts[String(puzzle.id)] == nil
+            ? "Play world \(puzzle.id + 1)" : "Continue world \(puzzle.id + 1)",
           icon: "arrow.right", id: "begin"
         ) {
           start(store.unlocked)
         }
-        HStack(spacing: 12) {
-          secondaryButton("The collection", icon: "square.grid.2x2", id: "collection") {
+        VStack(spacing: 0) {
+          navigationRow(
+            "Choose a world", detail: "\(store.completed) of 8 completed", id: "collection"
+          ) {
             showCollection = true
           }
-          secondaryButton("Open table", icon: "sparkles", id: "sandbox") { start(8) }
-        }
-        HStack(spacing: 6) {
-          ForEach(0..<8, id: \.self) { index in
-            RoundedRectangle(cornerRadius: 1)
-              .fill(index < store.completed ? Palette.brass : Palette.cream.opacity(0.15))
-              .frame(width: 4, height: 10)
+          Rectangle().fill(Palette.separator).frame(height: 0.5)
+          navigationRow(
+            "Free build", detail: "An open table with unlimited pieces", id: "sandbox"
+          ) {
+            start(8)
           }
-          Text("\(store.completed) / 8 WORLDS COMPLETE")
-            .font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(1)
-            .padding(.leading, 7)
         }
-        .foregroundStyle(Palette.muted)
-        .padding(.bottom, 8)
+        .padding(.bottom, 4)
       }
-      .padding(.horizontal, 28)
+      .padding(.horizontal, GameLayout.inset)
     }
   }
 
   private var game: some View {
     GeometryReader { geometry in
       let compact = geometry.size.height < 720
-      VStack(spacing: compact ? 6 : 10) {
-        HStack {
-          iconButton("arrow.left", label: "Return to workshop", id: "home") {
+      VStack(spacing: 8) {
+        HStack(spacing: 10) {
+          iconButton("chevron.left", label: "Home", id: "home") {
             store.pause()
             store.save()
             playing = false
           }
-          Spacer()
-          HStack(spacing: 9) {
-            Rectangle().fill(Palette.brass.opacity(0.4)).frame(width: 22, height: 0.5)
-            Text(
-              store.puzzle.sandbox
-                ? "OPEN TABLE" : "WORLD \(String(format: "%02d", store.puzzle.id + 1)) / 08"
-            )
-            .font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(2)
-            Rectangle().fill(Palette.brass.opacity(0.4)).frame(width: 22, height: 0.5)
+          VStack(alignment: .leading, spacing: 3) {
+            Text(store.puzzle.sandbox ? "Free build" : "World \(store.puzzle.id + 1) of 8")
+              .font(GameType.caption).foregroundStyle(Palette.muted)
+            Text(store.puzzle.title).font(GameType.section).foregroundStyle(Palette.cream)
+              .lineLimit(2).fixedSize(horizontal: false, vertical: true)
           }
-          Spacer()
+          .frame(maxWidth: .infinity, alignment: .leading)
           iconButton("questionmark", label: "How to play", id: "help") {
             store.pause()
             showHelp = true
           }
         }
-        .foregroundStyle(Palette.brass)
-        VStack(spacing: 4) {
-          Text(store.puzzle.title)
-            .font(.custom("Baskerville", size: compact ? 29 : 36))
-            .foregroundStyle(Palette.cream)
-            .minimumScaleFactor(0.75).lineLimit(1)
-          HStack(spacing: 7) {
+        .foregroundStyle(Palette.cream)
+        .frame(height: 66)
+        HStack {
+          HStack(spacing: 5) {
             ForEach(0..<store.puzzle.targets.count, id: \.self) { index in
               Image(systemName: index < store.bellsRung ? "bell.fill" : "bell")
                 .foregroundStyle(index < store.bellsRung ? Palette.brass : Palette.muted)
             }
-            Text("\(store.bellsRung) / \(store.puzzle.targets.count)")
-            Text("·").padding(.horizontal, 4)
-            Text(store.best == 0 ? "RING EVERY BELL" : "BEST \(store.best)")
+            Text("\(store.bellsRung) of \(store.puzzle.targets.count) bells").padding(.leading, 3)
           }
-          .font(.system(size: 10, weight: .medium, design: .monospaced))
-          .tracking(1).foregroundStyle(Palette.muted)
-          .accessibilityElement(children: .ignore)
-          .accessibilityLabel(
-            "\(store.bellsRung) of \(store.puzzle.targets.count) bells rung. Best score \(store.best)"
-          )
+          Spacer()
+          if store.best > 0 { Text("Best \(store.best)").monospacedDigit() }
         }
-        .fixedSize(horizontal: false, vertical: true)
+        .font(GameType.label).foregroundStyle(Palette.muted)
+        .frame(height: 20)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(
+          "\(store.bellsRung) of \(store.puzzle.targets.count) bells rung. Best score \(store.best)"
+        )
         TabletopView(
           puzzle: store.puzzle, pieces: store.allPieces, selected: store.selected,
           result: store.result, beat: store.beat, guides: store.guides,
@@ -193,8 +171,8 @@ struct ContentView: View {
             }
           }
         )
-        .frame(height: max(255, geometry.size.height - (compact ? 350 : 398)))
-        .padding(.horizontal, -18)
+        .frame(height: max(230, geometry.size.height - (compact ? 370 : 392)))
+        .padding(.horizontal, -GameLayout.inset)
         .layoutPriority(1)
         if store.phase == .result {
           resultPanel
@@ -205,7 +183,7 @@ struct ContentView: View {
         }
         Spacer(minLength: 0)
       }
-      .padding(.horizontal, 18)
+      .padding(.horizontal, GameLayout.inset)
       .padding(.bottom, 10)
     }
   }
@@ -213,11 +191,10 @@ struct ContentView: View {
   private func editingPanel(compact: Bool) -> some View {
     VStack(spacing: compact ? 6 : 10) {
       HStack(alignment: .top, spacing: 8) {
-        Rectangle().fill(Palette.brass).frame(width: 2, height: 30)
         Text(store.message)
-          .font(.system(size: compact ? 12 : 13)).lineSpacing(2)
-          .foregroundStyle(Palette.cream.opacity(0.86))
-          .frame(maxWidth: .infinity, minHeight: 36, alignment: .leading)
+          .font(GameType.label).lineSpacing(2)
+          .foregroundStyle(Palette.cream)
+          .frame(maxWidth: .infinity, minHeight: 40, alignment: .leading)
           .fixedSize(horizontal: false, vertical: true)
           .accessibilityIdentifier("context-message")
       }
@@ -228,35 +205,37 @@ struct ContentView: View {
           } label: {
             VStack(spacing: 3) {
               HStack(alignment: .top, spacing: 5) {
-                PieceGlyph(kind: kind).frame(width: 34, height: compact ? 24 : 30)
+                PieceGlyph(kind: kind).frame(width: 30, height: 24)
                 Spacer(minLength: 0)
                 Text(store.puzzle.sandbox ? "∞" : "\(store.remaining(kind))")
-                  .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                  .font(GameType.label).monospacedDigit()
               }
-              Text(kind.title.uppercased())
-                .font(.system(size: 9, weight: .semibold, design: .monospaced)).tracking(1)
-                .frame(maxWidth: .infinity, alignment: .leading)
+              HStack(spacing: 2) {
+                Text(kind.title).font(GameType.label)
+                Spacer(minLength: 0)
+                if store.tool == kind {
+                  Image(systemName: "checkmark").font(.system(size: 9, weight: .bold))
+                }
+              }
             }
             .padding(.horizontal, 10)
             .frame(maxWidth: .infinity)
-            .frame(height: compact ? 56 : 66)
+            .frame(height: compact ? 60 : 66)
             .foregroundStyle(
               store.tool == kind
-                ? Palette.ink : Palette.cream.opacity(store.remaining(kind) == 0 ? 0.55 : 0.85)
+                ? Palette.ink : store.remaining(kind) == 0 ? Palette.muted : Palette.cream
             )
             .background(
-              store.tool == kind ? Palette.cream : Color.black.opacity(0.17),
-              in: RoundedRectangle(cornerRadius: 6)
+              store.tool == kind ? Palette.cream : Palette.surface,
+              in: RoundedRectangle(cornerRadius: GameLayout.cornerRadius)
             )
-            .overlay(
-              RoundedRectangle(cornerRadius: 6).strokeBorder(
-                store.tool == kind ? Palette.brass : Palette.cream.opacity(0.14), lineWidth: 1))
           }
           .buttonStyle(.plain)
           .accessibilityLabel(
             "\(kind.title), \(store.puzzle.sandbox ? "unlimited" : "\(store.remaining(kind)) remaining")"
           )
           .accessibilityIdentifier("piece-\(kind.rawValue)")
+          .accessibilityAddTraits(store.tool == kind ? .isSelected : [])
         }
       }
       HStack(spacing: 0) {
@@ -273,22 +252,22 @@ struct ContentView: View {
           toolButton("lightbulb", label: "Hint", id: "hint") { store.hint() }
         }
       }
-      primaryButton("Give it a nudge", icon: "play.fill", id: "trigger") { store.trigger() }
+      primaryButton("Start chain", icon: "play.fill", id: "trigger") { store.trigger() }
     }
   }
 
   private var playbackPanel: some View {
-    VStack(spacing: 15) {
-      Text(store.phase == .paused ? "A moment of stillness." : "And away they go…")
-        .font(.system(size: 22, weight: .regular, design: .serif)).foregroundStyle(Palette.cream)
+    VStack(alignment: .leading, spacing: 16) {
+      Text(store.phase == .paused ? "Chain paused" : "Chain in motion")
+        .font(GameType.section).foregroundStyle(Palette.cream)
       ProgressView(value: max(0, store.beat), total: Double(store.totalBeat) + 2)
-        .tint(Palette.brass).padding(.horizontal, 18)
+        .tint(Palette.brass)
       Text(
         store.phase == .paused
-          ? "Your chain is waiting right here."
-          : "Watch the porcelain ripple through your little world."
+          ? "Resume the chain, or return to editing."
+          : "Following the route from the trigger to each bell."
       )
-      .font(.system(size: 11)).foregroundStyle(Palette.muted)
+      .font(GameType.body).foregroundStyle(Palette.muted)
       HStack {
         secondaryButton("Edit board", icon: "arrow.uturn.backward", id: "edit-running") {
           store.editAgain()
@@ -301,85 +280,62 @@ struct ContentView: View {
         }
       }
     }
-    .padding(.vertical, 22)
+    .padding(.vertical, 16)
   }
 
   private var resultPanel: some View {
     let won = store.result?.won == true
-    return VStack(spacing: 10) {
-      HStack {
-        Text(won ? "THE CHAIN IS COMPLETE" : "BACK TO THE DRAWING BOARD")
-          .font(.system(size: 9, weight: .semibold, design: .monospaced)).tracking(1.4)
-        Spacer()
-        Text(String(format: "№ %02d", store.puzzle.id + 1))
-          .font(.system(size: 10, design: .monospaced))
+    return VStack(alignment: .leading, spacing: 12) {
+      Rectangle().fill(Palette.separator).frame(height: 0.5)
+      Label(
+        won ? "All bells rung" : "Chain stopped", systemImage: won ? "checkmark" : "stop.circle"
+      )
+      .font(GameType.section).foregroundStyle(won ? Palette.success : Palette.failure)
+      if !won {
+        Text(
+          store.firstFailure.flatMap { store.result?.failures[$0] }
+            ?? "Connect every bell and try again."
+        )
+        .font(GameType.label).foregroundStyle(Palette.cream)
+        .fixedSize(horizontal: false, vertical: true)
       }
-      .foregroundStyle(Palette.ink.opacity(0.7))
-      HStack(alignment: .top) {
-        VStack(alignment: .leading, spacing: 5) {
-          Text(won ? "Beautifully set in motion." : "One more little nudge.")
-            .font(.custom("Baskerville-Italic", size: 26))
-            .minimumScaleFactor(0.8).lineLimit(1)
-          Text(
-            won
-              ? "Every bell has a story. You rang them all."
-              : store.firstFailure.flatMap { store.result?.failures[$0] }
-                ?? "Connect every bell and try again."
-          )
-          .font(.system(size: 12)).fixedSize(horizontal: false, vertical: true).lineSpacing(2)
-        }
-        Spacer(minLength: 0)
-        Image(systemName: won ? "seal" : "arrow.triangle.turn.up.right.diamond")
-          .font(.system(size: 27, weight: .ultraLight)).foregroundStyle(Palette.ink)
-      }
-      .foregroundStyle(Palette.ink)
       HStack {
-        metric("\(store.result?.chainLength ?? 0)", caption: "DOMINOES")
+        metric("\(store.result?.chainLength ?? 0)", caption: "Dominoes")
         Spacer()
-        metric("\(store.currentScore)", caption: "POINTS")
+        metric("\(store.currentScore)", caption: "Points")
         Spacer()
         metric(
-          "\(store.result?.reached.count ?? 0)/\(store.puzzle.targets.count)", caption: "BELLS")
+          "\(store.result?.reached.count ?? 0)/\(store.puzzle.targets.count)", caption: "Bells")
       }
-      Divider().overlay(Palette.ink.opacity(0.1))
       HStack(spacing: 10) {
-        Button {
+        secondaryButton(
+          won ? "Replay" : "Edit board", icon: "arrow.uturn.backward", id: "replay"
+        ) {
           store.editAgain()
-        } label: {
-          Label(won ? "Replay" : "Keep building", systemImage: "arrow.uturn.backward")
-            .font(.system(size: 12, weight: .semibold)).frame(maxWidth: .infinity, minHeight: 43)
         }
-        .accessibilityIdentifier("replay")
-        .foregroundStyle(Palette.ink)
         if won {
-          Button {
+          secondaryButton("Share", icon: "square.and.arrow.up", id: "share") {
             share()
-          } label: {
-            Image(systemName: "square.and.arrow.up").frame(width: 44, height: 43)
           }
-          .foregroundStyle(Palette.ink)
-          .accessibilityLabel("Share finished board").accessibilityIdentifier("share")
+          .accessibilityLabel("Share finished board")
           if !store.puzzle.sandbox && store.puzzle.id < 7 {
             Button {
               start(store.puzzle.id + 1)
             } label: {
-              Label("Next", systemImage: "arrow.right")
-                .font(.system(size: 12, weight: .semibold)).frame(width: 83, height: 43)
-                .background(Palette.ink, in: RoundedRectangle(cornerRadius: 5))
-                .foregroundStyle(Palette.cream)
+              Text("Next world")
+                .font(GameType.label).frame(width: 105, height: GameLayout.controlHeight)
+                .background(
+                  Palette.coral, in: RoundedRectangle(cornerRadius: GameLayout.cornerRadius)
+                )
+                .foregroundStyle(Palette.ink)
             }
+            .buttonStyle(WorkshopPressStyle())
             .accessibilityIdentifier("next")
           }
         }
       }
     }
-    .padding(17)
-    .background(Palette.cream, in: RoundedRectangle(cornerRadius: 7))
-    .overlay(
-      RoundedRectangle(cornerRadius: 4).strokeBorder(Palette.brass.opacity(0.6), lineWidth: 0.7)
-        .padding(5)
-        .allowsHitTesting(false)
-    )
+    .padding(.top, 4)
     .accessibilityIdentifier(won ? "success-result" : "failure-result")
   }
 
@@ -387,10 +343,8 @@ struct ContentView: View {
     NavigationStack {
       ScrollView {
         VStack(alignment: .leading, spacing: 0) {
-          Text("The afternoon\ncollection.").font(.custom("Baskerville", size: 42))
-            .padding(.bottom, 8)
-          Text("A quiet collection of small, satisfying machines.")
-            .font(.system(size: 13)).foregroundStyle(.secondary).padding(.bottom, 24)
+          Text("\(store.completed) of 8 worlds completed")
+            .font(.body).foregroundStyle(.secondary).padding(.bottom, 16)
           ForEach(Puzzle.all.filter { !$0.sandbox }) { puzzle in
             let locked = puzzle.id > store.unlocked
             Button {
@@ -399,32 +353,36 @@ struct ContentView: View {
             } label: {
               HStack(spacing: 17) {
                 Text(String(format: "%02d", puzzle.id + 1))
-                  .font(.system(size: 28, weight: .regular, design: .serif)).foregroundStyle(
-                    Palette.brass)
+                  .font(GameType.section).monospacedDigit().foregroundStyle(Palette.ink)
                 VStack(alignment: .leading, spacing: 4) {
-                  Text(puzzle.title).font(.system(size: 17, weight: .medium, design: .serif))
-                  Text(locked ? "Complete the previous world to open" : progressCaption(puzzle))
-                    .font(.system(size: 12)).foregroundStyle(.secondary)
+                  Text(puzzle.title).font(.headline)
+                  Text(
+                    locked ? "Complete world \(puzzle.id) to unlock" : progressCaption(puzzle)
+                  )
+                  .font(.subheadline).foregroundStyle(.secondary)
+                  .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer()
                 Image(
                   systemName: locked
                     ? "lock"
                     : store.progress.scores[String(puzzle.id)] == nil
-                      ? "arrow.right" : "checkmark.seal")
+                      ? "chevron.right" : "checkmark")
               }
               .frame(minHeight: 70)
               .foregroundStyle(Palette.ink)
-              .opacity(locked ? 0.5 : 1)
+              .padding(.vertical, 8)
             }
             .disabled(locked)
             .accessibilityIdentifier("world-\(puzzle.id)")
             Divider()
           }
         }
-        .padding(24)
+        .padding(GameLayout.inset)
       }
       .background(Palette.cream)
+      .navigationTitle("Choose a world")
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) { Button("Done") { showCollection = false } }
       }
@@ -434,22 +392,22 @@ struct ContentView: View {
   private var settings: some View {
     NavigationStack {
       Form {
-        Section("A little atmosphere") {
+        Section("Sound and display") {
           Toggle("Sound effects", isOn: $store.sound).accessibilityIdentifier("sound-toggle")
-          Toggle("Gentle haptics", isOn: $store.haptics).accessibilityIdentifier("haptics-toggle")
-          Toggle("Blueprint guides", isOn: $store.guides).accessibilityIdentifier("guides-toggle")
+          Toggle("Haptic feedback", isOn: $store.haptics).accessibilityIdentifier("haptics-toggle")
+          Toggle("Placement guides", isOn: $store.guides).accessibilityIdentifier("guides-toggle")
         }
         Section {
           Text(
-            "Progress and unfinished boards are saved on this iPhone. No account, no clocks, no rush."
+            "Scores and unfinished boards are saved on this iPhone."
           )
           Text(
             "Domino Daydream follows your system Reduce Motion preference. Audio and haptics depend on device settings."
           )
         }
-        .font(.system(size: 13))
+        .font(.subheadline)
       }
-      .navigationTitle("Make yourself at home")
+      .navigationTitle("Settings")
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .topBarTrailing) { Button("Done") { showSettings = false } }
@@ -462,33 +420,33 @@ struct ContentView: View {
     NavigationStack {
       ScrollView {
         VStack(alignment: .leading, spacing: 22) {
-          Text("A small nudge.\nA lovely ripple.").font(
-            .system(size: 36, weight: .regular, design: .serif))
+          Text("Connect the trigger to every bell.").font(.title3.weight(.semibold))
           Text(
             "Choose a piece from the tray, then tap a dotted socket. Tap it again to select it; Rotate turns its open edges clockwise."
           )
           ForEach(PieceKind.allCases) { kind in
             HStack(alignment: .top, spacing: 16) {
-              Image(systemName: kind.symbol).font(.system(size: 22)).frame(width: 30)
-                .foregroundStyle(Palette.coral)
+              PieceGlyph(kind: kind).frame(width: 34, height: 30).foregroundStyle(Palette.ink)
               VStack(alignment: .leading, spacing: 5) {
                 Text(kind.title).bold()
-                Text(pieceHelp(kind)).font(.system(size: 13)).foregroundStyle(.secondary)
+                Text(pieceHelp(kind)).font(.subheadline).foregroundStyle(.secondary)
               }
             }
           }
           Text(
             "Ring every brass bell in one chain. A closed edge or an empty socket stops that branch. Hints cost 75 points; each retry after the first costs 25. Undo is free."
           )
-          .font(.system(size: 13))
+          .font(.subheadline)
           Text(
             "Need a blueprint? Select a socket and tap Hint. It tells you the piece and how many clockwise quarter turns to make from its tray position."
           )
-          .font(.system(size: 13))
+          .font(.subheadline)
         }
-        .padding(26)
+        .padding(GameLayout.inset)
       }
       .foregroundStyle(Palette.ink).background(Palette.cream)
+      .navigationTitle("How to play")
+      .navigationBarTitleDisplayMode(.inline)
       .toolbar { ToolbarItem(placement: .topBarTrailing) { Button("Got it") { showHelp = false } } }
     }
   }
@@ -509,6 +467,15 @@ struct ContentView: View {
     return "\(puzzle.sockets.count) pieces to place · \(puzzle.targets.count) bells"
   }
 
+  private func previewPieces(for puzzle: Puzzle) -> [Cell: Piece] {
+    let draft = store.progress.drafts[String(puzzle.id)]
+    let saved = puzzle.sockets.compactMap { cell -> (Cell, Piece)? in
+      guard let piece = draft?.placed[cell.id] else { return nil }
+      return (cell, piece)
+    }
+    return puzzle.fixed.merging(Dictionary(uniqueKeysWithValues: saved)) { fixed, _ in fixed }
+  }
+
   private func start(_ index: Int) {
     store.load(index)
     playing = true
@@ -518,21 +485,23 @@ struct ContentView: View {
     sharePayload = SharePayload.make(
       puzzle: store.puzzle, pieces: store.allPieces, result: store.result, score: store.currentScore
     )
+    shareFailed = sharePayload == nil
   }
 
   private func metric(_ value: String, caption: String) -> some View {
     VStack(alignment: .leading, spacing: 2) {
-      Text(value).font(.system(size: 26, weight: .regular, design: .serif))
-      Text(caption).font(.system(size: 10, weight: .semibold, design: .monospaced)).tracking(0.5)
+      Text(value).font(GameType.number).foregroundStyle(Palette.cream)
+      Text(caption).font(GameType.caption).foregroundStyle(Palette.muted)
     }
-    .foregroundStyle(Palette.ink)
+    .accessibilityElement(children: .combine)
   }
 
   private func iconButton(_ symbol: String, label: String, id: String, action: @escaping () -> Void)
     -> some View
   {
     Button(action: action) {
-      Image(systemName: symbol).font(.system(size: 16, weight: .light)).frame(width: 44, height: 44)
+      Image(systemName: symbol).font(.system(size: 17, weight: .medium)).frame(
+        width: 44, height: 44)
     }
     .buttonStyle(.plain).accessibilityLabel(label).accessibilityIdentifier(id)
   }
@@ -544,11 +513,12 @@ struct ContentView: View {
     Button(action: action) {
       HStack(spacing: 4) {
         Image(systemName: symbol).font(.system(size: 13))
-        Text(label).font(.system(size: 11, weight: .medium))
+        Text(label).font(GameType.caption)
       }
       .frame(maxWidth: .infinity, minHeight: 44)
-      .foregroundStyle(Palette.cream.opacity(disabled ? 0.5 : 0.85))
+      .foregroundStyle(disabled ? Palette.muted.opacity(0.6) : Palette.cream)
     }
+    .buttonStyle(WorkshopPressStyle())
     .disabled(disabled).accessibilityLabel(label).accessibilityIdentifier(id)
   }
 
@@ -556,27 +526,16 @@ struct ContentView: View {
     _ title: String, icon: String, id: String, action: @escaping () -> Void
   ) -> some View {
     Button(action: action) {
-      HStack(spacing: 14) {
-        Circle().fill(Palette.ink.opacity(0.3)).frame(width: 4, height: 4)
-        Text(title).font(.system(size: 14, weight: .semibold)).tracking(0.3)
+      HStack(spacing: 12) {
+        Text(title).font(GameType.action)
         Spacer()
-        Image(systemName: icon).font(.system(size: 14, weight: .medium))
-          .frame(width: 30, height: 30)
-          .overlay(Circle().stroke(Palette.ink.opacity(0.25), lineWidth: 0.7))
+        Image(systemName: icon).font(.system(size: 15, weight: .semibold))
       }
-      .foregroundStyle(Palette.ink).padding(.horizontal, 17).frame(height: 54)
+      .foregroundStyle(Palette.ink).padding(.horizontal, 16)
+      .frame(height: GameLayout.controlHeight)
       .background(
-        LinearGradient(
-          colors: [Color(hex: 0xF1C08F), Palette.coral],
-          startPoint: .top, endPoint: .bottom),
-        in: RoundedRectangle(cornerRadius: 7)
+        Palette.coral, in: RoundedRectangle(cornerRadius: GameLayout.cornerRadius)
       )
-      .overlay(
-        RoundedRectangle(cornerRadius: 7).strokeBorder(Palette.cream.opacity(0.4), lineWidth: 0.7)
-      )
-      .background {
-        RoundedRectangle(cornerRadius: 7).fill(.black.opacity(0.23)).offset(y: 4)
-      }
     }
     .buttonStyle(WorkshopPressStyle()).accessibilityIdentifier(id)
   }
@@ -586,14 +545,28 @@ struct ContentView: View {
   ) -> some View {
     Button(action: action) {
       Label(title, systemImage: icon)
-        .font(.system(size: 12, weight: .medium))
-        .frame(maxWidth: .infinity, minHeight: 45)
+        .font(GameType.label)
+        .frame(maxWidth: .infinity, minHeight: GameLayout.controlHeight)
         .foregroundStyle(Palette.cream)
-        .overlay(alignment: .bottom) {
-          Rectangle().fill(Palette.brass.opacity(0.25)).frame(height: 0.5)
-        }
     }
-    .buttonStyle(.plain).accessibilityIdentifier(id)
+    .buttonStyle(WorkshopPressStyle()).accessibilityIdentifier(id)
+  }
+
+  private func navigationRow(
+    _ title: String, detail: String, id: String, action: @escaping () -> Void
+  ) -> some View {
+    Button(action: action) {
+      HStack {
+        VStack(alignment: .leading, spacing: 3) {
+          Text(title).font(GameType.action).foregroundStyle(Palette.cream)
+          Text(detail).font(GameType.caption).foregroundStyle(Palette.muted)
+        }
+        Spacer()
+        Image(systemName: "chevron.right").font(GameType.label).foregroundStyle(Palette.muted)
+      }
+      .frame(minHeight: 62).contentShape(Rectangle())
+    }
+    .buttonStyle(WorkshopPressStyle()).accessibilityIdentifier(id)
   }
 }
 
@@ -610,36 +583,37 @@ struct ResultCard: View {
         HStack {
           DominoMark().frame(width: 35, height: 35)
           Spacer()
-          Text("THE AFTERNOON COLLECTION\nA MACHINE BY YOU")
-            .font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(2)
-            .multilineTextAlignment(.trailing)
+          Text(
+            puzzle.sandbox
+              ? "Free build\nFinished route" : "World \(puzzle.id + 1) of 8\nFinished route"
+          )
+          .font(GameType.label)
+          .multilineTextAlignment(.trailing)
         }
         Rectangle().fill(Palette.ink.opacity(0.25)).frame(height: 0.7)
-        Text("Domino Daydream").font(.custom("Baskerville", size: 45))
+        Text("Domino Daydream").font(GameType.heading)
           .frame(maxWidth: .infinity, alignment: .leading)
         Image(uiImage: artwork).resizable().scaledToFit().frame(width: 510, height: 490)
-        Text(puzzle.title).font(.custom("Baskerville-Italic", size: 30))
+        Text(puzzle.title).font(GameType.title)
         HStack {
-          cardMetric("\(result?.chainLength ?? 0)", label: "DOMINOES")
+          cardMetric("\(result?.chainLength ?? 0)", label: "Dominoes")
           Spacer()
-          cardMetric("\(score)", label: "POINTS")
+          cardMetric("\(score)", label: "Points")
           Spacer()
-          cardMetric("\(result?.reached.count ?? 0)", label: "BELLS RUNG")
+          cardMetric("\(result?.reached.count ?? 0)", label: "Bells rung")
         }
         .padding(.horizontal, 25)
         Rectangle().fill(Palette.ink.opacity(0.25)).frame(height: 0.7)
-        Text("Made by hand. Set in motion.").font(.custom("Baskerville-Italic", size: 17))
       }
       .foregroundStyle(Palette.ink)
       .padding(36)
     }
-    .overlay(Rectangle().strokeBorder(Palette.brass, lineWidth: 1).padding(16))
   }
 
   private func cardMetric(_ value: String, label: String) -> some View {
     VStack(spacing: 3) {
-      Text(value).font(.custom("Baskerville", size: 36))
-      Text(label).font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(2)
+      Text(value).font(GameType.number)
+      Text(label).font(GameType.label)
     }
   }
 }
@@ -689,7 +663,7 @@ struct SharePayload: Identifiable {
     return SharePayload(
       image: image,
       text:
-        "A little nudge, a lovely ripple. \(result?.chainLength ?? 0) dominoes · \(score) points in Domino Daydream."
+        "\(puzzle.title): \(result?.chainLength ?? 0) dominoes · \(score) points in Domino Daydream."
     )
   }
 }
