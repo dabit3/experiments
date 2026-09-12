@@ -209,19 +209,25 @@ struct PlayView: View {
   @ObservedObject var model: GameModel
   @State private var scene: GameScene?
   @State private var padPressed = false
+  private var overlayPresented: Bool {
+    model.resultReady || (model.engine.phase == .paused && model.resumeCount == 0)
+  }
 
   var body: some View {
     ZStack {
       VStack(spacing: 14) {
-        HStack {
-          IconButton(icon: "arrow.left", label: "Back to tracks", action: model.home)
-          Spacer()
-          Eyebrow(text: model.practice ? "PRACTICE SESSION" : "NORMAL SESSION", color: Palette.cyan)
-          Spacer()
-          IconButton(icon: "pause.fill", label: "Pause") { model.pause() }
-            .disabled(model.engine.phase != .running)
+        if !overlayPresented {
+          HStack {
+            IconButton(icon: "arrow.left", label: "Back to tracks", action: model.home)
+            Spacer()
+            Eyebrow(
+              text: model.practice ? "PRACTICE SESSION" : "NORMAL SESSION", color: Palette.cyan)
+            Spacer()
+            IconButton(icon: "pause.fill", label: "Pause") { model.pause() }
+              .disabled(model.engine.phase != .running)
+          }
+          .padding(.horizontal, 24)
         }
-        .padding(.horizontal, 24)
         HStack(alignment: .center) {
           VStack(alignment: .leading, spacing: 7) {
             Eyebrow(
@@ -314,21 +320,21 @@ struct PlayView: View {
           .clipShape(RoundedRectangle(cornerRadius: 22))
           .overlay(RoundedRectangle(cornerRadius: 22).stroke(Palette.cyan.opacity(0.45)))
           .accessibilityHidden(true)
-          TouchPad(
-            label: model.engine.phase == .ready ? "Let's go" : "Tap to jump",
-            value:
-              "phase \(String(describing: model.engine.phase)), progress \(Int(model.engine.progress)), grounded \(model.engine.grounded), next \(Int(model.engine.nextHazardDistance ?? 9999))",
-            action: model.tap, pressed: { padPressed = $0 }
-          )
+          if !overlayPresented {
+            TouchPad(
+              label: model.engine.phase == .ready ? "Let's go" : "Tap to jump",
+              value:
+                "phase \(String(describing: model.engine.phase)), progress \(Int(model.engine.progress)), grounded \(model.engine.grounded), next \(Int(model.engine.nextHazardDistance ?? 9999))",
+              action: model.tap, pressed: { padPressed = $0 }
+            )
+          }
         }
         .frame(height: 112)
         .foregroundStyle(Palette.cyan)
         .padding(.horizontal, 24).padding(.bottom, 24)
       }.padding(.top, 6)
         .accessibilityElement(children: .contain)
-        .accessibilityHidden(
-          model.resultReady || (model.engine.phase == .paused && model.resumeCount == 0)
-        )
+        .accessibilityHidden(overlayPresented)
 
       if model.engine.phase == .paused && model.resumeCount == 0 { PauseOverlay(model: model) }
       if model.resultReady {
