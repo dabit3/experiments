@@ -470,7 +470,7 @@ struct ResultView: View {
             Text("BEST  \(progress.best[puzzle.id] ?? 0) / 3 STARS · SAVED ON THIS IPHONE")
               .font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.muted)
           }.padding(.horizontal, 24).padding(.bottom, 24)
-        }
+        }.clipped()
       }
     }
     .sheet(item: $share) { payload in
