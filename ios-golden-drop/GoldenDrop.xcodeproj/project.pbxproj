@@ -7,18 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F8A49E3212C1DD13DB92A7F /* finale.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2AC64C312A003DEFA4D7C331 /* finale.wav */; };
+		737A7DF5C7270D648A238D90 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FEA0F14FDB28C00F5F3F5E98 /* Assets.xcassets */; };
 		9F0A1B8641C687C9A3CFCE40 /* GoldenDropApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECDA205D3D2F5D685F508FE3 /* GoldenDropApp.swift */; };
+		ACD0CDF2ED272162BD1133B3 /* catch.wav in Resources */ = {isa = PBXBuildFile; fileRef = EAFB40D66D2A59E2242D9DF3 /* catch.wav */; };
 		D7FB1F0E939656751D301091 /* TheaterArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5368B36D3F4302BC4EC6F384 /* TheaterArt.swift */; };
 		DD71EEC281D628A3F7560858 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2ECB75A3A16B8F25C44575 /* GameStore.swift */; };
+		EA3D9CD9146E946240480DE2 /* launch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 30D58113E26B9BB29868DA28 /* launch.wav */; };
+		F3B53C7DFE08AB7C8373489A /* peg.wav in Resources */ = {isa = PBXBuildFile; fileRef = CF3101C37D52FB55C43F9D4D /* peg.wav */; };
 		FE1ED8B34D2A99FBC20BD05B /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303C62D1A189A112FBEF9375 /* GameRules.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1A156ADBB92E51DAA461CB17 /* GoldenDrop.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GoldenDrop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2AC64C312A003DEFA4D7C331 /* finale.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = finale.wav; sourceTree = "<group>"; };
 		303C62D1A189A112FBEF9375 /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
+		30D58113E26B9BB29868DA28 /* launch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = launch.wav; sourceTree = "<group>"; };
 		5368B36D3F4302BC4EC6F384 /* TheaterArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TheaterArt.swift; sourceTree = "<group>"; };
 		5B2ECB75A3A16B8F25C44575 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		CF3101C37D52FB55C43F9D4D /* peg.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = peg.wav; sourceTree = "<group>"; };
+		EAFB40D66D2A59E2242D9DF3 /* catch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = catch.wav; sourceTree = "<group>"; };
 		ECDA205D3D2F5D685F508FE3 /* GoldenDropApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldenDropApp.swift; sourceTree = "<group>"; };
+		FEA0F14FDB28C00F5F3F5E98 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -28,6 +38,18 @@
 				1A156ADBB92E51DAA461CB17 /* GoldenDrop.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A0F7964A46C37987FAB33E19 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FEA0F14FDB28C00F5F3F5E98 /* Assets.xcassets */,
+				EAFB40D66D2A59E2242D9DF3 /* catch.wav */,
+				2AC64C312A003DEFA4D7C331 /* finale.wav */,
+				30D58113E26B9BB29868DA28 /* launch.wav */,
+				CF3101C37D52FB55C43F9D4D /* peg.wav */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		E4B5426C877FAA9B27BF1995 /* Sources */ = {
@@ -44,6 +66,7 @@
 		F4C76463C5FBEDFBB5BA98C8 = {
 			isa = PBXGroup;
 			children = (
+				A0F7964A46C37987FAB33E19 /* Resources */,
 				E4B5426C877FAA9B27BF1995 /* Sources */,
 				8BF2495A8B2F933B3739DA74 /* Products */,
 			);
@@ -57,6 +80,7 @@
 			buildConfigurationList = 658C18CD07EFF2229E156119 /* Build configuration list for PBXNativeTarget "GoldenDrop" */;
 			buildPhases = (
 				D5B615DFC59157CB89D36E56 /* Sources */,
+				CE7B2BB3EF7C60A55279CB73 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -101,6 +125,21 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CE7B2BB3EF7C60A55279CB73 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				737A7DF5C7270D648A238D90 /* Assets.xcassets in Resources */,
+				ACD0CDF2ED272162BD1133B3 /* catch.wav in Resources */,
+				6F8A49E3212C1DD13DB92A7F /* finale.wav in Resources */,
+				EA3D9CD9146E946240480DE2 /* launch.wav in Resources */,
+				F3B53C7DFE08AB7C8373489A /* peg.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D5B615DFC59157CB89D36E56 /* Sources */ = {
@@ -254,7 +293,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = studio.celestial.goldendrop;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -272,7 +311,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = studio.celestial.goldendrop;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
