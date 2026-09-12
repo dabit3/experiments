@@ -1,6 +1,7 @@
 import SwiftUI
 
 enum Ink {
+  static let paper = Color(red: 0.95, green: 0.97, blue: 0.95)
   static let navy = Color(red: 0.08, green: 0.17, blue: 0.19)
   static let cream = Color(red: 0.98, green: 0.95, blue: 0.87)
   static let sea = Color(red: 0.25, green: 0.62, blue: 0.59)

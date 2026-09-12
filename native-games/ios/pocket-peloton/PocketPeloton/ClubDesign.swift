@@ -1,5 +1,27 @@
 import SwiftUI
 
+enum RaceType {
+  static let title = Font.system(.title, design: .default, weight: .bold)
+  static let heading = Font.system(.title3, design: .default, weight: .semibold)
+  static let body = Font.system(.subheadline, design: .default, weight: .regular)
+  static let label = Font.system(.subheadline, design: .default, weight: .semibold)
+  static let caption = Font.system(.caption, design: .default, weight: .medium)
+  static let action = Font.system(.body, design: .default, weight: .semibold)
+  static let instrument = Font.system(size: 30, weight: .semibold)
+}
+
+enum RaceLayout {
+  static let gutter: CGFloat = 20
+  static let corner: CGFloat = 8
+  static let controlHeight: CGFloat = 56
+}
+
+struct RaceRule: View {
+  var body: some View {
+    Rectangle().fill(Ink.navy.opacity(0.18)).frame(height: 1).accessibilityHidden(true)
+  }
+}
+
 struct ClubEmblem: View {
   var size: CGFloat = 32
 
@@ -62,10 +84,13 @@ struct CourseTrace: View {
 }
 
 struct ClubButtonStyle: ButtonStyle {
+  @Environment(\.accessibilityReduceMotion) private var reducedMotion
+  @Environment(\.isEnabled) private var enabled
+
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .scaleEffect(configuration.isPressed ? 0.975 : 1)
-      .opacity(configuration.isPressed ? 0.85 : 1)
+      .scaleEffect(configuration.isPressed && !reducedMotion ? 0.985 : 1)
+      .opacity(!enabled ? 0.4 : (configuration.isPressed ? 0.75 : 1))
   }
 }
 

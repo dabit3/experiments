@@ -71,7 +71,7 @@ try render(size: 1024, target: root.appendingPathComponent("AppIcon.appiconset/A
 try render(size: 256, target: root.appendingPathComponent("LaunchMark.imageset/LaunchMark.png")) {
   rect(0, 0, 256, 256, cream)
   let text = "P."
-  let font = NSFont(name: "Georgia-BoldItalic", size: 155) ?? NSFont.boldSystemFont(ofSize: 155)
+  let font = NSFont.systemFont(ofSize: 155, weight: .heavy)
   text.draw(at: NSPoint(x: 27, y: 40), withAttributes: [.font: font, .foregroundColor: navy])
   rect(39, 37, 170, 8, red)
 }
