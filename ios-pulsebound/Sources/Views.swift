@@ -325,6 +325,9 @@ struct PlayView: View {
         .foregroundStyle(Palette.cyan)
         .padding(.horizontal, 24).padding(.bottom, 24)
       }.padding(.top, 6)
+        .accessibilityHidden(
+          model.resultReady || (model.engine.phase == .paused && model.resumeCount == 0)
+        )
 
       if model.engine.phase == .paused && model.resumeCount == 0 { PauseOverlay(model: model) }
       if model.resultReady {
@@ -429,7 +432,7 @@ struct ResultOverlay: View {
         .accessibilityIdentifier("retry")
         Button("Back to tracks", action: model.home).buttonStyle(SecondaryButtonStyle())
       }.padding(.horizontal, 28).padding(.vertical, 20)
-    }.accessibilityIdentifier("results")
+    }
   }
 
   private func stat(_ name: String, value: String) -> some View {
