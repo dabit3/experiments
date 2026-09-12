@@ -155,8 +155,27 @@ struct Diorama: View, Animatable {
     context.stroke(
       river, with: .color(Color(hex: 0x86C5BA)),
       style: StrokeStyle(lineWidth: 23 * s, lineCap: .round))
-    context.stroke(
-      river, with: .color(.white.opacity(0.5)), style: StrokeStyle(lineWidth: 1, dash: [13, 9]))
+    for ripple in 0..<15 {
+      let t = Double(ripple) / 15 + 0.015
+      let u = 1 - t
+      let x =
+        (u * u * u * 0.04 + 3 * u * u * t * 0.65 + 3 * u * t * t * 0.22 + t * t * t * 0.96)
+        * size.width
+      let y =
+        (u * u * u * 0.64 + 3 * u * u * t * 0.5 + 3 * u * t * t * 1.0 + t * t * t * 0.82)
+        * size.height
+      let drift = CGFloat((ripple * 13) % 17 - 8) * s
+      var current = Path()
+      current.move(to: CGPoint(x: x - 4 * s, y: y + drift))
+      current.addQuadCurve(
+        to: CGPoint(x: x + CGFloat(3 + ripple % 5) * s, y: y + drift - 1),
+        control: CGPoint(x: x, y: y + drift - 2 * s))
+      context.stroke(current, with: .color(.white.opacity(0.45)), lineWidth: 0.9 * s)
+      if ripple % 4 == 0 {
+        let stone = CGPoint(x: x, y: y + 17 * s)
+        context.fill(diamond(stone, 5 + CGFloat(ripple % 3), 3), with: .color(Earth.sand))
+      }
+    }
 
     for index in heights.indices {
       let base = p.point(level.route[index])
@@ -175,44 +194,62 @@ struct Diorama: View, Animatable {
       let west = offset(top, -44, 0)
       let south = offset(top, 0, 24)
       let east = offset(top, 44, 0)
-      let leftFace = polygon([west, south, offset(south, 0, depth), offset(west, 0, depth)])
-      let rightFace = polygon([south, east, offset(east, 0, depth), offset(south, 0, depth)])
+      let weathering = CGFloat(index % 3)
+      let leftRim = [west, offset(top, -29, 10 + weathering), offset(top, -17, 13), south]
+      let rightRim = [south, offset(top, 15, 14 - weathering), offset(top, 31, 9), east]
+      let rim = leftRim + rightRim.dropFirst()
+      let plateau = polygon(
+        rim + [offset(top, 28, -10), offset(top, 0, -24), offset(top, -26, -12)])
+      let leftFace = polygon(leftRim + leftRim.reversed().map { offset($0, 0, depth) })
+      let rightFace = polygon(rightRim + rightRim.reversed().map { offset($0, 0, depth) })
       context.fill(leftFace, with: .color(Earth.copper))
       context.fill(rightFace, with: .color(Earth.clay))
       for band in 1...4 {
         let d = depth * CGFloat(band) / 5
         var line = Path()
-        line.move(to: offset(west, 0, d))
-        line.addLine(to: offset(south, 0, d + (band % 2 == 0 ? 2 : -1)))
-        line.addLine(to: offset(east, 0, d))
+        line.addLines(
+          rim.enumerated().map { step, point in
+            offset(point, 0, d + sin(Double(step + band + index)) * 1.4)
+          })
         context.stroke(
           line, with: .color(Earth.sand.opacity(band % 2 == 0 ? 0.55 : 0.25)),
-          lineWidth: band % 2 == 0 ? 3 * s : 1 * s)
+          lineWidth: band % 2 == 0 ? CGFloat(2 + index % 2) * s : 1 * s)
       }
       context.fill(
-        diamond(top, 44, 24),
+        plateau,
         with: .linearGradient(
           Gradient(colors: [Color(hex: 0xF0DCAD), Color(hex: 0xDABA82)]),
           startPoint: offset(top, -30, -15), endPoint: offset(top, 30, 24)))
       for ring in 0..<3 {
+        let contour = polygon(
+          (0..<24).map { step in
+            let angle = Double(step) * .pi / 12
+            let variation = 1 + sin(angle * 3 + Double(index)) * 0.12
+            return offset(
+              top, -7 + cos(angle) * Double(31 - ring * 7) * variation,
+              -4 + sin(angle) * Double(13 - ring * 3) * variation)
+          })
         context.stroke(
-          diamond(offset(top, -8, -4), CGFloat(32 - ring * 8), CGFloat(16 - ring * 4)),
+          contour,
           with: .color(Color(hex: 0xB69B66).opacity(0.32)), lineWidth: 0.6 * s)
       }
       if selected == index {
-        context.stroke(diamond(top, 45, 25), with: .color(Earth.teal), lineWidth: 3 * s)
-        context.stroke(
-          diamond(top, 49, 28), with: .color(Earth.teal.opacity(0.22)), lineWidth: 2 * s)
+        context.stroke(plateau, with: .color(Earth.teal.opacity(0.22)), lineWidth: 7 * s)
+        context.stroke(plateau, with: .color(Earth.teal), lineWidth: 2.5 * s)
       }
-      for tree in 0..<2 {
+      for rock in 0..<(1 + index % 3) {
+        let center = offset(top, -12 + CGFloat(rock) * 6, -12 + CGFloat((rock + index) % 3))
+        context.fill(diamond(center, 2.5, 1.8), with: .color(Color(hex: 0xA89A78).opacity(0.7)))
+      }
+      for tree in 0..<(index % 3 == 2 ? 1 : 2) {
         let trunk = offset(top, tree == 0 ? -24 : 23, tree == 0 ? -3 : -5)
         var stem = Path()
         stem.move(to: trunk)
         stem.addLine(to: offset(trunk, 0, -11))
         context.stroke(stem, with: .color(Earth.copper), lineWidth: 2 * s)
         for tier in 0..<3 {
-          let y = CGFloat(tier) * -5
-          let width = CGFloat(6 - tier)
+          let y = CGFloat(tier) * CGFloat(-4 - index % 2)
+          let width = CGFloat(5 + (index + tree) % 3 - tier)
           context.fill(
             polygon([
               offset(trunk, -width, y - 4), offset(trunk, width, y - 4), offset(trunk, 0, y - 15),

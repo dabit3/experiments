@@ -269,9 +269,9 @@ struct ExpeditionView: View {
         Image(systemName: "circle").foregroundStyle(Earth.teal)
         Text("EXIT")
       }
-      .font(.system(size: 8, weight: .bold))
-      .tracking(0.7)
-      .foregroundStyle(Earth.muted)
+      .font(.system(size: 10, weight: .bold))
+      .tracking(0.2)
+      .foregroundStyle(Earth.ink.opacity(0.8))
       .padding(.bottom, 4)
       HStack(spacing: 12) {
         adjustButton(delta: -1)
@@ -280,7 +280,7 @@ struct ExpeditionView: View {
           Text("Layer \(game.heights[game.selected])")
             .font(.system(size: 22, design: .serif))
           Text(game.level.fixed.contains(game.selected) ? "Anchored" : "Ready to shape")
-            .font(.system(size: 10, weight: .medium))
+            .font(.system(size: 12, weight: .medium))
             .foregroundStyle(Earth.muted)
         }
         .frame(maxWidth: .infinity)
@@ -302,10 +302,10 @@ struct ExpeditionView: View {
         }
       }
       Text(
-        "Best route: \(game.level.par) \(game.level.par == 1 ? "shift" : "shifts")  ·  Anchored ends stay in place"
+        "Best route: \(game.level.par) \(game.level.par == 1 ? "shift" : "shifts") · Ends are anchored"
       )
-      .font(.system(size: 10, weight: .medium))
-      .foregroundStyle(Earth.muted)
+      .font(.system(size: 12, weight: .medium))
+      .foregroundStyle(Earth.ink.opacity(0.8))
     }
   }
 
@@ -363,6 +363,7 @@ struct ExpeditionView: View {
       HStack(spacing: 8) {
         Rectangle().fill(Earth.copper.opacity(0.4)).frame(height: 1)
         eyebrow("LANDSCAPE RESTORED")
+          .fixedSize()
         Rectangle().fill(Earth.copper.opacity(0.4)).frame(height: 1)
       }
       .padding(.top, 25)
