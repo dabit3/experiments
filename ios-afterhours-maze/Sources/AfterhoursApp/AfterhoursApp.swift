@@ -260,8 +260,8 @@ struct ArcadeView: View {
       }
       .padding(.horizontal, 4).padding(.top, compact ? 10 : 14).padding(.bottom, compact ? 10 : 12)
       HStack(spacing: 10) {
-        mazeChoice(1, name: "Blue Hour", label: "01 · ORIGINAL")
-        mazeChoice(2, name: "Velvet Circuit", label: "02 · DETOUR")
+        mazeChoice(1, name: "Blue Hour", label: "MAZE 01")
+        mazeChoice(2, name: "Velvet Circuit", label: "MAZE 02")
       }
       .padding(.bottom, compact ? 10 : 14)
       primary("Enter the maze", icon: "arrow.right", id: "start") { arcade.start() }
@@ -325,6 +325,7 @@ struct ArcadeView: View {
           .accessibilityHidden(true)
         VStack(alignment: .leading, spacing: 4) {
           micro(label, color: selected ? accent : Palette.muted.opacity(0.8)).lineLimit(1)
+            .minimumScaleFactor(0.7)
           Text(name).font(.system(size: 15, weight: .semibold, design: .serif)).italic()
             .foregroundStyle(selected ? Palette.pearl : Palette.muted)
             .lineLimit(1).minimumScaleFactor(0.6)
