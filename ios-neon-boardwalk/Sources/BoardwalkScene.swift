@@ -15,6 +15,7 @@ final class BoardwalkScene {
   private let shadow = SCNNode()
   private let shield = SCNNode()
   private let world = SCNNode()
+  private let wheel = SCNNode()
   private var scenery: [(SCNNode, Float)] = []
   private var obstacles: [Int: SCNNode] = [:]
   private var pickups: [Int: SCNNode] = [:]
@@ -88,7 +89,7 @@ final class BoardwalkScene {
   }
 
   private func sky() -> UIImage {
-    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 8, height: 1024))
+    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 1024))
     return renderer.image { context in
       let colors = [
         UIColor(red: 0.025, green: 0.035, blue: 0.13, alpha: 1).cgColor,
@@ -103,6 +104,36 @@ final class BoardwalkScene {
         context.cgContext.drawLinearGradient(
           gradient, start: .zero, end: CGPoint(x: 0, y: 1024), options: [])
       }
+      var seed: UInt64 = 0x5EED
+      func next(_ range: UInt64) -> CGFloat {
+        seed = seed &* 6_364_136_223_846_793_005 &+ 1_442_695_040_888_963_407
+        return CGFloat((seed >> 33) % range)
+      }
+      for _ in 0..<170 {
+        let x = next(512)
+        let y = next(380)
+        let size = 0.9 + next(3) * 0.5
+        let alpha = 0.2 + next(60) / 100
+        context.cgContext.setFillColor(UIColor(white: 1, alpha: alpha).cgColor)
+        context.cgContext.fillEllipse(in: CGRect(x: x, y: y, width: size, height: size))
+      }
+    }
+  }
+
+  private func halo(_ color: UIColor) -> UIImage {
+    UIGraphicsImageRenderer(size: CGSize(width: 256, height: 256)).image { context in
+      let colors = [
+        color.withAlphaComponent(0.55).cgColor, color.withAlphaComponent(0.12).cgColor,
+        color.withAlphaComponent(0).cgColor,
+      ]
+      if let gradient = CGGradient(
+        colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray,
+        locations: [0, 0.45, 1])
+      {
+        context.cgContext.drawRadialGradient(
+          gradient, startCenter: CGPoint(x: 128, y: 128), startRadius: 0,
+          endCenter: CGPoint(x: 128, y: 128), endRadius: 128, options: [])
+      }
     }
   }
 
@@ -111,9 +142,27 @@ final class BoardwalkScene {
     let sunlight = material(UIColor(red: 1, green: 0.60, blue: 0.39, alpha: 1), glow: 0.7)
     sunlight.lightingModel = .constant
     sun.geometry?.materials = [sunlight]
-    sun.position = SCNVector3(-11, 11, -85)
+    sun.position = SCNVector3(-15, 4.6, -85)
     sun.scale.z = 0.1
     world.addChildNode(sun)
+    let glow = SCNPlane(width: 30, height: 30)
+    let glowMaterial = SCNMaterial()
+    glowMaterial.lightingModel = .constant
+    glowMaterial.diffuse.contents = halo(UIColor(red: 1, green: 0.55, blue: 0.45, alpha: 1))
+    glowMaterial.writesToDepthBuffer = false
+    glowMaterial.blendMode = .add
+    glow.materials = [glowMaterial]
+    let haloNode = SCNNode(geometry: glow)
+    haloNode.position = SCNVector3(-15, 5.2, -86)
+    world.addChildNode(haloNode)
+    for band in 0..<4 {
+      let stripe = box(
+        world, SCNVector3(14, 0.35 + Float(band) * 0.2, 0.05),
+        SCNVector3(-15, 1.6 + Float(band) * 1.55, -84.9),
+        UIColor(red: 0.25, green: 0.10, blue: 0.30, alpha: 1), radius: 0)
+      stripe.geometry?.firstMaterial?.lightingModel = .constant
+    }
+    createWheel()
     box(
       world, SCNVector3(180, 0.15, 200), SCNVector3(-42, -0.6, -70),
       UIColor(red: 0.055, green: 0.16, blue: 0.25, alpha: 1), radius: 0)
@@ -136,9 +185,9 @@ final class BoardwalkScene {
       }
       box(block, SCNVector3(0.13, 1.4, 0.13), SCNVector3(-5.15, 0.7, -4), teal, glow: 0.2)
       box(block, SCNVector3(0.1, 0.1, 18), SCNVector3(-5.15, 1.25, -8), teal, glow: 0.25)
-      for strip in 0..<3 {
+      for strip in 0..<2 {
         let tint = index % 2 == 0 ? pink : teal
-        let surface = SCNPlane(width: 1.8, height: CGFloat(6 + strip))
+        let surface = SCNPlane(width: 1.6, height: CGFloat(6 + strip * 2))
         let reflected = SCNMaterial()
         reflected.lightingModel = .constant
         reflected.diffuse.contents = reflection(tint)
@@ -147,15 +196,47 @@ final class BoardwalkScene {
         let patch = SCNNode(geometry: surface)
         patch.eulerAngles.x = -.pi / 2
         patch.position = SCNVector3(
-          3.3 + Float((index + strip) % 3) * 0.3, 0.025, -Float(strip) * 5.4)
+          3.3 + Float((index + strip) % 3) * 0.3, 0.025, -1 - Float(strip) * 8.5)
         block.addChildNode(patch)
       }
     }
   }
 
+  private func createWheel() {
+    wheel.position = SCNVector3(-26, 11.5, -92)
+    world.addChildNode(wheel)
+    let rim = SCNTorus(ringRadius: 9.5, pipeRadius: 0.16)
+    rim.materials = [material(teal, glow: 1.2)]
+    let rimNode = SCNNode(geometry: rim)
+    rimNode.eulerAngles.x = .pi / 2
+    wheel.addChildNode(rimNode)
+    let inner = SCNTorus(ringRadius: 6.2, pipeRadius: 0.09)
+    inner.materials = [material(pink, glow: 0.9)]
+    let innerNode = SCNNode(geometry: inner)
+    innerNode.eulerAngles.x = .pi / 2
+    wheel.addChildNode(innerNode)
+    for spoke in 0..<12 {
+      let bar = box(
+        wheel, SCNVector3(0.1, 19, 0.1), SCNVector3Zero,
+        UIColor(red: 0.55, green: 0.85, blue: 0.95, alpha: 1), glow: 0.5, radius: 0)
+      bar.eulerAngles.z = Float(spoke) * .pi / 12
+      let cabin = box(
+        wheel, SCNVector3(0.9, 0.9, 0.7), SCNVector3Zero, spoke % 2 == 0 ? pink : teal, glow: 1,
+        radius: 0.2)
+      let angle = Float(spoke) * .pi * 2 / 12
+      cabin.position = SCNVector3(cos(angle) * 9.5, sin(angle) * 9.5, 0)
+    }
+    for x: Float in [-4.5, 4.5] {
+      let leg = box(
+        world, SCNVector3(0.35, 24, 0.35), SCNVector3(-26 + x, 0, -92.2),
+        UIColor(red: 0.10, green: 0.10, blue: 0.20, alpha: 1), radius: 0)
+      leg.eulerAngles.z = x < 0 ? -0.18 : 0.18
+    }
+  }
+
   private func reflection(_ color: UIColor) -> UIImage {
     UIGraphicsImageRenderer(size: CGSize(width: 128, height: 128)).image { context in
-      let colors = [color.withAlphaComponent(0.20).cgColor, color.withAlphaComponent(0).cgColor]
+      let colors = [color.withAlphaComponent(0.11).cgColor, color.withAlphaComponent(0).cgColor]
       if let gradient = CGGradient(
         colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray, locations: [0, 1])
       {
@@ -458,6 +539,7 @@ final class BoardwalkScene {
     shadow.opacity = CGFloat(0.65 - engine.jumpHeight * 0.15)
     shield.isHidden = !engine.isShielded
     shield.eulerAngles.y = Float(time * 0.4)
+    wheel.eulerAngles.z = Float(time * 0.12)
     skater.opacity = engine.graceTime > 0 && Int(time * 12) % 2 == 0 ? 0.45 : 1
     for item in engine.obstacles {
       let node: SCNNode

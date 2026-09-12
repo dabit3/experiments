@@ -8,6 +8,7 @@ final class GameStore: NSObject, ObservableObject {
   private(set) var engine = RunnerEngine()
   private(set) var record: RunSnapshot
   private(set) var newBest = false
+  private(set) var previousBest = 0
   private(set) var shieldBreakTime = 0.0
   @Published var showGuide = false
   @Published var sound: Bool {
@@ -96,6 +97,7 @@ final class GameStore: NSObject, ObservableObject {
       UINotificationFeedbackGenerator().notificationOccurred(.success)
     }
     if oldPhase == .running && engine.phase == .finished {
+      previousBest = record.bestDistance
       newBest = Int(engine.distance) > record.bestDistance
       record.bestDistance = max(record.bestDistance, Int(engine.distance))
       record.totalCoins += engine.coins

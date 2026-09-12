@@ -13,6 +13,32 @@ private enum Palette {
   static let pink = Color(red: 1, green: 0.35, blue: 0.63)
   static let navy = Color(red: 0.035, green: 0.055, blue: 0.12)
   static let muted = Color(red: 0.68, green: 0.75, blue: 0.82)
+  static let gold = Color(red: 1, green: 0.84, blue: 0.36)
+}
+
+private struct PressableStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .scaleEffect(configuration.isPressed ? 0.94 : 1)
+      .brightness(configuration.isPressed ? 0.12 : 0)
+      .animation(.spring(duration: 0.18), value: configuration.isPressed)
+  }
+}
+
+private struct NeonText: View {
+  let text: String
+  let size: CGFloat
+  let color: Color
+
+  var body: some View {
+    Text(text)
+      .font(.system(size: size, weight: .black, design: .rounded))
+      .italic()
+      .tracking(size > 50 ? -3 : -1.8)
+      .foregroundStyle(color)
+      .shadow(color: color.opacity(0.55), radius: size * 0.16)
+      .shadow(color: color.opacity(0.25), radius: size * 0.42)
+  }
 }
 
 struct BoardwalkView: View {
@@ -63,65 +89,93 @@ struct BoardwalkView: View {
       .padding(.top, 8)
       Spacer().frame(height: 17)
       VStack(alignment: .leading, spacing: 4) {
-        eyebrow("THE COAST IS YOURS", color: Palette.mint)
-        Text("NEON")
-          .font(.system(size: 60, weight: .black, design: .rounded))
-          .italic()
-          .tracking(-3)
+        HStack(spacing: 10) {
+          Rectangle().fill(Palette.mint).frame(width: 22, height: 1.5)
+          eyebrow("THE COAST IS YOURS", color: Palette.mint)
+        }
+        .padding(.bottom, 4)
+        NeonText(text: "NEON", size: 60, color: .white)
           .lineSpacing(-5)
-        Text("BOARDWALK")
-          .font(.system(size: 37, weight: .black, design: .rounded))
-          .italic()
-          .tracking(-1.8)
-          .foregroundStyle(Palette.mint)
+        NeonText(text: "BOARDWALK", size: 37, color: Palette.mint)
         Text("Chase the glow. Find your flow.")
           .font(.system(size: 15, weight: .medium))
           .foregroundStyle(.white.opacity(0.92))
           .padding(.horizontal, 12)
           .padding(.vertical, 9)
           .background(Palette.navy.opacity(0.82), in: Capsule())
+          .overlay(Capsule().strokeBorder(.white.opacity(0.1)))
           .padding(.top, 6)
       }
       .frame(maxWidth: .infinity, alignment: .leading)
       Spacer(minLength: 20)
-      VStack(spacing: 18) {
-        HStack {
-          Image(systemName: "laurel.leading").foregroundStyle(Palette.mint)
-          VStack(alignment: .leading, spacing: 3) {
-            eyebrow("PERSONAL BEST")
-            Text("\(game.record.bestDistance.formatted()) m")
-              .font(.system(size: 24, weight: .bold, design: .rounded))
-              .monospacedDigit()
+      VStack(spacing: 16) {
+        HStack(spacing: 0) {
+          HStack(spacing: 11) {
+            Image(systemName: "laurel.leading")
+              .font(.system(size: 20, weight: .semibold))
+              .foregroundStyle(Palette.mint)
+            VStack(alignment: .leading, spacing: 3) {
+              eyebrow("PERSONAL BEST")
+              Text("\(game.record.bestDistance.formatted()) m")
+                .font(.system(size: 23, weight: .bold, design: .rounded))
+                .monospacedDigit()
+            }
           }
           Spacer()
-          VStack(alignment: .trailing, spacing: 4) {
-            Text("\(game.record.totalCoins.formatted())")
-              .font(.system(size: 20, weight: .bold, design: .rounded))
-              .foregroundStyle(.yellow)
-            eyebrow("LIFETIME COINS")
+          Rectangle().fill(.white.opacity(0.12)).frame(width: 1, height: 34)
+          Spacer()
+          HStack(spacing: 11) {
+            VStack(alignment: .trailing, spacing: 3) {
+              eyebrow("LIFETIME COINS")
+              Text("\(game.record.totalCoins.formatted())")
+                .font(.system(size: 23, weight: .bold, design: .rounded))
+                .monospacedDigit()
+                .foregroundStyle(Palette.gold)
+            }
+            Image(systemName: "circle.inset.filled")
+              .font(.system(size: 18))
+              .foregroundStyle(Palette.gold)
           }
         }
-        .padding(.horizontal, 4)
+        .padding(.horizontal, 18)
+        .frame(height: 68)
+        .background(glass(radius: 20))
+        .accessibilityElement(children: .combine)
         primary("LET’S RIDE", icon: "arrow.right", action: game.start)
           .accessibilityIdentifier("startRun")
-        HStack(spacing: 6) {
-          Image(systemName: "hand.draw")
-          Text("Swipe to move · up to jump · down to slide")
-        }
-        .font(.system(size: 11, weight: .medium))
-        .foregroundStyle(Palette.muted)
         Button {
           game.showGuide = true
         } label: {
-          Text("How to ride").font(.system(size: 14, weight: .semibold))
-            .underline()
-            .frame(minHeight: 36)
+          HStack(spacing: 7) {
+            Image(systemName: "hand.draw").font(.system(size: 13, weight: .semibold))
+            Text("How to ride").font(.system(size: 14, weight: .semibold))
+          }
+          .foregroundStyle(.white.opacity(0.92))
+          .padding(.horizontal, 20)
+          .frame(height: 46)
+          .background(glass(radius: 23))
         }
+        .buttonStyle(PressableStyle())
         .accessibilityIdentifier("howToRide")
+        Text("Swipe to move · up to jump · down to slide")
+          .font(.system(size: 11, weight: .medium))
+          .foregroundStyle(Palette.muted)
       }
       .padding(.bottom, 8)
     }
     .padding(.horizontal, 28)
+  }
+
+  private func glass(radius: CGFloat) -> some View {
+    RoundedRectangle(cornerRadius: radius)
+      .fill(Palette.navy.opacity(0.62))
+      .overlay(
+        RoundedRectangle(cornerRadius: radius)
+          .strokeBorder(
+            LinearGradient(
+              colors: [.white.opacity(0.28), .white.opacity(0.06)],
+              startPoint: .top, endPoint: .bottom))
+      )
   }
 
   private var brand: some View {
@@ -143,7 +197,9 @@ struct BoardwalkView: View {
         .font(.system(size: 17, weight: .semibold))
         .frame(width: 44, height: 44)
         .background(.white.opacity(0.08), in: Circle())
+        .overlay(Circle().strokeBorder(.white.opacity(0.14)))
     }
+    .buttonStyle(PressableStyle())
     .accessibilityLabel(game.sound ? "Mute sound" : "Enable sound")
     .accessibilityIdentifier("soundToggle")
   }
@@ -171,20 +227,24 @@ struct BoardwalkView: View {
         .accessibilityIdentifier("distance")
         Spacer()
         HStack(spacing: 6) {
-          Image(systemName: "circle.inset.filled").foregroundStyle(.yellow)
+          Image(systemName: "circle.inset.filled").foregroundStyle(Palette.gold)
           Text("\(game.engine.coins)").font(.system(size: 19, weight: .bold, design: .rounded))
             .monospacedDigit()
+            .contentTransition(.numericText())
         }
         .padding(.horizontal, 13)
         .frame(height: 44)
         .background(Palette.navy.opacity(0.7), in: Capsule())
+        .overlay(Capsule().strokeBorder(.white.opacity(0.12)))
         .accessibilityLabel("\(game.engine.coins) coins")
         Button(action: game.pause) {
           Image(systemName: "pause.fill")
             .font(.system(size: 16, weight: .semibold))
             .frame(width: 44, height: 44)
-            .background(.white.opacity(0.12), in: Circle())
+            .background(Palette.navy.opacity(0.7), in: Circle())
+            .overlay(Circle().strokeBorder(.white.opacity(0.12)))
         }
+        .buttonStyle(PressableStyle())
         .accessibilityLabel("Pause")
         .accessibilityIdentifier("pauseRun")
       }
@@ -251,14 +311,19 @@ struct BoardwalkView: View {
     } label: {
       VStack(spacing: 5) {
         Image(systemName: symbol).font(.system(size: 21, weight: .semibold))
+          .foregroundStyle(move == .jump || move == .slide ? Palette.mint : .white)
         Text(label).font(.system(size: 8, weight: .bold, design: .monospaced)).tracking(1.5)
+          .foregroundStyle(Palette.muted)
       }
       .frame(maxWidth: .infinity)
       .frame(height: 61)
-      .background(Palette.navy.opacity(0.72), in: RoundedRectangle(cornerRadius: 18))
-      .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(.white.opacity(0.16)))
+      .background(glass(radius: 18))
+      .overlay(alignment: .top) {
+        Capsule().fill(Palette.mint.opacity(move == .jump || move == .slide ? 0.7 : 0))
+          .frame(width: 22, height: 2).padding(.top, 7)
+      }
     }
-    .buttonStyle(.plain)
+    .buttonStyle(PressableStyle())
     .accessibilityLabel(move.rawValue.capitalized)
     .accessibilityIdentifier(move.rawValue)
   }
@@ -291,6 +356,7 @@ struct BoardwalkView: View {
         Spacer()
         Image(systemName: game.newBest ? "trophy.fill" : "sun.horizon.fill")
           .foregroundStyle(Palette.pink)
+          .shadow(color: Palette.pink.opacity(0.6), radius: 6)
       }
       Text(game.newBest ? "Made your mark." : "Keep chasing.")
         .font(.system(size: 30, weight: .heavy, design: .rounded))
@@ -299,19 +365,36 @@ struct BoardwalkView: View {
         Text("\(Int(game.engine.distance).formatted())")
           .font(.system(size: 66, weight: .black, design: .rounded)).tracking(-2)
           .minimumScaleFactor(0.6).lineLimit(1)
+          .shadow(color: (game.newBest ? Palette.mint : Palette.pink).opacity(0.35), radius: 18)
         Text("metres").font(.system(size: 17, weight: .medium)).foregroundStyle(Palette.muted)
         Spacer(minLength: 0)
       }
       .accessibilityIdentifier("finalDistance")
+      HStack(spacing: 8) {
+        Image(systemName: "mappin.and.ellipse").font(.system(size: 11, weight: .bold))
+        Text(district)
+          .font(.system(size: 10, weight: .semibold, design: .monospaced))
+          .tracking(2)
+        Spacer()
+        Text(bestDelta)
+          .font(.system(size: 11, weight: .bold, design: .monospaced))
+          .foregroundStyle(game.newBest ? Palette.mint : Palette.muted)
+      }
+      .foregroundStyle(Palette.muted)
       HStack {
-        stat("COINS", value: "\(game.engine.coins)", icon: "circle.inset.filled", color: .yellow)
+        stat(
+          "COINS", value: "\(game.engine.coins)", icon: "circle.inset.filled", color: Palette.gold
+        )
+        Spacer()
+        Rectangle().fill(.white.opacity(0.1)).frame(width: 1, height: 40)
         Spacer()
         stat(
-          "BEST RUN", value: "\(game.record.bestDistance) m", icon: "laurel.leading",
+          "BEST RUN", value: "\(game.record.bestDistance.formatted()) m", icon: "laurel.leading",
           color: Palette.mint)
       }
       .padding(18)
       .background(.white.opacity(0.045), in: RoundedRectangle(cornerRadius: 18))
+      .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(.white.opacity(0.08)))
       Text(crashAdvice)
         .font(.system(size: 13, weight: .medium))
         .foregroundStyle(Palette.muted)
@@ -324,6 +407,13 @@ struct BoardwalkView: View {
         .frame(minHeight: 44)
         .accessibilityIdentifier("backHome")
     }
+  }
+
+  private var bestDelta: String {
+    let gap = Int(game.engine.distance) - game.previousBest
+    if game.previousBest == 0 { return "FIRST RUN LOGGED" }
+    if gap > 0 { return "+\(gap.formatted()) m OVER OLD BEST" }
+    return "\((-gap).formatted()) m SHORT OF BEST"
   }
 
   private var crashAdvice: String {
@@ -429,9 +519,16 @@ struct BoardwalkView: View {
       .foregroundStyle(Palette.navy)
       .padding(.horizontal, 23)
       .frame(height: 60)
-      .background(Palette.mint, in: RoundedRectangle(cornerRadius: 19))
+      .background(
+        LinearGradient(
+          colors: [Color(red: 0.62, green: 1, blue: 0.92), Palette.mint],
+          startPoint: .top, endPoint: .bottom),
+        in: RoundedRectangle(cornerRadius: 19)
+      )
+      .overlay(RoundedRectangle(cornerRadius: 19).strokeBorder(.white.opacity(0.35)))
+      .shadow(color: Palette.mint.opacity(0.35), radius: 16, y: 6)
     }
-    .buttonStyle(.plain)
+    .buttonStyle(PressableStyle())
   }
 }
 
