@@ -402,16 +402,20 @@ struct PelotonView: View {
     }
   }
 
-  private func overlayPanel<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+  private func overlayPanel<Content: View>(@ViewBuilder content: @escaping () -> Content)
+    -> some View
+  {
     ZStack {
       Ink.navy.opacity(0.68).ignoresSafeArea()
-      ScrollView {
-        VStack(alignment: .leading, spacing: 20, content: content)
-          .padding(textSize.isAccessibilitySize ? 16 : 24)
-          .background(Ink.paper, in: RoundedRectangle(cornerRadius: RaceLayout.corner))
-          .padding(RaceLayout.gutter)
+      GeometryReader { geometry in
+        ScrollView {
+          VStack(alignment: .leading, spacing: 20, content: content)
+            .padding(textSize.isAccessibilitySize ? 16 : 24)
+            .background(Ink.paper, in: RoundedRectangle(cornerRadius: RaceLayout.corner))
+            .padding(RaceLayout.gutter)
+            .frame(maxWidth: .infinity, minHeight: geometry.size.height)
+        }
       }
-      .fixedSize(horizontal: false, vertical: true)
     }
   }
 
