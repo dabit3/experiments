@@ -8,6 +8,7 @@ final class FlyingFruit {
     let isBomb: Bool
     var velocity: CGVector
     var rotation: CGFloat
+    var launchDelay: Double = 0
 
     init(node: SKSpriteNode, kind: FruitKind, isBomb: Bool, velocity: CGVector, rotation: CGFloat) {
         self.node = node
@@ -83,6 +84,11 @@ final class SliceScene: SKScene {
             launchWave()
         }
         for item in fruit {
+            if item.launchDelay > 0 {
+                item.launchDelay -= delta
+                item.node.isHidden = item.launchDelay > 0
+                continue
+            }
             item.velocity.dy -= gravity * delta
             item.node.position.x += item.velocity.dx * delta
             item.node.position.y += item.velocity.dy * delta
@@ -114,7 +120,7 @@ final class SliceScene: SKScene {
         let right: CGFloat = hasBomb && plan.bombLane == 1 ? size.width - 108 : size.width - 44
         let width = right - left
         for index in 0 ..< plan.fruitCount {
-            let x = left + width * CGFloat(index) / CGFloat(max(1, plan.fruitCount - 1))
+            let x = left + width * CGFloat(index) / CGFloat(max(1, plan.fruitCount - 1)) + CGFloat.random(in: -7 ... 7)
             let kind = FruitKind(rawValue: (wave + index) % 3) ?? .citrus
             launch(kind: kind, x: x, bomb: false, index: index)
         }
@@ -131,10 +137,14 @@ final class SliceScene: SKScene {
         node.position = CGPoint(x: x, y: -68 - CGFloat(index % 2) * 10)
         node.zPosition = 5
         addChild(node)
-        let height = size.height * (rules.mode == .practice ? 0.69 : 0.73)
+        let arc = sin(CGFloat(index) * 1.4 + CGFloat(wave) * 0.8) * 0.08
+        let height = size.height * ((rules.mode == .practice ? 0.64 : 0.69) + arc)
         let speed = sqrt(2 * gravity * (height + 68)) + CGFloat.random(in: -12 ... 12)
-        let inward = (size.width / 2 - x) * 0.035
-        fruit.append(FlyingFruit(node: node, kind: kind, isBomb: bomb, velocity: CGVector(dx: inward, dy: speed), rotation: CGFloat.random(in: -0.75 ... 0.75)))
+        let inward = bomb ? 0 : (size.width / 2 - x) * 0.07
+        let item = FlyingFruit(node: node, kind: kind, isBomb: bomb, velocity: CGVector(dx: inward, dy: speed), rotation: CGFloat.random(in: -1.1 ... 1.1))
+        item.launchDelay = Double(index) * (wave % 2 == 0 ? 0.07 : 0.035)
+        node.isHidden = item.launchDelay > 0
+        fruit.append(item)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with _: UIEvent?) {
@@ -178,7 +188,7 @@ final class SliceScene: SKScene {
         addChild(trail)
         trail.run(.sequence([.fadeOut(withDuration: 0.22), .removeFromParent()]))
         let hits = fruit.filter {
-            SliceGeometry.intersects(from: Point2D(x: start.x, y: start.y), to: Point2D(x: end.x, y: end.y), center: Point2D(x: $0.node.position.x, y: $0.node.position.y - 3), radius: $0.isBomb ? 28 : 34)
+            !$0.node.isHidden && SliceGeometry.intersects(from: Point2D(x: start.x, y: start.y), to: Point2D(x: end.x, y: end.y), center: Point2D(x: $0.node.position.x, y: $0.node.position.y - 3), radius: $0.isBomb ? 28 : 34)
         }
         for item in hits {
             if item.isBomb {

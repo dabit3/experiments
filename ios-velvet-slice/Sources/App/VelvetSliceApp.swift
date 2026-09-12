@@ -3,7 +3,7 @@ import SwiftUI
 
 private let ink = Color(red: 0.025, green: 0.055, blue: 0.105)
 private let cream = Color(red: 0.98, green: 0.94, blue: 0.84)
-private let muted = Color(red: 0.56, green: 0.65, blue: 0.7)
+private let muted = Color(red: 0.63, green: 0.71, blue: 0.75)
 private let mint = Color(red: 0.73, green: 0.92, blue: 0.76)
 private let orange = Color(red: 1, green: 0.66, blue: 0.36)
 
@@ -112,7 +112,7 @@ struct RootView: View {
                 .font(.custom("AvenirNext-Medium", size: 10))
                 .foregroundStyle(muted)
                 .padding(.bottom, 23)
-                actionButton("Play arcade", subtitle: "60 SECONDS · MAKE EVERY SLICE COUNT", system: "arrow.up.right", primary: true) { store.begin(.arcade) }
+                actionButton("Play arcade", subtitle: "60 SECONDS · FIND YOUR FLOW", system: "arrow.up.right", primary: true) { store.begin(.arcade) }
                 actionButton("Practice", subtitle: "NO CLOCK. NO BOMBS. JUST FLOW.", system: "leaf", primary: false) { store.begin(.practice) }
                     .padding(.top, 10)
                 Spacer(minLength: 10)
@@ -141,7 +141,7 @@ struct RootView: View {
                 Spacer()
                 VStack(spacing: 5) {
                     eyebrow(store.mode == .arcade ? "TIME LEFT" : "FREE FLOW")
-                    Text(store.mode == .arcade ? String(format: "0:%02d", Int(ceil(store.round.remaining))) : "∞")
+                    Text(store.mode == .arcade ? clockText(store.round.remaining) : "∞")
                         .font(.custom("AvenirNext-Medium", size: store.mode == .arcade ? 24 : 32))
                         .monospacedDigit()
                         .foregroundStyle(store.round.remaining <= 10 && store.mode == .arcade ? orange : cream)
@@ -190,9 +190,9 @@ struct RootView: View {
                     } else {
                         Text("BEST \(store.practiceBest)").tracking(1)
                     }
-                }.font(.custom("AvenirNext-DemiBold", size: 10)).foregroundStyle(muted)
-                Text(store.mode == .arcade ? "3+ fruit in one swipe = combo · Miss −2 · Bomb −25" : "Slice freely. Pause to finish your session.")
-                    .font(.custom("AvenirNext-Medium", size: 10)).foregroundStyle(muted.opacity(0.85))
+                }.font(.custom("AvenirNext-DemiBold", size: 11)).foregroundStyle(muted)
+                Text(store.mode == .arcade ? "3+ fruit = combo · Miss −2 · Bomb −25" : "Slice freely. Pause to finish your session.")
+                    .font(.custom("AvenirNext-Medium", size: 11)).foregroundStyle(muted)
             }.padding(.horizontal, 28).padding(.bottom, 18).padding(.top, 8)
         }
     }
@@ -205,11 +205,11 @@ struct RootView: View {
                 .font(.system(size: 27, weight: .light)).foregroundStyle(orange)
                 .padding(.bottom, 18)
             eyebrow(store.newBest ? "A NEW PERSONAL BEST" : (store.mode == .practice ? "PRACTICE COMPLETE" : "ARCADE COMPLETE"))
-            Text(store.round.bombs >= 3 ? "A sharp lesson." : "Beautifully sliced.")
+            Text(store.round.bombs >= 3 ? "A sharp lesson." : (store.round.score == 0 ? "Find your rhythm." : "Beautifully sliced."))
                 .font(.custom("Baskerville-Italic", size: 36))
                 .padding(.top, 16)
                 .minimumScaleFactor(0.7).lineLimit(1)
-            Text(store.round.bombs >= 3 ? "Three bombs. Breathe, then try again." : "A moment of focus. A splash of color.")
+            Text(store.round.bombs >= 3 ? "Three bombs. Breathe, then try again." : (store.round.score == 0 ? "Try a long swipe as the fruit rises." : "A moment of focus. A splash of color."))
                 .font(.custom("AvenirNext-Medium", size: 12)).foregroundStyle(muted).padding(.top, 8)
             Text("\(store.round.score)")
                 .font(.custom("Baskerville", size: 102)).monospacedDigit()
@@ -220,7 +220,7 @@ struct RootView: View {
                 Rectangle().fill(.white.opacity(0.12)).frame(width: 1, height: 35)
                 resultStat(store.round.bestCombo >= 3 ? "\(store.round.bestCombo)×" : "—", label: "BEST COMBO")
                 Rectangle().fill(.white.opacity(0.12)).frame(width: 1, height: 35)
-                resultStat("\(store.round.missed)", label: "MISSED")
+                resultStat(store.mode == .practice ? clockText(store.round.elapsed) : "\(store.round.missed)", label: store.mode == .practice ? "IN THE FLOW" : "MISSED")
             }
             .padding(.vertical, 24)
             .background(.white.opacity(0.035), in: RoundedRectangle(cornerRadius: 20))
@@ -300,12 +300,12 @@ struct RootView: View {
     private func resultStat(_ value: String, label: String) -> some View {
         VStack(spacing: 7) {
             Text(value).font(.custom("Baskerville", size: 30)).foregroundStyle(cream)
-            Text(label).font(.custom("AvenirNext-DemiBold", size: 8)).tracking(1.1).foregroundStyle(muted)
+            Text(label).font(.custom("AvenirNext-DemiBold", size: 10)).tracking(0.4).foregroundStyle(muted)
         }.frame(maxWidth: .infinity)
     }
 
     private func eyebrow(_ text: String) -> some View {
-        Text(text).font(.custom("AvenirNext-DemiBold", size: 10)).tracking(2.2).foregroundStyle(muted)
+        Text(text).font(.custom("AvenirNext-DemiBold", size: 11)).tracking(1.8).foregroundStyle(muted)
     }
 
     private func iconButton(_ icon: String, label: String, action: @escaping () -> Void) -> some View {
@@ -322,7 +322,7 @@ struct RootView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title).font(.custom("AvenirNext-DemiBold", size: 19))
-                    Text(subtitle).font(.custom("AvenirNext-DemiBold", size: 8)).tracking(1.1).opacity(0.65)
+                    Text(subtitle).font(.custom("AvenirNext-DemiBold", size: 10)).tracking(0.3).opacity(0.75)
                 }
                 Spacer()
                 Image(systemName: system).font(.system(size: 23, weight: .light))
@@ -333,6 +333,11 @@ struct RootView: View {
             .background(primary ? mint : .white.opacity(0.035), in: RoundedRectangle(cornerRadius: 18))
             .overlay(RoundedRectangle(cornerRadius: 18).stroke(primary ? .clear : .white.opacity(0.13)))
         }.buttonStyle(SliceButtonStyle()).accessibilityLabel(title).accessibilityHint(subtitle)
+    }
+
+    private func clockText(_ seconds: Double) -> String {
+        let whole = max(0, Int(ceil(seconds)))
+        return String(format: "%d:%02d", whole / 60, whole % 60)
     }
 
     private func secondaryButton(_ title: String, action: @escaping () -> Void) -> some View {
