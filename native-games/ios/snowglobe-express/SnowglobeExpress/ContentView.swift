@@ -42,6 +42,7 @@ struct ContentView: View {
     }
     .sheet(item: $panel) { panel in
       panelView(panel)
+        .preferredColorScheme(.light)
         .presentationDragIndicator(.visible)
         .presentationDetents(panel == .routes ? [.large] : [.medium, .large])
     }

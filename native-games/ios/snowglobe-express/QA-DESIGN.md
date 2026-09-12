@@ -84,7 +84,11 @@ observation and bindings, rather than reading the parent properties only inside
 the sheet closure. The tap failure persisted after that change; state ownership
 was not sufficient to resolve it. Replaced the switch affordances with native
 segmented Off/On pickers, giving each preference two explicit targets.
-A focused native regression will verify selection and persistence.
+Ordinary Off/On taps passed on Pro Max and 17e; Off persisted through both sheet
+reopening and actual process termination/relaunch. The native segmented controls
+inherited the game's dark scheme, causing pale labels against the cream panel.
+Cream panels now request a light color scheme for readable native controls.
+Final contrast and golden-path recording verification is pending.
 
 ## Shell checks
 
