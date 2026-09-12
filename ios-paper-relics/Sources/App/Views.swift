@@ -527,7 +527,7 @@ struct ShopView: View {
               kind: kind, trailing: run.gold >= 45 ? "45 gold" : "Need\n\(45 - run.gold)\nmore gold"
             )
           }
-          .buttonStyle(.plain).disabled(run.gold < 45)
+          .buttonStyle(CardPressStyle()).disabled(run.gold < 45)
         }
         Text(run.lastMessage).font(.system(size: 13)).foregroundStyle(Ink.faded)
         PrimaryButton(title: "Continue your story") { store.act { $0.leaveShop() } }
