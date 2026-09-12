@@ -1,0 +1,356 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		38E40E4A1CABE4CDD4E925F3 /* FruitArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454E443C96D68C0CA0FFF4AB /* FruitArt.swift */; };
+		3B660EDD8FEDAA249F32D55E /* SliceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6BD1BF46A90E65C1CC80F9 /* SliceScene.swift */; };
+		3D32AA98B9B58C7AD90BBE6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 10AC5F5F33AE09DD523126F9 /* Assets.xcassets */; };
+		4FE3C59837CD8B750CDE493B /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2767CE7AB2941E67E9EC48AD /* GameRules.swift */; };
+		88B655300A18D8EDDB3C841F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DB592E59EC61C8E26C2DFFDC /* PrivacyInfo.xcprivacy */; };
+		8E23C572C89DE5043A28F03C /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B38A9A732E42683F4767A29 /* GameStore.swift */; };
+		B999F498449B85786B283826 /* VelvetSliceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24C015704C6E7A899C90A0F /* VelvetSliceApp.swift */; };
+		BDAFEBF824B7D494BDE93DBB /* SoundEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A63B8E544FFAB435BE22B58E /* SoundEngine.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		10AC5F5F33AE09DD523126F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2767CE7AB2941E67E9EC48AD /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
+		454E443C96D68C0CA0FFF4AB /* FruitArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FruitArt.swift; sourceTree = "<group>"; };
+		61CB3319BD450C7776818FB8 /* VelvetSlice.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = VelvetSlice.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B38A9A732E42683F4767A29 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		9C6BD1BF46A90E65C1CC80F9 /* SliceScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliceScene.swift; sourceTree = "<group>"; };
+		A63B8E544FFAB435BE22B58E /* SoundEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEngine.swift; sourceTree = "<group>"; };
+		B24C015704C6E7A899C90A0F /* VelvetSliceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VelvetSliceApp.swift; sourceTree = "<group>"; };
+		DB592E59EC61C8E26C2DFFDC /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		468E42C0B5ECBDF1FAF8FADC /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				AF7EEAAA8624F893A1582E15 /* App */,
+				FC4443D1C77F479F5C854595 /* Core */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		69279C952200D76560B56488 = {
+			isa = PBXGroup;
+			children = (
+				10AC5F5F33AE09DD523126F9 /* Assets.xcassets */,
+				468E42C0B5ECBDF1FAF8FADC /* Sources */,
+				973FCC93AF5C2FD7BA4A9758 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		973FCC93AF5C2FD7BA4A9758 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				61CB3319BD450C7776818FB8 /* VelvetSlice.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AF7EEAAA8624F893A1582E15 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				454E443C96D68C0CA0FFF4AB /* FruitArt.swift */,
+				6B38A9A732E42683F4767A29 /* GameStore.swift */,
+				DB592E59EC61C8E26C2DFFDC /* PrivacyInfo.xcprivacy */,
+				9C6BD1BF46A90E65C1CC80F9 /* SliceScene.swift */,
+				A63B8E544FFAB435BE22B58E /* SoundEngine.swift */,
+				B24C015704C6E7A899C90A0F /* VelvetSliceApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		FC4443D1C77F479F5C854595 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				2767CE7AB2941E67E9EC48AD /* GameRules.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		82B668477D711EB1F4CFC98C /* VelvetSlice */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C589A6ADB0DF8136EF802215 /* Build configuration list for PBXNativeTarget "VelvetSlice" */;
+			buildPhases = (
+				B5BB28314EA12168B17E031E /* Sources */,
+				4D01FF7232BEDFDE0A6DFD97 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VelvetSlice;
+			packageProductDependencies = (
+			);
+			productName = VelvetSlice;
+			productReference = 61CB3319BD450C7776818FB8 /* VelvetSlice.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1D53A776776431963C92753B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					82B668477D711EB1F4CFC98C = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = E3F493100A05E1518CEAD028 /* Build configuration list for PBXProject "VelvetSlice" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 69279C952200D76560B56488;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 973FCC93AF5C2FD7BA4A9758 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				82B668477D711EB1F4CFC98C /* VelvetSlice */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4D01FF7232BEDFDE0A6DFD97 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D32AA98B9B58C7AD90BBE6A /* Assets.xcassets in Resources */,
+				88B655300A18D8EDDB3C841F /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B5BB28314EA12168B17E031E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38E40E4A1CABE4CDD4E925F3 /* FruitArt.swift in Sources */,
+				4FE3C59837CD8B750CDE493B /* GameRules.swift in Sources */,
+				8E23C572C89DE5043A28F03C /* GameStore.swift in Sources */,
+				3B660EDD8FEDAA249F32D55E /* SliceScene.swift in Sources */,
+				BDAFEBF824B7D494BDE93DBB /* SoundEngine.swift in Sources */,
+				B999F498449B85786B283826 /* VelvetSliceApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1D3C9C3C3C7F7095D263172C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_CFBundleDisplayName = "Velvet Slice";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.velvetslice.game;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2DC9404953000602260FF71E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		AFF25F709EE4B1BF3A83D7F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		DE804AF6B2D79F5B52C78C49 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_CFBundleDisplayName = "Velvet Slice";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.velvetslice.game;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C589A6ADB0DF8136EF802215 /* Build configuration list for PBXNativeTarget "VelvetSlice" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DE804AF6B2D79F5B52C78C49 /* Debug */,
+				1D3C9C3C3C7F7095D263172C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E3F493100A05E1518CEAD028 /* Build configuration list for PBXProject "VelvetSlice" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFF25F709EE4B1BF3A83D7F0 /* Debug */,
+				2DC9404953000602260FF71E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1D53A776776431963C92753B /* Project object */;
+}
