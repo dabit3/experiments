@@ -349,7 +349,6 @@ final class PicnicWorld {
     start.addChildNode(grid.flattenedClone())
     let gantry = SCNNode()
     gantry.position.z = 11
-    start.addChildNode(gantry)
     for x in [-7.9, 7.9] {
       let pillar = Self.node(SCNCylinder(radius: 0.28, height: 7.4), Palette.cream)
       pillar.position = SCNVector3(x, 3.7, 0)
@@ -394,6 +393,7 @@ final class PicnicWorld {
       flag.eulerAngles.x = .pi
       gantry.addChildNode(flag)
     }
+    start.addChildNode(gantry.flattenedClone())
     scene.rootNode.addChildNode(start)
   }
 
@@ -413,7 +413,7 @@ final class PicnicWorld {
       let lemonade = Self.lemonade()
       lemonade.scale = SCNVector3(4, 4, 4)
       lemonade.position = SCNVector3(x, 0, z)
-      scene.rootNode.addChildNode(lemonade)
+      scene.rootNode.addChildNode(lemonade.flattenedClone())
     }
     buildParasol(at: SCNVector3(-54, 0, 44))
     buildBasket(at: SCNVector3(52, 0, -40))
@@ -503,7 +503,7 @@ final class PicnicWorld {
       flame.position = SCNVector3(cos(t) * 2.2, y + 2.95, sin(t) * 2.2)
       cake.addChildNode(flame)
     }
-    scene.rootNode.addChildNode(cake)
+    scene.rootNode.addChildNode(cake.flattenedClone())
   }
 
   private func buildParasol(at position: SCNVector3) {
@@ -534,7 +534,7 @@ final class PicnicWorld {
     tip.position.y = 5.8
     canopy.addChildNode(tip)
     parasol.addChildNode(canopy)
-    scene.rootNode.addChildNode(parasol)
+    scene.rootNode.addChildNode(parasol.flattenedClone())
   }
 
   private func buildBasket(at position: SCNVector3) {
@@ -569,7 +569,7 @@ final class PicnicWorld {
     let apple = Self.glossy(SCNSphere(radius: 1.4), Palette.pink)
     apple.position = SCNVector3(3.3, 7.6, -1)
     basket.addChildNode(apple)
-    scene.rootNode.addChildNode(basket)
+    scene.rootNode.addChildNode(basket.flattenedClone())
   }
 
   private func buildTeaSet(at position: SCNVector3) {
@@ -597,7 +597,7 @@ final class PicnicWorld {
       saucer.position = SCNVector3(offset.0, 0.1, offset.1)
       set.addChildNode(saucer)
     }
-    scene.rootNode.addChildNode(set)
+    scene.rootNode.addChildNode(set.flattenedClone())
   }
 
   private func buildBunting() {
@@ -660,7 +660,7 @@ final class PicnicWorld {
       cloud.scale = SCNVector3(1.3, 0.75, 1)
       clouds.addChildNode(cloud)
     }
-    scene.rootNode.addChildNode(clouds)
+    scene.rootNode.addChildNode(clouds.flattenedClone())
   }
 
   private func buildPlayerMarker() {
@@ -964,8 +964,9 @@ final class PicnicWorld {
           bar.eulerAngles.x = Float(spoke) * .pi / 4
           pivot.addChildNode(bar)
         }
-        group.addChildNode(pivot)
-        wheels.append(pivot)
+        let flatWheel = pivot.flattenedClone()
+        group.addChildNode(flatWheel)
+        wheels.append(flatWheel)
       }
     }
     let fur = [
@@ -1041,7 +1042,9 @@ final class PicnicWorld {
     let helmetTrim = node(SCNTorus(ringRadius: 0.41, pipeRadius: 0.04), Palette.cream)
     helmetTrim.position = SCNVector3(0, 1.66, -0.26)
     body.addChildNode(helmetTrim)
-    return (group, body, wheels)
+    let flatBody = body.flattenedClone()
+    group.replaceChildNode(body, with: flatBody)
+    return (group, flatBody, wheels)
   }
 
   func update(race: RaceEngine, racing: Bool, reducedMotion: Bool) {
