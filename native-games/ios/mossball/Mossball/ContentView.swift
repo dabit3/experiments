@@ -165,10 +165,15 @@ struct ContentView: View {
                     .padding(.horizontal, 70)
                     .padding(.bottom, 6)
                     Text(game.message.isEmpty ? playHint : game.message)
-                        .font(.system(size: 13))
+                        .font(.system(size: 13, weight: game.message.isEmpty ? .regular : .semibold))
                         .foregroundStyle(game.message.isEmpty ? GardenPalette.cream : GardenPalette.gold)
                         .multilineTextAlignment(.center)
-                        .frame(minHeight: 35)
+                        .frame(maxWidth: .infinity, minHeight: 35)
+                        .padding(.horizontal, 6)
+                        .background(
+                            game.message.isEmpty ? .clear : GardenPalette.gold.opacity(0.12),
+                            in: RoundedRectangle(cornerRadius: 8)
+                        )
                         .accessibilityIdentifier("game.hint")
                     if game.aim.length > 0 {
                         powerMeter
@@ -193,10 +198,14 @@ struct ContentView: View {
     private var playHint: String {
         if game.simulation.sunk { return "Watch the garden bloom." }
         if game.simulation.moving { return "Let it roll." }
-        if game.aim.length > 0 { return "Follow the dots. Release to putt." }
+        if game.aim.length > 0 {
+            return game.hole.water.isEmpty
+                ? "Follow the dots. Release to putt." : "× means water ahead. Time your release."
+        }
         if game.hole.lily { return "Cross on the moving lily. Water costs +1." }
         if game.hole.gate { return "Time your shot through the moving gate." }
         if !game.hole.mushrooms.isEmpty { return "Mushrooms bounce. Use the dotted preview." }
+        if !game.hole.water.isEmpty { return "Keep out of the pond. Water costs +1." }
         return "Drag back anywhere. Release to putt."
     }
 
@@ -218,17 +227,24 @@ struct ContentView: View {
 
     private var practiceControls: some View {
         VStack(spacing: 5) {
-            Text(game.message.isEmpty ? "Button putting · aim, power, then putt." : game.message)
-                .font(.system(size: 11))
-                .foregroundStyle(GardenPalette.muted)
+            Text(game.message.isEmpty ? practiceHint : game.message)
+                .font(.system(size: 12, weight: game.message.isEmpty ? .regular : .semibold))
+                .foregroundStyle(game.message.isEmpty ? GardenPalette.cream : GardenPalette.gold)
                 .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, minHeight: 34)
+                .padding(.horizontal, 6)
+                .background(
+                    game.message.isEmpty ? .clear : GardenPalette.gold.opacity(0.12),
+                    in: RoundedRectangle(cornerRadius: 8))
             HStack(spacing: 12) {
                 iconButton("rotate.left", label: "Aim 5 degrees left", id: "practice.aimLeft") {
                     game.practiceAngle -= 5
                 }
                 VStack(spacing: 0) {
-                    Text("POWER  \(Int(game.practicePower / 135 * 100))%")
-                        .font(.system(size: 9, design: .monospaced)).tracking(1)
+                    Text(
+                        "POWER  \(Int(min(game.aim.length > 0 ? game.aim.length : game.practicePower, 135) / 135 * 100))%"
+                    )
+                    .font(.system(size: 9, design: .monospaced)).tracking(1)
                     Slider(value: $game.practicePower, in: 5...135)
                         .tint(GardenPalette.gold)
                         .accessibilityLabel("Shot power")
@@ -251,6 +267,23 @@ struct ContentView: View {
                 .font(.system(size: 10))
                 .foregroundStyle(GardenPalette.muted)
         }
+    }
+
+    private var practiceHint: String {
+        guard game.canShoot else { return playHint }
+        if game.hole.lily {
+            return "Time the lily crossing. × means water ahead."
+        }
+        if game.hole.gate {
+            return "Wait for the gate. A gold ring predicts a sink."
+        }
+        if !game.hole.mushrooms.isEmpty {
+            return "Bank off a mushroom. Follow the dotted path."
+        }
+        if !game.hole.water.isEmpty {
+            return "Avoid the pond. × means water ahead."
+        }
+        return "Aim with the buttons, set power, then Putt."
     }
 
     private var holeResult: some View {

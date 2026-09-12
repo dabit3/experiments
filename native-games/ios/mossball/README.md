@@ -50,13 +50,15 @@ xcodebuild -project Mossball.xcodeproj -scheme Mossball \
 Builds perform Swift typechecking. XCTest covers friction, capped shot strength,
 collision/reflection, cup capture, water penalties, lily support, moving gates,
 trajectory consistency, stroke limits, practice isolation and persisted settings
-and best scores.
+and best scores. Twenty tests also validate a successful route through every
+hole and the rendered scorecard image payloads.
 
 ## Play
 
 - **Enter the garden:** nine handcrafted holes, par 28. Drag back anywhere on
   the playfield to aim and set power. The dots simulate your shot; the ring marks
-  its resting point. Release to putt. A tiny drag cancels without using a stroke.
+  its resting point. A gold ring predicts a sink; an amber `×` warns of water.
+  Release to putt. A tiny drag cancels without using a stroke.
 - Stone walls reflect with energy loss; mushrooms are springier. Ponds add one
   penalty stroke and return the ball to its previous lie. Moving lily pads bridge
   the water; time the shot so the ball stays over the pad. Moving stone gates

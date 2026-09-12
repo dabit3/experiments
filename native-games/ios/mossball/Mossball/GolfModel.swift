@@ -114,6 +114,12 @@ enum GolfEvent: Equatable {
     case none, bounce, splash, sunk, stopped
 }
 
+struct ShotPrediction {
+    let points: [Vector]
+    let waterHazard: Bool
+    let sinks: Bool
+}
+
 struct GolfSimulation {
     static let friction = 190.0
     static let ballRadius = 6.0
@@ -238,20 +244,28 @@ struct GolfSimulation {
         return event
     }
 
-    func trajectory(pull: Vector) -> [Vector] {
+    func prediction(pull: Vector) -> ShotPrediction {
         var preview = self
         preview.shoot(pull: pull)
         var points = [position]
         for index in 0..<250 {
+            let before = preview.position
             let event = preview.tick(1.0 / 60)
-            if event == .splash { break }
+            if event == .splash {
+                points.append(before)
+                return ShotPrediction(points: points, waterHazard: true, sinks: false)
+            }
             if index.isMultiple(of: 5) { points.append(preview.position) }
             if !preview.moving {
                 points.append(preview.position)
                 break
             }
         }
-        return points
+        return ShotPrediction(points: points, waterHazard: false, sinks: preview.sunk)
+    }
+
+    func trajectory(pull: Vector) -> [Vector] {
+        prediction(pull: pull).points
     }
 }
 

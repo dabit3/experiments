@@ -163,16 +163,28 @@ struct GardenCanvas: View {
     }
 
     private func trajectory(_ context: inout GraphicsContext) {
-        let points = simulation.trajectory(pull: aim)
+        let prediction = simulation.prediction(pull: aim)
+        let points = prediction.points
         for (index, point) in points.enumerated() {
             let alpha = 0.9 - Double(index) / Double(max(points.count, 1)) * 0.55
             ellipse(
                 &context, x: point.x - 1.7, y: point.y - 1.7, w: 3.4, h: 3.4, color: GardenPalette.cream.opacity(alpha))
         }
         if let end = points.last {
+            let color =
+                prediction.waterHazard
+                ? Color(hex: 0xFFD28A) : prediction.sinks ? GardenPalette.gold : GardenPalette.cream
             context.stroke(
                 Path(ellipseIn: CGRect(x: end.x - 8, y: end.y - 8, width: 16, height: 16)),
-                with: .color(GardenPalette.cream.opacity(0.8)), lineWidth: 1)
+                with: .color(color), lineWidth: prediction.sinks ? 2 : 1)
+            if prediction.waterHazard {
+                line(
+                    &context, from: CGPoint(x: end.x - 4, y: end.y - 4), to: CGPoint(x: end.x + 4, y: end.y + 4),
+                    color: color, width: 1.5)
+                line(
+                    &context, from: CGPoint(x: end.x + 4, y: end.y - 4), to: CGPoint(x: end.x - 4, y: end.y + 4),
+                    color: color, width: 1.5)
+            }
         }
         let position = simulation.position
         let tail = position - aim.unit * min(aim.length, 58)

@@ -127,6 +127,44 @@ final class GolfTests: XCTestCase {
         XCTAssertEqual(predicted.last!.y, simulation.position.y, accuracy: 0.01)
     }
 
+    func testPreviewDistinguishesWaterFromSafeLilyCrossing() {
+        var simulation = GolfSimulation(hole: Hole.course[3])
+        let safe = simulation.prediction(pull: Vector(x: 0, y: -96.333))
+        XCTAssertTrue(safe.sinks)
+        XCTAssertFalse(safe.waterHazard)
+        simulation.time = 3
+        let unsafe = simulation.prediction(pull: Vector(x: 0, y: -96.333))
+        XCTAssertTrue(unsafe.waterHazard)
+        XCTAssertFalse(unsafe.sinks)
+        XCTAssertNotEqual(unsafe.points.last, simulation.hole.tee)
+    }
+
+    func testEveryHandcraftedHoleCanBeSunkBelowItsStrokeLimit() {
+        let routes: [[Vector]] = [
+            [Vector(x: 0, y: -83)],
+            [Vector(x: -103.416, y: -86.776), Vector(x: 39.650, y: -16.541)],
+            [Vector(x: 103.416, y: -86.776), Vector(x: 9.666, y: -9.543)],
+            [Vector(x: 0, y: -96.333)],
+            [Vector(x: 103.416, y: -86.776), Vector(x: 9.844, y: -11.987)],
+            [Vector(x: -55.667, y: -100.667)],
+            [Vector(x: -49.333, y: -99.667)],
+            [Vector(x: 103.416, y: -86.776), Vector(x: 0.619, y: -22)],
+            [
+                Vector(x: 103.923, y: -60), Vector(x: 86.776, y: -103.416),
+                Vector(x: -13.673, y: 7.612),
+            ],
+        ]
+        for (hole, route) in zip(Hole.course, routes) {
+            var simulation = GolfSimulation(hole: hole)
+            for pull in route {
+                simulation.shoot(pull: pull)
+                _ = settle(&simulation)
+            }
+            XCTAssertTrue(simulation.sunk, "Hole \(hole.number) must remain solvable")
+            XCTAssertLessThan(simulation.strokes, 8)
+        }
+    }
+
     func testCourseHasNineDistinctPlayableBoundsAndPar28() {
         XCTAssertEqual(Hole.course.count, 9)
         XCTAssertEqual(Hole.totalPar, 28)
@@ -220,5 +258,21 @@ final class GameStoreTests: XCTestCase {
         XCTAssertEqual(restored.rounds, 1)
         XCTAssertTrue(restored.sound)
         XCTAssertFalse(restored.gentle)
+    }
+
+    func testSharingRendersActualImageForMomentAndCourse() {
+        let (game, _) = store()
+        game.start(practice: 0)
+        game.simulation.sunk = true
+        game.simulation.strokes = 1
+        let moment = ScorecardRenderer.hole(game: game)
+        XCTAssertEqual(moment?.image.size.width, 450)
+        XCTAssertEqual(moment?.image.size.height, 800)
+        XCTAssertGreaterThan(moment?.image.pngData()?.count ?? 0, 10_000)
+        XCTAssertTrue(moment?.text.contains("1 stroke,") ?? false)
+        let record = CourseRecord(strokes: Array(repeating: 3, count: 9), completed: Array(repeating: true, count: 9))
+        let course = ScorecardRenderer.course(record: record)
+        XCTAssertGreaterThan(course?.image.pngData()?.count ?? 0, 10_000)
+        XCTAssertTrue(course?.text.contains("27 strokes") ?? false)
     }
 }

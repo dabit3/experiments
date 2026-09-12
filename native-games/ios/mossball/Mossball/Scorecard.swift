@@ -1,3 +1,4 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -10,7 +11,21 @@ struct SharePayload: Identifiable {
 struct ShareSheet: UIViewControllerRepresentable {
     let payload: SharePayload
     func makeUIViewController(context: Context) -> UIActivityViewController {
-        UIActivityViewController(activityItems: [payload.image, payload.text], applicationActivities: nil)
+        let configuration = UIActivityItemsConfiguration(objects: [payload.image])
+        configuration.metadataProvider = { key in
+            switch key {
+            case .title, .messageBody: return payload.text
+            default: return nil
+            }
+        }
+        configuration.perItemMetadataProvider = { _, key in
+            guard key == .linkPresentationMetadata else { return nil }
+            let metadata = LPLinkMetadata()
+            metadata.title = payload.text
+            metadata.imageProvider = NSItemProvider(object: payload.image)
+            return metadata
+        }
+        return UIActivityViewController(activityItemsConfiguration: configuration)
     }
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
