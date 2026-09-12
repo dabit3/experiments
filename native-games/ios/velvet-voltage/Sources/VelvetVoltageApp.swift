@@ -13,8 +13,7 @@ struct VoltageView: View {
   @StateObject private var game = GameSession()
   @State private var scene: VoltageScene?
   @State private var settings = false
-  @State private var shareImage: UIImage?
-  @State private var showShare = false
+  @State private var shareItem: SharePoster?
   @State private var confirmRestart = false
   @Environment(\.scenePhase) private var phase
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -57,18 +56,10 @@ struct VoltageView: View {
     .onChange(of: reduceMotion) { _, value in game.reducedMotion = value }
     .onChange(of: phase) { _, value in if value != .active { game.pause() } }
     .sheet(isPresented: $settings) { settingsView }
-    .sheet(isPresented: $showShare) {
-      if let shareImage {
-        ShareSheet(
-          image: shareImage,
-          text:
-            "I powered the night: \(game.score.points.formatted()) volts and \(game.score.circuits) circuits in Velvet Voltage."
-        )
-      }
+    .sheet(item: $shareItem) { item in
+      ShareSheet(image: item.image, text: item.text)
     }
-    .confirmationDialog(
-      "Restart this three-ball game?", isPresented: $confirmRestart, titleVisibility: .visible
-    ) {
+    .alert("Restart this three-ball game?", isPresented: $confirmRestart) {
       Button("Restart game", role: .destructive) { game.newGame() }
       Button("Cancel", role: .cancel) {}
     }
@@ -265,8 +256,11 @@ struct VoltageView: View {
         width: 390, height: 620))
     renderer.scale = 3
     guard let image = renderer.uiImage else { return }
-    shareImage = image
-    showShare = true
+    shareItem = SharePoster(
+      image: image,
+      text:
+        "I powered the night: \(game.score.points.formatted()) volts and \(game.score.circuits) \(game.score.circuits == 1 ? "circuit" : "circuits") in Velvet Voltage."
+    )
   }
 
   private var settingsView: some View {
@@ -388,11 +382,12 @@ struct ScorePoster: View {
         Text(score.points.formatted()).font(
           .system(size: 62, weight: .ultraLight, design: .monospaced)
         )
+        .lineLimit(1).minimumScaleFactor(0.5).padding(.horizontal, 12)
         .foregroundStyle(Color(Ink.cyan)).padding(.top, 15).accessibilityIdentifier("resultScore")
         Text("V O L T S  G E N E R A T E D").font(
           .system(size: 8, weight: .medium, design: .monospaced))
         HStack(spacing: 26) {
-          Text("\(score.circuits) CIRCUITS")
+          Text("\(score.circuits) \(score.circuits == 1 ? "CIRCUIT" : "CIRCUITS")")
           Text("\(score.multiplier)× POWER")
         }.font(.system(size: 10, weight: .medium, design: .monospaced)).padding(.top, 22)
         Text(newRecord ? "NEW PERSONAL BEST" : "PERSONAL BEST  \(best.formatted()) V").font(
@@ -433,6 +428,12 @@ struct CitySilhouette: View {
       }
     }.accessibilityHidden(true)
   }
+}
+
+struct SharePoster: Identifiable {
+  let id = UUID()
+  let image: UIImage
+  let text: String
 }
 
 struct ShareSheet: UIViewControllerRepresentable {
