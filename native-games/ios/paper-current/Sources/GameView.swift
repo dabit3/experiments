@@ -1,3 +1,4 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -126,7 +127,7 @@ struct GameView: View {
     .onChange(of: scenePhase) { _, phase in
       if phase != .active && sailing { paused = true }
     }
-    .sheet(isPresented: $showHelp) { help }
+    .sheet(isPresented: $showHelp) { help.preferredColorScheme(.light) }
     .confirmationDialog(
       "Fold this route again?", isPresented: $showReset, titleVisibility: .visible
     ) {
@@ -296,6 +297,7 @@ struct BoardView: View {
   let boat: Cell
   let collected: Set<Cell>
   var interactive: Bool
+  var failure: Cell? = nil
   var rotate: (Cell) -> Void = { _ in }
   var toggle: (Cell) -> Void = { _ in }
 
@@ -341,7 +343,8 @@ struct BoardView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .disabled(!interactive || fixed)
+        .allowsHitTesting(interactive && !fixed)
+        .accessibilityHidden(!interactive || fixed)
         .accessibilityLabel("Canal row \(cell.row + 1) column \(cell.col + 1)")
         .accessibilityValue(
           canal.ports.map { String(describing: $0) }.joined(separator: " to ")
@@ -385,7 +388,8 @@ struct BoardView: View {
                   .frame(width: 44, height: 44)
                   .contentShape(Rectangle())
               }
-              .disabled(!interactive)
+              .allowsHitTesting(interactive)
+              .accessibilityHidden(!interactive)
               .accessibilityLabel(
                 "\(canal.open ? "Close" : "Open") lock row \(cell.row + 1) column \(cell.col + 1)"
               )
@@ -393,6 +397,15 @@ struct BoardView: View {
             }
             Spacer(minLength: 0)
           }
+        }
+        if cell == failure {
+          RoundedRectangle(cornerRadius: 3).strokeBorder(Ink.red, lineWidth: 2)
+            .allowsHitTesting(false)
+          Image(systemName: "exclamationmark.circle.fill")
+            .foregroundStyle(Ink.cream, Ink.red)
+            .font(.system(size: 19))
+            .offset(x: -side * 0.28, y: side * 0.28)
+            .allowsHitTesting(false)
         }
       }
       .clipped()
@@ -476,7 +489,8 @@ struct ResultView: View {
           } else {
             BoardView(
               level: level, canals: puzzle.canals, lit: Set(voyage.cells),
-              boat: voyage.cells.last ?? level.start, collected: voyage.stamps, interactive: false
+              boat: voyage.cells.last ?? level.start, collected: voyage.stamps, interactive: false,
+              failure: voyage.cells.last
             )
             .aspectRatio(1, contentMode: .fit).padding(.horizontal, 18)
             Text(voyage.problem?.message ?? "")
@@ -495,7 +509,7 @@ struct ResultView: View {
       ActivitySheet(
         image: item.image,
         text: "A little wonder, delivered. \(level.title) — \(puzzle.moves) moves in Paper Current."
-      )
+      ).preferredColorScheme(.light)
     }
   }
 }
@@ -532,7 +546,8 @@ struct Postcard: View {
         Text("No. \(String(format: "%02d", level.id + 1)) · \(level.title)")
           .font(Ink.title(12)).foregroundStyle(Ink.blue)
         Spacer()
-        Text("3 / 3").font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.red)
+        Text("\(puzzle.moves) moves · 3/3").font(.system(size: 10, design: .monospaced))
+          .foregroundStyle(Ink.red)
       }.padding(.top, 3)
     }
     .padding(16).background(Ink.cream)
@@ -550,7 +565,44 @@ struct ActivitySheet: UIViewControllerRepresentable {
   let image: UIImage
   let text: String
   func makeUIViewController(context: Context) -> UIActivityViewController {
-    UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
+    UIActivityViewController(
+      activityItems: [PostcardActivityItem(image: image, text: text)], applicationActivities: nil)
   }
   func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
+}
+
+final class PostcardActivityItem: NSObject, UIActivityItemSource {
+  let image: UIImage
+  let text: String
+
+  init(image: UIImage, text: String) {
+    self.image = image
+    self.text = text
+  }
+  func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController)
+    -> Any
+  {
+    image
+  }
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    itemForActivityType activityType: UIActivity.ActivityType?
+  ) -> Any? {
+    image
+  }
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    subjectForActivityType activityType: UIActivity.ActivityType?
+  ) -> String {
+    text
+  }
+  func activityViewControllerLinkMetadata(
+    _ activityViewController: UIActivityViewController
+  ) -> LPLinkMetadata? {
+    let metadata = LPLinkMetadata()
+    metadata.title = text
+    metadata.imageProvider = NSItemProvider(object: image)
+    metadata.iconProvider = NSItemProvider(object: image)
+    return metadata
+  }
 }

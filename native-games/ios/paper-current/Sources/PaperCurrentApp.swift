@@ -7,7 +7,7 @@ struct PaperCurrentApp: App {
   var body: some Scene {
     WindowGroup {
       RootView()
-        .preferredColorScheme(.light)
+        .preferredColorScheme(.dark)
         .tint(Ink.red)
     }
   }
@@ -103,12 +103,12 @@ struct RootView: View {
         home.id(refresh)
       }
     }
-    .sheet(isPresented: $showSettings) { SettingsView() }
+    .sheet(isPresented: $showSettings) { SettingsView().preferredColorScheme(.light) }
     .sheet(isPresented: $showChapters) {
       ChapterView(store: store) {
         selected = $0
         showChapters = false
-      }
+      }.preferredColorScheme(.light)
     }
   }
 

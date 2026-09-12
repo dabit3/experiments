@@ -21,7 +21,7 @@ targets:
         UILaunchScreen:
           UIColorName: LaunchBackground
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
-        UIUserInterfaceStyle: Light
+        UIUserInterfaceStyle: Dark
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.paperstudio.PaperCurrent
