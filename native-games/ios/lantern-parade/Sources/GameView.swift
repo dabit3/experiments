@@ -103,7 +103,7 @@ struct GameView: View {
               }.font(.system(size: 12)).foregroundStyle(Ink.muted)
                 .padding(.top, compact ? 10 : 20).padding(.bottom, compact ? 10 : 22)
             }.padding(.horizontal, 24)
-          }
+          }.clipped()
         }.accessibilityHidden(tutorial || paused || tangled || showingResult)
         if tutorial { tutorialOverlay }
         if paused { pauseOverlay }

@@ -89,7 +89,7 @@ struct HomeView: View {
                 .top, 7)
             }.padding(.top, 12)
           }.padding(.horizontal, 24).padding(.bottom, 20)
-        }
+        }.clipped()
       }
     }
     .fullScreenCover(item: $active) { puzzle in
@@ -158,28 +158,29 @@ struct SettingsView: View {
     NavigationStack {
       ZStack {
         NightBackground()
-        VStack(alignment: .leading, spacing: 24) {
-          PaperLantern(size: 40)
-          Text("A quieter kind\nof celebration.")
-            .font(.system(size: 34, design: .serif)).foregroundStyle(Ink.cream)
-          Toggle("Haptic feedback", isOn: $progress.haptics).accessibilityIdentifier(
-            "haptics-toggle")
-          Text(
-            "Lantern Parade is intentionally silent. Haptics mark each step on supported iPhones."
-          )
-          .font(.subheadline).foregroundStyle(Ink.muted)
-          Divider()
-          Text("HOW TO PARADE").font(.caption.monospaced()).tracking(2).foregroundStyle(Ink.gold)
-          Text(
-            "Draw along neighboring street lights, or tap them one by one. Collect 1 Amber, 2 Rose, then 3 Jade. Matching lanterns open gates. Bring every color to the square without crossing your ribbon."
-          )
-          .font(.subheadline).foregroundStyle(Ink.cream)
-          Text(
-            "Undo is free. A guide reveals a possible route; using it reduces your star rating. Daily light changes at midnight UTC. All progress stays on this iPhone."
-          )
-          .font(.subheadline).foregroundStyle(Ink.muted)
-          Spacer(minLength: 0)
-        }.padding(28)
+        ScrollView {
+          VStack(alignment: .leading, spacing: 24) {
+            PaperLantern(size: 40)
+            Text("A quieter kind\nof celebration.")
+              .font(.system(size: 34, design: .serif)).foregroundStyle(Ink.cream)
+            Toggle("Haptic feedback", isOn: $progress.haptics).accessibilityIdentifier(
+              "haptics-toggle")
+            Text(
+              "Lantern Parade is intentionally silent. Haptics mark each step on supported iPhones."
+            )
+            .font(.subheadline).foregroundStyle(Ink.muted)
+            Divider()
+            Text("HOW TO PARADE").font(.caption.monospaced()).tracking(2).foregroundStyle(Ink.gold)
+            Text(
+              "Draw along neighboring street lights, or tap them one by one. Collect 1 Amber, 2 Rose, then 3 Jade. Matching lanterns open gates. Bring every color to the square without crossing your ribbon."
+            )
+            .font(.subheadline).foregroundStyle(Ink.cream)
+            Text(
+              "Undo is free. A guide reveals a possible route; using it reduces your star rating. Daily light changes at midnight UTC. All progress stays on this iPhone."
+            )
+            .font(.subheadline).foregroundStyle(Ink.muted)
+          }.fixedSize(horizontal: false, vertical: true).padding(28)
+        }
       }.navigationTitle("Under the lanterns").navigationBarTitleDisplayMode(.inline)
         .toolbar { Button("Done") { dismiss() }.accessibilityIdentifier("close-settings") }
     }.presentationDetents([.large])
