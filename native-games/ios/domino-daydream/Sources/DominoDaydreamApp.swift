@@ -182,6 +182,7 @@ struct ContentView: View {
             "\(store.bellsRung) of \(store.puzzle.targets.count) bells rung. Best score \(store.best)"
           )
         }
+        .fixedSize(horizontal: false, vertical: true)
         TabletopView(
           puzzle: store.puzzle, pieces: store.allPieces, selected: store.selected,
           result: store.result, beat: store.beat, guides: store.guides,
@@ -192,7 +193,7 @@ struct ContentView: View {
             }
           }
         )
-        .frame(height: max(255, geometry.size.height - (compact ? 350 : 378)))
+        .frame(height: max(255, geometry.size.height - (compact ? 350 : 398)))
         .padding(.horizontal, -18)
         .layoutPriority(1)
         if store.phase == .result {
