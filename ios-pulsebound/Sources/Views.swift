@@ -40,52 +40,61 @@ struct HomeView: View {
   private var accent: Color { Palette.accent(model.selection) }
 
   var body: some View {
-    ScrollView(showsIndicators: false) {
-      VStack(spacing: 26) {
-        HStack(spacing: 10) {
-          PulseMark(size: 26)
-          Text("PULSEBOUND").font(.system(size: 13, weight: .heavy)).tracking(4.5)
-          Spacer()
-          SoundButton(model: model)
-        }
-        .padding(.top, 6)
+    VStack(spacing: 0) {
+      HStack(spacing: 10) {
+        PulseMark(size: 26)
+        Text("PULSEBOUND").font(.system(size: 13, weight: .heavy)).tracking(4.5)
+        Spacer()
+        SoundButton(model: model)
+      }
+      .padding(.horizontal, 22).padding(.top, 6).padding(.bottom, 14)
 
-        HeroPanel(accent: accent)
+      ScrollView(showsIndicators: false) {
+        VStack(spacing: 20) {
+          HeroPanel(accent: accent)
 
-        VStack(spacing: 10) {
-          HStack(alignment: .firstTextBaseline) {
-            Text("Tracks").font(.system(size: 21, weight: .bold, design: .rounded))
-            Spacer()
-            Text("\(model.clears.filter { $0 }.count) / 3 CLEARED")
-              .font(.system(size: 10, weight: .bold)).tracking(1.4)
-              .foregroundStyle(Palette.muted)
-          }.padding(.bottom, 4)
-          ForEach(Stage.all) { stage in
-            StageCard(stage: stage, model: model)
+          VStack(spacing: 10) {
+            HStack(alignment: .firstTextBaseline) {
+              Text("Tracks").font(.system(size: 21, weight: .bold, design: .rounded))
+              Spacer()
+              Text("\(model.clears.filter { $0 }.count) / 3 CLEARED")
+                .font(.system(size: 10, weight: .bold)).tracking(1.4)
+                .foregroundStyle(Palette.muted)
+            }.padding(.bottom, 4)
+            ForEach(Stage.all) { stage in
+              StageCard(stage: stage, model: model)
+            }
           }
         }
+        .padding(.horizontal, 22).padding(.bottom, 20)
+      }
 
-        VStack(spacing: 14) {
-          HStack(spacing: 4) {
-            modeButton("Normal", detail: "One clean run", icon: "bolt.fill", practice: false)
-            modeButton(
-              "Practice", detail: "Checkpoints on", icon: "flag.checkered", practice: true)
-          }
-          .padding(4)
-          .background(Palette.deep, in: RoundedRectangle(cornerRadius: 20))
-          .overlay(RoundedRectangle(cornerRadius: 20).stroke(.white.opacity(0.07)))
-
-          PrimaryButton(
-            title: "Play \(model.stage.title)", icon: "arrow.up.right",
-            action: model.enter)
-          HStack(spacing: 14) {
-            hint("hand.tap.fill", "Tap to jump")
-            hint("metronome.fill", "Ride the beat")
-            hint("flag.checkered", "Reach the gate")
-          }
+      VStack(spacing: 12) {
+        HStack(spacing: 4) {
+          modeButton("Normal", detail: "One clean run", icon: "bolt.fill", practice: false)
+          modeButton(
+            "Practice", detail: "Checkpoints on", icon: "flag.checkered", practice: true)
+        }
+        .padding(4)
+        .background(Palette.deep, in: RoundedRectangle(cornerRadius: 20))
+        .overlay(RoundedRectangle(cornerRadius: 20).stroke(.white.opacity(0.07)))
+        PrimaryButton(
+          title: "Play \(model.stage.title)", icon: "arrow.up.right",
+          action: model.enter)
+        HStack(spacing: 14) {
+          hint("hand.tap.fill", "Tap to jump")
+          hint("metronome.fill", "Ride the beat")
+          hint("flag.checkered", "Reach the gate")
         }
       }
-      .padding(.horizontal, 22).padding(.bottom, 24)
+      .padding(.horizontal, 22).padding(.top, 10).padding(.bottom, 4)
+      .background(
+        LinearGradient(
+          colors: [Palette.background.opacity(0), Palette.background], startPoint: .top,
+          endPoint: UnitPoint(x: 0.5, y: 0.22)
+        )
+        .padding(.top, -28)
+      )
     }
   }
 
@@ -146,7 +155,7 @@ struct HeroPanel: View {
         PulseSculpture(
           time: reduceMotion ? 0 : timeline.date.timeIntervalSinceReferenceDate, accent: accent)
       }
-      .frame(width: 200, height: 200)
+      .frame(width: 184, height: 184)
       .mask(
         LinearGradient(
           stops: [
@@ -160,8 +169,8 @@ struct HeroPanel: View {
       VStack(alignment: .leading, spacing: 12) {
         Eyebrow(text: "ONE TOUCH · PURE FLOW", color: Palette.coral)
         Text("Find your\nfrequency.")
-          .font(.system(size: 40, weight: .heavy, design: .rounded))
-          .tracking(-1.8).lineSpacing(-5)
+          .font(.system(size: 36, weight: .heavy, design: .rounded))
+          .tracking(-1.6).lineSpacing(-5)
           .foregroundStyle(
             LinearGradient(
               colors: [Palette.white, Palette.white.opacity(0.72)], startPoint: .top,
@@ -172,7 +181,7 @@ struct HeroPanel: View {
       }
       .padding(.leading, 24)
     }
-    .frame(height: 226)
+    .frame(height: 192)
     .clipShape(RoundedRectangle(cornerRadius: 30))
     .overlay(
       RoundedRectangle(cornerRadius: 30)
@@ -341,6 +350,7 @@ struct StageCard: View {
             "\(["INTRO", "FLOW", "EXPERT"][stage.id])  ·  \(Int(stage.bpm)) BPM  ·  \(stage.duration) SEC"
           )
           .font(.system(size: 10, weight: .semibold)).tracking(0.6)
+          .lineLimit(1).minimumScaleFactor(0.8)
           .foregroundStyle(selected ? accent : Palette.muted)
           GeometryReader { geometry in
             ZStack(alignment: .leading) {
