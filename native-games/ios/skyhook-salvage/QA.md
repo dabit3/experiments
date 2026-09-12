@@ -1,9 +1,9 @@
 # Skyhook Salvage — native QA and design report
 
-**Verdict:** V1 implementation and focused final native UI retest passed.
+**Verdict:** Maritime redesign and focused final native UI retest passed.
 No unresolved defect was observed in the tested scope.
 
-- Tested source: `a11a78d40df7433d59c7bd2beab73f1437385c34`.
+- Tested source: `9f58b394aaa2ba1cdf677a994c396d121fcbfd6b`.
 - Branch: `devin/1789187581-ios-skyhook-salvage`.
 - PR: https://github.com/dabit3/experiments/pull/106
 - Platform: macOS Darwin 25.5.0 arm64, Xcode 26.6 (17F113), iOS 26.5.
@@ -11,7 +11,46 @@ No unresolved defect was observed in the tested scope.
 - Native SwiftUI/Canvas application; no web runtime, backend or external account.
 - Final app left installed and running at home on Max; SE shut down.
 
-## Three design passes and corrective retests
+## Maritime redesign — three further rendered reviews
+
+The previous vector presentation did not meet the requested visual quality.
+The new direction uses original generated maritime illustrations, a printed-paper
+palette, Baskerville display typography, fine brass rules and restrained teal
+controls. The illustrated cover, harbor backdrop, airship and five cargo sprites
+are native asset-catalog resources; source artwork and Swift preparation scripts
+are included. Home, onboarding, pause, settings, gameplay, receipt and app icon
+share this visual system. The trim slider is a custom accessible brass ruler.
+
+| Review | Observed issue | Correction and verification |
+|---|---|---|
+| 1 — Native packaging | Compiled app showed the new typography but blank illustrations. | Changed XcodeGen asset inclusion so `Assets.xcassets` enters the resource build phase; verified Debug/Release `Assets.car` and added an app-bundle artwork regression test. The missing-art run is superseded. |
+| 2 — Cargo shape and support | Corrected SE build completed all six cargo, but a fixed drawing rectangle compressed the clock; irregular silhouettes appeared to float. | Resolve intrinsic image proportions, give taller cargo individual presentation heights and add delicate freight support rails. Stack, suspension, guide, receipt and scene sizing now accumulate visual heights. Collision widths, weights, scoring and model behavior remain unchanged. |
+| 3 — Final SE and Max review | Needed proof that the taller artwork still fit compact play and that large-screen composition remained coherent. | SE six-cargo win, unobscured final piano/guidance, complete receipt PNG and replay passed. Max caught and landed two cargo and verified upright clock, trim, home, tutorial, settings and pause. No further material visual defect was observed in this scope. |
+
+**Final native source `9f58b39`:**
+- SE Contract 03 cleared: 1,623 points, six treasures, 18 tonnes.
+- Native share → Save to Files → opened PNG: full tower, airship, six rows and footer.
+- Replay returned to zero points, 0/6 aboard, three lifts and 110 seconds.
+- Held trim dragging and directional buttons worked; revised tutorial diagram fit.
+- Max active play reached two landed cargo and 395 points; full latest-build
+  Max win/result was not completed after timing misses.
+- Earlier comprehensive persistence, practice and failure/retry coverage below
+  was not repeated in full for the redesign.
+
+### Latest evidence
+
+- [Compact annotated recording download](https://app.devin.ai/attachments/9f73d4a8-1fb3-467f-aeaa-73f327824386/skyhook-9f58b39-se-edited.mp4)
+- [Max annotated recording download](https://app.devin.ai/attachments/fbb1ee81-d2f9-4a39-8c2b-3812e0e15c0f/skyhook-9f58b39-max-edited.mp4)
+- [Illustrated Max home](https://app.devin.ai/attachments/b5102663-8dc6-4a7e-a8dc-df03bb16909c/skyhook-9f58b39-max-home.png)
+- [Max upright clock and supported stack](https://app.devin.ai/attachments/e275b6f6-39b4-4f7c-acbb-750ce87c1f7c/skyhook-9f58b39-max-gameplay.png)
+- [Compact final piano](https://app.devin.ai/attachments/c40ca620-cfc0-422a-b831-d30dd1dc5a5b/skyhook-9f58b39-se-gameplay.png)
+- [Complete exported receipt](https://app.devin.ai/attachments/63c386c3-bbc0-4936-9636-000f9d76d677/skyhook-9f58b39-se-export.png)
+- [Detailed native retest report](https://app.devin.ai/attachments/a7a73531-2284-4ca1-a28f-8cc66a486733/skyhook-9f58b39-qa-report.md)
+
+Recordings use structured native annotations. The session's original recording
+attachments expose the action timeline; standalone downloads are video files.
+
+## Original three design passes and corrective retests
 
 | Pass | Observed issue | Change and verification |
 |---|---|---|
@@ -22,7 +61,7 @@ No unresolved defect was observed in the tested scope.
 These were rendered Simulator reviews with real controls, followed by rebuilds
 and retests. No screenshots were substituted for playable flows.
 
-## Native runtime coverage
+## Prior native runtime coverage
 
 **Comprehensive revision `1fd43a6`:**
 - Fresh onboarding, compact home, scrollable tutorial/results and usable controls.
@@ -65,13 +104,13 @@ xcodebuild -project SkyhookSalvage.xcodeproj -scheme SkyhookSalvage \
   CODE_SIGNING_ALLOWED=NO test
 ```
 
-**11 XCTest tests, zero failures.** Coverage includes catch/support boundaries,
+**12 XCTest tests, zero failures.** Coverage includes asset-catalog loading, catch/support boundaries,
 weighted balance and counterweights, precision scoring, contract completion and
 persistence, misses/retry, pause/timeout, practice, bounded trim, repeated input
 and agreement between projected and actual landing drift. Builds also typecheck.
 Discover a current Simulator UUID rather than reusing this session's UUID.
 
-## Evidence downloads
+## Prior evidence downloads
 
 - [Final compact gameplay/result/share/retry recording](https://app.devin.ai/attachments/d5f109e6-a76a-4a4d-a704-b6ea229e744d/skyhook-a11a78d-se-edited.mp4)
 - [Final Max guidance regression recording](https://app.devin.ai/attachments/bc5dde7f-2bfe-4df4-b7d0-3dd6796f84e5/skyhook-a11a78d-max-edited.mp4)
