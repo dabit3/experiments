@@ -386,6 +386,7 @@ struct Run: Codable {
       lastMessage = "Not enough energy. End your turn to refill."
       return false
     }
+    let effect = cardText(card.kind).replacingOccurrences(of: "\n", with: " ")
     hand.remove(at: index)
     energy -= card.kind.cost
     switch card.kind {
@@ -427,7 +428,7 @@ struct Run: Codable {
       draw(2)
     }
     if card.kind.exhausts { exhaust.append(card) } else { discard.append(card) }
-    lastMessage = "\(card.kind.title) · \(card.kind.text.replacingOccurrences(of: "\n", with: " "))"
+    lastMessage = "\(card.kind.title) · \(effect)"
     checkVictory()
     return true
   }

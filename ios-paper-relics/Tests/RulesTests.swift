@@ -40,6 +40,27 @@ import Testing
   #expect(run.battles == 1)
 }
 
+@Test func adjustedDamageMatchesPreviewAndAnnouncement() {
+  for weak in [0, 1] {
+    for strength in [0, 2] {
+      var run = Run(seed: 7)
+      run.startBattle(.queen)
+      run.weak = weak
+      run.strength = strength
+      run.hand = [Card(id: 100, kind: .echo)]
+      let preview = run.cardText(.echo)
+      let damage = weak > 0 ? (5 + strength) * 3 / 4 : 5 + strength
+      let health = run.enemy?.hp
+      let played = run.play(100)
+      #expect(played)
+      #expect(run.damageDealt == damage * 2)
+      #expect(run.enemy?.hp == health.map { $0 - damage * 2 })
+      #expect(preview.contains("\(damage) damage"))
+      #expect(run.lastMessage.contains(preview.replacingOccurrences(of: "\n", with: " ")))
+    }
+  }
+}
+
 @Test func pilesConserveCardsAndExhaustNeverReshuffles() {
   var run = Run(seed: 3)
   run.addCard(.kindle)

@@ -256,17 +256,17 @@ struct BattleView: View {
             EnemyArt(kind: enemy.kind)
               .frame(height: max(120, min(185, geometry.size.height * 0.24)))
               .id(enemy.kind)
-              .phaseAnimator([false, true, false], trigger: store.pulse) { content, phase in
+              .phaseAnimator([false, true, false], trigger: enemy.hp) { content, phase in
                 content.scaleEffect(reduceMotion ? 1 : phase ? 0.96 : 1)
               } animation: { _ in
                 .easeOut(duration: 0.12)
               }
               .overlay(alignment: .bottomTrailing) {
-                if !store.feedback.isEmpty {
-                  Text(store.feedback).font(.system(size: 12, weight: .bold, design: .rounded))
-                    .tracking(1).foregroundStyle(Ink.paper)
+                if !store.enemyFeedback.isEmpty {
+                  Text(store.enemyFeedback).font(.system(size: 12, weight: .bold, design: .rounded))
+                    .tracking(1).foregroundStyle(Ink.deep)
                     .padding(.horizontal, 12).padding(.vertical, 8)
-                    .background(Ink.green, in: Capsule())
+                    .background(Ink.copper, in: Capsule())
                     .padding(.trailing, 27)
                 }
               }
@@ -285,21 +285,27 @@ struct BattleView: View {
                 height: 14)
             }
           }
-          HStack(spacing: 12) {
-            Label(
-              "\(run.hp)/\(run.maxHP)",
-              systemImage: run.hp * 3 <= run.maxHP ? "heart.slash.fill" : "heart.fill"
-            )
-            .foregroundStyle(Ink.red)
-            Label("\(run.block)", systemImage: "shield.fill").foregroundStyle(Ink.paper)
-            if run.weak > 0 { Text("Weak \(run.weak)").foregroundStyle(Ink.copper) }
-            if run.strength > 0 { Text("+\(run.strength) STR").foregroundStyle(Ink.copper) }
-            Spacer(minLength: 0)
-            HStack(spacing: 5) {
-              Image(systemName: "sparkle")
-              Text("\(run.energy)").font(.system(size: 22, weight: .semibold, design: .serif))
-              Text("ENERGY").font(.system(size: 8, weight: .bold)).tracking(1)
-            }.foregroundStyle(Ink.copper)
+          VStack(spacing: 6) {
+            HStack(spacing: 12) {
+              Label(
+                "\(run.hp)/\(run.maxHP)",
+                systemImage: run.hp * 3 <= run.maxHP ? "heart.slash.fill" : "heart.fill"
+              )
+              .foregroundStyle(Ink.red)
+              Label("\(run.block)", systemImage: "shield.fill").foregroundStyle(Ink.paper)
+              if run.weak > 0 { Text("Weak \(run.weak)").foregroundStyle(Ink.copper) }
+              if run.strength > 0 { Text("+\(run.strength) STR").foregroundStyle(Ink.copper) }
+              Spacer(minLength: 0)
+              HStack(spacing: 5) {
+                Image(systemName: "sparkle")
+                Text("\(run.energy)").font(.system(size: 22, weight: .semibold, design: .serif))
+                Text("ENERGY").font(.system(size: 8, weight: .bold)).tracking(1)
+              }.foregroundStyle(Ink.copper)
+            }
+            Text(store.playerFeedback)
+              .font(.system(size: 10, weight: .bold, design: .rounded)).tracking(1)
+              .foregroundStyle(store.playerHurt ? Ink.red : Ink.paper)
+              .frame(height: 13)
           }
           .font(.system(size: 13, weight: .medium))
           .padding(.horizontal, 16).padding(.vertical, 12)
@@ -312,27 +318,34 @@ struct BattleView: View {
           Text(run.lastMessage).font(.system(size: 12, weight: .medium)).foregroundStyle(Ink.paper)
             .lineLimit(2).multilineTextAlignment(.center).frame(height: 32).padding(.horizontal, 22)
             .accessibilityIdentifier("battleMessage")
-          ScrollView(.horizontal) {
-            HStack(spacing: 11) {
-              ForEach(run.hand) { card in
-                Button {
-                  store.play(card)
-                } label: {
-                  CardFace(
-                    kind: card.kind, affordable: run.energy >= card.kind.cost,
-                    text: run.cardText(card.kind))
+          ScrollViewReader { reader in
+            ScrollView(.horizontal) {
+              HStack(spacing: 11) {
+                ForEach(run.hand) { card in
+                  Button {
+                    store.play(card)
+                  } label: {
+                    CardFace(
+                      kind: card.kind, affordable: run.energy >= card.kind.cost,
+                      text: run.cardText(card.kind))
+                  }
+                  .buttonStyle(CardPressStyle())
+                  .id(card.id)
+                  .accessibilityIdentifier("card-\(card.id)")
+                  .transition(
+                    reduceMotion ? .identity : .scale(scale: 0.8).combined(with: .opacity))
                 }
-                .buttonStyle(CardPressStyle())
-                .accessibilityIdentifier("card-\(card.id)")
-                .transition(reduceMotion ? .identity : .scale(scale: 0.8).combined(with: .opacity))
               }
-            }
-            .padding(.horizontal, 22).padding(.bottom, 7)
-            .animation(reduceMotion ? nil : .spring(duration: 0.25), value: run.hand)
-          }.scrollIndicators(.hidden)
+              .padding(.horizontal, 22).padding(.bottom, 7)
+              .animation(reduceMotion ? nil : .spring(duration: 0.25), value: run.hand)
+            }.scrollIndicators(.hidden)
+              .onChange(of: run.turns) { _, _ in
+                if let first = run.hand.first { reader.scrollTo(first.id, anchor: .leading) }
+              }
+          }
           HStack {
             VStack(alignment: .leading, spacing: 6) {
-              Text("Tap to play · swipe hand").foregroundStyle(Ink.faded)
+              Text("\(run.hand.count) cards · tap to play · swipe hand").foregroundStyle(Ink.faded)
               Text(
                 "Draw \(run.drawPile.count)  /  Discard \(run.discard.count)  /  Exhaust \(run.exhaust.count)"
               )
@@ -421,7 +434,9 @@ struct RewardView: View {
         }
         if let relic = run.offeredRelic {
           VStack(alignment: .leading, spacing: 13) {
-            Eyebrow(text: "Included with either choice")
+            Eyebrow(text: "Your keepsake")
+            Text("Automatically included—even if you skip.")
+              .font(.system(size: 12)).foregroundStyle(Ink.faded)
             RelicRow(relic: relic)
           }.frame(maxWidth: .infinity, alignment: .leading).padding(20)
             .background(Ink.copper.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
@@ -508,9 +523,11 @@ struct ShopView: View {
           Button {
             store.act { $0.buy(kind) }
           } label: {
-            RewardRow(kind: kind, trailing: "45 gold")
+            RewardRow(
+              kind: kind, trailing: run.gold >= 45 ? "45 gold" : "Need\n\(45 - run.gold)\nmore gold"
+            )
           }
-          .disabled(run.gold < 45).opacity(run.gold >= 45 ? 1 : 0.5)
+          .buttonStyle(.plain).disabled(run.gold < 45)
         }
         Text(run.lastMessage).font(.system(size: 13)).foregroundStyle(Ink.faded)
         PrimaryButton(title: "Continue your story") { store.act { $0.leaveShop() } }
