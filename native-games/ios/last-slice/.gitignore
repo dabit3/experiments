@@ -1,0 +1,8 @@
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+*.xcresult
+*.mov
+*.mp4
+.DS_Store
