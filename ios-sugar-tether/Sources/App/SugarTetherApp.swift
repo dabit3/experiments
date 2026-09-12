@@ -581,7 +581,7 @@ struct PlayView: View {
       }
       Text(
         won
-          ? "\(store.game.collected.count) stars for Pip. \(store.game.collected.count == 3 ? "Beautifully done." : "There’s more sweetness to find.")"
+          ? "\(store.game.collected.count) \(store.game.collected.count == 1 ? "star" : "stars") for Pip. \(store.game.collected.count == 3 ? "Beautifully done." : "There’s more sweetness to find.")"
           : lossHint
       )
       .font(.system(size: 14, design: .rounded)).foregroundStyle(Palette.muted)
