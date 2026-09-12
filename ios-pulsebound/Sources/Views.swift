@@ -243,10 +243,8 @@ struct PlayView: View {
 
         ZStack {
           if let scene {
-            SpriteView(scene: scene, preferredFramesPerSecond: 60)
-              .aspectRatio(760 / 620, contentMode: .fit)
-              .accessibilityLabel("Game field")
-              .accessibilityIdentifier("game.field")
+            GameCanvas(scene: scene)
+              .background(Palette.background)
           }
           if model.engine.phase == .ready {
             VStack(spacing: 12) {
@@ -273,7 +271,22 @@ struct PlayView: View {
               .frame(maxHeight: .infinity, alignment: .top).padding(.top, 14)
               .allowsHitTesting(false)
           }
+          if model.resumeCount > 0 {
+            VStack(spacing: 5) {
+              Text("\(model.resumeCount)")
+                .font(.system(size: 44, weight: .light, design: .rounded))
+              Eyebrow(text: "FIND THE BEAT", color: Palette.cyan)
+            }
+            .frame(width: 140, height: 96)
+            .background(Palette.background, in: RoundedRectangle(cornerRadius: 22))
+            .overlay(
+              RoundedRectangle(cornerRadius: 22).stroke(Palette.cyan.opacity(0.5), lineWidth: 1)
+            )
+            .frame(maxHeight: .infinity, alignment: .top).padding(.top, 16)
+            .allowsHitTesting(false)
+          }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         HStack(spacing: 7) {
           Circle().fill(Palette.cyan).frame(width: 4, height: 4)
           Text(
@@ -296,7 +309,7 @@ struct PlayView: View {
             )
             .font(.system(size: 11)).foregroundStyle(Palette.cyan.opacity(0.8))
           }
-          .frame(maxWidth: .infinity).frame(height: 89)
+          .frame(maxWidth: .infinity).frame(height: 112)
           .background(Palette.cyan.opacity(padPressed ? 0.2 : 0.085))
           .clipShape(RoundedRectangle(cornerRadius: 22))
           .overlay(RoundedRectangle(cornerRadius: 22).stroke(Palette.cyan.opacity(0.45)))
@@ -308,24 +321,12 @@ struct PlayView: View {
             action: model.tap, pressed: { padPressed = $0 }
           )
         }
-        .frame(height: 89)
+        .frame(height: 112)
         .foregroundStyle(Palette.cyan)
-        .padding(.horizontal, 24).padding(.bottom, 12)
-        Spacer(minLength: 0)
+        .padding(.horizontal, 24).padding(.bottom, 24)
       }.padding(.top, 6)
 
       if model.engine.phase == .paused && model.resumeCount == 0 { PauseOverlay(model: model) }
-      if model.resumeCount > 0 {
-        VStack(spacing: 10) {
-          Text("\(model.resumeCount)")
-            .font(.system(size: 66, weight: .light, design: .rounded))
-          Eyebrow(text: "FIND THE BEAT", color: Palette.cyan)
-        }
-        .frame(width: 180, height: 180)
-        .background(Palette.background, in: Circle())
-        .overlay(Circle().stroke(Palette.cyan.opacity(0.5), lineWidth: 2))
-        .allowsHitTesting(false)
-      }
       if model.resultReady {
         ResultOverlay(model: model)
       }

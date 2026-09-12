@@ -3,6 +3,8 @@ import UIKit
 
 final class GameScene: SKScene {
   weak var model: GameModel?
+  var onFirstFrame: (() -> Void)?
+  private var renderedFrames = 0
   private let world = SKNode()
   private let scenery = SKNode()
   private let player = SKNode()
@@ -100,6 +102,7 @@ final class GameScene: SKScene {
       let star = SKShapeNode(circleOfRadius: index % 3 == 0 ? 1.7 : 0.9)
       star.fillColor = UIColor.white.withAlphaComponent(0.15 + Double(index % 3) * 0.1)
       star.strokeColor = .clear
+      star.name = "star.\(index)"
       star.position = CGPoint(x: (index * 137) % 840, y: 210 + (index * 91) % 390)
       scenery.addChild(star)
     }
@@ -152,6 +155,21 @@ final class GameScene: SKScene {
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) { model?.tap() }
+
+  override func didChangeSize(_ oldSize: CGSize) {
+    for index in 0..<25 {
+      scenery.childNode(withName: "star.\(index)")?.position.y =
+        300 + Double((index * 91) % 390) / 390 * max(0, size.height - 330)
+    }
+  }
+
+  override func didFinishUpdate() {
+    renderedFrames += 1
+    if renderedFrames == 3 {
+      onFirstFrame?()
+      onFirstFrame = nil
+    }
+  }
 
   override func update(_ currentTime: TimeInterval) {
     guard let model else { return }

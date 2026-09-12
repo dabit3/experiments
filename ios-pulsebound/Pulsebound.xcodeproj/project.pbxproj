@@ -14,6 +14,7 @@
 		624C84C7CFB77D96D04AEB6F /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D08CDD3BA0C73EFE475ED34 /* Views.swift */; };
 		7E5D82CD76792F4FE87301C5 /* Stage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33E880AD82DEF4149A248FE /* Stage.swift */; };
 		8809E85E7EFE06B1F4F0F5F8 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3025E5314B3D3EC708846B86 /* GameScene.swift */; };
+		A3FAD0ED98E32DB9384D9B2F /* GameCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02274A5DC272E74AFACD5DFE /* GameCanvas.swift */; };
 		CAF7972DA52B37DCE223DF06 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D36B5ADA0CC047B5618720 /* Engine.swift */; };
 		E26F3D23F7F3DF4C68BAC105 /* PulseboundUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7482A915C25DE1D9C445D7DF /* PulseboundUITests.swift */; };
 		E66049F8EAABB75426C3365E /* TouchPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45785FEFAD75808225930C7B /* TouchPad.swift */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		02274A5DC272E74AFACD5DFE /* GameCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCanvas.swift; sourceTree = "<group>"; };
 		06444DC44A5F72965F38A3DA /* PulseboundUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PulseboundUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D08CDD3BA0C73EFE475ED34 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		3025E5314B3D3EC708846B86 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			children = (
 				5DD955148DFD8D32FF71A5D8 /* Audio.swift */,
 				76D36B5ADA0CC047B5618720 /* Engine.swift */,
+				02274A5DC272E74AFACD5DFE /* GameCanvas.swift */,
 				B5F6A7C2ABE277D88E8E406C /* GameModel.swift */,
 				3025E5314B3D3EC708846B86 /* GameScene.swift */,
 				7289AE131F784896D1D5FF74 /* PulseboundApp.swift */,
@@ -186,6 +189,7 @@
 			files = (
 				50764B69DFE4DDA629F47BBE /* Audio.swift in Sources */,
 				CAF7972DA52B37DCE223DF06 /* Engine.swift in Sources */,
+				A3FAD0ED98E32DB9384D9B2F /* GameCanvas.swift in Sources */,
 				253655628730C432BCF47463 /* GameModel.swift in Sources */,
 				8809E85E7EFE06B1F4F0F5F8 /* GameScene.swift in Sources */,
 				386D2D9ED1F32A368A9256CE /* PulseboundApp.swift in Sources */,
