@@ -15,6 +15,7 @@
 		BBB40031C32810E70038163A /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44A8C923C06643B20213A36 /* Puzzle.swift */; };
 		E2F9B1D80E745041F36F54D9 /* Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8C4CE2E45CC6191CB4A667 /* Sharing.swift */; };
 		EEFB1F175D64C56057DDA2E6 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4190892CDE9760078390A7ED /* GameStore.swift */; };
+		F102E5C44F38AB9DE6C24344 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8205D6BC0EA0F385E6855809 /* DesignSystem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		602D399C1BD790711AB8610D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6C7CC6D8FAAC176F7743C1D8 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		71D2BDED608CCF34B2E7BAEC /* TinyTectonicsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TinyTectonicsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8205D6BC0EA0F385E6855809 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		AA0CFE05E86A511497A27035 /* PuzzleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleTests.swift; sourceTree = "<group>"; };
 		D44A8C923C06643B20213A36 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -63,6 +65,7 @@
 		FB3AAAA29266F086497D3516 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				8205D6BC0EA0F385E6855809 /* DesignSystem.swift */,
 				4C41F5E9781EFF3EA5BB4E56 /* Diorama.swift */,
 				4190892CDE9760078390A7ED /* GameStore.swift */,
 				6C7CC6D8FAAC176F7743C1D8 /* LaunchScreen.storyboard */,
@@ -176,6 +179,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F102E5C44F38AB9DE6C24344 /* DesignSystem.swift in Sources */,
 				1C7E8C9763416320B4E954E9 /* Diorama.swift in Sources */,
 				EEFB1F175D64C56057DDA2E6 /* GameStore.swift in Sources */,
 				BBB40031C32810E70038163A /* Puzzle.swift in Sources */,

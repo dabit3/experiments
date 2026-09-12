@@ -73,26 +73,31 @@ struct LandscapeCard: View {
   let stars: Int
 
   var body: some View {
-    VStack(spacing: 12) {
+    VStack(spacing: 0) {
       HStack {
-        Text("TINY TECTONICS")
+        ContourEmblem().frame(width: 38, height: 38)
+        Text("TINY TECTONICS").padding(.leading, 8)
         Spacer()
         Text(String(format: "NO. %02d", level.id + 1))
       }
-      .font(.system(size: 12, weight: .bold))
-      .tracking(3)
-      .foregroundStyle(Earth.muted)
-      .padding(.top, 16)
+      .font(.system(size: 11, weight: .medium, design: .monospaced))
+      .tracking(2)
+      .foregroundStyle(Earth.brass)
+      Rectangle().fill(Earth.brass.opacity(0.35)).frame(height: 1).padding(.top, 20)
       Diorama(
         level: level, heights: heights, travel: Double(heights.count - 1), running: true,
-        celebration: true
+        celebration: true, presentation: true
       )
-      .frame(height: 390)
-      Text(level.name).font(.system(size: 46, design: .serif))
+      .frame(height: 365)
+      Text(level.region)
+        .font(.system(size: 10, design: .monospaced)).tracking(3)
+        .foregroundStyle(Earth.brass).padding(.bottom, 10)
+      Text(level.name).font(.custom("Georgia", size: 40))
       Text("A landscape, beautifully balanced.")
-        .font(.system(size: 17))
+        .font(.custom("Georgia-Italic", size: 16))
         .foregroundStyle(Earth.muted)
-      Rectangle().fill(Earth.copper.opacity(0.3)).frame(height: 1).padding(.vertical, 15)
+        .padding(.top, 8)
+      Rectangle().fill(Earth.brass.opacity(0.3)).frame(height: 1).padding(.vertical, 25)
       HStack {
         Text("\(moves) \(moves == 1 ? "SHIFT" : "SHIFTS")")
         Spacer()
@@ -100,12 +105,14 @@ struct LandscapeCard: View {
         Spacer()
         Text("\(stars) / 3 STARS")
       }
-      .font(.system(size: 12, weight: .bold))
+      .font(.system(size: 11, weight: .medium, design: .monospaced))
       .tracking(2)
+      .foregroundStyle(Earth.brass)
     }
-    .padding(40)
+    .padding(38)
     .frame(width: 600, height: 720)
-    .foregroundStyle(Earth.ink)
-    .background(Earth.paper)
+    .foregroundStyle(Earth.paper)
+    .background(GalleryBackground())
+    .overlay(Rectangle().strokeBorder(Earth.brass.opacity(0.3), lineWidth: 1).padding(14))
   }
 }

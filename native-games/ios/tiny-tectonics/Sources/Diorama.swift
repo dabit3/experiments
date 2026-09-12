@@ -1,13 +1,16 @@
 import SwiftUI
 
 enum Earth {
-  static let paper = Color(hex: 0xF4EFDF)
+  static let night = Color(hex: 0x101F1C)
+  static let surface = Color(hex: 0x273D35)
+  static let brass = Color(hex: 0xD2B27A)
+  static let paper = Color(hex: 0xF5EBD8)
   static let ink = Color(hex: 0x263D36)
-  static let muted = Color(hex: 0x69776B)
-  static let copper = Color(hex: 0xB65032)
-  static let clay = Color(hex: 0xD98B61)
+  static let muted = Color(hex: 0xA2B5A9)
+  static let copper = Color(hex: 0xD9825A)
+  static let clay = Color(hex: 0xB95E43)
   static let sand = Color(hex: 0xE7CC97)
-  static let teal = Color(hex: 0x258F88)
+  static let teal = Color(hex: 0x6DCAB5)
   static let gold = Color(hex: 0xE9AD42)
 }
 
@@ -67,6 +70,7 @@ struct Diorama: View, Animatable {
   var travel: Double = 0
   var running = false
   var celebration = false
+  var presentation = false
   var onSelect: ((Int) -> Void)? = nil
   var terrain: HeightVector
 
@@ -77,7 +81,8 @@ struct Diorama: View, Animatable {
 
   init(
     level: Landscape, heights: [Int], selected: Int? = nil, travel: Double = 0,
-    running: Bool = false, celebration: Bool = false, onSelect: ((Int) -> Void)? = nil
+    running: Bool = false, celebration: Bool = false, presentation: Bool = false,
+    onSelect: ((Int) -> Void)? = nil
   ) {
     self.level = level
     self.heights = heights
@@ -85,6 +90,7 @@ struct Diorama: View, Animatable {
     self.travel = travel
     self.running = running
     self.celebration = celebration
+    self.presentation = presentation
     self.onSelect = onSelect
     terrain = HeightVector(values: heights.map(Double.init))
   }
@@ -105,7 +111,7 @@ struct Diorama: View, Animatable {
             } label: {
               Color.clear.contentShape(Rectangle())
             }
-            .frame(width: 68 * projection.scale, height: 43 * projection.scale)
+            .frame(width: max(44, 68 * projection.scale), height: max(44, 43 * projection.scale))
             .position(point)
             .accessibilityLabel(
               "Plate \(index + 1), elevation \(heights[index])\(level.fixed.contains(index) ? ", anchored" : "")"
@@ -135,13 +141,24 @@ struct Diorama: View, Animatable {
         offset(center, 0, height), offset(center, -width, 0),
       ])
     }
-    let riverCenter = CGPoint(x: size.width * 0.48, y: size.height * 0.72)
-    for ring in 0..<7 {
+    let riverCenter = CGPoint(x: size.width * 0.48, y: size.height * 0.70)
+    context.drawLayer { glow in
+      glow.addFilter(.blur(radius: 28 * s))
+      glow.fill(
+        Path(
+          ellipseIn: CGRect(
+            x: size.width * 0.12, y: size.height * 0.35,
+            width: size.width * 0.76, height: size.height * 0.55)),
+        with: .color(Earth.teal.opacity(0.07)))
+    }
+    for ring in 0..<6 {
       let inset = CGFloat(ring) * 17 * s
       let rect = CGRect(
         x: riverCenter.x - 140 * s - inset, y: riverCenter.y - 43 * s - inset * 0.3,
         width: 280 * s + inset * 2, height: 86 * s + inset * 0.6)
-      context.stroke(Path(ellipseIn: rect), with: .color(Earth.sand.opacity(0.28)), lineWidth: 0.7)
+      context.stroke(
+        Path(ellipseIn: rect), with: .color(Earth.brass.opacity(ring == 0 ? 0.22 : 0.08)),
+        lineWidth: 0.6)
     }
     var river = Path()
     river.move(to: CGPoint(x: size.width * 0.04, y: size.height * 0.64))
@@ -149,12 +166,24 @@ struct Diorama: View, Animatable {
       to: CGPoint(x: size.width * 0.96, y: size.height * 0.82),
       control1: CGPoint(x: size.width * 0.65, y: size.height * 0.5),
       control2: CGPoint(x: size.width * 0.22, y: size.height * 1.0))
+    context.drawLayer { glow in
+      glow.addFilter(.blur(radius: 12 * s))
+      glow.stroke(
+        river, with: .color(Earth.teal.opacity(0.18)),
+        style: StrokeStyle(lineWidth: 42 * s, lineCap: .round))
+    }
     context.stroke(
-      river, with: .color(Color(hex: 0xBEDAD1)),
+      river, with: .color(Color(hex: 0x385B50)),
       style: StrokeStyle(lineWidth: 39 * s, lineCap: .round))
     context.stroke(
-      river, with: .color(Color(hex: 0x86C5BA)),
-      style: StrokeStyle(lineWidth: 23 * s, lineCap: .round))
+      river,
+      with: .linearGradient(
+        Gradient(colors: [Color(hex: 0x1A5048), Color(hex: 0x5BAA98), Color(hex: 0x153B35)]),
+        startPoint: .zero, endPoint: CGPoint(x: size.width, y: size.height)),
+      style: StrokeStyle(lineWidth: 34 * s, lineCap: .round))
+    context.stroke(
+      river, with: .color(Earth.teal.opacity(0.2)),
+      style: StrokeStyle(lineWidth: 1 * s, lineCap: .round))
     for ripple in 0..<15 {
       let t = Double(ripple) / 15 + 0.015
       let u = 1 - t
@@ -173,7 +202,9 @@ struct Diorama: View, Animatable {
       context.stroke(current, with: .color(.white.opacity(0.45)), lineWidth: 0.9 * s)
       if ripple % 4 == 0 {
         let stone = CGPoint(x: x, y: y + 17 * s)
-        context.fill(diamond(stone, 5 + CGFloat(ripple % 3), 3), with: .color(Earth.sand))
+        context.fill(
+          diamond(stone, 5 + CGFloat(ripple % 3), 3),
+          with: .color(Color(hex: 0x6C8A75)))
       }
     }
 
@@ -181,7 +212,7 @@ struct Diorama: View, Animatable {
       let base = p.point(level.route[index])
       context.drawLayer { shadow in
         shadow.addFilter(.blur(radius: 9 * s))
-        shadow.fill(diamond(offset(base, 9, 28), 46, 22), with: .color(Earth.ink.opacity(0.18)))
+        shadow.fill(diamond(offset(base, 9, 28), 46, 22), with: .color(.black.opacity(0.55)))
       }
     }
 
@@ -202,24 +233,67 @@ struct Diorama: View, Animatable {
         rim + [offset(top, 28, -10), offset(top, 0, -24), offset(top, -26, -12)])
       let leftFace = polygon(leftRim + leftRim.reversed().map { offset($0, 0, depth) })
       let rightFace = polygon(rightRim + rightRim.reversed().map { offset($0, 0, depth) })
-      context.fill(leftFace, with: .color(Earth.copper))
-      context.fill(rightFace, with: .color(Earth.clay))
-      for band in 1...4 {
-        let d = depth * CGFloat(band) / 5
-        var line = Path()
-        line.addLines(
-          rim.enumerated().map { step, point in
-            offset(point, 0, d + sin(Double(step + band + index)) * 1.4)
-          })
-        context.stroke(
-          line, with: .color(Earth.sand.opacity(band % 2 == 0 ? 0.55 : 0.25)),
-          lineWidth: band % 2 == 0 ? CGFloat(2 + index % 2) * s : 1 * s)
+      context.fill(
+        leftFace,
+        with: .linearGradient(
+          Gradient(colors: [Color(hex: 0xAF6046), Color(hex: 0x5C302C)]),
+          startPoint: west, endPoint: offset(south, 0, depth)))
+      context.fill(
+        rightFace,
+        with: .linearGradient(
+          Gradient(colors: [Color(hex: 0xD49469), Color(hex: 0x82432F)]),
+          startPoint: east, endPoint: offset(south, 0, depth)))
+      context.drawLayer { strata in
+        strata.clip(to: polygon(rim + rim.reversed().map { offset($0, 0, depth) }))
+        let widths: [CGFloat] = [1.1, 3.8, 0.7, 2.4, 5.2, 0.8, 2.1]
+        for band in 0..<7 {
+          let d = depth * CGFloat(band + 1) / 8
+          var line = Path()
+          line.addLines(
+            rim.enumerated().map { step, point in
+              offset(point, 0, d + sin(Double(step * 2 + band + index)) * 1.7)
+            })
+          strata.stroke(
+            line,
+            with: .color(
+              (band % 3 == 0 ? Earth.sand : Earth.copper)
+                .opacity(band % 2 == 0 ? 0.48 : 0.3)),
+            lineWidth: widths[band] * s)
+        }
+        for fleck in 0..<160 {
+          let x = CGFloat((fleck * 43 + index * 7) % 89 - 44)
+          let y = CGFloat((fleck * 31 + index * 13) % 103)
+          let mark = offset(top, x, y)
+          strata.fill(
+            Path(CGRect(x: mark.x, y: mark.y, width: 0.6 * s, height: 0.4 * s)),
+            with: .color(fleck % 2 == 0 ? Earth.sand.opacity(0.24) : .black.opacity(0.2)))
+        }
+        for crack in 0..<5 {
+          let x = CGFloat(crack * 19 - 39)
+          var line = Path()
+          line.move(to: offset(top, x, 15))
+          line.addLine(to: offset(top, x + 3, 29))
+          line.addLine(to: offset(top, x + 1, 39))
+          strata.stroke(line, with: .color(.black.opacity(0.11)), lineWidth: 0.6 * s)
+        }
       }
       context.fill(
         plateau,
         with: .linearGradient(
-          Gradient(colors: [Color(hex: 0xF0DCAD), Color(hex: 0xDABA82)]),
+          Gradient(colors: [Color(hex: 0xF9E9C3), Color(hex: 0xD6B47C)]),
           startPoint: offset(top, -30, -15), endPoint: offset(top, 30, 24)))
+      context.stroke(plateau, with: .color(Color(hex: 0xFFE6B5).opacity(0.8)), lineWidth: 1.1 * s)
+      context.drawLayer { texture in
+        texture.clip(to: plateau)
+        for fleck in 0..<110 {
+          let point = offset(
+            top, CGFloat((fleck * 17 + index * 11) % 87 - 43),
+            CGFloat((fleck * 23) % 47 - 23))
+          texture.fill(
+            Path(ellipseIn: CGRect(x: point.x, y: point.y, width: 0.7 * s, height: 0.4 * s)),
+            with: .color(Color(hex: 0x795A39).opacity(0.22)))
+        }
+      }
       for ring in 0..<3 {
         let contour = polygon(
           (0..<24).map { step in
@@ -234,8 +308,11 @@ struct Diorama: View, Animatable {
           with: .color(Color(hex: 0xB69B66).opacity(0.32)), lineWidth: 0.6 * s)
       }
       if selected == index {
-        context.stroke(plateau, with: .color(Earth.teal.opacity(0.22)), lineWidth: 7 * s)
-        context.stroke(plateau, with: .color(Earth.teal), lineWidth: 2.5 * s)
+        context.drawLayer { halo in
+          halo.addFilter(.blur(radius: 4 * s))
+          halo.stroke(plateau, with: .color(Earth.teal.opacity(0.55)), lineWidth: 6 * s)
+        }
+        context.stroke(plateau, with: .color(Earth.teal), lineWidth: 1.8 * s)
       }
       for rock in 0..<(1 + index % 3) {
         let center = offset(top, -12 + CGFloat(rock) * 6, -12 + CGFloat((rock + index) % 3))
@@ -243,6 +320,9 @@ struct Diorama: View, Animatable {
       }
       for tree in 0..<(index % 3 == 2 ? 1 : 2) {
         let trunk = offset(top, tree == 0 ? -24 : 23, tree == 0 ? -3 : -5)
+        context.fill(
+          polygon([offset(trunk, -3, 0), offset(trunk, 5, 3), offset(trunk, 16, -6)]),
+          with: .color(Earth.ink.opacity(0.16)))
         var stem = Path()
         stem.move(to: trunk)
         stem.addLine(to: offset(trunk, 0, -11))
@@ -254,7 +334,13 @@ struct Diorama: View, Animatable {
             polygon([
               offset(trunk, -width, y - 4), offset(trunk, width, y - 4), offset(trunk, 0, y - 15),
             ]),
-            with: .color(tree == 0 ? Color(hex: 0x466E55) : Color(hex: 0x648263)))
+            with: .linearGradient(
+              Gradient(colors: [Color(hex: 0x84A286), Color(hex: 0x2C5545)]),
+              startPoint: offset(trunk, -width, 0), endPoint: offset(trunk, width, 0)))
+          var needle = Path()
+          needle.move(to: offset(trunk, 0, y - 14))
+          needle.addLine(to: offset(trunk, 0, y - 5))
+          context.stroke(needle, with: .color(Earth.sand.opacity(0.22)), lineWidth: 0.6 * s)
         }
       }
     }
@@ -268,26 +354,35 @@ struct Diorama: View, Animatable {
       route.addLine(to: to)
       if safe {
         context.stroke(
-          route, with: .color(Earth.copper.opacity(0.25)),
-          style: StrokeStyle(lineWidth: 10 * s, lineCap: .round))
+          route, with: .color(Color(hex: 0x704431).opacity(0.38)),
+          style: StrokeStyle(lineWidth: 8 * s, lineCap: .round))
         context.stroke(
           route, with: .color(Color(hex: 0xFFF3D4)),
-          style: StrokeStyle(lineWidth: 6 * s, lineCap: .round))
+          style: StrokeStyle(lineWidth: 4.5 * s, lineCap: .round))
         context.stroke(
-          route, with: .color(Earth.copper.opacity(0.35)),
-          style: StrokeStyle(lineWidth: 0.8 * s, dash: [2 * s, 4 * s]))
+          route, with: .color(Earth.brass),
+          style: StrokeStyle(lineWidth: 0.6 * s, dash: [1 * s, 4 * s]))
+        if running, travel >= Double(index) {
+          context.drawLayer { glow in
+            glow.addFilter(.blur(radius: 2 * s))
+            glow.stroke(route, with: .color(Earth.gold.opacity(0.55)), lineWidth: 5 * s)
+          }
+        }
       } else {
         context.stroke(
           route, with: .color(Earth.copper.opacity(0.5)),
           style: StrokeStyle(lineWidth: 1.5 * s, dash: [3 * s, 5 * s]))
-        let center = CGPoint(x: (from.x + to.x) / 2, y: (from.y + to.y) / 2)
-        context.fill(
-          Path(
-            ellipseIn: CGRect(
-              x: center.x - 6 * s, y: center.y - 6 * s, width: 12 * s, height: 12 * s)),
-          with: .color(Earth.copper))
-        context.draw(
-          Text("!").font(.system(size: 9 * s, weight: .heavy)).foregroundColor(.white), at: center)
+        if !presentation {
+          let center = CGPoint(x: (from.x + to.x) / 2, y: (from.y + to.y) / 2)
+          context.fill(
+            Path(
+              ellipseIn: CGRect(
+                x: center.x - 6 * s, y: center.y - 6 * s, width: 12 * s, height: 12 * s)),
+            with: .color(Color(hex: 0xA84730)))
+          context.draw(
+            Text("!").font(.system(size: 9 * s, weight: .heavy)).foregroundColor(.white), at: center
+          )
+        }
       }
     }
 
@@ -295,16 +390,23 @@ struct Diorama: View, Animatable {
       let top = p.point(level.route[index], height: terrain.values[index])
       let badge = offset(top, 0, 16)
       let selectedPlate = selected == index
-      context.fill(
-        Path(
-          ellipseIn: CGRect(x: badge.x - 8 * s, y: badge.y - 8 * s, width: 16 * s, height: 16 * s)),
-        with: .color(selectedPlate ? Earth.teal : Earth.paper.opacity(0.9)))
-      context.draw(
-        Text("\(index + 1)").font(.system(size: 9 * s, weight: .bold, design: .rounded))
-          .foregroundColor(selectedPlate ? .white : Earth.ink),
-        at: badge)
+      if !presentation {
+        context.fill(
+          Path(
+            ellipseIn: CGRect(x: badge.x - 8 * s, y: badge.y - 8 * s, width: 16 * s, height: 16 * s)
+          ),
+          with: .color(selectedPlate ? Earth.teal : Earth.ink.opacity(0.85)))
+        context.draw(
+          Text("\(index + 1)").font(.system(size: 9 * s, weight: .semibold, design: .monospaced))
+            .foregroundColor(selectedPlate ? Earth.ink : Earth.paper),
+          at: badge)
+      }
       if level.fossils.contains(index), !running || travel < Double(index) {
         let gem = offset(top, 0, -11)
+        context.drawLayer { glow in
+          glow.addFilter(.blur(radius: 5 * s))
+          glow.fill(diamond(gem, 6, 9), with: .color(Earth.gold.opacity(0.45)))
+        }
         context.fill(diamond(gem, 6, 9), with: .color(Earth.gold))
         context.fill(
           polygon([offset(gem, 0, -9), offset(gem, 6, 0), offset(gem, 0, 4)]),
@@ -315,12 +417,26 @@ struct Diorama: View, Animatable {
 
     let exit = p.point(level.route.last!, height: terrain.values.last!)
     let portal = offset(exit, 0, -15)
-    context.fill(diamond(exit, 15, 8), with: .color(Earth.teal.opacity(0.25)))
-    let arch = CGRect(x: portal.x - 10 * s, y: portal.y - 15 * s, width: 20 * s, height: 31 * s)
-    context.stroke(Path(ellipseIn: arch), with: .color(Earth.teal), lineWidth: 5 * s)
+    context.fill(diamond(offset(exit, 0, 2), 16, 9), with: .color(Color(hex: 0xA88960)))
+    context.fill(diamond(exit, 16, 9), with: .color(Color(hex: 0xF0D5A2)))
+    var gate = Path()
+    gate.move(to: offset(exit, -10, 0))
+    gate.addLine(to: offset(exit, -10, -22))
+    gate.addCurve(
+      to: offset(exit, 10, -22),
+      control1: offset(exit, -10, -38), control2: offset(exit, 10, -38))
+    gate.addLine(to: offset(exit, 10, 0))
+    context.drawLayer { glow in
+      glow.addFilter(.blur(radius: 9 * s))
+      glow.fill(diamond(portal, 12, 18), with: .color(Earth.teal.opacity(0.5)))
+    }
+    context.stroke(gate, with: .color(Color(hex: 0x4E6150)), lineWidth: 9 * s)
     context.stroke(
-      Path(ellipseIn: arch.insetBy(dx: 1 * s, dy: 1 * s)), with: .color(Color(hex: 0xB8E1C8)),
-      lineWidth: 1.5 * s)
+      gate,
+      with: .linearGradient(
+        Gradient(colors: [Color(hex: 0xF8E4B6), Color(hex: 0xA98F5D)]),
+        startPoint: offset(exit, -10, -32), endPoint: exit), lineWidth: 6 * s)
+    context.stroke(gate, with: .color(Earth.teal), lineWidth: 1.4 * s)
 
     let bounded = min(max(travel, 0), Double(heights.count - 1))
     let before = Int(bounded)

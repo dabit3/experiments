@@ -16,11 +16,11 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Tiny Tectonics" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="title">
                                 <rect key="frame" x="40" y="402" width="313" height="48"/>
                                 <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="36"/>
-                                <color key="textColor" red="0.149" green="0.239" blue="0.212" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.961" green="0.922" blue="0.847" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="safe"/>
-                        <color key="backgroundColor" red="0.957" green="0.937" blue="0.875" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.063" green="0.122" blue="0.110" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="title" firstAttribute="centerX" secondItem="root" secondAttribute="centerX" id="x"/>
                             <constraint firstItem="title" firstAttribute="centerY" secondItem="root" secondAttribute="centerY" id="y"/>
