@@ -337,7 +337,7 @@ struct GameView: View {
             text: "Light a lantern to save your place.\nReach the brass door to finish.")
         }.padding(.vertical, 2)
         Text("Keyboard: ← → to run · Space to jump · Esc to pause")
-          .font(Type.body(10)).foregroundStyle(cream.opacity(0.5))
+          .font(Type.body(11)).foregroundStyle(cream.opacity(0.72))
         primary("Got it", icon: "checkmark") { model.dismissHelp() }
       }
     case .hurt, .lost:
@@ -413,8 +413,11 @@ struct GameView: View {
             RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(
               Palette.brass.opacity(0.3))))
       HStack(spacing: 12) {
-        Button("Replay") { model.start(model.snapshot.levelIndex) }
-          .font(Type.label(13)).frame(width: 78, height: 48).buttonStyle(GhostButtonStyle())
+        Button {
+          model.start(model.snapshot.levelIndex)
+        } label: {
+          Text("Replay").font(Type.label(13)).frame(width: 84, height: 48)
+        }.buttonStyle(GhostButtonStyle())
         primary(
           model.snapshot.levelIndex < 2 ? "Next chapter" : "Woodland atlas", icon: "arrow.right"
         ) {
