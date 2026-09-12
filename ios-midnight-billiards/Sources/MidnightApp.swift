@@ -25,11 +25,7 @@ struct ClubView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                Club.ink.ignoresSafeArea()
-                RadialGradient(
-                    colors: [Club.teal.opacity(0.065), .clear],
-                    center: .topTrailing, startRadius: 0, endRadius: geometry.size.width
-                ).ignoresSafeArea()
+                RoomBackdrop(lampX: session.game == nil ? 0.3 : 0.42)
                 if let game = session.game {
                     playView(game)
                 } else {
@@ -54,23 +50,29 @@ struct ClubView: View {
     private var home: some View {
         HStack(spacing: 32) {
             VStack(alignment: .leading, spacing: 12) {
-                HStack(spacing: 8) {
-                    Image(systemName: "moon.fill").font(.system(size: 12))
-                    Text("THE AFTER-HOURS CLUB").font(.system(size: 10, weight: .semibold)).tracking(2.5)
+                HStack(spacing: 10) {
+                    Diamond().fill(Brass.mid).frame(width: 5, height: 8)
+                    Text("THE AFTER-HOURS CLUB").font(.system(size: 10, weight: .semibold)).tracking(2.8)
+                    Rectangle().fill(Brass.hairline).frame(width: 60, height: 1)
                 }
-                .foregroundStyle(Club.gold)
+                .foregroundStyle(Brass.mid)
                 Text("Midnight\nBilliards")
-                    .font(.system(size: 49, weight: .regular, design: .serif))
+                    .font(.system(size: 52, weight: .regular, design: .serif))
                     .tracking(-1.5)
-                    .lineSpacing(-7)
-                    .foregroundStyle(Club.ivory)
+                    .lineSpacing(-8)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [Club.ivory, Club.ivory, Brass.light.opacity(0.85)],
+                            startPoint: .top, endPoint: .bottom)
+                    )
+                    .shadow(color: Brass.mid.opacity(0.25), radius: 18, y: 6)
                     .fixedSize(horizontal: false, vertical: true)
                 Text("A quiet room. A perfect angle.")
-                    .font(.system(size: 13))
+                    .font(.system(size: 14, design: .serif).italic())
                     .foregroundStyle(Club.muted)
                 HStack(spacing: 18) {
                     stat("\(session.wins)", label: "MATCHES WON")
-                    Rectangle().fill(Club.gold.opacity(0.2)).frame(width: 1, height: 27)
+                    Rectangle().fill(Brass.hairline).frame(width: 1, height: 27)
                     stat(session.best.formatted(), label: "PERSONAL BEST")
                 }
                 .padding(.top, 8)
@@ -95,16 +97,18 @@ struct ClubView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 12) {
-                HStack(spacing: -4) {
-                    BallBadge(number: 9, size: 44).offset(y: 6)
-                    BallBadge(number: 8, size: 59).zIndex(1)
-                    BallBadge(number: 3, size: 44).offset(y: 6)
+                HStack(alignment: .bottom, spacing: -6) {
+                    BallBadge(number: 9, size: 42).offset(y: 3)
+                    BallBadge(number: 8, size: 58).zIndex(1)
+                    BallBadge(number: 3, size: 42).offset(y: 3)
                     Spacer()
-                    Text("EST.\n00:00")
-                        .font(.system(size: 10, weight: .medium, design: .serif))
-                        .tracking(2)
-                        .multilineTextAlignment(.trailing)
-                        .foregroundStyle(Club.gold.opacity(0.75))
+                    VStack(alignment: .trailing, spacing: 3) {
+                        Text("TABLE No. 8").font(.system(size: 9, weight: .semibold)).tracking(2)
+                            .foregroundStyle(Brass.mid)
+                        Text("open from midnight")
+                            .font(.system(size: 11, design: .serif).italic())
+                            .foregroundStyle(Club.muted)
+                    }
                 }
                 .padding(.horizontal, 8)
                 .padding(.bottom, 4)
@@ -116,11 +120,16 @@ struct ClubView: View {
                     title: "Against the clock", subtitle: "3 MINUTES  /  SOLO POTTING",
                     icon: "timer", filled: false
                 ) { session.start(.challenge) }
-                Text("OFFLINE. UNHURRIED. ALWAYS YOUR TABLE.")
-                    .font(.system(size: 8, weight: .medium))
-                    .tracking(1.3)
-                    .foregroundStyle(Club.muted.opacity(0.7))
-                    .padding(.top, 6)
+                HStack(spacing: 8) {
+                    Rectangle().fill(Brass.hairline).frame(height: 1)
+                    Text("OFFLINE · UNHURRIED · ALWAYS YOUR TABLE")
+                        .font(.system(size: 8, weight: .medium))
+                        .tracking(1.3)
+                        .foregroundStyle(Club.muted.opacity(0.8))
+                        .fixedSize()
+                    Rectangle().fill(Brass.hairline).frame(height: 1)
+                }
+                .padding(.top, 6)
             }
             .frame(maxWidth: .infinity)
         }
@@ -130,7 +139,7 @@ struct ClubView: View {
 
     private func stat(_ value: String, label: String) -> some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(value).font(.system(size: 23, weight: .regular, design: .serif)).foregroundStyle(Club.ivory)
+            BrassText(text: value, size: 23)
             Text(label).font(.system(size: 8, weight: .medium)).tracking(1.2).foregroundStyle(Club.muted)
         }
     }
@@ -139,21 +148,49 @@ struct ClubView: View {
         title: String, subtitle: String, icon: String, filled: Bool, action: @escaping () -> Void
     ) -> some View {
         Button(action: action) {
-            HStack {
+            HStack(spacing: 14) {
                 VStack(alignment: .leading, spacing: 7) {
                     Text(subtitle).font(.system(size: 8, weight: .semibold)).tracking(1.5)
-                        .opacity(0.7)
+                        .opacity(0.75)
                     Text(title).font(.system(size: 22, weight: .regular, design: .serif))
                 }
                 Spacer()
-                Image(systemName: icon).font(.system(size: 18, weight: .light))
+                Image(systemName: icon).font(.system(size: 15, weight: .medium))
+                    .frame(width: 34, height: 34)
+                    .background(
+                        Circle().stroke(
+                            filled ? Club.ink.opacity(0.35) : Brass.mid.opacity(0.5), lineWidth: 1))
             }
             .foregroundStyle(filled ? Club.ink : Club.ivory)
-            .padding(18)
+            .padding(.horizontal, 18)
+            .padding(.vertical, 16)
             .frame(maxWidth: .infinity, minHeight: 82)
-            .background(filled ? Club.gold : Club.panel, in: RoundedRectangle(cornerRadius: 14))
-            .overlay(
-                RoundedRectangle(cornerRadius: 14).stroke(Club.gold.opacity(filled ? 0 : 0.25), lineWidth: 1))
+            .background {
+                if filled {
+                    RoundedRectangle(cornerRadius: 14).fill(Brass.gradient)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 11).strokeBorder(
+                                Club.ink.opacity(0.22), lineWidth: 1
+                            )
+                            .padding(3)
+                        )
+                        .shadow(color: Brass.mid.opacity(0.3), radius: 16, y: 8)
+                } else {
+                    RoundedRectangle(cornerRadius: 14)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color(red: 0.09, green: 0.16, blue: 0.19), Club.panel.opacity(0.7)],
+                                startPoint: .top, endPoint: .bottom)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14).strokeBorder(
+                                LinearGradient(
+                                    colors: [Brass.light.opacity(0.55), Brass.deep.opacity(0.25)],
+                                    startPoint: .topLeading, endPoint: .bottomTrailing), lineWidth: 1)
+                        )
+                        .shadow(color: .black.opacity(0.4), radius: 14, y: 8)
+                }
+            }
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier(filled ? "startMatch" : "startChallenge")
@@ -165,9 +202,13 @@ struct ClubView: View {
                 Button {
                     session.setPaused(true)
                 } label: {
-                    Image(systemName: "pause").font(.system(size: 16, weight: .medium))
+                    Image(systemName: "pause").font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(Brass.light)
                         .frame(width: 44, height: 40)
-                        .background(Club.panel, in: RoundedRectangle(cornerRadius: 10))
+                        .background(Club.panel.opacity(0.8), in: RoundedRectangle(cornerRadius: 10))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10).strokeBorder(
+                                Brass.mid.opacity(0.45), lineWidth: 1))
                 }
                 .accessibilityLabel("Pause game")
                 .accessibilityIdentifier("pauseGame")
@@ -175,35 +216,42 @@ struct ClubView: View {
                     player(
                         name: "YOU", group: game.humanGroup, remaining: game.remaining(for: 0),
                         active: game.turn == 0)
-                    Text("8").font(.system(size: 15, weight: .regular, design: .serif))
-                        .foregroundStyle(Club.gold)
+                    BallBadge(number: 8, size: 22)
                     player(
                         name: "AVERY", group: game.group(for: 1), remaining: game.remaining(for: 1),
                         active: game.turn == 1)
                 } else {
                     HStack(alignment: .firstTextBaseline, spacing: 8) {
-                        Text("\(game.score)").font(.system(size: 29, weight: .regular, design: .serif))
-                            .monospacedDigit()
-                        Text("POINTS").font(.system(size: 10, weight: .medium)).tracking(0.8)
+                        BrassText(text: "\(game.score)", size: 30)
+                        Text("POINTS").font(.system(size: 10, weight: .medium)).tracking(1)
                             .foregroundStyle(Club.muted)
                         if game.streak > 1 {
-                            Text("×\(min(5, game.streak))").font(.system(size: 13, weight: .bold))
-                                .foregroundStyle(Club.gold)
+                            Text("×\(min(5, game.streak))").font(.system(size: 11, weight: .bold))
+                                .foregroundStyle(Club.ink)
+                                .padding(.horizontal, 6).padding(.vertical, 2)
+                                .background(Capsule().fill(Brass.gradient))
                         }
                     }
                     Spacer()
-                    Text("BEST  \(session.best)").font(.system(size: 11, weight: .medium)).tracking(0.7)
+                    Text("BEST  \(session.best.formatted())").font(.system(size: 11, weight: .medium))
+                        .tracking(0.7)
                         .foregroundStyle(Club.muted)
                     let seconds = Int(ceil(game.secondsRemaining))
                     Text(String(format: "%d:%02d", seconds / 60, seconds % 60))
-                        .font(.system(size: 25, weight: .light, design: .monospaced))
-                        .foregroundStyle(seconds < 30 ? Color(red: 1, green: 0.57, blue: 0.41) : Club.gold)
+                        .font(.system(size: 22, weight: .light, design: .monospaced))
+                        .foregroundStyle(seconds < 30 ? Color(red: 1, green: 0.57, blue: 0.41) : Brass.light)
+                        .padding(.horizontal, 12)
+                        .frame(height: 36)
+                        .background(Capsule().fill(Club.ink.opacity(0.7)))
+                        .overlay(
+                            Capsule().strokeBorder(Brass.mid.opacity(seconds < 30 ? 0.9 : 0.45), lineWidth: 1)
+                        )
                         .accessibilityIdentifier("challengeTimer")
                 }
                 Spacer(minLength: 0)
                 if game.mode == .challenge {
-                    Text("MIDNIGHT").font(.system(size: 9, weight: .medium, design: .serif)).tracking(2)
-                        .foregroundStyle(Club.gold.opacity(0.7))
+                    Text("MIDNIGHT").font(.system(size: 9, weight: .medium, design: .serif)).tracking(2.5)
+                        .foregroundStyle(Brass.mid.opacity(0.8))
                 }
             }
             .foregroundStyle(Club.ivory)
@@ -218,13 +266,13 @@ struct ClubView: View {
                         onTouch: session.touchTable)
                     Spacer(minLength: 0)
                     Text(game.detail)
-                        .font(.system(size: 11))
+                        .font(.system(size: 11.5, design: .serif).italic())
                         .foregroundStyle(Club.muted)
                         .lineLimit(2)
                         .multilineTextAlignment(.center)
                         .frame(height: 25)
                 }
-                controls(game).frame(width: 174)
+                controls(game).frame(width: 176)
             }
         }
         .padding(.horizontal, 8)
@@ -234,7 +282,8 @@ struct ClubView: View {
 
     private func player(name: String, group: BallGroup?, remaining: [Int], active: Bool) -> some View {
         HStack(spacing: 7) {
-            Circle().fill(active ? Club.teal : Club.muted.opacity(0.25)).frame(width: 5, height: 5)
+            Diamond().fill(active ? Brass.light : Club.muted.opacity(0.25)).frame(width: 5, height: 8)
+                .shadow(color: active ? Brass.mid.opacity(0.9) : .clear, radius: 4)
             VStack(alignment: .leading, spacing: 5) {
                 Text(group.map { "\(name) · \($0.rawValue.uppercased())" } ?? name)
                     .font(.system(size: 11, weight: .semibold)).tracking(0.7)
@@ -244,7 +293,7 @@ struct ClubView: View {
                         if remaining.isEmpty {
                             BallBadge(number: 8, size: 18)
                             Text("CALL POCKET").font(.system(size: 10, weight: .medium)).foregroundStyle(
-                                Club.gold)
+                                Brass.light)
                         } else {
                             ForEach(remaining, id: \.self) { BallBadge(number: $0, size: 18) }
                         }
@@ -262,13 +311,13 @@ struct ClubView: View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text(game.mode == .match ? "HOUSE TABLE" : "SOLO SESSION")
-                    .font(.system(size: 10, weight: .semibold)).tracking(0.8).foregroundStyle(Club.gold)
+                    .font(.system(size: 9.5, weight: .semibold)).tracking(1.4).foregroundStyle(Brass.mid)
                 Spacer()
                 Button {
                     session.toggleSound()
                 } label: {
                     Image(systemName: session.soundOn ? "speaker.wave.2" : "speaker.slash")
-                        .font(.system(size: 13)).frame(width: 44, height: 34)
+                        .font(.system(size: 12)).foregroundStyle(Brass.light).frame(width: 44, height: 34)
                 }
                 .accessibilityLabel(session.soundOn ? "Mute sound" : "Enable sound")
             }
@@ -278,7 +327,7 @@ struct ClubView: View {
                 .lineLimit(2)
                 .minimumScaleFactor(0.8)
                 .frame(height: 46, alignment: .topLeading)
-            Rectangle().fill(Club.gold.opacity(0.18)).frame(height: 1)
+            BrassRule()
             if game.finished {
                 Text("Session complete")
                     .font(.system(size: 13, weight: .medium))
@@ -286,7 +335,7 @@ struct ClubView: View {
                 Spacer(minLength: 0)
             } else if game.ballInHand && game.turn == 0 {
                 Text("BALL IN HAND").font(.system(size: 11, weight: .semibold)).tracking(0.8).foregroundStyle(
-                    Club.gold)
+                    Brass.light)
                 Text("Tap clear felt to move the cue ball.")
                     .font(.system(size: 12)).foregroundStyle(Club.muted)
                 Spacer(minLength: 0)
@@ -294,16 +343,14 @@ struct ClubView: View {
                     .accessibilityIdentifier("confirmPlacement")
             } else {
                 HStack {
-                    Text("POWER").font(.system(size: 10, weight: .medium)).tracking(1)
+                    Text("POWER").font(.system(size: 9.5, weight: .medium)).tracking(1.4)
                     Spacer()
                     Text("\(Int(session.power * 100))%").font(
-                        .system(size: 12, weight: .medium, design: .monospaced))
+                        .system(size: 12, weight: .medium, design: .monospaced)
+                    ).foregroundStyle(Brass.light)
                 }.foregroundStyle(Club.muted)
-                Slider(value: $session.power, in: 0.05...1)
-                    .accessibilityLabel("Shot power")
+                PowerGauge(power: $session.power, enabled: !(game.shooting || game.turn == 1))
                     .accessibilityIdentifier("shotPower")
-                    .frame(height: 21)
-                    .disabled(game.shooting || game.turn == 1)
                 HStack(spacing: 0) {
                     Button {
                         session.angle -= .pi / 720
@@ -311,10 +358,10 @@ struct ClubView: View {
                         Image(systemName: "minus").frame(width: 44, height: 44)
                     }.accessibilityLabel("Aim counterclockwise")
                     VStack(spacing: 2) {
-                        Text("FINE AIM").font(.system(size: 9, weight: .medium)).tracking(0.5)
+                        Text("FINE AIM").font(.system(size: 9, weight: .medium)).tracking(0.8)
                         Text(String(format: "%.2f°", session.angle * 180 / .pi))
-                            .font(.system(size: 10, weight: .medium, design: .monospaced))
-                            .foregroundStyle(Club.gold)
+                            .font(.system(size: 10.5, weight: .medium, design: .monospaced))
+                            .foregroundStyle(Brass.light)
                     }
                     .frame(maxWidth: .infinity)
                     .accessibilityIdentifier("aimAngle")
@@ -326,29 +373,37 @@ struct ClubView: View {
                 }
                 .font(.system(size: 12))
                 .foregroundStyle(Club.ivory)
-                .background(Club.ink.opacity(0.5), in: RoundedRectangle(cornerRadius: 8))
+                .background(Club.ink.opacity(0.55), in: RoundedRectangle(cornerRadius: 8))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8).strokeBorder(Brass.deep.opacity(0.4), lineWidth: 1)
+                )
                 .disabled(game.shooting || game.turn == 1)
-                HStack {
+                HStack(spacing: 10) {
                     Button {
                         session.spin = session.spin == 0 ? 0.75 : session.spin > 0 ? -0.75 : 0
                     } label: {
-                        HStack(spacing: 6) {
-                            ZStack {
-                                Circle().fill(Club.ivory).frame(width: 18, height: 18)
-                                Circle().fill(Club.gold).frame(width: 5, height: 5).offset(
-                                    y: -session.spin * 6)
+                        HStack(spacing: 9) {
+                            SpinDial(spin: session.spin, size: 32)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text("SPIN").font(.system(size: 8, weight: .medium)).tracking(1.2)
+                                    .foregroundStyle(Club.muted)
+                                Text(session.spin == 0 ? "Center" : session.spin > 0 ? "Follow" : "Draw")
+                                    .font(.system(size: 12, weight: .medium)).foregroundStyle(Club.ivory)
                             }
-                            Text(session.spin == 0 ? "CENTER" : session.spin > 0 ? "FOLLOW" : "DRAW")
-                                .font(.system(size: 10, weight: .medium)).tracking(0.6)
                         }
-                        .frame(height: 30)
+                        .frame(height: 44)
                     }
                     .accessibilityLabel(
                         "Spin: \(session.spin == 0 ? "center" : session.spin > 0 ? "follow" : "draw"). Tap to change."
                     )
                     .disabled(game.shooting || game.turn == 1)
                     Spacer()
-                    Text("\(game.shots) SHOTS").font(.system(size: 10)).foregroundStyle(Club.muted)
+                    VStack(alignment: .trailing, spacing: 1) {
+                        Text("SHOTS").font(.system(size: 8, weight: .medium)).tracking(1.2)
+                            .foregroundStyle(Club.muted)
+                        Text("\(game.shots)").font(.system(size: 13, weight: .regular, design: .serif))
+                            .monospacedDigit().foregroundStyle(Club.ivory)
+                    }
                 }
                 Spacer(minLength: 0)
                 if game.canShoot && game.turn == 0 {
@@ -366,13 +421,13 @@ struct ClubView: View {
                     .foregroundStyle(Club.ivory)
                     .frame(maxWidth: .infinity, minHeight: 44)
                     .background(Club.ink.opacity(0.6), in: RoundedRectangle(cornerRadius: 9))
-                    .overlay(RoundedRectangle(cornerRadius: 9).stroke(Club.gold.opacity(0.3)))
+                    .overlay(RoundedRectangle(cornerRadius: 9).strokeBorder(Brass.mid.opacity(0.35)))
                     .accessibilityIdentifier("shotStatus")
                 }
             }
         }
         .padding(13)
-        .background(Club.panel, in: RoundedRectangle(cornerRadius: 15))
+        .decoFrame(radius: 15, strength: 0.8)
     }
 
     private func actionButton(_ title: String, icon: String, action: @escaping () -> Void) -> some View {
@@ -385,7 +440,12 @@ struct ClubView: View {
             .foregroundStyle(Club.ink)
             .padding(.horizontal, 13)
             .frame(maxWidth: .infinity, minHeight: 44)
-            .background(Club.gold, in: RoundedRectangle(cornerRadius: 9))
+            .background(RoundedRectangle(cornerRadius: 9).fill(Brass.gradient))
+            .overlay(
+                RoundedRectangle(cornerRadius: 7).strokeBorder(Club.ink.opacity(0.22), lineWidth: 1).padding(
+                    2)
+            )
+            .shadow(color: Brass.mid.opacity(0.28), radius: 10, y: 5)
         }
         .buttonStyle(.plain)
     }
@@ -397,12 +457,13 @@ struct ClubView: View {
                     eyebrow("A MOMENT BETWEEN SHOTS")
                     Text("Take your time.").font(.system(size: 37, weight: .regular, design: .serif))
                         .foregroundStyle(Club.ivory)
-                    Text("Your table will be right here.").font(.system(size: 13)).foregroundStyle(Club.muted)
+                    Text("Your table will be right here.")
+                        .font(.system(size: 14, design: .serif).italic()).foregroundStyle(Club.muted)
                 }
                 VStack(spacing: 10) {
                     actionButton("Back to the table", icon: "play.fill") { session.setPaused(false) }
                     secondaryButton("How to play") { session.showRules = true }
-                    Rectangle().fill(Club.gold.opacity(0.2)).frame(height: 1)
+                    BrassRule().padding(.vertical, 2)
                     secondaryButton("Start a fresh rack") {
                         if let mode = session.game?.mode { session.start(mode) }
                     }
@@ -426,12 +487,11 @@ struct ClubView: View {
                         Text(game.resultTitle)
                             .font(.system(size: 35, weight: .regular, design: .serif))
                             .foregroundStyle(Club.ivory)
-                        Text(game.resultDetail).font(.system(size: 12)).foregroundStyle(Club.muted)
+                        Text(game.resultDetail).font(.system(size: 12.5, design: .serif).italic())
+                            .foregroundStyle(Club.muted)
                         if game.mode == .challenge {
                             HStack(alignment: .firstTextBaseline, spacing: 8) {
-                                Text("\(game.score)").font(
-                                    .system(size: 59, weight: .regular, design: .serif)
-                                ).foregroundStyle(Club.gold)
+                                BrassText(text: game.score.formatted(), size: 60)
                                 Text("POINTS").font(.system(size: 10, weight: .medium)).tracking(2)
                                     .foregroundStyle(Club.muted)
                             }
@@ -442,9 +502,10 @@ struct ClubView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     VStack(spacing: 12) {
                         Text(
-                            game.mode == .challenge ? "BEST  \(session.best)" : "\(session.wins) MATCHES WON"
+                            game.mode == .challenge
+                                ? "BEST  \(session.best.formatted())" : "\(session.wins) MATCHES WON"
                         )
-                        .font(.system(size: 10, weight: .medium)).tracking(1.3).foregroundStyle(Club.gold)
+                        .font(.system(size: 10, weight: .medium)).tracking(1.3).foregroundStyle(Brass.mid)
                         actionButton("Play again", icon: "arrow.clockwise") { session.start(game.mode) }
                         secondaryButton("Back to the club") { session.game = nil }
                     }.frame(width: 185)
@@ -509,14 +570,21 @@ struct ClubView: View {
 
     private func rule(_ number: String, _ title: String, _ text: String) -> some View {
         VStack(alignment: .leading, spacing: 5) {
-            Text("\(number)  \(title)").font(.system(size: 12, weight: .semibold)).foregroundStyle(Club.gold)
+            HStack(alignment: .firstTextBaseline, spacing: 7) {
+                Text(number).font(.system(size: 11, weight: .regular, design: .serif)).foregroundStyle(
+                    Brass.mid)
+                Text(title).font(.system(size: 12, weight: .semibold)).foregroundStyle(Club.ivory)
+            }
             Text(text).font(.system(size: 11)).foregroundStyle(Club.muted).fixedSize(
                 horizontal: false, vertical: true)
         }.frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func eyebrow(_ title: String) -> some View {
-        Text(title).font(.system(size: 9, weight: .medium)).tracking(1.8).foregroundStyle(Club.gold)
+        HStack(spacing: 8) {
+            Diamond().fill(Brass.mid).frame(width: 4, height: 7)
+            Text(title).font(.system(size: 9, weight: .medium)).tracking(1.8).foregroundStyle(Brass.mid)
+        }
     }
 
     private func secondaryButton(_ title: String, action: @escaping () -> Void) -> some View {
@@ -524,17 +592,19 @@ struct ClubView: View {
             Text(title).font(.system(size: 12, weight: .medium)).foregroundStyle(Club.ivory)
                 .frame(maxWidth: .infinity, minHeight: 38)
                 .background(Club.ivory.opacity(0.05), in: RoundedRectangle(cornerRadius: 8))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8).strokeBorder(Brass.mid.opacity(0.28), lineWidth: 1))
         }.buttonStyle(.plain)
     }
 
     private func modal<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         ZStack {
-            Club.ink.opacity(0.89).ignoresSafeArea()
+            Rectangle().fill(.ultraThinMaterial).ignoresSafeArea()
+            Club.ink.opacity(0.5).ignoresSafeArea()
             content()
-                .padding(26)
+                .padding(28)
                 .frame(maxWidth: 660)
-                .background(Club.panel, in: RoundedRectangle(cornerRadius: 20))
-                .overlay(RoundedRectangle(cornerRadius: 20).stroke(Club.gold.opacity(0.25), lineWidth: 1))
+                .decoFrame(radius: 20)
                 .padding(14)
         }
     }
