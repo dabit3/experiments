@@ -65,6 +65,8 @@ also typecheck the native UI and game.
 
 ## Reliability and limitations
 
+See [QA.md](QA.md) for native test results, three visual review passes and evidence.
+
 - Physics is a deterministic, bounded pendulum/drop model, rather than an unstable
   rigid-body simulation. Landings require at least 34% support overlap; ship tilt
   uses the weighted cargo center of mass plus the ship's ballast.
