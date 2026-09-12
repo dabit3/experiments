@@ -7,8 +7,7 @@ struct StudioView: View {
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @State private var galleryOpen = false
   @State private var settingsOpen = false
-  @State private var shareImage: UIImage?
-  @State private var shareOpen = false
+  @State private var shareContent: ShareContent?
   @State private var previousTick = Date()
   @State private var reveal = false
   private let timer = Timer.publish(every: 1.0 / 30, on: .main, in: .common).autoconnect()
@@ -49,14 +48,8 @@ struct StudioView: View {
     }
     .sheet(isPresented: $galleryOpen) { gallery }
     .sheet(isPresented: $settingsOpen) { settings }
-    .sheet(isPresented: $shareOpen) {
-      if let shareImage, let piece = studio.result {
-        ShareSheet(
-          image: shareImage,
-          text:
-            "I made \(piece.commission.title) in Emberglass. \(piece.grade) · \(piece.score)/100. Made of fire. Finished by hand."
-        )
-      }
+    .sheet(item: $shareContent) { content in
+      ShareSheet(image: content.image, text: content.text)
     }
   }
 
@@ -615,8 +608,11 @@ struct StudioView: View {
     let renderer = ImageRenderer(content: ResultPrint(piece: piece))
     renderer.scale = 2
     if let image = renderer.uiImage {
-      shareImage = image
-      shareOpen = true
+      shareContent = ShareContent(
+        image: image,
+        text:
+          "I made \(piece.commission.title) in Emberglass. \(piece.grade) · \(piece.score)/100. Made of fire. Finished by hand."
+      )
     }
   }
 
@@ -659,9 +655,18 @@ struct ResultPrint: View {
       Text("E M B E R G L A S S").font(.system(size: 15, design: .serif))
       Text("MADE OF FIRE. FINISHED BY HAND.")
         .font(.system(size: 8, design: .monospaced)).tracking(2).foregroundStyle(Palette.muted)
-      VesselArt(profile: piece.profile, phase: 1, commission: piece.commission)
-        .frame(width: 270, height: 345)
-      Plinth().frame(width: 270).padding(.top, -28)
+      ZStack {
+        Plinth().frame(width: 270)
+          .position(x: 135, y: 327)
+        Ellipse().fill(.black.opacity(0.70))
+          .frame(width: 270 * (piece.profile.last ?? 0.4), height: 9)
+          .blur(radius: 4)
+          .position(x: 135, y: 325)
+        VesselArt(profile: piece.profile, phase: 1, commission: piece.commission)
+          .frame(width: 270, height: 345)
+          .position(x: 135, y: 172.5)
+      }
+      .frame(width: 270, height: 355)
       Text(piece.commission.title).font(.system(size: 33, design: .serif))
       Text("\(piece.grade)  /  \(piece.score)")
         .font(.system(size: 13, design: .monospaced)).tracking(2).foregroundStyle(Palette.mint)
@@ -671,6 +676,12 @@ struct ResultPrint: View {
     .padding(30).frame(width: 390, height: 680)
     .foregroundStyle(Palette.cream).background(Palette.background)
   }
+}
+
+struct ShareContent: Identifiable {
+  let id = UUID()
+  let image: UIImage
+  let text: String
 }
 
 struct ShareSheet: UIViewControllerRepresentable {
