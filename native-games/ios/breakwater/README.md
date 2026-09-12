@@ -8,8 +8,13 @@ fuel budgets. Scores and campaign progress stay on the device.
 
 ## Art direction
 
-The coastal rescue identity pairs Baskerville lettering, a custom lighthouse seal,
-brass chart instruments, ivory voyage reports and a framed rescue postcard.
+The coastal rescue identity pairs native system sans-serif typography, a custom
+lighthouse seal, brass chart instruments, ivory voyage reports and a framed rescue
+postcard. Shared type and spacing tokens keep mission titles, route controls and
+results consistent. Home presents the next rescue's boat count and water conditions;
+chart rows expose fuel budgets, personal bests and readable unlock instructions.
+Brass marks navigation and fuel; coral marks hazards or failure. Primary controls
+use solid ivory, and numerical instruments use tabular figures.
 Bundled original generated illustrations provide the home portrait, limestone
 islands, coral tug, lighthouse and water texture. Native Canvas adds moving
 surface glints, shoreline foam, current streamlines, wakes, routes and the towing
@@ -84,8 +89,9 @@ labels and identifiers. Route input supports taps as an alternative to dragging.
 Reduced Motion freezes ambient waves, boat bobbing and rotating lighthouse light.
 Help and chart lists scroll. Navigation and settings are VoiceOver labeled, but
 spatial route drawing is visual and is not a complete nonvisual gameplay mode.
-Typography supports system text where practical; chart labels use fixed small
-nautical annotations, and very large accessibility text sizes are not fully optimized.
+Interface typography follows Dynamic Type; exported postcards use a fixed type scale.
+Chart annotations remain fixed to the playfield's coordinate system. Very large
+accessibility text sizes are not fully optimized for the spatial game screen.
 
 Audio uses local synthesized chimes and honors Silent Mode. Haptics are optional.
 Simulator checks cannot validate physical-device audio output or haptic feel.

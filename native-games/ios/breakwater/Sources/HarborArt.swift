@@ -9,6 +9,27 @@ enum HarborPalette {
   static let muted = Color(red: 0.61, green: 0.72, blue: 0.71)
   static let brass = Color(red: 0.83, green: 0.68, blue: 0.44)
   static let coral = Color(red: 0.91, green: 0.38, blue: 0.25)
+  static let onPaper = ink.opacity(0.78)
+  static let separator = muted.opacity(0.25)
+}
+
+enum HarborType {
+  static let brand = Font.title.weight(.bold)
+  static let title = Font.title2.weight(.bold)
+  static let heading = Font.headline
+  static let body = Font.subheadline
+  static let label = Font.footnote.weight(.medium)
+  static let instrument = Font.footnote.monospacedDigit().weight(.semibold)
+  static let score = Font.title.monospacedDigit().weight(.semibold)
+}
+
+enum HarborSpacing {
+  static let page: CGFloat = 20
+  static let section: CGFloat = 20
+  static let row: CGFloat = 12
+  static let detail: CGFloat = 8
+  static let hitTarget: CGFloat = 44
+  static let control: CGFloat = 52
 }
 
 struct HarborSea: View {
@@ -109,17 +130,14 @@ extension HarborSea {
         }
       }
       label(
-        "TIDAL DRIFT", at: current.center + SeaPoint(x: 0, y: current.radius - 4),
-        size: 7, color: HarborPalette.foam.opacity(0.65), ctx: &ctx)
+        "Current", at: current.center + SeaPoint(x: 0, y: current.radius - 4),
+        size: 9, color: HarborPalette.foam.opacity(0.9), ctx: &ctx)
     }
 
     for reef in chart.reefs { drawReef(reef, time: time, ctx: &ctx) }
     drawHarbor(time: time, ctx: &ctx)
     if !decorative { drawJetty(ctx: &ctx) }
     compass(at: SeaPoint(x: 305, y: 466), ctx: &ctx)
-    label(
-      "BREAKWATER  /  COASTAL RESCUE", at: .init(x: 177, y: 510), size: 5.5,
-      color: HarborPalette.foam.opacity(0.45), ctx: &ctx)
 
     if decorative {
       drawHomeFleet(time: time, ctx: &ctx)
@@ -482,10 +500,11 @@ private func islandArtwork(for reef: Reef) -> String {
 
 struct HarborPressStyle: ButtonStyle {
   @Environment(\.accessibilityReduceMotion) private var reducedMotion
+  @Environment(\.isEnabled) private var isEnabled
 
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .opacity(configuration.isPressed ? 0.83 : 1)
+      .opacity(isEnabled ? (configuration.isPressed ? 0.83 : 1) : 0.45)
       .scaleEffect(configuration.isPressed && !reducedMotion ? 0.985 : 1)
       .animation(reducedMotion ? nil : .easeOut(duration: 0.15), value: configuration.isPressed)
   }
