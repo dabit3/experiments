@@ -1,0 +1,989 @@
+[
+  {
+    "name": "Orbit Foundry",
+    "slug": "orbit-foundry",
+    "category": "Gravity puzzle",
+    "concept": "A tactile orbital mechanics puzzle: aim and launch a tiny probe around luminous planets to collect beacons and reach a space station. Show the predicted trajectory while dragging. Build at least 8 hand-designed, solvable levels, restart, progression, best scores, and a genuinely useful first-level tutorial.",
+    "design": "An astronomical instrument made of midnight indigo, warm ivory numerals, copper rings and electric-cyan orbital trails. Vast negative space around a spectacular moving solar system. Bespoke level cards, finely engraved HUD, and satisfying capture bursts. Gameplay must dominate the screen.",
+    "demo": "Browse the elegant mission selection, drag to see an arc, launch and capture beacons, finish a level, and show the unlocked next mission. Tests should cover gravity/trajectory stability, win/reset/progression, and persistence.",
+    "description": "Bend a probe\u2019s path around luminous planets, collect beacons, and find a safe route home.",
+    "session_id": "da22a3166eea422db3fede07e8b1939d",
+    "session_url": "https://app.devin.ai/sessions/da22a3166eea422db3fede07e8b1939d",
+    "result": {
+      "name": "Orbit Foundry",
+      "slug": "orbit-foundry",
+      "branch": "devin/1789166061-ios-orbit-foundry",
+      "commit": "71e56d74ce3b07dae78e6bd675cf2041305c0fb9",
+      "pr_url": "https://github.com/dabit3/experiments/pull/95",
+      "status": "complete",
+      "summary": "Completed a native SwiftUI gravity puzzle with eight authored solvable missions, live trajectory prediction, ring-drag and slider aiming, beacon collection, docking, tutorial, optional guides, failure/retry/review, sequential unlocks and persisted best scores. Two screenshot-informed refinement passes and final native UI testing are complete. Final source and evidence are accessible in the open, unmerged PR; all source changes stay within ios-collection/orbit-foundry/.",
+      "hero_url": "https://app.devin.ai/attachments/f9260191-1ffa-4680-87fe-34691c2de9eb/01-home.png",
+      "video_url": "https://app.devin.ai/attachments/38d4d5d0-704a-449f-84a5-060b4e9da6fe/orbit-foundry-demo-h264.mp4",
+      "report_url": "https://app.devin.ai/attachments/ed7810b5-4498-4619-95db-6739e6020548/orbit-foundry-qa-design-report.md",
+      "limitations": [
+        "Portrait iPhone V1; no dedicated iPad/landscape layout, cloud sync or custom mission editor",
+        "Spoken VoiceOver navigation and physical haptics/device performance remain untested; labels, standard sliders and Dynamic Type support are implemented",
+        "Missions 01\u201302 were won through native UI; missions 03\u201308 have deterministic XCTest-verified solutions but were not manually played to completion",
+        "Capture-particle suppression under Reduce Motion was not exhaustively inspected frame by frame; inactive-scene behavior received a timing smoke check rather than performance profiling",
+        "Physics is a puzzle-scale model. Progress is local and removed on uninstall. The app and demo have no audio",
+        "No physical-device validation, production signing, App Store approval or submission is claimed."
+      ],
+      "session_url": "https://app.devin.ai/sessions/da22a3166eea422db3fede07e8b1939d",
+      "build_and_tests": "Final simulator Debug xcodebuild build passed with CODE_SIGNING_ALLOWED=NO. Strict xcrun swift-format lint --strict --recursive Sources Tests Tools and git diff --check passed. xcodebuild test on iPhone 17e passed 12 XCTest tests with zero failures: all eight complete mission solutions, prediction/live integration equality, softened gravity, 216 finite terminating angle/thrust cases, collision/missing-beacon failures, finished-flight stability, launch/reset/replay, aim/guide, best scores, progression and persistence/corrupt-save handling. Final native UI verified observatory/atlas/tutorial, held live ring drag, first-light docking/unlock, failure/review/retry, fresh replay scoring, leave and reset cancellation/confirmation, terminate/relaunch persistence, larger-text scrolling and guide dismissal, iPhone 17e layout, Reduce Motion Copper bend docking and inactive-scene pause smoke check. No repository CI checks were registered; no review findings or merge conflicts remained when checked.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/f9260191-1ffa-4680-87fe-34691c2de9eb/01-home.png",
+        "https://app.devin.ai/attachments/a16d45e6-3173-446e-8825-2fa15260d02b/02-held-aim.png",
+        "https://app.devin.ai/attachments/e8d06c7e-f7ae-48d6-9b46-2d2c58a18c93/03-docked.png",
+        "https://app.devin.ai/attachments/97afebd3-7a71-4d4f-b8e4-9cd6ccfd9635/04-unlocked-atlas.png",
+        "https://app.devin.ai/attachments/bc5f08cd-e899-42a5-b401-13ae85345ab8/persistence-settings.png"
+      ],
+      "design_iterations": "Working V1: 459c1d7. Pass 1 (44792d4) fixed clipped guide/tutorial content, collapsed accessibility playfield, truncated controls, fragmented score labels, obscured failure paths, small targets/annotations and faint locked rows. Pass 2 (71e56d7) restricted aiming to a 72-point probe handle to preserve scrolling, clipped content below system safe areas, stacked the accessibility atlas heading/count, added Back to trajectory and persistent guide close, compacted the default guide sheet, added capture bursts with Reduce Motion fallback, paused inactive flight and reset replay scoring. Returned native screenshots were reviewed; the final tester confirmed the previous usability defects resolved.",
+      "platform_evidence": "Native macOS 26.5.2 (25F84), arm64; Xcode 26.6 (17F113); iOS 26.5 Simulator. Final native UI tested on iPhone 17 Pro (691C57A7-98F5-4C32-A5AF-3074F4F0FBA3) at default and accessibility XXXL, and iPhone 17e (97EB512B-0C2B-41C5-BAA0-C9C96F1BCB9D) at default text and with Reduce Motion. Native SwiftUI/Observation/Canvas app targets iOS 17+, with committed Xcode project and shared scheme."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the observatory, live aiming field and docking result. Copper planets, cyan telemetry, quiet star fields and ivory typography support a coherent orbital instrument. The 68.63-second video is native 1206 \u00d7 2622 H.264. Twelve XCTest cases verify deterministic solutions for all eight missions, prediction/live parity, bounds, finite physics, replay scoring and persistence. Native two-device testing and two concrete screenshot-informed design passes are documented. All 14 changed files are isolated to ios-collection/orbit-foundry/; Xcode project, shared scheme, icon and native tests are present. PR #95 is open with no actionable comments. Missions 03\u201308 were model-tested rather than manually completed; physical-device and spoken VoiceOver limitations remain explicit.",
+      "reviewed_commit": "71e56d74ce3b07dae78e6bd675cf2041305c0fb9",
+      "video_duration_seconds": 68.633333,
+      "hero_asset": "assets/orbit-foundry.png"
+    }
+  },
+  {
+    "name": "Velvet Rally",
+    "slug": "velvet-rally",
+    "category": "Arcade table tennis",
+    "concept": "A beautiful one-thumb table-tennis arcade with a smoothly controlled near paddle, fair AI opponent, satisfying ball physics, rallies, first-to-7 matches, difficulty options, and local best results. Add subtle camera/perspective or rich court lighting without compromising readable collision behavior.",
+    "design": "Luxury sports editorial: aubergine and clay courts, cream sideline typography, tangerine ball trails, soft stadium spotlights, premium match scoreboards and a bold celebratory result card. This should look like a tiny designer sports game, not a default Pong clone.",
+    "demo": "Choose a court and difficulty, play a real rally through touch/drag, score points, pause/resume, finish a short test match and see the results. Test collisions, scoring, reset, pause and difficulty bounds.",
+    "description": "A tiny designer table-tennis court, with one-thumb rallies, a computer opponent and a bold match-day atmosphere.",
+    "session_id": "ad8a0e35a4f1465881198ff9c0ca129b",
+    "session_url": "https://app.devin.ai/sessions/ad8a0e35a4f1465881198ff9c0ca129b",
+    "result": {
+      "name": "Velvet Rally",
+      "slug": "velvet-rally",
+      "branch": "devin/1789165989-ios-velvet-rally",
+      "commit": "efaf005b568bf8fe400f56aaad047189b13cd2b6",
+      "pr_url": "https://github.com/dabit3/experiments/pull/79",
+      "status": "complete",
+      "summary": "Polished native SwiftUI table-tennis V1 with two courts, three fair AI difficulties, real one-thumb gameplay, Classic/Sprint matches, pause/retry and local records. Two screenshot-informed refinement passes completed; final two-device simulator QA and 10 XCTest cases passed. PR is open and evidence uploaded.",
+      "hero_url": "https://app.devin.ai/attachments/af05b8a0-1d50-49f8-bdec-6f0836554b41/01-hero.png",
+      "video_url": "https://app.devin.ai/attachments/e8c2f589-b720-47cf-aa2a-8caa65c3a2c4/velvet-rally-demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/324f5ca8-5688-44be-bbe2-ced97354727a/QA-design-report.md",
+      "limitations": [
+        "Simulator V1 only: no physical-device/haptic-quality validation, production signing or App Store submission/approval",
+        "Native simctl recording omitted late frames. Delivered demo is a verified continuous 80-second real-time desktop recording cropped to the device display: 406\u00d7878 H.264 at 30fps, no still substitutions or gameplay splicing. Full screenshots are uncropped",
+        "Final winning-result variant not re-exercised; a real 3\u20132 victory passed on the previous refinement",
+        "VoiceOver operation, maximum accessibility sizes, prolonged high-speed UI gameplay and exhaustive settings combinations remain untested. Model speed-cap tests passed",
+        "Portrait iPhone, local-only records, no multiplayer/cloud sync/audio soundtrack. Unfinished matches intentionally do not persist."
+      ],
+      "session_url": "https://app.devin.ai/sessions/ad8a0e35a4f1465881198ff9c0ca129b",
+      "build_and_tests": "Simulator build/compiler passed. Strict swift-format lint passed. Final XCTest: 10 tests, zero failures, covering physics/collisions, 3/7 scoring, input and AI bounds, 100-contact speed cap, pause, persistence, exactly-once save and reset. Initial bootstrap failure resolved with parallel-testing-enabled NO. Final native UI passed real Sprint 1\u20133 and Classic 0\u20137 completion, all difficulties, drag/returns/both point owners, pause/resume, cancel/confirm reset/leave, retry, process-relaunch persistence, record clear and accessibility-medium layouts. No CI checks configured.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/af05b8a0-1d50-49f8-bdec-6f0836554b41/01-hero.png",
+        "https://app.devin.ai/attachments/d3e28f85-f5c2-4a8a-be0f-342d140fc74d/02-settings.png",
+        "https://app.devin.ai/attachments/2244fdc1-da4a-464d-9e8d-1fcdb12e61ce/03-moving-gameplay.png",
+        "https://app.devin.ai/attachments/017c9311-8b79-4158-9470-33cadf24f919/04-result.png",
+        "https://app.devin.ai/attachments/8adaa486-ef71-411e-a640-1576f233e0e2/05-AX-settings.png"
+      ],
+      "design_iterations": "Initial screenshots yielded nine concrete issues. Refinement 1 (7b212a1) improved settings whitespace, text sizes, Clay contrast, lighting, point ownership/onboarding, score progress and labeled result/pause columns; empty history gained a working Play CTA. Actual pass2 screenshots exposed accessibility and live-state issues. Refinement 2 (efaf005) added full-width AX court/length controls, IN PLAY status, opaque prompts, stronger score pips and proportional court illustration details. Final five full screenshots visually inspected by lead.",
+      "platform_evidence": "Native macOS 26.5.2 (25F84), Darwin arm64, Xcode 26.6 (17F113), iOS 26.5 simulators. Final native UI QA on iPhone 17 Pro and smaller iPhone 17e at standard and accessibility-medium text. Full screenshots: Pro 1206\u00d72622; 17e 1170\u00d72532."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the club home, actual moving rally and accessibility-medium settings. Aubergine, clay, cream and orange create a distinctive arcade identity; ball trails, score pips and edge-angle guidance communicate live play clearly. The continuous 80-second H.264 demo is 406 \u00d7 878 because native Simulator recording dropped late frames; full native screenshots preserve visual detail. Ten XCTest cases, real Sprint and Classic completions, persistence, two iPhones and two screenshot-informed design passes are documented. All 17 changed files are isolated under ios-collection/velvet-rally/, with project, shared scheme, icon and tests. PR #79 is open with no actionable comments. Final winning-result, maximum text, VoiceOver and physical-device gaps are disclosed.",
+      "reviewed_commit": "efaf005b568bf8fe400f56aaad047189b13cd2b6",
+      "video_duration_seconds": 80.0,
+      "hero_asset": "assets/velvet-rally.png"
+    }
+  },
+  {
+    "name": "Foldscape",
+    "slug": "foldscape",
+    "category": "Paper landscape puzzle",
+    "concept": "A paper-cut sliding-tile puzzle in which completing a scene brings a layered landscape to life. Offer at least 6 original illustrated scenes, a guaranteed-solvable shuffle, move counter, hint or preview, restart, and saved completions. Use a 3x3 puzzle with one empty tile so the interaction is understandable.",
+    "design": "Handcrafted paper dioramas with cream stock, moss forests, coral mountains, indigo sea, dimensional shadows and tactile tile lifts. Scene completion reveals a tasteful animation such as drifting clouds or sun rays. Beautiful scene-selection gallery with large artwork rather than generic cards.",
+    "demo": "Pick a scene, move tiles, use a preview, solve a short scenario and reveal the completed living landscape, then relaunch to verify progress. Test solvability, legal moves, completion and persistence.",
+    "description": "Slide fragments of illustrated paper landscapes into place, then watch the completed scene come to life.",
+    "session_id": "d79621a2334f443a8ae2531c2823510c",
+    "session_url": "https://app.devin.ai/sessions/d79621a2334f443a8ae2531c2823510c",
+    "result": {
+      "name": "Foldscape",
+      "slug": "foldscape",
+      "branch": "devin/1789166052-ios-foldscape",
+      "commit": "e4364aaa9e38f612be4b09f70a4fb4dd1224d0a2",
+      "pr_url": "https://github.com/dabit3/experiments/pull/96",
+      "status": "complete",
+      "summary": "Delivered a polished native SwiftUI iOS paper-landscape puzzle with six original scenes, solvable 3\u00d73 gameplay, hints/preview/restart, persistent collection, and animated collectible completion. Two screenshot-informed design refinements and final native UI testing are complete. PR is open and all evidence is uploaded.",
+      "hero_url": "https://app.devin.ai/attachments/ef38512b-1f0f-42ca-96ea-fe9e05c738bc/pro-completion-hero.png",
+      "video_url": "https://app.devin.ai/attachments/fba6c8b5-4a5a-4af7-a358-5bf8280eaa1a/foldscape-demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/c411cec1-a839-4ef4-af4b-bd1508cf7518/Foldscape-QA-Design.md",
+      "limitations": [
+        "No physical-device testing, production signing, or App Store submission",
+        "VoiceOver activation, physical haptics, Reduce Motion behavior, and accessibility-category text sizes were not exercised; ordinary XXXL was tested",
+        "UI completion focused on Mosslight/Gentle; model tests cover both shuffle modes",
+        "Progress is local-only; no cloud sync, audio, leaderboard, or custom image import",
+        "No CI checks are configured for this PR; validation ran locally."
+      ],
+      "session_url": "https://app.devin.ai/sessions/d79621a2334f443a8ae2531c2823510c",
+      "build_and_tests": "Simulator build/type checking and strict Swift format lint passed. Seven XCTest cases passed with zero failures, including 600 seeded shuffles across both modes, arbitrary-move hint completion, parity/legality, persistence/reset/corrupt storage, and board coordinate mapping. Final native UI validation passed tile/blank/gap targeting, Hint/Preview, restart/cancel, back/resume, six-move completion/retry, relaunch persistence, settings and erase on both devices. Git diff check passed and changes are confined to ios-collection/foldscape/. PR check query returned zero configured checks.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/ef38512b-1f0f-42ca-96ea-fe9e05c738bc/pro-completion-hero.png",
+        "https://app.devin.ai/attachments/d4bbdf7c-ba49-4133-b5d1-ac2bd72a5dc7/pro-home.png",
+        "https://app.devin.ai/attachments/60509a92-a5ca-4f9c-8eb3-5d9c6500cacb/pro-puzzle.png",
+        "https://app.devin.ai/attachments/59e184eb-c981-49b8-b4be-1cedda7ae15a/pro-preview.png",
+        "https://app.devin.ai/attachments/56449e48-e068-415f-a7cd-d3465ccdd7d1/pro-collected-relaunch.png",
+        "https://app.devin.ai/attachments/722a721e-e784-4bb6-95c3-381579029199/17e-completion.png",
+        "https://app.devin.ai/attachments/1f2e4b9f-4690-4a99-8771-67963dfeef9a/17e-large-completion.png"
+      ],
+      "design_iterations": "Pass 1 improved tile frames, recessed blank, directional hint contrast, status-area protection, and ink hierarchy. Pass 2 fixed residual blank-corner targeting with tested coordinate mapping, refined cut-paper shadows/folds/grain and silhouettes, added collectible print framing/atlas stamp, pinned actions, returning ninth piece and cloud animation, and singular move copy. Final primary and larger-text screenshots personally reviewed.",
+      "platform_evidence": "Native macOS 26.5.2 (25F84), Darwin 25.5.0 arm64; Xcode 26.6 (17F113); iOS 26.5 Simulator on iPhone 17 Pro and iPhone 17e, including ordinary XXXL Dynamic Type."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the landscape gallery, hinted puzzle and completed atlas print. Folded pine shapes, paper grain, directional shadows and a cream/forest palette give the art a tactile identity; the solved print has a clear reward state and reachable replay controls. Independent ffprobe inspection confirms 73.86 seconds of native 1206 \u00d7 2622 H.264. Seven XCTest cases cover 600 seeded shuffles, legal moves, hint completion, persistence and exact board coordinates. The report records two substantial design passes and native interaction testing on two iPhones, including ordinary XXXL text. All 29 changed files are scoped to ios-collection/foldscape/, with generated original art, project, shared scheme, icon and tests. The open PR has no actionable comments. Accessibility-category text, VoiceOver, Reduce Motion and physical-device testing remain explicitly unverified.",
+      "reviewed_commit": "e4364aaa9e38f612be4b09f70a4fb4dd1224d0a2",
+      "video_duration_seconds": 73.861667,
+      "hero_asset": "assets/foldscape.png"
+    }
+  },
+  {
+    "name": "Koi Keeper",
+    "slug": "koi-keeper",
+    "category": "Living pond sandbox",
+    "concept": "An interactive koi pond with graceful independently swimming fish. Tap to feed and see fish seek food, earn a simple care currency, add lily pads/rocks/plants using an edit mode, unlock distinct fish, and save the pond. Make feeding, placement and fish behavior actually work with an achievable progression loop.",
+    "design": "A luminous Japanese garden from directly above: jade water, amber sunlight, refracted caustics, beautifully drawn koi, gentle ripples, lily shadows and warm parchment controls. The pond is the hero; keep chrome minimal and coherent. Fluid motion is essential.",
+    "demo": "Feed koi, watch them gather, place a lily or stone, unlock/add a fish, inspect the collection, and return to the saved pond. Test economy bounds, food consumption, placement validation and save/load.",
+    "description": "A living jade pond to care for and compose. Feed the koi, arrange your garden and welcome new companions.",
+    "session_id": "dc86d8c9007c413e85b8b3b120b34582",
+    "session_url": "https://app.devin.ai/sessions/dc86d8c9007c413e85b8b3b120b34582",
+    "result": {
+      "name": "Koi Keeper",
+      "slug": "koi-keeper",
+      "branch": "devin/1789166004-ios-koi-keeper",
+      "commit": "695054024cbf1e0c696ff93bc298c2b244a72119",
+      "pr_url": "https://github.com/dabit3/experiments/pull/89",
+      "status": "complete",
+      "summary": "Built a native SwiftUI living pond with independently swimming koi, feeding and care pearls, validated garden preview/confirmation and refunds, four fish varieties and persistent local saves. Completed two substantive screenshot-informed refinements and a final verified boundary correction. Source and evidence are accessible in open PR #89.",
+      "hero_url": "https://app.devin.ai/attachments/fa018ced-a03d-4258-a043-358cc16238eb/01-pro-hero.png",
+      "video_url": "https://app.devin.ai/attachments/7d963f59-5899-4d6a-ba6f-f2dc4af19b66/final-demo-89s.mp4",
+      "report_url": "https://app.devin.ai/attachments/bdea6d3a-8c60-407a-bccc-4ce668eedff8/Koi-Keeper-QA-Design.md",
+      "limitations": [
+        "No physical-device validation, haptic-feel check, production signing, App Store submission or approval",
+        "VoiceOver announcements, maximum accessibility sizes and the OS Reduce Motion toggle were not interactively audited; labels, alternatives and fallback code are implemented",
+        "Final native UI did not exhaust fish/garden capacity, pearl ceiling or food expiry; fish capacity and expiry have model tests",
+        "Portrait iPhone only; no iPad, landscape or iOS 17 runtime validation",
+        "Local UserDefaults saves; no cloud sync, export or offline progression. Food and swimming positions are transient; invalid saves restore starter content",
+        "Garden pieces are decorative; fish cannot be removed individually. Sandbox has no win/loss condition."
+      ],
+      "session_url": "https://app.devin.ai/sessions/dc86d8c9007c413e85b8b3b120b34582",
+      "build_and_tests": "XcodeGen generation, simulator build, strict swift-format lint, git diff --check and all 8 XCTest tests passed. Final UI verification passed feeding 26\u219229 pearls, lily confirmation 29\u219221, Showa unlock 21\u21923, and terminate/relaunch preservation of 3 pearls, 3 koi, 4 garden items and 17 care acts. Corrected boundary rejection/recovery passed on 17e accessibility-large. Reset, affordability, overlap, cancellation, refund and food-cap safety checks were retained from b0440c1 after the boundary-only final fix. No configured PR CI checks reported.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/bedd157f-0408-4347-a13c-495552ef9ce2/02-pro-collection.png",
+        "https://app.devin.ai/attachments/90fba9f2-3d63-40c6-a5e5-de796c9f266d/03-pro-showa-welcomed.png",
+        "https://app.devin.ai/attachments/7d8b998e-9720-4f75-ab71-26b8764904f2/04-pro-garden-preview.png",
+        "https://app.devin.ai/attachments/59e45418-8d3a-4e99-b3c3-e9173e843652/05-pro-journal.png",
+        "https://app.devin.ai/attachments/d3bb9c5d-53cb-4f5a-b724-ad566ca057e2/08-17e-accessibility-preview.png"
+      ],
+      "design_iterations": "Pass 1 (264319e) replaced repetitive water rows, fixed the bottom safe-area seam and shoreline clipping, exposed Journal, added exclusion guides and corrected committed lift wording. Pass 2 (b0440c1) added ghost preview/Place here, accessible spot cycling and lift list, adaptive large-text artwork layouts and status chip. Follow-up (6950540) fixed a tester-discovered clipped near-panel ghost by measuring editor position and reserving clearance; corrected native screenshots were reviewed.",
+      "platform_evidence": "Native macOS arm64, Darwin 25.5.0; Xcode 26.6 (17F113); iOS 26.5 Simulator on iPhone 17 Pro (691C57A7-98F5-4C32-A5AF-3074F4F0FBA3) and iPhone 17e (97EB512B-0C2B-41C5-BAA0-C9C96F1BCB9D), including accessibility-large text. Final native video is 1206x2622 and 88.99 seconds."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the saved pond, illustrated fish collection and enlarged-text garden preview. Original koi artwork, layered jade water, parchment sheets and restrained controls make the pond the visual focus. The final placement boundary is visible above the enlarged editor. The 88.99-second native video is 1206 \u00d7 2622; the QA report documents real feeding, purchase, unlock and relaunch interactions. PR #89 is open and mergeable with no actionable review findings; all 15 files remain under ios-collection/koi-keeper/. Eight model tests and two design passes plus the boundary correction are documented. Remaining accessibility/device and sandbox limitations are explicit.",
+      "reviewed_commit": "695054024cbf1e0c696ff93bc298c2b244a72119",
+      "video_duration_seconds": 88.990515,
+      "hero_asset": "assets/koi-keeper.png"
+    }
+  },
+  {
+    "name": "Emberpath",
+    "slug": "emberpath",
+    "category": "Lantern dungeon puzzle",
+    "concept": "A turn-based miniature dungeon where a lantern-bearing explorer must collect embers and reach the exit before the light expires. Each move consumes light; embers replenish it. Add 8 designed solvable rooms, walls, keys/doors, undo or restart, clear failure/success states, and persisted unlocks. Turn-based controls make this fully demoable.",
+    "design": "Moody charcoal stone, a warm volumetric amber lantern, jewel-like ember particles, fog-of-war revealing intricate tiny rooms, and elegant serif chapter titles. Original atmospheric illustration rather than emoji sprites. Controls should be spacious, simple and tactile.",
+    "demo": "Enter a room, navigate and reveal the map, collect a key and embers, open a door, escape with a celebratory light bloom, and inspect the next chapter. Test movement, light economy, keys, win/loss and restart.",
+    "description": "Carry a little light through eight miniature dungeons. Find embers, collect keys and escape before your lantern fades.",
+    "session_id": "a3a932533f364c5c83325ac06d15ace6",
+    "session_url": "https://app.devin.ai/sessions/a3a932533f364c5c83325ac06d15ace6",
+    "result": {
+      "name": "Emberpath",
+      "slug": "emberpath",
+      "branch": "devin/1789166084-ios-emberpath",
+      "commit": "f3a32b4a8ed25cfdbf63f8aff960da14b9341d65",
+      "pr_url": "https://github.com/dabit3/experiments/pull/86",
+      "status": "complete",
+      "summary": "Native SwiftUI lantern dungeon V1 with eight solvable rooms, original Canvas artwork, undo/restart and persisted unlocks. Two screenshot-led design passes and accessibility refinements completed. Collection follow-up corrected guide movement instructions, with native verification at normal and accessibility-extra-large text. Source is pushed to the existing, unmerged PR.",
+      "hero_url": "https://app.devin.ai/attachments/8987538f-7810-4191-9ead-ea3d5e9d61c2/03-victory.png",
+      "video_url": "https://app.devin.ai/attachments/45779cd8-9c7e-49c0-80f9-22155a75119e/emberpath-final-demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/3e76b0bb-1009-4dea-b39d-c63f0d3184e1/QA-report.md",
+      "limitations": [
+        "Simulator-only validation; no physical-device validation, production signing or App Store submission",
+        "Chambers 2-8 proven solvable by model tests; no complete manual playthroughs of those chapters",
+        "Full VoiceOver, Reduce Motion, physical haptics and destructive erase confirmation were not UI-tested",
+        "The retained 82.34-second gameplay demo and home/gameplay/victory screenshots document cc8dc56d64c71cb44dbc932889722895c458e388. Gameplay is unchanged in f3a32b4a8ed25cfdbf63f8aff960da14b9341d65; the corrected guide has separate final-revision screenshots and recording",
+        "Native Toggle required explicit 200ms press/release in simulator; instantaneous automation clicks missed",
+        "Portrait iPhone V1; no audio, iPad layout or cloud sync."
+      ],
+      "session_url": "https://app.devin.ai/sessions/a3a932533f364c5c83325ac06d15ace6",
+      "build_and_tests": "At f3a32b4a8ed25cfdbf63f8aff960da14b9341d65: xcrun swift format lint --strict --recursive Emberpath EmberpathTests Tools passed; xcodebuild -project Emberpath.xcodeproj -scheme Emberpath -destination 'platform=iOS Simulator,id=691C57A7-98F5-4C32-A5AF-3074F4F0FBA3' -derivedDataPath /Users/devin/emberpath-artifacts/DerivedData CODE_SIGNING_ALLOWED=NO build passed; git diff --check passed and working tree is clean. Native focused guide verification passed at both text sizes: correct arrow copy, readable content, scrolling and dismissal. Focused recording: https://app.devin.ai/attachments/875c5e30-c8e0-40a7-8c49-07ef4ef71ed0/guide-verification.mp4. At cc8dc56d64c71cb44dbc932889722895c458e388: serial xcodebuild test (-parallel-testing-enabled NO) passed all 9 XCTest tests, including BFS solvability of all eight rooms; native chapter-one key/ember/door/escape completed in 12 steps with 2 light, chapter two opened and persisted at 9 light/1 step after relaunch, and accessibility layouts were verified. Restart/loss/undo/retry regression was also verified before the final accessibility-only patches, with revision provenance in the report. Gameplay and model tests were not repeated for the final one-string guide change. Initial parallel simulator bootstrap failed, then serial testing recovered. No PR CI checks were configured at last inspection.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/f5e90588-d5d8-4dad-9352-bc7d0e5620bc/01-home.png",
+        "https://app.devin.ai/attachments/c6048153-e899-45c0-ac5e-f6671a2a2d48/02-key-and-ember.png",
+        "https://app.devin.ai/attachments/8987538f-7810-4191-9ead-ea3d5e9d61c2/03-victory.png",
+        "https://app.devin.ai/attachments/579ee83f-806a-413d-9e5f-73ebeaf97b1e/01-guide-default.png",
+        "https://app.devin.ai/attachments/d88c16db-8816-489d-bc07-7d904f604888/02-guide-accessibility.png"
+      ],
+      "design_iterations": "Pass 1 used native screenshots to fix clipped controls with pinned navigation/control shelf, improve fog/floor readability and compact the guide. Pass 2 used reviewed screenshots to distinguish floors/walls, enlarge movement hints, soften lantern light, reduce the hero and add progress, create victory bloom/statistics/unlock feedback, style settings and match guide glyphs to game artwork. Accessibility follow-ups fixed Restart wrapping, stacked stats, adapted the guide to a 2x2 layout and allowed board scrolling at accessibility sizes. Collection follow-up changed guide rule01 to 'Tap the arrows to move.' and verified it at both text sizes. Both new guide screenshots were visually inspected. Screenshot provenance: home/key-and-ember/victory and the 82.34-second gameplay demo are cc8dc56d64c71cb44dbc932889722895c458e388; both guide screenshots and focused guide recording are f3a32b4a8ed25cfdbf63f8aff960da14b9341d65.",
+      "platform_evidence": "Native macOS Darwin arm64 25.5.0; Xcode 26.6 (17F113), Swift 6.3.3; \u2026 (164 chars truncated)\n<truncation_notice>\nFull output written to: /Users/devin/.devin-files/devin-remote-overflows-501/6b04ff13/content.txt\n</truncation_notice>"
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Home, active gameplay, completion and accessibility screenshots have a cohesive charcoal-and-amber identity. The native demo is 82.34 seconds at 1206 \u00d7 2622. Two design passes and large-text refinements are documented; source scope is restricted to ios-collection/emberpath/. The requested guide correction is now verified in the one-string source diff and in normal and accessibility-extra-large screenshots: both instruct the player to tap the arrows. The retained gameplay video and nine model tests cover the preceding revision; the final copy-only commit has focused native UI, lint and build verification.",
+      "reviewed_commit": "f3a32b4a8ed25cfdbf63f8aff960da14b9341d65",
+      "video_duration_seconds": 82.34,
+      "hero_asset": "assets/emberpath.png"
+    }
+  },
+  {
+    "name": "Chroma Cascade",
+    "slug": "chroma-cascade",
+    "category": "Color sorting puzzle",
+    "concept": "A satisfying color-stack sorting game with sculptural transparent vessels and smoothly animated pours. Implement legal stack transfers, undo, restart, solvable generated or curated levels, level progression and persistent stats. At least 12 levels and a colorblind symbol mode.",
+    "design": "An art-gallery palette: off-white plaster, smoky translucent glass, saturated pigments, soft realistic shadows, subtle liquid-like transfer animation, oversized tasteful level numbers. Avoid the generic neon test-tube game look; art-direct the vessels and compositions.",
+    "demo": "Select a chapter, pour a legal stack, show invalid move feedback, undo, solve a small puzzle and advance. Test move legality, capacity, solved-state detection, undo and save/load.",
+    "description": "Sort sculptural vessels of pigment into harmonious colors, one satisfying transfer at a time.",
+    "session_id": "895be8c4132f49f19536b60d103cfef9",
+    "session_url": "https://app.devin.ai/sessions/895be8c4132f49f19536b60d103cfef9",
+    "result": {
+      "name": "Chroma Cascade",
+      "slug": "chroma-cascade",
+      "branch": "devin/1789166010-ios-chroma-cascade",
+      "commit": "4e41161221443ffd3b3f499ad1032cc1edf187f3",
+      "pr_url": "https://github.com/dabit3/experiments/pull/92",
+      "status": "complete",
+      "summary": "Polished native SwiftUI color-sorting V1 with twelve solvable studies, procedural glass and icon, undo/restart, progression/bests, persisted state and colorblind symbols. Two substantive simulator-informed refinement passes plus final copy polish completed. Open PR includes final test evidence; five screenshots, hero, 69.46-second real demo and QA/design report uploaded and delivered.",
+      "hero_url": "https://app.devin.ai/attachments/82df5952-4ab4-4d16-88f4-9150ad3a2faf/home.png",
+      "video_url": "https://app.devin.ai/attachments/f04c128d-131c-4093-a339-817190dcf956/demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/83431761-840c-495e-9732-a348aa518ff1/chroma-cascade-qa-design.md",
+      "limitations": [
+        "VoiceOver spoken output/focus order and physical haptic quality remain untested",
+        "Tested on iOS 26.5 Simulator; minimum iOS 17 runtime, physical devices and iPad layouts were not tested",
+        "All twelve solutions verified by model tests; not every level was manually solved on every device",
+        "No production-signing or App Store approval claim. Portrait iPhone V1; local-only data without cloud sync/export",
+        "Reduce Motion gameplay verified, but exact animation timing not instrumented. No audio by design",
+        "Complete UI regression was on dcb7d17; final copy-only revision 4e41161 received targeted two-device verification and fresh golden-path demo/screenshots."
+      ],
+      "session_url": "https://app.devin.ai/sessions/895be8c4132f49f19536b60d103cfef9",
+      "build_and_tests": "Final simulator build succeeded. Seven XCTest tests passed with zero failures: capacity/maximal transfers, invalid moves, full monochrome solved detection, undo, legal solution witnesses for all 12 studies, save/load/preferences/bests/restart/reset and corrupt-data recovery. Strict swift-format lint and git diff --check passed. Complete native regression at dcb7d17 covered legal/invalid transfers, deselection, undo, restart cancel/confirm, help/back, win/replay/next, solved reentry, relaunch persistence, reset preserving preferences, symbols, maximum text and Reduce Motion. Final copy revision 4e41161 retested on both devices with a new golden path and 69.463333-second direct 1206x2622 H.264 demo. No CI jobs reported; PR open and unmerged; working tree clean and changes restricted to app directory.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/82df5952-4ab4-4d16-88f4-9150ad3a2faf/home.png",
+        "https://app.devin.ai/attachments/cee8fa46-5464-47eb-bbb9-c64ab0f583f9/chapters.png",
+        "https://app.devin.ai/attachments/81f77579-4e47-49f4-b964-456a4094a5cb/game-symbols.png",
+        "https://app.devin.ai/attachments/4a44481b-42f3-4808-9e11-16b2a96af641/result.png",
+        "https://app.devin.ai/attachments/7862a92b-1b0d-4a91-9580-3c7a29c5d1fd/settings.png"
+      ],
+      "design_iterations": "V1 critique identified six screenshot-backed weaknesses: stale completion feedback, oversized settings eyebrows, hidden restart cancellation, wrong result pigments, subtle capacity divisions and clipped footer. Pass1 749b98a corrected these with identity reset, actual study pigments, explicit alerts, ticks/captions and compact layout. Fresh simulator review exposed broken-word action labels, uneven empty captions, undersized chapter identifiers and incorrect solved reentry. Pass2 dcb7d17 added adaptive accessibility controls/grid/headings, uniform occupancy captions and solved-state feedback. Final polish 4e41161 fixed orphan chapter punctuation and singular pour count, then recaptured final evidence.",
+      "platform_evidence": "Actual macOS 26.5.2 (25F84) arm64 VM, Darwin 25.5.0; Xcode 26.6 (17F113); iOS 26.5 Simulator. Native UI QA on iPhone 17 and narrower iPhone 17e with maximum Dynamic Type; XCTest on iPhone 17 Pro. iOS deployment target 17.0. Committed Xcode project/shared ChromaCascade scheme and XcodeGen spec."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the gallery home, symbol-enabled sorting board and solved result. Cream paper, large serif type and translucent pigment vessels form a distinctive, consistent interface; symbols and occupancy ticks make the puzzle legible without color alone. Independent video inspection confirmed 69.46 seconds of 1206 \u00d7 2622 H.264. The report documents seven passing XCTest cases, solution witnesses for all twelve studies, two substantial native design passes and targeted two-device verification after final copy polish. All 16 changed source files are isolated under ios-collection/chroma-cascade/, including the project, shared scheme, icon and tests. Minimum-runtime, physical-device and spoken VoiceOver gaps remain explicit.",
+      "reviewed_commit": "4e41161221443ffd3b3f499ad1032cc1edf187f3",
+      "video_duration_seconds": 69.463333,
+      "hero_asset": "assets/chroma-cascade.png"
+    }
+  },
+  {
+    "name": "Pulse Grid",
+    "slug": "pulse-grid",
+    "category": "Light circuit puzzle",
+    "concept": "Rotate circuit tiles to connect a power source to receivers, then watch pulses travel through the completed network. Build 10 handcrafted levels with corners, straights, tees, blocked cells and multiple receivers. Include a reset, optional hint, level progress, and a satisfying powered-grid state.",
+    "design": "A futuristic pocket instrument: deep petrol blue, frosted circuit tiles, mint and coral electricity, crisp monospaced microtype, clean topology, layered glow restrained by dark negative space. Each tap rotates with a precise spring and complete paths animate with traveling light.",
+    "demo": "Choose a circuit, rotate tiles and watch live connectivity, complete all receivers, and show the cascade and progress screen. Test connectivity for loops/branches, rotation, receiver states and resets.",
+    "description": "Turn circuit tiles into connected networks and watch the light travel through your completed creation.",
+    "session_id": "5fc02941796e4e1e8da5ef0265bbd87a",
+    "session_url": "https://app.devin.ai/sessions/5fc02941796e4e1e8da5ef0265bbd87a",
+    "result": {
+      "name": "Pulse Grid",
+      "slug": "pulse-grid",
+      "branch": "devin/1789165992-ios-pulse-grid",
+      "commit": "efd4d745f3668a293190461225e9813da256cf27",
+      "pr_url": "https://github.com/dabit3/experiments/pull/85",
+      "status": "complete",
+      "summary": "Delivered a native SwiftUI circuit puzzle with ten authored levels, persistent progress, hints, reset/replay and animated powered paths. Two design refinement passes and final native Simulator QA completed. PR is open and updated with uploaded screenshots, demo and QA/design report.",
+      "hero_url": "https://app.devin.ai/attachments/bb8a982d-38ed-432c-8eda-08d52a5468d0/02-solved.png",
+      "video_url": "https://app.devin.ai/attachments/4a7903fb-35fc-4f03-9909-adb36d7943ec/native-demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/259532a2-9c5c-443b-9a6c-99e9f4819f8b/qa-design-report.md",
+      "limitations": [
+        "Spoken VoiceOver, full focus order and fixed-terminal accessibility traits not fully verified; native Inspector tile activation was verified",
+        "Physical-device behavior and physical haptic output untested",
+        "Reduce Motion was verified on the hero; a separate powered-board animation comparison was inconclusive",
+        "Maximum accessibility size tested for reachability, not exhaustive accessibility certification; instrument microtype caps at XXXL and the decorative archive numeral is fixed",
+        "Full erase execution passed in Pass 1; final revision rechecked home-only visibility without repeating destructive erasure",
+        "Ten fixed puzzles with local data only, no cloud sync or audio. Production signing and App Store submission/approval are outside scope."
+      ],
+      "session_url": "https://app.devin.ai/sessions/5fc02941796e4e1e8da5ef0265bbd87a",
+      "build_and_tests": "Strict Swift Format lint passed; Debug Simulator build passed; 14 XCTest tests passed with zero failures. Final native UI QA verified manual win, replay/reset/cancel, hints, Next-level state isolation, relaunch persistence, branch/loop and partial-receiver states, and all-ten-level completion through real UI interactions. iPhone 17e default, Accessibility Large and maximum-size reachability tested. No CI checks reported. Final diff contains only ios-collection/pulse-grid/ and the working tree is clean.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/a058fe49-f78d-4f22-b724-312eb532540a/01-home.png",
+        "https://app.devin.ai/attachments/bb8a982d-38ed-432c-8eda-08d52a5468d0/02-solved.png",
+        "https://app.devin.ai/attachments/ee5f5ce7-0887-4bbc-b04f-670a5eeb303b/03-partial-5x5.png",
+        "https://app.devin.ai/attachments/77f7a6e6-ff39-49b8-8e96-c54cf7c7845b/04-archive.png",
+        "https://app.devin.ai/attachments/706d0b35-0396-480a-85a5-5f683f53d06f/05-guide.png"
+      ],
+      "design_iterations": "Two substantive passes informed by native screenshots and UI findings. Commit 71f8251 repaired Next destination identity, improved microtype, hero topology, archive affordance and powered-state brightness. Final commit efd4d74 added adaptive navigation/stats/actions, inline large-text completion, visible hints, labeled Replay, pinned sheet dismissal, consistent hero receiver semantics and stronger blocked-cell contrast. Lead visually reviewed baseline, intermediate and final screenshots.",
+      "platform_evidence": "macOS 26.5.2 (25F84), Darwin arm64, Xcode 26.6 (17F113); final native UI QA on iPhone 17 Pro and iPhone 17e running iOS 26.5. Runnable Xcode project/shared scheme with iOS 17 deployment target."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the solved circuit, partially powered 5\u00d75 network and full archive. Petrol-blue surfaces, crisp mint traces, coral incomplete terminals and measured typography create a polished pocket-instrument identity. The 69.52-second native video is 1206 \u00d7 2622. Fourteen model tests cover connectivity, all authored solutions, persistence and invalid storage; final native QA includes a manual unassisted win and completion of the remaining nine levels through real hint interactions. Two source refinement passes and compact-device/accessibility verification are documented. PR #85 is open and mergeable with no actionable review comments; all 19 files are scoped to ios-collection/pulse-grid/.",
+      "reviewed_commit": "efd4d745f3668a293190461225e9813da256cf27",
+      "video_duration_seconds": 69.523333,
+      "hero_asset": "assets/pulse-grid.png"
+    }
+  },
+  {
+    "name": "Switchyard",
+    "slug": "switchyard",
+    "category": "Rail dispatch game",
+    "concept": "A miniature railway dispatch puzzle. Color-coded trains arrive; tap track switches and signals to route each train to its matching station without collisions. Include 6 authored scenarios, pause, speed control, restart, clear objectives, score and progression. Scope to a polished readable board rather than an enormous simulation.",
+    "design": "Charming isometric or top-down toy railway with butter-yellow station buildings, midnight-navy rails, mint terrain, red signals, tiny animated trains and elegant transit signage. Crisp native HUD and gorgeous route preview lines. Board interactions must remain usable at phone size.",
+    "demo": "Start a scenario, switch tracks and hold/release a train at a signal, deliver multiple trains, pause/resume, and show a success card. Test routing, signals, collision detection, deliveries and time-step consistency.",
+    "description": "Run a miniature railway: set switches, hold signals and guide each train safely to its station.",
+    "session_id": "6c5953642f544eff861f98a92b6b641f",
+    "session_url": "https://app.devin.ai/sessions/6c5953642f544eff861f98a92b6b641f",
+    "result": {
+      "name": "Switchyard",
+      "slug": "switchyard",
+      "branch": "devin/1789166050-ios-switchyard",
+      "commit": "3ecf8797c74a152ecdc0f58fb655577f3ea4adcb",
+      "pr_url": "https://github.com/dabit3/experiments/pull/93",
+      "status": "complete",
+      "summary": "Completed a native SwiftUI iPhone railway dispatch game with six authored scenarios, working switches and signals, collisions and wrong-route failures, pause/speed/restart, saved scores and progression, original procedural art and icon, accessible controls, field guide and station delivery receipts. Two screenshot-informed refinement passes and final native simulator verification completed. Source is pushed, working tree is clean, and PR #93 is open and unmerged with final evidence.",
+      "hero_url": "https://app.devin.ai/attachments/dcfba2fa-9c8a-4de2-894e-54f76cb65ec3/3ecf879-02-hero.png",
+      "video_url": "https://app.devin.ai/attachments/bf82552b-2c54-472b-b6d3-96c84c7e3ec9/3ecf879-gameplay.mp4",
+      "report_url": "https://app.devin.ai/attachments/b5b9c791-806a-4a37-b087-2ce2c39e381b/Switchyard-QA-Design.md",
+      "limitations": [
+        "Simulator validation only; no physical-device testing, distribution signing, App Store submission or approval",
+        "All six scenarios pass automated model playthroughs; the final complete UI win covers First light. The meet was exercised for entry, collision and retry. iPhone 17e received focused layout/interaction coverage rather than a full win",
+        "VoiceOver, physical haptic output, text sizes above XXXL and the system Reduce Motion setting were not separately exercised. Full nonvisual gameplay is not provided",
+        "Portrait iPhone layout; landscape and iPad-specific layouts are outside scope. Unfinished shifts are not restored after termination or leaving the shift",
+        "The 69.163-second, 1206 \u00d7 2622 H.264 demo contains real native gameplay. The game is intentionally silent and the video has no audio track."
+      ],
+      "session_url": "https://app.devin.ai/sessions/6c5953642f544eff861f98a92b6b641f",
+      "build_and_tests": "Final XcodeGen generation, simulator Debug build, strict recursive swift-format lint and git diff --check passed. 10 XCTest tests passed with 0 failures, covering all six scenario completions, signals, merge collision, wrong station, routing commitment, fixed timestep, pause/speed, invalid time, persistence/reset and compiled icon assets. Final Pro UI verified a fresh first-shift win, real hold/release, both route changes, pause/resume, receipt and next shift; final 17e default/XXXL layout and controls passed. Wrong-route/collision retries, speed, confirmations, background pause, progression and preference persistence, and reset were verified on the preceding gameplay-identical revision. No CI checks are configured on the PR.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/3dabf592-8c4a-419d-82a3-68d3fa17edd8/3ecf879-01-home.png",
+        "https://app.devin.ai/attachments/dcfba2fa-9c8a-4de2-894e-54f76cb65ec3/3ecf879-02-hero.png",
+        "https://app.devin.ai/attachments/1fad5e65-6fb4-49a3-8774-0ddd79a8d8bd/3ecf879-03-result.png",
+        "https://app.devin.ai/attachments/9464b972-4407-45dd-8e5f-94d0ef9ab3bb/3ecf879-04-guide.png",
+        "https://app.devin.ai/attachments/9f28ba7a-9a03-484f-ad01-c6506048423f/3ecf879-05-17e-xxxl.png"
+      ],
+      "design_iterations": "Two substantive source refinement passes followed actual baseline simulator screenshots. Pass 1 clarified switch destinations, added junction leaders, improved station contrast and upright train glyphs, stabilized arrivals and added contextual guidance. Pass 2 moved station signs away from train routes, recognized committed destinations and prepared next routes, docked controls, adapted XXXL instructions/arrivals, added a prominent Home continue action and per-station receipt with direct next shift. Final UI QA additionally caught and verified a fix for icon packaging.",
+      "platform_evidence": "Native macOS arm64 VM, Darwin 25.5.0; Xcode 26.6 (17F113), XcodeGen 2.46.0. Actual iOS 26.5 Simulator testing on iPhone 17 Pro and iPhone 17e including XXXL. Real iOS application targeting iOS 17.0, bundle com.nader.switchyard; no web view or external runtime dependencies."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the active railway, successful station receipt and XXXL compact-device layout. The mint terrain, clear station colors and letters, visible switch leaders and docked dispatch controls make a coherent miniature transport game. The native interaction demo is 69.16 seconds at 1206 \u00d7 2622. Two design passes and the final icon packaging correction are documented. PR #93 is open with no actionable comments; all 14 files are isolated to ios-collection/switchyard/. Ten XCTest cases include model wins for all six shifts, fixed timestep, wrong-route and collision handling, persistence and compiled icon assets. Final UI coverage and retained regression provenance are explicit.",
+      "reviewed_commit": "3ecf8797c74a152ecdc0f58fb655577f3ea4adcb",
+      "video_duration_seconds": 69.163333,
+      "hero_asset": "assets/switchyard.png"
+    }
+  },
+  {
+    "name": "Prismatic",
+    "slug": "prismatic",
+    "category": "Generative drawing studio",
+    "concept": "A creative studio for drawing gorgeous radial and mirrored art. Finger strokes repeat across adjustable symmetry axes. Support several palettes and brushes, symmetry count, undo/redo, clear with confirmation, gallery saving/loading and a real PNG export/share sheet. Include a few clearly identified editable sample artworks.",
+    "design": "A black-ink atelier with luminous pigment, ivory floating tool capsules, delicate axis guides and a beautiful full-screen canvas. The initial screen should invite drawing immediately. Gallery thumbnails must show actual saved work. Beautiful brush previews and graceful controls.",
+    "demo": "Draw a real mandala, change symmetry and pigment, undo/redo, save, reopen from the gallery and export a PNG. Test transform geometry, stroke history, serialization and export dimensions.",
+    "description": "Turn a few finger strokes into intricate mirrored artwork, then save your creations and share a real image.",
+    "session_id": "6349c13ccfc4471497e62f898dbc771e",
+    "session_url": "https://app.devin.ai/sessions/6349c13ccfc4471497e62f898dbc771e",
+    "result": {
+      "name": "Prismatic",
+      "slug": "prismatic",
+      "branch": "devin/1789166043-ios-prismatic",
+      "commit": "b2e86c21067ee59e6efb31aa2e9070de47582110",
+      "pr_url": "https://github.com/dabit3/experiments/pull/90",
+      "status": "complete",
+      "summary": "Polished native SwiftUI/UIKit generative drawing studio with radial/mirrored strokes, three brushes, three palettes, history, local gallery, editable samples and real PNG sharing. Delivered after two screenshot-informed refinements and a final title-layout correction.",
+      "hero_url": "https://app.devin.ai/attachments/bd35939f-ceec-492a-bdb3-ae55c482fffa/01-hero-aurora-sample-17e.png",
+      "video_url": "https://app.devin.ai/attachments/136b47ca-ba65-4d79-b2a0-fd2102fad864/native-demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/878cc663-bd54-4839-a4a6-ff8d6c98b370/QA-design-report.md",
+      "limitations": [
+        "No physical-device, production-signing, App Store approval, iPad UI or older iOS-runtime validation",
+        "VoiceOver labels implemented but VoiceOver runtime not exercised; exhaustive accessibility combinations not tested",
+        "Very long studio titles ellipsize after two lines at large accessibility sizes; gallery retains full stored name",
+        "Disk-full/corrupt-archive recovery UI not manually tested; very complex drawings not stress-tested on physical hardware",
+        "Square opaque canvas; no layers, zoom/pan, pressure-sensitive width, transparent PNG, external image import or cloud sync. Undo history resets on reopening/relaunch."
+      ],
+      "session_url": "https://app.devin.ai/sessions/6349c13ccfc4471497e62f898dbc771e",
+      "build_and_tests": "Simulator build and strict swift-format lint passed. Final xcodebuild test executed 8 XCTest cases with 0 failures covering transform geometry, history, serialization, persistence, PNG signature/dimensions and safe filenames. Final native UI passed drawing/symmetry/pigment/brush/history/save/start-new/reopen/relaunch/PNG preview. Files/Photos delivery and domain-edge coverage passed on ab235b3 before title-height/count-label-only delta. No CI checks configured.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/bd35939f-ceec-492a-bdb3-ae55c482fffa/01-hero-aurora-sample-17e.png",
+        "https://app.devin.ai/attachments/b26699f5-2bf6-460e-8cc4-99b95d2267dd/02-long-title-artwork.png",
+        "https://app.devin.ai/attachments/28765c48-f863-4513-a808-870b075d8465/03-gallery-singular-17e.png",
+        "https://app.devin.ai/attachments/7376256a-9da0-46db-8f89-f6f5c4d0e52d/04-accessibility-title-controls.png",
+        "https://app.devin.ai/attachments/f3b66136-1585-4e1a-92e0-fcc9ec79b896/05-final-bloom-export.png"
+      ],
+      "design_iterations": "Pass 1 (9a06dc9): fixed blank share sheet via URL payload, introduced drawable boundaries and next-stroke summary, improved label readability/palette discovery/weight previews. Pass 2 (ab235b3): screenshot-informed accessibility tool/brush/gallery layouts, pinned Close controls, single-piece gallery balance, safe title filenames and stronger bounds. Final correction (b2e86c2): two-line title sizing and singular stroke label. Final screenshots inspected.",
+      "platform_evidence": "Native macOS 26.5.2 (25F84), Darwin 25.5 arm64; Xcode 26.6 (17F113). Actual native iPhone 17 Pro and iPhone 17e simulator UI testing on iOS 26.5, including accessibility-large Dynamic Type."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the Aurora sample, hand-drawn saved work and accessibility-large controls. The luminous radial artwork stays central, supported by ivory tools, visible drawing bounds and clear pigment/symmetry state. The 61.055-second native H.264 demo is 1206 \u00d7 2622. Eight XCTest cases validate transforms, history, serialization, persistence and actual PNG dimensions/filenames. Two substantive screenshot-informed passes and a targeted final title/count correction are documented, including two-device UI testing and real Files/Photos export on the prior unchanged export implementation. All 15 changed source files are under ios-collection/prismatic/, including project, shared scheme, icon and tests. PR #90 is open without actionable review comments. Title limits, session-local undo and physical-device/VoiceOver gaps remain explicit.",
+      "reviewed_commit": "b2e86c21067ee59e6efb31aa2e9070de47582110",
+      "video_duration_seconds": 61.055,
+      "hero_asset": "assets/prismatic.png"
+    }
+  },
+  {
+    "name": "Tape Deck",
+    "slug": "tape-deck",
+    "category": "Pocket music sequencer",
+    "concept": "A fully offline groove instrument: 16-step drum sequencer, four synthesized or bundled-original drum voices, tempo/swing, pattern presets, mute/solo, transport, saved patterns and real audio output. Add a simple bass line only if the core is already excellent. No external music APIs or copyrighted samples.",
+    "design": "A beautiful tactile portable tape machine: bone-white casing, charcoal pads, tomato-red record/transport accents, warm amber meters, animated reels or waveform, precise knobs and an art-directed pattern grid. Native controls should feel like physical hardware without becoming illegible.",
+    "demo": "Play an actual audible groove, toggle steps, change tempo and swing, mute a track, save and reload a custom pattern. Capture audio in the demo if tooling permits and explicitly state if the recording is silent. Test sequencer timing math, pattern persistence and parameter bounds.",
+    "description": "Build an offline groove on a tactile pocket sequencer, shaping steps, tempo and individual drum voices.",
+    "session_id": "57375095a3b24268a46dbc220ca2f42c",
+    "session_url": "https://app.devin.ai/sessions/57375095a3b24268a46dbc220ca2f42c",
+    "result": {
+      "name": "Tape Deck",
+      "slug": "tape-deck",
+      "branch": "devin/1789166054-ios-tape-deck",
+      "commit": "c2f8a980a36fde58ae9fc6b9d12444d19faecace",
+      "pr_url": "https://github.com/dabit3/experiments/pull/88",
+      "status": "complete",
+      "summary": "Native offline SwiftUI groove instrument delivered through two screenshot-driven design refinements and final native validation. Actual app audio, transport, live steps, mixer, tempo/swing and lifecycle checks passed. PR88 contains final source and updated evidence: a synchronized real-audio demo, full screenshots and QA/design report. The initial host-audio blocker is resolved.",
+      "hero_url": "https://app.devin.ai/attachments/49771bf9-26f1-462b-887e-6bf52e08b714/03-midnight-playing-hero.png",
+      "video_url": "https://app.devin.ai/attachments/cf3670c6-62e2-40b5-be6f-2f92b85f70bc/tape-deck-actual-audio-demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/47212485-18d2-4598-af45-8b11d2b9042f/QA-design-report.md",
+      "limitations": [
+        "Physical output removal and real call/audio-session interruptions remain untested. Background/foreground and relaunch behavior were tested with actual captured audio",
+        "Native video had one330ms backward timestamp jump. Video PTS were repaired while preserving native frames and original audio speed; idle intro trimmed. Original video/input/continuity metadata are linked in the report. Final onset sync4ms and Stop sync23ms; audio capture has zero timestamp gaps",
+        "The full lifecycle suite ran on iPhone17Pro;17e covered focused interaction/sizing checks. XXXL text requires scrolling to reach the fourth pad row and Reset, both verified reachable",
+        "No physical-device, headphone/Bluetooth latency, professional hard real-time, production signing or App Store approval claim. VoiceOver/Reduce Motion/haptic implementation is not a complete assistive-technology or physical-haptics audit",
+        "V1 has one bar and four voices; no bass, MIDI, import/export, background playback or arrangement mode. Local data is removed on uninstall."
+      ],
+      "session_url": "https://app.devin.ai/sessions/57375095a3b24268a46dbc220ca2f42c",
+      "build_and_tests": "Final simulator build, strict swift-format lint and8 XCTest tests passed; zero failures. Covers timing/bounds, mute/solo, persistence/corruption, synthesis/rendering and atomic edits. Publication regression failed before the fix, passed after. Final native UI checks passed editing, reset, clear/save/load/delete/replace cancellation/confirmation, help, persistence and no-output recovery. Actual audio acceptance passed primary17Pro and focused17e: live step adds captured156.25ms hit, all4 voices, multiple solos/mute precedence,96/0=156ms versus96/60=250ms and180/60=133-134ms adjacent-hit timing, preserved bar duration, Stop/restart, background/foreground, relaunch persistence and saved reload. Main independently verified final37.883333s H26460fps1206x2622/AAC48k stereo demo; decoded peak -9.753455dBFS, RMS -27.382857dBFS, no NaNs/Infs. Tester confirmed zero clipping and AV sync within23ms. No source changes needed for audio follow-up. No remote CI checks reported. All18 changed files confined to ios-collection/tape-deck; working tree clean.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/49771bf9-26f1-462b-887e-6bf52e08b714/03-midnight-playing-hero.png",
+        "https://app.devin.ai/attachments/99eed540-d98a-4814-b60d-c597a6c06110/02-parameters.png",
+        "https://app.devin.ai/attachments/340a0b45-31ce-424f-ba52-4a339293c487/03-save.png",
+        "https://app.devin.ai/attachments/939094be-43b3-4529-a1c9-bfbcc14f5245/04-library.png",
+        "https://app.devin.ai/attachments/548d5c09-216e-4936-b32e-3699e299fb98/02-secondary-playing.png"
+      ],
+      "design_iterations": "First working version e1bbf2e was critiqued in actual simulator screenshots: oversized cassette, hidden final pad row, terse M/S labels, unclear selected-track labeling, missing knob affordance, low-visibility help and no-output crash. Pass 1 f25ee88 compacted the cassette, separated transport, exposed all16 pads, strengthened labels/help/chevrons and guarded output format. Pass 2 c2f8a98 enlarged pads, added cross-track hit/mute/solo/held status, moved notices below the grid, made Cancel explicit, marked ON DECK library matches and published normalized parameter changes atomically. Final screenshots were visually inspected; one settled-state reset passed on both devices.",
+      "platform_evidence": "Native Darwin 25.5.0 arm64, Xcode 26.6 (17F113), iOS 26.5. Primary iPhone 17 Pro UUID 691C57A7-98F5-4C32-A5AF-3074F4F0FBA3; secondary iPhone 17e UUID 97EB512B-0C2B-41C5-BAA0-C9C96F1BCB9D. XXXL Dynamic Type tested on17e. Shared Xcode scheme and XcodeGen2.46.0 specification checked in. Trusted/notarized BlackHole2ch0.7.1 passed pkgutil/spctl; normal sudo -n installer succeeded. CoreAudio process restart exposed48kHz stereo default input/output, followed by Simulator reboot and normal microphone approval. No security controls disabled. Environment evidence: https://app.devin.ai/attachments/b4ccdfde-524e-42cd-a94a-f6fd1bdf4057/native-audio-environment.log"
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the running cassette instrument, tempo/swing sheet and secondary-device playback. Raised amber pads, cream hardware panels, visible playhead and explicit mixer state make a cohesive playable instrument. The initial host-audio blocker is resolved. Independent ffprobe and volume analysis confirm a 37.883-second 1206 \u00d7 2622 H.264 demo with actual 48 kHz stereo AAC, mean \u221227.4 dB and maximum \u22129.8 dB. Eight native tests, two screenshot-informed design passes, primary lifecycle checks and focused secondary playback are documented. Audio evidence covers live steps, four voices, mute/solo, tempo/swing, stopping, reload and foreground recovery. All 18 changed files are isolated under ios-collection/tape-deck/, including project, shared scheme, icon and tests. The PR has no actionable comments. Video timestamp repair preserves native frames and audio speed; physical interruptions, route removal and professional latency remain explicit limits.",
+      "reviewed_commit": "c2f8a980a36fde58ae9fc6b9d12444d19faecace",
+      "video_duration_seconds": 37.883333,
+      "audio_verified": true,
+      "hero_asset": "assets/tape-deck.png"
+    }
+  },
+  {
+    "name": "Hourgarden",
+    "slug": "hourgarden",
+    "category": "Focus timer",
+    "concept": "A focus ritual where each completed session grows an illustrated botanical specimen in a personal garden. Real configurable countdown, pause/resume/cancel, session tags, history, daily totals, and persistence across app backgrounding/relaunch. Provide a clearly labeled short preview session for demonstrations without fake elapsed time.",
+    "design": "Quiet premium wellness editorial: ivory paper, ink-black serif headings, sage botanical linework, a large slowly blooming plant as the timer face, warm apricot completion state and a gorgeous herbarium history. Avoid generic circular progress rings as the only visual interest.",
+    "demo": "Choose a focus intention, start a short labeled session, pause/resume, finish and grow a plant, then inspect history and daily progress. Test date-based countdowns, resume/relaunch, cancellation and history duplication.",
+    "description": "Make room for a focused moment, then grow an illustrated specimen in your personal garden of completed sessions.",
+    "session_id": "66cdc6d39b724532bc0962582f28171d",
+    "session_url": "https://app.devin.ai/sessions/66cdc6d39b724532bc0962582f28171d",
+    "result": {
+      "name": "Hourgarden",
+      "slug": "hourgarden",
+      "branch": "devin/1789165991-ios-hourgarden",
+      "commit": "fbde6b2015dd24057498f88a10ee110cbdd8b3c6",
+      "pr_url": "https://github.com/dabit3/experiments/pull/77",
+      "status": "complete",
+      "summary": "Acceptance polish complete: singular home summary and fully scaled stacked accessibility Rhythm counters passed targeted native checks on both iPhones. Final source, PR, screenshots and QA/design report updated.",
+      "hero_url": "https://app.devin.ai/attachments/0bcf0292-4bdc-4bbf-8012-4ea233de5857/fbde6b2-pro-home.png",
+      "video_url": "https://app.devin.ai/attachments/3e87fc17-3a3d-43f4-acbd-3564e3ff3b99/570712c-native-demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/a6038735-467f-4c07-8199-02e47d148224/final-qa-design-report.md",
+      "limitations": [
+        "Demo and completion/herbarium screenshots retained from 570712c; lifecycle/reflection evidence from 78f4ef2. Those unchanged flows were not rerun for the final copy/layout-only change, as requested",
+        "Final home plural branch checked with zero; multiple-minute home value was not rerun",
+        "No physical-device validation, production signing or App Store submission; VoiceOver and haptics not manually tested",
+        "Local-only persistence; no background alerts, cloud sync, widgets or audio. Device wall-clock changes affect deadlines",
+        "Midnight attribution has model tests; overnight and long-duration UI runs were not performed."
+      ],
+      "session_url": "https://app.devin.ai/sessions/66cdc6d39b724532bc0962582f28171d",
+      "build_and_tests": "Final fbde6b2 simulator build, compiler checks and strict swift-format lint passed. Targeted iPhone 17 Pro/17e native checks passed: singular home1, plural home0, normal horizontal Rhythm counters and largest-AX stacked counters with whole words and no truncation/overlap. Retained 9 passing XCTest cases and real preview/active-reset evidence from 570712c, lifecycle/reflection evidence from 78f4ef2. No configured CI checks. Acceptance recording: https://app.devin.ai/attachments/b9497fb5-91e3-44cb-8f9b-3dfa97012483/hourgarden-fbde6b2-acceptance-edited.mp4",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/0bcf0292-4bdc-4bbf-8012-4ea233de5857/fbde6b2-pro-home.png",
+        "https://app.devin.ai/attachments/23ccc372-4601-448a-aade-7f30096754e1/fbde6b2-pro-rhythm.png",
+        "https://app.devin.ai/attachments/05dc5909-c591-41b9-b6af-756479b06a18/fbde6b2-17e-ax-counters.png",
+        "https://app.devin.ai/attachments/1298be2a-dd8d-4fb9-8020-70c3a7fe134d/570712c-completion.png",
+        "https://app.devin.ai/attachments/64670ac0-d5c4-47d4-b98b-72b74d82ce1b/570712c-herbarium.png"
+      ],
+      "design_iterations": "Two screenshot-informed substantive passes plus follow-ups for keyboard focus, chart sizing and CTA copy. Acceptance follow-up preserves Dynamic Type scaling with vertically stacked accessibility counters.",
+      "platform_evidence": "macOS 26.5.2 arm64; Xcode 26.6 (17F113); iPhone 17 Pro and iPhone 17e / iOS 26.5."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the botanical home, real ritual/archive evidence and final largest-accessibility counters. Quiet paper/sage styling, large original botanical artwork and the herbarium create a distinctive focus ritual. The final home correctly reads 1 mindful minute, and accessibility counters now retain whole words and full scaling in a vertical layout. Source diff inspection confirms the final delta is limited to those copy/layout changes. The retained 72.722-second 1206 \u00d7 2622 H.264 demo and nine XCTest cases cover unchanged timer behavior; final build/lint and targeted two-device UI checks validate the accepted revision. Two major screenshot-informed passes plus focused follow-ups are documented. All 16 changed files are isolated under ios-collection/hourgarden/, including project, shared scheme, icon and tests. Open PR has no actionable comments. Retained evidence provenance, local-only persistence, background-alert and physical-device/VoiceOver limits are explicit.",
+      "reviewed_commit": "fbde6b2015dd24057498f88a10ee110cbdd8b3c6",
+      "video_duration_seconds": 72.721667,
+      "hero_asset": "assets/hourgarden.png"
+    }
+  },
+  {
+    "name": "Fieldnotes",
+    "slug": "fieldnotes",
+    "category": "Nature journal",
+    "concept": "A pocket naturalist's journal with observation entries, species/category tags, notes, optional photo import, location text, favorite specimens, collection filtering and real persisted editing/deletion. Include a curated offline field guide of roughly 12 common subjects, with original illustrations and clearly labeled sample observations. No fake AI identification.",
+    "design": "A natural-history museum field book: textured-looking warm paper, dark olive typography, delicate botanical/animal illustrations, burnt-orange specimen labels, elegant editorial spreads and lovely photography layouts. Rich yet airy, with generous text sizes.",
+    "demo": "Explore the field guide, add an observation with notes and tags, edit it, favorite and filter, then verify it survives relaunch. Test entry validation, filtering, persistence and deletion.",
+    "description": "A pocket naturalist\u2019s field book, with illustrated subjects and a personal journal of notes, photographs and discoveries.",
+    "session_id": "0dedf3eecc2348c79c39e4034b4e7b45",
+    "session_url": "https://app.devin.ai/sessions/0dedf3eecc2348c79c39e4034b4e7b45",
+    "result": {
+      "name": "Fieldnotes",
+      "slug": "fieldnotes",
+      "branch": "devin/1789166005-ios-fieldnotes",
+      "commit": "7b75d0ca393c93ab1f3fe36b00d07d4c9625bce8",
+      "pr_url": "https://github.com/dabit3/experiments/pull/81",
+      "status": "complete",
+      "summary": "Completed a polished native SwiftUI nature journal with 12 illustrated offline guide subjects, persisted observation editing/deletion, notes, tags, location text, photo import, favorites and combined filters. Two screenshot-informed design refinements and final native simulator testing completed. Source and evidence are available in one open, unmerged PR; all changes are restricted to ios-collection/fieldnotes/.",
+      "hero_url": "https://app.devin.ai/attachments/86c555e1-c92c-4ea8-a7e9-4f28e625961e/01-home.png",
+      "video_url": "https://app.devin.ai/attachments/04f6c81a-cbbe-4de1-823d-ef4b13d32bc0/native-demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/4177218f-9805-48e0-a46a-1016e473306a/Fieldnotes-QA-and-design.md",
+      "limitations": [
+        "Portrait iPhone V1 verified in simulators; no physical-device validation, production signing or App Store approval/submission., Local storage only: no sync, export/recovery UI or in-app camera capture. Large photo collections increase JSON storage and write cost., Illustrations are stylized and guide subjects span regions; no authoritative species or food-safety identification., At accessibility-large, an empty example placeholder may ellipsize; persistent labels and essential controls remain readable., VoiceOver, maximum Dynamic Type, malformed images and photo replacement/removal were not exercised. Validation length limits and corrupt storage were tested with XCTest rather than UI injection."
+      ],
+      "session_url": "https://app.devin.ai/sessions/0dedf3eecc2348c79c39e4034b4e7b45",
+      "build_and_tests": "Strict Swift format lint passed. xcodebuild simulator build and test passed on final source: 8 XCTest cases, 0 failures, covering name/tag/note/location validation, combined filtering, create/edit/favorite/relaunch/delete persistence, sample seeding/removal, corrupt-file preservation and guide integrity. Final native UI testing passed guide-prefilled creation, notes/tags/location, editing, favorite/search/category filtering, terminate/relaunch persistence, actual PhotosPicker import and full-aspect saved images, blank validation, discard protection, sample removal preserving custom entries, confirmed deletion and persistent empty state. Git diff --check passed; worktree clean. PR has no configured CI checks and no actionable review findings.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/86c555e1-c92c-4ea8-a7e9-4f28e625961e/01-home.png",
+        "https://app.devin.ai/attachments/2f69ed13-9c11-4917-9ebf-3d9bf0270bf0/02-guide.png",
+        "https://app.devin.ai/attachments/f422dfe1-e0af-4302-8bc7-11ff4b983c6a/03-editor.png",
+        "https://app.devin.ai/attachments/e4852f5f-b00b-4305-a66f-86dd451998af/04-observation.png",
+        "https://app.devin.ai/attachments/f0ba43f3-4203-469c-962c-f6165b5f0b12/05-collection.png"
+      ],
+      "design_iterations": "Initial working version d9f4e42 was reviewed in simulator screenshots. Pass 1 (0ce6d4b) addressed seven concrete weaknesses: title wrapping, guide-grid alignment, root scroll clipping, category-filter visibility, persistent editor labels/contrast, reachable guide recording CTA and navigation backgrounds. Pass 2 (7b75d0c) responded to iPhone 17e/accessibility/photo findings with a compact home composition, accessible CTA placement, stacked full-width long-title rows, scaled serif headings, shorter editor titles, uncropped photo presentation and refined fern/oak/turkey-tail artwork. Final home, guide, editor, observation, collection, accessibility and photo screenshots were directly inspected.",
+      "platform_evidence": "Verified native macOS 26.5.2 (25F84), Darwin arm64; Xcode 26.6 (17F113), Swift 6.3.3. Final UI verification used iOS 26.5 simulators on iPhone 17 Pro and iPhone 17e with standard and accessibility-large text. Committed runnable Xcode project and shared scheme target iOS 17+. XcodeGen 2.46.0 generation and original icon generation were verified."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the final journal, guide and observation screenshots, QA/design report, native demo metadata and PR #81. Warm paper, forest-green typography, original botanical illustrations and clear observation actions form a coherent editorial design. The native demo is 75.3 seconds at 1206 \u00d7 2622. Both refinement passes and iPhone 17 Pro/17e coverage are documented. Source scope was independently checked: all 15 changed files are under ios-collection/fieldnotes/. Eight meaningful XCTest cases cover validation, filtering, persistence, sample seeding and corrupt-storage preservation. Simulator-only validation and the remaining accessibility/photo edge cases are disclosed.",
+      "reviewed_commit": "7b75d0ca393c93ab1f3fe36b00d07d4c9625bce8",
+      "video_duration_seconds": 75.3,
+      "hero_asset": "assets/fieldnotes.png"
+    }
+  },
+  {
+    "name": "Supper Club",
+    "slug": "supper-club",
+    "category": "Cooking companion",
+    "concept": "An offline dinner-planning and cooking companion with 10 carefully written original recipes, ingredient-based filtering, scalable servings, a persistent shopping list and immersive step-by-step cook mode with functioning named timers. Include dietary labels only when accurate; no nutrition claims or invented live services.",
+    "design": "A modern food magazine: tomato-red accents, butter paper, rich aubergine typography, beautifully styled original food illustrations or licensed imagery, oversized recipe titles and a bold clean cook mode that works with messy hands. Shopping list uses satisfying tactile checkoffs.",
+    "demo": "Filter recipes by pantry ingredient, open one, scale servings, add ingredients to the list, check items off, then cook through steps and run a timer. Test fractional scaling, deduplication, timer behavior and persistence.",
+    "description": "Plan a meal, scale its ingredients, gather your shopping list and cook through clear steps with working timers.",
+    "session_id": "97cc5f487442412295fdc1cb884ac696",
+    "session_url": "https://app.devin.ai/sessions/97cc5f487442412295fdc1cb884ac696",
+    "result": {
+      "name": "Supper Club",
+      "slug": "supper-club",
+      "branch": "devin/1789165992-ios-supper-club",
+      "commit": "58c38db2044dc7f18bb91d91bc7f20b8b1db1b4f",
+      "pr_url": "https://github.com/dabit3/experiments/pull/87",
+      "status": "complete",
+      "summary": "Polished native SwiftUI cooking companion delivered with ten original recipes, ingredient search, serving fractions, persistent deduplicated shopping and extras, favorites, step-by-step cooking and real named timers. One open PR contains all functional source; final native QA and evidence are complete.",
+      "hero_url": "https://app.devin.ai/attachments/f5731f7b-0fa1-4394-b4a8-29c615d719cc/hero.png",
+      "video_url": "https://app.devin.ai/attachments/8d5ff98e-f9e3-492a-b0e3-c751636918b9/demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/10481bb0-193c-4242-a868-eebb99ac4385/QA-DESIGN-REPORT.md",
+      "limitations": [
+        "Timers retain wall-clock deadlines but do not send background notifications or make sounds; physical haptics were not validated",
+        "No physical-device testing, production signing or App Store submission/approval",
+        "VoiceOver and every Dynamic Type category were not exhaustively tested; portrait iPhone layouts only",
+        "Recipes are original written content, not kitchen-tested recipes or nutrition/allergen advice",
+        "Data is local-only; no cloud sync/import/export. Uninstalling removes data and clock changes affect timer deadlines",
+        "Demo and four main screenshots show unchanged screens captured on a682b86; final 58c38db only changed toolbar text colors on sheets absent from the demo. Fifth screenshot and focused final verification use 58c38db",
+        "Generic macOS desktop capture returned black intermittently; native Simulator capture supplied full-device evidence instead."
+      ],
+      "session_url": "https://app.devin.ai/sessions/97cc5f487442412295fdc1cb884ac696",
+      "build_and_tests": "Final xcodebuild simulator build and test passed; 6 XCTest cases, 0 failures. Strict recursive swift-format lint passed. Native tests covered ten recipe details, pantry/no-results/reset, fractional scaling, idempotent/shared shopping quantities, extras CRUD, checks, favorites, cook previous/restart/cancel/close/resume/completion/retry, timer validation/start/pause/resume/reset/expiry/cancel, and persistence across real termination/relaunch. Final icon and accessibility/toolbar fixes verified. PR has no CI checks configured.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/f5731f7b-0fa1-4394-b4a8-29c615d719cc/hero.png",
+        "https://app.devin.ai/attachments/f545cd2d-4a8f-49ab-a82a-1d778ae9f434/recipe.png",
+        "https://app.devin.ai/attachments/5aa7325c-3abd-4981-b834-1e107a843124/shopping.png",
+        "https://app.devin.ai/attachments/8eee8d3c-81ac-4feb-8bb7-4b85b3326630/cook-timer.png",
+        "https://app.devin.ai/attachments/a1fa4728-e762-4e8f-b065-1db4463e3c87/timer-editor.png"
+      ],
+      "design_iterations": "Two substantive screenshot-informed passes refined masthead and hero proportions, shopping placement, cooking contrast/scroll reset/navigation wording, original food illustration texture, relative editorial type, adaptive servings controls, warm-paper ingredient/timer sheets and duration presets. Further native QA corrected opaque app-icon generation, extra helper truncation, keyboard action overlap and pale sheet toolbar text. Lead inspected all five final screenshots.",
+      "platform_evidence": "macOS 26.5.2 (25F84), Darwin arm64; Xcode 26.6 (17F113); iOS 26.5 Simulator. Native QA on iPhone 17 Pro and iPhone 17e at accessibility-large. App targets iOS 17+ and uses SwiftUI/Canvas/Foundation with no backend or external runtime packages."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the recipe collection, scaled ingredients and running cooking timer. Original food illustrations, cream/plum surfaces, tomato-red actions and large editorial headings feel like a coherent cooking magazine. Independent ffprobe inspection confirms a continuous 43.423-second 1206 \u00d7 2622 H.264 demo. Six XCTest cases and extensive two-device native checks cover shopping aggregation, editing, fractions, persistence, cooking and real timer deadlines. Two substantial design passes and targeted icon, accessibility and toolbar-contrast fixes are documented; the final color-only delta preserves the main demo screens. All 17 changed files are under ios-collection/supper-club/, including project, shared scheme, icon and tests. The PR is open without actionable comments. Timers lack background notifications/audio, recipes are not kitchen-tested, and physical-device/VoiceOver limits are explicit.",
+      "reviewed_commit": "58c38db2044dc7f18bb91d91bc7f20b8b1db1b4f",
+      "video_duration_seconds": 43.423333,
+      "hero_asset": "assets/supper-club.png"
+    }
+  },
+  {
+    "name": "Elsewhere",
+    "slug": "elsewhere",
+    "category": "Travel scrapbook",
+    "concept": "A beautiful travel-memory scrapbook with trips, dated places, notes, photo import, a route/timeline view, favorites and shareable generated postcard images. Works offline: sample journeys and local illustrated maps must be labeled, and map tiles should not be a dependency for the core flow.",
+    "design": "A premium travel journal: cobalt-blue passport marks, cream paper, vermilion coordinates, layered postcards, elegant typographic destination spreads, photostrips and tasteful ticket-shaped details. Make transition from trip cover to journal feel carefully composed.",
+    "demo": "Open a sample journey, create a new trip and stop, add a note, reorder or edit stops, generate an actual postcard and invoke sharing, then verify persistence. Test trip/stop CRUD, ordering and export.",
+    "description": "Collect journeys, places and small memories in a personal travel scrapbook, then turn them into postcards.",
+    "session_id": "f4d2878234ff4f168a5a57de29eea796",
+    "session_url": "https://app.devin.ai/sessions/f4d2878234ff4f168a5a57de29eea796",
+    "result": {
+      "name": "Elsewhere",
+      "slug": "elsewhere",
+      "branch": "devin/1789166042-ios-elsewhere",
+      "commit": "130cb3faaab249592302b8b8b7889fd48c533513",
+      "pr_url": "https://github.com/dabit3/experiments/pull/94",
+      "status": "complete",
+      "summary": "Completed polished native SwiftUI travel scrapbook and focused export follow-up. Save to Files and Photos now pass on both simulators using concrete PNG activity items and item-driven presentation. Actual saved files were reopened and independently verified. PR/report updated while preserving previous broad design and test evidence.",
+      "hero_url": "https://app.devin.ai/attachments/7e59f3cc-c471-4473-81c9-9f906711e499/02-home-hero-iphone17e.png",
+      "video_url": "https://app.devin.ai/attachments/a2dfee8d-0c86-4c64-ba3d-b36d340c5df6/elsewhere-native-flow.mp4",
+      "supplementary_videos": [
+        {
+          "label": "Files export check",
+          "url": "https://app.devin.ai/attachments/00adcd62-05b0-43a4-82b5-816464f3a9a6/130cb3f-files-demo.mp4"
+        }
+      ],
+      "report_url": "https://app.devin.ai/attachments/d439375a-1ec8-4389-abdc-4965bb483f82/QA-design-report.md",
+      "limitations": [
+        "No outstanding failure in focused Files/Photos checks. Permission denial, storage exhaustion and physical-device export remain untested",
+        "On 17e, the tester opened Photos before first permission completion; granting access and returning to Elsewhere completed the pending save. Reopening Photos verified success without a second save attempt",
+        "VoiceOver runtime traversal and actual pinch gesture remain untested; prior zoom buttons/double-tap/reset passed. Maximum Dynamic Type can wrap a timeline ordinal",
+        "The main 89-second demo preserves broad V1 evidence at 682557b. The separate Files export check is a 20.167-second supplement at final revision 130cb3f. The QA report links actual source/saved PNG pairs, native logs and final build/test logs.",
+        "Local-only storage and labeled decorative routes; no cloud sync or full-journal backup/import. No production signing or App Store submission/approval."
+      ],
+      "session_url": "https://app.devin.ai/sessions/f4d2878234ff4f168a5a57de29eea796",
+      "build_and_tests": "130cb3f passed simulator build, compiler checks, strict swift-format lint, git diff --check and 8 XCTest cases with 0 failures. New test verifies PNG signature, resolution, bytes, safe Unicode filename and isolated exports. Both simulators passed first Share, Save to Files to On My iPhone, actual file reopen, source lifetime and completion cleanup, plus Photos export regression. Primary cancel/repeat cleanup passed. cmp, SHA-256 and sips independently confirmed both source/saved pairs byte-identical at 1200\u00d71760. Primary hash c68f6a06e5bf3a3c79b1d4e9e986d7ce7a9412f60a69f076299c5a60b0e2f002; secondary hash 5ad16462c26bb76a38c4ff97ed1a36ebaca17530e2ce7c66894e57f6ada161b8. Native logs show NSURL items and success=YES for Files and Photos. Broad CRUD, ordering, favorites/photos, restoration, relaunch and accessibility QA retains 682557b/e94e226 provenance. No configured CI jobs.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/7e59f3cc-c471-4473-81c9-9f906711e499/02-home-hero-iphone17e.png",
+        "https://app.devin.ai/attachments/14ab93e6-bc0c-4783-8d54-134e60c7b287/01-personal-photo-memory.png",
+        "https://app.devin.ai/attachments/f1d50422-65e2-435e-91b1-858ff331b090/03-route-iphone17e.png",
+        "https://app.devin.ai/attachments/c3be9315-43b9-467b-b8c6-8c9cb3c77eb6/04-postcard-iphone17e.png",
+        "https://app.devin.ai/attachments/58e3833d-3610-4dba-87e8-63793c200cdb/05-personal-journal-iphone17e.png",
+        "https://app.devin.ai/attachments/307e1acd-93ab-4342-93cc-bfcb7eb6361b/130cb3f-files-reopened-primary.png",
+        "https://app.devin.ai/attachments/3483a131-67f9-4eba-aa79-fd0386a75cc6/130cb3f-files-reopened-secondary.png",
+        "https://app.devin.ai/attachments/a8401526-bfb7-4f03-a2c1-1d6d7dd59568/130cb3f-photos-primary.png",
+        "https://app.devin.ai/attachments/56c47e5c-3541-4749-bd8f-55d0bb15098c/130cb3f-photos-secondary.png"
+      ],
+      "design_iterations": "Two prior screenshot-informed refinement passes retained: 41d3853 corrected action/tab overlap, repeated artwork, scalable hierarchy and route alignment; e94e226 added opaque navigation, accessibility artwork sizing, singular counts and postcard inspection. 682557b corrected long-note editing. Export follow-up: baseline 682557b logs proved NSValue extension-request decoding failure in UIImage/provider configuration; candidate 7debcd6 wrote valid PNG but exposed blank first-share presentation and is superseded. Final 130cb3f uses concrete PNG URL plus .sheet(item:) and verified cache lifecycle. Exact offending original metadata callback was not isolated; same-device successful comparison rules out a simulator-wide limitation. Hero and broad screenshots/video retain 682557b provenance; current focused evidence is 130cb3f.",
+      "platform_evidence": "Native macOS 26.5.2, arm64; Xcode 26.6 (17F113). Final focused export QA at 130cb3f on iPhone 17 Pro and iPhone 17e simulators, both iOS 26.5. Same primary simulator reproduced baseline failure and successful file-URL comparison."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the illustrated travel library, labeled decorative route and real postcard reopened from Files. Cream paper, blue passport stamps, editorial serif type and original destinations form a consistent travel journal. Independent ffprobe checks confirm the retained 89-second 1170 \u00d7 2532 native workflow and final 20.167-second export supplement. An initial Files failure was investigated and fixed with concrete PNG items and item-driven sheet presentation; supplied logs show eight passing XCTest cases, and independent SHA-256 checks confirm both source/saved image pairs are byte-identical. Final two-device Files/Photos checks supplement the prior CRUD, persistence and two substantive design passes. All 18 changed files remain within ios-collection/elsewhere/, with project, scheme, icon and tests. Current PR has no actionable comments. Video revision provenance, decorative-map semantics, local-only storage and remaining maximum-text/VoiceOver/physical-device limits are explicit.",
+      "reviewed_commit": "130cb3faaab249592302b8b8b7889fd48c533513",
+      "video_duration_seconds": 89.0,
+      "supplementary_video_duration_seconds": 20.166667,
+      "hero_asset": "assets/elsewhere.png"
+    }
+  },
+  {
+    "name": "Cadence Coach",
+    "slug": "cadence-coach",
+    "category": "Interval workout coach",
+    "concept": "An offline interval training companion: several configurable routines, work/rest rounds, a clear countdown, pause/resume/skip/end, synthesized or bundled sound cues with mute, and completed workout history. Users can create and edit their own interval sequences. Treat exercise examples as general fitness routines without medical promises.",
+    "design": "A premium performance instrument: deep graphite, electric-lime numerals, bold condensed typography, sculptural interval bars and minimal high-contrast full-screen session mode. A clean cream planning surface can contrast the immersive workout screen. Motion conveys phase changes clearly.",
+    "demo": "Create a short routine, start it, progress from work to rest, pause/resume and skip, complete and inspect saved stats. Test timer drift/background recovery, round transitions, editing and history accuracy.",
+    "description": "Create an interval routine and move through work, rest and recovery with a clear, focused workout display.",
+    "session_id": "541f9397af9a42008ff913c9d54fa5f1",
+    "session_url": "https://app.devin.ai/sessions/541f9397af9a42008ff913c9d54fa5f1",
+    "result": {
+      "name": "Cadence Coach",
+      "slug": "cadence-coach",
+      "branch": "devin/1789166009-ios-cadence-coach",
+      "commit": "03f8f22887f8de5d65230b87d3063b8e2215bcbb",
+      "pr_url": "https://github.com/dabit3/experiments/pull/84",
+      "status": "complete",
+      "summary": "Delivered a native offline SwiftUI interval coach with configurable routines, work/rest countdown, pause/resume/skip/restart/end, synthesized cues and mute, persistent active sessions and workout history. Completed two screenshot-informed design refinement passes, final native simulator verification, and an open unmerged PR with uploaded evidence.",
+      "hero_url": "https://app.devin.ai/attachments/459684c5-f77d-48a3-805c-b5e042bc3cac/04-session.png",
+      "video_url": "https://app.devin.ai/attachments/2fbe0986-6596-4378-bf70-8520d579b12a/demo-full-arc.mp4",
+      "report_url": "https://app.devin.ai/attachments/18ba43ca-4a9a-4714-9183-0250438751c3/qa-design-report.md",
+      "supplementary_videos": [
+        {
+          "label": "Audio cue capture",
+          "url": "https://app.devin.ai/attachments/e5859a6e-f1b5-4fd5-99fe-58c0244dcf75/demo-audio-supplement.mp4"
+        }
+      ],
+      "limitations": [
+        "Primary workflow video remains silent; actual work/rest/completion cues and mute/unmute are verified by the supplementary Simulator loopback recording. Human listening through physical speakers/headphones was not tested",
+        "Physical-device audio, interruptions, lock-screen behavior, spoken VoiceOver, production signing and App Store submission were not validated",
+        "More-than-24-phase progress pagination was not UI-tested",
+        "The 76-second demo is a 394\u00d7856 phone crop of real raw desktop footage because simctl movie capture omitted modal layers. Only idle lead-in/out was trimmed; no internal cuts, countdown acceleration or injected UI state",
+        "The 80-second audio supplement uses a common native audio/video timeline with a 0.6-second final-frame hold. Automatic transitions align within about 0.22 seconds; initial screen presentation follows its start cue by about 0.55 seconds. Earlier dropped-buffer captures were excluded",
+        "Audio respects Silent Mode and is foreground-only; background timing catches up on return. Manual device-clock changes can affect timestamp-based timing."
+      ],
+      "session_url": "https://app.devin.ai/sessions/541f9397af9a42008ff913c9d54fa5f1",
+      "build_and_tests": "Final simulator build/compiler checks and strict swift format lint passed. Nine XCTest tests passed with zero failures, covering boundaries, timestamp/background recovery, pause serialization, skip accounting, persisted skip indices, idempotent end, validation and storage. Native UI passed routine CRUD/validation/discard, pause/resume/skip, restart/end cancellation and confirmation, completion/history, persistence/relaunch, clear history, background catch-up and AX3 controls. Full-arc saved stats matched 26s active / 20s work / 3 of 4 finished / 1 skipped; natural completion matched 30s / 20s / 4 of 4 / 0. Earlier source-equivalent checks are identified by revision in the report. Focused audio follow-up changed no source: eight complete cues, 880Hz work and 440Hz rest/completion, exact silence during muted transitions and restored cues after unmute. A separate fully muted completion run also passed. Collection review independently decoded the delivered audio and confirmed all eight cue frequencies, nonzero unclipped peaks and zero-signal mute windows. Native source packet continuity and capture timing are documented. Final local/remote heads match the reviewed commit; diff is restricted to the app. No configured CI checks.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/60a9e1fc-5209-4595-b3a1-f78fd7e39411/01-home.png",
+        "https://app.devin.ai/attachments/2683a899-735b-4f42-97f3-23d207120778/02-detail.png",
+        "https://app.devin.ai/attachments/a882b5ea-f36b-4204-92b4-80f383c2261d/03-editor.png",
+        "https://app.devin.ai/attachments/459684c5-f77d-48a3-805c-b5e042bc3cac/04-session.png",
+        "https://app.devin.ai/attachments/0c5e49cc-1219-4389-bfe8-04cf4bb524d8/05-result.png"
+      ],
+      "design_iterations": "Initial native screenshots produced seven concrete critiques. Pass 1: compact separated metrics, pinned completion actions, personal routine hero, visible active-time and Skip labels, consistent history rounding. Pass 2, informed by default and AX screenshots: scalable compressed display typography, adaptive vertical metrics and detail/history layouts, pinned content-sized workout controls, fixed decorative icon and dashed skip progress. Further native QA corrected icon resource inclusion, AX wordmark wrapping and End-confirmation fading. Five final screenshots visually inspected.",
+      "platform_evidence": "Native macOS arm64, Xcode 26.6 (17F113), iOS 26.5. Native UI verified on iPhone 17 Pro and iPhone 17e at default and largest accessibility Dynamic Type; original icon verified on both Home Screens. Focused audio used the Pro through official BlackHole 2ch 0.7.1, with trusted signature and notarization verified before normal installation. CoreAudio restart, Simulator reboot, explicit 48kHz stereo output and Silent Mode off enabled actual app loopback capture. Native simultaneous audio/video capture replaced dropped-buffer FFmpeg diagnostics."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the home, routine editor, workout hero and audio-demo frames. Cream and graphite surfaces, lime work phases, muted teal rest phases, compressed display typography and pinned controls create a coherent fitness instrument. The report documents two substantive screenshot-driven refinements, nine passing native tests and two-device functional/accessibility-size checks, with earlier source-equivalent checks identified honestly. Independent ffprobe checks confirm the retained 76-second workflow and 80-second stereo audio supplement. Independent decoding confirms eight unclipped 880Hz work/440Hz rest and completion cues, exact zero-signal mute windows and restored cues after unmute; inspected native frames match work, muted rest, restored rest and completed results. The final branch still matches the reviewed commit. All 18 changed files are isolated to this app, with one Xcode project, shared scheme, tests, icon and bundle identifier; source archive extraction passed. Physical audio, interruptions, VoiceOver and long-sequence pagination limits remain explicit.",
+      "reviewed_commit": "03f8f22887f8de5d65230b87d3063b8e2215bcbb",
+      "video_duration_seconds": 76.0,
+      "supplementary_video_duration_seconds": 80.0,
+      "audio_verified": true,
+      "hero_asset": "assets/cadence-coach.png"
+    }
+  },
+  {
+    "name": "Hush",
+    "slug": "hush",
+    "category": "Ambient sound mixer",
+    "concept": "An offline soundscape mixer with four or more genuinely audible synthesized/original loops such as rain, brown noise, ocean and wind. Independent volume controls, saved mixes, sleep timer, master fade, mute and persistent settings. No network dependency, no misleading wellness claims.",
+    "design": "Cinematic nocturnal landscapes, midnight ink, moonlit lavender, silver text, quietly animated rain/ocean contours and elegant vertical sound faders. A scene morphs subtly as layers change. Create a calming art-directed experience rather than a stack of plain sliders.",
+    "demo": "Build an audible rain/ocean mix, adjust layer levels, save and recall a scene, start a short timer and show the fade. Include audio in video if possible; disclose silent capture. Test mix state, timer, gain bounds and persistence.",
+    "description": "Compose a personal nighttime soundscape from audible ambient layers, with saved mixes and a gentle sleep timer.",
+    "session_id": "50001ee7ef70411398d8f388cfc1c370",
+    "session_url": "https://app.devin.ai/sessions/50001ee7ef70411398d8f388cfc1c370",
+    "result": {
+      "name": "Hush",
+      "slug": "hush",
+      "branch": "devin/1789165997-ios-hush",
+      "commit": "ae98f1a33aa246b55ffc39a600b07671df72d47f",
+      "pr_url": "https://github.com/dabit3/experiments/pull/82",
+      "status": "complete",
+      "summary": "Completed a polished native offline SwiftUI sound mixer with four original synthesized stereo layers, independent faders, saved scenes, master/mute, sleep timer, manual fade and persistent preferences. Two substantive design refinement passes and final native testing completed. All source is pushed; PR #82 is open and unmerged with final evidence. Five screenshots, an 80-second synchronized real-audio demo and QA/design report are uploaded.",
+      "hero_url": "https://app.devin.ai/attachments/8fa90952-a05e-4fe3-bee4-f1b7173c8654/01-ae98-home.png",
+      "video_url": "https://app.devin.ai/attachments/8b1e902e-5de5-48e5-af97-10d919bfbdd6/Hush-ae98-final-demo-with-audio.mp4",
+      "report_url": "https://app.devin.ai/attachments/b112f225-3554-4394-8c07-4867af6da9c6/Hush-QA-design-report.md",
+      "limitations": [
+        "Physical-device audio routes, background/lock-screen behavior and tactile haptics were not validated. Production signing and App Store submission are outside scope",
+        "VoiceOver controls and Reduce Motion support are implemented; a complete screen-reader/Reduce Motion interaction audit was not performed",
+        "Actual output, mute and fade were measured; subjective headphone listening quality was not assessed. The 80-second demo uses documented fixed +10 dB capture gain, with measured peak \u221213.58 dBFS and no clipping",
+        "Timers clear on process termination. Data stays local; no synchronization or export is included",
+        "The PR tool automatically converts embedded media links into expiring signed URLs. Use the canonical attachment URLs supplied here and in the QA report for stable access."
+      ],
+      "session_url": "https://app.devin.ai/sessions/50001ee7ef70411398d8f388cfc1c370",
+      "build_and_tests": "Simulator xcodebuild build and final test build passed. Seven XCTest cases, zero failures, covering synthesis, gain bounds, corrupt persistence, scenes, playback/mute, timer/fade and audio failure behavior. Strict xcrun swift-format lint and git diff --check passed. Native UI verified scene editing/persistence, reset/cancel, mute, exact fader endpoints, master bounds, timer cancellation/completion/recovery and manual fade across refinement revisions. Final Pro and 17e layouts and Pro demo tested on ae98f1a; accessibility-large master values tested on f82d516 before the final grid-only change. All 19 changed files are inside ios-collection/hush/. Remote branch SHA matches final commit. PR reports no CI checks.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/8fa90952-a05e-4fe3-bee4-f1b7173c8654/01-ae98-home.png",
+        "https://app.devin.ai/attachments/b05d5424-8909-48a7-b613-4869c663f57f/02-ae98-library.png",
+        "https://app.devin.ai/attachments/ce07f3e3-f704-4c17-9bc5-471077ebdcab/03-ae98-timer-complete.png",
+        "https://app.devin.ai/attachments/a99b24dc-98ff-4675-94b0-89549811e7f1/04-ae98-settings.png",
+        "https://app.devin.ai/attachments/624db670-0a37-4222-9336-5ff4b812e2f8/qa-ae98-17e.png"
+      ],
+      "design_iterations": "First screenshot-informed refinement improved muted contrast, fader outlines and labels, tap targets, Clear labeling, retained edited scene identity, compact hero and stable playback feedback. Second substantive refinement removed dock/fader overlap using bounded scrolling, adapted hero and fader sizing, clarified timer completion and recovery, added informative scene summaries and responsive thumbnails, and styled selected settings in lavender. Focused follow-ups kept large-text master values single-line, aligned drag endpoints to handle travel and quantized percentages, then top-aligned wrapped labels on iPhone 17e. Before/after evidence and concrete critique are in the report.",
+      "platform_evidence": "Native Darwin arm64; macOS 26.5.2 (25F84); Xcode 26.6 (17F113); Swift 6.3.3; iOS 26.5 iPhone 17 Pro Simulator (691C57A7-98F5-4C32-A5AF-3074F4F0FBA3) and iPhone 17e Simulator (97EB512B-0C2B-41C5-BAA0-C9C96F1BCB9D). Full native screenshots are 1206\u00d72622 and 1170\u00d72532. BlackHole 2ch provided actual stereo output and capture."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the playing mixer, scene library and compact-device fader alignment. The lavender moonlit landscape and vertical translucent faders create a coherent ambient instrument. The 80-second real-interaction video has 544 \u00d7 1072 H.264 and 48 kHz stereo AAC. Independent ffmpeg measurement confirmed nonzero audio at \u221231.0 dBFS mean and \u221213.6 dBFS maximum, consistent with the report's fixed capture gain and fade measurements. The no-output-device blocker was resolved using BlackHole. Seven XCTest cases, two design passes and final Pro/17e verification are documented. PR #82 is open; all 19 files are scoped to ios-collection/hush/. Physical routes and subjective listening remain explicitly untested.",
+      "reviewed_commit": "ae98f1a33aa246b55ffc39a600b07671df72d47f",
+      "video_duration_seconds": 80.0,
+      "hero_asset": "assets/hush.png"
+    }
+  },
+  {
+    "name": "Silverroom",
+    "slug": "silverroom",
+    "category": "Photo darkroom",
+    "concept": "A real local photo editor using Core Image: import photos, original built-in sample image, exposure/contrast/warmth, carefully tuned monochrome/film presets, before/after press, reset, crop or rotate if feasible, saved editing recipes and actual full-resolution exported images through share. All editing is on-device.",
+    "design": "An editorial analog darkroom with charcoal background, silver typography, contact-sheet gallery, tasteful amber highlights, thin precise adjustment scales and genuinely beautiful large image presentation. A clean custom filmstrip preset picker with previews from the active photo.",
+    "demo": "Load a sample or imported photo, apply a preset, adjust exposure, compare before/after, reset or rotate, and export a real edited image. Test filter composition, clamping, orientation and output dimensions.",
+    "description": "An intimate photo darkroom for shaping light and tone, comparing edits and exporting a finished photograph.",
+    "session_id": "3913bce5f1a24696ac297afd19b207d3",
+    "session_url": "https://app.devin.ai/sessions/3913bce5f1a24696ac297afd19b207d3",
+    "result": {
+      "name": "Silverroom",
+      "slug": "silverroom",
+      "branch": "devin/1789165970-ios-silverroom",
+      "commit": "7f4f2541bc392c0f98eddd8e743cf29ea61673b9",
+      "pr_url": "https://github.com/dabit3/experiments/pull/91",
+      "status": "complete",
+      "summary": "Delivered a native SwiftUI/Core Image photo darkroom with local imports, real film presets and adjustments, held comparison, rotation/crop, persisted recipes and full-resolution JPEG sharing. Two screenshot-informed refinement passes and final native testing on two iPhone simulators completed. One open, unmerged PR contains all functional source; final evidence is uploaded.",
+      "hero_url": "https://app.devin.ai/attachments/da18333a-4bd3-4caf-a712-6b00ba0c99ec/02-hero-darkroom.png",
+      "video_url": "https://app.devin.ai/attachments/0bff0268-c711-45a0-82c1-acca591fc78d/native-demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/93a2c443-f144-49c3-bc38-ba29cdf57986/QA-design.md",
+      "limitations": [
+        "Complete spoken VoiceOver navigation, focus order and adjustable-slider gestures remain untested; actual element labels were sampled through Accessibility Inspector",
+        "No physical-device validation, production signing or App Store submission; iOS 17 is the compiler-checked deployment target, while runtime testing used iOS 26.5",
+        "Low-storage behavior, denied Photos permission and third-party sharing destinations were not tested",
+        "The 13.7MP orientation-tagged HEIC was an upscaled 1.7MB sample, not a large compressed camera original; extreme-resolution memory behavior remains untested",
+        "Centered square crop only; 96%-quality sRGB JPEG export. No RAW, HDR, lossless export, masks, Live Photo motion, video or sync",
+        "Original imports and staged exports consume local storage; no automatic staged-export cleanup is included."
+      ],
+      "session_url": "https://app.devin.ai/sessions/3913bce5f1a24696ac297afd19b207d3",
+      "build_and_tests": "Initial simulator build succeeded. Strict swift-format lint and xcodebuild test passed after both refinements; final 10 XCTest tests, zero failures. Tests cover clamping, preset pixel output, monochrome neutrality, exposure/filter composition, warmth/contrast effects, all eight EXIF orientations, rotation/crop dimensions, preview downsampling versus full-size export, invalid inputs and persistence. Final native UI tests passed import, presets, sliders/Neutral, compare, reset/cancel/back, recipe lifecycle, relaunch persistence and Photos/Files export. Actual Files-destination JPEG verified at 4536\u00d73024, sRGB, from orientation-6 HEIC. No configured PR CI checks; no unresolved review findings.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/e1795ec7-d720-4d3f-9d57-bc2ad18170ea/01-home.png",
+        "https://app.devin.ai/attachments/da18333a-4bd3-4caf-a712-6b00ba0c99ec/02-hero-darkroom.png",
+        "https://app.devin.ai/attachments/5a244241-c2bf-444e-98c2-9c6210d3c521/03-frame.png",
+        "https://app.devin.ai/attachments/7a0574da-6d82-4d8d-a8c6-050dfe8686c4/04-recipes.png",
+        "https://app.devin.ai/attachments/9d737f97-0055-4552-996a-9814d63f992e/05-export.png"
+      ],
+      "design_iterations": "Baseline b86db1e was reviewed using actual simulator screenshots. Pass1 ffa7be3 addressed aggressive contrast, small targets, missing neutral recovery, limited comparison target, partly hidden selected presets, sparse recipe rows and unsafe deletion. Pass1 Pro and accessibility-large 17e screenshots then revealed toolbar/status overlap, crowded adjustment viewport, fragmented control labels, uneven frame cards and squeezed recipe summaries. Pass2 7f4f254 fixed the toolbar outside scrolling content, adapted photo height, introduced an accessible adjustment menu and stacked footer/frame controls, and moved large-text recipe metadata full-width. Final principal and accessibility screenshots were personally inspected; no blocking layout defect remained.",
+      "platform_evidence": "Native macOS 26.5.2 (25F84), Darwin arm64, Xcode 26.6 (17F113), Apple Swift 6.3.3, iOS 26.5. Final native UI validation on iPhone 17 Pro at default text size and iPhone 17e at accessibility-large. iOS 17 deployment target. Final H.264 device-only interaction demo: 49.911667 seconds, 1206\u00d72622."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the darkroom, framing controls and finished-export presentation. Charcoal surfaces, restrained amber controls and contact-sheet thumbnails keep the image central while making real adjustments approachable. The 49.91-second native video is 1206 \u00d7 2622. Ten XCTest cases include actual preset pixels, crop/JPEG dimensions, all EXIF orientations, preview/export resolution and persistence. Final Pro and accessibility-large 17e UI testing includes actual Photos/Files export with the retrieved 4536 \u00d7 3024 sRGB JPEG checked. Two screenshot-informed design passes are documented. PR #91 is open and mergeable with no actionable review comments; all 23 changed files are under ios-collection/silverroom/. Large-camera-file, permissions and physical-device gaps remain explicit.",
+      "reviewed_commit": "7f4f2541bc392c0f98eddd8e743cf29ea61673b9",
+      "video_duration_seconds": 49.911667,
+      "hero_asset": "assets/silverroom.png"
+    }
+  },
+  {
+    "name": "Sprout",
+    "slug": "sprout",
+    "category": "Plant-care companion",
+    "concept": "A personal plant shelf with add/edit plants, room grouping, watering intervals, due/overdue care queue, mark-watered history, notes and photos. Offer a small offline guide with conservative care guidance and a clearly labeled starter collection. Scheduling must compute from actual dates and persist.",
+    "design": "An inviting plant boutique: cream walls, deep forest-green typography, terracotta pots, original lush plant illustrations, a shelf-like collection arrangement and generous editorial plant detail pages. Avoid a generic dashboard of metric cards. Watering has a beautiful restrained animation.",
+    "demo": "Browse the shelf, add a plant, set its interval and room, mark a due plant watered, view history and edit it. Test due-date calculation, interval changes, persistence and deletion.",
+    "description": "Keep a beautiful record of your plants, their care routines and the small acts that help your indoor garden thrive.",
+    "session_id": "2537f2359c4b4d4aa53fbde199e1ea6b",
+    "session_url": "https://app.devin.ai/sessions/2537f2359c4b4d4aa53fbde199e1ea6b",
+    "result": {
+      "name": "Sprout",
+      "slug": "sprout",
+      "branch": "devin/1789166010-ios-sprout",
+      "commit": "cabe16d5367dfd9d9d2c6a425934aab790b057aa",
+      "pr_url": "https://github.com/dabit3/experiments/pull/83",
+      "status": "complete",
+      "summary": "Completed a polished native SwiftUI plant-care V1 with original botanical artwork, editable plants/photos/notes, room grouping, actual-date care scheduling, watering history and an offline guide. Source is confined to ios-collection/sprout; PR is open and unmerged. Delivered five full screenshots, a 67-second continuous native interaction demo and QA/design report.",
+      "hero_url": "https://app.devin.ai/attachments/8f253352-db7b-4a72-9265-44d0a6e240fc/01-hero-shelf.png",
+      "video_url": "https://app.devin.ai/attachments/bd124f3a-5023-44a6-b9d5-03a6405459fb/sprout-demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/375fc490-de78-4509-bed3-1fe808bde7d1/qa-report.md",
+      "limitations": [
+        "Physical devices, production signing and App Store submission were not performed",
+        "VoiceOver runtime, intermediate Dynamic Type sizes, localization, full Photos permission matrix and low-storage/corrupt-file runtime injection remain untested; model tests verify unreadable-file protection",
+        "Unchanged feature results were retained from earlier native checkpoints after final presentation changes; provenance is documented in the QA report",
+        "Offline V1 has no sync, export, notifications, species recognition or diagnosis, and only four guide species",
+        "Minor visual limitations: editor/guide-detail chrome retains native translucency; bottom shelf metadata requires scrolling."
+      ],
+      "session_url": "https://app.devin.ai/sessions/2537f2359c4b4d4aa53fbde199e1ea6b",
+      "build_and_tests": "Final xcodebuild test succeeded on iPhone 17 Pro with CODE_SIGNING_ALLOWED=NO; 7 XCTest cases passed with 0 failures. Strict recursive Swift format lint and git diff --check passed. Tests cover calendar-day due dates, DST/year boundaries, interval changes, history ordering/editing, duplicate prevention, persistence, undo/deletion, validation and unreadable-file preservation. Native QA covered add/edit/photo/room/interval/notes, watering and history editing, cancellation, removal, empty states and cold relaunch persistence; final UI changes verified on both devices. PR has no CI checks configured (0 passed, 0 failed, 0 pending).",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/8f253352-db7b-4a72-9265-44d0a6e240fc/01-hero-shelf.png",
+        "https://app.devin.ai/attachments/65d8fa13-85b7-4282-9608-9443ad8480e5/02-plant-detail.png",
+        "https://app.devin.ai/attachments/f6afbfe1-e91a-408f-abe6-eab284941d74/03-care.png",
+        "https://app.devin.ai/attachments/98d56110-b6c7-40cf-9910-211962ca21a9/04-field-guide.png",
+        "https://app.devin.ai/attachments/8366e644-56b0-4e3e-9661-8fa4713d8d02/05-settings.png"
+      ],
+      "design_iterations": "Completed two substantive screenshot-informed refinement passes plus regression polish. Pass 1 fixed status-bar overlap, keyboard dismissal, full-row hit targets, singular journal labels and destructive styling. Pass 2 compressed the shelf composition, improved room selection, restyled settings, stacked accessibility layouts and removed footer fragmentation. Further native checkpoints fixed stale Undo feedback, AX5 interval fragmentation, room popover clipping through a scrollable selection sheet, and explicit sample-removal cancellation. Inspected final screenshots and accepted the finished design.",
+      "platform_evidence": "Built on macOS 26.5.2 arm64 with Xcode 26.6 (17F113). Tested native iOS 26.5 Simulator on iPhone 17 Pro and iPhone 17e, including maximum accessibility text. Final demo is an uncropped 1206\u00d72622 native Simulator recording, 67.046667 seconds."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the botanical shelf, plant journal and field guide. Original plant illustrations, warm paper, deep-green serif titles and clear watering actions create a consistent visual identity. The 67.05-second full-device video records real add, care and history-edit interactions. Seven tests cover calendar/DST dates, history, persistence and unreadable-file preservation. Two design passes plus targeted accessibility and cancellation refinements are documented, including maximum text on iPhone 17e. PR #83 has no actionable review comments and all 18 changed files are under ios-collection/sprout/. Native-translucency and scrolling details are disclosed as minor visual limits.",
+      "reviewed_commit": "cabe16d5367dfd9d9d2c6a425934aab790b057aa",
+      "video_duration_seconds": 67.046667,
+      "hero_asset": "assets/sprout.png"
+    }
+  },
+  {
+    "name": "Sunward",
+    "slug": "sunward",
+    "category": "Golden-hour planner",
+    "concept": "A photographer's sun planner for selected locations and dates, with an interactive 24-hour sun arc, sunrise/sunset and golden-hour windows computed locally using a documented astronomy algorithm. Preset world cities plus manual latitude/longitude, saved shoots and date/time scrubbing. Handle polar day/night honestly. No GPS permission required for core use.",
+    "design": "A beautiful celestial dial over atmospheric amber-to-indigo horizons, cream technical type, fine azimuth ticks, copper sun paths and elegant location/date sheets. The large scrubbable sun diagram must be the hero and feel precise, not decorative.",
+    "demo": "Select a city and date, scrub the sun position, view golden-hour windows, save a shoot, and compare another latitude including a polar edge case. Test known approximate sun times, timezone/date handling, latitude bounds and polar conditions.",
+    "description": "Find the golden windows in a day, explore the sun\u2019s path and save the light you want to photograph.",
+    "session_id": "7d487bb7538b49ed821130b6ff518994",
+    "session_url": "https://app.devin.ai/sessions/7d487bb7538b49ed821130b6ff518994",
+    "result": {
+      "name": "Sunward",
+      "slug": "sunward",
+      "branch": "devin/1789165993-ios-sunward",
+      "commit": "b6d38cd1393e1a70190dc0203f52b8318e6a380e",
+      "pr_url": "https://github.com/dabit3/experiments/pull/78",
+      "status": "complete",
+      "summary": "Polished native SwiftUI golden-hour planner with NOAA solar calculations, interactive celestial dial, manual locations/timezones, persisted shoots and honest polar states. Two design refinement passes and final native simulator QA completed; source and evidence published in PR #78.",
+      "hero_url": "https://app.devin.ai/attachments/be8b8991-34a4-4782-8ae3-5d80220f7dfc/01-hero.png",
+      "video_url": "https://app.devin.ai/attachments/a28ec221-a415-4c17-a446-de8df2030fff/demo.mp4",
+      "report_url": "https://app.devin.ai/attachments/eec03117-1ee5-45cf-aa3e-afc9eb4a87f8/qa-design-report.md",
+      "limitations": [
+        "Simulator validation only; physical-device behavior, production signing and App Store submission/approval are outside scope",
+        "Full spoken VoiceOver traversal, physical haptic feel and exhaustive text-size/timezone combinations were not tested; technical dial labels use fixed sizes",
+        "Astronomy assumes an unobstructed sea-level horizon without terrain, weather, elevation or refraction variation; five-minute bracketing may miss very short grazing polar events",
+        "V1 has no map, GPS, cloud sync, export or notifications. Data is local and removed when the app is deleted."
+      ],
+      "session_url": "https://app.devin.ai/sessions/7d487bb7538b49ed821130b6ff518994",
+      "build_and_tests": "Native simulator build and strict swift format lint passed. Latest xcodebuild test passed 8 XCTest cases with zero failures: approximate reference sunrise/sunset, golden windows, polar summer/winter, midnight clipping, DST civil-day durations, coordinate bounds and persistence/edit/delete. Final UI QA passed city/date/window planning, slider and hold scrubbing versus scrolling, custom coordinates and searched timezones, validation correction, saved-shoot lifecycle and relaunch persistence, cancel/back/Today, DST timeline and polar edge cases. Larger text, Reduce Motion and runtime accessibility labels/15-minute dial adjustment verified. No configured PR CI checks. Clean working tree; diff confined to 17 files under ios-collection/sunward/.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/be8b8991-34a4-4782-8ae3-5d80220f7dfc/01-hero.png",
+        "https://app.devin.ai/attachments/477c330d-9420-4aa5-93fa-ef56eb3b08e0/02-windows.png",
+        "https://app.devin.ai/attachments/0c58c463-3472-444e-b72c-f45cadef7e62/03-save.png",
+        "https://app.devin.ai/attachments/e295db68-8158-4f45-899b-a3827dfbbcde/04-polar-17e.png",
+        "https://app.devin.ai/attachments/05fdd3d1-8c7a-4d98-8c53-29fbb6ffb8df/05-large-text-date.png"
+      ],
+      "design_iterations": "V1 screenshot critique identified invisible night markers, overloaded first screen, Save clipping, scroll/time conflicts, blank UTC selector, disappearing coordinate labels, irrelevant search and ambiguous midnight windows. Pass 1 (11e7bef) addressed night path, layout, manual location entry and civil-time notation. Fresh Pro/17e review informed pass 2 (b6d38cd): native hold recognizer preserving scrolling, armed ring/caption/haptic, cooler night atmosphere, status-safe clipping, tappable window summary, immediate error clearing and cohesive Save/Date sheets. Final screenshots personally inspected.",
+      "platform_evidence": "Darwin 25.5.0 arm64; Xcode 26.6 (17F113); native iOS 26.5 (23F73) Simulator testing on iPhone 17 Pro and iPhone 17e, plus accessibility-medium text. Runnable shared Sunward Xcode scheme; iOS 17 minimum uses Observation and native SwiftUI APIs."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the golden-hour hero, daily windows, compact polar-night screen, a frame from the native Simulator video and the detailed QA/design report. The celestial dial, warm/cool sky treatment, precise typography and prominent save action form a polished instrument. Native video is 33.46 seconds at 1600 \u00d7 1200. PR #78 is open and mergeable with no actionable review comments; all 17 changed files are under ios-collection/sunward/. Eight XCTest cases meaningfully cover reference sun times, hemispheres, polar conditions, civil-day/DST handling, coordinate bounds and persisted editing/deletion. Two design passes and Pro/17e accessibility coverage are documented.",
+      "reviewed_commit": "b6d38cd1393e1a70190dc0203f52b8318e6a380e",
+      "video_duration_seconds": 33.458,
+      "hero_asset": "assets/sunward.png"
+    }
+  },
+  {
+    "name": "Curio",
+    "slug": "curio",
+    "category": "Personal collection museum",
+    "concept": "A private museum for things you collect: records, cameras, ceramics, sneakers or keepsakes. Create collections and objects with photos, title, story, acquired date and tags; favorite, search and filter; switch between an elegant gallery and detailed object cards; generate a real shareable museum label/poster. Fully offline persistence.",
+    "design": "A contemporary design museum: warm off-white, espresso text, single cobalt accent, exquisite object cutout illustrations, generous plinth-like spacing, numbered exhibit labels and refined serif/sans pairing. The curated sample collection should look like a real exhibition and be explicitly sample data.",
+    "demo": "Walk through a collection, add and edit an object, favorite and search it, open its detailed exhibit, and export an actual museum-label image. Test CRUD, search/tag filtering, export and persistence.",
+    "description": "Build a personal cabinet of curiosities, giving meaningful objects a place for their images, stories and details.",
+    "session_id": "f52299d674d0479db8319e745a07c6eb",
+    "session_url": "https://app.devin.ai/sessions/f52299d674d0479db8319e745a07c6eb",
+    "result": {
+      "name": "Curio",
+      "slug": "curio",
+      "branch": "devin/1789165971-ios-curio",
+      "commit": "94b9fa6385f99f2ca86da8c0bd6762885b144910",
+      "pr_url": "https://github.com/dabit3/experiments/pull/80",
+      "status": "complete",
+      "summary": "Polished native offline collection museum delivered in PR #80 after two simulator-informed design passes and follow-up contrast/accessibility fixes. Final evidence includes five full screenshots, a 74.867-second continuous real-time demo and a real exported museum-label PNG.",
+      "hero_url": "https://app.devin.ai/attachments/004afe51-b925-4c26-a468-7047eb71f815/94b9fa6-01-home-17e.png",
+      "video_url": "https://app.devin.ai/attachments/4f3b7a1c-6fc2-40ee-980e-7760e8ec6013/94b9fa6-native-demo-realtime.mp4",
+      "report_url": "https://app.devin.ai/attachments/b0efecab-239a-4b4e-b809-84c9f08e45d2/Curio-QA-design-report.md",
+      "limitations": [
+        "Runtime VoiceOver reading, physical devices, production signing and App Store submission were not validated",
+        "Runtime tests used iOS 26.5; older supported iOS versions and every Dynamic Type size were not tested",
+        "Large datasets and UI-level storage-failure recovery were not tested; corrupt-archive preservation is unit-tested",
+        "No cloud sync or archive backup/recovery interface; deleting the app removes its museum",
+        "The 74.867-second demo reaches native sharing; actual Save to Files completion was verified separately immediately afterward",
+        "Comprehensive unchanged regression from 7e24d24 was carried forward to final wrapping-only revision 94b9fa6."
+      ],
+      "session_url": "https://app.devin.ai/sessions/f52299d674d0479db8319e745a07c6eb",
+      "build_and_tests": "Final strict swift-format lint and native xcodebuild test passed 7 XCTest cases with 0 failures. Native testing verified CRUD/moves, date changes, cancellation, photo import/replacement, combined filters, relaunch persistence, cascade deletion and actual Files export. Final wrapping-only revision repeated affected layouts and add/edit/favorite/search/export; unchanged comprehensive regression carried forward from 7e24d24. GitHub reported no CI checks. App-only diff and clean working tree.",
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/004afe51-b925-4c26-a468-7047eb71f815/94b9fa6-01-home-17e.png",
+        "https://app.devin.ai/attachments/e3fb8159-2f9e-4ae8-9632-8c85076cb557/94b9fa6-02-gallery-17e.png",
+        "https://app.devin.ai/attachments/7b4823c9-54d0-40e1-9988-6aa5dcd82f3c/94b9fa6-03-sunday-cup.png",
+        "https://app.devin.ai/attachments/67fc242f-6b15-4067-a081-300d91b71401/94b9fa6-04-label-share.png",
+        "https://app.devin.ai/attachments/a6b5dd18-fe84-4f5d-bcaa-59be44537a3f/94b9fa6-05-accessibility-detail.png"
+      ],
+      "design_iterations": "Pass 1: pinned home chrome, personal-collection hero priority, denser gallery, readable catalog/maker metadata, pinned Share. Pass 2: bespoke empty plinth and neutral illustration default, title-first editors, compact label introduction, safe-area treatments, descriptive filenames. Follow-up screenshot-driven fixes corrected editor contrast after picker dismissal, clipped editor intro, truncated empty hint and large-text CTA wrapping.",
+      "platform_evidence": "Native macOS 26.5.2 (25F84), Darwin arm64; Xcode 26.6 (17F113), XcodeGen 2.46.0, swift-format 6.3.0. Actual native iOS 26.5 testing on iPhone 17 Pro and iPhone 17e, including accessibility-large."
+    },
+    "review": {
+      "accepted": true,
+      "assessment": "Collection review inspected the museum home, user-created exhibit and accessibility-large detail. Electric blue accents, catalog numbers, original object illustrations and restrained paper surfaces create a coherent personal-museum interface. Independent inspection confirms 74.867 seconds of real-time 1600 \u00d7 1200 H.264; a sampled frame shows the actual app prominently in a full-screen Simulator. Seven XCTest cases, two substantive design passes and further native layout corrections are documented. Final wrapping changes were checked on two iPhones, with comprehensive unchanged CRUD/filter/export regression carried forward transparently. All 17 changed files are isolated under ios-collection/curio/, with project, shared scheme, icon and tests. The open PR has no actionable comments. Actual Files delivery was verified immediately after the demo; VoiceOver, large datasets and physical hardware remain unverified.",
+      "reviewed_commit": "94b9fa6385f99f2ca86da8c0bd6762885b144910",
+      "video_duration_seconds": 74.867063,
+      "hero_asset": "assets/curio.png"
+    }
+  }
+]
