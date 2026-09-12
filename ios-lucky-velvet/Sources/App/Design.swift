@@ -1,44 +1,172 @@
 import SwiftUI
 
 enum Palette {
-  static let ink = Color(red: 0.025, green: 0.12, blue: 0.10)
-  static let green = Color(red: 0.04, green: 0.24, blue: 0.19)
-  static let gold = Color(red: 0.88, green: 0.73, blue: 0.43)
-  static let cream = Color(red: 0.97, green: 0.93, blue: 0.82)
-  static let muted = Color(red: 0.71, green: 0.81, blue: 0.73)
-  static let ruby = Color(red: 0.64, green: 0.19, blue: 0.25)
+  static let ink = Color(red: 0.020, green: 0.095, blue: 0.082)
+  static let green = Color(red: 0.045, green: 0.245, blue: 0.190)
+  static let felt = Color(red: 0.070, green: 0.330, blue: 0.245)
+  static let gold = Color(red: 0.89, green: 0.74, blue: 0.44)
+  static let brass = Color(red: 0.66, green: 0.50, blue: 0.24)
+  static let cream = Color(red: 0.975, green: 0.94, blue: 0.85)
+  static let ivory = Color(red: 0.995, green: 0.985, blue: 0.95)
+  static let muted = Color(red: 0.72, green: 0.82, blue: 0.74)
+  static let ruby = Color(red: 0.66, green: 0.17, blue: 0.24)
+  static let rose = Color(red: 0.84, green: 0.36, blue: 0.40)
+
+  static let foil = LinearGradient(
+    colors: [Color(red: 0.99, green: 0.93, blue: 0.75), gold, brass, gold],
+    startPoint: .topLeading, endPoint: .bottomTrailing)
+  static let foilStroke = LinearGradient(
+    colors: [Color(red: 0.99, green: 0.92, blue: 0.72), brass, gold],
+    startPoint: .top, endPoint: .bottom)
+}
+
+extension Text {
+  func deco(_ size: CGFloat, weight: Font.Weight = .semibold, tracking: CGFloat = 2.4) -> Text {
+    font(.system(size: size, weight: weight, design: .serif)).tracking(tracking)
+  }
 }
 
 struct VelvetBackground: View {
   var body: some View {
     ZStack {
+      LinearGradient(
+        colors: [Palette.felt, Palette.green, Palette.ink], startPoint: .top, endPoint: .bottom)
       RadialGradient(
-        colors: [Palette.green, Palette.ink, Color(red: 0.015, green: 0.065, blue: 0.06)],
-        center: .top, startRadius: 30, endRadius: 900)
+        colors: [Palette.gold.opacity(0.22), .clear], center: UnitPoint(x: 0.5, y: -0.1),
+        startRadius: 0, endRadius: 520)
       Canvas { context, size in
-        for x in stride(from: 0.0, through: size.width, by: 22) {
-          for y in stride(from: 0.0, through: size.height, by: 22) {
+        var weave = Path()
+        for x in stride(from: -size.height, through: size.width, by: 7) {
+          weave.move(to: CGPoint(x: x, y: 0))
+          weave.addLine(to: CGPoint(x: x + size.height, y: size.height))
+        }
+        context.stroke(weave, with: .color(.black.opacity(0.09)), lineWidth: 0.6)
+        for x in stride(from: 0.0, through: size.width, by: 26) {
+          for y in stride(from: 0.0, through: size.height, by: 26) {
             let diamond = Path { p in
-              p.move(to: CGPoint(x: x, y: y - 2))
-              p.addLine(to: CGPoint(x: x + 1.5, y: y))
-              p.addLine(to: CGPoint(x: x, y: y + 2))
-              p.addLine(to: CGPoint(x: x - 1.5, y: y))
+              p.move(to: CGPoint(x: x, y: y - 2.2))
+              p.addLine(to: CGPoint(x: x + 1.6, y: y))
+              p.addLine(to: CGPoint(x: x, y: y + 2.2))
+              p.addLine(to: CGPoint(x: x - 1.6, y: y))
               p.closeSubpath()
             }
-            context.fill(diamond, with: .color(Palette.gold.opacity(0.09)))
+            context.fill(diamond, with: .color(Palette.gold.opacity(0.10)))
           }
         }
       }
-      .allowsHitTesting(false)
-    }.ignoresSafeArea()
+      RadialGradient(
+        colors: [.clear, .black.opacity(0.55)], center: .center, startRadius: 180,
+        endRadius: 620)
+    }.ignoresSafeArea().allowsHitTesting(false)
+  }
+}
+
+struct Sunburst: View {
+  var rays = 36
+  var body: some View {
+    Canvas { context, size in
+      let center = CGPoint(x: size.width / 2, y: size.height / 2)
+      let radius = max(size.width, size.height)
+      for n in 0..<rays where n % 2 == 0 {
+        let a = Double(n) / Double(rays) * .pi * 2
+        let b = Double(n + 1) / Double(rays) * .pi * 2
+        let ray = Path { p in
+          p.move(to: center)
+          p.addLine(to: CGPoint(x: center.x + cos(a) * radius, y: center.y + sin(a) * radius))
+          p.addLine(to: CGPoint(x: center.x + cos(b) * radius, y: center.y + sin(b) * radius))
+          p.closeSubpath()
+        }
+        context.fill(ray, with: .color(Palette.gold.opacity(0.055)))
+      }
+    }
+    .mask(
+      RadialGradient(
+        colors: [.white, .white.opacity(0)], center: .center, startRadius: 40, endRadius: 230)
+    )
+    .allowsHitTesting(false)
   }
 }
 
 struct Eyebrow: View {
   let text: String
+  var color = Palette.gold
   var body: some View {
-    Text(text.uppercased()).font(.system(size: 11, weight: .bold, design: .rounded))
-      .tracking(1.8).foregroundStyle(Palette.gold)
+    Text(text.uppercased()).deco(10.5, tracking: 2.6).foregroundStyle(color)
+  }
+}
+
+struct Ornament: View {
+  var text = ""
+  var body: some View {
+    HStack(spacing: 10) {
+      rule(.leading)
+      if text.isEmpty {
+        Text("✦").font(.system(size: 9)).foregroundStyle(Palette.gold)
+      } else {
+        Eyebrow(text: text).fixedSize()
+      }
+      rule(.trailing)
+    }
+  }
+  private func rule(_ fade: UnitPoint) -> some View {
+    LinearGradient(
+      colors: [Palette.gold.opacity(0), Palette.gold.opacity(0.6)], startPoint: fade,
+      endPoint: fade == .leading ? .trailing : .leading
+    )
+    .frame(height: 1).frame(maxWidth: .infinity)
+  }
+}
+
+struct DecoFrame: ViewModifier {
+  var radius: CGFloat = 20
+  var fill = Palette.ink.opacity(0.72)
+  var strength = 0.55
+  func body(content: Content) -> some View {
+    content
+      .background(fill, in: RoundedRectangle(cornerRadius: radius, style: .continuous))
+      .overlay(
+        RoundedRectangle(cornerRadius: radius, style: .continuous)
+          .strokeBorder(Palette.foilStroke, lineWidth: 1).opacity(strength)
+      )
+      .overlay(
+        RoundedRectangle(cornerRadius: max(4, radius - 5), style: .continuous)
+          .strokeBorder(Palette.gold.opacity(0.18 * strength), lineWidth: 0.7).padding(5)
+      )
+      .overlay(alignment: .top) {
+        LinearGradient(
+          colors: [Palette.cream.opacity(0.10), .clear], startPoint: .top, endPoint: .bottom
+        )
+        .frame(height: 28).clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
+        .allowsHitTesting(false)
+      }
+      .shadow(color: .black.opacity(0.28), radius: 14, y: 8)
+  }
+}
+
+extension View {
+  func decoFrame(
+    radius: CGFloat = 20, fill: Color = Palette.ink.opacity(0.72), strength: Double = 0.55
+  )
+    -> some View
+  {
+    modifier(DecoFrame(radius: radius, fill: fill, strength: strength))
+  }
+}
+
+struct Panel<Content: View>: View {
+  var inset: CGFloat = 18
+  @ViewBuilder var content: Content
+  var body: some View {
+    content.padding(inset).frame(maxWidth: .infinity).decoFrame(radius: 22)
+  }
+}
+
+struct PressStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .scaleEffect(configuration.isPressed ? 0.97 : 1)
+      .brightness(configuration.isPressed ? -0.05 : 0)
+      .animation(.spring(response: 0.25, dampingFraction: 0.7), value: configuration.isPressed)
   }
 }
 
@@ -50,19 +178,25 @@ struct GoldButton: View {
   var body: some View {
     Button(action: action) {
       HStack {
-        Text(title).font(.system(size: 16, weight: .bold, design: .rounded))
+        Text(title).font(.system(size: 16, weight: .semibold, design: .serif))
         Spacer()
-        Image(systemName: icon).font(.system(size: 15, weight: .semibold))
+        Image(systemName: icon).font(.system(size: 14, weight: .semibold))
       }
-      .padding(.horizontal, 20).frame(minHeight: 54)
+      .padding(.horizontal, 22).frame(minHeight: 54)
       .foregroundStyle(Palette.ink)
-      .background(
-        LinearGradient(
-          colors: [Palette.cream, Palette.gold], startPoint: .topLeading, endPoint: .bottomTrailing),
-        in: RoundedRectangle(cornerRadius: 15)
+      .background(Palette.foil, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+      .overlay(
+        RoundedRectangle(cornerRadius: 16, style: .continuous)
+          .strokeBorder(Color.white.opacity(0.55), lineWidth: 1).padding(1.5)
+          .blendMode(.overlay)
       )
+      .overlay(
+        RoundedRectangle(cornerRadius: 16, style: .continuous)
+          .strokeBorder(Palette.brass.opacity(0.9), lineWidth: 1)
+      )
+      .shadow(color: Palette.gold.opacity(disabled ? 0 : 0.30), radius: 16, y: 6)
       .opacity(disabled ? 0.35 : 1)
-    }.disabled(disabled).buttonStyle(.plain)
+    }.disabled(disabled).buttonStyle(PressStyle())
   }
 }
 
@@ -74,65 +208,160 @@ struct QuietButton: View {
   var body: some View {
     Button(action: action) {
       HStack(spacing: 8) {
-        if !icon.isEmpty { Image(systemName: icon) }
-        Text(title).fontWeight(.semibold)
-      }.font(.system(size: 13)).frame(minHeight: height).frame(maxWidth: .infinity)
+        if !icon.isEmpty { Image(systemName: icon).font(.system(size: 12, weight: .semibold)) }
+        Text(title).font(.system(size: 14, weight: .semibold, design: .serif))
+      }.frame(minHeight: height).frame(maxWidth: .infinity)
         .foregroundStyle(Palette.cream)
-        .background(Palette.cream.opacity(0.06), in: RoundedRectangle(cornerRadius: 12))
-        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Palette.gold.opacity(0.2)))
-    }.buttonStyle(.plain)
+        .background(
+          Palette.cream.opacity(0.05), in: RoundedRectangle(cornerRadius: 16, style: .continuous)
+        )
+        .overlay(
+          RoundedRectangle(cornerRadius: 16, style: .continuous)
+            .strokeBorder(Palette.foilStroke, lineWidth: 1).opacity(0.5))
+    }.buttonStyle(PressStyle())
   }
 }
 
-struct Panel<Content: View>: View {
-  var inset: CGFloat = 18
-  @ViewBuilder var content: Content
+struct CountUp: View, @preconcurrency Animatable {
+  var value: Double
+  nonisolated var animatableData: Double {
+    get { value }
+    set { value = newValue }
+  }
   var body: some View {
-    content.padding(inset).frame(maxWidth: .infinity)
-      .background(Palette.ink.opacity(0.65), in: RoundedRectangle(cornerRadius: 22))
-      .overlay(RoundedRectangle(cornerRadius: 22).stroke(Palette.gold.opacity(0.20)))
+    Text("+\(Int(value.rounded(.down)).formatted())")
+  }
+}
+
+struct Monogram: View {
+  var size: CGFloat = 34
+  var body: some View {
+    ZStack {
+      Circle().fill(Palette.ink)
+      Circle().strokeBorder(Palette.foilStroke, lineWidth: 1.2)
+      Circle().strokeBorder(Palette.gold.opacity(0.35), lineWidth: 0.6).padding(3)
+      Text("LV").font(.system(size: size * 0.40, weight: .medium, design: .serif))
+        .tracking(-1).foregroundStyle(Palette.gold)
+    }.frame(width: size, height: size).accessibilityHidden(true)
   }
 }
 
 struct PlayingCard: View {
   let card: Card
   var selected = false
+  private var tint: Color { card.suit.isRed ? Palette.ruby : Palette.ink }
   var body: some View {
     GeometryReader { geometry in
-      let width = geometry.size.width
+      let w = geometry.size.width
+      let h = geometry.size.height
       ZStack {
-        RoundedRectangle(cornerRadius: 9)
+        RoundedRectangle(cornerRadius: w * 0.10, style: .continuous)
           .fill(
             LinearGradient(
-              colors: [Color.white, Palette.cream], startPoint: .topLeading,
-              endPoint: .bottomTrailing))
-        RoundedRectangle(cornerRadius: 6).stroke(Palette.gold.opacity(0.4)).padding(4)
-        VStack(spacing: 0) {
-          HStack(alignment: .top) {
-            VStack(spacing: -3) {
-              Text(card.label).font(.system(size: width * 0.28, weight: .bold, design: .serif))
-              Text(card.suit.symbol).font(.system(size: width * 0.20))
-            }
-            Spacer(minLength: 0)
-            if selected {
-              Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 14)).foregroundStyle(Palette.green)
-            }
-          }
-          Spacer(minLength: 0)
-          Text(card.suit.symbol).font(.system(size: width * 0.43))
-          Spacer(minLength: 0)
-          HStack {
-            Spacer()
-            Text(card.label).font(.system(size: width * 0.17, weight: .bold, design: .serif))
-          }
-        }.padding(8).foregroundStyle(card.suit.isRed ? Palette.ruby : Palette.ink)
+              colors: [Palette.ivory, Palette.cream], startPoint: .top, endPoint: .bottom))
+        RoundedRectangle(cornerRadius: w * 0.10, style: .continuous)
+          .strokeBorder(Palette.brass.opacity(0.55), lineWidth: 0.8)
+        RoundedRectangle(cornerRadius: w * 0.05, style: .continuous)
+          .strokeBorder(Palette.gold.opacity(0.7), lineWidth: 0.7).padding(w * 0.075)
+        face(w: w, h: h)
+        index(w: w)
+        index(w: w).rotationEffect(.degrees(180))
       }
       .overlay(
-        RoundedRectangle(cornerRadius: 9).stroke(selected ? Palette.gold : .clear, lineWidth: 3)
+        RoundedRectangle(cornerRadius: w * 0.10, style: .continuous)
+          .strokeBorder(Palette.gold, lineWidth: selected ? 2.5 : 0)
       )
-      .shadow(color: .black.opacity(0.3), radius: 5, y: 4)
+      .shadow(color: .black.opacity(0.32), radius: selected ? 10 : 5, y: selected ? 8 : 4)
+      .shadow(color: Palette.gold.opacity(selected ? 0.45 : 0), radius: 14)
     }.aspectRatio(0.70, contentMode: .fit)
+  }
+
+  private func index(w: CGFloat) -> some View {
+    VStack(spacing: -w * 0.03) {
+      Text(card.label).font(.system(size: w * 0.24, weight: .semibold, design: .serif))
+      Text(card.suit.symbol).font(.system(size: w * 0.15))
+    }
+    .foregroundStyle(tint)
+    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+    .padding(.leading, w * 0.10).padding(.top, w * 0.07)
+  }
+
+  @ViewBuilder
+  private func face(w: CGFloat, h: CGFloat) -> some View {
+    let inner = CGRect(x: w * 0.27, y: h * 0.17, width: w * 0.46, height: h * 0.66)
+    switch card.rank {
+    case 14:
+      ZStack {
+        Circle().strokeBorder(Palette.gold.opacity(0.6), lineWidth: 0.8).frame(width: w * 0.58)
+        Text(card.suit.symbol).font(.system(size: w * 0.40)).foregroundStyle(tint)
+      }
+    case 11, 12, 13:
+      ZStack {
+        RoundedRectangle(cornerRadius: w * 0.04)
+          .fill(tint.opacity(0.08)).frame(width: inner.width, height: inner.height)
+        RoundedRectangle(cornerRadius: w * 0.04)
+          .strokeBorder(Palette.gold.opacity(0.8), lineWidth: 0.8)
+          .frame(width: inner.width, height: inner.height)
+        VStack(spacing: w * 0.02) {
+          Text(card.rank == 13 ? "♚" : card.rank == 12 ? "♛" : "⚜")
+            .font(.system(size: w * 0.22)).foregroundStyle(Palette.brass)
+          Text(card.label).font(.system(size: w * 0.30, weight: .medium, design: .serif))
+            .foregroundStyle(tint)
+          Text(card.suit.symbol).font(.system(size: w * 0.15)).foregroundStyle(tint)
+        }
+      }
+    default:
+      Canvas { context, size in
+        for point in Self.pips[card.rank] ?? [] {
+          let flipped = point.y > 0.5
+          let pip = context.resolve(
+            Text(card.suit.symbol).font(.system(size: w * 0.19)).foregroundStyle(tint))
+          var ctx = context
+          let at = CGPoint(x: size.width * point.x, y: size.height * point.y)
+          if flipped {
+            ctx.translateBy(x: at.x, y: at.y)
+            ctx.rotate(by: .degrees(180))
+            ctx.draw(pip, at: .zero)
+          } else {
+            ctx.draw(pip, at: at)
+          }
+        }
+      }.frame(width: inner.width, height: inner.height)
+    }
+  }
+
+  private static let pips: [Int: [CGPoint]] = {
+    let l = 0.22
+    let r = 0.78
+    let c = 0.5
+    var map: [Int: [CGPoint]] = [:]
+    map[2] = [(c, 0.12), (c, 0.88)].map { CGPoint(x: $0, y: $1) }
+    map[3] = [(c, 0.12), (c, 0.5), (c, 0.88)].map { CGPoint(x: $0, y: $1) }
+    let corners = [(l, 0.12), (r, 0.12), (l, 0.88), (r, 0.88)]
+    map[4] = corners.map { CGPoint(x: $0, y: $1) }
+    map[5] = (corners + [(c, 0.5)]).map { CGPoint(x: $0, y: $1) }
+    let six = corners + [(l, 0.5), (r, 0.5)]
+    map[6] = six.map { CGPoint(x: $0, y: $1) }
+    map[7] = (six + [(c, 0.31)]).map { CGPoint(x: $0, y: $1) }
+    map[8] = (six + [(c, 0.31), (c, 0.69)]).map { CGPoint(x: $0, y: $1) }
+    let nine = [
+      (l, 0.12), (r, 0.12), (l, 0.37), (r, 0.37), (l, 0.63), (r, 0.63), (l, 0.88), (r, 0.88),
+    ]
+    map[9] = (nine + [(c, 0.5)]).map { CGPoint(x: $0, y: $1) }
+    map[10] = (nine + [(c, 0.245), (c, 0.755)]).map { CGPoint(x: $0, y: $1) }
+    return map
+  }()
+}
+
+struct CharmTile: View {
+  let charm: Charm
+  var body: some View {
+    ZStack {
+      RoundedRectangle(cornerRadius: 12, style: .continuous).fill(Palette.ink)
+      RoundedRectangle(cornerRadius: 12, style: .continuous)
+        .strokeBorder(Palette.foilStroke, lineWidth: 1).opacity(0.7)
+      CharmArt(charm: charm).padding(4)
+    }
   }
 }
 
@@ -141,6 +370,8 @@ struct CharmArt: View {
   var body: some View {
     Canvas { context, size in
       let scale = min(size.width, size.height) / 100
+      context.translateBy(
+        x: (size.width - 100 * scale) / 2, y: (size.height - 100 * scale) / 2)
       context.scaleBy(x: scale, y: scale)
       let gold = Palette.gold
       func line(_ points: [CGPoint], color: Color = Palette.gold, width: CGFloat = 3) {
@@ -163,10 +394,17 @@ struct CharmArt: View {
             p.closeSubpath()
           }, with: .color(color))
       }
-      oval(CGRect(x: 8, y: 8, width: 84, height: 84), color: gold.opacity(0.08))
+      context.fill(
+        Path(ellipseIn: CGRect(x: 6, y: 6, width: 88, height: 88)),
+        with: .radialGradient(
+          Gradient(colors: [Palette.green.opacity(0.9), Palette.ink]),
+          center: CGPoint(x: 50, y: 40), startRadius: 0, endRadius: 50))
       context.stroke(
-        Path(ellipseIn: CGRect(x: 12, y: 12, width: 76, height: 76)),
-        with: .color(gold.opacity(0.3)), lineWidth: 1)
+        Path(ellipseIn: CGRect(x: 9, y: 9, width: 82, height: 82)),
+        with: .color(gold.opacity(0.75)), lineWidth: 1.2)
+      context.stroke(
+        Path(ellipseIn: CGRect(x: 14, y: 14, width: 72, height: 72)),
+        with: .color(gold.opacity(0.28)), lineWidth: 0.8)
       switch charm {
       case .ribbon:
         polygon(
@@ -185,7 +423,7 @@ struct CharmArt: View {
           let angle = Double(n) * .pi * 2 / 5
           oval(
             CGRect(x: 35 + cos(angle) * 15, y: 33 + sin(angle) * 15, width: 30, height: 30),
-            color: n % 2 == 0 ? Palette.ruby : Color(red: 0.82, green: 0.35, blue: 0.39))
+            color: n % 2 == 0 ? Palette.ruby : Palette.rose)
         }
         polygon(
           [.init(x: 50, y: 30), .init(x: 64, y: 48), .init(x: 50, y: 68), .init(x: 36, y: 48)],
@@ -258,10 +496,6 @@ struct CharmArt: View {
             .init(x: 50, y: 84), .init(x: 42, y: 58), .init(x: 16, y: 50), .init(x: 42, y: 42),
           ], color: gold)
         oval(CGRect(x: 43, y: 43, width: 14, height: 14), color: Palette.cream)
-      }
-      for (x, y) in [(15.0, 20.0), (82.0, 79.0)] {
-        line([.init(x: x - 3, y: y), .init(x: x + 3, y: y)], width: 1)
-        line([.init(x: x, y: y - 3), .init(x: x, y: y + 3)], width: 1)
       }
     }.aspectRatio(1, contentMode: .fit).accessibilityHidden(true)
   }

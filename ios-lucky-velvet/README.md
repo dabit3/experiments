@@ -1,6 +1,6 @@
 # Lucky Velvet
 
-An original native iPhone poker-hand roguelike. An emerald lounge, illustrated charm cards, tactile cream playing cards and a complete three-ante run. Built with SwiftUI, Canvas and AVFoundation. No web views, services, accounts, purchases or third-party assets.
+An original native iPhone poker-hand roguelike. An art-deco emerald lounge with gold-foil framing, bespoke pip-accurate playing cards, illustrated charm cards, a sunburst-lit scoring reveal and a complete three-ante run. Built with SwiftUI, Canvas and AVFoundation. No web views, services, accounts, purchases or third-party assets.
 
 ## Build and run
 
