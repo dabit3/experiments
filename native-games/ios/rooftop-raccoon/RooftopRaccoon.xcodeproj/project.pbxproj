@@ -10,6 +10,7 @@
 		10DD41A5E2C3DAAD59F3DE4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF0175B842D050FE0024D9BF /* Assets.xcassets */; };
 		1A2793F20D9FE0C7DBA83C75 /* RooftopRaccoonApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080D615DB39D9C9C830D65EC /* RooftopRaccoonApp.swift */; };
 		2A014DB53991FA75B3982ED3 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E246E8DB8A0B858E0AA0CEF /* GameStore.swift */; };
+		79E5E456F374D393BAAFB5C4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C42F023B7056E2D53791C6D9 /* LaunchScreen.storyboard */; };
 		83F1D013D2EC503B771B6FB6 /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4EAF62A7B7FE72AAFA4EFC /* GameRules.swift */; };
 		95F328BD7C02B87246019410 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99BFB4C7C49BA2A85540EAAE /* Artwork.swift */; };
 		C9EE0F50A3DA7B101373F820 /* GameRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9DFD2657A287BF6D75A76 /* GameRulesTests.swift */; };
@@ -31,6 +32,7 @@
 		56A8F40C0EBB772F40ED4DC3 /* RooftopRaccoonTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RooftopRaccoonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E246E8DB8A0B858E0AA0CEF /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
 		99BFB4C7C49BA2A85540EAAE /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
+		C42F023B7056E2D53791C6D9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DF0175B842D050FE0024D9BF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EC4EAF62A7B7FE72AAFA4EFC /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
 		F2DC244A966D1A289BCD2603 /* RooftopRaccoon.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RooftopRaccoon.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,6 +55,7 @@
 				99BFB4C7C49BA2A85540EAAE /* Artwork.swift */,
 				EC4EAF62A7B7FE72AAFA4EFC /* GameRules.swift */,
 				7E246E8DB8A0B858E0AA0CEF /* GameStore.swift */,
+				C42F023B7056E2D53791C6D9 /* LaunchScreen.storyboard */,
 				080D615DB39D9C9C830D65EC /* RooftopRaccoonApp.swift */,
 			);
 			path = Sources;
@@ -157,6 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				10DD41A5E2C3DAAD59F3DE4B /* Assets.xcassets in Resources */,
+				79E5E456F374D393BAAFB5C4 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,7 +274,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Rooftop Raccoon";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -294,7 +298,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Rooftop Raccoon";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (

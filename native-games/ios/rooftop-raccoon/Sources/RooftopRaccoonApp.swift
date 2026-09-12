@@ -1,3 +1,4 @@
+import LinkPresentation
 import SwiftUI
 import UIKit
 
@@ -171,7 +172,7 @@ struct HomeView: View {
                 }
                 .foregroundStyle(
                   !unlocked
-                    ? Palette.muted.opacity(0.5)
+                    ? Palette.muted.opacity(0.9)
                     : store.selected == district.id ? Palette.ink : Palette.cream
                 )
                 .padding(12)
@@ -214,7 +215,7 @@ struct HomeView: View {
 
 struct BoardGeometry {
   let size: CGSize
-  var roofWidth: CGFloat { size.width / 3 - 19 }
+  var roofWidth: CGFloat { size.width / 3 - 32 }
   func center(_ id: Int) -> CGPoint {
     CGPoint(
       x: (CGFloat(id % 3) + 0.5) * size.width / 3 - 3,
@@ -293,6 +294,18 @@ struct BoardView: View {
                 ], Palette.cream, width: 3)
             }
           }
+          for roof in mission.district.roofs where roof.column < 2 {
+            let origin = board.center(roof.id)
+            let next = board.center(roof.id + 1)
+            let left = origin.x + board.roofWidth / 2 - 1
+            let right = next.x - board.roofWidth / 2 + 5
+            let y = origin.y - 10
+            pen.line([CGPoint(x: left, y: y), CGPoint(x: right, y: y)], Palette.ink, width: 11)
+            pen.line([CGPoint(x: left, y: y), CGPoint(x: right, y: y)], Palette.cream, width: 6)
+            for x in stride(from: left + 2, through: right, by: 5) {
+              pen.line([CGPoint(x: x, y: y - 3), CGPoint(x: x, y: y + 3)], Palette.brick, width: 1)
+            }
+          }
         }
         ForEach(mission.district.roofs) { roof in
           let point = board.center(roof.id)
@@ -317,7 +330,7 @@ struct BoardView: View {
           .overlay(alignment: .bottom) { EmptyView() }
           if roof.id != mission.position {
             Text(roof.id == 2 ? "EXIT" : roof.garden ? "HIDE" : danger ? "WATCHED" : "CLEAR")
-              .font(.system(size: 8, weight: .heavy, design: .monospaced))
+              .font(.system(size: 9, weight: .heavy, design: .monospaced))
               .tracking(0.8)
               .foregroundStyle(roof.garden ? Palette.mint : danger ? Palette.coral : Palette.cream)
               .padding(.horizontal, 5)
@@ -333,16 +346,28 @@ struct BoardView: View {
           .position(x: board.center(mission.position).x, y: board.center(mission.position).y - 30)
           .shadow(color: Palette.ink.opacity(0.4), radius: 8, y: 5)
           .allowsHitTesting(false)
-        Text("YOU")
-          .font(.system(size: 8, weight: .heavy, design: .monospaced))
-          .tracking(1.2)
-          .foregroundStyle(Palette.ink)
-          .padding(.horizontal, 8)
-          .padding(.vertical, 3)
-          .background(Palette.mint, in: Capsule())
-          .position(x: board.center(mission.position).x, y: board.center(mission.position).y + 43)
-          .allowsHitTesting(false)
-          .accessibilityHidden(true)
+        if store.snackPulse > 0 && !reduceMotion {
+          SnackBurst()
+            .id(store.snackPulse)
+            .position(x: board.center(mission.position).x, y: board.center(mission.position).y - 40)
+            .allowsHitTesting(false)
+        }
+        Text(
+          mission.district.roofs[mission.position].danger(on: mission.beat + 1)
+            ? "YOU · WATCHED" : "YOU · SAFE"
+        )
+        .font(.system(size: 8, weight: .heavy, design: .monospaced))
+        .tracking(1.2)
+        .foregroundStyle(Palette.ink)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 3)
+        .background(
+          mission.district.roofs[mission.position].danger(on: mission.beat + 1)
+            ? Palette.coral : Palette.mint, in: Capsule()
+        )
+        .position(x: board.center(mission.position).x, y: board.center(mission.position).y + 43)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
       }
       .contentShape(Rectangle())
       .simultaneousGesture(
@@ -364,6 +389,9 @@ struct PlayView: View {
   @Bindable var store: GameStore
   let mission: Mission
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  private var waitingDanger: Bool {
+    mission.district.roofs[mission.position].danger(on: mission.beat + 1)
+  }
 
   var body: some View {
     VStack(spacing: 0) {
@@ -418,7 +446,7 @@ struct PlayView: View {
         Text("\(mission.remaining) beats left")
           .foregroundStyle(mission.remaining <= 4 ? Palette.coral : Palette.cream)
       }
-      .font(.system(size: 9, weight: .medium, design: .monospaced))
+      .font(.system(size: 10, weight: .medium, design: .monospaced))
       .foregroundStyle(Palette.muted)
       .padding(.top, 13)
       BoardView(store: store, mission: mission)
@@ -429,12 +457,15 @@ struct PlayView: View {
           Image(systemName: mission.canEscape ? "flag.checkered" : "sparkle")
             .foregroundStyle(Palette.mint)
             .font(.system(size: 14))
-          Text(mission.message)
-            .font(.system(size: 12, weight: .medium, design: .rounded))
-            .foregroundStyle(Palette.cream)
-            .lineSpacing(3)
-            .frame(maxWidth: .infinity, minHeight: 34, alignment: .topLeading)
-            .accessibilityIdentifier("game-guidance")
+          Text(
+            waitingDanger
+              ? "Watched next beat! Move away; waiting here risks a sighting." : mission.message
+          )
+          .font(.system(size: 12, weight: .medium, design: .rounded))
+          .foregroundStyle(Palette.cream)
+          .lineSpacing(3)
+          .frame(maxWidth: .infinity, minHeight: 34, alignment: .topLeading)
+          .accessibilityIdentifier("game-guidance")
         }
         .padding(.horizontal, 4)
         HStack(spacing: 8) {
@@ -462,16 +493,24 @@ struct PlayView: View {
             withAnimation(reduceMotion ? nil : .easeOut(duration: 0.25)) { store.act(nil) }
           } label: {
             VStack(spacing: 3) {
-              Image(systemName: "moon.zzz.fill").font(.system(size: 16))
+              Image(systemName: waitingDanger ? "eye.fill" : "moon.zzz.fill").font(
+                .system(size: 16))
               Text("WAIT").font(.system(size: 9, weight: .heavy, design: .monospaced))
             }
-            .foregroundStyle(Palette.mint)
+            .foregroundStyle(waitingDanger ? Palette.coral : Palette.mint)
             .frame(width: 67, height: 48)
-            .background(Palette.mint.opacity(0.1), in: RoundedRectangle(cornerRadius: 14))
-            .overlay(RoundedRectangle(cornerRadius: 14).stroke(Palette.mint.opacity(0.35)))
+            .background(
+              (waitingDanger ? Palette.coral : Palette.mint).opacity(0.1),
+              in: RoundedRectangle(cornerRadius: 14)
+            )
+            .overlay(
+              RoundedRectangle(cornerRadius: 14).stroke(
+                (waitingDanger ? Palette.coral : Palette.mint).opacity(0.35)))
           }
           .buttonStyle(.plain)
-          .accessibilityLabel("Wait one beat")
+          .accessibilityLabel(
+            waitingDanger ? "Wait one beat, danger: this roof will be watched" : "Wait one beat"
+          )
           .accessibilityHint(
             "Stay on this roof while the watchers change. Gardens are always safe."
           )
@@ -499,7 +538,7 @@ struct TutorialView: View {
 
   var body: some View {
     ZStack {
-      Palette.ink.opacity(0.90).ignoresSafeArea()
+      Palette.ink.ignoresSafeArea()
       VStack(spacing: 22) {
         HStack {
           Eyebrow(text: "FIELD NOTES  /  \(store.tutorialPage + 1) OF 3")
@@ -790,7 +829,74 @@ struct ShareSheet: UIViewControllerRepresentable {
   let image: UIImage
   let text: String
   func makeUIViewController(context: Context) -> UIActivityViewController {
-    UIActivityViewController(activityItems: [image, text], applicationActivities: nil)
+    UIActivityViewController(
+      activityItems: [PosterActivitySource(image: image, text: text), text],
+      applicationActivities: nil)
   }
   func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
+}
+
+final class PosterActivitySource: NSObject, UIActivityItemSource {
+  let image: UIImage
+  let text: String
+
+  init(image: UIImage, text: String) {
+    self.image = image
+    self.text = text
+  }
+
+  func activityViewControllerPlaceholderItem(_ activityViewController: UIActivityViewController)
+    -> Any
+  {
+    image
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    itemForActivityType activityType: UIActivity.ActivityType?
+  ) -> Any? {
+    image
+  }
+
+  func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    subjectForActivityType activityType: UIActivity.ActivityType?
+  ) -> String {
+    text
+  }
+
+  func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController)
+    -> LPLinkMetadata?
+  {
+    let metadata = LPLinkMetadata()
+    metadata.title = "Wanted: The Rooftop Raccoon"
+    metadata.imageProvider = NSItemProvider(object: image)
+    metadata.iconProvider = NSItemProvider(object: image)
+    return metadata
+  }
+}
+
+struct SnackBurst: View {
+  @State private var expanded = false
+  var body: some View {
+    ZStack {
+      ForEach(0..<8) { index in
+        let angle = Double(index) * .pi / 4
+        Capsule()
+          .fill(index.isMultiple(of: 2) ? Palette.cream : Palette.mint)
+          .frame(width: 3, height: 8)
+          .rotationEffect(.radians(angle))
+          .offset(x: cos(angle) * (expanded ? 46 : 12), y: sin(angle) * (expanded ? 46 : 12))
+      }
+      Text("+1")
+        .font(.system(size: 15, weight: .black, design: .rounded))
+        .foregroundStyle(Palette.cream)
+        .offset(y: expanded ? -52 : -15)
+    }
+    .opacity(expanded ? 0 : 1)
+    .onAppear {
+      withAnimation(.easeOut(duration: 0.8)) { expanded = true }
+    }
+    .accessibilityHidden(true)
+  }
 }

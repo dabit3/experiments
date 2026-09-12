@@ -106,13 +106,14 @@ enum Illustration {
     if snacks > 0 {
       for index in 0..<min(snacks, 7) {
         var snackContext = context
-        snackContext.translateBy(x: 37 + CGFloat(index % 2) * 2, y: 73 - CGFloat(index) * 12)
+        snackContext.translateBy(x: 76 + CGFloat(index % 2) * 2, y: 73 - CGFloat(index) * 12)
         snackContext.scaleBy(x: 0.68, y: 0.68)
         snack(snackContext, kind: index)
       }
     }
     p.oval(CGRect(x: 22, y: 69, width: 19, height: 10), mask)
-    p.oval(CGRect(x: 61, y: 69, width: 17, height: 10), mask)
+    p.line([CGPoint(x: 65, y: 72), CGPoint(x: 85, y: 81)], fur, width: 11)
+    p.oval(CGRect(x: 82, y: 79, width: 15, height: 8), mask)
   }
 
   static func snack(_ context: GraphicsContext, kind: Int = 0) {
@@ -257,9 +258,10 @@ struct CityBackdrop: View {
               Palette.cream.opacity(index % 3 == 0 ? 0.6 : 0.24))
           }
           p.oval(
-            CGRect(x: size.width - 70, y: size.height * 0.12, width: 33, height: 33), Palette.cream)
+            CGRect(x: size.width - 66, y: size.height * 0.28, width: 24, height: 24),
+            Palette.cream.opacity(0.45))
           p.oval(
-            CGRect(x: size.width - 59, y: size.height * 0.12 - 4, width: 29, height: 29),
+            CGRect(x: size.width - 58, y: size.height * 0.28 - 3, width: 22, height: 22),
             Palette.sky)
           for layer in 0..<2 {
             for index in 0..<9 {
@@ -267,7 +269,7 @@ struct CityBackdrop: View {
               let x = CGFloat(index) * width - 20 + CGFloat(layer * 10)
               let height = CGFloat(55 + (index * 39 + layer * 23) % 110)
               let base = size.height * (layer == 0 ? 0.89 : 1.0)
-              let color = layer == 0 ? Palette.ink.opacity(0.25) : Palette.ink.opacity(0.45)
+              let color = layer == 0 ? Palette.ink.opacity(0.10) : Palette.ink.opacity(0.16)
               p.box(CGRect(x: x, y: base - height, width: width - 3, height: height), color)
               p.box(CGRect(x: x + 10, y: base - height - 9, width: 8, height: 12), color)
               for row in 0..<4 {
@@ -277,7 +279,7 @@ struct CityBackdrop: View {
                       CGRect(
                         x: x + 12 + CGFloat(column * 19), y: base - height + 15 + CGFloat(row * 22),
                         width: 5, height: 8),
-                      Palette.cream.opacity(layer == 0 ? 0.08 : 0.15), radius: 1)
+                      Palette.cream.opacity(layer == 0 ? 0.025 : 0.04), radius: 1)
                   }
                 }
               }

@@ -35,6 +35,7 @@ The icon is custom vector artwork. To regenerate it:
 ```sh
 swiftc Sources/Artwork.swift Scripts/GenerateIcon.swift -o build/generate-icon
 build/generate-icon Assets.xcassets/AppIcon.appiconset/AppIcon.png
+cp Assets.xcassets/AppIcon.appiconset/AppIcon.png Assets.xcassets/LaunchRaccoon.imageset/LaunchRaccoon.png
 ```
 
 ## Rules and controls
