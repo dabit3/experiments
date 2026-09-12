@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0731A026CADFC035EC703CAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7182D2A1F0516F088E9D5103 /* Assets.xcassets */; };
 		0E38352EB6E01B34FC07290A /* MapDrawing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77C53C65C811AF380446C97 /* MapDrawing.swift */; };
+		5B9E010D0DF6F36A67302C0F /* PaperModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71CA69F3AFCBD5DDC296999B /* PaperModal.swift */; };
 		81551C0A124F100FAAD321AF /* TransitAtelierApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75C125C7AAB744786E033FCC /* TransitAtelierApp.swift */; };
 		97D4B24545540207DE78C11A /* JourneyPostcard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50F772D0A3E199641C262480 /* JourneyPostcard.swift */; };
 		D8D135A1A26CD56164D11478 /* TransitSimulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D2B041DFF290A15194337F /* TransitSimulation.swift */; };
@@ -18,6 +19,7 @@
 		50F772D0A3E199641C262480 /* JourneyPostcard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyPostcard.swift; sourceTree = "<group>"; };
 		55D2B041DFF290A15194337F /* TransitSimulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitSimulation.swift; sourceTree = "<group>"; };
 		7182D2A1F0516F088E9D5103 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		71CA69F3AFCBD5DDC296999B /* PaperModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperModal.swift; sourceTree = "<group>"; };
 		75C125C7AAB744786E033FCC /* TransitAtelierApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitAtelierApp.swift; sourceTree = "<group>"; };
 		BB5823367743AA9F264D0268 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BB7BDD4E180BBE461BB34378 /* TransitAtelier.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TransitAtelier.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -56,6 +58,7 @@
 			children = (
 				50F772D0A3E199641C262480 /* JourneyPostcard.swift */,
 				F77C53C65C811AF380446C97 /* MapDrawing.swift */,
+				71CA69F3AFCBD5DDC296999B /* PaperModal.swift */,
 				75C125C7AAB744786E033FCC /* TransitAtelierApp.swift */,
 			);
 			name = App;
@@ -141,6 +144,7 @@
 			files = (
 				97D4B24545540207DE78C11A /* JourneyPostcard.swift in Sources */,
 				0E38352EB6E01B34FC07290A /* MapDrawing.swift in Sources */,
+				5B9E010D0DF6F36A67302C0F /* PaperModal.swift in Sources */,
 				81551C0A124F100FAAD321AF /* TransitAtelierApp.swift in Sources */,
 				D8D135A1A26CD56164D11478 /* TransitSimulation.swift in Sources */,
 			);

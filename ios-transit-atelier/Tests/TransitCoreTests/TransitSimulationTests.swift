@@ -50,6 +50,7 @@ final class TransitSimulationTests: XCTestCase {
     for _ in 0..<260 { game.tick(0.1) }
     XCTAssertTrue(game.isOver)
     XCTAssertFalse(game.completed)
+    XCTAssertEqual(game.failedStation?.id, 0)
     let retry = TransitSimulation(city: game.city, seed: 42)
     XCTAssertFalse(retry.isOver)
     XCTAssertEqual(retry.delivered, 0)

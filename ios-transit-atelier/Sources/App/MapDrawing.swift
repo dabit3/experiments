@@ -254,13 +254,34 @@ struct MapDrawing: View {
     context.stroke(
       shape, with: .color(Ink.navy), style: StrokeStyle(lineWidth: 2.3, lineJoin: .round))
     if !decorative {
+      let failed = game.failedStation?.id == station.id
+      if failed {
+        let label = CGRect(x: center.x - 24, y: center.y - 36, width: 48, height: 14)
+        context.fill(Path(roundedRect: label, cornerRadius: 4), with: .color(Ink.routes[0]))
+        context.draw(
+          Text("CROWDED").font(.system(size: 7, weight: .bold)).foregroundStyle(Ink.paper),
+          at: CGPoint(x: center.x, y: center.y - 29))
+      }
+      let idLabel = CGRect(x: center.x - 25, y: center.y + 12, width: 20, height: 12)
+      context.fill(Path(roundedRect: idLabel, cornerRadius: 3), with: .color(Ink.paper))
       context.draw(
         Text(String(format: "%02d", station.id + 1)).font(
           .system(size: 9, weight: .medium, design: .monospaced)
-        ).foregroundStyle(Ink.muted),
+        ).foregroundStyle(failed ? Ink.routes[0] : Ink.muted),
         at: CGPoint(x: center.x - 15, y: center.y + 18))
       let rightSpace = size.width - center.x
       let startX = rightSpace < 65 ? center.x - 48 : center.x + 19
+      if !station.waiting.isEmpty {
+        let count = min(12, station.waiting.count)
+        let rows = (count + 3) / 4
+        let queue = CGRect(
+          x: startX - 3, y: center.y - 11,
+          width: Double(min(4, count)) * 8 + 4,
+          height: Double(rows) * 9 + (station.waiting.count > 12 ? 15 : 3))
+        let backing = Path(roundedRect: queue, cornerRadius: 4)
+        context.fill(backing, with: .color(Ink.paper))
+        context.stroke(backing, with: .color(Ink.rule), lineWidth: 0.5)
+      }
       for (index, kind) in station.waiting.prefix(12).enumerated() {
         let glyph = CGRect(
           x: startX + Double(index % 4) * 8, y: center.y - 8 + Double(index / 4) * 9, width: 6,

@@ -1,4 +1,22 @@
+import CoreTransferable
+import Foundation
 import SwiftUI
+import UniformTypeIdentifiers
+
+struct JourneyExport: Transferable {
+  let png: Data
+  let filename: String
+
+  static var transferRepresentation: some TransferRepresentation {
+    FileRepresentation(exportedContentType: .png) { journey in
+      let directory = URL.cachesDirectory.appending(path: "JourneyPostcards")
+      try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+      let file = directory.appending(path: journey.filename)
+      try journey.png.write(to: file, options: .atomic)
+      return SentTransferredFile(file)
+    }
+  }
+}
 
 struct JourneyPostcard: View {
   let game: TransitSimulation

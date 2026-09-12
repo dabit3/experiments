@@ -164,6 +164,10 @@ struct TransitSimulation: Codable, Sendable {
   var waitingCount: Int { stations.reduce(0) { $0 + $1.waiting.count } }
   var aboardCount: Int { trains.reduce(0) { $0 + $1.passengers.count } }
   var canAddLine: Bool { routes.count < 4 }
+  var failedStation: Station? {
+    guard isOver, !completed else { return nil }
+    return stations.first { $0.pressure >= Self.overloadDuration }
+  }
 
   func tunnelCount(_ proposed: [Route]) -> Int {
     proposed.reduce(0) { count, route in

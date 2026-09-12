@@ -253,7 +253,9 @@ struct AtelierView: View {
             }.accessibilityLabel(desk.sound ? "Mute sound" : "Enable sound")
           }
           Text("Transit\nAtelier")
-            .font(.system(size: 58, weight: .regular, design: .serif))
+            .font(
+              .system(size: geometry.size.height < 700 ? 48 : 58, weight: .regular, design: .serif)
+            )
             .tracking(-2.5)
             .lineSpacing(-8)
             .padding(.top, 12)
@@ -264,7 +266,7 @@ struct AtelierView: View {
               .foregroundStyle(Ink.muted)
           }.padding(.top, 14)
           MapDrawing(game: demoMap, selected: 0, decorative: true)
-            .frame(height: max(170, min(245, geometry.size.height * 0.30)))
+            .frame(height: geometry.size.height < 700 ? 130 : min(245, geometry.size.height * 0.30))
             .padding(.vertical, 16)
             .accessibilityHidden(true)
           HStack {
@@ -365,15 +367,22 @@ struct AtelierView: View {
         } label: {
           Image(systemName: "ellipsis").frame(width: 42, height: 44)
         }.accessibilityLabel("Journey menu")
-        Button {
-          desk.paused.toggle()
-        } label: {
-          Image(systemName: desk.paused ? "play.fill" : "pause.fill")
-            .font(.system(size: 17))
+        if game.isOver {
+          Image(systemName: game.completed ? "checkmark" : "stop.fill")
             .frame(width: 44, height: 44)
             .background(Ink.rule.opacity(0.35), in: Circle())
-        }.accessibilityLabel(desk.paused ? "Resume journey" : "Pause journey")
-          .disabled(game.isOver || game.upgradePending)
+            .accessibilityLabel("Journey finished")
+        } else {
+          Button {
+            desk.paused.toggle()
+          } label: {
+            Image(systemName: desk.paused ? "play.fill" : "pause.fill")
+              .font(.system(size: 17))
+              .frame(width: 44, height: 44)
+              .background(Ink.rule.opacity(0.35), in: Circle())
+          }.accessibilityLabel(desk.paused ? "Resume journey" : "Pause journey")
+            .disabled(game.upgradePending)
+        }
       }.padding(.horizontal, 24).padding(.top, 8)
       HStack(alignment: .firstTextBaseline, spacing: 0) {
         Text("\(game.delivered)")
@@ -385,9 +394,10 @@ struct AtelierView: View {
           .foregroundStyle(Ink.muted)
         Spacer()
         VStack(alignment: .trailing, spacing: 5) {
-          Text(time(game.elapsed))
+          Text(game.isOver ? elapsed(game.elapsed) : time(game.elapsed))
             .font(.system(size: 22, weight: .light, design: .monospaced))
-          eyebrow(desk.planning ? "CONNECT TO BEGIN" : "UNTIL CLOSING")
+          eyebrow(
+            game.isOver ? "JOURNEY TIME" : (desk.planning ? "CONNECT TO BEGIN" : "UNTIL CLOSING"))
         }
       }.padding(.horizontal, 24).padding(.top, 18).padding(.bottom, 14)
       statusRibbon(game)
@@ -395,10 +405,14 @@ struct AtelierView: View {
       ZStack(alignment: .topLeading) {
         InteractiveMap(game: game, selected: desk.selectedLine, tap: desk.station)
         HStack(spacing: 5) {
-          Circle().fill(desk.planning || desk.paused ? Ink.muted : Ink.routes[1]).frame(
-            width: 5, height: 5)
+          Circle().fill(game.isOver || desk.planning || desk.paused ? Ink.muted : Ink.routes[1])
+            .frame(
+              width: 5, height: 5)
           Text(
-            desk.planning || desk.paused || game.upgradePending ? "PLANNING TABLE" : "LIVE NETWORK"
+            game.isOver
+              ? "FINISHED NETWORK"
+              : (desk.planning || desk.paused || game.upgradePending
+                ? "PLANNING TABLE" : "LIVE NETWORK")
           )
           .font(.system(size: 9, weight: .medium))
           .tracking(1.5)
@@ -433,7 +447,10 @@ struct AtelierView: View {
       )
       .foregroundStyle(Ink.routes[1])
       if game.isOver {
-        Text("Your finished network")
+        Text(
+          game.completed
+            ? "Closing bell · a city connected"
+            : "Overcrowding · station \(String(format: "%02d", (game.failedStation?.id ?? 0) + 1))")
         Spacer()
         Button("Results") { showNetwork = false }.fontWeight(.semibold)
       } else if game.upgradePending {
@@ -517,19 +534,8 @@ struct AtelierView: View {
     .padding(.bottom, 8)
   }
 
-  private func modal<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-    ZStack {
-      Ink.navy.opacity(0.45).ignoresSafeArea()
-      ScrollView {
-        content()
-          .padding(26)
-      }
-      .fixedSize(horizontal: false, vertical: true)
-      .frame(maxWidth: 420)
-      .background(Ink.paper, in: RoundedRectangle(cornerRadius: 26))
-      .overlay(RoundedRectangle(cornerRadius: 26).stroke(Color.white.opacity(0.6), lineWidth: 1))
-      .padding(20)
-    }.accessibilityAddTraits(.isModal)
+  private func modal<Content: View>(@ViewBuilder content: @escaping () -> Content) -> some View {
+    PaperModal(dismiss: desk.showGuide ? { desk.showGuide = false } : nil, content: content)
   }
 
   private var guide: some View {
@@ -642,7 +648,7 @@ struct AtelierView: View {
       Text(
         game.completed
           ? "Five minutes. Countless connections."
-          : "A station filled faster than its trains could carry.\nTry shorter lines and more connections."
+          : "Station \(String(format: "%02d", (game.failedStation?.id ?? 0) + 1)) (\(game.failedStation?.kind.name ?? "station")) became overcrowded.\nTry shorter lines and more connections."
       )
       .font(.system(size: 12)).foregroundStyle(Ink.muted)
       Rectangle().fill(Ink.rule).frame(height: 1).padding(.top, 5)
@@ -675,8 +681,9 @@ struct AtelierView: View {
         Spacer()
         if let image = postcard(game) {
           ShareLink(
-            item: image,
-            preview: SharePreview("Transit Atelier · \(game.delivered) delivered", image: image)
+            item: image.file,
+            preview: SharePreview(
+              "Transit Atelier · \(game.delivered) delivered", image: image.preview)
           ) {
             Label("Share journey", systemImage: "square.and.arrow.up")
           }
@@ -685,11 +692,13 @@ struct AtelierView: View {
     }
   }
 
-  private func postcard(_ game: TransitSimulation) -> Image? {
+  private func postcard(_ game: TransitSimulation) -> (preview: Image, file: JourneyExport)? {
     let renderer = ImageRenderer(content: JourneyPostcard(game: game, best: desk.best(game.city)))
     renderer.scale = 2
-    guard let image = renderer.uiImage else { return nil }
-    return Image(uiImage: image)
+    guard let image = renderer.uiImage, let data = image.pngData() else { return nil }
+    let name =
+      "Transit-Atelier-\(game.city.title.replacingOccurrences(of: " ", with: "-"))-\(game.delivered).png"
+    return (Image(uiImage: image), JourneyExport(png: data, filename: name))
   }
 
   private func resultStat(_ label: String, value: String) -> some View {
