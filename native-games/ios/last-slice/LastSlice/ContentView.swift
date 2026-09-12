@@ -415,8 +415,10 @@ struct ContentView: View {
       )
       .font(.system(size: 14)).foregroundStyle(Palette.olive)
       Divider().padding(.vertical, 18)
-      Text("\(model.completed) dinners served · \(model.totalStars) stars")
-        .font(Palette.serif(22))
+      Text(
+        "\(model.completed) \(model.completed == 1 ? "dinner" : "dinners") served · \(model.totalStars) \(model.totalStars == 1 ? "star" : "stars")"
+      )
+      .font(Palette.serif(22))
       Text(
         "Progress stays on this device. Reduced Motion follows your iPhone's accessibility setting."
       )
@@ -491,7 +493,7 @@ struct ContentView: View {
         }.disabled(dinner.id > model.unlocked)
           .opacity(dinner.id > model.unlocked ? 0.45 : 1)
           .accessibilityLabel(
-            "Dinner \(dinner.id + 1), \(dinner.title), \(dinner.id > model.unlocked ? "locked" : "\(model.best[dinner.id]) stars")"
+            "Dinner \(dinner.id + 1), \(dinner.title), \(dinner.id > model.unlocked ? "locked" : "\(model.best[dinner.id]) \(model.best[dinner.id] == 1 ? "star" : "stars")")"
           )
           .accessibilityIdentifier("dinner\(dinner.id + 1)")
       }
