@@ -54,6 +54,7 @@ struct MatchEngine {
     static let goalHalfHeight = 76.0
     static let ballRadius = 18.0
     static let carRadius = 22.0
+    static let cornerRadius = 70.0
     var player = Car(position: Vector(x: -225, y: 0), heading: 0)
     var opponent = Car(position: Vector(x: 225, y: 0), heading: .pi)
     var ball = Vector.zero
@@ -69,9 +70,13 @@ struct MatchEngine {
     var driveTarget: Vector?
     var boostRequested = false
     var impactSerial = 0
+    private(set) var brakeRemaining = 0.0
     private var aiClock = 0.0
     private var aiTarget = Vector.zero
     private var burstRemaining = 0.0
+    private var aiStuckTime = 0.0
+    private var aiRecoveryTime = 0.0
+    private var aiRecoveryTarget = Vector.zero
 
     mutating func start() {
         self = MatchEngine()
@@ -90,6 +95,11 @@ struct MatchEngine {
         driveTarget = nil
         boostRequested = false
         burstRemaining = 0
+    }
+
+    mutating func brake() {
+        clearInput()
+        brakeRemaining = 0.65
     }
 
     mutating func step(_ delta: Double) {
@@ -115,13 +125,35 @@ struct MatchEngine {
             return
         }
         burstRemaining = max(0, burstRemaining - dt)
+        brakeRemaining = max(0, brakeRemaining - dt)
         var input = steering
         if let target = driveTarget {
             let offset = target - player.position
-            input = offset.length > 20 ? offset.unit : .zero
+            input = offset.unit * min(1, offset.length / 65)
+            if offset.length < 14 {
+                brake()
+                input = .zero
+            }
+        }
+        if input.length > 0.1 {
+            brakeRemaining = 0
+        }
+        if brakeRemaining > 0 {
+            player.velocity = player.velocity * exp(-9 * dt)
         }
         let boosting = (boostRequested || burstRemaining > 0) && player.boost > 0
         drive(&player, input: input, boosting: boosting, speed: 218, dt: dt)
+        aiRecoveryTime = max(0, aiRecoveryTime - dt)
+        let pinned = ballVelocity.length < 35 && (ball - opponent.position).length < 85
+            && (abs(ball.x) > 355 || abs(ball.y) > 125)
+        aiStuckTime = pinned ? aiStuckTime + dt : 0
+        if aiStuckTime > 1.1, aiRecoveryTime == 0 {
+            aiRecoveryTime = 1.0
+            aiStuckTime = 0
+            aiRecoveryTarget = opponent.position + (opponent.position - ball).unit * 100
+            aiRecoveryTarget.x = min(380, max(-380, aiRecoveryTarget.x))
+            aiRecoveryTarget.y = min(110, max(-110, aiRecoveryTarget.y))
+        }
         aiClock -= dt
         if aiClock <= 0 {
             aiClock = 0.18
@@ -136,10 +168,17 @@ struct MatchEngine {
             if opponent.position.x < ball.x - 20 {
                 aiTarget.y += opponent.position.y > ball.y ? 85 : -85
             }
+            if abs(ball.y) > 120 {
+                let inwardY = ball.y > 0 ? -1.0 : 1.0
+                aiTarget = predicted + Vector(x: 58, y: inwardY * 45)
+                if opponent.position.x > ball.x + 8 {
+                    aiTarget = predicted + Vector(x: -80, y: inwardY * 20)
+                }
+            }
             aiTarget.x = min(410, max(-400, aiTarget.x))
             aiTarget.y = min(145, max(-145, aiTarget.y))
         }
-        let aiInput = (aiTarget - opponent.position).unit
+        let aiInput = ((aiRecoveryTime > 0 ? aiRecoveryTarget : aiTarget) - opponent.position).unit
         let aiBoost = opponent.position.x > ball.x + 75 && ball.x < 120
             && abs(opponent.position.y - ball.y) < 35 && opponent.boost > 0.4
         drive(&opponent, input: aiInput, boosting: aiBoost, speed: 184, dt: dt)
@@ -206,6 +245,7 @@ struct MatchEngine {
             car.position.y = car.position.y > 0 ? yLimit : -yLimit
             car.velocity.y *= -0.25
         }
+        Self.resolveCorner(position: &car.position, velocity: &car.velocity, radius: Self.carRadius, bounce: 0.3)
     }
 
     private mutating func collideCars() {
@@ -265,6 +305,23 @@ struct MatchEngine {
         {
             ball.x = ball.x > 0 ? Self.halfWidth - Self.ballRadius : -Self.halfWidth + Self.ballRadius
             ballVelocity.x *= -0.84
+        }
+        Self.resolveCorner(position: &ball, velocity: &ballVelocity, radius: Self.ballRadius, bounce: 0.88)
+    }
+
+    private static func resolveCorner(position: inout Vector, velocity: inout Vector, radius: Double, bounce: Double) {
+        let cx = halfWidth - cornerRadius
+        let cy = halfHeight - cornerRadius
+        guard abs(position.x) > cx, abs(position.y) > cy else { return }
+        let center = Vector(x: position.x > 0 ? cx : -cx, y: position.y > 0 ? cy : -cy)
+        let offset = position - center
+        let limit = cornerRadius - radius
+        guard offset.length > limit else { return }
+        let normal = offset.unit
+        position = center + normal * limit
+        let outwardSpeed = velocity.dot(normal)
+        if outwardSpeed > 0 {
+            velocity = velocity - normal * outwardSpeed * (1 + bounce)
         }
     }
 }

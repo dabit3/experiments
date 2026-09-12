@@ -7,6 +7,7 @@ final class ArenaScene: SKScene {
     private let orangeCar = SKNode()
     private let ballNode = SKNode()
     private let targetRing = SKShapeNode(circleOfRadius: 12)
+    private let playerTag = SKLabelNode(fontNamed: "AvenirNext-Heavy")
     private let arena = SKNode()
     private var lastTime = 0.0
     private var accumulator = 0.0
@@ -29,12 +30,21 @@ final class ArenaScene: SKScene {
         arena.addChild(orangeCar)
         buildBall()
         arena.addChild(ballNode)
-        targetRing.fillColor = .clear
-        targetRing.strokeColor = blue.withAlphaComponent(0.8)
-        targetRing.lineWidth = 2
+        targetRing.fillColor = UIColor(hex: 0x123B48).withAlphaComponent(0.7)
+        targetRing.strokeColor = .white.withAlphaComponent(0.9)
+        targetRing.lineWidth = 2.5
         targetRing.zPosition = 1
         targetRing.isHidden = true
         arena.addChild(targetRing)
+        for angle in stride(from: 0.0, to: Double.pi * 2, by: Double.pi / 2) {
+            line([CGPoint(x: cos(angle) * 17, y: sin(angle) * 17),
+                  CGPoint(x: cos(angle) * 22, y: sin(angle) * 22)], color: blue, width: 3, parent: targetRing)
+        }
+        playerTag.text = "YOU"
+        playerTag.fontSize = 10
+        playerTag.fontColor = blue
+        playerTag.zPosition = 8
+        arena.addChild(playerTag)
     }
 
     @available(*, unavailable)
@@ -123,10 +133,32 @@ final class ArenaScene: SKScene {
                 parent: arena
             )
         }
+        for sx in [-1.0, 1.0] {
+            for sy in [-1.0, 1.0] {
+                let wedge = CGMutablePath()
+                wedge.move(to: CGPoint(x: 440, y: 175))
+                wedge.addLine(to: CGPoint(x: 440, y: 105))
+                wedge.addArc(
+                    center: CGPoint(x: 370, y: 105),
+                    radius: 70,
+                    startAngle: 0,
+                    endAngle: .pi / 2,
+                    clockwise: false
+                )
+                wedge.closeSubpath()
+                let bumper = SKShapeNode(path: wedge)
+                bumper.fillColor = UIColor(hex: 0x284B50)
+                bumper.strokeColor = UIColor(hex: 0x547D7A)
+                bumper.lineWidth = 2
+                bumper.xScale = sx
+                bumper.yScale = sy
+                arena.addChild(bumper)
+            }
+        }
         let ink = UIColor(hex: 0xBEF3D9).withAlphaComponent(0.47)
         _ = shape(
             CGRect(x: -421, y: -156, width: 842, height: 312),
-            radius: 14,
+            radius: 51,
             fill: .clear,
             stroke: ink,
             width: 2,
@@ -206,6 +238,20 @@ final class ArenaScene: SKScene {
             at: CGPoint(x: 0, y: 181),
             size: 9,
             color: UIColor(hex: 0x91ACB4),
+            parent: arena
+        )
+        label(
+            "DEFEND",
+            at: CGPoint(x: -255, y: -145),
+            size: 11,
+            color: blue.withAlphaComponent(0.65),
+            parent: arena
+        )
+        label(
+            "SCORE  →",
+            at: CGPoint(x: 255, y: -145),
+            size: 11,
+            color: orange.withAlphaComponent(0.7),
             parent: arena
         )
         for side in [-1.0, 1.0] {
@@ -350,8 +396,11 @@ final class ArenaScene: SKScene {
             orangeCar.zRotation = .pi + 0.4
             ballNode.position = CGPoint(x: 0, y: sin(idleTime * 1.3) * 5)
             targetRing.isHidden = true
+            playerTag.isHidden = true
             return
         }
+        playerTag.isHidden = false
+        playerTag.position = CGPoint(x: engine.player.position.x, y: engine.player.position.y + 31)
         blueCar.position = engine.player.position.point
         blueCar.zRotation = engine.player.heading
         orangeCar.position = engine.opponent.position.point

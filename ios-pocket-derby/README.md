@@ -21,7 +21,7 @@ Open the generated `PocketDerby.xcodeproj`, select an iPhone Simulator, and Run.
 
 - Tap **Let’s play**. You are Skyline Blue, attacking the right goal.
 - Drag the left joystick to steer and accelerate. Car heading turns gradually; grip and momentum determine your line.
-- Alternatively, tap or drag **on the pitch** to set a drive destination. This is a normal, fully playable one-pointer control method; it uses the same steering, acceleration, collisions, and speed limits.
+- Alternatively, tap or drag **on the pitch** to set a drive destination. The crosshair marks your destination and clears on arrival. This is a normal, fully playable one-pointer control method; it uses the same steering, acceleration, collisions, and speed limits.
 - Tap **Boost** for a short speed burst. Boost recharges automatically. **Brake** clears your steering target and slows the car.
 - Get behind the ball and hit it toward the orange goal. Defend your blue goal on the left.
 - Play 90 seconds of active match time. Goal celebrations and kickoff countdowns stop the clock. Draws are valid results.
@@ -38,7 +38,7 @@ xcodebuild -project PocketDerby.xcodeproj -scheme PocketDerby \
   -derivedDataPath build CODE_SIGNING_ALLOWED=NO test
 ```
 
-Deterministic tests cover heading/momentum, car-ball impulses, goal boundaries, kickoff resets, clock expiry, paused physics, boost capacity, AI attack and record serialization. Rendering uses SpriteKit; presentation uses SwiftUI. Physics run at a fixed 120 Hz with bounded frame catch-up.
+The 12 deterministic tests cover heading/momentum, car-ball impulses, goal boundaries, kickoff resets, clock expiry, paused physics, boost capacity, braking, AI attack, rounded-corner deflection, recovery from a pinned corner ball, and record serialization. Rendering uses SpriteKit; presentation uses SwiftUI. Physics run at a fixed 120 Hz with bounded frame catch-up.
 
 The original app icon is reproducible:
 

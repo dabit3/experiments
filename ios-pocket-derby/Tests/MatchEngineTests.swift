@@ -128,4 +128,46 @@ final class MatchEngineTests: XCTestCase {
         XCTAssertEqual(decoded.played, 3)
         XCTAssertEqual(decoded.lastBlue, 0)
     }
+
+    func testRoundedCornerDeflectsBallBackIntoPlay() {
+        var game = playing()
+        game.player.position = Vector(x: -200, y: -100)
+        game.opponent.position = Vector(x: 100, y: -100)
+        game.ball = Vector(x: 408, y: 140)
+        game.ballVelocity = Vector(x: 230, y: 200)
+        for _ in 0 ..< 12 {
+            game.step(1.0 / 120)
+        }
+        XCTAssertLessThan(game.ballVelocity.x, 0)
+        XCTAssertLessThan(game.ballVelocity.y, 0)
+        XCTAssertEqual(game.playerGoals + game.opponentGoals, 0)
+    }
+
+    func testCPUEscapesPinnedCornerWithoutResettingBall() {
+        var game = playing()
+        game.ball = Vector(x: 421, y: 157)
+        game.opponent.position = Vector(x: 415, y: 118)
+        game.opponent.heading = .pi / 2
+        var leftCorner = false
+        for _ in 0 ..< 1440 {
+            game.step(1.0 / 120)
+            if game.ball.x < 335 || game.ball.y < 80 {
+                leftCorner = true
+            }
+        }
+        XCTAssertTrue(leftCorner, "CPU must reapproach and release a pinned corner ball")
+    }
+
+    func testBrakeClearsTargetAndDissipatesMomentum() {
+        var game = playing()
+        game.player.velocity = Vector(x: 210, y: 0)
+        game.driveTarget = Vector(x: 300, y: 0)
+        game.brake()
+        for _ in 0 ..< 60 {
+            game.step(1.0 / 120)
+        }
+        XCTAssertNil(game.driveTarget)
+        XCTAssertLessThan(game.player.velocity.length, 2)
+        XCTAssertLessThan(game.player.position.x, -200)
+    }
 }

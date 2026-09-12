@@ -194,13 +194,17 @@ struct DerbyView: View {
                 }
                 Spacer(minLength: 0)
                 Button {
-                    store.engine.clearInput()
+                    store.engine.brake()
                 } label: {
                     VStack(spacing: 4) {
                         Image(systemName: "hand.raised.fill").font(.system(size: 17))
-                        Text("BRAKE").font(.system(size: 9, weight: .heavy)).tracking(1)
+                        Text(store.engine.brakeRemaining > 0 ? "STOPPING" : "BRAKE")
+                            .font(.system(size: 8, weight: .heavy)).tracking(0.7)
                     }.frame(width: 57, height: 58)
-                        .background(.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 15))
+                        .background(
+                            store.engine.brakeRemaining > 0 ? cyan.opacity(0.2) : .white.opacity(0.05),
+                            in: RoundedRectangle(cornerRadius: 15)
+                        )
                 }.accessibilityLabel("Brake").accessibilityIdentifier("brake")
                 Button { store.engine.burst() } label: {
                     HStack(spacing: 11) {
