@@ -43,10 +43,10 @@ struct VesselShape: Shape {
       )
     }
     let last = profile[profile.count - 1] * unit
-    path.addQuadCurve(
-      to: CGPoint(x: center - last, y: top + height),
-      control: CGPoint(x: center, y: rect.maxY)
-    )
+    let foot = top + height + height * GlassContour.footHalfHeight / GlassContour.height
+    path.addLine(to: CGPoint(x: center + last, y: foot))
+    path.addLine(to: CGPoint(x: center - last, y: foot))
+    path.addLine(to: CGPoint(x: center - last, y: top + height))
     for index in (0..<(profile.count - 1)).reversed() {
       let y = top + Double(index) * step
       path.addCurve(
@@ -57,10 +57,7 @@ struct VesselShape: Shape {
           x: center - (profile[index] + tangents[index] / 3) * unit, y: y + step / 3)
       )
     }
-    path.addQuadCurve(
-      to: CGPoint(x: center + profile[0] * unit, y: top),
-      control: CGPoint(x: center, y: top + 10)
-    )
+    path.addLine(to: CGPoint(x: center + profile[0] * unit, y: top))
     path.closeSubpath()
     return path
   }
@@ -106,8 +103,6 @@ struct MakerMark: Shape {
     let h = rect.height
     path.move(to: CGPoint(x: x, y: 0))
     path.addLine(to: CGPoint(x: x, y: h * 0.37))
-    path.move(to: CGPoint(x: x - w * 0.16, y: h * 0.29))
-    path.addLine(to: CGPoint(x: x + w * 0.16, y: h * 0.29))
     path.move(to: CGPoint(x: x, y: h * 0.34))
     path.addCurve(
       to: CGPoint(x: x, y: h),

@@ -4,6 +4,14 @@ import XCTest
 @testable import Emberglass
 
 final class GlassContourTests: XCTestCase {
+  func testTracingOutlineHasAFlatFootWithoutAnImaginaryRoundedBase() {
+    let rect = CGRect(x: 0, y: 0, width: 320, height: 420)
+    let path = VesselShape(profile: Commission.tide.radii).path(in: rect)
+    XCTAssertEqual(path.boundingRect.maxY, 375.13, accuracy: 0.02)
+    XCTAssertTrue(path.contains(CGPoint(x: rect.midX, y: 374)))
+    XCTAssertFalse(path.contains(CGPoint(x: rect.midX, y: 390)))
+  }
+
   func testLathePassesThroughEveryTracedPointWithoutOvershoot() {
     for commission in Commission.allCases {
       let profile = commission.radii

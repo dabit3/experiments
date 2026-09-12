@@ -5,70 +5,54 @@ let destination =
 let size = NSSize(width: 1024, height: 1024)
 let image = NSImage(size: size)
 image.lockFocus()
-NSColor(red: 0.025, green: 0.04, blue: 0.048, alpha: 1).setFill()
+NSColor(red: 0.043, green: 0.063, blue: 0.071, alpha: 1).setFill()
 NSBezierPath(rect: NSRect(origin: .zero, size: size)).fill()
-let halo = NSBezierPath(ovalIn: NSRect(x: 114, y: 95, width: 796, height: 840))
-NSColor(red: 0.90, green: 0.35, blue: 0.14, alpha: 0.45).setStroke()
-halo.lineWidth = 2
-halo.stroke()
-let vase = NSBezierPath()
-vase.move(to: NSPoint(x: 408, y: 810))
-vase.curve(
-  to: NSPoint(x: 395, y: 640), controlPoint1: NSPoint(x: 430, y: 750),
-  controlPoint2: NSPoint(x: 420, y: 690))
-vase.curve(
-  to: NSPoint(x: 275, y: 390), controlPoint1: NSPoint(x: 360, y: 560),
-  controlPoint2: NSPoint(x: 265, y: 510))
-vase.curve(
-  to: NSPoint(x: 374, y: 213), controlPoint1: NSPoint(x: 276, y: 285),
-  controlPoint2: NSPoint(x: 309, y: 232))
-vase.curve(
-  to: NSPoint(x: 650, y: 213), controlPoint1: NSPoint(x: 450, y: 173),
-  controlPoint2: NSPoint(x: 574, y: 173))
-vase.curve(
-  to: NSPoint(x: 749, y: 390), controlPoint1: NSPoint(x: 715, y: 232),
-  controlPoint2: NSPoint(x: 748, y: 285))
-vase.curve(
-  to: NSPoint(x: 629, y: 640), controlPoint1: NSPoint(x: 759, y: 510),
-  controlPoint2: NSPoint(x: 664, y: 560))
-vase.curve(
-  to: NSPoint(x: 616, y: 810), controlPoint1: NSPoint(x: 604, y: 690),
-  controlPoint2: NSPoint(x: 594, y: 750))
-vase.close()
-NSGraphicsContext.saveGraphicsState()
-vase.addClip()
-NSGradient(colors: [
-  NSColor(red: 0.05, green: 0.20, blue: 0.24, alpha: 1),
-  NSColor(red: 0.48, green: 0.89, blue: 0.82, alpha: 1),
-  NSColor(red: 0.10, green: 0.38, blue: 0.46, alpha: 1),
-  NSColor(red: 0.29, green: 0.25, blue: 0.60, alpha: 1),
-  NSColor(red: 0.05, green: 0.10, blue: 0.15, alpha: 1),
-])!.draw(in: NSRect(x: 270, y: 180, width: 484, height: 640), angle: 0)
-for index in 0..<28 {
+for index in 0..<256 {
   let line = NSBezierPath()
-  let y = 210 + CGFloat(index) * 22
-  line.move(to: NSPoint(x: 250, y: y))
-  line.curve(
-    to: NSPoint(x: 770, y: y + 80), controlPoint1: NSPoint(x: 430, y: y - 100),
-    controlPoint2: NSPoint(x: 600, y: y + 110))
-  NSColor.white.withAlphaComponent(0.15).setStroke()
-  line.lineWidth = 2
+  line.move(to: NSPoint(x: index * 4, y: 0))
+  line.line(to: NSPoint(x: index * 4, y: 1024))
+  NSColor.white.withAlphaComponent(index % 3 == 0 ? 0.025 : 0.012).setStroke()
+  line.lineWidth = 1
   line.stroke()
 }
-let highlight = NSBezierPath(
-  roundedRect: NSRect(x: 380, y: 300, width: 12, height: 290), xRadius: 8, yRadius: 8)
-NSColor.white.withAlphaComponent(0.65).setFill()
-highlight.fill()
+let border = NSBezierPath(
+  roundedRect: NSRect(x: 62, y: 62, width: 900, height: 900), xRadius: 200, yRadius: 200)
+NSColor(red: 0.808, green: 0.678, blue: 0.471, alpha: 0.35).setStroke()
+border.lineWidth = 2
+border.stroke()
+let glass = NSBezierPath()
+glass.move(to: NSPoint(x: 512, y: 690))
+glass.curve(
+  to: NSPoint(x: 512, y: 202), controlPoint1: NSPoint(x: 50, y: 318),
+  controlPoint2: NSPoint(x: 353, y: 202))
+glass.curve(
+  to: NSPoint(x: 512, y: 690), controlPoint1: NSPoint(x: 815, y: 202),
+  controlPoint2: NSPoint(x: 830, y: 380))
+glass.close()
+NSGraphicsContext.saveGraphicsState()
+glass.addClip()
+NSGradient(colors: [
+  NSColor(red: 0.035, green: 0.09, blue: 0.11, alpha: 1),
+  NSColor(red: 0.07, green: 0.27, blue: 0.28, alpha: 1),
+  NSColor(red: 0.10, green: 0.16, blue: 0.17, alpha: 1),
+])!.draw(in: NSRect(x: 260, y: 200, width: 505, height: 500), angle: 30)
 NSGraphicsContext.restoreGraphicsState()
-NSColor(red: 0.76, green: 0.93, blue: 0.87, alpha: 0.8).setStroke()
-vase.lineWidth = 3
-vase.stroke()
-let lip = NSBezierPath(ovalIn: NSRect(x: 408, y: 798, width: 208, height: 24))
-NSColor(red: 0.02, green: 0.09, blue: 0.11, alpha: 1).setFill()
-lip.fill()
-NSColor(red: 0.95, green: 0.89, blue: 0.73, alpha: 1).setStroke()
-lip.lineWidth = 3
-lip.stroke()
+let mark = NSBezierPath()
+mark.append(glass)
+mark.move(to: NSPoint(x: 512, y: 835))
+mark.line(to: NSPoint(x: 512, y: 665))
+mark.move(to: NSPoint(x: 512, y: 510))
+mark.curve(
+  to: NSPoint(x: 512, y: 202), controlPoint1: NSPoint(x: 350, y: 370),
+  controlPoint2: NSPoint(x: 686, y: 308))
+mark.lineWidth = 14
+mark.lineCapStyle = .round
+mark.lineJoinStyle = .round
+NSColor(red: 0.808, green: 0.678, blue: 0.471, alpha: 1).setStroke()
+mark.stroke()
+mark.lineWidth = 3
+NSColor(red: 0.99, green: 0.91, blue: 0.73, alpha: 0.65).setStroke()
+mark.stroke()
 image.unlockFocus()
 guard let tiff = image.tiffRepresentation,
   let bitmap = NSBitmapImageRep(data: tiff),

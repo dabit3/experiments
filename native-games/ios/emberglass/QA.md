@@ -104,6 +104,42 @@ retest and the complete large-screen success/study/replay route.
 
 ## Evidence and limits
 
+### Additional art-direction pass — sculptural glass and studio instruments
+
+The user liked the game and testing, but asked for a more authored, finished
+visual identity. The original screenshots showed a flat gradient silhouette
+with horizontal lines, generic orange controls and decorative dots.
+
+**Rebuilt:** the vessel is now a native SceneKit surface of revolution with
+separate inner/outer walls, a glass rim and foot, colored flowing glaze,
+reflected studio panels, directional/rim lighting, and a dimensional stone
+plinth with brass inlay. Player contours drive both the live scene and exported
+portrait. The interface now uses a custom blowpipe/flame maker's mark,
+Didot/Avenir typography, an exhibition niche, brass action surfaces, an engraved
+precision scale, a physical-looking rotation thumb, and an inscribed grade seal.
+The maker's mark also replaces the old icon, and the launch typography matches.
+
+**Rendered review 1 (`f04e257`):** compact home fit was good and dimensionality
+was clearly improved, but broad white shoulder and pedestal reflections
+obscured material detail. Reduced environment/light intensity and exposure,
+removed cooled bloom, reduced glass metalness, and increased stone roughness.
+
+**Rendered review 2 (`3e9a4d1`):** reviewed full SE3 and Pro Max firings. The
+revised glass preserved colored midtones and the pedestal no longer bloomed
+white. Heat hold/release and the new rotation thumb responded visibly. SE3
+reached 77 Exquisite with 95% form; first-process Share opened populated and
+the exported PNG showed the new sculpture, complete typography and grounded
+plinth. Pro Max reached 83 Exquisite with 97% form. Eight matched side points
+registered with the mesh, but the old target outline still drew a curved bottom
+below the new flat glass foot. The tracing view was also brighter than the
+exhibition view.
+
+**Refinements:** the target now ends at the flat foot using the renderer's foot
+thickness; the top guide is straight in the orthographic tracing view.
+Reduced tracing exposure slightly, made gallery portrait rows lazy, and added
+a regression test that rejects the old imaginary rounded base.
+Final post-refinement Simulator regression is pending.
+
 The testing agent uses native Simulator computer interaction and Devin's native
 recording tools, including structured setup, test-start and assertion annotations.
 Final evidence links are attached to the PR and session; videos and build output

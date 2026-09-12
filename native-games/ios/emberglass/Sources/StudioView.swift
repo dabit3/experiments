@@ -579,7 +579,7 @@ struct StudioView: View {
   private var gallery: some View {
     NavigationStack {
       ScrollView {
-        VStack(alignment: .leading, spacing: 24) {
+        LazyVStack(alignment: .leading, spacing: 24) {
           Text("The collection").font(StudioType.display(36))
           Text("Your last 24 firings. Collect at 55. Master at 90.")
             .font(.system(size: 13)).foregroundStyle(Palette.muted)

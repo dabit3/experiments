@@ -3,6 +3,9 @@ import SwiftUI
 import UIKit
 
 enum GlassContour {
+  static let height = 3.6
+  static let footHalfHeight = 0.06
+
   static func radius(_ profile: [Double], at fraction: Double) -> Double {
     guard profile.count > 1 else { return profile.first ?? 0 }
     let position = CraftRules.clamp(fraction) * Double(profile.count - 1)
@@ -28,12 +31,13 @@ enum GlassContour {
       let slope =
         (self.radius(profile, at: min(1, t + 0.001))
           - self.radius(profile, at: max(0, t - 0.001))) * 1.6
-        / ((min(1, t + 0.001) - max(0, t - 0.001)) * 3.6)
+        / ((min(1, t + 0.001) - max(0, t - 0.001)) * height)
       let length = sqrt(1 + slope * slope)
       let sign = inside ? -1.0 : 1.0
       for column in 0...columns {
         let angle = Double(column) / Double(columns) * .pi * 2
-        vertices.append(SCNVector3(radius * cos(angle), 1.8 - t * 3.6, radius * sin(angle)))
+        vertices.append(
+          SCNVector3(radius * cos(angle), height * (0.5 - t), radius * sin(angle)))
         normals.append(
           SCNVector3(sign * cos(angle) / length, sign * slope / length, sign * sin(angle) / length))
         coordinates.append(CGPoint(x: Double(column) / Double(columns), y: t))
@@ -81,7 +85,7 @@ final class GlassStudio {
     camera.camera?.zNear = 0.1
     camera.camera?.zFar = 30
     camera.camera?.wantsHDR = true
-    camera.camera?.exposureOffset = -0.65
+    camera.camera?.exposureOffset = tracing ? -0.9 : -0.65
     camera.camera?.bloomIntensity = molten ? 0.18 : 0
     camera.camera?.bloomThreshold = 1.2
     camera.position = tracing ? SCNVector3(0, 0, 9) : SCNVector3(0, 1.05, 9)
@@ -120,11 +124,12 @@ final class GlassStudio {
       inside.geometry = GlassContour.geometry(profile: profile, inside: true)
       let radius = (profile.first ?? 0.4) * 1.6
       lip.geometry = SCNTorus(ringRadius: radius - 0.028, pipeRadius: 0.033)
-      lip.position.y = 1.8
-      let base = SCNCylinder(radius: (profile.last ?? 0.4) * 1.6, height: 0.12)
+      lip.position.y = Float(GlassContour.height / 2)
+      let base = SCNCylinder(
+        radius: (profile.last ?? 0.4) * 1.6, height: GlassContour.footHalfHeight * 2)
       base.radialSegmentCount = 96
       foot.geometry = base
-      foot.position.y = -1.8
+      foot.position.y = -Float(GlassContour.height / 2)
     }
     if self.commission != commission || self.molten != molten
       || outside.geometry?.firstMaterial == nil
