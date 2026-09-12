@@ -74,15 +74,15 @@ final class GlassStudio {
   init(profile: [Double], commission: Commission, molten: Bool = false, tracing: Bool = false) {
     scene.background.contents = UIColor.clear
     scene.lightingEnvironment.contents = Self.environment
-    scene.lightingEnvironment.intensity = 1.3
+    scene.lightingEnvironment.intensity = 0.65
     camera.camera = SCNCamera()
     camera.camera?.usesOrthographicProjection = true
     camera.camera?.orthographicScale = tracing ? 2.278481 : 2.72
     camera.camera?.zNear = 0.1
     camera.camera?.zFar = 30
     camera.camera?.wantsHDR = true
-    camera.camera?.exposureOffset = 0.15
-    camera.camera?.bloomIntensity = molten ? 0.32 : 0.08
+    camera.camera?.exposureOffset = -0.65
+    camera.camera?.bloomIntensity = molten ? 0.18 : 0
     camera.camera?.bloomThreshold = 1.2
     camera.position = tracing ? SCNVector3(0, 0, 9) : SCNVector3(0, 1.05, 9)
     camera.look(at: tracing ? SCNVector3Zero : SCNVector3(0, -0.12, 0))
@@ -97,16 +97,16 @@ final class GlassStudio {
     }
     light(
       .directional, color: UIColor(red: 0.86, green: 0.95, blue: 1, alpha: 1),
-      intensity: 850, at: SCNVector3(-3, 5, 5))
+      intensity: 420, at: SCNVector3(-3, 5, 5))
     light(
       .omni, color: UIColor(red: 0.43, green: 0.80, blue: 0.92, alpha: 1),
-      intensity: 380, at: SCNVector3(3, 1, -2))
+      intensity: 90, at: SCNVector3(3, 1, -2))
     light(
       .omni, color: UIColor(red: 1, green: 0.64, blue: 0.29, alpha: 1),
-      intensity: 500, at: SCNVector3(-3, 0, -3))
+      intensity: 110, at: SCNVector3(-3, 0, -3))
     light(
       .ambient, color: UIColor(white: 0.5, alpha: 1),
-      intensity: 180, at: SCNVector3Zero)
+      intensity: 70, at: SCNVector3Zero)
     update(profile: profile, commission: commission, molten: molten)
   }
 
@@ -133,11 +133,11 @@ final class GlassStudio {
       self.molten = molten
     }
     let material = Self.material(commission: commission, molten: molten)
-    outside.geometry?.firstMaterial = material
-    inside.geometry?.firstMaterial = material
-    lip.geometry?.firstMaterial = material
-    foot.geometry?.firstMaterial = material
-    camera.camera?.bloomIntensity = molten ? 0.32 : 0.08
+    outside.geometry?.materials = [material]
+    inside.geometry?.materials = [material]
+    lip.geometry?.materials = [material]
+    foot.geometry?.materials = [material]
+    camera.camera?.bloomIntensity = molten ? 0.18 : 0
   }
 
   private func light(
@@ -158,11 +158,11 @@ final class GlassStudio {
     let stone = SCNMaterial()
     stone.lightingModel = .physicallyBased
     stone.diffuse.contents = UIColor(red: 0.09, green: 0.12, blue: 0.13, alpha: 1)
-    stone.roughness.contents = 0.62
-    stone.metalness.contents = 0.25
+    stone.roughness.contents = 0.85
+    stone.metalness.contents = 0
     let body = SCNCylinder(radius: 1.72, height: 0.32)
     body.radialSegmentCount = 128
-    body.firstMaterial = stone
+    body.materials = [stone]
     pedestal.geometry = body
     pedestal.position.y = -2.025
     scene.rootNode.addChildNode(pedestal)
@@ -180,8 +180,10 @@ final class GlassStudio {
       scene.rootNode.addChildNode(node)
     }
     let contact = SCNCylinder(radius: 1.1, height: 0.005)
-    contact.firstMaterial?.diffuse.contents = UIColor.black
-    contact.firstMaterial?.lightingModel = .constant
+    let shadowMaterial = SCNMaterial()
+    shadowMaterial.diffuse.contents = UIColor.black.withAlphaComponent(0.35)
+    shadowMaterial.lightingModel = .constant
+    contact.materials = [shadowMaterial]
     let shadow = SCNNode(geometry: contact)
     shadow.position.y = -1.862
     scene.rootNode.addChildNode(shadow)
@@ -197,10 +199,10 @@ final class GlassStudio {
     let texture = makeGlaze(commission: commission, molten: molten)
     material.diffuse.contents = texture
     material.diffuse.wrapS = .repeat
-    material.metalness.contents = molten ? 0.12 : 0.48
-    material.roughness.contents = molten ? 0.20 : 0.13
-    material.fresnelExponent = 2.4
-    material.transparency = 0.96
+    material.metalness.contents = molten ? 0.08 : 0.22
+    material.roughness.contents = molten ? 0.24 : 0.19
+    material.fresnelExponent = 1.8
+    material.transparency = 0.93
     if molten {
       material.emission.contents = texture
       material.emission.intensity = 0.65
