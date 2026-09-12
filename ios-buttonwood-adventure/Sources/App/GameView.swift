@@ -273,7 +273,7 @@ struct GameView: View {
           .font(.custom("Georgia-Bold", size: 34))
         Text(
           model.screen == .hurt
-            ? "\(model.snapshot.lives) hearts left · \(model.snapshot.checkpointActive ? "Your lantern is waiting." : "Try the trail again.")"
+            ? "\(model.snapshot.lives) \(model.snapshot.lives == 1 ? "heart" : "hearts") left · \(model.snapshot.checkpointActive ? "Your lantern is waiting." : "Try the trail again.")"
             : "You gathered \(model.snapshot.coinCount) buttons. Let’s go a little further."
         )
         .font(.system(size: 13)).foregroundStyle(cream.opacity(0.7))

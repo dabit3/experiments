@@ -78,6 +78,7 @@ final class GameModel: ObservableObject {
         UIImpactFeedbackGenerator(style: event == .hurt ? .medium : .soft).impactOccurred()
       }
       switch event {
+      case .stomp: announce("STOMP +125 • a perfect landing", duration: 2)
       case .checkpoint: announce("Lantern lit • your new starting point")
       case .shield:
         announce(game.shield ? "Acorn guard • one hit protected" : "Guard used • keep going!")

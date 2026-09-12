@@ -215,6 +215,30 @@ enum ForestArt {
     return node
   }
 
+  static func waterwheel(radius: CGFloat) -> SKNode {
+    let node = SKNode()
+    let rim = oval(radius * 2, radius * 2, 0x567B73)
+    rim.fillColor = .clear
+    rim.strokeColor = UIColor(hex: 0x698C7C)
+    rim.lineWidth = 9
+    node.addChild(rim)
+    for i in 0..<8 {
+      let angle = CGFloat(i) * .pi / 4
+      node.addChild(
+        line(
+          [.zero, CGPoint(x: cos(angle) * radius, y: sin(angle) * radius)],
+          0x547A70, width: 7))
+      let paddle = rect(
+        23, 9, 0x7C9680,
+        x: cos(angle) * radius, y: sin(angle) * radius, radius: 2)
+      paddle.zRotation = angle + .pi / 2
+      node.addChild(paddle)
+    }
+    node.addChild(oval(24, 24, 0x658475))
+    node.addChild(oval(9, 9, 0x3D625D))
+    return node
+  }
+
   static func coin() -> SKNode {
     let node = SKNode()
     node.addChild(oval(21, 23, 0xBD863D))

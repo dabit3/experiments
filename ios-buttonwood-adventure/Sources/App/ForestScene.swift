@@ -235,9 +235,13 @@ final class ForestScene: SKScene {
         middle.addChild(shimmer)
       }
       for i in 0..<7 {
-        let wheel = ForestArt.gear(radius: 65 + CGFloat(i % 2) * 20)
-        wheel.position = CGPoint(x: 500 + i * 510, y: 145)
-        wheel.alpha = 0.48
+        let wheel = ForestArt.waterwheel(radius: 65 + CGFloat(i % 2) * 20)
+        wheel.position = CGPoint(x: 500 + i * 510, y: 118)
+        wheel.alpha = 0.65
+        middle.addChild(
+          ForestArt.line(
+            [CGPoint(x: wheel.position.x, y: 15), wheel.position],
+            0x4D746B, width: 12))
         middle.addChild(wheel)
         let channel = ForestArt.rect(13, 175, 0xBDD7C7, x: CGFloat(590 + i * 510), y: 160)
         channel.alpha = 0.22
@@ -251,16 +255,24 @@ final class ForestScene: SKScene {
     } else if game.level.palette == 2 {
       for i in 0..<18 {
         let x = CGFloat(i * 207 + 150)
-        let lantern = ForestArt.lantern(active: true)
-        lantern.position = CGPoint(x: x, y: 145 + CGFloat(i % 3) * 36)
-        lantern.setScale(0.65)
-        lantern.alpha = 0.6
-        middle.addChild(lantern)
+        let y = 290 + CGFloat(i % 3) * 28
+        let jar = SKNode()
+        jar.position = CGPoint(x: x, y: y)
+        jar.alpha = 0.45
+        let glow = ForestArt.oval(34, 40, 0xBCE3AA)
+        glow.alpha = 0.12
+        jar.addChild(glow)
+        let glass = ForestArt.oval(15, 21, 0x86B6A2)
+        glass.alpha = 0.3
+        jar.addChild(glass)
+        jar.addChild(ForestArt.rect(12, 4, 0x608879, y: 11, radius: 2))
+        jar.addChild(ForestArt.oval(3, 3, 0xD1ECAF, x: -3, y: 3))
+        jar.addChild(ForestArt.oval(2, 2, 0xD1ECAF, x: 3, y: -4))
+        middle.addChild(jar)
         middle.addChild(
           ForestArt.line(
-            [
-              CGPoint(x: x + 16, y: 500), CGPoint(x: x + 16, y: lantern.position.y + 66),
-            ], 0x5B8272, width: 1.5))
+            [CGPoint(x: x, y: 500), CGPoint(x: x, y: y + 13)],
+            0x456E65, width: 1))
       }
     }
   }
@@ -346,6 +358,19 @@ final class ForestScene: SKScene {
 
   func burst(_ event: GameEvent) {
     guard !UIAccessibility.isReduceMotionEnabled else { return }
+    if event == .shield, !game.shield {
+      let ring = ForestArt.oval(61, 83, 0xFFF1A3, x: game.player.x, y: game.player.y + 37)
+      ring.fillColor = .clear
+      ring.strokeColor = UIColor(hex: 0xFFF1A3)
+      ring.lineWidth = 4
+      ring.zPosition = 30
+      world.addChild(ring)
+      ring.run(
+        .sequence([
+          .group([.scale(to: 2, duration: 0.45), .fadeOut(withDuration: 0.45)]),
+          .removeFromParent(),
+        ]))
+    }
     let color: UInt32 = event == .hurt ? 0xD98770 : 0xF4D786
     for i in 0..<10 {
       let spark = ForestArt.oval(4, 4, color, x: game.player.x, y: game.player.y + 30)
