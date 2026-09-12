@@ -60,12 +60,14 @@ final class GameTests: XCTestCase {
     var game = Game()
     for expected in [2, 1, 0] {
       game.grace = 0
+      game.bonusTime = 2
       game.rivals[0].runner = Runner(tile: game.player.tile)
       game.rivals[0].release = 0
       game.resolveCollisions()
       XCTAssertEqual(game.lives, expected)
       if expected > 0 {
         XCTAssertEqual(game.phase, .lifeLost)
+        XCTAssertEqual(game.bonusTime, 0)
         XCTAssertEqual(game.player.tile, game.maze.spawn)
         XCTAssertTrue(game.rivals.allSatisfy { $0.release > 0 })
         XCTAssertGreaterThan(game.grace, 0)

@@ -131,6 +131,7 @@ public struct Game: Sendable {
     queued = .left
     frightened = 0
     combo = 0
+    bonusTime = 0
     grace = 2.5
     elapsed = 0
     rivals = (0..<4).map {
