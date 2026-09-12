@@ -1,6 +1,6 @@
 # Bento Circuit
 
-A native iPhone lunchbox packing puzzle. SwiftUI, custom Canvas food illustrations,
+A native iPhone lunchbox packing puzzle. SwiftUI, original illustrated food assets,
 UIKit sharing, local persistence, and no third-party runtime dependencies.
 
 ## Play
@@ -76,9 +76,14 @@ To format: `xcrun swift-format format --in-place --recursive Sources Tests Tools
 
 ## Design and limitations
 
-Rice-paper ivory, persimmon seals, seaweed ink, sage compartments and individually
-drawn salmon, tamago, onigiri, mandarin and strawberry pieces. A finished lunch
-gets a ribbon animation, brief paper confetti and a shareable postcard.
+Rice-paper ivory, persimmon seals and seaweed ink give the game a Japanese
+railway-stationery identity. Original generated food illustrations are packaged
+locally as transparent asset-catalog images: salmon, tamago, onigiri, mandarin,
+strawberry and shiso. They share one art direction across the app icon, cloth-wrapped
+home lunchbox, ingredient tray, playable board and collectible result postcard.
+The box uses layered lacquer, wood grain and metallic edging; the cloth uses a
+procedural wave pattern. The journey is a station line, controls are tactile keys,
+and a completed lunch gets a custom ribbon knot and paper confetti.
 
 Portrait iPhone layout; scrolling preserves access to controls on short screens.
 Interactive elements have accessibility names/identifiers, and tap placement

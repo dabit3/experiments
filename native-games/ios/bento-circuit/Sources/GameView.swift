@@ -11,26 +11,23 @@ struct BoardView: View {
 
   var body: some View {
     ZStack(alignment: .topLeading) {
-      RoundedRectangle(cornerRadius: 18).fill(Palette.wood)
-        .overlay(RoundedRectangle(cornerRadius: 18).stroke(Palette.ink, lineWidth: 3))
-        .padding(-10)
-        .shadow(color: Palette.ink.opacity(0.14), radius: 8, y: 9)
+      BentoFrame().padding(-16)
       ForEach(0..<lunch.height, id: \.self) { y in
         ForEach(0..<lunch.width, id: \.self) { x in
           let cell = Cell(x: x, y: y)
           Button {
             onCell?(cell)
           } label: {
-            RoundedRectangle(cornerRadius: 5)
+            RoundedRectangle(cornerRadius: 3)
               .fill(
                 x >= lunch.divider
-                  ? Color(red: 0.94, green: 0.85, blue: 0.67)
-                  : Color(red: 0.84, green: 0.84, blue: 0.70)
+                  ? Color(red: 0.91, green: 0.83, blue: 0.65)
+                  : Color(red: 0.81, green: 0.83, blue: 0.70)
               )
               .overlay {
-                Circle().fill(Palette.ink.opacity(0.13)).frame(width: 3, height: 3)
+                Circle().fill(Palette.ink.opacity(0.20)).frame(width: 2, height: 2)
               }
-              .padding(1.5)
+              .padding(0.7)
           }
           .buttonStyle(.plain)
           .frame(width: cellSize, height: cellSize)
@@ -44,7 +41,7 @@ struct BoardView: View {
         if let placement = game.placements[piece.id] {
           PolyominoArt(
             piece: piece, turns: placement.turns, cellSize: cellSize,
-            selected: selectedID == piece.id, showLetter: showLetters
+            selected: selectedID == piece.id, showLetter: showLetters, decorative: !showLetters
           )
           .offset(
             x: CGFloat(placement.anchor.x) * cellSize, y: CGFloat(placement.anchor.y) * cellSize
@@ -52,8 +49,9 @@ struct BoardView: View {
           .allowsHitTesting(false)
         }
       }
-      Rectangle().fill(Palette.ink)
+      Rectangle().fill(Palette.ink.gradient)
         .frame(width: 5, height: CGFloat(lunch.height) * cellSize + 12)
+        .overlay(Rectangle().fill(Palette.gold.opacity(0.6)).frame(width: 1), alignment: .leading)
         .offset(x: CGFloat(lunch.divider) * cellSize - 2.5, y: -6)
         .allowsHitTesting(false)
       if let (piece, placement) = ghost {
@@ -141,22 +139,25 @@ struct GameView: View {
       ScrollView {
         VStack(spacing: 20) {
           header
-          VStack(spacing: 4) {
-            Text(lunch.title).font(.system(size: 31, weight: .regular, design: .serif)).tracking(
-              -0.8
-            )
-            .minimumScaleFactor(0.7).lineLimit(1)
-            Text(
-              lunch.isDaily
-                ? lunch.subtitle
-                : "LUNCH \(String(format: "%02d", lunch.number))  /  12  ·  \(lunch.par) PIECES"
-            )
-            .font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(1.3)
-            .foregroundStyle(Palette.muted)
+          HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 6) {
+              MicroLabel(
+                text: lunch.isDaily
+                  ? "THE DAILY PARCEL"
+                  : "THE LOCAL LINE / LUNCH \(String(format: "%02d", lunch.number))")
+              Text(lunch.title).font(.system(size: 34, weight: .regular, design: .serif))
+                .tracking(-1.1).minimumScaleFactor(0.7).lineLimit(1)
+            }
+            Spacer(minLength: 8)
+            VStack(spacing: 2) {
+              Text(String(format: "%02d", lunch.par)).font(
+                .system(size: 27, weight: .regular, design: .serif))
+              MicroLabel(text: "PIECES", color: Palette.orange)
+            }.foregroundStyle(Palette.orange)
           }
           HStack {
-            Label("SAVORY", systemImage: "leaf").frame(width: cellSize * CGFloat(lunch.divider))
-            Label("FRUIT", systemImage: "sun.max").frame(width: cellSize * 2)
+            Text("01 / SAVORY").frame(width: cellSize * CGFloat(lunch.divider))
+            Text("02 / FRUIT").frame(width: cellSize * 2)
           }
           .font(.system(size: 9, weight: .bold, design: .monospaced)).tracking(1.2)
           .foregroundStyle(Palette.muted).padding(.bottom, -8)
@@ -172,17 +173,12 @@ struct GameView: View {
           }
           .overlay {
             if ribbon {
-              ZStack {
-                Rectangle().fill(Palette.orange).frame(width: 18)
-                Rectangle().fill(Palette.orange).frame(height: 16)
-                Image(systemName: "infinity").font(.system(size: 60))
-                  .foregroundStyle(Palette.paper).rotationEffect(.degrees(-20))
-              }
-              .transition(.scale(scale: 0.05).combined(with: .opacity))
-              .allowsHitTesting(false)
+              ParcelRibbon()
+                .transition(.scale(scale: 0.05).combined(with: .opacity))
+                .allowsHitTesting(false)
             }
           }
-          .padding(.vertical, 8)
+          .padding(.vertical, 15)
           status
           tray(cellSize: cellSize, compact: geometry.size.width < 390)
           controls
@@ -239,15 +235,21 @@ struct GameView: View {
         home()
       }
       Spacer()
-      HStack(spacing: 8) {
-        Image(systemName: "tram.fill")
+      HStack(spacing: 10) {
         let remaining = max(0, lunch.moveLimit - game.moves)
-        Text("\(remaining) \(remaining == 1 ? "MOVE" : "MOVES") LEFT")
-          .font(.system(size: 11, weight: .bold, design: .monospaced)).tracking(0.5)
+        Text(String(format: "%02d", remaining))
+          .font(.system(size: 24, weight: .regular, design: .serif))
+        Rectangle().fill(Palette.cream.opacity(0.25)).frame(width: 1, height: 23)
+        Text("\(remaining == 1 ? "MOVE" : "MOVES")\nLEFT")
+          .font(.system(size: 8, weight: .semibold, design: .monospaced)).tracking(1.8)
       }
-      .foregroundStyle(game.isFailed(lunch) ? Palette.orange : Palette.ink)
-      .padding(.horizontal, 14).frame(height: 38)
-      .background(Palette.sage.opacity(0.30), in: Capsule())
+      .foregroundStyle(Palette.cream)
+      .padding(.horizontal, 17).frame(height: 45)
+      .background(
+        game.isFailed(lunch) ? Palette.orange : Palette.ink, in: RoundedRectangle(cornerRadius: 5)
+      )
+      .accessibilityElement(children: .ignore)
+      .accessibilityLabel("\(max(0, lunch.moveLimit - game.moves)) moves left")
       Spacer()
       IconButton(symbol: "pause", label: "Pause") { paused = true }
     }
@@ -257,8 +259,8 @@ struct GameView: View {
     VStack(spacing: 8) {
       HStack(spacing: 5) {
         ForEach(lunch.pieces) { piece in
-          Capsule().fill(game.placements[piece.id] == nil ? Palette.line : Palette.orange)
-            .frame(height: 3)
+          Rectangle().fill(game.placements[piece.id] == nil ? Palette.line : Palette.orange)
+            .frame(height: 2)
         }
       }
       if game.isFailed(lunch) {
@@ -281,7 +283,7 @@ struct GameView: View {
   private func tray(cellSize: CGFloat, compact: Bool) -> some View {
     VStack(alignment: .leading, spacing: 10) {
       HStack {
-        Text("TODAY’S INGREDIENTS").font(.system(size: 9, weight: .bold, design: .monospaced))
+        Text("THE INGREDIENT TRAY").font(.system(size: 9, weight: .bold, design: .monospaced))
           .tracking(1.4)
         Spacer()
         Text("\(game.placements.count) / \(lunch.pieces.count) PACKED")
@@ -313,26 +315,34 @@ struct GameView: View {
                     (columns == 2 ? 110 : (compact ? 65 : 76)) / shapeWidth),
                   showLetter: !placed
                 )
-                .opacity(placed ? 0.30 : 1)
+                .opacity(placed ? 0.35 : 1)
                 if placed {
                   Image(systemName: "checkmark.circle.fill").font(.system(size: 20))
                     .foregroundStyle(Palette.ink).background(Palette.paper, in: Circle())
                 }
               }.frame(height: artHeight + 1)
               Text("\(piece.id) · \(piece.ingredient.name)")
-                .font(.system(size: columns == 2 ? 11 : 9, weight: .medium)).lineLimit(1)
+                .font(.system(size: columns == 2 ? 12 : 10, weight: .medium, design: .serif))
+                .lineLimit(1)
                 .minimumScaleFactor(0.65)
             }
             .frame(maxWidth: .infinity).frame(height: artHeight + 26)
             .background(
-              selectedID == piece.id ? Palette.sage.opacity(0.35) : Color.white.opacity(0.35),
-              in: RoundedRectangle(cornerRadius: 11)
+              selectedID == piece.id ? Palette.cream : Palette.cream.opacity(0.5),
+              in: RoundedRectangle(cornerRadius: 5)
             )
             .overlay(
-              RoundedRectangle(cornerRadius: 11)
+              RoundedRectangle(cornerRadius: 5)
                 .stroke(
                   selectedID == piece.id ? Palette.orange : Palette.line,
-                  lineWidth: selectedID == piece.id ? 2 : 1))
+                  lineWidth: selectedID == piece.id ? 1.5 : 0.7)
+            )
+            .overlay(alignment: .leading) {
+              if selectedID == piece.id {
+                RoundedRectangle(cornerRadius: 2).fill(Palette.orange).frame(width: 3, height: 30)
+                  .padding(.leading, 5)
+              }
+            }
           }
           .buttonStyle(.plain)
           .disabled(game.isComplete(lunch) || game.isFailed(lunch))
@@ -367,7 +377,7 @@ struct GameView: View {
   }
 
   private var controls: some View {
-    HStack(spacing: 8) {
+    HStack(spacing: 0) {
       control("arrow.uturn.backward", "Undo") {
         game.undo()
         selectedID = nil
@@ -391,6 +401,11 @@ struct GameView: View {
       }.disabled(game.isFailed(lunch) || game.isComplete(lunch))
       control("arrow.counterclockwise", "Repack") { resetConfirmation = true }
     }
+    .padding(5)
+    .background(Palette.ink, in: RoundedRectangle(cornerRadius: 9))
+    .overlay(
+      RoundedRectangle(cornerRadius: 6).stroke(Palette.gold.opacity(0.4), lineWidth: 0.7).padding(3)
+    )
   }
 
   private func control(_ symbol: String, _ name: String, action: @escaping () -> Void) -> some View
@@ -401,15 +416,14 @@ struct GameView: View {
         Text(name).font(.system(size: 10, weight: .medium))
       }
       .frame(maxWidth: .infinity).frame(height: 57)
-      .background(Palette.sage.opacity(0.20), in: RoundedRectangle(cornerRadius: 11))
     }
-    .buttonStyle(.plain).accessibilityLabel(name).accessibilityIdentifier(name)
+    .buttonStyle(ControlKey()).accessibilityLabel(name).accessibilityIdentifier(name)
   }
 
   private var pauseSheet: some View {
     VStack(spacing: 22) {
       Capsule().fill(Palette.line).frame(width: 35, height: 4).padding(.top, 12)
-      Image(systemName: "cup.and.saucer").font(.system(size: 38)).foregroundStyle(Palette.orange)
+      PackingSeal(title: "REST", subtitle: "A WHILE")
       Text("Take a little breather.").font(.system(size: 30, design: .serif))
       Text("Your lunch will be right here.").font(.system(size: 14)).foregroundStyle(Palette.muted)
       Button("Keep packing") { paused = false }.buttonStyle(PrimaryButton())
@@ -492,21 +506,24 @@ struct TutorialView: View {
   var body: some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 24) {
-        Text("A SMALL PACKING RITUAL").font(.system(size: 11, weight: .bold, design: .monospaced))
-          .tracking(1.5).foregroundStyle(Palette.orange)
+        HStack {
+          CircuitMark()
+          Spacer()
+          MicroLabel(text: "THE ART OF PACKING", color: Palette.orange)
+        }
         Text("Everything\nhas its place.").font(.system(size: 43, weight: .regular, design: .serif))
           .tracking(-1.5).fixedSize(horizontal: false, vertical: true)
         HStack {
           Spacer()
           PolyominoArt(piece: LunchBook.all[0].pieces[1], cellSize: 50, showLetter: true)
           Image(systemName: "arrow.right").padding(20).foregroundStyle(Palette.orange)
-          ZStack(alignment: .topTrailing) {
-            Image(systemName: "square.grid.2x2").font(.system(size: 72, weight: .ultraLight))
-            Text("B").font(.system(size: 14, weight: .bold, design: .monospaced))
-              .foregroundStyle(Palette.paper).padding(7).background(Palette.orange, in: Circle())
-          }
+          PolyominoArt(
+            piece: LunchBook.all[0].pieces[1], cellSize: 50, selected: true, showLetter: true
+          )
+          .padding(9).background(Palette.sage.opacity(0.3), in: RoundedRectangle(cornerRadius: 9))
           Spacer()
         }
+        Perforation()
         instruction(
           "01", "Choose, turn, tuck.",
           "Tap an ingredient, rotate if needed, then tap where its letter-marked square should go. Or drag it into the box."

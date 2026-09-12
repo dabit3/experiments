@@ -37,46 +37,44 @@ struct LunchPostcard: View {
   var width: CGFloat = 340
 
   var body: some View {
-    VStack(spacing: 18) {
-      HStack(alignment: .top) {
+    VStack(spacing: 20) {
+      HStack(alignment: .center, spacing: 9) {
+        CircuitMark()
         VStack(alignment: .leading, spacing: 5) {
-          Text("BENTO CIRCUIT").font(.system(size: 10, weight: .black, design: .monospaced))
-            .tracking(2)
+          Text("Bento Circuit").font(.system(size: 21, weight: .regular, design: .serif))
+            .tracking(-0.7)
           Text(
             lunch.isDaily
-              ? "THE DAILY PARCEL" : "A POSTCARD FROM STOP \(String(format: "%02d", lunch.number))"
+              ? "THE DAILY PARCEL" : "THE LOCAL LINE / VOL. 01"
           )
           .font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(1)
           .foregroundStyle(Palette.muted)
         }
         Spacer()
-        Image(systemName: "tram.fill").font(.system(size: 22, weight: .light))
-          .foregroundStyle(Palette.orange)
-          .padding(9).overlay(
-            Rectangle().stroke(Palette.orange, style: StrokeStyle(lineWidth: 1, dash: [2, 2]))
-          )
-          .rotationEffect(.degrees(7))
+        PackingSeal(title: "STOP", subtitle: String(format: "%02d", lunch.number))
+          .scaleEffect(0.82).frame(width: 51, height: 51).rotationEffect(.degrees(9))
       }
+      Perforation()
       BoardView(
         lunch: lunch, game: game, cellSize: (width - 76) / CGFloat(lunch.width), showLetters: false
       )
-      .rotationEffect(.degrees(-3))
-      .padding(.vertical, 13)
+      .rotationEffect(.degrees(-4))
+      .padding(.vertical, 20)
       .accessibilityHidden(true)
       VStack(spacing: 8) {
-        HStack(spacing: 9) {
+        HStack(spacing: 10) {
           ForEach(0..<3) { index in
             Image(systemName: index < game.stars(lunch) ? "star.fill" : "star")
           }
-        }.font(.system(size: 18)).foregroundStyle(Palette.orange)
-        Text(game.stars(lunch) == 3 ? "Beautifully arranged." : "Packed with care.")
-          .font(.system(size: 29, design: .serif)).tracking(-0.8)
+        }.font(.system(size: 18)).foregroundStyle(Palette.orange).padding(.bottom, 5)
+        Text(game.stars(lunch) == 3 ? "Lunch, perfected." : "Packed with care.")
+          .font(.system(size: 32, design: .serif)).tracking(-1.1)
           .minimumScaleFactor(0.7).lineLimit(1)
         Text(lunch.title.uppercased())
           .font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(1.3)
           .foregroundStyle(Palette.muted)
       }
-      Rectangle().fill(Palette.line).frame(height: 1)
+      Perforation()
       HStack {
         Text("\(game.moves) MOVES  ·  \(game.stars(lunch)) / 3 STARS")
         Spacer()
@@ -86,9 +84,10 @@ struct LunchPostcard: View {
       .foregroundStyle(Palette.muted)
     }
     .padding(24).frame(width: width)
-    .background(Palette.paper)
+    .background(Palette.cream)
     .foregroundStyle(Palette.ink)
-    .overlay(Rectangle().stroke(Palette.line, lineWidth: 1).padding(7))
+    .overlay(Rectangle().stroke(Palette.gold.opacity(0.45), lineWidth: 0.7).padding(7))
+    .overlay(alignment: .top) { Rectangle().fill(Palette.orange).frame(height: 4) }
   }
 }
 
@@ -132,9 +131,11 @@ struct ResultView: View {
     GeometryReader { proxy in
       ScrollView {
         VStack(spacing: 20) {
-          Text("READY FOR THE JOURNEY")
-            .font(.system(size: 10, weight: .bold, design: .monospaced)).tracking(2)
-            .foregroundStyle(Palette.orange).padding(.top, 28)
+          HStack(spacing: 12) {
+            Rectangle().fill(Palette.gold.opacity(0.5)).frame(height: 1)
+            MicroLabel(text: "YOUR LUNCH IS SERVED", color: Palette.cream)
+            Rectangle().fill(Palette.gold.opacity(0.5)).frame(height: 1)
+          }.padding(.top, 28)
           LunchPostcard(lunch: lunch, game: game, width: min(proxy.size.width - 40, 370))
             .shadow(color: Palette.ink.opacity(0.15), radius: 16, x: 0, y: 10)
           Text(
@@ -145,7 +146,7 @@ struct ResultView: View {
                 : "A lovely fit. Try one move per piece for three stars.")
           )
           .font(.system(size: 13, design: .serif)).italic()
-          .foregroundStyle(Palette.muted).multilineTextAlignment(.center)
+          .foregroundStyle(Palette.cream.opacity(0.8)).multilineTextAlignment(.center)
           HStack(spacing: 12) {
             Button {
               share()
@@ -165,13 +166,13 @@ struct ResultView: View {
             Spacer()
             Button("Journey", action: home).accessibilityIdentifier("Journey")
           }
-          .font(.system(size: 13, weight: .medium)).foregroundStyle(Palette.muted)
+          .font(.system(size: 13, weight: .medium)).foregroundStyle(Palette.cream.opacity(0.85))
         }
         .padding(.horizontal, 22).padding(.bottom, 28)
       }
       .overlay(CelebrationPetals())
     }
-    .background(Palette.paper)
+    .background(Palette.ink)
     .sheet(item: $parcel) { NativeShareSheet(parcel: $0) }
     .alert("The postcard couldn’t be prepared.", isPresented: $shareError) {
       Button("OK", role: .cancel) {}

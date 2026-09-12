@@ -113,56 +113,43 @@ struct RootView: View {
   private var home: some View {
     GeometryReader { geometry in
       ScrollView {
-        VStack(alignment: .leading, spacing: 22) {
-          HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 2) {
-              Text("BENTO CIRCUIT").font(.system(size: 13, weight: .black, design: .monospaced))
-                .tracking(2.5)
-              Text("THE LUNCHBOX PUZZLE").font(
-                .system(size: 9, weight: .medium, design: .monospaced)
-              ).tracking(1.9)
-                .foregroundStyle(Palette.muted)
-            }
+        VStack(alignment: .leading, spacing: 20) {
+          HStack(spacing: 10) {
+            CircuitMark()
+            MicroLabel(text: "THE LUNCHBOX PUZZLE")
             Spacer()
             IconButton(symbol: "slider.horizontal.3", label: "Settings") { showSettings = true }
           }
-          HStack(alignment: .top) {
-            Text("Good things,\nbeautifully\narranged.")
-              .font(
-                .system(size: geometry.size.width < 390 ? 40 : 46, weight: .regular, design: .serif)
+          VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .lastTextBaseline, spacing: 7) {
+              Text("Bento").font(
+                .system(size: geometry.size.width < 390 ? 68 : 78, weight: .regular, design: .serif)
               )
-              .tracking(-1.9).lineSpacing(-2)
-            Spacer(minLength: 0)
-            VStack(spacing: 5) {
-              Image(systemName: "tram.fill").font(.system(size: 22))
-              Text("12\nSTOPS").font(.system(size: 10, weight: .bold, design: .monospaced))
-                .multilineTextAlignment(.center)
+              .tracking(-4)
+              Text("Circuit").font(
+                .system(size: geometry.size.width < 390 ? 35 : 41, weight: .regular, design: .serif)
+              )
+              .italic().tracking(-1.8)
             }
-            .foregroundStyle(Palette.orange)
-            .padding(.top, 13)
+            Text("The art of a perfectly packed lunch.")
+              .font(.system(size: 15, design: .serif)).foregroundStyle(Palette.muted)
           }
-          ZStack {
-            Ellipse().fill(Palette.sage.opacity(0.5))
-              .frame(width: geometry.size.width - 48, height: 175)
-              .rotationEffect(.degrees(-14)).offset(y: 28)
-            LunchIllustration()
-              .frame(width: min(geometry.size.width - 94, 310))
-              .rotationEffect(.degrees(-7))
-            Text("MADE TO FIT")
-              .font(.system(size: 10, weight: .bold, design: .monospaced)).tracking(2)
-              .foregroundStyle(Palette.orange)
-              .padding(10).background(Palette.paper)
-              .overlay(Rectangle().stroke(Palette.orange, lineWidth: 1))
-              .rotationEffect(.degrees(8)).offset(x: 89, y: 96)
+          homeHero(width: geometry.size.width - 52)
+          HStack {
+            MicroLabel(text: "A SMALL DAILY RITUAL")
+            Spacer()
+            MicroLabel(text: "VOL. 01 / 12 LUNCHES", color: Palette.orange)
           }
-          .frame(maxWidth: .infinity).frame(height: 253)
-          VStack(spacing: 10) {
+          VStack(spacing: 17) {
             Button {
               selectedLunch = LunchBook.all[store.nextIndex]
             } label: {
               HStack {
-                Text(store.stars == 0 ? "Pack your first lunch" : "Continue the journey")
+                Text(store.stars == 0 ? "Let’s make lunch" : "Continue the journey")
                 Spacer()
+                Text(String(format: "%02d", store.nextIndex + 1))
+                  .font(.system(size: 13, weight: .medium, design: .monospaced))
+                  .opacity(0.65)
                 Image(systemName: "arrow.right")
               }.padding(.horizontal, 20)
             }
@@ -171,67 +158,105 @@ struct RootView: View {
             Button {
               selectedLunch = LunchBook.daily()
             } label: {
-              HStack(spacing: 9) {
-                Image(systemName: "sun.max")
-                Text("The daily parcel")
+              HStack(spacing: 16) {
+                VStack(spacing: 5) {
+                  Image(systemName: "sun.max").font(.system(size: 23, weight: .light))
+                  MicroLabel(text: "DAILY", color: Palette.orange)
+                }.frame(width: 46).foregroundStyle(Palette.orange)
+                Rectangle().fill(Palette.line).frame(width: 1, height: 43)
+                VStack(alignment: .leading, spacing: 5) {
+                  Text("The daily parcel").font(.system(size: 23, design: .serif))
+                  MicroLabel(
+                    text: store.best[LunchBook.daily().id] != nil
+                      ? "PACKED WITH CARE" : "A FRESH LITTLE CHALLENGE")
+                }
                 Spacer()
-                Text(store.best[LunchBook.daily().id] != nil ? "PACKED" : "TODAY")
-                  .font(.system(size: 10, weight: .bold, design: .monospaced)).tracking(1)
-                Image(systemName: "arrow.up.right")
-              }.padding(.horizontal, 20)
-            }.buttonStyle(PrimaryButton(light: true))
+                Image(systemName: "arrow.up.right").font(.system(size: 15))
+              }.padding(.vertical, 17)
+                .overlay(alignment: .top) { Perforation() }
+                .overlay(alignment: .bottom) { Perforation() }
+                .contentShape(Rectangle())
+            }.buttonStyle(.plain)
               .accessibilityIdentifier("Daily challenge")
           }
-          HStack {
-            Text("YOUR LITTLE JOURNEY").font(.system(size: 10, weight: .bold, design: .monospaced))
-              .tracking(1.5)
-            Spacer()
-            Image(systemName: "star.fill").font(.system(size: 10)).foregroundStyle(Palette.orange)
-            Text("\(store.stars) / 36").font(
-              .system(size: 11, weight: .medium, design: .monospaced))
-          }
-          LazyVGrid(
-            columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 4), spacing: 10
-          ) {
-            ForEach(LunchBook.all) { lunch in
-              let unlocked = lunch.number <= store.nextIndex + 1
-              Button {
-                selectedLunch = lunch
-              } label: {
-                VStack(spacing: 5) {
-                  if unlocked {
-                    Text(String(format: "%02d", lunch.number))
-                      .font(.system(size: 23, weight: .regular, design: .serif))
-                  } else {
-                    Image(systemName: "lock").font(.system(size: 16)).frame(height: 27)
-                  }
-                  HStack(spacing: 2) {
-                    ForEach(0..<3) { star in
-                      Image(systemName: star < (store.best[lunch.id] ?? 0) ? "star.fill" : "circle")
-                        .font(.system(size: 6))
+          VStack(alignment: .leading, spacing: 22) {
+            HStack(alignment: .lastTextBaseline) {
+              Text("The local line").font(.system(size: 26, design: .serif)).tracking(-0.7)
+              Spacer()
+              MicroLabel(text: "\(store.stars) / 36 STARS", color: Palette.orange)
+            }
+            LazyVGrid(
+              columns: Array(repeating: GridItem(.flexible(), spacing: 0), count: 4), spacing: 18
+            ) {
+              ForEach(LunchBook.all) { lunch in
+                let unlocked = lunch.number <= store.nextIndex + 1
+                let current = lunch.number == store.nextIndex + 1
+                Button {
+                  selectedLunch = lunch
+                } label: {
+                  VStack(spacing: 7) {
+                    ZStack {
+                      Rectangle().fill(Palette.line).frame(height: 1)
+                      Circle().fill(current ? Palette.orange : Palette.paper).frame(
+                        width: 48, height: 48)
+                      Circle().stroke(current ? Palette.orange : Palette.line, lineWidth: 1).frame(
+                        width: 54, height: 54)
+                      Text(String(format: "%02d", lunch.number))
+                        .font(.system(size: 23, weight: .regular, design: .serif))
+                        .foregroundStyle(
+                          current
+                            ? Palette.cream : (unlocked ? Palette.ink : Palette.muted.opacity(0.55))
+                        )
                     }
-                  }.foregroundStyle(unlocked ? Palette.orange : Palette.muted.opacity(0.5))
+                    HStack(spacing: 3) {
+                      ForEach(0..<3) { star in
+                        Image(
+                          systemName: star < (store.best[lunch.id] ?? 0) ? "star.fill" : "circle"
+                        )
+                        .font(.system(size: 6))
+                      }
+                    }.foregroundStyle(Palette.orange.opacity(unlocked ? 1 : 0.25))
+                  }.frame(maxWidth: .infinity).frame(height: 72)
                 }
-                .frame(maxWidth: .infinity).frame(height: 66)
-                .background(
-                  unlocked ? Palette.sage.opacity(0.25) : Palette.line.opacity(0.18),
-                  in: RoundedRectangle(cornerRadius: 12))
+                .buttonStyle(.plain).disabled(!unlocked)
+                .accessibilityLabel(
+                  "Lunch \(lunch.number), \(lunch.title), \(unlocked ? "\(store.best[lunch.id] ?? 0) stars" : "locked")"
+                )
+                .accessibilityIdentifier("Lunch \(lunch.number)")
               }
-              .disabled(!unlocked)
-              .accessibilityLabel(
-                "Lunch \(lunch.number), \(lunch.title), \(unlocked ? "\(store.best[lunch.id] ?? 0) stars" : "locked")"
-              )
-              .accessibilityIdentifier("Lunch \(lunch.number)")
             }
           }
-          Text("A small ritual for a quieter day.")
-            .font(.system(size: 13, design: .serif)).italic()
-            .foregroundStyle(Palette.muted).frame(maxWidth: .infinity).padding(.bottom, 12)
+          HStack {
+            Rectangle().fill(Palette.line).frame(height: 1)
+            CircuitMark().scaleEffect(0.65).frame(width: 33)
+            Rectangle().fill(Palette.line).frame(height: 1)
+          }.padding(.vertical, 8)
         }
         .foregroundStyle(Palette.ink)
         .padding(.horizontal, 26).padding(.top, 14)
       }
     }
+  }
+
+  private func homeHero(width: CGFloat) -> some View {
+    ZStack {
+      FuroshikiCloth()
+        .frame(width: width * 0.88, height: width * 0.62)
+        .rotationEffect(.degrees(12)).offset(x: -6, y: 12)
+      LunchIllustration().frame(width: width * 0.85)
+        .rotationEffect(.degrees(-9)).offset(x: -7, y: -6)
+      HStack(spacing: 5) {
+        ForEach(0..<2) { _ in
+          Capsule().fill(
+            LinearGradient(
+              colors: [Palette.wood, Palette.gold, Palette.wood],
+              startPoint: .leading, endPoint: .trailing)
+          ).frame(width: 4, height: width * 0.63)
+        }
+      }.rotationEffect(.degrees(26)).offset(x: width * 0.43, y: 12)
+      PackingSeal().rotationEffect(.degrees(13)).offset(x: width * 0.30, y: width * 0.29)
+    }.frame(maxWidth: .infinity).frame(height: width * 0.83).padding(.vertical, 7)
+      .accessibilityHidden(true)
   }
 }
 

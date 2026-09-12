@@ -13,19 +13,19 @@
                     <view key="view" contentMode="scaleToFill" id="paper">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="BENTO CIRCUIT" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="title">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Bento Circuit" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="title">
                                 <rect key="frame" x="45" y="393" width="303" height="37"/>
-                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="28"/>
-                                <color key="textColor" red="0.17" green="0.23" blue="0.20" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="40"/>
+                                <color key="textColor" red="0.12" green="0.21" blue="0.18" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="A LITTLE LUNCH, BEAUTIFULLY ARRANGED." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="subtitle">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="THE ART OF A PERFECTLY PACKED LUNCH." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="subtitle">
                                 <rect key="frame" x="40" y="442" width="313" height="15"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="10"/>
-                                <color key="textColor" red="0.84" green="0.28" blue="0.14" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.73" green="0.23" blue="0.12" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="safe"/>
-                        <color key="backgroundColor" red="0.97" green="0.95" blue="0.89" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.96" green="0.94" blue="0.88" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="title" firstAttribute="centerX" secondItem="paper" secondAttribute="centerX" id="titleX"/>
                             <constraint firstItem="title" firstAttribute="centerY" secondItem="paper" secondAttribute="centerY" constant="-14" id="titleY"/>
