@@ -11,6 +11,23 @@ enum HarborPalette {
   static let muted = Color(red: 0.39, green: 0.45, blue: 0.42)
   static let sage = Color(red: 0.30, green: 0.44, blue: 0.37)
   static let rule = Color(red: 0.78, green: 0.79, blue: 0.72)
+  static let fog = Color(red: 0.94, green: 0.96, blue: 0.95)
+  static let surface = Color(red: 0.985, green: 0.99, blue: 0.985)
+}
+
+enum HarborType {
+  static let title = Font.system(.title, design: .default).weight(.bold)
+  static let heading = Font.system(.title2, design: .default).weight(.semibold)
+  static let action = Font.system(.headline, design: .default)
+  static let body = Font.system(.subheadline, design: .default)
+  static let caption = Font.system(.footnote, design: .default)
+  static let readout = Font.system(.title, design: .default).weight(.semibold)
+}
+
+enum HarborSpacing {
+  static let page: CGFloat = 20
+  static let section: CGFloat = 16
+  static let row: CGFloat = 8
 }
 
 extension CargoKind {
@@ -141,10 +158,11 @@ struct HarborCanvas: View {
         &context, CGRect(x: projected - 6, y: floor - 2, width: 12, height: 5), guideColor)
       let captionX = pickup ? 267.0 : 102.0
       context.draw(
-        Text(pickup ? "The catch" : "The landing")
-          .font(.custom("Baskerville-Italic", size: 17))
+        Text(pickup ? "Collect" : "Land cargo")
+          .font(.system(size: 17, weight: .semibold))
           .foregroundStyle(HarborPalette.muted), at: CGPoint(x: captionX, y: 85))
-      HarborArt.label(&context, pickup ? "01 / DOCK" : "02 / DECK", x: captionX, y: 103, size: 7)
+      HarborArt.label(
+        &context, pickup ? "Left dock" : "Airship deck", x: captionX, y: 104, size: 11)
     }
     HarborArt.crane(
       &context, anchor: anchor, hookX: x, hookY: y, height: dock,
@@ -161,11 +179,11 @@ struct HarborCanvas: View {
     if phase == .settling {
       let rewardY = max(65, deck - stackHeight - 38)
       context.draw(
-        Text("+\(game.lastAward)").font(.custom("Baskerville", size: 29))
+        Text("+\(game.lastAward)").font(.system(size: 29, weight: .semibold))
           .foregroundStyle(HarborPalette.ink), at: CGPoint(x: 255, y: rewardY))
       HarborArt.label(
-        &context, game.preciseLanding ? "BEAUTIFUL LANDING" : "CARGO SECURED",
-        x: 255, y: rewardY + 22, size: 8)
+        &context, game.preciseLanding ? "Precise landing" : "Cargo secured",
+        x: 255, y: rewardY + 22, size: 11)
       for index in 0..<12 {
         let angle = Double(index) * .pi / 6
         let distance = game.phaseTime * 50
@@ -177,10 +195,10 @@ struct HarborCanvas: View {
           HarborPalette.orange.opacity(max(0, 1 - game.phaseTime)))
       }
     }
-    HarborArt.label(&context, "SALVAGE DOCK", x: 84, y: dock + 28, size: 8)
+    HarborArt.label(&context, "Salvage dock", x: 84, y: dock + 28, size: 11)
     HarborArt.label(
-      &context, abs(game.balance) > 0.65 ? "BALANCE / CAUTION" : "BALANCE / STEADY",
-      x: 258, y: deck + 98, size: 8)
+      &context, abs(game.balance) > 0.65 ? "Balance: caution" : "Balance: steady",
+      x: 258, y: deck + 98, size: 11)
   }
 }
 

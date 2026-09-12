@@ -35,7 +35,7 @@ struct HarborView: View {
 
   var body: some View {
     ZStack {
-      HarborPalette.cream.ignoresSafeArea()
+      HarborPalette.fog.ignoresSafeArea()
       if !game.isPlaying {
         home
       } else if game.phase == .finished {
@@ -68,78 +68,33 @@ struct HarborView: View {
 
   private var home: some View {
     GeometryReader { geometry in
-      let compact = geometry.size.height < 700
-      VStack(spacing: 0) {
-        HStack(spacing: 10) {
-          HarborMark().frame(width: 31, height: 31)
-          VStack(alignment: .leading, spacing: 3) {
-            eyebrow("PORT MARLOW")
-            Text("Salvage office · No. 07")
-              .font(.system(size: 10)).foregroundStyle(HarborPalette.muted)
+      let contract = Contract.all[selectedContract]
+      ScrollView {
+        VStack(alignment: .leading, spacing: HarborSpacing.section) {
+          HStack(spacing: 12) {
+            HarborMark().frame(width: 34, height: 34)
+            VStack(alignment: .leading, spacing: 2) {
+              Text("Skyhook Salvage").font(HarborType.heading)
+              Text("Crane contracts · Port Marlow")
+                .font(HarborType.caption).foregroundStyle(HarborPalette.muted)
+            }
+            Spacer(minLength: 0)
+            iconButton("slider.horizontal.3", label: "Settings", id: "settings") {
+              settingsShown = true
+            }
           }
-          Spacer()
-          iconButton("slider.horizontal.3", label: "Settings", id: "settings") {
-            settingsShown = true
-          }
-        }
-        .padding(.horizontal, 24)
-        VStack(spacing: 0) {
-          Text("Skyhook")
-            .font(.custom("Baskerville", size: compact ? 54 : 70, relativeTo: .largeTitle))
-            .tracking(-2)
-          HStack(spacing: 15) {
-            Rectangle().frame(width: 25, height: 0.5)
-            Text("SALVAGE COMPANY")
-              .font(.system(size: 10, weight: .medium)).tracking(3.5)
-            Rectangle().frame(width: 25, height: 0.5)
-          }
-          .foregroundStyle(HarborPalette.brass)
-          Text("Lost things. Lofty ambitions.")
-            .font(.custom("Baskerville-Italic", size: 15))
-            .foregroundStyle(HarborPalette.muted)
-            .padding(.top, compact ? 8 : 12)
-        }
-        .padding(.top, compact ? 0 : 7)
-        .padding(.bottom, compact ? 15 : 22)
-        VStack(spacing: 0) {
           GeometryReader { art in
             Image("HarborCover")
               .resizable().scaledToFill()
               .frame(width: art.size.width, height: art.size.height)
               .clipped()
           }
+          .frame(height: min(240, max(160, geometry.size.height * 0.30)))
           .accessibilityLabel("Illustrated brass airship and rooftop crane above Port Marlow")
           HStack {
-            eyebrow("THE SMALL WONDER")
+            Text("Contract \(selectedContract + 1) of \(Contract.all.count)")
+              .font(HarborType.body).fontWeight(.semibold)
             Spacer()
-            Text("A second life for beautiful things.")
-              .font(.custom("Baskerville-Italic", size: 11))
-          }
-          .padding(.horizontal, 12).padding(.vertical, 10)
-          .background(HarborPalette.paper)
-        }
-        .overlay(Rectangle().strokeBorder(HarborPalette.rule, lineWidth: 0.7))
-        .padding(.horizontal, 20)
-        VStack(spacing: compact ? 8 : 13) {
-          HStack(spacing: 13) {
-            VStack(spacing: 0) {
-              Text("NO.").font(.system(size: 7, weight: .semibold)).tracking(1.5)
-              Text(String(format: "%02d", selectedContract + 1))
-                .font(.custom("Baskerville", size: 30))
-            }
-            .foregroundStyle(HarborPalette.orange)
-            .frame(width: 43, height: 49)
-            .overlay(Rectangle().stroke(HarborPalette.orange.opacity(0.35), lineWidth: 0.7))
-            VStack(alignment: .leading, spacing: 5) {
-              Text(Contract.all[selectedContract].title)
-                .font(.custom("Baskerville", size: 23))
-                .lineLimit(1).minimumScaleFactor(0.8)
-              eyebrow(
-                "\(Contract.all[selectedContract].cargo.count) TREASURES  ·  \(Int(Contract.all[selectedContract].seconds)) SECONDS"
-              )
-              .foregroundStyle(HarborPalette.muted)
-            }
-            Spacer(minLength: 0)
             HStack(spacing: 0) {
               iconButton("chevron.left", label: "Previous contract", id: "previousContract") {
                 selectedContract = max(0, selectedContract - 1)
@@ -149,25 +104,51 @@ struct HarborView: View {
               }.disabled(selectedContract >= game.unlocked)
             }
           }
-          primaryButton("Begin salvage", symbol: "arrow.up.right", id: "beginSalvage") {
+          .padding(.bottom, -HarborSpacing.row)
+          VStack(alignment: .leading, spacing: HarborSpacing.row) {
+            Text(contract.title).font(HarborType.heading)
+            Text(
+              "\(contract.cargo.count) cargo · \(Int(contract.seconds)) sec · \(Int(contract.cargo.reduce(0) { $0 + $1.weight })) t total"
+            )
+            .font(HarborType.caption).foregroundStyle(HarborPalette.muted)
+            HStack(spacing: HarborSpacing.row) {
+              ForEach(Array(contract.cargo.enumerated()), id: \.offset) { _, cargo in
+                Image(cargo.assetName).resizable().scaledToFit()
+                  .frame(maxWidth: .infinity).frame(height: 42)
+                  .accessibilityLabel("\(cargo.title), \(Int(cargo.weight)) tonnes")
+              }
+            }
+            .padding(.vertical, HarborSpacing.row)
+            .overlay(alignment: .bottom) {
+              Rectangle().fill(HarborPalette.rule).frame(height: 1)
+            }
+            if selectedContract == game.unlocked && game.unlocked < Contract.all.count - 1 {
+              Text("Clear this contract to open the next route.")
+                .font(HarborType.caption).foregroundStyle(HarborPalette.muted)
+            }
+          }
+        }
+        .padding(.horizontal, HarborSpacing.page)
+        .padding(.vertical, HarborSpacing.row)
+      }
+      .scrollIndicators(.hidden)
+      .safeAreaInset(edge: .bottom, spacing: 0) {
+        VStack(spacing: 0) {
+          primaryButton("Start contract", symbol: "arrow.right", id: "beginSalvage") {
             begin(practice: false)
           }
           HStack {
-            Button {
-              begin(practice: true)
-            } label: {
-              HStack(spacing: 7) {
-                Image(systemName: "wind").font(.system(size: 12))
-                Text("Practice dock").font(.custom("Baskerville", size: 16))
-              }.frame(minHeight: 44)
-            }.accessibilityIdentifier("practiceDock")
+            Button("Practice dock") { begin(practice: true) }
+              .font(HarborType.body).fontWeight(.semibold)
+              .frame(minHeight: 44).accessibilityIdentifier("practiceDock")
             Spacer()
-            eyebrow("BEST  \(game.best.formatted())")
-              .foregroundStyle(HarborPalette.muted)
+            Text("Best \(game.best.formatted())")
+              .font(HarborType.caption).monospacedDigit().foregroundStyle(HarborPalette.muted)
           }
         }
-        .padding(.horizontal, 24)
-        .padding(.top, compact ? 14 : 20)
+        .padding(.horizontal, HarborSpacing.page)
+        .padding(.top, HarborSpacing.row)
+        .background(HarborPalette.fog)
       }
     }
   }
@@ -176,60 +157,55 @@ struct HarborView: View {
     VStack(spacing: 0) {
       HStack(alignment: .center) {
         VStack(alignment: .leading, spacing: 4) {
-          eyebrow(game.practice ? "PRACTICE DOCK" : "CONTRACT 0\(game.contract.id + 1)")
+          Text(game.practice ? "Practice dock" : "Contract \(game.contract.id + 1)")
+            .font(HarborType.caption).foregroundStyle(HarborPalette.muted)
           Text(game.score.formatted())
-            .font(.custom("Baskerville", size: 32))
+            .font(HarborType.readout).monospacedDigit()
             .contentTransition(.numericText())
             .accessibilityLabel("Score \(game.score)")
         }
         Spacer()
         VStack(alignment: .trailing, spacing: 5) {
-          Text(game.practice ? "NO TIME LIMIT" : "\(Int(ceil(game.timeLeft)))s")
-            .font(.system(size: 17, weight: .medium, design: .monospaced))
+          Text(game.practice ? "No clock" : "\(Int(ceil(game.timeLeft)))s")
+            .font(HarborType.heading).monospacedDigit()
             .foregroundStyle(game.timeLeft < 15 ? HarborPalette.orange : HarborPalette.ink)
-          Text(game.practice ? "\(game.losses) missed lifts" : "\(3 - game.losses) lifts to spare")
-            .font(.system(size: 10))
+          Text(game.practice ? "\(game.losses) missed lifts" : "\(3 - game.losses) misses left")
+            .font(HarborType.caption)
             .foregroundStyle(HarborPalette.muted)
         }
         iconButton("pause", label: "Pause game", id: "pauseGame") { game.paused = true }
       }
-      .padding(.horizontal, 22)
-      .padding(.bottom, 8)
+      .padding(.horizontal, HarborSpacing.page)
+      .padding(.vertical, HarborSpacing.row)
       HStack(spacing: 12) {
         Image(game.cargo.assetName).resizable().scaledToFit()
-          .frame(width: 36, height: 32).accessibilityHidden(true)
+          .frame(width: 40, height: 36).accessibilityHidden(true)
         VStack(alignment: .leading, spacing: 3) {
-          Text(game.cargo.title).font(.custom("Baskerville", size: 20))
-          eyebrow(
-            "\(Int(game.cargo.weight)) TONNES  /  \(game.stack.count) OF \(game.contract.cargo.count) ABOARD"
+          Text(game.cargo.title).font(HarborType.action)
+          Text(
+            "\(Int(game.cargo.weight)) t · \(game.stack.count) of \(game.contract.cargo.count) aboard"
           )
+          .font(HarborType.caption).foregroundStyle(HarborPalette.muted)
         }
         Spacer()
-        HStack(spacing: 4) {
-          ForEach(0..<game.contract.cargo.count, id: \.self) { index in
-            Circle().fill(index < game.stack.count ? HarborPalette.orange : HarborPalette.rule)
-              .frame(width: 5, height: 5)
-          }
-        }
-        .accessibilityLabel("\(game.stack.count) of \(game.contract.cargo.count) treasures rescued")
       }
-      .padding(.horizontal, 24)
-      .padding(.vertical, 10)
-      .overlay(alignment: .top) { Rectangle().fill(HarborPalette.rule).frame(height: 0.5) }
+      .padding(.horizontal, HarborSpacing.page)
+      .padding(.vertical, HarborSpacing.row)
+      .background(HarborPalette.surface)
+      .overlay(alignment: .top) { Rectangle().fill(HarborPalette.rule).frame(height: 1) }
       HarborCanvas(game: game, reducedMotion: reducedMotion)
         .frame(maxHeight: .infinity)
         .clipped()
-        .overlay(Rectangle().strokeBorder(HarborPalette.rule, lineWidth: 0.5))
-        .padding(.horizontal, 12)
-      VStack(spacing: 6) {
+      VStack(spacing: 4) {
         HStack(spacing: 9) {
           Image(systemName: game.onTarget ? "checkmark.circle.fill" : "scope")
-            .font(.system(size: 12))
+            .font(HarborType.body)
             .foregroundStyle(game.onTarget ? HarborPalette.sage : HarborPalette.orange)
           Text(controlHint)
-            .font(.system(size: 11, weight: .medium))
+            .font(HarborType.body)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: 32)
+            .frame(minHeight: 42)
+            .fixedSize(horizontal: false, vertical: true)
             .accessibilityIdentifier("gameHint")
         }
         HStack(spacing: 12) {
@@ -254,9 +230,8 @@ struct HarborView: View {
         ) { game.act() }
         .disabled(!game.actionable)
       }
-      .padding(.horizontal, 24)
-      .padding(.top, 3)
-      .padding(.bottom, 6)
+      .padding(.horizontal, HarborSpacing.page)
+      .padding(.vertical, HarborSpacing.row)
     }
   }
 
@@ -264,32 +239,40 @@ struct HarborView: View {
     switch game.phase {
     case .pickup:
       return game.onTarget
-        ? "In reach · drop now to catch the cargo."
-        : "Adjust trim · line up the hook with the left dock."
+        ? "Hook aligned. Drop to collect."
+        : "Move the hook above the left dock."
     case .release:
       return game.onTarget
-        ? "Safe to land · release cargo onto the stack."
-        : "Adjust trim · place cargo above the stack's center."
+        ? "Landing aligned. Release cargo."
+        : "Center the guide on the stack below."
     default:
       return game.message
     }
   }
 
   private var results: some View {
-    ScrollView {
-      VStack(spacing: 18) {
-        HStack {
-          eyebrow("CARGO MANIFEST  /  0\(game.contract.id + 1)")
-          Spacer()
-          iconButton("xmark", label: "Return to harbor", id: "resultsHome") { game.home() }
-        }
+    VStack(spacing: 0) {
+      HStack {
+        Text("Cargo manifest").font(HarborType.action)
+        Spacer()
+        iconButton("xmark", label: "Return to harbor", id: "resultsHome") { game.home() }
+      }
+      .padding(.horizontal, HarborSpacing.page)
+      ScrollView {
         ManifestCard(
           won: game.won, practice: game.practice, score: game.score, stack: game.stack,
-          title: game.contract.title, reason: game.resultReason)
-        VStack(spacing: 10) {
+          title: game.contract.title, reason: game.resultReason, condensed: true
+        )
+        .padding(HarborSpacing.page)
+      }
+      .scrollIndicators(.hidden)
+      .safeAreaInset(edge: .bottom, spacing: 0) {
+        VStack(spacing: 0) {
           primaryButton(
             game.won && !game.practice && game.contract.id < 2 ? "Next contract" : "Try again",
-            symbol: "arrow.up.right", id: "replay"
+            symbol: game.won && !game.practice && game.contract.id < 2
+              ? "arrow.right" : "arrow.counterclockwise",
+            id: "replay"
           ) {
             let next = game.won && !game.practice ? min(2, game.contract.id + 1) : game.contract.id
             selectedContract = next
@@ -299,49 +282,46 @@ struct HarborView: View {
             shareManifest()
           } label: {
             Label("Share cargo manifest", systemImage: "square.and.arrow.up")
-              .font(.system(size: 15, weight: .semibold))
-              .frame(maxWidth: .infinity, minHeight: 50)
-              .overlay(Rectangle().stroke(HarborPalette.rule, lineWidth: 0.7))
+              .font(HarborType.body.weight(.semibold))
+              .frame(maxWidth: .infinity, minHeight: 44)
           }
           .accessibilityIdentifier("shareManifest")
           Text(
             game.practice
-              ? "Practice run · best score unchanged" : "PERSONAL BEST  \(game.best.formatted())"
+              ? "Practice run · best score unchanged" : "Personal best \(game.best.formatted())"
           )
-          .font(.system(size: 11, weight: .medium, design: .monospaced))
-          .padding(.top, 4)
+          .font(HarborType.caption).monospacedDigit().foregroundStyle(HarborPalette.muted)
         }
+        .padding(.horizontal, HarborSpacing.page)
+        .padding(.vertical, HarborSpacing.row)
+        .background(HarborPalette.fog)
       }
-      .padding(.horizontal, 26)
-      .padding(.bottom, 24)
     }
-    .scrollIndicators(.hidden)
   }
 
   private var pauseOverlay: some View {
     ZStack {
       HarborPalette.ink.opacity(0.55).ignoresSafeArea()
-      VStack(alignment: .leading, spacing: 20) {
-        HarborMark().frame(width: 42, height: 42)
-        eyebrow("ALL LINES SECURED")
-        Text("Take a breather.")
-          .font(.custom("Baskerville", size: 36))
-        Text("Your crane and harbor clock are paused.")
-          .font(.system(size: 15))
-        primaryButton("Resume salvage", symbol: "play.fill", id: "resume") { game.paused = false }
-        Button("Restart contract") {
-          game.start(contract: game.contract.id, practice: game.practice)
+      ScrollView {
+        VStack(alignment: .leading, spacing: HarborSpacing.section) {
+          Text("Crane paused")
+            .font(HarborType.title)
+          Text("Your crane and harbor clock are paused.")
+            .font(HarborType.body)
+          primaryButton("Resume salvage", symbol: "play.fill", id: "resume") { game.paused = false }
+          Button("Restart contract") {
+            game.start(contract: game.contract.id, practice: game.practice)
+          }
+          .frame(maxWidth: .infinity, minHeight: 44).accessibilityIdentifier("restart")
+          Button("Return to harbor") { game.home() }
+            .frame(maxWidth: .infinity, minHeight: 44).accessibilityIdentifier("pauseHome")
         }
-        .frame(maxWidth: .infinity, minHeight: 44).accessibilityIdentifier("restart")
-        Button("Return to harbor") { game.home() }
-          .frame(maxWidth: .infinity, minHeight: 44).accessibilityIdentifier("pauseHome")
+        .font(HarborType.action)
+        .padding(HarborSpacing.page)
+        .background(HarborPalette.surface, in: RoundedRectangle(cornerRadius: 12))
       }
-      .padding(26)
-      .background(HarborPalette.paper)
-      .overlay(
-        Rectangle().strokeBorder(HarborPalette.brass.opacity(0.5), lineWidth: 0.8).padding(7)
-      )
-      .padding(24)
+      .fixedSize(horizontal: false, vertical: true)
+      .padding(HarborSpacing.page)
     }
     .accessibilityAddTraits(.isModal)
   }
@@ -349,26 +329,16 @@ struct HarborView: View {
   private var settings: some View {
     NavigationStack {
       Form {
-        Section {
-          HStack(spacing: 14) {
-            HarborMark().frame(width: 44, height: 44)
-            VStack(alignment: .leading, spacing: 4) {
-              Text("The ship's quarters").font(.custom("Baskerville", size: 27))
-              eyebrow("MAKE YOURSELF AT HOME")
-            }
-          }
-          .padding(.vertical, 12)
-        }.listRowBackground(Color.clear)
-        Section("On the airship") {
+        Section("Sound and touch") {
           Toggle("Harbor sounds", isOn: $game.audioEnabled).accessibilityIdentifier("audioToggle")
           Toggle("Haptic feedback", isOn: $game.hapticsEnabled).accessibilityIdentifier(
             "hapticsToggle")
-        }.listRowBackground(HarborPalette.paper)
+        }.listRowBackground(HarborPalette.surface)
         Section("Your logbook") {
           LabeledContent("Best manifest", value: game.best.formatted())
           LabeledContent("Contracts cleared", value: "\(game.completed)")
           LabeledContent("Routes unlocked", value: "\(game.unlocked + 1) / 3")
-        }.listRowBackground(HarborPalette.paper)
+        }.listRowBackground(HarborPalette.surface)
         Section {
           Button("How to salvage") {
             settingsShown = false
@@ -378,14 +348,14 @@ struct HarborView: View {
           }.accessibilityIdentifier("howToPlay")
         } footer: {
           Text(
-            "Made for quiet moments. Progress stays on this iPhone. Motion follows your system accessibility setting."
+            "Progress stays on this iPhone. Motion follows your system accessibility setting."
           )
         }
       }
       .scrollContentBackground(.hidden)
-      .background(HarborPalette.cream)
-      .tint(HarborPalette.orange)
-      .navigationTitle("Skyhook")
+      .background(HarborPalette.fog)
+      .tint(HarborPalette.ink)
+      .navigationTitle("Settings")
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .confirmationAction) {
@@ -399,14 +369,7 @@ struct HarborView: View {
   private func tutorial(_ request: TutorialRequest) -> some View {
     ScrollView {
       VStack(alignment: .leading, spacing: 20) {
-        HStack {
-          eyebrow("A NOTE FROM THE DOCKMASTER")
-          Spacer()
-          HarborMark().frame(width: 34, height: 34)
-        }
-        Text("Two moves.\nOne steady ship.")
-          .font(.custom("Baskerville", size: 36))
-          .tracking(-1)
+        Text("Your first lift").font(HarborType.title)
         LiftDiagram().aspectRatio(330.0 / 84.0, contentMode: .fit)
         tutorialStep("01", "Catch the treasure", "Tap Drop hook as it swings over the left dock.")
         tutorialStep(
@@ -418,7 +381,7 @@ struct HarborView: View {
           "Trim left or right to move the crane. Heavy cargo pulls harder. Keep the deck's bubble near the middle."
         )
         Text("Three missed lifts end a contract. Practice has no clock and unlimited missed lifts.")
-          .font(.system(size: 13)).foregroundStyle(HarborPalette.ink.opacity(0.8))
+          .font(HarborType.caption).foregroundStyle(HarborPalette.muted)
         primaryButton(
           request.startsGame ? "Let's salvage" : "Got it", symbol: "arrow.up.right",
           id: "tutorialContinue"
@@ -430,19 +393,19 @@ struct HarborView: View {
           }
         }
       }
-      .padding(28)
+      .padding(HarborSpacing.page)
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(HarborPalette.cream)
+    .background(HarborPalette.fog)
     .presentationDetents([.large])
   }
 
   private func tutorialStep(_ number: String, _ title: String, _ detail: String) -> some View {
     HStack(alignment: .top, spacing: 17) {
-      Text(number).font(.custom("Baskerville", size: 25)).foregroundStyle(HarborPalette.orange)
+      Text(number).font(HarborType.heading).monospacedDigit().foregroundStyle(HarborPalette.muted)
       VStack(alignment: .leading, spacing: 5) {
-        Text(title).font(.custom("Baskerville", size: 21))
-        Text(detail).font(.system(size: 14)).lineSpacing(3)
+        Text(title).font(HarborType.action)
+        Text(detail).font(HarborType.body).lineSpacing(2)
       }
     }
   }
@@ -484,30 +447,38 @@ struct ManifestCard: View {
   let stack: [StackedCargo]
   let title: String
   let reason: String
+  var condensed = false
 
   var body: some View {
-    VStack(spacing: 16) {
-      HStack {
-        HarborMark().frame(width: 27, height: 27)
-        Spacer()
-        eyebrow("PORT MARLOW  /  CARGO RECEIPT")
+    VStack(alignment: .leading, spacing: HarborSpacing.section) {
+      VStack(alignment: .leading, spacing: HarborSpacing.row) {
+        Text(won ? (practice ? "Practice complete" : "Contract cleared") : "Contract ended")
+          .font(HarborType.title)
+          .foregroundStyle(won ? HarborPalette.ink : HarborPalette.orange)
+        Text(title).font(HarborType.body)
+        Text(won ? "All \(stack.count) cargo safely aboard." : reason)
+          .font(HarborType.body).foregroundStyle(HarborPalette.muted)
       }
-      VStack(spacing: 6) {
-        Text(won ? "Safe harbor." : "Another tide.")
-          .font(.custom("Baskerville", size: 44)).tracking(-1)
-          .lineLimit(1).minimumScaleFactor(0.8)
-        Text(won ? "CONTRACT CLEARED" : "CONTRACT INCOMPLETE")
-          .font(.system(size: 8, weight: .medium)).tracking(2)
-          .foregroundStyle(HarborPalette.orange)
+      HStack(alignment: .firstTextBaseline) {
+        VStack(alignment: .leading, spacing: 3) {
+          Text(score.formatted()).font(HarborType.readout).monospacedDigit()
+          Text(practice ? "Practice points" : "Salvage points").font(HarborType.caption)
+        }
+        Spacer()
+        VStack(alignment: .trailing, spacing: 3) {
+          Text("\(stack.reduce(0) { $0 + Int($1.kind.weight) }) t")
+            .font(HarborType.readout).monospacedDigit()
+          Text("\(stack.count) cargo aboard").font(HarborType.caption)
+        }
       }
       Canvas { context, size in
-        let scale = size.width / 350
-        context.scaleBy(x: scale, y: scale)
         let deck = 30.0 + max(100, HarborArt.stackHeight(stack) * 0.72)
         let shipX = 175.0
+        let scale = min(size.width / 350, size.height / (deck + 99))
         context.draw(
-          Image("HarborBackdrop"),
-          in: CGRect(x: 0, y: 0, width: 350, height: deck + 99))
+          Image("HarborBackdrop"), in: CGRect(origin: .zero, size: size))
+        context.translateBy(x: (size.width - 350 * scale) / 2, y: 0)
+        context.scaleBy(x: scale, y: scale)
         HarborArt.airship(&context, x: shipX, y: deck, clock: 0)
         var cargoY = 0.0
         for item in stack {
@@ -521,45 +492,34 @@ struct ManifestCard: View {
         }
         HarborArt.balanceGauge(&context, x: shipX, y: deck + 16, balance: DockRules.balance(stack))
       }
-      .aspectRatio(350.0 / (129 + max(100, HarborArt.stackHeight(stack) * 0.72)), contentMode: .fit)
+      .aspectRatio(
+        350.0 / (condensed ? 230 : 129 + max(100, HarborArt.stackHeight(stack) * 0.72)),
+        contentMode: .fit
+      )
       .accessibilityLabel("Cargo tower with \(stack.count) treasures on the Small Wonder")
-      HStack(alignment: .firstTextBaseline) {
-        VStack(alignment: .leading, spacing: 3) {
-          Text(score.formatted()).font(.custom("Baskerville", size: 39))
-          eyebrow(practice ? "PRACTICE POINTS" : "SALVAGE POINTS")
-        }
-        Spacer()
-        VStack(alignment: .trailing, spacing: 3) {
-          Text("\(stack.reduce(0) { $0 + Int($1.kind.weight) }) t")
-            .font(.custom("Baskerville", size: 31))
-          eyebrow("\(stack.count) TREASURES ABOARD")
-        }
-      }
-      Rectangle().fill(HarborPalette.rule).frame(height: 0.7)
-      VStack(alignment: .leading, spacing: 7) {
+      VStack(alignment: .leading, spacing: 0) {
         ForEach(stack) { item in
-          HStack {
+          HStack(spacing: 12) {
             Image(item.kind.assetName).resizable().scaledToFit()
-              .frame(width: 28, height: 22).accessibilityHidden(true)
+              .frame(width: 32, height: 28).accessibilityHidden(true)
             Text(item.kind.title)
             Spacer()
-            Text("\(Int(item.kind.weight)) t").monospaced()
+            Text("\(Int(item.kind.weight)) t").monospacedDigit()
           }
-          .font(.system(size: 12))
+          .font(HarborType.body)
+          .padding(.vertical, HarborSpacing.row)
+          .overlay(alignment: .bottom) {
+            Rectangle().fill(HarborPalette.rule).frame(height: 0.5)
+          }
         }
         if stack.isEmpty {
-          Text("An empty deck. A fresh start.").font(.system(size: 13))
+          Text("No cargo aboard. Try again and catch your first lift.")
+            .font(HarborType.body)
         }
       }
-      Text(reason).font(.custom("Baskerville-Italic", size: 16))
-        .foregroundStyle(HarborPalette.muted)
-        .multilineTextAlignment(.center).padding(.top, 2)
-      eyebrow("SKYHOOK SALVAGE  /  \(title.uppercased())")
-        .padding(.top, 3)
+      Text("Skyhook Salvage · Port Marlow")
+        .font(HarborType.caption).foregroundStyle(HarborPalette.muted)
     }
-    .padding(18)
-    .background(HarborPalette.paper)
-    .overlay(Rectangle().strokeBorder(HarborPalette.rule, lineWidth: 0.7))
     .foregroundStyle(HarborPalette.ink)
   }
 }
@@ -587,9 +547,9 @@ struct LiftDiagram: View {
       for x in [107.0, 220.0] {
         HarborArt.label(&context, "→", x: x, y: 40, size: 17)
       }
-      HarborArt.label(&context, "CATCH", x: 53, y: 74, size: 7)
-      HarborArt.label(&context, "HOIST", x: 166, y: 74, size: 7)
-      HarborArt.label(&context, "LAND", x: 277, y: 74, size: 7)
+      HarborArt.label(&context, "Catch", x: 53, y: 74, size: 11)
+      HarborArt.label(&context, "Hoist", x: 166, y: 74, size: 11)
+      HarborArt.label(&context, "Land", x: 277, y: 74, size: 11)
     }
     .accessibilityLabel("Catch cargo on the left dock, hoist across, then land on the ship")
   }
@@ -604,12 +564,6 @@ struct NativeShare: UIViewControllerRepresentable {
   func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
-func eyebrow(_ text: String) -> some View {
-  Text(text)
-    .font(.system(size: 8, weight: .medium))
-    .tracking(1.2)
-}
-
 func primaryButton(
   _ title: String, symbol: String, id: String, action: @escaping () -> Void
 ) -> some View {
@@ -617,18 +571,14 @@ func primaryButton(
     HStack {
       Text(title)
       Spacer()
-      Image(systemName: symbol).font(.system(size: 14, weight: .regular))
+      Image(systemName: symbol).font(HarborType.body.weight(.semibold))
     }
-    .font(.custom("Baskerville", size: 21))
-    .padding(.horizontal, 20)
+    .font(HarborType.action)
+    .padding(.horizontal, HarborSpacing.section)
+    .padding(.vertical, HarborSpacing.row)
     .frame(maxWidth: .infinity, minHeight: 54)
-    .foregroundStyle(HarborPalette.cream)
-    .background(HarborPalette.ink, in: RoundedRectangle(cornerRadius: 3))
-    .overlay(
-      RoundedRectangle(cornerRadius: 1).strokeBorder(
-        HarborPalette.cream.opacity(0.2), lineWidth: 0.7
-      )
-      .padding(4))
+    .foregroundStyle(HarborPalette.surface)
+    .background(HarborPalette.ink, in: RoundedRectangle(cornerRadius: 8))
   }
   .buttonStyle(HarborButtonStyle())
   .accessibilityIdentifier(id)
@@ -638,19 +588,21 @@ func iconButton(
   _ symbol: String, label: String, id: String, action: @escaping () -> Void
 ) -> some View {
   Button(action: action) {
-    Image(systemName: symbol).font(.system(size: 14, weight: .regular))
+    Image(systemName: symbol).font(HarborType.body.weight(.semibold))
       .frame(width: 44, height: 44)
   }
+  .buttonStyle(HarborButtonStyle())
   .accessibilityLabel(label)
   .accessibilityIdentifier(id)
 }
 
 struct HarborButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var enabled
+  @Environment(\.accessibilityReduceMotion) private var reducedMotion
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .opacity(enabled ? (configuration.isPressed ? 0.8 : 1) : 0.55)
-      .scaleEffect(configuration.isPressed ? 0.98 : 1)
+      .opacity(enabled ? (configuration.isPressed ? 0.7 : 1) : 0.35)
+      .scaleEffect(configuration.isPressed && !reducedMotion ? 0.98 : 1)
   }
 }
 

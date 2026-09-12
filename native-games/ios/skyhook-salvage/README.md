@@ -37,8 +37,10 @@ swift scripts/GenerateIcon.swift
 ```
 
 The first script isolates the six illustrated sprites from the source atlas.
-The interface uses Baskerville, fine brass rules and a custom adjustable crane
-trim dial; the same cargo artwork appears in play, onboarding and shared receipts.
+The interface uses a shared native sans-serif type scale, cool harbor-gray surfaces
+and a custom adjustable brass crane-trim dial. Cargo previews introduce each contract;
+start and replay actions stay within reach above the safe area. The same cargo
+artwork appears in play, onboarding and shared manifests.
 
 ## Play
 
