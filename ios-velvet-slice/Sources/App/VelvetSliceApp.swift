@@ -186,9 +186,7 @@ struct RootView: View {
                 }.frame(height: 3).padding(.horizontal, 30).padding(.top, 10)
             }
             ZStack {
-                SpriteView(scene: store.scene, isPaused: store.paused, options: [.allowsTransparency])
-                    .accessibilityLabel("Fruit slicing playfield. Swipe across airborne fruit. Avoid red-ringed bombs.")
-                    .accessibilityIdentifier("playfield")
+                Playfield(store: store)
                 if store.countdown > 0 {
                     VStack(spacing: 14) {
                         eyebrow("FIND YOUR FLOW")
@@ -442,6 +440,19 @@ struct RootView: View {
             .background(.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 14))
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(gold.opacity(0.25)))
             .buttonStyle(.plain)
+    }
+}
+
+struct Playfield: View {
+    @ObservedObject var store: GameStore
+    @State private var revealed = false
+
+    var body: some View {
+        SpriteView(scene: store.scene, isPaused: store.paused, options: [.allowsTransparency])
+            .opacity(revealed ? 1 : 0)
+            .onAppear { withAnimation(.easeIn(duration: 0.4).delay(0.15)) { revealed = true } }
+            .accessibilityLabel("Fruit slicing playfield. Swipe across airborne fruit. Avoid red-ringed bombs.")
+            .accessibilityIdentifier("playfield")
     }
 }
 
