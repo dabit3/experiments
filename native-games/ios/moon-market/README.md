@@ -59,7 +59,7 @@ exactly-once awards.
 ## Play
 
 - Begin with **90 credits**, **12 crate spaces**, and a goal of **600 credits**.
-- Each produce tag reads **Buy → Sell**. `Want` is exactly how many customers
+- Each produce tag shows **Buy** and **Sell** prices. `Want` is exactly how many customers
   will buy tonight. Tap **+ / −** to edit the order before committing.
 - **Open market** buys the order, sells held and purchased stock up to demand,
   and pays 5 credits rent. The preview includes all three, and orders always

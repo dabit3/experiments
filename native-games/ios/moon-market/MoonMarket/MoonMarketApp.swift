@@ -194,6 +194,12 @@ struct MarketRoot: View {
   }
 
   private var market: some View {
+    GeometryReader { geometry in
+      marketContent(compact: geometry.size.height < 700)
+    }
+  }
+
+  private func marketContent(compact: Bool) -> some View {
     VStack(spacing: 0) {
       HStack {
         VStack(alignment: .leading, spacing: 4) {
@@ -231,9 +237,11 @@ struct MarketRoot: View {
               caption: store.run.cash >= Run.goal ? "LEGEND GOAL" : "FINAL GOAL")
           }
           .padding(.horizontal, 24)
-          BazaarScene(flourishing: store.run.cash >= Run.goal)
-            .frame(height: 158)
-            .padding(.vertical, -8)
+          if !compact {
+            BazaarScene(flourishing: store.run.cash >= Run.goal, fitted: true)
+              .frame(height: 158)
+              .padding(.vertical, -8)
+          }
           VStack(alignment: .leading, spacing: 4) {
             HStack {
               Image(systemName: "waveform.path").foregroundStyle(Palette.orange)
@@ -326,14 +334,18 @@ struct MarketRoot: View {
           Text(produce.name).font(Lettering.display(21))
             .lineLimit(1).minimumScaleFactor(0.8)
           if held > 0 {
-            Text("+\(held) held").font(.system(size: 9, weight: .bold)).foregroundStyle(
-              Palette.mint)
+            Text("+\(held) held").font(.system(size: 12, weight: .medium)).foregroundStyle(
+              Palette.mint
+            )
+            .lineLimit(1).minimumScaleFactor(0.8)
           }
         }
-        Text("Buy \(quote.buy)  →  Sell \(quote.sell)")
-          .font(.system(size: 10, weight: .medium, design: .monospaced))
-          .foregroundStyle(Palette.orange)
-          .fixedSize(horizontal: true, vertical: false)
+        HStack(spacing: 10) {
+          Text("Buy \(quote.buy)").foregroundStyle(Palette.orange)
+          Text("Sell \(quote.sell)").foregroundStyle(Palette.cream)
+        }
+        .font(.system(size: 12, weight: .medium))
+        .monospacedDigit()
         Text("\(quote.demand) want tonight")
           .font(.system(size: 12, weight: .medium))
           .foregroundStyle(Palette.mint)
@@ -342,7 +354,7 @@ struct MarketRoot: View {
             ? "\(held + quantity - quote.demand) will carry over"
             : "\(max(0, quote.demand - held - quantity)) more can sell tonight"
         )
-        .font(.system(size: 10))
+        .font(.system(size: 12))
         .foregroundStyle(Palette.muted)
       }
       .frame(maxWidth: .infinity, alignment: .leading)
@@ -741,7 +753,16 @@ struct MarketRoot: View {
           Text("Moon Market").font(Lettering.display(38)).tracking(-1)
             .foregroundStyle(Palette.cream)
           Image(store.run.won ? "BazaarThriving" : "Bazaar")
-            .resizable().scaledToFill().frame(width: 330, height: 180).clipped()
+            .resizable().scaledToFit().frame(width: 330, height: 220)
+            .mask {
+              LinearGradient(
+                stops: [
+                  .init(color: .clear, location: 0),
+                  .init(color: .white, location: 0.09),
+                  .init(color: .white, location: 0.9),
+                  .init(color: .clear, location: 1),
+                ], startPoint: .top, endPoint: .bottom)
+            }
           ReceiptView(run: store.run)
           Text("Small stall. Infinite possibility.")
             .font(Lettering.italic(17)).foregroundStyle(Palette.muted)
@@ -794,18 +815,34 @@ struct ReceiptView: View {
         Text("\(run.profit >= 0 ? "+" : "")\(run.profit) cr").bold()
       }.font(.system(size: 13, design: .monospaced))
       Rectangle().fill(Palette.ink.opacity(0.2)).frame(height: 0.5)
-      HStack(alignment: .bottom, spacing: 8) {
+      HStack {
+        Text("NIGHTLY NET").font(Lettering.label(8)).tracking(1)
+        Spacer()
+        Text("CREDITS · + GAIN / − LOSS").font(.system(size: 7, design: .monospaced))
+      }
+      HStack(alignment: .top, spacing: 6) {
         ForEach(Array(run.history.enumerated()), id: \.offset) { index, settlement in
-          VStack(spacing: 4) {
-            Rectangle()
-              .fill(Palette.ink.opacity(settlement.net > 0 ? 0.72 : 0.25))
-              .frame(height: CGFloat(max(3, min(30, abs(settlement.net) / 5))))
-            Text(String(index + 1)).font(.system(size: 7, design: .monospaced))
-          }.frame(maxWidth: .infinity)
+          let height =
+            CGFloat(abs(settlement.net))
+            / CGFloat(max(1, run.history.map { abs($0.net) }.max() ?? 1)) * 21
+          VStack(spacing: 0) {
+            Rectangle().fill(Palette.ink.opacity(0.7))
+              .frame(height: settlement.net > 0 ? max(2, height) : 0)
+              .frame(height: 21, alignment: .bottom)
+            Rectangle().fill(Palette.ink.opacity(0.3)).frame(height: 0.5)
+            Rectangle().fill(Palette.ink.opacity(0.35))
+              .frame(height: settlement.net < 0 ? max(2, height) : 0)
+              .frame(height: 21, alignment: .top)
+            Text("\(settlement.net >= 0 ? "+" : "")\(settlement.net)")
+              .font(.system(size: 8, weight: .semibold, design: .monospaced))
+              .padding(.top, 3)
+            Text(String(index + 1)).font(.system(size: 7, design: .monospaced)).padding(.top, 3)
+          }
+          .frame(maxWidth: .infinity)
+          .accessibilityElement(children: .ignore)
+          .accessibilityLabel("Night \(index + 1), net \(settlement.net) credits")
         }
       }
-      .frame(height: 42, alignment: .bottom)
-      .accessibilityLabel("Eight-night trading history")
       HStack {
         Text("\(run.history.reduce(0) { $0 + $1.customers }) CUSTOMERS")
         Spacer()

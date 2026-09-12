@@ -70,6 +70,7 @@ struct ProduceArt: View {
 struct BazaarScene: View {
   var flourishing = false
   var celebrating = false
+  var fitted = false
   @Environment(\.accessibilityReduceMotion) private var reducedMotion
   @Environment(\.scenePhase) private var scenePhase
 
@@ -78,7 +79,7 @@ struct BazaarScene: View {
       ZStack {
         Image(flourishing ? "BazaarThriving" : "Bazaar")
           .resizable()
-          .scaledToFill()
+          .aspectRatio(contentMode: fitted ? .fit : .fill)
           .frame(width: geometry.size.width, height: geometry.size.height)
           .clipped()
         TimelineView(
