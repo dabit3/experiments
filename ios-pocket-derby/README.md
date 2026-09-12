@@ -40,6 +40,8 @@ xcodebuild -project PocketDerby.xcodeproj -scheme PocketDerby \
 
 The 12 deterministic tests cover heading/momentum, car-ball impulses, goal boundaries, kickoff resets, clock expiry, paused physics, boost capacity, braking, AI attack, rounded-corner deflection, recovery from a pinned corner ball, and record serialization. Rendering uses SpriteKit; presentation uses SwiftUI. Physics run at a fixed 120 Hz with bounded frame catch-up.
 
+Launching with the `-autostart` argument (`xcrun simctl launch <udid> games.pocketderby.rooftop -autostart`) skips the clubhouse and kicks off immediately, which is handy for gameplay screenshots. Arena artwork is painted at runtime with CoreGraphics (`Sources/Paint.swift`) and the SwiftUI design tokens live in `Sources/Theme.swift`.
+
 The original app icon is reproducible:
 
 ```sh

@@ -41,6 +41,9 @@ final class GameStore: ObservableObject {
         } else {
             record = MatchRecord()
         }
+        if CommandLine.arguments.contains("-autostart") {
+            start()
+        }
     }
 
     func start() {
