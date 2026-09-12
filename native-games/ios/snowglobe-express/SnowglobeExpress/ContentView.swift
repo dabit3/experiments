@@ -407,15 +407,7 @@ struct ContentView: View {
               Divider()
             }
           case .settings:
-            Text("Settle into the snowfall.").font(.system(size: 15))
-            Toggle("Delivery chime", isOn: $sound).accessibilityIdentifier("sound-toggle")
-            Toggle("Gentle haptics", isOn: $haptics).accessibilityIdentifier("haptics-toggle")
-            Text(
-              "Motion follows your iPhone’s Reduce Motion setting. Your stars and current route stay on this device."
-            )
-            .font(.system(size: 13)).foregroundStyle(Winter.ink.opacity(0.75))
-            Button("How to play") { self.panel = .tutorial }
-              .frame(minHeight: 44)
+            SettingsControls { self.panel = .tutorial }
           case .tutorial:
             tutorialStep(
               "1", title: "The bakery gets the first parcel.",
@@ -641,6 +633,28 @@ struct ContentView: View {
       text:
         "A little warmth, delivered. \(journey.score) points in Snowglobe Express · \(journey.puzzle.name)."
     )
+  }
+}
+
+private struct SettingsControls: View {
+  @AppStorage("village.sound") private var sound = true
+  @AppStorage("village.haptics") private var haptics = true
+  let showTutorial: () -> Void
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 20) {
+      Text("Settle into the snowfall.").font(.system(size: 15))
+      Toggle("Delivery chime", isOn: $sound).accessibilityIdentifier("sound-toggle")
+      Toggle("Gentle haptics", isOn: $haptics).accessibilityIdentifier("haptics-toggle")
+      Text(
+        "Motion follows your iPhone’s Reduce Motion setting. Your stars and current route stay on this device."
+      )
+      .font(.system(size: 13)).foregroundStyle(Winter.ink.opacity(0.75))
+      Button("How to play", action: showTutorial)
+        .frame(minHeight: 44)
+        .accessibilityIdentifier("settings-tutorial")
+    }
+    .toggleStyle(.switch)
   }
 }
 

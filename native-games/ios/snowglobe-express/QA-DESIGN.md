@@ -70,5 +70,48 @@ one identifiable postcard payload passed directly into `sheet(item:)`, so the
 sheet content receives the image/text responsible for presenting it. A rendering
 failure now reports an error while retaining the result.
 
-The final retest will cover native sharing, failure/retry, persistence/settings,
-daily play and large-screen fit, and produce a new annotated recording.
+The retest verified first-share and reopen, plus Save to Files. The exported PNG
+opened in Files with the illuminated village and correct score, fuel and stars.
+Failure/retry, replay, save-home/Continue and actual termination/relaunch passed.
+Journey, three accumulated stars and settings persisted. Cranberry lane and daily
+play accepted movement; home/tutorial/gameplay/result/share fit on Pro Max.
+Reduce Motion preserved correct Drive/Undo state.
+
+Ordinary app switch taps did not visibly change state on either device, although
+thumb drags did. System Settings switches accepted the same ordinary taps. The
+settings controls were moved into a dedicated View owning its own `@AppStorage`
+observation and bindings, rather than reading the parent properties only inside
+the sheet closure. A focused native regression will verify this correction.
+
+## Shell checks
+
+Run from this game's directory on the native VM:
+
+```sh
+xcrun swift-format lint --strict -r SnowglobeExpress SnowglobeExpressTests Tools/GenerateAssets.swift
+
+xcodebuild -project SnowglobeExpress.xcodeproj -scheme SnowglobeExpress \
+  -configuration Debug -sdk iphonesimulator \
+  -destination 'generic/platform=iOS Simulator' \
+  -derivedDataPath /Users/devin/snowglobe-review-build CODE_SIGNING_ALLOWED=NO build
+
+xcodebuild -project SnowglobeExpress.xcodeproj -scheme SnowglobeExpress \
+  -configuration Release -sdk iphonesimulator \
+  -destination 'generic/platform=iOS Simulator' \
+  -derivedDataPath /Users/devin/snowglobe-review-build CODE_SIGNING_ALLOWED=NO build
+
+xcodebuild -project SnowglobeExpress.xcodeproj -scheme SnowglobeExpress \
+  -configuration Debug \
+  -destination 'platform=iOS Simulator,id=97EB512B-0C2B-41C5-BAA0-C9C96F1BCB9D' \
+  -derivedDataPath DerivedData CODE_SIGNING_ALLOWED=NO test
+
+ruby -c Tools/generate-project.rb
+plutil -lint SnowglobeExpress/Info.plist
+git diff --check
+```
+
+All passed. The final sharing correction was built in both configurations.
+XCTest reported 9 tests and 0 failures; the rules and persistence implementation
+has not changed since that run. Build checks also typecheck the SwiftUI code.
+Use a UUID from `xcrun simctl list devices available` on another VM.
+PR checks report no configured CI jobs; these are local native verification results.
