@@ -47,6 +47,8 @@ public struct Game: Sendable {
   public internal(set) var events: [GameEvent] = []
   public internal(set) var lastBonus = 0
   public internal(set) var bonusTime = 0.0
+  public internal(set) var hitTime = 0.0
+  public internal(set) var lastHit: Runner?
   private var random: UInt64
   private var beforePause: GamePhase = .playing
   public var scatter: Bool { elapsed.truncatingRemainder(dividingBy: 27) < 7 }
@@ -96,8 +98,10 @@ public struct Game: Sendable {
 
   public mutating func update(_ delta: Double) {
     events = []
-    guard phase != .paused && phase != .over && phase != .cleared else { return }
+    guard phase != .paused else { return }
     let dt = min(max(delta, 0), 1.0 / 30)
+    hitTime = max(0, hitTime - dt)
+    guard phase != .over && phase != .cleared else { return }
     if phase == .ready || phase == .lifeLost {
       phaseTime -= dt
       if phaseTime <= 0 { phase = .playing }
@@ -250,13 +254,15 @@ public struct Game: Sendable {
         events.append(.rival(lastBonus))
       } else if grace <= 0 {
         lives -= 1
+        lastHit = player
+        hitTime = 1.1
         events.append(.hit)
         if lives == 0 {
           phase = .over
         } else {
           resetActors()
           phase = .lifeLost
-          phaseTime = 1.6
+          phaseTime = 2.3
         }
         return
       }

@@ -112,7 +112,11 @@ struct ArcadeView: View {
           titleView(size: geometry.size)
         }
         if arcade.inGame && arcade.game.phase == .paused { pauseOverlay }
-        if arcade.inGame && [.over, .cleared].contains(arcade.game.phase) { resultOverlay }
+        if arcade.inGame && [.over, .cleared].contains(arcade.game.phase)
+          && arcade.game.hitTime < 0.3
+        {
+          resultOverlay
+        }
         if arcade.showGuide { guideOverlay }
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -205,6 +209,16 @@ struct ArcadeView: View {
       arcade.selectedMaze = number
     } label: {
       VStack(alignment: .leading, spacing: 7) {
+        HStack {
+          MazeThumbnail(index: number - 1)
+            .frame(width: 48, height: 48)
+            .accessibilityHidden(true)
+          Spacer()
+          if arcade.selectedMaze == number {
+            Image(systemName: "checkmark.circle.fill").foregroundStyle(Palette.pearl)
+              .font(.system(size: 17))
+          }
+        }
         micro(label, color: arcade.selectedMaze == number ? Palette.blue : Palette.muted)
         Text(name).font(.system(size: 12, weight: .bold, design: .rounded))
           .foregroundStyle(arcade.selectedMaze == number ? Palette.pearl : Palette.muted)
@@ -224,7 +238,7 @@ struct ArcadeView: View {
   }
 
   private func playView(size: CGSize) -> some View {
-    let boardWidth = min(size.width - 28, max(240, (size.height - 246) * 19 / 21))
+    let boardWidth = min(size.width - 28, max(240, (size.height - 335) * 19 / 21))
     return VStack(spacing: 0) {
       HStack(alignment: .center) {
         VStack(alignment: .leading, spacing: 2) {
@@ -255,8 +269,15 @@ struct ArcadeView: View {
         VStack(alignment: .trailing, spacing: 5) {
           micro("BEST  \(arcade.best.formatted())")
           HStack(spacing: 7) {
-            ForEach(0..<arcade.game.lives, id: \.self) { _ in
-              CometShape(mouth: 0.65).fill(Palette.pearl).frame(width: 14, height: 14)
+            ForEach(0..<max(3, arcade.game.lives), id: \.self) { index in
+              CometShape(mouth: 0.65)
+                .fill(
+                  index < arcade.game.lives
+                    ? Palette.pearl
+                    : arcade.game.hitTime > 0 && index == arcade.game.lives
+                      ? Palette.rivals[0] : Palette.muted.opacity(0.18)
+                )
+                .frame(width: 17, height: 17)
             }
           }
           .accessibilityLabel("\(arcade.game.lives) lives")
@@ -265,15 +286,21 @@ struct ArcadeView: View {
       ZStack {
         MazeBoard(game: arcade.game, reducedMotion: reducedMotion)
           .aspectRatio(19.0 / 21, contentMode: .fit)
-        if arcade.game.phase == .ready || arcade.game.phase == .lifeLost {
+        if arcade.game.phase == .ready
+          || (arcade.game.phase == .lifeLost && arcade.game.hitTime < 0.4)
+        {
           VStack(spacing: 8) {
             micro(
-              arcade.game.phase == .lifeLost ? "KEEP YOUR GLOW" : "THE NIGHT IS YOURS",
+              arcade.game.phase == .lifeLost
+                ? "\(arcade.game.lives) LIVES LEFT" : "THE NIGHT IS YOURS",
               color: Palette.pearl)
             Text(arcade.game.phase == .lifeLost ? "Try another path" : "Ready, comet?")
               .font(.system(size: 26, weight: .bold, design: .rounded))
-            Text("Swipe to turn · tap arrows to steer")
-              .font(.system(size: 12)).foregroundStyle(Palette.muted)
+            Text(
+              arcade.game.phase == .lifeLost
+                ? "A fresh start. Find a new route." : "Swipe to turn · tap arrows to steer"
+            )
+            .font(.system(size: 12)).foregroundStyle(Palette.muted)
           }
           .padding(22).background(Palette.ink.opacity(0.94), in: RoundedRectangle(cornerRadius: 18))
         }
@@ -292,28 +319,42 @@ struct ArcadeView: View {
         "Maze. \(arcade.game.remaining) lights remaining. \(arcade.game.frightened > 0 ? "Rivals frightened" : "Rivals chasing")."
       )
       .accessibilityIdentifier("mazeBoard")
-      HStack(spacing: 8) {
-        Circle().fill(arcade.game.frightened > 0 ? Palette.mint : Palette.blue).frame(
-          width: 5, height: 5)
-        micro(
-          arcade.game.frightened > 0
-            ? "CHASE THEM  ·  \(Int(ceil(arcade.game.frightened)))s"
-            : "\(arcade.game.remaining) LIGHTS LEFT",
-          color: arcade.game.frightened > 0 ? Palette.mint : Palette.muted)
-        Spacer()
-        if arcade.game.bonusTime > 0 {
-          micro("+\(arcade.game.lastBonus)  /  \(arcade.game.combo)×", color: Palette.mint)
-        } else {
-          micro("SWIPE OR TAP", color: Palette.muted.opacity(0.7))
+      VStack(spacing: 8) {
+        HStack(spacing: 8) {
+          Image(systemName: arcade.game.frightened > 0 ? "sparkles" : "circle.dotted")
+          Text(arcade.game.frightened > 0 ? "CHASE THEM" : "\(arcade.game.remaining) LIGHTS LEFT")
+            .tracking(1)
+          Spacer()
+          Text(
+            arcade.game.frightened > 0 ? "\(Int(ceil(arcade.game.frightened)))s" : "10 pts / light"
+          )
+          .monospacedDigit()
         }
-      }.frame(width: boardWidth - 16).padding(.top, 12)
-      Spacer(minLength: 5)
-      HStack(spacing: 12) {
-        directionButton(.left, symbol: "arrow.left")
-        directionButton(.up, symbol: "arrow.up")
-        directionButton(.down, symbol: "arrow.down")
-        directionButton(.right, symbol: "arrow.right")
-      }.padding(.vertical, 8)
+        .font(.system(size: 12, weight: .bold, design: .monospaced))
+        .foregroundStyle(arcade.game.frightened > 0 ? Palette.mint : Palette.muted)
+        GeometryReader { meter in
+          ZStack(alignment: .leading) {
+            Capsule().fill(Palette.blue.opacity(0.12))
+            Capsule().fill(arcade.game.frightened > 0 ? Palette.mint : Palette.blue)
+              .frame(
+                width: meter.size.width
+                  * (arcade.game.frightened > 0
+                    ? min(1, arcade.game.frightened / 10)
+                    : Double(arcade.game.collected)
+                      / Double(arcade.game.maze.pellets.count + arcade.game.maze.powers.count)))
+          }
+        }.frame(height: 3)
+      }.frame(width: boardWidth - 16).padding(.top, 13)
+      Spacer(minLength: 8)
+      ZStack {
+        Circle().stroke(Palette.blue.opacity(0.16), lineWidth: 1).frame(width: 64, height: 64)
+        Image(systemName: "sparkle").font(.system(size: 16)).foregroundStyle(
+          Palette.blue.opacity(0.5))
+        directionButton(.left, symbol: "arrow.left").offset(x: -82)
+        directionButton(.up, symbol: "arrow.up").offset(y: -45)
+        directionButton(.down, symbol: "arrow.down").offset(y: 45)
+        directionButton(.right, symbol: "arrow.right").offset(x: 82)
+      }.frame(width: 240, height: 143).padding(.top, 4)
     }.padding(.bottom, 8)
   }
 
@@ -521,7 +562,7 @@ struct ArcadeView: View {
   }
 
   private func micro(_ text: String, color: Color = Palette.muted) -> some View {
-    Text(text).font(.system(size: 9, weight: .bold, design: .monospaced)).tracking(1.1)
+    Text(text).font(.system(size: 10, weight: .bold, design: .monospaced)).tracking(0.8)
       .foregroundStyle(color)
   }
 }

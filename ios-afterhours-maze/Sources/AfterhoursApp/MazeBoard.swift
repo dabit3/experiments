@@ -120,6 +120,29 @@ struct MazeBoard: View {
           )
           .foregroundStyle(Palette.mint), at: CGPoint(x: point.x, y: point.y - cell))
       }
+      if game.hitTime > 0, let hit = game.lastHit {
+        let position = hit.position(width: game.maze.width)
+        let origin = CGPoint(x: (position.x + 0.5) * cell, y: (position.y + 0.5) * cell)
+        let progress = 1 - game.hitTime / 1.1
+        let radius = cell * (0.5 + progress * 2.5)
+        context.fill(
+          Path(roundedRect: bounds, cornerRadius: 15),
+          with: .color(Palette.rivals[0].opacity(game.hitTime * 0.07)))
+        context.stroke(
+          Path(
+            ellipseIn: CGRect(
+              x: origin.x - radius, y: origin.y - radius,
+              width: radius * 2, height: radius * 2)),
+          with: .color(Palette.rivals[0].opacity(game.hitTime)),
+          lineWidth: 2)
+        for index in 0..<8 {
+          let angle = Double(index) * .pi / 4
+          let point = CGPoint(x: origin.x + cos(angle) * radius, y: origin.y + sin(angle) * radius)
+          context.fill(
+            Path(ellipseIn: CGRect(x: point.x - 2, y: point.y - 2, width: 4, height: 4)),
+            with: .color(Palette.pearl.opacity(game.hitTime)))
+        }
+      }
     }
     .clipShape(RoundedRectangle(cornerRadius: 16))
     .overlay(RoundedRectangle(cornerRadius: 16).stroke(Palette.blue.opacity(0.22), lineWidth: 1))
@@ -201,6 +224,24 @@ struct MazeBoard: View {
             x: -cell * 0.2 + Double(index) * cell * 0.1, y: cell * (index % 2 == 0 ? 0.23 : 0.16)))
       }
       context.stroke(mouth, with: .color(Palette.ink), lineWidth: 1)
+    }
+  }
+}
+
+struct MazeThumbnail: View {
+  let index: Int
+  var body: some View {
+    Canvas { context, size in
+      let maze = Maze(index: index)
+      let cell = size.width / CGFloat(maze.width)
+      for tile in maze.walls {
+        context.fill(
+          Path(
+            roundedRect: CGRect(
+              x: CGFloat(tile.x) * cell, y: CGFloat(tile.y) * cell,
+              width: cell * 0.8, height: cell * 0.8), cornerRadius: 0.4),
+          with: .color(index == 0 ? Palette.blue : Palette.rivals[1]))
+      }
     }
   }
 }
