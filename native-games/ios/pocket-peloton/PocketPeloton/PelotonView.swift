@@ -7,8 +7,7 @@ struct PelotonView: View {
   @Environment(\.scenePhase) private var scenePhase
   @Environment(\.accessibilityReduceMotion) private var reducedMotion
   @AppStorage("tapSprint") private var tapSprint = false
-  @State private var shareImage: UIImage?
-  @State private var sharing = false
+  @State private var sharePayload: RaceShare?
   private let clock = Timer.publish(every: 1.0 / 30.0, on: .main, in: .common).autoconnect()
 
   var body: some View {
@@ -26,14 +25,8 @@ struct PelotonView: View {
       }
       .foregroundStyle(Ink.navy)
       .sheet(isPresented: $store.showSettings) { settings }
-      .sheet(isPresented: $sharing) {
-        if let result = store.race.result, let shareImage {
-          ShareSheet(
-            image: shareImage,
-            text:
-              "\(result.course.title) — \(result.timeLabel), \(ordinal(result.rank)) place. \(result.gapLabel) to the fastest rival. Pocket Peloton."
-          )
-        }
+      .sheet(item: $sharePayload) { payload in
+        ShareSheet(image: payload.image, text: payload.text)
       }
       .onReceive(clock) { store.tick($0) }
       .onChange(of: scenePhase) { _, phase in
@@ -90,6 +83,7 @@ struct PelotonView: View {
           Spacer()
           Text("SEA AIR.\nRACE LEGS.")
             .font(.system(size: 9, weight: .heavy)).tracking(1.2)
+            .fixedSize()
             .rotationEffect(.degrees(-90)).frame(width: 25, height: 94)
         }
         Spacer(minLength: 10)
@@ -143,7 +137,7 @@ struct PelotonView: View {
 
   private var gameplay: some View {
     ZStack {
-      CoastArtwork(race: store.race, reducedMotion: reducedMotion)
+      CoastArtwork(race: store.race, reducedMotion: reducedMotion, riderLane: store.displayLane)
         .ignoresSafeArea()
         .gesture(
           DragGesture(minimumDistance: 24).onEnded { value in
@@ -217,7 +211,7 @@ struct PelotonView: View {
     if store.race.isBend {
       return "BEND  ·  \(store.race.insideLane == 0 ? "LEFT" : "RIGHT") LINE IS QUICKER"
     }
-    return "FIND A WHEEL  ·  HOLD TO SPRINT"
+    return "FIND A WHEEL  ·  \(tapSprint ? "TAP" : "HOLD") TO SPRINT"
   }
 
   private var statusIcon: String {
@@ -263,7 +257,7 @@ struct PelotonView: View {
         }
         .accessibilityLabel(
           tapSprint
-            ? (store.race.sprintHeld ? "Stop sprinting" : "Start sprinting") : "Hold to sprint"
+            ? (store.race.sprintHeld ? "Cancel sprint" : "Start sprinting") : "Hold to sprint"
         )
         .accessibilityIdentifier("sprintButton")
         laneButton(1)
@@ -282,7 +276,9 @@ struct PelotonView: View {
   private var sprintLabel: some View {
     HStack(spacing: 7) {
       Image(systemName: "bolt.fill")
-      Text(store.race.sprintHeld ? "SPRINTING" : "SPRINT").tracking(1.5)
+      Text(store.race.exhausted ? "RECOVERING" : (store.race.isSprinting ? "SPRINTING" : "SPRINT"))
+        .tracking(1)
+        .lineLimit(1).minimumScaleFactor(0.8)
     }
     .font(.system(size: 15, weight: .black))
     .frame(maxWidth: .infinity).frame(height: 56)
@@ -402,8 +398,13 @@ struct PelotonView: View {
             let renderer = ImageRenderer(
               content: RacePoster(result: result).frame(width: 600, height: 820))
             renderer.scale = 2
-            shareImage = renderer.uiImage
-            sharing = shareImage != nil
+            if let image = renderer.uiImage {
+              sharePayload = RaceShare(
+                image: image,
+                text:
+                  "\(result.course.title) — \(result.timeLabel), \(ordinal(result.rank)) place. \(result.gapLabel) to the fastest rival. Pocket Peloton."
+              )
+            }
           } label: {
             Label("Share poster", systemImage: "square.and.arrow.up")
               .font(.system(size: 14, weight: .bold)).frame(maxWidth: .infinity, minHeight: 48)
@@ -557,6 +558,12 @@ struct RacePoster: View {
       }
     }
   }
+}
+
+private struct RaceShare: Identifiable {
+  let id = UUID()
+  let image: UIImage
+  let text: String
 }
 
 struct ShareSheet: UIViewControllerRepresentable {

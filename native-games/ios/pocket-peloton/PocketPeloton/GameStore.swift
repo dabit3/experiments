@@ -7,6 +7,7 @@ import UIKit
 final class GameStore: ObservableObject {
   @Published var course: Course = .riviera
   @Published var race = RaceState(course: .riviera)
+  @Published var displayLane: Double = 1
   @Published var screen: Screen = .home
   @Published var paused = false
   @Published var showSettings = false
@@ -37,6 +38,7 @@ final class GameStore: ObservableObject {
 
   func start() {
     race = RaceState(course: course)
+    displayLane = 1
     paused = false
     lastTick = nil
     screen = .racing
@@ -56,7 +58,9 @@ final class GameStore: ObservableObject {
     guard screen == .racing, !paused, !showGuide, let previous = lastTick else { return }
     let previousCollision = race.collisions
     let previousReady = race.attackReady
-    race.step(date.timeIntervalSince(previous))
+    let delta = min(0.1, date.timeIntervalSince(previous))
+    race.step(delta)
+    displayLane += (Double(race.lane) - displayLane) * min(1, delta * 16)
     if race.collisions > previousCollision { pulse(frequency: 180) }
     if !previousReady && race.attackReady { pulse(frequency: 720) }
     if let result = race.result {

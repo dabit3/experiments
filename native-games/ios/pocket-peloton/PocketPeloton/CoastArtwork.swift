@@ -15,12 +15,13 @@ struct CoastArtwork: View {
   var race: RaceState
   var hero = false
   var reducedMotion = false
+  var riderLane: Double = 1
 
   var body: some View {
     Canvas { context, size in
       let w = size.width
       let h = size.height
-      let playerY = h * (hero ? 0.65 : 0.68)
+      let playerY = h * (hero ? 0.61 : 0.59)
       let scale = hero ? 4.5 : 5.0
       let travelled = hero ? 35.0 : race.distance
       func world(_ y: Double) -> Double { travelled + (playerY - y) / scale }
@@ -139,7 +140,10 @@ struct CoastArtwork: View {
       for rival in riders {
         let y = playerY - (rival.distance - travelled) * scale
         if y > -80 && y < h + 80 {
-          let x = laneX(rival.lane, y)
+          let crowded = riders.contains {
+            $0.id != rival.id && $0.lane == rival.lane && abs($0.distance - rival.distance) < 12
+          }
+          let x = laneX(rival.lane, y) + (crowded ? (rival.id.isMultiple(of: 2) ? -10.0 : 10.0) : 0)
           var slip = Path()
           slip.move(to: CGPoint(x: x - 8, y: y + 22))
           slip.addLine(to: CGPoint(x: x - 25, y: y + 110))
@@ -157,7 +161,8 @@ struct CoastArtwork: View {
             jersey: [Ink.navy, Ink.butter, Color.white][rival.id], phase: travelled, player: false)
         }
       }
-      let x = laneX(hero ? 1 : race.lane, playerY)
+      let visualLane = hero ? 1 : (reducedMotion ? Double(race.lane) : riderLane)
+      let x = center(playerY) + (visualLane - 1) * roadWidth(playerY) * 0.29
       if !hero && (race.isSprinting || race.attackRemaining > 0) && !reducedMotion {
         for i in 0..<8 {
           let side = i.isMultiple(of: 2) ? -1.0 : 1.0
