@@ -287,7 +287,7 @@ final class ToyWorld {
                 default: flowers(root, x: Float(column), z: Float(lane.row % 3) * 0.12 - 0.15)
                 }
             }
-            for _ in 0 ..< 3 {
+            for _ in 0 ..< 2 {
                 let x = Float(random.value(64)) / 10 - 3.2
                 let z = Float(random.value(6)) / 10 - 0.3
                 tuft(root, x: x, z: z)
@@ -492,7 +492,7 @@ final class ToyWorld {
                 0.035,
                 0.07 + CGFloat(abs(offset)),
                 0.035,
-                ToyColor.leafLight,
+                UIColor(red: 0.56, green: 0.79, blue: 0.60, alpha: 1),
                 x + offset,
                 0.02,
                 z + offset * 0.4,

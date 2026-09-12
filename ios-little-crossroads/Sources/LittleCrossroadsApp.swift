@@ -48,13 +48,13 @@ struct CrossroadsView: View {
                     LinearGradient(
                         stops: [
                             .init(color: Palette.cream, location: 0),
-                            .init(color: Palette.cream.opacity(0.98), location: 0.60),
-                            .init(color: Palette.cream.opacity(0.78), location: 0.78),
+                            .init(color: Palette.cream.opacity(0.98), location: 0.66),
+                            .init(color: Palette.cream.opacity(0.80), location: 0.82),
                             .init(color: Palette.cream.opacity(0), location: 1),
                         ],
                         startPoint: .top, endPoint: .bottom
                     )
-                    .frame(height: geometry.size.height * (store.state == .ready ? 0.44 : 0.19))
+                    .frame(height: geometry.size.height * (store.state == .ready ? 0.50 : 0.20))
                     Spacer()
                 }
                 .ignoresSafeArea().allowsHitTesting(false)
@@ -117,7 +117,7 @@ struct CrossroadsView: View {
                 titleStat("COINS", value: "\(store.bank)", symbol: "circle.inset.filled")
             }
             .padding(.vertical, 8).padding(.horizontal, 6)
-            .background(.white.opacity(0.55), in: Capsule())
+            .background(Palette.paper.opacity(0.92), in: Capsule())
             .overlay(Capsule().stroke(Palette.hairline, lineWidth: 1))
             .padding(.top, 14)
         }
@@ -188,7 +188,7 @@ struct CrossroadsView: View {
                             .minimumScaleFactor(0.6).lineLimit(1)
                             .contentTransition(.numericText())
                             .accessibilityIdentifier("scoreValue")
-                        Text("HOPS").font(.eyebrow(7.5)).tracking(1.8)
+                        Text("HOPS").font(.eyebrow(9.5)).tracking(1.6)
                     }
                     .padding(.horizontal, 10)
                 }
@@ -196,7 +196,7 @@ struct CrossroadsView: View {
                 .shadow(color: Palette.ink.opacity(0.14), radius: 10, y: 5)
                 .animation(reducedMotion ? nil : .snappy(duration: 0.25), value: store.score)
                 chip {
-                    Text("BEST \(store.best)").font(.eyebrow(9.5)).tracking(1.4)
+                    Text("BEST \(store.best)").font(.eyebrow(11)).tracking(1.4)
                 }
             }
             .frame(maxWidth: .infinity)
@@ -223,8 +223,8 @@ struct CrossroadsView: View {
     private var controls: some View {
         VStack(spacing: 12) {
             Text(store.score < 6 ? "TAP TO HOP · SWIPE TO STEER" : "TAKE YOUR TIME. FIND YOUR GAP.")
-                .font(.eyebrow(9)).tracking(1.6)
-                .padding(.vertical, 8).padding(.horizontal, 13)
+                .font(.eyebrow(10.5)).tracking(1.5)
+                .padding(.vertical, 9).padding(.horizontal, 14)
                 .background(Palette.paper.opacity(0.92), in: Capsule())
             HStack(spacing: 14) {
                 arrow("arrow.left", label: "Hop left", id: "hopLeft", direction: .left)
