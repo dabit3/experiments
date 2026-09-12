@@ -67,7 +67,8 @@ and 90 a Masterwork. Lower scores are honest studies with actionable retry advic
 Three commissions have distinct contours and palettes. Results keep the actual
 curve you shaped; the native share sheet exports an original vessel print.
 
-The gallery keeps the last 24 firings, including studies. Personal best and
+The read-only gallery keeps the last 24 firings, including studies; share a
+vessel from its current result screen. Personal best and
 unlocks remain even when old firings leave the gallery. Everything is stored
 locally in UserDefaults. Removing the app removes local progress.
 
