@@ -118,14 +118,14 @@ struct LanternfallView: View {
         .ignoresSafeArea()
       VStack {
         LinearGradient(
-          colors: [Palette.ink.opacity(0.95), .clear], startPoint: .top, endPoint: .bottom
+          colors: [Palette.ink.opacity(0.85), .clear], startPoint: .top, endPoint: .bottom
         )
-        .frame(height: 235)
+        .frame(height: 175)
         Spacer()
         LinearGradient(
-          colors: [.clear, Palette.ink.opacity(0.94)], startPoint: .top, endPoint: .bottom
+          colors: [.clear, Palette.ink.opacity(0.82)], startPoint: .top, endPoint: .bottom
         )
-        .frame(height: 180)
+        .frame(height: 140)
       }
       .ignoresSafeArea().allowsHitTesting(false)
       VStack(spacing: 12) {
@@ -171,8 +171,18 @@ struct LanternfallView: View {
         }
         if let boss = store.game.enemies.first(where: { $0.kind == .boss }) {
           VStack(spacing: 5) {
-            Text("THE HOLLOW GARDENER").font(.system(size: 9, weight: .bold)).tracking(2)
-              .foregroundStyle(Palette.gold)
+            HStack {
+              Text("THE HOLLOW GARDENER").font(.system(size: 9, weight: .bold)).tracking(2)
+              Spacer()
+              Image(systemName: "location.north.fill")
+                .rotationEffect(
+                  .radians(
+                    .pi / 2
+                      - atan2(
+                        boss.position.y - store.game.player.y, boss.position.x - store.game.player.x
+                      )))
+            }
+            .foregroundStyle(Palette.gold)
             meter(boss.health / boss.maxHealth, color: Palette.gold, height: 4)
           }
           .padding(12).background(Palette.ink.opacity(0.8), in: RoundedRectangle(cornerRadius: 12))
@@ -180,6 +190,18 @@ struct LanternfallView: View {
           Text("Drag the stick to move. Your lantern attacks.")
             .font(.system(size: 12)).foregroundStyle(Palette.cream.opacity(0.8))
             .padding(.top, 10)
+        }
+        if store.game.elapsed >= 43 && store.game.elapsed < 55 {
+          Label(
+            "Thorn blooms! Leave the rose-colored rings.", systemImage: "exclamationmark.circle"
+          )
+          .font(.system(size: 11, weight: .medium))
+          .foregroundStyle(Color(red: 1, green: 0.6, blue: 0.7))
+          .padding(10).background(Palette.ink.opacity(0.7), in: Capsule())
+        } else if store.game.experience >= store.game.neededExperience && store.game.nextGiftIn > 0
+        {
+          Text("A new gift blooms in \(Int(ceil(store.game.nextGiftIn)))s")
+            .font(.system(size: 11)).foregroundStyle(Palette.mint)
         }
         Spacer()
         if store.game.elapsed < 16 {
@@ -238,10 +260,11 @@ struct LanternfallView: View {
                 HStack {
                   Text(upgrade.title).font(.system(size: 18, design: .serif))
                   Spacer()
-                  Text("I\(String(repeating: "I", count: min(5, store.game.rank(upgrade))))")
+                  Text("RANK \(store.game.rank(upgrade) + 1)")
                     .font(.system(size: 10, weight: .medium)).foregroundStyle(Palette.gold)
                 }
-                Text(upgrade.detail).font(.system(size: 12)).foregroundStyle(Palette.muted)
+                Text(upgrade.detail(after: store.game.rank(upgrade))).font(.system(size: 12))
+                  .foregroundStyle(Palette.muted)
                   .fixedSize(horizontal: false, vertical: true).lineSpacing(3)
               }
               Image(systemName: "chevron.right").font(.system(size: 10)).foregroundStyle(
@@ -364,8 +387,10 @@ struct LanternfallView: View {
           "sun.max", title: "Earn your dawn",
           text:
             "Survive five minutes and defeat the Hollow Gardener, who arrives in the final minute.")
-        Text("Keep moving in wide loops. Circle back for gems.\nYou can pause at any time.")
-          .font(.system(size: 12)).foregroundStyle(Palette.gold).lineSpacing(4)
+        Text(
+          "Leave rose-colored thorn rings before they bloom.\nCircle back for gems. Pause whenever you need."
+        )
+        .font(.system(size: 12)).foregroundStyle(Palette.gold).lineSpacing(4)
         primary("I’ll keep the light", icon: "checkmark") { showingGuide = false }
       }
     }

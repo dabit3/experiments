@@ -42,14 +42,19 @@ enum Upgrade: String, CaseIterable, Identifiable {
     case .magnet: return "diamond"
     }
   }
-  var detail: String {
+  func detail(after rank: Int) -> String {
+    let next = rank + 1
     switch self {
-    case .lantern: return "+1 golden bolt. More damage with every volley."
-    case .orbit: return "A circling moonblade cuts through nearby shades."
-    case .nova: return "Ring a radiant bell that strikes every nearby enemy."
+    case .lantern:
+      return "\(min(7, next + 1)) bolts per volley · \(18 + next * 5) damage each."
+    case .orbit:
+      return "\(min(5, next + 1)) circling blades · \(12 + next * 5) damage per strike."
+    case .nova:
+      return
+        "\(30 + next * 15) area damage every \(String(format: "%.1f", max(1.8, 5 - Double(next) * 0.4))) seconds."
     case .haste: return "Move 12% faster. Your lantern fires 10% sooner."
     case .vitality: return "Restore 35 health and grow your maximum by 15."
-    case .magnet: return "Gather gems from farther away. Gain 20% more light."
+    case .magnet: return "\(63 + next * 24) reach · \(next * 10)% bonus light from gems."
     }
   }
 }
@@ -88,6 +93,15 @@ struct Spark: Identifiable {
   let mint: Bool
 }
 
+struct ThornBloom: Identifiable {
+  let id: Int
+  let position: V2
+  var age: Double = 0
+  static let warning: Double = 1.6
+  static let lifetime: Double = 4.8
+  static let radius: Double = 58
+}
+
 struct Cell: Hashable {
   let x: Int
   let y: Int
@@ -117,11 +131,13 @@ struct GameModel {
   var bolts: [Bolt] = []
   var pickups: [Pickup] = []
   var sparks: [Spark] = []
+  var blooms: [ThornBloom] = []
   var bossSpawned = false
   var bossDefeated = false
   var novaFlash: Double = 0
   var hurtFlash: Double = 0
   var shotsFired = 0
+  private(set) var nextGiftIn: Double = 0
   private var random: SeededRandom
   private var nextID = 0
   private var spawnClock: Double = 0
@@ -129,11 +145,12 @@ struct GameModel {
   private var novaClock: Double = 4
   private var contactClock: Double = 0
   private var orbitClock: Double = 0
+  private var bloomClock: Double = 45
   static let duration: Double = 300
   static let boundary: Double = 1100
-  var neededExperience: Double { Double(7 + level * 5) }
+  var neededExperience: Double { Double(10 + level * 6 + level * level) }
   var speed: Double { 145 * (1 + Double(rank(.haste)) * 0.12) }
-  var magnetRadius: Double { 63 + Double(rank(.magnet)) * 32 }
+  var magnetRadius: Double { 63 + Double(rank(.magnet)) * 24 }
   var orbitCount: Int { rank(.orbit) == 0 ? 0 : min(5, rank(.orbit) + 1) }
   var orbitRadius: Double { 70 + Double(rank(.orbit)) * 7 }
   var stage: String {
@@ -173,10 +190,10 @@ struct GameModel {
     }
     phase = .playing
     choices = []
-    checkLevel()
+    nextGiftIn = 8
   }
   mutating func checkLevel() {
-    guard phase == .playing, experience >= neededExperience else { return }
+    guard phase == .playing, nextGiftIn <= 0, experience >= neededExperience else { return }
     experience -= neededExperience
     level += 1
     phase = .choosing
@@ -192,6 +209,7 @@ struct GameModel {
     guard phase == .playing else { return }
     let dt = min(0.05, max(0, delta))
     elapsed += dt
+    nextGiftIn = max(0, nextGiftIn - dt)
     player = player + movement.normalized * min(1, movement.length) * (speed * dt)
     player.x = min(Self.boundary, max(-Self.boundary, player.x))
     player.y = min(Self.boundary, max(-Self.boundary, player.y))
@@ -208,6 +226,23 @@ struct GameModel {
       bossSpawned = true
       spawnEnemy(kind: .boss)
     }
+    bloomClock -= dt
+    if bloomClock <= 0 {
+      bloomClock = elapsed >= 240 ? 4.5 : elapsed >= 150 ? 7 : 10
+      blooms.append(ThornBloom(id: identifier(), position: player))
+    }
+    for index in blooms.indices {
+      blooms[index].age += dt
+      if blooms[index].age >= ThornBloom.warning
+        && (blooms[index].position - player).length < ThornBloom.radius
+        && contactClock <= 0
+      {
+        health -= 16
+        contactClock = 0.8
+        hurtFlash = 0.4
+      }
+    }
+    blooms.removeAll { $0.age >= ThornBloom.lifetime }
     for index in enemies.indices {
       let kind = enemies[index].kind
       let enemySpeed: Double =
@@ -303,7 +338,7 @@ struct GameModel {
         if pickups[index].healing {
           health = min(maxHealth, health + pickups[index].value)
         } else {
-          experience += pickups[index].value * (1 + Double(rank(.magnet)) * 0.2)
+          experience += pickups[index].value * (1 + Double(rank(.magnet)) * 0.1)
         }
         pickups[index].value = 0
       }

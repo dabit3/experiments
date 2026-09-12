@@ -11,7 +11,8 @@ Tap **Enter the garden**, then drag the lower-right movement stick. The lantern
 automatically attacks nearby enemies. Kite in wide loops and return for turquoise
 experience gems. Every level pauses the garden for one of three randomized gifts:
 golden volleys, orbiting moonblades, a radial dawn bell, haste, vitality or a magnet.
-Rose gems heal. Pause with the top-right button.
+Rose gems heal. Leave the rose-colored thorn rings before their 1.6-second warning
+ends. Their cadence escalates as dawn approaches. Pause with the top-right button.
 
 Survive **5:00** and defeat the **Hollow Gardener**, who appears at **4:00**, to win.
 Health reaching zero, or reaching dawn with the boss still alive, ends the run.
@@ -51,7 +52,10 @@ xcrun swift-format lint --strict --recursive App Core Tests Scripts Package.swif
 
 Tests exercise paused time, movement normalization/bounds, deterministic fair
 spawns, weapon upgrades, real projectile hits and experience collection, health
-defeat, boss spawning and dawn victory rules. Production uses a fresh random seed
+defeat, telegraphed thorn damage/escape, upgrade backlog pacing, one-time pickup
+collection, boss spawning and dawn victory rules. Level costs increase quadratically,
+and queued gifts allow eight seconds of gameplay between choices without discarding
+earned experience. Production uses a fresh random seed
 each run. Bolts query a spatial grid; active enemies are bounded at 140 regular
 enemies plus the boss, distant enemies are culled, and terrain uses nearby tiles.
 Rendering and rules use elapsed frame deltas capped at 50ms; UI modals stop

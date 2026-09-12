@@ -18,6 +18,7 @@ final class GameStore: ObservableObject {
     scene.onFrame = { [weak self] delta in self?.frame(delta) }
   }
   func start() {
+    scene.resetRun()
     game = GameModel()
     saved = false
     screen = "game"

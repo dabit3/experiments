@@ -86,4 +86,45 @@ final class GameTests: XCTestCase {
     XCTAssertLessThanOrEqual(game.player.x, 1100)
     XCTAssertLessThanOrEqual(game.player.y, 1100)
   }
+  func testCollectedGemCannotGrantExperienceTwice() {
+    var game = GameModel(seed: 12)
+    game.pickups = [Pickup(id: 99, position: .zero, value: 3, healing: false)]
+    game.tick(0.01)
+    XCTAssertEqual(game.experience, 3)
+    for _ in 0..<20 { game.tick(0.01) }
+    XCTAssertEqual(game.experience, 3)
+    XCTAssertTrue(game.pickups.isEmpty)
+  }
+  func testBackloggedGiftsPreserveExperienceAndAllowGameplay() {
+    var game = GameModel(seed: 12)
+    game.experience = 1000
+    game.checkLevel()
+    let remaining = game.experience
+    game.choose(game.choices[0])
+    XCTAssertEqual(game.phase, .playing)
+    for _ in 0..<100 { game.tick(0.05) }
+    XCTAssertEqual(game.phase, .playing)
+    XCTAssertEqual(game.experience, remaining)
+    for _ in 0..<62 { game.tick(0.05) }
+    XCTAssertEqual(game.phase, .choosing)
+    XCTAssertEqual(game.level, 3)
+    XCTAssertLessThan(game.experience, remaining)
+  }
+  func testThornsWarnBeforeDamageAndMovingEscapes() {
+    var still = GameModel(seed: 1)
+    still.blooms = [ThornBloom(id: 99, position: .zero)]
+    var moving = still
+    moving.movement = V2(x: 1)
+    for _ in 0..<30 {
+      still.tick(0.05)
+      moving.tick(0.05)
+    }
+    XCTAssertEqual(still.health, 100)
+    for _ in 0..<10 {
+      still.tick(0.05)
+      moving.tick(0.05)
+    }
+    XCTAssertEqual(still.health, 84)
+    XCTAssertEqual(moving.health, 100)
+  }
 }

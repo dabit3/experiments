@@ -138,12 +138,23 @@ final class GardenScene: SKScene {
   private let cameraNode = SKCameraNode()
   private let keeper = SKSpriteNode(texture: GardenArt.texture("keeper"))
   private var entities: [Int: SKSpriteNode] = [:]
+  private var bloomNodes: [Int: SKShapeNode] = [:]
   private var terrain: [String: SKNode] = [:]
   private var textures: [String: SKTexture] = [:]
   private var previousTime: Double = 0
   private let nova = SKShapeNode(circleOfRadius: 180)
   private var orbitNodes: [SKShapeNode] = []
   private var previousCell = ""
+
+  func resetRun() {
+    for node in entities.values { node.removeFromParent() }
+    for node in bloomNodes.values { node.removeFromParent() }
+    for node in orbitNodes { node.removeFromParent() }
+    entities.removeAll()
+    bloomNodes.removeAll()
+    orbitNodes.removeAll()
+    previousTime = 0
+  }
 
   override func didMove(to view: SKView) {
     backgroundColor = UIColor(red: 0.025, green: 0.072, blue: 0.10, alpha: 1)
@@ -166,6 +177,11 @@ final class GardenScene: SKScene {
     nova.lineWidth = 2
     nova.zPosition = 16
     world.addChild(nova)
+    let boundary = SKShapeNode(rectOf: CGSize(width: 2250, height: 2250), cornerRadius: 35)
+    boundary.strokeColor = GardenArt.mint.withAlphaComponent(0.4)
+    boundary.lineWidth = 12
+    boundary.zPosition = -4
+    world.addChild(boundary)
   }
   override func update(_ currentTime: TimeInterval) {
     let dt = previousTime == 0 ? 1 / 60.0 : min(0.05, currentTime - previousTime)
@@ -190,7 +206,7 @@ final class GardenScene: SKScene {
       node.position = CGPoint(x: enemy.position.x, y: enemy.position.y)
       node.zPosition = 12
       node.color = .white
-      node.colorBlendFactor = enemy.flash > 0 ? 0.75 : 0
+      node.colorBlendFactor = enemy.flash > 0 ? 0.75 : 0.16
       node.zRotation = sin(model.elapsed * (enemy.kind == .moth ? 12 : 3) + Double(enemy.id)) * 0.08
     }
     for bolt in model.bolts {
@@ -203,7 +219,8 @@ final class GardenScene: SKScene {
     }
     for pickup in model.pickups {
       let node = entity(pickup.id, texture: textures["gem"], live: &live)
-      node.size = CGSize(width: pickup.healing ? 22 : 14, height: pickup.healing ? 22 : 14)
+      node.size = CGSize(width: pickup.healing ? 22 : 11, height: pickup.healing ? 22 : 11)
+      node.alpha = pickup.healing ? 1 : 0.66
       node.color = .systemPink
       node.colorBlendFactor = pickup.healing ? 0.8 : 0
       node.position = CGPoint(x: pickup.position.x, y: pickup.position.y)
@@ -219,6 +236,35 @@ final class GardenScene: SKScene {
     }
     for id in Array(entities.keys) where !live.contains(id) {
       entities.removeValue(forKey: id)?.removeFromParent()
+    }
+    let liveBlooms = Set(model.blooms.map(\.id))
+    for id in Array(bloomNodes.keys) where !liveBlooms.contains(id) {
+      bloomNodes.removeValue(forKey: id)?.removeFromParent()
+    }
+    for bloom in model.blooms {
+      let node: SKShapeNode
+      if let existing = bloomNodes[bloom.id] {
+        node = existing
+      } else {
+        node = SKShapeNode(circleOfRadius: ThornBloom.radius)
+        node.lineWidth = 2
+        node.zPosition = 7
+        world.addChild(node)
+        bloomNodes[bloom.id] = node
+        let symbol = SKLabelNode(fontNamed: "AvenirNext-Medium")
+        symbol.text = "✧"
+        symbol.fontSize = 40
+        symbol.verticalAlignmentMode = .center
+        symbol.fontColor = UIColor(red: 1, green: 0.5, blue: 0.7, alpha: 1)
+        node.addChild(symbol)
+      }
+      let armed = bloom.age >= ThornBloom.warning
+      let rose = UIColor(red: 0.95, green: 0.36, blue: 0.57, alpha: 1)
+      node.strokeColor = rose.withAlphaComponent(armed ? 0.9 : 0.6)
+      node.fillColor = rose.withAlphaComponent(armed ? 0.23 : 0.06)
+      node.position = CGPoint(x: bloom.position.x, y: bloom.position.y)
+      node.setScale(armed ? 1 : 0.65 + 0.35 * bloom.age / ThornBloom.warning)
+      node.zRotation = armed ? bloom.age * 0.2 : 0
     }
     nova.position = player
     nova.isHidden = model.novaFlash <= 0
@@ -243,7 +289,11 @@ final class GardenScene: SKScene {
   }
   private func entity(_ id: Int, texture: SKTexture?, live: inout Set<Int>) -> SKSpriteNode {
     live.insert(id)
-    if let node = entities[id] { return node }
+    if let node = entities[id] {
+      node.texture = texture
+      node.alpha = 1
+      return node
+    }
     let node = SKSpriteNode(texture: texture)
     world.addChild(node)
     entities[id] = node
