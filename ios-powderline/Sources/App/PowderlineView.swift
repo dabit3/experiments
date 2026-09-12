@@ -83,12 +83,18 @@ struct PowderlineView: View {
             miniRecord("BEST SCORE", value: store.records.bestScore.formatted())
           }
           .foregroundStyle(ink)
-          .padding(.bottom, 6)
+          .padding(.horizontal, 24)
+          .padding(.vertical, 12)
+          .background(cream.opacity(0.95), in: RoundedRectangle(cornerRadius: 16))
+          .padding(.bottom, 3)
         } else {
           Text("A fresh trail. A quieter mind.")
             .font(.system(size: 13, design: .serif))
             .italic()
             .foregroundStyle(ink.opacity(0.80))
+            .padding(.horizontal, 18)
+            .padding(.vertical, 10)
+            .background(cream.opacity(0.95), in: Capsule())
             .padding(.bottom, 6)
         }
         primaryButton("Begin the descent", icon: "arrow.right") { store.start(.expedition) }
@@ -209,7 +215,7 @@ struct PowderlineView: View {
           .padding(.bottom, size.height * 0.26)
           .allowsHitTesting(false)
           .accessibilityElement(children: .combine)
-        } else if store.engine.elapsed < 4.5 {
+        } else if store.engine.elapsed < 4.5 && !store.hasJumped {
           VStack(spacing: 8) {
             Text("Find your flow.")
               .font(.system(size: 25, weight: .light, design: .serif))
@@ -415,7 +421,7 @@ struct PowderlineView: View {
         guideRow(
           "02", title: "Hold. Flip. Let go.",
           detail:
-            "Keep holding for a backflip. Release when your board comes around, then land upright.",
+            "Hold for about 1.2 seconds. Release as your board comes around and the cue reads LEVEL. Land upright.",
           icon: "arrow.counterclockwise")
         guideRow(
           "03", title: "Find your flow",

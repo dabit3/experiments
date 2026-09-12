@@ -13,8 +13,8 @@ struct AlpineCanvas: View {
   var body: some View {
     Canvas { context, size in
       let scale = size.width / 480
-      let baseline = size.height * (isHome ? 0.84 : 0.72)
-      let offset = travel - 124
+      let baseline = size.height * 0.72
+      let offset = travel - (isHome ? 60 : 124)
       sky(&context, size: size)
       mountains(&context, size: size, scale: scale)
       village(&context, size: size, baseline: baseline, scale: scale)
@@ -290,7 +290,7 @@ struct AlpineCanvas: View {
   private func rider(_ context: inout GraphicsContext, baseline: Double, scale: Double) {
     let riderY = isHome ? RideEngine.height(at: travel) : engine.y
     let angle = isHome ? atan(RideEngine.slope(at: travel)) : engine.rotation
-    let center = CGPoint(x: 124 * scale, y: baseline - riderY * scale)
+    let center = CGPoint(x: (isHome ? 60 : 124) * scale, y: baseline - riderY * scale)
     if !isHome && engine.rescueTime > 0 {
       context.opacity = 0.55 + 0.35 * sin(time * 14)
     }
@@ -305,10 +305,11 @@ struct AlpineCanvas: View {
         )
       }
     }
+    let riderScale = scale * 1.22
     var rider = context
-    rider.translateBy(x: center.x, y: center.y - 10 * scale)
+    rider.translateBy(x: center.x, y: center.y - 10 * riderScale)
     rider.rotate(by: .radians(-angle))
-    rider.scaleBy(x: scale, y: scale)
+    rider.scaleBy(x: riderScale, y: riderScale)
     var scarf = Path()
     scarf.move(to: CGPoint(x: 1, y: -16))
     scarf.addQuadCurve(
@@ -351,6 +352,24 @@ struct AlpineCanvas: View {
     rider.stroke(
       board, with: .color(Color(hex: 0xF2B886)), style: StrokeStyle(lineWidth: 1.4, lineCap: .round)
     )
+    if !isHome && !engine.grounded && engine.airtime > 0.25 {
+      let level = RideEngine.isSafeLanding(
+        rotation: engine.rotation, slope: RideEngine.slope(at: engine.x))
+      let cue = CGPoint(x: center.x + 68 * scale, y: center.y - 47 * scale)
+      context.fill(
+        Path(
+          roundedRect: CGRect(
+            x: cue.x - 31 * scale, y: cue.y - 12 * scale,
+            width: 62 * scale, height: 24 * scale),
+          cornerRadius: 12 * scale),
+        with: .color(level ? Color(hex: 0xF5EEDD) : ink.opacity(0.85)))
+      context.draw(
+        Text(level ? "LEVEL" : "ROTATE")
+          .font(.system(size: 9 * scale, weight: .bold, design: .monospaced))
+          .tracking(0.8)
+          .foregroundColor(level ? ink : Color(hex: 0xF5EEDD)),
+        at: cue)
+    }
   }
 
   private func pine(

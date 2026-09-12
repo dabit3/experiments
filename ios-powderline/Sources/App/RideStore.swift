@@ -21,6 +21,7 @@ final class RideStore: NSObject, ObservableObject {
   @Published var toastTime = 0.0
   @Published var sceneryTime = 0.0
   @Published var newBest = false
+  @Published var hasJumped = false
   var reduceMotion = false
   private var displayLink: CADisplayLink?
   private var lastFrame = 0.0
@@ -55,6 +56,7 @@ final class RideStore: NSObject, ObservableObject {
     toastTime = 0
     savedCurrentRide = false
     newBest = false
+    hasJumped = false
     lastFrame = 0
     UIImpactFeedbackGenerator(style: .soft).impactOccurred()
     if soundEnabled { players["wind"]?.play() }
@@ -65,6 +67,7 @@ final class RideStore: NSObject, ObservableObject {
     let canJump = engine.grounded
     engine.press()
     if canJump {
+      hasJumped = true
       play("jump")
       UIImpactFeedbackGenerator(style: .light).impactOccurred(intensity: 0.4)
     }
