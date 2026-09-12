@@ -69,13 +69,14 @@ struct GoldButton: View {
 struct QuietButton: View {
   let title: String
   var icon = ""
+  var height: CGFloat = 44
   var action: () -> Void
   var body: some View {
     Button(action: action) {
       HStack(spacing: 8) {
         if !icon.isEmpty { Image(systemName: icon) }
         Text(title).fontWeight(.semibold)
-      }.font(.system(size: 13)).frame(minHeight: 44).frame(maxWidth: .infinity)
+      }.font(.system(size: 13)).frame(minHeight: height).frame(maxWidth: .infinity)
         .foregroundStyle(Palette.cream)
         .background(Palette.cream.opacity(0.06), in: RoundedRectangle(cornerRadius: 12))
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(Palette.gold.opacity(0.2)))
@@ -84,9 +85,10 @@ struct QuietButton: View {
 }
 
 struct Panel<Content: View>: View {
+  var inset: CGFloat = 18
   @ViewBuilder var content: Content
   var body: some View {
-    content.padding(18).frame(maxWidth: .infinity)
+    content.padding(inset).frame(maxWidth: .infinity)
       .background(Palette.ink.opacity(0.65), in: RoundedRectangle(cornerRadius: 22))
       .overlay(RoundedRectangle(cornerRadius: 22).stroke(Palette.gold.opacity(0.20)))
   }

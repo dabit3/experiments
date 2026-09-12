@@ -107,3 +107,37 @@ func card(_ rank: Int, _ suit: Suit = .spades) -> Card { Card(rank: rank, suit: 
   #expect(decoded.run.charms == run.charms)
   #expect(decoded.recordedResult)
 }
+
+@Test func fractionalProductsRoundDownOnceAfterAllModifiers() throws {
+  let score = try #require(
+    Scoring.score([card(4)], charms: [.ribbon, .echo], money: 0, handsLeft: 3, previous: .highCard))
+  #expect(score.chips == 9)
+  #expect(score.mult == 7.5)
+  #expect(score.rawTotal == 67.5)
+  #expect(score.total == 67)
+  #expect(score.isRounded)
+}
+
+@Test func shopCapacityAndExhaustedDiscardsRespectLimits() {
+  var run = Run(seed: 17)
+  for _ in 0..<3 {
+    let discarded = run.discard([run.hand[0].id])
+    #expect(discarded)
+  }
+  let deckCount = run.deck.count
+  let exhausted = run.discard([run.hand[0].id])
+  #expect(!exhausted)
+  #expect(run.deck.count == deckCount)
+  run.phase = .shop
+  run.charms = [.ribbon, .ruby, .moon, .crown, .twins]
+  run.offers = [.velvet]
+  run.money = 10
+  let full = run.buy(.velvet)
+  #expect(!full)
+  #expect(run.money == 10)
+  run.sell(.ribbon)
+  let bought = run.buy(.velvet)
+  #expect(bought)
+  #expect(run.money == 4)
+  #expect(run.charms.count == 5)
+}

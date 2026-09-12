@@ -151,6 +151,8 @@ struct Score: Sendable {
   let mult: Double
   let total: Int
   let lines: [ScoreLine]
+  var rawTotal: Double { Double(chips) * mult }
+  var isRounded: Bool { rawTotal != Double(total) }
 }
 
 enum Scoring {

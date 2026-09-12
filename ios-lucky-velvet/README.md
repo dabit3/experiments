@@ -34,7 +34,7 @@ swift Scripts/GenerateAssets.swift
 
 ## How to play
 
-Take a seat, select one to five of eight cards and play. A preview shows the exact Chips × Mult score, including active charms. The hand breakdown shows each contribution. Pairs score only the pair, for example; kickers do not add chips. Aces score 11, faces 10, and other cards their rank.
+Take a seat, select one to five of eight cards and play. A preview shows the exact awarded score, including active charms. Chips × Mult rounds down to whole points; fractional products are labeled in the preview and explained in the breakdown (for example, `9 × 7.5 = 67.5 → 67 points`). The hand breakdown shows each contribution. Pairs score only the pair, for example; kickers do not add chips. Aces score 11, faces 10, and other cards their rank.
 
 Each blind gives four hands and three discards. Discard replaces up to five selected cards. Unplayed cards stay in hand, and played/discarded cards leave the current blind's deck. Reach the target to earn `$5 + ante + unused hands`, then shop for modifiers. Select charms to read their effects; sell them for $2 in the shop to free one of five slots. Refresh shop offers for $2.
 

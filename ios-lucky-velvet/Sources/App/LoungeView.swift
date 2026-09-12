@@ -103,7 +103,8 @@ struct LoungeView: View {
             PlayingCard(card: Card(rank: 14, suit: .hearts)).frame(width: 103, height: 147)
               .rotationEffect(.degrees(19)).offset(x: 65, y: 6)
             VStack(spacing: 0) {
-              Eyebrow(text: "The velvet fox").scaleEffect(0.7)
+              Text("THE VELVET FOX").font(.system(size: 7, weight: .bold))
+                .tracking(1.1).foregroundStyle(Palette.gold).lineLimit(1)
               CharmArt(charm: .velvet).frame(width: 106, height: 106)
               Text("FORTUNE FAVORS YOU").font(.system(size: 6, weight: .bold)).tracking(1)
                 .foregroundStyle(Palette.gold)
@@ -162,7 +163,7 @@ struct LoungeView: View {
   }
 
   private var table: some View {
-    VStack(spacing: 10) {
+    VStack(spacing: 8) {
       HStack {
         Eyebrow(text: "Ante \(game.run.ante) / 3")
         Spacer()
@@ -177,7 +178,7 @@ struct LoungeView: View {
         Text("$\(game.run.money)").font(.system(size: 18, weight: .bold, design: .rounded))
           .foregroundStyle(Palette.gold)
       }
-      Panel {
+      Panel(inset: 14) {
         VStack(spacing: 9) {
           HStack {
             VStack(alignment: .leading, spacing: 5) {
@@ -268,9 +269,11 @@ struct LoungeView: View {
   private var tableActions: some View {
     HStack(spacing: 12) {
       VStack(spacing: 5) {
-        QuietButton(title: "Discard", icon: "arrow.triangle.2.circlepath") { game.discard() }
-          .disabled(game.selected.isEmpty || game.run.discards == 0)
-          .opacity(game.selected.isEmpty || game.run.discards == 0 ? 0.4 : 1)
+        QuietButton(title: "Discard", icon: "arrow.triangle.2.circlepath", height: 54) {
+          game.discard()
+        }
+        .disabled(game.selected.isEmpty || game.run.discards == 0)
+        .opacity(game.selected.isEmpty || game.run.discards == 0 ? 0.4 : 1)
         Text("\(game.run.discards) discards left").font(.system(size: 12, weight: .medium))
           .foregroundStyle(
             Palette.muted)
@@ -303,12 +306,13 @@ struct LoungeView: View {
         if let preview = game.preview {
           Text("\(preview.chips) Chips × \(preview.mult.formatted()) Mult")
           Spacer()
-          Text("PREVIEW").font(.system(size: 8, weight: .bold)).tracking(1.4)
+          Text(preview.isRounded ? "ROUNDED DOWN" : "PREVIEW")
+            .font(.system(size: 8, weight: .bold)).tracking(1)
         } else {
           Text("Tap 1–5 cards to preview your score.")
         }
       }.font(.system(size: 12)).foregroundStyle(Palette.muted)
-    }.padding(15).background(Palette.green.opacity(0.65), in: RoundedRectangle(cornerRadius: 15))
+    }.padding(12).background(Palette.green.opacity(0.65), in: RoundedRectangle(cornerRadius: 15))
       .overlay(RoundedRectangle(cornerRadius: 15).stroke(Palette.gold.opacity(0.2)))
   }
 

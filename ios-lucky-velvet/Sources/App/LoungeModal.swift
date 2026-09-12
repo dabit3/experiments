@@ -76,6 +76,10 @@ struct LoungeModal: View {
         )
         .foregroundStyle(Palette.gold).contentTransition(.numericText())
         .scaleEffect(revealed ? 1 : 0.85)
+        if score.isRounded {
+          Text("\(score.rawTotal.formatted()) → \(score.total) points · rounded down")
+            .font(.system(size: 12)).foregroundStyle(Palette.muted)
+        }
         Text(
           game.run.phase == .shop || game.run.phase == .won
             ? "BLIND CLEARED"
@@ -130,7 +134,7 @@ struct LoungeModal: View {
                 }
                 .font(.system(size: 13, weight: .bold)).frame(minHeight: 35)
               }
-            }
+            }.frame(maxWidth: .infinity, alignment: .leading)
           }
         }
       }
@@ -150,7 +154,7 @@ struct LoungeModal: View {
       )
       rule(
         "02", "Make it count",
-        "Base Chips + scoring card values, multiplied by Mult. Only cards forming the poker hand contribute: a stray Ace beside a pair does not score."
+        "Base Chips + scoring card values, multiplied by Mult, rounded down to whole points. Only cards forming the poker hand contribute: a stray Ace beside a pair does not score."
       )
       rule(
         "03", "Beat the house",
