@@ -21,8 +21,7 @@ struct MarketRoot: View {
   @AppStorage("moon.learned") private var learned = false
   @State private var sheet: Panel?
   @State private var confirmRestart = false
-  @State private var shareImage: UIImage?
-  @State private var sharing = false
+  @State private var sharePayload: SharePayload?
   @State private var tutorialStep = 0
 
   private enum Panel: String, Identifiable {
@@ -60,8 +59,8 @@ struct MarketRoot: View {
       .presentationDetents(panel == .tutorial ? [.height(510)] : [.medium])
       .presentationDragIndicator(.visible)
     }
-    .sheet(isPresented: $sharing) {
-      ShareSheet(image: shareImage, text: shareText)
+    .sheet(item: $sharePayload) { payload in
+      ShareSheet(image: payload.image, text: payload.text)
         .presentationDetents([.medium, .large])
     }
     .confirmationDialog(
@@ -115,7 +114,7 @@ struct MarketRoot: View {
               Rectangle().fill(Palette.muted.opacity(0.25)).frame(width: 1, height: 27)
               homeFact("90", "CREDITS TO START")
               Rectangle().fill(Palette.muted.opacity(0.25)).frame(width: 1, height: 27)
-              homeFact("240", "CREDITS TO WIN")
+              homeFact(String(Run.goal), "CREDITS TO WIN")
             }
             .padding(.bottom, 8)
             if let run = store.archive.run, !run.finished {
@@ -187,6 +186,7 @@ struct MarketRoot: View {
         VStack(alignment: .leading, spacing: 4) {
           eyebrow("NIGHT \(String(format: "%02d", store.run.round)) / 08")
           Text(nightTitle).font(.system(size: 26, weight: .regular, design: .serif))
+            .lineLimit(1).minimumScaleFactor(0.7)
         }
         Spacer()
         iconButton("questionmark", label: "Trading guide", id: "guide") {
@@ -209,11 +209,13 @@ struct MarketRoot: View {
             Spacer()
             stat("\(store.run.occupied)/12", caption: "CRATE SPACE")
             Spacer()
-            stat("240 cr", caption: "FINAL GOAL")
+            stat(
+              "\(store.run.cash >= Run.goal ? Run.legendGoal : Run.goal) cr",
+              caption: store.run.cash >= Run.goal ? "LEGEND GOAL" : "FINAL GOAL")
           }
           .padding(.horizontal, 24)
           BazaarScene(flourishing: store.run.cash >= Run.goal)
-            .frame(height: 180)
+            .frame(height: 140)
             .padding(.top, -16)
             .padding(.bottom, -6)
           VStack(alignment: .leading, spacing: 4) {
@@ -230,6 +232,7 @@ struct MarketRoot: View {
           }
           .frame(maxWidth: .infinity, alignment: .leading)
           .padding(.horizontal, 24)
+          forecastNote
           VStack(spacing: 9) {
             HStack {
               eyebrow("STOCK YOUR STALL")
@@ -241,25 +244,6 @@ struct MarketRoot: View {
             ForEach(Produce.allCases) { produce in productCard(produce) }
           }
           .padding(.horizontal, 18)
-          if store.run.round < 8 {
-            HStack(spacing: 8) {
-              Image(systemName: "sparkle").foregroundStyle(Palette.mint)
-              VStack(alignment: .leading, spacing: 3) {
-                Text("TOMORROW'S QUEUE").font(.system(size: 9, weight: .bold, design: .monospaced))
-                  .tracking(1)
-                Text(
-                  Produce.allCases.map {
-                    "\($0.name) \(store.run.forecast.quotes[$0.rawValue].demand)"
-                  }.joined(separator: "  ·  ")
-                )
-                .font(.system(size: 12)).foregroundStyle(Palette.muted)
-              }
-              Spacer(minLength: 0)
-            }.padding(.horizontal, 24)
-          } else {
-            Text("Last night: remaining stock clears at half tonight's buy price.")
-              .font(.system(size: 11)).foregroundStyle(Palette.muted).padding(.horizontal, 24)
-          }
           if store.run.inventory.reduce(0, +) > 0 {
             Button {
               store.change { $0.clearInventory() }
@@ -275,7 +259,7 @@ struct MarketRoot: View {
         .padding(.top, 10)
         .padding(.bottom, 14)
       }
-      .scrollIndicators(.hidden)
+      .scrollIndicators(.visible)
     }
     .safeAreaInset(edge: .bottom, spacing: 0) { orderBar }
   }
@@ -289,14 +273,33 @@ struct MarketRoot: View {
     ][store.run.round]
   }
 
+  private var forecastNote: some View {
+    HStack(spacing: 8) {
+      Image(systemName: "sparkle").foregroundStyle(Palette.mint)
+      VStack(alignment: .leading, spacing: 3) {
+        Text(store.run.round < 8 ? "TOMORROW'S QUEUE" : "LAST CALL")
+          .font(.system(size: 9, weight: .bold, design: .monospaced)).tracking(1)
+        Text(
+          store.run.round < 8
+            ? Produce.allCases.map { "\($0.name) \(store.run.forecast.quotes[$0.rawValue].demand)" }
+              .joined(separator: "  ·  ")
+            : "Leftovers clear at half tonight's buy price."
+        )
+        .font(.system(size: 12)).foregroundStyle(Palette.muted)
+      }
+      Spacer(minLength: 0)
+    }
+    .padding(.horizontal, 24)
+  }
+
   private func productCard(_ produce: Produce) -> some View {
     let index = produce.rawValue
     let quote = store.run.market.quotes[index]
     let held = store.run.inventory[index]
     let quantity = store.run.order[index]
-    return HStack(spacing: 10) {
+    return HStack(spacing: 8) {
       ProduceArt(kind: index).frame(width: 44, height: 66)
-      VStack(alignment: .leading, spacing: 5) {
+      VStack(alignment: .leading, spacing: 4) {
         HStack(spacing: 5) {
           Text(produce.name).font(.system(size: 17, weight: .semibold, design: .rounded))
           if held > 0 {
@@ -305,7 +308,7 @@ struct MarketRoot: View {
           }
         }
         Text("Buy \(quote.buy)  →  Sell \(quote.sell)")
-          .font(.system(size: 12, weight: .semibold, design: .monospaced))
+          .font(.system(size: 11, weight: .semibold, design: .monospaced))
           .fixedSize(horizontal: true, vertical: false)
         Text("\(quote.demand) want tonight")
           .font(.system(size: 12, weight: .bold))
@@ -334,7 +337,8 @@ struct MarketRoot: View {
         Text("\(quantity)")
           .font(.system(size: 18, weight: .bold, design: .rounded))
           .monospacedDigit()
-          .frame(width: 19)
+          .frame(width: 30)
+          .lineLimit(1)
           .accessibilityLabel("\(quantity) \(produce.name) ordered")
         Button {
           store.change { $0.adjust(index, by: 1) }
@@ -430,8 +434,10 @@ struct MarketRoot: View {
             ).foregroundStyle(Palette.mint)
           }
           if store.run.inventory.reduce(0, +) > 0 {
-            Text("\(store.run.inventory.reduce(0, +)) unsold items stay in your crate.")
-              .font(.system(size: 12)).foregroundStyle(Palette.muted)
+            Text(
+              "\(store.run.inventory.reduce(0, +)) unsold \(store.run.inventory.reduce(0, +) == 1 ? "item stays" : "items stay") in your crate."
+            )
+            .font(.system(size: 12)).foregroundStyle(Palette.muted)
           }
           Text(
             store.run.cash >= Run.goal
@@ -499,9 +505,11 @@ struct MarketRoot: View {
         }
         .font(.system(size: 14, weight: .medium))
         .frame(minHeight: 44)
-        Text("BEST RECEIPT  \(store.archive.best) cr  ·  \(store.archive.completed) ORBITS")
-          .font(.system(size: 10, weight: .medium, design: .monospaced))
-          .tracking(1).foregroundStyle(Palette.muted)
+        Text(
+          "BEST RECEIPT  \(store.archive.best) cr  ·  \(store.archive.completed) \(store.archive.completed == 1 ? "ORBIT" : "ORBITS")"
+        )
+        .font(.system(size: 10, weight: .medium, design: .monospaced))
+        .tracking(1).foregroundStyle(Palette.muted)
       }
       .padding(.bottom, 24)
     }.scrollIndicators(.hidden)
@@ -524,7 +532,7 @@ struct MarketRoot: View {
         [
           "Start with 90 credits and 12 crate spaces. Tap + to order produce. The left price is what you pay; the right is what each customer pays you.",
           "“Want” is exactly how many will buy tonight. Rival effects are already included. Unsold stock carries over; tomorrow's queue helps you plan.",
-          "Open market to buy your order and serve the queue. Rent is 5 credits a night. Finish with 240 to light up your stall. Leftovers clear at half buy price after night 8.",
+          "Open market to buy your order and serve the queue. Rent is 5 credits a night. Finish with \(Run.goal) to light up your stall, or \(Run.legendGoal) for Lunar Legend. Leftovers clear at half buy price after night 8.",
         ][tutorialStep]
       )
       .font(.system(size: 16)).foregroundStyle(Palette.muted).lineSpacing(4)
@@ -688,8 +696,7 @@ struct MarketRoot: View {
         .padding(30).frame(width: 390).background(Palette.ink)
     )
     renderer.scale = 3
-    shareImage = renderer.uiImage
-    sharing = true
+    sharePayload = SharePayload(image: renderer.uiImage, text: shareText)
   }
 }
 
@@ -773,4 +780,10 @@ struct ShareSheet: UIViewControllerRepresentable {
     return UIActivityViewController(activityItems: [text], applicationActivities: nil)
   }
   func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
+}
+
+struct SharePayload: Identifiable {
+  let id = UUID()
+  let image: UIImage?
+  let text: String
 }

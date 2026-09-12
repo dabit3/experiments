@@ -48,8 +48,8 @@ exactly-once awards.
 
 ## Play
 
-- Begin with **90 credits**, **12 crate spaces**, and a goal of **240 credits**.
-- Each produce tag reads **buy → sell**. `Want` is exactly how many customers
+- Begin with **90 credits**, **12 crate spaces**, and a goal of **600 credits**.
+- Each produce tag reads **Buy → Sell**. `Want` is exactly how many customers
   will buy tonight. Tap **+ / −** to edit the order before committing.
 - **Open market** buys the order, sells held and purchased stock up to demand,
   and pays 5 credits rent. The preview includes all three, and orders always
@@ -61,8 +61,8 @@ exactly-once awards.
 - Transparent rivals: Pip reduces one queue by two, Mox discounts one buy price
   by three, Ora improves one sell price by four. All displayed values already
   include the change.
-- Finish at 240+ to transform your cart into a glowing stall. 480+ earns Lunar
-  Legend; 90–239 is Rising Merchant; below 90 is Stardust Apprentice. An empty
+- Finish at 600+ to transform your cart into a glowing stall. 800+ earns Lunar
+  Legend; 90–599 is Rising Merchant; below 90 is Stardust Apprentice. An empty
   night still costs rent, capped by available cash. There is no timer.
 - Daily orbit uses `YYYYMMDD` in UTC as its seed. Replay uses exactly the same
   market. Free play picks a local random seed; there is no online leaderboard.

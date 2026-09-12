@@ -71,7 +71,8 @@ struct Run: Codable, Equatable {
   static let openingCash = 90
   static let rent = 5
   static let capacity = 12
-  static let goal = 240
+  static let goal = 600
+  static let legendGoal = 800
   let seed: UInt64
   let daily: Bool
   var round = 1
@@ -99,7 +100,7 @@ struct Run: Codable, Equatable {
   var profit: Int { cash - Self.openingCash }
   var won: Bool { finished && cash >= Self.goal }
   var rank: String {
-    if cash >= 480 { return "Lunar legend" }
+    if cash >= Self.legendGoal { return "Lunar legend" }
     if cash >= Self.goal { return "Market luminary" }
     if cash >= Self.openingCash { return "Rising merchant" }
     return "Stardust apprentice"
