@@ -203,7 +203,7 @@ final class BoardwalkScene {
   }
 
   private func createWheel() {
-    wheel.position = SCNVector3(-26, 11.5, -92)
+    wheel.position = SCNVector3(-21, 12.5, -92)
     world.addChildNode(wheel)
     let rim = SCNTorus(ringRadius: 9.5, pipeRadius: 0.16)
     rim.materials = [material(teal, glow: 1.2)]
@@ -228,7 +228,7 @@ final class BoardwalkScene {
     }
     for x: Float in [-4.5, 4.5] {
       let leg = box(
-        world, SCNVector3(0.35, 24, 0.35), SCNVector3(-26 + x, 0, -92.2),
+        world, SCNVector3(0.35, 26, 0.35), SCNVector3(-21 + x, 0, -92.2),
         UIColor(red: 0.10, green: 0.10, blue: 0.20, alpha: 1), radius: 0)
       leg.eulerAngles.z = x < 0 ? -0.18 : 0.18
     }
