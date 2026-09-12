@@ -964,7 +964,11 @@ struct NativeScene: UIViewRepresentable {
     let view = KeyboardSceneView()
     view.scene = game.world.scene
     view.pointOfView = game.world.camera
-    view.antialiasingMode = .multisampling4X
+    #if targetEnvironment(simulator)
+      view.antialiasingMode = .multisampling2X
+    #else
+      view.antialiasingMode = .multisampling4X
+    #endif
     view.preferredFramesPerSecond = 60
     view.isPlaying = true
     view.game = game

@@ -95,10 +95,6 @@ enum Textures {
     }
   }
 
-  static let dot = image(32) { context, size in
-    UIColor.white.setFill()
-    context.fillEllipse(in: CGRect(x: 4, y: 4, width: size - 8, height: size - 8))
-  }
 }
 
 final class PicnicWorld {
@@ -110,8 +106,11 @@ final class PicnicWorld {
   private var wheels: [[SCNNode]] = []
   private var bodies: [SCNNode] = []
   private let clouds = SCNNode()
-  private let driftSparks = SCNParticleSystem()
-  private let boostTrail = SCNParticleSystem()
+  private var sparks: [SCNNode] = []
+  private var sparkLife: [Double] = []
+  private var sparkVelocity: [SIMD3<Float>] = []
+  private var sparkSpawn = 0.0
+  private var sparkSeed: UInt32 = 11
   private let circuit = Circuit()
   private var cameraReady = false
   private var lastElapsed = 0.0
@@ -138,8 +137,10 @@ final class PicnicWorld {
     camera.camera?.wantsHDR = false
     camera.camera?.vignettingIntensity = 0.55
     camera.camera?.vignettingPower = 0.9
-    camera.camera?.screenSpaceAmbientOcclusionIntensity = 0.7
-    camera.camera?.screenSpaceAmbientOcclusionRadius = 2.2
+    #if !targetEnvironment(simulator)
+      camera.camera?.screenSpaceAmbientOcclusionIntensity = 0.7
+      camera.camera?.screenSpaceAmbientOcclusionRadius = 2.2
+    #endif
     scene.rootNode.addChildNode(camera)
     let ambient = SCNNode()
     ambient.light = SCNLight()
@@ -157,7 +158,7 @@ final class PicnicWorld {
     sun.light?.shadowColor = UIColor(red: 0.10, green: 0.22, blue: 0.16, alpha: 0.32)
     sun.light?.shadowRadius = 4
     sun.light?.shadowSampleCount = 8
-    sun.light?.shadowMapSize = CGSize(width: 2048, height: 2048)
+    sun.light?.shadowMapSize = CGSize(width: 1536, height: 1536)
     sun.light?.orthographicScale = 150
     sun.eulerAngles = SCNVector3(-1.0, -0.6, 0)
     scene.rootNode.addChildNode(sun)
@@ -210,7 +211,7 @@ final class PicnicWorld {
       karts[0].addChildNode(glow)
       boostNodes.append(glow)
     }
-    configureParticles()
+    configureSparks()
   }
 
   static func node(_ geometry: SCNGeometry, _ color: UIColor, roughness: CGFloat = 0.65) -> SCNNode
@@ -346,28 +347,31 @@ final class PicnicWorld {
       }
     }
     start.addChildNode(grid.flattenedClone())
+    let gantry = SCNNode()
+    gantry.position.z = 11
+    start.addChildNode(gantry)
     for x in [-7.9, 7.9] {
       let pillar = Self.node(SCNCylinder(radius: 0.28, height: 7.4), Palette.cream)
       pillar.position = SCNVector3(x, 3.7, 0)
-      start.addChildNode(pillar)
+      gantry.addChildNode(pillar)
       for stripe in 0..<6 {
         let ring = Self.node(SCNCylinder(radius: 0.3, height: 0.5), Palette.pink)
         ring.position = SCNVector3(x, 0.5 + Double(stripe) * 1.2, 0)
-        start.addChildNode(ring)
+        gantry.addChildNode(ring)
       }
       let finial = Self.glossy(SCNSphere(radius: 0.5), Palette.butter)
       finial.position = SCNVector3(x, 7.6, 0)
-      start.addChildNode(finial)
+      gantry.addChildNode(finial)
     }
     let banner = Self.box(16.4, 1.35, 0.3, Palette.green, radius: 0.12)
     banner.position.y = 6.6
-    start.addChildNode(banner)
+    gantry.addChildNode(banner)
     let trim = Self.box(16.6, 0.12, 0.34, Palette.butter, radius: 0.02)
     trim.position.y = 7.33
-    start.addChildNode(trim)
+    gantry.addChildNode(trim)
     let trimLow = Self.box(16.6, 0.12, 0.34, Palette.butter, radius: 0.02)
     trimLow.position.y = 5.87
-    start.addChildNode(trimLow)
+    gantry.addChildNode(trimLow)
     for side in [-1.0, 1.0] {
       let text = SCNText(string: "DRIFT PICNIC", extrusionDepth: 0.02)
       text.font = UIFont(name: "Georgia-BoldItalic", size: 0.78)
@@ -379,7 +383,7 @@ final class PicnicWorld {
         (bounds.min.x + bounds.max.x) / 2, (bounds.min.y + bounds.max.y) / 2, 0)
       label.position = SCNVector3(0, 6.6, side * 0.18)
       label.eulerAngles.y = side < 0 ? .pi : 0
-      start.addChildNode(label)
+      gantry.addChildNode(label)
     }
     for i in 0..<14 {
       let flag = Self.node(
@@ -388,7 +392,7 @@ final class PicnicWorld {
       flag.geometry?.firstMaterial?.isDoubleSided = true
       flag.position = SCNVector3(-7.2 + Double(i) * 1.1, 5.75, 0)
       flag.eulerAngles.x = .pi
-      start.addChildNode(flag)
+      gantry.addChildNode(flag)
     }
     scene.rootNode.addChildNode(start)
   }
@@ -413,7 +417,7 @@ final class PicnicWorld {
     }
     buildParasol(at: SCNVector3(-54, 0, 44))
     buildBasket(at: SCNVector3(52, 0, -40))
-    buildTeaSet(at: SCNVector3(-42, 0, -28))
+    buildTeaSet(at: SCNVector3(-16, 0, -55))
     buildBunting()
     let trees = SCNNode()
     for i in 0..<34 {
@@ -686,38 +690,88 @@ final class PicnicWorld {
     karts[0].addChildNode(marker)
   }
 
-  private func configureParticles() {
-    driftSparks.particleImage = Textures.dot
-    driftSparks.particleColor = Palette.butter
-    driftSparks.particleSize = 0.22
-    driftSparks.particleLifeSpan = 0.5
-    driftSparks.birthRate = 0
-    driftSparks.particleVelocity = 3
-    driftSparks.particleVelocityVariation = 1.5
-    driftSparks.spreadingAngle = 40
-    driftSparks.emittingDirection = SCNVector3(0, 0.5, -1)
-    driftSparks.blendMode = .additive
-    driftSparks.isLightingEnabled = false
-    driftSparks.particleSizeVariation = 0.1
-    let sparkNode = SCNNode()
-    sparkNode.position = SCNVector3(0, 0.15, -0.9)
-    sparkNode.addParticleSystem(driftSparks)
-    karts[0].addChildNode(sparkNode)
-    boostTrail.particleImage = Textures.dot
-    boostTrail.particleColor = Palette.cream
-    boostTrail.particleSize = 0.5
-    boostTrail.particleSizeVariation = 0.2
-    boostTrail.particleLifeSpan = 0.35
-    boostTrail.birthRate = 0
-    boostTrail.particleVelocity = 6
-    boostTrail.spreadingAngle = 12
-    boostTrail.emittingDirection = SCNVector3(0, 0, -1)
-    boostTrail.blendMode = .additive
-    boostTrail.isLightingEnabled = false
-    let trailNode = SCNNode()
-    trailNode.position = SCNVector3(0, 0.4, -1.4)
-    trailNode.addParticleSystem(boostTrail)
-    karts[0].addChildNode(trailNode)
+  private func configureSparks() {
+    for _ in 0..<36 {
+      let geometry = SCNSphere(radius: 0.11)
+      geometry.segmentCount = 8
+      let spark = Self.node(geometry, Palette.butter)
+      spark.geometry?.firstMaterial?.lightingModel = .constant
+      spark.geometry?.firstMaterial?.emission.contents = Palette.butter
+      spark.castsShadow = false
+      spark.isHidden = true
+      scene.rootNode.addChildNode(spark)
+      sparks.append(spark)
+      sparkLife.append(0)
+      sparkVelocity.append(.zero)
+    }
+  }
+
+  private func random() -> Float {
+    sparkSeed = sparkSeed &* 1_664_525 &+ 1_013_904_223
+    return Float(sparkSeed >> 8) / Float(1 << 24)
+  }
+
+  private func emitSpark(
+    from origin: SIMD3<Float>, velocity: SIMD3<Float>, color: UIColor, size: Float
+  ) {
+    guard let index = sparkLife.firstIndex(where: { $0 <= 0 }) else { return }
+    let spark = sparks[index]
+    spark.isHidden = false
+    spark.position = SCNVector3(origin.x, origin.y, origin.z)
+    spark.scale = SCNVector3(size, size, size)
+    spark.geometry?.firstMaterial?.diffuse.contents = color
+    spark.geometry?.firstMaterial?.emission.contents = color
+    sparkVelocity[index] = velocity
+    sparkLife[index] = 1
+  }
+
+  private func updateSparks(race: RaceEngine, dt: Double, reducedMotion: Bool) {
+    let player = race.player
+    let heading = Float(player.heading)
+    let forward = SIMD3<Float>(sin(heading), 0, cos(heading))
+    let side = SIMD3<Float>(cos(heading), 0, -sin(heading))
+    let rear = SIMD3<Float>(Float(player.point.x), 0.18, Float(player.point.z)) - forward * 0.95
+    let boosting = player.boost > 0
+    let drifting = race.drifting && player.speed > 8
+    let rate: Double =
+      reducedMotion ? 0 : (boosting ? 70 : (drifting ? (player.driftCharge >= 0.65 ? 60 : 32) : 0))
+    sparkSpawn = rate > 0 ? sparkSpawn + rate * dt : 0
+    while sparkSpawn >= 1 {
+      sparkSpawn -= 1
+      if boosting {
+        let jitter = side * (random() - 0.5) * 0.5
+        emitSpark(
+          from: rear + jitter + SIMD3<Float>(0, 0.25, 0),
+          velocity: -forward * (5 + random() * 2) + SIMD3<Float>(0, 0.6 + random(), 0),
+          color: Palette.cream, size: 1.6 + random() * 0.8)
+      } else {
+        let lateral = Float(race.steering > 0 ? 1 : -1) * (0.45 + random() * 0.4)
+        emitSpark(
+          from: rear + side * lateral,
+          velocity: -forward * (2 + random() * 2) + side * lateral * 2
+            + SIMD3<Float>(0, 1.4 + random() * 1.6, 0),
+          color: player.driftCharge >= 0.65 ? Palette.butter : Palette.cream,
+          size: 0.7 + random() * 0.5)
+      }
+    }
+    for index in sparks.indices where sparkLife[index] > 0 {
+      sparkLife[index] -= dt / 0.45
+      let spark = sparks[index]
+      if sparkLife[index] <= 0 {
+        spark.isHidden = true
+        continue
+      }
+      sparkVelocity[index].y -= Float(dt) * 6
+      let velocity = sparkVelocity[index]
+      spark.position = SCNVector3(
+        spark.position.x + velocity.x * Float(dt),
+        max(0.08, spark.position.y + velocity.y * Float(dt)),
+        spark.position.z + velocity.z * Float(dt))
+      let fade = Float(sparkLife[index])
+      spark.scale = SCNVector3(
+        spark.scale.x * (0.94 + 0.06 * fade), spark.scale.y * (0.94 + 0.06 * fade),
+        spark.scale.z * (0.94 + 0.06 * fade))
+    }
   }
 
   static func tree(seed: Int) -> SCNNode {
@@ -783,7 +837,7 @@ final class PicnicWorld {
       seed.position = SCNVector3(cos(t) * 0.73, y, sin(t) * 0.73)
       group.addChildNode(seed)
     }
-    return group
+    return group.flattenedClone()
   }
 
   static func lemonade() -> SCNNode {
@@ -1011,11 +1065,7 @@ final class PicnicWorld {
     }
     let boosting = race.player.boost > 0
     for node in boostNodes { node.isHidden = !boosting }
-    boostTrail.birthRate = boosting && !reducedMotion ? 90 : 0
-    driftSparks.birthRate =
-      race.drifting && race.player.speed > 8 && !reducedMotion
-      ? CGFloat(40 + race.player.driftCharge * 80) : 0
-    driftSparks.particleColor = race.player.driftCharge >= 0.65 ? Palette.butter : Palette.cream
+    updateSparks(race: race, dt: dt, reducedMotion: reducedMotion)
     for (index, node) in itemNodes.enumerated() {
       node.isHidden = race.player.lastItemZone == race.player.tracker.laps * 3 + index
       if !reducedMotion {
