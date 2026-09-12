@@ -289,7 +289,7 @@ struct PlayView: View {
             ThiefFigure().frame(width: 18, height: 20)
             Text("YOU").font(.system(size: 10, design: .monospaced)).foregroundStyle(Palette.paper)
           }.accessibilityHidden(true)
-          legend("line.diagonal", text: "LASER", color: Palette.ruby)
+          legend("xmark", text: "DANGER NOW", color: Palette.ruby)
           if !store.room.sentries.isEmpty {
             legend("square.dashed", text: "NEXT SWEEP", color: Palette.amber)
           }
@@ -442,6 +442,8 @@ struct PauseView: View {
     .presentationDetents([.medium])
     .presentationDragIndicator(.visible)
     .presentationBackground(Palette.ink)
+    .foregroundStyle(Palette.paper)
+    .tint(Palette.gold)
   }
 }
 
