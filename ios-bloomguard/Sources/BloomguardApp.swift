@@ -142,7 +142,6 @@ struct BloomguardView: View {
       .frame(width: geometry.size.width, height: geometry.size.height)
       .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: store.screen)
     }
-    .fontDesign(.rounded)
     .foregroundStyle(Color.ink)
     .onReceive(timer) { _ in store.tick() }
     .onChange(of: scenePhase) { _, phase in
@@ -291,14 +290,14 @@ struct BloomguardView: View {
           VStack(alignment: .leading, spacing: 1) {
             Text(store.garden.title).font(.system(size: 16, weight: .semibold, design: .serif))
             Text(store.garden.waveLabel + "  ·  \(store.garden.score) PTS")
-              .font(.system(size: 8, weight: .semibold, design: .monospaced)).tracking(1)
-              .foregroundStyle(Color.cream.opacity(0.65))
+              .font(.system(size: 10, weight: .semibold, design: .monospaced)).tracking(0.5)
+              .foregroundStyle(Color.cream.opacity(0.85))
           }
           Spacer(minLength: 0)
           Text(
             store.garden.nextWave > 0
               ? "A breath between waves"
-              : store.garden.pests.isEmpty && store.garden.waveTime < 17
+              : store.garden.wave == 1 && store.garden.pests.isEmpty && store.garden.waveTime < 17
                 ? "Plant your first guardians" : "\(store.garden.pests.count) CLOCKWORKS"
           )
           .font(.system(size: 9, weight: .medium, design: .monospaced)).foregroundStyle(
@@ -315,9 +314,9 @@ struct BloomguardView: View {
             store.shovel.toggle()
           } label: {
             VStack(spacing: 3) {
-              Image(systemName: "trowel.fill").font(.system(size: 22))
-              Text("SHOVEL").font(.system(size: 7, weight: .bold, design: .monospaced))
-              Text("½ refund").font(.system(size: 7))
+              ShovelArt().frame(width: 27, height: 27)
+              Text("SHOVEL").font(.system(size: 8, weight: .bold, design: .monospaced))
+              Text("½ refund").font(.system(size: 9))
             }.frame(width: 57, height: 60).background(
               store.shovel ? Color.gold : Color.cream.opacity(0.1),
               in: RoundedRectangle(cornerRadius: 10)
@@ -335,8 +334,9 @@ struct BloomguardView: View {
           )
           .lineLimit(1).minimumScaleFactor(0.7)
           Spacer(minLength: 0)
-          Text("← COTTAGE     PESTS ←").tracking(1).foregroundStyle(Color.cream.opacity(0.45))
-        }.font(.system(size: 9)).foregroundStyle(Color.cream.opacity(0.85)).frame(height: 13)
+          Text("DEFEND YOUR COTTAGE").font(.system(size: 8, weight: .medium, design: .monospaced))
+            .tracking(0.5).foregroundStyle(Color.cream.opacity(0.55))
+        }.font(.system(size: 11)).foregroundStyle(Color.cream).frame(height: 16)
       }.padding(.horizontal, 5).padding(.vertical, 5)
       if store.garden.phase == .paused { pause }
       if store.garden.finished { results }
@@ -429,6 +429,20 @@ struct BloomguardView: View {
           )
           .font(.system(size: 12)).foregroundStyle(Color.moss)
         }
+      }
+      if won {
+        HStack(spacing: 6) {
+          ForEach(0..<3) { index in
+            Image(systemName: index < store.medals[store.garden.level] ? "star.fill" : "star")
+              .foregroundStyle(Color(red: 0.73, green: 0.48, blue: 0.10))
+          }
+          Text(
+            store.garden.level < 3
+              ? "\(Chapter.all[store.garden.level + 1].title) unlocked"
+              : "All four chapters defended"
+          )
+          .font(.system(size: 11, weight: .semibold)).padding(.leading, 8)
+        }.font(.system(size: 15))
       }
       HStack(spacing: 40) {
         resultStat("\(store.garden.score)", "GARDEN POINTS")

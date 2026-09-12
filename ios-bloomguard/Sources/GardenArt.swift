@@ -209,3 +209,30 @@ struct PaperBackground: View {
     }.ignoresSafeArea()
   }
 }
+
+struct ShovelArt: View {
+  var body: some View {
+    Canvas { context, size in
+      context.scaleBy(x: size.width / 30, y: size.height / 30)
+      var handle = Path()
+      handle.move(to: CGPoint(x: 15, y: 4))
+      handle.addLine(to: CGPoint(x: 15, y: 19))
+      context.stroke(
+        handle, with: .color(.init(red: 0.70, green: 0.46, blue: 0.27)),
+        style: StrokeStyle(lineWidth: 4, lineCap: .round))
+      context.stroke(
+        Path(roundedRect: CGRect(x: 10, y: 1, width: 10, height: 7), cornerRadius: 2),
+        with: .color(.gold), lineWidth: 3)
+      var blade = Path()
+      blade.move(to: CGPoint(x: 8, y: 16))
+      blade.addLine(to: CGPoint(x: 22, y: 16))
+      blade.addQuadCurve(to: CGPoint(x: 15, y: 29), control: CGPoint(x: 25, y: 26))
+      blade.addQuadCurve(to: CGPoint(x: 8, y: 16), control: CGPoint(x: 5, y: 26))
+      context.fill(blade, with: .color(.init(red: 0.71, green: 0.81, blue: 0.76)))
+      var seam = Path()
+      seam.move(to: CGPoint(x: 15, y: 18))
+      seam.addLine(to: CGPoint(x: 15, y: 25))
+      context.stroke(seam, with: .color(.ink.opacity(0.3)), lineWidth: 1)
+    }.rotationEffect(.degrees(30)).accessibilityHidden(true)
+  }
+}

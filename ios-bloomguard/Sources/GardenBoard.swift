@@ -5,7 +5,7 @@ struct GardenBoard: View {
 
   var body: some View {
     GeometryReader { geometry in
-      let inset = 29.0
+      let inset = 65.0
       let field = geometry.size.width - inset - 20
       let cell = field / 7.5
       let laneHeight = geometry.size.height / 5
@@ -25,11 +25,14 @@ struct GardenBoard: View {
                   : Color(red: 0.56, green: 0.65, blue: 0.38)))
             for column in 0..<7 {
               let x = inset + Double(column) * cell
-              context.stroke(
-                Path(
-                  roundedRect: CGRect(x: x + 3, y: y + 4, width: cell - 6, height: laneHeight - 8),
-                  cornerRadius: 8), with: .color(Color.cream.opacity(0.12)),
-                style: StrokeStyle(lineWidth: 1, dash: [2, 5]))
+              let plot = Path(
+                roundedRect: CGRect(x: x + 3, y: y + 4, width: cell - 6, height: laneHeight - 8),
+                cornerRadius: 8)
+              context.fill(
+                plot,
+                with: .color(
+                  (column + row) % 2 == 0 ? Color.cream.opacity(0.08) : Color.ink.opacity(0.03)))
+              context.stroke(plot, with: .color(Color.cream.opacity(0.32)), lineWidth: 1)
               for fleck in 0..<4 {
                 let point = CGPoint(
                   x: x + Double((column * 17 + fleck * 11) % 60) + 8,
@@ -49,6 +52,13 @@ struct GardenBoard: View {
               with: .color(Color(red: 0.72, green: 0.67, blue: 0.47)))
           }
         }
+        VStack(spacing: 3) {
+          Text("HOME").font(.system(size: 7, weight: .bold, design: .monospaced)).tracking(1)
+          Cottage().frame(width: 45, height: 42)
+          Text("KEEP IT\nGROWING").font(.system(size: 6, weight: .bold, design: .monospaced))
+            .multilineTextAlignment(.center)
+        }.foregroundStyle(Color.cream).position(x: 25, y: geometry.size.height / 2)
+          .allowsHitTesting(false)
         ForEach(0..<5) { row in
           ZStack {
             Capsule().fill(Color.ink.opacity(0.10)).frame(width: 22, height: laneHeight - 7)
@@ -59,7 +69,7 @@ struct GardenBoard: View {
               Text("\(row + 1)").font(.system(size: 8, weight: .bold, design: .monospaced))
                 .foregroundStyle(Color.ink.opacity(0.5))
             }
-          }.position(x: 14, y: (Double(row) + 0.5) * laneHeight)
+          }.position(x: 52, y: (Double(row) + 0.5) * laneHeight)
           ForEach(0..<7) { column in
             Button {
               store.place(lane: row, column: column)
