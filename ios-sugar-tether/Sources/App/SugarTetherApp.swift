@@ -17,6 +17,11 @@ enum Palette {
   static let deepMint = Color(red: 0.23, green: 0.43, blue: 0.33)
   static let pink = Color(red: 0.83, green: 0.39, blue: 0.40)
   static let gold = Color(red: 0.88, green: 0.66, blue: 0.24)
+  static let cream = Color(red: 0.995, green: 0.975, blue: 0.93)
+  static let blush = Color(red: 0.98, green: 0.89, blue: 0.83)
+  static let honey = Color(red: 0.97, green: 0.81, blue: 0.47)
+  static let caramel = Color(red: 0.70, green: 0.49, blue: 0.27)
+  static let plum = Color(red: 0.62, green: 0.25, blue: 0.32)
 }
 
 @MainActor
@@ -216,8 +221,7 @@ struct RootView: View {
   @Environment(\.scenePhase) private var scenePhase
   var body: some View {
     ZStack {
-      Palette.paper.ignoresSafeArea()
-      PaperTexture().ignoresSafeArea().allowsHitTesting(false)
+      SugarBackdrop().ignoresSafeArea().allowsHitTesting(false)
       switch store.page {
       case .home: HomeView(store: store)
       case .box: PuzzleBoxView(store: store)
@@ -232,18 +236,60 @@ struct RootView: View {
   }
 }
 
-struct PaperTexture: View {
+/// Buttery paper wash with a warm glow, drifting paper clouds and fine grain.
+struct SugarBackdrop: View {
   var body: some View {
-    Canvas { context, size in
-      for i in 0..<1600 {
-        let x = Double((i * 79) % 997) / 997 * size.width
-        let y = Double((i * 137) % 991) / 991 * size.height
-        context.fill(
-          Path(ellipseIn: CGRect(x: x, y: y, width: 1.3, height: 1.3)),
-          with: .color(Palette.ink.opacity(0.045)))
+    ZStack {
+      LinearGradient(
+        colors: [Palette.cream, Palette.paper, Palette.blush], startPoint: .top, endPoint: .bottom)
+      RadialGradient(
+        colors: [Palette.honey.opacity(0.35), .clear], center: .init(x: 0.8, y: 0.08),
+        startRadius: 10, endRadius: 320)
+      Canvas { context, size in
+        let s = size.width / 390
+        Art.cloud(&context, at: CGPoint(x: 50 * s, y: size.height * 0.18), scale: 1.3 * s)
+        Art.cloud(&context, at: CGPoint(x: size.width - 40 * s, y: size.height * 0.42), scale: s)
+        Art.cloud(&context, at: CGPoint(x: 70 * s, y: size.height * 0.74), scale: 0.9 * s)
+        for i in 0..<1600 {
+          let x = Double((i * 79) % 997) / 997 * size.width
+          let y = Double((i * 137) % 991) / 991 * size.height
+          context.fill(
+            Path(ellipseIn: CGRect(x: x, y: y, width: 1.3, height: 1.3)),
+            with: .color(Palette.ink.opacity(0.045)))
+        }
       }
     }
     .accessibilityHidden(true)
+  }
+}
+
+/// A felt panel with a soft drop, a pale rim and an inset running stitch.
+struct FeltCard: ViewModifier {
+  var fill: Color = .white
+  var corner: CGFloat = 26
+  var stitch: Color = Palette.caramel.opacity(0.35)
+  var lift: CGFloat = 8
+  func body(content: Content) -> some View {
+    content
+      .background(
+        RoundedRectangle(cornerRadius: corner).fill(fill)
+          .shadow(color: Palette.caramel.opacity(0.18), radius: lift * 1.6, y: lift)
+      )
+      .overlay(
+        RoundedRectangle(cornerRadius: max(2, corner - 6))
+          .stroke(stitch, style: StrokeStyle(lineWidth: 1, dash: [3, 4]))
+          .padding(6)
+      )
+      .overlay(RoundedRectangle(cornerRadius: corner).stroke(.white.opacity(0.9), lineWidth: 1.5))
+  }
+}
+
+extension View {
+  func felt(
+    _ fill: Color = .white, corner: CGFloat = 26, stitch: Color = Palette.caramel.opacity(0.35),
+    lift: CGFloat = 8
+  ) -> some View {
+    modifier(FeltCard(fill: fill, corner: corner, stitch: stitch, lift: lift))
   }
 }
 
@@ -254,23 +300,43 @@ struct SweetButton: View {
   let action: () -> Void
   var body: some View {
     Button(action: action) {
-      HStack {
-        Spacer()
-        Text(title).font(.system(size: 17, weight: .semibold, design: .rounded))
-        Spacer()
-        Image(systemName: icon).font(.system(size: 15, weight: .bold))
+      HStack(spacing: 12) {
+        Spacer(minLength: 0)
+        Text(title).font(.system(size: 17, weight: .bold, design: .rounded))
+        Spacer(minLength: 0)
+        Image(systemName: icon)
+          .font(.system(size: 13, weight: .black))
+          .foregroundStyle(primary ? Palette.ink : Palette.cream)
+          .frame(width: 30, height: 30)
+          .background(primary ? Palette.honey : Palette.mint, in: Circle())
+          .overlay(Circle().stroke(.white.opacity(0.6), lineWidth: 1))
       }
-      .padding(.horizontal, 23)
-      .frame(height: 58)
-      .foregroundStyle(primary ? Palette.paper : Palette.ink)
+      .padding(.leading, 26).padding(.trailing, 13)
+      .frame(height: 60)
+      .foregroundStyle(primary ? Palette.cream : Palette.ink)
       .background(
-        primary ? Palette.deepMint : Color.white.opacity(0.5),
-        in: RoundedRectangle(cornerRadius: 20)
+        RoundedRectangle(cornerRadius: 22).fill(
+          LinearGradient(
+            colors: primary ? [Palette.mint, Palette.deepMint] : [.white, Palette.cream],
+            startPoint: .top, endPoint: .bottom))
       )
-      .overlay(RoundedRectangle(cornerRadius: 20).stroke(Palette.ink.opacity(primary ? 0 : 0.12)))
+      .overlay(
+        RoundedRectangle(cornerRadius: 17)
+          .stroke(
+            primary ? Palette.cream.opacity(0.55) : Palette.caramel.opacity(0.4),
+            style: StrokeStyle(lineWidth: 1, dash: [3, 4])
+          )
+          .padding(5)
+      )
+      .overlay(
+        RoundedRectangle(cornerRadius: 22).stroke(
+          primary ? Palette.deepMint : Palette.caramel.opacity(0.35), lineWidth: 1)
+      )
       .background(
-        RoundedRectangle(cornerRadius: 20)
-          .fill(primary ? Palette.ink : Palette.ink.opacity(0.08)).offset(y: 4))
+        RoundedRectangle(cornerRadius: 22)
+          .fill(primary ? Palette.ink : Palette.caramel.opacity(0.45)).offset(y: 5)
+      )
+      .shadow(color: Palette.caramel.opacity(0.22), radius: 12, y: 8)
     }
     .buttonStyle(PressStyle())
   }
@@ -280,8 +346,9 @@ struct PressStyle: ButtonStyle {
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .scaleEffect(configuration.isPressed ? 0.97 : 1)
-      .animation(reduceMotion ? nil : .easeOut(duration: 0.15), value: configuration.isPressed)
+      .scaleEffect(configuration.isPressed ? 0.96 : 1)
+      .offset(y: configuration.isPressed ? 2 : 0)
+      .animation(reduceMotion ? nil : .spring(duration: 0.22), value: configuration.isPressed)
   }
 }
 
@@ -292,138 +359,166 @@ struct RoundButton: View {
   var body: some View {
     Button(action: action) {
       Image(systemName: icon)
-        .font(.system(size: 17, weight: .medium))
+        .font(.system(size: 16, weight: .semibold))
+        .foregroundStyle(Palette.deepMint)
         .frame(width: 46, height: 46)
-        .background(.white.opacity(0.55), in: Circle())
-        .overlay(Circle().stroke(Palette.ink.opacity(0.1)))
+        .background(
+          Circle().fill(
+            LinearGradient(colors: [.white, Palette.cream], startPoint: .top, endPoint: .bottom)
+          )
+          .shadow(color: Palette.caramel.opacity(0.25), radius: 6, y: 4)
+        )
+        .overlay(
+          Circle().stroke(
+            Palette.caramel.opacity(0.4), style: StrokeStyle(lineWidth: 1, dash: [2, 3])
+          )
+          .padding(4)
+        )
+        .overlay(Circle().stroke(.white, lineWidth: 1.5))
     }
     .buttonStyle(PressStyle())
     .accessibilityLabel(label)
   }
 }
 
+/// Small caps eyebrow text with a candy dot on either side.
+struct Eyebrow: View {
+  let text: String
+  var color: Color = Palette.caramel
+  var body: some View {
+    HStack(spacing: 8) {
+      Circle().frame(width: 4, height: 4)
+      Text(text).font(.system(size: 10, weight: .bold, design: .rounded)).tracking(2.2)
+      Circle().frame(width: 4, height: 4)
+    }
+    .foregroundStyle(color)
+  }
+}
+
+/// The wordmark: a warm serif with a caramel-to-mint glaze and a stitched flourish.
+struct Wordmark: View {
+  var size: CGFloat = 50
+  var body: some View {
+    VStack(spacing: 6) {
+      Text("Sugar Tether")
+        .font(.system(size: size, weight: .bold, design: .serif))
+        .tracking(-1.5)
+        .foregroundStyle(
+          LinearGradient(
+            colors: [Palette.deepMint, Palette.ink], startPoint: .top, endPoint: .bottom)
+        )
+        .shadow(color: .white.opacity(0.9), radius: 0, y: 1.5)
+        .shadow(color: Palette.caramel.opacity(0.25), radius: 10, y: 8)
+      Canvas { context, canvasSize in
+        let midY = canvasSize.height / 2
+        let midX = canvasSize.width / 2
+        var line = Path()
+        line.move(to: CGPoint(x: midX - 110, y: midY))
+        line.addQuadCurve(
+          to: CGPoint(x: midX - 18, y: midY), control: CGPoint(x: midX - 64, y: midY - 7))
+        line.move(to: CGPoint(x: midX + 18, y: midY))
+        line.addQuadCurve(
+          to: CGPoint(x: midX + 110, y: midY), control: CGPoint(x: midX + 64, y: midY - 7))
+        context.stroke(
+          line, with: .color(Palette.caramel.opacity(0.7)),
+          style: StrokeStyle(lineWidth: 1.2, lineCap: .round, dash: [3, 3]))
+        Art.candy(&context, at: V(x: midX, y: midY), radius: 7, rotation: 0.5)
+      }
+      .frame(width: 240, height: 18)
+      .accessibilityHidden(true)
+    }
+  }
+}
+
 struct HomeView: View {
   @ObservedObject var store: GameStore
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
   var body: some View {
     GeometryReader { geometry in
       let compact = geometry.size.height < 710
-      VStack(spacing: compact ? 13 : 20) {
+      VStack(spacing: compact ? 12 : 18) {
         HStack {
-          Label("POCKET CONFECTIONS", systemImage: "leaf")
-            .font(.system(size: 10, weight: .semibold, design: .rounded))
-            .tracking(2)
+          HStack(spacing: 7) {
+            Image(systemName: "leaf.fill").font(.system(size: 10))
+            Text("POCKET CONFECTIONS")
+              .font(.system(size: 10, weight: .bold, design: .rounded)).tracking(2)
+          }
+          .foregroundStyle(Palette.caramel)
+          .padding(.horizontal, 12).frame(height: 30)
+          .felt(Palette.cream, corner: 15, lift: 3)
           Spacer()
           RoundButton(
-            icon: store.sound ? "speaker.wave.2" : "speaker.slash",
+            icon: store.sound ? "speaker.wave.2.fill" : "speaker.slash.fill",
             label: store.sound ? "Mute sound" : "Enable sound"
           ) { store.toggleSound() }
         }
-        VStack(spacing: 7) {
-          Text("Sugar Tether")
-            .font(.system(size: compact ? 43 : 48, weight: .bold, design: .serif))
-            .tracking(-2)
-          HStack(spacing: 9) {
-            Rectangle().frame(width: 21, height: 1)
-            Text("A LITTLE SNIP. A LITTLE MAGIC.")
-              .font(.system(size: 10, weight: .semibold)).tracking(1.5)
-            Rectangle().frame(width: 21, height: 1)
-          }
-          .foregroundStyle(Palette.muted)
+        VStack(spacing: 8) {
+          Wordmark(size: compact ? 44 : 50)
+          Text("A LITTLE SNIP. A LITTLE MAGIC.")
+            .font(.system(size: 10, weight: .bold, design: .rounded)).tracking(2.4)
+            .foregroundStyle(Palette.caramel)
         }
-        HeroArt().frame(maxWidth: .infinity, maxHeight: .infinity)
+        TimelineView(.animation(paused: reduceMotion)) { timeline in
+          HeroArt(phase: reduceMotion ? 0.6 : timeline.date.timeIntervalSinceReferenceDate * 1.4)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         VStack(spacing: 7) {
           Text("Meet Pip. Pip loves sweets.")
-            .font(.system(size: 21, weight: .semibold, design: .serif))
+            .font(.system(size: 22, weight: .semibold, design: .serif))
           Text("Cut silk threads. Catch golden stars.\nBring a little sweetness home.")
-            .font(.system(size: 14, design: .rounded))
+            .font(.system(size: 14, weight: .medium, design: .rounded))
             .foregroundStyle(Palette.muted)
             .multilineTextAlignment(.center)
             .lineSpacing(3)
         }
-        VStack(spacing: 13) {
+        VStack(spacing: 12) {
           SweetButton(title: store.progress.completed == 0 ? "Let’s play" : "Keep playing") {
             store.start(store.nextLevel)
           }
           Button {
             store.page = .box
           } label: {
-            HStack(spacing: 8) {
-              Image(systemName: "square.grid.2x2")
+            HStack(spacing: 10) {
+              Image(systemName: "square.grid.2x2.fill").font(.system(size: 13))
+                .foregroundStyle(Palette.deepMint)
               Text("The puzzle box")
-              Text("· \(store.progress.totalStars)/24")
-                .foregroundStyle(Palette.muted)
+              Text("\(store.progress.totalStars) / 24")
+                .foregroundStyle(Palette.caramel)
+              StarBadge(size: 11, earned: true)
             }
-            .font(.system(size: 14, weight: .medium, design: .rounded))
-            .frame(height: 40)
+            .font(.system(size: 14, weight: .bold, design: .rounded))
+            .padding(.horizontal, 18).frame(height: 44)
+            .felt(Palette.cream, corner: 22, lift: 4)
           }
+          .buttonStyle(PressStyle())
           .accessibilityLabel("The puzzle box, \(store.progress.totalStars) of 24 stars")
         }
-        Text("8 HANDCRAFTED MOMENTS OF JOY")
-          .font(.system(size: 10, weight: .medium)).tracking(1.7)
-          .foregroundStyle(Palette.muted)
+        Eyebrow(text: "EIGHT HANDCRAFTED PUZZLES")
       }
-      .padding(.horizontal, 28)
+      .padding(.horizontal, 26)
       .padding(.top, 8)
-      .padding(.bottom, compact ? 12 : 22)
+      .padding(.bottom, compact ? 10 : 18)
     }
   }
 }
 
-struct PuzzleBoxView: View {
-  @ObservedObject var store: GameStore
+/// A candy-glass star drawn with the game art so UI stars match the playfield.
+struct StarBadge: View {
+  var size: CGFloat = 20
+  var earned: Bool
   var body: some View {
-    VStack(spacing: 18) {
-      HStack {
-        RoundButton(icon: "arrow.left", label: "Back to title") { store.leave(.home) }
-        Spacer()
-        Text("\(store.progress.totalStars) / 24  ★")
-          .font(.system(size: 16, weight: .semibold, design: .rounded))
-          .foregroundStyle(Palette.gold)
+    Canvas { context, canvasSize in
+      let center = V(x: canvasSize.width / 2, y: canvasSize.height / 2)
+      if earned {
+        Art.star(&context, at: center, radius: size / 2)
+      } else {
+        let shape = Art.starPath(at: center, radius: size / 2)
+        context.fill(shape, with: .color(Palette.caramel.opacity(0.12)))
+        context.stroke(shape, with: .color(Palette.caramel.opacity(0.45)), lineWidth: 1)
       }
-      VStack(spacing: 9) {
-        Text("The puzzle box").font(.system(size: 34, weight: .bold, design: .serif))
-        Text("Small puzzles. Sweet discoveries.")
-          .font(.system(size: 14, design: .rounded)).foregroundStyle(Palette.muted)
-      }
-      ScrollView {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-          ForEach(Puzzle.all.indices, id: \.self) { index in
-            let unlocked = store.progress.unlocked(index)
-            Button {
-              if unlocked { store.start(index) }
-            } label: {
-              VStack(spacing: 10) {
-                Text(String(format: "%02d", index + 1))
-                  .font(.system(size: 31, weight: .semibold, design: .serif))
-                  .foregroundStyle(unlocked ? Palette.deepMint : Palette.muted)
-                Text(Puzzle.all[index].title)
-                  .font(.system(size: 12, weight: .semibold, design: .rounded))
-                if unlocked {
-                  StarRow(earned: max(0, store.progress.stars[index]), size: 14)
-                } else {
-                  Label("Complete puzzle \(index)", systemImage: "lock")
-                    .font(.system(size: 11)).foregroundStyle(Palette.muted)
-                }
-              }
-              .frame(maxWidth: .infinity).frame(height: 119)
-              .background(
-                .white.opacity(unlocked ? 0.65 : 0.2),
-                in: RoundedRectangle(cornerRadius: 24)
-              )
-              .overlay(RoundedRectangle(cornerRadius: 24).stroke(Palette.ink.opacity(0.1)))
-            }
-            .buttonStyle(PressStyle()).disabled(!unlocked)
-            .accessibilityLabel(
-              "Puzzle \(index + 1), \(Puzzle.all[index].title), \(unlocked ? "\(max(0, store.progress.stars[index])) stars" : "locked")"
-            )
-          }
-        }
-        .padding(.bottom, 12)
-      }
-      Text("Earn stars at your own pace. Replay any open puzzle.")
-        .font(.system(size: 11, design: .rounded)).foregroundStyle(Palette.muted)
     }
-    .padding(.horizontal, 24).padding(.top, 10).padding(.bottom, 12)
+    .frame(width: size + 6, height: size + 6)
+    .accessibilityHidden(true)
   }
 }
 
@@ -431,15 +526,121 @@ struct StarRow: View {
   let earned: Int
   var size: CGFloat = 23
   var body: some View {
-    HStack(spacing: 7) {
+    HStack(spacing: size * 0.28) {
       ForEach(0..<3) { index in
-        Image(systemName: index < earned ? "star.fill" : "star")
-          .font(.system(size: size, weight: .medium))
-          .foregroundStyle(index < earned ? Palette.gold : Palette.muted.opacity(0.4))
+        StarBadge(size: size, earned: index < earned)
       }
     }
     .accessibilityElement(children: .ignore)
     .accessibilityLabel("\(earned) of 3 stars")
+  }
+}
+
+struct PuzzleBoxView: View {
+  @ObservedObject var store: GameStore
+  private let accents = [
+    Color(red: 0.99, green: 0.87, blue: 0.80), Color(red: 0.83, green: 0.92, blue: 0.83),
+    Color(red: 0.98, green: 0.91, blue: 0.72), Color(red: 0.86, green: 0.90, blue: 0.96),
+  ]
+  var body: some View {
+    VStack(spacing: 16) {
+      HStack {
+        RoundButton(icon: "arrow.left", label: "Back to title") { store.leave(.home) }
+        Spacer()
+        HStack(spacing: 6) {
+          StarBadge(size: 13, earned: true)
+          Text("\(store.progress.totalStars) / 24")
+            .font(.system(size: 15, weight: .bold, design: .rounded))
+            .foregroundStyle(Palette.caramel)
+        }
+        .padding(.horizontal, 14).frame(height: 36)
+        .felt(Palette.cream, corner: 18, lift: 3)
+      }
+      VStack(spacing: 8) {
+        Eyebrow(text: "PIP’S COLLECTION")
+        Text("The puzzle box").font(.system(size: 34, weight: .bold, design: .serif))
+          .foregroundStyle(
+            LinearGradient(
+              colors: [Palette.deepMint, Palette.ink], startPoint: .top, endPoint: .bottom))
+        ProgressGauge(value: store.progress.totalStars, total: 24)
+          .frame(width: 220, height: 12)
+          .padding(.top, 4)
+      }
+      ScrollView(showsIndicators: false) {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 14) {
+          ForEach(Puzzle.all.indices, id: \.self) { index in
+            let unlocked = store.progress.unlocked(index)
+            Button {
+              if unlocked { store.start(index) }
+            } label: {
+              VStack(spacing: 8) {
+                Text(String(format: "%02d", index + 1))
+                  .font(.system(size: 22, weight: .bold, design: .serif))
+                  .foregroundStyle(unlocked ? Palette.deepMint : Palette.muted)
+                  .frame(width: 46, height: 46)
+                  .background(
+                    Circle().fill(unlocked ? accents[index % accents.count] : Palette.cream)
+                      .shadow(color: Palette.caramel.opacity(0.18), radius: 3, y: 2)
+                  )
+                  .overlay(Circle().stroke(.white, lineWidth: 1.5))
+                Text(Puzzle.all[index].title)
+                  .font(.system(size: 13, weight: .bold, design: .rounded))
+                  .foregroundStyle(unlocked ? Palette.ink : Palette.muted)
+                if unlocked {
+                  StarRow(earned: max(0, store.progress.stars[index]), size: 15)
+                } else {
+                  Label("Complete puzzle \(index)", systemImage: "lock.fill")
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Palette.muted)
+                }
+              }
+              .frame(maxWidth: .infinity).frame(height: 128)
+              .felt(
+                unlocked ? .white : Palette.cream.opacity(0.7), corner: 24,
+                stitch: Palette.caramel.opacity(unlocked ? 0.35 : 0.18), lift: unlocked ? 6 : 2)
+            }
+            .buttonStyle(PressStyle()).disabled(!unlocked)
+            .accessibilityLabel(
+              "Puzzle \(index + 1), \(Puzzle.all[index].title), \(unlocked ? "\(max(0, store.progress.stars[index])) stars" : "locked")"
+            )
+          }
+        }
+        .padding(.horizontal, 2)
+        .padding(.top, 6)
+        .padding(.bottom, 14)
+      }
+      Text("Earn stars at your own pace. Replay any open puzzle.")
+        .font(.system(size: 12, weight: .medium, design: .rounded)).foregroundStyle(Palette.muted)
+    }
+    .padding(.horizontal, 24).padding(.top, 10).padding(.bottom, 12)
+  }
+}
+
+/// A felt gauge filling with honey as stars are earned.
+struct ProgressGauge: View {
+  let value: Int
+  let total: Int
+  var body: some View {
+    GeometryReader { geometry in
+      let fraction = CGFloat(value) / CGFloat(max(1, total))
+      ZStack(alignment: .leading) {
+        Capsule().fill(Palette.cream)
+          .overlay(Capsule().stroke(Palette.caramel.opacity(0.35), lineWidth: 1))
+        Capsule()
+          .fill(
+            LinearGradient(
+              colors: [Palette.honey, Palette.gold], startPoint: .top, endPoint: .bottom)
+          )
+          .frame(width: max(geometry.size.height, geometry.size.width * fraction))
+          .overlay(alignment: .top) {
+            Capsule().fill(.white.opacity(0.5)).frame(height: 3).padding(.horizontal, 5).padding(
+              .top, 2)
+          }
+          .padding(1.5)
+      }
+    }
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel("\(value) of \(total) stars collected")
   }
 }
 
@@ -449,16 +650,19 @@ struct PlayView: View {
   @State private var firstPoint: V?
   var body: some View {
     ZStack {
-      VStack(spacing: 9) {
+      VStack(spacing: 10) {
         HStack(alignment: .center) {
-          RoundButton(icon: "pause", label: "Pause game") { store.paused = true }
+          RoundButton(icon: "pause.fill", label: "Pause game") { store.paused = true }
           Spacer()
-          VStack(spacing: 4) {
-            Text("BONBON \(String(format: "%02d", store.level + 1)) / 08")
-              .font(.system(size: 11, weight: .semibold)).tracking(1.5)
-              .foregroundStyle(Palette.muted)
+          VStack(spacing: 3) {
+            Text("BONBON \(String(format: "%02d", store.level + 1)) OF 08")
+              .font(.system(size: 10, weight: .bold, design: .rounded)).tracking(1.8)
+              .foregroundStyle(Palette.caramel)
             Text(store.game.puzzle.title)
-              .font(.system(size: 22, weight: .semibold, design: .serif))
+              .font(.system(size: 23, weight: .bold, design: .serif))
+              .foregroundStyle(
+                LinearGradient(
+                  colors: [Palette.deepMint, Palette.ink], startPoint: .top, endPoint: .bottom))
           }
           Spacer()
           RoundButton(icon: "arrow.counterclockwise", label: "Retry puzzle") {
@@ -467,11 +671,13 @@ struct PlayView: View {
         }
         HStack {
           Text(store.game.puzzle.subtitle)
-            .font(.system(size: 10, weight: .semibold)).tracking(1.3)
+            .font(.system(size: 10, weight: .bold, design: .rounded)).tracking(1.6)
             .foregroundStyle(Palette.muted)
           Spacer()
           StarRow(earned: store.game.collected.count, size: 17)
-        }.padding(.horizontal, 9).padding(.top, 9)
+            .padding(.horizontal, 10).frame(height: 32)
+            .felt(Palette.cream, corner: 16, lift: 2)
+        }.padding(.horizontal, 6).padding(.top, 4)
         GeometryReader { geometry in
           let scale = min(geometry.size.width / 360, geometry.size.height / 560)
           let width = 360 * scale
@@ -481,8 +687,7 @@ struct PlayView: View {
             puffFlash: store.puffFlash, sparkles: store.sparkles, hasBegun: store.hasBegun
           )
           .frame(width: width, height: height)
-          .background(Color.white.opacity(0.3), in: RoundedRectangle(cornerRadius: 28))
-          .overlay(RoundedRectangle(cornerRadius: 28).stroke(Palette.ink.opacity(0.1)))
+          .shadow(color: Palette.caramel.opacity(0.28), radius: 18, y: 12)
           .contentShape(Rectangle())
           .gesture(
             DragGesture(minimumDistance: 0)
@@ -509,88 +714,120 @@ struct PlayView: View {
           .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
         }
         HStack(spacing: 12) {
-          Image(systemName: store.game.bubbleActive ? "hand.tap" : "hand.draw")
-            .font(.system(size: 22, weight: .light)).foregroundStyle(Palette.deepMint)
+          Image(systemName: store.game.bubbleActive ? "hand.tap.fill" : "hand.draw.fill")
+            .font(.system(size: 18, weight: .medium)).foregroundStyle(Palette.cream)
+            .frame(width: 38, height: 38)
+            .background(
+              Circle().fill(
+                LinearGradient(
+                  colors: [Palette.mint, Palette.deepMint], startPoint: .top, endPoint: .bottom)))
           Text(
             store.game.bubbleActive && store.game.collected.count == 3
               ? "All three stars! Tap the bubble now to float down to Pip."
               : store.game.puzzle.hint
           )
-          .font(.system(size: 14, design: .rounded))
-          .foregroundStyle(Palette.muted).lineSpacing(3)
+          .font(.system(size: 13.5, weight: .medium, design: .rounded))
+          .foregroundStyle(Palette.ink.opacity(0.85)).lineSpacing(3)
           .fixedSize(horizontal: false, vertical: true)
+          Spacer(minLength: 0)
           if store.game.puzzle.puff {
             Button {
               store.puff()
             } label: {
-              VStack(spacing: 3) {
-                Image(systemName: "wind").font(.system(size: 23))
-                Text("PUFF").font(.system(size: 9, weight: .bold)).tracking(1)
+              VStack(spacing: 2) {
+                Image(systemName: "wind").font(.system(size: 22, weight: .semibold))
+                Text("PUFF").font(.system(size: 9, weight: .black, design: .rounded)).tracking(1.4)
               }
-              .foregroundStyle(Palette.paper)
-              .frame(width: 72, height: 62)
-              .background(Palette.deepMint, in: RoundedRectangle(cornerRadius: 18))
-              .opacity(store.game.puffCooldown > 0 ? 0.55 : 1)
+              .foregroundStyle(Palette.ink)
+              .frame(width: 66, height: 66)
+              .background(
+                Circle().fill(
+                  LinearGradient(
+                    colors: [Color(red: 1, green: 0.9, blue: 0.6), Palette.honey], startPoint: .top,
+                    endPoint: .bottom)
+                )
+                .shadow(color: Palette.caramel.opacity(0.35), radius: 6, y: 5)
+              )
+              .overlay(
+                Circle().stroke(
+                  Palette.caramel.opacity(0.5), style: StrokeStyle(lineWidth: 1, dash: [2, 3])
+                )
+                .padding(5)
+              )
+              .overlay(Circle().stroke(.white, lineWidth: 1.5))
+              .background(Circle().fill(Palette.caramel).offset(y: 4))
+              .opacity(store.game.puffCooldown > 0 ? 0.5 : 1)
             }
             .buttonStyle(PressStyle()).accessibilityLabel("Air puff")
             .disabled(store.game.puffCooldown > 0)
           }
-        }.frame(minHeight: 62).padding(.horizontal, 8)
+        }
+        .padding(.horizontal, 12).padding(.vertical, 9)
+        .frame(minHeight: 66)
+        .felt(Palette.cream, corner: 24, lift: 4)
       }
-      .padding(.horizontal, 20).padding(.top, 8).padding(.bottom, 9)
+      .padding(.horizontal, 20).padding(.top, 8).padding(.bottom, 10)
       if store.paused { pauseCard }
       if store.showResult { resultCard }
     }
   }
 
   private var pauseCard: some View {
-    card {
+    card(eyebrow: "PAUSED") {
       Text("A sweet little break")
-        .font(.system(size: 29, weight: .semibold, design: .serif))
+        .font(.system(size: 29, weight: .bold, design: .serif))
       Text("Pip will keep your place.")
-        .font(.system(size: 14, design: .rounded)).foregroundStyle(Palette.muted)
+        .font(.system(size: 14, weight: .medium, design: .rounded)).foregroundStyle(Palette.muted)
       MiniPip().frame(height: 128)
       SweetButton(title: "Keep going", icon: "play.fill") { store.paused = false }
       SweetButton(title: "Start this puzzle again", icon: "arrow.counterclockwise", primary: false)
       {
         store.start(store.level)
       }
-      HStack {
-        Button("Puzzle box") { store.leave(.box) }
-        Spacer()
+      HStack(spacing: 14) {
+        Button("The puzzle box") { store.leave(.box) }
+          .foregroundStyle(Palette.deepMint)
+          .padding(.horizontal, 16).padding(.vertical, 12)
+          .felt(Palette.cream, corner: 22, lift: 3)
         RoundButton(
-          icon: store.sound ? "speaker.wave.2" : "speaker.slash",
+          icon: store.sound ? "speaker.wave.2.fill" : "speaker.slash.fill",
           label: store.sound ? "Mute sound" : "Enable sound"
         ) { store.toggleSound() }
-      }.font(.system(size: 14, weight: .medium, design: .rounded))
+      }.font(.system(size: 14, weight: .bold, design: .rounded))
     }
   }
 
   private var resultCard: some View {
     let won = store.game.outcome == .fed
     let finale = won && store.level == Puzzle.all.count - 1
-    return card {
-      Text(won ? "DELIVERED WITH LOVE" : "EVERY SNIP IS A NEW START")
-        .font(.system(size: 9, weight: .semibold)).tracking(2).foregroundStyle(Palette.muted)
+    return card(eyebrow: won ? "DELIVERED WITH LOVE" : "EVERY SNIP IS A NEW START") {
       Text(won ? (finale ? "A box of little joys" : "Sweet delivery!") : "One more little try?")
-        .font(.system(size: 31, weight: .semibold, design: .serif))
+        .font(.system(size: 31, weight: .bold, design: .serif))
         .multilineTextAlignment(.center)
+        .foregroundStyle(
+          LinearGradient(
+            colors: [Palette.deepMint, Palette.ink], startPoint: .top, endPoint: .bottom))
       MiniPip(happy: won).frame(height: 122)
       if won {
-        StarRow(earned: store.game.collected.count, size: 34)
+        ResultStars(earned: store.game.collected.count)
       }
       Text(
         won
           ? "\(store.game.collected.count) \(store.game.collected.count == 1 ? "star" : "stars") for Pip. \(store.game.collected.count == 3 ? "Beautifully done." : "There’s more sweetness to find.")"
           : lossHint
       )
-      .font(.system(size: 14, design: .rounded)).foregroundStyle(Palette.muted)
+      .font(.system(size: 14, weight: .medium, design: .rounded)).foregroundStyle(Palette.muted)
       .multilineTextAlignment(.center).lineSpacing(4)
       if won {
-        Text(
-          "BEST \(max(0, store.progress.stars[store.level]))/3  ·  YOUR BOX \(store.progress.totalStars)/24"
-        )
-        .font(.system(size: 10, weight: .semibold)).tracking(1).foregroundStyle(Palette.deepMint)
+        HStack(spacing: 14) {
+          Text("BEST \(max(0, store.progress.stars[store.level]))/3")
+          Circle().frame(width: 3, height: 3)
+          Text("YOUR BOX \(store.progress.totalStars)/24")
+        }
+        .font(.system(size: 10, weight: .bold, design: .rounded)).tracking(1.2)
+        .foregroundStyle(Palette.caramel)
+        .padding(.horizontal, 14).frame(height: 28)
+        .felt(Palette.cream, corner: 14, lift: 2)
       }
       SweetButton(
         title: won ? (finale ? "Back to the puzzle box" : "Next little puzzle") : "Try again",
@@ -610,7 +847,8 @@ struct PlayView: View {
         }
       }
       Button("The puzzle box") { store.leave(.box) }
-        .font(.system(size: 14, weight: .medium, design: .rounded)).frame(height: 35)
+        .font(.system(size: 14, weight: .bold, design: .rounded)).frame(height: 35)
+        .foregroundStyle(Palette.deepMint)
     }
   }
 
@@ -631,19 +869,56 @@ struct PlayView: View {
     }
   }
 
-  private func card<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+  private func card<Content: View>(
+    eyebrow: String, @ViewBuilder content: () -> Content
+  ) -> some View {
     ZStack {
-      Palette.ink.opacity(0.28).ignoresSafeArea().contentShape(Rectangle())
-      VStack(spacing: 17, content: content)
-        .padding(26)
-        .frame(maxWidth: 350)
-        .background(
-          RoundedRectangle(cornerRadius: 32).fill(Palette.paper)
-            .shadow(color: Palette.ink.opacity(0.2), radius: 24, y: 14)
+      Palette.ink.opacity(0.32).ignoresSafeArea().contentShape(Rectangle())
+      VStack(spacing: 16) {
+        Eyebrow(text: eyebrow)
+        content()
+      }
+      .padding(.horizontal, 24).padding(.top, 22).padding(.bottom, 20)
+      .frame(maxWidth: 350)
+      .background(
+        RoundedRectangle(cornerRadius: 34).fill(
+          LinearGradient(colors: [.white, Palette.paper], startPoint: .top, endPoint: .bottom)
         )
-        .overlay(RoundedRectangle(cornerRadius: 32).stroke(.white.opacity(0.8), lineWidth: 2))
-        .padding(20)
+        .shadow(color: Palette.ink.opacity(0.28), radius: 28, y: 16)
+      )
+      .overlay(
+        RoundedRectangle(cornerRadius: 27)
+          .stroke(Palette.caramel.opacity(0.35), style: StrokeStyle(lineWidth: 1, dash: [3, 4]))
+          .padding(7)
+      )
+      .overlay(RoundedRectangle(cornerRadius: 34).stroke(.white, lineWidth: 2))
+      .padding(20)
     }
     .accessibilityAddTraits(.isModal)
+  }
+}
+
+/// Result stars pop in one after another; Reduce Motion shows them settled.
+struct ResultStars: View {
+  let earned: Int
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @State private var shown = 0
+  var body: some View {
+    HStack(spacing: 12) {
+      ForEach(0..<3) { index in
+        StarBadge(size: 36, earned: index < earned)
+          .scaleEffect(index < earned && shown <= index && !reduceMotion ? 0.2 : 1)
+          .opacity(index < earned && shown <= index && !reduceMotion ? 0 : 1)
+      }
+    }
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel("\(earned) of 3 stars")
+    .task {
+      guard !reduceMotion else { return }
+      for index in 0..<earned {
+        try? await Task.sleep(for: .milliseconds(index == 0 ? 120 : 260))
+        withAnimation(.spring(duration: 0.45, bounce: 0.45)) { shown = index + 1 }
+      }
+    }
   }
 }
