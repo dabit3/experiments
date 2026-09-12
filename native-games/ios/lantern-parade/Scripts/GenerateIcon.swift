@@ -3,9 +3,9 @@ import AppKit
 let size = NSSize(width: 1024, height: 1024)
 let image = NSImage(size: size)
 image.lockFocus()
-let night = NSColor(calibratedRed: 0.045, green: 0.068, blue: 0.16, alpha: 1)
-let gold = NSColor(calibratedRed: 0.98, green: 0.72, blue: 0.36, alpha: 1)
-let cream = NSColor(calibratedRed: 1, green: 0.94, blue: 0.76, alpha: 1)
+let night = NSColor(calibratedRed: 0.035, green: 0.085, blue: 0.12, alpha: 1)
+let gold = NSColor(calibratedRed: 0.86, green: 0.72, blue: 0.47, alpha: 1)
+let cream = NSColor(calibratedRed: 0.95, green: 0.90, blue: 0.79, alpha: 1)
 night.setFill()
 NSBezierPath(rect: NSRect(origin: .zero, size: size)).fill()
 let glow = NSGradient(starting: gold.withAlphaComponent(0.24), ending: night)!
@@ -22,7 +22,7 @@ for row in 0..<3 {
     roof.line(to: NSPoint(x: x + 145, y: y + 55))
     roof.line(to: NSPoint(x: x + 185, y: y))
     roof.close()
-    NSColor(calibratedRed: 0.26, green: 0.21, blue: 0.26, alpha: 1).setFill()
+    NSColor(calibratedRed: 0.14, green: 0.22, blue: 0.24, alpha: 1).setFill()
     roof.fill()
   }
 }

@@ -54,24 +54,20 @@ struct GameView: View {
           header
           ScrollView(showsIndicators: false) {
             VStack(spacing: 0) {
-              HStack(alignment: .firstTextBaseline) {
-                Text(puzzle.title).font(.system(size: 32, design: .serif))
+              VStack(spacing: 4) {
+                Text(puzzle.title).font(TypeStyle.title(compact ? 36 : 44))
                   .foregroundStyle(Ink.cream).minimumScaleFactor(0.7).lineLimit(1)
-                Spacer()
-                Text("PAR \(puzzle.par)").font(.system(size: 12, design: .monospaced))
-                  .foregroundStyle(Ink.muted)
+                if !compact {
+                  Text(puzzle.subtitle).font(TypeStyle.italic(16)).foregroundStyle(Ink.muted)
+                }
               }.padding(.top, compact ? 8 : 18)
-              if !compact {
-                Text(puzzle.subtitle).font(.system(size: 12)).foregroundStyle(Ink.muted)
-                  .frame(maxWidth: .infinity, alignment: .leading).padding(.top, 7)
-              }
-              collectionRow.padding(.top, compact ? 12 : 22)
+              collectionRow.padding(.top, compact ? 12 : 18)
               playableMap
                 .frame(
                   width: min(geometry.size.width - 24, max(280, geometry.size.height * 0.45), 440)
                 )
                 .padding(.horizontal, -12)
-                .padding(.top, compact ? 4 : 12)
+                .padding(.top, compact ? 8 : 18)
               HStack(spacing: 7) {
                 Image(
                   systemName: parade.completed
@@ -81,20 +77,20 @@ struct GameView: View {
                 Text(parade.completed ? "The town is coming to life…" : notice)
                   .foregroundStyle(Ink.cream)
               }
-              .font(.system(size: 14)).multilineTextAlignment(.center)
-              .frame(minHeight: compact ? 32 : 38)
+              .font(.system(size: 13)).multilineTextAlignment(.center)
+              .frame(minHeight: compact ? 36 : 44)
               .accessibilityIdentifier("route-notice")
-              .padding(.horizontal, 4)
+              .padding(.horizontal, 4).padding(.top, 8)
               HStack {
-                Label("\(parade.route.count - 1) steps", systemImage: "shoeprints.fill")
+                Text("\(parade.route.count - 1)  STEPS")
                 Spacer()
-                Text("Keep the ribbon together")
-              }.font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.muted).padding(
-                .top, compact ? 4 : 14)
-              Divider().overlay(Ink.muted.opacity(0.1)).padding(.vertical, compact ? 8 : 16)
+                Text("PAR  \(puzzle.par)")
+              }.font(.system(size: 10, weight: .medium)).tracking(1.5).foregroundStyle(Ink.muted)
+                .padding(.top, compact ? 2 : 8)
+              FestivalRule().padding(.top, compact ? 8 : 14)
               if parade.completed {
                 Label("The procession is on its way", systemImage: "sparkles")
-                  .font(.system(size: 16, design: .serif)).foregroundStyle(Ink.gold).frame(
+                  .font(TypeStyle.italic(18)).foregroundStyle(Ink.gold).frame(
                     height: 54)
               } else {
                 controls
@@ -103,8 +99,8 @@ struct GameView: View {
                 Label("Start", systemImage: "flag.fill")
                 Label("Gate", systemImage: "door.left.hand.closed")
                 Label("Square", systemImage: "sparkles")
-              }.font(.system(size: 12)).foregroundStyle(Ink.muted)
-                .padding(.top, compact ? 10 : 20).padding(.bottom, compact ? 10 : 22)
+              }.font(.system(size: 10)).foregroundStyle(Ink.muted)
+                .padding(.top, compact ? 10 : 18).padding(.bottom, compact ? 10 : 22)
             }.padding(.horizontal, 24)
           }.clipped()
         }.accessibilityHidden(tutorial || paused || tangled || showingResult)
@@ -142,8 +138,8 @@ struct GameView: View {
       Button {
         paused = true
       } label: {
-        Image(systemName: "pause").font(.system(size: 16)).frame(width: 44, height: 44)
-          .background(Ink.panel.opacity(0.7), in: Circle())
+        Image(systemName: "pause").font(.system(size: 16, weight: .light)).frame(
+          width: 44, height: 44)
       }.accessibilityLabel("Pause parade").accessibilityIdentifier("pause")
       Spacer()
       Eyebrow(text: chapter)
@@ -151,8 +147,7 @@ struct GameView: View {
       Button {
         tutorial = true
       } label: {
-        Image(systemName: "questionmark").font(.system(size: 15)).frame(width: 44, height: 44)
-          .overlay(Circle().stroke(Ink.muted.opacity(0.2)))
+        Image(systemName: "questionmark").font(TypeStyle.italic(22)).frame(width: 44, height: 44)
       }.accessibilityLabel("How to play").accessibilityIdentifier("help")
     }.padding(.horizontal, 24).padding(.top, 8)
   }
@@ -160,21 +155,22 @@ struct GameView: View {
   private var collectionRow: some View {
     HStack(spacing: 0) {
       ForEach(LanternColor.allCases, id: \.rawValue) { color in
-        HStack(spacing: 8) {
+        HStack(spacing: 4) {
           ZStack {
-            Circle().fill(color.ink.opacity(colors.contains(color) ? 0.24 : 0.07)).frame(
-              width: 32, height: 32)
-            Image(systemName: colors.contains(color) ? "checkmark" : color.symbol)
-              .font(.system(size: 12)).foregroundStyle(color.ink)
+            PaperLantern(color: color.ink, size: 18)
+              .opacity(colors.contains(color) || colors.count == color.rawValue ? 1 : 0.4)
+            Text(colors.contains(color) ? "✓" : "\(color.rawValue + 1)")
+              .font(.system(size: 9, weight: .semibold)).foregroundStyle(Ink.night)
           }
           VStack(alignment: .leading, spacing: 2) {
-            Text("\(color.rawValue + 1)  \(color.name)").font(.system(size: 12, weight: .semibold))
+            Text(color.name).font(TypeStyle.title(18))
               .foregroundStyle(Ink.cream)
             Text(
               colors.contains(color)
-                ? "collected" : (colors.count == color.rawValue ? "collect next" : "then collect")
+                ? "COLLECTED" : (colors.count == color.rawValue ? "NEXT LIGHT" : "THEN")
             )
-            .font(.system(size: 11)).foregroundStyle(Ink.muted)
+            .font(.system(size: 8, weight: .medium)).tracking(0.7).foregroundStyle(
+              colors.count == color.rawValue ? Ink.gold : Ink.muted)
           }
         }.frame(maxWidth: .infinity, alignment: .leading)
           .accessibilityElement(children: .combine)
@@ -242,7 +238,6 @@ struct GameView: View {
         Label("Undo", systemImage: "arrow.uturn.backward")
       }.buttonStyle(GoldButtonStyle(secondary: true))
         .disabled(parade.route.count <= 1 || parade.completed)
-        .opacity(parade.route.count <= 1 ? 0.4 : 1)
         .accessibilityIdentifier("undo")
       Button {
         showClearConfirmation = true
@@ -269,7 +264,7 @@ struct GameView: View {
           }
         }
       } label: {
-        Label("Guide", systemImage: "wand.and.stars")
+        Label("Guide", systemImage: "lightbulb")
       }.buttonStyle(GoldButtonStyle(secondary: true)).disabled(parade.completed || showingHint)
         .accessibilityIdentifier("guide")
     }
@@ -338,8 +333,11 @@ struct GameView: View {
       Ink.night.opacity(0.85).ignoresSafeArea()
       VStack(spacing: 18, content: content)
         .padding(28).frame(maxWidth: 360)
-        .background(Ink.panel, in: RoundedRectangle(cornerRadius: 28))
-        .overlay(RoundedRectangle(cornerRadius: 28).stroke(Ink.gold.opacity(0.25)))
+        .background(Ink.panel, in: FestivalTicket())
+        .overlay(FestivalTicket().stroke(Ink.rule, lineWidth: 0.8))
+        .overlay(
+          FestivalTicket().stroke(Ink.rule, lineWidth: 0.5).padding(5).allowsHitTesting(false)
+        )
         .padding(22)
     }.accessibilityAddTraits(.isModal)
   }
@@ -349,7 +347,7 @@ struct GameView: View {
       PaperLantern(size: 36)
       Eyebrow(text: "Carry the light")
       Text("One unbroken parade.")
-        .font(.system(size: 28, design: .serif)).foregroundStyle(Ink.cream)
+        .font(TypeStyle.title(30)).foregroundStyle(Ink.cream)
       HStack(spacing: 8) {
         Image(systemName: "flag.fill")
         Image(systemName: "arrow.right")
@@ -387,7 +385,7 @@ struct GameView: View {
   private var pauseOverlay: some View {
     overlay {
       Eyebrow(text: "A moment of quiet")
-      Text("Your lanterns can wait.").font(.system(size: 28, design: .serif)).foregroundStyle(
+      Text("Your lanterns can wait.").font(TypeStyle.title(30)).foregroundStyle(
         Ink.cream)
       Text("Your route is saved on this iPhone.").font(.subheadline).foregroundStyle(Ink.muted)
       Button("Resume parade") { paused = false }.buttonStyle(GoldButtonStyle())
@@ -404,7 +402,7 @@ struct GameView: View {
       Image(systemName: "point.topleft.down.to.point.bottomright.curvepath")
         .font(.system(size: 34)).foregroundStyle(Ink.rose)
       Eyebrow(text: "A little tangle")
-      Text("The ribbon crossed itself.").font(.system(size: 28, design: .serif)).foregroundStyle(
+      Text("The ribbon crossed itself.").font(TypeStyle.title(30)).foregroundStyle(
         Ink.cream
       )
       .multilineTextAlignment(.center)
@@ -442,36 +440,49 @@ struct ResultView: View {
     GeometryReader { geometry in
       ZStack {
         NightBackground()
-        ScrollView {
-          VStack(spacing: 14) {
-            Eyebrow(text: "A town, illuminated").padding(.top, 25)
-            Text("You brought\nthe night to life.")
-              .font(.system(size: 40, design: .serif)).tracking(-1)
-              .foregroundStyle(Ink.cream).multilineTextAlignment(.center)
-            Stars(count: parade.stars(in: puzzle)).font(.system(size: 23))
-            TownMap(puzzle: puzzle, route: parade.route, celebrating: true, procession: 0.8)
-              .frame(width: min(geometry.size.width - 48, geometry.size.height * 0.42))
-            Text(puzzle.title).font(.system(size: 25, design: .serif)).foregroundStyle(Ink.cream)
-            Text(
-              "\(parade.route.count - 1) STEPS  ·  \(parade.mistakes) \(parade.mistakes == 1 ? "MISSTEP" : "MISSTEPS")  ·  \(parade.hints) \(parade.hints == 1 ? "GUIDE" : "GUIDES")"
-            )
-            .font(.system(size: 12, design: .monospaced)).foregroundStyle(Ink.muted)
+        ScrollView(showsIndicators: false) {
+          VStack(spacing: 16) {
+            Eyebrow(text: "One unbroken ribbon").padding(.top, 20)
+            Text("A town aglow.")
+              .font(TypeStyle.italic(44)).tracking(-0.5)
+              .foregroundStyle(Ink.cream)
+            VStack(spacing: 12) {
+              HStack {
+                Text("LANTERN PARADE").font(.system(size: 8, weight: .medium)).tracking(2)
+                Spacer()
+                Text("NIGHT ATLAS").font(.system(size: 8)).tracking(1)
+              }.foregroundStyle(Ink.night.opacity(0.6))
+              Text(puzzle.title).font(TypeStyle.title(30)).foregroundStyle(Ink.night)
+              TownMap(puzzle: puzzle, route: parade.route, celebrating: true, procession: 0.8)
+                .frame(width: min(geometry.size.width - 76, geometry.size.height * 0.38))
+              Stars(count: parade.stars(in: puzzle)).font(.system(size: 14))
+                .colorMultiply(Ink.night)
+              HStack(spacing: 0) {
+                resultStat("\(parade.route.count - 1)", "STEPS")
+                resultStat("\(parade.mistakes)", parade.mistakes == 1 ? "MISSTEP" : "MISSTEPS")
+                resultStat("\(parade.hints)", parade.hints == 1 ? "GUIDE" : "GUIDES")
+              }.padding(.bottom, 4)
+            }.padding(16).background(Ink.cream, in: FestivalTicket())
+              .overlay(
+                FestivalTicket().stroke(Ink.gold.opacity(0.3), lineWidth: 0.5).padding(5)
+                  .allowsHitTesting(false))
             Text(advice)
               .font(.system(size: 12)).foregroundStyle(Ink.muted).multilineTextAlignment(.center)
             Button {
               createShare()
             } label: {
-              Label("Share your lantern poster", systemImage: "square.and.arrow.up")
-            }.buttonStyle(GoldButtonStyle()).padding(.top, 8).accessibilityIdentifier(
-              "share-result")
+              Label("Keep a little of the night", systemImage: "square.and.arrow.up")
+            }.buttonStyle(GoldButtonStyle()).accessibilityLabel("Share your lantern poster")
+              .accessibilityIdentifier(
+                "share-result")
             HStack(spacing: 12) {
               Button("Parade again", action: replay).buttonStyle(GoldButtonStyle(secondary: true))
                 .accessibilityIdentifier("replay")
               Button("Explore towns", action: home).buttonStyle(GoldButtonStyle(secondary: true))
                 .accessibilityIdentifier("result-home")
             }
-            Text("BEST  \(progress.best[puzzle.id] ?? 0) / 3 STARS · SAVED ON THIS IPHONE")
-              .font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.muted)
+            Text("BEST  \(progress.best[puzzle.id] ?? 0) / 3   ·   SAVED ON THIS IPHONE")
+              .font(.system(size: 9)).tracking(1).foregroundStyle(Ink.muted)
           }.padding(.horizontal, 24).padding(.bottom, 24)
         }.clipped()
       }
@@ -484,6 +495,13 @@ struct ResultView: View {
     } message: {
       Text("Please try sharing again.")
     }
+  }
+
+  private func resultStat(_ value: String, _ label: String) -> some View {
+    VStack(spacing: 3) {
+      Text(value).font(TypeStyle.title(25))
+      Text(label).font(.system(size: 8, weight: .medium)).tracking(1.2)
+    }.foregroundStyle(Ink.night.opacity(0.8)).frame(maxWidth: .infinity)
   }
 
   @MainActor
@@ -503,21 +521,37 @@ struct PosterView: View {
   let parade: Parade
   var body: some View {
     ZStack {
-      NightBackground()
-      VStack(spacing: 20) {
-        Eyebrow(text: "The midnight festival")
-        Text("Lantern\nParade").font(.system(size: 66, design: .serif)).tracking(-2)
-          .foregroundStyle(Ink.cream).multilineTextAlignment(.center)
+      Ink.cream
+      Rectangle().stroke(Ink.night.opacity(0.4), lineWidth: 0.7).padding(18)
+      Rectangle().stroke(Ink.night.opacity(0.15), lineWidth: 0.5).padding(23)
+      VStack(spacing: 0) {
+        HStack {
+          Text("THE MIDNIGHT FESTIVAL")
+          Spacer()
+          Text(
+            puzzle.id.hasPrefix("daily")
+              ? "DAILY LIGHT"
+              : "ROUTE № \(String(format: "%02d", (Towns.all.firstIndex { $0.id == puzzle.id } ?? 0) + 1))"
+          )
+        }.font(.system(size: 9, weight: .medium)).tracking(1.6).padding(.bottom, 26)
+        Text("Lantern Parade").font(TypeStyle.title(57)).tracking(-2)
+        Text("A little light, beautifully led.").font(TypeStyle.italic(22))
+          .padding(.top, 3).padding(.bottom, 27)
         TownMap(puzzle: puzzle, route: parade.route, celebrating: true, procession: 0.8)
-          .frame(width: 430, height: 430)
-        Text(puzzle.title).font(.system(size: 32, design: .serif)).foregroundStyle(Ink.cream)
-        Stars(count: parade.stars(in: puzzle)).font(.title2)
-        Text("\(parade.route.count - 1) steps • One unbroken ribbon").font(.subheadline)
-          .foregroundStyle(Ink.muted)
-        Rectangle().fill(Ink.gold.opacity(0.3)).frame(width: 70, height: 1)
-        Eyebrow(text: "I brought the night to life")
-      }.padding(.vertical, 45)
-    }.frame(width: 540, height: 930).environment(\.colorScheme, .dark)
+          .frame(width: 440, height: 440)
+        Text(puzzle.title).font(TypeStyle.title(35)).padding(.top, 25)
+        Stars(count: parade.stars(in: puzzle)).font(.system(size: 16)).colorMultiply(Ink.night)
+          .padding(.top, 12)
+        Text("\(parade.route.count - 1) steps  ·  One unbroken ribbon")
+          .font(.system(size: 12)).tracking(1).padding(.top, 18)
+        Spacer(minLength: 20)
+        HStack {
+          Rectangle().fill(Ink.night.opacity(0.3)).frame(height: 0.5)
+          Text("A TOWN, ILLUMINATED").font(.system(size: 9)).tracking(2).fixedSize()
+          Rectangle().fill(Ink.night.opacity(0.3)).frame(height: 0.5)
+        }
+      }.foregroundStyle(Ink.night).padding(50)
+    }.frame(width: 540, height: 980).environment(\.colorScheme, .dark)
   }
 }
 
@@ -536,7 +570,7 @@ struct PosterPreview: View {
         Ink.night.ignoresSafeArea()
         VStack(spacing: 18) {
           Image(uiImage: image).resizable().scaledToFit()
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .shadow(color: .black.opacity(0.3), radius: 16, y: 8)
             .accessibilityLabel(
               "Lantern Parade poster showing the completed route through \(title)")
           ShareLink(

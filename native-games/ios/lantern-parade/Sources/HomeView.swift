@@ -14,50 +14,34 @@ struct HomeView: View {
 
   var body: some View {
     GeometryReader { geometry in
+      let compact = geometry.size.height < 720
       ZStack {
         NightBackground()
         ScrollView(showsIndicators: false) {
           VStack(spacing: 0) {
             HStack {
-              Eyebrow(text: "A little light goes a long way")
+              Eyebrow(text: "The midnight festival")
               Spacer()
               Button {
                 showSettings = true
               } label: {
-                Image(systemName: "slider.horizontal.3").frame(width: 44, height: 44)
+                Image(systemName: "slider.horizontal.3").font(.system(size: 17, weight: .light))
+                  .foregroundStyle(Ink.muted).frame(width: 44, height: 44)
               }.accessibilityLabel("Settings").accessibilityIdentifier("settings")
-            }.padding(.top, 8)
-            HStack(alignment: .top) {
-              VStack(alignment: .leading, spacing: 8) {
-                Text("Lantern\nParade")
-                  .font(
-                    .system(
-                      size: geometry.size.height < 750 ? 54 : 64, weight: .regular, design: .serif)
-                  )
-                  .tracking(-2).lineSpacing(-4).foregroundStyle(Ink.cream)
-                  .accessibilityAddTraits(.isHeader)
-                Text("One ribbon. A thousand little lights.")
-                  .font(.system(size: 13)).foregroundStyle(Ink.muted)
-              }
-              Spacer(minLength: 0)
-              VStack(spacing: 0) {
-                Rectangle().fill(Ink.gold.opacity(0.45)).frame(width: 1, height: 38)
-                PaperLantern(size: 40)
-              }.padding(.trailing, 8)
-            }.padding(.top, 16)
-            ZStack {
-              FestivalVignette()
-              VStack {
-                Spacer()
-                HStack(spacing: 8) {
-                  Rectangle().fill(Ink.gold.opacity(0.3)).frame(width: 28, height: 1)
-                  Eyebrow(text: "The town is waiting")
-                  Rectangle().fill(Ink.gold.opacity(0.3)).frame(width: 28, height: 1)
-                }.offset(y: 4)
-              }
-            }.frame(height: min(geometry.size.width - 40, geometry.size.height * 0.4))
-              .padding(.vertical, 12)
-            VStack(spacing: 12) {
+            }.padding(.horizontal, 28).padding(.top, 4)
+            VStack(spacing: -12) {
+              Text("Lantern").font(TypeStyle.title(compact ? 59 : 72)).tracking(-1.5)
+              Text("Parade").font(TypeStyle.italic(compact ? 65 : 78)).tracking(-2)
+            }.foregroundStyle(Ink.cream).padding(.top, compact ? 0 : 8)
+              .accessibilityElement(children: .ignore).accessibilityLabel("Lantern Parade")
+              .accessibilityAddTraits(.isHeader)
+            FestivalVignette()
+              .frame(height: min(460, geometry.size.height * (compact ? 0.40 : 0.46)))
+              .padding(.top, -10)
+            VStack(spacing: 13) {
+              Text("One ribbon. A thousand little lights.")
+                .font(TypeStyle.italic(17)).foregroundStyle(Ink.cream.opacity(0.8))
+                .padding(.bottom, 5)
               Button {
                 if let saved = progress.saved, !saved.completed,
                   let puzzle = Towns.puzzle(id: saved.puzzleID)
@@ -75,28 +59,26 @@ struct HomeView: View {
                   Image(systemName: "arrow.right")
                 }.padding(.horizontal, 22)
               }.buttonStyle(GoldButtonStyle()).accessibilityIdentifier("begin-parade")
-              HStack(spacing: 12) {
+              HStack(spacing: 22) {
                 Button {
                   active = ParadeSession(puzzle: Towns.daily(), restored: nil)
                 } label: {
-                  Label("Daily light", systemImage: "moon.stars")
+                  Label("Daily light", systemImage: "moon")
                 }.buttonStyle(GoldButtonStyle(secondary: true)).accessibilityIdentifier(
                   "daily-challenge")
                 Button {
                   showTowns = true
                 } label: {
-                  Label("The twelve towns", systemImage: "map")
+                  Label("Town atlas", systemImage: "map")
                 }.buttonStyle(GoldButtonStyle(secondary: true)).accessibilityIdentifier("towns")
               }
-              HStack {
-                Text("\(progress.completedCount) / 12 towns illuminated")
-                Spacer()
-                Image(systemName: "star.fill").foregroundStyle(Ink.gold)
-                Text("\(progress.stars) / 36")
-              }.font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.muted).padding(
-                .top, 7)
-            }.padding(.top, 12)
-          }.padding(.horizontal, 24).padding(.bottom, 20)
+              HStack(spacing: 10) {
+                Text("\(progress.completedCount) of 12 towns aglow")
+                Circle().fill(Ink.gold).frame(width: 2, height: 2)
+                Text("\(progress.stars) / 36 stars")
+              }.font(.system(size: 10)).tracking(0.6).foregroundStyle(Ink.muted).padding(.top, 4)
+            }.padding(.horizontal, 28).padding(.top, -5)
+          }.padding(.bottom, 24)
         }.clipped()
       }
     }
@@ -124,9 +106,9 @@ struct TownList: View {
         NightBackground()
         ScrollView {
           VStack(alignment: .leading, spacing: 4) {
-            Text("Twelve towns.\nOne luminous journey.")
-              .font(.system(size: 32, design: .serif)).foregroundStyle(Ink.cream).padding(
-                .vertical, 18)
+            Eyebrow(text: "An atlas of little lights").padding(.top, 16)
+            Text("Where shall\nwe wander?")
+              .font(TypeStyle.title(42)).foregroundStyle(Ink.cream).padding(.vertical, 14)
             Text(
               "Explore in any order. Earn three stars with a clean route at or under par, without a guide."
             )
@@ -135,20 +117,27 @@ struct TownList: View {
               Button {
                 select(puzzle)
               } label: {
-                HStack(spacing: 16) {
-                  Text(String(format: "%02d", index + 1))
-                    .font(.system(size: 16, design: .monospaced)).foregroundStyle(Ink.gold)
+                HStack(spacing: 14) {
+                  VStack(spacing: 5) {
+                    Text(String(format: "%02d", index + 1))
+                      .font(TypeStyle.italic(27)).foregroundStyle(Ink.gold)
+                    Rectangle().fill(Ink.rule).frame(width: 18, height: 0.5)
+                  }.frame(width: 34)
                   VStack(alignment: .leading, spacing: 5) {
-                    Text(puzzle.title).font(.system(size: 20, design: .serif)).foregroundStyle(
+                    Text(puzzle.title).font(TypeStyle.title(24)).foregroundStyle(
                       Ink.cream)
                     Text("\(puzzle.size) × \(puzzle.size) streets · par \(puzzle.par)")
                       .font(.caption).foregroundStyle(Ink.muted)
                   }
                   Spacer()
-                  Stars(count: progress.best[puzzle.id] ?? 0).font(.system(size: 9))
+                  VStack(alignment: .trailing, spacing: 8) {
+                    Image(systemName: "arrow.up.right").font(.system(size: 13, weight: .light))
+                      .foregroundStyle(Ink.muted)
+                    Stars(count: progress.best[puzzle.id] ?? 0).font(.system(size: 8))
+                  }
                 }.padding(.vertical, 16)
               }.accessibilityIdentifier("town-\(index + 1)")
-              Divider().overlay(Ink.muted.opacity(0.1))
+              Rectangle().fill(Ink.rule).frame(height: 0.5)
             }
           }.padding(24)
         }
@@ -169,7 +158,7 @@ struct SettingsView: View {
           VStack(alignment: .leading, spacing: 24) {
             PaperLantern(size: 40)
             Text("A quieter kind\nof celebration.")
-              .font(.system(size: 34, design: .serif)).foregroundStyle(Ink.cream)
+              .font(TypeStyle.title(38)).foregroundStyle(Ink.cream)
             Toggle("Haptic feedback", isOn: $progress.haptics).accessibilityIdentifier(
               "haptics-toggle")
             Text(
