@@ -5,7 +5,7 @@
 - macOS arm64; Xcode 26.6 (17F113); iOS 26.5 Simulator.
 - iPhone 17 Pro Max: 440×956 points / 1320×2868 pixels.
 - iPhone SE (3rd generation): 375×667 points / 750×1334 pixels.
-- Final app revision: `b349dc65da7c222bde1db25dc9c50b6f91064b8c`.
+- Final app source revision: `1daac66f1bd14ff921821e321ce8bc9212b626c4`.
 - PR: https://github.com/dabit3/experiments/pull/112
 
 ## Build and automated checks
@@ -36,7 +36,7 @@ three escalating patterns, failure, Codable results and settings persistence.
 The rules/state code did not change during subsequent presentation fixes.
 Replace the recorded simulator UUID with an available device when reproducing.
 
-## Three actual visual review passes
+## Initial three visual review passes
 
 ### 1. Composition and hierarchy
 
@@ -74,6 +74,57 @@ The remaining 2–6pt tutorial target movement came from a 44pt Skip footer vers
 52pt Play footer. Both now reserve 52pt; the final simulator review confirmed
 stable target positions. A final native recording was captured with setup,
 test-start and passed-assertion annotations plus computer-use actions.
+
+## Additional art direction and native review
+
+### 1. Illustrated nocturne collection
+
+Replaced broad fish silhouettes and boxed rows with patterned koi, translucent
+etched fins, botanical lily contours, broken moon arcs and subtle water flow.
+Baskerville display/italic type, a ripple seal and chart-derived rhythm signatures
+provide a consistent identity. Home, results and the framed performance print
+reserve dedicated illustration space; the icon uses the same procedural artwork.
+Timing, compositions, scoring, persistence and native share architecture remain
+unchanged.
+
+Native review of `b07dd4c` revealed that the copper tail clipped on SE3 and
+crossed the home caption on Pro Max. The tail root also looked pinched.
+
+### 2. Complete artwork bounds
+
+Sized the hero using the complete koi envelope, moved its caption into a separate
+layout band, and widened the tail roots. Review of `5619d15` confirmed full tails,
+clear caption spacing and working tutorial/results/share on both sizes. Both
+real-input First light attempts scored 12 Perfect / 100%; actual native exports
+were 800×1440 with intact padding.
+
+The SE3 celebration exposed the next weak detail: bright koi could pass behind
+local gold judgement text and remain visible through targets.
+
+### 3. Feedback protection and final native recording
+
+Added opaque ink behind target-local feedback and inside timing targets.
+Softened the tail junction pigment/stroke and rendered small eyes at their final
+size. Regenerated the matching opaque 1024×1024 icon.
+
+Final source `1daac66` passed strict Swift-format lint and Debug/Release simulator
+builds. The redesign XCTest run passed 10 tests, 0 failures; subsequent changes
+were limited to presentation.
+
+Final SE3 preflight confirmed protected feedback during a 12 Perfect / 100% run.
+The Pro Max recording covered all three tutorial lilies, a genuine perfect run,
+celebration, populated first-share presentation, native Save to Files, an honest
+0% / 12-missed replay, retry and return home with the best preserved. Exported PNG
+was 800×1440 with separated illustration, rank and statistics. Both home layouts
+fit; the app was left running on both Simulators.
+
+The original native recording contains one setup, four test starts, nine passed
+assertions and thirteen control-action entries. Scheduled native mouse events
+were real game input; the individual timed note clicks are not separately listed
+in the native action timeline. The edited video is 40.67 seconds at 1600×1200.
+Fine fin etching and decorative captions remain subtle on SE3.
+
+[Detailed final redesign report](https://app.devin.ai/attachments/d10a5e3d-99e4-490c-bf42-1b391aa0a200/report.md)
 
 ## Evidence and limitations
 
