@@ -72,7 +72,7 @@ struct BreakwaterView: View {
                 .init(color: .black, location: 1),
               ], startPoint: .top, endPoint: .bottom)
           )
-          .offset(y: geometry.size.height * 0.02)
+          .offset(y: geometry.size.height * 0.02 + max(0, 720 - geometry.size.height) * 0.25)
           .accessibilityHidden(true)
         HarborAtmosphere()
           .allowsHitTesting(false)
