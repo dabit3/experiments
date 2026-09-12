@@ -55,6 +55,7 @@ struct TabletopView: View {
   var result: ChainResult?
   var beat: Double = -1
   var guides = true
+  var labels = true
   var reduceMotion = false
   var interactive = true
   var tap: (Cell) -> Void = { _ in }
@@ -66,7 +67,7 @@ struct TabletopView: View {
         Canvas { context, size in
           TablePainter(
             puzzle: puzzle, pieces: pieces, selected: selected, result: result,
-            beat: beat, guides: guides, reduceMotion: reduceMotion
+            beat: beat, guides: guides, reduceMotion: reduceMotion, labels: labels
           ).draw(context: &context, size: size)
         }
         if interactive {
@@ -121,6 +122,7 @@ struct TablePainter {
   let beat: Double
   let guides: Bool
   let reduceMotion: Bool
+  let labels: Bool
 
   func draw(context: inout GraphicsContext, size: CGSize) {
     let layout = BoardLayout(size: size)
@@ -139,12 +141,14 @@ struct TablePainter {
         let p = layout.point(cell)
         circle(&context, p, radius: 1, color: Palette.sage.opacity(0.35))
       }
-      text(
-        &context, "\(row + 1)",
-        at: CGPoint(x: layout.origin.x - u * 0.66, y: layout.point(Cell(x: 0, y: row)).y),
-        size: max(10, u * 0.22), color: Palette.ink.opacity(0.68))
+      if labels {
+        text(
+          &context, "\(row + 1)",
+          at: CGPoint(x: layout.origin.x - u * 0.66, y: layout.point(Cell(x: 0, y: row)).y),
+          size: max(10, u * 0.22), color: Palette.ink.opacity(0.68))
+      }
     }
-    for column in 0..<7 {
+    for column in 0..<7 where labels {
       text(
         &context, String(UnicodeScalar(65 + column)!),
         at: CGPoint(
@@ -322,9 +326,11 @@ struct TablePainter {
     arrow.addLine(to: CGPoint(x: p.x - u * 0.07, y: p.y + u * 0.12))
     arrow.closeSubpath()
     context.fill(arrow, with: .color(Palette.cream))
-    text(
-      &context, "START", at: CGPoint(x: p.x, y: p.y + u * 0.51), size: max(9, u * 0.19),
-      color: Color(hex: 0x98513F))
+    if labels {
+      text(
+        &context, "START", at: CGPoint(x: p.x, y: p.y + u * 0.51), size: max(9, u * 0.19),
+        color: Color(hex: 0x98513F))
+    }
   }
 
   private func bell(
@@ -352,9 +358,12 @@ struct TablePainter {
       &context, CGPoint(x: p.x - u * 0.07, y: p.y - u * 0.12), radius: u * 0.07,
       color: Palette.cream.opacity(0.7))
     circle(&context, p, radius: u * 0.035, color: Palette.walnut)
-    text(
-      &context, active ? "RUNG" : "BELL \(number)", at: CGPoint(x: p.x, y: p.y + u * 0.5),
-      size: max(9, u * 0.19), color: Palette.ink)
+    if labels {
+      text(
+        &context, active ? "RUNG" : u < 42 ? "B\(number)" : "BELL \(number)",
+        at: CGPoint(x: p.x, y: p.y + u * 0.5),
+        size: max(9, u * 0.19), color: Palette.ink)
+    }
   }
 
   private func scenery(_ context: inout GraphicsContext, layout: BoardLayout) {

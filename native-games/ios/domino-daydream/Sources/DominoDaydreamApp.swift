@@ -76,7 +76,7 @@ struct ContentView: View {
         .padding(.top, -8)
         TabletopView(
           puzzle: Puzzle.all[7], pieces: Puzzle.all[7].solution,
-          guides: false, interactive: false
+          guides: false, labels: false, interactive: false
         )
         .frame(maxHeight: geometry.size.height * (compact ? 0.43 : 0.48))
         .rotationEffect(.degrees(-3))
