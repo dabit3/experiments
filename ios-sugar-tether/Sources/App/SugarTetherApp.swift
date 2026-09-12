@@ -12,7 +12,7 @@ struct SugarTetherApp: App {
 enum Palette {
   static let paper = Color(red: 0.98, green: 0.95, blue: 0.88)
   static let ink = Color(red: 0.19, green: 0.29, blue: 0.25)
-  static let muted = Color(red: 0.46, green: 0.49, blue: 0.39)
+  static let muted = Color(red: 0.37, green: 0.42, blue: 0.33)
   static let mint = Color(red: 0.34, green: 0.59, blue: 0.45)
   static let deepMint = Color(red: 0.23, green: 0.43, blue: 0.33)
   static let pink = Color(red: 0.83, green: 0.39, blue: 0.40)
@@ -304,7 +304,7 @@ struct HomeView: View {
           HStack(spacing: 9) {
             Rectangle().frame(width: 21, height: 1)
             Text("A LITTLE SNIP. A LITTLE MAGIC.")
-              .font(.system(size: 9, weight: .semibold)).tracking(2)
+              .font(.system(size: 10, weight: .semibold)).tracking(1.5)
             Rectangle().frame(width: 21, height: 1)
           }
           .foregroundStyle(Palette.muted)
@@ -338,7 +338,7 @@ struct HomeView: View {
           .accessibilityLabel("The puzzle box, \(store.progress.totalStars) of 24 stars")
         }
         Text("8 HANDCRAFTED MOMENTS OF JOY")
-          .font(.system(size: 9, weight: .medium)).tracking(2.3)
+          .font(.system(size: 10, weight: .medium)).tracking(1.7)
           .foregroundStyle(Palette.muted)
       }
       .padding(.horizontal, 28)
@@ -351,7 +351,7 @@ struct HomeView: View {
 struct PuzzleBoxView: View {
   @ObservedObject var store: GameStore
   var body: some View {
-    VStack(spacing: 22) {
+    VStack(spacing: 18) {
       HStack {
         RoundButton(icon: "arrow.left", label: "Back to title") { store.leave(.home) }
         Spacer()
@@ -365,14 +365,14 @@ struct PuzzleBoxView: View {
           .font(.system(size: 14, design: .rounded)).foregroundStyle(Palette.muted)
       }
       ScrollView {
-        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 14) {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
           ForEach(Puzzle.all.indices, id: \.self) { index in
             let unlocked = store.progress.unlocked(index)
             Button {
               if unlocked { store.start(index) }
             } label: {
-              VStack(spacing: 12) {
-                Text(unlocked ? String(format: "%02d", index + 1) : "·")
+              VStack(spacing: 10) {
+                Text(String(format: "%02d", index + 1))
                   .font(.system(size: 31, weight: .semibold, design: .serif))
                   .foregroundStyle(unlocked ? Palette.deepMint : Palette.muted)
                 Text(Puzzle.all[index].title)
@@ -380,11 +380,11 @@ struct PuzzleBoxView: View {
                 if unlocked {
                   StarRow(earned: max(0, store.progress.stars[index]), size: 14)
                 } else {
-                  Label("Feed Pip in \(index)", systemImage: "lock")
-                    .font(.system(size: 10)).foregroundStyle(Palette.muted)
+                  Label("Complete puzzle \(index)", systemImage: "lock")
+                    .font(.system(size: 11)).foregroundStyle(Palette.muted)
                 }
               }
-              .frame(maxWidth: .infinity).frame(height: 136)
+              .frame(maxWidth: .infinity).frame(height: 119)
               .background(
                 .white.opacity(unlocked ? 0.65 : 0.2),
                 in: RoundedRectangle(cornerRadius: 24)
@@ -434,7 +434,7 @@ struct PlayView: View {
           Spacer()
           VStack(spacing: 4) {
             Text("BONBON \(String(format: "%02d", store.level + 1)) / 08")
-              .font(.system(size: 9, weight: .semibold)).tracking(2)
+              .font(.system(size: 11, weight: .semibold)).tracking(1.5)
               .foregroundStyle(Palette.muted)
             Text(store.game.puzzle.title)
               .font(.system(size: 22, weight: .semibold, design: .serif))
@@ -446,7 +446,7 @@ struct PlayView: View {
         }
         HStack {
           Text(store.game.puzzle.subtitle)
-            .font(.system(size: 8, weight: .semibold)).tracking(1.8)
+            .font(.system(size: 10, weight: .semibold)).tracking(1.3)
             .foregroundStyle(Palette.muted)
           Spacer()
           StarRow(earned: store.game.collected.count, size: 17)
@@ -487,7 +487,7 @@ struct PlayView: View {
           Image(systemName: store.game.bubbleActive ? "hand.tap" : "hand.draw")
             .font(.system(size: 22, weight: .light)).foregroundStyle(Palette.deepMint)
           Text(store.game.puzzle.hint)
-            .font(.system(size: 12, design: .rounded))
+            .font(.system(size: 14, design: .rounded))
             .foregroundStyle(Palette.muted).lineSpacing(3)
             .fixedSize(horizontal: false, vertical: true)
           if store.game.puzzle.puff {
@@ -520,7 +520,7 @@ struct PlayView: View {
         .font(.system(size: 29, weight: .semibold, design: .serif))
       Text("Pip will keep your place.")
         .font(.system(size: 14, design: .rounded)).foregroundStyle(Palette.muted)
-      MiniPip().frame(height: 112)
+      MiniPip().frame(height: 128)
       SweetButton(title: "Keep going", icon: "play.fill") { store.paused = false }
       SweetButton(title: "Start this puzzle again", icon: "arrow.counterclockwise", primary: false)
       {
@@ -547,7 +547,9 @@ struct PlayView: View {
         .font(.system(size: 31, weight: .semibold, design: .serif))
         .multilineTextAlignment(.center)
       MiniPip(happy: won).frame(height: 122)
-      StarRow(earned: store.game.collected.count, size: 34)
+      if won {
+        StarRow(earned: store.game.collected.count, size: 34)
+      }
       Text(
         won
           ? "\(store.game.collected.count) stars for Pip. \(store.game.collected.count == 3 ? "Beautifully done." : "There’s more sweetness to find.")"
@@ -589,9 +591,11 @@ struct PlayView: View {
       VStack(spacing: 17, content: content)
         .padding(26)
         .frame(maxWidth: 350)
-        .background(Palette.paper, in: RoundedRectangle(cornerRadius: 32))
+        .background(
+          RoundedRectangle(cornerRadius: 32).fill(Palette.paper)
+            .shadow(color: Palette.ink.opacity(0.2), radius: 24, y: 14)
+        )
         .overlay(RoundedRectangle(cornerRadius: 32).stroke(.white.opacity(0.8), lineWidth: 2))
-        .shadow(color: Palette.ink.opacity(0.2), radius: 24, y: 14)
         .padding(20)
     }
     .accessibilityAddTraits(.isModal)

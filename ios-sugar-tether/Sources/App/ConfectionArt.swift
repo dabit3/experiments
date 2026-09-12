@@ -25,7 +25,6 @@ struct HeroArt: View {
       Art.leaf(&context, at: V(x: 282, y: 270), angle: 0.6, scale: 0.55)
       Art.label(
         &context, "oh, sugar!", at: V(x: 236, y: 53), size: 12, color: Palette.muted, italic: true)
-      Art.label(&context, "PIP", at: V(x: 160, y: 299), size: 9, color: Palette.muted)
     }.accessibilityLabel("Pip, a little mint creature, waiting for a striped candy pearl")
   }
 }
@@ -34,9 +33,10 @@ struct MiniPip: View {
   var happy = true
   var body: some View {
     Canvas { context, size in
+      let scale = min(1.1, (size.height - 10) / 120)
       Art.creature(
-        &context, at: V(x: size.width / 2, y: 66),
-        look: V(x: size.width / 2, y: 20), happy: happy, scale: 1.1)
+        &context, at: V(x: size.width / 2, y: size.height * 0.56),
+        look: V(x: size.width / 2, y: 20), happy: happy, scale: scale)
       if happy {
         Art.star(&context, at: V(x: size.width / 2 - 79, y: 25), radius: 10, earned: false)
         Art.star(&context, at: V(x: size.width / 2 + 75, y: 39), radius: 8, earned: false)
