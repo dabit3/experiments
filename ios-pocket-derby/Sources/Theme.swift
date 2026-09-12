@@ -176,7 +176,7 @@ struct CityBackdrop: View {
                         with: .color(.white.opacity(0.25 + random() * 0.5))
                     )
                 }
-                let moon = CGPoint(x: size.width * 0.435, y: size.height * 0.1)
+                let moon = CGPoint(x: size.width * 0.385, y: size.height * 0.085)
                 context.fill(
                     Path(ellipseIn: CGRect(x: moon.x - 120, y: moon.y - 120, width: 240, height: 240)),
                     with: .radialGradient(
@@ -185,8 +185,8 @@ struct CityBackdrop: View {
                     )
                 )
                 context.fill(
-                    Path(ellipseIn: CGRect(x: moon.x - 17, y: moon.y - 17, width: 34, height: 34)),
-                    with: .color(Color(hex: 0xEAF8FF).opacity(0.9))
+                    Path(ellipseIn: CGRect(x: moon.x - 11, y: moon.y - 11, width: 22, height: 22)),
+                    with: .color(Color(hex: 0xEAF8FF).opacity(0.75))
                 )
                 for layer in 0 ..< 2 {
                     let base = size.height * (layer == 0 ? 0.66 : 0.78)

@@ -49,9 +49,9 @@ final class ArenaScene: SKScene {
     }
 
     override func didChangeSize(_: CGSize) {
-        let scale = min(size.width / 1040, size.height / 410)
+        let scale = min(size.width / 1080, size.height / 462)
         arena.xScale = scale
-        arena.yScale = scale * 0.9
+        arena.yScale = scale
     }
 
     // MARK: - Rooftop
@@ -503,6 +503,9 @@ final class ArenaScene: SKScene {
     // MARK: - Frame loop
 
     override func update(_ currentTime: TimeInterval) {
+        if let bounds = view?.bounds.size, bounds.width > 0, bounds.height > 0, bounds != size {
+            size = bounds
+        }
         guard let store else { return }
         let delta = lastTime == 0 ? 0 : min(currentTime - lastTime, 0.05)
         lastTime = currentTime
