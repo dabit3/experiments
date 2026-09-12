@@ -138,9 +138,7 @@ struct GameView: View {
       if phase != .active && sailing { paused = true }
     }
     .sheet(isPresented: $showHelp) { help.preferredColorScheme(.light) }
-    .confirmationDialog(
-      "Fold this route again?", isPresented: $showReset, titleVisibility: .visible
-    ) {
+    .alert("Fold this route again?", isPresented: $showReset) {
       Button("Reset this letter", role: .destructive) {
         returnToPlanning()
         puzzle = PuzzleState(level: level)
