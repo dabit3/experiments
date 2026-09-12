@@ -137,6 +137,7 @@ struct ResultView: View {
             Rectangle().fill(Palette.gold.opacity(0.5)).frame(height: 1)
           }.padding(.top, 28)
           LunchPostcard(lunch: lunch, game: game, width: min(proxy.size.width - 40, 370))
+            .compositingGroup()
             .shadow(color: Palette.ink.opacity(0.15), radius: 16, x: 0, y: 10)
           Text(
             game.stars(lunch) == 3

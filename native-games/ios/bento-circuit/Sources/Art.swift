@@ -306,6 +306,7 @@ struct PrimaryButton: ButtonStyle {
         RoundedRectangle(cornerRadius: 5)
           .stroke(light ? Palette.line : Palette.cream.opacity(0.3), lineWidth: 0.7).padding(4)
       )
+      .compositingGroup()
       .shadow(
         color: (light ? Palette.ink : Palette.orange).opacity(0.16),
         radius: 0, y: configuration.isPressed ? 0 : 3

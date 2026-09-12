@@ -12,30 +12,39 @@ struct BoardView: View {
   var body: some View {
     ZStack(alignment: .topLeading) {
       BentoFrame().padding(-16)
-      ForEach(0..<lunch.height, id: \.self) { y in
-        ForEach(0..<lunch.width, id: \.self) { x in
-          let cell = Cell(x: x, y: y)
-          Button {
-            onCell?(cell)
-          } label: {
-            RoundedRectangle(cornerRadius: 3)
-              .fill(
-                x >= lunch.divider
-                  ? Color(red: 0.91, green: 0.83, blue: 0.65)
-                  : Color(red: 0.81, green: 0.83, blue: 0.70)
-              )
-              .overlay {
-                Circle().fill(Palette.ink.opacity(0.20)).frame(width: 2, height: 2)
-              }
-              .padding(0.7)
+      if showLetters {
+        ForEach(0..<lunch.height, id: \.self) { y in
+          ForEach(0..<lunch.width, id: \.self) { x in
+            let cell = Cell(x: x, y: y)
+            Button {
+              onCell?(cell)
+            } label: {
+              RoundedRectangle(cornerRadius: 3)
+                .fill(
+                  x >= lunch.divider
+                    ? Color(red: 0.91, green: 0.83, blue: 0.65)
+                    : Color(red: 0.81, green: 0.83, blue: 0.70)
+                )
+                .overlay {
+                  Circle().fill(Palette.ink.opacity(0.20)).frame(width: 2, height: 2)
+                }
+                .padding(0.7)
+            }
+            .buttonStyle(.plain)
+            .frame(width: cellSize, height: cellSize)
+            .position(x: (CGFloat(x) + 0.5) * cellSize, y: (CGFloat(y) + 0.5) * cellSize)
+            .accessibilityLabel(cellLabel(cell))
+            .accessibilityIdentifier("Cell \(x + 1),\(y + 1)")
+            .disabled(onCell == nil)
           }
-          .buttonStyle(.plain)
-          .frame(width: cellSize, height: cellSize)
-          .position(x: (CGFloat(x) + 0.5) * cellSize, y: (CGFloat(y) + 0.5) * cellSize)
-          .accessibilityLabel(cellLabel(cell))
-          .accessibilityIdentifier("Cell \(x + 1),\(y + 1)")
-          .disabled(onCell == nil)
         }
+      } else {
+        HStack(spacing: 4) {
+          RoundedRectangle(cornerRadius: 4).fill(Palette.sage)
+            .frame(width: CGFloat(lunch.divider) * cellSize - 2)
+          RoundedRectangle(cornerRadius: 4).fill(Color(red: 0.91, green: 0.83, blue: 0.65))
+            .frame(width: CGFloat(lunch.width - lunch.divider) * cellSize - 2)
+        }.frame(height: CGFloat(lunch.height) * cellSize)
       }
       ForEach(lunch.pieces) { piece in
         if let placement = game.placements[piece.id] {
@@ -291,7 +300,7 @@ struct GameView: View {
             Palette.muted)
       }
       let columns = lunch.pieces.count == 4 ? 2 : (lunch.pieces.count > 8 ? 4 : 3)
-      let artHeight: CGFloat = columns == 2 ? 60 : 48
+      let artHeight: CGFloat = columns == 2 ? 68 : 54
       LazyVGrid(
         columns: Array(repeating: GridItem(.flexible(), spacing: 7), count: columns), spacing: 8
       ) {
@@ -311,7 +320,7 @@ struct GameView: View {
                 PolyominoArt(
                   piece: piece, turns: displayTurns,
                   cellSize: min(
-                    columns == 2 ? 28 : 22, artHeight / shapeHeight,
+                    columns == 2 ? 34 : 25, artHeight / shapeHeight,
                     (columns == 2 ? 110 : (compact ? 65 : 76)) / shapeWidth),
                   showLetter: !placed
                 )
