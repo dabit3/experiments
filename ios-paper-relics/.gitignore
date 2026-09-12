@@ -1,0 +1,8 @@
+.build/
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+PaperRelics.xcodeproj/
+.DS_Store
+*-output.log
