@@ -204,13 +204,14 @@ struct ContentView: View {
   }
 
   private func boardSize(_ geometry: GeometryProxy) -> CGFloat {
-    min(geometry.size.width, max(235, geometry.size.height - 410), 430)
+    min(geometry.size.width, max(235, geometry.size.height - 454), 430)
   }
 
   private var guests: some View {
     HStack(alignment: .top, spacing: 8) {
       ForEach(model.dinner.guests) { guest in
         let match = model.liveVerdict.matches.first { $0.guest.id == guest.id }
+        let hasCut = !model.cuts.isEmpty || model.preview != nil
         VStack(spacing: 4) {
           GuestPortrait(id: guest.id, happy: match?.passed == true).frame(width: 46, height: 46)
           Text(guest.name.uppercased()).font(.system(size: 10, weight: .bold)).tracking(1.2)
@@ -219,25 +220,25 @@ struct ContentView: View {
             Text("\(guest.count) ×").font(.system(size: 12, weight: .semibold))
             ToppingIcon(kind: guest.topping)
           }
-          if !model.cuts.isEmpty || model.preview != nil {
-            VStack(spacing: 3) {
-              Text(model.preview == nil ? "ON THE PLATE" : "PREVIEW")
-                .font(.system(size: 8, weight: .heavy)).tracking(0.8)
-              HStack(spacing: 3) {
-                Text(
-                  match?.portionIndex == nil
-                    ? "—" : "\(match?.percent ?? 0)% · \(match?.count ?? 0)")
-                Image(systemName: match?.passed == true ? "checkmark.circle.fill" : "xmark.circle")
-              }.font(.system(size: 13, weight: .bold))
-            }
-            .foregroundStyle(match?.passed == true ? Palette.olive : Palette.red)
-            .padding(.vertical, 6).frame(maxWidth: .infinity)
-            .background(
-              (match?.passed == true ? Palette.olive : Palette.red).opacity(0.07),
-              in: RoundedRectangle(cornerRadius: 7))
-          } else {
-            Text(guest.topping.title).font(.system(size: 10)).foregroundStyle(Palette.olive)
+          VStack(spacing: 3) {
+            Text(hasCut ? (model.preview == nil ? "ON THE PLATE" : "PREVIEW") : "YOUR SLICE")
+              .font(.system(size: 8, weight: .heavy)).tracking(0.8)
+            HStack(spacing: 3) {
+              Text(
+                hasCut
+                  ? (match?.portionIndex == nil
+                    ? "—" : "\(match?.percent ?? 0)% · \(match?.count ?? 0)") : "— · —")
+              Image(
+                systemName: !hasCut
+                  ? "circle.dotted"
+                  : (match?.passed == true ? "checkmark.circle.fill" : "xmark.circle"))
+            }.font(.system(size: 13, weight: .bold))
           }
+          .foregroundStyle(!hasCut || match?.passed == true ? Palette.olive : Palette.red)
+          .frame(maxWidth: .infinity).frame(height: 42)
+          .background(
+            (!hasCut || match?.passed == true ? Palette.olive : Palette.red).opacity(0.07),
+            in: RoundedRectangle(cornerRadius: 7))
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .ignore)
@@ -294,7 +295,7 @@ struct ContentView: View {
           }.padding(.horizontal, 25).padding(.vertical, 12)
           VStack(spacing: 0) {
             ForEach(verdict.matches, id: \.guest.id) { match in
-              resultRow(match)
+              resultRow(match, portion: match.portionIndex.map { verdict.portions[$0] })
             }
           }.padding(.horizontal, 24)
           if verdict.extraPortions > 0 {
@@ -338,7 +339,7 @@ struct ContentView: View {
     }.scrollIndicators(.hidden)
   }
 
-  private func resultRow(_ match: GuestMatch) -> some View {
+  private func resultRow(_ match: GuestMatch, portion: Portion?) -> some View {
     VStack(spacing: 0) {
       Rectangle().fill(Palette.line).frame(height: 0.7)
       HStack(spacing: 12) {
@@ -370,8 +371,8 @@ struct ContentView: View {
           }
         }
         Spacer(minLength: 0)
-        if let portionIndex = match.portionIndex {
-          ServedPlate(portion: model.portions[portionIndex], index: match.guest.id)
+        if let portion {
+          ServedPlate(portion: portion, index: match.guest.id)
             .frame(width: 58, height: 58)
         }
       }.padding(.vertical, 14)

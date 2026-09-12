@@ -163,6 +163,7 @@ struct GuestMatch {
 
 struct Verdict {
   let matches: [GuestMatch]
+  let portions: [Portion]
   let extraPortions: Int
   var success: Bool { extraPortions == 0 && matches.allSatisfy(\.passed) }
   var passedCount: Int { matches.filter(\.passed).count }
@@ -243,7 +244,8 @@ enum Rules {
       }
     }
     visit(0, used: [], matches: [], cost: 0)
-    return Verdict(matches: best, extraPortions: max(0, portions.count - guests.count))
+    return Verdict(
+      matches: best, portions: portions, extraPortions: max(0, portions.count - guests.count))
   }
 }
 

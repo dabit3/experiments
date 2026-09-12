@@ -3,6 +3,28 @@ import XCTest
 @testable import LastSlice
 
 final class LastSliceTests: XCTestCase {
+  @MainActor
+  func testServedPortionsRemainAvailableDuringRetryTransition() throws {
+    let name = "LastSlice-retry-\(UUID().uuidString)"
+    let defaults = try XCTUnwrap(UserDefaults(suiteName: name))
+    defer { defaults.removePersistentDomain(forName: name) }
+    let model = GameModel(defaults: defaults)
+    model.haptics = false
+    model.start(index: 0)
+    model.previewCut(.line(angle: .pi / 2, offset: 0.5))
+    model.commitCut()
+    model.serve()
+    let verdict = try XCTUnwrap(model.result)
+    XCTAssertFalse(verdict.success)
+    model.reset()
+    XCTAssertEqual(model.portions.count, 1)
+    XCTAssertEqual(verdict.portions.count, 2)
+    for match in verdict.matches {
+      let index = try XCTUnwrap(match.portionIndex)
+      XCTAssertEqual(verdict.portions[index].fraction, match.fraction)
+    }
+  }
+
   func testAuthoredToppingsStaySeparatedAndInsideTheirSlice() {
     for dinner in Menu.dinners {
       for portion in Rules.portions(cuts: dinner.solution, toppings: dinner.toppings) {
