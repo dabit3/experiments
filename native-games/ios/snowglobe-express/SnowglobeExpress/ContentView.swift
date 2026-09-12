@@ -14,8 +14,8 @@ struct ContentView: View {
   @State private var selected: Direction = .north
   @State private var panel: Panel?
   @State private var note = "Choose a direction to preview your next move."
-  @State private var shareImage: UIImage?
-  @State private var showShare = false
+  @State private var sharedPostcard: SharedPostcard?
+  @State private var shareFailed = false
   @State private var chime: AVAudioPlayer?
   private let store = LocalStore()
 
@@ -45,14 +45,13 @@ struct ContentView: View {
         .presentationDragIndicator(.visible)
         .presentationDetents(panel == .routes ? [.large] : [.medium, .large])
     }
-    .sheet(isPresented: $showShare) {
-      if let shareImage, let journey {
-        ActivitySheet(
-          image: shareImage,
-          text:
-            "A little warmth, delivered. \(journey.score) points in Snowglobe Express · \(journey.puzzle.name)."
-        )
-      }
+    .sheet(item: $sharedPostcard) { postcard in
+      ActivitySheet(image: postcard.image, text: postcard.text)
+    }
+    .alert("The postcard couldn’t be prepared.", isPresented: $shareFailed) {
+      Button("OK", role: .cancel) {}
+    } message: {
+      Text("Your result is safe. Please try sharing again.")
     }
     .onChange(of: scenePhase) { _, phase in
       if let journey {
@@ -633,9 +632,22 @@ struct ContentView: View {
   private func createShare(_ journey: Journey) {
     let renderer = ImageRenderer(content: Postcard(journey: journey))
     renderer.scale = 3
-    shareImage = renderer.uiImage
-    showShare = shareImage != nil
+    guard let image = renderer.uiImage else {
+      shareFailed = true
+      return
+    }
+    sharedPostcard = SharedPostcard(
+      image: image,
+      text:
+        "A little warmth, delivered. \(journey.score) points in Snowglobe Express · \(journey.puzzle.name)."
+    )
   }
+}
+
+struct SharedPostcard: Identifiable {
+  let id = UUID()
+  let image: UIImage
+  let text: String
 }
 
 struct Postcard: View {

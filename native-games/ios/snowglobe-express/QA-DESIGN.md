@@ -58,5 +58,17 @@ snow bank's pill; smoothly offset the van toward the curb as it approaches any
 home, leaving its windows visible; applied the Drive animation to Undo.
 Snow depth changes remain immediate logical turn updates.
 
-Pass 3 will verify these fixes plus cross-size fit, failure/retry, persistence,
-settings and native sharing, then capture final evidence.
+### Pass 3 — small-screen review and sharing correction
+
+On iPhone 17e, the tester verified home/tutorial fit, blocked moves, previews,
+delivery Undo and the 1100-point success. Home badges and snow pills were distinct,
+and all lit windows remained visible. The first share presentation opened an empty
+sheet. The run was stopped and its artifacts retained as diagnostic evidence only.
+
+The presentation used separate Boolean and optional image state. Changed it to
+one identifiable postcard payload passed directly into `sheet(item:)`, so the
+sheet content receives the image/text responsible for presenting it. A rendering
+failure now reports an error while retaining the result.
+
+The final retest will cover native sharing, failure/retry, persistence/settings,
+daily play and large-screen fit, and produce a new annotated recording.
