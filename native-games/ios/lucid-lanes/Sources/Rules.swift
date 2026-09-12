@@ -143,7 +143,8 @@ struct BowlingGame {
         guard index < frames.count, !frames[index].isEmpty else { return "—" }
         let rolls = frames[index]
         return rolls.enumerated().map { i, value in
-            if i > 0 && rolls[i - 1] != 10 && value + rolls[i - 1] == 10 { return "/" }
+            let secondRollOnRack = i == 1 || (i == 2 && rolls[0] == 10)
+            if secondRollOnRack && rolls[i - 1] != 10 && value + rolls[i - 1] == 10 { return "/" }
             if value == 10 { return "X" }
             return value == 0 ? "–" : String(value)
         }.joined(separator: "  ")

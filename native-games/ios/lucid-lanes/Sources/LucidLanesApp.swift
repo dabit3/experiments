@@ -27,7 +27,7 @@ struct ContentView: View {
                 if model.screen != "result" {
                     LaneArtwork(model: model, hero: model.screen == "home").ignoresSafeArea()
                 }
-                if model.screen == "home" { home }
+                if model.screen == "home" { home(compact: geometry.size.height < 700) }
                 if model.screen == "play" { play(size: geometry.size) }
                 if model.screen == "result" { result }
                 if model.screen == "play" && model.tutorial { tutorial }
@@ -53,7 +53,7 @@ struct ContentView: View {
         }
     }
 
-    private var home: some View {
+    private func home(compact: Bool) -> some View {
         VStack(spacing: 0) {
             HStack {
                 Text("THE DREAM HOTEL").font(.system(size: 10, weight: .semibold)).tracking(3)
@@ -62,12 +62,12 @@ struct ContentView: View {
             }
             .padding(.horizontal, 26)
             VStack(spacing: 1) {
-                Text("Lucid").font(.system(size: 65, weight: .regular, design: .serif)).tracking(-3)
-                Text("LANES").font(.system(size: 26, weight: .light)).tracking(13).padding(.leading, 13)
+                Text("Lucid").font(.system(size: compact ? 46 : 65, weight: .regular, design: .serif)).tracking(-3)
+                Text("LANES").font(.system(size: compact ? 20 : 26, weight: .light)).tracking(13).padding(.leading, 13)
                 Text("BOWLING, SOMEWHERE ELSE.").font(.system(size: 9, weight: .medium))
-                    .tracking(2.5).foregroundStyle(Dream.lavender).padding(.top, 15)
+                    .tracking(2.5).foregroundStyle(Dream.lavender).padding(.top, compact ? 8 : 15)
             }
-            .padding(.top, 8)
+            .padding(.top, compact ? 0 : 8)
             Spacer()
             VStack(spacing: 14) {
                 HStack(alignment: .center) {

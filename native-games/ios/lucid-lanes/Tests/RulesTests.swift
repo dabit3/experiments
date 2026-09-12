@@ -44,6 +44,16 @@ final class RulesTests: XCTestCase {
         XCTAssertEqual(game.symbols(for: 2), "X  7  /")
     }
 
+    func testFreshBonusRackCannotBeMarkedAsAnotherSpare() {
+        for (rolls, symbols) in [([7, 3, 7], "7  /  7"), ([5, 5, 5], "5  /  5"), ([0, 10, 10], "–  /  X")] {
+            var game = BowlingGame()
+            for pins in [0, 0, 0, 0] + rolls { game.roll(pins) }
+            XCTAssertTrue(game.isComplete)
+            XCTAssertEqual(game.symbols(for: 2), symbols)
+            XCTAssertEqual(game.score, rolls.reduce(0, +))
+        }
+    }
+
     func testRollsAreClampedToStandingPins() {
         var game = BowlingGame()
         game.roll(-3)
