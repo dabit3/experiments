@@ -1,6 +1,82 @@
 # Skyhook Salvage — native QA and design report
 
-**Verdict:** Maritime redesign and focused final native UI retest passed.
+## Current verdict — native sans-serif redesign
+
+Implemented and reviewed on compact SE and iPhone 17 Pro Max. Debug and Release
+Simulator builds, strict Swift format lint and all 12 XCTest tests pass on final
+code `939cc8bd98bab739438324e1db75de89a10e132a`. No material defect remains in
+the completed native test scope. Subsequent documentation commits do not alter code.
+
+### Product direction and five priorities
+
+Skyhook serves players making brief, timed crane lifts. Home supports choosing a
+load and starting; gameplay supports judging hook alignment and ship balance;
+results supports understanding the haul, replaying and sharing. Supporting screens
+teach the controls or adjust sound/touch without interrupting those tasks.
+
+| Source of generic styling | Implemented decision |
+|---|---|
+| Oversized serif display type | Shared native system sans-serif roles: 13pt metadata, 15pt body, 17pt actions, 22pt headings, 28pt outcome/readout at default size. Dynamic Type scales the interface. Canvas labels also use sans-serif. |
+| Home composed like a poster | Smaller identity/header, actual cargo previews, contract quantities/time/weight and persistent Start/Practice actions. Large phones show named cargo and individual weights. |
+| Tiny, tracked uppercase labels | Natural-case HUD labels, explicit cargo count, readable timing hints beside the trim/action controls and monospaced digits where values change. |
+| Repeated crests and ornamental containers | Keep one home identity mark, the illustrated harbor and mechanical trim ruler. Use cool fog/surface colors, open rows and useful separators. Teal carries actions; orange/sage communicate caution/alignment with text and symbols. |
+| Replay/share buried below a long receipt | Outcome and score precede a compact tower; replay/share stay pinned while cargo rows scroll. Native export keeps the complete full-height tower. |
+
+The crane, cargo names/weights, stack guide, balance bubble and manifest make the
+interface specific to salvage play. Rules, scoring, progression and persistence
+were not changed. No dependencies were added.
+
+### Actual rendered reviews and corrections
+
+1. **Compact composition, `daebc6b`:** All three contract titles, cargo previews,
+   Start/Practice and pause fit. Actual Settings taps failed. The scaled cover
+   was removed from hit testing; first-tap Settings then passed on both devices.
+2. **Corrected interaction and gameplay, `b2a523a`:** SE completed Contract 3
+   through real play: 1,675 points, six cargo, 18t. Final piano, supported stack,
+   crane and aligned hint remained readable. Pinned result actions, scrollable
+   rows, native Save to Files/opened full PNG, empty three-miss failure and
+   immediate retry passed. Max supported real trim gestures, a 207-point landing,
+   pause/resume and Practice continuing after three misses and another catch.
+   Settings/tutorial fit both devices. XXXL text and Reduce Motion were exercised
+   on SE; no equivalent nonvisual play is claimed.
+3. **Large-phone density, `939cc8b`:** Reviewing the Max screenshot exposed too
+   much unused space before Start. Reused the result cargo rows for large-phone
+   contracts. Native retest verified all three ordered lists/weights, including
+   six rows and two pianos, locked/boundary arrows, Settings and Start/Practice.
+   A real Max Contract 2 win (1,380 points, five cargo, 13t) unlocked Contract 3.
+   SE kept compact previews; empty result and retry passed. Broader six-cargo
+   export tests were not repeated after this presentation-only row extraction.
+
+Final app is installed and running at Contract 3 home on Max. SE is shut down.
+Default text size is restored on both; SE Reduce Motion is confirmed off.
+
+### Current native evidence
+
+- [SE full play/result/export/retry and accessibility recording](https://app.devin.ai/attachments/b543b633-87b7-48a2-a463-f64a7eac971d/skyhook-b2a523a-se-edited.mp4)
+- [Max controls/practice recording](https://app.devin.ai/attachments/19be3e89-5af9-4491-a47a-3e1f1a4e5cf1/skyhook-b2a523a-max-edited.mp4)
+- [Final Max cargo-row and compact regression recording](https://app.devin.ai/attachments/b9737182-6a45-4d53-92a8-1740976a07e9/skyhook-939cc8b-max-edited.mp4)
+- [Final Max home](https://app.devin.ai/attachments/34b01587-ee19-4e5e-8d46-65a67c4e153b/skyhook-939cc8b-max-home.png)
+- [Final compact home](https://app.devin.ai/attachments/d98fd65e-455a-4075-b024-1821250d6f6a/skyhook-939cc8b-se-home.png)
+- [Final-piano gameplay](https://app.devin.ai/attachments/fbebe373-2ced-4aa6-8165-a28ad8b3dd8f/skyhook-b2a523a-se-gameplay.png)
+- [Six-cargo result](https://app.devin.ai/attachments/797438c1-8ebf-4233-9330-6b855a4c38d0/skyhook-b2a523a-se-result.png)
+- [Opened full manifest export](https://app.devin.ai/attachments/7e201993-28fa-47d6-9a81-b89a0187086e/skyhook-b2a523a-se-export.png)
+
+Recordings are original native edited MP4s with structured setup, test_start and
+assertion annotations. Session attachments retain the action timeline; these
+download links provide standalone video.
+
+### Remaining verification gaps
+
+Physical-device sound/haptic feel and performance, external share delivery,
+dedicated UI timeout, accessibility sizes beyond XXXL and full six-cargo
+Max win/export remain untested. Final-piano aligned guidance was captured;
+the dedicated final-piano invalid-state capture was not completed, although
+invalid guidance was exercised earlier. Timeout and balance retain unit coverage.
+No browser/desktop-size web review applies to this native iPhone app.
+
+## Prior maritime redesign
+
+**Prior verdict:** Maritime redesign and focused final native UI retest passed.
 No unresolved defect was observed in the tested scope.
 
 - Tested source: `9f58b394aaa2ba1cdf677a994c396d121fcbfd6b`.
@@ -37,7 +113,7 @@ share this visual system. The trim slider is a custom accessible brass ruler.
 - Earlier comprehensive persistence, practice and failure/retry coverage below
   was not repeated in full for the redesign.
 
-### Latest evidence
+### Prior maritime evidence
 
 - [Compact annotated recording download](https://app.devin.ai/attachments/9f73d4a8-1fb3-467f-aeaa-73f327824386/skyhook-9f58b39-se-edited.mp4)
 - [Max annotated recording download](https://app.devin.ai/attachments/fbb1ee81-d2f9-4a39-8c2b-3812e0e15c0f/skyhook-9f58b39-max-edited.mp4)
@@ -119,7 +195,7 @@ Discover a current Simulator UUID rather than reusing this session's UUID.
 - [Six-cargo result](https://app.devin.ai/attachments/0a447145-bc08-45f2-b55b-0fffebeb3fec/skyhook-a11a78d-se-result.png)
 - [Home](https://app.devin.ai/attachments/35e489d8-b3f2-46df-beee-89fb0a93f28f/skyhook-a11a78d-max-home.png)
 
-## Limits
+## Prior limits (before the sans-serif redesign)
 
 Physical-device sound/haptic feel, external recipient delivery, accessibility
 text-size variants and dedicated UI timeout/tipping outcomes were not tested.
