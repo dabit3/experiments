@@ -20,12 +20,12 @@ enum ScorecardRenderer {
     static func hole(game: GameStore) -> SharePayload? {
         let card = ShareCard(
             title: game.resultTitle, subtitle: "\(game.hole.name) · \(game.resultLabel.lowercased())",
-            score: "\(game.simulation.strokes)", detail: "STROKES  /  PAR \(game.hole.par)",
+            score: "\(game.simulation.strokes)", detail: "\(game.strokeNoun.uppercased())  /  PAR \(game.hole.par)",
             simulation: game.simulation, record: nil, practice: game.practice)
         return render(
             card,
             text:
-                "Mossball — \(game.hole.name): \(game.simulation.strokes) strokes, par \(game.hole.par).\(game.practice ? " Practice round." : "") A little golf. A little wild."
+                "Mossball — \(game.hole.name): \(game.simulation.strokes) \(game.strokeNoun), par \(game.hole.par).\(game.practice ? " Practice round." : "") A little golf. A little wild."
         )
     }
 

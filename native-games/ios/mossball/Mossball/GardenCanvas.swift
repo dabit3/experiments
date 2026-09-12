@@ -19,14 +19,15 @@ struct GardenCanvas: View {
 
     var body: some View {
         GeometryReader { geometry in
-            let scale = min(geometry.size.width / 360, geometry.size.height / 530)
-            let offsetX = (geometry.size.width - 360 * scale) / 2
-            let offsetY = (geometry.size.height - 530 * scale) / 2
+            let scale = min(geometry.size.width / 400, geometry.size.height / 590)
+            let offsetX = (geometry.size.width - 400 * scale) / 2 + 20 * scale
+            let offsetY = (geometry.size.height - 590 * scale) / 2 + 30 * scale
             Canvas { context, _ in
                 context.translateBy(x: offsetX, y: offsetY)
                 context.scaleBy(x: scale, y: scale)
                 drawGarden(&context)
             }
+            .clipped()
             .contentShape(Rectangle())
             .gesture(
                 DragGesture(minimumDistance: 5)

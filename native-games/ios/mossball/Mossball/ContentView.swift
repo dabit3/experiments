@@ -25,6 +25,7 @@ struct ContentView: View {
         }
         .foregroundStyle(GardenPalette.cream)
         .preferredColorScheme(.dark)
+        .tint(GardenPalette.cream)
         .onReceive(clock) { _ in game.tick() }
         .onChange(of: scenePhase) { _, phase in
             if phase != .active && game.screen == .playing {
@@ -68,13 +69,12 @@ struct ContentView: View {
                 simulation: GolfSimulation(hole: Hole.course[8]),
                 reducedMotion: reduceMotion, decorative: true
             )
-            .padding(.horizontal, 20)
-            .padding(.top, -26)
-            .padding(.bottom, -21)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 8)
             VStack(spacing: 15) {
                 HStack(spacing: 12) {
                     Rectangle().fill(GardenPalette.muted.opacity(0.22)).frame(height: 1)
-                    eyebrow("THE OVERGROWN NINE")
+                    eyebrow("THE OVERGROWN NINE").fixedSize()
                     Rectangle().fill(GardenPalette.muted.opacity(0.22)).frame(height: 1)
                 }
                 primaryButton("Enter the garden", icon: "arrow.up.right", id: "home.start") {
@@ -126,7 +126,7 @@ struct ContentView: View {
                     Text("STROKES").font(.system(size: 8, weight: .semibold)).tracking(1.3)
                 }
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(game.simulation.strokes) strokes")
+                .accessibilityLabel("\(game.simulation.strokes) \(game.strokeNoun)")
                 .accessibilityIdentifier("game.strokes")
                 iconButton("pause", label: "Pause game", id: "game.pause") { game.paused = true }
                     .padding(.leading, 8)
@@ -150,8 +150,7 @@ struct ContentView: View {
                 onDrag: { pull in if game.canShoot { game.aim = pull } },
                 onRelease: { pull in game.shoot(pull) }
             )
-            .padding(.top, -18)
-            .padding(.bottom, -14)
+            .padding(.vertical, 6)
             VStack(spacing: 10) {
                 if game.practice {
                     practiceControls
@@ -264,19 +263,21 @@ struct ContentView: View {
                 .lineLimit(1)
                 .padding(.top, 14)
                 .padding(.horizontal, 23)
+            Text(game.resultLabel)
+                .font(.system(size: 11, weight: .semibold, design: .monospaced))
+                .tracking(2.5)
+                .foregroundStyle(GardenPalette.gold)
+                .padding(.top, 15)
             GardenCanvas(
                 simulation: game.simulation, bloom: game.simulation.sunk ? 1 : 0,
                 reducedMotion: reduceMotion, decorative: true
             )
-            .padding(.horizontal, 18)
-            .padding(.top, -15)
-            .padding(.bottom, -10)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
             VStack(spacing: 13) {
-                eyebrow(game.resultLabel)
-                    .foregroundStyle(GardenPalette.gold)
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("\(game.simulation.strokes)").font(.system(size: 56, weight: .light, design: .serif))
-                    Text("strokes").font(.system(size: 16, design: .serif)).foregroundStyle(GardenPalette.muted)
+                    Text(game.strokeNoun).font(.system(size: 16, design: .serif)).foregroundStyle(GardenPalette.muted)
                     Text(" /  par \(game.hole.par)").font(.system(size: 16, design: .serif)).foregroundStyle(
                         GardenPalette.muted)
                 }
@@ -411,11 +412,7 @@ struct ContentView: View {
                 .font(.system(size: 39, weight: .regular, design: .serif))
                 .multilineTextAlignment(.center)
                 .padding(.vertical, 8)
-            Image(systemName: "arrow.up.right")
-                .font(.system(size: 38, weight: .ultraLight))
-                .foregroundStyle(GardenPalette.gold)
-                .frame(height: 54)
-                .accessibilityHidden(true)
+            tutorialDiagram
             Text("Drag back anywhere in the garden to aim.\nPull farther for more power. Release to putt.")
                 .font(.system(size: 15)).multilineTextAlignment(.center).lineSpacing(5)
             Text(
@@ -431,6 +428,35 @@ struct ContentView: View {
                 .font(.system(size: 11)).foregroundStyle(GardenPalette.muted)
                 .multilineTextAlignment(.center)
         }
+    }
+
+    private var tutorialDiagram: some View {
+        HStack(spacing: 20) {
+            VStack(spacing: 5) {
+                Image(systemName: "flag.fill")
+                    .font(.system(size: 20))
+                    .foregroundStyle(GardenPalette.gold)
+                ForEach(0..<3, id: \.self) { _ in
+                    Circle().fill(GardenPalette.cream.opacity(0.55)).frame(width: 3, height: 3)
+                }
+                Circle().fill(GardenPalette.cream).frame(width: 15, height: 15)
+                    .shadow(color: .black.opacity(0.3), radius: 3, x: 2, y: 3)
+                Image(systemName: "arrow.down")
+                    .font(.system(size: 26, weight: .ultraLight))
+                    .foregroundStyle(GardenPalette.gold)
+                Image(systemName: "hand.draw")
+                    .font(.system(size: 23, weight: .light))
+            }
+            VStack(alignment: .leading, spacing: 49) {
+                Text("BALL GOES UP")
+                Text("YOU PULL DOWN")
+            }
+            .font(.system(size: 9, weight: .medium, design: .monospaced))
+            .tracking(1.4)
+            .foregroundStyle(GardenPalette.muted)
+        }
+        .padding(.vertical, 10)
+        .accessibilityLabel("To shoot toward the cup above the ball, drag your finger downward.")
     }
 
     private var settings: some View {
@@ -499,6 +525,8 @@ struct ContentView: View {
                             }
                             .padding(.vertical, 16)
                         }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(GardenPalette.cream)
                         .accessibilityLabel("Practice hole \(hole.number), \(hole.name), par \(hole.par)")
                         .accessibilityIdentifier("practice.hole.\(hole.number)")
                         Divider().overlay(GardenPalette.muted.opacity(0.2))

@@ -34,6 +34,7 @@ final class GameStore: ObservableObject {
     private var lastFeedback = -1.0
     var hole: Hole { Hole.course[holeIndex] }
     var total: Int { scores.reduce(0, +) }
+    var strokeNoun: String { simulation.strokes == 1 ? "stroke" : "strokes" }
     var record: CourseRecord { CourseRecord(strokes: scores, completed: completed) }
     var canShoot: Bool {
         screen == .playing && !paused && !showTutorial && !simulation.moving && !simulation.sunk
