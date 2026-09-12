@@ -105,7 +105,9 @@ struct BazaarScene: View {
     TimelineView(.animation(minimumInterval: 1.0 / 24, paused: reducedMotion)) { timeline in
       let time = reducedMotion ? 0 : timeline.date.timeIntervalSinceReferenceDate
       Canvas { context, size in
-        context.scaleBy(x: size.width / 360, y: size.height / 225)
+        let scale = min(size.width / 360, size.height / 225)
+        context.translateBy(x: (size.width - 360 * scale) / 2, y: size.height - 225 * scale)
+        context.scaleBy(x: scale, y: scale)
         draw(context: &context, time: time)
       }
     }
@@ -202,7 +204,7 @@ struct BazaarScene: View {
       }
       rect(x + 10, 151, 22, 12, Palette.mint, radius: 2)
       context.draw(
-        Text(["7", "10", "13"][index]).font(.system(size: 7, weight: .bold, design: .monospaced))
+        Text(["MP", "SC", "CR"][index]).font(.system(size: 7, weight: .bold, design: .monospaced))
           .foregroundColor(Palette.ink), at: .init(x: x + 21, y: 157))
     }
     for x in [117.0, 237.0] {

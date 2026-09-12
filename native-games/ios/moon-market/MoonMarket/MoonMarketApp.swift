@@ -213,7 +213,7 @@ struct MarketRoot: View {
           }
           .padding(.horizontal, 24)
           BazaarScene(flourishing: store.run.cash >= Run.goal)
-            .frame(height: 132)
+            .frame(height: 180)
             .padding(.top, -16)
             .padding(.bottom, -6)
           VStack(alignment: .leading, spacing: 4) {
@@ -234,7 +234,7 @@ struct MarketRoot: View {
             HStack {
               eyebrow("STOCK YOUR STALL")
               Spacer()
-              Text("BUY → SELL · QUEUE").font(
+              Text("12 SPACES · 5 cr RENT").font(
                 .system(size: 9, weight: .medium, design: .monospaced)
               ).foregroundStyle(Palette.muted)
             }
@@ -252,7 +252,7 @@ struct MarketRoot: View {
                     "\($0.name) \(store.run.forecast.quotes[$0.rawValue].demand)"
                   }.joined(separator: "  ·  ")
                 )
-                .font(.system(size: 11)).foregroundStyle(Palette.muted)
+                .font(.system(size: 12)).foregroundStyle(Palette.muted)
               }
               Spacer(minLength: 0)
             }.padding(.horizontal, 24)
@@ -295,7 +295,7 @@ struct MarketRoot: View {
     let held = store.run.inventory[index]
     let quantity = store.run.order[index]
     return HStack(spacing: 10) {
-      ProduceArt(kind: index).frame(width: 55, height: 66)
+      ProduceArt(kind: index).frame(width: 44, height: 66)
       VStack(alignment: .leading, spacing: 5) {
         HStack(spacing: 5) {
           Text(produce.name).font(.system(size: 17, weight: .semibold, design: .rounded))
@@ -304,19 +304,18 @@ struct MarketRoot: View {
               Color(red: 0.22, green: 0.4, blue: 0.34))
           }
         }
-        HStack(spacing: 5) {
-          Text("\(quote.buy) → \(quote.sell) cr")
-            .font(.system(size: 12, weight: .semibold, design: .monospaced))
-          Text("· \(quote.demand) want")
-            .font(.system(size: 10, weight: .medium))
-            .foregroundStyle(Palette.ink.opacity(0.65))
-        }
+        Text("Buy \(quote.buy)  →  Sell \(quote.sell)")
+          .font(.system(size: 12, weight: .semibold, design: .monospaced))
+          .fixedSize(horizontal: true, vertical: false)
+        Text("\(quote.demand) want tonight")
+          .font(.system(size: 12, weight: .bold))
+          .foregroundStyle(Color(red: 0.17, green: 0.37, blue: 0.31))
         Text(
           held + quantity > quote.demand
             ? "\(held + quantity - quote.demand) will carry over"
             : "\(max(0, quote.demand - held - quantity)) more can sell tonight"
         )
-        .font(.system(size: 10))
+        .font(.system(size: 11))
         .foregroundStyle(Palette.ink.opacity(0.6))
       }
       .frame(maxWidth: .infinity, alignment: .leading)
@@ -326,7 +325,7 @@ struct MarketRoot: View {
           tick()
         } label: {
           Image(systemName: "minus").font(.system(size: 14, weight: .semibold)).frame(
-            width: 36, height: 48)
+            width: 44, height: 48)
         }
         .disabled(quantity == 0)
         .opacity(quantity == 0 ? 0.3 : 1)
@@ -342,7 +341,7 @@ struct MarketRoot: View {
           tick()
         } label: {
           Image(systemName: "plus").font(.system(size: 14, weight: .semibold)).frame(
-            width: 36, height: 48)
+            width: 44, height: 48)
         }
         .disabled(!store.run.canAdd(index))
         .opacity(store.run.canAdd(index) ? 1 : 0.3)
@@ -361,7 +360,7 @@ struct MarketRoot: View {
     VStack(spacing: 10) {
       HStack {
         Text("ORDER \(store.run.orderCost)  +  RENT 5").font(
-          .system(size: 10, weight: .medium, design: .monospaced))
+          .system(size: 11, weight: .medium, design: .monospaced))
         Spacer()
         Text("After sales  \(store.run.projectedCash) cr")
           .font(.system(size: 12, weight: .semibold))
@@ -403,7 +402,9 @@ struct MarketRoot: View {
             Text("THE NIGHT'S TAKINGS").font(.system(size: 10, weight: .bold, design: .monospaced))
               .tracking(2)
             Spacer()
-            Text("\(receipt?.customers ?? 0) happy customers").font(.system(size: 11))
+            Text(
+              "\(receipt?.customers ?? 0) happy \(receipt?.customers == 1 ? "customer" : "customers")"
+            ).font(.system(size: 11))
           }.foregroundStyle(Palette.muted)
           HStack(spacing: 16) {
             ForEach(Produce.allCases) { produce in
@@ -414,6 +415,9 @@ struct MarketRoot: View {
               }
             }
           }
+          Text("\((receipt?.net ?? 0) >= 0 ? "+" : "")\(receipt?.net ?? 0) cr tonight")
+            .font(.system(size: 28, weight: .semibold, design: .rounded))
+            .foregroundStyle((receipt?.net ?? 0) >= 0 ? Palette.mint : Palette.orange)
           Divider().overlay(Palette.muted.opacity(0.2))
           ledgerLine("Sales", "+\(receipt?.revenue ?? 0) cr")
           ledgerLine("Stock bought", "−\(receipt?.cost ?? 0) cr")
@@ -510,11 +514,7 @@ struct MarketRoot: View {
         Spacer()
         Button("Close") { sheet = nil }.frame(minHeight: 44).accessibilityIdentifier("close-guide")
       }
-      HStack(spacing: 8) {
-        ForEach(0..<3) { index in
-          ProduceArt(kind: index).frame(width: 76, height: 84)
-        }
-      }
+      tutorialExample
       Text(
         ["Buy small. Dream lunar.", "Read the queue.", "Make eight nights count."][tutorialStep]
       )
@@ -542,6 +542,27 @@ struct MarketRoot: View {
         }
       }
     }
+  }
+
+  private var tutorialExample: some View {
+    HStack(spacing: 14) {
+      ProduceArt(kind: tutorialStep).frame(width: 66, height: 76)
+      VStack(alignment: .leading, spacing: 7) {
+        Text(["BUY 7  →  SELL 16", "3 IN CRATE · 2 WANT", "90 − 14 + 32 − 5"][tutorialStep])
+          .font(.system(size: 14, weight: .bold, design: .monospaced))
+        Text(
+          [
+            "9 credits earned per sale", "2 sold · 1 saved for tomorrow",
+            "= 103 credits after market",
+          ][tutorialStep]
+        )
+        .font(.system(size: 12))
+      }
+      Spacer(minLength: 0)
+    }
+    .padding(12)
+    .foregroundStyle(Palette.ink)
+    .background(Palette.cream, in: RoundedRectangle(cornerRadius: 18))
   }
 
   private var settings: some View {
