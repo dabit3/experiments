@@ -30,10 +30,41 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
   private let anchor = CGPoint(x: 220, y: 230)
   private let gravity: CGFloat = -420
   private var lastTrail: TimeInterval = 0
+  private var framedSize = CGSize.zero
+  private var framedInsets = UIEdgeInsets.zero
   private var reduceMotion: Bool { UIAccessibility.isReduceMotionEnabled }
 
   override func didMove(to view: SKView) {
     view.preferredFramesPerSecond = 60
+    framePlayfield()
+  }
+
+  private func framePlayfield() {
+    guard let level, let view, game?.screen == .playing else { return }
+    let insets = view.window?.safeAreaInsets ?? view.safeAreaInsets
+    framedSize = view.bounds.size
+    framedInsets = insets
+    let viewportWidth = min(view.bounds.width, view.bounds.height * size.width / size.height)
+    guard viewportWidth > 0 else { return }
+    let sideMargin = (view.bounds.width - viewportWidth) / 2
+    let left = max(0, insets.left - sideMargin) + 16
+    let right = max(0, insets.right - sideMargin) + 16
+    let usableWidth = max(0.5, 1 - (left + right) / viewportWidth)
+    let minX = anchor.x - 115 - 29
+    let maxX = max(
+      level.blocks.map { $0.x + $0.width / 2 }.max() ?? anchor.x,
+      level.targets.map { $0.x + 29 }.max() ?? anchor.x)
+    let maxY = max(
+      level.blocks.map { $0.y + $0.height / 2 }.max() ?? anchor.y,
+      level.targets.map { $0.y + 29 }.max() ?? anchor.y)
+    let scale = max(0.88, (maxX - minX) / usableWidth / size.width, (maxY + 100) / size.height)
+    let framing = camera ?? SKCameraNode()
+    if framing.parent == nil { addChild(framing) }
+    framing.setScale(scale)
+    framing.position = CGPoint(
+      x: (minX + maxX) / 2 + (right - left) / viewportWidth * size.width * scale / 2,
+      y: size.height * scale / 2)
+    camera = framing
   }
 
   private func prepare() {
@@ -52,7 +83,7 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
     winDelay = 0
     backgroundColor = UIColor(hex: 0xF4DDBA)
     let backdrop = SKSpriteNode(texture: OrchardArt.background())
-    backdrop.size = size
+    backdrop.size = CGSize(width: size.width + 200, height: size.height)
     backdrop.position = CGPoint(x: size.width / 2, y: size.height / 2)
     backdrop.zPosition = -50
     addChild(backdrop)
@@ -128,13 +159,7 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
   func start(_ level: Level) {
     self.level = level
     prepare()
-    if level.targets.allSatisfy({ $0.y < 440 }) {
-      let framing = SKCameraNode()
-      framing.position = CGPoint(x: 650, y: 295)
-      framing.setScale(0.88)
-      addChild(framing)
-      camera = framing
-    }
+    framePlayfield()
     fruitIndex = 0
     for spec in level.blocks { blocks.append(makeBlock(spec)) }
     for target in level.targets {
@@ -374,6 +399,12 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
   }
 
   override func update(_ currentTime: TimeInterval) {
+    if let view,
+      view.bounds.size != framedSize
+        || (view.window?.safeAreaInsets ?? view.safeAreaInsets) != framedInsets
+    {
+      framePlayfield()
+    }
     let delta = previousTime == 0 ? 0 : min(1.0 / 20, currentTime - previousTime)
     previousTime = currentTime
     guard level != nil, game?.result == nil, game?.paused == false else { return }

@@ -291,8 +291,12 @@ struct OrchardView: View {
           Image(uiImage: UIImage(cgImage: OrchardArt.fruit(result.won ? .apple : .plum).cgImage()))
             .resizable().scaledToFit().frame(width: 102, height: 113)
           stars(result.stars, size: 25)
-          Text(result.won ? "FORT CLEARED" : "\(game.targets) PESTS REMAIN")
-            .font(.system(size: 9, weight: .heavy)).tracking(1.5)
+          Text(
+            result.won
+              ? "FORT CLEARED"
+              : "\(game.targets) \(game.targets == 1 ? "PEST REMAINS" : "PESTS REMAIN")"
+          )
+          .font(.system(size: 9, weight: .heavy)).tracking(1.5)
         }
         .frame(width: 133)
         Rectangle().fill(Palette.green.opacity(0.15)).frame(width: 1, height: 207)
