@@ -569,7 +569,7 @@ struct BreakwaterView: View {
               .padding(.vertical, HarborSpacing.section)
               .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
+            .buttonStyle(HarborPressStyle(dimWhenDisabled: false))
             .disabled(!open)
             .accessibilityIdentifier("chart\(index + 1)")
             Rectangle().fill(HarborPalette.separator).frame(height: 1)

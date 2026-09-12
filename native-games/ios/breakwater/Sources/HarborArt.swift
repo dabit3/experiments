@@ -501,10 +501,11 @@ private func islandArtwork(for reef: Reef) -> String {
 struct HarborPressStyle: ButtonStyle {
   @Environment(\.accessibilityReduceMotion) private var reducedMotion
   @Environment(\.isEnabled) private var isEnabled
+  var dimWhenDisabled = true
 
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .opacity(isEnabled ? (configuration.isPressed ? 0.83 : 1) : 0.45)
+      .opacity(isEnabled ? (configuration.isPressed ? 0.83 : 1) : (dimWhenDisabled ? 0.45 : 1))
       .scaleEffect(configuration.isPressed && !reducedMotion ? 0.985 : 1)
       .animation(reducedMotion ? nil : .easeOut(duration: 0.15), value: configuration.isPressed)
   }
