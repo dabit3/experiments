@@ -22,6 +22,9 @@ struct GameView: View {
   init(puzzle: Puzzle, restored: Parade?) {
     self.puzzle = puzzle
     _parade = State(initialValue: restored ?? Parade(puzzle: puzzle))
+    if let restored, restored.route.count > 1 {
+      _notice = State(initialValue: "Welcome back. Continue from the end of your ribbon.")
+    }
   }
 
   private var colors: [LanternColor] { parade.collected(in: puzzle) }

@@ -1,11 +1,16 @@
 import SwiftUI
 
+private struct ParadeSession: Identifiable {
+  let id = UUID()
+  let puzzle: Puzzle
+  let restored: Parade?
+}
+
 struct HomeView: View {
   @EnvironmentObject private var progress: Progress
-  @State private var active: Puzzle?
+  @State private var active: ParadeSession?
   @State private var showTowns = false
   @State private var showSettings = false
-  @State private var resume = false
 
   var body: some View {
     GeometryReader { geometry in
@@ -54,9 +59,13 @@ struct HomeView: View {
               .padding(.vertical, 12)
             VStack(spacing: 12) {
               Button {
-                resume = progress.saved != nil && progress.saved?.completed == false
-                active =
-                  resume ? Towns.puzzle(id: progress.saved?.puzzleID ?? "") : progress.nextTown
+                if let saved = progress.saved, !saved.completed,
+                  let puzzle = Towns.puzzle(id: saved.puzzleID)
+                {
+                  active = ParadeSession(puzzle: puzzle, restored: saved)
+                } else {
+                  active = ParadeSession(puzzle: progress.nextTown, restored: nil)
+                }
               } label: {
                 HStack {
                   Text(
@@ -68,8 +77,7 @@ struct HomeView: View {
               }.buttonStyle(GoldButtonStyle()).accessibilityIdentifier("begin-parade")
               HStack(spacing: 12) {
                 Button {
-                  resume = false
-                  active = Towns.daily()
+                  active = ParadeSession(puzzle: Towns.daily(), restored: nil)
                 } label: {
                   Label("Daily light", systemImage: "moon.stars")
                 }.buttonStyle(GoldButtonStyle(secondary: true)).accessibilityIdentifier(
@@ -92,15 +100,14 @@ struct HomeView: View {
         }.clipped()
       }
     }
-    .fullScreenCover(item: $active) { puzzle in
-      GameView(puzzle: puzzle, restored: resume ? progress.saved : nil)
+    .fullScreenCover(item: $active) { session in
+      GameView(puzzle: session.puzzle, restored: session.restored)
         .environmentObject(progress)
     }
     .sheet(isPresented: $showTowns) {
       TownList { puzzle in
         showTowns = false
-        resume = false
-        active = puzzle
+        active = ParadeSession(puzzle: puzzle, restored: nil)
       }.environmentObject(progress)
     }
     .sheet(isPresented: $showSettings) { SettingsView().environmentObject(progress) }
