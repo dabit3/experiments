@@ -219,7 +219,7 @@ struct GameView: View {
           }
         }
       }
-      .simultaneousGesture(
+      .highPriorityGesture(
         DragGesture(minimumDistance: 8)
           .onChanged { value in
             guard let tile = geo.tile(at: value.location), tile != lastTouched else { return }
