@@ -90,6 +90,7 @@ struct HarborView: View {
               .clipped()
           }
           .frame(height: min(240, max(160, geometry.size.height * 0.30)))
+          .allowsHitTesting(false)
           .accessibilityLabel("Illustrated brass airship and rooftop crane above Port Marlow")
           HStack {
             Text("Contract \(selectedContract + 1) of \(Contract.all.count)")
