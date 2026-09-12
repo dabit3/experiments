@@ -111,7 +111,7 @@ struct AnglerView: View {
       }
       .padding(.top, 12)
       HStack {
-        Text("\(store.progress.total) CATCHES")
+        Text("\(store.progress.total) \(store.progress.total == 1 ? "CATCH" : "CATCHES")")
         Spacer()
         Text(
           store.progress.best == 0

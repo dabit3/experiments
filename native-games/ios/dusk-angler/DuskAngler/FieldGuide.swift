@@ -199,7 +199,7 @@ struct FieldPanel: View {
         VStack(alignment: .leading, spacing: 24) {
           Eyebrow(
             text: panel == .journal
-              ? "\(store.progress.total) catches · \(store.progress.bait) glow bait"
+              ? "\(store.progress.total) \(store.progress.total == 1 ? "catch" : "catches") · \(store.progress.bait) glow bait"
               : "Dusk Angler", color: Ink.gold)
           switch panel {
           case .journal: journal
