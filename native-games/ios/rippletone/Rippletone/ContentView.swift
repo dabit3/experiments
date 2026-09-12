@@ -246,7 +246,7 @@ struct ContentView: View {
           } else {
             Button("Skip practice") { game.start(Composition.all[0]) }
               .font(.system(size: 12)).foregroundStyle(Ink.muted)
-              .frame(minHeight: 44).accessibilityIdentifier("tutorial-skip")
+              .frame(minHeight: 52).accessibilityIdentifier("tutorial-skip")
           }
         } else {
           eyebrow("TAP AS THE RINGS MEET")
