@@ -11,9 +11,27 @@ struct LittleCrossroadsApp: App {
 private enum Palette {
     static let ink = Color(uiColor: ToyColor.dark)
     static let cream = Color(uiColor: ToyColor.cream)
+    static let paper = Color(red: 1, green: 0.985, blue: 0.94)
     static let mint = Color(uiColor: ToyColor.mint)
     static let yellow = Color(uiColor: ToyColor.yellow)
+    static let honey = Color(red: 0.84, green: 0.58, blue: 0.09)
     static let coral = Color(uiColor: ToyColor.coral)
+    static let shade = Color(red: 0.80, green: 0.79, blue: 0.68)
+    static let hairline = ink.opacity(0.09)
+}
+
+private extension Font {
+    static func display(_ size: CGFloat) -> Font {
+        .system(size: size, weight: .medium, design: .serif).italic()
+    }
+
+    static func numeral(_ size: CGFloat) -> Font {
+        .system(size: size, weight: .black, design: .rounded)
+    }
+
+    static func eyebrow(_ size: CGFloat = 10) -> Font {
+        .system(size: size, weight: .heavy, design: .rounded)
+    }
 }
 
 struct CrossroadsView: View {
@@ -36,7 +54,7 @@ struct CrossroadsView: View {
                         ],
                         startPoint: .top, endPoint: .bottom
                     )
-                    .frame(height: geometry.size.height * (store.state == .ready ? 0.43 : 0.17))
+                    .frame(height: geometry.size.height * (store.state == .ready ? 0.44 : 0.19))
                     Spacer()
                 }
                 .ignoresSafeArea().allowsHitTesting(false)
@@ -54,7 +72,7 @@ struct CrossroadsView: View {
                     }
                 }
                 .padding(.horizontal, geometry.size.width < 380 ? 20 : 26)
-                .padding(.top, 12)
+                .padding(.top, 10)
                 .padding(.bottom, 12)
                 if store.state == .paused {
                     pauseCard
@@ -76,49 +94,60 @@ struct CrossroadsView: View {
         .preferredColorScheme(.light)
     }
 
+    // MARK: Title
+
     private var titleHeader: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack {
-                Label("A POCKET-SIZED ADVENTURE", systemImage: "sun.max.fill")
-                    .font(.system(size: 9, weight: .heavy, design: .rounded)).tracking(1.8)
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 8) {
+                Circle().fill(Palette.coral).frame(width: 6, height: 6)
+                Text("A POCKET-SIZED ADVENTURE").font(.eyebrow(9.5)).tracking(2.2)
+                    .foregroundStyle(Palette.ink.opacity(0.72))
                 Spacer()
                 soundButton
             }
-            Text("little").font(.system(size: 36, weight: .semibold, design: .serif))
-                .padding(.top, 10)
-            Text("crossroads").font(.system(size: 47, weight: .black, design: .rounded))
-                .tracking(-2.6).minimumScaleFactor(0.7).lineLimit(1).padding(.top, -10)
-            HStack(spacing: 6) {
-                Capsule().fill(Palette.coral).frame(width: 23, height: 3)
-                Text("Small hops. Big adventures.").font(.system(size: 13, weight: .medium))
+            Text("Little").font(.display(42)).padding(.top, 8)
+            Text("Crossroads").font(.numeral(54)).tracking(-2.8)
+                .minimumScaleFactor(0.7).lineLimit(1).padding(.top, -14)
+            RoadRule().frame(width: 132).padding(.top, 10)
+            Text("Small hops. Big adventures.").font(.display(16))
+                .foregroundStyle(Palette.ink.opacity(0.78)).padding(.top, 10)
+            HStack(spacing: 0) {
+                titleStat("BEST", value: "\(store.best)", symbol: "flag.checkered")
+                Rectangle().fill(Palette.ink.opacity(0.14)).frame(width: 1, height: 22)
+                titleStat("COINS", value: "\(store.bank)", symbol: "circle.inset.filled")
             }
-            .padding(.top, 4)
-            HStack(spacing: 14) {
-                Label("\(store.best) best", systemImage: "flag.checkered")
-                Label("\(store.bank) coins", systemImage: "circle.inset.filled")
-            }
-            .font(.system(size: 12, weight: .bold, design: .rounded))
-            .padding(.vertical, 9).padding(.horizontal, 13)
-            .background(.white.opacity(0.58), in: Capsule())
-            .padding(.top, 12)
+            .padding(.vertical, 8).padding(.horizontal, 6)
+            .background(.white.opacity(0.55), in: Capsule())
+            .overlay(Capsule().stroke(Palette.hairline, lineWidth: 1))
+            .padding(.top, 14)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+    private func titleStat(_ title: String, value: String, symbol: String) -> some View {
+        HStack(spacing: 7) {
+            Image(systemName: symbol).font(.system(size: 12, weight: .bold))
+            Text(value).font(.numeral(15))
+            Text(title).font(.eyebrow(9)).tracking(1.4).foregroundStyle(Palette.ink.opacity(0.62))
+        }
+        .padding(.horizontal, 12)
+    }
+
     private var startCard: some View {
-        VStack(spacing: 15) {
+        VStack(alignment: .leading, spacing: 14) {
             HStack(alignment: .top) {
-                VStack(alignment: .leading, spacing: 5) {
-                    Text("The other side is calling.")
-                        .font(.system(size: 19, weight: .bold, design: .rounded))
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("READY WHEN YOU ARE").font(.eyebrow(9)).tracking(2)
+                        .foregroundStyle(Palette.ink.opacity(0.6))
+                    Text("The other side is calling.").font(.display(24))
                     Text("Dodge traffic. Catch a log. Keep hopping.")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(Palette.ink.opacity(0.7))
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(Palette.ink.opacity(0.68))
                 }
-                Spacer(minLength: 6)
-                Image(systemName: "arrow.up.right").font(.system(size: 20, weight: .medium))
-                    .padding(.top, 3)
+                Spacer(minLength: 8)
+                Signpost().frame(width: 46, height: 52)
             }
+            RoadRule().padding(.vertical, 2)
             primary("Let's hop", symbol: "arrow.up") { store.start() }
                 .accessibilityIdentifier("startGame")
             HStack {
@@ -130,96 +159,121 @@ struct CrossroadsView: View {
                     Label("How to play", systemImage: "questionmark.circle")
                 }
             }
-            .font(.system(size: 12, weight: .bold, design: .rounded))
+            .font(.system(size: 12.5, weight: .bold, design: .rounded))
             .buttonStyle(SoftPress())
             .frame(minHeight: 36)
         }
-        .padding(21)
-        .background(Palette.cream, in: RoundedRectangle(cornerRadius: 29))
-        .overlay(RoundedRectangle(cornerRadius: 29).stroke(.white.opacity(0.7), lineWidth: 1))
-        .shadow(color: Palette.ink.opacity(0.10), radius: 20, x: 0, y: 9)
+        .padding(22)
+        .background(Palette.paper, in: RoundedRectangle(cornerRadius: 32, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 32, style: .continuous).stroke(Palette.hairline, lineWidth: 1))
+        .shadow(color: Palette.ink.opacity(0.13), radius: 24, x: 0, y: 12)
     }
 
+    // MARK: Gameplay
+
     private var gameHeader: some View {
-        HStack(alignment: .center) {
-            VStack(alignment: .leading, spacing: 5) {
-                Text("COINS").font(.system(size: 11, weight: .heavy)).tracking(1)
-                Label("\(store.runCoins)", systemImage: "circle.inset.filled")
-                    .font(.system(size: 18, weight: .black, design: .rounded))
+        HStack(alignment: .top) {
+            chip {
+                Image(systemName: "circle.inset.filled").font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(Palette.honey)
+                Text("\(store.runCoins)").font(.numeral(17)).contentTransition(.numericText())
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            VStack(spacing: -1) {
-                Text("\(store.score)").font(.system(size: 49, weight: .black, design: .rounded))
-                    .contentTransition(.numericText())
-                    .accessibilityIdentifier("scoreValue")
-                Text("HOPS").font(.system(size: 11, weight: .black)).tracking(2)
+            VStack(spacing: 8) {
+                ZStack {
+                    Circle().fill(Palette.paper)
+                    Circle().stroke(Palette.ink, lineWidth: 2.5).padding(4)
+                    VStack(spacing: -3) {
+                        Text("\(store.score)").font(.numeral(34)).tracking(-1)
+                            .minimumScaleFactor(0.6).lineLimit(1)
+                            .contentTransition(.numericText())
+                            .accessibilityIdentifier("scoreValue")
+                        Text("HOPS").font(.eyebrow(7.5)).tracking(1.8)
+                    }
+                    .padding(.horizontal, 10)
+                }
+                .frame(width: 84, height: 84)
+                .shadow(color: Palette.ink.opacity(0.14), radius: 10, y: 5)
+                .animation(reducedMotion ? nil : .snappy(duration: 0.25), value: store.score)
+                chip {
+                    Text("BEST \(store.best)").font(.eyebrow(9.5)).tracking(1.4)
+                }
             }
             .frame(maxWidth: .infinity)
-            VStack(spacing: 5) {
-                Button { store.pause() } label: {
-                    Image(systemName: "pause.fill")
-                        .font(.system(size: 16, weight: .bold))
-                        .frame(width: 44, height: 44)
-                        .background(Palette.mint.opacity(0.45), in: Circle())
-                }
-                .accessibilityLabel("Pause game").accessibilityIdentifier("pauseGame").buttonStyle(SoftPress())
-                Text("BEST \(store.best)").font(.system(size: 11, weight: .bold))
+            Button { store.pause() } label: {
+                Image(systemName: "pause.fill")
+                    .font(.system(size: 15, weight: .bold))
+                    .frame(width: 44, height: 44)
+                    .background(Palette.paper, in: Circle())
+                    .overlay(Circle().stroke(Palette.hairline, lineWidth: 1))
             }
+            .accessibilityLabel("Pause game").accessibilityIdentifier("pauseGame").buttonStyle(SoftPress())
             .frame(maxWidth: .infinity, alignment: .trailing)
         }
-        .padding(.horizontal, 17).padding(.vertical, 12)
-        .background(Palette.cream.opacity(0.97), in: RoundedRectangle(cornerRadius: 25))
+        .padding(.top, 2)
+    }
+
+    private func chip<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+        HStack(spacing: 6) { content() }
+            .padding(.horizontal, 13).frame(height: 34)
+            .background(Palette.paper.opacity(0.96), in: Capsule())
+            .overlay(Capsule().stroke(Palette.hairline, lineWidth: 1))
     }
 
     private var controls: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 12) {
             Text(store.score < 6 ? "TAP TO HOP · SWIPE TO STEER" : "TAKE YOUR TIME. FIND YOUR GAP.")
-                .font(.system(size: 9, weight: .heavy, design: .rounded)).tracking(1.2)
-                .padding(.vertical, 9).padding(.horizontal, 14)
-                .background(Palette.cream.opacity(0.93), in: Capsule())
-            HStack(spacing: 12) {
+                .font(.eyebrow(9)).tracking(1.6)
+                .padding(.vertical, 8).padding(.horizontal, 13)
+                .background(Palette.paper.opacity(0.92), in: Capsule())
+            HStack(spacing: 14) {
                 arrow("arrow.left", label: "Hop left", id: "hopLeft", direction: .left)
                 Button { store.move(.forward) } label: {
-                    HStack(spacing: 13) {
-                        Text("HOP").font(.system(size: 16, weight: .black, design: .rounded)).tracking(2)
-                        Image(systemName: "arrow.up").font(.system(size: 21, weight: .bold))
+                    HStack(spacing: 12) {
+                        Text("HOP").font(.numeral(17)).tracking(2.4)
+                        Image(systemName: "arrow.up").font(.system(size: 20, weight: .bold))
                     }
-                    .frame(width: 136, height: 58)
-                    .background(Palette.yellow, in: RoundedRectangle(cornerRadius: 22))
-                    .overlay(RoundedRectangle(cornerRadius: 22).stroke(.white.opacity(0.65), lineWidth: 1))
+                    .frame(width: 148, height: 60)
                 }
-                .accessibilityLabel("Hop forward").accessibilityIdentifier("hopForward").buttonStyle(SoftPress())
+                .buttonStyle(ToyPress(fill: Palette.yellow, shade: Palette.honey, radius: 30))
+                .accessibilityLabel("Hop forward").accessibilityIdentifier("hopForward")
                 arrow("arrow.right", label: "Hop right", id: "hopRight", direction: .right)
             }
             Button { store.move(.backward) } label: {
                 Label("Step back", systemImage: "arrow.down")
-                    .font(.system(size: 11, weight: .bold))
-                    .frame(width: 115, height: 40)
-                    .background(Palette.cream.opacity(0.9), in: Capsule())
+                    .font(.system(size: 11.5, weight: .bold, design: .rounded))
+                    .frame(width: 118, height: 38)
             }
-            .accessibilityIdentifier("hopBackward").buttonStyle(SoftPress())
+            .buttonStyle(ToyPress(fill: Palette.paper, shade: Palette.shade, radius: 19, depth: 3))
+            .accessibilityIdentifier("hopBackward")
         }
-        .padding(.bottom, 1)
+        .padding(.bottom, 4)
     }
 
     private func arrow(_ symbol: String, label: String, id: String, direction: Direction) -> some View {
         Button { store.move(direction) } label: {
             Image(systemName: symbol).font(.system(size: 20, weight: .bold))
-                .frame(width: 54, height: 54)
-                .background(Palette.cream, in: RoundedRectangle(cornerRadius: 20))
+                .frame(width: 58, height: 58)
         }
-        .accessibilityLabel(label).accessibilityIdentifier(id).buttonStyle(SoftPress())
+        .buttonStyle(ToyPress(fill: Palette.paper, shade: Palette.shade, radius: 29))
+        .accessibilityLabel(label).accessibilityIdentifier(id)
     }
+
+    // MARK: Overlays
 
     private var pauseCard: some View {
         modal {
-            VStack(spacing: 19) {
-                Image(systemName: "leaf.fill").font(.system(size: 35)).foregroundStyle(Palette.mint)
-                VStack(spacing: 6) {
-                    Text("A little breather.").font(.system(size: 28, weight: .bold, design: .rounded))
-                    Text("Your adventure will wait right here.")
-                        .font(.system(size: 13, weight: .medium))
+            VStack(spacing: 18) {
+                ZStack {
+                    Circle().fill(Palette.mint.opacity(0.55)).frame(width: 66, height: 66)
+                    Image(systemName: "leaf.fill").font(.system(size: 28))
                 }
+                VStack(spacing: 6) {
+                    Text("A little breather.").font(.display(30))
+                    Text("Your adventure will wait right here.")
+                        .font(.system(size: 13, weight: .medium)).foregroundStyle(Palette.ink.opacity(0.7))
+                }
+                RoadRule()
                 primary("Keep hopping", symbol: "play.fill") { store.resume() }
                     .accessibilityIdentifier("resumeGame")
                 HStack {
@@ -228,40 +282,40 @@ struct CrossroadsView: View {
                     Button("How to play") { store.showGuide = true }
                     Spacer()
                     Button("End run") { store.game.endRun() }
-                }.font(.system(size: 12, weight: .bold))
+                }.font(.system(size: 12.5, weight: .bold, design: .rounded))
             }
         }
     }
 
     private var resultCard: some View {
         modal {
-            VStack(spacing: 17) {
-                HStack {
+            VStack(spacing: 16) {
+                HStack(spacing: 8) {
+                    Circle().fill(Palette.coral).frame(width: 6, height: 6)
                     Text(store.newBest ? "A NEW PERSONAL BEST" : "UNTIL THE NEXT ADVENTURE")
-                        .font(.system(size: 9, weight: .black)).tracking(1.5)
+                        .font(.eyebrow(9)).tracking(2).foregroundStyle(Palette.ink.opacity(0.7))
                     Spacer()
                     Image(systemName: store.newBest ? "sparkles" : "sun.max.fill")
-                        .foregroundStyle(Palette.coral)
+                        .font(.system(size: 15)).foregroundStyle(Palette.coral)
                 }
                 VStack(spacing: 0) {
-                    Text(store.reason).font(.system(size: 23, weight: .bold, design: .rounded))
-                        .minimumScaleFactor(0.7).lineLimit(1)
-                    Text("\(store.score)").font(.system(size: 88, weight: .black, design: .rounded))
-                        .tracking(-4).accessibilityIdentifier("resultScore")
-                    Text("HOPS INTO THE COUNTRYSIDE")
-                        .font(.system(size: 9, weight: .heavy)).tracking(1.2)
+                    Text(store.reason).font(.display(24)).minimumScaleFactor(0.7).lineLimit(1)
+                    Text("\(store.score)").font(.numeral(94)).tracking(-5)
+                        .accessibilityIdentifier("resultScore")
+                        .padding(.top, -6)
+                    Text("HOPS INTO THE COUNTRYSIDE").font(.eyebrow(9)).tracking(1.8)
+                        .foregroundStyle(Palette.ink.opacity(0.7)).padding(.top, -6)
                 }
+                RoadRule()
                 HStack(spacing: 0) {
                     resultStat("PERSONAL BEST", value: "\(store.best)", symbol: "flag.checkered")
-                    Rectangle().fill(Palette.ink.opacity(0.1)).frame(width: 1, height: 35)
+                    Rectangle().fill(Palette.ink.opacity(0.12)).frame(width: 1, height: 36)
                     resultStat("COINS FOUND", value: "+\(store.runCoins)", symbol: "circle.inset.filled")
                 }
-                .padding(.vertical, 13)
-                .background(Palette.mint.opacity(0.24), in: RoundedRectangle(cornerRadius: 18))
                 if !store.unlockedNames.isEmpty {
                     Text("\(store.unlockedNames.joined(separator: " & ")) joined your flock!")
-                        .font(.system(size: 12, weight: .bold)).multilineTextAlignment(.center)
-                        .foregroundStyle(Palette.ink)
+                        .font(.system(size: 12.5, weight: .bold, design: .rounded)).multilineTextAlignment(.center)
+                        .foregroundStyle(Palette.coral)
                 }
                 primary("One more hop", symbol: "arrow.clockwise") { store.start() }
                     .accessibilityIdentifier("retryGame")
@@ -276,34 +330,35 @@ struct CrossroadsView: View {
                     Spacer()
                     Button { store.showWardrobe = true } label: { Label("Flock", systemImage: "square.grid.2x2") }
                 }
-                .font(.system(size: 12, weight: .bold)).frame(minHeight: 40)
+                .font(.system(size: 12.5, weight: .bold, design: .rounded)).frame(minHeight: 40)
             }
         }
     }
 
     private func resultStat(_ title: String, value: String, symbol: String) -> some View {
-        VStack(spacing: 5) {
-            Label(value, systemImage: symbol).font(.system(size: 21, weight: .black, design: .rounded))
-            Text(title).font(.system(size: 8, weight: .heavy)).tracking(0.7)
+        VStack(spacing: 4) {
+            Label(value, systemImage: symbol).font(.numeral(22))
+            Text(title).font(.eyebrow(8)).tracking(1.2).foregroundStyle(Palette.ink.opacity(0.62))
         }
         .frame(maxWidth: .infinity)
     }
 
     private func modal<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         ZStack {
-            Palette.ink.opacity(0.22).ignoresSafeArea()
+            Palette.ink.opacity(0.26).ignoresSafeArea()
             content()
-                .padding(25)
-                .background(Palette.cream, in: RoundedRectangle(cornerRadius: 31))
-                .shadow(color: Palette.ink.opacity(0.17), radius: 30, y: 16)
-                .padding(.horizontal, 25)
+                .padding(26)
+                .background(Palette.paper, in: RoundedRectangle(cornerRadius: 34, style: .continuous))
+                .overlay(RoundedRectangle(cornerRadius: 34, style: .continuous).stroke(Palette.hairline, lineWidth: 1))
+                .shadow(color: Palette.ink.opacity(0.22), radius: 34, y: 18)
+                .padding(.horizontal, 24)
         }
     }
 
     private var soundButton: some View {
         Button { store.sound.toggle() } label: {
             Image(systemName: store.sound ? "speaker.wave.2" : "speaker.slash")
-                .font(.system(size: 16, weight: .semibold)).frame(width: 44, height: 44)
+                .font(.system(size: 15, weight: .semibold)).frame(width: 44, height: 44)
         }
         .accessibilityLabel(store.sound ? "Mute sound" : "Enable sound").buttonStyle(SoftPress())
     }
@@ -314,57 +369,69 @@ struct CrossroadsView: View {
                 Spacer()
                 Text(title).font(.system(size: 17, weight: .heavy, design: .rounded))
                 Spacer()
-                Image(systemName: symbol).font(.system(size: 19, weight: .bold))
+                Image(systemName: symbol).font(.system(size: 18, weight: .bold))
             }
-            .padding(.horizontal, 19).frame(height: 56)
-            .background(Palette.yellow, in: RoundedRectangle(cornerRadius: 18))
+            .padding(.horizontal, 20).frame(height: 58)
         }
-        .buttonStyle(SoftPress())
+        .buttonStyle(ToyPress(fill: Palette.yellow, shade: Palette.honey, radius: 29))
     }
+
+    // MARK: Sheets
 
     private var wardrobe: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading, spacing: 19) {
-                    Text("Good company.\nGreat plumage.")
-                        .font(.system(size: 33, weight: .bold, design: .rounded)).tracking(-1)
+                VStack(alignment: .leading, spacing: 18) {
+                    Text("MEET THE FLOCK").font(.eyebrow(9.5)).tracking(2.2)
+                        .foregroundStyle(Palette.ink.opacity(0.62))
+                    Text("Good company.\nGreat plumage.").font(.display(34)).padding(.top, -8)
                     Text("Collect coins or reach a personal best to welcome new friends. Coins are never spent.")
                         .font(.system(size: 14)).foregroundStyle(Palette.ink.opacity(0.7))
+                    RoadRule()
                     HStack {
                         Label("\(store.bank) lifetime coins", systemImage: "circle.inset.filled")
                         Spacer()
                         Label("\(store.best) best", systemImage: "flag.checkered")
-                    }.font(.system(size: 12, weight: .bold))
-                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 13) {
+                    }.font(.system(size: 12.5, weight: .bold, design: .rounded))
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 14) {
                         ForEach(Plumage.allCases) { duck in
                             let unlocked = duck.unlocked(coins: store.bank, best: store.best)
+                            let tint = Color(uiColor: ToyColor.duck(duck))
                             Button {
                                 if unlocked {
                                     store.selected = duck
                                 }
                             } label: {
                                 VStack(spacing: 10) {
-                                    DuckPortrait(color: Color(uiColor: ToyColor.duck(duck)))
-                                        .frame(width: 78, height: 82).padding(.top, 4)
+                                    ZStack {
+                                        Circle().fill(tint.opacity(unlocked ? 0.28 : 0.12)).frame(width: 96, height: 96)
+                                        DuckPortrait(color: tint).frame(width: 78, height: 82)
+                                            .saturation(unlocked ? 1 : 0.15).opacity(unlocked ? 1 : 0.55)
+                                    }
                                     Text(duck.name).font(.system(size: 16, weight: .bold, design: .rounded))
                                     if unlocked {
                                         Label(
                                             store.selected == duck ? "Your companion" : "Choose",
                                             systemImage: store.selected == duck ? "checkmark.circle.fill" : "circle"
                                         )
-                                        .font(.system(size: 10, weight: .bold))
+                                        .font(.system(size: 10.5, weight: .bold, design: .rounded))
                                     } else {
                                         Text("\(duck.price) coins or \(duck.milestone) hops")
-                                            .font(.system(size: 10, weight: .semibold))
+                                            .font(.system(size: 10.5, weight: .semibold))
+                                            .foregroundStyle(Palette.ink.opacity(0.7))
                                     }
                                 }
-                                .frame(maxWidth: .infinity).padding(.vertical, 15)
+                                .frame(maxWidth: .infinity).padding(.vertical, 16)
                                 .background(
-                                    unlocked ? .white.opacity(0.7) : Palette.mint.opacity(0.27),
-                                    in: RoundedRectangle(cornerRadius: 23)
+                                    unlocked ? .white.opacity(0.75) : Palette.ink.opacity(0.03),
+                                    in: RoundedRectangle(cornerRadius: 26, style: .continuous)
                                 )
-                                .overlay(RoundedRectangle(cornerRadius: 23).stroke(
-                                    store.selected == duck ? Palette.ink : .clear, lineWidth: 2
+                                .overlay(RoundedRectangle(cornerRadius: 26, style: .continuous).strokeBorder(
+                                    store.selected == duck ? Palette.ink : Palette.ink.opacity(unlocked ? 0.08 : 0.28),
+                                    style: StrokeStyle(
+                                        lineWidth: store.selected == duck ? 2 : 1,
+                                        dash: unlocked ? [] : [6, 5]
+                                    )
                                 ))
                             }
                             .disabled(!unlocked).buttonStyle(SoftPress())
@@ -383,31 +450,29 @@ struct CrossroadsView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    Text("One hop at a time.")
-                        .font(.system(size: 31, weight: .bold, design: .rounded)).tracking(-1)
+                    Text("HOW TO PLAY").font(.eyebrow(9.5)).tracking(2.2)
+                        .foregroundStyle(Palette.ink.opacity(0.62))
+                    Text("One hop at a time.").font(.display(34)).padding(.top, -14)
+                    RoadRule()
                     instruction(
                         "01",
                         title: "Follow your beak.",
-                        text: "Tap the countryside or HOP to move forward. Swipe or use the arrows to step left, right or back.",
-                        icon: "hand.tap"
+                        text: "Tap the countryside or HOP to move forward. Swipe or use the arrows to step left, right or back."
                     )
                     instruction(
                         "02",
                         title: "Find a little opening.",
-                        text: "Cars never stop. Wait on a grassy verge, then hop through a clear gap. There is no timer rushing you.",
-                        icon: "car.side"
+                        text: "Cars never stop. Wait on a grassy verge, then hop through a clear gap. There is no timer rushing you."
                     )
                     instruction(
                         "03",
                         title: "Go with the flow.",
-                        text: "Land on a floating log to cross water. It carries you sideways, so hop off before it reaches the edge.",
-                        icon: "water.waves"
+                        text: "Land on a floating log to cross water. It carries you sideways, so hop off before it reaches the edge."
                     )
                     instruction(
                         "04",
                         title: "Grow your flock.",
-                        text: "Your farthest row is your score. Golden coins and personal bests unlock three new companions, saved on this device.",
-                        icon: "sparkles"
+                        text: "Your farthest row is your score. Golden coins and personal bests unlock three new companions, saved on this device."
                     )
                     primary("Got it", symbol: "checkmark") { store.showGuide = false }
                 }.padding(26)
@@ -418,15 +483,47 @@ struct CrossroadsView: View {
         .tint(Palette.ink)
     }
 
-    private func instruction(_ number: String, title: String, text: String, icon: String) -> some View {
+    private func instruction(_ number: String, title: String, text: String) -> some View {
         HStack(alignment: .top, spacing: 16) {
-            Image(systemName: icon).font(.system(size: 23, weight: .medium))
-                .frame(width: 49, height: 49).background(Palette.mint, in: RoundedRectangle(cornerRadius: 16))
-            VStack(alignment: .leading, spacing: 8) {
-                Text("\(number) / \(title)").font(.system(size: 16, weight: .bold, design: .rounded))
+            ZStack {
+                Circle().fill(Palette.paper)
+                Circle().stroke(Palette.ink, lineWidth: 2).padding(3)
+                Text(number).font(.numeral(15))
+            }
+            .frame(width: 48, height: 48)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(title).font(.display(19))
                 Text(text).font(.system(size: 14)).foregroundStyle(Palette.ink.opacity(0.75)).lineSpacing(4)
             }
         }
+    }
+}
+
+// MARK: Design elements
+
+private struct RoadRule: View {
+    var body: some View {
+        HStack(spacing: 10) {
+            Rectangle().fill(Palette.ink.opacity(0.22)).frame(height: 1)
+            Circle().fill(Palette.coral).frame(width: 6, height: 6)
+            Rectangle().fill(Palette.ink.opacity(0.22)).frame(height: 1)
+        }
+        .frame(height: 6)
+        .accessibilityHidden(true)
+    }
+}
+
+private struct Signpost: View {
+    var body: some View {
+        ZStack(alignment: .top) {
+            RoundedRectangle(cornerRadius: 2).fill(Palette.ink.opacity(0.35)).frame(width: 4).padding(.top, 8)
+            VStack(spacing: 5) {
+                RoundedRectangle(cornerRadius: 5).fill(Palette.coral).frame(height: 14)
+                RoundedRectangle(cornerRadius: 5).fill(Palette.mint).frame(height: 14).padding(.leading, 10)
+            }
+            .padding(.top, 3)
+        }
+        .accessibilityHidden(true)
     }
 }
 
@@ -435,11 +532,12 @@ private struct DuckPortrait: View {
     var body: some View {
         ZStack {
             Ellipse().fill(Palette.ink.opacity(0.10)).frame(width: 71, height: 16).offset(y: 32)
-            RoundedRectangle(cornerRadius: 12).fill(color).frame(width: 56, height: 40).offset(y: 11)
-            RoundedRectangle(cornerRadius: 11).fill(color).frame(width: 43, height: 39).offset(x: 7, y: -14)
+            RoundedRectangle(cornerRadius: 14).fill(color).frame(width: 56, height: 40).offset(y: 11)
+            RoundedRectangle(cornerRadius: 12).fill(color).frame(width: 43, height: 39).offset(x: 7, y: -14)
             RoundedRectangle(cornerRadius: 4).fill(Palette.coral).frame(width: 24, height: 11).offset(x: 30, y: -7)
-            Circle().fill(Palette.ink).frame(width: 5, height: 5).offset(x: 17, y: -19)
-            RoundedRectangle(cornerRadius: 6).fill(.white.opacity(0.22)).frame(width: 26, height: 19).offset(
+            Circle().fill(Palette.ink).frame(width: 5.5, height: 5.5).offset(x: 17, y: -19)
+            Circle().fill(.white).frame(width: 2, height: 2).offset(x: 18.5, y: -20.5)
+            RoundedRectangle(cornerRadius: 6).fill(.white.opacity(0.24)).frame(width: 26, height: 19).offset(
                 x: -10,
                 y: 8
             )
@@ -460,6 +558,27 @@ private struct SoftPress: ButtonStyle {
     }
 }
 
+private struct ToyPress: ButtonStyle {
+    let fill: Color
+    let shade: Color
+    let radius: CGFloat
+    var depth: CGFloat = 5
+    @Environment(\.accessibilityReduceMotion) private var reducedMotion
+
+    func makeBody(configuration: Configuration) -> some View {
+        let shape = RoundedRectangle(cornerRadius: radius, style: .continuous)
+        let travel = configuration.isPressed ? depth - 1 : 0
+        return configuration.label
+            .foregroundStyle(Palette.ink)
+            .background(fill, in: shape)
+            .overlay(shape.stroke(.white.opacity(0.45), lineWidth: 1))
+            .offset(y: travel)
+            .background(shape.fill(shade).offset(y: depth))
+            .padding(.bottom, depth)
+            .animation(reducedMotion ? nil : .easeOut(duration: 0.08), value: configuration.isPressed)
+    }
+}
+
 private struct NativeWorld: UIViewRepresentable {
     let store: GameStore
     func makeCoordinator() -> Coordinator {
@@ -473,7 +592,7 @@ private struct NativeWorld: UIViewRepresentable {
         view.antialiasingMode = .multisampling4X
         view.preferredFramesPerSecond = 60
         view.isPlaying = true
-        view.backgroundColor = ToyColor.mint
+        view.backgroundColor = ToyColor.haze
         view.addGestureRecognizer(UITapGestureRecognizer(
             target: context.coordinator,
             action: #selector(Coordinator.tap)

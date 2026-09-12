@@ -8,6 +8,31 @@ enum ToyColor {
     static let coral = UIColor(red: 0.94, green: 0.39, blue: 0.31, alpha: 1)
     static let cream = UIColor(red: 1, green: 0.97, blue: 0.88, alpha: 1)
     static let water = UIColor(red: 0.28, green: 0.67, blue: 0.68, alpha: 1)
+    static let haze = UIColor(red: 0.90, green: 0.95, blue: 0.90, alpha: 1)
+    static let meadowLight = UIColor(red: 0.74, green: 0.89, blue: 0.75, alpha: 1)
+    static let meadowDeep = UIColor(red: 0.63, green: 0.83, blue: 0.66, alpha: 1)
+    static let asphalt = UIColor(red: 0.33, green: 0.41, blue: 0.43, alpha: 1)
+    static let curb = UIColor(red: 0.86, green: 0.87, blue: 0.80, alpha: 1)
+    static let sand = UIColor(red: 0.93, green: 0.87, blue: 0.70, alpha: 1)
+    static let bark = UIColor(red: 0.58, green: 0.37, blue: 0.25, alpha: 1)
+    static let barkLight = UIColor(red: 0.85, green: 0.66, blue: 0.43, alpha: 1)
+    static let leafDeep = UIColor(red: 0.22, green: 0.52, blue: 0.40, alpha: 1)
+    static let leafMid = UIColor(red: 0.31, green: 0.62, blue: 0.45, alpha: 1)
+    static let leafLight = UIColor(red: 0.45, green: 0.73, blue: 0.51, alpha: 1)
+    static let sky = UIColor(red: 0.45, green: 0.70, blue: 0.82, alpha: 1)
+    static let blossom = UIColor(red: 0.98, green: 0.72, blue: 0.75, alpha: 1)
+    static let stone = UIColor(red: 0.78, green: 0.80, blue: 0.76, alpha: 1)
+
+    static func lighten(_ color: UIColor) -> UIColor {
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 1
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return UIColor(
+            red: red + (1 - red) * 0.3,
+            green: green + (1 - green) * 0.3,
+            blue: blue + (1 - blue) * 0.3,
+            alpha: 1
+        )
+    }
 
     static func duck(_ plumage: Plumage) -> UIColor {
         [yellow, UIColor(red: 0.46, green: 0.80, blue: 0.67, alpha: 1),
@@ -30,14 +55,18 @@ final class ToyWorld {
     private var lastPlumage: Plumage?
     private var lastDirection: Direction = .forward
     private var impactProgress = 0.0
+    private var facing: Float = 0
+    private var wasAirborne = false
+    private var landingSquash = 0.0
+    private var ripples: [(node: SCNNode, x: Float)] = []
     private let contactShadow = SCNNode()
     private let impactRing = SCNNode()
 
     init() {
-        scene.background.contents = ToyColor.mint
-        scene.fogColor = ToyColor.mint
-        scene.fogStartDistance = 27
-        scene.fogEndDistance = 44
+        scene.background.contents = ToyColor.haze
+        scene.fogColor = ToyColor.haze
+        scene.fogStartDistance = 24
+        scene.fogEndDistance = 42
         camera.camera = SCNCamera()
         camera.camera?.usesOrthographicProjection = true
         camera.camera?.orthographicScale = 7.2
@@ -47,18 +76,19 @@ final class ToyWorld {
         let ambient = SCNNode()
         ambient.light = SCNLight()
         ambient.light?.type = .ambient
-        ambient.light?.intensity = 600
-        ambient.light?.color = UIColor(red: 0.93, green: 0.97, blue: 1, alpha: 1)
+        ambient.light?.intensity = 560
+        ambient.light?.color = UIColor(red: 0.88, green: 0.95, blue: 1, alpha: 1)
         scene.rootNode.addChildNode(ambient)
         let sun = SCNNode()
         sun.light = SCNLight()
         sun.light?.type = .directional
-        sun.light?.intensity = 850
+        sun.light?.intensity = 900
+        sun.light?.color = UIColor(red: 1, green: 0.97, blue: 0.90, alpha: 1)
         sun.light?.castsShadow = true
         sun.light?.shadowMode = .deferred
-        sun.light?.shadowRadius = 5
+        sun.light?.shadowRadius = 6
         sun.light?.shadowSampleCount = 16
-        sun.light?.shadowColor = UIColor(white: 0.12, alpha: 0.16)
+        sun.light?.shadowColor = UIColor(red: 0.10, green: 0.25, blue: 0.30, alpha: 0.18)
         sun.light?.orthographicScale = 20
         sun.light?.shadowMapSize = CGSize(width: 2048, height: 2048)
         sun.eulerAngles = SCNVector3(-Float.pi / 3, -Float.pi / 4, 0)
@@ -102,6 +132,7 @@ final class ToyWorld {
             laneNodes.removeAll()
             movingNodes.removeAll()
             coins.removeAll()
+            ripples.removeAll()
             lastSeed = game.course.seed
             cameraRow = 1.5
             cameraX = game.state == .ready ? 0 : -0.8
@@ -123,12 +154,24 @@ final class ToyWorld {
             laneNodes.removeValue(forKey: row)?.removeFromParentNode()
             movingNodes.removeValue(forKey: row)
             coins.removeValue(forKey: row)
+            ripples.removeAll { $0.node.parent == nil }
         }
         let time = game.time
         for (row, nodes) in movingNodes {
             let lane = game.course.lane(row)
             for (node, x) in zip(nodes, lane.centers(at: time)) {
                 node.position.x = Float(x)
+                if lane.kind == .river, !reducedMotion {
+                    node.eulerAngles.x = Float(sin(time * 1.6 + x)) * 0.035
+                    node.position.y = Float(sin(time * 2.1 + x * 0.7)) * 0.012
+                }
+            }
+        }
+        if !reducedMotion {
+            for (index, ripple) in ripples.enumerated() {
+                let drift = Float(sin(time * 0.9 + Double(index) * 1.3))
+                ripple.node.position.x = ripple.x + drift * 0.16
+                ripple.node.opacity = CGFloat(0.55 + Double(drift) * 0.35)
             }
         }
         for (row, node) in coins {
@@ -142,14 +185,40 @@ final class ToyWorld {
         cameraX += (targetX - cameraX) * min(1, delta * 9)
         camera.position = SCNVector3(Float(6.8 + cameraX), 12.5, Float(10 - cameraRow))
         camera.look(at: SCNVector3(Float(cameraX), 0, Float(-cameraRow)))
-        duck.position = SCNVector3(Float(game.visibleX), Float(game.height + 0.10), Float(-game.visibleRow))
+        let airborne = game.hop != nil
+        if wasAirborne, !airborne {
+            landingSquash = 1
+        }
+        wasAirborne = airborne
+        landingSquash = max(0, landingSquash - delta / 0.18)
+        let idle = game.state == .playing || game.state == .ready ? sin(time * 4.2) * 0.012 : 0
+        duck.position = SCNVector3(
+            Float(game.visibleX),
+            Float(game.height + 0.10 + (reducedMotion ? 0 : idle)),
+            Float(-game.visibleRow)
+        )
+        let stretch = reducedMotion ? 0 : game.height / 0.48 * 0.14 - landingSquash * 0.16
+        duck.scale = SCNVector3(
+            1.13 * Float(1 - stretch * 0.5),
+            1.13 * Float(1 + stretch),
+            1.13 * Float(1 - stretch * 0.5)
+        )
         let angle: Float = switch lastDirection {
         case .forward: 0
         case .backward: .pi
         case .left: .pi / 2
         case .right: -.pi / 2
         }
-        duck.eulerAngles.y = game.state == .ready ? .pi * 0.86 : angle
+        let wanted = game.state == .ready ? Float.pi * 0.86 : angle
+        var gap = (wanted - facing).truncatingRemainder(dividingBy: 2 * .pi)
+        if gap > .pi {
+            gap -= 2 * .pi
+        }
+        if gap < -.pi {
+            gap += 2 * .pi
+        }
+        facing += reducedMotion ? gap : gap * Float(min(1, delta * 16))
+        duck.eulerAngles.y = facing
         let onWater = game.course.lane(game.row).kind == .river
         contactShadow.position = SCNVector3(Float(game.visibleX), onWater ? 0.235 : 0.005, Float(-game.visibleRow))
         impactRing.isHidden = game.state != .finished || game.endReason == "A well-earned rest"
@@ -208,14 +277,23 @@ final class ToyWorld {
         laneNodes[lane.row] = root
         switch lane.kind {
         case .meadow:
-            let green = lane.row % 2 == 0 ? ToyColor.mint : UIColor(red: 0.62, green: 0.81, blue: 0.64, alpha: 1)
+            var random = SeededRandom(seed: UInt64(bitPattern: Int64(lane.row)) &* 2_654_435_761)
+            let green = lane.row % 2 == 0 ? ToyColor.meadowLight : ToyColor.meadowDeep
             box(root, 18, 0.30, 1, green, 0, -0.18)
             for column in [-5, -4, 4, 5] {
-                if (lane.row + column) % 3 == 0 {
-                    tree(root, x: Float(column), z: 0.05)
-                } else {
-                    flowers(root, x: Float(column), z: Float(lane.row % 3) * 0.12 - 0.15)
+                switch (lane.row + column) % 4 {
+                case 0: tree(root, x: Float(column), z: 0.05, variant: random.value(3))
+                case 2: bush(root, x: Float(column), z: Float(random.value(3)) * 0.12 - 0.15)
+                default: flowers(root, x: Float(column), z: Float(lane.row % 3) * 0.12 - 0.15)
                 }
+            }
+            for _ in 0 ..< 3 {
+                let x = Float(random.value(64)) / 10 - 3.2
+                let z = Float(random.value(6)) / 10 - 0.3
+                tuft(root, x: x, z: z)
+            }
+            if random.value(4) == 0 {
+                pebble(root, x: Float(random.value(60)) / 10 - 3, z: Float(random.value(5)) / 10 - 0.25)
             }
             if lane.row % 5 == 0 {
                 for x in [-3.8, 3.8] {
@@ -227,9 +305,17 @@ final class ToyWorld {
                 }
             }
         case .road:
-            box(root, 18, 0.24, 1, UIColor(red: 0.34, green: 0.43, blue: 0.43, alpha: 1), 0, -0.18)
+            box(root, 18, 0.24, 1, ToyColor.asphalt, 0, -0.18)
+            for z: Float in [-0.47, 0.47] {
+                box(root, 18, 0.05, 0.07, ToyColor.curb, 0, -0.05, z, bevel: 0.01)
+            }
             for x in -9 ... 9 {
-                box(root, 0.30, 0.008, 0.045, UIColor(white: 0.84, alpha: 1), Float(x), -0.049, 0.38, bevel: 0)
+                box(root, 0.30, 0.008, 0.045, UIColor(white: 0.86, alpha: 1), Float(x), -0.055, 0.38, bevel: 0)
+            }
+            if lane.row % 7 == 3 {
+                for x in -9 ... 9 {
+                    box(root, 0.55, 0.008, 0.8, UIColor(white: 0.88, alpha: 0.85), Float(x) + 0.5, -0.056, 0, bevel: 0)
+                }
             }
             movingNodes[lane.row] = lane.centers(at: 0).enumerated().map { index, _ in
                 let car = makeCar(index: index + lane.row)
@@ -238,9 +324,13 @@ final class ToyWorld {
                 return car
             }
         case .river:
+            var random = SeededRandom(seed: UInt64(bitPattern: Int64(lane.row)) &* 40503)
             box(root, 18, 0.20, 1, ToyColor.water, 0, -0.24)
+            for z: Float in [-0.49, 0.49] {
+                box(root, 18, 0.10, 0.10, ToyColor.sand, 0, -0.12, z, bevel: 0.02)
+            }
             for index in -12 ... 12 {
-                box(
+                let ripple = box(
                     root,
                     0.42,
                     0.008,
@@ -251,6 +341,18 @@ final class ToyWorld {
                     Float(index % 3) * 0.21,
                     bevel: 0
                 )
+                ripples.append((ripple, Float(index) * 0.71))
+            }
+            for _ in 0 ..< 3 {
+                let x = Float(random.value(70)) / 10 - 3.5
+                let z = Float(random.value(5)) / 10 - 0.25
+                lilyPad(root, x: x, z: z, bloom: random.value(3) == 0)
+            }
+            for x: Float in [-4.2, 4.3] {
+                for offset: Float in [-0.1, 0.08, 0.2] {
+                    box(root, 0.03, 0.42, 0.03, ToyColor.leafDeep, x + offset, 0.06, offset * 0.8, bevel: 0.01)
+                    box(root, 0.05, 0.11, 0.05, ToyColor.bark, x + offset, 0.28, offset * 0.8, bevel: 0.02)
+                }
             }
             movingNodes[lane.row] = lane.centers(at: 0).map { _ in
                 let log = SCNNode()
@@ -280,20 +382,28 @@ final class ToyWorld {
                         0.015
                     )
                 }
+                for x in [-1.1, 0.5] {
+                    let band = cylinder(log, radius: 0.205, height: 0.05, color: UIColor(
+                        red: 0.48, green: 0.30, blue: 0.20, alpha: 1
+                    ), x: Float(x), y: 0.03)
+                    band.eulerAngles.z = .pi / 2
+                }
                 root.addChildNode(log)
                 return log
-            }
-            for x in [-4.5, 4.6] {
-                cylinder(root, radius: 0.22, height: 0.02, color: UIColor(
-                    red: 0.47, green: 0.72, blue: 0.46, alpha: 1
-                ), x: Float(x), y: -0.08, z: 0.2)
-                box(root, 0.10, 0.08, 0.1, ToyColor.cream, Float(x), -0.01, 0.2)
             }
         }
         if let column = lane.coinColumn {
             let coin = SCNNode()
             let disc = cylinder(coin, radius: 0.17, height: 0.07, color: ToyColor.yellow)
+            disc.geometry?.firstMaterial?.emission.contents = UIColor(red: 0.55, green: 0.38, blue: 0.05, alpha: 1)
+            disc.geometry?.firstMaterial?.roughness.contents = 0.45
+            disc.geometry?.firstMaterial?.metalness.contents = 0.35
             disc.eulerAngles.x = .pi / 2
+            let rim = SCNTorus(ringRadius: 0.17, pipeRadius: 0.028)
+            rim.materials = [material(UIColor(red: 0.96, green: 0.65, blue: 0.14, alpha: 1))]
+            let rimNode = SCNNode(geometry: rim)
+            rimNode.eulerAngles.x = .pi / 2
+            coin.addChildNode(rimNode)
             box(coin, 0.045, 0.15, 0.075, ToyColor.cream)
             coin.position = SCNVector3(Float(column), 0.46, 0)
             root.addChildNode(coin)
@@ -303,15 +413,38 @@ final class ToyWorld {
 
     private func makeCar(index: Int) -> SCNNode {
         let car = SCNNode()
-        let colors = [ToyColor.coral, ToyColor.cream, UIColor(red: 0.42, green: 0.68, blue: 0.80, alpha: 1)]
+        let colors = [
+            ToyColor.coral,
+            ToyColor.cream,
+            UIColor(red: 0.42, green: 0.68, blue: 0.80, alpha: 1),
+            ToyColor.yellow,
+            UIColor(red: 0.36, green: 0.44, blue: 0.62, alpha: 1),
+        ]
         let color = colors[abs(index) % colors.count]
-        box(car, 1.35, 0.27, 0.61, color, 0, 0.20, bevel: 0.07)
-        box(car, 0.66, 0.26, 0.51, color, -0.10, 0.44, bevel: 0.06)
+        let van = abs(index) % 4 == 3
         let glass = UIColor(red: 0.21, green: 0.40, blue: 0.43, alpha: 1)
-        box(car, 0.20, 0.18, 0.52, glass, 0.15, 0.45, bevel: 0.02)
-        box(car, 0.22, 0.16, 0.52, glass, -0.18, 0.45, bevel: 0.02)
-        box(car, 0.08, 0.07, 0.13, ToyColor.cream, 0.67, 0.22, -0.18)
-        box(car, 0.08, 0.07, 0.13, ToyColor.cream, 0.67, 0.22, 0.18)
+        if van {
+            box(car, 1.35, 0.30, 0.61, color, 0, 0.21, bevel: 0.07)
+            box(car, 1.05, 0.34, 0.56, color, -0.12, 0.50, bevel: 0.06)
+            box(car, 0.16, 0.20, 0.57, glass, 0.42, 0.52, bevel: 0.02)
+            box(car, 0.34, 0.16, 0.57, glass, -0.20, 0.53, bevel: 0.02)
+            box(car, 1.0, 0.03, 0.42, ToyColor.dark, -0.12, 0.69, bevel: 0.01)
+        } else {
+            box(car, 1.35, 0.27, 0.61, color, 0, 0.20, bevel: 0.07)
+            box(car, 0.66, 0.26, 0.51, color, -0.10, 0.44, bevel: 0.06)
+            box(car, 0.20, 0.18, 0.52, glass, 0.15, 0.45, bevel: 0.02)
+            box(car, 0.22, 0.16, 0.52, glass, -0.18, 0.45, bevel: 0.02)
+            box(car, 0.62, 0.03, 0.30, ToyColor.lighten(color), -0.10, 0.575, bevel: 0.01)
+        }
+        box(car, 1.30, 0.03, 0.62, UIColor(red: 0.20, green: 0.28, blue: 0.29, alpha: 1), 0, 0.075, bevel: 0.01)
+        box(car, 0.10, 0.05, 0.60, ToyColor.dark, 0.66, 0.16, bevel: 0.01)
+        box(car, 0.10, 0.05, 0.60, ToyColor.dark, -0.66, 0.16, bevel: 0.01)
+        for z: Float in [-0.18, 0.18] {
+            let lamp = box(car, 0.08, 0.07, 0.13, ToyColor.cream, 0.67, 0.24, z)
+            lamp.geometry?.firstMaterial?.emission.contents = UIColor(red: 0.6, green: 0.56, blue: 0.4, alpha: 1)
+            let tail = box(car, 0.05, 0.06, 0.12, ToyColor.coral, -0.67, 0.24, z)
+            tail.geometry?.firstMaterial?.emission.contents = UIColor(red: 0.45, green: 0.08, blue: 0.05, alpha: 1)
+        }
         for x: Float in [-0.43, 0.43] {
             for z: Float in [-0.31, 0.31] {
                 let tire = cylinder(car, radius: 0.14, height: 0.08, color: ToyColor.dark, x: x, y: 0.09, z: z)
@@ -323,30 +456,93 @@ final class ToyWorld {
         return car
     }
 
-    private func tree(_ parent: SCNNode, x: Float, z: Float) {
-        box(parent, 0.17, 0.57, 0.17, UIColor(red: 0.62, green: 0.44, blue: 0.29, alpha: 1), x, 0.22, z)
-        box(
-            parent,
-            0.82,
-            0.67,
-            0.75,
-            UIColor(red: 0.27, green: 0.56, blue: 0.42, alpha: 1),
-            x,
-            0.73,
-            z,
-            bevel: 0.12
-        )
-        box(
-            parent,
-            0.58,
-            0.44,
-            0.54,
-            UIColor(red: 0.40, green: 0.69, blue: 0.49, alpha: 1),
-            x - 0.07,
-            1.09,
-            z - 0.04,
-            bevel: 0.10
-        )
+    private func tree(_ parent: SCNNode, x: Float, z: Float, variant: Int) {
+        let trunk = UIColor(red: 0.62, green: 0.44, blue: 0.29, alpha: 1)
+        switch variant {
+        case 0:
+            box(parent, 0.17, 0.57, 0.17, trunk, x, 0.22, z)
+            box(parent, 0.82, 0.67, 0.75, ToyColor.leafDeep, x, 0.73, z, bevel: 0.12)
+            box(parent, 0.58, 0.44, 0.54, ToyColor.leafLight, x - 0.07, 1.09, z - 0.04, bevel: 0.10)
+        case 1:
+            box(parent, 0.15, 0.5, 0.15, trunk, x, 0.2, z)
+            sphere(parent, radius: 0.44, color: ToyColor.leafMid, x: x, y: 0.72, z: z)
+            sphere(parent, radius: 0.30, color: ToyColor.leafLight, x: x - 0.18, y: 0.98, z: z - 0.1)
+            sphere(parent, radius: 0.26, color: ToyColor.leafDeep, x: x + 0.24, y: 0.62, z: z + 0.18)
+        default:
+            box(parent, 0.14, 0.4, 0.14, trunk, x, 0.16, z)
+            cone(parent, bottom: 0.52, height: 0.62, color: ToyColor.leafDeep, x: x, y: 0.62, z: z)
+            cone(parent, bottom: 0.40, height: 0.52, color: ToyColor.leafMid, x: x, y: 1.0, z: z)
+            cone(parent, bottom: 0.26, height: 0.42, color: ToyColor.leafLight, x: x, y: 1.34, z: z)
+        }
+    }
+
+    private func bush(_ parent: SCNNode, x: Float, z: Float) {
+        sphere(parent, radius: 0.27, color: ToyColor.leafMid, x: x, y: 0.16, z: z)
+        sphere(parent, radius: 0.20, color: ToyColor.leafLight, x: x + 0.22, y: 0.12, z: z + 0.1)
+        sphere(parent, radius: 0.17, color: ToyColor.leafDeep, x: x - 0.22, y: 0.1, z: z - 0.08)
+        for offset: Float in [-0.1, 0.12] {
+            sphere(parent, radius: 0.045, color: ToyColor.blossom, x: x + offset, y: 0.38, z: z + offset * 0.5)
+        }
+    }
+
+    private func tuft(_ parent: SCNNode, x: Float, z: Float) {
+        for offset: Float in [-0.05, 0, 0.05] {
+            box(
+                parent,
+                0.035,
+                0.07 + CGFloat(abs(offset)),
+                0.035,
+                ToyColor.leafLight,
+                x + offset,
+                0.02,
+                z + offset * 0.4,
+                bevel: 0.01
+            )
+        }
+    }
+
+    private func pebble(_ parent: SCNNode, x: Float, z: Float) {
+        let node = sphere(parent, radius: 0.13, color: ToyColor.stone, x: x, y: -0.04, z: z)
+        node.scale = SCNVector3(1.2, 0.7, 1)
+    }
+
+    private func lilyPad(_ parent: SCNNode, x: Float, z: Float, bloom: Bool) {
+        cylinder(parent, radius: 0.24, height: 0.03, color: UIColor(
+            red: 0.47, green: 0.74, blue: 0.48, alpha: 1
+        ), x: x, y: -0.125, z: z)
+        box(parent, 0.05, 0.036, 0.16, ToyColor.water, x + 0.1, -0.125, z - 0.14, bevel: 0)
+        if bloom {
+            sphere(parent, radius: 0.07, color: ToyColor.blossom, x: x - 0.05, y: -0.06, z: z + 0.04)
+            sphere(parent, radius: 0.035, color: ToyColor.yellow, x: x - 0.05, y: -0.01, z: z + 0.04)
+        }
+    }
+
+    @discardableResult
+    private func sphere(_ parent: SCNNode, radius: CGFloat, color: UIColor, x: Float, y: Float, z: Float) -> SCNNode {
+        let geometry = SCNSphere(radius: radius)
+        geometry.segmentCount = 20
+        geometry.materials = [material(color)]
+        let node = SCNNode(geometry: geometry)
+        node.position = SCNVector3(x, y, z)
+        parent.addChildNode(node)
+        return node
+    }
+
+    private func cone(
+        _ parent: SCNNode,
+        bottom: CGFloat,
+        height: CGFloat,
+        color: UIColor,
+        x: Float,
+        y: Float,
+        z: Float
+    ) {
+        let geometry = SCNCone(topRadius: 0.03, bottomRadius: bottom, height: height)
+        geometry.radialSegmentCount = 18
+        geometry.materials = [material(color)]
+        let node = SCNNode(geometry: geometry)
+        node.position = SCNVector3(x, y, z)
+        parent.addChildNode(node)
     }
 
     private func flowers(_ parent: SCNNode, x: Float, z: Float) {
@@ -370,11 +566,15 @@ final class ToyWorld {
     private func makeDuck(_ plumage: Plumage) -> SCNNode {
         let root = SCNNode()
         let color = ToyColor.duck(plumage)
-        box(root, 0.54, 0.40, 0.63, color, 0, 0.29, 0.02, bevel: 0.10)
-        box(root, 0.42, 0.39, 0.42, color, 0, 0.59, -0.20, bevel: 0.085)
-        box(root, 0.27, 0.105, 0.25, ToyColor.coral, 0, 0.49, -0.47, bevel: 0.035)
+        let belly = ToyColor.lighten(color)
+        box(root, 0.54, 0.40, 0.63, color, 0, 0.29, 0.02, bevel: 0.13)
+        box(root, 0.40, 0.12, 0.46, belly, 0, 0.16, 0.04, bevel: 0.05)
+        box(root, 0.42, 0.39, 0.42, color, 0, 0.59, -0.20, bevel: 0.11)
+        box(root, 0.27, 0.075, 0.25, ToyColor.coral, 0, 0.51, -0.47, bevel: 0.03)
+        box(root, 0.23, 0.05, 0.20, UIColor(red: 0.86, green: 0.32, blue: 0.26, alpha: 1), 0, 0.455, -0.45, bevel: 0.02)
         for x: Float in [-0.14, 0.14] {
             box(root, 0.062, 0.074, 0.035, ToyColor.dark, x, 0.65, -0.411, bevel: 0.016)
+            box(root, 0.02, 0.022, 0.012, UIColor.white, x + 0.014, 0.668, -0.43, bevel: 0.005)
             box(root, 0.14, 0.075, 0.21, ToyColor.coral, x, 0.035, -0.03, bevel: 0.025)
             box(
                 root,
