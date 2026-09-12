@@ -102,20 +102,60 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
     ground.physicsBody?.categoryBitMask = 1
     world.addChild(ground)
     if !reduceMotion {
-      let leaf = SKShapeNode(ellipseOf: CGSize(width: 8, height: 3))
-      leaf.fillColor = UIColor(hex: 0xDFAE56)
-      leaf.strokeColor = .clear
-      leaf.position = CGPoint(x: 390, y: 500)
-      leaf.zRotation = 0.5
-      addChild(leaf)
-      leaf.run(
-        .repeatForever(
-          .sequence([
-            .group([.moveBy(x: 180, y: -180, duration: 10), .rotate(byAngle: 5, duration: 10)]),
-            .fadeOut(withDuration: 1), .move(to: CGPoint(x: 390, y: 500), duration: 0),
-            .fadeIn(withDuration: 1),
-          ])))
+      for index in 0..<5 {
+        let start = CGPoint(x: 120 + CGFloat(index) * 260, y: 560 + CGFloat(index % 2) * 60)
+        let leaf = SKSpriteNode(texture: OrchardArt.leaf())
+        leaf.size = CGSize(width: 18, height: 10)
+        leaf.position = start
+        leaf.alpha = 0
+        leaf.zPosition = -10
+        addChild(leaf)
+        let duration = 11.0 + Double(index) * 1.7
+        let drift = SKAction.customAction(withDuration: duration) { node, time in
+          let progress = time / CGFloat(duration)
+          node.position = CGPoint(
+            x: start.x + progress * 240 + sin(progress * 14) * 28,
+            y: start.y - progress * 430)
+          node.zRotation = sin(progress * 9) * 0.9
+          node.alpha = min(1, progress * 6) * min(1, (1 - progress) * 8)
+        }
+        leaf.run(
+          .repeatForever(.sequence([.wait(forDuration: Double(index) * 2.3), drift])))
+      }
     }
+  }
+
+  private func dust(at point: CGPoint, spread: CGFloat, count: Int) {
+    for index in 0..<(reduceMotion ? 1 : count) {
+      let puff = SKShapeNode(circleOfRadius: 8 + CGFloat(index % 3) * 4)
+      puff.fillColor = UIColor(hex: 0xEBCFA5).withAlphaComponent(0.55)
+      puff.strokeColor = .clear
+      puff.position = CGPoint(
+        x: point.x + CGFloat(index - count / 2) * spread / CGFloat(max(1, count)),
+        y: point.y + CGFloat(index % 2) * 6)
+      puff.zPosition = 35
+      effects.addChild(puff)
+      puff.run(
+        .sequence([
+          .group([
+            .scale(to: 2.4, duration: 0.55),
+            .moveBy(x: CGFloat(index - count / 2) * 9, y: 18, duration: 0.55),
+            .fadeOut(withDuration: 0.55),
+          ]), .removeFromParent(),
+        ]))
+    }
+  }
+
+  private func shake(_ strength: CGFloat) {
+    guard !reduceMotion, let camera, camera.action(forKey: "shake") == nil else { return }
+    let amount = min(9, strength)
+    camera.run(
+      .sequence([
+        .moveBy(x: -amount, y: amount * 0.6, duration: 0.04),
+        .moveBy(x: amount * 2, y: -amount * 1.2, duration: 0.05),
+        .moveBy(x: -amount * 1.4, y: amount * 0.8, duration: 0.05),
+        .moveBy(x: amount * 0.4, y: -amount * 0.2, duration: 0.04),
+      ]), withKey: "shake")
   }
 
   func showGarden() {
@@ -129,6 +169,14 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
     bug.size = CGSize(width: 77, height: 72)
     bug.position = CGPoint(x: 1080, y: 287)
     world.addChild(bug)
+    if !reduceMotion {
+      bug.run(
+        .repeatForever(
+          .sequence([
+            .moveBy(x: 0, y: 6, duration: 0.5), .moveBy(x: 0, y: -6, duration: 0.5),
+            .wait(forDuration: 1.6),
+          ])))
+    }
     for (kind, position, width) in [
       (Fruit.apple, CGPoint(x: 825, y: 230), CGFloat(184)),
       (Fruit.pear, CGPoint(x: 1235, y: 192), CGFloat(92)),
@@ -151,9 +199,6 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
             ])))
       }
     }
-    label(
-      "GROWN FOR A LITTLE CHAOS.", at: CGPoint(x: 979, y: 79), size: 15,
-      color: UIColor(hex: 0xF1DAB5))
   }
 
   func start(_ level: Level) {
@@ -209,22 +254,19 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
   }
 
   private func makeSling() {
-    for (width, color) in [(CGFloat(22), UInt32(0x60442F)), (CGFloat(13), UInt32(0xB4804D))] {
-      let fork = CGMutablePath()
-      fork.move(to: CGPoint(x: 216, y: 140))
-      fork.addLine(to: CGPoint(x: 219, y: 193))
-      fork.addLine(to: CGPoint(x: 196, y: 240))
-      fork.move(to: CGPoint(x: 219, y: 193))
-      fork.addLine(to: CGPoint(x: 243, y: 239))
-      let shape = SKShapeNode(path: fork)
-      shape.strokeColor = UIColor(hex: color)
-      shape.lineWidth = width
-      shape.lineCap = .round
-      shape.zPosition = 5
-      world.addChild(shape)
-    }
-    bands.strokeColor = UIColor(hex: 0x7A4836)
-    bands.lineWidth = 7
+    let shadow = SKShapeNode(ellipseOf: CGSize(width: 74, height: 14))
+    shadow.fillColor = UIColor(hex: 0x3E5A2E).withAlphaComponent(0.22)
+    shadow.strokeColor = .clear
+    shadow.position = CGPoint(x: 206, y: 137)
+    shadow.zPosition = 1
+    world.addChild(shadow)
+    let fork = SKSpriteNode(texture: OrchardArt.sling())
+    fork.size = CGSize(width: 62, height: 104)
+    fork.position = CGPoint(x: 219.5, y: 188)
+    fork.zPosition = 5
+    world.addChild(fork)
+    bands.strokeColor = UIColor(hex: 0x8A4A3C)
+    bands.lineWidth = 6
     bands.lineCap = .round
     bands.zPosition = 6
     bands.removeFromParent()
@@ -234,9 +276,9 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
 
   private func drawBands(to point: CGPoint) {
     let path = CGMutablePath()
-    path.move(to: CGPoint(x: 195, y: 239))
+    path.move(to: CGPoint(x: 198, y: 235))
     path.addLine(to: point)
-    path.addLine(to: CGPoint(x: 244, y: 239))
+    path.addLine(to: CGPoint(x: 241, y: 235))
     bands.path = path
   }
 
@@ -249,6 +291,14 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
     fruit.zPosition = 8
     world.addChild(fruit)
     projectile = fruit
+    world.childNode(withName: "shadow")?.removeFromParent()
+    let shadow = SKShapeNode(ellipseOf: CGSize(width: 44, height: 10))
+    shadow.name = "shadow"
+    shadow.fillColor = UIColor(hex: 0x3E5A2E).withAlphaComponent(0.2)
+    shadow.strokeColor = .clear
+    shadow.position = CGPoint(x: anchor.x, y: 137)
+    shadow.zPosition = 1
+    world.addChild(shadow)
     flying = false
     burstUsed = false
     game?.currentFruit = kind
@@ -298,10 +348,10 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
         x: position.x + velocity.dx * time,
         y: position.y + velocity.dy * time + 0.5 * gravity * time * time)
       guard point.y > 136, point.x < 1370 else { break }
-      let dot = SKShapeNode(circleOfRadius: max(2, 5 - CGFloat(index) * 0.1))
-      dot.fillColor = UIColor(hex: 0xFFFCDF).withAlphaComponent(1 - CGFloat(index) * 0.028)
-      dot.strokeColor = UIColor(hex: 0x746C4F).withAlphaComponent(0.2)
-      dot.lineWidth = 1
+      let dot = SKShapeNode(circleOfRadius: max(2.5, 5.5 - CGFloat(index) * 0.1))
+      dot.fillColor = UIColor(hex: 0xFFFBEA).withAlphaComponent(0.95 - CGFloat(index) * 0.03)
+      dot.strokeColor = UIColor(hex: 0xC94D3A).withAlphaComponent(0.55 - CGFloat(index) * 0.018)
+      dot.lineWidth = 1.5
       dot.position = point
       trajectory.addChild(dot)
     }
@@ -388,6 +438,10 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
       }
     }
     if contact.collisionImpulse > 0.5 { quietTime = 0 }
+    if contact.collisionImpulse > 4 {
+      dust(at: contact.contactPoint, spread: 30, count: 4)
+      shake(contact.collisionImpulse / 4)
+    }
     for (body, other) in [(contact.bodyA, contact.bodyB), (contact.bodyB, contact.bodyA)] {
       guard let node = body.node as? FortBody else { continue }
       var damage = contact.collisionImpulse
@@ -420,6 +474,12 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
     pending.removeAll()
     for node in beetles where node.parent != nil {
       if node.position.y < 100 || node.position.x > 1390 || node.position.x < -50 { destroy(node) }
+    }
+    if let projectile, let shadow = world.childNode(withName: "shadow") {
+      let height = max(0, projectile.position.y - 137)
+      shadow.position.x = projectile.position.x
+      shadow.setScale(max(0.35, 1 - height / 600))
+      shadow.alpha = max(0.05, 0.22 - height / 2200)
     }
     guard flying else { return }
     elapsed += delta
@@ -472,22 +532,35 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
       color: UIColor(
         hex: node.isTarget
           ? 0x91B48C
-          : node.material == .glass ? 0xC0E5D9 : 0xD5A56E),
+          : node.material == .glass ? 0xC0E5D9 : node.material == .stone ? 0xB9B5A4 : 0xD5A56E),
       count: node.isTarget ? 14 : 9)
-    let points = SKLabelNode(fontNamed: "AvenirNext-Heavy")
+    dust(at: position, spread: node.size.width, count: node.isTarget ? 3 : 5)
+    let tag = SKNode()
+    tag.position = position
+    tag.zPosition = 50
+    let points = SKLabelNode(fontNamed: "Georgia-Bold")
     points.text = "+\(node.points)"
-    points.fontSize = 23
-    points.fontColor = UIColor(hex: 0x34523B)
-    points.position = position
-    points.zPosition = 50
-    effects.addChild(points)
-    points.run(
+    points.fontSize = node.isTarget ? 26 : 21
+    points.fontColor = UIColor(hex: node.isTarget ? 0xC94D3A : 0x2F4A36)
+    points.verticalAlignmentMode = .center
+    let plate = SKShapeNode(
+      rectOf: CGSize(width: points.frame.width + 18, height: points.fontSize + 10),
+      cornerRadius: (points.fontSize + 10) / 2)
+    plate.fillColor = UIColor(hex: 0xFFF8E6).withAlphaComponent(0.92)
+    plate.strokeColor = .clear
+    tag.addChild(plate)
+    tag.addChild(points)
+    tag.setScale(0.6)
+    effects.addChild(tag)
+    tag.run(
       .sequence([
         .group([
-          .moveBy(x: 0, y: 46, duration: 0.8),
-          .fadeOut(withDuration: 0.95),
+          .sequence([.scale(to: 1.08, duration: 0.14), .scale(to: 1, duration: 0.1)]),
+          .moveBy(x: 0, y: 52, duration: 0.9),
+          .sequence([.wait(forDuration: 0.45), .fadeOut(withDuration: 0.5)]),
         ]), .removeFromParent(),
       ]))
+    if node.isTarget { shake(5) }
     game?.feedback(.impact)
   }
 
@@ -510,12 +583,4 @@ final class OrchardScene: SKScene, SKPhysicsContactDelegate {
     }
   }
 
-  private func label(_ text: String, at point: CGPoint, size: CGFloat, color: UIColor) {
-    let node = SKLabelNode(fontNamed: "AvenirNext-DemiBold")
-    node.text = text
-    node.fontSize = size
-    node.fontColor = color
-    node.position = point
-    world.addChild(node)
-  }
 }
