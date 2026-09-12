@@ -21,6 +21,8 @@ final class GameModel {
   var actionX = 0.0
   var actionStartX = 0.0
   var impact = 0.0
+  var lastAward = 0
+  var preciseLanding = false
   var message = "Line up with the treasure on the left."
   var resultReason = ""
   var won = false
@@ -50,6 +52,17 @@ final class GameModel {
     return anchor + swing + trim * 52
   }
   var balance: Double { DockRules.balance(stack) }
+  var projectedX: Double {
+    guard phase == .release else { return hookX }
+    return hookX + cos(clock * contract.swing) * contract.swing * (practice ? 30 : 44) * 0.12
+  }
+  var onTarget: Bool {
+    if phase == .pickup { return DockRules.canCatch(hookX: hookX, cargo: cargo) }
+    guard phase == .release else { return false }
+    let projectedStack = stack + [StackedCargo(id: cargoIndex, kind: cargo, x: projectedX)]
+    return DockRules.hasSupport(x: projectedX, kind: cargo, stack: stack)
+      && DockRules.isStable(projectedStack)
+  }
   var actionable: Bool { phase == .pickup || phase == .release }
   var buttonTitle: String {
     switch phase {
@@ -74,6 +87,8 @@ final class GameModel {
     phaseTime = 0
     trim = 0
     impact = 0
+    lastAward = 0
+    preciseLanding = false
     timeLeft = contract.seconds
     phase = .pickup
     paused = false
@@ -131,7 +146,7 @@ final class GameModel {
     if phase == .pickup {
       changePhase(.lowering)
     } else {
-      actionX += cos(clock * contract.swing) * contract.swing * (practice ? 30 : 44) * 0.12
+      actionX = projectedX
       changePhase(.falling)
     }
     signal(.releaseCargo)
@@ -153,6 +168,8 @@ final class GameModel {
     }
     let earned = DockRules.points(x: actionX, kind: cargo, stack: stack)
     let precise = abs(actionX - targetX) < 14
+    lastAward = earned
+    preciseLanding = precise
     stack.append(StackedCargo(id: cargoIndex, kind: cargo, x: actionX))
     impact = 1
     guard DockRules.isStable(stack) else {

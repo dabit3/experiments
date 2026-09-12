@@ -65,7 +65,7 @@ struct HarborCanvas: View {
     let pickup = phase == .pickup || phase == .lowering
     let anchor = pickup ? DockRules.dockX : DockRules.shipX
     let targetY = deck - Double(game.stack.count + 1) * 36
-    let suspensionY = max(65, min(94, targetY - 58))
+    let suspensionY = max(58, min(deck * 0.42, targetY - 58))
     var x = game.hookX
     var y = suspensionY
     if phase == .lowering {
@@ -89,23 +89,34 @@ struct HarborCanvas: View {
       let target = pickup ? DockRules.dockX : game.targetX
       let width = pickup ? game.cargo.width + 20 : (game.stack.last?.kind.width ?? 150)
       let floor = pickup ? dock - 40 : targetY - 4
-      let projected =
-        pickup
-        ? x
-        : x + cos(game.clock * game.contract.swing) * game.contract.swing
-          * (game.practice ? 30 : 44) * 0.12
+      let projected = game.projectedX
+      let guideColor = game.onTarget ? HarborPalette.orange : HarborPalette.ink.opacity(0.65)
       HarborArt.rounded(
         &context, rect: CGRect(x: target - width / 2, y: floor, width: width, height: 9),
-        radius: 4, color: HarborPalette.orange.opacity(0.25))
+        radius: 4, color: guideColor.opacity(0.3))
+      for edge in [-1.0, 1.0] {
+        let edgeX = target + edge * width / 2
+        HarborArt.line(
+          &context, from: CGPoint(x: edgeX, y: floor - 10),
+          to: CGPoint(x: edgeX, y: floor + 7), color: guideColor, width: 2)
+      }
       var guide = Path()
       guide.move(to: CGPoint(x: projected, y: y + (pickup ? 13 : 41)))
       guide.addLine(to: CGPoint(x: projected, y: floor))
       context.stroke(
-        guide, with: .color(HarborPalette.ink.opacity(0.4)),
-        style: StrokeStyle(lineWidth: 1, dash: [3, 6]))
+        guide, with: .color(guideColor),
+        style: StrokeStyle(lineWidth: 1.5, dash: [4, 5]))
       HarborArt.ellipse(
-        &context, CGRect(x: projected - 5, y: floor - 1, width: 10, height: 4),
-        HarborPalette.orange)
+        &context, CGRect(x: projected - 6, y: floor - 2, width: 12, height: 5), guideColor)
+      HarborArt.label(
+        &context, game.onTarget ? (pickup ? "IN REACH" : "SAFE TO LAND") : "ADJUST YOUR TRIM",
+        x: pickup ? 87 : DockRules.shipX, y: floor - 22, size: 8)
+      let captionX = pickup ? 267.0 : 102.0
+      HarborArt.label(
+        &context, pickup ? "01 / CATCH" : "02 / LAND", x: captionX, y: 96, size: 10)
+      HarborArt.label(
+        &context, pickup ? "THE DOCK IS YOUR TARGET" : "KEEP IT CENTERED",
+        x: captionX, y: 112, size: 6.8)
     }
     HarborArt.crane(
       &context, anchor: anchor, hookX: x, hookY: y, height: dock,
@@ -120,6 +131,13 @@ struct HarborCanvas: View {
       HarborArt.cargo(&context, kind: game.cargo, x: dropX, y: dropY)
     }
     if phase == .settling {
+      let rewardY = max(125, deck - Double(game.stack.count) * 36 - 38)
+      context.draw(
+        Text("+\(game.lastAward)").font(.system(size: 29, weight: .regular, design: .serif))
+          .foregroundStyle(HarborPalette.ink), at: CGPoint(x: 255, y: rewardY))
+      HarborArt.label(
+        &context, game.preciseLanding ? "BEAUTIFUL LANDING" : "CARGO SECURED",
+        x: 255, y: rewardY + 22, size: 8)
       for index in 0..<12 {
         let angle = Double(index) * .pi / 6
         let distance = game.phaseTime * 50
@@ -127,12 +145,14 @@ struct HarborCanvas: View {
           x: game.actionX + cos(angle) * distance,
           y: targetY + 25 + sin(angle) * distance)
         HarborArt.ellipse(
-          &context, CGRect(x: point.x, y: point.y, width: 3, height: 3),
+          &context, CGRect(x: point.x, y: point.y, width: 5, height: 5),
           HarborPalette.orange.opacity(max(0, 1 - game.phaseTime)))
       }
     }
     HarborArt.label(&context, "SALVAGE DOCK", x: 84, y: dock + 28, size: 8)
-    HarborArt.label(&context, "S.S. SMALL WONDER", x: 258, y: deck + 98, size: 8)
+    HarborArt.label(
+      &context, abs(game.balance) > 0.65 ? "BALANCE / CAUTION" : "BALANCE / STEADY",
+      x: 258, y: deck + 98, size: 8)
   }
 }
 
@@ -306,13 +326,16 @@ enum HarborArt {
     _ c: inout GraphicsContext, x: Double, y: Double, balance: Double
   ) {
     rounded(
-      &c, rect: CGRect(x: x - 27, y: y, width: 54, height: 15), radius: 7,
+      &c, rect: CGRect(x: x - 34, y: y, width: 68, height: 18), radius: 9,
       color: HarborPalette.ink)
     line(
-      &c, from: CGPoint(x: x - 18, y: y + 7), to: CGPoint(x: x + 18, y: y + 7),
+      &c, from: CGPoint(x: x - 24, y: y + 9), to: CGPoint(x: x + 24, y: y + 9),
       color: HarborPalette.cream.opacity(0.6))
+    line(
+      &c, from: CGPoint(x: x, y: y + 4), to: CGPoint(x: x, y: y + 14),
+      color: HarborPalette.cream.opacity(0.5))
     ellipse(
-      &c, CGRect(x: x - 4 + max(-1, min(1, balance)) * 18, y: y + 3, width: 8, height: 8),
+      &c, CGRect(x: x - 5 + max(-1, min(1, balance)) * 24, y: y + 4, width: 10, height: 10),
       abs(balance) > 0.65 ? HarborPalette.orange : HarborPalette.cream)
   }
 

@@ -137,4 +137,29 @@ final class GameModelTests: XCTestCase {
     game.shift(-100)
     XCTAssertEqual(game.trim, -1)
   }
+
+  func testLandingGuideUsesTheSameDriftAsRelease() {
+    let game = GameModel(defaults: defaults)
+    game.start()
+    game.act()
+    game.tick(0.61)
+    game.tick(1.11)
+    game.clock = 0
+    XCTAssertEqual(game.projectedX, 262.224, accuracy: 0.001)
+    XCTAssertTrue(game.onTarget)
+    game.act()
+    game.tick(0.71)
+    XCTAssertEqual(game.stack.first?.x ?? 0, 262.224, accuracy: 0.001)
+  }
+
+  func testLandingGuideRejectsUnsupportedPlacement() {
+    let game = GameModel(defaults: defaults)
+    game.start()
+    game.stack = [StackedCargo(id: 0, kind: .clock, x: 258)]
+    game.phase = .release
+    game.trim = 1
+    XCTAssertFalse(game.onTarget)
+    game.trim = 0
+    XCTAssertTrue(game.onTarget)
+  }
 }

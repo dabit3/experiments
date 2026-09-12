@@ -15,13 +15,17 @@ struct SharePayload: Identifiable {
   let text: String
 }
 
+struct TutorialRequest: Identifiable {
+  let id = UUID()
+  let startsGame: Bool
+  let practice: Bool
+}
+
 struct HarborView: View {
   @State private var game = GameModel()
   @State private var selectedContract = 0
   @State private var settingsShown = false
-  @State private var tutorialShown = false
-  @State private var pendingStart = false
-  @State private var pendingPractice = false
+  @State private var tutorialRequest: TutorialRequest?
   @State private var sharePayload: SharePayload?
   @State private var feedback = Feedback()
   @AppStorage("tutorialSeen") private var tutorialSeen = false
@@ -54,7 +58,7 @@ struct HarborView: View {
       if scenePhase != .active && game.isPlaying && game.phase != .finished { game.paused = true }
     }
     .sheet(isPresented: $settingsShown) { settings }
-    .sheet(isPresented: $tutorialShown) { tutorial }
+    .sheet(item: $tutorialRequest) { request in tutorial(request) }
     .sheet(item: $sharePayload) { payload in
       NativeShare(payload: payload)
         .presentationDetents([.medium, .large])
@@ -306,8 +310,9 @@ struct HarborView: View {
         Section {
           Button("How to salvage") {
             settingsShown = false
-            pendingStart = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { tutorialShown = true }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+              tutorialRequest = TutorialRequest(startsGame: false, practice: false)
+            }
           }.accessibilityIdentifier("howToPlay")
         } footer: {
           Text(
@@ -326,32 +331,38 @@ struct HarborView: View {
     .presentationDetents([.large])
   }
 
-  private var tutorial: some View {
-    VStack(alignment: .leading, spacing: 24) {
-      eyebrow("A NOTE FROM THE DOCKMASTER")
-      Text("Two moves.\nOne steady ship.")
-        .font(.system(size: 39, weight: .regular, design: .serif))
-        .tracking(-1)
-      tutorialStep("01", "Catch the treasure", "Tap Drop hook as it swings over the left dock.")
-      tutorialStep(
-        "02", "Make a soft landing",
-        "Wait for the cargo to reach the ship, then release over the stack. The dashed line predicts your landing."
-      )
-      tutorialStep(
-        "03", "Keep your balance",
-        "Trim left or right to move the crane. Heavy cargo pulls harder. Keep the deck's bubble near the middle."
-      )
-      Text("Three missed lifts end a contract. Practice has no clock and unlimited missed lifts.")
-        .font(.system(size: 13)).foregroundStyle(HarborPalette.ink.opacity(0.8))
-      primaryButton(
-        pendingStart ? "Let's salvage" : "Got it", symbol: "arrow.up.right", id: "tutorialContinue"
-      ) {
-        tutorialSeen = true
-        tutorialShown = false
-        if pendingStart { game.start(contract: selectedContract, practice: pendingPractice) }
+  private func tutorial(_ request: TutorialRequest) -> some View {
+    ScrollView {
+      VStack(alignment: .leading, spacing: 20) {
+        eyebrow("A NOTE FROM THE DOCKMASTER")
+        Text("Two moves.\nOne steady ship.")
+          .font(.system(size: 36, weight: .regular, design: .serif))
+          .tracking(-1)
+        LiftDiagram().frame(height: 87)
+        tutorialStep("01", "Catch the treasure", "Tap Drop hook as it swings over the left dock.")
+        tutorialStep(
+          "02", "Make a soft landing",
+          "Wait for the cargo to reach the ship, then release over the stack. The dashed line predicts your landing."
+        )
+        tutorialStep(
+          "03", "Keep your balance",
+          "Trim left or right to move the crane. Heavy cargo pulls harder. Keep the deck's bubble near the middle."
+        )
+        Text("Three missed lifts end a contract. Practice has no clock and unlimited missed lifts.")
+          .font(.system(size: 13)).foregroundStyle(HarborPalette.ink.opacity(0.8))
+        primaryButton(
+          request.startsGame ? "Let's salvage" : "Got it", symbol: "arrow.up.right",
+          id: "tutorialContinue"
+        ) {
+          tutorialSeen = true
+          tutorialRequest = nil
+          if request.startsGame {
+            game.start(contract: selectedContract, practice: request.practice)
+          }
+        }
       }
+      .padding(28)
     }
-    .padding(28)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(HarborPalette.cream)
     .presentationDetents([.large])
@@ -369,9 +380,7 @@ struct HarborView: View {
 
   private func begin(practice: Bool) {
     if !tutorialSeen {
-      pendingStart = true
-      pendingPractice = practice
-      tutorialShown = true
+      tutorialRequest = TutorialRequest(startsGame: true, practice: practice)
     } else {
       game.start(contract: selectedContract, practice: practice)
     }
@@ -437,7 +446,7 @@ struct ManifestCard: View {
         }
         HarborArt.balanceGauge(&context, x: shipX, y: deck + 16, balance: DockRules.balance(stack))
       }
-      .frame(height: CGFloat(130 + max(3, stack.count) * 31))
+      .aspectRatio(350.0 / Double(135 + max(3, stack.count) * 31), contentMode: .fit)
       .accessibilityLabel("Cargo tower with \(stack.count) treasures on the Small Wonder")
       HStack(alignment: .firstTextBaseline) {
         VStack(alignment: .leading, spacing: 3) {
@@ -470,6 +479,37 @@ struct ManifestCard: View {
         .padding(.top, 3)
     }
     .foregroundStyle(HarborPalette.ink)
+  }
+}
+
+struct LiftDiagram: View {
+  var body: some View {
+    Canvas { context, size in
+      let scale = size.width / 330
+      context.scaleBy(x: scale, y: scale)
+      HarborArt.rounded(
+        &context, rect: CGRect(x: 0, y: 0, width: 330, height: 84),
+        radius: 12, color: HarborPalette.sky.opacity(0.55))
+      HarborArt.cargo(&context, kind: .trunk, x: 53, y: 24)
+      HarborArt.line(
+        &context, from: CGPoint(x: 16, y: 61), to: CGPoint(x: 90, y: 61),
+        color: HarborPalette.ink, width: 3)
+      HarborArt.cargo(&context, kind: .trunk, x: 166, y: 19)
+      HarborArt.line(
+        &context, from: CGPoint(x: 166, y: 2), to: CGPoint(x: 166, y: 19),
+        color: HarborPalette.ink)
+      HarborArt.cargo(&context, kind: .trunk, x: 277, y: 24)
+      HarborArt.line(
+        &context, from: CGPoint(x: 235, y: 61), to: CGPoint(x: 318, y: 61),
+        color: HarborPalette.ink, width: 3)
+      for x in [107.0, 220.0] {
+        HarborArt.label(&context, "→", x: x, y: 40, size: 17)
+      }
+      HarborArt.label(&context, "CATCH", x: 53, y: 74, size: 7)
+      HarborArt.label(&context, "HOIST", x: 166, y: 74, size: 7)
+      HarborArt.label(&context, "LAND", x: 277, y: 74, size: 7)
+    }
+    .accessibilityLabel("Catch cargo on the left dock, hoist across, then land on the ship")
   }
 }
 

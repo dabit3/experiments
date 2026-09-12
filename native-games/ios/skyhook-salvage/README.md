@@ -26,7 +26,7 @@ xcrun simctl launch DEVICE_UUID com.skyhooksalvage.game
 ```
 
 The checked-in project needs no generator to build. After editing `project.yml`,
-regenerate with XcodeGen 2.45.3 or newer: `brew install xcodegen && xcodegen generate`.
+regenerate with XcodeGen (validated with 2.46.0): `brew install xcodegen && xcodegen generate`.
 The original vector app icon is reproducible: `swift scripts/GenerateIcon.swift`.
 
 ## Play
@@ -55,12 +55,12 @@ native share sheet with a rendered cargo manifest/tower image and score text.
 swift format lint --strict --recursive Sources Tests scripts
 xcodebuild -project SkyhookSalvage.xcodeproj -scheme SkyhookSalvage \
   -configuration Debug -destination 'platform=iOS Simulator,id=DEVICE_UUID' \
-  -derivedDataPath build/Tests CODE_SIGNING_ALLOWED=NO test
+  -parallel-testing-enabled NO -derivedDataPath build/Tests CODE_SIGNING_ALLOWED=NO test
 ```
 
 Tests cover catch windows, stack support, weighted balance, scoring precision,
 contract completion/unlocks/persistence, missed-lift failure and retry, pause and
-timeout, practice rules, trim bounds and repeated inputs. Debug and Release builds
+timeout, practice rules, trim bounds, landing-guide agreement and repeated inputs. Debug and Release builds
 also typecheck the native UI and game.
 
 ## Reliability and limitations
