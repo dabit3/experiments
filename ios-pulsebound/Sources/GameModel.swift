@@ -26,6 +26,7 @@ final class GameModel: ObservableObject {
   private var resultDelay = 0.0
   private var resumeDelay = 0.0
   private let haptic = UINotificationFeedbackGenerator()
+  private let impact = UIImpactFeedbackGenerator(style: .light)
 
   var stage: Stage { Stage.all[selection] }
   var best: Double { practice ? practiceBests[selection] : bests[selection] }
@@ -58,7 +59,9 @@ final class GameModel: ObservableObject {
       engine.start()
       playAudio()
     case .running:
+      let grounded = engine.grounded
       engine.jump()
+      if grounded { impact.impactOccurred(intensity: 0.7) }
     default: break
     }
   }
