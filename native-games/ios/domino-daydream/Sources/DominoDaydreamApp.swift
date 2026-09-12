@@ -151,7 +151,7 @@ struct ContentView: View {
               store.puzzle.sandbox
                 ? "OPEN TABLE" : "WORLD \(String(format: "%02d", store.puzzle.id + 1)) / 08"
             )
-            .font(.system(size: 9, weight: .medium, design: .monospaced)).tracking(2)
+            .font(.system(size: 10, weight: .medium, design: .monospaced)).tracking(2)
             Rectangle().fill(Palette.brass.opacity(0.4)).frame(width: 22, height: 0.5)
           }
           Spacer()
@@ -175,7 +175,7 @@ struct ContentView: View {
             Text("·").padding(.horizontal, 4)
             Text(store.best == 0 ? "RING EVERY BELL" : "BEST \(store.best)")
           }
-          .font(.system(size: 9, weight: .medium, design: .monospaced))
+          .font(.system(size: 10, weight: .medium, design: .monospaced))
           .tracking(1).foregroundStyle(Palette.muted)
           .accessibilityElement(children: .ignore)
           .accessibilityLabel(
@@ -192,7 +192,7 @@ struct ContentView: View {
             }
           }
         )
-        .frame(height: max(255, geometry.size.height - (compact ? 330 : 378)))
+        .frame(height: max(255, geometry.size.height - (compact ? 350 : 378)))
         .padding(.horizontal, -18)
         .layoutPriority(1)
         if store.phase == .result {
@@ -308,7 +308,7 @@ struct ContentView: View {
     return VStack(spacing: 10) {
       HStack {
         Text(won ? "THE CHAIN IS COMPLETE" : "BACK TO THE DRAWING BOARD")
-          .font(.system(size: 8, weight: .semibold, design: .monospaced)).tracking(1.4)
+          .font(.system(size: 9, weight: .semibold, design: .monospaced)).tracking(1.4)
         Spacer()
         Text(String(format: "№ %02d", store.puzzle.id + 1))
           .font(.system(size: 10, design: .monospaced))
@@ -325,7 +325,7 @@ struct ContentView: View {
               : store.firstFailure.flatMap { store.result?.failures[$0] }
                 ?? "Connect every bell and try again."
           )
-          .font(.system(size: 11)).fixedSize(horizontal: false, vertical: true).lineSpacing(2)
+          .font(.system(size: 12)).fixedSize(horizontal: false, vertical: true).lineSpacing(2)
         }
         Spacer(minLength: 0)
         Image(systemName: won ? "seal" : "arrow.triangle.turn.up.right.diamond")

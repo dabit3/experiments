@@ -31,7 +31,7 @@ final class Diorama {
     scene.background.contents = UIColor.clear
     camera.camera = SCNCamera()
     camera.camera?.usesOrthographicProjection = true
-    camera.camera?.orthographicScale = 5.65
+    camera.camera?.orthographicScale = labels ? 4.6 : 5.65
     camera.camera?.zNear = 0.1
     camera.camera?.zFar = 100
     camera.position = SCNVector3(labels ? 0 : 2.2, 16, 12)
@@ -168,14 +168,14 @@ final class Diorama {
         }
       }
       if labels {
-        lettering("\(y + 1)", at: (-3.65, 0.08, Float(y - 4) + 0.06), size: 0.25, material: dark)
+        lettering("\(y + 1)", at: (-3.65, 0.08, Float(y - 4) + 0.1), size: 0.35, material: dark)
       }
     }
     if labels {
       for x in 0..<7 {
         lettering(
-          String(UnicodeScalar(65 + x)!), at: (Float(x - 3), 0.08, -4.5),
-          size: 0.25, material: dark)
+          String(UnicodeScalar(65 + x)!), at: (Float(x - 3), 0.08, -4.45),
+          size: 0.35, material: dark)
       }
     }
     lettering("D O M I N O   •   D A Y D R E A M", at: (0, 0.08, 4.65), size: 0.12, material: dark)
@@ -188,7 +188,7 @@ final class Diorama {
     box(start, (0.32, 0.012, 0.045), (0, 0.275, 0), porcelain)
     for sign: Float in [-1, 1] {
       let arrow = box(start, (0.15, 0.012, 0.04), (0.09, 0.275, sign * 0.043), porcelain)
-      arrow.eulerAngles.y = sign * -.pi / 4
+      arrow.eulerAngles.y = sign * .pi / 4
     }
     for (index, cell) in puzzle.targets.enumerated() {
       let bell = SCNNode()
@@ -206,7 +206,7 @@ final class Diorama {
       if labels {
         lettering(
           "\(index + 1)", at: (Float(cell.x - 3), 0.078, Float(cell.y - 4) + 0.48),
-          size: 0.21, material: dark)
+          size: 0.29, material: dark)
       }
     }
   }
@@ -242,7 +242,7 @@ final class Diorama {
         box(town, (0.1, 0.32, 0.13), (0.2, 0.95, -0.16), ivory)
       }
     }
-    for cell in [Cell(x: 0, y: 0), Cell(x: 6, y: 8)] where !occupied.contains(cell) {
+    for cell in [Cell(x: 0, y: 1), Cell(x: 6, y: 8)] where !occupied.contains(cell) {
       let plant = SCNNode()
       plant.position = point(cell)
       plant.scale = SCNVector3(0.65, 0.65, 0.65)

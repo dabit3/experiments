@@ -47,7 +47,8 @@ xcodebuild -project DominoDaydream.xcodeproj -scheme DominoDaydream \
 Builds perform Swift typechecking. XCTest covers the solvability and inventories of
 all nine boards, stops at empty/closed edges, bridge water crossings, branching,
 deterministic event order, exact domino counts, scoring penalties, rotation,
-inventory restoration, undo/reset, sandbox and draft persistence.
+inventory restoration, undo/reset, sandbox, draft persistence, share artwork,
+and projected touch coordinates for every grid cell on compact and large viewports.
 
 ## Play
 
@@ -82,8 +83,8 @@ seconds. Later worlds add turns, bridges and multiple branches.
 ## Accessibility and limits
 
 Every control and board cell has a spoken label and stable accessibility ID.
-System Reduce Motion removes intermediate falling, placement motion and bell wobble. The app supports
-small/large portrait iPhones and safe areas; gameplay uses fixed-size typography
+System Reduce Motion removes intermediate falling, placement motion and bell wobble.
+The app supports small/large portrait iPhones and safe areas; gameplay uses fixed-size typography
 to protect grid geometry. Full Dynamic Type reflow and nonvisual spatial puzzle
 navigation are not provided.
 
