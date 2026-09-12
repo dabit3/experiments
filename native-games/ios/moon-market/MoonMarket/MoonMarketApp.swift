@@ -92,31 +92,39 @@ struct MarketRoot: View {
           }
           .padding(.horizontal, 24)
           .padding(.top, 10)
-          VStack(spacing: 8) {
-            eyebrow("THE NIGHT SHIFT, REIMAGINED")
+          VStack(spacing: 0) {
+            eyebrow("A LITTLE COMMERCE AMONG THE STARS")
+              .padding(.bottom, 10)
             Text("Moon Market")
-              .font(.system(size: 49, weight: .regular, design: .serif))
-              .tracking(-2)
-              .minimumScaleFactor(0.6)
+              .font(Lettering.display(58))
+              .tracking(-2.5)
+              .minimumScaleFactor(0.7)
               .lineLimit(1)
-            Text("A tiny stall. A whole galaxy of possibility.")
-              .font(.system(size: 14))
-              .foregroundStyle(Palette.muted)
+              .foregroundStyle(Palette.gold)
+            HStack(spacing: 12) {
+              Rectangle().fill(Palette.rule).frame(width: 25, height: 0.5)
+              Text("THE LUNAR BAZAAR").font(Lettering.label(9)).tracking(4)
+              Rectangle().fill(Palette.rule).frame(width: 25, height: 0.5)
+            }.foregroundStyle(Palette.muted)
           }
           .padding(.horizontal, 20)
-          .padding(.top, 30)
+          .padding(.top, 22)
           BazaarScene(flourishing: true)
-            .frame(height: max(210, min(300, geometry.size.height * 0.37)))
-            .padding(.top, 5)
-          VStack(spacing: 15) {
+            .frame(height: max(250, min(350, geometry.size.height * 0.41)))
+            .padding(.top, -8)
+          VStack(spacing: 16) {
+            VStack(spacing: 4) {
+              Text("Small stall. Infinite possibility.")
+                .font(Lettering.italic(23))
+              Text("Buy wisely. Read the crowd. Make your moonshot.")
+                .font(.system(size: 12)).foregroundStyle(Palette.muted)
+            }.padding(.top, -12)
+            FineRule().padding(.top, 2)
             HStack(spacing: 0) {
               homeFact("8", "NIGHTS")
-              Rectangle().fill(Palette.muted.opacity(0.25)).frame(width: 1, height: 27)
-              homeFact("90", "CREDITS TO START")
-              Rectangle().fill(Palette.muted.opacity(0.25)).frame(width: 1, height: 27)
-              homeFact(String(Run.goal), "CREDITS TO WIN")
+              homeFact("90", "STARTING CREDITS")
+              homeFact(String(Run.goal), "YOUR MOONSHOT")
             }
-            .padding(.bottom, 8)
             if let run = store.archive.run, !run.finished {
               primary("Resume night \(run.round)", icon: "arrow.right", id: "resume") {
                 store.atHome = false
@@ -139,17 +147,22 @@ struct MarketRoot: View {
               offerTutorial()
             } label: {
               HStack {
-                Image(systemName: "moon.stars")
-                Text("Daily orbit")
+                Image(systemName: "moonphase.waning.crescent").foregroundStyle(Palette.orange)
+                VStack(alignment: .leading, spacing: 3) {
+                  Text("The daily orbit").font(Lettering.display(19))
+                  Text("A NEW MARKET, EVERY EARTH DAY")
+                    .font(Lettering.label(8)).tracking(1)
+                    .foregroundStyle(Palette.muted)
+                }
                 Spacer()
-                Text(String(Run.dailySeed())).font(.system(size: 12, design: .monospaced))
-                Image(systemName: "arrow.up.right")
+                Text(String(Run.dailySeed())).font(.system(size: 10, design: .monospaced))
+                  .foregroundStyle(Palette.orange)
+                Image(systemName: "arrow.up.right").font(.system(size: 12))
               }
-              .font(.system(size: 16, weight: .medium))
-              .padding(.horizontal, 18)
+              .padding(.horizontal, 14)
               .frame(minHeight: 54)
-              .background(Palette.mint.opacity(0.07), in: RoundedRectangle(cornerRadius: 17))
-              .overlay(RoundedRectangle(cornerRadius: 17).stroke(Palette.mint.opacity(0.22)))
+              .background(Palette.panel.opacity(0.6), in: RoundedRectangle(cornerRadius: 7))
+              .overlay(RoundedRectangle(cornerRadius: 7).stroke(Palette.rule, lineWidth: 0.7))
             }
             .accessibilityLabel("Daily orbit. Same market for everyone today.")
             .accessibilityIdentifier("daily")
@@ -185,7 +198,7 @@ struct MarketRoot: View {
       HStack {
         VStack(alignment: .leading, spacing: 4) {
           eyebrow("NIGHT \(String(format: "%02d", store.run.round)) / 08")
-          Text(nightTitle).font(.system(size: 26, weight: .regular, design: .serif))
+          Text(nightTitle).font(Lettering.display(26))
             .lineLimit(1).minimumScaleFactor(0.7)
         }
         Spacer()
@@ -197,13 +210,17 @@ struct MarketRoot: View {
       }
       .padding(.horizontal, 22)
       .padding(.top, 8)
+      OrbitTrack(night: store.run.round).padding(.horizontal, 24).padding(.vertical, 10)
       ScrollView {
-        VStack(spacing: 14) {
+        VStack(spacing: 12) {
           HStack(alignment: .firstTextBaseline) {
             HStack(alignment: .firstTextBaseline, spacing: 5) {
-              Text("\(store.run.cash)").font(.system(size: 32, weight: .semibold, design: .rounded))
+              Text("\(store.run.cash)").font(Lettering.display(36))
                 .contentTransition(.numericText())
-              Text("cr").font(.system(size: 13)).foregroundStyle(Palette.muted)
+              VStack(alignment: .leading, spacing: 0) {
+                Text("CREDITS").font(Lettering.label(8)).tracking(1)
+                Text("in your purse").font(Lettering.italic(12))
+              }.foregroundStyle(Palette.muted)
             }
             .accessibilityLabel("Wallet \(store.run.cash) credits")
             Spacer()
@@ -215,15 +232,13 @@ struct MarketRoot: View {
           }
           .padding(.horizontal, 24)
           BazaarScene(flourishing: store.run.cash >= Run.goal)
-            .frame(height: 140)
-            .padding(.top, -16)
-            .padding(.bottom, -6)
+            .frame(height: 158)
+            .padding(.vertical, -8)
           VStack(alignment: .leading, spacing: 4) {
             HStack {
-              Circle().fill(Palette.orange).frame(width: 6, height: 6)
+              Image(systemName: "waveform.path").foregroundStyle(Palette.orange)
               Text(store.run.market.headline.uppercased())
-                .font(.system(size: 10, weight: .bold, design: .monospaced))
-                .tracking(0.6)
+                .font(Lettering.label(10)).tracking(0.8)
             }
             Text(store.run.market.detail)
               .font(.system(size: 12))
@@ -231,11 +246,16 @@ struct MarketRoot: View {
               .fixedSize(horizontal: false, vertical: true)
           }
           .frame(maxWidth: .infinity, alignment: .leading)
+          .padding(.leading, 12)
+          .padding(.vertical, 3)
+          .overlay(alignment: .leading) {
+            Rectangle().fill(Palette.orange.opacity(0.6)).frame(width: 1)
+          }
           .padding(.horizontal, 24)
           forecastNote
           VStack(spacing: 9) {
             HStack {
-              eyebrow("STOCK YOUR STALL")
+              eyebrow("THE PRODUCE EXCHANGE")
               Spacer()
               Text("12 SPACES · 5 cr RENT").font(
                 .system(size: 9, weight: .medium, design: .monospaced)
@@ -276,7 +296,8 @@ struct MarketRoot: View {
 
   private var forecastNote: some View {
     HStack(spacing: 8) {
-      Image(systemName: "sparkle").foregroundStyle(Palette.mint)
+      Image(systemName: "moonphase.first.quarter").font(.system(size: 15)).foregroundStyle(
+        Palette.mint)
       VStack(alignment: .leading, spacing: 3) {
         Text(store.run.round < 8 ? "TOMORROW'S QUEUE" : "LAST CALL")
           .font(.system(size: 9, weight: .bold, design: .monospaced)).tracking(1)
@@ -298,29 +319,31 @@ struct MarketRoot: View {
     let quote = store.run.market.quotes[index]
     let held = store.run.inventory[index]
     let quantity = store.run.order[index]
-    return HStack(spacing: 8) {
-      ProduceArt(kind: index).frame(width: 44, height: 66)
+    return HStack(spacing: 10) {
+      ProduceArt(kind: index).frame(width: 50, height: 70)
       VStack(alignment: .leading, spacing: 4) {
-        HStack(spacing: 5) {
-          Text(produce.name).font(.system(size: 17, weight: .semibold, design: .rounded))
+        HStack(spacing: 3) {
+          Text(produce.name).font(Lettering.display(21))
+            .lineLimit(1).minimumScaleFactor(0.8)
           if held > 0 {
             Text("+\(held) held").font(.system(size: 9, weight: .bold)).foregroundStyle(
-              Color(red: 0.22, green: 0.4, blue: 0.34))
+              Palette.mint)
           }
         }
         Text("Buy \(quote.buy)  →  Sell \(quote.sell)")
-          .font(.system(size: 11, weight: .semibold, design: .monospaced))
+          .font(.system(size: 10, weight: .medium, design: .monospaced))
+          .foregroundStyle(Palette.orange)
           .fixedSize(horizontal: true, vertical: false)
         Text("\(quote.demand) want tonight")
-          .font(.system(size: 12, weight: .bold))
-          .foregroundStyle(Color(red: 0.17, green: 0.37, blue: 0.31))
+          .font(.system(size: 12, weight: .medium))
+          .foregroundStyle(Palette.mint)
         Text(
           held + quantity > quote.demand
             ? "\(held + quantity - quote.demand) will carry over"
             : "\(max(0, quote.demand - held - quantity)) more can sell tonight"
         )
-        .font(.system(size: 11))
-        .foregroundStyle(Palette.ink.opacity(0.6))
+        .font(.system(size: 10))
+        .foregroundStyle(Palette.muted)
       }
       .frame(maxWidth: .infinity, alignment: .leading)
       HStack(spacing: 0) {
@@ -336,7 +359,7 @@ struct MarketRoot: View {
         .accessibilityLabel("Remove one \(produce.name)")
         .accessibilityIdentifier("minus-\(index)")
         Text("\(quantity)")
-          .font(.system(size: 18, weight: .bold, design: .rounded))
+          .font(Lettering.label(19))
           .monospacedDigit()
           .frame(width: 30)
           .lineLimit(1)
@@ -353,12 +376,24 @@ struct MarketRoot: View {
         .accessibilityLabel("Add one \(produce.name)")
         .accessibilityIdentifier("plus-\(index)")
       }
-      .background(Palette.ink.opacity(0.055), in: RoundedRectangle(cornerRadius: 12))
+      .background(Palette.ink.opacity(0.65), in: RoundedRectangle(cornerRadius: 7))
+      .overlay(RoundedRectangle(cornerRadius: 7).stroke(Palette.rule, lineWidth: 0.5))
     }
     .padding(.horizontal, 10)
-    .padding(.vertical, 7)
-    .foregroundStyle(Palette.ink)
-    .background(Palette.cream, in: RoundedRectangle(cornerRadius: 18))
+    .padding(.vertical, 10)
+    .foregroundStyle(Palette.cream)
+    .background(
+      LinearGradient(
+        colors: [Palette.panel, Palette.panel.opacity(0.45)],
+        startPoint: .topLeading, endPoint: .bottomTrailing),
+      in: RoundedRectangle(cornerRadius: 10)
+    )
+    .overlay(
+      RoundedRectangle(cornerRadius: 10)
+        .stroke(
+          quantity > 0 ? Palette.orange.opacity(0.6) : Palette.cream.opacity(0.13), lineWidth: 0.7)
+    )
+    .animation(reduceMotion ? nil : .easeOut(duration: 0.2), value: quantity)
   }
 
   private var orderBar: some View {
@@ -381,7 +416,7 @@ struct MarketRoot: View {
     .padding(.top, 13)
     .padding(.bottom, 10)
     .background(Palette.ink)
-    .overlay(alignment: .top) { Rectangle().fill(Palette.mint.opacity(0.12)).frame(height: 1) }
+    .overlay(alignment: .top) { Rectangle().fill(Palette.rule).frame(height: 0.5) }
   }
 
   private var settlement: some View {
@@ -395,13 +430,14 @@ struct MarketRoot: View {
         }
         .padding(.horizontal, 24)
         Text(receipt?.customers == 0 ? "A quiet little orbit." : "You made their night.")
-          .font(.system(size: 31, weight: .regular, design: .serif))
+          .font(Lettering.display(34))
           .multilineTextAlignment(.center)
           .padding(.horizontal, 20)
         BazaarScene(
           flourishing: store.run.cash >= Run.goal, celebrating: (receipt?.customers ?? 0) > 0
         )
         .frame(height: 245)
+        .padding(.vertical, -10)
         VStack(spacing: 13) {
           HStack {
             Text("THE NIGHT'S TAKINGS").font(.system(size: 10, weight: .bold, design: .monospaced))
@@ -421,9 +457,9 @@ struct MarketRoot: View {
             }
           }
           Text("\((receipt?.net ?? 0) >= 0 ? "+" : "")\(receipt?.net ?? 0) cr tonight")
-            .font(.system(size: 28, weight: .semibold, design: .rounded))
+            .font(Lettering.display(34))
             .foregroundStyle((receipt?.net ?? 0) >= 0 ? Palette.mint : Palette.orange)
-          Divider().overlay(Palette.muted.opacity(0.2))
+          FineRule()
           ledgerLine("Sales", "+\(receipt?.revenue ?? 0) cr")
           ledgerLine("Stock bought", "−\(receipt?.cost ?? 0) cr")
           ledgerLine("Stall rent", "−\(receipt?.rent ?? 0) cr")
@@ -431,7 +467,7 @@ struct MarketRoot: View {
             Text("Wallet").font(.system(size: 16, weight: .medium))
             Spacer()
             Text("\(store.run.cash) cr").font(
-              .system(size: 34, weight: .semibold, design: .rounded)
+              Lettering.display(36)
             ).foregroundStyle(Palette.mint)
           }
           if store.run.inventory.reduce(0, +) > 0 {
@@ -447,7 +483,10 @@ struct MarketRoot: View {
           )
           .font(.system(size: 12)).foregroundStyle(Palette.orange)
         }
-        .padding(.horizontal, 26)
+        .padding(20)
+        .background(Palette.panel.opacity(0.5), in: RoundedRectangle(cornerRadius: 10))
+        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Palette.rule, lineWidth: 0.5))
+        .padding(.horizontal, 24)
         .padding(.bottom, 15)
       }
     }
@@ -481,10 +520,12 @@ struct MarketRoot: View {
             ? "EIGHT NIGHTS. ONE BRIGHT LITTLE STALL." : "EVERY MERCHANT STARTS SOMEWHERE."
         )
         .padding(.top, 10)
-        Text(store.run.rank).font(.system(size: 33, weight: .regular, design: .serif))
+        Text(store.run.rank).font(Lettering.display(37))
+          .foregroundStyle(Palette.gold)
           .multilineTextAlignment(.center).padding(.horizontal, 20)
         BazaarScene(flourishing: store.run.won, celebrating: store.run.won)
-          .frame(height: 180)
+          .frame(height: 208)
+          .padding(.vertical, -12)
         ReceiptView(run: store.run)
           .padding(.horizontal, 28)
         Text(
@@ -527,7 +568,7 @@ struct MarketRoot: View {
       Text(
         ["Buy small. Dream lunar.", "Read the queue.", "Make eight nights count."][tutorialStep]
       )
-      .font(.system(size: 29, weight: .regular, design: .serif))
+      .font(Lettering.display(31))
       .multilineTextAlignment(.center)
       Text(
         [
@@ -570,13 +611,14 @@ struct MarketRoot: View {
       Spacer(minLength: 0)
     }
     .padding(12)
-    .foregroundStyle(Palette.ink)
-    .background(Palette.cream, in: RoundedRectangle(cornerRadius: 18))
+    .foregroundStyle(Palette.cream)
+    .background(Palette.ink, in: RoundedRectangle(cornerRadius: 10))
+    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Palette.rule, lineWidth: 0.5))
   }
 
   private var settings: some View {
     VStack(alignment: .leading, spacing: 20) {
-      Text("A quieter corner.").font(.system(size: 30, design: .serif))
+      Text("A quieter corner.").font(Lettering.display(32))
       Toggle("Haptic feedback", isOn: $haptics)
         .accessibilityIdentifier("haptics")
         .frame(minHeight: 44)
@@ -594,7 +636,7 @@ struct MarketRoot: View {
   private var pause: some View {
     VStack(spacing: 16) {
       eyebrow("YOUR STALL IS SAFE")
-      Text("Take a little moonwalk.").font(.system(size: 28, design: .serif))
+      Text("Take a little moonwalk.").font(Lettering.display(30))
         .multilineTextAlignment(.center)
       Text("No timers. No rush. Every trade is saved.")
         .font(.system(size: 14)).foregroundStyle(Palette.muted)
@@ -614,26 +656,29 @@ struct MarketRoot: View {
   }
 
   private var brand: some View {
-    HStack(spacing: 7) {
-      Image(systemName: "moon.fill").font(.system(size: 12)).foregroundStyle(Palette.orange)
-      Text("LUNE TRADING CO.").font(.system(size: 10, weight: .semibold, design: .monospaced))
-        .tracking(1.8)
+    HStack(spacing: 9) {
+      MoonSeal(size: 32)
+      VStack(alignment: .leading, spacing: 2) {
+        Text("LUNE TRADING CO.").font(Lettering.label(9)).tracking(2)
+        Text("PURVEYORS OF OTHERWORLDLY GOODS")
+          .font(Lettering.label(6)).tracking(0.9).foregroundStyle(Palette.muted)
+      }
     }
   }
   private func eyebrow(_ text: String) -> some View {
-    Text(text).font(.system(size: 10, weight: .semibold, design: .monospaced))
-      .tracking(1.3).foregroundStyle(Palette.mint)
+    Text(text).font(Lettering.label(9))
+      .tracking(1.5).foregroundStyle(Palette.orange)
   }
   private func homeFact(_ value: String, _ label: String) -> some View {
     VStack(spacing: 5) {
-      Text(value).font(.system(size: 25, weight: .medium, design: .serif))
-      Text(label).font(.system(size: 8, weight: .semibold, design: .monospaced)).tracking(0.7)
+      Text(value).font(Lettering.display(25))
+      Text(label).font(Lettering.label(8)).tracking(0.8)
         .foregroundStyle(Palette.muted)
     }.frame(maxWidth: .infinity)
   }
   private func stat(_ value: String, caption: String) -> some View {
     VStack(alignment: .leading, spacing: 4) {
-      Text(value).font(.system(size: 17, weight: .semibold, design: .rounded))
+      Text(value).font(Lettering.label(16))
       Text(caption).font(.system(size: 8, weight: .medium, design: .monospaced)).tracking(0.7)
         .foregroundStyle(Palette.muted)
     }
@@ -650,15 +695,20 @@ struct MarketRoot: View {
   {
     Button(action: action) {
       HStack {
-        Spacer()
-        Text(label).font(.system(size: 16, weight: .semibold))
+        Image(systemName: "moon.fill").font(.system(size: 12))
+        Text(label).font(Lettering.label(16)).padding(.leading, 4)
         Spacer()
         Image(systemName: icon).font(.system(size: 15, weight: .semibold))
       }
       .padding(.horizontal, 20)
-      .frame(minHeight: 55)
+      .frame(minHeight: 56)
       .foregroundStyle(Palette.ink)
-      .background(Palette.orange, in: RoundedRectangle(cornerRadius: 17))
+      .background(Palette.gold, in: RoundedRectangle(cornerRadius: 8))
+      .overlay(
+        RoundedRectangle(cornerRadius: 5).stroke(Palette.cream.opacity(0.5), lineWidth: 0.7)
+          .padding(3)
+      )
+      .shadow(color: Palette.orange.opacity(0.1), radius: 18, y: 5)
     }
     .buttonStyle(PressStyle())
     .accessibilityIdentifier(id)
@@ -667,9 +717,9 @@ struct MarketRoot: View {
     -> some View
   {
     Button(action: action) {
-      Image(systemName: icon).font(.system(size: 17))
+      Image(systemName: icon).font(.system(size: 15, weight: .light))
         .frame(width: 44, height: 44)
-        .background(Palette.mint.opacity(0.07), in: Circle())
+        .overlay(Circle().stroke(Palette.rule, lineWidth: 0.7))
     }.accessibilityLabel(label).accessibilityIdentifier(id)
   }
   private func offerTutorial() {
@@ -688,11 +738,13 @@ struct MarketRoot: View {
     let renderer = ImageRenderer(
       content:
         VStack(spacing: 22) {
-          Text("MOON MARKET").font(.system(size: 18, weight: .medium, design: .serif)).tracking(4)
+          Text("Moon Market").font(Lettering.display(38)).tracking(-1)
             .foregroundStyle(Palette.cream)
+          Image(store.run.won ? "BazaarThriving" : "Bazaar")
+            .resizable().scaledToFill().frame(width: 330, height: 180).clipped()
           ReceiptView(run: store.run)
-          Text("A tiny stall. A whole galaxy of possibility.")
-            .font(.system(size: 11)).foregroundStyle(Palette.muted)
+          Text("Small stall. Infinite possibility.")
+            .font(Lettering.italic(17)).foregroundStyle(Palette.muted)
         }
         .padding(30).frame(width: 390).background(Palette.ink)
     )
@@ -704,44 +756,73 @@ struct MarketRoot: View {
 struct ReceiptView: View {
   let run: Run
   var body: some View {
-    VStack(spacing: 13) {
+    VStack(spacing: 12) {
       HStack {
-        Image(systemName: "moon.stars.fill")
+        VStack(alignment: .leading, spacing: 3) {
+          Text("LUNE TRADING CO.").font(Lettering.label(9)).tracking(2)
+          Text("OFFICIAL MARKET RECEIPT").font(.system(size: 7, design: .monospaced)).tracking(1)
+        }
         Spacer()
-        Text("LUNE TRADING CO.").font(.system(size: 10, weight: .bold, design: .monospaced))
-          .tracking(1)
-        Spacer()
-        Image(systemName: "sparkle")
+        Image(systemName: "moon.stars.fill").font(.system(size: 24, weight: .ultraLight))
       }
-      Text(run.won ? "A STALL IS BORN" : "UNTIL THE NEXT ORBIT")
-        .font(.system(size: 10, weight: .bold, design: .monospaced)).tracking(2)
-      HStack(alignment: .firstTextBaseline, spacing: 4) {
-        Text("\(run.cash)").font(.system(size: 57, weight: .regular, design: .serif)).tracking(-3)
-        Text("cr").font(.system(size: 18, design: .serif))
+      Rectangle().fill(Palette.ink.opacity(0.3)).frame(height: 0.5)
+      HStack(alignment: .center) {
+        VStack(alignment: .leading, spacing: 0) {
+          Text("FINAL BALANCE").font(Lettering.label(8)).tracking(1.5)
+          HStack(alignment: .firstTextBaseline, spacing: 4) {
+            Text("\(run.cash)").font(Lettering.display(65)).tracking(-3)
+            Text("cr").font(Lettering.italic(22))
+          }
+        }
+        Spacer()
+        ZStack {
+          Circle().stroke(Palette.ink.opacity(0.5), lineWidth: 1)
+          Circle().stroke(Palette.ink.opacity(0.25), lineWidth: 0.5).padding(4)
+          VStack(spacing: 1) {
+            Image(systemName: run.won ? "sparkles" : "moon")
+              .font(.system(size: 15, weight: .light))
+            Text("VIII").font(Lettering.display(22))
+            Text("NIGHTS").font(Lettering.label(6)).tracking(1.5)
+          }
+        }
+        .frame(width: 70, height: 70).rotationEffect(.degrees(-12))
+        .accessibilityHidden(true)
       }
       HStack {
         Text("NET PROFIT")
         Spacer()
         Text("\(run.profit >= 0 ? "+" : "")\(run.profit) cr").bold()
       }.font(.system(size: 13, design: .monospaced))
-      Rectangle().fill(Palette.ink.opacity(0.2)).frame(height: 1)
+      Rectangle().fill(Palette.ink.opacity(0.2)).frame(height: 0.5)
+      HStack(alignment: .bottom, spacing: 8) {
+        ForEach(Array(run.history.enumerated()), id: \.offset) { index, settlement in
+          VStack(spacing: 4) {
+            Rectangle()
+              .fill(Palette.ink.opacity(settlement.net > 0 ? 0.72 : 0.25))
+              .frame(height: CGFloat(max(3, min(30, abs(settlement.net) / 5))))
+            Text(String(index + 1)).font(.system(size: 7, design: .monospaced))
+          }.frame(maxWidth: .infinity)
+        }
+      }
+      .frame(height: 42, alignment: .bottom)
+      .accessibilityLabel("Eight-night trading history")
       HStack {
         Text("\(run.history.reduce(0) { $0 + $1.customers }) CUSTOMERS")
         Spacer()
-        Text("8 NIGHTS")
+        Text(run.won ? "MOONSHOT MADE" : "ORBIT COMPLETE")
       }.font(.system(size: 10, design: .monospaced))
-      HStack(spacing: 0) {
-        ForEach(0..<35) { index in
-          Rectangle().frame(width: index % 3 == 0 ? 3 : 1, height: 19)
-            .frame(maxWidth: .infinity)
-        }
-      }.opacity(0.65).accessibilityHidden(true)
-      Text("\(run.daily ? "DAILY ORBIT" : "ORBIT") / \(run.seed)")
-        .font(.system(size: 10, design: .monospaced)).tracking(1)
+      Rectangle().fill(Palette.ink.opacity(0.25))
+        .frame(height: 0.5).padding(.horizontal, -22)
+      Text("\(run.daily ? "DAILY ORBIT" : "ORBIT") / \(String(run.seed))")
+        .font(.system(size: 9, design: .monospaced)).tracking(1)
+      Text("Thank you for trading among the stars.")
+        .font(Lettering.italic(14))
     }
     .padding(22)
     .foregroundStyle(Palette.ink)
     .background(Palette.cream, in: ReceiptShape())
+    .overlay { PaperGrain().clipShape(ReceiptShape()) }
+    .shadow(color: .black.opacity(0.25), radius: 12, y: 8)
     .accessibilityElement(children: .combine)
   }
 }

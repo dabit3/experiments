@@ -1,7 +1,7 @@
 # Moon Market
 
 A native, offline iPhone strategy game in SwiftUI. Run a tiny lunar produce stall
-for eight nights. Custom Canvas artwork, deterministic markets, transparent
+for eight nights. Original illustrated dioramas with native Canvas stardust, deterministic markets, transparent
 transaction previews, persistent runs, illustrated receipt sharing and no dependencies.
 
 ## Build and run
@@ -31,6 +31,16 @@ xcrun simctl launch SIMULATOR_UUID ai.devin.nativegames.moonmarket
 
 Optional project regeneration: `brew install xcodegen` then `xcodegen generate`
 (verified with 2.46.0). Icon regeneration: `swift Tools/GenerateIcon.swift`.
+
+## Visual identity
+
+The bazaar and produce use bundled, original AI-generated miniature illustrations:
+aged brass, striped teal cloth, glazed alien produce and warm lantern light.
+Separate quiet/thriving artwork reflects the 600-credit milestone. SwiftUI supplies
+the controls, trade states, copper rules, orbital progress and engraved moon seal;
+Canvas animates ambient stardust and draws receipt paper grain. Baskerville and
+Avenir Next are system fonts. No asset downloads or services are needed at runtime.
+The shared receipt includes the bazaar and the actual eight-night trading history.
 
 ## Checks
 
