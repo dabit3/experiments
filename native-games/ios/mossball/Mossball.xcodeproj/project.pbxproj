@@ -1,0 +1,116 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+		000000000000000000000064 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mossball/ContentView.swift"; sourceTree = "<group>"; };
+		0000000000000000000000C8 = { isa = PBXBuildFile; fileRef = 000000000000000000000064; };
+		000000000000000000000065 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mossball/GameStore.swift"; sourceTree = "<group>"; };
+		0000000000000000000000C9 = { isa = PBXBuildFile; fileRef = 000000000000000000000065; };
+		000000000000000000000066 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mossball/GardenCanvas.swift"; sourceTree = "<group>"; };
+		0000000000000000000000CA = { isa = PBXBuildFile; fileRef = 000000000000000000000066; };
+		000000000000000000000067 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mossball/GolfModel.swift"; sourceTree = "<group>"; };
+		0000000000000000000000CB = { isa = PBXBuildFile; fileRef = 000000000000000000000067; };
+		000000000000000000000068 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mossball/MossballApp.swift"; sourceTree = "<group>"; };
+		0000000000000000000000CC = { isa = PBXBuildFile; fileRef = 000000000000000000000068; };
+		000000000000000000000069 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mossball/Scorecard.swift"; sourceTree = "<group>"; };
+		0000000000000000000000CD = { isa = PBXBuildFile; fileRef = 000000000000000000000069; };
+		00000000000000000000006A = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MossballTests/GolfTests.swift"; sourceTree = "<group>"; };
+		0000000000000000000000CE = { isa = PBXBuildFile; fileRef = 00000000000000000000006A; };
+		00000000000000000000012C = { isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Mossball/Assets.xcassets; sourceTree = "<group>"; };
+		00000000000000000000012D = { isa = PBXBuildFile; fileRef = 00000000000000000000012C; };
+		00000000000000000000012E = { isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Mossball/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		00000000000000000000012F = { isa = PBXBuildFile; fileRef = 00000000000000000000012E; };
+		00000000000000000000000A = { isa = PBXFileReference; explicitFileType = wrapper.application; path = Mossball.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		00000000000000000000000B = { isa = PBXFileReference; explicitFileType = wrapper.cfbundle; path = MossballTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00000000000000000000000C = { isa = PBXGroup; name = Products; children = (00000000000000000000000A, 00000000000000000000000B); sourceTree = "<group>"; };
+		000000000000000000000002 = { isa = PBXGroup; children = (000000000000000000000064, 000000000000000000000065, 000000000000000000000066, 000000000000000000000067, 000000000000000000000068, 000000000000000000000069, 00000000000000000000006A, 00000000000000000000012C, 00000000000000000000012E, 00000000000000000000000C); sourceTree = "<group>"; };
+		000000000000000000000014 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (0000000000000000000000C8, 0000000000000000000000C9, 0000000000000000000000CA, 0000000000000000000000CB, 0000000000000000000000CC, 0000000000000000000000CD); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000015 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (0000000000000000000000CE); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000016 = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000012D, 00000000000000000000012F); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000017 = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000018 = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		000000000000000000000019 = { isa = PBXContainerItemProxy; containerPortal = 000000000000000000000001; proxyType = 1; remoteGlobalIDString = 000000000000000000000003; remoteInfo = Mossball; };
+		00000000000000000000001A = { isa = PBXTargetDependency; target = 000000000000000000000003; targetProxy = 000000000000000000000019; };
+		000000000000000000000028 = { isa = XCBuildConfiguration; name = Debug; buildSettings = {
+        
+CLANG_ENABLE_MODULES = YES;
+SWIFT_VERSION = 5.0;
+IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+SDKROOT = iphoneos;
+TARGETED_DEVICE_FAMILY = 1;
+CODE_SIGN_STYLE = Automatic;
+
+        SWIFT_OPTIMIZATION_LEVEL = -Onone;
+        SWIFT_COMPILATION_MODE = singlefile;
+        DEBUG_INFORMATION_FORMAT = dwarf;
+        ENABLE_TESTABILITY = YES;
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+        GCC_OPTIMIZATION_LEVEL = 0;
+    }; };
+		00000000000000000000002A = { isa = XCBuildConfiguration; name = Debug; buildSettings = {
+        PRODUCT_NAME = Mossball;
+        PRODUCT_BUNDLE_IDENTIFIER = com.nader.mossball;
+        INFOPLIST_FILE = Mossball/Info.plist;
+        ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+        MARKETING_VERSION = 1.0;
+        CURRENT_PROJECT_VERSION = 1;
+        LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+        SUPPORTS_MACCATALYST = NO;
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+        SWIFT_EMIT_LOC_STRINGS = YES;
+    }; };
+		00000000000000000000002C = { isa = XCBuildConfiguration; name = Debug; buildSettings = {
+        PRODUCT_NAME = MossballTests;
+        PRODUCT_BUNDLE_IDENTIFIER = com.nader.mossball.tests;
+        GENERATE_INFOPLIST_FILE = YES;
+        TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mossball.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Mossball";
+        BUNDLE_LOADER = "$(TEST_HOST)";
+        LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+    }; };
+		000000000000000000000029 = { isa = XCBuildConfiguration; name = Release; buildSettings = {
+        
+CLANG_ENABLE_MODULES = YES;
+SWIFT_VERSION = 5.0;
+IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+SDKROOT = iphoneos;
+TARGETED_DEVICE_FAMILY = 1;
+CODE_SIGN_STYLE = Automatic;
+
+        SWIFT_OPTIMIZATION_LEVEL = -O;
+        SWIFT_COMPILATION_MODE = wholemodule;
+        DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+        ENABLE_TESTABILITY = NO;
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
+        GCC_OPTIMIZATION_LEVEL = s;
+    }; };
+		00000000000000000000002B = { isa = XCBuildConfiguration; name = Release; buildSettings = {
+        PRODUCT_NAME = Mossball;
+        PRODUCT_BUNDLE_IDENTIFIER = com.nader.mossball;
+        INFOPLIST_FILE = Mossball/Info.plist;
+        ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+        MARKETING_VERSION = 1.0;
+        CURRENT_PROJECT_VERSION = 1;
+        LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+        SUPPORTS_MACCATALYST = NO;
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+        SWIFT_EMIT_LOC_STRINGS = YES;
+    }; };
+		00000000000000000000002D = { isa = XCBuildConfiguration; name = Release; buildSettings = {
+        PRODUCT_NAME = MossballTests;
+        PRODUCT_BUNDLE_IDENTIFIER = com.nader.mossball.tests;
+        GENERATE_INFOPLIST_FILE = YES;
+        TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mossball.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Mossball";
+        BUNDLE_LOADER = "$(TEST_HOST)";
+        LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+    }; };
+		00000000000000000000001E = { isa = XCConfigurationList; buildConfigurations = (000000000000000000000028, 000000000000000000000029); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		00000000000000000000001F = { isa = XCConfigurationList; buildConfigurations = (00000000000000000000002A, 00000000000000000000002B); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		000000000000000000000020 = { isa = XCConfigurationList; buildConfigurations = (00000000000000000000002C, 00000000000000000000002D); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		000000000000000000000003 = { isa = PBXNativeTarget; buildConfigurationList = 00000000000000000000001F; buildPhases = (000000000000000000000014, 000000000000000000000017, 000000000000000000000016); buildRules = (); dependencies = (); name = Mossball; productName = Mossball; productReference = 00000000000000000000000A; productType = "com.apple.product-type.application"; };
+		000000000000000000000004 = { isa = PBXNativeTarget; buildConfigurationList = 000000000000000000000020; buildPhases = (000000000000000000000015, 000000000000000000000018); buildRules = (); dependencies = (00000000000000000000001A); name = MossballTests; productName = MossballTests; productReference = 00000000000000000000000B; productType = "com.apple.product-type.bundle.unit-test"; };
+		000000000000000000000001 = { isa = PBXProject; attributes = { LastUpgradeCheck = 2600; }; buildConfigurationList = 00000000000000000000001E; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = 000000000000000000000002; productRefGroup = 00000000000000000000000C; projectDirPath = ""; projectRoot = ""; targets = (000000000000000000000003, 000000000000000000000004); };
+	};
+	rootObject = 000000000000000000000001;
+}
