@@ -33,8 +33,6 @@ struct HarborIllustration: View {
   var body: some View {
     GeometryReader { geometry in
       Image("Harbor").resizable().scaledToFit()
-        .frame(width: geometry.size.width, height: geometry.size.height)
-        .clipped()
         .mask {
           LinearGradient(
             stops: [
@@ -42,8 +40,19 @@ struct HarborIllustration: View {
               .init(color: .black, location: 0.12),
               .init(color: .black, location: 0.84),
               .init(color: .clear, location: 1),
-            ], startPoint: .top, endPoint: .bottom)
+            ], startPoint: .top, endPoint: .bottom
+          )
+          .mask {
+            LinearGradient(
+              stops: [
+                .init(color: .clear, location: 0),
+                .init(color: .black, location: 0.08),
+                .init(color: .black, location: 0.92),
+                .init(color: .clear, location: 1),
+              ], startPoint: .leading, endPoint: .trailing)
+          }
         }
+        .frame(width: geometry.size.width, height: geometry.size.height)
         .overlay {
           TimelineView(.animation(minimumInterval: 0.06, paused: reduceMotion)) { timeline in
             Canvas { context, size in
@@ -398,12 +407,16 @@ struct PaperTexture: View {
   var light = false
   var body: some View {
     Canvas { context, size in
-      for i in 0..<1600 {
-        let x = CGFloat((i * 127 + 31) % 997) / 997 * size.width
-        let y = CGFloat((i * 193 + 71) % 991) / 991 * size.height
+      var seed: UInt64 = 0x5041_5045_52
+      let fibers = max(0, min(4000, Int(size.width * size.height / 90)))
+      for i in 0..<fibers {
+        seed = seed &* 2_862_933_555_777_941_757 &+ 3_037_000_493
+        let x = CGFloat((seed >> 32) % 65_536) / 65_536 * size.width
+        seed = seed &* 2_862_933_555_777_941_757 &+ 3_037_000_493
+        let y = CGFloat((seed >> 32) % 65_536) / 65_536 * size.height
         context.fill(
           Path(CGRect(x: x, y: y, width: i % 3 == 0 ? 1.5 : 0.6, height: 0.5)),
-          with: .color(light ? Ink.cream.opacity(0.045) : Ink.night.opacity(0.08)))
+          with: .color(light ? Ink.cream.opacity(0.035) : Ink.night.opacity(0.06)))
       }
     }.allowsHitTesting(false).accessibilityHidden(true)
   }

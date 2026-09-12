@@ -249,6 +249,7 @@ struct GameView: View {
     } label: {
       Label(label, systemImage: icon).font(.system(size: 12))
         .foregroundStyle(Ink.paper).frame(maxWidth: .infinity, minHeight: 44)
+        .contentShape(Rectangle())
     }
     .buttonStyle(PaperPressStyle()).disabled(disabled).opacity(disabled ? 0.3 : 1)
     .accessibilityIdentifier(label.lowercased())
@@ -367,7 +368,7 @@ struct BoardView: View {
             )
             .allowsHitTesting(false)
         }
-      }.shadow(color: .black.opacity(0.25), radius: 18, y: 14)
+      }.compositingGroup().shadow(color: .black.opacity(0.17), radius: 10, y: 8)
     }
   }
 

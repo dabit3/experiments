@@ -166,6 +166,7 @@ struct RootView: View {
                 Image(systemName: "arrow.up.right").font(.system(size: 11, weight: .light))
               }
               .foregroundStyle(Ink.muted).frame(minHeight: 44)
+              .contentShape(Rectangle())
               .overlay(alignment: .bottom) {
                 Rectangle().fill(Ink.paper.opacity(0.12)).frame(height: 0.5)
               }
@@ -184,6 +185,7 @@ struct PaperSheet<Content: View>: View {
   let title: String
   let subtitle: String
   let closeLabel: String
+  var closeIdentifier: String?
   let close: () -> Void
   @ViewBuilder let content: Content
 
@@ -196,7 +198,8 @@ struct PaperSheet<Content: View>: View {
           Button(action: close) {
             Image(systemName: "xmark").font(.system(size: 17, weight: .light))
               .foregroundStyle(Ink.blue).frame(width: 44, height: 44)
-          }.accessibilityLabel(closeLabel).accessibilityIdentifier(closeLabel)
+              .contentShape(Rectangle())
+          }.accessibilityLabel(closeLabel).accessibilityIdentifier(closeIdentifier ?? closeLabel)
         }
         VStack(alignment: .leading, spacing: 8) {
           Text(title).font(Ink.title(36)).tracking(-0.8).foregroundStyle(Ink.night)
@@ -219,7 +222,7 @@ struct SettingsView: View {
   var body: some View {
     PaperSheet(
       title: "Quiet details", subtitle: "Settle into your own rhythm.",
-      closeLabel: "closeSettings"
+      closeLabel: "Close settings", closeIdentifier: "closeSettings"
     ) {
       dismiss()
     } content: {
@@ -291,7 +294,7 @@ struct ChapterView: View {
                   ? "lock" : store.completed[String(level.id)] != nil ? "checkmark" : "arrow.right"
               )
               .font(.system(size: 13, weight: .light)).foregroundStyle(Ink.red)
-            }.padding(.vertical, 16)
+            }.padding(.vertical, 16).contentShape(Rectangle())
           }
           .buttonStyle(PaperPressStyle())
           .disabled(level.id > store.unlocked)
