@@ -29,11 +29,14 @@ Apple signing configuration. App Store submission is outside this project.
 1. Choose a track and Normal or Practice, then tap Play.
 2. Tap **LET’S GO** to start; tap the field or the large **TAP TO JUMP** pad to jump.
 3. Clear coral spike groups and land on the cyan ground. No double jumps.
-4. Pause in the top-right corner. Resume, restart or return to tracks from there.
+4. Pause in the top-right corner. Resume gives a three-beat count-in before motion;
+   restart or return to tracks from the same menu.
 5. On a collision, **Try again** starts immediately.
 
 Space also starts/jumps with a connected hardware keyboard (including Simulator).
 It invokes the same input action and uses the same physics as touch.
+Both the field and jump pad trigger on touch-down, once per contact; holding and
+releasing the pad does not produce another jump.
 
 Normal mode requires one continuous clean run. Practice automatically saves at
 three authored safe checkpoints within that session; retries start at the last

@@ -9,6 +9,8 @@ final class GameModel: ObservableObject {
   @Published var engine = Engine(stage: Stage.all[0], practice: false)
   @Published var attempts = 0
   @Published var checkpointNotice = false
+  @Published var resultReady = false
+  @Published var resumeCount = 0
   @Published var sound: Bool {
     didSet {
       defaults.set(sound, forKey: "sound")
@@ -21,6 +23,8 @@ final class GameModel: ObservableObject {
   let audio = PulseAudio()
   private let defaults: UserDefaults
   private var noticeTimer = 0.0
+  private var resultDelay = 0.0
+  private var resumeDelay = 0.0
   private let haptic = UINotificationFeedbackGenerator()
 
   var stage: Stage { Stage.all[selection] }
@@ -38,6 +42,10 @@ final class GameModel: ObservableObject {
     engine = Engine(stage: stage, practice: practice)
     attempts = defaults.integer(forKey: "attempts.\(selection)")
     checkpointNotice = false
+    resultReady = false
+    resultDelay = 0
+    resumeDelay = 0
+    resumeCount = 0
     audio.prepare(stage: stage)
     screenIsGame = true
   }
@@ -56,6 +64,19 @@ final class GameModel: ObservableObject {
   }
 
   func tick(_ dt: Double) {
+    if resumeDelay > 0 {
+      resumeDelay = max(0, resumeDelay - dt)
+      resumeCount = Int(ceil(resumeDelay / (60 / stage.bpm)))
+      if resumeDelay == 0 {
+        engine.resume()
+        playAudio()
+      }
+      return
+    }
+    if resultDelay > 0 {
+      resultDelay -= dt
+      if resultDelay <= 0 { resultReady = true }
+    }
     let previousPhase = engine.phase
     let previousCheckpoint = engine.checkpoint
     engine.advance(dt)
@@ -73,28 +94,38 @@ final class GameModel: ObservableObject {
       audio.stop()
       audio.effect(success: engine.phase == .cleared, enabled: sound)
       haptic.notificationOccurred(engine.phase == .cleared ? .success : .error)
+      resultDelay = engine.phase == .cleared ? 0.2 : 0.45
     }
   }
 
   func pause() {
+    resumeDelay = 0
+    resumeCount = 0
     engine.pause()
     audio.stop()
   }
 
   func resume() {
-    engine.resume()
-    playAudio()
+    guard engine.phase == .paused else { return }
+    resumeDelay = 3 * 60 / stage.bpm
+    resumeCount = 3
   }
 
   func retry() {
     engine.retry()
     checkpointNotice = false
+    resultReady = false
+    resultDelay = 0
+    resumeDelay = 0
+    resumeCount = 0
     tap()
   }
 
   func home() {
     if engine.phase == .running || engine.phase == .paused { saveResult() }
     audio.stop()
+    resumeDelay = 0
+    resumeCount = 0
     screenIsGame = false
   }
 

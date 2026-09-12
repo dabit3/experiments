@@ -16,6 +16,7 @@
 		8809E85E7EFE06B1F4F0F5F8 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3025E5314B3D3EC708846B86 /* GameScene.swift */; };
 		CAF7972DA52B37DCE223DF06 /* Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D36B5ADA0CC047B5618720 /* Engine.swift */; };
 		E26F3D23F7F3DF4C68BAC105 /* PulseboundUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7482A915C25DE1D9C445D7DF /* PulseboundUITests.swift */; };
+		E66049F8EAABB75426C3365E /* TouchPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45785FEFAD75808225930C7B /* TouchPad.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		06444DC44A5F72965F38A3DA /* PulseboundUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PulseboundUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D08CDD3BA0C73EFE475ED34 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		3025E5314B3D3EC708846B86 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		45785FEFAD75808225930C7B /* TouchPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchPad.swift; sourceTree = "<group>"; };
 		524986394C8069C443EF3726 /* Pulsebound.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Pulsebound.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DD955148DFD8D32FF71A5D8 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		7289AE131F784896D1D5FF74 /* PulseboundApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseboundApp.swift; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 				3025E5314B3D3EC708846B86 /* GameScene.swift */,
 				7289AE131F784896D1D5FF74 /* PulseboundApp.swift */,
 				E33E880AD82DEF4149A248FE /* Stage.swift */,
+				45785FEFAD75808225930C7B /* TouchPad.swift */,
 				1D08CDD3BA0C73EFE475ED34 /* Views.swift */,
 			);
 			path = Sources;
@@ -187,6 +190,7 @@
 				8809E85E7EFE06B1F4F0F5F8 /* GameScene.swift in Sources */,
 				386D2D9ED1F32A368A9256CE /* PulseboundApp.swift in Sources */,
 				7E5D82CD76792F4FE87301C5 /* Stage.swift in Sources */,
+				E66049F8EAABB75426C3365E /* TouchPad.swift in Sources */,
 				624C84C7CFB77D96D04AEB6F /* Views.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

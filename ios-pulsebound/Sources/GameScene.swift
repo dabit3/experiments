@@ -41,8 +41,8 @@ final class GameScene: SKScene {
       let shape = SKShapeNode(path: path)
       shape.fillColor = coral.withAlphaComponent(0.22)
       shape.strokeColor = coral
-      shape.lineWidth = 2.6
-      shape.glowWidth = 2
+      shape.lineWidth = 3.4
+      shape.glowWidth = 3
       shape.position = CGPoint(x: obstacle.x, y: ground)
       world.addChild(shape)
       let dot = SKShapeNode(circleOfRadius: 2.3)
@@ -72,7 +72,11 @@ final class GameScene: SKScene {
     finish.glowWidth = 10
     finish.position = CGPoint(x: model.stage.length, y: ground + 140)
     world.addChild(finish)
-    let body = SKShapeNode(rectOf: CGSize(width: 38, height: 38), cornerRadius: 7)
+    let aura = SKShapeNode(rectOf: CGSize(width: 50, height: 50), cornerRadius: 12)
+    aura.strokeColor = cyan.withAlphaComponent(0.2)
+    aura.lineWidth = 1.5
+    player.addChild(aura)
+    let body = SKShapeNode(rectOf: CGSize(width: 42, height: 42), cornerRadius: 7)
     body.fillColor = cyan
     body.strokeColor = UIColor.white.withAlphaComponent(0.9)
     body.lineWidth = 2

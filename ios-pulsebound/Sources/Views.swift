@@ -92,7 +92,7 @@ struct HomeView: View {
           .font(.system(size: 13))
         VStack(alignment: .leading, spacing: 3) {
           Text(title).font(.system(size: 12, weight: .bold))
-          Text(detail).font(.system(size: 9))
+          Text(detail).font(.system(size: 10))
             .foregroundStyle(Palette.muted)
         }
         Spacer(minLength: 0)
@@ -135,7 +135,7 @@ struct StageCard: View {
               .foregroundStyle(selected ? Palette.coral : Palette.muted)
             Text("·  \(Int(stage.bpm)) BPM  ·  \(stage.duration) SEC")
               .foregroundStyle(Palette.muted)
-          }.font(.system(size: 8, weight: .semibold)).tracking(0.6)
+          }.font(.system(size: 10, weight: .semibold)).tracking(0.2)
         }
         Spacer(minLength: 0)
         VStack(alignment: .trailing, spacing: 5) {
@@ -145,7 +145,7 @@ struct StageCard: View {
             Text("\(Int(model.bests[stage.id]))%")
               .font(.system(size: 13, weight: .bold, design: .monospaced))
           }
-          Text("BEST").font(.system(size: 7, weight: .bold)).tracking(1)
+          Text("BEST").font(.system(size: 9, weight: .bold)).tracking(1)
             .foregroundStyle(Palette.muted)
         }
       }
@@ -208,10 +208,11 @@ struct HeroArt: View {
 struct PlayView: View {
   @ObservedObject var model: GameModel
   @State private var scene: GameScene?
+  @State private var padPressed = false
 
   var body: some View {
     ZStack {
-      VStack(spacing: 20) {
+      VStack(spacing: 14) {
         HStack {
           IconButton(icon: "arrow.left", label: "Back to tracks", action: model.home)
           Spacer()
@@ -227,22 +228,19 @@ struct PlayView: View {
               text: "TRACK 0\(model.selection + 1) / \(Int(model.stage.bpm)) BPM",
               color: Palette.coral)
             Text(model.stage.title)
-              .font(.system(size: 32, weight: .heavy, design: .rounded)).tracking(-1)
-            Text(model.stage.subtitle)
-              .font(.system(size: 12)).foregroundStyle(Palette.muted)
+              .font(.system(size: 27, weight: .heavy, design: .rounded)).tracking(-0.7)
           }
           Spacer()
-          ProgressRing(value: model.engine.progress, size: 76, lineWidth: 4)
+          ProgressRing(value: model.engine.progress, size: 62, lineWidth: 3)
         }.padding(.horizontal, 26)
 
         HStack {
           Text(String(format: "ATTEMPT %02d", max(1, model.attempts)))
           Spacer()
-          Text("\(model.practice ? "PRACTICE" : "PERSONAL") BEST  \(Int(model.best))%")
-        }.font(.system(size: 9, weight: .semibold, design: .monospaced))
-          .tracking(0.7).foregroundStyle(Palette.muted).padding(.horizontal, 26)
+          Text("\(model.practice ? "PRACTICE" : "LOCAL") BEST  \(Int(model.best))%")
+        }.font(.system(size: 11, weight: .semibold, design: .monospaced))
+          .tracking(0.2).foregroundStyle(Palette.muted).padding(.horizontal, 26)
 
-        Spacer(minLength: 0)
         ZStack {
           if let scene {
             SpriteView(scene: scene, preferredFramesPerSecond: 60)
@@ -283,10 +281,9 @@ struct PlayView: View {
               ? "Checkpoints save automatically. Retry from your last flag."
               : "A clean run. No checkpoints. Every beat counts."
           )
-          .font(.system(size: 10)).foregroundStyle(Palette.muted)
+          .font(.system(size: 11)).foregroundStyle(Palette.muted)
         }.padding(.horizontal, 24)
-        Spacer(minLength: 0)
-        Button(action: model.tap) {
+        ZStack {
           VStack(spacing: 7) {
             HStack(spacing: 10) {
               Image(systemName: model.engine.phase == .ready ? "play.fill" : "arrow.up")
@@ -297,25 +294,39 @@ struct PlayView: View {
               model.engine.phase == .ready
                 ? "Your rhythm starts here" : "Light touch. Perfect timing."
             )
-            .font(.system(size: 10)).foregroundStyle(Palette.cyan.opacity(0.7))
+            .font(.system(size: 11)).foregroundStyle(Palette.cyan.opacity(0.8))
           }
           .frame(maxWidth: .infinity).frame(height: 89)
-          .background(Palette.cyan.opacity(0.085))
+          .background(Palette.cyan.opacity(padPressed ? 0.2 : 0.085))
           .clipShape(RoundedRectangle(cornerRadius: 22))
           .overlay(RoundedRectangle(cornerRadius: 22).stroke(Palette.cyan.opacity(0.45)))
+          .accessibilityHidden(true)
+          TouchPad(
+            label: model.engine.phase == .ready ? "Let's go" : "Tap to jump",
+            value:
+              "phase \(String(describing: model.engine.phase)), progress \(Int(model.engine.progress)), grounded \(model.engine.grounded), next \(Int(model.engine.nextHazardDistance ?? 9999))",
+            action: model.tap, pressed: { padPressed = $0 }
+          )
         }
-        .buttonStyle(JumpButtonStyle())
-        .keyboardShortcut(.space, modifiers: [])
+        .frame(height: 89)
         .foregroundStyle(Palette.cyan)
-        .accessibilityIdentifier("jump")
-        .accessibilityValue(
-          "phase \(String(describing: model.engine.phase)), progress \(Int(model.engine.progress)), grounded \(model.engine.grounded), next \(Int(model.engine.nextHazardDistance ?? 9999))"
-        )
         .padding(.horizontal, 24).padding(.bottom, 12)
+        Spacer(minLength: 0)
       }.padding(.top, 6)
 
-      if model.engine.phase == .paused { PauseOverlay(model: model) }
-      if model.engine.phase == .crashed || model.engine.phase == .cleared {
+      if model.engine.phase == .paused && model.resumeCount == 0 { PauseOverlay(model: model) }
+      if model.resumeCount > 0 {
+        VStack(spacing: 10) {
+          Text("\(model.resumeCount)")
+            .font(.system(size: 66, weight: .light, design: .rounded))
+          Eyebrow(text: "FIND THE BEAT", color: Palette.cyan)
+        }
+        .frame(width: 180, height: 180)
+        .background(Palette.background, in: Circle())
+        .overlay(Circle().stroke(Palette.cyan.opacity(0.5), lineWidth: 2))
+        .allowsHitTesting(false)
+      }
+      if model.resultReady {
         ResultOverlay(model: model)
       }
     }
@@ -328,19 +339,23 @@ struct PauseOverlay: View {
   @ObservedObject var model: GameModel
   var body: some View {
     ZStack {
-      Palette.background.opacity(0.96).ignoresSafeArea()
-      VStack(spacing: 27) {
+      Palette.background.ignoresSafeArea()
+      VStack(spacing: 22) {
         Image(systemName: "pause.circle").font(.system(size: 52, weight: .ultraLight))
           .foregroundStyle(Palette.cyan)
         VStack(spacing: 8) {
           Eyebrow(text: "TAKE A BREATH")
           Text("Between beats.")
             .font(.system(size: 34, weight: .heavy, design: .rounded)).tracking(-1)
-          Text("Your run is right where you left it.")
-            .font(.system(size: 13)).foregroundStyle(Palette.muted)
+          Text(
+            "\(model.stage.title) · \(model.practice ? "Practice" : "Normal") · \(Int(model.engine.progress))%"
+          )
+          .font(.system(size: 13)).foregroundStyle(Palette.muted)
         }
         PrimaryButton(title: "Resume the flow", icon: "play.fill", action: model.resume)
         Button("Restart attempt", action: model.retry).buttonStyle(SecondaryButtonStyle())
+          .background(Palette.panel, in: RoundedRectangle(cornerRadius: 14))
+          .overlay(RoundedRectangle(cornerRadius: 14).stroke(.white.opacity(0.1)))
         HStack {
           Button("Back to tracks", action: model.home)
             .font(.system(size: 13, weight: .semibold))
@@ -357,7 +372,7 @@ struct ResultOverlay: View {
   private var cleared: Bool { model.engine.phase == .cleared }
   var body: some View {
     ZStack {
-      Palette.background.opacity(0.97).ignoresSafeArea()
+      Palette.background.ignoresSafeArea()
       VStack(spacing: 25) {
         HStack {
           Eyebrow(
@@ -370,7 +385,9 @@ struct ResultOverlay: View {
         Spacer(minLength: 0)
         VStack(spacing: 11) {
           Eyebrow(
-            text: cleared ? "FREQUENCY FOUND" : "SO CLOSE. GO AGAIN.",
+            text: cleared
+              ? "FREQUENCY FOUND"
+              : model.engine.progress >= 80 ? "SO CLOSE. GO AGAIN." : "FIND YOUR TIMING",
             color: cleared ? Palette.cyan : Palette.coral)
           Text(cleared ? "Pure resonance." : "One more beat.")
             .font(.system(size: 34, weight: .heavy, design: .rounded)).tracking(-1.2)
@@ -381,14 +398,16 @@ struct ResultOverlay: View {
           cleared
             ? (model.practice
               ? "Practice complete. Ready for a clean run?" : "Every jump. Every beat. All yours.")
-            : "Every attempt brings you closer."
+            : model.engine.jumps == 0
+              ? "Tap as a coral spike approaches your cube."
+              : "Watch the next spike. Jump before it reaches you."
         )
         .font(.system(size: 13)).foregroundStyle(Palette.muted)
         .multilineTextAlignment(.center)
         HStack(spacing: 0) {
           stat("ATTEMPT", value: String(format: "%02d", model.attempts))
           Rectangle().fill(.white.opacity(0.1)).frame(width: 1, height: 28)
-          stat(model.practice ? "PRACTICE BEST" : "PERSONAL BEST", value: "\(Int(model.best))%")
+          stat(model.practice ? "PRACTICE BEST" : "LOCAL BEST", value: "\(Int(model.best))%")
           Rectangle().fill(.white.opacity(0.1)).frame(width: 1, height: 28)
           stat("JUMPS", value: "\(model.engine.jumps)")
         }.padding(.vertical, 19).background(Palette.panel, in: RoundedRectangle(cornerRadius: 18))
@@ -415,7 +434,7 @@ struct ResultOverlay: View {
   private func stat(_ name: String, value: String) -> some View {
     VStack(spacing: 8) {
       Text(value).font(.system(size: 21, weight: .semibold, design: .rounded))
-      Text(name).font(.system(size: 7, weight: .bold)).tracking(1).foregroundStyle(Palette.muted)
+      Text(name).font(.system(size: 10, weight: .bold)).tracking(0.2).foregroundStyle(Palette.muted)
     }.frame(maxWidth: .infinity)
   }
 }
@@ -444,9 +463,11 @@ struct ProgressRing: View {
           Text("%").font(.system(size: size > 100 ? 20 : 10, weight: .light))
             .foregroundStyle(Palette.muted)
         }
-        Text(size > 100 ? "COMPLETED" : "PROGRESS")
-          .font(.system(size: size > 100 ? 8 : 5, weight: .bold))
-          .tracking(size > 100 ? 2 : 0.7).foregroundStyle(Palette.muted)
+        if size > 100 {
+          Text("COMPLETED")
+            .font(.system(size: 10, weight: .bold))
+            .tracking(2).foregroundStyle(Palette.muted)
+        }
       }
     }.frame(width: size, height: size).accessibilityLabel("\(Int(value)) percent completed")
   }
@@ -456,7 +477,7 @@ struct Eyebrow: View {
   let text: String
   var color = Palette.muted
   var body: some View {
-    Text(text).font(.system(size: 9, weight: .bold)).tracking(1.6).foregroundStyle(color)
+    Text(text).font(.system(size: 10, weight: .bold)).tracking(1.3).foregroundStyle(color)
   }
 }
 
