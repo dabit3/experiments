@@ -39,12 +39,25 @@ struct SpiritShape: Shape {
 struct MazeBoard: View {
   let game: Game
   let reducedMotion: Bool
+  var attract = false
 
   var body: some View {
     Canvas { context, size in
       let cell = size.width / CGFloat(game.maze.width)
       let bounds = CGRect(origin: .zero, size: size)
-      context.fill(Path(roundedRect: bounds, cornerRadius: 15), with: .color(Palette.ink))
+      context.fill(
+        Path(roundedRect: bounds, cornerRadius: 15),
+        with: .linearGradient(
+          Gradient(colors: [Palette.panel.opacity(0.55), Palette.ink]),
+          startPoint: .zero, endPoint: CGPoint(x: 0, y: size.height)))
+      var lanes = Path()
+      for y in 0..<game.maze.height {
+        for x in 0..<game.maze.width where !game.maze.walls.contains(Tile(x, y)) {
+          lanes.addRect(
+            CGRect(x: CGFloat(x) * cell, y: CGFloat(y) * cell, width: cell, height: cell))
+        }
+      }
+      context.fill(lanes, with: .color(Palette.blue.opacity(0.045)))
       var walls = Path()
       for tile in game.maze.walls {
         let point = center(tile, cell)
@@ -58,23 +71,47 @@ struct MazeBoard: View {
           }
         }
       }
+      let chase = game.frightened > 0
+      let wallTint = chase ? Palette.mint : Palette.blue
       context.drawLayer { glow in
-        glow.addFilter(.shadow(color: Palette.blue.opacity(0.6), radius: 7))
+        glow.addFilter(.shadow(color: wallTint.opacity(0.55), radius: 9))
         glow.stroke(
-          walls, with: .color(Palette.blue.opacity(0.20)),
-          style: StrokeStyle(lineWidth: cell * 0.63, lineCap: .round, lineJoin: .round))
+          walls, with: .color(wallTint.opacity(0.16)),
+          style: StrokeStyle(lineWidth: cell * 0.66, lineCap: .round, lineJoin: .round))
       }
       context.stroke(
-        walls, with: .color(Color(red: 0.055, green: 0.12, blue: 0.30)),
-        style: StrokeStyle(lineWidth: cell * 0.63, lineCap: .round, lineJoin: .round))
+        walls,
+        with: .linearGradient(
+          Gradient(colors: [
+            Color(red: 0.09, green: 0.16, blue: 0.40), Color(red: 0.045, green: 0.09, blue: 0.24),
+          ]),
+          startPoint: .zero, endPoint: CGPoint(x: size.width, y: size.height)),
+        style: StrokeStyle(lineWidth: cell * 0.66, lineCap: .round, lineJoin: .round))
       context.stroke(
-        walls, with: .color(Palette.blue.opacity(0.78)),
-        style: StrokeStyle(lineWidth: 1.2, lineCap: .round, lineJoin: .round))
+        walls, with: .color(Palette.ink.opacity(0.9)),
+        style: StrokeStyle(lineWidth: cell * 0.30, lineCap: .round, lineJoin: .round))
+      context.stroke(
+        walls, with: .color(wallTint.opacity(chase ? 0.9 : 0.82)),
+        style: StrokeStyle(lineWidth: 1.1, lineCap: .round, lineJoin: .round))
+      let tunnelY = (CGFloat(10) + 0.5) * cell
+      for x in [cell * 0.5, size.width - cell * 0.5] {
+        context.fill(
+          Path(
+            ellipseIn: CGRect(
+              x: x - cell * 0.6, y: tunnelY - cell * 0.6, width: cell * 1.2, height: cell * 1.2)),
+          with: .radialGradient(
+            Gradient(colors: [Palette.violet.opacity(0.35), .clear]),
+            center: CGPoint(x: x, y: tunnelY), startRadius: 0, endRadius: cell * 0.6))
+      }
+      let twinkle = reducedMotion ? 1.0 : 0.85 + sin(game.elapsed * 2.2) * 0.15
       for tile in game.pellets {
         let point = center(tile, cell)
         context.fill(
-          Path(ellipseIn: CGRect(x: point.x - 1.5, y: point.y - 1.5, width: 3, height: 3)),
-          with: .color(Palette.pearl.opacity(0.92)))
+          Path(ellipseIn: CGRect(x: point.x - 3.5, y: point.y - 3.5, width: 7, height: 7)),
+          with: .color(Palette.gold.opacity(0.14 * twinkle)))
+        context.fill(
+          Path(ellipseIn: CGRect(x: point.x - 1.6, y: point.y - 1.6, width: 3.2, height: 3.2)),
+          with: .color(Palette.pearl.opacity(0.95)))
       }
       for tile in game.powers {
         let point = center(tile, cell)
@@ -96,9 +133,17 @@ struct MazeBoard: View {
           with: .color(Palette.pearl.opacity(0.25)), lineWidth: 1)
       }
       let home = center(game.maze.home, cell)
+      context.stroke(
+        Path(
+          ellipseIn: CGRect(
+            x: home.x - cell * 0.42, y: home.y - cell * 0.42, width: cell * 0.84,
+            height: cell * 0.84
+          )),
+        with: .color(Palette.violet.opacity(0.35)), style: StrokeStyle(lineWidth: 1, dash: [2, 3]))
       context.draw(
-        Text("✦").font(.system(size: cell * 0.7)).foregroundStyle(Palette.blue.opacity(0.25)),
+        Text("✦").font(.system(size: cell * 0.5)).foregroundStyle(Palette.violet.opacity(0.5)),
         at: home)
+      drawTail(context, cell: cell, width: size.width)
       for rival in game.hitTime > 0.4 ? game.impactRivals : game.rivals {
         drawRival(context, rival, cell: cell)
       }
@@ -119,11 +164,20 @@ struct MazeBoard: View {
           runner: visiblePlayer)
       }
       if game.bonusTime > 1.6 {
-        context.draw(
-          Text("+\(game.lastBonus)").font(
-            .system(size: cell * 0.7, weight: .black, design: .rounded)
-          )
-          .foregroundStyle(Palette.mint), at: CGPoint(x: point.x, y: point.y - cell))
+        let rise = (2.8 - game.bonusTime) * cell * 0.6
+        context.drawLayer { label in
+          label.addFilter(.shadow(color: Palette.mint.opacity(0.8), radius: 6))
+          label.draw(
+            Text("+\(game.lastBonus)").font(
+              .system(size: cell * 0.78, weight: .black, design: .rounded)
+            )
+            .foregroundStyle(Palette.mint),
+            at: CGPoint(x: point.x, y: max(cell * 0.6, point.y - cell - rise)))
+        }
+      }
+      if attract {
+        context.fill(
+          Path(roundedRect: bounds, cornerRadius: 15), with: .color(Palette.ink.opacity(0.18)))
       }
       if game.hitTime > 0, let hit = game.lastHit {
         let position = hit.position(width: game.maze.width)
@@ -150,11 +204,30 @@ struct MazeBoard: View {
       }
     }
     .clipShape(RoundedRectangle(cornerRadius: 16))
-    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Palette.blue.opacity(0.22), lineWidth: 1))
+    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Palette.rim, lineWidth: 1))
+    .shadow(color: Palette.blue.opacity(attract ? 0 : 0.2), radius: 26, y: 8)
   }
 
   private func center(_ tile: Tile, _ cell: CGFloat) -> CGPoint {
     CGPoint(x: (CGFloat(tile.x) + 0.5) * cell, y: (CGFloat(tile.y) + 0.5) * cell)
+  }
+
+  private func drawTail(_ context: GraphicsContext, cell: CGFloat, width: CGFloat) {
+    guard game.phase == .playing, game.player.next != nil else { return }
+    let position = game.player.position(width: game.maze.width)
+    let direction = game.player.direction
+    for index in 1...4 {
+      let lag = Double(index) * 0.32
+      var x = (position.x + 0.5 - Double(direction.dx) * lag) * cell
+      let y = (position.y + 0.5 - Double(direction.dy) * lag) * cell
+      if x < 0 { x += width }
+      if x > width { x -= width }
+      let radius = cell * (0.30 - Double(index) * 0.055)
+      context.fill(
+        Path(
+          ellipseIn: CGRect(x: x - radius, y: y - radius, width: radius * 2, height: radius * 2)),
+        with: .color(Palette.gold.opacity(0.28 - Double(index) * 0.06)))
+    }
   }
 
   private func drawComet(
@@ -172,11 +245,13 @@ struct MazeBoard: View {
         ),
         with: .color(Palette.pearl.opacity(0.5)), style: StrokeStyle(lineWidth: 1, dash: [2, 3]))
     }
-    context.addFilter(.shadow(color: Palette.pearl.opacity(0.55), radius: 5))
+    context.addFilter(.shadow(color: Palette.gold.opacity(0.7), radius: 6))
     context.fill(
       CometShape(mouth: mouth).path(
         in: CGRect(x: -cell * 0.41, y: -cell * 0.41, width: cell * 0.82, height: cell * 0.82)),
-      with: .color(Palette.pearl))
+      with: .radialGradient(
+        Gradient(colors: [Color(red: 1, green: 0.98, blue: 0.92), Palette.pearl, Palette.gold]),
+        center: CGPoint(x: -cell * 0.1, y: -cell * 0.12), startRadius: 0, endRadius: cell * 0.5))
     context.fill(
       Path(
         ellipseIn: CGRect(x: -cell * 0.08, y: -cell * 0.26, width: cell * 0.10, height: cell * 0.10)
@@ -193,13 +268,18 @@ struct MazeBoard: View {
     let color =
       frightened ? (flashing ? Palette.pearl : Palette.mint) : Palette.rivals[rival.identity]
     if !rival.returning {
+      let frame = CGRect(x: -cell * 0.39, y: -cell * 0.40, width: cell * 0.78, height: cell * 0.82)
       context.drawLayer { body in
-        body.addFilter(.shadow(color: color.opacity(0.45), radius: 4))
+        body.addFilter(.shadow(color: color.opacity(0.5), radius: 5))
         body.fill(
-          SpiritShape(identity: rival.identity).path(
-            in: CGRect(x: -cell * 0.39, y: -cell * 0.40, width: cell * 0.78, height: cell * 0.82)),
-          with: .color(color))
+          SpiritShape(identity: rival.identity).path(in: frame),
+          with: .linearGradient(
+            Gradient(colors: [color.opacity(1), color.opacity(0.62)]),
+            startPoint: CGPoint(x: 0, y: frame.minY), endPoint: CGPoint(x: 0, y: frame.maxY)))
       }
+      context.stroke(
+        SpiritShape(identity: rival.identity).path(in: frame),
+        with: .color(.white.opacity(0.22)), lineWidth: 0.8)
       if rival.identity == 1 {
         context.fill(
           Path(
@@ -249,63 +329,6 @@ struct MazeThumbnail: View {
               width: cell * 0.8, height: cell * 0.8), cornerRadius: 0.4),
           with: .color(index == 0 ? Palette.blue : Palette.rivals[1]))
       }
-    }
-  }
-}
-
-struct TitleArt: View {
-  var body: some View {
-    Canvas { context, _ in
-      var tracks = Path()
-      tracks.move(to: CGPoint(x: 12, y: 74))
-      tracks.addLine(to: CGPoint(x: 106, y: 74))
-      tracks.addQuadCurve(to: CGPoint(x: 124, y: 56), control: CGPoint(x: 124, y: 74))
-      tracks.addLine(to: CGPoint(x: 124, y: 35))
-      tracks.move(to: CGPoint(x: 190, y: 197))
-      tracks.addLine(to: CGPoint(x: 190, y: 183))
-      tracks.addQuadCurve(to: CGPoint(x: 210, y: 163), control: CGPoint(x: 190, y: 163))
-      tracks.addLine(to: CGPoint(x: 296, y: 163))
-      context.drawLayer { layer in
-        layer.addFilter(.shadow(color: Palette.blue.opacity(0.5), radius: 15))
-        layer.stroke(
-          tracks, with: .color(Palette.blue.opacity(0.18)),
-          style: StrokeStyle(lineWidth: 20, lineCap: .round))
-        layer.stroke(
-          tracks, with: .color(Palette.blue.opacity(0.8)),
-          style: StrokeStyle(lineWidth: 1, lineCap: .round))
-      }
-      for x in [133.0, 160, 187] {
-        context.fill(
-          Path(ellipseIn: CGRect(x: x, y: 114, width: 5, height: 5)),
-          with: .color(Palette.pearl.opacity(0.8)))
-      }
-      context.drawLayer { comet in
-        comet.addFilter(.shadow(color: Palette.pearl.opacity(0.4), radius: 24))
-        comet.fill(
-          CometShape(mouth: 0.60).path(in: CGRect(x: 45, y: 83, width: 70, height: 70)),
-          with: .color(Palette.pearl))
-        comet.fill(
-          Path(ellipseIn: CGRect(x: 77, y: 94, width: 6, height: 6)), with: .color(Palette.ink))
-      }
-      context.drawLayer { spirit in
-        spirit.addFilter(.shadow(color: Palette.rivals[1].opacity(0.45), radius: 18))
-        spirit.fill(
-          SpiritShape(identity: 1).path(in: CGRect(x: 214, y: 89, width: 52, height: 58)),
-          with: .color(Palette.rivals[1]))
-        for x in [222.0, 241] {
-          spirit.fill(
-            Path(ellipseIn: CGRect(x: x, y: 106, width: 12, height: 16)), with: .color(.white))
-          spirit.fill(
-            Path(ellipseIn: CGRect(x: x + 1, y: 110, width: 6, height: 8)),
-            with: .color(Palette.ink))
-        }
-      }
-      context.draw(
-        Text("✦").font(.system(size: 18)).foregroundStyle(Palette.pearl.opacity(0.7)),
-        at: CGPoint(x: 202, y: 52))
-      context.draw(
-        Text("✧").font(.system(size: 12)).foregroundStyle(Palette.muted), at: CGPoint(x: 89, y: 191)
-      )
     }
   }
 }
