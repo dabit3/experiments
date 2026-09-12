@@ -96,6 +96,7 @@ struct GameView: View {
           .frame(minHeight: geometry.size.height, alignment: .top)
         }
         .scrollIndicators(.hidden)
+        .clipped()
       }
       if paused {
         Ink.night.opacity(0.94).ignoresSafeArea()
@@ -460,6 +461,10 @@ struct ResultView: View {
   let home: () -> Void
   @State private var shareImage: SharedPostcard?
 
+  private var hintSummary: String {
+    "\(puzzle.hints) \(puzzle.hints == 1 ? "hint" : "hints")"
+  }
+
   var body: some View {
     ZStack {
       Ink.night.ignoresSafeArea()
@@ -483,10 +488,10 @@ struct ResultView: View {
                 Image(systemName: "seal.fill")
                   .foregroundStyle(index < puzzle.rating ? Ink.gold : Ink.muted.opacity(0.25))
               }
-              Text("\(puzzle.moves) moves · \(puzzle.hints) hints")
+              Text("\(puzzle.moves) moves · \(hintSummary)")
                 .font(.system(size: 13)).foregroundStyle(Ink.paper)
             }.accessibilityLabel(
-              "\(puzzle.rating) of 3 seals, \(puzzle.moves) moves, \(puzzle.hints) hints")
+              "\(puzzle.rating) of 3 seals, \(puzzle.moves) moves, \(hintSummary)")
             MainButton(title: level.id == 9 ? "Back to the collection" : "The next letter") {
               if level.id == 9 { home() } else { next() }
             }.accessibilityIdentifier("nextLetter")
@@ -527,7 +532,7 @@ struct ResultView: View {
             .font(.system(size: 12)).foregroundStyle(Ink.muted)
             .frame(minHeight: 44).accessibilityIdentifier("resultHome")
         }.padding(24)
-      }.scrollIndicators(.hidden)
+      }.scrollIndicators(.hidden).clipped()
     }
     .sheet(item: $shareImage) { item in
       ActivitySheet(
