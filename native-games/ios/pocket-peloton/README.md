@@ -1,6 +1,6 @@
 # Pocket Peloton
 
-A native, offline iPhone cycling sprint. SwiftUI + Canvas, original procedural coastal illustrations, four riders and three short roads. No packages, services, accounts, or signing credentials are needed for simulator builds.
+A native, offline iPhone cycling sprint. SwiftUI + Canvas, an illustrated Mediterranean coast, four riders and three short roads. No packages, services, accounts, or signing credentials are needed for simulator builds.
 
 ## Open and run
 
@@ -54,7 +54,18 @@ The XCTest suite covers drafting boundaries and recovery, sprint exhaustion/reco
 
 ## Artwork
 
-The coastal road, sailboats, palms, villas and riders are drawn natively in `CoastArtwork.swift`. The app icon and launch monogram are generated assets with a checked-in native generator:
+`CoastArtwork.swift` renders the moving road, shoreline, markers, slipstreams, shadows and illustrated sprites natively. The home and result poster use an original generated Mediterranean diorama illustration. Original generated scenery/cyclist atlases share its textured miniature style; their source PNGs are included under `Tools/Artwork`. They are static bundled assets with no runtime network or image-generation dependency.
+
+The native importer removes the magenta atlas background, trims each quadrant and writes the transparent asset catalogs:
+
+```sh
+xcrun swift Tools/ImportSprites.swift Tools/Artwork/scenery-atlas.png \
+  PocketPeloton/Assets.xcassets ScenicPine ScenicVilla ScenicRocks ScenicBoat
+xcrun swift Tools/ImportSprites.swift Tools/Artwork/riders-atlas.png \
+  PocketPeloton/Assets.xcassets RiderRed RiderTeal RiderYellow RiderIvory
+```
+
+The app icon and launch monogram have a separate checked-in native generator:
 
 ```sh
 xcrun swift Tools/GenerateArtwork.swift PocketPeloton/Assets.xcassets
@@ -62,6 +73,6 @@ xcrun swift Tools/GenerateArtwork.swift PocketPeloton/Assets.xcassets
 
 ## Accessibility and limitations
 
-Interactive controls have accessibility names/identifiers. Tap-to-toggle sprint avoids prolonged pressing; buttons provide an alternative to swipe steering. Reduce Motion suppresses pedaling and speed particles. Tutorial, settings and results can scroll on smaller displays.
+Interactive controls have accessibility names/identifiers. Tap-to-toggle sprint avoids prolonged pressing; buttons provide an alternative to swipe steering. Reduce Motion suppresses rider sway, lane interpolation and speed particles. Tutorial, settings and results can scroll on smaller displays.
 
 This is a visual reflex game: live spatial obstacles are not fully playable with VoiceOver alone. Haptics and sound effects have independent settings, but physical-device audio, vibration, performance, signing and App Store submission are not validated by simulator evidence. No daily/online ranking, multiplayer, purchases or cloud sync are implied. See the accompanying QA/design report for the specific simulator runs and visual revisions.
