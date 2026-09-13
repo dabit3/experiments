@@ -33,7 +33,7 @@ final class DuelClient: ObservableObject {
   private var connectionGeneration = 0
 
   init() {
-    scene.scaleMode = .aspectFill
+    scene.scaleMode = .aspectFit
     let args = ProcessInfo.processInfo.arguments
     func value(_ key: String) -> String? {
       guard let index = args.firstIndex(of: key), index + 1 < args.count else { return nil }

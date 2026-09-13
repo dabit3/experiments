@@ -25,8 +25,13 @@ final class BattleScene: SKScene {
     fighters.zPosition = 10
     effects.zPosition = 20
     hud.zPosition = 50
-    addChild(fighters)
-    addChild(effects)
+    let arena = SKNode()
+    let arenaScale = 0.85
+    arena.setScale(arenaScale)
+    arena.position = CGPoint(x: size.width * (1 - arenaScale) / 2, y: floorY * (1 - arenaScale))
+    arena.addChild(fighters)
+    arena.addChild(effects)
+    addChild(arena)
     addChild(hud)
     let backdrop = SKSpriteNode(imageNamed: "celestial-stage")
     backdrop.size = size

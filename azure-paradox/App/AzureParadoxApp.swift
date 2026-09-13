@@ -27,8 +27,8 @@ struct DuelView: View {
     GeometryReader { geometry in
       ZStack {
         if client.inArena {
+          ink.ignoresSafeArea()
           SpriteView(scene: client.scene, options: [.ignoresSiblingOrder])
-            .ignoresSafeArea()
           arenaControls
           if client.state?.phase == "result" { result }
         } else {
