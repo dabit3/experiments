@@ -165,6 +165,32 @@ use the hardware output path.
 `arena-audio-origin.json` records the Unix wall-clock origin of the rendered stream
 for alignment with simultaneous device video capture.
 
+### Actual simulator output
+
+For evidence of the ordinary output path, launch **without** `--capture-audio`.
+On a macOS VM with no audio device, the following setup was verified:
+
+```sh
+brew install --cask blackhole-2ch
+system_profiler SPAudioDataType
+# Only if the installed BlackHole endpoint is still absent:
+sudo -n killall coreaudiod
+system_profiler SPAudioDataType
+```
+
+Confirm BlackHole is the default input/output before booting simulators. Restart
+any simulator booted before the endpoint appeared. No host reboot was needed in
+the verified environment. Capture BlackHole input concurrently with the two
+device streams, retaining host/sample timestamps to align them. Mute one app
+through its real speaker control to avoid mixing two copies of the soundtrack.
+Check sample continuity, nonzero PCM, mute silence, sound/event correspondence
+and full media decode; a nonempty audio file alone is insufficient.
+
+The PR's final evidence bundle includes the external native CoreAudio input-tap
+recorder and capture/composition scripts from the actual run. The earlier FFmpeg
+diagnostic omitted timestamp gaps and is explicitly excluded from final media.
+BlackHole output is virtual; it does not verify physical loudspeakers.
+
 ## Architecture
 
 - **SwiftUI**: native lobby, team selection, paired health HUD, virtual controls,
