@@ -665,10 +665,14 @@ final class GameWorld {
   }
 }
 
+final class DecorativeSceneView: SCNView {
+  override func accessibilityElementCount() -> Int { 0 }
+}
+
 struct WorldView: UIViewRepresentable {
   let world: GameWorld
   func makeUIView(context: Context) -> SCNView {
-    let view = SCNView()
+    let view = DecorativeSceneView()
     view.scene = world.scene
     view.pointOfView = world.camera
     view.backgroundColor = .black
@@ -678,6 +682,7 @@ struct WorldView: UIViewRepresentable {
     view.isUserInteractionEnabled = false
     view.isAccessibilityElement = false
     view.accessibilityElementsHidden = true
+    view.accessibilityElements = []
     return view
   }
   func updateUIView(_ uiView: SCNView, context: Context) {}
