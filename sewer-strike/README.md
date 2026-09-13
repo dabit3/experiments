@@ -162,6 +162,45 @@ xcodebuild -project SewerStrike.xcodeproj -scheme SewerStrike \
 It holds movement arrows, taps jump/strike/power, checks server-accepted action
 counters and reconnects the same hero.
 
+### Recording actual game audio on a macOS VM
+
+Establish a host audio endpoint **before booting the simulators**. The verified
+VM setup used BlackHole 2ch 0.7.1:
+
+```sh
+system_profiler SPAudioDataType
+brew install --cask blackhole-2ch
+# Only if installed but still absent, and noninteractive sudo is authorized:
+sudo -n killall coreaudiod
+system_profiler SPAudioDataType
+```
+
+Confirm BlackHole is the default input and output at 48 kHz stereo. Restart
+simulators that booted before the endpoint existed; they may retain stale
+CoreAudio state. Grant the recorder's legitimate microphone permission when
+prompted. Do not restart CoreAudio during a capture.
+
+`simctl recordVideo` does not capture audio. Capture actual BlackHole input
+concurrently with both native streams. In this VM, FFmpeg AVFoundation audio
+capture dropped samples even with a larger buffer; a native `AVAudioEngine`
+input-node tap wrote contiguous PCM instead. Record each callback's
+`AVAudioTime.hostTime`, `sampleTime`, frame count and sample rate. Verify adjacent
+sample continuity, decoded frame count and write errors before using the audio.
+Keep a common host-clock video reference for alignment; independently check
+native Sound OFF/ON transitions against PCM silence/restoration. Use one peer's
+gameplay audio and mute the other through its native menu to avoid doubled music.
+Never replace live capture with bundled music or fill missing capture with a
+generated soundtrack.
+
+The [live-audio report](https://app.devin.ai/attachments/1889f0c3-51a4-4909-b453-34c7d89154ac/runtime-report.md)
+and [machine evidence bundle](https://app.devin.ai/attachments/2bd10608-bbfb-437c-8b68-4f9f8ef2f737/runtime-evidence.zip)
+preserve the tested recorder source, commands, timestamps, assertions and rejected
+capture attempts. This run captured 166.4 seconds of contiguous 48 kHz stereo,
+verified native mute/unmute, and recorded a shared clear and rematch. Sampled
+peer presentation skew reached 405 ms; selected early-to-late relative drift was
+zero, but continuous late absolute synchronization and physical-speaker latency
+were not established.
+
 ## Known gaps / scope
 
 This is an original reference-inspired approximation, not the licensed arcade
