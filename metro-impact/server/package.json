@@ -1,0 +1,17 @@
+{
+  "name": "metro-impact-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check combat.js && node --check combat.test.js && node --check network.test.js",
+    "test": "node --test *.test.js"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  }
+}

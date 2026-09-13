@@ -1,0 +1,44 @@
+name: MetroImpact
+options:
+  bundleIdPrefix: com.metroimpact
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CODE_SIGNING_ALLOWED: NO
+    GENERATE_INFOPLIST_FILE: NO
+targets:
+  MetroImpact:
+    type: application
+    platform: iOS
+    sources:
+      - App
+    resources:
+      - path: Assets
+        type: folder
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Metro Impact
+        CFBundleIdentifier: com.metroimpact.arcade
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
+        UIStatusBarHidden: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSLocalNetworkUsageDescription: Connect two fighters to your local Metro Impact room server.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+        CFBundleURLTypes:
+          - CFBundleURLName: com.metroimpact.arcade
+            CFBundleURLSchemes:
+              - metroimpact
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.metroimpact.arcade
+        SUPPORTS_MACCATALYST: NO
