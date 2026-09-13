@@ -1,16 +1,85 @@
 import AfterhoursCore
 import SwiftUI
 
+enum Sprite {
+  static let size = 13
+
+  static let ghostBody: [[String]] = [
+    [
+      "0000111110000",
+      "0011111111100",
+      "0111111111110",
+      "0111111111110",
+      "1111111111111",
+      "1111111111111",
+      "1111111111111",
+      "1111111111111",
+      "1111111111111",
+      "1111111111111",
+      "1111111111111",
+      "1101111011011",
+      "1000110001001",
+    ],
+    [
+      "0000111110000",
+      "0011111111100",
+      "0111111111110",
+      "0111111111110",
+      "1111111111111",
+      "1111111111111",
+      "1111111111111",
+      "1111111111111",
+      "1111111111111",
+      "1111111111111",
+      "1111111111111",
+      "1011101110111",
+      "0001000100010",
+    ],
+  ]
+
+  static let cometFrames = 3
+
+  static func comet(open: Int) -> [[Bool]] {
+    (0..<size).map { y in
+      (0..<size).map { x in
+        let dx = Double(x) - 6
+        let dy = Double(y) - 6
+        guard dx * dx + dy * dy <= 6.6 * 6.6 else { return false }
+        guard open > 0, dx > 0 else { return true }
+        return open == 1 ? abs(dy) > dx * 0.55 - 0.4 : abs(dy) > dx * 0.95 - 0.5
+      }
+    }
+  }
+
+  static func fill(_ context: GraphicsContext, bits: [[Bool]], px: CGFloat, color: Color) {
+    var path = Path()
+    for (y, row) in bits.enumerated() {
+      for (x, on) in row.enumerated() where on {
+        path.addRect(CGRect(x: CGFloat(x) * px, y: CGFloat(y) * px, width: px, height: px))
+      }
+    }
+    context.fill(path, with: .color(color))
+  }
+
+  static func fill(_ context: GraphicsContext, rows: [String], px: CGFloat, color: Color) {
+    fill(context, bits: rows.map { $0.map { $0 == "1" } }, px: px, color: color)
+  }
+}
+
 struct CometShape: Shape {
   var mouth: Double
   func path(in rect: CGRect) -> Path {
+    let px = rect.width / CGFloat(Sprite.size)
     var path = Path()
-    let center = CGPoint(x: rect.midX, y: rect.midY)
-    path.move(to: center)
-    path.addArc(
-      center: center, radius: rect.width / 2, startAngle: .radians(mouth),
-      endAngle: .radians(2 * .pi - mouth), clockwise: false)
-    path.closeSubpath()
+    let open = mouth < 0.3 ? 0 : mouth < 0.6 ? 1 : 2
+    for (y, row) in Sprite.comet(open: open).enumerated() {
+      for (x, on) in row.enumerated() where on {
+        path.addRect(
+          CGRect(
+            x: rect.minX + CGFloat(x) * px, y: rect.minY + CGFloat(y) * px, width: px, height: px
+          ))
+      }
+    }
     return path
   }
 }
@@ -18,20 +87,16 @@ struct CometShape: Shape {
 struct SpiritShape: Shape {
   let identity: Int
   func path(in rect: CGRect) -> Path {
+    let px = rect.width / CGFloat(Sprite.size)
     var path = Path()
-    let w = rect.width
-    let h = rect.height
-    path.move(to: CGPoint(x: rect.minX, y: rect.minY + h))
-    path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + h * 0.45))
-    path.addQuadCurve(
-      to: CGPoint(x: rect.maxX, y: rect.minY + h * 0.45),
-      control: CGPoint(x: rect.midX, y: rect.minY - h * 0.43))
-    path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
-    for index in stride(from: 5, through: 0, by: -1) {
-      let offset = index % 2 == identity % 2 ? 0.16 : 0.0
-      path.addLine(to: CGPoint(x: rect.minX + w * CGFloat(index) / 6, y: rect.maxY - h * offset))
+    for (y, row) in Sprite.ghostBody[identity % 2].enumerated() {
+      for (x, bit) in row.enumerated() where bit == "1" {
+        path.addRect(
+          CGRect(
+            x: rect.minX + CGFloat(x) * px, y: rect.minY + CGFloat(y) * px, width: px, height: px
+          ))
+      }
     }
-    path.closeSubpath()
     return path
   }
 }
@@ -42,22 +107,13 @@ struct MazeBoard: View {
   var attract = false
 
   var body: some View {
-    Canvas { context, size in
+    Canvas(rendersAsynchronously: false) { context, size in
       let cell = size.width / CGFloat(game.maze.width)
+      let px = cell / 14
       let bounds = CGRect(origin: .zero, size: size)
-      context.fill(
-        Path(roundedRect: bounds, cornerRadius: 15),
-        with: .linearGradient(
-          Gradient(colors: [Palette.panel.opacity(0.55), Palette.ink]),
-          startPoint: .zero, endPoint: CGPoint(x: 0, y: size.height)))
-      var lanes = Path()
-      for y in 0..<game.maze.height {
-        for x in 0..<game.maze.width where !game.maze.walls.contains(Tile(x, y)) {
-          lanes.addRect(
-            CGRect(x: CGFloat(x) * cell, y: CGFloat(y) * cell, width: cell, height: cell))
-        }
-      }
-      context.fill(lanes, with: .color(Palette.blue.opacity(0.045)))
+      let frame = Int(game.elapsed * 8)
+      context.fill(Path(bounds), with: .color(Palette.ink))
+
       var walls = Path()
       for tile in game.maze.walls {
         let point = center(tile, cell)
@@ -71,246 +127,177 @@ struct MazeBoard: View {
           }
         }
       }
-      let chase = game.frightened > 0
-      let wallTint = chase ? Palette.mint : Palette.blue
-      context.drawLayer { glow in
-        glow.addFilter(.shadow(color: wallTint.opacity(0.55), radius: 9))
-        glow.stroke(
-          walls, with: .color(wallTint.opacity(0.16)),
-          style: StrokeStyle(lineWidth: cell * 0.66, lineCap: .round, lineJoin: .round))
-      }
+      let clearing = game.phase == .cleared && !reducedMotion && frame % 2 == 0
+      let wallColor = clearing ? Palette.white : Palette.blue
+      let thick = cell * 0.56
+      let line = max(2, (px * 2).rounded())
       context.stroke(
-        walls,
-        with: .linearGradient(
-          Gradient(colors: [
-            Color(red: 0.09, green: 0.16, blue: 0.40), Color(red: 0.045, green: 0.09, blue: 0.24),
-          ]),
-          startPoint: .zero, endPoint: CGPoint(x: size.width, y: size.height)),
-        style: StrokeStyle(lineWidth: cell * 0.66, lineCap: .round, lineJoin: .round))
+        walls, with: .color(wallColor),
+        style: StrokeStyle(lineWidth: thick, lineCap: .square, lineJoin: .miter))
       context.stroke(
-        walls, with: .color(Palette.ink.opacity(0.9)),
-        style: StrokeStyle(lineWidth: cell * 0.30, lineCap: .round, lineJoin: .round))
-      context.stroke(
-        walls, with: .color(wallTint.opacity(chase ? 0.9 : 0.82)),
-        style: StrokeStyle(lineWidth: 1.1, lineCap: .round, lineJoin: .round))
+        walls, with: .color(Palette.ink),
+        style: StrokeStyle(lineWidth: thick - line * 2, lineCap: .square, lineJoin: .miter))
+
       let tunnelY = (CGFloat(10) + 0.5) * cell
-      for x in [cell * 0.5, size.width - cell * 0.5] {
-        context.fill(
-          Path(
-            ellipseIn: CGRect(
-              x: x - cell * 0.6, y: tunnelY - cell * 0.6, width: cell * 1.2, height: cell * 1.2)),
-          with: .radialGradient(
-            Gradient(colors: [Palette.violet.opacity(0.35), .clear]),
-            center: CGPoint(x: x, y: tunnelY), startRadius: 0, endRadius: cell * 0.6))
-      }
-      let twinkle = reducedMotion ? 1.0 : 0.85 + sin(game.elapsed * 2.2) * 0.15
+      var tunnel = Path()
+      tunnel.addRect(CGRect(x: 0, y: tunnelY - cell / 2, width: cell * 0.55, height: cell))
+      tunnel.addRect(
+        CGRect(x: size.width - cell * 0.55, y: tunnelY - cell / 2, width: cell * 0.55, height: cell)
+      )
+      context.fill(tunnel, with: .color(Palette.ink))
+
+      var pellets = Path()
       for tile in game.pellets {
         let point = center(tile, cell)
-        context.fill(
-          Path(ellipseIn: CGRect(x: point.x - 3.5, y: point.y - 3.5, width: 7, height: 7)),
-          with: .color(Palette.gold.opacity(0.14 * twinkle)))
-        context.fill(
-          Path(ellipseIn: CGRect(x: point.x - 1.6, y: point.y - 1.6, width: 3.2, height: 3.2)),
-          with: .color(Palette.pearl.opacity(0.95)))
+        pellets.addRect(CGRect(x: point.x - px, y: point.y - px, width: px * 2, height: px * 2))
       }
-      for tile in game.powers {
-        let point = center(tile, cell)
-        let pulse = reducedMotion ? 1 : 0.88 + sin(game.elapsed * 5) * 0.12
-        let radius = cell * 0.27 * pulse
-        context.drawLayer { glow in
-          glow.addFilter(.shadow(color: Palette.pearl.opacity(0.8), radius: 8))
-          glow.fill(
-            Path(
-              ellipseIn: CGRect(
-                x: point.x - radius, y: point.y - radius, width: radius * 2, height: radius * 2)),
-            with: .color(Palette.pearl))
+      context.fill(pellets, with: .color(Palette.peach))
+
+      if reducedMotion || frame % 3 != 2 {
+        var powers = Path()
+        for tile in game.powers {
+          let point = center(tile, cell)
+          let radius = px * 4
+          powers.addRect(
+            CGRect(x: point.x - radius, y: point.y - radius + px, width: radius * 2, height: px * 6)
+          )
+          powers.addRect(
+            CGRect(x: point.x - radius + px, y: point.y - radius, width: px * 6, height: radius * 2)
+          )
         }
-        context.stroke(
-          Path(
-            ellipseIn: CGRect(
-              x: point.x - cell * 0.4, y: point.y - cell * 0.4, width: cell * 0.8,
-              height: cell * 0.8)),
-          with: .color(Palette.pearl.opacity(0.25)), lineWidth: 1)
+        context.fill(powers, with: .color(Palette.peach))
       }
+
       let home = center(game.maze.home, cell)
-      context.stroke(
-        Path(
-          ellipseIn: CGRect(
-            x: home.x - cell * 0.42, y: home.y - cell * 0.42, width: cell * 0.84,
-            height: cell * 0.84
-          )),
-        with: .color(Palette.violet.opacity(0.35)), style: StrokeStyle(lineWidth: 1, dash: [2, 3]))
-      context.draw(
-        Text("✦").font(.system(size: cell * 0.5)).foregroundStyle(Palette.violet.opacity(0.5)),
-        at: home)
-      drawTail(context, cell: cell, width: size.width)
+      context.fill(
+        Path(CGRect(x: home.x - cell * 0.5, y: home.y - cell * 0.5, width: cell, height: px)),
+        with: .color(Palette.pink))
+
       for rival in game.hitTime > 0.4 ? game.impactRivals : game.rivals {
-        drawRival(context, rival, cell: cell)
+        drawRival(context, rival, cell: cell, px: px, frame: frame)
       }
+
       let visiblePlayer = game.hitTime > 0.4 ? (game.lastHit ?? game.player) : game.player
       let position = visiblePlayer.position(width: game.maze.width)
       var point = CGPoint(x: (position.x + 0.5) * cell, y: (position.y + 0.5) * cell)
       if point.x < 0 { point.x += size.width }
       if point.x > size.width { point.x -= size.width }
-      drawComet(context, at: point, cell: cell, runner: visiblePlayer)
-      if point.x < cell {
-        drawComet(
-          context, at: CGPoint(x: point.x + size.width, y: point.y), cell: cell,
-          runner: visiblePlayer)
+      for shift in [0, size.width, -size.width] as [CGFloat] {
+        let shifted = CGPoint(x: point.x + shift, y: point.y)
+        if shifted.x > -cell && shifted.x < size.width + cell {
+          drawComet(context, at: shifted, cell: cell, px: px, runner: visiblePlayer, frame: frame)
+        }
       }
-      if point.x > size.width - cell {
-        drawComet(
-          context, at: CGPoint(x: point.x - size.width, y: point.y), cell: cell,
-          runner: visiblePlayer)
-      }
+
       if game.bonusTime > 1.6 {
-        let rise = (2.8 - game.bonusTime) * cell * 0.6
-        context.drawLayer { label in
-          label.addFilter(.shadow(color: Palette.mint.opacity(0.8), radius: 6))
-          label.draw(
-            Text("+\(game.lastBonus)").font(
-              .system(size: cell * 0.78, weight: .black, design: .rounded)
-            )
-            .foregroundStyle(Palette.mint),
-            at: CGPoint(x: point.x, y: max(cell * 0.6, point.y - cell - rise)))
-        }
+        let label = "\(game.lastBonus)"
+        let scale = max(1, px.rounded())
+        let width = PixelFont.size(of: label, scale: scale).width
+        let y = max(cell * 0.4, point.y - cell * 1.1)
+        PixelFont.draw(
+          label, in: context, at: CGPoint(x: point.x - width / 2, y: y), scale: scale,
+          color: Palette.cyan)
       }
+
       if attract {
-        context.fill(
-          Path(roundedRect: bounds, cornerRadius: 15), with: .color(Palette.ink.opacity(0.18)))
-      }
-      if game.hitTime > 0, let hit = game.lastHit {
-        let position = hit.position(width: game.maze.width)
-        let origin = CGPoint(x: (position.x + 0.5) * cell, y: (position.y + 0.5) * cell)
-        let progress = 1 - game.hitTime / 1.1
-        let radius = cell * (0.5 + progress * 2.5)
-        context.fill(
-          Path(roundedRect: bounds, cornerRadius: 15),
-          with: .color(Palette.rivals[0].opacity(game.hitTime * 0.07)))
-        context.stroke(
-          Path(
-            ellipseIn: CGRect(
-              x: origin.x - radius, y: origin.y - radius,
-              width: radius * 2, height: radius * 2)),
-          with: .color(Palette.rivals[0].opacity(game.hitTime)),
-          lineWidth: 2)
-        for index in 0..<8 {
-          let angle = Double(index) * .pi / 4
-          let point = CGPoint(x: origin.x + cos(angle) * radius, y: origin.y + sin(angle) * radius)
-          context.fill(
-            Path(ellipseIn: CGRect(x: point.x - 2, y: point.y - 2, width: 4, height: 4)),
-            with: .color(Palette.pearl.opacity(game.hitTime)))
-        }
+        context.fill(Path(bounds), with: .color(Palette.ink.opacity(0.25)))
       }
     }
-    .clipShape(RoundedRectangle(cornerRadius: 16))
-    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Palette.rim, lineWidth: 1))
-    .shadow(color: Palette.blue.opacity(attract ? 0 : 0.2), radius: 26, y: 8)
+    .clipShape(Rectangle())
   }
 
   private func center(_ tile: Tile, _ cell: CGFloat) -> CGPoint {
     CGPoint(x: (CGFloat(tile.x) + 0.5) * cell, y: (CGFloat(tile.y) + 0.5) * cell)
   }
 
-  private func drawTail(_ context: GraphicsContext, cell: CGFloat, width: CGFloat) {
-    guard game.phase == .playing, game.player.next != nil else { return }
-    let position = game.player.position(width: game.maze.width)
-    let direction = game.player.direction
-    for index in 1...4 {
-      let lag = Double(index) * 0.32
-      var x = (position.x + 0.5 - Double(direction.dx) * lag) * cell
-      let y = (position.y + 0.5 - Double(direction.dy) * lag) * cell
-      if x < 0 { x += width }
-      if x > width { x -= width }
-      let radius = cell * (0.30 - Double(index) * 0.055)
-      context.fill(
-        Path(
-          ellipseIn: CGRect(x: x - radius, y: y - radius, width: radius * 2, height: radius * 2)),
-        with: .color(Palette.gold.opacity(0.28 - Double(index) * 0.06)))
-    }
+  private func snap(_ value: CGFloat, _ px: CGFloat) -> CGFloat {
+    (value / px).rounded() * px
   }
 
   private func drawComet(
-    _ context: GraphicsContext, at point: CGPoint, cell: CGFloat, runner: Runner
+    _ context: GraphicsContext, at point: CGPoint, cell: CGFloat, px: CGFloat, runner: Runner,
+    frame: Int
   ) {
     var context = context
-    context.translateBy(x: point.x, y: point.y)
+    let half = px * CGFloat(Sprite.size) / 2
+    context.translateBy(x: snap(point.x, px), y: snap(point.y, px))
     context.rotate(by: .radians(runner.direction.angle))
-    let mouth =
-      runner.next == nil || reducedMotion ? 0.40 : 0.20 + abs(sin(game.elapsed * 16)) * 0.50
-    if game.grace > 0 && game.hitTime <= 0.4 {
-      context.stroke(
-        Path(
-          ellipseIn: CGRect(x: -cell * 0.55, y: -cell * 0.55, width: cell * 1.1, height: cell * 1.1)
-        ),
-        with: .color(Palette.pearl.opacity(0.5)), style: StrokeStyle(lineWidth: 1, dash: [2, 3]))
+    context.translateBy(x: -half, y: -half)
+    if game.hitTime > 0 && game.hitTime <= 0.4 { return }
+    if game.hitTime > 0.4 {
+      let progress = min(1, (1.1 - game.hitTime) / 0.7)
+      let bits = Sprite.comet(open: 0).enumerated().map { y, row in
+        row.enumerated().map { x, on in
+          let angle = atan2(Double(y) - 6, Double(x) - 6)
+          return on && abs(angle) > progress * .pi
+        }
+      }
+      Sprite.fill(context, bits: bits, px: px, color: Palette.yellow)
+      return
     }
-    context.addFilter(.shadow(color: Palette.gold.opacity(0.7), radius: 6))
-    context.fill(
-      CometShape(mouth: mouth).path(
-        in: CGRect(x: -cell * 0.41, y: -cell * 0.41, width: cell * 0.82, height: cell * 0.82)),
-      with: .radialGradient(
-        Gradient(colors: [Color(red: 1, green: 0.98, blue: 0.92), Palette.pearl, Palette.gold]),
-        center: CGPoint(x: -cell * 0.1, y: -cell * 0.12), startRadius: 0, endRadius: cell * 0.5))
-    context.fill(
-      Path(
-        ellipseIn: CGRect(x: -cell * 0.08, y: -cell * 0.26, width: cell * 0.10, height: cell * 0.10)
-      ),
-      with: .color(Palette.ink))
+    let open: Int
+    if runner.next == nil || reducedMotion {
+      open = 1
+    } else {
+      open = [0, 1, 2, 1][frame % 4]
+    }
+    if game.grace > 0 && game.phase == .playing && frame % 2 == 0 && !reducedMotion {
+      Sprite.fill(context, bits: Sprite.comet(open: open), px: px, color: Palette.white)
+    } else {
+      Sprite.fill(context, bits: Sprite.comet(open: open), px: px, color: Palette.yellow)
+    }
   }
 
-  private func drawRival(_ context: GraphicsContext, _ rival: Rival, cell: CGFloat) {
+  private func drawRival(
+    _ context: GraphicsContext, _ rival: Rival, cell: CGFloat, px: CGFloat, frame: Int
+  ) {
     let position = rival.runner.position(width: game.maze.width)
     var context = context
-    context.translateBy(x: (position.x + 0.5) * cell, y: (position.y + 0.5) * cell)
+    let half = px * CGFloat(Sprite.size) / 2
+    context.translateBy(
+      x: snap((position.x + 0.5) * cell, px) - half, y: snap((position.y + 0.5) * cell, px) - half)
     let frightened = game.frightened > 0 && !rival.returning
-    let flashing = game.frightened < 2 && Int(game.elapsed * 6) % 2 == 0 && !reducedMotion
-    let color =
-      frightened ? (flashing ? Palette.pearl : Palette.mint) : Palette.rivals[rival.identity]
+    let flashing = game.frightened < 2 && frame % 2 == 0 && !reducedMotion
+    let wobble = reducedMotion ? 0 : (frame / 2 + rival.identity) % 2
     if !rival.returning {
-      let frame = CGRect(x: -cell * 0.39, y: -cell * 0.40, width: cell * 0.78, height: cell * 0.82)
-      context.drawLayer { body in
-        body.addFilter(.shadow(color: color.opacity(0.5), radius: 5))
-        body.fill(
-          SpiritShape(identity: rival.identity).path(in: frame),
-          with: .linearGradient(
-            Gradient(colors: [color.opacity(1), color.opacity(0.62)]),
-            startPoint: CGPoint(x: 0, y: frame.minY), endPoint: CGPoint(x: 0, y: frame.maxY)))
-      }
-      context.stroke(
-        SpiritShape(identity: rival.identity).path(in: frame),
-        with: .color(.white.opacity(0.22)), lineWidth: 0.8)
+      let color =
+        frightened ? (flashing ? Palette.white : Palette.blue) : Palette.rivals[rival.identity]
+      Sprite.fill(context, rows: Sprite.ghostBody[wobble], px: px, color: color)
       if rival.identity == 1 {
         context.fill(
-          Path(
-            ellipseIn: CGRect(
-              x: -cell * 0.08, y: -cell * 0.44, width: cell * 0.16, height: cell * 0.16)),
-          with: .color(Palette.pearl))
-      }
-    }
-    for x in [-0.16, 0.16] {
-      let eye = CGRect(
-        x: cell * x - cell * 0.105, y: -cell * 0.12, width: cell * 0.21, height: cell * 0.25)
-      context.fill(Path(ellipseIn: eye), with: .color(frightened ? Palette.ink : .white))
-      if !frightened {
+          Path(CGRect(x: px * 4, y: 0, width: px * 2, height: px)), with: .color(Palette.white))
         context.fill(
-          Path(
-            ellipseIn: eye.offsetBy(
-              dx: CGFloat(rival.runner.direction.dx) * cell * 0.035,
-              dy: CGFloat(rival.runner.direction.dy) * cell * 0.035
-            ).insetBy(dx: cell * 0.06, dy: cell * 0.07)),
-          with: .color(Palette.ink))
+          Path(CGRect(x: px * 7, y: 0, width: px * 2, height: px)), with: .color(Palette.white))
+      }
+      if rival.identity == 2 {
+        context.fill(
+          Path(CGRect(x: px * 6, y: -px, width: px, height: px * 2)), with: .color(Palette.white))
       }
     }
     if frightened {
-      var mouth = Path()
-      mouth.move(to: CGPoint(x: -cell * 0.2, y: cell * 0.23))
-      for index in 1...4 {
-        mouth.addLine(
-          to: CGPoint(
-            x: -cell * 0.2 + Double(index) * cell * 0.1, y: cell * (index % 2 == 0 ? 0.23 : 0.16)))
+      let face = flashing ? Palette.red : Palette.peach
+      var eyes = Path()
+      eyes.addRect(CGRect(x: px * 3, y: px * 4, width: px * 2, height: px * 2))
+      eyes.addRect(CGRect(x: px * 8, y: px * 4, width: px * 2, height: px * 2))
+      for index in 0..<9 {
+        eyes.addRect(
+          CGRect(
+            x: px * CGFloat(2 + index), y: px * CGFloat(index % 2 == 0 ? 9 : 8), width: px,
+            height: px))
       }
-      context.stroke(mouth, with: .color(Palette.ink), lineWidth: 1)
+      context.fill(eyes, with: .color(face))
+    } else {
+      let dx = CGFloat(rival.runner.direction.dx)
+      let dy = CGFloat(rival.runner.direction.dy)
+      var whites = Path()
+      var pupils = Path()
+      for x in [2, 7] as [CGFloat] {
+        whites.addRect(CGRect(x: px * (x + dx), y: px * (3 + dy), width: px * 4, height: px * 5))
+        pupils.addRect(
+          CGRect(x: px * (x + 1 + dx * 2), y: px * (4 + dy * 2), width: px * 2, height: px * 2))
+      }
+      context.fill(whites, with: .color(Palette.white))
+      context.fill(pupils, with: .color(Palette.navy))
     }
   }
 }
@@ -321,14 +308,13 @@ struct MazeThumbnail: View {
     Canvas { context, size in
       let maze = Maze(index: index)
       let cell = size.width / CGFloat(maze.width)
+      var path = Path()
       for tile in maze.walls {
-        context.fill(
-          Path(
-            roundedRect: CGRect(
-              x: CGFloat(tile.x) * cell, y: CGFloat(tile.y) * cell,
-              width: cell * 0.8, height: cell * 0.8), cornerRadius: 0.4),
-          with: .color(index == 0 ? Palette.blue : Palette.rivals[1]))
+        path.addRect(
+          CGRect(
+            x: CGFloat(tile.x) * cell, y: CGFloat(tile.y) * cell, width: cell, height: cell))
       }
+      context.fill(path, with: .color(index == 0 ? Palette.blue : Palette.pink))
     }
   }
 }

@@ -1,6 +1,6 @@
 # Afterhours Maze
 
-A native, offline iPhone maze chase. A hungry comet collects warm pearl lights through two sapphire circuits while four rival spirits hunt, ambush, flank, and retreat. Built with SwiftUI Canvas and a deterministic, separately tested Swift simulation. Original code, vector artwork, synthesized chimes, and icon; no external assets or services.
+A native, offline iPhone maze chase in an 8-bit console style: a hungry comet eats dots through two blue-walled mazes while four rival spirits hunt, ambush, flank, and retreat. Built with SwiftUI Canvas and a deterministic, separately tested Swift simulation. Original code, pixel sprites, a hand-drawn 5x7 pixel font, square-wave sound effects, and icon; no external assets, fonts, or services.
 
 ## Build and run
 
@@ -26,10 +26,10 @@ The project is generated from `project.yml`; generated metadata and build produc
 
 ## Play
 
-The title screen runs a live attract-mode demo (an autopilot comet playing a real game); tap it to jump straight in. Select Blue Hour or Velvet Circuit, then **Enter the maze**. Swipe anywhere on the board or tap a wedge of (or flick across) the steering dial below it (the dial's comet points along the queued direction). Turns queue until the next legal corner; the opposite direction reverses immediately. Your comet moves automatically, stopping at walls. Side tunnels wrap to the opposite edge.
+The title screen runs a live attract-mode demo (an autopilot comet playing a real game); tap it to jump straight in. Pick Maze 1 (Blue Hour) or Maze 2 (Velvet Circuit), then **PUSH START**. Swipe anywhere on the board, or tap an arm of (or flick across) the D-pad below it; the queued arm lights up red. Turns queue until the next legal corner; the opposite direction reverses immediately. Your comet moves automatically, stopping at walls. Side tunnels wrap to the opposite edge.
 
-- Pearl: **10** points. Power orb: **50**.
-- Power lasts 10 seconds initially, with a gentle reduction on later circuits. Frightened rivals turn mint and slow down; their final two seconds flash.
+- Dot: **10** points. Power dot: **50**.
+- Power lasts 10 seconds initially, with a gentle reduction on later mazes. Frightened rivals turn blue and slow down; their final two seconds flash white.
 - Catch rivals during one power window for **200 / 400 / 800 / 1,600**.
 - Clear every light for **1,000** and an extra life (maximum five), then continue into the other maze.
 - Three lives per fresh run. Each lost life resets actors with a protected spawn and staggered rival release.
@@ -54,4 +54,4 @@ swift Scripts/GenerateIcon.swift Sources/AfterhoursApp/Assets.xcassets/AppIcon.a
 
 ## Scope
 
-Two original mazes repeat with modest speed increases. This is a focused V1 inspired by classic maze chase rules, without commercial character art, level parity, ads, purchases, account requirements, or network access. Reduced Motion disables pellet pulsing and nonessential flashing. Gameplay is visual and real-time; VoiceOver labels describe controls and status but do not turn the game into a nonvisual experience.
+Two original mazes repeat with modest speed increases. This is a focused V1 inspired by classic maze chase rules and the look of 8-bit console games, without commercial character art, level parity, ads, purchases, account requirements, or network access. Reduced Motion disables blinking text, power-dot flashing, and other nonessential flashing. Gameplay is visual and real-time; VoiceOver labels describe controls and status but do not turn the game into a nonvisual experience.

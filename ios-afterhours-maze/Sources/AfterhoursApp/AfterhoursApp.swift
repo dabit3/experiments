@@ -23,6 +23,7 @@ final class Arcade: ObservableObject {
   @Published var sound = !UserDefaults.standard.bool(forKey: "afterhours.muted")
   @Published var showGuide = false
   @Published var selectedMaze = 1
+  @Published var clock = 0.0
   private var ticker: AnyCancellable?
   private let audio = ArcadeAudio()
   private var lastTick = Date()
@@ -47,6 +48,7 @@ final class Arcade: ObservableObject {
   func tick(_ date: Date) {
     let dt = min(1.0 / 30, date.timeIntervalSince(lastTick))
     lastTick = date
+    clock += dt
     guard inGame else {
       runDemo(dt)
       return
@@ -129,35 +131,32 @@ enum Autopilot {
 }
 
 enum Palette {
-  static let ink = Color(red: 0.016, green: 0.024, blue: 0.066)
-  static let panel = Color(red: 0.055, green: 0.078, blue: 0.165)
-  static let pearl = Color(red: 1, green: 0.92, blue: 0.74)
-  static let gold = Color(red: 0.93, green: 0.74, blue: 0.42)
-  static let muted = Color(red: 0.52, green: 0.59, blue: 0.75)
-  static let blue = Color(red: 0.26, green: 0.50, blue: 1)
-  static let violet = Color(red: 0.56, green: 0.40, blue: 1)
-  static let mint = Color(red: 0.48, green: 0.96, blue: 0.84)
-  static let rivals: [Color] = [
-    Color(red: 1, green: 0.42, blue: 0.50),
-    Color(red: 0.80, green: 0.58, blue: 1),
-    Color(red: 0.38, green: 0.86, blue: 0.92),
-    Color(red: 1, green: 0.70, blue: 0.40),
-  ]
-  static let pearlGradient = LinearGradient(
-    colors: [Color(red: 1, green: 0.97, blue: 0.88), pearl, gold],
-    startPoint: .top, endPoint: .bottom)
-  static let rim = AngularGradient(
-    colors: [
-      blue.opacity(0.55), violet.opacity(0.35), pearl.opacity(0.25), blue.opacity(0.2),
-      blue.opacity(0.55),
-    ],
-    center: .center)
+  static let ink = Color.black
+  static let navy = Color(red: 0, green: 0, blue: 0.66)
+  static let blue = Color(red: 0.13, green: 0.22, blue: 0.93)
+  static let sky = Color(red: 0.24, green: 0.74, blue: 0.99)
+  static let yellow = Color(red: 0.97, green: 0.85, blue: 0.47)
+  static let peach = Color(red: 0.99, green: 0.88, blue: 0.66)
+  static let red = Color(red: 0.97, green: 0.22, blue: 0)
+  static let pink = Color(red: 0.97, green: 0.47, blue: 0.97)
+  static let cyan = Color(red: 0, green: 0.91, blue: 0.85)
+  static let orange = Color(red: 0.99, green: 0.63, blue: 0.27)
+  static let green = Color(red: 0.72, green: 0.97, blue: 0.09)
+  static let gray = Color(red: 0.74, green: 0.74, blue: 0.74)
+  static let steel = Color(red: 0.46, green: 0.46, blue: 0.46)
+  static let shadow = Color(red: 0.23, green: 0.23, blue: 0.23)
+  static let white = Color(red: 0.99, green: 0.99, blue: 0.99)
+  static let rivals: [Color] = [red, pink, cyan, orange]
 }
 
 struct ArcadeView: View {
   @StateObject private var arcade = Arcade()
   @Environment(\.scenePhase) private var scenePhase
   @Environment(\.accessibilityReduceMotion) private var reducedMotion
+
+  private var blink: Bool {
+    reducedMotion || Int(arcade.clock * 2.5) % 2 == 0
+  }
 
   var body: some View {
     GeometryReader { geometry in
@@ -186,122 +185,88 @@ struct ArcadeView: View {
   private var backdrop: some View {
     ZStack {
       Palette.ink.ignoresSafeArea()
-      RadialGradient(
-        colors: [Palette.blue.opacity(0.22), .clear],
-        center: .init(x: 0.2, y: 0.12), startRadius: 0, endRadius: 460
-      ).ignoresSafeArea()
-      RadialGradient(
-        colors: [Palette.violet.opacity(0.16), .clear],
-        center: .init(x: 0.9, y: 0.78), startRadius: 0, endRadius: 420
-      ).ignoresSafeArea()
       Canvas { context, size in
-        for index in 0..<70 {
-          let x = CGFloat((index * 137 + 21) % 997) / 997 * size.width
-          let y = CGFloat((index * 229 + 7) % 991) / 991 * size.height
-          if index % 11 == 0 {
-            context.draw(
-              Text("✦").font(.system(size: 7)).foregroundStyle(Palette.pearl.opacity(0.35)),
-              at: CGPoint(x: x, y: y))
-          } else {
-            let radius: CGFloat = index % 5 == 0 ? 1.1 : 0.55
-            context.fill(
-              Path(ellipseIn: CGRect(x: x, y: y, width: radius * 2, height: radius * 2)),
-              with: .color(Palette.muted.opacity(index % 3 == 0 ? 0.42 : 0.22)))
+        let tick = Int(arcade.clock * 2)
+        var bright = Path()
+        var dim = Path()
+        for index in 0..<48 {
+          let x = (CGFloat((index * 137 + 21) % 997) / 997 * size.width / 3).rounded() * 3
+          let y = (CGFloat((index * 229 + 7) % 991) / 991 * size.height / 3).rounded() * 3
+          let rect = CGRect(x: x, y: y, width: 3, height: 3)
+          if (index + tick) % 7 == 0 && !reducedMotion {
+            continue
           }
+          if index % 4 == 0 { bright.addRect(rect) } else { dim.addRect(rect) }
         }
+        context.fill(bright, with: .color(Palette.gray))
+        context.fill(dim, with: .color(Palette.shadow))
       }.ignoresSafeArea().accessibilityHidden(true)
     }
   }
 
   private func titleView(size: CGSize) -> some View {
     let compact = size.height < 800
+    let titleScale: CGFloat = size.width < 380 ? 4 : 5
     return VStack(spacing: 0) {
-      HStack {
-        micro("A MIDNIGHT ARCADE", color: Palette.muted)
+      HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 4) {
+          PixelText("HIGH SCORE", scale: 2, color: Palette.red)
+          PixelText(String(format: "%06d", arcade.best), scale: 2, color: Palette.white)
+        }
         Spacer()
-        soundButton
+        VStack(alignment: .trailing, spacing: 4) {
+          PixelText("MAZE", scale: 2, color: Palette.red)
+          PixelText(String(format: "%02d", arcade.deepest), scale: 2, color: Palette.white)
+        }
+        soundButton.padding(.leading, 10).offset(y: -8)
       }
       .padding(.top, 6)
-      Spacer(minLength: 4)
-      VStack(spacing: -2) {
-        Text("Afterhours")
-          .font(.system(size: min(size.width * 0.16, 66), weight: .medium, design: .serif))
-          .italic().tracking(-1.5)
-          .foregroundStyle(Palette.pearlGradient)
-          .shadow(color: Palette.gold.opacity(0.35), radius: 24)
-        HStack(spacing: 12) {
-          rule
-          Text("M A Z E").font(.system(size: 13, weight: .semibold, design: .monospaced))
-            .tracking(6).foregroundStyle(Palette.blue).fixedSize()
-          rule
-        }.frame(width: 230)
+      Spacer(minLength: 6)
+      VStack(spacing: compact ? 6 : 10) {
+        ZStack {
+          PixelText("AFTERHOURS", scale: titleScale, color: Palette.red).offset(
+            x: titleScale, y: titleScale)
+          PixelText("AFTERHOURS", scale: titleScale, color: Palette.yellow)
+        }
+        HStack(spacing: 10) {
+          PixelText("* MAZE *", scale: 3, color: Palette.cyan)
+        }
       }
       .accessibilityElement(children: .combine)
       .accessibilityIdentifier("title")
-      Text("A tiny hungry comet against the shadows.")
-        .font(.system(size: 14, weight: .regular, design: .serif)).italic()
-        .foregroundStyle(Palette.muted).padding(.top, compact ? 8 : 12)
       attract
-        .aspectRatio(0.98, contentMode: .fit)
         .frame(height: min(size.height * (compact ? 0.30 : 0.36), 330))
-        .padding(.top, compact ? 10 : 16)
-      HStack(spacing: 6) {
-        Circle().fill(Palette.mint).frame(width: 5, height: 5)
-          .shadow(color: Palette.mint, radius: 4)
-        micro("LIVE ATTRACT MODE · TAP TO PLAY", color: Palette.muted)
-      }.padding(.top, 10)
-      HStack(spacing: 8) {
-        Image(systemName: "sparkle").font(.system(size: 11)).foregroundStyle(Palette.gold)
-        micro("YOUR BEST")
-        Text(arcade.best.formatted()).font(.system(size: 22, weight: .bold, design: .rounded))
-          .foregroundStyle(Palette.pearlGradient).monospacedDigit()
-        Spacer()
-        micro("DEEPEST  \(String(format: "%02d", arcade.deepest))")
+        .padding(.top, compact ? 12 : 18)
+      PixelText(
+        blink ? "TAP TO PLAY" : " ", scale: 2, color: Palette.white
+      ).padding(.top, 12)
+        .accessibilityHidden(true)
+      VStack(alignment: .leading, spacing: 6) {
+        mazeChoice(1, name: "BLUE HOUR")
+        mazeChoice(2, name: "VELVET CIRCUIT")
       }
-      .padding(.horizontal, 4).padding(.top, compact ? 10 : 14).padding(.bottom, compact ? 10 : 12)
-      HStack(spacing: 10) {
-        mazeChoice(1, name: "Blue Hour", label: "MAZE 01")
-        mazeChoice(2, name: "Velvet Circuit", label: "MAZE 02")
-      }
-      .padding(.bottom, compact ? 10 : 14)
-      primary("Enter the maze", icon: "arrow.right", id: "start") { arcade.start() }
+      .padding(.top, compact ? 10 : 16).padding(.bottom, compact ? 10 : 14)
+      primary("PUSH START", fill: Palette.red, id: "start") { arcade.start() }
       HStack {
         Button {
           arcade.showGuide = true
         } label: {
-          Label("How to play", systemImage: "hand.draw")
-            .font(.system(size: 13, weight: .semibold)).foregroundStyle(Palette.muted)
-            .frame(height: 46)
+          PixelText("HOW TO PLAY", scale: 2, color: Palette.gray).frame(height: 46)
         }.accessibilityIdentifier("howToPlay")
         Spacer()
-        micro("OFFLINE · ALL YOURS", color: Palette.muted.opacity(0.7))
+        PixelText("1 PLAYER", scale: 2, color: Palette.steel)
       }
       Spacer(minLength: 2)
     }
-    .padding(.horizontal, 24)
-  }
-
-  private var rule: some View {
-    Rectangle().fill(
-      LinearGradient(
-        colors: [.clear, Palette.blue.opacity(0.7), .clear], startPoint: .leading,
-        endPoint: .trailing)
-    ).frame(height: 1)
+    .padding(.horizontal, 22)
   }
 
   private var attract: some View {
-    ZStack {
-      RoundedRectangle(cornerRadius: 22).fill(Palette.ink.opacity(0.7))
+    PixelPanel(border: Palette.blue) {
       MazeBoard(game: arcade.demo, reducedMotion: reducedMotion, attract: true)
         .aspectRatio(19.0 / 21, contentMode: .fit)
-        .padding(10)
-      RoundedRectangle(cornerRadius: 22).fill(
-        RadialGradient(
-          colors: [.clear, .clear, Palette.ink.opacity(0.45)], center: .center,
-          startRadius: 90, endRadius: 240))
+        .padding(12)
     }
-    .overlay(RoundedRectangle(cornerRadius: 22).stroke(Palette.rim, lineWidth: 1))
-    .shadow(color: Palette.blue.opacity(0.22), radius: 30, y: 10)
     .contentShape(Rectangle())
     .onTapGesture { arcade.start() }
     .accessibilityElement(children: .ignore)
@@ -310,125 +275,70 @@ struct ArcadeView: View {
     .accessibilityIdentifier("attract")
   }
 
-  private func mazeChoice(_ number: Int, name: String, label: String) -> some View {
+  private func mazeChoice(_ number: Int, name: String) -> some View {
     let selected = arcade.selectedMaze == number
-    let accent = number == 1 ? Palette.blue : Palette.violet
     return Button {
       arcade.selectedMaze = number
       UISelectionFeedbackGenerator().selectionChanged()
     } label: {
       HStack(spacing: 12) {
-        MazeThumbnail(index: number - 1)
-          .frame(width: 34, height: 38)
-          .padding(5)
-          .background(Palette.ink.opacity(0.7), in: RoundedRectangle(cornerRadius: 10))
-          .accessibilityHidden(true)
-        VStack(alignment: .leading, spacing: 4) {
-          micro(label, color: selected ? accent : Palette.muted.opacity(0.8)).lineLimit(1)
-            .minimumScaleFactor(0.7)
-          Text(name).font(.system(size: 15, weight: .semibold, design: .serif)).italic()
-            .foregroundStyle(selected ? Palette.pearl : Palette.muted)
-            .lineLimit(1).minimumScaleFactor(0.6)
-        }
+        PixelText(">", scale: 2, color: selected && blink ? Palette.yellow : .clear)
+        MazeThumbnail(index: number - 1).frame(width: 19, height: 21).accessibilityHidden(true)
+        PixelText("MAZE \(number)", scale: 2, color: selected ? Palette.white : Palette.steel)
+        PixelText(name, scale: 2, color: selected ? Palette.yellow : Palette.gray)
         Spacer(minLength: 0)
       }
-      .padding(.leading, 10).padding(.trailing, 6).padding(.vertical, 11)
+      .padding(.horizontal, 6).frame(height: 40)
       .frame(maxWidth: .infinity, alignment: .leading)
-      .background(
-        selected ? accent.opacity(0.16) : Palette.panel.opacity(0.55),
-        in: RoundedRectangle(cornerRadius: 16)
-      )
-      .overlay(
-        RoundedRectangle(cornerRadius: 16).stroke(
-          selected ? accent.opacity(0.8) : Palette.muted.opacity(0.14), lineWidth: 1)
-      )
-      .overlay(alignment: .topTrailing) {
-        if selected {
-          Circle().fill(accent).frame(width: 6, height: 6)
-            .shadow(color: accent, radius: 5).padding(7)
-        }
-      }
+      .contentShape(Rectangle())
     }
+    .buttonStyle(.plain)
     .accessibilityIdentifier("maze\(number)")
     .accessibilityLabel("\(name), \(selected ? "selected" : "select maze")")
   }
 
   private func playView(size: CGSize) -> some View {
-    let boardWidth = min(size.width - 28, max(240, (size.height - 400) * 19 / 21))
+    let boardWidth = min(size.width - 24, max(240, (size.height - 380) * 19 / 21))
     let chase = arcade.game.frightened > 0
     return VStack(spacing: 0) {
-      HStack(alignment: .center) {
-        VStack(alignment: .leading, spacing: 1) {
-          micro("AFTERHOURS · \(String(format: "%02d", arcade.game.level))", color: Palette.blue)
-          Text(arcade.game.maze.name).font(.system(size: 20, weight: .medium, design: .serif))
-            .italic().foregroundStyle(Palette.pearl)
+      HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 4) {
+          PixelText(
+            blink || arcade.game.phase != .playing ? "1UP" : " ", scale: 2, color: Palette.red)
+          PixelText(String(format: "%06d", arcade.game.score), scale: 2, color: Palette.white)
+            .accessibilityIdentifier("score")
+        }
+        Spacer()
+        VStack(alignment: .center, spacing: 4) {
+          PixelText("HIGH SCORE", scale: 2, color: Palette.red)
+          PixelText(String(format: "%06d", arcade.best), scale: 2, color: Palette.white)
         }
         Spacer()
         Button {
           arcade.game.pause()
         } label: {
-          Image(systemName: "pause.fill").font(.system(size: 15, weight: .bold))
-            .foregroundStyle(Palette.pearl).frame(width: 44, height: 44)
-            .background(Palette.panel.opacity(0.8), in: Circle())
-            .overlay(Circle().stroke(Palette.rim, lineWidth: 1))
-        }.accessibilityLabel("Pause").accessibilityIdentifier("pause")
-      }
-      .padding(.horizontal, 24).padding(.top, 4)
-      HStack(alignment: .lastTextBaseline) {
-        VStack(alignment: .leading, spacing: 0) {
-          micro("SCORE")
-          Text(String(format: "%05d", arcade.game.score))
-            .font(.system(size: 36, weight: .bold, design: .rounded)).tracking(-0.5)
-            .foregroundStyle(Palette.pearlGradient).monospacedDigit()
-            .accessibilityIdentifier("score")
+          PixelText("II", scale: 2, color: Palette.ink).frame(width: 44, height: 34)
         }
-        Spacer()
-        VStack(alignment: .trailing, spacing: 6) {
-          micro("BEST  \(arcade.best.formatted())")
-          HStack(spacing: 6) {
-            ForEach(0..<max(3, arcade.game.lives), id: \.self) { index in
-              CometShape(mouth: 0.65)
-                .fill(
-                  index < arcade.game.lives
-                    ? Palette.pearl
-                    : arcade.game.hitTime > 0 && index == arcade.game.lives
-                      ? Palette.rivals[0] : Palette.muted.opacity(0.18)
-                )
-                .frame(width: 15, height: 15)
-                .shadow(
-                  color: index < arcade.game.lives ? Palette.gold.opacity(0.6) : .clear, radius: 4)
-            }
-          }
-          .accessibilityLabel("\(arcade.game.lives) lives")
-        }.padding(.bottom, 6)
-      }.padding(.horizontal, 26).padding(.top, 8).padding(.bottom, 10)
+        .buttonStyle(PixelButtonStyle(fill: Palette.gray, text: Palette.ink, unit: 2))
+        .accessibilityLabel("Pause").accessibilityIdentifier("pause")
+      }
+      .padding(.horizontal, 22).padding(.top, 6)
       ZStack {
         MazeBoard(game: arcade.game, reducedMotion: reducedMotion)
           .aspectRatio(19.0 / 21, contentMode: .fit)
         if arcade.game.phase == .ready
           || (arcade.game.phase == .lifeLost && arcade.game.hitTime < 0.4)
         {
-          VStack(spacing: 8) {
-            micro(
-              arcade.game.phase == .lifeLost
-                ? "\(arcade.game.lives) \(arcade.game.lives == 1 ? "LIFE" : "LIVES") LEFT"
-                : "THE NIGHT IS YOURS",
-              color: Palette.blue)
-            Text(arcade.game.phase == .lifeLost ? "Try another path." : "Ready, comet?")
-              .font(.system(size: 28, weight: .medium, design: .serif)).italic()
-              .foregroundStyle(Palette.pearl)
-            Text(
-              arcade.game.phase == .lifeLost
-                ? "A fresh start. Find a new route." : "Swipe the board · or tap the dial"
-            )
-            .font(.system(size: 12)).foregroundStyle(Palette.muted)
-          }
-          .padding(.horizontal, 26).padding(.vertical, 22)
-          .background(Palette.ink.opacity(0.92), in: RoundedRectangle(cornerRadius: 20))
-          .overlay(RoundedRectangle(cornerRadius: 20).stroke(Palette.rim, lineWidth: 1))
+          PixelText(
+            arcade.game.phase == .lifeLost ? "GET READY" : "READY!", scale: 3,
+            color: Palette.yellow
+          )
+          .padding(.horizontal, 12).padding(.vertical, 8).background(Palette.ink)
+          .offset(y: boardWidth * 0.06)
         }
       }
       .frame(width: boardWidth)
+      .padding(.top, 10)
       .contentShape(Rectangle())
       .gesture(
         DragGesture(minimumDistance: 12).onEnded { value in
@@ -442,74 +352,57 @@ struct ArcadeView: View {
         "Maze. \(arcade.game.remaining) lights remaining. \(chase ? "Rivals frightened" : "Rivals chasing")."
       )
       .accessibilityIdentifier("mazeBoard")
-      VStack(spacing: 7) {
-        HStack(spacing: 8) {
-          Image(systemName: chase ? "sparkles" : "circle.dotted")
-          Text(
-            chase
-              ? "CHASE · \(Int(ceil(arcade.game.frightened)))s"
-              : "\(arcade.game.remaining) LIGHTS LEFT"
-          )
-          .tracking(1)
-          Spacer()
-          Text(
-            arcade.game.bonusTime > 0
-              ? "+\(arcade.game.lastBonus) · \(arcade.game.combo)×"
-              : chase ? "CATCH RIVALS" : "10 pts / light"
-          )
-          .monospacedDigit()
-          .foregroundStyle(
-            arcade.game.bonusTime > 0 ? Palette.pearl : chase ? Palette.mint : Palette.muted)
-        }
-        .font(.system(size: 12, weight: .bold, design: .monospaced))
-        .foregroundStyle(chase ? Palette.mint : Palette.muted)
-        GeometryReader { meter in
-          ZStack(alignment: .leading) {
-            Capsule().fill(Palette.blue.opacity(0.12))
-            Capsule()
+      HStack(spacing: 0) {
+        HStack(spacing: 5) {
+          ForEach(0..<max(3, arcade.game.lives), id: \.self) { index in
+            CometShape(mouth: 0.5)
               .fill(
-                chase
-                  ? AnyShapeStyle(Palette.mint)
-                  : AnyShapeStyle(
-                    LinearGradient(
-                      colors: [Palette.blue, Palette.violet], startPoint: .leading,
-                      endPoint: .trailing))
+                index < arcade.game.lives
+                  ? Palette.yellow
+                  : arcade.game.hitTime > 0 && index == arcade.game.lives
+                    ? Palette.red : Palette.shadow
               )
-              .frame(
-                width: meter.size.width
-                  * (chase
-                    ? min(1, arcade.game.frightened / 10)
-                    : Double(arcade.game.collected)
-                      / Double(arcade.game.maze.pellets.count + arcade.game.maze.powers.count))
-              )
-              .shadow(color: (chase ? Palette.mint : Palette.blue).opacity(0.8), radius: 4)
+              .frame(width: 16, height: 16)
           }
-        }.frame(height: 3)
-      }.frame(width: boardWidth - 12).padding(.top, 12)
+        }
+        .accessibilityLabel("\(arcade.game.lives) lives")
+        Spacer()
+        PixelText(
+          chase
+            ? "POWER \(Int(ceil(arcade.game.frightened)))"
+            : arcade.game.bonusTime > 0
+              ? "+\(arcade.game.lastBonus) x\(arcade.game.combo)"
+              : "\(arcade.game.remaining) LEFT",
+          scale: 2,
+          color: chase ? Palette.cyan : arcade.game.bonusTime > 0 ? Palette.green : Palette.gray
+        )
+        Spacer()
+        HStack(spacing: 4) {
+          MazeThumbnail(index: arcade.game.level - 1).frame(width: 13, height: 14)
+          PixelText(
+            "MAZE \(String(format: "%02d", arcade.game.level))", scale: 2, color: Palette.gray)
+        }
+      }
+      .frame(width: boardWidth).padding(.top, 10)
       Spacer(minLength: 6)
-      dial.padding(.bottom, 4)
+      dpad.padding(.bottom, 6)
     }.padding(.bottom, 6)
   }
 
-  private var dial: some View {
-    ZStack {
-      Circle().fill(
-        RadialGradient(
-          colors: [Palette.panel, Palette.ink], center: .center, startRadius: 20, endRadius: 100))
-      Circle().stroke(Palette.rim, lineWidth: 1)
+  private var dpad: some View {
+    let arm: CGFloat = 58
+    let unit: CGFloat = 3
+    return ZStack {
+      Rectangle().fill(Palette.shadow).frame(width: arm, height: arm * 3)
+      Rectangle().fill(Palette.shadow).frame(width: arm * 3, height: arm)
+      Rectangle().fill(Palette.steel).frame(width: arm - unit * 4, height: arm * 3 - unit * 4)
+      Rectangle().fill(Palette.steel).frame(width: arm * 3 - unit * 4, height: arm - unit * 4)
       ForEach(Direction.allCases, id: \.rawValue) { direction in
-        dialWedge(direction)
+        dpadArm(direction, arm: arm)
       }
-      Circle().fill(Palette.ink).frame(width: 66, height: 66)
-        .overlay(Circle().stroke(Palette.blue.opacity(0.35), lineWidth: 1))
-      CometShape(mouth: 0.55).fill(Palette.pearlGradient)
-        .frame(width: 22, height: 22)
-        .rotationEffect(.radians(arcade.game.queued.angle))
-        .shadow(color: Palette.gold.opacity(0.7), radius: 6)
-        .animation(reducedMotion ? nil : .spring(duration: 0.25), value: arcade.game.queued)
+      Rectangle().fill(Palette.shadow).frame(width: arm * 0.45, height: arm * 0.45)
     }
-    .frame(width: 196, height: 196)
-    .shadow(color: Palette.blue.opacity(0.18), radius: 24, y: 8)
+    .frame(width: arm * 3, height: arm * 3)
     .simultaneousGesture(
       DragGesture(minimumDistance: 14).onEnded { value in
         let dx = value.translation.width
@@ -518,27 +411,24 @@ struct ArcadeView: View {
       }
     )
     .accessibilityElement(children: .contain)
-    .accessibilityLabel("Steering dial")
+    .accessibilityLabel("Direction pad")
   }
 
-  private func dialWedge(_ direction: Direction) -> some View {
+  private func dpadArm(_ direction: Direction, arm: CGFloat) -> some View {
     let active = arcade.game.queued == direction
-    let symbol = ["arrow.left", "arrow.up", "arrow.right", "arrow.down"][direction.rawValue]
+    let glyph = ["<", "^", ">", "v"][direction.rawValue]
     return Button {
       arcade.steer(direction)
     } label: {
       ZStack {
-        WedgeShape(direction: direction)
-          .fill(active ? Palette.blue.opacity(0.28) : Palette.panel.opacity(0.35))
-        WedgeShape(direction: direction)
-          .stroke(active ? Palette.blue.opacity(0.9) : Palette.muted.opacity(0.10), lineWidth: 1)
-        Image(systemName: symbol).font(.system(size: 19, weight: .semibold))
-          .foregroundStyle(active ? Palette.pearl : Palette.muted)
-          .offset(x: cos(direction.angle) * 68, y: sin(direction.angle) * 68)
+        Rectangle().fill(active ? Palette.red : .clear).padding(6)
+        PixelText(glyph, scale: 3, color: active ? Palette.white : Palette.shadow)
       }
-      .contentShape(WedgeShape(direction: direction))
+      .frame(width: arm, height: arm)
+      .contentShape(Rectangle())
     }
     .buttonStyle(.plain)
+    .offset(x: CGFloat(direction.dx) * arm, y: CGFloat(direction.dy) * arm)
     .accessibilityLabel(String(describing: direction))
     .accessibilityIdentifier("direction_\(direction)")
     .keyboardShortcut(
@@ -551,35 +441,32 @@ struct ArcadeView: View {
 
   private var pauseOverlay: some View {
     modal {
-      micro("TAKE A BREATHER", color: Palette.blue)
-      Text("The night can wait.").font(.system(size: 32, weight: .medium, design: .serif))
-        .italic().foregroundStyle(Palette.pearl).multilineTextAlignment(.center)
-      Text("Your comet is right where you left it.")
-        .font(.system(size: 14)).foregroundStyle(Palette.muted).padding(.bottom, 10)
-      primary("Keep glowing", icon: "play.fill", id: "resume") { arcade.game.resume() }
-      HStack {
+      PixelText("PAUSE", scale: 4, color: Palette.yellow, shadow: Palette.red)
+      PixelText("TAKE A BREATHER", scale: 2, color: Palette.gray).padding(.bottom, 10)
+      primary("CONTINUE", fill: Palette.red, id: "resume") { arcade.game.resume() }
+      HStack(spacing: 10) {
         Button {
           arcade.toggleSound()
         } label: {
-          Label(
-            arcade.sound ? "Sound on" : "Sound off",
-            systemImage: arcade.sound ? "speaker.wave.2" : "speaker.slash"
-          )
-          .frame(maxWidth: .infinity, minHeight: 48)
-        }.accessibilityIdentifier("pauseSound")
+          PixelText(arcade.sound ? "SOUND ON" : "SOUND OFF", scale: 2, color: Palette.ink)
+            .frame(maxWidth: .infinity, minHeight: 46)
+        }
+        .buttonStyle(PixelButtonStyle(fill: Palette.gray, text: Palette.ink))
+        .accessibilityIdentifier("pauseSound")
         Button {
           arcade.showGuide = true
         } label: {
-          Label("Guide", systemImage: "questionmark.circle").frame(
-            maxWidth: .infinity, minHeight: 48)
+          PixelText("HELP", scale: 2, color: Palette.ink).frame(maxWidth: .infinity, minHeight: 46)
         }
-      }.font(.system(size: 13, weight: .semibold)).foregroundStyle(Palette.muted)
-      Button("End run") {
+        .buttonStyle(PixelButtonStyle(fill: Palette.gray, text: Palette.ink))
+      }
+      Button {
         arcade.game.resume()
         arcade.inGame = false
+      } label: {
+        PixelText("QUIT TO TITLE", scale: 2, color: Palette.gray).frame(height: 44)
       }
-      .font(.system(size: 14, weight: .semibold)).foregroundStyle(Palette.muted)
-      .frame(height: 44).accessibilityIdentifier("endRun")
+      .accessibilityIdentifier("endRun")
     }
   }
 
@@ -587,145 +474,110 @@ struct ArcadeView: View {
     let cleared = arcade.game.phase == .cleared
     let record = arcade.game.score >= arcade.best && arcade.best > 0
     return modal {
-      resultEmblem(cleared: cleared).padding(.bottom, 6)
-      micro(cleared ? "EVERY LIGHT, FOUND" : "UNTIL NEXT TIME", color: Palette.blue)
-      Text(cleared ? "Night, illuminated." : "A beautiful run.")
-        .font(.system(size: 32, weight: .medium, design: .serif)).italic()
-        .foregroundStyle(Palette.pearl).minimumScaleFactor(0.7).lineLimit(1)
-      Text(
-        cleared
-          ? "Maze cleared. +1,000 points & an extra life."
-          : "The shadows caught up. Your glow stays."
-      )
-      .font(.system(size: 13)).foregroundStyle(Palette.muted).multilineTextAlignment(.center)
-      VStack(spacing: 6) {
-        Text(arcade.game.score.formatted()).font(.system(size: 64, weight: .bold, design: .rounded))
-          .tracking(-2.5).foregroundStyle(Palette.pearlGradient).monospacedDigit()
-          .shadow(color: Palette.gold.opacity(0.35), radius: 20)
-        micro(
-          record ? "★  NEW PERSONAL BEST" : "POINTS COLLECTED",
-          color: record ? Palette.gold : Palette.pearl.opacity(0.6))
-      }.padding(.vertical, 12).accessibilityIdentifier("resultScore")
+      resultEmblem(cleared: cleared).padding(.bottom, 4)
+      PixelText(
+        cleared ? "MAZE CLEAR!" : "GAME OVER", scale: 4,
+        color: cleared ? Palette.cyan : Palette.red,
+        shadow: cleared ? Palette.navy : Palette.shadow)
+      PixelText(
+        cleared ? "BONUS 1000  +1 LIFE" : "THE SPIRITS GOT YOU", scale: 2, color: Palette.gray)
+      VStack(spacing: 8) {
+        PixelText("SCORE", scale: 2, color: Palette.red)
+        PixelText(String(format: "%06d", arcade.game.score), scale: 5, color: Palette.white)
+        if record {
+          PixelText(blink ? "NEW HIGH SCORE!" : " ", scale: 2, color: Palette.yellow)
+        } else {
+          PixelText(" ", scale: 2)
+        }
+      }.padding(.vertical, 10).accessibilityIdentifier("resultScore")
       HStack {
         resultStat("MAZE", value: String(format: "%02d", arcade.game.level))
         Spacer()
-        resultStat("LIGHTS", value: "\(arcade.game.collected)")
+        resultStat("DOTS", value: "\(arcade.game.collected)")
         Spacer()
-        resultStat("BEST", value: arcade.best.formatted())
+        resultStat("HIGH", value: String(format: "%06d", arcade.best))
       }
-      .padding(16).background(Palette.ink.opacity(0.7), in: RoundedRectangle(cornerRadius: 14))
-      .overlay(
-        RoundedRectangle(cornerRadius: 14).stroke(Palette.blue.opacity(0.15), lineWidth: 1)
-      )
-      .padding(.bottom, 10)
-      primary(cleared ? "Into the next night" : "One more run", icon: "arrow.right", id: "replay") {
+      .padding(.horizontal, 12).padding(.bottom, 10)
+      primary(
+        cleared ? "NEXT MAZE" : "TRY AGAIN", fill: cleared ? Palette.blue : Palette.red,
+        id: "replay"
+      ) {
         if cleared { arcade.game.nextLevel() } else { arcade.start() }
       }
-      Button("Back to the arcade") { arcade.inGame = false }
-        .font(.system(size: 14, weight: .semibold)).foregroundStyle(Palette.muted)
-        .frame(height: 44).accessibilityIdentifier("home")
+      Button {
+        arcade.inGame = false
+      } label: {
+        PixelText("TITLE SCREEN", scale: 2, color: Palette.gray).frame(height: 44)
+      }.accessibilityIdentifier("home")
     }
   }
 
   private var guideOverlay: some View {
     modal {
-      micro("A FIELD GUIDE TO THE NIGHT", color: Palette.blue)
-      Text("Keep your glow.").font(.system(size: 34, weight: .medium, design: .serif)).italic()
-        .foregroundStyle(Palette.pearl)
+      PixelText("HOW TO PLAY", scale: 3, color: Palette.yellow, shadow: Palette.red)
       guideRow(
-        "hand.draw", title: "Swipe before the corner",
-        detail:
-          "Your next turn is queued. Tap or flick the dial if you prefer; opposite turns reverse instantly."
-      )
+        Palette.yellow, title: "SWIPE OR D-PAD",
+        detail: "Turns queue until the next corner. The opposite direction reverses instantly.")
       guideRow(
-        "circle.dotted", title: "Find every little light",
-        detail:
-          "Pearls are 10 points. Clear the maze for 1,000 and an extra life. Side tunnels wrap around."
-      )
+        Palette.peach, title: "EAT EVERY DOT",
+        detail: "Dots are 10 points. Clear the maze for 1000 and an extra life. Side tunnels wrap.")
       guideRow(
-        "sparkle", title: "Big lights turn the chase",
-        detail: "Power orbs are 50 points. Catch frightened rivals for 200, 400, 800, then 1,600.")
-      HStack(spacing: 14) {
+        Palette.cyan, title: "POWER DOTS",
+        detail: "Big dots are 50 points and scare the spirits. Catch them for 200, 400, 800, 1600.")
+      HStack(spacing: 10) {
         ForEach(0..<4) { index in
           VStack(spacing: 8) {
-            SpiritShape(identity: index).fill(Palette.rivals[index]).frame(width: 27, height: 30)
-              .shadow(color: Palette.rivals[index].opacity(0.6), radius: 6)
-            Text(["HUNTS", "AMBUSH", "FLANKS", "SHY"][index])
-              .font(.system(size: 10, weight: .bold, design: .monospaced)).foregroundStyle(
-                Palette.pearl.opacity(0.8))
+            SpiritShape(identity: index).fill(Palette.rivals[index]).frame(width: 26, height: 26)
+            PixelText(["HUNTS", "AMBUSH", "FLANK", "SHY"][index], scale: 1.5, color: Palette.gray)
           }.frame(maxWidth: .infinity)
         }
-      }.padding(.vertical, 12)
-      primary("Got it. Let’s glow.", icon: "arrow.right", id: "closeGuide") {
-        arcade.showGuide = false
-      }
+      }.padding(.vertical, 10)
+      primary("OK!", fill: Palette.red, id: "closeGuide") { arcade.showGuide = false }
     }
   }
 
-  private func guideRow(_ icon: String, title: String, detail: String) -> some View {
-    HStack(alignment: .top, spacing: 14) {
-      Image(systemName: icon).foregroundStyle(Palette.pearlGradient)
-        .font(.system(size: 22, weight: .light)).frame(width: 30)
-      VStack(alignment: .leading, spacing: 5) {
-        Text(title).font(.system(size: 15, weight: .semibold, design: .serif)).italic()
-          .foregroundStyle(Palette.pearl)
-        Text(detail).font(.system(size: 14)).foregroundStyle(Palette.muted).fixedSize(
-          horizontal: false, vertical: true)
+  private func guideRow(_ color: Color, title: String, detail: String) -> some View {
+    HStack(alignment: .top, spacing: 12) {
+      Rectangle().fill(color).frame(width: 12, height: 12).padding(.top, 2)
+      VStack(alignment: .leading, spacing: 6) {
+        PixelText(title, scale: 2, color: Palette.white)
+        Text(detail).font(.system(size: 14, weight: .semibold, design: .monospaced))
+          .foregroundStyle(Palette.gray).fixedSize(horizontal: false, vertical: true)
       }
-    }.padding(.vertical, 6)
+    }.frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 4)
   }
 
   private func resultEmblem(cleared: Bool) -> some View {
-    ZStack {
-      Circle().stroke(Palette.rim, lineWidth: 1).frame(width: 84, height: 84)
-      Circle().stroke(
-        Palette.blue.opacity(0.22), style: StrokeStyle(lineWidth: 1, dash: [2, 6])
-      ).frame(width: 104, height: 104)
-      ForEach(0..<3) { index in
-        Circle().fill(Palette.gold.opacity(0.22 - Double(index) * 0.06))
-          .frame(width: 14 - CGFloat(index) * 3, height: 14 - CGFloat(index) * 3)
-          .offset(x: -30 - CGFloat(index) * 12)
-      }
-      CometShape(mouth: cleared ? 0.2 : 0.62).fill(Palette.pearlGradient)
-        .frame(width: 40, height: 40).shadow(color: Palette.gold.opacity(0.6), radius: 14)
-      Circle().fill(Palette.ink).frame(width: 5, height: 5).offset(x: -2, y: -9)
+    HStack(spacing: 14) {
       if cleared {
         ForEach(0..<3) { index in
-          Image(systemName: "sparkle").font(.system(size: 9 + CGFloat(index) * 2))
-            .foregroundStyle(Palette.pearl)
-            .offset(x: 32 + CGFloat(index) * 12, y: -14 + CGFloat(index) * 9)
+          Rectangle().fill(Palette.peach).frame(width: 8, height: 8)
         }
+        CometShape(mouth: 0.4).fill(Palette.yellow).frame(width: 39, height: 39)
       } else {
-        SpiritShape(identity: 1).fill(Palette.rivals[1].opacity(0.9))
-          .frame(width: 22, height: 24).offset(x: 40, y: 4)
-          .shadow(color: Palette.rivals[1].opacity(0.6), radius: 8)
+        CometShape(mouth: 0.9).fill(Palette.yellow).frame(width: 39, height: 39)
+          .rotationEffect(.degrees(180))
+        ForEach(0..<2) { index in
+          SpiritShape(identity: index).fill(Palette.rivals[index]).frame(width: 39, height: 39)
+        }
       }
-    }.frame(height: 108).accessibilityHidden(true)
+    }
+    .frame(height: 50).accessibilityHidden(true)
   }
 
   private func resultStat(_ label: String, value: String) -> some View {
-    VStack(spacing: 7) {
-      micro(label)
-      Text(value).font(.system(size: 18, weight: .bold, design: .rounded)).foregroundStyle(
-        Palette.pearl
-      ).monospacedDigit()
+    VStack(spacing: 6) {
+      PixelText(label, scale: 2, color: Palette.red)
+      PixelText(value, scale: 2, color: Palette.white)
     }
   }
 
   private func modal<Content: View>(@ViewBuilder content: () -> Content) -> some View {
-    ZStack {
-      Palette.ink.opacity(0.88).ignoresSafeArea()
+    let body = VStack(spacing: 14, content: content).padding(24).frame(maxWidth: 360)
+    return ZStack {
+      Palette.ink.opacity(0.9).ignoresSafeArea()
       ScrollView {
-        VStack(spacing: 14, content: content)
-          .padding(26).frame(maxWidth: 380)
-          .background(
-            LinearGradient(
-              colors: [Palette.panel, Palette.ink], startPoint: .topLeading,
-              endPoint: .bottomTrailing),
-            in: RoundedRectangle(cornerRadius: 30)
-          )
-          .overlay(RoundedRectangle(cornerRadius: 30).stroke(Palette.rim, lineWidth: 1))
-          .shadow(color: Palette.blue.opacity(0.25), radius: 40, y: 12)
+        PixelPanel(border: Palette.white) { body }
           .padding(20)
       }.scrollBounceBehavior(.basedOnSize)
         .defaultScrollAnchor(.center)
@@ -736,61 +588,25 @@ struct ArcadeView: View {
     Button {
       arcade.toggleSound()
     } label: {
-      Image(systemName: arcade.sound ? "speaker.wave.2" : "speaker.slash")
-        .font(.system(size: 15)).foregroundStyle(Palette.muted).frame(width: 44, height: 44)
-    }.accessibilityLabel(arcade.sound ? "Mute sound" : "Enable sound").accessibilityIdentifier(
+      PixelText(arcade.sound ? "SND" : "MUTE", scale: 2, color: Palette.ink)
+        .frame(width: 50, height: 32)
+    }
+    .buttonStyle(
+      PixelButtonStyle(
+        fill: arcade.sound ? Palette.gray : Palette.steel, text: Palette.ink, unit: 2)
+    )
+    .accessibilityLabel(arcade.sound ? "Mute sound" : "Enable sound").accessibilityIdentifier(
       "sound")
   }
 
-  private func primary(_ text: String, icon: String, id: String, action: @escaping () -> Void)
+  private func primary(_ text: String, fill: Color, id: String, action: @escaping () -> Void)
     -> some View
   {
     Button(action: action) {
-      HStack {
-        Text(text).font(.system(size: 16, weight: .bold, design: .rounded))
-        Spacer()
-        Image(systemName: icon).font(.system(size: 15, weight: .bold))
-      }
-      .foregroundStyle(Palette.ink).padding(.horizontal, 22).frame(height: 56)
-      .background(
-        LinearGradient(
-          colors: [Color(red: 1, green: 0.96, blue: 0.86), Palette.pearl, Palette.gold],
-          startPoint: .top, endPoint: .bottom),
-        in: RoundedRectangle(cornerRadius: 18)
-      )
-      .overlay(
-        RoundedRectangle(cornerRadius: 18)
-          .stroke(
-            LinearGradient(
-              colors: [.white.opacity(0.9), .white.opacity(0.05)], startPoint: .top,
-              endPoint: .bottom),
-            lineWidth: 1)
-      )
-      .shadow(color: Palette.gold.opacity(0.35), radius: 18, y: 8)
-    }.accessibilityIdentifier(id)
-  }
-
-  private func micro(_ text: String, color: Color = Palette.muted) -> some View {
-    Text(text).font(.system(size: 11, weight: .bold, design: .monospaced)).tracking(0.8)
-      .foregroundStyle(color)
-  }
-}
-
-struct WedgeShape: Shape {
-  let direction: Direction
-  func path(in rect: CGRect) -> Path {
-    let center = CGPoint(x: rect.midX, y: rect.midY)
-    let outer = rect.width / 2 - 4
-    let inner = outer * 0.38
-    let half = Double.pi / 4 - 0.045
-    var path = Path()
-    path.addArc(
-      center: center, radius: outer, startAngle: .radians(direction.angle - half),
-      endAngle: .radians(direction.angle + half), clockwise: false)
-    path.addArc(
-      center: center, radius: inner, startAngle: .radians(direction.angle + half),
-      endAngle: .radians(direction.angle - half), clockwise: true)
-    path.closeSubpath()
-    return path
+      PixelText(text, scale: 3, color: Palette.white, shadow: Palette.ink.opacity(0.5))
+        .frame(maxWidth: .infinity).frame(height: 56)
+    }
+    .buttonStyle(PixelButtonStyle(fill: fill, text: Palette.white))
+    .accessibilityIdentifier(id)
   }
 }

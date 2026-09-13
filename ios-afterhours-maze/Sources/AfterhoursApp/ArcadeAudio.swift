@@ -46,9 +46,10 @@ final class ArcadeAudio {
       for index in 0..<samplesPerNote {
         let t = Double(index) / Double(rate)
         let progress = Double(index) / Double(samplesPerNote)
-        let envelope = min(1, progress * 20) * pow(1 - progress, 1.6)
-        let signal = sin(2 * .pi * note * t) + 0.15 * sin(4 * .pi * note * t)
-        var value = Int16(signal * envelope * 12_000).littleEndian
+        let envelope = progress < 0.75 ? 1.0 : (1 - progress) * 4
+        let phase = (note * t).truncatingRemainder(dividingBy: 1)
+        let signal = phase < 0.25 ? 1.0 : -1.0
+        var value = Int16(signal * envelope * 5_500).littleEndian
         withUnsafeBytes(of: &value) { samples.append(contentsOf: $0) }
       }
     }
