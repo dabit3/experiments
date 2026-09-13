@@ -459,7 +459,9 @@ final class RaceWorld {
       let p = Course.point(track, 0)
       let angle = time * 0.15
       cameraNode.position = SCNVector3(p.x + sin(angle) * 11, 6, p.z + cos(angle) * 11)
-      cameraNode.look(at: SCNVector3(p.x, 1.7, p.z))
+      cameraNode.look(
+        at: SCNVector3(p.x, 1.7, p.z), up: SCNVector3(0, 1, 0),
+        localFront: SCNVector3(0, 0, -1))
       return
     }
     previewKart.isHidden = true
@@ -521,7 +523,9 @@ final class RaceWorld {
     cameraNode.position.x += (target.x - cameraNode.position.x) * 0.22
     cameraNode.position.z += (target.z - cameraNode.position.z) * 0.22
     cameraNode.position.y += (target.y - cameraNode.position.y) * 0.22
-    cameraNode.look(at: SCNVector3(me.x + sin(h) * 7, 1.5, me.z + cos(h) * 7))
+    cameraNode.look(
+      at: SCNVector3(me.x + sin(h) * 7, 1.5, me.z + cos(h) * 7),
+      up: SCNVector3(0, 1, 0), localFront: SCNVector3(0, 0, -1))
     cameraNode.camera?.fieldOfView = me.boost > 0 ? 76 : 68
     if state.phase == "results"
       && courseRoot.childNode(withName: "confetti", recursively: false) == nil

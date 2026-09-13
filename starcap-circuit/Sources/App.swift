@@ -25,7 +25,7 @@ struct CircuitView: View {
         if client.racing {
           RaceHUD(client: client)
         } else if client.state?.phase == "results" {
-          ResultsPanel(client: client)
+          ResultsPanel(client: client, width: geometry.size.width)
         } else {
           LobbyPanel(client: client, width: geometry.size.width)
         }
@@ -564,10 +564,11 @@ struct HoldControl: View {
 
 struct ResultsPanel: View {
   @ObservedObject var client: RaceClient
+  let width: CGFloat
   var body: some View {
     ZStack {
       navy.opacity(0.76).ignoresSafeArea()
-      HStack(spacing: 28) {
+      HStack(spacing: 20) {
         VStack(spacing: 10) {
           Image(systemName: "trophy.fill").font(.system(size: 60)).foregroundStyle(yellow)
           OutlinedText(
@@ -577,7 +578,7 @@ struct ResultsPanel: View {
           Text("TWO LAPS. ALL HEART.").font(.system(size: 10, weight: .bold)).foregroundStyle(
             .white.opacity(0.6))
           OutlinedText(text: client.me?.rank == 1 ? "1st" : "2nd", size: 61)
-        }.frame(maxWidth: .infinity)
+        }.frame(width: width * 0.30)
         VStack(alignment: .leading, spacing: 13) {
           HStack {
             Text("THE FINISH LINE").font(.system(size: 20, weight: .black, design: .rounded))
@@ -586,20 +587,23 @@ struct ResultsPanel: View {
               yellow)
           }
           ForEach((client.state?.players ?? []).sorted { $0.rank < $1.rank }) { p in
-            HStack(spacing: 12) {
-              Text("\(p.rank)").font(.system(size: 26, weight: .black, design: .rounded))
-                .foregroundStyle(p.rank == 1 ? yellow : .white)
-              RacerPortrait(racer: p.racer).frame(width: 50, height: 50)
-              VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 5) {
+              HStack(spacing: 9) {
+                Text("\(p.rank)").font(.system(size: 26, weight: .black, design: .rounded))
+                  .foregroundStyle(p.rank == 1 ? yellow : .white)
+                RacerPortrait(racer: p.racer).frame(width: 38, height: 38)
                 Text(p.name).font(.system(size: 16, weight: .black, design: .rounded))
-                Text("\(p.shots) ITEMS • \(p.drifts) TURBOS • \(p.hits) HITS").font(
-                  .system(size: 8, weight: .bold)
-                ).foregroundStyle(.white.opacity(0.6))
+                  .lineLimit(1).minimumScaleFactor(0.65)
+                  .frame(maxWidth: .infinity, alignment: .leading)
+                Text(p.finish > 0 ? String(format: "%.2fs", p.finish / 1000) : "DNF")
+                  .font(.system(size: 17, weight: .black, design: .monospaced)).foregroundStyle(
+                    p.rank == 1 ? yellow : .white
+                  )
+                  .fixedSize()
               }
-              Spacer()
-              Text(p.finish > 0 ? String(format: "%.2fs", p.finish / 1000) : "DNF")
-                .font(.system(size: 17, weight: .black, design: .monospaced)).foregroundStyle(
-                  p.rank == 1 ? yellow : .white)
+              Text("\(p.shots) ITEMS • \(p.drifts) TURBOS • \(p.hits) HITS")
+                .font(.system(size: 9, weight: .bold))
+                .foregroundStyle(.white.opacity(0.65)).lineLimit(1).minimumScaleFactor(0.8)
             }.padding(10).background(
               .white.opacity(p.id == client.playerID ? 0.13 : 0.06),
               in: RoundedRectangle(cornerRadius: 15))
@@ -615,7 +619,7 @@ struct ResultsPanel: View {
         }.frame(maxWidth: .infinity).padding(20)
           .background(navy.opacity(0.75), in: RoundedRectangle(cornerRadius: 24))
           .overlay(RoundedRectangle(cornerRadius: 24).stroke(.white.opacity(0.17)))
-      }.padding(.horizontal, 35).padding(.vertical, 20)
+      }.padding(.horizontal, 24).padding(.vertical, 20)
     }
   }
 }
