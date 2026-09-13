@@ -1,0 +1,53 @@
+name: ChompCrown
+options:
+  bundleIdPrefix: games.chompcrown
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1"
+    CODE_SIGNING_ALLOWED: NO
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+targets:
+  ChompCrown:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: games.chompcrown.neon
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Chomp Crown
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+    info:
+      path: App/Info.plist
+      properties:
+        NSLocalNetworkUsageDescription: Connect to your Chomp Crown room on the local network.
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+          NSAllowsArbitraryLoads: true
+        CFBundleURLTypes:
+          - CFBundleURLName: games.chompcrown.controls
+            CFBundleURLSchemes: [chomp-crown]
+  ChompCrownUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [ChompCrownUITests]
+    dependencies:
+      - target: ChompCrown
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: games.chompcrown.uitests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  ChompCrown:
+    build:
+      targets:
+        ChompCrown: all
+        ChompCrownUITests: [test]
+    test:
+      targets: [ChompCrownUITests]
