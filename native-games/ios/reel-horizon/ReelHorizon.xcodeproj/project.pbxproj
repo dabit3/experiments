@@ -1,0 +1,503 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C0B156B8465DE50334DC55A9 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46096F50A6CAFE50CDC61E0 /* Artwork.swift */; };
+		195D7F32C0357F626924D34D /* FishingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949F511B62C411594C4427AA /* FishingView.swift */; };
+		168E9EFDFEB99BADBE40DB98 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49BCCEB5C2A9467DDB3E97E2 /* GameStore.swift */; };
+		6BD23AD0F4BF361F2653B445 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA74D3D1E596A6781DDC753A /* HomeView.swift */; };
+		FE69299C25020661271ABC2D /* ReelHorizonApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF0DC9F3DCA84B5895B0312 /* ReelHorizonApp.swift */; };
+		126204621E8CE86BB47A291A /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD9A99D269C021369D6D75 /* ShopView.swift */; };
+		633F62E727E8BEB8974C76A1 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72793F96FE827A9659D129E2 /* Theme.swift */; };
+		F21F225EAEBFBB7ACDDD264E /* FishingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D51C8F4903AA5CE3304953C5 /* FishingSession.swift */; };
+		878B12A899AA0EC6A25C1CA5 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = A463E4891321A3DB546E5D0E /* Player.swift */; };
+		46BE98D59742428DDA52AF9D /* SeededRandom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0581C2FC04F955106B886E89 /* SeededRandom.swift */; };
+		DB3BDFF863FAF99419CFA0FD /* Species.swift in Sources */ = {isa = PBXBuildFile; fileRef = D12D10D75D7CACD3D1E481AA /* Species.swift */; };
+		03A568FD6C9D1E3FFFAF035C /* Tackle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9F5C7D8ADF06D0FF536AE8 /* Tackle.swift */; };
+		B4DD3060D82FE0594D87ECA6 /* Waterway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FD8E61501505DC31EB30ED /* Waterway.swift */; };
+		0C2158C53B40A644F153B1EA /* ReelHorizonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82481EBC18003108476DA9CA /* ReelHorizonTests.swift */; };
+		A7F780676E5968441EBC2A57 /* ReelHorizonUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1EA1195DAF6B97436AC06B3 /* ReelHorizonUITests.swift */; };
+		D8CA9875A76B00A75A887490 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 351560C7E6186E473979C880 /* Assets.xcassets */; };
+		7757DB8E5F73394454D17317 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB6394EF6C47649132BD0D3F /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C2652295E90D9D59F6C8616F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 29C7B681C8D62CBAC94D51C0;
+			remoteInfo = ReelHorizon;
+		};
+		A0986D674A860739C33D13BB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 29C7B681C8D62CBAC94D51C0;
+			remoteInfo = ReelHorizon;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D46096F50A6CAFE50CDC61E0 /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
+		949F511B62C411594C4427AA /* FishingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishingView.swift; sourceTree = "<group>"; };
+		49BCCEB5C2A9467DDB3E97E2 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		DA74D3D1E596A6781DDC753A /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		7BF0DC9F3DCA84B5895B0312 /* ReelHorizonApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelHorizonApp.swift; sourceTree = "<group>"; };
+		A1AD9A99D269C021369D6D75 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
+		72793F96FE827A9659D129E2 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		D51C8F4903AA5CE3304953C5 /* FishingSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishingSession.swift; sourceTree = "<group>"; };
+		A463E4891321A3DB546E5D0E /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		0581C2FC04F955106B886E89 /* SeededRandom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeededRandom.swift; sourceTree = "<group>"; };
+		D12D10D75D7CACD3D1E481AA /* Species.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Species.swift; sourceTree = "<group>"; };
+		EF9F5C7D8ADF06D0FF536AE8 /* Tackle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tackle.swift; sourceTree = "<group>"; };
+		03FD8E61501505DC31EB30ED /* Waterway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waterway.swift; sourceTree = "<group>"; };
+		82481EBC18003108476DA9CA /* ReelHorizonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelHorizonTests.swift; sourceTree = "<group>"; };
+		D1EA1195DAF6B97436AC06B3 /* ReelHorizonUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReelHorizonUITests.swift; sourceTree = "<group>"; };
+		351560C7E6186E473979C880 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB6394EF6C47649132BD0D3F /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B6CDB6E5D160E013280D3C68 /* ReelHorizon.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ReelHorizon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		782395792B604A503D86C9E7 /* ReelHorizonTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ReelHorizonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6876384C1F14AB301558A48A /* ReelHorizonUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ReelHorizonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		CF8D0BD4B75E8C2C174692A5 /* ReelHorizon */ = {
+			isa = PBXGroup;
+			children = (
+				D46096F50A6CAFE50CDC61E0 /* Artwork.swift */,
+				949F511B62C411594C4427AA /* FishingView.swift */,
+				49BCCEB5C2A9467DDB3E97E2 /* GameStore.swift */,
+				DA74D3D1E596A6781DDC753A /* HomeView.swift */,
+				7BF0DC9F3DCA84B5895B0312 /* ReelHorizonApp.swift */,
+				A1AD9A99D269C021369D6D75 /* ShopView.swift */,
+				72793F96FE827A9659D129E2 /* Theme.swift */,
+				351560C7E6186E473979C880 /* Assets.xcassets */,
+				BB6394EF6C47649132BD0D3F /* LaunchScreen.storyboard */,
+			);
+			path = ReelHorizon;
+			sourceTree = "<group>";
+		};
+		FC8F5A85394B0D5FF7E93AFA /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				D51C8F4903AA5CE3304953C5 /* FishingSession.swift */,
+				A463E4891321A3DB546E5D0E /* Player.swift */,
+				0581C2FC04F955106B886E89 /* SeededRandom.swift */,
+				D12D10D75D7CACD3D1E481AA /* Species.swift */,
+				EF9F5C7D8ADF06D0FF536AE8 /* Tackle.swift */,
+				03FD8E61501505DC31EB30ED /* Waterway.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		CEDF942FF3B0BCA7DF754049 /* ReelHorizonTests */ = {
+			isa = PBXGroup;
+			children = (
+				82481EBC18003108476DA9CA /* ReelHorizonTests.swift */,
+			);
+			path = ReelHorizonTests;
+			sourceTree = "<group>";
+		};
+		9D1F2B3F17BB8AA6FB663F5C /* ReelHorizonUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D1EA1195DAF6B97436AC06B3 /* ReelHorizonUITests.swift */,
+			);
+			path = ReelHorizonUITests;
+			sourceTree = "<group>";
+		};
+		00C45FD35CB0F9C5F764F070 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B6CDB6E5D160E013280D3C68 /* ReelHorizon.app */,
+				782395792B604A503D86C9E7 /* ReelHorizonTests.xctest */,
+				6876384C1F14AB301558A48A /* ReelHorizonUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ADCF10F76EBF2A74473E9DC4 = {
+			isa = PBXGroup;
+			children = (
+				CF8D0BD4B75E8C2C174692A5 /* ReelHorizon */,
+				FC8F5A85394B0D5FF7E93AFA /* Core */,
+				CEDF942FF3B0BCA7DF754049 /* ReelHorizonTests */,
+				9D1F2B3F17BB8AA6FB663F5C /* ReelHorizonUITests */,
+				00C45FD35CB0F9C5F764F070 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		29C7B681C8D62CBAC94D51C0 /* ReelHorizon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 23746EFE221170E24101FE05 /* Build configuration list for PBXNativeTarget "ReelHorizon" */;
+			buildPhases = (
+				8682261519D15BD64A9E5D31 /* Sources */,
+				E28FAD8F60ECDED9B4AD087A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReelHorizon;
+			packageProductDependencies = (
+			);
+			productName = ReelHorizon;
+			productReference = B6CDB6E5D160E013280D3C68 /* ReelHorizon */;
+			productType = "com.apple.product-type.application";
+		};
+		744203E57A60333548F2AFC1 /* ReelHorizonTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 05D0B1CB75B6E3617CC27B88 /* Build configuration list for PBXNativeTarget "ReelHorizonTests" */;
+			buildPhases = (
+				5A2FF233CE93FBCA0A3E42A6 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9C5AEAB7BA46770CC1789D3C /* PBXTargetDependency */,
+			);
+			name = ReelHorizonTests;
+			packageProductDependencies = (
+			);
+			productName = ReelHorizonTests;
+			productReference = 782395792B604A503D86C9E7 /* ReelHorizonTests */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4125057379AE12C52671CDDE /* ReelHorizonUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 70931A551046C3205E3B2723 /* Build configuration list for PBXNativeTarget "ReelHorizonUITests" */;
+			buildPhases = (
+				FFD25EA4B0C184CA94EBBB82 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F8DD9074C82279B6D4404D74 /* PBXTargetDependency */,
+			);
+			name = ReelHorizonUITests;
+			packageProductDependencies = (
+			);
+			productName = ReelHorizonUITests;
+			productReference = 6876384C1F14AB301558A48A /* ReelHorizonUITests */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					4125057379AE12C52671CDDE = {
+						TestTargetID = 29C7B681C8D62CBAC94D51C0;
+					};
+				};
+			};
+			buildConfigurationList = 3D29D9F3A882C4202964FB56 /* Build configuration list for PBXProject "ReelHorizon" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = ADCF10F76EBF2A74473E9DC4;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 00C45FD35CB0F9C5F764F070 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				29C7B681C8D62CBAC94D51C0 /* ReelHorizon */,
+				744203E57A60333548F2AFC1 /* ReelHorizonTests */,
+				4125057379AE12C52671CDDE /* ReelHorizonUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E28FAD8F60ECDED9B4AD087A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8CA9875A76B00A75A887490 /* Assets.xcassets in Resources */,
+				7757DB8E5F73394454D17317 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8682261519D15BD64A9E5D31 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0B156B8465DE50334DC55A9 /* Artwork.swift in Sources */,
+				195D7F32C0357F626924D34D /* FishingView.swift in Sources */,
+				168E9EFDFEB99BADBE40DB98 /* GameStore.swift in Sources */,
+				6BD23AD0F4BF361F2653B445 /* HomeView.swift in Sources */,
+				FE69299C25020661271ABC2D /* ReelHorizonApp.swift in Sources */,
+				126204621E8CE86BB47A291A /* ShopView.swift in Sources */,
+				633F62E727E8BEB8974C76A1 /* Theme.swift in Sources */,
+				F21F225EAEBFBB7ACDDD264E /* FishingSession.swift in Sources */,
+				878B12A899AA0EC6A25C1CA5 /* Player.swift in Sources */,
+				46BE98D59742428DDA52AF9D /* SeededRandom.swift in Sources */,
+				DB3BDFF863FAF99419CFA0FD /* Species.swift in Sources */,
+				03A568FD6C9D1E3FFFAF035C /* Tackle.swift in Sources */,
+				B4DD3060D82FE0594D87ECA6 /* Waterway.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5A2FF233CE93FBCA0A3E42A6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0C2158C53B40A644F153B1EA /* ReelHorizonTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FFD25EA4B0C184CA94EBBB82 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7F780676E5968441EBC2A57 /* ReelHorizonUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9C5AEAB7BA46770CC1789D3C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 29C7B681C8D62CBAC94D51C0 /* ReelHorizon */;
+			targetProxy = C2652295E90D9D59F6C8616F /* PBXContainerItemProxy */;
+		};
+		F8DD9074C82279B6D4404D74 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 29C7B681C8D62CBAC94D51C0 /* ReelHorizon */;
+			targetProxy = A0986D674A860739C33D13BB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		E3EBCBBFB33611052F1F254E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		45A51FDE45C8C9313F9CC216 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		754064D2901B6752E802BA06 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Reel Horizon";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.naderdabit.reelhorizon;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		831F0B0E7AD0243B76867D45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Reel Horizon";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.naderdabit.reelhorizon;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		035F89338935DABE4A27672E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.naderdabit.ReelHorizonTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReelHorizon.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ReelHorizon";
+			};
+			name = Debug;
+		};
+		F699283EC556E8ABB5C728C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.naderdabit.ReelHorizonTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ReelHorizon.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ReelHorizon";
+			};
+			name = Release;
+		};
+		CA95A729D71C15B3BFCC7771 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.naderdabit.ReelHorizonUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ReelHorizon;
+			};
+			name = Debug;
+		};
+		76B76C54BA3EE960FAC98C62 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.naderdabit.ReelHorizonUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ReelHorizon;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3D29D9F3A882C4202964FB56 /* Build configuration list for PBXProject "ReelHorizon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E3EBCBBFB33611052F1F254E /* Debug */,
+				45A51FDE45C8C9313F9CC216 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		23746EFE221170E24101FE05 /* Build configuration list for PBXNativeTarget "ReelHorizon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				754064D2901B6752E802BA06 /* Debug */,
+				831F0B0E7AD0243B76867D45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		05D0B1CB75B6E3617CC27B88 /* Build configuration list for PBXNativeTarget "ReelHorizonTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				035F89338935DABE4A27672E /* Debug */,
+				F699283EC556E8ABB5C728C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		70931A551046C3205E3B2723 /* Build configuration list for PBXNativeTarget "ReelHorizonUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA95A729D71C15B3BFCC7771 /* Debug */,
+				76B76C54BA3EE960FAC98C62 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+}
