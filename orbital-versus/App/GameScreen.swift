@@ -7,12 +7,13 @@ private let navy = Color(red: 0.035, green: 0.085, blue: 0.14)
 struct CutPanel: Shape {
   func path(in rect: CGRect) -> Path {
     Path { path in
-      path.move(to: CGPoint(x: 12, y: 0))
-      path.addLines([
-        CGPoint(x: rect.width, y: 0), CGPoint(x: rect.width, y: rect.height - 12),
-        CGPoint(x: rect.width - 12, y: rect.height), CGPoint(x: 0, y: rect.height),
-        CGPoint(x: 0, y: 12),
-      ])
+      let cut = min(12, rect.height * 0.2, rect.width * 0.1)
+      path.move(to: CGPoint(x: cut, y: 0))
+      path.addLine(to: CGPoint(x: rect.width, y: 0))
+      path.addLine(to: CGPoint(x: rect.width, y: rect.height - cut))
+      path.addLine(to: CGPoint(x: rect.width - cut, y: rect.height))
+      path.addLine(to: CGPoint(x: 0, y: rect.height))
+      path.addLine(to: CGPoint(x: 0, y: cut))
       path.closeSubpath()
     }
   }
