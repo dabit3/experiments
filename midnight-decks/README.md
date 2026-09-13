@@ -20,6 +20,8 @@ xcrun swift-format lint --strict --recursive App
 xcodebuild -project MidnightDecks.xcodeproj -scheme MidnightDecks \
   -configuration Release -destination 'generic/platform=iOS Simulator' \
   -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+test -s build/Build/Products/Release-iphonesimulator/MidnightDecks.app/chart.json
+test -s build/Build/Products/Release-iphonesimulator/MidnightDecks.app/afterimage.wav
 ```
 
 The Xcode project is checked in. To regenerate after changing `project.yml`,
@@ -94,7 +96,7 @@ Keep both simulator displays visible during the same capture.
 xcrun simctl launch "$DEVICE_A" ai.midnightdecks.rhythm \
   --connect --create --room NIGHT --name NOVA --auto --auto-rematch
 xcrun simctl launch "$DEVICE_B" ai.midnightdecks.rhythm \
-  --connect --room NIGHT --name ECHO --auto --delay-ms 38 --auto-rematch
+  --connect --room NIGHT --name ECHO --auto --delay-ms 20 --auto-rematch
 ```
 
 `--server ws://HOST:PORT` overrides the default address. A named room must not
@@ -124,6 +126,19 @@ processes concurrently, then stop both with SIGINT and compose with ffmpeg.
 Preserve complete device frames. Device recording does not capture audio;
 capture actual system audio separately if available, and document that choice.
 Never silently dub audio and claim it proves actual playback synchronization.
+
+On a macOS VM without an audio device, install `blackhole-2ch` through Homebrew
+and verify `system_profiler SPAudioDataType` lists a working output **before**
+booting the simulators. A simulator booted without host audio may retain a stale
+CoreAudio endpoint until restarted. Actual BlackHole loopback capture and app
+audio clocks were verified on this environment.
+
+The recorded two-iPhone run used a 20 ms ECHO delay and passed the unchanged
+assertions, including all 191 endpoints per player and round two. A prior 38 ms
+run fell below the accuracy threshold under simulator scheduling load; the
+driver does not override judgments to guarantee a result. Separate manual
+controls were exercised, but precisely timed manual charge scoring, every
+hardware mapping, and physical-device latency remain unverified.
 
 ## Architecture and protocol
 
