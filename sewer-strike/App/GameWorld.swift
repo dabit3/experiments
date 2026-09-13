@@ -676,6 +676,8 @@ struct WorldView: UIViewRepresentable {
     view.preferredFramesPerSecond = 60
     view.antialiasingMode = .multisampling4X
     view.isUserInteractionEnabled = false
+    view.isAccessibilityElement = false
+    view.accessibilityElementsHidden = true
     return view
   }
   func updateUIView(_ uiView: SCNView, context: Context) {}

@@ -73,7 +73,9 @@ service to the public Internet. It is deliberately an ephemeral LAN game server.
 SwiftUI owns lobby, four-slot team HUD, touch input and results. SceneKit renders
 an original procedural 3D stage, rigged heroes, enemies, weapon poses, jumping,
 knockback, rings, neon pipework, healing slices and comic impact effects. Render
-poses interpolate 30 Hz state snapshots. Native `AVAudioPlayer` plays a looping
+poses interpolate 30 Hz state snapshots; the SwiftUI HUD refreshes at 10 Hz.
+Decorative SceneKit nodes are excluded from the accessibility hierarchy while
+all native controls remain accessible. Native `AVAudioPlayer` plays a looping
 original 128 BPM electro-funk track plus generated jump/hit/power/heal/clear cues.
 `Tools/make_audio.py` reproducibly authors the bundled WAVs without source samples.
 

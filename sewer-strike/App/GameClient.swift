@@ -11,8 +11,8 @@ final class GameClient: ObservableObject {
   @Published var connected = false
   @Published var connecting = false
   @Published var automation = false
-  @Published var driverStep = "MANUAL TOUCH CONTROLS"
-  @Published var sentInputs = 0
+  private(set) var driverStep = "MANUAL TOUCH CONTROLS"
+  private(set) var sentInputs = 0
   @Published var address = UserDefaults.standard.string(forKey: "server") ?? "ws://127.0.0.1:8767"
   @Published var guest = "Guest"
   @Published var room = ""
@@ -35,11 +35,13 @@ final class GameClient: ObservableObject {
   private var generation = 0
   private var lastEvent = 0
   private var lastLoggedTick = -30
+  private var latestState: GameState?
+  private var lastHUDTick = -3
   private let autoReady: Bool
   private let autoRematch: Bool
   private let logger = EvidenceLog()
 
-  var me: PlayerState? { state?.players.first { $0.id == playerID } }
+  var me: PlayerState? { latestState?.players.first { $0.id == playerID } }
   init() {
     let args = ProcessInfo.processInfo.arguments
     func value(_ flag: String) -> String? {
@@ -138,8 +140,12 @@ final class GameClient: ObservableObject {
         connecting = false
       } else if header.type == "state" {
         let next = try JSONDecoder().decode(GameState.self, from: data)
-        state = next
+        latestState = next
         world.update(next, localID: playerID)
+        if next.tick - lastHUDTick >= 3 || next.phase != state?.phase {
+          state = next
+          lastHUDTick = next.tick
+        }
         for event in next.events where event.id > lastEvent {
           if event.tick >= next.tick - 8 { audio.play(event.kind) }
           lastEvent = event.id
@@ -195,6 +201,7 @@ final class GameClient: ObservableObject {
     receiveTask?.cancel()
     socket?.cancel(with: .normalClosure, reason: nil)
     state = nil
+    latestState = nil
     token = ""
     playerID = ""
     connected = false
@@ -202,13 +209,14 @@ final class GameClient: ObservableObject {
     readySent = false
     lastEvent = 0
     lastLoggedTick = -30
+    lastHUDTick = -3
     movement = .zero
     pending = []
     error = ""
     status = "OFFLINE"
   }
   private func frame() {
-    guard connected, let state else { return }
+    guard connected, let state = latestState else { return }
     if autoReady && state.phase == "lobby" && !readySent {
       readySent = true
       ready()
@@ -293,7 +301,7 @@ final class EvidenceLog {
       FileManager.default.createFile(atPath: url.path, contents: nil)
     }
     handle = try? FileHandle(forWritingTo: url)
-    try? handle?.seekToEnd()
+    _ = try? handle?.seekToEnd()
   }
   func write(_ object: [String: any Sendable]) {
     guard JSONSerialization.isValidJSONObject(object),

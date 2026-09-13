@@ -16,7 +16,7 @@ struct GameScreen: View {
   var body: some View {
     GeometryReader { geo in
       ZStack {
-        WorldView(world: client.world).ignoresSafeArea()
+        WorldView(world: client.world).ignoresSafeArea().accessibilityHidden(true)
         if client.state == nil {
           LinearGradient(
             colors: [.black.opacity(0.85), .black.opacity(0.15), .black.opacity(0.75)],
