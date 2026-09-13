@@ -86,7 +86,8 @@ private struct TitleScreen: View {
                             PixelText("90 SEC", px: 2, color: Theme.ink)
                         }
                         .padding(.horizontal, 16)
-                        .frame(width: compact ? 250 : 300, height: 52)
+                        .frame(height: 52)
+                        .fixedSize()
                     }
                     .buttonStyle(PixelButtonStyle())
                     .accessibilityIdentifier("play")
