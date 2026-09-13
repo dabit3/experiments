@@ -496,6 +496,8 @@ struct Joystick: View {
         value = CGSize(width: dx / length, height: dy / length)
       }.onEnded { _ in value = .zero }
     )
+    .accessibilityElement(children: .ignore)
     .accessibilityLabel("Movement joystick")
+    .accessibilityHint("Drag to strafe or approach the locked target")
   }
 }
