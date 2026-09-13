@@ -76,7 +76,16 @@ Win two rounds. On timeout, higher health wins. Both players must vote rematch.
 
 ```sh
 swiftlint lint --strict --config .swiftlint.yml
+python3 -B -m unittest discover -s scripts -p 'test_*.py' -v
 cd server && npm run check && npm test && npm audit
+```
+
+Python evidence lint (from the game directory):
+
+```sh
+python3 -m venv build/lint-venv
+build/lint-venv/bin/python -m pip install ruff==0.13.0
+build/lint-venv/bin/ruff check scripts/assert-evidence.py scripts/test_evidence.py
 ```
 
 The Node suite checks hit startup/range, guard chip, sequence replay rejection,
@@ -155,6 +164,13 @@ python3 scripts/assert-evidence.py left-network.jsonl right-network.jsonl \
   --output assertions.json
 ffprobe -v error -show_format -show_streams duel.mp4
 ```
+
+The evidence checker requires over 100 identical same-tick snapshots. A guest's
+immediate join snapshot can share the previous broadcast tick: an otherwise
+identical lobby changing from one to two players is reported separately in
+`lobby_join_transitions`, never counted as agreement. Every other difference,
+including changed existing-player fields or a combat roster change, fails.
+The Python regression suite checks both this transition and divergence rejection.
 
 To test real touch controls with the same peers, pause the driver independently:
 `xcrun simctl openurl "$DEVICE_A" 'riftrequiem://auto?enabled=0'`.
