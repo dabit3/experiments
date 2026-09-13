@@ -121,7 +121,7 @@ struct ChannelView: View {
             }.font(.system(size: 12, weight: .black, design: .monospaced))
             Text("Two rivals. Two signals. One frequency.")
               .font(.system(size: 14, weight: .semibold)).padding(.top, 8).padding(.bottom, 16)
-          }.frame(width: 568)
+          }.padding(.leading, 48).frame(width: 568)
           VStack(alignment: .leading, spacing: 10) {
             HStack {
               heading(online ? "ON THE AIR" : "TUNE IN", size: 35, color: yellow)
@@ -192,7 +192,7 @@ struct ChannelView: View {
           Spacer()
           Text(client.status)
         }.font(.system(size: 10, weight: .heavy, design: .monospaced)).foregroundStyle(yellow)
-          .padding(.horizontal, 24).frame(height: 28).background(black)
+          .padding(.horizontal, 72).frame(height: 28).background(black)
       }
     }
   }
@@ -371,7 +371,7 @@ struct ChannelView: View {
             heading("MIKA", size: 80)
             heading("REDSHIFT", size: 23, color: yellow)
           }
-        }.padding(30).background(
+        }.padding(.horizontal, 72).padding(.vertical, 30).background(
           LinearGradient(colors: [.clear, black], startPoint: .top, endPoint: .bottom))
         checker(height: 16)
       }
