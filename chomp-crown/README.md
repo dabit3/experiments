@@ -109,36 +109,71 @@ Shut down and reboot any simulator that booted before the endpoint existed.
 Grant the macOS microphone/capture prompts when presented. Enumeration commands
 may exit nonzero after listing devices because no capture input was selected.
 
-Arrange both full device displays together. A joint AVFoundation screen/audio
-input preserves a common timestamp domain. After checking the current device
-indices, this command captured screen `0` and BlackHole audio `0` on the VM:
+Arrange both full device displays together. The
+[input-tap evidence bundle](https://app.devin.ai/attachments/a5be1589-e3d6-49da-86f0-036b55af2378/raw-evidence-bundle.zip)
+contains the inspected `capture-audio.swift` helper, raw recordings, per-buffer
+timestamps, failed attempts and analysis/export scripts. The unchanged helper
+uses `AVAudioEngine.inputNode.installTap` to record actual BlackHole input to CAF,
+logging each buffer's `hostTime`, `sampleTime`, frame count and sample rate.
+Compile it from the extracted directory and run it for a bounded duration:
+
+```sh
+swiftc capture-audio.swift -o capture-audio
+./capture-audio "$OUTPUT/live-audio" 300
+```
+
+Concurrently capture **video only**. After enumerating the current screen index,
+this command captured screen `0` while preserving demuxer host timestamps:
 
 ```sh
 ffmpeg -y -nostdin -hide_banner \
-  -f avfoundation -framerate 30 -capture_cursor 1 -i 0:0 \
-  -c:v h264_videotoolbox -b:v 6000k -c:a pcm_s16le \
-  live-screen-audio.mkv
+  -debug_ts -f avfoundation -framerate 30 -i 0:none \
+  -c:v h264_videotoolbox -b:v 6000k -fps_mode passthrough \
+  "$OUTPUT/screen-raw.mkv"
 ```
 
-Keep the capture process and its parent session alive; stop with SIGINT and wait
-for finalization. Native logs flush immediately when `simctl launch` is prefixed
-with `SIMCTL_CHILD_NSUnbufferedIO=YES`. Mute both phones, verify zero PCM, then
-unmute just one to distinguish actual game output from unrelated host audio.
-Inspect packet timestamps, sample counts, signal levels and control transitions:
+Set `OUTPUT` to an existing evidence directory. Keep both parent sessions alive
+and retain video stderr. Do not run competing screen recorders. Let AVFoundation
+select a supported pixel format; the successful attempt used `uyvy422`. Two
+initial attempts stalled before gameplay. Confirm stored frames and a growing
+file before starting the match. Stop video with SIGINT and let the fixed-duration
+audio helper finish naturally.
+
+Check every audio buffer for valid host/sample times, adjacent sample indices,
+consistent sample rate and host-versus-sample progression. Independently decode
+the CAF to count **stored** frames: this run logged 14,395,200 frames across
+2,999 buffers, but stored 14,393,344. Exclude the unflushed 1,856-frame tail.
+Use actual audio host timestamps and video demuxer host PTS to trim their fully
+stored intersection; process launch times are not synchronization evidence.
+Preserve originals and adapt the bundle's run-specific analysis indices to the
+new timestamps. Never fill, replace or reconstruct audio.
+
+Native logs flush immediately when `simctl launch` is prefixed with
+`SIMCTL_CHILD_NSUnbufferedIO=YES`. Mute both phones, verify zero PCM, then unmute
+just one. Inspect RMS, clipping, source correlation, actual zero runs and visible
+control transitions as separate checks. Validate the final export:
 
 ```sh
-ffprobe -v error -show_packets -show_streams -show_format -of json live-screen-audio.mkv
-ffmpeg -v error -i live-screen-audio.mkv -f null -
+ffprobe -v error -count_frames -show_streams -show_format -of json final.mp4
+ffmpeg -v error -i final.mp4 -f null -
 ```
 
-The recorded audio follow-up verified nonzero native music, source correlation,
-mute/unmute causality and control/audio alignment within approximately −12 to
-+46 ms. **Capture continuity failed:** the VM omitted 15.614% of audio intervals
-(37.220 seconds across 238.4 seconds; maximum gap 96.3 ms). The exported video
-preserves original sample timestamps and fills only absent intervals with
-silence. Never concatenate incomplete samples as a continuous track, replace
-gaps with generated music, or describe this capture path as lossless. Earlier
-silent evidence and failed capture attempts were retained in the test artifacts.
+The fresh 176.6-second two-device match/rematch export had zero audio sample/host
+discontinuities and zero clipping. Sample trim residuals were +18.458/−2.375 µs;
+these are numerical rounding, not physical latency. Visible control/audio changes
+agreed within approximately −37 to +46 ms, with video sampling uncertainty.
+
+**Source playback remains imperfectly characterized:** ten actual all-zero
+spans totaling 219.5 ms (maximum 41.083 ms) occurred in Gold-only audible lobby
+windows despite continuous timestamps. Their source/loopback origin is
+unresolved. Samples remain unmodified; continuous tap timestamps do not prove
+uninterrupted upstream music. Subjective listening and isolated verification of
+every effect remain untested.
+
+Historical joint FFmpeg screen/audio capture omitted 15.614% of audio intervals
+(37.220 seconds across 238.4 seconds; maximum gap 96.3 ms). That earlier export,
+its documented silence fills, the initial silent run and all failed attempts
+remain preserved separately. The input-tap export uses no inserted audio fills.
 
 ## Game rules and controls
 
