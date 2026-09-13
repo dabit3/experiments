@@ -178,6 +178,7 @@ struct AtelierView: View {
   @Environment(\.scenePhase) private var scenePhase
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @State private var confirmClear = false
+  @State private var showMenu = false
   @State private var showInvestment = false
   @State private var showNetwork = false
   @State private var width: CGFloat = 375
@@ -194,6 +195,10 @@ struct AtelierView: View {
         }
         if desk.showGuide {
           PaperModal(title: "HOW TO PLAY", dismiss: { desk.showGuide = false }) { guide }
+        } else if confirmClear {
+          PaperModal(title: "REDRAW LINE?", dismiss: { confirmClear = false }) { clearPrompt }
+        } else if showMenu {
+          PaperModal(title: "MENU", dismiss: { showMenu = false }) { menu }
         } else if let game = desk.game {
           if game.isOver, !showNetwork {
             PaperModal { result(game, compact: geometry.size.height < 700) }
@@ -208,17 +213,59 @@ struct AtelierView: View {
       .onAppear { width = geometry.size.width }
       .onChange(of: geometry.size.width) { _, value in width = value }
     }
-    .onReceive(timer) { _ in desk.tick() }
+    .onReceive(timer) { _ in
+      if !showMenu && !confirmClear { desk.tick() }
+    }
     .onChange(of: desk.game?.isOver) { _, _ in showNetwork = false }
     .onChange(of: scenePhase) { _, phase in
       if phase != .active { desk.background() }
     }
-    .confirmationDialog("Redraw this line?", isPresented: $confirmClear, titleVisibility: .visible)
-    {
-      Button("Clear line", role: .destructive) { desk.clear() }
-      Button("Cancel", role: .cancel) {}
-    } message: {
-      Text("Passengers aboard return to their last station. Other lines keep running.")
+  }
+
+  private var clearPrompt: some View {
+    VStack(alignment: .leading, spacing: 16) {
+      PixelText(
+        "PASSENGERS ABOARD RETURN TO THEIR LAST STATION. OTHER LINES KEEP RUNNING.",
+        scale: 1.5, color: Ink.white, columns: modalColumns(1.5))
+      Button {
+        desk.clear()
+        confirmClear = false
+      } label: {
+        PixelText("CLEAR LINE", scale: 2, color: Ink.white, shadow: Ink.outline)
+      }.buttonStyle(PixelButton(fill: Ink.ember))
+      Button {
+        confirmClear = false
+      } label: {
+        PixelText("CANCEL", scale: 2, color: Ink.white, shadow: Ink.outline)
+      }.buttonStyle(PixelButton(fill: Ink.skyLight))
+    }
+  }
+
+  private var menu: some View {
+    VStack(alignment: .leading, spacing: 12) {
+      Button {
+        showMenu = false
+        desk.showGuide = true
+      } label: {
+        PixelText("HOW TO PLAY", scale: 2, color: Ink.white, shadow: Ink.outline)
+      }.buttonStyle(PixelButton(fill: Ink.skyLight))
+      Button {
+        desk.toggleSound()
+      } label: {
+        PixelText(
+          desk.sound ? "SOUND: ON" : "SOUND: OFF", scale: 2, color: Ink.white, shadow: Ink.outline)
+      }.buttonStyle(PixelButton(fill: Ink.skyLight))
+      Button {
+        showMenu = false
+        desk.home()
+      } label: {
+        PixelText("SAVE & QUIT", scale: 2, color: Ink.white, shadow: Ink.outline)
+      }.buttonStyle(PixelButton(fill: Ink.sun))
+      Button {
+        showMenu = false
+      } label: {
+        PixelText("BACK TO GAME", scale: 2, color: Ink.white, shadow: Ink.outline)
+      }.buttonStyle(PixelButton(fill: Ink.ember))
     }
   }
 
@@ -437,12 +484,8 @@ struct AtelierView: View {
       HStack(spacing: 10) {
         PixelText("STAGE \(game.city.number)  \(game.city.title)", scale: 1.5, color: Ink.grey)
         Spacer()
-        Menu {
-          Button("How to play", systemImage: "questionmark.circle") { desk.showGuide = true }
-          Button(desk.sound ? "Mute sound" : "Enable sound", systemImage: "speaker.wave.2") {
-            desk.toggleSound()
-          }
-          Button("Save & leave", systemImage: "square.and.arrow.up") { desk.home() }
+        Button {
+          showMenu = true
         } label: {
           hudChip("MENU", fill: Ink.sky, text: Ink.white)
         }.accessibilityLabel("Journey menu")

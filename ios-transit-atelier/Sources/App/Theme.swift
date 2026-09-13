@@ -278,7 +278,7 @@ struct Blink<Content: View>: View {
   var body: some View {
     TimelineView(.periodic(from: .now, by: period)) { timeline in
       let on = reduceMotion || Int(timeline.date.timeIntervalSinceReferenceDate / period) % 2 == 0
-      content().opacity(on ? 1 : 0.3)
+      content().opacity(on ? 1 : 0.65)
     }
   }
 }

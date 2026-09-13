@@ -25,16 +25,20 @@ struct JourneyPostcard: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      HStack(alignment: .center) {
-        VStack(alignment: .leading, spacing: 10) {
+      VStack(alignment: .leading, spacing: 10) {
+        HStack(alignment: .center) {
           PixelText("TRANSIT ATELIER", scale: 2, color: Ink.sun, shadow: Ink.outline)
-          PixelText(game.city.title, scale: 4, color: Ink.white, outline: Ink.outline)
-          PixelText(
-            "STAGE \(game.city.number)  ·  \(game.city.subtitle)", scale: 1.5, color: Ink.grey)
+          Spacer()
+          Loco(color: Ink.routes[0], scale: 3)
         }
-        Spacer()
-        Loco(color: Ink.routes[0], scale: 4)
+        PixelText(
+          game.city.title, scale: game.city.title.count > 13 ? 3 : 4, color: Ink.white,
+          outline: Ink.outline)
+        PixelText(
+          "STAGE \(game.city.number)  ·  \(game.city.subtitle.uppercased())", scale: 1.5,
+          color: Ink.grey, columns: 42)
       }
+      .frame(maxWidth: .infinity, alignment: .leading)
       .padding(26)
       .background(Ink.sky)
       Rectangle().fill(Ink.outline).frame(height: 4)
