@@ -1,0 +1,30 @@
+{
+  "reference_desktop": [1024, 768],
+  "avfoundation": "0:0",
+  "players": [
+    {
+      "name": "Azure",
+      "udid": "691C57A7-98F5-4C32-A5AF-3074F4F0FBA3",
+      "focus": [300, 84],
+      "lobby_ready": [319, 256],
+      "result_ready": [319, 234],
+      "queen": [267, 305],
+      "left": [74, 300],
+      "right": [113, 300],
+      "jump": [514, 300],
+      "action": [474, 300]
+    },
+    {
+      "name": "Amber",
+      "udid": "607A62B2-D5BF-40A7-B59F-1A5B65CB2DE1",
+      "focus": [320, 443],
+      "lobby_ready": [345, 627],
+      "result_ready": [345, 605],
+      "queen": [292, 688],
+      "left": [74, 683],
+      "right": [113, 683],
+      "jump": [566, 683],
+      "action": [527, 683]
+    }
+  ]
+}

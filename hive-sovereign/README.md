@@ -74,6 +74,14 @@ indefinitely at their hive. Respawn protection blinks briefly.
 
 ## Reproducible two-device run
 
+For two captains driven through actual macOS pointer events, use the
+[OS-input testing script and instructions](Tools/README.md). That harness
+launches no in-app driver, clicks ordinary touch controls, reads room telemetry
+without writing gameplay commands, and captures both screens with live audio.
+It includes source, coordinate calibration and timestamped assertions.
+
+### In-app driver
+
 The testing agent owns simulator/server setup for the recorded acceptance run.
 For a manual reproduction after `make build` and `make server`:
 
@@ -163,7 +171,8 @@ Never join unrelated runs or reinterpret input timestamps to force alignment.
 
 ## Checks
 
-`make check` runs strict Swift formatting lint, Node syntax checks, meaningful
+`make check` runs strict Swift formatting lint, pointer-helper typechecking,
+Python harness syntax checking, Node syntax checks, meaningful
 physics/rules tests, actual WebSocket room/input/reconnect tests and dependency
 audit. `make build` typechecks and builds the native simulator app. The
 `HiveSovereignUITests` target covers the lobby/manual error flow; UI acceptance

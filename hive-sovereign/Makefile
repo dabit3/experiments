@@ -4,7 +4,9 @@ server:
 	cd server && npm ci --ignore-scripts && npm start
 
 check:
-	swift format lint --strict --recursive App Tests
+	swift format lint --strict --recursive App Tests Tools
+	swiftc -typecheck Tools/Pointer.swift
+	python3 -m py_compile Tools/play_os.py
 	cd server && npm ci --ignore-scripts && npm run check && npm test && npm audit
 
 project:
