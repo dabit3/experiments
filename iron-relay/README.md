@@ -6,6 +6,14 @@ health, sidestep, guard, punch strings, launch/juggle/tag feedback and first-to-
 rounds. Two guest devices share one authoritative match through real WebSockets.
 There is no AI player on the server.
 
+The playable cast uses authored contour meshes for human anatomy, modeled eyes,
+noses, jaws, ears and hair, and jointed gloves/fingers and laced boots. Kade wears
+an open red boxing jacket; Nyx has a lavender bob and violet kickboxing outfit;
+Atlas has a broad build, beard, mohawk and industrial vest; Sora wears an ivory
+wrap gi, jade sash and topknot. Each has a distinct guard stance. These are the
+same animated 3D models in selection and combat, with matte skin/fabric materials
+to retain their colors under the arena lighting.
+
 ## Build / run
 
 Requirements: macOS, Xcode 26.6 (tested; iOS minimum 17), Node 22+, and optionally
