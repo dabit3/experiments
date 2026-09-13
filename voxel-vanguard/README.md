@@ -42,6 +42,10 @@ npm --prefix Server start
 Use two available device IDs from `xcrun simctl list devices available`. Replace
 `DEVICE_A` and `DEVICE_B` below with different simulator UUIDs:
 
+Before booting, verify the Mac has a working audio output with
+`system_profiler SPAudioDataType`. See [audio capture](#audio-capture-on-macos-vms)
+for headless hosts; simulators booted without an endpoint may need restarting.
+
 ```sh
 xcrun simctl boot DEVICE_A
 xcrun simctl boot DEVICE_B
@@ -138,6 +142,35 @@ node Scripts/assert-evidence.mjs evidence/server.jsonl
 It requires two distinct peers, both ready, meaningful input/hits from both,
 all three stages, equipment, shared victory and a rematch. It does **not** replace
 visual/manual inspection or prove that a recording exists.
+
+### Audio capture on macOS VMs
+
+The verified VM setup uses BlackHole 2ch 0.7.1 for actual loopback capture:
+
+```sh
+brew install blackhole-2ch
+system_profiler SPAudioDataType
+```
+
+If installation succeeds but no endpoint appears, stop audio consumers and run
+`sudo -n killall coreaudiod` once. Do not supply a password or restart CoreAudio
+during a recording. Confirm BlackHole is the default input, output and system
+output at 48 kHz, then restart simulators that booted before it existed. Grant
+SimulatorTrampoline microphone access when prompted.
+
+`simctl recordVideo` records no audio. Capture real loopback concurrently and
+retain host-clock/sample timestamps to align it with both complete device
+streams. Initial FFmpeg AVFoundation audio probes dropped packets on this VM;
+a native `AVAudioEngine` input tap writing `AVAudioFile` captured contiguous PCM.
+Check persisted frame counts as well as timestamps to detect unflushed tails.
+Never replace missing audio with a generated soundtrack.
+
+Compare silence before connecting, audible game output and silence after both
+apps terminate. Verify manual action cues, nonzero samples, clipping, complete
+final audio/video decoding and real playback through loopback. The verified
+recording mixes both simulators with constant gain; it does not establish
+independent audio stems, human listening quality or physical-device latency.
+Capture tooling, timing logs and measured limits accompany the PR's test report.
 
 ## Architecture
 
