@@ -1,52 +1,82 @@
 import AppKit
 
+// 8-bit app icon: a 32x32 pixel citrus slice and blade streak scaled 32x with hard edges.
 let side = 1024
+let grid = 32
+let cell = CGFloat(side / grid)
 let c = CGContext(data: nil, width: side, height: side, bitsPerComponent: 8, bytesPerRow: side * 4, space: CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
-c.setFillColor(NSColor(red: 0.025, green: 0.07, blue: 0.12, alpha: 1).cgColor)
-c.fill(CGRect(x: 0, y: 0, width: side, height: side))
-c.translateBy(x: 512, y: 510)
-c.setShadow(offset: CGSize(width: 0, height: -30), blur: 65, color: NSColor.black.cgColor)
-c.setFillColor(NSColor(red: 1, green: 0.51, blue: 0.14, alpha: 1).cgColor)
-c.fillEllipse(in: CGRect(x: -310, y: -310, width: 620, height: 620))
-c.setShadow(offset: .zero, blur: 0)
-c.setFillColor(NSColor(red: 1, green: 0.93, blue: 0.71, alpha: 1).cgColor)
-c.fillEllipse(in: CGRect(x: -287, y: -287, width: 574, height: 574))
-c.saveGState()
-c.addEllipse(in: CGRect(x: -265, y: -265, width: 530, height: 530))
-c.clip()
-let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: [
-    NSColor(red: 1, green: 0.8, blue: 0.29, alpha: 1).cgColor,
-    NSColor(red: 0.98, green: 0.34, blue: 0.06, alpha: 1).cgColor,
-] as CFArray, locations: [0, 1])!
-c.drawLinearGradient(gradient, start: CGPoint(x: -150, y: 220), end: CGPoint(x: 160, y: -230), options: .drawsAfterEndLocation)
-for i in 0 ..< 10 {
-    c.saveGState()
-    c.rotate(by: CGFloat(i) * .pi / 5)
-    c.setStrokeColor(NSColor(red: 1, green: 0.94, blue: 0.71, alpha: 1).cgColor)
-    c.setLineWidth(10)
-    c.move(to: .zero)
-    c.addLine(to: CGPoint(x: 270, y: 0))
-    c.strokePath()
-    for j in 0 ..< 7 {
-        c.setFillColor(NSColor.white.withAlphaComponent(0.19).cgColor)
-        c.fillEllipse(in: CGRect(x: 80 + j * 21, y: 20 + j % 2 * 20, width: 25, height: 10))
-    }
-    c.restoreGState()
+c.setShouldAntialias(false)
+
+func rgb(_ r: Double, _ g: Double, _ b: Double) -> CGColor {
+    CGColor(red: r, green: g, blue: b, alpha: 1)
 }
 
-c.restoreGState()
-c.setFillColor(NSColor(red: 0.4, green: 0.76, blue: 0.36, alpha: 1).cgColor)
-c.move(to: CGPoint(x: 0, y: 290))
-c.addQuadCurve(to: CGPoint(x: 215, y: 405), control: CGPoint(x: 60, y: 480))
-c.addQuadCurve(to: CGPoint(x: 0, y: 290), control: CGPoint(x: 160, y: 267))
-c.fillPath()
-c.setStrokeColor(NSColor(red: 0.78, green: 1, blue: 0.89, alpha: 1).cgColor)
-c.setShadow(offset: .zero, blur: 18, color: NSColor(red: 0.5, green: 1, blue: 0.8, alpha: 1).cgColor)
-c.setLineWidth(11)
-c.setLineCap(.round)
-c.move(to: CGPoint(x: -405, y: -310))
-c.addQuadCurve(to: CGPoint(x: 417, y: 250), control: CGPoint(x: 80, y: -110))
-c.strokePath()
+let navy = rgb(0.047, 0.047, 0.24), sky = rgb(0.36, 0.58, 0.99)
+let white = rgb(0.988, 0.988, 0.988), black = rgb(0, 0, 0), orange = rgb(0.99, 0.6, 0.22)
+let yellow = rgb(0.99, 0.88, 0), cream = rgb(0.99, 0.9, 0.66), green = rgb(0, 0.66, 0), darkGreen = rgb(0, 0.42, 0)
+
+func color(_ x: Int, _ y: Int) -> CGColor {
+    let stars: Set<[Int]> = [[3, 4], [27, 6], [6, 26], [25, 27], [14, 2], [29, 18], [2, 16]]
+    if stars.contains([x, y]) {
+        return white
+    }
+    let dx = Double(x) - 15.5, dy = Double(y) - 16.5
+    let d = (dx * dx + dy * dy).squareRoot()
+    let radius = 11.5
+    // Blade streak: a stepped diagonal that passes behind the fruit.
+    let onBlade = abs(Double(x) + Double(y) - 31) < 1.6 && d > radius + 1
+    if onBlade {
+        return white
+    }
+    if abs(Double(x) + Double(y) - 31) < 3, d > radius + 1 {
+        return sky
+    }
+    if y < 5, d > radius {
+        let leaf: Set<[Int]> = [[16, 4], [17, 4], [18, 3], [19, 3], [20, 2], [21, 2], [19, 2]]
+        if leaf.contains([x, y]) {
+            return green
+        }
+        if [[18, 4], [20, 3], [22, 1]].contains([x, y]) {
+            return darkGreen
+        }
+        if [[15, 4], [22, 2], [23, 1], [19, 1], [21, 1]].contains([x, y]) {
+            return black
+        }
+    }
+    if d > radius + 1 {
+        return navy
+    }
+    if d > radius {
+        return black
+    }
+    let lit = dx + dy < -7
+    if d > radius - 1.6 {
+        return lit ? white : orange
+    }
+    if d > radius - 2.8 {
+        return cream
+    }
+    let angle = atan2(dy, dx)
+    let seg = angle / (.pi / 5)
+    if abs(seg - seg.rounded()) < 0.09, d > 2.4 {
+        return orange
+    }
+    if d < 1.8 {
+        return cream
+    }
+    if dx + dy > 7, (x + y) % 2 == 0 {
+        return orange
+    }
+    return yellow
+}
+
+for y in 0 ..< grid {
+    for x in 0 ..< grid {
+        c.setFillColor(color(x, y))
+        c.fill(CGRect(x: CGFloat(x) * cell, y: CGFloat(grid - 1 - y) * cell, width: cell, height: cell))
+    }
+}
+
 let bitmap = NSBitmapImageRep(cgImage: c.makeImage()!)
 let data = bitmap.representation(using: .png, properties: [:])!
 try data.write(to: URL(fileURLWithPath: CommandLine.arguments[1]))

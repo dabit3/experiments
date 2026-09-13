@@ -100,7 +100,7 @@ final class SliceScene: SKScene {
             if !item.isBomb {
                 rules.miss()
                 if rules.mode == .arcade {
-                    label("−2", at: CGPoint(x: min(size.width - 28, max(28, item.node.position.x)), y: 28), color: UIColor(red: 0.82, green: 0.59, blue: 0.58, alpha: 1), small: true)
+                    label("-2", at: CGPoint(x: min(size.width - 28, max(28, item.node.position.x)), y: 28), color: Pixel.red, small: true)
                 }
             }
             item.node.removeFromParent()
@@ -132,9 +132,9 @@ final class SliceScene: SKScene {
     }
 
     private func launch(kind: FruitKind, x: CGFloat, bomb: Bool, index: Int) {
-        let node = SKSpriteNode(texture: SKTexture(image: bomb ? FruitArt.bomb : FruitArt.image(kind)))
-        let diameter: CGFloat = bomb ? 78 : 92
-        node.size = CGSize(width: diameter, height: diameter * 240 / 220)
+        let node = SKSpriteNode(texture: bomb ? FruitArt.nearest(FruitArt.bomb) : FruitArt.texture(kind))
+        let scale: CGFloat = bomb ? 2.8 : 3.2
+        node.size = CGSize(width: CGFloat(FruitArt.grid) * scale, height: CGFloat(FruitArt.grid + 4) * scale)
         node.position = CGPoint(x: x, y: -68 - CGFloat(index % 2) * 10)
         node.zPosition = 5
         addChild(node)
@@ -181,31 +181,28 @@ final class SliceScene: SKScene {
         path.move(to: start)
         path.addLine(to: end)
         let halo = SKShapeNode(path: path)
-        halo.strokeColor = UIColor(red: 0.55, green: 0.95, blue: 0.85, alpha: 0.35)
-        halo.lineWidth = 12
-        halo.glowWidth = 14
+        halo.strokeColor = Pixel.sky
+        halo.lineWidth = 10
         halo.zPosition = 29
-        halo.lineCap = .round
-        halo.blendMode = .add
+        halo.lineCap = .square
+        halo.isAntialiased = false
         addChild(halo)
-        halo.run(.sequence([.fadeOut(withDuration: 0.3), .removeFromParent()]))
+        halo.run(.sequence([.wait(forDuration: 0.05), .run { halo.strokeColor = Pixel.indigo }, .wait(forDuration: 0.05), .removeFromParent()]))
         let trail = SKShapeNode(path: path)
-        trail.strokeColor = UIColor(red: 0.98, green: 0.99, blue: 0.94, alpha: 1)
-        trail.lineWidth = 2.4
-        trail.glowWidth = 3
+        trail.strokeColor = Pixel.white
+        trail.lineWidth = 4
         trail.zPosition = 30
-        trail.lineCap = .round
+        trail.lineCap = .square
+        trail.isAntialiased = false
         addChild(trail)
-        trail.run(.sequence([.fadeOut(withDuration: 0.18), .removeFromParent()]))
-        let tip = SKShapeNode(circleOfRadius: 3)
-        tip.fillColor = .white
-        tip.strokeColor = .clear
-        tip.glowWidth = 6
+        trail.run(.sequence([.wait(forDuration: 0.07), .run { trail.strokeColor = Pixel.sky }, .wait(forDuration: 0.05), .removeFromParent()]))
+        let tip = SKSpriteNode(texture: FruitArt.square, size: CGSize(width: 10, height: 10))
+        tip.color = Pixel.yellow
+        tip.colorBlendFactor = 1
         tip.position = end
         tip.zPosition = 31
-        tip.blendMode = .add
         addChild(tip)
-        tip.run(.sequence([.group([.scale(to: 0.2, duration: 0.2), .fadeOut(withDuration: 0.2)]), .removeFromParent()]))
+        tip.run(.sequence([.wait(forDuration: 0.06), .removeFromParent()]))
         let hits = fruit.filter {
             !$0.node.isHidden && SliceGeometry.intersects(from: Point2D(x: start.x, y: start.y), to: Point2D(x: end.x, y: end.y), center: Point2D(x: $0.node.position.x, y: $0.node.position.y - 3), radius: $0.isBomb ? 28 : 34)
         }
@@ -213,9 +210,11 @@ final class SliceScene: SKScene {
             if item.isBomb {
                 chainCount = 0
                 rules.hitBomb()
-                burst(at: item.node.position, color: UIColor.systemRed, count: 25)
-                label("BOMB  −25", at: item.node.position, color: UIColor(red: 1, green: 0.47, blue: 0.4, alpha: 1))
-                flash(UIColor(red: 1, green: 0.35, blue: 0.3, alpha: 0.55))
+                burst(at: item.node.position, color: Pixel.red, count: 20)
+                burst(at: item.node.position, color: Pixel.yellow, count: 10)
+                label("BOMB -25", at: item.node.position, color: Pixel.red)
+                flash()
+                shake()
                 store?.sound.play(bomb: true)
             } else {
                 rules.slice()
@@ -227,7 +226,7 @@ final class SliceScene: SKScene {
                 split(item)
                 stain(at: item.node.position, color: item.kind.juice, angle: atan2(end.y - start.y, end.x - start.x))
                 burst(at: item.node.position, color: item.kind.juice, count: 16)
-                label("+10", at: CGPoint(x: item.node.position.x, y: item.node.position.y + 18), color: UIColor(red: 0.88, green: 0.96, blue: 0.83, alpha: 0.85), small: true)
+                label("+10", at: CGPoint(x: item.node.position.x, y: item.node.position.y + 56), color: Pixel.white, small: true)
                 store?.sound.play()
             }
             item.node.removeFromParent()
@@ -279,19 +278,23 @@ final class SliceScene: SKScene {
     private func burst(at point: CGPoint, color: UIColor, count: Int) {
         let reduced = UIAccessibility.isReduceMotionEnabled
         for _ in 0 ..< (reduced ? 4 : count) {
-            let radius = CGFloat.random(in: 1.5 ... 4)
-            let drop = SKShapeNode(ellipseOf: CGSize(width: radius * 1.5, height: radius * 2.6))
-            drop.fillColor = color
-            drop.strokeColor = .clear
+            let side = CGFloat([4, 6, 6, 8].randomElement() ?? 6)
+            let drop = SKSpriteNode(texture: FruitArt.square, size: CGSize(width: side, height: side))
+            drop.color = color
+            drop.colorBlendFactor = 1
             drop.position = point
             drop.zPosition = 7
             let angle = CGFloat.random(in: 0 ... (.pi * 2))
-            drop.zRotation = angle
+            let distance = CGFloat.random(in: 40 ... 90)
             addChild(drop)
-            drop.run(.sequence([.group([
-                .moveBy(x: cos(angle) * 75, y: sin(angle) * 75 - 30, duration: 0.45),
-                .fadeOut(withDuration: 0.45),
-            ]), .removeFromParent()]))
+            var steps: [SKAction] = []
+            for step in 0 ..< 7 {
+                let fall = CGFloat(step) * 4
+                steps.append(.moveBy(x: cos(angle) * distance / 7, y: sin(angle) * distance / 7 - fall, duration: 0))
+                steps.append(.wait(forDuration: 0.055))
+            }
+            steps.append(.removeFromParent())
+            drop.run(.sequence(steps))
         }
     }
 
@@ -302,83 +305,118 @@ final class SliceScene: SKScene {
         activeBanner = banner
         banner.position = point
         banner.zPosition = 45
-        let headline = SKLabelNode(fontNamed: "Baskerville-Italic")
-        headline.text = "\(count) fruit combo"
-        headline.fontSize = 32
-        headline.fontColor = UIColor(red: 0.99, green: 0.95, blue: 0.86, alpha: 1)
-        headline.verticalAlignmentMode = .center
+        let headline = pixelText("\(count) COMBO!", size: 22, color: Pixel.yellow)
         banner.addChild(headline)
-        let bonusLabel = SKLabelNode(fontNamed: "AvenirNext-DemiBold")
-        bonusLabel.text = "+\(bonus)  BONUS"
-        bonusLabel.fontSize = 13
-        bonusLabel.fontColor = UIColor(red: 0.87, green: 0.72, blue: 0.44, alpha: 1)
+        let bonusLabel = pixelText("+\(bonus)", size: 14, color: Pixel.white)
         bonusLabel.position.y = -28
-        bonusLabel.verticalAlignmentMode = .center
         banner.addChild(bonusLabel)
-        for side in [-1.0, 1.0] {
-            let rule = SKShapeNode(rectOf: CGSize(width: 36, height: 1))
-            rule.fillColor = UIColor(red: 0.87, green: 0.72, blue: 0.44, alpha: 0.8)
-            rule.strokeColor = .clear
-            rule.position = CGPoint(x: side * (headline.frame.width / 2 + 30), y: 0)
-            banner.addChild(rule)
-        }
-        let glow = SKShapeNode(ellipseOf: CGSize(width: headline.frame.width + 140, height: 90))
-        glow.fillColor = UIColor(red: 0.72, green: 0.93, blue: 0.78, alpha: 0.12)
-        glow.strokeColor = .clear
-        glow.blendMode = .add
-        glow.zPosition = -1
-        banner.addChild(glow)
-        banner.setScale(0.7)
-        banner.alpha = 0
+        banner.setScale(1.5)
         addChild(banner)
-        banner.run(.sequence([
-            .group([.scale(to: 1, duration: 0.22), .fadeIn(withDuration: 0.16)]),
-            .wait(forDuration: 0.55),
-            .group([.moveBy(x: 0, y: 26, duration: 0.5), .fadeOut(withDuration: 0.5)]),
-            .removeFromParent(),
-        ]))
+        let cycle: [UIColor] = [Pixel.yellow, Pixel.white, Pixel.orange, Pixel.yellow, Pixel.pink, Pixel.yellow]
+        var frames: [SKAction] = [.wait(forDuration: 0.07), .scale(to: 1.15, duration: 0), .wait(forDuration: 0.07), .scale(to: 1, duration: 0)]
+        for color in cycle {
+            frames.append(.run { headline.tint(color) })
+            frames.append(.wait(forDuration: 0.1))
+        }
+        frames.append(.wait(forDuration: 0.2))
+        for _ in 0 ..< 3 {
+            frames.append(.hide())
+            frames.append(.wait(forDuration: 0.05))
+            frames.append(.unhide())
+            frames.append(.wait(forDuration: 0.05))
+        }
+        frames.append(.removeFromParent())
+        banner.run(.sequence(frames))
     }
 
     private func stain(at point: CGPoint, color: UIColor, angle: CGFloat) {
-        let stain = SKSpriteNode(texture: FruitArt.splatter, size: CGSize(width: 150, height: 70))
+        let stain = SKSpriteNode(texture: FruitArt.splatter, size: CGSize(width: 96, height: 48))
         stain.color = color
         stain.colorBlendFactor = 1
-        stain.alpha = 0.55
         stain.position = point
         stain.zRotation = angle
         stain.zPosition = 1
-        stain.blendMode = .add
         addChild(stain)
         stain.run(.sequence([
-            .group([.scaleX(to: 1.5, y: 0.75, duration: 0.5), .sequence([.wait(forDuration: 0.5), .fadeOut(withDuration: 1.6)])]),
+            .wait(forDuration: 0.4),
+            .run { stain.alpha = 0.6 },
+            .wait(forDuration: 0.4),
+            .run { stain.alpha = 0.3 },
+            .wait(forDuration: 0.4),
             .removeFromParent(),
         ]))
     }
 
-    private func flash(_ color: UIColor) {
+    private func flash() {
         guard !UIAccessibility.isReduceMotionEnabled else { return }
-        let flash = SKSpriteNode(texture: FruitArt.vignette, size: CGSize(width: size.width * 1.4, height: size.height * 1.4))
-        flash.color = color
-        flash.colorBlendFactor = 1
-        flash.alpha = color.cgColor.alpha
+        let flash = SKSpriteNode(color: Pixel.white, size: CGSize(width: size.width * 2, height: size.height * 2))
         flash.position = CGPoint(x: size.width / 2, y: size.height / 2)
         flash.zPosition = 60
         addChild(flash)
-        flash.run(.sequence([.fadeOut(withDuration: 0.3), .removeFromParent()]))
+        flash.run(.sequence([
+            .wait(forDuration: 0.05),
+            .run { flash.color = Pixel.red },
+            .wait(forDuration: 0.05),
+            .run { flash.color = Pixel.white },
+            .wait(forDuration: 0.04),
+            .removeFromParent(),
+        ]))
+    }
+
+    private func shake() {
+        guard !UIAccessibility.isReduceMotionEnabled, let view else { return }
+        let shake = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        shake.values = [0, 6, -6, 4, -4, 0]
+        shake.duration = 0.24
+        shake.calculationMode = .discrete
+        view.layer.add(shake, forKey: "shake")
     }
 
     private func label(_ text: String, at point: CGPoint, color: UIColor, small: Bool = false) {
-        let label = SKLabelNode(fontNamed: "AvenirNext-DemiBold")
-        label.text = text
-        label.fontSize = small ? 16 : 19
-        label.fontColor = color
-        let inset = label.frame.width / 2 + 12
+        let label = pixelText(text, size: small ? 12 : 16, color: color)
+        let inset = label.calculateAccumulatedFrame().width / 2 + 12
         label.position = CGPoint(x: min(size.width - inset, max(inset, point.x)), y: point.y)
         label.zPosition = 40
         addChild(label)
-        label.run(.sequence([
-            .group([.moveBy(x: 0, y: 25, duration: small ? 0.65 : 0.9), .sequence([.wait(forDuration: small ? 0.2 : 0.45), .fadeOut(withDuration: 0.45)])]),
-            .removeFromParent(),
-        ]))
+        var steps: [SKAction] = []
+        for _ in 0 ..< (small ? 6 : 9) {
+            steps.append(.moveBy(x: 0, y: 5, duration: 0))
+            steps.append(.wait(forDuration: 0.07))
+        }
+        steps.append(.removeFromParent())
+        label.run(.sequence(steps))
+    }
+
+    private func pixelText(_ text: String, size fontSize: CGFloat, color: UIColor) -> PixelLabel {
+        PixelLabel(text, size: fontSize, color: color)
+    }
+}
+
+/// A Press Start 2P label with the hard one-step drop shadow of 8-bit HUD text.
+@MainActor
+final class PixelLabel: SKNode {
+    private let face = SKLabelNode(fontNamed: "PressStart2P-Regular")
+    private let shadow = SKLabelNode(fontNamed: "PressStart2P-Regular")
+
+    init(_ text: String, size: CGFloat, color: UIColor) {
+        super.init()
+        for (label, offset) in [(shadow, CGPoint(x: size / 6, y: -size / 6)), (face, .zero)] {
+            label.text = text
+            label.fontSize = size
+            label.verticalAlignmentMode = .center
+            label.position = offset
+            addChild(label)
+        }
+        shadow.fontColor = Pixel.black
+        face.fontColor = color
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("Use init(_:size:color:)")
+    }
+
+    func tint(_ color: UIColor) {
+        face.fontColor = color
     }
 }

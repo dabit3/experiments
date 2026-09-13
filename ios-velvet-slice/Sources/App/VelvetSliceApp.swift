@@ -1,12 +1,27 @@
 import SpriteKit
 import SwiftUI
 
-let ink = Color(red: 0.02, green: 0.045, blue: 0.09)
-let cream = Color(red: 0.985, green: 0.95, blue: 0.86)
-let muted = Color(red: 0.64, green: 0.72, blue: 0.76)
-let mint = Color(red: 0.72, green: 0.93, blue: 0.78)
-let orange = Color(red: 1, green: 0.66, blue: 0.36)
-let gold = Color(red: 0.87, green: 0.72, blue: 0.44)
+let pxWhite = Color(uiColor: Pixel.white)
+let pxNavy = Color(uiColor: Pixel.navy)
+let pxIndigo = Color(uiColor: Pixel.indigo)
+let pxSky = Color(uiColor: Pixel.sky)
+let pxRed = Color(uiColor: Pixel.red)
+let pxOrange = Color(uiColor: Pixel.orange)
+let pxYellow = Color(uiColor: Pixel.yellow)
+let pxCream = Color(uiColor: Pixel.cream)
+let pxGreen = Color(uiColor: Pixel.green)
+let pxDarkGreen = Color(uiColor: Pixel.darkGreen)
+let pxPink = Color(uiColor: Pixel.pink)
+let pxBrick = Color(uiColor: Pixel.brick)
+let pxGray = Color(uiColor: Pixel.gray)
+
+func px(_ size: CGFloat) -> Font {
+    .custom("PressStart2P-Regular", size: size)
+}
+
+func pad(_ value: Int, _ width: Int = 6) -> String {
+    String(format: "%0\(width)d", max(0, value))
+}
 
 @main
 struct VelvetSliceApp: App {
@@ -27,35 +42,68 @@ struct VelvetSliceApp: App {
     }
 }
 
-struct LacquerBackground: View {
+/// Night-sky level backdrop: twinkling 2px stars, a pixel moon, stepped hills
+/// and a brick floor, all snapped to a 4pt grid.
+struct PixelBackground: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     var body: some View {
         GeometryReader { geometry in
-            let size = geometry.size
-            ZStack {
-                LinearGradient(colors: [Color(red: 0.05, green: 0.13, blue: 0.2), ink, Color(red: 0.05, green: 0.03, blue: 0.07)], startPoint: .top, endPoint: .bottom)
-                RadialGradient(colors: [Color(red: 0.11, green: 0.25, blue: 0.3), .clear], center: UnitPoint(x: 0.5, y: 0.4), startRadius: 0, endRadius: size.height * 0.55)
-                RadialGradient(colors: [orange.opacity(0.14), .clear], center: UnitPoint(x: 1.05, y: -0.05), startRadius: 0, endRadius: size.width * 0.8)
-                RadialGradient(colors: [mint.opacity(0.09), .clear], center: UnitPoint(x: -0.1, y: 1.02), startRadius: 0, endRadius: size.width * 0.75)
-                Canvas { context, size in
-                    for index in 0 ..< 140 {
-                        let x = CGFloat((index * 127 + 53) % 991) / 991 * size.width
-                        let y = CGFloat((index * 263 + 19) % 997) / 997 * size.height
-                        context.fill(Path(ellipseIn: CGRect(x: x, y: y, width: 1, height: 1)), with: .color(.white.opacity(index % 4 == 0 ? 0.11 : 0.05)))
+            let bottomInset = geometry.safeAreaInsets.bottom
+            TimelineView(.periodic(from: .now, by: 0.7)) { timeline in
+                let frame = reduceMotion ? 0 : Int(timeline.date.timeIntervalSinceReferenceDate / 0.7) % 2
+                Canvas(rendersAsynchronously: false) { context, size in
+                    context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(pxNavy))
+                    for index in 0 ..< 70 {
+                        let x = CGFloat((index * 127 + 53) % 97) / 97 * size.width
+                        let y = CGFloat((index * 263 + 19) % 89) / 89 * size.height * 0.7
+                        let bright = (index + frame) % 3 == 0
+                        let side: CGFloat = index % 7 == 0 ? 4 : 2
+                        let color = bright ? pxWhite : (index % 5 == 0 ? pxSky : pxIndigo)
+                        context.fill(Path(CGRect(x: (x / 4).rounded() * 4, y: (y / 4).rounded() * 4, width: side, height: side)), with: .color(color))
                     }
-                    for index in 0 ..< 14 {
-                        var path = Path()
-                        let offset = CGFloat(index) * 96 - 260
-                        path.move(to: CGPoint(x: offset, y: size.height))
-                        path.addLine(to: CGPoint(x: offset + size.height * 0.55, y: 0))
-                        context.stroke(path, with: .color(.white.opacity(index % 3 == 0 ? 0.035 : 0.018)), lineWidth: 1)
+                    let moonX: CGFloat = 26
+                    let moonY = geometry.safeAreaInsets.top + 150
+                    for row in 0 ..< 8 {
+                        for col in 0 ..< 8 {
+                            let dx = Double(col) - 3.5, dy = Double(row) - 3.5
+                            let d = (dx * dx + dy * dy).squareRoot()
+                            guard d < 4 else { continue }
+                            let crater = [(2, 3), (5, 2), (4, 5), (5, 6)].contains { $0 == (col, row) }
+                            let color = crater ? pxOrange : (d > 3.3 && dx + dy > 0 ? pxOrange : pxYellow)
+                            context.fill(Path(CGRect(x: moonX + CGFloat(col) * 6, y: moonY + CGFloat(row) * 6, width: 6, height: 6)), with: .color(color))
+                        }
+                    }
+                    let floor = size.height - bottomInset - 20
+                    for hill in [(0.12, 88.0, 36.0), (0.55, 140.0, 52.0), (0.9, 96.0, 40.0)] {
+                        let center = size.width * hill.0
+                        let width = hill.1, height = hill.2
+                        var y: CGFloat = 0
+                        while y < height {
+                            let progress = y / height
+                            let half = width / 2 * (1 - progress * progress)
+                            let x0 = ((center - half) / 4).rounded() * 4
+                            let x1 = ((center + half) / 4).rounded() * 4
+                            let color = y > height - 12 ? pxGreen : (Int(y / 4) % 5 == 0 ? pxDarkGreen : pxGreen)
+                            context.fill(Path(CGRect(x: x0, y: floor - y - 4, width: x1 - x0, height: 4)), with: .color(color))
+                            y += 4
+                        }
+                    }
+                    context.fill(Path(CGRect(x: 0, y: floor, width: size.width, height: size.height - floor)), with: .color(pxBrick))
+                    var row = 0
+                    var y = floor
+                    while y < size.height {
+                        context.fill(Path(CGRect(x: 0, y: y, width: size.width, height: 2)), with: .color(.black))
+                        var x: CGFloat = row % 2 == 0 ? 0 : -18
+                        while x < size.width {
+                            context.fill(Path(CGRect(x: x, y: y, width: 2, height: 18)), with: .color(.black))
+                            context.fill(Path(CGRect(x: x + 2, y: y + 2, width: 32, height: 2)), with: .color(pxOrange))
+                            x += 36
+                        }
+                        y += 18
+                        row += 1
                     }
                 }
-                RoundedRectangle(cornerRadius: 34)
-                    .stroke(gold.opacity(0.22), lineWidth: 1)
-                    .padding(.horizontal, 12)
-                    .padding(.top, geometry.safeAreaInsets.top + 6)
-                    .padding(.bottom, max(10, geometry.safeAreaInsets.bottom + 2))
-                    .blendMode(.screen)
             }
         }
         .ignoresSafeArea()
@@ -68,378 +116,481 @@ struct RootView: View {
 
     var body: some View {
         ZStack {
-            LacquerBackground()
+            PixelBackground()
             switch store.screen {
-            case .home: home.transition(.opacity)
-            case .playing: gameplay.transition(.opacity)
-            case .results: results.transition(.opacity.combined(with: .move(edge: .bottom)))
+            case .home: home
+            case .playing: gameplay
+            case .results: results
             }
             if store.paused {
-                pauseOverlay.transition(.opacity)
+                pauseOverlay
             }
             if store.showRules {
-                rulesOverlay.transition(.opacity)
+                rulesOverlay
             }
         }
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.32), value: store.screen)
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: store.paused)
-        .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: store.showRules)
-        .foregroundStyle(cream)
-        .font(.custom("AvenirNext-Medium", size: 15))
-        .dynamicTypeSize(.xSmall ... .xxxLarge)
+        .foregroundStyle(pxWhite)
+        .font(px(10))
+        .dynamicTypeSize(.xSmall ... .large)
     }
 
     private var topBar: some View {
-        HStack {
-            HStack(spacing: 8) {
-                Image(systemName: "diamond.fill").font(.system(size: 7)).foregroundStyle(gold)
-                Text("THE POCKET ORCHARD").font(.custom("AvenirNext-DemiBold", size: 10)).tracking(2.4).foregroundStyle(gold.opacity(0.9))
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 6) {
+                PixelText("TOP SCORE", size: 8, color: pxYellow)
+                PixelText(pad(store.best), size: 12)
             }
             Spacer()
-            iconButton(store.soundOn ? "speaker.wave.2" : "speaker.slash", label: store.soundOn ? "Mute sound" : "Enable sound") { store.toggleSound() }
+            PixelIconButton(store.soundOn ? "SND ON" : "SND OFF", label: store.soundOn ? "Mute sound" : "Enable sound") { store.toggleSound() }
         }
+        .padding(.top, 4)
     }
 
     private var home: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
                 topBar
-                Spacer(minLength: 4)
-                ZStack {
-                    Text("Velvet")
-                        .font(.custom("Baskerville", size: 70))
-                        .offset(y: -34)
-                    Text("Slice")
-                        .font(.custom("Baskerville-Italic", size: 82))
-                        .foregroundStyle(LinearGradient(colors: [orange, Color(red: 1, green: 0.8, blue: 0.5)], startPoint: .leading, endPoint: .trailing))
-                        .offset(y: 38)
-                    BladeStroke().frame(width: 230, height: 22).offset(y: 3).accessibilityHidden(true)
-                }
-                .frame(height: 158)
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("Velvet Slice")
-                Text("A little edge. A lot of juice.")
-                    .font(.custom("Baskerville-Italic", size: 17))
-                    .foregroundStyle(muted)
-                    .padding(.top, 8)
-                FruitComposition()
-                    .frame(height: max(160, min(240, geometry.size.height * 0.29)))
-                    .padding(.vertical, 6)
-                    .accessibilityHidden(true)
-                HStack(spacing: 9) {
-                    Image(systemName: "crown.fill").font(.system(size: 11)).foregroundStyle(gold)
-                    Text("ARCADE BEST").tracking(1.9).font(.custom("AvenirNext-DemiBold", size: 10)).foregroundStyle(muted)
-                    Text("\(store.best)").foregroundStyle(cream).font(.custom("Baskerville", size: 18)).monospacedDigit()
-                }
-                .padding(.horizontal, 16).frame(height: 36)
-                .overlay(Capsule().stroke(gold.opacity(0.35), lineWidth: 1))
-                .padding(.bottom, 20)
-                actionButton("Play arcade", subtitle: "60 SECONDS · FIND YOUR FLOW", system: "arrow.up.right", primary: true) { store.begin(.arcade) }
-                actionButton("Practice", subtitle: "NO CLOCK. NO BOMBS. JUST FLOW.", system: "leaf", primary: false) { store.begin(.practice) }
-                    .padding(.top, 10)
+                Spacer(minLength: 10)
+                TitleLogo()
+                    .accessibilityLabel("Velvet Slice")
                 Spacer(minLength: 8)
-                Button { store.showRules = true } label: {
-                    Label("The art of the slice", systemImage: "hand.draw")
-                        .font(.custom("AvenirNext-Medium", size: 12))
-                        .foregroundStyle(muted)
-                        .frame(height: 44)
-                }.buttonStyle(.plain)
+                FruitParade()
+                    .frame(height: max(110, min(160, geometry.size.height * 0.2)))
+                    .accessibilityHidden(true)
+                Spacer(minLength: 14)
+                PixelPanel {
+                    VStack(spacing: 4) {
+                        MenuRow("ARCADE", detail: "60 SEC", cursor: true) { store.begin(.arcade) }
+                        MenuRow("PRACTICE", detail: "NO CLOCK", cursor: false) { store.begin(.practice) }
+                        MenuRow("HOW TO PLAY", detail: "", cursor: false) { store.showRules = true }
+                    }
+                }
+                Spacer(minLength: 12)
+                PixelText("© 2026 POCKET ORCHARD", size: 7, color: pxGray, shadow: false)
+                    .padding(.bottom, 44)
             }
-            .padding(.horizontal, 30)
-            .padding(.bottom, 10)
+            .padding(.horizontal, 24)
         }
     }
 
     private var gameplay: some View {
         VStack(spacing: 0) {
-            HStack(alignment: .center) {
-                VStack(alignment: .leading, spacing: 0) {
-                    eyebrow("SCORE")
-                    Text("\(store.round.score)")
-                        .font(.custom("Baskerville", size: 46))
-                        .monospacedDigit()
-                        .contentTransition(.numericText())
-                        .shadow(color: mint.opacity(0.35), radius: 14)
-                }
+            HStack(alignment: .top, spacing: 0) {
+                hudColumn("SCORE", value: pad(store.round.score))
                 Spacer()
-                HStack(spacing: 8) {
-                    Image(systemName: store.mode == .arcade ? "timer" : "infinity").font(.system(size: 12, weight: .medium)).foregroundStyle(gold)
-                    Text(store.mode == .arcade ? clockText(store.round.remaining) : "Free flow")
-                        .font(.custom("AvenirNext-DemiBold", size: 15))
-                        .monospacedDigit()
-                        .foregroundStyle(store.round.remaining <= 10 && store.mode == .arcade ? orange : cream)
-                }
-                .padding(.horizontal, 14).frame(height: 36)
-                .background(.white.opacity(0.05), in: Capsule())
-                .overlay(Capsule().stroke(.white.opacity(0.1)))
+                hudColumn("BEST", value: pad(store.mode == .arcade ? store.best : store.practiceBest))
                 Spacer()
-                iconButton("pause", label: "Pause game") { store.pause() }
-            }.padding(.horizontal, 30).padding(.top, 4)
-            if store.mode == .arcade {
-                GeometryReader { geometry in
-                    ZStack(alignment: .leading) {
-                        Capsule().fill(.white.opacity(0.07))
-                        Capsule()
-                            .fill(LinearGradient(colors: store.round.remaining <= 10 ? [orange, Color(red: 1, green: 0.5, blue: 0.4)] : [mint, gold], startPoint: .leading, endPoint: .trailing))
-                            .frame(width: max(0, geometry.size.width * store.round.remaining / 60))
-                    }
-                }.frame(height: 3).padding(.horizontal, 30).padding(.top, 10)
+                hudColumn(store.mode == .arcade ? "TIME" : "FREE", value: store.mode == .arcade ? pad(Int(ceil(store.round.remaining)), 3) : "PLAY", color: store.mode == .arcade && store.round.remaining <= 10 ? pxRed : pxWhite)
+                Spacer()
+                PixelIconButton("II", label: "Pause game") { store.pause() }
             }
+            .padding(.horizontal, 24).padding(.top, 4)
+            HStack {
+                if store.mode == .arcade {
+                    HStack(spacing: 3) {
+                        ForEach(0 ..< 3) { index in
+                            Image(uiImage: FruitArt.bomb).interpolation(.none).resizable()
+                                .frame(width: 21, height: 24)
+                                .opacity(index < store.round.bombs ? 0.25 : 1)
+                        }
+                    }
+                    .accessibilityLabel("\(3 - store.round.bombs) bombs remaining")
+                    Spacer()
+                    TimeBar(fraction: store.round.remaining / 60)
+                        .frame(width: 168, height: 12)
+                        .accessibilityLabel("\(Int(ceil(store.round.remaining))) seconds remaining")
+                } else {
+                    PixelText("NO BOMBS  NO CLOCK", size: 8, color: pxSky)
+                    Spacer()
+                }
+            }
+            .padding(.horizontal, 24).padding(.top, 10)
             ZStack {
                 Playfield(store: store)
                 if store.countdown > 0 {
-                    VStack(spacing: 14) {
-                        eyebrow("FIND YOUR FLOW")
-                        Text("\(store.countdown)")
-                            .font(.custom("Baskerville", size: 118))
-                            .foregroundStyle(LinearGradient(colors: [cream, orange], startPoint: .top, endPoint: .bottom))
-                            .contentTransition(.numericText(countsDown: true))
-                            .animation(.snappy(duration: 0.3), value: store.countdown)
-                            .shadow(color: orange.opacity(0.45), radius: 30)
-                        Text("Swipe through the fruit")
-                            .font(.custom("Baskerville-Italic", size: 25))
-                        Text(store.mode == .arcade ? "Avoid bombs. Slice 3+ for a combo." : "Nothing to lose. Everything to slice.")
-                            .font(.custom("AvenirNext-Medium", size: 12)).foregroundStyle(muted)
-                    }.allowsHitTesting(false)
-                }
-            }
-            HStack(spacing: 0) {
-                statusChip("sparkle", text: "\(store.round.sliced) SLICED")
-                Spacer()
-                if store.mode == .arcade {
-                    HStack(spacing: 8) {
-                        statusChip("bolt.fill", text: store.round.bestCombo >= 3 ? "\(store.round.bestCombo)× COMBO" : "COMBO —")
-                        HStack(spacing: 6) {
-                            ForEach(0 ..< 3) { index in
-                                Circle()
-                                    .fill(index < store.round.bombs ? Color(red: 1, green: 0.42, blue: 0.36) : .white.opacity(0.14))
-                                    .frame(width: 8, height: 8)
-                                    .overlay(Circle().stroke(index < store.round.bombs ? Color(red: 1, green: 0.42, blue: 0.36).opacity(0.5) : .clear, lineWidth: 3).blur(radius: 2))
-                            }
+                    PixelPanel {
+                        VStack(spacing: 14) {
+                            PixelText("READY?", size: 16, color: pxYellow)
+                            PixelText("\(store.countdown)", size: 40)
+                            PixelText(store.mode == .arcade ? "SWIPE FRUIT. DODGE BOMBS." : "SWIPE FRUIT. RELAX.", size: 8, color: pxSky)
                         }
-                        .padding(.leading, 4)
-                        .accessibilityLabel("\(store.round.bombs) of 3 bombs hit")
+                        .padding(.horizontal, 10)
                     }
-                } else {
-                    statusChip("crown.fill", text: "BEST \(store.practiceBest)")
+                    .allowsHitTesting(false)
                 }
             }
-            .padding(.horizontal, 30).padding(.bottom, 16).padding(.top, 6)
+            HStack {
+                PixelText("SLICED \(pad(store.round.sliced, 3))", size: 8)
+                Spacer()
+                PixelText(store.round.bestCombo >= 3 ? "COMBO x\(store.round.bestCombo)" : "COMBO x-", size: 8, color: pxYellow)
+            }
+            .padding(.horizontal, 24).padding(.bottom, 14).padding(.top, 8)
         }
     }
 
     private var results: some View {
         let ended = store.round.bombs >= 3
+        let title = store.mode == .practice ? "PRACTICE" : (ended ? "GAME OVER" : "TIME UP!")
         return VStack(spacing: 0) {
             topBar
-            Spacer(minLength: 8)
-            eyebrow(store.mode == .practice ? "PRACTICE COMPLETE" : "ARCADE COMPLETE")
-            Text(ended ? "A sharp lesson." : (store.round.score == 0 ? "Find your rhythm." : "Beautifully sliced."))
-                .font(.custom("Baskerville-Italic", size: 36))
-                .padding(.top, 12)
-                .minimumScaleFactor(0.7).lineLimit(1)
-            Text(ended ? "Three bombs. Breathe, then try again." : (store.round.score == 0 ? "Try a long swipe as the fruit rises." : "A moment of focus. A splash of color."))
-                .font(.custom("AvenirNext-Medium", size: 12)).foregroundStyle(muted).padding(.top, 6)
-            ZStack {
-                Circle().fill(RadialGradient(colors: [(store.newBest ? gold : mint).opacity(0.22), .clear], center: .center, startRadius: 20, endRadius: 130))
-                Circle().stroke(gold.opacity(0.4), lineWidth: 1).padding(14)
-                Circle().stroke(.white.opacity(0.08), lineWidth: 1).padding(4)
-                ForEach(0 ..< 12) { index in
-                    Capsule().fill(gold.opacity(index % 3 == 0 ? 0.7 : 0.3)).frame(width: 1, height: index % 3 == 0 ? 9 : 5)
-                        .offset(y: -102)
-                        .rotationEffect(.degrees(Double(index) * 30))
-                }
-                VStack(spacing: -4) {
-                    Text("\(store.round.score)")
-                        .font(.custom("Baskerville", size: store.round.score >= 1000 ? 78 : 92)).monospacedDigit()
-                        .shadow(color: (store.newBest ? gold : mint).opacity(0.35), radius: 18)
-                    eyebrow("POINTS")
-                }
-                if store.newBest {
-                    HStack(spacing: 6) {
-                        Image(systemName: "crown.fill").font(.system(size: 10))
-                        Text("NEW BEST").tracking(1.8).font(.custom("AvenirNext-DemiBold", size: 10))
+            Spacer(minLength: 10)
+            PixelPanel {
+                VStack(spacing: 18) {
+                    PixelText(title, size: 22, color: ended ? pxRed : pxYellow)
+                    PixelText(ended ? "THREE BOMBS. OUCH." : (store.round.score == 0 ? "SWIPE AS THEY RISE." : "NICE SLICING!"), size: 8, color: pxSky)
+                    VStack(spacing: 10) {
+                        PixelText("SCORE", size: 8, color: pxYellow)
+                        PixelText(pad(store.round.score), size: 30)
                     }
-                    .foregroundStyle(ink).padding(.horizontal, 12).frame(height: 26)
-                    .background(LinearGradient(colors: [gold, Color(red: 0.98, green: 0.87, blue: 0.62)], startPoint: .leading, endPoint: .trailing), in: Capsule())
-                    .offset(y: 112)
+                    .padding(.vertical, 4)
+                    .accessibilityElement(children: .combine)
+                    VStack(spacing: 12) {
+                        statRow("FRUIT", pad(store.round.sliced, 3))
+                        statRow("COMBO", store.round.bestCombo >= 3 ? "x\(store.round.bestCombo)" : "---")
+                        statRow(store.mode == .practice ? "TIME" : "MISSED", store.mode == .practice ? clockText(store.round.elapsed) : pad(store.round.missed, 3))
+                        Rectangle().fill(pxWhite).frame(height: 2).padding(.vertical, 2)
+                        statRow("TOP", pad(store.mode == .arcade ? store.best : store.practiceBest), color: pxYellow)
+                    }
+                    .padding(.horizontal, 6)
+                    if store.newBest {
+                        Blink { PixelText("NEW RECORD!", size: 12, color: pxYellow) }
+                            .frame(height: 16)
+                            .accessibilityLabel("New record")
+                    }
                 }
             }
-            .frame(width: 236, height: 236)
-            .padding(.top, 14)
-            .accessibilityElement(children: .combine)
-            HStack(spacing: 0) {
-                resultStat("\(store.round.sliced)", label: "FRUIT SLICED")
-                hairline
-                resultStat(store.round.bestCombo >= 3 ? "\(store.round.bestCombo)×" : "—", label: "BEST COMBO")
-                hairline
-                resultStat(store.mode == .practice ? clockText(store.round.elapsed) : "\(store.round.missed)", label: store.mode == .practice ? "IN THE FLOW" : "MISSED")
-            }
-            .padding(.vertical, 20)
-            .background(.white.opacity(0.04), in: RoundedRectangle(cornerRadius: 22))
-            .overlay(RoundedRectangle(cornerRadius: 22).stroke(gold.opacity(0.22)))
-            .padding(.top, 22)
-            HStack(spacing: 7) {
-                Image(systemName: "crown.fill").font(.system(size: 10)).foregroundStyle(gold)
-                Text("\(store.mode == .arcade ? "Arcade" : "Practice") best \(store.mode == .arcade ? store.best : store.practiceBest)")
-            }.font(.custom("AvenirNext-Medium", size: 12)).foregroundStyle(muted).padding(.top, 16)
+            .accessibilityElement(children: .contain)
+            PixelButton("PLAY AGAIN", color: pxRed) { store.begin(store.mode) }
+                .padding(.top, 26)
+            PixelButton("TITLE", color: pxIndigo) { store.screen = .home }
+                .padding(.top, 14)
             Spacer(minLength: 16)
-            actionButton("Slice again", subtitle: store.mode == .arcade ? "A FRESH 60 SECONDS" : "BACK INTO THE FLOW", system: "arrow.clockwise", primary: true) { store.begin(store.mode) }
-            Button("Back to the orchard") { store.screen = .home }
-                .font(.custom("AvenirNext-Medium", size: 13)).foregroundStyle(muted)
-                .frame(height: 52).buttonStyle(.plain)
-        }.padding(.horizontal, 30).padding(.bottom, 10)
-    }
-
-    private var hairline: some View {
-        Rectangle().fill(gold.opacity(0.25)).frame(width: 1, height: 34)
+        }
+        .padding(.horizontal, 24)
     }
 
     private var pauseOverlay: some View {
         overlayCard {
-            Image(systemName: "pause").font(.system(size: 26, weight: .ultraLight)).foregroundStyle(gold)
-            eyebrow("TAKE A BREATH")
-            Text("Stay in the flow.").font(.custom("Baskerville-Italic", size: 34))
-            Text("Your fruit and clock will wait.")
-                .font(.custom("AvenirNext-Medium", size: 13)).foregroundStyle(muted)
-            actionButton("Resume", subtitle: "RIGHT WHERE YOU LEFT OFF", system: "play", primary: true) { store.paused = false }
-                .padding(.top, 8)
+            PixelText("PAUSE", size: 24, color: pxYellow)
+            PixelText("THE FRUIT CAN WAIT.", size: 8, color: pxSky)
+            PixelButton("RESUME", color: pxGreen) { store.paused = false }
+                .padding(.top, 6)
             HStack(spacing: 12) {
-                secondaryButton("Restart") { store.begin(store.mode) }
-                secondaryButton("Finish run") { store.finish() }
+                PixelButton("RESTART", color: pxIndigo) { store.begin(store.mode) }
+                PixelButton("FINISH", color: pxIndigo) { store.finish() }
             }
             Button { store.toggleSound() } label: {
-                Label(store.soundOn ? "Sound on" : "Sound off", systemImage: store.soundOn ? "speaker.wave.2" : "speaker.slash")
-                    .foregroundStyle(muted).frame(height: 44)
-            }.buttonStyle(.plain)
+                PixelText(store.soundOn ? "SOUND: ON" : "SOUND: OFF", size: 8, color: pxGray, shadow: false)
+                    .frame(height: 44)
+            }.buttonStyle(.plain).accessibilityLabel(store.soundOn ? "Mute sound" : "Enable sound")
         }
     }
 
     private var rulesOverlay: some View {
         overlayCard {
-            eyebrow("THE ART OF THE SLICE")
-            Text("Follow the fruit.").font(.custom("Baskerville-Italic", size: 34))
-            VStack(alignment: .leading, spacing: 20) {
-                ruleRow("hand.draw", title: "Make your move", text: "Drag a finger through airborne fruit. Each slice earns 10 points.")
-                ruleRow("sparkles", title: "Find a beautiful line", text: "Slice 3 or more fruit quickly in one swipe for a bonus of 5 per fruit.")
-                ruleRow("xmark.circle", title: "Keep your edge", text: "Avoid red-ringed bombs: −25 points. Three end your run. Missed fruit: −2.", showBomb: true)
-                ruleRow("leaf", title: "Or, just unwind", text: "Practice has no bombs, timer or penalties. Finish from the pause menu.")
-            }.padding(.vertical, 10)
-            actionButton("Let’s slice", subtitle: "YOU HAVE 60 SECONDS", system: "arrow.up.right", primary: true) {
+            PixelText("HOW TO PLAY", size: 16, color: pxYellow)
+            VStack(alignment: .leading, spacing: 16) {
+                ruleRow(FruitArt.image(.citrus), text: "SWIPE THROUGH FRUIT.\nEACH SLICE +10.")
+                ruleRow(FruitArt.image(.kiwi), text: "3+ IN ONE SWIPE IS\nA COMBO. +5 EACH.")
+                ruleRow(FruitArt.bomb, text: "BOMBS -25. THREE\nBOMBS END THE RUN.")
+                ruleRow(FruitArt.image(.dragon), text: "MISSED FRUIT -2.\nPRACTICE: NO RULES.")
+            }.padding(.vertical, 6)
+            PixelButton("START", color: pxRed) {
                 store.showRules = false
                 store.begin(.arcade)
             }
-            Button("Back") { store.showRules = false }.foregroundStyle(muted).frame(height: 44).buttonStyle(.plain)
+            Button { store.showRules = false } label: {
+                PixelText("BACK", size: 8, color: pxGray, shadow: false).frame(height: 44)
+            }.buttonStyle(.plain)
         }
     }
 
-    private func ruleRow(_ icon: String, title: String, text: String, showBomb: Bool = false) -> some View {
-        HStack(alignment: .top, spacing: 15) {
-            Group {
-                if showBomb {
-                    Image(uiImage: FruitArt.bomb).resizable().scaledToFit().frame(height: 42)
-                } else {
-                    Image(systemName: icon).font(.system(size: 19, weight: .light)).foregroundStyle(gold)
-                }
-            }
-            .frame(width: 40, height: 40)
-            .background(.white.opacity(0.04), in: Circle())
-            .overlay(Circle().stroke(gold.opacity(0.25)))
-            .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title).font(.custom("AvenirNext-DemiBold", size: 14))
-                Text(text).font(.custom("AvenirNext-Regular", size: 12)).foregroundStyle(muted).fixedSize(horizontal: false, vertical: true)
-            }
+    private func ruleRow(_ sprite: UIImage, text: String) -> some View {
+        HStack(alignment: .center, spacing: 14) {
+            Image(uiImage: sprite).interpolation(.none).resizable()
+                .frame(width: 42, height: 48)
+                .accessibilityHidden(true)
+            PixelText(text, size: 8, lineSpacing: 6)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
     private func overlayCard(@ViewBuilder content: () -> some View) -> some View {
-        ZStack {
-            ink.opacity(0.9).ignoresSafeArea()
-            VStack(spacing: 16, content: content)
-                .padding(25)
-                .background(
-                    LinearGradient(colors: [Color(red: 0.07, green: 0.15, blue: 0.21), Color(red: 0.035, green: 0.08, blue: 0.13)], startPoint: .top, endPoint: .bottom),
-                    in: RoundedRectangle(cornerRadius: 30)
-                )
-                .overlay(RoundedRectangle(cornerRadius: 30).stroke(gold.opacity(0.3)))
-                .shadow(color: .black.opacity(0.5), radius: 40, y: 20)
+        let body = VStack(spacing: 16, content: content)
+        return ZStack {
+            Color.black.opacity(0.75).ignoresSafeArea()
+            PixelPanel(accent: pxSky) { body }
                 .padding(.horizontal, 22)
         }
     }
 
-    private func resultStat(_ value: String, label: String) -> some View {
-        VStack(spacing: 7) {
-            Text(value).font(.custom("Baskerville", size: 30)).foregroundStyle(cream)
-            Text(label).font(.custom("AvenirNext-DemiBold", size: 10)).tracking(0.6).foregroundStyle(muted)
-        }.frame(maxWidth: .infinity)
-    }
-
-    private func statusChip(_ icon: String, text: String) -> some View {
-        HStack(spacing: 6) {
-            Image(systemName: icon).font(.system(size: 9)).foregroundStyle(gold)
-            Text(text).tracking(1.2)
+    private func hudColumn(_ label: String, value: String, color: Color = pxWhite) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            PixelText(label, size: 8, color: pxYellow)
+            PixelText(value, size: 12, color: color)
         }
-        .font(.custom("AvenirNext-DemiBold", size: 11)).foregroundStyle(muted)
+        .accessibilityElement(children: .combine)
     }
 
-    private func eyebrow(_ text: String) -> some View {
-        HStack(spacing: 9) {
-            Rectangle().fill(gold.opacity(0.45)).frame(width: 14, height: 1)
-            Text(text).font(.custom("AvenirNext-DemiBold", size: 11)).tracking(2).foregroundStyle(muted)
-            Rectangle().fill(gold.opacity(0.45)).frame(width: 14, height: 1)
-        }.fixedSize()
-    }
-
-    private func iconButton(_ icon: String, label: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Image(systemName: icon).font(.system(size: 16, weight: .light))
-                .foregroundStyle(cream).frame(width: 44, height: 44)
-                .background(.white.opacity(0.05), in: Circle())
-                .overlay(Circle().stroke(gold.opacity(0.28)))
-        }.buttonStyle(.plain).accessibilityLabel(label)
-    }
-
-    private func actionButton(_ title: String, subtitle: String, system: String, primary: Bool, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            HStack(spacing: 14) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(title).font(.custom("Baskerville", size: 24))
-                    Text(subtitle).font(.custom("AvenirNext-DemiBold", size: 10)).tracking(0.9).opacity(0.72)
-                }
-                Spacer()
-                Image(systemName: system).font(.system(size: 16, weight: .medium))
-                    .frame(width: 40, height: 40)
-                    .background(primary ? ink.opacity(0.12) : .white.opacity(0.06), in: Circle())
-                    .overlay(Circle().stroke(primary ? ink.opacity(0.1) : gold.opacity(0.35)))
-            }
-            .foregroundStyle(primary ? ink : cream)
-            .padding(.horizontal, 20)
-            .frame(height: 74)
-            .background(
-                LinearGradient(
-                    colors: primary ? [Color(red: 0.82, green: 0.97, blue: 0.85), mint, Color(red: 0.6, green: 0.86, blue: 0.72)] : [.white.opacity(0.07), .white.opacity(0.025)],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                ),
-                in: RoundedRectangle(cornerRadius: 20)
-            )
-            .overlay(RoundedRectangle(cornerRadius: 20).stroke(primary ? .white.opacity(0.5) : gold.opacity(0.35), lineWidth: 1))
-            .shadow(color: primary ? mint.opacity(0.3) : .clear, radius: 22, y: 8)
-        }.buttonStyle(SliceButtonStyle()).accessibilityLabel(title).accessibilityHint(subtitle)
+    private func statRow(_ label: String, _ value: String, color: Color = pxWhite) -> some View {
+        HStack {
+            PixelText(label, size: 10)
+            Spacer(minLength: 8)
+            PixelText(value, size: 10, color: color)
+        }
+        .accessibilityElement(children: .combine)
     }
 
     private func clockText(_ seconds: Double) -> String {
         let whole = max(0, Int(ceil(seconds)))
         return String(format: "%d:%02d", whole / 60, whole % 60)
     }
+}
 
-    private func secondaryButton(_ title: String, action: @escaping () -> Void) -> some View {
-        Button(title, action: action).font(.custom("AvenirNext-DemiBold", size: 13))
-            .frame(maxWidth: .infinity).frame(height: 48)
-            .background(.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 14))
-            .overlay(RoundedRectangle(cornerRadius: 14).stroke(gold.opacity(0.25)))
-            .buttonStyle(.plain)
+/// Press Start 2P text with a one-step hard drop shadow.
+struct PixelText: View {
+    let text: String
+    let size: CGFloat
+    var color: Color = pxWhite
+    var shadow = true
+    var lineSpacing: CGFloat = 0
+
+    init(_ text: String, size: CGFloat, color: Color = pxWhite, shadow: Bool = true, lineSpacing: CGFloat = 0) {
+        self.text = text
+        self.size = size
+        self.color = color
+        self.shadow = shadow
+        self.lineSpacing = lineSpacing
+    }
+
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            if shadow {
+                Text(text).foregroundStyle(.black).offset(x: size / 6, y: size / 6).accessibilityHidden(true)
+            }
+            Text(text).foregroundStyle(color)
+        }
+        .font(px(size))
+        .lineSpacing(lineSpacing)
+        .monospacedDigit()
+    }
+}
+
+/// Toggles its content twice a second, like a title-screen prompt.
+struct Blink<Content: View>: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @ViewBuilder var content: () -> Content
+
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 0.45)) { timeline in
+            let on = reduceMotion || Int(timeline.date.timeIntervalSinceReferenceDate / 0.45) % 2 == 0
+            content().opacity(on ? 1 : 0)
+        }
+    }
+}
+
+/// RPG-style window: black fill, white frame, coloured outer frame.
+struct PixelPanel<Content: View>: View {
+    var accent: Color = pxSky
+    @ViewBuilder var content: () -> Content
+
+    init(accent: Color = pxSky, @ViewBuilder content: @escaping () -> Content) {
+        self.accent = accent
+        self.content = content
+    }
+
+    var body: some View {
+        content()
+            .padding(18)
+            .frame(maxWidth: .infinity)
+            .background(.black)
+            .overlay(Rectangle().strokeBorder(pxWhite, lineWidth: 3))
+            .padding(3)
+            .background(.black)
+            .overlay(Rectangle().strokeBorder(accent, lineWidth: 3))
+    }
+}
+
+/// Chunky arcade button with a hard 8-bit shadow that collapses when pressed.
+struct PixelButton: View {
+    let title: String
+    let color: Color
+    let action: () -> Void
+
+    init(_ title: String, color: Color, action: @escaping () -> Void) {
+        self.title = title
+        self.color = color
+        self.action = action
+    }
+
+    var body: some View {
+        Button(action: action) {
+            PixelText(title, size: 12)
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+                .background(color)
+                .overlay(Rectangle().strokeBorder(.black, lineWidth: 3))
+                .overlay(alignment: .top) { Rectangle().fill(pxWhite.opacity(0.35)).frame(height: 3).padding(3) }
+        }
+        .buttonStyle(PixelButtonStyle())
+        .accessibilityLabel(title.capitalized)
+    }
+}
+
+struct PixelButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(alignment: .bottom) {
+                Rectangle().fill(.black).offset(y: configuration.isPressed ? 0 : 5)
+            }
+            .offset(y: configuration.isPressed ? 5 : 0)
+    }
+}
+
+struct PixelIconButton: View {
+    let text: String
+    let label: String
+    let action: () -> Void
+
+    init(_ text: String, label: String, action: @escaping () -> Void) {
+        self.text = text
+        self.label = label
+        self.action = action
+    }
+
+    var body: some View {
+        Button(action: action) {
+            PixelText(text, size: 8)
+                .padding(.horizontal, 8)
+                .frame(minWidth: 44)
+                .frame(height: 36)
+                .background(pxIndigo)
+                .overlay(Rectangle().strokeBorder(pxWhite, lineWidth: 2))
+        }
+        .buttonStyle(PixelButtonStyle())
+        .accessibilityLabel(label)
+    }
+}
+
+/// Title-screen menu line with a blinking cursor on the default choice.
+struct MenuRow: View {
+    let title: String
+    let detail: String
+    let cursor: Bool
+    let action: () -> Void
+
+    init(_ title: String, detail: String, cursor: Bool, action: @escaping () -> Void) {
+        self.title = title
+        self.detail = detail
+        self.cursor = cursor
+        self.action = action
+    }
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 10) {
+                Group {
+                    if cursor {
+                        Blink { PixelArrow() }
+                    } else {
+                        Color.clear
+                    }
+                }
+                .frame(width: 14, height: 14)
+                PixelText(title, size: 12, color: cursor ? pxYellow : pxWhite)
+                Spacer()
+                PixelText(detail, size: 8, color: pxSky)
+            }
+            .frame(height: 44)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(detail.isEmpty ? title.capitalized : "\(title.capitalized), \(detail.lowercased())")
+    }
+}
+
+/// Menu cursor drawn as 2pt blocks so it matches the font's pixel grid.
+struct PixelArrow: View {
+    var body: some View {
+        Canvas { context, _ in
+            for col in 0 ..< 7 {
+                let half = CGFloat(col) * 0.5
+                let y0 = (half * 2).rounded(.down) * 1
+                let height = 14 - CGFloat(col) * 2
+                context.fill(Path(CGRect(x: CGFloat(col) * 2, y: y0, width: 2, height: max(2, height))), with: .color(pxYellow))
+            }
+        }
+        .frame(width: 14, height: 14)
+    }
+}
+
+struct TitleLogo: View {
+    var body: some View {
+        VStack(spacing: 10) {
+            ZStack {
+                Text("VELVET").foregroundStyle(pxIndigo).offset(x: 4, y: 4)
+                Text("VELVET").foregroundStyle(.black).offset(x: 2, y: 2)
+                Text("VELVET").foregroundStyle(pxSky)
+            }.font(px(30))
+            ZStack {
+                Text("SLICE").foregroundStyle(.black).offset(x: 6, y: 6)
+                Text("SLICE").foregroundStyle(pxRed).offset(x: 3, y: 3)
+                Text("SLICE").foregroundStyle(pxYellow)
+            }.font(px(46))
+            PixelText("FRUIT SLICING ARCADE", size: 8, color: pxWhite, shadow: false)
+                .padding(.top, 4)
+        }
+        .accessibilityElement(children: .ignore)
+    }
+}
+
+/// Three fruit sprites hopping in a stepped 4-frame cycle behind a pixel slash.
+struct FruitParade: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 0.12)) { timeline in
+            let frame = reduceMotion ? 0 : Int(timeline.date.timeIntervalSinceReferenceDate / 0.12) % 8
+            GeometryReader { geometry in
+                let w = geometry.size.width
+                let h = geometry.size.height
+                let hop: [CGFloat] = [0, -6, -12, -14, -12, -6, 0, 0]
+                ZStack {
+                    Canvas { context, size in
+                        var x: CGFloat = size.width * 0.08
+                        var y: CGFloat = size.height * 0.85
+                        while x < size.width * 0.92 {
+                            context.fill(Path(CGRect(x: x, y: y, width: 12, height: 6)), with: .color(pxWhite))
+                            x += 12
+                            y -= 6 * size.height / size.width * 1.4
+                        }
+                    }
+                    ForEach(Array(FruitKind.allCases.enumerated()), id: \.offset) { index, kind in
+                        let sprite = min(w * 0.26, h * 0.7)
+                        Image(uiImage: FruitArt.image(kind)).interpolation(.none).resizable()
+                            .frame(width: sprite, height: sprite * 32 / 28)
+                            .position(x: w * (0.2 + 0.3 * CGFloat(index)), y: h * 0.52 + hop[(frame + index * 3) % 8])
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// Segmented block timer that empties from the right and turns red at 10 seconds.
+struct TimeBar: View {
+    let fraction: Double
+
+    var body: some View {
+        HStack(spacing: 2) {
+            ForEach(0 ..< 20) { index in
+                Rectangle()
+                    .fill(Double(index) / 20 < fraction ? (fraction <= 10 / 60 ? pxRed : pxYellow) : pxIndigo)
+            }
+        }
+        .padding(2)
+        .background(.black)
+        .overlay(Rectangle().strokeBorder(pxWhite, lineWidth: 2))
     }
 }
 
@@ -450,62 +601,11 @@ struct Playfield: View {
     var body: some View {
         SpriteView(scene: store.scene, isPaused: store.paused, options: [.allowsTransparency])
             .opacity(revealed ? 1 : 0)
-            .onAppear { withAnimation(.easeIn(duration: 0.4).delay(0.15)) { revealed = true } }
+            .task {
+                try? await Task.sleep(for: .milliseconds(150))
+                revealed = true
+            }
             .accessibilityLabel("Fruit slicing playfield. Swipe across airborne fruit. Avoid red-ringed bombs.")
             .accessibilityIdentifier("playfield")
-    }
-}
-
-struct SliceButtonStyle: ButtonStyle {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.975 : 1)
-            .opacity(configuration.isPressed ? 0.85 : 1)
-            .animation(reduceMotion ? nil : .easeOut(duration: 0.13), value: configuration.isPressed)
-    }
-}
-
-struct BladeStroke: View {
-    var body: some View {
-        Canvas { context, size in
-            var line = Path()
-            line.move(to: CGPoint(x: 0, y: size.height * 0.8))
-            line.addQuadCurve(to: CGPoint(x: size.width, y: size.height * 0.2), control: CGPoint(x: size.width * 0.5, y: size.height * 0.15))
-            context.addFilter(.shadow(color: mint.opacity(0.7), radius: 6))
-            context.stroke(line, with: .linearGradient(Gradient(colors: [mint.opacity(0), cream, mint.opacity(0)]), startPoint: .zero, endPoint: CGPoint(x: size.width, y: 0)), style: StrokeStyle(lineWidth: 1.6, lineCap: .round))
-        }
-    }
-}
-
-struct FruitComposition: View {
-    var body: some View {
-        GeometryReader { geometry in
-            let w = geometry.size.width
-            let h = geometry.size.height
-            ZStack {
-                Circle().fill(RadialGradient(colors: [orange.opacity(0.28), .clear], center: .center, startRadius: 0, endRadius: w * 0.34)).frame(width: w * 0.7, height: w * 0.7).position(x: w / 2, y: h * 0.48)
-                Ellipse().stroke(gold.opacity(0.3), lineWidth: 1).frame(width: w * 0.8, height: 26).position(x: w / 2, y: h * 0.9)
-                Ellipse().fill(Color.black.opacity(0.35)).frame(width: w * 0.7, height: 32).blur(radius: 14).position(x: w / 2, y: h * 0.88)
-                Image(uiImage: FruitArt.image(.kiwi)).resizable().scaledToFit()
-                    .frame(width: w * 0.47).rotationEffect(.degrees(-24)).position(x: w * 0.21, y: h * 0.55)
-                Image(uiImage: FruitArt.image(.dragon)).resizable().scaledToFit()
-                    .frame(width: w * 0.48).rotationEffect(.degrees(24)).position(x: w * 0.79, y: h * 0.48)
-                Image(uiImage: FruitArt.image(.citrus)).resizable().scaledToFit()
-                    .frame(width: w * 0.62).rotationEffect(.degrees(-12)).position(x: w * 0.49, y: h * 0.49)
-                Canvas { context, size in
-                    var line = Path()
-                    line.move(to: CGPoint(x: size.width * 0.03, y: size.height * 0.86))
-                    line.addQuadCurve(to: CGPoint(x: size.width * 0.96, y: size.height * 0.08), control: CGPoint(x: size.width * 0.68, y: size.height * 0.67))
-                    context.addFilter(.shadow(color: mint.opacity(0.7), radius: 8))
-                    context.stroke(line, with: .linearGradient(Gradient(colors: [mint.opacity(0), mint, cream]), startPoint: CGPoint(x: 0, y: size.height), endPoint: CGPoint(x: size.width, y: 0)), style: StrokeStyle(lineWidth: 2.2, lineCap: .round))
-                    for index in 0 ..< 11 {
-                        let x = CGFloat((index * 37 + 11) % 100) / 100 * size.width
-                        let y = CGFloat((index * 61 + 5) % 100) / 100 * size.height
-                        context.fill(Path(ellipseIn: CGRect(x: x, y: y, width: index % 3 == 0 ? 4 : 2, height: index % 3 == 0 ? 6 : 3)), with: .color(index % 2 == 0 ? orange.opacity(0.7) : mint.opacity(0.65)))
-                    }
-                }
-            }
-        }
     }
 }

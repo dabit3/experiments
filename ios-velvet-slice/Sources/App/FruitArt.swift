@@ -6,207 +6,225 @@ enum FruitKind: Int, CaseIterable {
 
     var juice: UIColor {
         switch self {
-        case .citrus: UIColor(red: 1, green: 0.61, blue: 0.18, alpha: 1)
-        case .kiwi: UIColor(red: 0.68, green: 0.9, blue: 0.31, alpha: 1)
-        case .dragon: UIColor(red: 1, green: 0.29, blue: 0.55, alpha: 1)
+        case .citrus: Pixel.orange
+        case .kiwi: Pixel.lime
+        case .dragon: Pixel.pink
         }
     }
 }
 
+/// The 8-bit palette shared by the app and the scene.
+enum Pixel {
+    static let black = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+    static let white = UIColor(red: 0.988, green: 0.988, blue: 0.988, alpha: 1)
+    static let navy = UIColor(red: 0.047, green: 0.047, blue: 0.24, alpha: 1)
+    static let indigo = UIColor(red: 0.13, green: 0.13, blue: 0.47, alpha: 1)
+    static let sky = UIColor(red: 0.36, green: 0.58, blue: 0.99, alpha: 1)
+    static let red = UIColor(red: 0.97, green: 0.22, blue: 0, alpha: 1)
+    static let orange = UIColor(red: 0.99, green: 0.6, blue: 0.22, alpha: 1)
+    static let yellow = UIColor(red: 0.99, green: 0.88, blue: 0, alpha: 1)
+    static let cream = UIColor(red: 0.99, green: 0.9, blue: 0.66, alpha: 1)
+    static let green = UIColor(red: 0, green: 0.66, blue: 0, alpha: 1)
+    static let lime = UIColor(red: 0.72, green: 0.9, blue: 0.3, alpha: 1)
+    static let darkGreen = UIColor(red: 0, green: 0.42, blue: 0, alpha: 1)
+    static let pink = UIColor(red: 0.97, green: 0.47, blue: 0.97, alpha: 1)
+    static let magenta = UIColor(red: 0.85, green: 0.1, blue: 0.5, alpha: 1)
+    static let brown = UIColor(red: 0.42, green: 0.25, blue: 0.08, alpha: 1)
+    static let brick = UIColor(red: 0.78, green: 0.3, blue: 0.05, alpha: 1)
+    static let gray = UIColor(red: 0.47, green: 0.47, blue: 0.47, alpha: 1)
+    static let darkGray = UIColor(red: 0.24, green: 0.24, blue: 0.24, alpha: 1)
+}
+
+/// Procedural 8-bit sprite sheet. Every sprite is rasterised on a small pixel
+/// grid, given a 1px outline and scaled with nearest-neighbour sampling.
 @MainActor
 enum FruitArt {
-    static let images = FruitKind.allCases.map { draw($0) }
-    static let bomb = drawBomb()
-    static let splatter = SKTexture(image: drawSplatter())
-    static let vignette = SKTexture(image: drawVignette())
+    static let grid = 28
+    static let images = FruitKind.allCases.map { raster(kind: $0) }
+    static let bomb = raster(kind: nil)
+    static let splatter = nearest(drawSplatter())
+    static let square = nearest(solid())
 
     static func image(_ kind: FruitKind) -> UIImage {
         images[kind.rawValue]
     }
 
-    static func draw(_ kind: FruitKind) -> UIImage {
+    static func texture(_ kind: FruitKind) -> SKTexture {
+        nearest(image(kind))
+    }
+
+    static func nearest(_ image: UIImage) -> SKTexture {
+        let texture = SKTexture(image: image)
+        texture.filteringMode = .nearest
+        return texture
+    }
+
+    private static func solid() -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: 2, height: 2), format: pixelFormat()).image { renderer in
+            renderer.cgContext.setFillColor(UIColor.white.cgColor)
+            renderer.cgContext.fill(CGRect(x: 0, y: 0, width: 2, height: 2))
+        }
+    }
+
+    private static func pixelFormat() -> UIGraphicsImageRendererFormat {
         let format = UIGraphicsImageRendererFormat()
-        format.scale = 2
-        return UIGraphicsImageRenderer(size: CGSize(width: 220, height: 240), format: format).image { renderer in
+        format.scale = 1
+        return format
+    }
+
+    /// Colour of one grid cell, or nil for transparency. `nil` kind draws the bomb.
+    private static func cell(_ x: Int, _ y: Int, kind: FruitKind?) -> UIColor? {
+        let cx = 13.5, cy = 15.5
+        let dx = Double(x) + 0.5 - cx
+        let dy = Double(y) + 0.5 - cy
+        let d = (dx * dx + dy * dy).squareRoot()
+        let angle = atan2(dy, dx)
+        let radius = 11.5
+        let lit = dx + dy < -6
+        let shade = dx + dy > 7 && (x + y) % 2 == 0
+        guard let kind else {
+            if y < 3 {
+                if x == 13 || x == 14, y >= 1 {
+                    return Pixel.darkGray
+                }
+                if x == 15 || x == 16, y == 0 {
+                    return Pixel.yellow
+                }
+                if x == 17, y == 1 {
+                    return Pixel.red
+                }
+                if x == 12, y == 0 {
+                    return Pixel.red
+                }
+                return nil
+            }
+            if d > radius + 1 {
+                return nil
+            }
+            if d > radius {
+                return Pixel.black
+            }
+            if d > radius - 1.5 {
+                return Pixel.red
+            }
+            if d > radius - 2.5 {
+                return Pixel.black
+            }
+            if abs(dx) < 1.2, abs(dy) < 5.5 {
+                return Pixel.red
+            }
+            if abs(dy) < 1.2, abs(dx) < 5.5 {
+                return Pixel.red
+            }
+            if x >= 8, x <= 9, y >= 8, y <= 9 {
+                return Pixel.white
+            }
+            if x == 10, y == 8 {
+                return Pixel.white
+            }
+            return shade ? Pixel.black : Pixel.darkGray
+        }
+        if kind != .dragon, y < 4 {
+            let leaf = [(13, 3), (14, 3), (15, 2), (16, 2), (17, 1), (18, 1), (16, 1)]
+            if leaf.contains(where: { $0 == (x, y) }) {
+                return Pixel.green
+            }
+            if [(15, 3), (17, 2), (18, 0)].contains(where: { $0 == (x, y) }) {
+                return Pixel.darkGreen
+            }
+            if [(12, 3), (19, 1), (19, 0), (16, 0)].contains(where: { $0 == (x, y) }) {
+                return Pixel.black
+            }
+            return nil
+        }
+        if kind == .dragon, d > radius + 1, d < radius + 4 {
+            let petal = Int(((angle + .pi) / (.pi * 2) * 6).rounded()) % 6
+            let petalAngle = Double(petal) / 6 * .pi * 2 - .pi
+            let off = abs(atan2(sin(angle - petalAngle), cos(angle - petalAngle)))
+            let reach = radius + 4 - off * 9
+            if d < reach - 1.2 {
+                return Pixel.green
+            }
+            if d < reach {
+                return Pixel.darkGreen
+            }
+            return nil
+        }
+        if d > radius + 1 {
+            return nil
+        }
+        if d > radius {
+            return Pixel.black
+        }
+        let rind: UIColor = switch kind {
+        case .citrus: Pixel.orange
+        case .kiwi: Pixel.brown
+        case .dragon: Pixel.magenta
+        }
+        if d > radius - 1.6 {
+            return lit ? Pixel.white : rind
+        }
+        if d > radius - 2.6 {
+            return kind == .dragon ? Pixel.pink : Pixel.cream
+        }
+        switch kind {
+        case .citrus:
+            let seg = angle / (.pi / 5)
+            if abs(seg - seg.rounded()) < 0.09, d > 2.2 {
+                return Pixel.cream
+            }
+            if d < 1.6 {
+                return Pixel.cream
+            }
+            if shade {
+                return Pixel.orange
+            }
+            return Pixel.yellow
+        case .kiwi:
+            if d < 2.6 {
+                return Pixel.cream
+            }
+            let ring = Int((angle + .pi) / (.pi * 2) * 16) % 16
+            if d > 4, d < 7.4, ring % 2 == (Int(d) % 2) {
+                return Pixel.black
+            }
+            if shade {
+                return Pixel.green
+            }
+            return Pixel.lime
+        case .dragon:
+            if (x * 73 + y * 151 + x * y * 31) % 9 == 0, d < radius - 3.4 {
+                return Pixel.black
+            }
+            if shade {
+                return Pixel.cream
+            }
+            return Pixel.white
+        }
+    }
+
+    private static func raster(kind: FruitKind?) -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: grid, height: grid + 4), format: pixelFormat()).image { renderer in
             let c = renderer.cgContext
-            c.translateBy(x: 110, y: 130)
-            c.setShadow(offset: CGSize(width: 0, height: 8), blur: 14, color: UIColor.black.withAlphaComponent(0.45).cgColor)
-            let outer = CGRect(x: -89, y: -91, width: 178, height: 180)
-            c.setFillColor((kind == .kiwi ? UIColor(red: 0.4, green: 0.27, blue: 0.1, alpha: 1) : kind.juice).cgColor)
-            c.fillEllipse(in: outer)
-            c.setShadow(offset: .zero, blur: 0)
-            if kind == .kiwi {
-                for i in 0 ..< 90 {
-                    let angle = CGFloat(i) * 2.39996
-                    let r: CGFloat = 84 + CGFloat(i % 4)
-                    c.setFillColor(UIColor(red: 0.55, green: 0.4, blue: 0.2, alpha: 0.9).cgColor)
-                    c.fillEllipse(in: CGRect(x: cos(angle) * r - 1.5, y: sin(angle) * r - 1, width: 3, height: 2))
+            c.setShouldAntialias(false)
+            for y in 0 ..< (grid + 4) {
+                for x in 0 ..< grid {
+                    guard let color = cell(x, y, kind: kind) else { continue }
+                    c.setFillColor(color.cgColor)
+                    c.fill(CGRect(x: x, y: y, width: 1, height: 1))
                 }
-            }
-            if kind == .dragon {
-                for i in 0 ..< 9 {
-                    let angle = CGFloat(i) * .pi * 2 / 9
-                    c.saveGState()
-                    c.rotate(by: angle)
-                    let petal = UIBezierPath()
-                    petal.move(to: CGPoint(x: 60, y: -28))
-                    petal.addQuadCurve(to: CGPoint(x: 108, y: -5), controlPoint: CGPoint(x: 97, y: -38))
-                    petal.addQuadCurve(to: CGPoint(x: 71, y: 24), controlPoint: CGPoint(x: 87, y: 25))
-                    UIColor(red: 0.88, green: 0.14, blue: 0.44, alpha: 1).setFill()
-                    petal.fill()
-                    c.restoreGState()
-                }
-            }
-            c.setFillColor(UIColor(red: 1, green: 0.92, blue: 0.72, alpha: 1).cgColor)
-            c.fillEllipse(in: CGRect(x: -81, y: -84, width: 162, height: 164))
-            c.saveGState()
-            c.addEllipse(in: CGRect(x: -76, y: -79, width: 152, height: 154))
-            c.clip()
-            let colors: [CGColor] = switch kind {
-            case .citrus:
-                [UIColor(red: 1, green: 0.8, blue: 0.27, alpha: 1).cgColor, UIColor(red: 0.96, green: 0.34, blue: 0.05, alpha: 1).cgColor]
-            case .kiwi:
-                [UIColor(red: 0.91, green: 0.97, blue: 0.42, alpha: 1).cgColor, UIColor(red: 0.24, green: 0.63, blue: 0.15, alpha: 1).cgColor]
-            case .dragon:
-                [UIColor(red: 1, green: 0.97, blue: 0.9, alpha: 1).cgColor, UIColor(red: 0.97, green: 0.65, blue: 0.76, alpha: 1).cgColor]
-            }
-            if let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray, locations: [0, 1]) {
-                c.drawRadialGradient(gradient, startCenter: CGPoint(x: -15, y: -22), startRadius: 1, endCenter: .zero, endRadius: 90, options: .drawsAfterEndLocation)
-            }
-            if kind == .citrus {
-                for i in 0 ..< 10 {
-                    c.saveGState()
-                    c.rotate(by: CGFloat(i) * .pi / 5)
-                    c.setStrokeColor(UIColor(red: 1, green: 0.93, blue: 0.67, alpha: 0.95).cgColor)
-                    c.setLineWidth(3)
-                    c.move(to: CGPoint(x: 4, y: 0))
-                    c.addLine(to: CGPoint(x: 80, y: 0))
-                    c.strokePath()
-                    for j in 0 ..< 5 {
-                        c.setFillColor(UIColor.white.withAlphaComponent(0.16).cgColor)
-                        c.fillEllipse(in: CGRect(x: 20 + j * 9, y: 7 + j % 2 * 6, width: 12, height: 4))
-                    }
-                    c.restoreGState()
-                }
-                c.setFillColor(UIColor(red: 1, green: 0.95, blue: 0.73, alpha: 1).cgColor)
-                c.fillEllipse(in: CGRect(x: -7, y: -7, width: 14, height: 14))
-            } else if kind == .kiwi {
-                for i in 0 ..< 38 {
-                    c.saveGState()
-                    c.rotate(by: CGFloat(i) * .pi * 2 / 38)
-                    c.setStrokeColor(UIColor.white.withAlphaComponent(0.24).cgColor)
-                    c.setLineWidth(1.2)
-                    c.move(to: CGPoint(x: 12, y: 0))
-                    c.addLine(to: CGPoint(x: 75, y: 0))
-                    c.strokePath()
-                    c.setFillColor(UIColor(red: 0.13, green: 0.19, blue: 0.08, alpha: 1).cgColor)
-                    c.fillEllipse(in: CGRect(x: CGFloat(27 + i % 3 * 4), y: 0, width: 7, height: 3.5))
-                    c.restoreGState()
-                }
-                c.setFillColor(UIColor(red: 0.96, green: 0.98, blue: 0.73, alpha: 1).cgColor)
-                c.fillEllipse(in: CGRect(x: -15, y: -20, width: 30, height: 40))
-            } else {
-                for i in 0 ..< 75 {
-                    let angle = CGFloat(i) * 2.39996
-                    let r = sqrt(CGFloat(i) / 75) * 71
-                    c.saveGState()
-                    c.translateBy(x: cos(angle) * r, y: sin(angle) * r)
-                    c.rotate(by: angle)
-                    c.setFillColor(UIColor(red: 0.21, green: 0.11, blue: 0.2, alpha: 0.85).cgColor)
-                    c.fillEllipse(in: CGRect(x: -1.3, y: -2.3, width: 2.6, height: 4.6))
-                    c.restoreGState()
-                }
-            }
-            c.restoreGState()
-            c.saveGState()
-            c.addEllipse(in: CGRect(x: -76, y: -79, width: 152, height: 154))
-            c.clip()
-            let shading: [CGColor] = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.22).cgColor]
-            if let rim = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: shading as CFArray, locations: [0.62, 1]) {
-                c.drawRadialGradient(rim, startCenter: CGPoint(x: -10, y: -14), startRadius: 0, endCenter: .zero, endRadius: 82, options: .drawsAfterEndLocation)
-            }
-            let gleam: [CGColor] = [UIColor.white.withAlphaComponent(0.42).cgColor, UIColor.white.withAlphaComponent(0).cgColor]
-            if let highlight = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gleam as CFArray, locations: [0, 1]) {
-                c.drawRadialGradient(highlight, startCenter: CGPoint(x: -34, y: -42), startRadius: 0, endCenter: CGPoint(x: -30, y: -38), endRadius: 46, options: [])
-            }
-            c.restoreGState()
-            c.setStrokeColor(UIColor.white.withAlphaComponent(0.55).cgColor)
-            c.setLineWidth(2.4)
-            c.setLineCap(.round)
-            c.addArc(center: CGPoint(x: 0, y: -2), radius: 84, startAngle: .pi * 1.12, endAngle: .pi * 1.68, clockwise: false)
-            c.strokePath()
-            if kind != .dragon {
-                let leaf = UIBezierPath()
-                leaf.move(to: CGPoint(x: 0, y: -85))
-                leaf.addCurve(to: CGPoint(x: 53, y: -111), controlPoint1: CGPoint(x: 3, y: -116), controlPoint2: CGPoint(x: 35, y: -126))
-                leaf.addCurve(to: CGPoint(x: 0, y: -85), controlPoint1: CGPoint(x: 38, y: -87), controlPoint2: CGPoint(x: 17, y: -76))
-                UIColor(red: 0.29, green: 0.61, blue: 0.29, alpha: 1).setFill()
-                leaf.fill()
-                c.setStrokeColor(UIColor(red: 0.72, green: 0.88, blue: 0.37, alpha: 0.7).cgColor)
-                c.setLineWidth(1)
-                c.move(to: CGPoint(x: 0, y: -85))
-                c.addLine(to: CGPoint(x: 46, y: -109))
-                c.strokePath()
             }
         }
     }
 
-    static func drawSplatter() -> UIImage {
-        UIGraphicsImageRenderer(size: CGSize(width: 300, height: 140)).image { renderer in
+    private static func drawSplatter() -> UIImage {
+        UIGraphicsImageRenderer(size: CGSize(width: 24, height: 12), format: pixelFormat()).image { renderer in
             let c = renderer.cgContext
-            c.translateBy(x: 150, y: 70)
-            let fade: [CGColor] = [UIColor.white.cgColor, UIColor.white.withAlphaComponent(0).cgColor]
-            guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: fade as CFArray, locations: [0.15, 1]) else { return }
-            let blobs: [(CGFloat, CGFloat, CGFloat, CGFloat)] = [(0, 0, 70, 24), (-58, 6, 32, 14), (54, -7, 38, 15), (-96, -4, 16, 8), (98, 9, 18, 9), (22, 17, 20, 9), (-30, -18, 18, 8)]
+            c.setFillColor(UIColor.white.cgColor)
+            let blobs = [(6, 3, 12, 6), (2, 5, 4, 3), (18, 4, 4, 3), (0, 6, 2, 2), (22, 5, 2, 2), (9, 1, 3, 2), (13, 9, 3, 2), (4, 9, 2, 1)]
             for (x, y, w, h) in blobs {
-                c.saveGState()
-                c.translateBy(x: x, y: y)
-                c.scaleBy(x: w / 24, y: h / 24)
-                c.drawRadialGradient(gradient, startCenter: .zero, startRadius: 0, endCenter: .zero, endRadius: 24, options: [])
-                c.restoreGState()
+                c.fill(CGRect(x: x, y: y, width: w, height: h))
             }
-        }
-    }
-
-    static func drawVignette() -> UIImage {
-        UIGraphicsImageRenderer(size: CGSize(width: 256, height: 256)).image { renderer in
-            let c = renderer.cgContext
-            let fade: [CGColor] = [UIColor.white.cgColor, UIColor.white.withAlphaComponent(0.35).cgColor, UIColor.white.withAlphaComponent(0).cgColor]
-            guard let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: fade as CFArray, locations: [0, 0.45, 1]) else { return }
-            c.drawRadialGradient(gradient, startCenter: CGPoint(x: 128, y: 128), startRadius: 0, endCenter: CGPoint(x: 128, y: 128), endRadius: 128, options: [])
-        }
-    }
-
-    static func drawBomb() -> UIImage {
-        UIGraphicsImageRenderer(size: CGSize(width: 220, height: 240)).image { renderer in
-            let c = renderer.cgContext
-            c.translateBy(x: 110, y: 130)
-            c.setShadow(offset: CGSize(width: 0, height: 8), blur: 14, color: UIColor.black.cgColor)
-            c.setFillColor(UIColor(red: 0.19, green: 0.23, blue: 0.3, alpha: 1).cgColor)
-            c.fillEllipse(in: CGRect(x: -80, y: -80, width: 160, height: 160))
-            c.setShadow(offset: .zero, blur: 0)
-            c.setStrokeColor(UIColor(red: 1, green: 0.43, blue: 0.36, alpha: 1).cgColor)
-            c.setLineWidth(4)
-            c.strokeEllipse(in: CGRect(x: -78, y: -78, width: 156, height: 156))
-            c.setFillColor(UIColor(red: 0.32, green: 0.38, blue: 0.44, alpha: 1).cgColor)
-            c.fill(CGRect(x: -15, y: -95, width: 30, height: 22))
-            c.setLineWidth(5)
-            c.move(to: CGPoint(x: 0, y: -95))
-            c.addQuadCurve(to: CGPoint(x: 27, y: -117), control: CGPoint(x: -8, y: -125))
-            c.strokePath()
-            c.setFillColor(UIColor(red: 1, green: 0.79, blue: 0.34, alpha: 1).cgColor)
-            c.fillEllipse(in: CGRect(x: 21, y: -125, width: 13, height: 13))
-            c.setLineWidth(8)
-            c.setLineCap(.round)
-            c.move(to: CGPoint(x: -21, y: -21))
-            c.addLine(to: CGPoint(x: 21, y: 21))
-            c.move(to: CGPoint(x: 21, y: -21))
-            c.addLine(to: CGPoint(x: -21, y: 21))
-            c.strokePath()
-            c.setStrokeColor(UIColor.white.withAlphaComponent(0.22).cgColor)
-            c.setLineWidth(3)
-            c.addArc(center: .zero, radius: 63, startAngle: .pi * 1.1, endAngle: .pi * 1.55, clockwise: false)
-            c.strokePath()
         }
     }
 }

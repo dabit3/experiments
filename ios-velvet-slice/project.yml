@@ -18,6 +18,14 @@ targets:
     sources:
       - Sources
       - Assets.xcassets
+      - path: Resources/Fonts
+        type: folder
+        buildPhase: resources
+    info:
+      path: Sources/App/Info.plist
+      properties:
+        UIAppFonts:
+          - Fonts/PressStart2P-Regular.ttf
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: studio.velvetslice.game
