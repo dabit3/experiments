@@ -111,8 +111,10 @@ struct CrossroadsView: View {
             .overlay(Rectangle().strokeBorder(Palette.yellow, lineWidth: 3).padding(3))
             .overlay(Rectangle().strokeBorder(Palette.ink, lineWidth: 3))
             .background(Palette.ink.opacity(0.35).offset(x: 6, y: 6))
-            PixelText("SMALL HOPS. BIG ADVENTURES.", scale: 2, color: Palette.white)
-                .padding(.top, 20)
+            PixelText("SMALL HOPS. BIG ADVENTURES.", scale: 2, color: Palette.white, shadow: nil)
+                .padding(.vertical, 8).padding(.horizontal, 12)
+                .background(Palette.ink)
+                .padding(.top, 16)
         }
         .frame(maxWidth: .infinity)
     }
