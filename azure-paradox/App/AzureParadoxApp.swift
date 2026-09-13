@@ -1,5 +1,6 @@
 import SpriteKit
 import SwiftUI
+import UIKit
 
 @main
 struct AzureParadoxApp: App {
@@ -19,6 +20,20 @@ private let gold = Color(red: 0.91, green: 0.76, blue: 0.43)
 private let ice = Color(red: 0.35, green: 0.88, blue: 1)
 private let ink = Color(red: 0.025, green: 0.045, blue: 0.12)
 
+@MainActor
+private enum LobbyArt {
+  static let stage = load("celestial-stage")
+  static let seraph = load("seraph-0")
+  static let lyra = load("lyra-0")
+
+  private static func load(_ name: String) -> UIImage {
+    guard let url = Bundle.main.url(forResource: name, withExtension: "png"),
+      let image = UIImage(contentsOfFile: url.path)
+    else { return UIImage() }
+    return image
+  }
+}
+
 struct DuelView: View {
   @ObservedObject var client: DuelClient
   @State private var muted = false
@@ -32,7 +47,7 @@ struct DuelView: View {
           arenaControls
           if client.state?.phase == "result" { result }
         } else {
-          Image("celestial-stage").resizable().scaledToFill()
+          Image(uiImage: LobbyArt.stage).resizable().scaledToFill()
             .frame(width: geometry.size.width, height: geometry.size.height).clipped()
             .overlay(ink.opacity(0.73)).ignoresSafeArea()
           selection
@@ -144,7 +159,8 @@ struct DuelView: View {
             colors: [color.opacity(0.12), ink, color.opacity(0.25)], startPoint: .top,
             endPoint: .bottom)
           Circle().stroke(gold.opacity(0.3), lineWidth: 1).padding(20)
-          Image("\(id)-0").resizable().scaledToFit().padding(.top, 4)
+          Image(uiImage: id == "seraph" ? LobbyArt.seraph : LobbyArt.lyra)
+            .resizable().scaledToFit().padding(.top, 4)
         }.frame(height: 205)
         Text(title).font(.custom("Georgia-Bold", size: 22)).foregroundStyle(.white)
         Text(subtitle).font(.system(size: 8, weight: .bold)).tracking(1.5).foregroundStyle(gold)
