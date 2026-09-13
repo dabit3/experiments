@@ -25,7 +25,7 @@ npm --prefix server ci
 npm --prefix server run check
 npm --prefix server test
 npm --prefix server audit --audit-level=moderate
-xcrun swift-format lint --strict --recursive Sources
+xcrun swift-format lint --strict --recursive Sources scripts
 xcodebuild -project NovaBrawl.xcodeproj -scheme NovaBrawl \
   -configuration Debug -sdk iphonesimulator \
   -destination 'generic/platform=iOS Simulator' -derivedDataPath build \
@@ -105,6 +105,65 @@ and assertions from that run. Check video with:
 ffprobe -v error -show_entries format=duration,size \
   -show_entries stream=codec_name,width,height -of json two-device-match.mp4
 ```
+
+### Capture actual game audio on a macOS VM
+
+The `simctl` video streams contain no audio. The verified host setup uses
+BlackHole 2ch loopback:
+
+```sh
+brew install --cask blackhole-2ch
+system_profiler SPAudioDataType
+```
+
+Confirm a working default input, output and system output **before** booting
+simulators. BlackHole 0.7.1 registered at 48 kHz on this VM after one
+`sudo -n killall coreaudiod`. Use that bounded recovery only if the endpoint is
+missing immediately after installation; do not restart CoreAudio during capture.
+Restart simulators that booted before the endpoint existed. Allow macOS recording
+permission prompts for SimulatorTrampoline and the process hosting the recorder.
+A pre-permission launch hit an AURemoteIO timeout; subsequent launches were stable
+after permissions and endpoint setup. Its cause was not established.
+
+FFmpeg's AVFoundation input dropped samples under this VM's two-simulator load.
+The standalone native recorder in `scripts/CaptureAudio.swift` uses an
+AVAudioEngine input tap and retains every buffer's sample/host clocks. It records
+the default input, so ensure it is BlackHole and silence unrelated applications.
+From this directory, using a new output prefix and an existing output directory:
+
+```sh
+xcrun swiftc scripts/CaptureAudio.swift -o build/CaptureAudio
+build/CaptureAudio "$HOME/nova-match" 60 &
+AUDIO_PID=$!
+# Start both native video recorders concurrently, then launch both game clients.
+# After the shared result/rematch, stop all recorders using their individual PIDs.
+kill -INT "$AUDIO_PID"
+wait "$AUDIO_PID"
+ffprobe -v error -show_entries format=duration \
+  -show_entries stream=sample_rate,channels -of json "$HOME/nova-match.caf"
+```
+
+The recorder stops on SIGINT/SIGTERM or its duration limit, closes the CAF writer,
+and writes a `.callbacks.json` sibling containing clocks and write errors. It
+refuses to overwrite prior recordings. Compile/typecheck with `xcrun swiftc`;
+this macOS helper is not part of the iPhone app target.
+
+For synchronized composition, record each video's first-frame clock and use the
+audio's first-buffer host clock with its epoch anchors, not process-spawn times.
+Trim all three sources to their common interval, then combine the complete native
+displays and encode the **captured CAF** as the audio track. Do not fill acquisition
+gaps or substitute a generated soundtrack. Retain sources, clock metadata,
+authoritative server events and mux commands with the report. Check consecutive
+sample times, total frames / sample rate against the host span, cue onset against
+server events, nonzero effects, and zero muted windows. Fully decode the final
+video and audio; equal durations alone do not establish synchronization.
+
+The AUDIO32 evidence on app revision `9f6d514` captured 41.400 seconds of continuous
+48 kHz audio with no missing samples or write errors. Its complete 40.5-second
+two-device mux contains the real match, shared KO and rematch. Start/shot/rematch
+audio onsets were 46.7–51.1 ms after server events; both-client mute suppressed
+manual shots while their network damage still occurred. Physical-speaker listening
+quality and simultaneous manual Boost+joystick remain unverified.
 
 ## Controls and combat
 
