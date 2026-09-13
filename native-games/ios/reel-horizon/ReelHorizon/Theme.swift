@@ -143,6 +143,8 @@ struct CurrencyChip: View {
         Image(systemName: "star.fill").font(.system(size: size - 2)).foregroundStyle(Theme.green)
       }
       Text(amount.formatted()).font(Theme.mono(size)).foregroundStyle(Theme.ink)
+        .lineLimit(1)
+        .fixedSize()
     }
   }
 }

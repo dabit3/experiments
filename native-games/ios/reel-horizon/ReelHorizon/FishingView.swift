@@ -106,6 +106,8 @@ struct FishingView: View {
           Text("\(store.profile.keepnet.count)/\(PlayerProfile.keepnetMaxCount)").font(Theme.mono(12)).foregroundStyle(Theme.ink)
           Text(store.profile.keepnetWeightLb.lbOz).font(Theme.mono(10)).foregroundStyle(Theme.inkDim)
         }
+        .lineLimit(1)
+        .fixedSize()
         Divider().frame(height: 18).overlay(Theme.panelStroke)
         LevelBadge(level: store.profile.level, size: 24)
         MeterBar(value: store.profile.levelProgress, height: 5).frame(width: 60)

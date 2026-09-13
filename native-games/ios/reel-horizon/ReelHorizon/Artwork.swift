@@ -661,41 +661,79 @@ struct MapView: View {
           let p = Self.project(lat: waterway.latitude, lon: waterway.longitude)
           MapPin(
             waterway: waterway, locked: profile.level < waterway.requiredLevel,
-            current: profile.currentWaterwayID == waterway.id, selected: selected == waterway.id
+            current: profile.currentWaterwayID == waterway.id, selected: selected == waterway.id,
+            labelSide: labelSide(for: waterway)
           ) { onSelect(waterway) }
           .position(x: p.x * size.width, y: p.y * size.height)
         }
       }
     }
   }
+
+  /// Pins whose neighbours sit close enough for the captions to collide put the caption beside
+  /// the pin instead: the western pin to the left, the eastern one to the right.
+  private func labelSide(for waterway: Waterway) -> MapPin.LabelSide {
+    let p = Self.project(lat: waterway.latitude, lon: waterway.longitude)
+    for other in waterways where other.id != waterway.id {
+      let q = Self.project(lat: other.latitude, lon: other.longitude)
+      if abs(q.x - p.x) < 0.22 && abs(q.y - p.y) < 0.12 {
+        return p.x <= q.x ? .leading : .trailing
+      }
+    }
+    return .below
+  }
 }
 
 struct MapPin: View {
+  enum LabelSide { case below, leading, trailing }
+
   let waterway: Waterway
   let locked: Bool
   let current: Bool
   let selected: Bool
+  var labelSide: LabelSide = .below
   let action: () -> Void
 
   var body: some View {
     Button(action: action) {
-      VStack(spacing: 2) {
-        ZStack {
-          Circle().fill(locked ? Color(red: 0.35, green: 0.38, blue: 0.42) : (current ? Theme.gold : Theme.cyan))
-            .frame(width: 26, height: 26)
-            .shadow(color: (locked ? Color.black : Theme.cyan).opacity(0.7), radius: selected ? 10 : 4)
-          Circle().strokeBorder(.white.opacity(0.9), lineWidth: 2).frame(width: 26, height: 26)
-          Image(systemName: locked ? "lock.fill" : "fish.fill").font(.system(size: 12, weight: .bold)).foregroundStyle(locked ? Theme.inkDim : .black.opacity(0.75))
+      marker
+        .overlay {
+          caption
+            .fixedSize()
+            .alignmentGuide(HorizontalAlignment.center) { d in
+              switch labelSide {
+              case .below: return d[HorizontalAlignment.center]
+              case .leading: return d[.trailing] + 18
+              case .trailing: return d[.leading] - 18
+              }
+            }
+            .alignmentGuide(VerticalAlignment.center) { d in
+              labelSide == .below ? d[.top] - 15 : d[VerticalAlignment.center]
+            }
         }
-        Text(waterway.name).font(Theme.display(11)).textCase(.uppercase).foregroundStyle(.white)
-          .shadow(color: .black, radius: 2)
-        if locked {
-          Text("LVL \(waterway.requiredLevel)").font(Theme.mono(9)).foregroundStyle(Theme.gold)
-        }
-      }
-      .scaleEffect(selected ? 1.15 : 1)
-      .animation(.spring(response: 0.3), value: selected)
+        .scaleEffect(selected ? 1.15 : 1)
+        .animation(.spring(response: 0.3), value: selected)
     }
     .buttonStyle(.plain)
+  }
+
+  private var marker: some View {
+    ZStack {
+      Circle().fill(locked ? Color(red: 0.35, green: 0.38, blue: 0.42) : (current ? Theme.gold : Theme.cyan))
+        .frame(width: 26, height: 26)
+        .shadow(color: (locked ? Color.black : Theme.cyan).opacity(0.7), radius: selected ? 10 : 4)
+      Circle().strokeBorder(.white.opacity(0.9), lineWidth: 2).frame(width: 26, height: 26)
+      Image(systemName: locked ? "lock.fill" : "fish.fill").font(.system(size: 12, weight: .bold)).foregroundStyle(locked ? Theme.inkDim : .black.opacity(0.75))
+    }
+  }
+
+  private var caption: some View {
+    VStack(alignment: labelSide == .leading ? .trailing : (labelSide == .trailing ? .leading : .center), spacing: 0) {
+      Text(waterway.name).font(Theme.display(11)).textCase(.uppercase).foregroundStyle(.white)
+        .shadow(color: .black, radius: 2)
+      if locked {
+        Text("LVL \(waterway.requiredLevel)").font(Theme.mono(9)).foregroundStyle(Theme.gold)
+      }
+    }
   }
 }

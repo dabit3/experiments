@@ -195,19 +195,20 @@ struct LocationView: View {
                   .font(Theme.body(12, weight: .bold)).foregroundStyle(Theme.ink)
               }
             }
-            ForEach(waterway.licenses) { option in
-              LicenseRow(option: option, waterway: waterway)
-            }
-            Text("Advanced licenses lift the release rule on \(waterway.mustReleaseBasic.map { SpeciesCatalog.find($0).name }.joined(separator: ", ")).")
-              .font(Theme.body(10)).foregroundStyle(Theme.inkDim)
-            Spacer(minLength: 0)
-            HStack {
-              VStack(alignment: .leading) {
-                Text("Trip cost").capsLabel(11)
-                HStack(spacing: 10) {
-                  if waterway.travelFee == 0 { Text("FREE").font(Theme.mono(14)).foregroundStyle(Theme.green) } else { CurrencyChip(kind: .credits, amount: waterway.travelFee) }
-                  Text("Rig: \(store.profile.rig.lure.name)").font(Theme.body(11)).foregroundStyle(Theme.inkDim)
+            ScrollView {
+              VStack(alignment: .leading, spacing: 8) {
+                ForEach(waterway.licenses) { option in
+                  LicenseRow(option: option, waterway: waterway)
                 }
+                Text("Advanced licenses lift the release rule on \(waterway.mustReleaseBasic.map { SpeciesCatalog.find($0).name }.joined(separator: ", ")).")
+                  .font(Theme.body(10)).foregroundStyle(Theme.inkDim)
+              }
+            }
+            HStack {
+              VStack(alignment: .leading, spacing: 2) {
+                Text("Trip cost").capsLabel(11)
+                if waterway.travelFee == 0 { Text("FREE").font(Theme.mono(14)).foregroundStyle(Theme.green) } else { CurrencyChip(kind: .credits, amount: waterway.travelFee) }
+                Text("Rig: \(store.profile.rig.lure.name)").font(Theme.body(11)).foregroundStyle(Theme.inkDim).lineLimit(1)
               }
               Spacer()
               ChromeButton(title: "Go fishing", icon: "figure.fishing", tone: .green, size: 17) {

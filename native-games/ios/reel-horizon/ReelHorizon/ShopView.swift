@@ -337,7 +337,7 @@ struct ProfileView: View {
             }
             .accessibilityIdentifier("profile.reset")
           }
-          .frame(width: 280)
+          .frame(width: 250)
           .panel(padding: 12, radius: 10)
 
           VStack(alignment: .leading, spacing: 8) {
@@ -363,6 +363,7 @@ struct ProfileView: View {
                 .accessibilityIdentifier("profile.sell")
             }
           }
+          .frame(maxWidth: .infinity)
           .panel(padding: 12, radius: 10)
 
           VStack(alignment: .leading, spacing: 8) {
@@ -376,7 +377,7 @@ struct ProfileView: View {
               }
             }
           }
-          .frame(width: 300)
+          .frame(maxWidth: .infinity)
           .panel(padding: 12, radius: 10)
         }
       }
