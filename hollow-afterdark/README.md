@@ -79,6 +79,13 @@ to disable the driver. Test real touch input after disabling both drivers.
 Joining is idempotent while the connection is pending or already live; repeated
 taps cannot replace a socket before its private reconnect identity arrives.
 
+For a recorded game operated through both devices' visible controls, use the
+[full-game native-control harness](Tests/NativeUI/README.md). It leaves the app
+drivers disabled, clicks both players' movement/defense/attack controls through
+two complete matches, accepts rematch, and captures synchronized live audio.
+One host pointer alternates the devices; it does not represent two human players
+or simultaneous physical multitouch.
+
 Acceptance matrix:
 
 1. Two separate native app processes join one room; IDs differ.
