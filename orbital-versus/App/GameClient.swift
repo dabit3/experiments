@@ -74,6 +74,8 @@ final class GameClient: ObservableObject {
   private var automaticReady = false
   private var automaticRematch = false
   private var lastAutoRound = 0
+  private var autoStartTick = 0
+  private var nextAutoAction: [String: Double] = [:]
   private var logHandle: FileHandle?
 
   var me: UnitState? { state?.units.first { $0.id == playerID } }
@@ -310,26 +312,37 @@ final class GameClient: ObservableObject {
   }
   private func drive(_ me: UnitState) {
     guard let state, let target else { return }
-    if lastAutoRound != state.round { lastAutoRound = state.round }
-    let elapsed = 90 - state.time
+    if lastAutoRound != state.round {
+      lastAutoRound = state.round
+      autoStartTick = state.tick
+      nextAutoAction.removeAll()
+    }
+    let elapsed = Double(state.tick - autoStartTick) / 30
     let range = hypot(target.x - me.x, target.z - me.z)
-    let cycle = Int(elapsed * 30)
     automationStep =
       elapsed < 8 ? "01 / BOOST & BEAM" : elapsed < 18 ? "02 / SABER ENGAGE" : "03 / COST BATTLE"
-    if target.hp <= 0 && cycle % 15 == 0 { press("lock") }
-    boosting = elapsed < 8 ? cycle % 100 < 40 : cycle % 230 < 24
-    guarding = me.team == 1 && cycle % 180 > 153
+    if target.hp <= 0 { autoPress("lock", at: elapsed, interval: 0.5) }
+    boosting =
+      elapsed < 8
+      ? elapsed.truncatingRemainder(dividingBy: 3.3) < 1.3
+      : elapsed.truncatingRemainder(dividingBy: 7.6) < 0.8
+    guarding = me.team == 1 && elapsed.truncatingRemainder(dividingBy: 6) > 5.1
     move = CGSize(
       width: sin(elapsed * 0.8 + Double(me.team)) * (range < 10 ? 0.15 : 0.35),
       height: range > 8 ? -0.85 : range < 4 ? 0.3 : 0)
     if elapsed < 8 || range > 17 {
-      if cycle % 18 == 0 { press("fire") }
+      autoPress("fire", at: elapsed, interval: 0.65)
     } else {
-      if cycle % 18 == 0 { press("melee") }
-      if cycle % 50 == 24 { press("fire") }
+      autoPress("melee", at: elapsed, interval: 0.65)
+      autoPress("fire", at: elapsed, interval: 1.7)
     }
-    if cycle % 150 == 99 { press("dodge") }
-    if me.burst >= 50 && cycle % 30 == 0 { press("burst") }
+    if elapsed > 3 { autoPress("dodge", at: elapsed, interval: 5) }
+    if me.burst >= 50 { autoPress("burst", at: elapsed, interval: 1) }
+  }
+  private func autoPress(_ action: String, at time: Double, interval: Double) {
+    guard time >= nextAutoAction[action, default: 0] else { return }
+    press(action)
+    nextAutoAction[action] = time + interval
   }
   private func log(type: String, detail: String) {
     struct Entry: Encodable {
