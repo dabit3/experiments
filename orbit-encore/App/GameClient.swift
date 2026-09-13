@@ -37,6 +37,7 @@ final class GameClient: ObservableObject {
     private var lastEffect = ""
     private let epochOrigin = Date().timeIntervalSince1970 * 1000
     private let uptimeOrigin = ProcessInfo.processInfo.systemUptime
+    private let telemetryQueue = DispatchQueue(label: "games.orbitencore.telemetry", qos: .utility)
 
     var localNow: Double { epochOrigin + (ProcessInfo.processInfo.systemUptime - uptimeOrigin) * 1000 }
     var serverNow: Double { localNow + clockOffset }
@@ -76,14 +77,16 @@ final class GameClient: ObservableObject {
         guard let data = try? JSONEncoder().encode(row),
               let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
         let url = directory.appendingPathComponent("telemetry.jsonl")
-        if !FileManager.default.fileExists(atPath: url.path) { FileManager.default.createFile(atPath: url.path, contents: nil) }
-        guard let handle = try? FileHandle(forWritingTo: url) else { return }
-        do {
-            try handle.seekToEnd()
-            try handle.write(contentsOf: data)
-            try handle.write(contentsOf: Data([10]))
-            try handle.close()
-        } catch { print("Telemetry write failed") }
+        telemetryQueue.async {
+            if !FileManager.default.fileExists(atPath: url.path) { FileManager.default.createFile(atPath: url.path, contents: nil) }
+            guard let handle = try? FileHandle(forWritingTo: url) else { return }
+            do {
+                try handle.seekToEnd()
+                try handle.write(contentsOf: data)
+                try handle.write(contentsOf: Data([10]))
+                try handle.close()
+            } catch { print("Telemetry write failed") }
+        }
     }
 
     func connect() {
@@ -170,7 +173,11 @@ final class GameClient: ObservableObject {
         case "state":
             guard let next = try? JSONDecoder().decode(Snapshot.self, from: data) else { return }
             let oldPhase = snapshot?.phase
-            snapshot = next
+            if snapshot?.players != next.players || snapshot?.phase != next.phase ||
+                snapshot?.matchID != next.matchID || snapshot?.songID != next.songID ||
+                snapshot?.room != next.room || snapshot?.startAt != next.startAt {
+                snapshot = next
+            }
             if next.phase != oldPhase {
                 telemetry("phase", fields: ["phase": next.phase, "matchID": String(next.matchID), "startAt": String(next.startAt)])
             }
@@ -178,7 +185,8 @@ final class GameClient: ObservableObject {
                 scheduledMatch = next.matchID
                 let success = audio.play(song: next.songID, startAt: next.startAt, now: serverNow, offset: audioOffset)
                 telemetry("audioScheduled", fields: ["startAt": String(next.startAt), "ok": String(success),
-                                                      "rtt": String(clockRTT), "deviceAt": String(audio.scheduledAt)])
+                                                      "rtt": String(clockRTT), "deviceAt": String(audio.scheduledAt),
+                                                      "preparationTime": String(audio.preparationTime)])
                 if !success { error = "Audio could not start. Rejoin before playing." }
             }
             if next.phase == "results" { audio.stop() }
@@ -194,7 +202,8 @@ final class GameClient: ObservableObject {
                 lastLoggedSecond = second
                 telemetry("state", fields: ["phase": next.phase, "matchID": String(next.matchID),
                                             "score": String(me?.score ?? 0), "rivalScore": String(rival?.score ?? 0),
-                                            "songTime": String(songTime), "combo": String(me?.combo ?? 0)])
+                                            "songTime": String(songTime), "combo": String(me?.combo ?? 0),
+                                            "snapshotAgeMs": String(serverNow - next.serverTime), "rtt": String(clockRTT)])
             }
             automateReady()
         case "error":

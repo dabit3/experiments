@@ -31,20 +31,20 @@ struct Chart: Codable, Identifiable {
     let notes: [Note]
 }
 
-struct NoteState: Decodable {
+struct NoteState: Decodable, Equatable {
     let state: String
     let checkpoint: Int
     let judgment: String
 }
 
-struct Judgment: Decodable {
+struct Judgment: Decodable, Equatable {
     let id: Int
     let text: String
     let at: Double
     let lane: Int
 }
 
-struct Player: Decodable, Identifiable {
+struct Player: Decodable, Identifiable, Equatable {
     let id: String
     let name: String
     let ready: Bool

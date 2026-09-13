@@ -8,6 +8,7 @@ final class AudioEngine {
     private let effect = AVAudioPlayerNode()
     private var effectBuffer: AVAudioPCMBuffer?
     private(set) var scheduledAt = 0.0
+    private(set) var preparationTime = 0.0
     var volume: Float = 0.75 {
         didSet { player?.volume = volume }
     }
@@ -35,13 +36,15 @@ final class AudioEngine {
     }
 
     func play(song: String, startAt: Double, now: Double, offset: Double = 0) -> Bool {
+        let requestedAt = ProcessInfo.processInfo.systemUptime
         stop()
         guard let url = Bundle.main.url(forResource: song, withExtension: "wav") else { return false }
         do {
             let next = try AVAudioPlayer(contentsOf: url)
             next.volume = volume
             next.prepareToPlay()
-            let delay = (startAt - now) / 1000 + offset
+            preparationTime = ProcessInfo.processInfo.systemUptime - requestedAt
+            let delay = (startAt - now) / 1000 + offset - preparationTime
             if delay < 0 {
                 next.currentTime = min(-delay, max(0, next.duration - 0.01))
             }
