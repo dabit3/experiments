@@ -1,0 +1,34 @@
+name: MidnightDecks
+options:
+  bundleIdPrefix: ai.midnightdecks
+  deploymentTarget:
+    iOS: "18.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CODE_SIGNING_ALLOWED: NO
+targets:
+  MidnightDecks:
+    type: application
+    platform: iOS
+    sources: [App]
+    resources: [Resources]
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Midnight Decks
+        CFBundleIdentifier: ai.midnightdecks.rhythm
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        NSLocalNetworkUsageDescription: Join another DJ on your local Midnight Decks server.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.midnightdecks.rhythm
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+    scheme:
+      gatherCoverageData: false

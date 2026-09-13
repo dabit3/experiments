@@ -1,0 +1,6 @@
+Server/node_modules/
+build/
+.devin/
+*.xcuserstate
+xcuserdata/
+evidence/
