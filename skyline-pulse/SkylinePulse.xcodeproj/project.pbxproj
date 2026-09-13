@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1F80C2D62975F83FA7B2C146 /* aria.png in Resources */ = {isa = PBXBuildFile; fileRef = C887EFBC1F97CBBFFC92869F /* aria.png */; };
+		30DFDF359F175C32238BCCC0 /* charts.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F373FA452C314E0BF6343B4 /* charts.json */; };
+		34E0D25F124ECF7A1B9AA8A7 /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = F1F1A373E3A004AA3BDBFFD9 /* hit.wav */; };
+		38091A264DA06AB67A1DEE1F /* aurora.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 915BED724987CB014CECA688 /* aurora.m4a */; };
+		7D2DD7953A0F2B6424B7141B /* HighwayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80964C58CB49586D78541D42 /* HighwayScene.swift */; };
+		8A04E010C215E10E067C918A /* SkylinePulseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EDF8C646E27A6FD6DDCCD4 /* SkylinePulseApp.swift */; };
+		A862511A86D0EE332A7AF615 /* neon.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 801AB7D3BA02186DFC4751FB /* neon.m4a */; };
+		DC9E6444DB37611EC9BF60D1 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AFF4D56DB6DE0CE024004B /* Models.swift */; };
+		EC590FBC14D8D734A7123AB8 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = B352B8AE63B65EE3E46095F1 /* Session.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		29AFF4D56DB6DE0CE024004B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		5F373FA452C314E0BF6343B4 /* charts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = charts.json; sourceTree = "<group>"; };
+		801AB7D3BA02186DFC4751FB /* neon.m4a */ = {isa = PBXFileReference; path = neon.m4a; sourceTree = "<group>"; };
+		80964C58CB49586D78541D42 /* HighwayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighwayScene.swift; sourceTree = "<group>"; };
+		915BED724987CB014CECA688 /* aurora.m4a */ = {isa = PBXFileReference; path = aurora.m4a; sourceTree = "<group>"; };
+		A77903D36C750A6D4369B8F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B352B8AE63B65EE3E46095F1 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		B3EDF8C646E27A6FD6DDCCD4 /* SkylinePulseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkylinePulseApp.swift; sourceTree = "<group>"; };
+		BE432000CC00463B0003FD55 /* SkylinePulse.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SkylinePulse.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C887EFBC1F97CBBFFC92869F /* aria.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aria.png; sourceTree = "<group>"; };
+		F1F1A373E3A004AA3BDBFFD9 /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		179B1973398DBA4BB07A7A46 = {
+			isa = PBXGroup;
+			children = (
+				81B9AA3684458CE5F0C4E193 /* App */,
+				B2FCE6769E51DBA7E9CE11E7 /* Assets */,
+				9FCD78FE7C3381012B8FB709 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		81B9AA3684458CE5F0C4E193 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				80964C58CB49586D78541D42 /* HighwayScene.swift */,
+				A77903D36C750A6D4369B8F7 /* Info.plist */,
+				29AFF4D56DB6DE0CE024004B /* Models.swift */,
+				B352B8AE63B65EE3E46095F1 /* Session.swift */,
+				B3EDF8C646E27A6FD6DDCCD4 /* SkylinePulseApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		9FCD78FE7C3381012B8FB709 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE432000CC00463B0003FD55 /* SkylinePulse.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B2FCE6769E51DBA7E9CE11E7 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				C887EFBC1F97CBBFFC92869F /* aria.png */,
+				915BED724987CB014CECA688 /* aurora.m4a */,
+				5F373FA452C314E0BF6343B4 /* charts.json */,
+				F1F1A373E3A004AA3BDBFFD9 /* hit.wav */,
+				801AB7D3BA02186DFC4751FB /* neon.m4a */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		63E2486186A264A0243C6F7B /* SkylinePulse */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D018B13966CE7F14B618E3CC /* Build configuration list for PBXNativeTarget "SkylinePulse" */;
+			buildPhases = (
+				6FF1D6A7F64306B47BC006F8 /* Sources */,
+				81830D253213F0F78E25452D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SkylinePulse;
+			packageProductDependencies = (
+			);
+			productName = SkylinePulse;
+			productReference = BE432000CC00463B0003FD55 /* SkylinePulse.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		634276D24001B28B8CB2A3CE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 14A2742FE078D510C1CE0316 /* Build configuration list for PBXProject "SkylinePulse" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 179B1973398DBA4BB07A7A46;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9FCD78FE7C3381012B8FB709 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				63E2486186A264A0243C6F7B /* SkylinePulse */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		81830D253213F0F78E25452D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1F80C2D62975F83FA7B2C146 /* aria.png in Resources */,
+				38091A264DA06AB67A1DEE1F /* aurora.m4a in Resources */,
+				30DFDF359F175C32238BCCC0 /* charts.json in Resources */,
+				34E0D25F124ECF7A1B9AA8A7 /* hit.wav in Resources */,
+				A862511A86D0EE332A7AF615 /* neon.m4a in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6FF1D6A7F64306B47BC006F8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7D2DD7953A0F2B6424B7141B /* HighwayScene.swift in Sources */,
+				DC9E6444DB37611EC9BF60D1 /* Models.swift in Sources */,
+				EC590FBC14D8D734A7123AB8 /* Session.swift in Sources */,
+				8A04E010C215E10E067C918A /* SkylinePulseApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0E7B370CB9BEB1466252DD87 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		2F3BA0AB787853B0A1F021FA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.skylinepulse.arcade;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		A89E620843CB7B2284F0BB73 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.skylinepulse.arcade;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+		BD9C389D42B7711626BAF357 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		14A2742FE078D510C1CE0316 /* Build configuration list for PBXProject "SkylinePulse" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0E7B370CB9BEB1466252DD87 /* Debug */,
+				BD9C389D42B7711626BAF357 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D018B13966CE7F14B618E3CC /* Build configuration list for PBXNativeTarget "SkylinePulse" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2F3BA0AB787853B0A1F021FA /* Debug */,
+				A89E620843CB7B2284F0BB73 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 634276D24001B28B8CB2A3CE /* Project object */;
+}

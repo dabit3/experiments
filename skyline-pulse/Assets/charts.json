@@ -1,0 +1,2073 @@
+[
+  {
+    "id": "neon",
+    "title": "NEON ASCENT",
+    "artist": "SKYLINE SOUND SYSTEM",
+    "bpm": 128,
+    "level": "05",
+    "color": "cyan",
+    "bars": 24,
+    "root": 57,
+    "duration": 48.75,
+    "tick": 0.234375,
+    "notes": [
+      {
+        "id": 0,
+        "kind": "tap",
+        "time": 1.875,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 1,
+        "kind": "tap",
+        "time": 2.34375,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 2,
+        "kind": "tap",
+        "time": 2.8125,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 3,
+        "kind": "air",
+        "time": 3.28125,
+        "lane": 12,
+        "width": 4,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 4,
+        "kind": "hold",
+        "time": 3.75,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0.9375
+      },
+      {
+        "id": 5,
+        "kind": "tap",
+        "time": 3.984375,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 6,
+        "kind": "tap",
+        "time": 4.453125,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 7,
+        "kind": "tap",
+        "time": 4.921875,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 8,
+        "kind": "tap",
+        "time": 5.15625,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 9,
+        "kind": "slide",
+        "time": 5.625,
+        "lane": 2,
+        "width": 3,
+        "endLane": 10,
+        "duration": 1.40625
+      },
+      {
+        "id": 10,
+        "kind": "tap",
+        "time": 6.09375,
+        "lane": 13,
+        "width": 3,
+        "endLane": 13,
+        "duration": 0
+      },
+      {
+        "id": 11,
+        "kind": "air",
+        "time": 7.265625,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 12,
+        "kind": "hold",
+        "time": 7.5,
+        "lane": 12,
+        "width": 3,
+        "endLane": 12,
+        "duration": 0.9375
+      },
+      {
+        "id": 13,
+        "kind": "tap",
+        "time": 7.734375,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 14,
+        "kind": "tap",
+        "time": 8.203125,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 15,
+        "kind": "tap",
+        "time": 8.671875,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 16,
+        "kind": "air",
+        "time": 8.90625,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 17,
+        "kind": "tap",
+        "time": 9.375,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 18,
+        "kind": "tap",
+        "time": 9.609375,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 19,
+        "kind": "tap",
+        "time": 9.84375,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 20,
+        "kind": "slide",
+        "time": 10.3125,
+        "lane": 10,
+        "width": 3,
+        "endLane": 2,
+        "duration": 1.40625
+      },
+      {
+        "id": 21,
+        "kind": "tap",
+        "time": 10.78125,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 22,
+        "kind": "air",
+        "time": 11.953125,
+        "lane": 2,
+        "width": 4,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 23,
+        "kind": "tap",
+        "time": 12.1875,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 24,
+        "kind": "tap",
+        "time": 12.65625,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 25,
+        "kind": "hold",
+        "time": 13.125,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0.9375
+      },
+      {
+        "id": 26,
+        "kind": "hold",
+        "time": 13.125,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0.9375
+      },
+      {
+        "id": 27,
+        "kind": "air",
+        "time": 14.296875,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 28,
+        "kind": "air",
+        "time": 14.53125,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 29,
+        "kind": "tap",
+        "time": 15,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 30,
+        "kind": "tap",
+        "time": 15.46875,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 31,
+        "kind": "tap",
+        "time": 15.9375,
+        "lane": 8,
+        "width": 3,
+        "endLane": 8,
+        "duration": 0
+      },
+      {
+        "id": 32,
+        "kind": "air",
+        "time": 16.40625,
+        "lane": 11,
+        "width": 4,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 33,
+        "kind": "tap",
+        "time": 16.875,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 34,
+        "kind": "tap",
+        "time": 17.34375,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 35,
+        "kind": "tap",
+        "time": 17.8125,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 36,
+        "kind": "air",
+        "time": 18.28125,
+        "lane": 12,
+        "width": 4,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 37,
+        "kind": "hold",
+        "time": 18.75,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0.9375
+      },
+      {
+        "id": 38,
+        "kind": "tap",
+        "time": 18.984375,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 39,
+        "kind": "tap",
+        "time": 19.453125,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 40,
+        "kind": "tap",
+        "time": 19.921875,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 41,
+        "kind": "tap",
+        "time": 20.15625,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 42,
+        "kind": "slide",
+        "time": 20.625,
+        "lane": 2,
+        "width": 3,
+        "endLane": 10,
+        "duration": 1.40625
+      },
+      {
+        "id": 43,
+        "kind": "tap",
+        "time": 21.09375,
+        "lane": 13,
+        "width": 3,
+        "endLane": 13,
+        "duration": 0
+      },
+      {
+        "id": 44,
+        "kind": "air",
+        "time": 22.265625,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 45,
+        "kind": "hold",
+        "time": 22.5,
+        "lane": 12,
+        "width": 3,
+        "endLane": 12,
+        "duration": 0.9375
+      },
+      {
+        "id": 46,
+        "kind": "tap",
+        "time": 22.734375,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 47,
+        "kind": "tap",
+        "time": 23.203125,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 48,
+        "kind": "tap",
+        "time": 23.671875,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 49,
+        "kind": "air",
+        "time": 23.90625,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 50,
+        "kind": "tap",
+        "time": 24.375,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 51,
+        "kind": "tap",
+        "time": 24.609375,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 52,
+        "kind": "tap",
+        "time": 24.84375,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 53,
+        "kind": "slide",
+        "time": 25.3125,
+        "lane": 10,
+        "width": 3,
+        "endLane": 2,
+        "duration": 1.40625
+      },
+      {
+        "id": 54,
+        "kind": "tap",
+        "time": 25.78125,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 55,
+        "kind": "air",
+        "time": 26.953125,
+        "lane": 2,
+        "width": 4,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 56,
+        "kind": "tap",
+        "time": 27.1875,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 57,
+        "kind": "tap",
+        "time": 27.65625,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 58,
+        "kind": "hold",
+        "time": 28.125,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0.9375
+      },
+      {
+        "id": 59,
+        "kind": "hold",
+        "time": 28.125,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0.9375
+      },
+      {
+        "id": 60,
+        "kind": "air",
+        "time": 29.296875,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 61,
+        "kind": "air",
+        "time": 29.53125,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 62,
+        "kind": "tap",
+        "time": 30,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 63,
+        "kind": "tap",
+        "time": 30.46875,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 64,
+        "kind": "tap",
+        "time": 30.9375,
+        "lane": 8,
+        "width": 3,
+        "endLane": 8,
+        "duration": 0
+      },
+      {
+        "id": 65,
+        "kind": "air",
+        "time": 31.40625,
+        "lane": 11,
+        "width": 4,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 66,
+        "kind": "tap",
+        "time": 31.875,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 67,
+        "kind": "tap",
+        "time": 32.34375,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 68,
+        "kind": "tap",
+        "time": 32.8125,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 69,
+        "kind": "air",
+        "time": 33.28125,
+        "lane": 12,
+        "width": 4,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 70,
+        "kind": "hold",
+        "time": 33.75,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0.9375
+      },
+      {
+        "id": 71,
+        "kind": "tap",
+        "time": 33.984375,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 72,
+        "kind": "tap",
+        "time": 34.453125,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 73,
+        "kind": "tap",
+        "time": 34.921875,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 74,
+        "kind": "tap",
+        "time": 35.15625,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 75,
+        "kind": "slide",
+        "time": 35.625,
+        "lane": 2,
+        "width": 3,
+        "endLane": 10,
+        "duration": 1.40625
+      },
+      {
+        "id": 76,
+        "kind": "tap",
+        "time": 36.09375,
+        "lane": 13,
+        "width": 3,
+        "endLane": 13,
+        "duration": 0
+      },
+      {
+        "id": 77,
+        "kind": "air",
+        "time": 37.265625,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 78,
+        "kind": "hold",
+        "time": 37.5,
+        "lane": 12,
+        "width": 3,
+        "endLane": 12,
+        "duration": 0.9375
+      },
+      {
+        "id": 79,
+        "kind": "tap",
+        "time": 37.734375,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 80,
+        "kind": "tap",
+        "time": 38.203125,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 81,
+        "kind": "tap",
+        "time": 38.671875,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 82,
+        "kind": "air",
+        "time": 38.90625,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 83,
+        "kind": "tap",
+        "time": 39.375,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 84,
+        "kind": "tap",
+        "time": 39.609375,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 85,
+        "kind": "tap",
+        "time": 39.84375,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 86,
+        "kind": "slide",
+        "time": 40.3125,
+        "lane": 10,
+        "width": 3,
+        "endLane": 2,
+        "duration": 1.40625
+      },
+      {
+        "id": 87,
+        "kind": "tap",
+        "time": 40.78125,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 88,
+        "kind": "air",
+        "time": 41.953125,
+        "lane": 2,
+        "width": 4,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 89,
+        "kind": "tap",
+        "time": 42.1875,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 90,
+        "kind": "tap",
+        "time": 42.65625,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 91,
+        "kind": "hold",
+        "time": 43.125,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0.9375
+      },
+      {
+        "id": 92,
+        "kind": "hold",
+        "time": 43.125,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0.9375
+      },
+      {
+        "id": 93,
+        "kind": "air",
+        "time": 44.296875,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 94,
+        "kind": "air",
+        "time": 44.53125,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 95,
+        "kind": "tap",
+        "time": 45,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 96,
+        "kind": "tap",
+        "time": 45.46875,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 97,
+        "kind": "tap",
+        "time": 45.9375,
+        "lane": 8,
+        "width": 3,
+        "endLane": 8,
+        "duration": 0
+      },
+      {
+        "id": 98,
+        "kind": "air",
+        "time": 46.40625,
+        "lane": 11,
+        "width": 4,
+        "endLane": 11,
+        "duration": 0
+      }
+    ]
+  },
+  {
+    "id": "aurora",
+    "title": "AURORA CIRCUIT",
+    "artist": "SKYLINE SOUND SYSTEM",
+    "bpm": 144,
+    "level": "08",
+    "color": "pink",
+    "bars": 28,
+    "root": 62,
+    "duration": 50,
+    "tick": 0.20833333333333334,
+    "notes": [
+      {
+        "id": 0,
+        "kind": "tap",
+        "time": 1.666667,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 1,
+        "kind": "tap",
+        "time": 2.083333,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 2,
+        "kind": "tap",
+        "time": 2.5,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 3,
+        "kind": "air",
+        "time": 2.916667,
+        "lane": 12,
+        "width": 4,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 4,
+        "kind": "hold",
+        "time": 3.333333,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0.833333
+      },
+      {
+        "id": 5,
+        "kind": "tap",
+        "time": 3.541667,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 6,
+        "kind": "tap",
+        "time": 3.958333,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 7,
+        "kind": "tap",
+        "time": 4.375,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 8,
+        "kind": "tap",
+        "time": 4.583333,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 9,
+        "kind": "tap",
+        "time": 2.291666666666667,
+        "lane": 5,
+        "width": 2,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 10,
+        "kind": "tap",
+        "time": 2.7083333333333335,
+        "lane": 9,
+        "width": 2,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 11,
+        "kind": "tap",
+        "time": 4.166666666666667,
+        "lane": 12,
+        "width": 2,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 12,
+        "kind": "slide",
+        "time": 5,
+        "lane": 2,
+        "width": 3,
+        "endLane": 10,
+        "duration": 1.25
+      },
+      {
+        "id": 13,
+        "kind": "tap",
+        "time": 5.416667,
+        "lane": 13,
+        "width": 3,
+        "endLane": 13,
+        "duration": 0
+      },
+      {
+        "id": 14,
+        "kind": "air",
+        "time": 6.458333,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 15,
+        "kind": "hold",
+        "time": 6.666667,
+        "lane": 12,
+        "width": 3,
+        "endLane": 12,
+        "duration": 0.833333
+      },
+      {
+        "id": 16,
+        "kind": "tap",
+        "time": 6.875,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 17,
+        "kind": "tap",
+        "time": 7.291667,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 18,
+        "kind": "tap",
+        "time": 7.708333,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 19,
+        "kind": "air",
+        "time": 7.916667,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 20,
+        "kind": "tap",
+        "time": 8.333333,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 21,
+        "kind": "tap",
+        "time": 8.541667,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 22,
+        "kind": "tap",
+        "time": 8.75,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 23,
+        "kind": "slide",
+        "time": 9.166667,
+        "lane": 10,
+        "width": 3,
+        "endLane": 2,
+        "duration": 1.25
+      },
+      {
+        "id": 24,
+        "kind": "tap",
+        "time": 9.583333,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 25,
+        "kind": "air",
+        "time": 10.625,
+        "lane": 2,
+        "width": 4,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 26,
+        "kind": "tap",
+        "time": 10.833333,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 27,
+        "kind": "tap",
+        "time": 11.25,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 28,
+        "kind": "hold",
+        "time": 11.666667,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0.833333
+      },
+      {
+        "id": 29,
+        "kind": "hold",
+        "time": 11.666667,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0.833333
+      },
+      {
+        "id": 30,
+        "kind": "air",
+        "time": 12.708333,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 31,
+        "kind": "air",
+        "time": 12.916667,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 32,
+        "kind": "tap",
+        "time": 13.333333,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 33,
+        "kind": "tap",
+        "time": 13.75,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 34,
+        "kind": "tap",
+        "time": 14.166667,
+        "lane": 8,
+        "width": 3,
+        "endLane": 8,
+        "duration": 0
+      },
+      {
+        "id": 35,
+        "kind": "air",
+        "time": 14.583333,
+        "lane": 11,
+        "width": 4,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 36,
+        "kind": "tap",
+        "time": 15,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 37,
+        "kind": "tap",
+        "time": 15.416667,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 38,
+        "kind": "tap",
+        "time": 15.833333,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 39,
+        "kind": "air",
+        "time": 16.25,
+        "lane": 12,
+        "width": 4,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 40,
+        "kind": "hold",
+        "time": 16.666667,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0.833333
+      },
+      {
+        "id": 41,
+        "kind": "tap",
+        "time": 16.875,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 42,
+        "kind": "tap",
+        "time": 17.291667,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 43,
+        "kind": "tap",
+        "time": 17.708333,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 44,
+        "kind": "tap",
+        "time": 17.916667,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 45,
+        "kind": "tap",
+        "time": 15.625,
+        "lane": 5,
+        "width": 2,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 46,
+        "kind": "tap",
+        "time": 16.041666666666668,
+        "lane": 9,
+        "width": 2,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 47,
+        "kind": "tap",
+        "time": 17.5,
+        "lane": 12,
+        "width": 2,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 48,
+        "kind": "slide",
+        "time": 18.333333,
+        "lane": 2,
+        "width": 3,
+        "endLane": 10,
+        "duration": 1.25
+      },
+      {
+        "id": 49,
+        "kind": "tap",
+        "time": 18.75,
+        "lane": 13,
+        "width": 3,
+        "endLane": 13,
+        "duration": 0
+      },
+      {
+        "id": 50,
+        "kind": "air",
+        "time": 19.791667,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 51,
+        "kind": "hold",
+        "time": 20,
+        "lane": 12,
+        "width": 3,
+        "endLane": 12,
+        "duration": 0.833333
+      },
+      {
+        "id": 52,
+        "kind": "tap",
+        "time": 20.208333,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 53,
+        "kind": "tap",
+        "time": 20.625,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 54,
+        "kind": "tap",
+        "time": 21.041667,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 55,
+        "kind": "air",
+        "time": 21.25,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 56,
+        "kind": "tap",
+        "time": 21.666667,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 57,
+        "kind": "tap",
+        "time": 21.875,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 58,
+        "kind": "tap",
+        "time": 22.083333,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 59,
+        "kind": "slide",
+        "time": 22.5,
+        "lane": 10,
+        "width": 3,
+        "endLane": 2,
+        "duration": 1.25
+      },
+      {
+        "id": 60,
+        "kind": "tap",
+        "time": 22.916667,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 61,
+        "kind": "air",
+        "time": 23.958333,
+        "lane": 2,
+        "width": 4,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 62,
+        "kind": "tap",
+        "time": 24.166667,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 63,
+        "kind": "tap",
+        "time": 24.583333,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 64,
+        "kind": "hold",
+        "time": 25,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0.833333
+      },
+      {
+        "id": 65,
+        "kind": "hold",
+        "time": 25,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0.833333
+      },
+      {
+        "id": 66,
+        "kind": "air",
+        "time": 26.041667,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 67,
+        "kind": "air",
+        "time": 26.25,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 68,
+        "kind": "tap",
+        "time": 26.666667,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 69,
+        "kind": "tap",
+        "time": 27.083333,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 70,
+        "kind": "tap",
+        "time": 27.5,
+        "lane": 8,
+        "width": 3,
+        "endLane": 8,
+        "duration": 0
+      },
+      {
+        "id": 71,
+        "kind": "air",
+        "time": 27.916667,
+        "lane": 11,
+        "width": 4,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 72,
+        "kind": "tap",
+        "time": 28.333333,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 73,
+        "kind": "tap",
+        "time": 28.75,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 74,
+        "kind": "tap",
+        "time": 29.166667,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 75,
+        "kind": "air",
+        "time": 29.583333,
+        "lane": 12,
+        "width": 4,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 76,
+        "kind": "hold",
+        "time": 30,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0.833333
+      },
+      {
+        "id": 77,
+        "kind": "tap",
+        "time": 30.208333,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 78,
+        "kind": "tap",
+        "time": 30.625,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 79,
+        "kind": "tap",
+        "time": 31.041667,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 80,
+        "kind": "tap",
+        "time": 31.25,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 81,
+        "kind": "tap",
+        "time": 28.958333333333336,
+        "lane": 5,
+        "width": 2,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 82,
+        "kind": "tap",
+        "time": 29.375,
+        "lane": 9,
+        "width": 2,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 83,
+        "kind": "tap",
+        "time": 30.833333333333336,
+        "lane": 12,
+        "width": 2,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 84,
+        "kind": "slide",
+        "time": 31.666667,
+        "lane": 2,
+        "width": 3,
+        "endLane": 10,
+        "duration": 1.25
+      },
+      {
+        "id": 85,
+        "kind": "tap",
+        "time": 32.083333,
+        "lane": 13,
+        "width": 3,
+        "endLane": 13,
+        "duration": 0
+      },
+      {
+        "id": 86,
+        "kind": "air",
+        "time": 33.125,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 87,
+        "kind": "hold",
+        "time": 33.333333,
+        "lane": 12,
+        "width": 3,
+        "endLane": 12,
+        "duration": 0.833333
+      },
+      {
+        "id": 88,
+        "kind": "tap",
+        "time": 33.541667,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 89,
+        "kind": "tap",
+        "time": 33.958333,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 90,
+        "kind": "tap",
+        "time": 34.375,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 91,
+        "kind": "air",
+        "time": 34.583333,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 92,
+        "kind": "tap",
+        "time": 35,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 93,
+        "kind": "tap",
+        "time": 35.208333,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 94,
+        "kind": "tap",
+        "time": 35.416667,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 95,
+        "kind": "slide",
+        "time": 35.833333,
+        "lane": 10,
+        "width": 3,
+        "endLane": 2,
+        "duration": 1.25
+      },
+      {
+        "id": 96,
+        "kind": "tap",
+        "time": 36.25,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0
+      },
+      {
+        "id": 97,
+        "kind": "air",
+        "time": 37.291667,
+        "lane": 2,
+        "width": 4,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 98,
+        "kind": "tap",
+        "time": 37.5,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 99,
+        "kind": "tap",
+        "time": 37.916667,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 100,
+        "kind": "hold",
+        "time": 38.333333,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0.833333
+      },
+      {
+        "id": 101,
+        "kind": "hold",
+        "time": 38.333333,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0.833333
+      },
+      {
+        "id": 102,
+        "kind": "air",
+        "time": 39.375,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      },
+      {
+        "id": 103,
+        "kind": "air",
+        "time": 39.583333,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 104,
+        "kind": "tap",
+        "time": 40,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 105,
+        "kind": "tap",
+        "time": 40.416667,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 106,
+        "kind": "tap",
+        "time": 40.833333,
+        "lane": 8,
+        "width": 3,
+        "endLane": 8,
+        "duration": 0
+      },
+      {
+        "id": 107,
+        "kind": "air",
+        "time": 41.25,
+        "lane": 11,
+        "width": 4,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 108,
+        "kind": "tap",
+        "time": 41.666667,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 109,
+        "kind": "tap",
+        "time": 42.083333,
+        "lane": 10,
+        "width": 3,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 110,
+        "kind": "tap",
+        "time": 42.5,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 111,
+        "kind": "air",
+        "time": 42.916667,
+        "lane": 12,
+        "width": 4,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 112,
+        "kind": "hold",
+        "time": 43.333333,
+        "lane": 1,
+        "width": 3,
+        "endLane": 1,
+        "duration": 0.833333
+      },
+      {
+        "id": 113,
+        "kind": "tap",
+        "time": 43.541667,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 114,
+        "kind": "tap",
+        "time": 43.958333,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 115,
+        "kind": "tap",
+        "time": 44.375,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 116,
+        "kind": "tap",
+        "time": 44.583333,
+        "lane": 11,
+        "width": 3,
+        "endLane": 11,
+        "duration": 0
+      },
+      {
+        "id": 117,
+        "kind": "tap",
+        "time": 42.29166666666667,
+        "lane": 5,
+        "width": 2,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 118,
+        "kind": "tap",
+        "time": 42.708333333333336,
+        "lane": 9,
+        "width": 2,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 119,
+        "kind": "tap",
+        "time": 44.16666666666667,
+        "lane": 12,
+        "width": 2,
+        "endLane": 12,
+        "duration": 0
+      },
+      {
+        "id": 120,
+        "kind": "slide",
+        "time": 45,
+        "lane": 2,
+        "width": 3,
+        "endLane": 10,
+        "duration": 1.25
+      },
+      {
+        "id": 121,
+        "kind": "tap",
+        "time": 45.416667,
+        "lane": 13,
+        "width": 3,
+        "endLane": 13,
+        "duration": 0
+      },
+      {
+        "id": 122,
+        "kind": "air",
+        "time": 46.458333,
+        "lane": 10,
+        "width": 4,
+        "endLane": 10,
+        "duration": 0
+      },
+      {
+        "id": 123,
+        "kind": "hold",
+        "time": 46.666667,
+        "lane": 12,
+        "width": 3,
+        "endLane": 12,
+        "duration": 0.833333
+      },
+      {
+        "id": 124,
+        "kind": "tap",
+        "time": 46.875,
+        "lane": 2,
+        "width": 3,
+        "endLane": 2,
+        "duration": 0
+      },
+      {
+        "id": 125,
+        "kind": "tap",
+        "time": 47.291667,
+        "lane": 5,
+        "width": 3,
+        "endLane": 5,
+        "duration": 0
+      },
+      {
+        "id": 126,
+        "kind": "tap",
+        "time": 47.708333,
+        "lane": 9,
+        "width": 3,
+        "endLane": 9,
+        "duration": 0
+      },
+      {
+        "id": 127,
+        "kind": "air",
+        "time": 47.916667,
+        "lane": 3,
+        "width": 4,
+        "endLane": 3,
+        "duration": 0
+      }
+    ]
+  }
+]
