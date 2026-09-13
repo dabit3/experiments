@@ -186,14 +186,15 @@ final class PicnicAudio {
     case .finish: frequencies = [523, 659, 784, 1047]
     }
     let sampleRate = 22050
-    let samplesPerNote = 2400
+    let samplesPerNote = 1900
     var pcm = Data()
+    // Square-wave chip voice with a flat gate envelope: the classic console jingle timbre.
     for frequency in frequencies {
       for index in 0..<samplesPerNote {
         let t = Double(index) / Double(sampleRate)
-        let envelope = sin(.pi * Double(index) / Double(samplesPerNote))
-        let wave = sin(2 * .pi * frequency * t) + 0.22 * sin(4 * .pi * frequency * t)
-        var sample = Int16(wave * envelope * 5800).littleEndian
+        let gate = index < samplesPerNote - 300 ? 1.0 : Double(samplesPerNote - index) / 300
+        let wave = sin(2 * .pi * frequency * t) >= 0 ? 1.0 : -1.0
+        var sample = Int16(wave * gate * 3200).littleEndian
         withUnsafeBytes(of: &sample) { pcm.append(contentsOf: $0) }
       }
     }

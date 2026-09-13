@@ -1,116 +1,291 @@
+import CoreText
 import SceneKit
 import SwiftUI
 
 @main
 struct DriftPicnicApp: App {
+  init() {
+    if let url = Bundle.main.url(forResource: "PressStart2P-Regular", withExtension: "ttf") {
+      CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
+    }
+  }
   var body: some Scene {
     WindowGroup { PicnicView() }
   }
 }
 
-let forest = Color(uiColor: Palette.green)
-let deepForest = Color(uiColor: Palette.deepGreen)
-let butter = Color(uiColor: Palette.butter)
-let butterDeep = Color(red: 0.96, green: 0.78, blue: 0.36)
-let cream = Color(uiColor: Palette.cream)
-let creamDeep = Color(red: 0.96, green: 0.91, blue: 0.76)
-let strawberry = Color(uiColor: Palette.pink)
+let ink = Color(uiColor: Palette.ink)
+let navy = Color(uiColor: Palette.deepGreen)
+let navyLight = Color(red: 0.14, green: 0.22, blue: 0.52)
+let coin = Color(uiColor: Palette.butter)
+let coinDeep = Color(red: 0.86, green: 0.50, blue: 0.04)
+let paper = Color(uiColor: Palette.cream)
+let cherry = Color(uiColor: Palette.pink)
+let cherryDeep = Color(red: 0.58, green: 0.05, blue: 0.10)
+let royal = Color(uiColor: Palette.blue)
+let leaf = Color(uiColor: Palette.green)
+let skyBlue = Color(uiColor: Palette.sky)
+let slate = Color(red: 0.45, green: 0.47, blue: 0.58)
 
 func raceTime(_ seconds: Double) -> String {
-  guard seconds > 0 else { return "—:—" }
-  return String(format: "%d:%05.2f", Int(seconds) / 60, seconds.truncatingRemainder(dividingBy: 60))
+  guard seconds > 0 else { return "-'--\"--" }
+  let whole = Int(seconds)
+  let hundredths = Int((seconds - Double(whole)) * 100)
+  return String(format: "%d'%02d\"%02d", whole / 60, whole % 60, hundredths)
 }
 
-func serif(_ size: CGFloat) -> Font { .custom("Georgia-BoldItalic", size: size) }
+func pixel(_ size: CGFloat) -> Font { .custom("PressStart2P-Regular", size: size) }
 
-func eyebrow(_ text: String, size: CGFloat = 9) -> some View {
-  Text(text).font(.system(size: size, weight: .bold)).tracking(size * 0.22)
+func ordinal(_ position: Int) -> String {
+  ["", "1ST", "2ND", "3RD", "4TH"][position]
 }
 
-struct PicnicCard: ViewModifier {
-  var radius: CGFloat = 22
-  var tint: Color = cream
+/// Hard 8-direction outline built from zero-radius shadows, like sprite text on a console.
+struct Outlined: ViewModifier {
+  var color: Color
+  var width: CGFloat
   func body(content: Content) -> some View {
     content
-      .background {
-        RoundedRectangle(cornerRadius: radius, style: .continuous)
-          .fill(
-            LinearGradient(colors: [tint, tint.opacity(0.94)], startPoint: .top, endPoint: .bottom)
-          )
-          .overlay {
-            RoundedRectangle(cornerRadius: radius, style: .continuous)
-              .strokeBorder(
-                LinearGradient(
-                  colors: [.white.opacity(0.85), .white.opacity(0.15)], startPoint: .top,
-                  endPoint: .bottom), lineWidth: 1.2)
-          }
-          .shadow(color: deepForest.opacity(0.28), radius: 14, y: 8)
-      }
+      .shadow(color: color, radius: 0, x: width, y: 0)
+      .shadow(color: color, radius: 0, x: -width, y: 0)
+      .shadow(color: color, radius: 0, x: 0, y: width)
+      .shadow(color: color, radius: 0, x: 0, y: -width)
   }
 }
 
 extension View {
-  func picnicCard(_ radius: CGFloat = 22, tint: Color = cream) -> some View {
-    modifier(PicnicCard(radius: radius, tint: tint))
+  func outlined(_ color: Color = ink, _ width: CGFloat = 2) -> some View {
+    modifier(Outlined(color: color, width: width))
+  }
+  func hardShadow(_ color: Color = ink, _ offset: CGFloat = 3) -> some View {
+    shadow(color: color, radius: 0, x: offset, y: offset)
+  }
+  func retroPanel(_ fill: Color = navy, border: Color = paper) -> some View {
+    modifier(RetroPanel(fill: fill, border: border))
   }
 }
 
-struct GinghamPattern: View {
-  var color: Color
+/// Pixel-font text with an ink outline. `size / 9` keeps the outline one "pixel" wide at any size.
+struct RetroText: View {
+  var text: String
+  var size: CGFloat
+  var color: Color = paper
+  var outline: Color = ink
+  init(_ text: String, _ size: CGFloat, _ color: Color = paper, outline: Color = ink) {
+    self.text = text
+    self.size = size
+    self.color = color
+    self.outline = outline
+  }
   var body: some View {
-    Canvas { context, size in
-      let step: CGFloat = 26
-      var x: CGFloat = 0
-      while x < size.width {
-        context.fill(
-          Path(CGRect(x: x, y: 0, width: step / 2, height: size.height)), with: .color(color))
-        x += step
-      }
-      var y: CGFloat = 0
-      while y < size.height {
-        context.fill(
-          Path(CGRect(x: 0, y: y, width: size.width, height: step / 2)), with: .color(color))
-        y += step
+    Text(text).font(pixel(size)).foregroundStyle(color)
+      .outlined(outline, max(1.5, size / 9))
+  }
+}
+
+/// A dialog box in the style of a 16-bit RPG: ink frame, fill, then a bright inner frame.
+struct RetroPanel: ViewModifier {
+  var fill: Color
+  var border: Color
+  func body(content: Content) -> some View {
+    content.background {
+      ZStack {
+        Rectangle().fill(ink).offset(x: 5, y: 5)
+        Rectangle().fill(fill)
+        Rectangle().strokeBorder(border, lineWidth: 3).padding(5)
+        Rectangle().strokeBorder(ink, lineWidth: 3)
       }
     }
-    .allowsHitTesting(false)
   }
 }
 
-struct PrimaryButtonStyle: ButtonStyle {
-  var height: CGFloat = 54
+/// A chunky bevelled arcade button. Pressing snaps it down onto its hard shadow; no easing.
+struct RetroButtonStyle: ButtonStyle {
+  var fill: Color = coin
+  var text: Color = ink
+  var height: CGFloat = 50
+  var size: CGFloat = 11
   func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .font(.system(size: 17, weight: .heavy))
+    let pressed = configuration.isPressed
+    return configuration.label
+      .font(pixel(size)).foregroundStyle(text)
       .frame(maxWidth: .infinity).frame(height: height)
-      .foregroundStyle(deepForest)
       .background {
-        RoundedRectangle(cornerRadius: height * 0.34, style: .continuous)
-          .fill(LinearGradient(colors: [butter, butterDeep], startPoint: .top, endPoint: .bottom))
-          .overlay {
-            RoundedRectangle(cornerRadius: height * 0.34, style: .continuous)
-              .strokeBorder(.white.opacity(0.55), lineWidth: 1.2)
-          }
-          .shadow(color: butterDeep.opacity(configuration.isPressed ? 0.1 : 0.45), radius: 12, y: 6)
+        ZStack {
+          Rectangle().fill(fill)
+          VStack(spacing: 0) {
+            Rectangle().fill(.white.opacity(0.5)).frame(height: 4)
+            Spacer()
+            Rectangle().fill(.black.opacity(0.3)).frame(height: 6)
+          }.padding(3)
+          Rectangle().strokeBorder(ink, lineWidth: 3)
+        }
       }
-      .scaleEffect(configuration.isPressed ? 0.97 : 1)
-      .animation(.spring(duration: 0.25), value: configuration.isPressed)
+      .background { Rectangle().fill(ink).offset(y: pressed ? 0 : 5) }
+      .offset(y: pressed ? 5 : 0)
+      .animation(nil, value: pressed)
   }
 }
 
-struct GlassCircleStyle: ButtonStyle {
+struct RetroIconButtonStyle: ButtonStyle {
+  var fill: Color = navy
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .font(.system(size: 16, weight: .bold))
-      .frame(width: 46, height: 46)
-      .foregroundStyle(forest)
+      .frame(width: 44, height: 44)
       .background {
-        Circle().fill(cream.opacity(0.94))
-          .overlay { Circle().strokeBorder(.white.opacity(0.8), lineWidth: 1.2) }
-          .shadow(color: deepForest.opacity(0.3), radius: 8, y: 4)
+        ZStack {
+          Rectangle().fill(fill)
+          Rectangle().strokeBorder(paper, lineWidth: 2).padding(3)
+          Rectangle().strokeBorder(ink, lineWidth: 3)
+        }
       }
-      .scaleEffect(configuration.isPressed ? 0.92 : 1)
+      .background { Rectangle().fill(ink).offset(y: configuration.isPressed ? 0 : 4) }
+      .offset(y: configuration.isPressed ? 4 : 0)
+      .animation(nil, value: configuration.isPressed)
   }
+}
+
+/// Toggles visibility on a fixed clock, the classic "PRESS START" cadence.
+struct Blink<Content: View>: View {
+  var period = 0.5
+  var animated = true
+  @ViewBuilder var content: () -> Content
+  var body: some View {
+    TimelineView(.periodic(from: .now, by: period)) { context in
+      let on = !animated || Int(context.date.timeIntervalSinceReferenceDate / period) % 2 == 0
+      content().opacity(on ? 1 : 0)
+    }
+  }
+}
+
+/// Letters ride a stepped wave, advancing one frame every tenth of a second.
+struct WaveText: View {
+  var text: String
+  var size: CGFloat
+  var color: Color
+  var animated = true
+  private let lifts: [CGFloat] = [0, -2, -5, -8, -10, -8, -5, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  var body: some View {
+    TimelineView(.periodic(from: .now, by: 0.1)) { context in
+      let frame = Int(context.date.timeIntervalSinceReferenceDate * 10)
+      HStack(spacing: 0) {
+        ForEach(Array(text.enumerated()), id: \.offset) { index, letter in
+          let phase = (frame + index * 2) % lifts.count
+          Text(String(letter)).font(pixel(size)).foregroundStyle(color)
+            .offset(y: animated ? lifts[phase] : 0)
+        }
+      }
+      .outlined(ink, size / 10)
+      .hardShadow(cherryDeep, size / 10)
+    }
+  }
+}
+
+/// Tiny sprites drawn from character rows; one character is one pixel.
+struct PixelArt: View {
+  let rows: [String]
+  var body: some View {
+    Canvas { context, size in
+      let columns = rows.map(\.count).max() ?? 1
+      let cell = floor(min(size.width / CGFloat(columns), size.height / CGFloat(rows.count)))
+      let ox = (size.width - cell * CGFloat(columns)) / 2
+      let oy = (size.height - cell * CGFloat(rows.count)) / 2
+      for (y, row) in rows.enumerated() {
+        for (x, character) in row.enumerated() {
+          guard let color = Sprites.palette[character] else { continue }
+          context.fill(
+            Path(
+              CGRect(
+                x: ox + CGFloat(x) * cell, y: oy + CGFloat(y) * cell, width: cell, height: cell)),
+            with: .color(color))
+        }
+      }
+    }
+  }
+}
+
+enum Sprites {
+  static let palette: [Character: Color] = [
+    "k": ink, "w": paper, "y": coin, "r": cherry, "b": royal, "g": leaf,
+    "o": Color(red: 0.93, green: 0.52, blue: 0.20),
+    "p": Color(red: 1, green: 0.62, blue: 0.72), "s": Color(red: 0.55, green: 0.55, blue: 0.64),
+    "t": Color(red: 0.80, green: 0.80, blue: 0.86), "c": skyBlue,
+  ]
+  static let arrowLeft = [
+    "....kk...", "...kwk...", "..kwwk...", ".kwwwkkkk", "kwwwwwwwk", ".kwwwkkkk", "..kwwk...",
+    "...kwk...", "....kk...",
+  ]
+  static let arrowRight = arrowLeft.map { String($0.reversed()) }
+  static let cursor = [
+    "k....", "kk...", "kyk..", "kyyk.", "kyyyk", "kyyk.", "kyk..", "kk...", "k....",
+  ]
+  static let lemonade = [
+    "......kk..", ".....krk..", "....krk...", ".kkkkrkkk.", "kwwwwrwwwk", "kwyyyyyyyk",
+    "kwyyyyyyyk", "kwyywwyyyk", "kwyyyyyyyk", ".kwyyyyyk.", ".kwyyyyyk.", "..kkkkkk..",
+  ]
+  static let bolt = [
+    "....kkk.", "...kyyk.", "..kyyk..", ".kyyk...", "kyyyykkk", "kkkyyyyk", "..kyyyk.", "...kyyk.",
+    "....kyk.", "...kyk..", "..kyk...", "..kk....",
+  ]
+  static let speaker = [
+    "....k.....", "...kk..k..", "..kwk...k.", "kkkwk.k.k.", "kwwwk.k.k.", "kkkwk.k.k.",
+    "..kwk...k.",
+    "...kk..k..", "....k.....",
+  ]
+  static let muted = [
+    "....k.....", "...kk.....", "..kwk.r.r.", "kkkwk..r..", "kwwwk.r.r.", "kkkwk.....",
+    "..kwk.....",
+    "...kk.....", "....k.....",
+  ]
+  static let trophy = [
+    "kkkkkkkkkk", "kyyyyyyyyk", "kkyyyyyykk", ".kyyyyyyk.", "..kyyyyk..", "...kyyk...",
+    "....kk....",
+    "...kyyk...", "..kyyyyk..", ".kkkkkkkk.",
+  ]
+  static let stopwatch = [
+    "...kkk...", "....k....", "..kkkkk..", ".kwwwwwk.", "kwwwkwwwk", "kwwwkwwwk", "kwwwkkkwk",
+    ".kwwwwwk.", "..kkkkk..",
+  ]
+  static let flag = [
+    "k.........", "kkkkkkkkk.", "kwkwkwkwk.", "kkwkwkwkk.", "kwkwkwkwk.", "kkkkkkkkk.",
+    "k.........",
+    "k.........", "k.........",
+  ]
+  static let home = [
+    "....kk....", "...kwwk...", "..kwwwwk..", ".kwwwwwwk.", "kkkwwwwkkk", "..kwwwwk..",
+    "..kwkkwk..",
+    "..kwkkwk..", "..kkkkkk..",
+  ]
+  static let steer = [
+    "...kkkkk...", "..kwwwwwk..", ".kwkkkkkwk.", "kwk.....kwk", "kwk.....kwk", "kwk..k..kwk",
+    ".kwkkkkkwk.", "..kwwwwwk..", "...kkkkk...",
+  ]
+  static let animals: [[String]] = [
+    [
+      "..kk....kk..", ".kwwk..kwwk.", ".kwpk..kpwk.", ".kwpk..kpwk.", ".kwwkkkkwwk.",
+      ".kwwwwwwwwk.",
+      "kwwwwwwwwwwk", "kwwkwwwwkwwk", "kwwwwwwwwwwk", "kwwwwrrwwwwk", ".kwwwwwwwwk.",
+      "..kkkkkkkk..",
+    ],
+    [
+      ".kk......kk.", "kookkkkkkook", "kooooooooook", "koookoookook", "kooooooooook",
+      "koowwwwwwook",
+      "koowwkkwwook", "koowwwwwwook", "kooooooooook", ".kooooooook.", "..kkkkkkkk..",
+      "............",
+    ],
+    [
+      "kk........kk", "ksk......ksk", "kssk....kssk", "kssskkkksssk", "kssssssssssk",
+      "kssksssskssk",
+      "kssssssssssk", "ksssskpksssk", "kssssssssssk", ".kssssssssk.", "..kkkkkkkk..",
+      "............",
+    ],
+    [
+      "..kkkkkkkk..", ".kwwwwwwwwk.", "kwwwwwwwwwwk", "kwwkkkkkkwwk", "kwkttttttkwk",
+      "kwktkttktkwk",
+      "kwkttttttkwk", "kwkttkkttkwk", "kwkttttttkwk", ".kwkkkkkkwk.", "..kkkkkkkk..",
+      "............",
+    ],
+  ]
 }
 
 struct PicnicView: View {
@@ -121,14 +296,7 @@ struct PicnicView: View {
   var body: some View {
     GeometryReader { geometry in
       ZStack {
-        if game.phase == .title {
-          HStack(spacing: 0) {
-            forest.frame(width: min(365, geometry.size.width * 0.43))
-            NativeScene(game: game)
-          }.ignoresSafeArea()
-        } else {
-          NativeScene(game: game).ignoresSafeArea()
-        }
+        NativeScene(game: game).ignoresSafeArea()
         if game.phase == .title {
           title(geometry.size)
         } else if game.phase == .results {
@@ -140,7 +308,7 @@ struct PicnicView: View {
         }
         if game.showGuide { guide(geometry.size) }
       }
-      .foregroundStyle(forest)
+      .foregroundStyle(paper)
       .onAppear { game.reducedMotion = reduceMotion }
       .onChange(of: reduceMotion) { _, value in game.reducedMotion = value }
       .onChange(of: scenePhase) { _, phase in
@@ -150,345 +318,266 @@ struct PicnicView: View {
     .persistentSystemOverlays(.hidden)
   }
 
+  // MARK: Countdown
+
   private var countdownView: some View {
-    VStack(spacing: 2) {
-      Text(game.countdown == 0 ? "Go!" : "\(game.countdown)")
-        .font(serif(game.countdown == 0 ? 92 : 120))
-        .foregroundStyle(game.countdown == 0 ? butter : cream)
-        .id(game.countdown)
-        .transition(.scale(scale: 1.5).combined(with: .opacity))
-      eyebrow("A LITTLE RACE. A LOVELY DAY.", size: 11).foregroundStyle(cream)
+    VStack(spacing: 14) {
+      HStack(spacing: 10) {
+        ForEach(0..<3, id: \.self) { lamp in
+          let lit = lamp <= 3 - game.countdown
+          Circle()
+            .fill(game.countdown == 0 ? leaf : (lit ? cherry : cherryDeep.opacity(0.5)))
+            .overlay { Circle().strokeBorder(ink, lineWidth: 3) }
+            .frame(width: 30, height: 30)
+        }
+      }
+      .padding(.horizontal, 14).padding(.vertical, 10)
+      .retroPanel()
+      RetroText(
+        game.countdown == 0 ? "GO!!" : "\(game.countdown)", game.countdown == 0 ? 64 : 80, coin
+      )
+      .hardShadow(cherryDeep, 6)
+      .id(game.countdown)
+      .transition(.scale(scale: 1.6))
     }
-    .shadow(color: deepForest.opacity(0.7), radius: 16, y: 6)
-    .animation(reduceMotion ? nil : .spring(duration: 0.45), value: game.countdown)
+    .animation(reduceMotion ? nil : .linear(duration: 0.08), value: game.countdown)
     .allowsHitTesting(false)
   }
 
+  // MARK: Title
+
   private func title(_ size: CGSize) -> some View {
     let compact = size.height < 420
-    return HStack(spacing: 0) {
-      VStack(alignment: .leading, spacing: compact ? 6 : 10) {
-        HStack(spacing: 9) {
-          ZStack {
-            Circle().strokeBorder(butter, lineWidth: 1.4)
-            Text("DP").font(serif(12)).foregroundStyle(butter)
-          }.frame(width: 30, height: 30)
-          VStack(alignment: .leading, spacing: 2) {
-            eyebrow("THE LITTLE RACING CLUB").foregroundStyle(cream.opacity(0.75))
-            eyebrow("EST. ON A SUNNY SATURDAY", size: 7).foregroundStyle(cream.opacity(0.45))
-          }
-        }
-        VStack(alignment: .leading, spacing: compact ? -12 : -14) {
-          Text("Drift").foregroundStyle(cream)
-          Text("Picnic").foregroundStyle(butter)
-        }
-        .font(serif(compact ? 56 : 70))
-        .shadow(color: deepForest.opacity(0.6), radius: 0, x: 0, y: 3)
-        .padding(.top, compact ? 0 : 4)
-        HStack(spacing: 8) {
-          Rectangle().fill(butter).frame(width: 22, height: 1.5)
-          Text("Small wheels. Sweeter victories.")
-            .font(.system(size: 13, weight: .medium, design: .serif)).italic()
-            .foregroundStyle(cream.opacity(0.85))
-        }
-        Spacer(minLength: 0)
-        modePicker
-        Button(action: game.begin) {
-          HStack {
-            Text("Let’s race")
-            Spacer()
-            Image(systemName: "arrow.right")
-              .font(.system(size: 14, weight: .bold))
-              .frame(width: 30, height: 30)
-              .background(deepForest.opacity(0.12), in: Circle())
-          }.padding(.horizontal, 12)
-        }
-        .buttonStyle(PrimaryButtonStyle(height: compact ? 50 : 56))
-        .accessibilityIdentifier("startRace")
-        HStack {
-          eyebrow("3 LAPS  ·  \(game.mode == .picnic ? "4 FRIENDS" : "JUST YOU")")
-            .foregroundStyle(cream.opacity(0.6))
-          Spacer()
-          Button {
-            game.showGuide = true
-          } label: {
-            HStack(spacing: 5) {
-              Image(systemName: "book.closed.fill").font(.system(size: 9))
-              Text("How to play").font(.system(size: 11, weight: .bold))
-            }
-            .padding(.horizontal, 11).frame(height: 30)
-            .background(cream.opacity(0.1), in: Capsule())
-            .overlay { Capsule().strokeBorder(cream.opacity(0.25), lineWidth: 1) }
-          }.foregroundStyle(cream)
-        }
-      }
-      .padding(.horizontal, 26).padding(.vertical, compact ? 12 : 20)
-      .frame(width: min(365, size.width * 0.43))
-      .background {
-        ZStack {
-          LinearGradient(
-            colors: [Color(red: 0.11, green: 0.33, blue: 0.26), deepForest],
-            startPoint: .top, endPoint: .bottom)
-          GinghamPattern(color: .white.opacity(0.03))
-          Circle().fill(butter.opacity(0.10)).frame(width: 360, height: 360)
-            .blur(radius: 60).offset(x: -120, y: -170)
-        }.ignoresSafeArea()
-      }
-      .overlay(alignment: .trailing) {
-        Rectangle().fill(butter).frame(width: 2).ignoresSafeArea()
-      }
-      .shadow(color: deepForest.opacity(0.5), radius: 30, x: 12)
-      .zIndex(1)
-      Spacer(minLength: 0)
-      VStack {
-        HStack {
+    return ZStack {
+      navy.opacity(0.42).ignoresSafeArea()
+      VStack(spacing: 0) {
+        HStack(alignment: .top) {
+          RetroText("PICNIC GAMES PRESENTS", 8, paper)
           Spacer()
           Button(action: game.toggleSound) {
-            Image(systemName: game.sound ? "speaker.wave.2.fill" : "speaker.slash.fill")
+            PixelArt(rows: game.sound ? Sprites.speaker : Sprites.muted).frame(
+              width: 26, height: 26)
           }
-          .buttonStyle(GlassCircleStyle())
+          .buttonStyle(RetroIconButtonStyle())
           .accessibilityLabel(game.sound ? "Mute sound" : "Enable sound")
         }
-        Spacer()
-        courseCard(compact)
-      }.padding(compact ? 14 : 20)
-    }
-  }
-
-  private var modePicker: some View {
-    HStack(spacing: 4) {
-      ForEach([RaceMode.picnic, RaceMode.trial], id: \.self) { mode in
-        Button {
-          withAnimation(reduceMotion ? nil : .spring(duration: 0.35)) { game.mode = mode }
-        } label: {
-          HStack(spacing: 6) {
-            Image(systemName: mode == .picnic ? "flag.checkered" : "stopwatch")
-            Text(mode.rawValue)
-          }
-          .font(.system(size: 12, weight: .bold))
-          .frame(maxWidth: .infinity).frame(height: 38)
-          .foregroundStyle(game.mode == mode ? deepForest : cream)
-          .background {
-            if game.mode == mode {
-              RoundedRectangle(cornerRadius: 12, style: .continuous).fill(cream)
-                .shadow(color: deepForest.opacity(0.35), radius: 6, y: 3)
-                .matchedGeometryEffect(id: "mode", in: modeNamespace)
+        Spacer(minLength: 0)
+        HStack(alignment: .center, spacing: compact ? 22 : 34) {
+          VStack(alignment: .leading, spacing: compact ? 10 : 14) {
+            VStack(alignment: .leading, spacing: compact ? 6 : 10) {
+              WaveText(text: "DRIFT", size: compact ? 40 : 48, color: coin, animated: !reduceMotion)
+              WaveText(
+                text: "PICNIC", size: compact ? 40 : 48, color: paper, animated: !reduceMotion)
             }
+            RetroText("TOY-SIZED KART RACING", compact ? 8 : 9, skyBlue)
+            recordsPanel.padding(.top, compact ? 2 : 8)
           }
+          Spacer(minLength: 0)
+          menuPanel(compact)
         }
-        .accessibilityAddTraits(game.mode == mode ? .isSelected : [])
+        .frame(maxWidth: 720)
+        Spacer(minLength: 0)
+        HStack {
+          RetroText("© 2026 PICNIC GAMES", 7, paper.opacity(0.85))
+          Spacer()
+          Blink(animated: !reduceMotion) { RetroText("PRESS START!", 8, coin) }
+        }
       }
-    }
-    .padding(4)
-    .background(
-      deepForest.opacity(0.55), in: RoundedRectangle(cornerRadius: 16, style: .continuous)
-    )
-    .overlay {
-      RoundedRectangle(cornerRadius: 16, style: .continuous)
-        .strokeBorder(cream.opacity(0.14), lineWidth: 1)
+      .padding(.horizontal, compact ? 18 : 28).padding(.vertical, compact ? 10 : 16)
     }
   }
 
-  @Namespace private var modeNamespace
-
-  private func courseCard(_ compact: Bool) -> some View {
+  private var recordsPanel: some View {
     HStack(spacing: 14) {
-      MiniMap(circuit: game.race.circuit, drivers: [], onCard: true)
-        .frame(width: 74, height: 54)
-        .padding(6)
-        .background(
-          forest.opacity(0.08), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-      VStack(alignment: .leading, spacing: 6) {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-          Text("01").font(serif(20)).foregroundStyle(strawberry)
-          Text("Strawberry Circuit").font(.system(size: 16, weight: .heavy))
-        }
-        eyebrow("A SUN-SOAKED TABLETOP CLASSIC", size: 8).foregroundStyle(forest.opacity(0.7))
-        HStack(spacing: 14) {
-          statChip("stopwatch", raceTime(game.bestLap), "BEST LAP")
-          if game.mode == .picnic {
-            statChip("trophy.fill", "\(game.wins)", "WINS")
-            statChip("flag.checkered", raceTime(game.bestCup), "BEST CUP")
-          } else {
-            statChip("hourglass", raceTime(game.bestTrial), "BEST TRIAL")
-          }
-        }.padding(.top, 2)
+      record(Sprites.stopwatch, "BEST LAP", raceTime(game.bestLap))
+      if game.mode == .picnic {
+        record(Sprites.trophy, "WINS", "\(game.wins)")
+        record(Sprites.flag, "BEST CUP", raceTime(game.bestCup))
+      } else {
+        record(Sprites.flag, "BEST TRIAL", raceTime(game.bestTrial))
       }
     }
-    .padding(compact ? 12 : 16).picnicCard(22)
-    .frame(maxWidth: 360)
+    .padding(.horizontal, 14).padding(.vertical, 10)
+    .retroPanel()
   }
 
-  private func statChip(_ icon: String, _ value: String, _ label: String) -> some View {
-    HStack(spacing: 6) {
-      Image(systemName: icon).font(.system(size: 10, weight: .bold)).foregroundStyle(strawberry)
-      VStack(alignment: .leading, spacing: 1) {
-        Text(value).font(.system(size: 12, weight: .heavy)).monospacedDigit()
-        eyebrow(label, size: 6.5).foregroundStyle(forest.opacity(0.55))
+  private func record(_ icon: [String], _ label: String, _ value: String) -> some View {
+    HStack(spacing: 7) {
+      PixelArt(rows: icon).frame(width: 18, height: 18)
+      VStack(alignment: .leading, spacing: 4) {
+        Text(label).font(pixel(6)).foregroundStyle(coin)
+        Text(value).font(pixel(8)).foregroundStyle(paper)
       }
     }
   }
+
+  private func menuPanel(_ compact: Bool) -> some View {
+    VStack(spacing: compact ? 8 : 12) {
+      RetroText("SELECT MODE", 8, coin)
+      VStack(spacing: 4) {
+        ForEach([RaceMode.picnic, RaceMode.trial], id: \.self) { mode in
+          Button {
+            game.mode = mode
+          } label: {
+            HStack(spacing: 8) {
+              PixelArt(rows: Sprites.cursor).frame(width: 10, height: 18)
+                .opacity(game.mode == mode ? 1 : 0)
+              Text(mode.rawValue.uppercased()).font(pixel(9))
+              Spacer()
+              Text(mode == .picnic ? "VS 3 RIVALS" : "SOLO LAPS").font(pixel(6))
+                .foregroundStyle(paper.opacity(0.7))
+            }
+            .foregroundStyle(game.mode == mode ? paper : paper.opacity(0.55))
+            .padding(.horizontal, 10).frame(height: 32)
+            .background(game.mode == mode ? navyLight : .clear)
+          }
+          .accessibilityAddTraits(game.mode == mode ? .isSelected : [])
+        }
+      }
+      Button("START!", action: game.begin)
+        .buttonStyle(RetroButtonStyle(height: compact ? 44 : 50, size: 12))
+        .accessibilityIdentifier("startRace")
+      Button("HOW TO PLAY") { game.showGuide = true }
+        .buttonStyle(RetroButtonStyle(fill: royal, text: paper, height: 36, size: 8))
+    }
+    .padding(compact ? 12 : 16)
+    .frame(width: compact ? 262 : 292)
+    .retroPanel()
+  }
+
+  // MARK: HUD
 
   private var ready: Bool { game.race.player.driftCharge >= 0.65 }
 
   private func hud(_ size: CGSize) -> some View {
     let compact = size.height < 370
-    return VStack {
+    return VStack(spacing: 0) {
       HStack(alignment: .top, spacing: 12) {
         positionBadge
         Spacer()
-        HStack(spacing: 16) {
-          VStack(spacing: 5) {
-            eyebrow("LAP", size: 8).foregroundStyle(cream.opacity(0.65))
-            HStack(spacing: 4) {
+        VStack(spacing: 6) {
+          HStack(spacing: 10) {
+            Text("LAP").font(pixel(8)).foregroundStyle(coin)
+            HStack(spacing: 3) {
               ForEach(0..<3, id: \.self) { lap in
-                Capsule()
+                Rectangle()
                   .fill(
                     lap < game.race.player.tracker.laps
-                      ? butter : cream.opacity(lap == game.race.player.tracker.laps ? 0.9 : 0.25)
+                      ? coin : paper.opacity(lap == game.race.player.tracker.laps ? 1 : 0.3)
                   )
-                  .frame(width: lap == min(2, game.race.player.tracker.laps) ? 18 : 9, height: 5)
+                  .frame(width: 10, height: 8)
               }
             }
-            Text("\(min(3, game.race.player.tracker.laps + 1)) / 3").font(
-              .system(size: 15, weight: .heavy)
-            ).monospacedDigit()
+            Text("\(min(3, game.race.player.tracker.laps + 1))/3").font(pixel(10))
           }
-          Rectangle().fill(cream.opacity(0.2)).frame(width: 1, height: 36)
-          VStack(spacing: 4) {
-            eyebrow("RACE TIME", size: 8).foregroundStyle(cream.opacity(0.65))
-            Text(raceTime(game.race.elapsed)).font(.system(size: 22, weight: .heavy))
-              .monospacedDigit()
-          }
+          Text(raceTime(game.race.elapsed)).font(pixel(15)).foregroundStyle(paper)
+            .contentTransition(.identity)
         }
-        .padding(.horizontal, 22).padding(.vertical, 9)
-        .foregroundStyle(cream)
-        .background {
-          Capsule().fill(deepForest.opacity(0.88))
-            .overlay { Capsule().strokeBorder(butter.opacity(0.35), lineWidth: 1) }
-            .shadow(color: deepForest.opacity(0.35), radius: 10, y: 5)
-        }
+        .padding(.horizontal, 16).padding(.vertical, 8)
+        .retroPanel()
         Spacer()
-        HStack(spacing: 8) {
+        HStack(spacing: 10) {
           Button(action: game.toggleSound) {
-            Image(systemName: game.sound ? "speaker.wave.2.fill" : "speaker.slash.fill")
+            PixelArt(rows: game.sound ? Sprites.speaker : Sprites.muted).frame(
+              width: 24, height: 24)
           }
-          .buttonStyle(GlassCircleStyle())
+          .buttonStyle(RetroIconButtonStyle())
           .accessibilityLabel(game.sound ? "Mute sound" : "Enable sound")
-          Button(action: game.pause) { Image(systemName: "pause.fill") }
-            .buttonStyle(GlassCircleStyle())
-            .accessibilityLabel("Pause race").accessibilityIdentifier("pauseRace")
+          Button(action: game.pause) {
+            HStack(spacing: 4) {
+              Rectangle().fill(paper).frame(width: 6, height: 18)
+              Rectangle().fill(paper).frame(width: 6, height: 18)
+            }
+          }
+          .buttonStyle(RetroIconButtonStyle())
+          .accessibilityLabel("Pause race").accessibilityIdentifier("pauseRace")
         }
       }
       ZStack {
         if game.race.feedbackRemaining > 0 && game.phase == .racing {
-          Text(game.race.feedback)
-            .font(.system(size: 11, weight: .heavy)).tracking(1.4)
-            .foregroundStyle(deepForest)
-            .padding(.horizontal, 18).padding(.vertical, 8)
-            .background {
-              Capsule().fill(
-                LinearGradient(colors: [butter, butterDeep], startPoint: .top, endPoint: .bottom)
-              )
-              .shadow(color: deepForest.opacity(0.3), radius: 8, y: 4)
-            }
-            .transition(.scale(scale: 0.8).combined(with: .opacity))
+          RetroText(game.race.feedback, 13, coin)
+            .hardShadow(cherryDeep, 3)
+            .transition(.scale(scale: 1.4))
             .accessibilityIdentifier("raceFeedback")
         }
       }
-      .frame(height: 36).padding(.top, 6)
+      .frame(height: 40).padding(.top, 10)
       .animation(
-        reduceMotion ? nil : .spring(duration: 0.3), value: game.race.feedbackRemaining > 0)
+        reduceMotion ? nil : .linear(duration: 0.08), value: game.race.feedbackRemaining > 0)
       Spacer()
       HStack(alignment: .bottom, spacing: 12) {
-        steeringButton(-1, icon: "arrow.turn.up.left", label: "Steer left")
-        steeringButton(1, icon: "arrow.turn.up.right", label: "Steer right")
-        speedometer.padding(.leading, 6)
+        steeringButton(-1, icon: Sprites.arrowLeft, label: "Steer left")
+        steeringButton(1, icon: Sprites.arrowRight, label: "Steer right")
+        speedometer.padding(.leading, 4)
         Spacer()
         MiniMap(circuit: game.race.circuit, drivers: game.race.drivers, onCard: false)
-          .frame(width: 104, height: 68)
-          .padding(.horizontal, 10).padding(.vertical, 6)
+          .frame(width: 100, height: 66)
+          .padding(.horizontal, 8).padding(.vertical, 6)
           .background {
-            RoundedRectangle(cornerRadius: 18, style: .continuous).fill(deepForest.opacity(0.55))
-              .overlay {
-                RoundedRectangle(cornerRadius: 18, style: .continuous).strokeBorder(
-                  cream.opacity(0.25), lineWidth: 1)
-              }
+            ZStack {
+              Rectangle().fill(navy.opacity(0.75))
+              Rectangle().strokeBorder(ink, lineWidth: 3)
+            }
           }
-          .padding(.trailing, 4)
+          .padding(.trailing, 4).padding(.bottom, 4)
         itemButton
         driftButton
       }
     }
-    .padding(.horizontal, 18).padding(.vertical, compact ? 10 : 16)
+    .padding(.horizontal, 18).padding(.vertical, compact ? 10 : 14)
   }
 
   private var positionBadge: some View {
-    VStack(spacing: 0) {
-      HStack(alignment: .firstTextBaseline, spacing: 2) {
-        Text(game.mode == .trial ? "TT" : "\(game.race.position)")
-          .font(serif(game.mode == .trial ? 30 : 44))
-          .contentTransition(.numericText())
-        if game.mode == .picnic {
-          Text("/4").font(.system(size: 13, weight: .heavy)).foregroundStyle(
-            deepForest.opacity(0.6))
-        }
+    HStack(alignment: .firstTextBaseline, spacing: 4) {
+      if game.mode == .trial {
+        RetroText("TIME", 22, coin).hardShadow(cherryDeep, 3)
+        RetroText("TRIAL", 10, paper)
+      } else {
+        RetroText("\(game.race.position)", 40, coin).hardShadow(cherryDeep, 4)
+          .contentTransition(.identity)
+        RetroText(String(ordinal(game.race.position).dropFirst()), 14, paper)
       }
-      eyebrow(
-        game.mode == .trial
-          ? "TIME TRIAL" : ["", "LEADING", "SECOND", "THIRD", "FOURTH"][game.race.position], size: 7
-      )
-      .foregroundStyle(deepForest.opacity(0.7))
-      .padding(.bottom, 6)
     }
-    .foregroundStyle(deepForest)
-    .frame(width: 84)
-    .padding(.top, 2)
-    .picnicCard(20, tint: butter)
-    .animation(reduceMotion ? nil : .spring(duration: 0.35), value: game.race.position)
+    .frame(width: 96, alignment: .leading)
+    .padding(.top, 4)
+    .accessibilityLabel(game.mode == .trial ? "Time trial" : "Position \(game.race.position) of 4")
   }
 
   private var speedometer: some View {
     let boosting = game.race.player.boost > 0
-    return VStack(alignment: .leading, spacing: 1) {
-      Text("\(Int(game.race.player.speed * 3.6))")
-        .font(.system(size: 30, weight: .black)).monospacedDigit()
-        .foregroundStyle(boosting ? butter : cream)
-      eyebrow(boosting ? "BOOST" : "KM/H", size: 8).foregroundStyle(cream.opacity(0.8))
+    let segments = Int((game.race.player.speed / 26) * 10)
+    return VStack(alignment: .leading, spacing: 5) {
+      Text(boosting ? "BOOST!" : "SPEED").font(pixel(7)).foregroundStyle(boosting ? coin : paper)
+        .outlined(ink, 1.5)
+      HStack(spacing: 2) {
+        ForEach(0..<10, id: \.self) { index in
+          Rectangle()
+            .fill(
+              index < segments
+                ? (index < 5 ? leaf : (index < 8 ? coin : cherry)) : navy.opacity(0.7)
+            )
+            .frame(width: 8, height: 12 + CGFloat(index) * 1.2)
+            .overlay { Rectangle().strokeBorder(ink, lineWidth: 1.5) }
+        }
+      }
     }
-    .shadow(color: deepForest.opacity(0.9), radius: 5, y: 2)
-    .frame(width: 62, alignment: .leading)
+    .padding(.bottom, 4)
+    .accessibilityLabel("Speed \(Int(game.race.player.speed * 3.6)) kilometres per hour")
   }
 
   private var itemButton: some View {
     let has = game.race.hasItem
     return Button(action: game.item) {
-      VStack(spacing: 4) {
-        Image(systemName: has ? "cup.and.saucer.fill" : "sparkle")
-          .font(.system(size: 22, weight: .bold))
-          .frame(height: 28)
-        eyebrow(has ? "LEMONADE" : "FIND A CUP", size: 7.5)
+      VStack(spacing: 6) {
+        PixelArt(rows: Sprites.lemonade).frame(width: 30, height: 36)
+          .saturation(has ? 1 : 0).opacity(has ? 1 : 0.35)
+        Text(has ? "LEMONADE" : "NO ITEM").font(pixel(6))
       }
       .frame(width: 82, height: 80)
-      .foregroundStyle(has ? deepForest : forest.opacity(0.55))
-      .background {
-        RoundedRectangle(cornerRadius: 24, style: .continuous)
-          .fill(
-            has
-              ? LinearGradient(colors: [butter, butterDeep], startPoint: .top, endPoint: .bottom)
-              : LinearGradient(
-                colors: [cream.opacity(0.7), cream.opacity(0.6)], startPoint: .top,
-                endPoint: .bottom)
-          )
-          .overlay {
-            RoundedRectangle(cornerRadius: 24, style: .continuous)
-              .strokeBorder(.white.opacity(has ? 0.8 : 0.4), lineWidth: 1.2)
-          }
-          .shadow(color: has ? butterDeep.opacity(0.5) : .clear, radius: 12, y: 4)
-      }
+      .foregroundStyle(has ? ink : paper.opacity(0.6))
     }
+    .buttonStyle(ControlPadStyle(fill: has ? leaf : slate, active: has))
     .disabled(!has)
-    .animation(reduceMotion ? nil : .spring(duration: 0.3), value: has)
     .accessibilityLabel(has ? "Use lemonade boost" : "No item collected")
     .accessibilityIdentifier("useItem")
   }
@@ -498,63 +587,49 @@ struct PicnicView: View {
     let charge = min(1, game.race.player.driftCharge / 0.65)
     return Button(action: game.drift) {
       VStack(spacing: 5) {
-        ZStack {
-          Circle().stroke((ready ? butter : forest).opacity(0.2), lineWidth: 4)
-          Circle().trim(from: 0, to: charge)
-            .stroke(ready ? butter : forest, style: StrokeStyle(lineWidth: 4, lineCap: .round))
-            .rotationEffect(.degrees(-90))
-          Image(systemName: ready ? "bolt.fill" : (drifting ? "wind" : "skew"))
-            .font(.system(size: 19, weight: .bold))
-        }.frame(width: 44, height: 44)
-        eyebrow(ready ? "BOOST READY" : (drifting ? "CHARGING" : "DRIFT"), size: 8)
-      }
-      .frame(width: 96, height: 92)
-      .foregroundStyle(ready ? butter : deepForest)
-      .background {
-        RoundedRectangle(cornerRadius: 26, style: .continuous)
-          .fill(
-            ready
-              ? LinearGradient(colors: [forest, deepForest], startPoint: .top, endPoint: .bottom)
-              : (drifting
-                ? LinearGradient(colors: [butter, butterDeep], startPoint: .top, endPoint: .bottom)
-                : LinearGradient(colors: [cream, creamDeep], startPoint: .top, endPoint: .bottom))
-          )
-          .overlay {
-            RoundedRectangle(cornerRadius: 26, style: .continuous)
-              .strokeBorder(ready ? butter : .white.opacity(0.7), lineWidth: ready ? 2.5 : 1.2)
+        PixelArt(rows: Sprites.bolt).frame(width: 26, height: 36)
+        HStack(spacing: 2) {
+          ForEach(0..<6, id: \.self) { index in
+            Rectangle()
+              .fill(
+                Double(index) < charge * 6 - 0.01 ? (ready ? coin : skyBlue) : ink.opacity(0.35)
+              )
+              .frame(width: 9, height: 6)
           }
-          .shadow(color: ready ? butter.opacity(0.55) : deepForest.opacity(0.25), radius: 12, y: 5)
+        }
+        if ready {
+          Blink(period: 0.25, animated: !reduceMotion) { Text("BOOST!").font(pixel(7)) }
+        } else {
+          Text(drifting ? "CHARGE" : "DRIFT").font(pixel(7))
+        }
       }
+      .frame(width: 92, height: 92)
+      .foregroundStyle(ready ? ink : paper)
     }
-    .animation(reduceMotion ? nil : .spring(duration: 0.3), value: ready)
+    .buttonStyle(ControlPadStyle(fill: ready ? coin : (drifting ? royal : cherry), active: true))
     .accessibilityLabel(drifting ? "Release drift boost" : "Start drift")
     .accessibilityIdentifier("drift")
   }
 
-  private func steeringButton(_ direction: Double, icon: String, label: String) -> some View {
+  private func steeringButton(_ direction: Double, icon: [String], label: String) -> some View {
     let held = game.race.steering == direction
-    return Image(systemName: icon)
-      .font(.system(size: 28, weight: .bold))
-      .foregroundStyle(deepForest)
+    return PixelArt(rows: icon)
+      .frame(width: 40, height: 40)
       .frame(width: 80, height: 80)
       .background {
-        RoundedRectangle(cornerRadius: 26, style: .continuous)
-          .fill(
-            held
-              ? LinearGradient(colors: [butter, butterDeep], startPoint: .top, endPoint: .bottom)
-              : LinearGradient(
-                colors: [cream.opacity(0.96), creamDeep.opacity(0.92)], startPoint: .top,
-                endPoint: .bottom)
-          )
-          .overlay {
-            RoundedRectangle(cornerRadius: 26, style: .continuous)
-              .strokeBorder(.white.opacity(0.75), lineWidth: 1.2)
-          }
-          .shadow(color: deepForest.opacity(held ? 0.1 : 0.3), radius: 10, y: held ? 2 : 6)
+        ZStack {
+          Rectangle().fill(held ? coin : royal)
+          VStack(spacing: 0) {
+            Rectangle().fill(.white.opacity(0.45)).frame(height: 5)
+            Spacer()
+            Rectangle().fill(.black.opacity(0.3)).frame(height: 7)
+          }.padding(3)
+          Rectangle().strokeBorder(ink, lineWidth: 3)
+        }
       }
-      .scaleEffect(held ? 0.95 : 1)
-      .animation(reduceMotion ? nil : .spring(duration: 0.2), value: held)
-      .contentShape(RoundedRectangle(cornerRadius: 26))
+      .background { Rectangle().fill(ink).offset(y: held ? 0 : 5) }
+      .offset(y: held ? 5 : 0)
+      .contentShape(Rectangle())
       .gesture(
         DragGesture(minimumDistance: 0)
           .onChanged { _ in game.steer(direction) }
@@ -569,205 +644,164 @@ struct PicnicView: View {
       }
   }
 
-  private func metric(_ label: String, _ value: String, large: Bool = true) -> some View {
-    VStack(spacing: 3) {
-      eyebrow(label, size: 8).foregroundStyle(forest.opacity(0.65))
-      Text(value).font(.system(size: large ? 22 : 16, weight: .heavy)).monospacedDigit()
-    }
-  }
+  // MARK: Guide
 
   private func guide(_ size: CGSize) -> some View {
     ZStack {
-      deepForest.opacity(0.82).ignoresSafeArea()
-      VStack(alignment: .leading, spacing: 16) {
+      ink.opacity(0.7).ignoresSafeArea()
+      VStack(alignment: .leading, spacing: 14) {
         HStack(alignment: .top) {
-          VStack(alignment: .leading, spacing: 4) {
-            eyebrow("HOW TO PLAY").foregroundStyle(strawberry)
-            Text("A quick pit stop.").font(serif(30))
-            Text("Three little tricks for a sweet first race.")
-              .font(.system(size: 13, design: .serif)).italic().foregroundStyle(forest.opacity(0.8))
+          VStack(alignment: .leading, spacing: 8) {
+            RetroText("HOW TO PLAY", 16, coin).hardShadow(cherryDeep, 3)
+            Text("THREE TRICKS FOR A SWEET FIRST RACE").font(pixel(7)).foregroundStyle(skyBlue)
           }
           Spacer()
           Button {
             game.showGuide = false
           } label: {
-            Image(systemName: "xmark").font(.system(size: 13, weight: .bold)).frame(
-              width: 40, height: 40
-            )
-            .background(forest.opacity(0.08), in: Circle())
-          }.accessibilityLabel("Close instructions")
-        }
-        HStack(alignment: .top, spacing: 14) {
-          tip(
-            "01", "Steer your way",
-            "Hold the arrows to steer. Cut close to the inside curb for a faster racing line.",
-            "arrow.left.and.right")
-          tip(
-            "02", "Drift, then dash",
-            "Tap DRIFT into a bend. Tap again when BOOST READY lights up for a burst.", "bolt.fill")
-          tip(
-            "03", "Sip. Zip. Repeat.",
-            "Drive through a lemonade. Tap its button to boost past your friends.",
-            "cup.and.saucer.fill")
-        }
-        Button(action: game.start) {
-          HStack {
-            Text("Got it. Let’s picnic!")
-            Image(systemName: "arrow.right")
+            Text("X").font(pixel(12)).foregroundStyle(paper)
           }
-        }.buttonStyle(PrimaryButtonStyle(height: 50)).accessibilityIdentifier("confirmGuide")
+          .buttonStyle(RetroIconButtonStyle(fill: cherry))
+          .accessibilityLabel("Close instructions")
+        }
+        HStack(alignment: .top, spacing: 12) {
+          tip(
+            Sprites.steer, "STEER",
+            "HOLD THE ARROWS TO TURN. HUG THE INSIDE CURB FOR THE FASTEST LINE.")
+          tip(
+            Sprites.bolt, "DRIFT + BOOST",
+            "TAP DRIFT INTO A BEND. TAP AGAIN WHEN THE BOLT FLASHES BOOST!")
+          tip(
+            Sprites.lemonade, "LEMONADE",
+            "DRIVE THROUGH A GLASS, THEN TAP IT FOR A BIG SPEED BURST.")
+        }
+        Button("GOT IT! LET'S RACE", action: game.start)
+          .buttonStyle(RetroButtonStyle(height: 46, size: 10))
+          .accessibilityIdentifier("confirmGuide")
       }
-      .padding(24).frame(maxWidth: min(size.width - 40, 720))
-      .picnicCard(30)
-      .overlay(alignment: .top) {
-        HStack(spacing: 0) {
-          ForEach(0..<16, id: \.self) { i in
-            Triangle().fill([butter, strawberry, forest, Color(uiColor: Palette.blue)][i % 4])
-              .frame(width: 14, height: 10)
-          }
-        }.offset(y: -1)
-      }
+      .padding(20).frame(maxWidth: min(size.width - 40, 680))
+      .retroPanel()
     }
   }
 
-  private func tip(_ number: String, _ title: String, _ text: String, _ icon: String) -> some View {
-    VStack(alignment: .leading, spacing: 9) {
-      HStack {
-        Image(systemName: icon).font(.system(size: 17, weight: .bold)).foregroundStyle(deepForest)
-          .frame(width: 40, height: 40)
-          .background(
-            LinearGradient(colors: [butter, butterDeep], startPoint: .top, endPoint: .bottom),
-            in: Circle())
-        Spacer()
-        Text(number).font(serif(18)).foregroundStyle(strawberry.opacity(0.8))
+  private func tip(_ icon: [String], _ title: String, _ text: String) -> some View {
+    VStack(alignment: .leading, spacing: 8) {
+      HStack(spacing: 8) {
+        PixelArt(rows: icon).frame(width: 26, height: 26)
+        Text(title).font(pixel(8)).foregroundStyle(coin)
       }
-      Text(title).font(.system(size: 14, weight: .heavy))
-      Text(text).font(.system(size: 11)).lineSpacing(3).foregroundStyle(forest.opacity(0.85))
+      Text(text).font(pixel(6)).lineSpacing(5).foregroundStyle(paper)
         .fixedSize(horizontal: false, vertical: true)
     }
-    .padding(14)
+    .padding(10)
     .frame(maxWidth: .infinity, alignment: .leading)
-    .background(forest.opacity(0.06), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+    .background {
+      Rectangle().fill(navyLight).overlay { Rectangle().strokeBorder(ink, lineWidth: 2) }
+    }
   }
+
+  // MARK: Pause
 
   private var pausePanel: some View {
     ZStack {
-      deepForest.opacity(0.7).ignoresSafeArea()
-      VStack(spacing: 12) {
-        Image(systemName: "sun.haze.fill").font(.system(size: 28)).foregroundStyle(butter)
-        Text("Take a breather.").font(serif(30))
-        Text("Your picnic will be right here.")
-          .font(.system(size: 13, design: .serif)).italic().opacity(0.8)
-        eyebrow("PAUSED AT  \(raceTime(game.race.elapsed))", size: 10).monospacedDigit()
-          .padding(.horizontal, 12).padding(.vertical, 6)
-          .background(cream.opacity(0.1), in: Capsule())
-        Button("Back to the race", action: game.resume).buttonStyle(PrimaryButtonStyle(height: 50))
-          .accessibilityIdentifier("resumeRace").padding(.top, 4)
+      ink.opacity(0.6).ignoresSafeArea()
+      VStack(spacing: 14) {
+        Blink(animated: !reduceMotion) { RetroText("PAUSE", 26, coin).hardShadow(cherryDeep, 4) }
+        Text("TIME  \(raceTime(game.race.elapsed))").font(pixel(8)).foregroundStyle(skyBlue)
+        Button("CONTINUE", action: game.resume).buttonStyle(RetroButtonStyle(height: 46, size: 10))
+          .accessibilityIdentifier("resumeRace")
         HStack(spacing: 10) {
-          Button("Restart", action: game.start)
-          Button("Leave race", action: game.home)
+          Button("RESTART", action: game.start)
+          Button("QUIT", action: game.home)
         }
-        .buttonStyle(GhostButtonStyle())
+        .buttonStyle(RetroButtonStyle(fill: royal, text: paper, height: 38, size: 8))
       }
-      .foregroundStyle(cream).padding(26)
-      .frame(width: 340)
-      .background {
-        RoundedRectangle(cornerRadius: 30, style: .continuous)
-          .fill(LinearGradient(colors: [forest, deepForest], startPoint: .top, endPoint: .bottom))
-          .overlay {
-            GinghamPattern(color: .white.opacity(0.03)).clipShape(
-              RoundedRectangle(cornerRadius: 30, style: .continuous))
-          }
-          .overlay {
-            RoundedRectangle(cornerRadius: 30, style: .continuous).strokeBorder(
-              butter.opacity(0.4), lineWidth: 1.2)
-          }
-          .shadow(color: .black.opacity(0.35), radius: 30, y: 14)
-      }
+      .padding(22)
+      .frame(width: 320)
+      .retroPanel()
     }
   }
+
+  // MARK: Results
 
   private func results(_ size: CGSize) -> some View {
     let won = game.mode == .picnic && game.race.position == 1
     let personal = game.mode == .picnic ? game.bestCup : game.bestTrial
     let newBest = abs(personal - game.race.elapsed) < 0.001
+    let compact = size.height < 390
     return ZStack {
-      LinearGradient(
-        colors: [forest.opacity(0.94), deepForest.opacity(0.97)], startPoint: .top,
-        endPoint: .bottom
-      )
-      .ignoresSafeArea()
-      GinghamPattern(color: .white.opacity(0.025)).ignoresSafeArea()
+      navy.opacity(0.55).ignoresSafeArea()
       if won && !reduceMotion { Confetti().ignoresSafeArea().allowsHitTesting(false) }
-      HStack(spacing: 28) {
-        VStack(alignment: .leading, spacing: 10) {
-          eyebrow(game.mode == .trial ? "TIME TRIAL COMPLETE" : "STRAWBERRY CIRCUIT · CUP COMPLETE")
-            .foregroundStyle(butter)
-          Text(
-            game.mode == .trial
-              ? "Sweet time."
-              : (won ? "Oh, sweet\nvictory!" : "A lovely\nlittle race.")
-          )
-          .font(serif(size.height < 390 ? 34 : 42))
-          .lineSpacing(-6).foregroundStyle(cream)
+      HStack(spacing: compact ? 18 : 28) {
+        VStack(alignment: .leading, spacing: compact ? 8 : 12) {
+          RetroText(game.mode == .trial ? "TIME TRIAL" : "PICNIC CUP", 8, skyBlue)
+          WaveText(
+            text: won || game.mode == .trial ? "FINISH!" : "GOAL!", size: compact ? 30 : 36,
+            color: coin, animated: !reduceMotion)
           HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text(game.mode == .trial ? "3" : "\(game.race.position)")
-              .font(serif(56))
-            eyebrow(game.mode == .trial ? "LAPS COMPLETE" : "OF 4 RACERS", size: 10)
-          }.foregroundStyle(butter)
-          HStack(spacing: 8) {
-            resultChip("bolt.fill", "\(game.race.driftBoosts) drifts")
-            resultChip("cup.and.saucer.fill", "\(game.race.itemsCollected) lemonades")
+            if game.mode == .trial {
+              RetroText("3", 44, paper).hardShadow(cherryDeep, 4)
+              RetroText("LAPS", 10, paper)
+            } else {
+              RetroText("\(game.race.position)", 44, paper).hardShadow(cherryDeep, 4)
+              RetroText(String(ordinal(game.race.position).dropFirst()), 14, paper)
+              RetroText("PLACE", 10, coin).padding(.leading, 6)
+            }
           }
           HStack(spacing: 10) {
-            Button("Race again", action: game.start).buttonStyle(PrimaryButtonStyle(height: 50))
+            resultChip(Sprites.bolt, "\(game.race.driftBoosts) DRIFTS")
+            resultChip(Sprites.lemonade, "\(game.race.itemsCollected) DRINKS")
+          }
+          HStack(spacing: 10) {
+            Button("RETRY", action: game.start).buttonStyle(RetroButtonStyle(height: 46, size: 11))
               .accessibilityIdentifier("raceAgain")
             Button(action: game.home) {
-              Image(systemName: "house.fill").frame(width: 50, height: 50)
-                .background(
-                  cream.opacity(0.12), in: RoundedRectangle(cornerRadius: 17, style: .continuous)
-                )
-                .overlay {
-                  RoundedRectangle(cornerRadius: 17, style: .continuous).strokeBorder(
-                    cream.opacity(0.25), lineWidth: 1)
-                }
-            }.foregroundStyle(cream).accessibilityLabel("Back to title")
+              PixelArt(rows: Sprites.home).frame(width: 24, height: 24)
+            }
+            .buttonStyle(RetroIconButtonStyle(fill: royal))
+            .accessibilityLabel("Back to title")
           }.padding(.top, 4)
-        }.frame(maxWidth: 300, alignment: .leading)
-        VStack(spacing: 12) {
+        }.frame(maxWidth: 290, alignment: .leading)
+        VStack(spacing: 10) {
           if game.mode == .picnic { podium }
-          HStack {
-            metric("RACE TIME", raceTime(game.race.elapsed))
-            Spacer()
-            Rectangle().fill(forest.opacity(0.15)).frame(width: 1, height: 34)
-            Spacer()
-            metric("BEST LAP", raceTime(game.race.player.lapTimes.min() ?? 0))
+          VStack(spacing: 8) {
+            resultRow("RACE TIME", raceTime(game.race.elapsed), paper)
+            resultRow("BEST LAP", raceTime(game.race.player.lapTimes.min() ?? 0), paper)
+            resultRow(
+              newBest ? "NEW RECORD!" : "YOUR RECORD", raceTime(personal), coin, blink: newBest)
           }
-          .padding(.horizontal, 22).padding(.vertical, 14).picnicCard(20)
-          HStack {
-            Label(
-              newBest ? "New personal best" : "Personal best",
-              systemImage: newBest ? "sparkles" : "rosette"
-            )
-            .foregroundStyle(newBest ? butter : cream)
-            Spacer()
-            Text(raceTime(personal)).monospacedDigit().fontWeight(.heavy).foregroundStyle(cream)
-          }.font(.system(size: 12, weight: .semibold))
-          eyebrow("SAVED ON THIS DEVICE", size: 7.5).foregroundStyle(cream.opacity(0.4))
-        }.frame(maxWidth: 330)
+          .padding(.horizontal, 16).padding(.vertical, 12)
+          .retroPanel()
+          Text("SAVED ON THIS DEVICE").font(pixel(6)).foregroundStyle(paper.opacity(0.6))
+        }.frame(maxWidth: 320)
       }.padding(24)
     }
   }
 
-  private func resultChip(_ icon: String, _ text: String) -> some View {
-    HStack(spacing: 5) {
-      Image(systemName: icon).font(.system(size: 9, weight: .bold))
-      Text(text).font(.system(size: 11, weight: .bold))
+  private func resultRow(_ label: String, _ value: String, _ color: Color, blink: Bool = false)
+    -> some View
+  {
+    HStack {
+      if blink {
+        Blink(animated: !reduceMotion) { Text(label).font(pixel(7)).foregroundStyle(color) }
+      } else {
+        Text(label).font(pixel(7)).foregroundStyle(color)
+      }
+      Spacer()
+      Text(value).font(pixel(9)).foregroundStyle(color)
     }
-    .foregroundStyle(cream)
-    .padding(.horizontal, 10).padding(.vertical, 6)
-    .background(cream.opacity(0.1), in: Capsule())
-    .overlay { Capsule().strokeBorder(cream.opacity(0.2), lineWidth: 1) }
+  }
+
+  private func resultChip(_ icon: [String], _ text: String) -> some View {
+    HStack(spacing: 6) {
+      PixelArt(rows: icon).frame(width: 14, height: 16)
+      Text(text).font(pixel(7))
+    }
+    .foregroundStyle(paper)
+    .padding(.horizontal, 10).padding(.vertical, 7)
+    .background {
+      Rectangle().fill(navyLight).overlay { Rectangle().strokeBorder(ink, lineWidth: 2) }
+    }
   }
 
   private var podium: some View {
@@ -779,140 +813,83 @@ struct PicnicView: View {
       if b.finishTime != nil { return false }
       return a.tracker.progress > b.tracker.progress
     }
-    let names = ["Clover", "Maple", "Mochi", "Pepper"]
+    let names = ["CLOVER", "MAPLE", "MOCHI", "PEPPER"]
     return HStack(alignment: .bottom, spacing: 6) {
       ForEach([1, 0, 2], id: \.self) { rank in
         let driver = sorted[rank]
-        let height: CGFloat = rank == 0 ? 66 : (rank == 1 ? 48 : 38)
+        let height: CGFloat = rank == 0 ? 62 : (rank == 1 ? 46 : 36)
         VStack(spacing: 5) {
-          CharacterBadge(driver: driver).frame(width: 40, height: 40)
-            .shadow(color: .black.opacity(0.25), radius: 4, y: 3)
-          Text(names[driver] + (driver == 0 ? " · YOU" : ""))
-            .font(.system(size: 9, weight: .heavy)).foregroundStyle(driver == 0 ? butter : cream)
+          PixelArt(rows: Sprites.animals[driver]).frame(width: 36, height: 36)
+          Text(names[driver] + (driver == 0 ? "★" : "")).font(pixel(6))
+            .foregroundStyle(driver == 0 ? coin : paper)
           ZStack(alignment: .top) {
-            UnevenRoundedRectangle(topLeadingRadius: 10, topTrailingRadius: 10)
-              .fill(
-                rank == 0
-                  ? LinearGradient(
-                    colors: [butter, butterDeep], startPoint: .top, endPoint: .bottom)
-                  : LinearGradient(colors: [cream, creamDeep], startPoint: .top, endPoint: .bottom)
-              )
-              .overlay(alignment: .top) {
-                Rectangle().fill(.white.opacity(0.7)).frame(height: 3)
-              }
-            Text("\(rank + 1)")
-              .font(serif(rank == 0 ? 34 : 24))
-              .foregroundStyle(deepForest).padding(.top, rank == 0 ? 10 : 6)
+            Rectangle().fill(
+              rank == 0 ? coin : (rank == 1 ? Color(red: 0.75, green: 0.76, blue: 0.82) : coinDeep)
+            )
+            .overlay(alignment: .top) { Rectangle().fill(.white.opacity(0.5)).frame(height: 4) }
+            .overlay { Rectangle().strokeBorder(ink, lineWidth: 3) }
+            Text("\(rank + 1)").font(pixel(rank == 0 ? 18 : 13))
+              .foregroundStyle(ink).padding(.top, rank == 0 ? 10 : 8)
           }
           .frame(maxWidth: .infinity).frame(height: height)
-          .shadow(color: .black.opacity(0.2), radius: 6, y: 4)
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(rank + 1). \(names[driver])\(driver == 0 ? ", you" : "")")
+        .accessibilityLabel(
+          "\(rank + 1). \(names[driver].capitalized)\(driver == 0 ? ", you" : "")")
       }
     }
   }
 }
 
-struct GhostButtonStyle: ButtonStyle {
+/// Square control pad with the same bevel language as the menu buttons.
+struct ControlPadStyle: ButtonStyle {
+  var fill: Color
+  var active: Bool
   func makeBody(configuration: Configuration) -> some View {
-    configuration.label
-      .font(.system(size: 13, weight: .bold))
-      .frame(maxWidth: .infinity).frame(height: 42)
-      .foregroundStyle(cream)
-      .background(cream.opacity(configuration.isPressed ? 0.2 : 0.1), in: Capsule())
-      .overlay { Capsule().strokeBorder(cream.opacity(0.25), lineWidth: 1) }
+    let pressed = configuration.isPressed && active
+    return configuration.label
+      .background {
+        ZStack {
+          Rectangle().fill(fill)
+          VStack(spacing: 0) {
+            Rectangle().fill(.white.opacity(0.45)).frame(height: 5)
+            Spacer()
+            Rectangle().fill(.black.opacity(0.3)).frame(height: 7)
+          }.padding(3)
+          Rectangle().strokeBorder(ink, lineWidth: 3)
+        }
+      }
+      .background { Rectangle().fill(ink).offset(y: pressed ? 0 : 5) }
+      .offset(y: pressed ? 5 : 0)
+      .animation(nil, value: pressed)
   }
 }
 
-struct Triangle: Shape {
-  func path(in rect: CGRect) -> Path {
-    var path = Path()
-    path.move(to: CGPoint(x: rect.minX, y: rect.minY))
-    path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
-    path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
-    path.closeSubpath()
-    return path
-  }
-}
-
+/// Square confetti that falls in quantised steps at twelve frames a second.
 struct Confetti: View {
   private let start = Date()
   var body: some View {
-    TimelineView(.animation) { timeline in
-      let t = timeline.date.timeIntervalSince(start)
+    TimelineView(.periodic(from: .now, by: 1.0 / 12)) { timeline in
+      let t = floor(timeline.date.timeIntervalSince(start) * 12) / 12
       Canvas { context, size in
-        let colors = [
-          butter, strawberry, cream, Color(uiColor: Palette.blue), Color(uiColor: Palette.lilac),
-        ]
-        for i in 0..<48 {
+        let colors = [coin, cherry, paper, royal, leaf]
+        for i in 0..<40 {
           let seed = Double(i)
-          let speed = 55 + (seed * 37).truncatingRemainder(dividingBy: 40)
+          let speed = 60 + (seed * 37).truncatingRemainder(dividingBy: 50)
           let x =
             (seed * 97.3).truncatingRemainder(dividingBy: size.width)
-            + sin(t * 1.6 + seed) * 22
+            + (Int(t * 4 + seed) % 2 == 0 ? 0 : 6)
           let y = (t * speed + seed * 61).truncatingRemainder(dividingBy: size.height + 40) - 20
-          let fade = max(0, 1 - t / 7)
+          let fade = max(0, 1 - t / 8)
           var piece = context
-          piece.translateBy(x: x, y: y)
-          piece.rotate(by: .radians(t * 3 + seed))
           piece.opacity = fade
+          let side: CGFloat = i % 3 == 0 ? 8 : 6
           piece.fill(
-            Path(roundedRect: CGRect(x: -4, y: -2.5, width: 8, height: 5), cornerRadius: 1),
+            Path(CGRect(x: x, y: y, width: side, height: side)),
             with: .color(colors[i % colors.count]))
         }
       }
-    }
-  }
-}
-
-struct CharacterBadge: View {
-  let driver: Int
-  private var fur: Color {
-    [
-      cream, Color(red: 0.77, green: 0.49, blue: 0.32), Color(red: 0.46, green: 0.46, blue: 0.5),
-      Color(white: 0.94),
-    ][driver]
-  }
-  private var helmet: Color {
-    [forest, cream, butter, Color(uiColor: Palette.blue)][driver]
-  }
-  var body: some View {
-    GeometryReader { geometry in
-      let width = geometry.size.width
-      ZStack {
-        if driver == 0 {
-          ForEach([-1.0, 1.0], id: \.self) { side in
-            Capsule().fill(fur)
-              .frame(width: width * 0.24, height: width * 0.5)
-              .rotationEffect(.degrees(side * 12))
-              .offset(x: width * side * 0.22, y: -width * 0.3)
-          }
-        } else if driver == 2 {
-          ForEach([-1.0, 1.0], id: \.self) { side in
-            Triangle().fill(fur).rotationEffect(.degrees(180))
-              .frame(width: width * 0.26, height: width * 0.26)
-              .offset(x: width * side * 0.3, y: -width * 0.36)
-          }
-        } else {
-          ForEach([-1.0, 1.0], id: \.self) { side in
-            Circle().fill(fur).frame(width: width * 0.28)
-              .offset(x: width * side * 0.34, y: -width * (driver == 1 ? 0.28 : 0.05))
-          }
-        }
-        Ellipse().fill(fur).frame(width: width * 0.84, height: width * 0.72)
-        Ellipse().fill(helmet).frame(width: width * 0.86, height: width * 0.4).offset(
-          y: -width * 0.24
-        )
-        .mask(Rectangle().frame(height: width * 0.2).offset(y: -width * 0.32))
-        HStack(spacing: width * 0.24) {
-          Circle().fill(deepForest).frame(width: width * 0.09)
-          Circle().fill(deepForest).frame(width: width * 0.09)
-        }.offset(y: width * 0.02)
-        Ellipse().fill(strawberry.opacity(0.8))
-          .frame(width: width * 0.12, height: width * 0.07).offset(y: width * 0.16)
-      }.frame(width: width, height: geometry.size.height)
     }
   }
 }
@@ -929,30 +906,18 @@ struct MiniMap: View {
       var path = Path()
       path.addLines(circuit.points.map(point))
       path.closeSubpath()
-      context.stroke(
-        path, with: .color(onCard ? forest.opacity(0.9) : deepForest.opacity(0.7)), lineWidth: 8)
-      context.stroke(path, with: .color(onCard ? creamDeep : cream.opacity(0.8)), lineWidth: 3.5)
+      context.stroke(path, with: .color(ink), lineWidth: 8)
+      context.stroke(path, with: .color(paper), lineWidth: 3.5)
       let start = point(circuit.points[0])
       context.fill(
-        Path(
-          roundedRect: CGRect(x: start.x - 2, y: start.y - 5, width: 4, height: 10), cornerRadius: 1
-        ),
-        with: .color(onCard ? strawberry : butter))
+        Path(CGRect(x: start.x - 2, y: start.y - 5, width: 4, height: 10)), with: .color(coin))
+      let colors = [cherry, royal, leaf, coin]
       for index in drivers.indices.reversed() {
         let p = point(drivers[index].point)
-        let radius: CGFloat = index == 0 ? 4.5 : 3.2
-        context.fill(
-          Path(
-            ellipseIn: CGRect(
-              x: p.x - radius, y: p.y - radius, width: radius * 2, height: radius * 2)),
-          with: .color(index == 0 ? butter : strawberry))
-        if index == 0 {
-          context.stroke(
-            Path(
-              ellipseIn: CGRect(
-                x: p.x - radius, y: p.y - radius, width: radius * 2, height: radius * 2)),
-            with: .color(.white), lineWidth: 1.5)
-        }
+        let half: CGFloat = index == 0 ? 5 : 3.5
+        let rect = CGRect(x: p.x - half, y: p.y - half, width: half * 2, height: half * 2)
+        context.fill(Path(rect.insetBy(dx: -1.5, dy: -1.5)), with: .color(index == 0 ? paper : ink))
+        context.fill(Path(rect), with: .color(colors[index]))
       }
     }.accessibilityLabel("Circuit map")
   }

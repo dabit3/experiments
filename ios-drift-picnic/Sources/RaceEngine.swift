@@ -172,7 +172,7 @@ struct RaceEngine {
       driftBoosts += 1
       notify("SWEET DRIFT!")
     } else {
-      notify("HOLD YOUR DRIFT A LITTLE LONGER")
+      notify("HOLD IT LONGER!")
     }
     drivers[0].driftCharge = 0
     drifting = false
@@ -237,7 +237,7 @@ struct RaceEngine {
         if driver.tracker.laps >= 3 {
           driver.finishTime = elapsed
         } else if isPlayer {
-          notify(driver.tracker.laps == 2 ? "FINAL LAP · MAKE IT SWEET" : "LAP 2 · KEEP IT ROLLING")
+          notify(driver.tracker.laps == 2 ? "FINAL LAP!" : "LAP 2!")
         }
       }
       if isPlayer {
@@ -251,7 +251,7 @@ struct RaceEngine {
           if !hasItem {
             hasItem = true
             itemsCollected += 1
-            notify("LEMONADE PICKED UP")
+            notify("GOT LEMONADE!")
           }
         }
       }

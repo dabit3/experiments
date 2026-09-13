@@ -1,52 +1,55 @@
 import AppKit
 import Foundation
 
+// Renders the app icon as a 16x16 pixel-art sprite: Clover the rabbit in her red kart on a
+// checkered lawn under a banded console sky.
 let destination = CommandLine.arguments[1]
 let size = NSSize(width: 1024, height: 1024)
 let image = NSImage(size: size)
 image.lockFocus()
-let green = NSColor(srgbRed: 0.09, green: 0.28, blue: 0.22, alpha: 1)
-let cream = NSColor(srgbRed: 1, green: 0.97, blue: 0.85, alpha: 1)
-let butter = NSColor(srgbRed: 1, green: 0.88, blue: 0.52, alpha: 1)
-let pink = NSColor(srgbRed: 0.92, green: 0.28, blue: 0.36, alpha: 1)
-func rounded(_ rect: NSRect, _ radius: CGFloat, _ color: NSColor) {
-  color.setFill()
-  NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius).fill()
-}
-func oval(_ rect: NSRect, _ color: NSColor) {
-  color.setFill()
-  NSBezierPath(ovalIn: rect).fill()
-}
-rounded(NSRect(origin: .zero, size: size), 0, green)
-oval(
-  NSRect(x: 70, y: 60, width: 884, height: 884),
-  NSColor(srgbRed: 0.16, green: 0.37, blue: 0.28, alpha: 1))
-for x in 0..<9 {
-  for y in 0..<3 {
-    rounded(
-      NSRect(x: x * 130 - 70, y: y * 100 - 35, width: 130, height: 100), 0,
-      (x + y) % 2 == 0 ? cream.withAlphaComponent(0.10) : cream.withAlphaComponent(0.03))
+
+let palette: [Character: NSColor] = [
+  "C": NSColor(srgbRed: 0.16, green: 0.42, blue: 0.93, alpha: 1),
+  "c": NSColor(srgbRed: 0.36, green: 0.72, blue: 0.98, alpha: 1),
+  "y": NSColor(srgbRed: 0.98, green: 0.85, blue: 0.13, alpha: 1),
+  "w": NSColor(srgbRed: 0.99, green: 0.98, blue: 0.94, alpha: 1),
+  "k": NSColor(srgbRed: 0.08, green: 0.07, blue: 0.12, alpha: 1),
+  "r": NSColor(srgbRed: 0.91, green: 0.15, blue: 0.16, alpha: 1),
+  "p": NSColor(srgbRed: 1, green: 0.62, blue: 0.72, alpha: 1),
+  "g": NSColor(srgbRed: 0.36, green: 0.78, blue: 0.22, alpha: 1),
+  "G": NSColor(srgbRed: 0.24, green: 0.62, blue: 0.18, alpha: 1),
+]
+
+let rows = [
+  "CCCCCCCCCCCCCCCC",
+  "CCCCCCCCCCCCyyCC",
+  "ccccccccccccyycc",
+  "cccccccccccccccc",
+  "ccwwwccccccccccc",
+  "cwwwwwcccccccccc",
+  "cccccccccccwwwcc",
+  "ccccccwwccwwcccc",
+  "ccccccwpccpwcccc",
+  "cccccckwwwwkcccc",
+  "ccccckwkwwkwkccc",
+  "ccccckwwwwwwkccc",
+  "ccccckrrrrrrkccc",
+  "gggkkrrrrrrrrkkg",
+  "gkkkkrrrrrrkkkkg",
+  "GkkkkGgGgGgkkkkG",
+]
+
+let cell = size.width / CGFloat(rows[0].count)
+for (y, row) in rows.enumerated() {
+  for (x, character) in row.enumerated() {
+    guard let color = palette[character] else { continue }
+    color.setFill()
+    let rect = NSRect(
+      x: CGFloat(x) * cell, y: size.height - CGFloat(y + 1) * cell, width: cell, height: cell)
+    NSBezierPath(rect: rect).fill()
   }
 }
-oval(NSRect(x: 209, y: 150, width: 610, height: 145), NSColor.black.withAlphaComponent(0.22))
-rounded(NSRect(x: 209, y: 200, width: 132, height: 198), 52, NSColor(white: 0.12, alpha: 1))
-rounded(NSRect(x: 685, y: 200, width: 132, height: 198), 52, NSColor(white: 0.12, alpha: 1))
-rounded(NSRect(x: 267, y: 268, width: 490, height: 172), 65, butter)
-rounded(NSRect(x: 250, y: 211, width: 524, height: 77), 33, cream)
-rounded(NSRect(x: 287, y: 307, width: 450, height: 150), 57, butter)
-rounded(NSRect(x: 469, y: 289, width: 86, height: 140), 12, cream)
-oval(NSRect(x: 355, y: 392, width: 320, height: 313), cream)
-rounded(NSRect(x: 373, y: 642, width: 106, height: 242), 53, cream)
-rounded(NSRect(x: 548, y: 642, width: 106, height: 242), 53, cream)
-rounded(NSRect(x: 403, y: 690, width: 45, height: 157), 22, pink.withAlphaComponent(0.5))
-rounded(NSRect(x: 580, y: 690, width: 45, height: 157), 22, pink.withAlphaComponent(0.5))
-oval(NSRect(x: 428, y: 547, width: 27, height: 35), green)
-oval(NSRect(x: 575, y: 547, width: 27, height: 35), green)
-oval(NSRect(x: 494, y: 508, width: 39, height: 23), pink)
-oval(NSRect(x: 389, y: 493, width: 57, height: 30), pink.withAlphaComponent(0.35))
-oval(NSRect(x: 582, y: 493, width: 57, height: 30), pink.withAlphaComponent(0.35))
-rounded(NSRect(x: 394, y: 392, width: 246, height: 49), 24, green)
-oval(NSRect(x: 700, y: 735, width: 125, height: 125), butter)
+
 image.unlockFocus()
 guard let tiff = image.tiffRepresentation,
   let bitmap = NSBitmapImageRep(data: tiff),

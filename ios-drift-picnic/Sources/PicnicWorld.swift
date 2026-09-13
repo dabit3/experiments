@@ -1,19 +1,22 @@
 import SceneKit
 import UIKit
 
+/// A 16-bit console palette: saturated primaries, a navy for panels and ink for outlines.
 enum Palette {
-  static let green = UIColor(red: 0.09, green: 0.28, blue: 0.22, alpha: 1)
-  static let deepGreen = UIColor(red: 0.05, green: 0.19, blue: 0.15, alpha: 1)
-  static let butter = UIColor(red: 1, green: 0.88, blue: 0.52, alpha: 1)
-  static let cream = UIColor(red: 1, green: 0.97, blue: 0.85, alpha: 1)
-  static let pink = UIColor(red: 0.92, green: 0.28, blue: 0.36, alpha: 1)
-  static let blue = UIColor(red: 0.32, green: 0.64, blue: 0.77, alpha: 1)
-  static let lilac = UIColor(red: 0.72, green: 0.62, blue: 0.86, alpha: 1)
-  static let wood = UIColor(red: 0.55, green: 0.37, blue: 0.23, alpha: 1)
-  static let sky = UIColor(red: 0.52, green: 0.78, blue: 0.93, alpha: 1)
-  static let horizon = UIColor(red: 0.93, green: 0.90, blue: 0.80, alpha: 1)
-  static let grass = UIColor(red: 0.50, green: 0.68, blue: 0.37, alpha: 1)
-  static let asphalt = UIColor(red: 0.40, green: 0.53, blue: 0.43, alpha: 1)
+  static let green = UIColor(red: 0.13, green: 0.55, blue: 0.20, alpha: 1)
+  static let deepGreen = UIColor(red: 0.06, green: 0.10, blue: 0.30, alpha: 1)
+  static let butter = UIColor(red: 0.98, green: 0.85, blue: 0.13, alpha: 1)
+  static let cream = UIColor(red: 0.99, green: 0.98, blue: 0.94, alpha: 1)
+  static let pink = UIColor(red: 0.91, green: 0.15, blue: 0.16, alpha: 1)
+  static let blue = UIColor(red: 0.16, green: 0.40, blue: 0.95, alpha: 1)
+  static let lilac = UIColor(red: 0.62, green: 0.30, blue: 0.85, alpha: 1)
+  static let wood = UIColor(red: 0.63, green: 0.34, blue: 0.14, alpha: 1)
+  static let sky = UIColor(red: 0.36, green: 0.72, blue: 0.98, alpha: 1)
+  static let horizon = UIColor(red: 0.70, green: 0.89, blue: 1.0, alpha: 1)
+  static let grass = UIColor(red: 0.36, green: 0.78, blue: 0.22, alpha: 1)
+  static let asphalt = UIColor(red: 0.50, green: 0.50, blue: 0.62, alpha: 1)
+  static let ink = UIColor(red: 0.08, green: 0.07, blue: 0.12, alpha: 1)
+  static let orange = UIColor(red: 0.98, green: 0.50, blue: 0.08, alpha: 1)
 
   static func shade(_ color: UIColor, _ factor: CGFloat) -> UIColor {
     var h: CGFloat = 0
@@ -33,68 +36,91 @@ enum Textures {
     return renderer.image { context in draw(context.cgContext, size) }
   }
 
-  static func gradient(_ colors: [UIColor], _ locations: [CGFloat]) -> UIImage {
+  /// Hard colour bands instead of a smooth gradient, like a console sky drawn from a few palette entries.
+  static func bands(_ colors: [UIColor]) -> UIImage {
     let renderer = UIGraphicsImageRenderer(size: CGSize(width: 8, height: 512))
     return renderer.image { context in
-      let gradient = CGGradient(
-        colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors.map(\.cgColor) as CFArray,
-        locations: locations)!
-      context.cgContext.drawLinearGradient(
-        gradient, start: .zero, end: CGPoint(x: 0, y: 512), options: [])
+      let height = 512 / CGFloat(colors.count)
+      for (index, color) in colors.enumerated() {
+        color.setFill()
+        context.fill(CGRect(x: 0, y: CGFloat(index) * height, width: 8, height: height + 1))
+      }
     }
   }
 
-  static let sky = gradient(
+  static let sky = bands(
     [
-      UIColor(red: 0.36, green: 0.62, blue: 0.86, alpha: 1), Palette.sky,
-      UIColor(red: 0.82, green: 0.90, blue: 0.93, alpha: 1), Palette.horizon,
-    ], [0, 0.35, 0.62, 0.78])
+      UIColor(red: 0.13, green: 0.36, blue: 0.90, alpha: 1),
+      UIColor(red: 0.22, green: 0.52, blue: 0.95, alpha: 1),
+      Palette.sky, Palette.sky,
+      UIColor(red: 0.55, green: 0.83, blue: 0.99, alpha: 1),
+      Palette.horizon, Palette.horizon, Palette.horizon,
+    ])
 
-  static let gingham = image(256) { context, size in
+  static let gingham = image(32) { context, size in
     Palette.cream.setFill()
     context.fill(CGRect(x: 0, y: 0, width: size, height: size))
-    let stripe = UIColor(red: 0.86, green: 0.40, blue: 0.38, alpha: 0.30)
-    stripe.setFill()
-    for i in 0..<2 {
-      let offset = CGFloat(i) * size / 2
-      context.fill(CGRect(x: offset, y: 0, width: size / 4, height: size))
-      context.fill(CGRect(x: 0, y: offset, width: size, height: size / 4))
-    }
-    UIColor(white: 1, alpha: 0.10).setFill()
-    for i in 0..<16 {
-      context.fill(CGRect(x: CGFloat(i) * size / 16, y: 0, width: 1.5, height: size))
-    }
+    UIColor(red: 0.94, green: 0.36, blue: 0.36, alpha: 1).setFill()
+    context.fill(CGRect(x: 0, y: 0, width: size / 2, height: size / 2))
+    context.fill(CGRect(x: size / 2, y: size / 2, width: size / 2, height: size / 2))
   }
 
-  static let grass = image(128) { context, size in
+  static let grass = image(32) { context, size in
     Palette.grass.setFill()
     context.fill(CGRect(x: 0, y: 0, width: size, height: size))
+    Palette.shade(Palette.grass, 0.86).setFill()
+    context.fill(CGRect(x: 0, y: 0, width: size / 2, height: size / 2))
+    context.fill(CGRect(x: size / 2, y: size / 2, width: size / 2, height: size / 2))
     var seed: UInt32 = 7
-    for _ in 0..<180 {
+    Palette.shade(Palette.grass, 1.14).setFill()
+    for _ in 0..<40 {
       seed = seed &* 1_664_525 &+ 1_013_904_223
-      let x = CGFloat(seed % 128)
+      let x = CGFloat(seed % 32)
       seed = seed &* 1_664_525 &+ 1_013_904_223
-      let y = CGFloat(seed % 128)
-      let dark = seed % 3 == 0
-      (dark ? Palette.shade(Palette.grass, 0.9) : Palette.shade(Palette.grass, 1.08)).setFill()
-      context.fillEllipse(in: CGRect(x: x, y: y, width: 3, height: 1.6))
-    }
-  }
-
-  static let road = image(128) { context, size in
-    Palette.asphalt.setFill()
-    context.fill(CGRect(x: 0, y: 0, width: size, height: size))
-    var seed: UInt32 = 3
-    for _ in 0..<420 {
-      seed = seed &* 1_664_525 &+ 1_013_904_223
-      let x = CGFloat(seed % 128)
-      seed = seed &* 1_664_525 &+ 1_013_904_223
-      let y = CGFloat(seed % 128)
-      UIColor(white: seed % 2 == 0 ? 0.2 : 1, alpha: 0.07).setFill()
+      let y = CGFloat(seed % 32)
       context.fill(CGRect(x: x, y: y, width: 1, height: 1))
     }
   }
 
+  static let road = image(32) { context, size in
+    Palette.asphalt.setFill()
+    context.fill(CGRect(x: 0, y: 0, width: size, height: size))
+    var seed: UInt32 = 3
+    for _ in 0..<70 {
+      seed = seed &* 1_664_525 &+ 1_013_904_223
+      let x = CGFloat(seed % 32)
+      seed = seed &* 1_664_525 &+ 1_013_904_223
+      let y = CGFloat(seed % 32)
+      (seed % 2 == 0 ? Palette.shade(Palette.asphalt, 0.9) : Palette.shade(Palette.asphalt, 1.1))
+        .setFill()
+      context.fill(CGRect(x: x, y: y, width: 1, height: 1))
+    }
+  }
+
+  /// Crisp texel edges: no bilinear smearing, no mip blur.
+  static func pixelate(_ material: SCNMaterial, repeat scale: (Float, Float)) {
+    material.diffuse.wrapS = .repeat
+    material.diffuse.wrapT = .repeat
+    material.diffuse.magnificationFilter = .nearest
+    material.diffuse.minificationFilter = .nearest
+    material.diffuse.mipFilter = .none
+    material.diffuse.contentsTransform = SCNMatrix4MakeScale(scale.0, scale.1, 1)
+  }
+}
+
+/// Two-step cel shading applied to every lit material, so shadows fall as flat colour bands.
+enum Shaders {
+  static let toon = """
+    #pragma body
+    float lit = max(0.0, dot(_surface.normal, _light.direction));
+    float band = lit > 0.55 ? 1.0 : (lit > 0.22 ? 0.74 : 0.56);
+    _lightingContribution.diffuse += _light.intensity.rgb * band;
+    """
+
+  static let outline = """
+    #pragma body
+    _geometry.position.xyz += _geometry.normal * 0.045;
+    """
 }
 
 final class PicnicWorld {
@@ -119,7 +145,7 @@ final class PicnicWorld {
   init() {
     var wheelSets: [[SCNNode]] = []
     var bodySet: [SCNNode] = []
-    karts = [Palette.butter, Palette.pink, Palette.blue, Palette.lilac].enumerated().map {
+    karts = [Palette.pink, Palette.blue, Palette.green, Palette.butter].enumerated().map {
       let built = Self.kart(color: $0.element, animal: $0.offset)
       wheelSets.append(built.wheels)
       bodySet.append(built.body)
@@ -129,54 +155,42 @@ final class PicnicWorld {
     bodies = bodySet
     scene.background.contents = Textures.sky
     scene.fogColor = Palette.horizon
-    scene.fogStartDistance = 190
-    scene.fogEndDistance = 430
+    scene.fogStartDistance = 230
+    scene.fogEndDistance = 480
     camera.camera = SCNCamera()
     camera.camera?.fieldOfView = 57
     camera.camera?.zFar = 520
     camera.camera?.wantsHDR = false
-    camera.camera?.vignettingIntensity = 0.55
-    camera.camera?.vignettingPower = 0.9
-    #if !targetEnvironment(simulator)
-      camera.camera?.screenSpaceAmbientOcclusionIntensity = 0.7
-      camera.camera?.screenSpaceAmbientOcclusionRadius = 2.2
-    #endif
     scene.rootNode.addChildNode(camera)
     let ambient = SCNNode()
     ambient.light = SCNLight()
     ambient.light?.type = .ambient
-    ambient.light?.intensity = 380
-    ambient.light?.color = UIColor(red: 0.86, green: 0.92, blue: 1, alpha: 1)
+    ambient.light?.intensity = 520
+    ambient.light?.color = UIColor(red: 0.90, green: 0.94, blue: 1, alpha: 1)
     scene.rootNode.addChildNode(ambient)
     let sun = SCNNode()
     sun.light = SCNLight()
     sun.light?.type = .directional
-    sun.light?.intensity = 1050
-    sun.light?.color = UIColor(red: 1, green: 0.95, blue: 0.84, alpha: 1)
+    sun.light?.intensity = 900
+    sun.light?.color = UIColor(red: 1, green: 0.98, blue: 0.92, alpha: 1)
     sun.light?.castsShadow = true
     sun.light?.shadowMode = .forward
-    sun.light?.shadowColor = UIColor(red: 0.10, green: 0.22, blue: 0.16, alpha: 0.32)
-    sun.light?.shadowRadius = 4
-    sun.light?.shadowSampleCount = 8
+    sun.light?.shadowColor = UIColor(red: 0.05, green: 0.12, blue: 0.30, alpha: 0.42)
+    sun.light?.shadowRadius = 1
+    sun.light?.shadowSampleCount = 1
     sun.light?.shadowMapSize = CGSize(width: 1536, height: 1536)
     sun.light?.orthographicScale = 150
     sun.eulerAngles = SCNVector3(-1.0, -0.6, 0)
     scene.rootNode.addChildNode(sun)
-    let fill = SCNNode()
-    fill.light = SCNLight()
-    fill.light?.type = .directional
-    fill.light?.intensity = 220
-    fill.light?.color = UIColor(red: 0.75, green: 0.85, blue: 1, alpha: 1)
-    fill.eulerAngles = SCNVector3(-0.7, 2.4, 0)
-    scene.rootNode.addChildNode(fill)
     buildGround()
     buildTrack()
     buildScenery()
     buildSky()
     for kart in karts {
       let shadow = Self.node(
-        SCNCylinder(radius: 1, height: 0.015), UIColor.black.withAlphaComponent(0.2))
+        SCNCylinder(radius: 1, height: 0.015), Palette.ink.withAlphaComponent(0.35))
       shadow.geometry?.firstMaterial?.lightingModel = .constant
+      shadow.geometry?.firstMaterial?.shaderModifiers = nil
       shadow.scale = SCNVector3(0.85, 1, 1.35)
       shadow.position.y = -0.005
       kart.addChildNode(shadow)
@@ -191,8 +205,7 @@ final class PicnicWorld {
         let position = circuit.at(distance, offset: lane).point
         item.position = SCNVector3(position.x, 1.3, position.z)
         item.scale = SCNVector3(0.5, 0.5, 0.5)
-        let halo = Self.node(SCNTorus(ringRadius: 1.3, pipeRadius: 0.05), Palette.butter)
-        halo.geometry?.firstMaterial?.lightingModel = .constant
+        let halo = Self.flat(SCNTorus(ringRadius: 1.3, pipeRadius: 0.07), Palette.butter)
         halo.position.y = -1.7
         item.addChildNode(halo)
         group.addChildNode(item)
@@ -201,11 +214,10 @@ final class PicnicWorld {
       itemNodes.append(group)
     }
     for x in [-0.36, 0.36] {
-      let glow = Self.node(
-        SCNCone(topRadius: 0.05, bottomRadius: 0.24, height: 1.6), Palette.butter)
+      let glow = Self.flat(
+        SCNCone(topRadius: 0.05, bottomRadius: 0.24, height: 1.6), Palette.orange)
       glow.eulerAngles.x = -.pi / 2
-      glow.geometry?.firstMaterial?.lightingModel = .constant
-      glow.geometry?.firstMaterial?.emission.contents = Palette.butter
+      glow.geometry?.firstMaterial?.emission.contents = Palette.orange
       glow.isHidden = true
       glow.position = SCNVector3(x, 0.36, -1.35)
       karts[0].addChildNode(glow)
@@ -218,19 +230,37 @@ final class PicnicWorld {
   {
     let material = SCNMaterial()
     material.diffuse.contents = color
-    material.lightingModel = .blinn
-    material.specular.contents = UIColor(white: 0.22, alpha: 1)
-    material.shininess = 0.35
-    material.roughness.contents = roughness
+    material.lightingModel = .lambert
+    material.shaderModifiers = [.lightingModel: Shaders.toon]
     geometry.materials = [material]
     return SCNNode(geometry: geometry)
   }
 
   static func glossy(_ geometry: SCNGeometry, _ color: UIColor) -> SCNNode {
-    let built = node(geometry, color, roughness: 0.25)
-    built.geometry?.firstMaterial?.specular.contents = UIColor(white: 0.6, alpha: 1)
-    built.geometry?.firstMaterial?.shininess = 0.75
-    return built
+    node(geometry, color)
+  }
+
+  /// Unlit, single-colour geometry for markers, glows and sprites.
+  static func flat(_ geometry: SCNGeometry, _ color: UIColor) -> SCNNode {
+    let material = SCNMaterial()
+    material.diffuse.contents = color
+    material.lightingModel = .constant
+    geometry.materials = [material]
+    return SCNNode(geometry: geometry)
+  }
+
+  /// Inverted-hull ink outline: a copy pushed out along its normals, drawn back-faces only.
+  static func outline(_ source: SCNNode) -> SCNNode {
+    let copy = source.geometry!.copy() as! SCNGeometry
+    let material = SCNMaterial()
+    material.diffuse.contents = Palette.ink
+    material.lightingModel = .constant
+    material.cullMode = .front
+    material.shaderModifiers = [.geometry: Shaders.outline]
+    copy.materials = [material]
+    let node = SCNNode(geometry: copy)
+    node.castsShadow = false
+    return node
   }
 
   static func box(
@@ -244,20 +274,15 @@ final class PicnicWorld {
     lawn.position.y = -0.8
     let lawnMaterial = lawn.geometry!.firstMaterial!
     lawnMaterial.diffuse.contents = Textures.grass
-    lawnMaterial.diffuse.wrapS = .repeat
-    lawnMaterial.diffuse.wrapT = .repeat
-    lawnMaterial.diffuse.contentsTransform = SCNMatrix4MakeScale(70, 70, 1)
+    Textures.pixelate(lawnMaterial, repeat: (46, 46))
     scene.rootNode.addChildNode(lawn)
-    let blanket = Self.box(150, 0.3, 118, Palette.cream, radius: 1.6)
+    let blanket = Self.box(150, 0.3, 118, Palette.cream, radius: 0.4)
     blanket.position.y = -0.22
     let blanketMaterial = blanket.geometry!.firstMaterial!
     blanketMaterial.diffuse.contents = Textures.gingham
-    blanketMaterial.diffuse.wrapS = .repeat
-    blanketMaterial.diffuse.wrapT = .repeat
-    blanketMaterial.diffuse.contentsTransform = SCNMatrix4MakeScale(19, 15, 1)
-    blanketMaterial.roughness.contents = 0.95
+    Textures.pixelate(blanketMaterial, repeat: (25, 20))
     scene.rootNode.addChildNode(blanket)
-    let hem = Self.box(152, 0.34, 120, Palette.pink, radius: 1.8)
+    let hem = Self.box(152, 0.34, 120, Palette.ink, radius: 0.4)
     hem.position.y = -0.27
     scene.rootNode.addChildNode(hem)
     for i in 0..<6 {
@@ -304,30 +329,28 @@ final class PicnicWorld {
   }
 
   private func buildTrack() {
-    _ = ribbon(inner: -7.3, outer: 7.3, height: 0.00, color: Palette.green)
+    _ = ribbon(inner: -7.4, outer: 7.4, height: 0.00, color: Palette.ink)
     let surface = ribbon(inner: -6.5, outer: 6.5, height: 0.04, color: Palette.asphalt)
     let surfaceMaterial = surface.geometry!.firstMaterial!
     surfaceMaterial.diffuse.contents = Textures.road
-    surfaceMaterial.diffuse.wrapS = .repeat
-    surfaceMaterial.diffuse.wrapT = .repeat
-    surfaceMaterial.roughness.contents = 0.9
-    _ = ribbon(inner: -6.0, outer: -5.82, height: 0.055, color: Palette.cream)
-    _ = ribbon(inner: 5.82, outer: 6.0, height: 0.055, color: Palette.cream)
+    Textures.pixelate(surfaceMaterial, repeat: (1, 1))
+    _ = ribbon(inner: -6.0, outer: -5.75, height: 0.055, color: Palette.cream)
+    _ = ribbon(inner: 5.75, outer: 6.0, height: 0.055, color: Palette.cream)
     let curbs = SCNNode()
     for i in 0..<120 {
       let distance = Double(i) / 120 * circuit.length
       for side in [-1.0, 1.0] {
         let pose = circuit.at(distance, offset: side * 6.75)
         let curb = Self.box(
-          0.7, 0.18, 1.62, i % 2 == 0 ? Palette.cream : Palette.pink, radius: 0.05)
+          0.7, 0.18, 1.62, i % 2 == 0 ? Palette.cream : Palette.pink, radius: 0)
         curb.position = SCNVector3(pose.point.x, 0.11, pose.point.z)
         curb.eulerAngles.y = Float(pose.heading)
         curbs.addChildNode(curb)
       }
       if i % 3 == 0 {
         let pose = circuit.at(distance)
-        let dash = Self.box(0.11, 0.015, 1.5, Palette.cream, radius: 0)
-        dash.geometry?.firstMaterial?.diffuse.contents = Palette.cream.withAlphaComponent(0.7)
+        let dash = Self.flat(
+          SCNBox(width: 0.14, height: 0.015, length: 1.5, chamferRadius: 0), Palette.butter)
         dash.position = SCNVector3(pose.point.x, 0.065, pose.point.z)
         dash.eulerAngles.y = Float(pose.heading)
         curbs.addChildNode(dash)
@@ -341,7 +364,9 @@ final class PicnicWorld {
     let grid = SCNNode()
     for x in -6...6 {
       for z in 0...2 {
-        let tile = Self.box(1, 0.02, 1, (x + z) % 2 == 0 ? Palette.cream : Palette.green, radius: 0)
+        let tile = Self.flat(
+          SCNBox(width: 1, height: 0.02, length: 1, chamferRadius: 0),
+          (x + z) % 2 == 0 ? Palette.cream : Palette.ink)
         tile.position = SCNVector3(Double(x), 0.08, Double(z - 1))
         grid.addChildNode(tile)
       }
@@ -364,21 +389,21 @@ final class PicnicWorld {
       finial.position = SCNVector3(x, 7.6, 0)
       gantry.addChildNode(finial)
     }
-    let banner = Self.box(16.4, 1.35, 0.3, Palette.green, radius: 0.12)
+    let banner = Self.box(16.4, 1.5, 0.3, Palette.blue, radius: 0)
     banner.position.y = 6.6
     gantry.addChildNode(banner)
-    let trim = Self.box(16.6, 0.12, 0.34, Palette.butter, radius: 0.02)
-    trim.position.y = 7.33
+    let trim = Self.box(16.6, 0.14, 0.34, Palette.cream, radius: 0)
+    trim.position.y = 7.4
     gantry.addChildNode(trim)
-    let trimLow = Self.box(16.6, 0.12, 0.34, Palette.butter, radius: 0.02)
-    trimLow.position.y = 5.87
+    let trimLow = Self.box(16.6, 0.14, 0.34, Palette.cream, radius: 0)
+    trimLow.position.y = 5.8
     gantry.addChildNode(trimLow)
     for side in [-1.0, 1.0] {
       let text = SCNText(string: "DRIFT PICNIC", extrusionDepth: 0.02)
-      text.font = UIFont(name: "Georgia-BoldItalic", size: 0.78)
-      text.flatness = 0.05
-      let label = Self.node(text, Palette.butter)
-      label.geometry?.firstMaterial?.lightingModel = .constant
+      text.font =
+        UIFont(name: "PressStart2P-Regular", size: 0.7) ?? UIFont.boldSystemFont(ofSize: 0.7)
+      text.flatness = 0.2
+      let label = Self.flat(text, Palette.butter)
       let bounds = text.boundingBox
       label.pivot = SCNMatrix4MakeTranslation(
         (bounds.min.x + bounds.max.x) / 2, (bounds.min.y + bounds.max.y) / 2, 0)
@@ -389,7 +414,7 @@ final class PicnicWorld {
     for i in 0..<14 {
       let flag = Self.node(
         SCNPyramid(width: 0.7, height: 0.9, length: 0.04),
-        [Palette.butter, Palette.pink, Palette.cream, Palette.blue][i % 4])
+        [Palette.butter, Palette.pink, Palette.cream, Palette.green][i % 4])
       flag.geometry?.firstMaterial?.isDoubleSided = true
       flag.position = SCNVector3(-7.2 + Double(i) * 1.1, 5.75, 0)
       flag.eulerAngles.x = .pi
@@ -654,9 +679,10 @@ final class PicnicWorld {
       for (index, part) in [(0.0, 0.0, 9.0), (7.5, 1.5, 6.5), (-7.0, 1.0, 6.0), (2.0, 4.5, 6.0)]
         .enumerated()
       {
-        let puff = Self.node(
+        let puff = Self.flat(
           SCNSphere(radius: part.2), UIColor(white: index == 0 ? 1 : 0.985, alpha: 1))
-        puff.geometry?.firstMaterial?.lightingModel = .lambert
+        puff.geometry?.firstMaterial?.readsFromDepthBuffer = true
+        puff.castsShadow = false
         puff.position = SCNVector3(part.0, part.1, 0)
         cloud.addChildNode(puff)
       }
@@ -670,22 +696,21 @@ final class PicnicWorld {
     let marker = SCNNode()
     marker.position.y = 2.75
     marker.constraints = [SCNBillboardConstraint()]
-    let pill = Self.node(SCNCapsule(capRadius: 0.24, height: 1.35), Palette.green)
-    pill.eulerAngles.z = .pi / 2
-    pill.geometry?.firstMaterial?.lightingModel = .constant
+    let pill = Self.flat(
+      SCNBox(width: 1.3, height: 0.48, length: 0.06, chamferRadius: 0), Palette.ink)
     marker.addChildNode(pill)
     let markerText = SCNText(string: "YOU", extrusionDepth: 0)
-    markerText.font = UIFont.systemFont(ofSize: 0.28, weight: .black)
-    let markerLabel = Self.node(markerText, Palette.butter)
-    markerLabel.geometry?.firstMaterial?.lightingModel = .constant
+    markerText.font =
+      UIFont(name: "PressStart2P-Regular", size: 0.26) ?? UIFont.boldSystemFont(ofSize: 0.26)
+    markerText.flatness = 0.2
+    let markerLabel = Self.flat(markerText, Palette.butter)
     let markerBounds = markerText.boundingBox
     markerLabel.pivot = SCNMatrix4MakeTranslation(
       (markerBounds.min.x + markerBounds.max.x) / 2,
       (markerBounds.min.y + markerBounds.max.y) / 2, 0)
     markerLabel.position = SCNVector3(0, 0, 0.26)
     marker.addChildNode(markerLabel)
-    let tail = Self.node(SCNPyramid(width: 0.34, height: 0.3, length: 0.05), Palette.green)
-    tail.geometry?.firstMaterial?.lightingModel = .constant
+    let tail = Self.flat(SCNPyramid(width: 0.34, height: 0.3, length: 0.05), Palette.ink)
     tail.geometry?.firstMaterial?.isDoubleSided = true
     tail.position = SCNVector3(0, -0.22, 0)
     tail.eulerAngles.x = .pi
@@ -695,10 +720,8 @@ final class PicnicWorld {
 
   private func configureSparks() {
     for _ in 0..<36 {
-      let geometry = SCNSphere(radius: 0.11)
-      geometry.segmentCount = 8
-      let spark = Self.node(geometry, Palette.butter)
-      spark.geometry?.firstMaterial?.lightingModel = .constant
+      let geometry = SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0)
+      let spark = Self.flat(geometry, Palette.butter)
       spark.geometry?.firstMaterial?.emission.contents = Palette.butter
       spark.castsShadow = false
       spark.isHidden = true
@@ -746,14 +769,14 @@ final class PicnicWorld {
         emitSpark(
           from: rear + jitter + SIMD3<Float>(0, 0.25, 0),
           velocity: -forward * (5 + random() * 2) + SIMD3<Float>(0, 0.6 + random(), 0),
-          color: Palette.cream, size: 1.6 + random() * 0.8)
+          color: random() > 0.5 ? Palette.butter : Palette.cream, size: 1.6 + random() * 0.8)
       } else {
         let lateral = Float(race.steering > 0 ? 1 : -1) * (0.45 + random() * 0.4)
         emitSpark(
           from: rear + side * lateral,
           velocity: -forward * (2 + random() * 2) + side * lateral * 2
             + SIMD3<Float>(0, 1.4 + random() * 1.6, 0),
-          color: player.driftCharge >= 0.65 ? Palette.butter : Palette.cream,
+          color: player.driftCharge >= 0.65 ? Palette.orange : Palette.sky,
           size: 0.7 + random() * 0.5)
       }
     }
@@ -770,6 +793,7 @@ final class PicnicWorld {
         spark.position.x + velocity.x * Float(dt),
         max(0.08, spark.position.y + velocity.y * Float(dt)),
         spark.position.z + velocity.z * Float(dt))
+      spark.eulerAngles.y += Float(dt) * 9
       let fade = Float(sparkLife[index])
       spark.scale = SCNVector3(
         spark.scale.x * (0.94 + 0.06 * fade), spark.scale.y * (0.94 + 0.06 * fade),
@@ -784,9 +808,9 @@ final class PicnicWorld {
     trunk.position.y = 3
     tree.addChildNode(trunk)
     let leaf = [
-      UIColor(red: 0.27, green: 0.50, blue: 0.29, alpha: 1),
-      UIColor(red: 0.36, green: 0.58, blue: 0.31, alpha: 1),
-      UIColor(red: 0.20, green: 0.42, blue: 0.27, alpha: 1),
+      UIColor(red: 0.18, green: 0.62, blue: 0.24, alpha: 1),
+      UIColor(red: 0.30, green: 0.72, blue: 0.26, alpha: 1),
+      UIColor(red: 0.12, green: 0.52, blue: 0.30, alpha: 1),
     ][seed % 3]
     for layer in 0..<4 {
       let puff = node(
@@ -806,7 +830,10 @@ final class PicnicWorld {
     let stem = node(SCNCylinder(radius: 0.08, height: 1.3), Palette.green)
     stem.position.y = 0.65
     flower.addChildNode(stem)
-    let color = [Palette.butter, Palette.cream, Palette.pink, Palette.lilac][seed % 4]
+    let color = [
+      Palette.butter, Palette.cream, UIColor(red: 1, green: 0.45, blue: 0.7, alpha: 1),
+      Palette.lilac,
+    ][seed % 4]
     for i in 0..<5 {
       let petal = node(SCNSphere(radius: 0.26), color)
       petal.scale = SCNVector3(1, 0.5, 1)
@@ -904,8 +931,10 @@ final class PicnicWorld {
     roundel.position = SCNVector3(0, 0.94, 0.42)
     body.addChildNode(roundel)
     let number = SCNText(string: "\(animal + 1)", extrusionDepth: 0.01)
-    number.font = UIFont(name: "Georgia-BoldItalic", size: 0.3)
-    let numberNode = node(number, Palette.green)
+    number.font =
+      UIFont(name: "PressStart2P-Regular", size: 0.3) ?? UIFont.boldSystemFont(ofSize: 0.3)
+    number.flatness = 0.2
+    let numberNode = flat(number, Palette.ink)
     let numberBounds = number.boundingBox
     let numberCentre = SCNVector3(
       (numberBounds.min.x + numberBounds.max.x) / 2, (numberBounds.min.y + numberBounds.max.y) / 2,
@@ -917,8 +946,7 @@ final class PicnicWorld {
       let pod = glossy(SCNBox(width: 0.3, height: 0.3, length: 1.05, chamferRadius: 0.12), dark)
       pod.position = SCNVector3(x, 0.5, -0.05)
       body.addChildNode(pod)
-      let light = glossy(SCNSphere(radius: 0.11), Palette.cream)
-      light.geometry?.firstMaterial?.emission.contents = UIColor(white: 0.6, alpha: 1)
+      let light = flat(SCNSphere(radius: 0.11), Palette.butter)
       light.position = SCNVector3(x * 0.5, 0.6, 1.36)
       body.addChildNode(light)
       let exhaust = node(SCNCylinder(radius: 0.08, height: 0.3), UIColor(white: 0.3, alpha: 1))
@@ -968,13 +996,14 @@ final class PicnicWorld {
           pivot.addChildNode(bar)
         }
         let flatWheel = pivot.flattenedClone()
+        flatWheel.addChildNode(outline(flatWheel))
         group.addChildNode(flatWheel)
         wheels.append(flatWheel)
       }
     }
     let fur = [
-      Palette.cream, UIColor(red: 0.73, green: 0.44, blue: 0.28, alpha: 1),
-      UIColor(red: 0.42, green: 0.42, blue: 0.46, alpha: 1), UIColor(white: 0.93, alpha: 1),
+      Palette.cream, UIColor(red: 0.85, green: 0.48, blue: 0.22, alpha: 1),
+      UIColor(red: 0.45, green: 0.45, blue: 0.55, alpha: 1), UIColor(white: 0.95, alpha: 1),
     ][animal]
     let torso = node(SCNSphere(radius: 0.36), fur)
     torso.position = SCNVector3(0, 0.95, -0.3)
@@ -1034,18 +1063,19 @@ final class PicnicWorld {
     }
     let scarf = node(
       SCNTorus(ringRadius: 0.25, pipeRadius: 0.07),
-      [Palette.green, Palette.cream, Palette.butter, Palette.pink][animal])
+      [Palette.blue, Palette.butter, Palette.cream, Palette.pink][animal])
     scarf.position = SCNVector3(0, 1.17, -0.25)
     body.addChildNode(scarf)
     let helmet = glossy(
-      SCNSphere(radius: 0.43), [Palette.green, Palette.cream, Palette.butter, Palette.blue][animal])
+      SCNSphere(radius: 0.43), [Palette.cream, Palette.butter, Palette.pink, Palette.blue][animal])
     helmet.scale = SCNVector3(1, 0.62, 1)
     helmet.position = SCNVector3(0, 1.72, -0.26)
     body.addChildNode(helmet)
-    let helmetTrim = node(SCNTorus(ringRadius: 0.41, pipeRadius: 0.04), Palette.cream)
+    let helmetTrim = node(SCNTorus(ringRadius: 0.41, pipeRadius: 0.04), Palette.ink)
     helmetTrim.position = SCNVector3(0, 1.66, -0.26)
     body.addChildNode(helmetTrim)
     let flatBody = body.flattenedClone()
+    flatBody.addChildNode(outline(flatBody))
     group.replaceChildNode(body, with: flatBody)
     return (group, flatBody, wheels)
   }

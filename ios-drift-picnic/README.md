@@ -5,6 +5,11 @@ races Maple, Mochi and Pepper around Strawberry Circuit: three laps, strawberry
 curbs, a cake centerpiece and lemonade towers. The original art, icon, characters
 and synthesized sound are generated locally; there are no external assets or services.
 
+The presentation follows 16-bit console conventions: a saturated primary palette,
+hard-edged bevelled panels with ink outlines, stepped frame animation, pixel sprites,
+nearest-neighbour textures with banded toon lighting, and square-wave jingles. The only
+bundled asset is the open-licensed Press Start 2P font (`Resources/Fonts/OFL.txt`).
+
 ## Build
 
 Requires macOS, Xcode with an iOS SDK, and XcodeGen (`brew install xcodegen`).
