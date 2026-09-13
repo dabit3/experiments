@@ -82,6 +82,30 @@ test('full authored score has reachable taps, holds, FX, ramps and slams', () =>
   assert.equal(player.processed.size, engine.events.length);
 });
 
+test('stationary laser needs live samples and still expires after release or a 366ms sampling stall', () => {
+  const flat = {
+    duration: 2, tick: 0.05, notes: [],
+    lasers: [{ color: 0, points: [{ time: 0.2, x: 0.5 }, { time: 1, x: 0.5 }] }],
+  };
+  const engine = new DuelEngine(flat);
+  const live = engine.player('live', 'Live');
+  const stalled = engine.player('stalled', 'Stalled');
+  const released = engine.player('released', 'Released');
+  for (let i = 0; i <= 44; i++) {
+    const time = i * 0.025;
+    const sample = { seq: i, time, kind: 'laser', color: 0, x: 0.5 };
+    assert.equal(engine.input(live, sample, time), true);
+    if (time < 0.4 || time >= 0.775) engine.input(stalled, sample, time);
+    if (time < 0.4) engine.input(released, sample, time);
+    for (const p of [live, stalled, released]) engine.advance(p, time);
+  }
+  for (const p of [live, stalled, released]) engine.advance(p, 2);
+  assert.equal(live.laserHits, engine.events.length);
+  assert.equal(live.errors, 0);
+  assert.ok(stalled.errors >= 2, 'a gap longer than 180ms must still break laser tracking');
+  assert.ok(released.laserHits < stalled.laserHits, 'release must stop earning stationary ticks');
+});
+
 test('real WebSockets isolate two guests, reject third peer, synchronize start and resume', async () => {
   const server = createDuelServer({ port: 0, startDelay: 80 });
   await once(server.http, 'listening');

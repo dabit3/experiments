@@ -23,7 +23,6 @@ final class HighwayCanvas: UIView {
   private var displayLink: CADisplayLink?
   private var touchesByID: [ObjectIdentifier: Int] = [:]
   private var lastTouchX: [ObjectIdentifier: CGFloat] = [:]
-  private var knobTouchTime = [-10.0, -10.0]
   private var context: CGContext!
   private var height = 844.0
   private var hitY: Double { height - 250 }
@@ -47,19 +46,13 @@ final class HighwayCanvas: UIView {
   required init?(coder: NSCoder) { nil }
 
   func stop() {
+    model.releaseAll()
     displayLink?.invalidate()
     displayLink = nil
   }
 
   @objc private func updateFrame() {
     model.frame()
-    let time = model.songTime
-    for color in 0..<2 where touchesByID.values.contains(6 + color) {
-      if time - knobTouchTime[color] > 0.03 {
-        model.laser(color, x: model.lasers[color])
-        knobTouchTime[color] = time
-      }
-    }
     setNeedsDisplay()
   }
 
@@ -489,6 +482,7 @@ final class HighwayCanvas: UIView {
         model.button(control, down: true)
         UIImpactFeedbackGenerator(style: .light).impactOccurred(intensity: 0.5)
       } else {
+        model.laserContact(control - 6, down: true)
         model.laser(control - 6, x: model.lasers[control - 6])
       }
     }
@@ -515,6 +509,9 @@ final class HighwayCanvas: UIView {
       guard let control = touchesByID.removeValue(forKey: key) else { continue }
       lastTouchX.removeValue(forKey: key)
       if control < 6 && !touchesByID.values.contains(control) { model.button(control, down: false) }
+      if control >= 6 && !touchesByID.values.contains(control) {
+        model.laserContact(control - 6, down: false)
+      }
     }
   }
 }

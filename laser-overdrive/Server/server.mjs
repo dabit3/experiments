@@ -108,7 +108,8 @@ export function createDuelServer({ port = 8769, startDelay = 4000, logFile } = {
         const now = (Date.now() - room.startAt) / 1000;
         if (engine.input(player, message, now) && (player.inputCount % 120 === 0 || message.source === 'touch')) {
           log('input', { room: room.code, epoch: room.epoch, id: player.id, source: message.source,
-            kind: message.kind, lane: message.lane, color: message.color, time: message.time,
+            kind: message.kind, lane: message.lane, color: message.color, x: message.x,
+            seq: message.seq, time: message.time,
             score: player.score, inputs: player.inputCount });
         }
       } else if (message.type === 'leave') {

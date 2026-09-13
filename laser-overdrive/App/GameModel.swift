@@ -49,7 +49,8 @@ final class GameModel: ObservableObject {
   private var reconnectTask: Task<Void, Never>?
   private var bestRTT = Double.infinity
   private var awaitingJoinedState = false
-  private var seq = 0
+  private var inputs: GameInputStream?
+  private let logQueue = DispatchQueue(label: "laser-overdrive.evidence", qos: .utility)
   private var createRoom = false
   private var wantsConnection = false
   private var autoReady = false
@@ -116,6 +117,7 @@ final class GameModel: ObservableObject {
     createRoom = create
     reconnectTask?.cancel()
     receiveTask?.cancel()
+    inputs?.stop()
     socket?.cancel(with: .goingAway, reason: nil)
     connected = false
     status = "CONNECTING TO ROOM SERVER…"
@@ -123,6 +125,22 @@ final class GameModel: ObservableObject {
     UserDefaults.standard.set(serverAddress, forKey: "serverAddress")
     let task = URLSession.shared.webSocketTask(with: url)
     socket = task
+    inputs = GameInputStream { [weak self] message in
+      guard let data = try? JSONEncoder().encode(message),
+        let text = String(data: data, encoding: .utf8)
+      else { return }
+      task.send(.string(text)) { _ in }
+      if message.type == "input", message.source == "touch" {
+        let sentAt = Date().timeIntervalSince1970 * 1000
+        Task { @MainActor [weak self] in
+          self?.log(
+            "touch",
+            detail:
+              "\(message.kind ?? "") lane=\(message.lane ?? -1) color=\(message.color ?? -1) down=\(message.down ?? false) x=\(message.x ?? -1)",
+            inputTime: message.time, wallTime: sentAt)
+        }
+      }
+    }
     task.resume()
     var hello = WireMessage(type: "hello")
     hello.id = id
@@ -159,10 +177,7 @@ final class GameModel: ObservableObject {
   }
 
   private func send(_ message: WireMessage) {
-    guard let data = try? JSONEncoder().encode(message),
-      let string = String(data: data, encoding: .utf8), let socket
-    else { return }
-    socket.send(.string(string)) { _ in }
+    inputs?.send(message)
   }
 
   private func ping() {
@@ -185,7 +200,7 @@ final class GameModel: ObservableObject {
       awaitingJoinedState = true
       connected = true
       roomCode = message.code ?? roomCode
-      seq = message.nextSeq ?? seq
+      if let next = message.nextSeq { inputs?.resetSequence(next) }
       status = "CONNECTED / CLOCK SYNC"
       log("joined", detail: "distinct guest \(id)")
       if autoReady {
@@ -204,7 +219,7 @@ final class GameModel: ObservableObject {
       startAt = message.startAt ?? 0
       if nextEpoch != epoch {
         epoch = nextEpoch
-        if !awaitingJoinedState { seq = 0 }
+        if !awaitingJoinedState { inputs?.resetSequence(0) }
         buttons = Array(repeating: false, count: 6)
         noteDown.removeAll()
         noteUp.removeAll()
@@ -217,6 +232,8 @@ final class GameModel: ObservableObject {
       }
       awaitingJoinedState = false
       phase = nextPhase
+      inputs?.synchronize(
+        enabled: connected && phase == "playing", epoch: epoch, startAt: startAt, offset: offset)
       if phase != lastPhase {
         log("phase", detail: "\(phase), startAt=\(startAt)")
         lastPhase = phase
@@ -230,6 +247,7 @@ final class GameModel: ObservableObject {
       status = message.message ?? "Connection error"
       wantsConnection = false
       connected = false
+      inputs?.stop()
       pingTimer?.invalidate()
       socket?.cancel(with: .normalClosure, reason: nil)
     default: break
@@ -244,6 +262,7 @@ final class GameModel: ObservableObject {
 
   private func connectionLost() {
     connected = false
+    inputs?.stop()
     status = "LINK LOST — RECONNECTING TO \(roomCode)"
     log("disconnected", detail: status)
     guard wantsConnection else { return }
@@ -265,6 +284,8 @@ final class GameModel: ObservableObject {
     pingTimer?.invalidate()
     socket?.cancel(with: .normalClosure, reason: nil)
     socket = nil
+    inputs?.stop()
+    inputs = nil
     connected = false
     phase = "offline"
     peers = []
@@ -300,23 +321,15 @@ final class GameModel: ObservableObject {
 
   private func input(_ event: WireMessage, source: String, at: Double?) {
     guard phase == "playing", connected, songTime >= 0 else { return }
-    var event = event
-    event.time = at ?? songTime
-    event.seq = seq
-    event.epoch = epoch
-    event.source = source
-    seq += 1
-    send(event)
-    if source == "touch" {
-      log(
-        "touch",
-        detail:
-          "\(event.kind ?? "") lane=\(event.lane ?? -1) color=\(event.color ?? -1) down=\(event.down ?? false) x=\(event.x ?? -1)"
-      )
-    }
+    inputs?.input(event, source: source, at: at)
+  }
+
+  func laserContact(_ color: Int, down: Bool) {
+    inputs?.contact(color, position: down ? lasers[color] : nil)
   }
 
   func releaseAll() {
+    inputs?.releaseAll()
     for lane in 0..<6 where buttons[lane] { button(lane, down: false) }
   }
 
@@ -354,19 +367,25 @@ final class GameModel: ObservableObject {
     }
   }
 
-  func log(_ event: String, detail: String) {
+  func log(
+    _ event: String, detail: String, inputTime: Double? = nil, wallTime: Double? = nil
+  ) {
     let entry = EvidenceEntry(
-      event: event, wallTime: localTime, id: id, room: roomCode,
-      epoch: epoch, songTime: songTime, audioTime: audio.time, detail: detail, peers: peers)
-    guard var data = try? JSONEncoder().encode(entry) else { return }
-    data.append(0x0A)
-    if !FileManager.default.fileExists(atPath: logURL.path) {
-      FileManager.default.createFile(atPath: logURL.path, contents: nil)
-    }
-    if let handle = try? FileHandle(forWritingTo: logURL) {
-      defer { try? handle.close() }
-      _ = try? handle.seekToEnd()
-      try? handle.write(contentsOf: data)
+      event: event, wallTime: wallTime ?? localTime, id: id, room: roomCode,
+      epoch: epoch, songTime: inputTime ?? songTime, audioTime: audio.time, detail: detail,
+      peers: peers)
+    let url = logURL
+    logQueue.async {
+      guard var data = try? JSONEncoder().encode(entry) else { return }
+      data.append(0x0A)
+      if !FileManager.default.fileExists(atPath: url.path) {
+        FileManager.default.createFile(atPath: url.path, contents: nil)
+      }
+      if let handle = try? FileHandle(forWritingTo: url) {
+        defer { try? handle.close() }
+        _ = try? handle.seekToEnd()
+        try? handle.write(contentsOf: data)
+      }
     }
   }
 }

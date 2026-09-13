@@ -19,6 +19,9 @@ xcodebuild -project LaserOverdrive.xcodeproj -scheme LaserOverdrive \
 test -s .build/Build/Products/Release-iphonesimulator/LaserOverdrive.app/chart.json
 test -s .build/Build/Products/Release-iphonesimulator/LaserOverdrive.app/afterburn.m4a
 xcrun swift-format lint --strict --recursive App
+xcrun swiftc App/Chart.swift App/GameInputStream.swift Tools/input_stream_tests.swift \
+  -o .build/input-stream-tests
+.build/input-stream-tests
 
 cd Server
 npm ci --ignore-scripts
@@ -77,6 +80,10 @@ server clock. The song and chart include two seconds of musical lead-in.
   moves relatively (a 115-point sweep covers the track). Keep touching to sustain
   tracking on flat paths. Move smoothly along slopes and quickly at right angles.
   Each laser also moves the soundtrack's low-pass frequency.
+  A dedicated serial input queue samples held contacts every 25 ms independently
+  of rendering, coalesces moves, and orders them with button packets. Releasing,
+  cancelling, leaving or disconnecting clears the held contacts. The server
+  still requires samples newer than 180 ms; no missed samples are backfilled.
 - Multi-touch supports concurrent buttons and gestures. Controls light on contact,
   and tap feedback is synthesized locally with haptics on supported devices.
 - CRITICAL ≤50 ms, NEAR ≤120 ms. Sustains and lasers score repeated ticks.

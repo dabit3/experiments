@@ -14,6 +14,7 @@
 		6C7BE6774C0547555D5FA370 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E13036938796117C2F4C55 /* Chart.swift */; };
 		92BD43F66587169BBE08576B /* afterburn.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 54A0FD04FAC82E8742E5260B /* afterburn.m4a */; };
 		A75F971BA67D7B68327C99C5 /* LaserOverdriveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A232AFAF7CF24ABE2C1E894 /* LaserOverdriveApp.swift */; };
+		CFC698F374B9C439657DA103 /* GameInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7767154B2949CA3AB86F8 /* GameInputStream.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		54A0FD04FAC82E8742E5260B /* afterburn.m4a */ = {isa = PBXFileReference; path = afterburn.m4a; sourceTree = "<group>"; };
 		5A232AFAF7CF24ABE2C1E894 /* LaserOverdriveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaserOverdriveApp.swift; sourceTree = "<group>"; };
 		87A58FD1B010A57DA2F8D8A7 /* SoundEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEngine.swift; sourceTree = "<group>"; };
+		94F7767154B2949CA3AB86F8 /* GameInputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInputStream.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -33,6 +35,7 @@
 			isa = PBXGroup;
 			children = (
 				07E13036938796117C2F4C55 /* Chart.swift */,
+				94F7767154B2949CA3AB86F8 /* GameInputStream.swift */,
 				2E738F72679C63C9A91E41CB /* GameModel.swift */,
 				0AE8F31CC55CD82BC264F7AF /* HighwayView.swift */,
 				34161784AB36A36DEBD25F39 /* Info.plist */,
@@ -137,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C7BE6774C0547555D5FA370 /* Chart.swift in Sources */,
+				CFC698F374B9C439657DA103 /* GameInputStream.swift in Sources */,
 				05D96D202048D40A73BA99CC /* GameModel.swift in Sources */,
 				529C678392BFAFA1A8DFC640 /* HighwayView.swift in Sources */,
 				A75F971BA67D7B68327C99C5 /* LaserOverdriveApp.swift in Sources */,
