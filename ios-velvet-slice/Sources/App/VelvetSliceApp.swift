@@ -230,7 +230,8 @@ struct RootView: View {
 
     private var results: some View {
         let ended = store.round.bombs >= 3
-        let title = store.mode == .practice ? "PRACTICE" : (ended ? "GAME OVER" : "TIME UP!")
+        let quit = store.mode == .arcade && !ended && store.round.remaining > 0
+        let title = store.mode == .practice ? "PRACTICE" : (ended ? "GAME OVER" : (quit ? "RUN OVER" : "TIME UP!"))
         return VStack(spacing: 0) {
             topBar
             Spacer(minLength: 10)
