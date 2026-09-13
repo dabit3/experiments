@@ -18,8 +18,9 @@ xcodebuild -project LaserOverdrive.xcodeproj -scheme LaserOverdrive \
   build CODE_SIGNING_ALLOWED=NO
 test -s .build/Build/Products/Release-iphonesimulator/LaserOverdrive.app/chart.json
 test -s .build/Build/Products/Release-iphonesimulator/LaserOverdrive.app/afterburn.m4a
-xcrun swift-format lint --strict --recursive App
-xcrun swiftc App/Chart.swift App/GameInputStream.swift Tools/input_stream_tests.swift \
+xcrun swift-format lint --strict --recursive App Tools/input_stream_tests.swift
+xcrun swiftc -swift-version 6 -sanitize=thread \
+  App/Chart.swift App/GameInputStream.swift Tools/input_stream_tests.swift \
   -o .build/input-stream-tests
 .build/input-stream-tests
 
@@ -51,6 +52,33 @@ guest tokens and bounded payload/rate limits, but is intended for trusted local
 networks, not an internet service.
 
 ## Two-device play
+
+### Simulator audio preflight
+
+Verify a working host output **before booting the simulators**:
+
+```sh
+system_profiler SPAudioDataType
+```
+
+On this macOS VM, `brew install --cask blackhole-2ch` installed BlackHole 0.7.1.
+If it is installed but still absent from the device list, `sudo -n killall coreaudiod`
+activated it without a VM reboot. Use this only when the endpoint is missing and
+passwordless permission is available. Check that BlackHole is the default input,
+output and system output at 48kHz. Restart simulators that booted without it.
+Grant the macOS microphone prompt for SimulatorTrampoline/capture tooling, then
+launch the two apps sequentially; launching while permission was pending caused
+an audio RPC timeout in the first preflight.
+
+For recorded evidence, capture the live BlackHole input concurrently with video.
+The verified capture used a native AVAudioEngine input tap writing AVAudioFile,
+with wall/host timestamps and per-buffer frame counts. AVFoundation ffmpeg audio
+capture dropped buffers here, so check PCM duration, continuity and nonzero levels
+against elapsed time. A route listing or test tone alone does not prove game
+playback. Align actual captured audio by timestamps; never add the bundled song
+as a post-hoc soundtrack.
+
+### Launch both guests
 
 List devices with `xcrun simctl list devices available`. Choose **two different**
 iPhone UDIDs, then:
@@ -150,7 +178,9 @@ full screenshot and test report.
   original music against the common start clock.
 - `Server/engine.mjs` is the authoritative scoring engine. `server.mjs` handles
   two-seat rooms, readiness, identity resumption, broadcasts, rate limits and
-  result transitions. See [protocol](Docs/PROTOCOL.md).
+  result transitions. Evidence writes are asynchronous; rejection reasons,
+  delayed ticks and native send completions support delivery diagnostics.
+  See [protocol](Docs/PROTOCOL.md).
 - `Tools/generate_track.py` authors deterministic notes/lasers and synthesizes the
   original score. To regenerate: run it, then
   `ffmpeg -y -i Resources/afterburn.wav -c:a aac -b:a 160k Resources/afterburn.m4a`.
@@ -174,14 +204,28 @@ testing remain separate checks.
 
 ### Recorded runtime validation
 
-Two complete native Simulator duels were recorded at gameplay revision `acb668c`.
-Both peers agreed on authoritative results, scored all five mechanic categories,
-and exercised real BT/FX/laser touch input, rematch, and process reconnect.
+Two complete native Simulator duels at gameplay revision `a974a65` pass the
+unchanged evidence verifier, including real touch input, all five scoring
+mechanics, common starts, identical authoritative results, rematch and PRISM
+process reconnect. Both full device displays and actual BlackHole game output
+were captured concurrently. Native music-clock maximum drift was 17.194 ms in
+round one and 61.142 ms in round two, including reconnect.
 
-Validation remains **partial**. The test host exposed no audio endpoint, so
-AVAudioEngine reported `-10851`, both music-clock checks had zero samples, and the
-video is silent. Actual audible soundtrack/FX, hardware multitouch and haptics were
-not verified. Stationary laser contact sent repeated samples, but one observed
-366.6 ms gap exceeded the 180 ms freshness window; its cause is not established.
-The strict evidence verifier remains failing. Neither threshold nor assertion
-was relaxed to claim a pass.
+The manual held-laser test generated and accepted all 683 samples, with maximum
+sampling gap 27.681 ms, maximum server-arrival gap 29 ms and constant position for
+16.849 seconds. Release stopped samples until automation was explicitly restored.
+All 687 touch sends completed without errors; there were no touch rejections,
+clock-skew rejections or server tick delays. The 180 ms freshness threshold and
+250 ms input acceptance window remain unchanged.
+
+Historical failures remain preserved in the PR evidence. Revision `acb668c` ran
+without an audio endpoint (`-10851`, zero music-clock samples, silent video) and
+had a 366.6 ms display-link-dependent contact gap. The dedicated input sampler
+fix passed at `a24f617`, but a separate 370 ms accepted-arrival gap interrupted
+that follow-up. It did not recur after synchronous server evidence writes were
+removed and transport diagnostics added; its exact cause was not established.
+The final raw diagnostics also retain rejected late automated-driver events.
+
+Hardware multitouch, haptics, physical output latency and subjective listening
+remain unverified. Captured PCM continuity/levels and native audio clocks provide
+objective audio evidence; they do not claim hardware calibration or cabinet parity.
