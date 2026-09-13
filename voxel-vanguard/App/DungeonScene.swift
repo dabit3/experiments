@@ -75,7 +75,8 @@ final class DungeonScene {
   private func texture(_ color: UIColor) -> UIImage {
     let format = UIGraphicsImageRendererFormat()
     format.scale = 1
-    format.opaque = true
+    format.opaque = false
+    format.preferredRange = .standard
     let renderer = UIGraphicsImageRenderer(size: CGSize(width: 32, height: 32), format: format)
     return renderer.image { context in
       let drawing = context.cgContext
