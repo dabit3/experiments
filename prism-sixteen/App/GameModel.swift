@@ -95,6 +95,8 @@ final class GameModel: ObservableObject {
   var notes: [Note] { song?.charts[room?.difficulty ?? difficulty] ?? [] }
   var me: Peer? { room?.players.first { $0.id == playerID } }
   var rival: Peer? { room?.players.first { $0.id != playerID } }
+  var finalMe: Peer? { room?.results.first { $0.id == playerID } }
+  var finalRival: Peer? { room?.results.first { $0.id != playerID } }
   var playing: Bool { room?.phase == "playing" }
   var host: Bool { room?.hostID == playerID }
   var songTime: Double { serverNow - (room?.startAt ?? serverNow) }

@@ -124,3 +124,43 @@ test('real WebSocket room: capacity, host selection, ready gate, shared outcome,
     assert.equal(second.room.players[1].score, 0);
   } finally { await app.close(); }
 });
+
+test('completed outcome survives the winner leaving, with results cleared only on rematch', async () => {
+  let now = 2000;
+  const app = startServer({ port: 0, now: () => now, logger: () => {} });
+  await once(app.server, 'listening');
+  const port = app.server.address().port;
+  try {
+    const a = await peer(port), b = await peer(port);
+    a.send({ type: 'create', code: 'KEEP', playerID: 'winner-one', name: 'Winner' });
+    await a.wait(m => m.type === 'welcome');
+    b.send({ type: 'join', code: 'KEEP', playerID: 'runner-two', name: 'Runner' });
+    await b.wait(m => m.type === 'welcome');
+    a.send({ type: 'ready', ready: true });
+    b.send({ type: 'ready', ready: true });
+    const start = await a.wait(m => m.room?.phase === 'playing');
+    const note = JSON.parse(fs.readFileSync(new URL('../Resources/catalog.json', import.meta.url)))[0].charts.ADVANCED[0];
+    now = start.room.startAt + note.time;
+    a.send({ type: 'tap', cell: note.cell, seq: 1, at: now, round: 1 });
+    await a.wait(m => m.type === 'judgment');
+    now += 100;
+    const first = await b.wait(m => m.room?.phase === 'results');
+    assert.deepEqual(first.room.results, first.room.players);
+    assert.ok(first.room.results[0].score > first.room.results[1].score);
+    a.send({ type: 'ready', ready: true });
+    b.send({ type: 'ready', ready: true });
+    const rematch = await a.wait(m => m.room?.round === 2);
+    assert.deepEqual(rematch.room.results, []);
+    now = rematch.room.startAt + note.time;
+    a.send({ type: 'tap', cell: note.cell, seq: 2, at: now, round: 2 });
+    await a.wait(m => m.type === 'judgment' && m.at === now);
+    now += 100;
+    const second = await b.wait(m => m.room?.phase === 'results' && m.room.round === 2);
+    a.send({ type: 'leave' });
+    const departed = await b.wait(m => m.room?.phase === 'results' && m.room.players.length === 1);
+    assert.equal(departed.room.hostID, 'runner-two');
+    assert.equal(departed.room.players[0].id, 'runner-two');
+    assert.deepEqual(departed.room.results, second.room.results);
+    assert.ok(departed.room.results[0].score > departed.room.results[1].score);
+  } finally { await app.close(); }
+});

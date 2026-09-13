@@ -27,6 +27,7 @@ export function startServer({ port = 43116, now = () => Date.now() / 1000,
         code: room.code, hostID: room.hostID, phase: room.phase, songID: room.songID,
         difficulty: room.difficulty, round: room.round, startAt: room.startAt,
         players: [...room.players.values()].map(publicPlayer),
+        results: room.results,
       },
     };
   }
@@ -38,6 +39,7 @@ export function startServer({ port = 43116, now = () => Date.now() / 1000,
   function begin(room) {
     room.phase = 'playing';
     room.round++;
+    room.results = [];
     room.startAt = now() + startDelay;
     for (const p of room.players.values()) {
       p.performance = newPerformance();
@@ -76,7 +78,7 @@ export function startServer({ port = 43116, now = () => Date.now() / 1000,
           if (!roomPattern.test(code)) return error('Room codes use 4–6 letters or numbers');
           if (rooms.has(code)) return error('Room already exists. Join it instead.');
           room = { code, hostID: msg.playerID, players: new Map(), phase: 'lobby',
-            songID: 'refraction', difficulty: 'ADVANCED', startAt: 0, round: 0, touched: now() };
+            songID: 'refraction', difficulty: 'ADVANCED', startAt: 0, round: 0, results: [], touched: now() };
           rooms.set(code, room);
         } else {
           room = rooms.get(code);
@@ -152,8 +154,9 @@ export function startServer({ port = 43116, now = () => Date.now() / 1000,
         for (const p of room.players.values()) sweep(p, chartFor(room), room.startAt, now(), final);
         if (final) {
           room.phase = 'results';
+          room.results = structuredClone([...room.players.values()].map(publicPlayer));
           log('result', { code: room.code, round: room.round,
-            players: [...room.players.values()].map(publicPlayer) });
+            players: room.results });
         }
         broadcast(room);
       }

@@ -41,7 +41,7 @@ The `source` field labels evidence as touch/driver and does not alter judgment.
 - `welcome`: `id`, random rejoin `token`, `code`, `lastSequence`.
 - `pong`: echoed `sent`, `serverTime`.
 - `state`: `serverTime`, `room` with `code`, `hostID`, `phase`, `songID`,
-  `difficulty`, `round`, `startAt`, and complete public `players`.
+  `difficulty`, `round`, `startAt`, complete public `players`, and `results`.
 - `judgment`: immediate owning-peer feedback: `cell`, `noteID`, `label`, signed
   `error` seconds, server receipt `at`, and `source`.
 - `error`: human-readable `message`.
@@ -50,6 +50,11 @@ Each public player has `id`, `name`, `connected`, `ready`, `score`, `combo`,
 `maxCombo`, weighted `accuracy`, normalized `shutter`, `perfect`, `great`, `good`,
 `miss`, `ghost`, map `judged`, and last judgment. Private tokens never appear in
 public room state or server logs.
+
+`results` is a frozen array of the completed round's public performances. It is
+empty until the song ends and clears when a new round begins. Membership,
+readiness and disconnect updates affect `players`, while the final outcome stays
+unchanged even if a competitor explicitly leaves.
 
 ## Timing / recovery
 

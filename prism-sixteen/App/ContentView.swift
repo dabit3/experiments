@@ -234,13 +234,18 @@ struct ContentView: View {
           : (model.room?.phase == "results" ? "REMATCH" : "READY TO SYNC"),
         icon: model.me?.ready == true ? "checkmark" : "bolt.fill"
       ) { model.ready() }
-      .disabled(model.syncSamples < 3 || model.connection != "LINKED")
+      .disabled(
+        model.syncSamples < 3 || model.connection != "LINKED"
+          || (model.room?.phase == "results" && model.rival == nil)
+      )
       .opacity(model.syncSamples < 3 ? 0.4 : 1)
       .accessibilityIdentifier("readyButton")
       HStack {
         Text(
           model.rival == nil
-            ? "Share the code to connect player 2." : "The song begins when both players are ready."
+            ? (model.room?.phase == "results"
+              ? "Rival left. Leave to create a new room." : "Share the code to connect player 2.")
+            : "The song begins when both players are ready."
         )
         .font(.system(size: 10)).foregroundStyle(muted)
         Spacer()
@@ -375,7 +380,7 @@ struct ContentView: View {
         Text(outcome).font(.system(size: 12, weight: .black)).tracking(4).foregroundStyle(mint)
         Text(grade).font(.system(size: 76, weight: .ultraLight, design: .rounded)).foregroundStyle(
           mint)
-        Text(String(format: "%07d", model.me?.score ?? 0))
+        Text(String(format: "%07d", model.finalMe?.score ?? 0))
           .font(.system(size: 42, weight: .light, design: .rounded)).monospacedDigit()
         Text("JUDGMENT + SHUTTER BONUS").font(.system(size: 8, weight: .bold)).tracking(1)
           .foregroundStyle(muted)
@@ -383,16 +388,16 @@ struct ContentView: View {
         .background(mint.opacity(0.045), in: RoundedRectangle(cornerRadius: 8))
         .overlay(RoundedRectangle(cornerRadius: 8).stroke(mint.opacity(0.2)))
       HStack {
-        resultMetric("ACCURACY", String(format: "%.2f%%", model.me?.accuracy ?? 0))
-        resultMetric("MAX COMBO", "\(model.me?.maxCombo ?? 0)")
-        resultMetric("RIVAL SCORE", "\(model.rival?.score ?? 0)")
+        resultMetric("ACCURACY", String(format: "%.2f%%", model.finalMe?.accuracy ?? 0))
+        resultMetric("MAX COMBO", "\(model.finalMe?.maxCombo ?? 0)")
+        resultMetric("RIVAL SCORE", "\(model.finalRival?.score ?? 0)")
       }
       HStack(spacing: 5) {
         ForEach(
           Array(
             [
-              ("PERFECT", model.me?.perfect ?? 0), ("GREAT", model.me?.great ?? 0),
-              ("GOOD", model.me?.good ?? 0), ("MISS", model.me?.miss ?? 0),
+              ("PERFECT", model.finalMe?.perfect ?? 0), ("GREAT", model.finalMe?.great ?? 0),
+              ("GOOD", model.finalMe?.good ?? 0), ("MISS", model.finalMe?.miss ?? 0),
             ].enumerated()), id: \.offset
         ) { _, pair in
           VStack(spacing: 6) {
@@ -405,13 +410,13 @@ struct ContentView: View {
   }
 
   private var outcome: String {
-    let mine = model.me?.score ?? 0
-    let theirs = model.rival?.score ?? 0
+    let mine = model.finalMe?.score ?? 0
+    let theirs = model.finalRival?.score ?? 0
     return mine == theirs ? "DRAW / IN HARMONY" : mine > theirs ? "YOU WIN" : "RIVAL WINS"
   }
 
   private var grade: String {
-    let score = model.me?.score ?? 0
+    let score = model.finalMe?.score ?? 0
     if score == 1_000_000 { return "EXC" }
     if score >= 980_000 { return "SSS" }
     if score >= 950_000 { return "SS" }

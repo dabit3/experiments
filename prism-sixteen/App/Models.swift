@@ -61,6 +61,7 @@ struct Room: Decodable {
   let round: Int
   let startAt: Double
   let players: [Peer]
+  let results: [Peer]
 }
 
 struct ServerMessage: Decodable {
