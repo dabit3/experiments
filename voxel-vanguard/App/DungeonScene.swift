@@ -73,16 +73,21 @@ final class DungeonScene {
   }
 
   private func texture(_ color: UIColor) -> UIImage {
-    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 32, height: 32))
+    let format = UIGraphicsImageRendererFormat()
+    format.scale = 1
+    format.opaque = true
+    let renderer = UIGraphicsImageRenderer(size: CGSize(width: 32, height: 32), format: format)
     return renderer.image { context in
-      color.setFill()
-      context.fill(CGRect(x: 0, y: 0, width: 32, height: 32))
+      let drawing = context.cgContext
+      drawing.setFillColor(color.cgColor)
+      drawing.fill(CGRect(x: 0, y: 0, width: 32, height: 32))
       for i in 0..<72 {
         let x = (i * 13 + i / 3 * 7) % 32
         let y = (i * 19 + 3) % 32
-        (i % 3 == 0 ? UIColor.white : UIColor.black).withAlphaComponent(i % 3 == 0 ? 0.09 : 0.12)
-          .setFill()
-        context.fill(CGRect(x: x, y: y, width: 2 + i % 4, height: 2 + i % 3))
+        drawing.setFillColor(
+          (i % 3 == 0 ? UIColor.white : UIColor.black)
+            .withAlphaComponent(i % 3 == 0 ? 0.09 : 0.12).cgColor)
+        drawing.fill(CGRect(x: x, y: y, width: 2 + i % 4, height: 2 + i % 3))
       }
     }
   }
