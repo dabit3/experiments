@@ -41,12 +41,12 @@ final class ArenaRenderer {
     ambient.light = SCNLight()
     ambient.light?.type = .ambient
     ambient.light?.color = UIColor(rgb: 0xA5CDE7)
-    ambient.light?.intensity = 850
+    ambient.light?.intensity = 350
     scene.rootNode.addChildNode(ambient)
     let sun = SCNNode()
     sun.light = SCNLight()
     sun.light?.type = .directional
-    sun.light?.intensity = 1600
+    sun.light?.intensity = 1050
     sun.light?.color = UIColor(rgb: 0xFFF5DA)
     sun.eulerAngles = SCNVector3(-0.8, -0.5, 0)
     scene.rootNode.addChildNode(sun)
@@ -54,7 +54,7 @@ final class ArenaRenderer {
     rim.light = SCNLight()
     rim.light?.type = .directional
     rim.light?.color = UIColor(rgb: 0x42CAFF)
-    rim.light?.intensity = 1100
+    rim.light?.intensity = 700
     rim.eulerAngles = SCNVector3(0.5, 2.2, 0)
     scene.rootNode.addChildNode(rim)
     makeArena()
@@ -66,6 +66,7 @@ final class ArenaRenderer {
 
   func material(_ color: UInt32, glow: Bool = false, metal: CGFloat = 0.55) -> SCNMaterial {
     let value = SCNMaterial()
+    value.lightingModel = .physicallyBased
     value.diffuse.contents = UIColor(rgb: color)
     value.metalness.contents = metal
     value.roughness.contents = 0.35

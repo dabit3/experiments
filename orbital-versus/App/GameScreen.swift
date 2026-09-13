@@ -28,7 +28,7 @@ struct GameScreen: View {
         if client.state?.phase == "lobby" || client.state == nil {
           lobby(size: geometry.size)
         } else {
-          combatHUD(size: geometry.size)
+          combatHUD(size: geometry.size, insets: geometry.safeAreaInsets)
         }
         if client.hitFlash { Color.red.opacity(0.18).ignoresSafeArea().allowsHitTesting(false) }
         if client.state?.phase == "countdown" {
@@ -62,7 +62,6 @@ struct GameScreen: View {
       .font(.system(size: 12, weight: .semibold, design: .monospaced))
       .foregroundStyle(.white)
     }
-    .ignoresSafeArea()
   }
 
   private func lobby(size: CGSize) -> some View {
@@ -166,7 +165,7 @@ struct GameScreen: View {
     }.accessibilityIdentifier(id)
   }
 
-  private func combatHUD(size: CGSize) -> some View {
+  private func combatHUD(size: CGSize, insets: EdgeInsets) -> some View {
     ZStack {
       VStack {
         HStack(alignment: .top, spacing: 10) {
@@ -227,7 +226,7 @@ struct GameScreen: View {
             navy.opacity(0.8))
           Text("\(Int(range))m / \(Int(target.hp)) AP").font(.system(size: 8, weight: .bold))
         }
-        .position(x: client.reticle.x, y: client.reticle.y)
+        .position(x: client.reticle.x - insets.leading, y: client.reticle.y - insets.top)
         .allowsHitTesting(false)
       }
 
@@ -327,7 +326,8 @@ struct GameScreen: View {
     HStack(spacing: 5) {
       Text(title).font(.system(size: 8, weight: .heavy)).frame(width: 35, alignment: .leading)
       segmentedGauge(value: Double(cost) / 6000, color: color).frame(height: 9)
-      Text("\(cost)").font(.system(size: 11, weight: .black, design: .rounded)).frame(width: 34)
+      Text(String(cost)).font(.system(size: 11, weight: .black, design: .rounded))
+        .monospacedDigit().lineLimit(1).fixedSize().frame(width: 36)
     }.padding(3).background(navy.opacity(0.82)).clipShape(CutPanel())
   }
   private func segmentedGauge(value: Double, color: Color) -> some View {
