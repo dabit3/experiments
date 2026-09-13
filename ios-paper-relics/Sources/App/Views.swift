@@ -155,18 +155,18 @@ struct TitleView: View {
     GeometryReader { geometry in
       let compact = geometry.size.height < 700
       ScrollView {
-        VStack(spacing: compact ? 10 : 16) {
-          Eyebrow(text: "A pocket paper theater").padding(.top, compact ? 12 : 22)
+        VStack(spacing: compact ? 10 : 12) {
+          Eyebrow(text: "A pocket paper theater").padding(.top, compact ? 12 : 16)
           Spacer(minLength: 0)
           Proscenium(kind: .moth)
-            .frame(height: min(geometry.size.height * (compact ? 0.3 : 0.36), 320))
+            .frame(height: min(geometry.size.height * (compact ? 0.28 : 0.3), 300))
             .padding(.horizontal, 28)
             .opacity(lit || reduceMotion ? 1 : 0)
           VStack(spacing: compact ? 4 : 8) {
-            PixelText("PAPER", px: compact ? 5 : 6, color: Ink.white, shadow: Ink.navy)
-            PixelText("RELICS", px: compact ? 6 : 7, color: Ink.gold, shadow: Ink.maroon)
+            PixelText("PAPER", px: 5, color: Ink.white, shadow: Ink.navy)
+            PixelText("RELICS", px: 6, color: Ink.gold, shadow: Ink.maroon)
           }
-          .padding(.top, compact ? 6 : 12)
+          .padding(.top, compact ? 6 : 8)
           PixelRule().frame(width: 160)
           PixelText("EVERY CARD, A SMALL REBELLION", px: 1.5, color: Ink.mint)
           if !compact {
@@ -194,7 +194,7 @@ struct TitleView: View {
               PixelText("BEST \(arcade(store.archive.best))", px: 1.5, color: Ink.gold)
             }
           }
-          .padding(.bottom, 18)
+          .padding(.bottom, 12)
         }
         .frame(minHeight: geometry.size.height)
       }.scrollIndicators(.hidden)

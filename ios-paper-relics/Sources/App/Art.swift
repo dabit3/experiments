@@ -1226,8 +1226,7 @@ struct CardFace: View {
     .overlay(alignment: .topLeading) {
       CostBadge(number: kind.cost, size: (width * 0.2).rounded()).offset(x: -4, y: -4)
     }
-    .saturation(affordable ? 1 : 0.1)
-    .opacity(affordable ? 1 : 0.8)
+    .saturation(affordable ? 1 : 0.35)
     .compositingGroup()
     .shadow(color: Ink.black.opacity(0.7), radius: 0, x: 4, y: 4)
     .accessibilityElement(children: .ignore)
