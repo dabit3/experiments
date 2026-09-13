@@ -55,8 +55,8 @@ xcrun simctl list devices available
 export DEVICE_A='<first iPhone simulator UUID>'
 export DEVICE_B='<second iPhone simulator UUID>'
 xcrun simctl boot "$DEVICE_A"
-xcrun simctl boot "$DEVICE_B"
 xcrun simctl bootstatus "$DEVICE_A" -b
+xcrun simctl boot "$DEVICE_B"
 xcrun simctl bootstatus "$DEVICE_B" -b
 open -a Simulator
 xcrun simctl install "$DEVICE_A" build/Build/Products/Debug-iphonesimulator/NovaBrawl.app
@@ -105,6 +105,38 @@ and assertions from that run. Check video with:
 ffprobe -v error -show_entries format=duration,size \
   -show_entries stream=codec_name,width,height -of json two-device-match.mp4
 ```
+
+### Test through programmatic computer input
+
+The [runnable UI2603 harness](https://app.devin.ai/attachments/e99ffba5-eede-43cd-919b-ae8522ba7fac/nova-computer-input-harness.zip)
+contains the exact Python driver, Swift HID input helper, native desktop/audio
+recorders, overlay and validation scripts used for the recorded test.
+[Reproduction instructions](https://app.devin.ai/attachments/84286602-59c5-4d62-ba1d-00d4fe9a2934/REPRODUCE.md)
+include compilation, permissions, device IDs, window calibration and rerun commands.
+The immutable harness is preserved as test evidence outside the app source.
+
+This procedure omits `--auto` and `--connect`. It prefills lobby fields, then posts
+actual macOS mouse clicks, holds and drags to Create/Join/Ready and combat controls
+on two independent Simulator clients. The driver reads server JSONL only for
+observations and assertions. Every input records its player, device, coordinates,
+duration and timestamps. Both native clients run concurrently; one pointer
+alternates between them.
+
+The supplied calibration requires a 1600×1200 desktop, an iPhone 17 Pro window
+at 456×972 and an iPhone 17 Pro Max window at 494×1054. On another Mac, configure
+the device IDs and recalibrate controls first. A window-size mismatch aborts.
+Use a new room, output directory and free port for every run. Do not move the
+windows or use the mouse during execution.
+
+[UI2603 recording](https://app.devin.ai/attachments/41fddc89-573f-447e-9933-fa8a4a7c1004/computer-input-final.mp4)
+and [report](https://app.devin.ai/attachments/312a3238-02f7-4002-a666-edadc8f8cdf2/REPORT.md)
+show 67 OS actions, damage by both players, a shared KO, intentional Rematch
+clicks from both clients and resumed round-two combat. The complete desktop,
+cursor and action overlay were captured alongside continuous live game audio.
+The [evidence archive](https://app.devin.ai/attachments/546c864c-c64c-4bb1-9db2-14b54324f8fa/evidence-UI2603.zip)
+retains action/server logs, assertions, PCM clocks and failed probes. Simultaneous
+Boost+joystick is unverified; Strike inputs reached the server but dealt no melee
+damage in this run. Reconnect and mute checks belong to earlier separate runs.
 
 ### Capture actual game audio on a macOS VM
 
