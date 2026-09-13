@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F80C2D62975F83FA7B2C146 /* aria.png in Resources */ = {isa = PBXBuildFile; fileRef = C887EFBC1F97CBBFFC92869F /* aria.png */; };
 		30DFDF359F175C32238BCCC0 /* charts.json in Resources */ = {isa = PBXBuildFile; fileRef = 5F373FA452C314E0BF6343B4 /* charts.json */; };
 		34E0D25F124ECF7A1B9AA8A7 /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = F1F1A373E3A004AA3BDBFFD9 /* hit.wav */; };
 		38091A264DA06AB67A1DEE1F /* aurora.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 915BED724987CB014CECA688 /* aurora.m4a */; };
 		7D2DD7953A0F2B6424B7141B /* HighwayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80964C58CB49586D78541D42 /* HighwayScene.swift */; };
 		8A04E010C215E10E067C918A /* SkylinePulseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EDF8C646E27A6FD6DDCCD4 /* SkylinePulseApp.swift */; };
+		9609A85BFEB88FDFFC3E7AA3 /* Artwork.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5CFBE594E548FD565B6791BE /* Artwork.xcassets */; };
 		A862511A86D0EE332A7AF615 /* neon.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 801AB7D3BA02186DFC4751FB /* neon.m4a */; };
 		DC9E6444DB37611EC9BF60D1 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29AFF4D56DB6DE0CE024004B /* Models.swift */; };
 		EC590FBC14D8D734A7123AB8 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = B352B8AE63B65EE3E46095F1 /* Session.swift */; };
@@ -20,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		29AFF4D56DB6DE0CE024004B /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		5CFBE594E548FD565B6791BE /* Artwork.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Artwork.xcassets; sourceTree = "<group>"; };
 		5F373FA452C314E0BF6343B4 /* charts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = charts.json; sourceTree = "<group>"; };
 		801AB7D3BA02186DFC4751FB /* neon.m4a */ = {isa = PBXFileReference; path = neon.m4a; sourceTree = "<group>"; };
 		80964C58CB49586D78541D42 /* HighwayScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighwayScene.swift; sourceTree = "<group>"; };
@@ -28,7 +29,6 @@
 		B352B8AE63B65EE3E46095F1 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		B3EDF8C646E27A6FD6DDCCD4 /* SkylinePulseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkylinePulseApp.swift; sourceTree = "<group>"; };
 		BE432000CC00463B0003FD55 /* SkylinePulse.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SkylinePulse.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C887EFBC1F97CBBFFC92869F /* aria.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = aria.png; sourceTree = "<group>"; };
 		F1F1A373E3A004AA3BDBFFD9 /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,7 +65,7 @@
 		B2FCE6769E51DBA7E9CE11E7 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				C887EFBC1F97CBBFFC92869F /* aria.png */,
+				5CFBE594E548FD565B6791BE /* Artwork.xcassets */,
 				915BED724987CB014CECA688 /* aurora.m4a */,
 				5F373FA452C314E0BF6343B4 /* charts.json */,
 				F1F1A373E3A004AA3BDBFFD9 /* hit.wav */,
@@ -130,7 +130,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F80C2D62975F83FA7B2C146 /* aria.png in Resources */,
+				9609A85BFEB88FDFFC3E7AA3 /* Artwork.xcassets in Resources */,
 				38091A264DA06AB67A1DEE1F /* aurora.m4a in Resources */,
 				30DFDF359F175C32238BCCC0 /* charts.json in Resources */,
 				34E0D25F124ECF7A1B9AA8A7 /* hit.wav in Resources */,

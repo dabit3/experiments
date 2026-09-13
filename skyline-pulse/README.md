@@ -27,8 +27,8 @@ Boot two distinct iPad simulators via Xcode/Simulator or CLI:
 
 ```sh
 xcrun simctl list devices available
-xcrun simctl create "Pulse Aria" "iPad mini (A17 Pro)" "iOS 26.5"
-xcrun simctl create "Pulse Nova" "iPad mini (A17 Pro)" "iOS 26.5"
+xcrun simctl create "Pulse Aria" "iPad mini (A17 Pro)" com.apple.CoreSimulator.SimRuntime.iOS-26-5
+xcrun simctl create "Pulse Nova" "iPad mini (A17 Pro)" com.apple.CoreSimulator.SimRuntime.iOS-26-5
 # Substitute the returned UDIDs:
 xcrun simctl boot "$ARIA_DEVICE"
 xcrun simctl boot "$NOVA_DEVICE"

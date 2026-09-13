@@ -85,7 +85,7 @@ struct RootView: View {
     GeometryReader { geo in
       HStack(spacing: 0) {
         ZStack(alignment: .bottomLeading) {
-          Image("aria.png").resizable().scaledToFill()
+          Image("aria").resizable().scaledToFill()
             .frame(width: geo.size.width * 0.32, height: geo.size.height).clipped()
           LinearGradient(colors: [.clear, ink], startPoint: .center, endPoint: .bottom)
           VStack(alignment: .leading, spacing: 12) {
@@ -149,7 +149,7 @@ struct RootView: View {
     } label: {
       VStack(alignment: .leading, spacing: 0) {
         ZStack(alignment: .bottomLeading) {
-          Image("aria.png").resizable().scaledToFill()
+          Image("aria").resizable().scaledToFill()
             .frame(height: 140).clipped()
             .hueRotation(.degrees(chart.id == "neon" ? 0 : 85))
           LinearGradient(
@@ -340,7 +340,7 @@ struct RootView: View {
 
   private var results: some View {
     ZStack {
-      Image("aria.png").resizable().scaledToFill().ignoresSafeArea().opacity(0.24)
+      Image("aria").resizable().scaledToFill().ignoresSafeArea().opacity(0.24)
       ink.opacity(0.55).ignoresSafeArea()
       VStack(spacing: 17) {
         brand

@@ -85,7 +85,7 @@ final class HighwayScene: SKScene {
         y: CGFloat((i * 173) % 800) / 800 * h)
       addChild(dot)
     }
-    let art = SKSpriteNode(imageNamed: "aria.png")
+    let art = SKSpriteNode(imageNamed: "aria")
     art.size = CGSize(width: h * 0.667, height: h)
     art.position = CGPoint(x: w * 0.12, y: h * 0.46)
     art.alpha = 0.82
