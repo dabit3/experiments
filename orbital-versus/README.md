@@ -97,6 +97,58 @@ side-by-side without cropping either display. Do not splice different matches.
 Keep both names, room and round visible. `simctl` video has no app-audio track;
 do not present a synthesized post-dub as captured gameplay sound.
 
+### Capture actual game audio
+
+On a macOS VM, verify `system_profiler SPAudioDataType` lists a working default
+input/output **before** booting simulators. This VM used BlackHole 2ch 0.7.1:
+
+```sh
+brew install --cask blackhole-2ch
+system_profiler SPAudioDataType
+# Only if the newly installed endpoint is still absent:
+sudo -n killall coreaudiod
+system_profiler SPAudioDataType
+```
+
+Check that BlackHole is the default input, output and system output (48kHz
+stereo here). Restart simulators that booted without the endpoint; a VM reboot
+was unnecessary. If noninteractive activation fails, resolve host permissions
+before continuing. Allow native microphone capture permission if prompted.
+
+FFmpeg 9.0.1 AVFoundation polling lost sample packets in preflight. The native
+callback recorder below captured continuous PCM without that loss:
+
+```sh
+mkdir -p evidence/audio
+swiftc Scripts/NativeAudioCapture.swift -o evidence/audio/native-audio-capture
+evidence/audio/native-audio-capture "$PWD/evidence/audio/run-01" 420
+```
+
+Use a fresh prefix each time. The duration is an upper bound; create
+`evidence/audio/run-01.stop` to stop early. Wait for the recorder's `READY` line,
+start both device recordings, wait for both `Recording started` messages,
+then launch the two apps. Record process/ready/launch clocks using
+`mach_absolute_time` converted to seconds. The helper writes direct PCM to
+`<prefix>.wav`, callback `pts`/`arrivalHost`/frame counts and offsets to
+`<prefix>-packets.jsonl`, and totals to `<prefix>-metadata.json`.
+
+Use audio `firstPTS` as the composition origin and measured video-ready clocks
+as video offsets. Keep the captured audio intact; do not replace it with bundled
+assets. Preserve originals, packet logs, telemetry and mux commands. Check
+callback continuity, nonzero RMS and clipping, then decode the final AAC and
+compare early/late windows against raw PCM for lag, drift and trimming.
+Isolate one app at a time for AUDIO ON/OFF/ON checks so the other app cannot mask
+mute. In the verified run each OFF interval had RMS zero; ON intervals matched
+the original music, and the 65.8035s match capture had zero callback gaps.
+
+The WAV writer can warn about interleaving conversion; verify output frame
+counts rather than suppressing diagnostics. Raw simulator videos can also have
+timestamp warnings. Document VFR normalization, endpoint frame holds and start
+uncertainty (about 222ms in this run). Full MP4 decode and visible inspection
+are still required; this workflow does not establish hardware synchronization.
+
+### Retrieve gameplay telemetry
+
 Each native sandbox writes `Documents/telemetry.jsonl`, including peer welcome,
 phase changes, control requests and authoritative snapshots. Retrieve both:
 
@@ -149,5 +201,7 @@ and a simple deterministic AI; it does not reproduce the reference's full roster
 three burst archetypes, campaign or online services. Guard is omnidirectional.
 Arena scenery outside the boundary is decorative. Rendering interpolates network
 snapshots; competitive latency compensation is not implemented. Room state is
-in-memory and the server targets trusted LAN use. Recorded simulator streams may
-be silent even though the native app plays original music and action audio.
+in-memory and the server targets trusted LAN use. Native loopback testing verified
+actual music, effects and mute/unmute; physical speaker quality and physical-device
+performance remain unverified. Automatic rematch uses rendered updates and took
+about 26 seconds under dual-simulator capture; manual rematch is also available.

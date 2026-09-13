@@ -2,7 +2,8 @@
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
-xcrun swift-format lint --strict --recursive App Tests
+xcrun swift-format lint --strict --recursive App Tests Scripts/NativeAudioCapture.swift
+xcrun swiftc -typecheck Scripts/NativeAudioCapture.swift
 npm --prefix Server run lint
 npm --prefix Server test
 npm --prefix Server audit --audit-level=moderate
