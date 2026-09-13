@@ -191,7 +191,7 @@ final class ArenaRenderer {
       box(tower, SCNVector3(1, 44, 5.1), SCNVector3(0, 0, 0), 0x4DD3FD, glow: true)
     }
     box(root, SCNVector3(102, 3, 6), SCNVector3(0, 41, 65), 0x526878, bevel: 0.3)
-    scene.rootNode.addChildNode(root.flattenedClone())
+    scene.rootNode.addChildNode(root)
   }
 
   private func makeMecha(team: Int) -> SCNNode {
