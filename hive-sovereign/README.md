@@ -68,8 +68,8 @@ internet service. No deployment or complex identity provider is required.
 - **Sound** toggles original loop/effects. **Field Manual** explains the rules.
 - The result screen supports mutual-ready **Rematch** and **Leave**.
 
-Workers carry one berry automatically on contact, then deposit by entering
-their team's upper central hive. Queens have three eggs total; drones respawn
+Workers carry one berry automatically on contact, then jump into the white-outlined
+empty hole in their team's upper central hive to deposit. Queens have three eggs total; drones respawn
 indefinitely at their hive. Respawn protection blinks briefly.
 
 ## Reproducible two-device run

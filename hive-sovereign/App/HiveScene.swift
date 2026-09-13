@@ -223,6 +223,8 @@ final class HiveScene: SKScene {
     for team in 0..<2 {
       for (i, hole) in holes[team].enumerated() {
         hole.fillColor = i < game.score[team] ? UIColor(hex: 0xed6fe8) : PixelArt.ink
+        hole.strokeColor = i == game.score[team] ? .white : PixelArt.ink
+        hole.lineWidth = i == game.score[team] ? 2 : 1
       }
       for (i, egg) in eggs[team].enumerated() { egg.alpha = i < game.lives[team] ? 1 : 0.15 }
     }

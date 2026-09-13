@@ -13,7 +13,7 @@ export const PLATFORMS = [
 const HOMES = [385, 575];
 const PILES = [
   [80, 65], [880, 65], [305, 65], [655, 65], [480, 145],
-  [180, 235], [780, 235], [70, 320], [890, 320],
+  [80, 150], [880, 150],
 ];
 const emptyInput = () => ({ move: 0, jump: false, action: false, dive: false });
 const clamp = (x, low, high) => Math.max(low, Math.min(high, x));
@@ -76,14 +76,22 @@ function platformFor(unit) {
   return nearest;
 }
 
-function route(start, end) {
+export function hiveTarget(game, team) {
+  const hole = Math.min(game.score[team], 11);
+  return { x: (team === 0 ? 343 : 503) + 26 + hole % 4 * 19, y: 456 - Math.floor(hole / 4) * 13 };
+}
+
+function route(start, end, target) {
   const queue = [[start]];
   const seen = new Set([start]);
   while (queue.length) {
     const path = queue.shift();
     const last = path.at(-1);
     if (last === end) return path;
-    PLATFORMS.forEach((p, i) => {
+    PLATFORMS.map((p, i) => ({ ...p, i }))
+      .sort((a, b) => Math.abs(a.x + a.w / 2 - target.x) - Math.abs(b.x + b.w / 2 - target.x))
+      .forEach((p) => {
+      const i = p.i;
       if (seen.has(i)) return;
       const a = PLATFORMS[last];
       const gap = Math.max(p.x - (a.x + a.w), a.x - (p.x + p.w), 0);
@@ -98,15 +106,17 @@ function route(start, end) {
 
 export function navigate(unit, target) {
   const input = emptyInput();
+  if (!unit.grounded && unit.navigation) {
+    input.move = sign(unit.navigation.x - unit.x);
+    return input;
+  }
   const from = platformFor(unit);
   const dest = platformFor(target);
-  const path = route(from, dest);
-  if (from === dest || !unit.grounded) {
+  const path = route(from, dest, target);
+  if (from === dest) {
     input.move = sign(target.x - unit.x);
-    if (!unit.grounded && path.length > 1) {
-      const p = PLATFORMS[path[1]];
-      input.move = sign(clamp(unit.x, p.x + 15, p.x + p.w - 15) - unit.x);
-    }
+    input.jump = target.y > unit.y + 10 && unit.cooldown <= 0;
+    unit.navigation = { x: target.x };
     return input;
   }
   const p = PLATFORMS[path[1]];
@@ -114,12 +124,15 @@ export function navigate(unit, target) {
     const tx = clamp(unit.x, p.x + 20, p.x + p.w - 20);
     input.move = sign(tx - unit.x);
     input.jump = Math.abs(tx - unit.x) < 115 && unit.cooldown <= 0;
+    unit.navigation = { x: tx };
   } else {
     const a = PLATFORMS[from];
     const left = a.x - 18;
     const right = a.x + a.w + 18;
-    const exit = Math.abs(target.x - left) < Math.abs(target.x - right) ? left : right;
+    const center = clamp(target.x, p.x + 20, p.x + p.w - 20);
+    const exit = Math.abs(center - left) < Math.abs(center - right) ? left : right;
     input.move = sign(exit - unit.x);
+    unit.navigation = { x: exit };
   }
   return input;
 }
@@ -132,7 +145,13 @@ export function botInput(game, unit) {
     const aggressive = order === 'military' || unit.role === 'warrior';
     let target = aggressive && foe ? { x: foe.x, y: foe.y + 25 } :
       { x: gate.x + Math.sin(game.time * 0.6) * 90, y: gate.y + 65 };
-    if (unit.role === 'queen' && gate.team !== unit.team) target = gate;
+    if (unit.role === 'queen' && gate.team !== unit.team) {
+      target = gate;
+      if (unit.y > gate.y + 25) {
+        if (unit.grounded) return navigate(unit, gate);
+        if (unit.navigation) return { ...emptyInput(), move: sign(unit.navigation.x - unit.x) };
+      }
+    }
     const threat = game.units.find(u => u.team !== unit.team && u.dead <= 0 && distance(u, unit) < 100);
     if (threat && unit.y > threat.y + 15) target = threat;
     return {
@@ -156,9 +175,9 @@ export function botInput(game, unit) {
     const gates = game.gates.filter(g => g.kind === 'warrior' && (g.team < 0 || g.team === unit.team));
     const target = transform && gates.length ?
       gates.reduce((a, b) => distance(unit, a) < distance(unit, b) ? a : b) :
-      { x: HOMES[unit.team], y: 395 };
+      hiveTarget(game, unit.team);
     const input = navigate(unit, target);
-    if (distance(unit, target) < 23) { input.move = 0; input.action = transform; }
+    if (transform && distance(unit, target) < 23) { input.move = 0; input.action = true; }
     return input;
   }
   const candidates = game.berries.filter(b => b.active);
@@ -257,7 +276,7 @@ export function step(game, dt = DT) {
       const b = game.berries.find(b => b.active && distance(u, b) < 19);
       if (b) { b.active = false; u.berry = true; event(game, 'berry', u.team, u.x, u.y); }
     }
-    if (u.berry && Math.abs(u.x - HOMES[u.team]) < 38 && Math.abs(u.y - 395) < 12) {
+    if (u.berry && distance(u, hiveTarget(game, u.team)) < 16) {
       u.berry = false;
       game.score[u.team]++;
       game.deposits[u.team]++;
@@ -294,7 +313,7 @@ export function step(game, dt = DT) {
   const rider = game.units.find(u => u.id === game.snail.rider && u.dead <= 0 && u.role === 'worker');
   if (rider) {
     game.snail.team = rider.team;
-    game.snail.x += (rider.team === 0 ? -1 : 1) * 8 * dt;
+    game.snail.x += (rider.team === 0 ? -1 : 1) * 16 * dt;
     rider.x = game.snail.x;
     rider.y = 77;
     rider.vx = 0; rider.vy = 0;
@@ -305,7 +324,7 @@ export function step(game, dt = DT) {
 export function snapshot(game) {
   return {
     ...game,
-    units: game.units.map(({ input, lastJump, ...unit }) => unit),
+    units: game.units.map(({ input, lastJump, navigation, ...unit }) => unit),
     berries: game.berries.filter(b => b.active),
     platforms: PLATFORMS,
   };

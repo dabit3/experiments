@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createGame, step, DT } from './game.mjs';
+import { createGame, step, DT, hiveTarget } from './game.mjs';
 
 function fixture() {
   const g = createGame();
@@ -24,7 +24,8 @@ test('workers collect only one berry; twelve legitimate hive returns win', () =>
     const remaining = g.berries.filter(b => b.active).length;
     step(g);
     assert.equal(g.berries.filter(b => b.active).length, remaining);
-    u.x = 385; u.y = 395; u.vy = 0;
+    const socket = hiveTarget(g, u.team);
+    u.x = socket.x; u.y = socket.y; u.vy = 0;
     step(g);
     assert.equal(g.score[0], i + 1);
   }
@@ -112,4 +113,25 @@ test('autonomous teams can navigate, deposit, transform and finish without state
     if (military.units.some(u => u.role === 'warrior')) transformed = true;
   }
   assert.ok(transformed, 'military order uses actual berry gate transformations');
+});
+
+test('berry returns require the empty socket, not walking under the hive', () => {
+  const g = fixture(), u = g.units[1];
+  u.x = 385; u.y = 395; u.berry = true; u.vy = 0;
+  run(g, 1);
+  assert.equal(g.score[0], 0);
+  assert.equal(u.berry, true);
+  const socket = hiveTarget(g, 0);
+  u.x = socket.x; u.input.jump = true;
+  run(g, 0.2);
+  assert.equal(g.score[0], 1);
+});
+
+test('both factions navigate lower piles, claim gates and advance the snail', () => {
+  const g = createGame();
+  run(g, 16);
+  assert.ok(g.score.every(score => score > 0));
+  assert.deepEqual(g.gates.slice(0, 2).map(gate => gate.team), [0, 1]);
+  assert.ok(g.snail.x > 540, 'snail captain reaches and rides the lower route');
+  assert.ok(g.units.every(u => Number.isFinite(u.x) && Number.isFinite(u.y)));
 });

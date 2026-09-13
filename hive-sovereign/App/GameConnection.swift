@@ -224,6 +224,7 @@ final class GameConnection: ObservableObject {
 }
 
 enum CaptainDriver {
+  private static var waypoint: [String: Double] = [:]
   private static func distance(_ a: UnitState, _ x: Double, _ y: Double) -> Double {
     hypot(a.x - x, a.y - y)
   }
@@ -240,8 +241,9 @@ enum CaptainDriver {
         dive: unit.role == "queen" && abs((foe?.x ?? 0) - unit.x) < 22
           && unit.y > (foe?.y ?? 0) + 20)
     }
-    var tx = unit.team == 0 ? 385.0 : 575.0
-    var ty = 395.0
+    let hole = min(game.score[unit.team], 11)
+    var tx = (unit.team == 0 ? 343.0 : 503.0) + 26 + Double(hole % 4) * 19
+    var ty = 456.0 - Double(hole / 4) * 13
     var use = false
     if strategy == "snail" {
       tx = game.snail.x
@@ -271,6 +273,9 @@ enum CaptainDriver {
   private static func navigate(_ platforms: [PlatformState], unit: UnitState, x: Double, y: Double)
     -> GameInput
   {
+    if !unit.grounded, let x = waypoint[unit.id] {
+      return GameInput(move: direction(x - unit.x))
+    }
     func nearest(_ x: Double, _ y: Double) -> Int {
       platforms.indices.min {
         let a = platforms[$0]
@@ -291,7 +296,11 @@ enum CaptainDriver {
         route = path
         break
       }
-      for i in platforms.indices where !visited.contains(i) {
+      let candidates = platforms.indices.sorted {
+        abs(platforms[$0].x + platforms[$0].w / 2 - x)
+          < abs(platforms[$1].x + platforms[$1].w / 2 - x)
+      }
+      for i in candidates where !visited.contains(i) {
         let a = platforms[last]
         let b = platforms[i]
         let gap = max(b.x - a.x - a.w, a.x - b.x - b.w, 0)
@@ -301,20 +310,24 @@ enum CaptainDriver {
         }
       }
     }
-    if from == dest { return GameInput(move: direction(x - unit.x)) }
-    let next = platforms[route.count > 1 ? route[1] : dest]
-    if !unit.grounded {
-      let tx = max(next.x + 15, min(next.x + next.w - 15, unit.x))
-      return GameInput(move: direction(tx - unit.x))
+    if from == dest {
+      waypoint[unit.id] = x
+      return GameInput(
+        move: direction(x - unit.x), jump: y > unit.y + 10 && unit.cooldown <= 0)
     }
+    let next = platforms[route.count > 1 ? route[1] : dest]
     if next.y > unit.y + 10 {
       let tx = max(next.x + 20, min(next.x + next.w - 20, unit.x))
+      waypoint[unit.id] = tx
       return GameInput(
         move: direction(tx - unit.x), jump: abs(tx - unit.x) < 115 && unit.cooldown <= 0)
     }
     let current = platforms[from]
     let left = current.x - 18
     let right = current.x + current.w + 18
-    return GameInput(move: direction((abs(x - left) < abs(x - right) ? left : right) - unit.x))
+    let center = max(next.x + 20, min(next.x + next.w - 20, x))
+    let exit = abs(center - left) < abs(center - right) ? left : right
+    waypoint[unit.id] = exit
+    return GameInput(move: direction(exit - unit.x))
   }
 }

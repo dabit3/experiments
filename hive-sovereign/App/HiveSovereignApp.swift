@@ -199,10 +199,6 @@ struct ContentView: View {
           }
           .accessibilityLabel("Toggle sound")
           Spacer()
-          if game.autoPilot {
-            Text("AUTOMATED CAPTAIN").font(.system(size: 8, weight: .heavy)).foregroundStyle(
-              .orange)
-          }
           Button {
             showHelp = true
           } label: {
@@ -251,6 +247,10 @@ struct ContentView: View {
       }
       Spacer(minLength: 6)
       VStack(spacing: 5) {
+        if game.autoPilot {
+          Text("AUTOMATED CAPTAIN").font(.system(size: 8, weight: .heavy))
+            .foregroundStyle(.orange)
+        }
         HStack(spacing: 4) {
           ForEach(["economy", "snail", "military"], id: \.self) { order in
             Button(order.uppercased()) { game.order(order) }
@@ -338,7 +338,7 @@ struct ContentView: View {
         HStack(alignment: .top, spacing: 25) {
           manualColumn(
             "WORKER",
-            "Run ◀ ▶ and JUMP between platforms. Touch a magenta berry to carry it. Return to your hive above center to deposit. Fill 12 holes to win."
+            "Run ◀ ▶ and JUMP between platforms. Touch a magenta berry to carry it. Jump into your hive's white-outlined hole above center to deposit. Fill 12 holes to win."
           )
           manualColumn(
             "WARRIOR / QUEEN",
