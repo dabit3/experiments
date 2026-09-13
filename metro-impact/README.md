@@ -26,6 +26,7 @@ xcodebuild -project MetroImpact.xcodeproj -scheme MetroImpact \
   -configuration Debug -sdk iphonesimulator \
   -destination 'generic/platform=iOS Simulator' \
   -derivedDataPath .build CODE_SIGNING_ALLOWED=NO build
+bash scripts/check_bundle.sh
 ```
 
 Start the authoritative game server in its own terminal:

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		125372F6E3058A08F8108361 /* Assets in Resources */ = {isa = PBXBuildFile; fileRef = F3B8FC68865812C89485CAA6 /* Assets */; };
 		1BFD8B9872D13476061D071D /* ArenaScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4A2BB25E988650FA453E03 /* ArenaScene.swift */; };
 		290E986FDDF2CB9AC0C91C4E /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8A3ABF99C18007C9A68BEF /* Protocol.swift */; };
 		2BD8CB30A5478A5E03F25388 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = C279C9707E289520DD9CAB2F /* Audio.swift */; };
@@ -22,6 +23,7 @@
 		8A227CD0CCB7FC266602531F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C279C9707E289520DD9CAB2F /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		ED4A2BB25E988650FA453E03 /* ArenaScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaScene.swift; sourceTree = "<group>"; };
+		F3B8FC68865812C89485CAA6 /* Assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Assets; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -41,6 +43,7 @@
 		75103C2D2059A1B72274BD71 = {
 			isa = PBXGroup;
 			children = (
+				F3B8FC68865812C89485CAA6 /* Assets */,
 				01A82D06A0B36E47BC06C5E9 /* App */,
 				77180F2CFD947AAD3F78ED44 /* Products */,
 			);
@@ -62,6 +65,7 @@
 			buildConfigurationList = 4598A04F2B0B6784FB65B7A6 /* Build configuration list for PBXNativeTarget "MetroImpact" */;
 			buildPhases = (
 				BF74EFADBB35CB46FCA66F1E /* Sources */,
+				D0EF12DAC53A5ABB7C6B6027 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -103,6 +107,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D0EF12DAC53A5ABB7C6B6027 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				125372F6E3058A08F8108361 /* Assets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BF74EFADBB35CB46FCA66F1E /* Sources */ = {
