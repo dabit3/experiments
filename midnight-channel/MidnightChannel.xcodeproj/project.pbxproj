@@ -11,10 +11,8 @@
 		2ABF889582D80D42812F9D5D /* impact.wav in Resources */ = {isa = PBXBuildFile; fileRef = 89BF350A56AE6B4A94E7C9E7 /* impact.wav */; };
 		3DFF8714C427E362D7FC3148 /* sting.wav in Resources */ = {isa = PBXBuildFile; fileRef = A497A4756B480D91338BAE00 /* sting.wav */; };
 		5ACF739E29568F956CF0A9F7 /* summon.wav in Resources */ = {isa = PBXBuildFile; fileRef = A9107605D852469DDCCAAA3A /* summon.wav */; };
-		5AF2B5AE4254EB669009D372 /* stage.png in Resources */ = {isa = PBXBuildFile; fileRef = BAB7E6FB8F8F5AD953882CA8 /* stage.png */; };
-		5FC394C8C55F505351DB2414 /* mika-card.png in Resources */ = {isa = PBXBuildFile; fileRef = 48AE5A767E70FB497F882720 /* mika-card.png */; };
 		6415BFBC47362C54AAA721F6 /* broadcast.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2C1F3F9A07AFD45B7F0FD709 /* broadcast.wav */; };
-		706CB8AC28B45E6CE52AF33A /* rei-card.png in Resources */ = {isa = PBXBuildFile; fileRef = 645B7D1D1C9B4155E78AF073 /* rei-card.png */; };
+		97947A5AD4C53B1C90753733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C98F8DAB10D3CBF3F512C1A2 /* Assets.xcassets */; };
 		AFA6AB25D55407C266C6CFEF /* MidnightChannelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3AF44C2EA274D6F9BFED5 /* MidnightChannelApp.swift */; };
 		C8C14B0C6B5D5CC01F95C346 /* MatchClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199FE00498F243D8A6799BE3 /* MatchClient.swift */; };
 		ECF113C9E865ECBAEA87AC05 /* ArenaScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920A8BE8CC244E08D47631D5 /* ArenaScene.swift */; };
@@ -26,9 +24,7 @@
 		199FE00498F243D8A6799BE3 /* MatchClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchClient.swift; sourceTree = "<group>"; };
 		2B80FABF4EBB051D36ED903F /* MidnightChannel.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MidnightChannel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C1F3F9A07AFD45B7F0FD709 /* broadcast.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = broadcast.wav; sourceTree = "<group>"; };
-		48AE5A767E70FB497F882720 /* mika-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mika-card.png"; sourceTree = "<group>"; };
 		583BA6E9ECBA49A654B97175 /* GameAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAudio.swift; sourceTree = "<group>"; };
-		645B7D1D1C9B4155E78AF073 /* rei-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rei-card.png"; sourceTree = "<group>"; };
 		759921DA1730C653D2EBDC55 /* block.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = block.wav; sourceTree = "<group>"; };
 		89BF350A56AE6B4A94E7C9E7 /* impact.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = impact.wav; sourceTree = "<group>"; };
 		920A8BE8CC244E08D47631D5 /* ArenaScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaScene.swift; sourceTree = "<group>"; };
@@ -36,19 +32,17 @@
 		A1C3AF44C2EA274D6F9BFED5 /* MidnightChannelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MidnightChannelApp.swift; sourceTree = "<group>"; };
 		A497A4756B480D91338BAE00 /* sting.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sting.wav; sourceTree = "<group>"; };
 		A9107605D852469DDCCAAA3A /* summon.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = summon.wav; sourceTree = "<group>"; };
-		BAB7E6FB8F8F5AD953882CA8 /* stage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stage.png; sourceTree = "<group>"; };
+		C98F8DAB10D3CBF3F512C1A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		96CF2E626353E55A36ADE538 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C98F8DAB10D3CBF3F512C1A2 /* Assets.xcassets */,
 				759921DA1730C653D2EBDC55 /* block.wav */,
 				2C1F3F9A07AFD45B7F0FD709 /* broadcast.wav */,
 				89BF350A56AE6B4A94E7C9E7 /* impact.wav */,
-				48AE5A767E70FB497F882720 /* mika-card.png */,
-				645B7D1D1C9B4155E78AF073 /* rei-card.png */,
-				BAB7E6FB8F8F5AD953882CA8 /* stage.png */,
 				A497A4756B480D91338BAE00 /* sting.wav */,
 				A9107605D852469DDCCAAA3A /* summon.wav */,
 			);
@@ -140,12 +134,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97947A5AD4C53B1C90753733 /* Assets.xcassets in Resources */,
 				F3EABFFBA39FE1E97DCFFDDA /* block.wav in Resources */,
 				6415BFBC47362C54AAA721F6 /* broadcast.wav in Resources */,
 				2ABF889582D80D42812F9D5D /* impact.wav in Resources */,
-				5FC394C8C55F505351DB2414 /* mika-card.png in Resources */,
-				706CB8AC28B45E6CE52AF33A /* rei-card.png in Resources */,
-				5AF2B5AE4254EB669009D372 /* stage.png in Resources */,
 				3DFF8714C427E362D7FC3148 /* sting.wav in Resources */,
 				5ACF739E29568F956CF0A9F7 /* summon.wav in Resources */,
 			);
