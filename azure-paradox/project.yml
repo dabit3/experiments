@@ -18,8 +18,10 @@ targets:
   AzureParadox:
     type: application
     platform: iOS
-    sources: [App]
-    resources: [Resources]
+    sources:
+      - path: App
+      - path: Resources
+        buildPhase: resources
     info:
       path: App/Info.plist
       properties:
