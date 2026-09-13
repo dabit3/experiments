@@ -218,8 +218,9 @@ struct ArcadeView: View {
           PixelText("MAZE", scale: 2, color: Palette.red)
           PixelText(String(format: "%02d", arcade.deepest), scale: 2, color: Palette.white)
         }
-        soundButton.padding(.leading, 10).offset(y: -8)
+        soundButton.padding(.leading, 10)
       }
+      .fixedSize(horizontal: false, vertical: true)
       .padding(.top, 6)
       Spacer(minLength: 6)
       VStack(spacing: compact ? 6 : 10) {
@@ -241,11 +242,12 @@ struct ArcadeView: View {
         blink ? "TAP TO PLAY" : " ", scale: 2, color: Palette.white
       ).padding(.top, 12)
         .accessibilityHidden(true)
+      Spacer(minLength: 6)
       VStack(alignment: .leading, spacing: 6) {
         mazeChoice(1, name: "BLUE HOUR")
         mazeChoice(2, name: "VELVET CIRCUIT")
       }
-      .padding(.top, compact ? 10 : 16).padding(.bottom, compact ? 10 : 14)
+      .padding(.bottom, compact ? 10 : 14)
       primary("PUSH START", fill: Palette.red, id: "start") { arcade.start() }
       HStack {
         Button {
@@ -256,9 +258,8 @@ struct ArcadeView: View {
         Spacer()
         PixelText("1 PLAYER", scale: 2, color: Palette.steel)
       }
-      Spacer(minLength: 2)
     }
-    .padding(.horizontal, 22)
+    .padding(.horizontal, 22).padding(.bottom, 8)
   }
 
   private var attract: some View {
@@ -517,13 +518,13 @@ struct ArcadeView: View {
       PixelText("HOW TO PLAY", scale: 3, color: Palette.yellow, shadow: Palette.red)
       guideRow(
         Palette.yellow, title: "SWIPE OR D-PAD",
-        detail: "Turns queue until the next corner. The opposite direction reverses instantly.")
+        detail: "TURNS QUEUE UNTIL THE NEXT CORNER. REVERSE ANY TIME.")
       guideRow(
         Palette.peach, title: "EAT EVERY DOT",
-        detail: "Dots are 10 points. Clear the maze for 1000 and an extra life. Side tunnels wrap.")
+        detail: "10 PTS EACH. CLEAR THE MAZE FOR 1000 AND 1UP. TUNNELS WRAP.")
       guideRow(
         Palette.cyan, title: "POWER DOTS",
-        detail: "Big dots are 50 points and scare the spirits. Catch them for 200, 400, 800, 1600.")
+        detail: "50 PTS. SPIRITS TURN BLUE: EAT THEM FOR 200 400 800 1600.")
       HStack(spacing: 10) {
         ForEach(0..<4) { index in
           VStack(spacing: 8) {
@@ -541,8 +542,7 @@ struct ArcadeView: View {
       Rectangle().fill(color).frame(width: 12, height: 12).padding(.top, 2)
       VStack(alignment: .leading, spacing: 6) {
         PixelText(title, scale: 2, color: Palette.white)
-        Text(detail).font(.system(size: 14, weight: .semibold, design: .monospaced))
-          .foregroundStyle(Palette.gray).fixedSize(horizontal: false, vertical: true)
+        PixelParagraph(text: detail, columns: 22)
       }
     }.frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 4)
   }

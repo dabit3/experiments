@@ -122,6 +122,40 @@ struct PixelText: View {
   }
 }
 
+struct PixelParagraph: View {
+  let text: String
+  var scale: CGFloat = 2
+  var columns = 22
+  var color: Color = Palette.gray
+
+  private var lines: [String] {
+    var lines: [String] = []
+    var current = ""
+    for word in text.split(separator: " ") {
+      if current.isEmpty {
+        current = String(word)
+      } else if current.count + 1 + word.count <= columns {
+        current += " " + word
+      } else {
+        lines.append(current)
+        current = String(word)
+      }
+    }
+    if !current.isEmpty { lines.append(current) }
+    return lines
+  }
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: scale * 2) {
+      ForEach(Array(lines.enumerated()), id: \.offset) { line in
+        PixelText(line.element, scale: scale, color: color)
+      }
+    }
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel(Text(text))
+  }
+}
+
 struct PixelPanel<Content: View>: View {
   var fill: Color = Palette.ink
   var border: Color = .white

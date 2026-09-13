@@ -262,6 +262,13 @@ struct MazeBoard: View {
     if !rival.returning {
       let color =
         frightened ? (flashing ? Palette.white : Palette.blue) : Palette.rivals[rival.identity]
+      if frightened {
+        for (dx, dy) in [(-1, 0), (1, 0), (0, -1), (0, 1)] as [(CGFloat, CGFloat)] {
+          var outline = context
+          outline.translateBy(x: dx * px, y: dy * px)
+          Sprite.fill(outline, rows: Sprite.ghostBody[wobble], px: px, color: Palette.peach)
+        }
+      }
       Sprite.fill(context, rows: Sprite.ghostBody[wobble], px: px, color: color)
       if rival.identity == 1 {
         context.fill(
