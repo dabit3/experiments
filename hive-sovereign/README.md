@@ -119,10 +119,47 @@ Close/reconnect one socket to observe the other client's paused state and resume
 with the same guest identity. The reconnect token remains in app memory; quitting
 the process intentionally requires a fresh room (no account persistence).
 
-For authentic simultaneous device captures, start `xcrun simctl io "$BLUE"
-recordVideo` and its GOLD equivalent together, retain their original streams,
-then compose them side-by-side with ffmpeg. Do not join unrelated runs. Show
-both full displays, the same room, changing shared objectives and the outcome.
+### Record both devices with live audio
+
+Before booting the simulators, install `brew install --cask blackhole-2ch` and
+verify `system_profiler SPAudioDataType` lists BlackHole as default input,
+output and system output at 48000 Hz. If the endpoint is missing after install,
+`sudo -n killall coreaudiod` exposed it on the tested Mac without a VM reboot.
+Reboot simulators that started before the endpoint existed. Grant the recording
+host screen and microphone permissions; select BlackHole in Simulator's audio
+output menu if needed.
+
+Arrange both complete landscape screens on the desktop. Leave one app's sound
+on and mute the other to avoid doubled music. Verify the speaker icons and
+actual nonzero loopback, rather than assuming a successful click toggled sound.
+Discover screen/audio indices with
+`ffmpeg -f avfoundation -list_devices true -i ''`, then record both together:
+
+```sh
+ffmpeg -thread_queue_size 512 -f avfoundation -framerate 15 \
+  -pixel_format uyvy422 -capture_cursor 1 -i 'SCREEN_INDEX:AUDIO_INDEX' \
+  -c:v libx264 -preset ultrafast -threads 2 -crf 20 -pix_fmt yuv420p -r 15 \
+  -af 'aresample=async=1:min_hard_comp=0.01:first_pts=0' \
+  -c:a pcm_s16le capture.mov
+# Wait for recording output before readying both players. Stop with Ctrl-C.
+ffmpeg -i capture.mov -c:v copy -c:a aac -b:a 192k \
+  -movflags +faststart two-devices.mp4
+ffprobe -v error -show_streams -show_format two-devices.mp4
+ffmpeg -v error -i two-devices.mp4 -f null -
+```
+
+Keep the original PCM capture, timestamped room telemetry and assertions.
+Inspect ready/gameplay/result frames, seek-versus-sequential consistency,
+audio/video durations and audio levels throughout. This captures actual app
+sound; do not add a replacement soundtrack. The resampler fills timestamp gaps
+with silence: the verified run had 1.689 seconds of cumulative padding across
+137 small events, with no silent one-second gameplay/result window. It is not
+a gapless audio recording.
+
+Use one recorder at a time. Concurrent desktop recorders stalled initialization
+on the tested VM. Separate `simctl recordVideo` streams had inconsistent seek
+timestamps here; do not treat an unvalidated composition as synchronized proof.
+Never join unrelated runs or reinterpret input timestamps to force alignment.
 
 ## Checks
 
