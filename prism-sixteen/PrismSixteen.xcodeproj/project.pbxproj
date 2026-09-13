@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0029719EDD016D8F389A06AE /* refraction.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DE7AA03DBCF8255D85292C /* refraction.png */; };
 		0FF111FF6A6B0E9DDF86D952 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086F7490F7D94C4E4D5D8471 /* ContentView.swift */; };
 		2B75891AAAEA88A07528F91B /* tap.wav in Resources */ = {isa = PBXBuildFile; fileRef = 58B50BD2B097ACEFC330F71D /* tap.wav */; };
 		5B6BD1E3A7DBBCD1E1BE493E /* refraction.wav in Resources */ = {isa = PBXBuildFile; fileRef = 17ACAD98A82AB62A66BB6602 /* refraction.wav */; };
@@ -31,7 +30,6 @@
 		90CC5B3BCAC9DB26047C8811 /* PrismSixteenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismSixteenApp.swift; sourceTree = "<group>"; };
 		A95EA13EE48084488E3D8A81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CA491D8235C9A8F55FAAA2FA /* PanelBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelBoard.swift; sourceTree = "<group>"; };
-		D7DE7AA03DBCF8255D85292C /* refraction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refraction.png; sourceTree = "<group>"; };
 		D847CDCAEA81E1E00A4211BC /* afterglow.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = afterglow.wav; sourceTree = "<group>"; };
 		F6B4A96F2277C27F4DABFF74 /* catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = catalog.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,7 +71,6 @@
 				D847CDCAEA81E1E00A4211BC /* afterglow.wav */,
 				54998B886A8DB28AFBB0FE1D /* Assets.xcassets */,
 				F6B4A96F2277C27F4DABFF74 /* catalog.json */,
-				D7DE7AA03DBCF8255D85292C /* refraction.png */,
 				17ACAD98A82AB62A66BB6602 /* refraction.wav */,
 				58B50BD2B097ACEFC330F71D /* tap.wav */,
 			);
@@ -139,7 +136,6 @@
 				AF332AE3D0C89F14D2F77938 /* Assets.xcassets in Resources */,
 				D8B0A2E0AD4E3F729275CCE0 /* afterglow.wav in Resources */,
 				7027B756D110DEAAA51AB161 /* catalog.json in Resources */,
-				0029719EDD016D8F389A06AE /* refraction.png in Resources */,
 				5B6BD1E3A7DBBCD1E1BE493E /* refraction.wav in Resources */,
 				2B75891AAAEA88A07528F91B /* tap.wav in Resources */,
 			);
