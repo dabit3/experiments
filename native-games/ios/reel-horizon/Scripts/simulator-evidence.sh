@@ -7,7 +7,9 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="${1:-$ROOT/../../../.evidence/reel-horizon}"
 mkdir -p "$OUT"
-DEVICE="${SIM_DEVICE:-iPhone 15}"
+# Default to the first available iPhone simulator unless SIM_DEVICE is set.
+DEVICE="${SIM_DEVICE:-$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['name'] for v in d.values() for x in v if x['name'].startswith('iPhone')))")}"
+echo "using simulator: $DEVICE"
 DEST="platform=iOS Simulator,name=$DEVICE"
 BUNDLE=com.naderdabit.reelhorizon
 
@@ -23,7 +25,8 @@ xcrun simctl install "$UDID" "$APP"
 xcrun simctl launch "$UDID" "$BUNDLE" --reset-profile --skip-tutorial --fast-fish --rich
 sleep 4
 xcrun simctl io "$UDID" screenshot "$OUT/home.png"
-xcrun simctl launch --terminate-running-process "$UDID" "$BUNDLE" --reset-profile --fast-fish
+xcrun simctl terminate "$UDID" "$BUNDLE" 2>/dev/null || true
+xcrun simctl launch "$UDID" "$BUNDLE" --reset-profile --fast-fish
 sleep 4
 xcrun simctl io "$UDID" screenshot "$OUT/tutorial.png"
 xcrun simctl appinfo "$UDID" "$BUNDLE" > "$OUT/appinfo.txt"
