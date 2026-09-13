@@ -53,6 +53,7 @@ struct DuelView: View {
           VStack {
             Text(connection.status).font(.caption.monospaced())
             Button("RECONNECT") { connection.reconnect() }.buttonStyle(NightButton())
+              .disabled(connection.connecting)
           }
           .padding(20).background(ink.opacity(0.95))
         }
@@ -137,12 +138,13 @@ struct DuelView: View {
             connection.join()
           } label: {
             HStack {
-              Text("ENTER THE HOLLOW")
+              Text(connection.connecting ? "CONNECTING…" : "ENTER THE HOLLOW")
               Spacer()
               Text("↗")
             }
           }
           .buttonStyle(NightButton()).accessibilityIdentifier("joinRoom")
+          .disabled(connection.connecting)
           Text(
             "Enter the same code on the other iPhone.\nThe first guest opens the room. No account required."
           )
@@ -208,6 +210,7 @@ struct DuelView: View {
         .overlay(alignment: .bottom) { Rectangle().fill(.white.opacity(0.2)).frame(height: 1) }
         .accessibilityLabel(title)
         .accessibilityIdentifier(identifier)
+        .disabled(connection.connecting)
     }
   }
 

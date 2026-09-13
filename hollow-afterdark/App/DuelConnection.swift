@@ -5,6 +5,7 @@ import Foundation
 final class DuelConnection: ObservableObject {
   @Published var state: MatchState?
   @Published var connected = false
+  @Published private(set) var connecting = false
   @Published var status = "OFFLINE / LOCAL NETWORK"
   @Published var playerID = ""
   @Published var inRoom = false
@@ -57,12 +58,14 @@ final class DuelConnection: ObservableObject {
   var opponent: Duelist? { state?.players.first { $0.id != playerID } }
 
   func join() {
+    guard !connecting, !connected else { return }
     guard let url = URL(string: server),
       ["ws", "wss"].contains(url.scheme ?? ""), url.host != nil
     else {
       status = "Use ws://host:8787 or wss://host"
       return
     }
+    connecting = true
     stopReconnect = false
     generation += 1
     let currentGeneration = generation
@@ -101,6 +104,7 @@ final class DuelConnection: ObservableObject {
         receive(task, generation: current)
       } catch {
         guard let self, current == generation, !stopReconnect else { return }
+        connecting = false
         connected = false
         status = "SIGNAL LOST / RETRYING"
         scheduleReconnect()
@@ -114,6 +118,7 @@ final class DuelConnection: ObservableObject {
       playerID = envelope.id ?? ""
       token = envelope.token ?? ""
       sequence = max(sequence, (envelope.seq ?? -1) + 1)
+      connecting = false
       connected = true
       inRoom = true
       lastStateDate = Date()
@@ -132,6 +137,7 @@ final class DuelConnection: ObservableObject {
     } else if envelope.type == "error" {
       status = envelope.message ?? "Connection rejected"
       stopReconnect = true
+      connecting = false
       inRoom = false
       connected = false
       socket?.cancel(with: .normalClosure, reason: nil)
@@ -188,6 +194,7 @@ final class DuelConnection: ObservableObject {
     stopReconnect = true
     generation += 1
     socket?.cancel(with: .normalClosure, reason: nil)
+    connecting = false
     connected = false
     inRoom = false
     state = nil

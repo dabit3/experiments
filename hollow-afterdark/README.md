@@ -76,6 +76,8 @@ alter server state directly. Both drivers ready after three seconds and accept
 one rematch seven seconds after the first match result. It never creates an AI
 opponent. To play manually, omit `--driver` and `--autojoin`, or tap `▷ AUTO`
 to disable the driver. Test real touch input after disabling both drivers.
+Joining is idempotent while the connection is pending or already live; repeated
+taps cannot replace a socket before its private reconnect identity arrives.
 
 Acceptance matrix:
 
@@ -99,7 +101,33 @@ curl http://127.0.0.1:8787/rooms
 it has no write operation and exposes no reconnect tokens. Capture both device
 streams simultaneously with `xcrun simctl io "$DEVICE_A" recordVideo ...` and
 the equivalent for B, then compose with ffmpeg. Keep both full displays visible.
-Simulator video does not capture app audio. Original audio is audible in-app.
+Simulator video does not capture app audio; record live output separately.
+
+### Simulator audio on a hosted Mac
+
+Check `system_profiler SPAudioDataType` before booting simulators. If the host has
+no audio endpoint, the verified setup is:
+
+```sh
+brew install --cask blackhole-2ch
+system_profiler SPAudioDataType
+```
+
+If BlackHole is still absent, shut down the two test simulators and restart
+CoreAudio once with `sudo -n killall coreaudiod`. This requires the host's existing
+administrator authorization; do not repeatedly prompt for a password. Verify
+BlackHole appears as the default input, output and system output at 48 kHz, then
+boot the simulators again. A simulator booted without host audio can retain a
+stale endpoint. Grant the SimulatorTrampoline microphone permission if prompted
+before recording: delayed first-use permission caused an Apple Audio Unit RPC
+timeout on this host; a clean app restart after permission recovered.
+
+Capture actual loopback audio concurrently with both complete device displays.
+Preserve original host/sample timestamps and check sample continuity, nonzero
+playback, and AUDIO ON/OFF/ON suppression/restoration. Some AVFoundation captures
+drop audio packets even when the app is producing sound. Do not collapse those
+intervals or substitute a separately generated soundtrack; retain failed probes
+and disclose gaps. Physical-device audio and hardware latency remain untested.
 
 ## Controls and combat
 
