@@ -1,0 +1,15 @@
+<!doctype html><meta charset="utf-8"><title>Computer-use runner</title>
+<style>body{background:#10192f;color:#eef2ff;font:16px system-ui;padding:12px}h1{font-size:22px;color:#ffde58}h2{font-size:18px}small{color:#a7c6e8}section{border:1px solid #456;padding:10px;margin:10px 0;border-radius:8px}.pass{color:#7cffa9}.fail{color:#ff7c9c}pre{white-space:pre-wrap;font-size:13px}</style>
+<h1>DEVIN · COMPUTER USE</h1><small>Two iPhone apps • AUTO OFF<br>Real mouse/touch controls<br>Read-only telemetry guides steering</small>
+<section><h2 id="stage">Waiting for runner</h2><div id="clock"></div></section>
+<section id="players"></section><h2>Live mouse actions</h2><pre id="actions"></pre><h2>Assertions</h2><div id="assertions"></div>
+<script>
+const run=new URLSearchParams(location.search).get('run')||'run-01';
+function escapeHTML(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+async function tick(){try{let s=await(await fetch(run+'/status.json?'+Date.now())).json();
+stage.textContent=s.stage;clock.textContent=s.room+' · '+s.phase+' · '+s.elapsed+'s';
+players.innerHTML=s.players.map(p=>'<b>'+escapeHTML(p.name)+'</b><br>Gate '+Math.min(16,p.gate-1)+'/16 · Lap '+p.lap+'/2 · '+Math.round(p.speed*3.6)+' km/h<br>'+(p.finish?'FINISH '+(p.finish/1000).toFixed(2)+'s':'Progress '+p.progress)+'<hr>').join('');
+actions.textContent=s.actions.slice(-6).map(a=>a.device+' '+a.control.toUpperCase()+' held '+a.holdSeconds.toFixed(2)+'s').join('\n');
+assertions.innerHTML=s.assertions.map(a=>'<div class="'+(a.result==='passed'?'pass':'fail')+'">'+(a.result==='passed'?'✓ ':'✗ ')+escapeHTML(a.name)+'</div>').join('');
+}catch(e){}setTimeout(tick,250)}tick();
+</script>

@@ -97,6 +97,14 @@ for manual control checks and the rematch. Capture `/rooms/CODE` state alongside
 the video for machine-readable expected/actual assertions. Server stdout emits
 JSON lines for joins, starts, checkpoints, pickups, hits, turbos and results.
 
+### Programmatic computer-input test
+
+The [external two-player test](scripts/computer-use/README.md) drives both
+simulators' visible JOIN, READY, GAS, BRAKE, steering, ITEM and REMATCH controls
+with real mouse events while the in-app AUTO driver stays off. It includes a
+configurable Python runner, a live action/assertion dashboard, and reproducible
+setup instructions. Read-only room telemetry guides steering and assertions.
+
 ## Architecture
 
 - `Sources/App.swift`: native lobby, touch controls, HUD, mini-map and results.

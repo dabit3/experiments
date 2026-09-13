@@ -1,0 +1,18 @@
+{
+  "coordinate_scale": 1.5625,
+  "description": "Coordinates in 1024x768 reference screenshot; Quartz desktop is 1600x1200. Two landscape Simulator displays.",
+  "players": {
+    "A": {
+      "name": "PipTouch",
+      "udid": "691C57A7-98F5-4C32-A5AF-3074F4F0FBA3",
+      "window": "iPhone 17 Pro – iOS 26.5",
+      "controls": {"join":[177,277],"ready":[177,219],"left":[104,305],"right":[151,305],"brake":[421,305],"drift":[461,301],"gas":[510,298],"item":[308,104],"rematch":[380,249]}
+    },
+    "B": {
+      "name": "MochiTouch",
+      "udid": "607A62B2-D5BF-40A7-B59F-1A5B65CB2DE1",
+      "window": "iPhone 17 Pro Max – iOS 26.5",
+      "controls": {"join":[179,612],"ready":[178,553],"left":[104,665],"right":[151,665],"brake":[475,665],"drift":[516,662],"gas":[564,659],"item":[335,440],"rematch":[414,594]}
+    }
+  }
+}
