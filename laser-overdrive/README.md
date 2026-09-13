@@ -16,6 +16,8 @@ cd laser-overdrive
 xcodebuild -project LaserOverdrive.xcodeproj -scheme LaserOverdrive \
   -sdk iphonesimulator -configuration Release -derivedDataPath .build \
   build CODE_SIGNING_ALLOWED=NO
+test -s .build/Build/Products/Release-iphonesimulator/LaserOverdrive.app/chart.json
+test -s .build/Build/Products/Release-iphonesimulator/LaserOverdrive.app/afterburn.m4a
 xcrun swift-format lint --strict --recursive App
 
 cd Server
@@ -159,6 +161,20 @@ One authored song and one difficulty are included. Room state is in memory;
 restarting the host discards matches. Brief reconnects resume; disconnected seats
 expire after a minute outside gameplay. WSS termination, internet matchmaking,
 account progression, calibration UI, background play and VoiceOver navigation of
-the fast multitouch gameplay surface are not implemented. Audio timing is measured
-on Simulator; Bluetooth/device latency calibration and physical-device testing
-remain separate checks.
+the fast multitouch gameplay surface are not implemented. Audio timing is instrumented
+in the client logs; Bluetooth/device latency calibration and physical-device
+testing remain separate checks.
+
+### Recorded runtime validation
+
+Two complete native Simulator duels were recorded at gameplay revision `acb668c`.
+Both peers agreed on authoritative results, scored all five mechanic categories,
+and exercised real BT/FX/laser touch input, rematch, and process reconnect.
+
+Validation remains **partial**. The test host exposed no audio endpoint, so
+AVAudioEngine reported `-10851`, both music-clock checks had zero samples, and the
+video is silent. Actual audible soundtrack/FX, hardware multitouch and haptics were
+not verified. Stationary laser contact sent repeated samples, but one observed
+366.6 ms gap exceeded the 180 ms freshness window; its cause is not established.
+The strict evidence verifier remains failing. Neither threshold nor assertion
+was relaxed to claim a pass.
