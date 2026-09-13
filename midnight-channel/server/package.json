@@ -1,0 +1,17 @@
+{
+  "name": "midnight-channel-server",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check engine.mjs && node --check server.mjs && node --check engine.test.mjs && node --check network.test.mjs",
+    "test": "node --test *.test.mjs"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  }
+}

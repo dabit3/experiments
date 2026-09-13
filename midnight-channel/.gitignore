@@ -1,0 +1,7 @@
+build/
+server/node_modules/
+.devin/
+.DS_Store
+*.xcuserstate
+xcuserdata/
+evidence/
