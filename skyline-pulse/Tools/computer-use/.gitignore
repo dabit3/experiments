@@ -1,0 +1,6 @@
+__pycache__/
+.DS_Store
+gestures
+capture-audio
+capture-video
+geometry.local.json

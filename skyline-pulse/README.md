@@ -53,6 +53,26 @@ Both simulators access the same Mac server with `ws://127.0.0.1:8769`. Real iPad
 
 ## Repeatable native automation
 
+For an **external computer-use test with autoplay disabled on both devices**, use
+[the runnable harness and setup instructions](Tools/computer-use/README.md).
+It clicks and types into both Simulator windows, then sends genuine macOS mouse
+down/drag/up events through the apps' native touch callbacks. The single shared
+cursor alternates players and intentionally skips overlapping notes. The bundle
+includes strict gameplay assertions, calibrated window configuration, real audio
+capture, synchronized video validation and cleanup commands.
+
+```sh
+make computer-use-check
+make computer-use-build
+```
+
+Follow the harness README to supply your two device IDs and desktop geometry,
+then run `prepare.py`, `run.py`, `assertions.py` and `validate-media.py`.
+The strict validator exits nonzero when selected note probes fail; successful
+driver completion alone is not an all-green test result.
+
+### In-app input driver
+
 Launch arguments control a **visibly labeled input driver**, never scores or judgment injection:
 
 ```sh

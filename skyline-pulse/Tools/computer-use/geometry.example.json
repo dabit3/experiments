@@ -1,0 +1,11 @@
+{
+  "windows": {
+    "ARIA":{"titleContains":"iPad mini","bounds":[12,251,764,553]},
+    "NOVA":{"titleContains":"Pulse Nova","bounds":[810,251,764,553]}
+  },
+  "displays": {"ARIA":[12,303,763,501],"NOVA":[810,303,763,501]},
+  "controls": {
+    "create":[0.46,0.84],"room":[0.66,0.84],"join":[0.86,0.84],
+    "ready":[0.51,0.86],"rematch":[0.26,0.80],"reconnect":[0.50,0.80]
+  }
+}
