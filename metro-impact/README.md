@@ -77,6 +77,23 @@ driver controls the actual guest player through the same inputs as touch.
 The testing agent owns simulator/server setup for the recorded verification.
 The following commands are for reproducing the test manually afterward:
 
+For live audio on a macOS VM without an output device, prepare a loopback endpoint
+**before booting simulators**:
+
+```sh
+brew install --cask blackhole-2ch
+system_profiler SPAudioDataType
+# Only if installed BlackHole is absent, with no recording running:
+sudo -n killall coreaudiod
+system_profiler SPAudioDataType
+```
+
+Verify BlackHole 2ch is the default input, output and system output at 48000 Hz.
+If sudo requires a password, stop and ask the machine administrator. Shut down
+and reboot any simulators that started before the endpoint existed. Approve
+microphone permissions for the capture application and SimulatorTrampoline when
+prompted. Installing the driver alone does not prove the app produces audio.
+
 ```sh
 xcrun simctl list devices available
 # Set A and B to TWO DIFFERENT iPhone UDIDs from the command above.
@@ -132,8 +149,28 @@ filter if your capture is already landscape. Approve the first-use iOS
 
 Align capture start timestamps if the record processes started at different times;
 do not splice different matches. Simulator video streams may not include audio;
-the app's actual playback and audio-capture limits must be stated in the report.
-Use a screen recording with loopback audio when available.
+capture actual live loopback independently:
+
+```sh
+ffmpeg -f avfoundation -list_devices true -i ''
+# Replace 0 with the enumerated BlackHole audio input index.
+ffmpeg -hide_banner -debug_ts -f avfoundation -i ':0' \
+  -af aresample=async=1:first_pts=0 -c:a pcm_s16le evidence/live-loopback.wav
+```
+
+The verified audio run used one continuous desktop recorder showing both complete
+simulators plus this audio-only process. Two concurrent desktop recorders stalled
+during initialization. Preserve raw video, PCM, and capture logs; align audio and
+video using their AVFoundation source timestamps, not annotated/slowed video.
+Only mux audio captured during that same match. Do not dub the bundled soundtrack.
+
+Measure live output, then mute both clients using their native SOUND controls.
+After effects settle, verify silence; restore each client independently and
+verify nonzero output. Check visible mute/restore edges against the captured audio
+and fully decode the final AAC track as well as the video. The verified run had
+exact-zero muted intervals, no PCM clipping, and four sound transitions within
+0.151 seconds of the visible control changes (measurement uncertainty ±0.08s).
+This verifies native loopback output; physical-speaker fidelity was not assessed.
 
 Automation deep links (for testing only, no score/state overrides):
 
