@@ -91,6 +91,55 @@ for the entire match. Preserve logs from that same run. Inspect the completed
 video and verify with `ffprobe`; screenshots/build success alone do not prove
 two-device gameplay.
 
+### Live audio capture on a macOS VM
+
+If the host has no audio endpoint, install BlackHole before booting simulators:
+
+```sh
+brew install --cask blackhole-2ch
+system_profiler SPAudioDataType
+ffmpeg -hide_banner -f avfoundation -list_devices true -i ""
+```
+
+On the verified VM, BlackHole 2ch 0.7.1 appeared as the default input, output and
+system output at 48 kHz after a CoreAudio reload. **Only if the endpoint is still
+missing**, before recording, run `sudo -n killall coreaudiod` and repeat device
+enumeration. Do not request a password TTY or restart CoreAudio during capture.
+Shut down and reboot any simulator that booted before the endpoint existed.
+Grant the macOS microphone/capture prompts when presented. Enumeration commands
+may exit nonzero after listing devices because no capture input was selected.
+
+Arrange both full device displays together. A joint AVFoundation screen/audio
+input preserves a common timestamp domain. After checking the current device
+indices, this command captured screen `0` and BlackHole audio `0` on the VM:
+
+```sh
+ffmpeg -y -nostdin -hide_banner \
+  -f avfoundation -framerate 30 -capture_cursor 1 -i 0:0 \
+  -c:v h264_videotoolbox -b:v 6000k -c:a pcm_s16le \
+  live-screen-audio.mkv
+```
+
+Keep the capture process and its parent session alive; stop with SIGINT and wait
+for finalization. Native logs flush immediately when `simctl launch` is prefixed
+with `SIMCTL_CHILD_NSUnbufferedIO=YES`. Mute both phones, verify zero PCM, then
+unmute just one to distinguish actual game output from unrelated host audio.
+Inspect packet timestamps, sample counts, signal levels and control transitions:
+
+```sh
+ffprobe -v error -show_packets -show_streams -show_format -of json live-screen-audio.mkv
+ffmpeg -v error -i live-screen-audio.mkv -f null -
+```
+
+The recorded audio follow-up verified nonzero native music, source correlation,
+mute/unmute causality and control/audio alignment within approximately −12 to
++46 ms. **Capture continuity failed:** the VM omitted 15.614% of audio intervals
+(37.220 seconds across 238.4 seconds; maximum gap 96.3 ms). The exported video
+preserves original sample timestamps and fills only absent intervals with
+silence. Never concatenate incomplete samples as a continuous track, replace
+gaps with generated music, or describe this capture path as lossless. Earlier
+silent evidence and failed capture attempts were retained in the test artifacts.
+
 ## Game rules and controls
 
 * Buffered cardinal movement at 4.1 tiles/s; turns occur at open cell centers.
