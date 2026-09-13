@@ -7,6 +7,10 @@ final class ArenaAudio {
   private let hit = AVAudioPlayerNode()
   private let music = AVAudioPlayerNode()
   private var enabled = false
+  private var recording: AVAudioFile?
+  private var renderBuffer: AVAudioPCMBuffer?
+  private var renderTimer: Timer?
+  private var renderStartedAt = 0.0
 
   func start() {
     guard !enabled else { return }
@@ -22,17 +26,25 @@ final class ArenaAudio {
       if ProcessInfo.processInfo.arguments.contains("--capture-audio") {
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
           .appendingPathComponent("arena-audio.caf")
-        let output = engine.mainMixerNode.outputFormat(forBus: 0)
-        let recording = try AVAudioFile(forWriting: url, settings: output.settings)
-        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 2048, format: output) { buffer, _ in
-          try? recording.write(from: buffer)
-        }
+        try engine.enableManualRenderingMode(.offline, format: format, maximumFrameCount: 4096)
+        recording = try AVAudioFile(forWriting: url, settings: format.settings)
+        renderBuffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: 4096)
       }
       try engine.start()
       enabled = true
       if let buffer = buffer(seconds: 4, effect: "music") {
         music.scheduleBuffer(buffer, at: nil, options: .loops)
         music.play()
+      }
+      if recording != nil {
+        renderStartedAt = Date.timeIntervalSinceReferenceDate
+        let origin = renderStartedAt + Date.timeIntervalBetween1970AndReferenceDate
+        let clockURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+          .appendingPathComponent("arena-audio-origin.json")
+        try? JSONEncoder().encode(origin).write(to: clockURL)
+        renderTimer = Timer.scheduledTimer(withTimeInterval: 0.02, repeats: true) { [weak self] _ in
+          Task { @MainActor in self?.renderAudio() }
+        }
       }
     } catch {
       print("Audio unavailable: \(error.localizedDescription)")
@@ -49,6 +61,17 @@ final class ArenaAudio {
 
   func mute(_ muted: Bool) {
     engine.mainMixerNode.outputVolume = muted ? 0 : 1
+  }
+
+  private func renderAudio() {
+    guard let recording, let renderBuffer else { return }
+    let target = AVAudioFramePosition(
+      (Date.timeIntervalSinceReferenceDate - renderStartedAt) * 44100)
+    while target > engine.manualRenderingSampleTime {
+      let count = AVAudioFrameCount(min(4096, target - engine.manualRenderingSampleTime))
+      guard (try? engine.renderOffline(count, to: renderBuffer)) == .success else { return }
+      try? recording.write(from: renderBuffer)
+    }
   }
 
   private func buffer(seconds: Double, effect: String) -> AVAudioPCMBuffer? {

@@ -112,20 +112,15 @@ final class ArenaRenderer {
       let angle = Double(index) * .pi / 6
       let x = sin(angle) * 8.3
       let z = cos(angle) * 8.3
+      guard z < 2 else { continue }
       beam(width: 0.44, height: 7, depth: 0.6, position: SCNVector3(x, 3, z), material: steel)
       beam(
         width: 0.08, height: 5.3, depth: 0.64, position: SCNVector3(x + 0.24, 2.7, z), material: red
       )
-      if z < 2 {
-        for height in [1.0, 3.0, 5.0] {
-          beam(
-            width: 2.8, height: 0.09, depth: 0.10,
-            position: SCNVector3(x, height, z), material: red)
-        }
-      }
-      let upperRing = SCNTorus(ringRadius: 8.3, pipeRadius: 0.13)
-      if index < 2 {
-        _ = geometry(upperRing, position: SCNVector3(0, 5 + index, 0), material: steel)
+      for height in [1.0, 3.0, 5.0] {
+        beam(
+          width: 2.8, height: 0.09, depth: 0.10,
+          position: SCNVector3(x, height, z), material: red)
       }
     }
     for index in -6...6 {

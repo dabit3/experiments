@@ -149,8 +149,13 @@ second, all observed combat events and attack controls. It excludes reconnect
 tokens. Final visual/test evidence is attached to the PR/session rather than
 committed into this application folder.
 Add `--capture-audio` to opt into a `Documents/arena-audio.caf` recording of the
-native AVAudioEngine mixer for sound verification. This captures the sound the app
-actually renders, including mute, rather than reconstructing sound from event logs.
+native AVAudioEngine mixer for sound verification. This mode uses manual rendering
+paced by the live clock, allowing simulator VMs with no CoreAudio output device to
+capture the same music and event-triggered sound graph, including mute. It does not
+play through speakers or reconstruct sound later from event logs. Normal launches
+use the hardware output path.
+`arena-audio-origin.json` records the Unix wall-clock origin of the rendered stream
+for alignment with simultaneous device video capture.
 
 ## Architecture
 
