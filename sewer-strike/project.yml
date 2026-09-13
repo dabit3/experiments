@@ -1,0 +1,53 @@
+name: SewerStrike
+options:
+  bundleIdPrefix: ai.devin.sewerstrike
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGNING_ALLOWED: NO
+    TARGETED_DEVICE_FAMILY: "1,2"
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+targets:
+  SewerStrike:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      - path: Resources
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.devin.sewerstrike.ios
+        PRODUCT_NAME: SewerStrike
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Sewer Strike
+        UILaunchScreen: {}
+        UIStatusBarHidden: true
+        UIViewControllerBasedStatusBarAppearance: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSLocalNetworkUsageDescription: Connect with your crew on a local Sewer Strike server.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+  SewerStrikeUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [Tests]
+    dependencies:
+      - target: SewerStrike
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.devin.sewerstrike.uitests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  SewerStrike:
+    build:
+      targets:
+        SewerStrike: all
+    test:
+      targets: [SewerStrikeUITests]

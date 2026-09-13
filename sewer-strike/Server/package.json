@@ -1,0 +1,13 @@
+{
+  "name": "sewer-strike-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs",
+    "lint": "node --check game.mjs && node --check server.mjs && node --check test/game.test.mjs && node --check test/network.test.mjs && node --check test/playthrough.test.mjs && node --check ../Tools/assert_match.mjs"
+  },
+  "engines": { "node": ">=22" },
+  "dependencies": { "ws": "8.21.3" }
+}
