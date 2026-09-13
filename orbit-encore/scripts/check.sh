@@ -9,7 +9,7 @@ xcodegen generate
 xcodebuild -project OrbitEncore.xcodeproj -scheme OrbitEncore \
   -sdk iphonesimulator -configuration Debug -derivedDataPath build \
   CODE_SIGNING_ALLOWED=NO build
-test -s build/Build/Products/Debug-iphonesimulator/OrbitEncore.app/cosmic-bunny.png
+test -s build/Build/Products/Debug-iphonesimulator/OrbitEncore.app/Assets.car
 for resource in charts.json sugar.wav neon.wav; do
   cmp "Resources/$resource" "build/Build/Products/Debug-iphonesimulator/OrbitEncore.app/$resource"
 done
