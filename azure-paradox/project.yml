@@ -1,0 +1,45 @@
+name: AzureParadox
+options:
+  bundleIdPrefix: ai.azureparadox
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CODE_SIGNING_ALLOWED: NO
+    GENERATE_INFOPLIST_FILE: YES
+    INFOPLIST_KEY_CFBundleDisplayName: Azure Paradox
+    INFOPLIST_KEY_UILaunchScreen_Generation: YES
+    INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+    INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+    INFOPLIST_KEY_UIRequiresFullScreen: YES
+targets:
+  AzureParadox:
+    type: application
+    platform: iOS
+    sources: [App]
+    resources: [Resources]
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Azure Paradox
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+          NSAllowsLocalNetworking: true
+        NSLocalNetworkUsageDescription: Connect to your local Azure Paradox duel server.
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UILaunchScreen: {}
+        CFBundleURLTypes:
+          - CFBundleURLName: ai.azureparadox.duel
+            CFBundleURLSchemes: [azureparadox]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.azureparadox.duel
+schemes:
+  AzureParadox:
+    build:
+      targets:
+        AzureParadox: all
