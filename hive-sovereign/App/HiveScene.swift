@@ -191,7 +191,7 @@ final class HiveScene: SKScene {
     status.fontColor = UIColor(hex: 0xc2d9e2)
     status.position = CGPoint(x: 480, y: 504)
     hud.addChild(status)
-    label("SNAIL ROUTE", x: 480, y: 36, size: 8, color: UIColor(hex: 0xbad5db), parent: hud)
+    label("SNAIL ROUTE", x: 480, y: 9, size: 8, color: UIColor(hex: 0xbad5db), parent: hud)
     snailTrack.color = UIColor(hex: 0x45606f)
     snailTrack.position = CGPoint(x: 480, y: 26)
     hud.addChild(snailTrack)
@@ -199,9 +199,6 @@ final class HiveScene: SKScene {
     hud.addChild(snailMarker)
     label("AZURE", x: 300, y: 23, size: 8, color: PixelArt.blue, parent: hud)
     label("AMBER", x: 660, y: 23, size: 8, color: PixelArt.gold, parent: hud)
-    label(
-      "12 BERRIES  /  3 QUEEN EGGS  /  1 SNAIL", x: 480, y: 9, size: 8,
-      color: UIColor(hex: 0x8ba4b3), parent: hud)
     topBlue.text = "AZURE  ·  0 / 12   ♛ 3"
     topGold.text = "AMBER  ·  0 / 12   ♛ 3"
     status.text = "TWO CAPTAINS. THREE WAYS TO WIN."
