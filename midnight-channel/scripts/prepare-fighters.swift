@@ -11,6 +11,11 @@ struct Figure {
   let bottom: Int
 }
 
+struct PoseBounds: Encodable {
+  let top: Double
+  let radius: Double
+}
+
 enum ArtError: Error {
   case invalidImage(String)
   case missingFigures(String, Int)
@@ -26,6 +31,7 @@ let outputWidth = 896
 let outputHeight = 640
 let baseline = 600
 let pivot = 384
+var bounds: [String: PoseBounds] = [:]
 
 try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
 
@@ -138,8 +144,15 @@ for (sheet, rows, names) in [
     else { throw ArtError.invalidImage(output.path) }
     CGImageDestinationAddImage(writer, result, nil)
     guard CGImageDestinationFinalize(writer) else { throw ArtError.invalidImage(output.path) }
+    bounds["\(names[character])-\(frame)"] = PoseBounds(
+      top: Double(baseline) - topY,
+      radius: max(Double(pivot) - minX, maxX - Double(pivot)))
     print(
       "\(names[character])-\(frame): \(figure.pixels.count) opaque pixels, bounds \(figure.left),\(figure.top)–\(figure.right),\(figure.bottom)"
     )
   }
 }
+
+let encoder = JSONEncoder()
+encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+try encoder.encode(bounds).write(to: root.appendingPathComponent("Resources/FighterBounds.json"))

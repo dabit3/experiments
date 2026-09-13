@@ -97,6 +97,31 @@ xcrun simctl openurl <DEVICE_A> 'midnightchannel://autoplay?role=alpha'
 The input URL disables autoplay so manual testing can take over. Touch buttons
 and simultaneous direction/attack inputs remain available throughout.
 
+### Simulator audio on a headless Mac
+
+Check `system_profiler SPAudioDataType` **before booting simulators**. If it lists
+no working output, install a loopback device:
+
+```sh
+brew install --cask blackhole-2ch
+system_profiler SPAudioDataType
+# Only if the installed device still does not appear:
+sudo -n killall coreaudiod
+system_profiler SPAudioDataType
+```
+
+On the verified VM, one CoreAudio restart exposed BlackHole 2ch as default input,
+output and system output at 48 kHz. Restart simulators that were already booted
+without an endpoint. Each app's SOUND toggle should independently silence and
+resume its music and effects. A missing host endpoint is not fixed by toggling
+the in-app button.
+
+For audiovisual evidence, capture the live loopback input while recording both
+simulators simultaneously. Preserve audio sample/host timestamps and video start
+times when aligning the streams. Use only the audio captured during that run;
+bundled WAV files are not substitutes for a live capture. Keep the raw captures,
+timing logs and decode/audio validation with the report.
+
 ## Controls and rules
 
 | Control | Behavior |
@@ -162,6 +187,9 @@ excluded from the app bundle. The preparation script removes green, isolates
 connected silhouettes, verifies figure counts and clipping, and aligns all
 poses to a shared foot pivot without stretching their proportions. The resulting
 `Resources/Fighters.atlas` is compiled by Xcode and used during live combat.
+Generated opaque-pose bounds drive uniform combat-layer framing so airborne
+fighters and companions stay below the HUD; the authoritative jump trajectory,
+hit ranges and state remain unchanged.
 All portraits, stage art, music and effects are used in the app. No extracted
 commercial game assets are included. The separate original portrait illustration
 sheet is retained to reproduce the portrait crops.

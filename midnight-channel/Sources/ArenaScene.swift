@@ -46,8 +46,24 @@ private enum FighterPose: Int {
   }
 }
 
+private struct PoseBounds: Decodable {
+  let top: CGFloat
+  let radius: CGFloat
+
+  func upperEdge(rotation: CGFloat, scaleY: CGFloat = 1) -> CGFloat {
+    0.48 * (top * scaleY * cos(rotation) + radius * abs(sin(rotation)))
+  }
+}
+
 final class FighterArt: SKNode {
   private static let atlas = SKTextureAtlas(named: "Fighters")
+  private static let poseBounds: [String: PoseBounds] = {
+    guard let url = Bundle.main.url(forResource: "FighterBounds", withExtension: "json"),
+      let data = try? Data(contentsOf: url),
+      let bounds = try? JSONDecoder().decode([String: PoseBounds].self, from: data)
+    else { preconditionFailure("Missing fighter pose bounds") }
+    return bounds
+  }()
   private let rig = SKNode()
   private let body = SKNode()
   private let sprite = SKSpriteNode()
@@ -60,8 +76,16 @@ final class FighterArt: SKNode {
   private let aura = SKShapeNode(ellipseOf: CGSize(width: 128, height: 214))
   private let textures: [SKTexture]
   private let spiritTextures: [SKTexture]
+  private let bodyBounds: [PoseBounds]
+  private let spiritBounds: [PoseBounds]
   private let slot: Int
   private var accent: UIColor { slot == 0 ? cyan : red }
+  private(set) var visibleHeight: CGFloat = 210
+
+  private static func bounds(named name: String) -> PoseBounds {
+    guard let bounds = poseBounds[name] else { preconditionFailure("Missing pose: \(name)") }
+    return bounds
+  }
 
   init(slot: Int) {
     self.slot = slot
@@ -69,6 +93,8 @@ final class FighterArt: SKNode {
     let spirit = slot == 0 ? "antenna" : "redshift"
     textures = (0..<12).map { Self.atlas.textureNamed("\(name)-\($0)") }
     spiritTextures = (0..<4).map { Self.atlas.textureNamed("\(spirit)-\($0)") }
+    bodyBounds = (0..<12).map { Self.bounds(named: "\(name)-\($0)") }
+    spiritBounds = (0..<4).map { Self.bounds(named: "\(spirit)-\($0)") }
     super.init()
     for texture in textures + spiritTextures { texture.filteringMode = .linear }
     shadow.fillColor = .black.withAlphaComponent(0.6)
@@ -177,11 +203,20 @@ final class FighterArt: SKNode {
     companionGlow.position = CGPoint(x: companion.position.x - 4, y: companion.position.y + 2)
     companionGlow.zRotation = companion.zRotation
     companionGlow.alpha = companion.alpha * 0.3
+    let bodyTop =
+      body.position.y
+      + bodyBounds[pose.rawValue].upperEdge(rotation: body.zRotation, scaleY: body.yScale)
+    let spiritTop =
+      companion.isHidden
+      ? 0
+      : companion.position.y + spiritBounds[spiritFrame].upperEdge(rotation: companion.zRotation)
+    visibleHeight = rig.position.y + max(bodyTop, spiritTop) + 6
   }
 }
 
 final class ArenaScene: SKScene {
   private let world = SKNode()
+  private let combat = SKNode()
   private var fighters: [FighterArt] = []
   private var latest: MatchState?
   private var lastEvent = 0
@@ -222,11 +257,13 @@ final class ArenaScene: SKScene {
     floor.fillColor = gold
     floor.strokeColor = .clear
     world.addChild(floor)
+    combat.zPosition = 1
+    world.addChild(combat)
     for slot in 0..<2 {
       let actor = FighterArt(slot: slot)
       actor.position = CGPoint(x: slot == 0 ? 295 : 705, y: 100)
       actor.zPosition = 1
-      world.addChild(actor)
+      combat.addChild(actor)
       fighters.append(actor)
     }
   }
@@ -265,6 +302,11 @@ final class ArenaScene: SKScene {
       actor.position.x += (state.x - actor.position.x) * 0.35
       if CACurrentMediaTime() > freezeUntil { actor.pose(state, time: currentTime) }
     }
+    let tallest = fighters.map(\.visibleHeight).max() ?? 225
+    let targetScale = min(1, 225 / max(1, tallest))
+    let framingScale = min(targetScale, combat.xScale + (targetScale - combat.xScale) * 0.14)
+    combat.setScale(framingScale)
+    combat.position = CGPoint(x: 500 * (1 - framingScale), y: 100 * (1 - framingScale))
   }
 
   private func impact(_ event: CombatEvent, blocked: Bool) {
@@ -280,7 +322,7 @@ final class ArenaScene: SKScene {
       spark.position = origin
       spark.zRotation = angle
       spark.zPosition = 8
-      world.addChild(spark)
+      combat.addChild(spark)
       spark.run(
         .sequence([
           .group([
@@ -303,7 +345,7 @@ final class ArenaScene: SKScene {
     node.fillColor = .clear
     node.zPosition = 7
     node.setScale(0.15)
-    world.addChild(node)
+    combat.addChild(node)
     node.run(
       .sequence([
         .group([.scale(to: 1, duration: 0.28), .fadeOut(withDuration: 0.3)]), .removeFromParent(),

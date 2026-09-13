@@ -16,6 +16,7 @@
 		97947A5AD4C53B1C90753733 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C98F8DAB10D3CBF3F512C1A2 /* Assets.xcassets */; };
 		AFA6AB25D55407C266C6CFEF /* MidnightChannelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C3AF44C2EA274D6F9BFED5 /* MidnightChannelApp.swift */; };
 		C8C14B0C6B5D5CC01F95C346 /* MatchClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199FE00498F243D8A6799BE3 /* MatchClient.swift */; };
+		CDE1D3EB68BAA7458915193A /* FighterBounds.json in Resources */ = {isa = PBXBuildFile; fileRef = 6721ACE6825D7FE8EE5E0BD5 /* FighterBounds.json */; };
 		ECF113C9E865ECBAEA87AC05 /* ArenaScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 920A8BE8CC244E08D47631D5 /* ArenaScene.swift */; };
 		ED737CA1904D274932F6B538 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931790CB307B1282B6CB36CC /* Models.swift */; };
 		F3EABFFBA39FE1E97DCFFDDA /* block.wav in Resources */ = {isa = PBXBuildFile; fileRef = 759921DA1730C653D2EBDC55 /* block.wav */; };
@@ -26,6 +27,7 @@
 		2B80FABF4EBB051D36ED903F /* MidnightChannel.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MidnightChannel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C1F3F9A07AFD45B7F0FD709 /* broadcast.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = broadcast.wav; sourceTree = "<group>"; };
 		583BA6E9ECBA49A654B97175 /* GameAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAudio.swift; sourceTree = "<group>"; };
+		6721ACE6825D7FE8EE5E0BD5 /* FighterBounds.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FighterBounds.json; sourceTree = "<group>"; };
 		70B825DC522123AB7E837CE1 /* Fighters.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Fighters.atlas; sourceTree = "<group>"; };
 		759921DA1730C653D2EBDC55 /* block.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = block.wav; sourceTree = "<group>"; };
 		89BF350A56AE6B4A94E7C9E7 /* impact.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = impact.wav; sourceTree = "<group>"; };
@@ -44,6 +46,7 @@
 				C98F8DAB10D3CBF3F512C1A2 /* Assets.xcassets */,
 				759921DA1730C653D2EBDC55 /* block.wav */,
 				2C1F3F9A07AFD45B7F0FD709 /* broadcast.wav */,
+				6721ACE6825D7FE8EE5E0BD5 /* FighterBounds.json */,
 				70B825DC522123AB7E837CE1 /* Fighters.atlas */,
 				89BF350A56AE6B4A94E7C9E7 /* impact.wav */,
 				A497A4756B480D91338BAE00 /* sting.wav */,
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97947A5AD4C53B1C90753733 /* Assets.xcassets in Resources */,
+				CDE1D3EB68BAA7458915193A /* FighterBounds.json in Resources */,
 				81D8579A1E0777ED243F7A32 /* Fighters.atlas in Resources */,
 				F3EABFFBA39FE1E97DCFFDDA /* block.wav in Resources */,
 				6415BFBC47362C54AAA721F6 /* broadcast.wav in Resources */,
