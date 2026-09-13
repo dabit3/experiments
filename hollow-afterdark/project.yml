@@ -1,0 +1,40 @@
+name: HollowAfterdark
+options:
+  bundleIdPrefix: ai.afterdark
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGNING_ALLOWED: NO
+    TARGETED_DEVICE_FAMILY: "1,2"
+targets:
+  HollowAfterdark:
+    type: application
+    platform: iOS
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: Hollow Afterdark
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+        NSLocalNetworkUsageDescription: Connect two duelists to your local Hollow Afterdark room server.
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UIRequiresFullScreen: true
+    sources:
+      - App
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ai.afterdark.hollow.duel
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+schemes:
+  HollowAfterdark:
+    build:
+      targets:
+        HollowAfterdark: all

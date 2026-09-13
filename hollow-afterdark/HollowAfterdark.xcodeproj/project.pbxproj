@@ -1,0 +1,329 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04FBB786B5B9BA37E19E8B05 /* HollowAfterdarkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D7324E37B3B4DE8DDBFB5E /* HollowAfterdarkApp.swift */; };
+		1407370A03360D30DDDDDE2C /* DuelConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34332F4C50F15BD299B8DDA1 /* DuelConnection.swift */; };
+		4099B12C9FCB3367B5B6D8CE /* moon-station.png in Resources */ = {isa = PBXBuildFile; fileRef = FAD901D562933672ED410165 /* moon-station.png */; };
+		5BE92A178566DBF1B2FA6C7E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2CB61F5BB2AD59A1DDA450 /* Models.swift */; };
+		87C151EFEC63FCD4BAE1E347 /* DuelScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AFBB2548154563ABF57F04 /* DuelScene.swift */; };
+		A4FA56888CA338E9BB8C5228 /* NightAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E957E9CC40CB0205FBD112F /* NightAudio.swift */; };
+		FCA578EDF9264B25E17CDEA5 /* FighterArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = D461F71917596A9C42E8F2BE /* FighterArt.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		34332F4C50F15BD299B8DDA1 /* DuelConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuelConnection.swift; sourceTree = "<group>"; };
+		3E957E9CC40CB0205FBD112F /* NightAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightAudio.swift; sourceTree = "<group>"; };
+		42D7324E37B3B4DE8DDBFB5E /* HollowAfterdarkApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HollowAfterdarkApp.swift; sourceTree = "<group>"; };
+		6D2CB61F5BB2AD59A1DDA450 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		A9AFBB2548154563ABF57F04 /* DuelScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuelScene.swift; sourceTree = "<group>"; };
+		D461F71917596A9C42E8F2BE /* FighterArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FighterArt.swift; sourceTree = "<group>"; };
+		DB83BE6C69B036C4B4DBD2C0 /* HollowAfterdark.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HollowAfterdark.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FAD901D562933672ED410165 /* moon-station.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "moon-station.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		2597FF2E61131145DAD97A50 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FAD901D562933672ED410165 /* moon-station.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		6D3A3D5B79F43EE5F8C09DFA = {
+			isa = PBXGroup;
+			children = (
+				87558338B075B7CA11449FBD /* App */,
+				B13238F3BE0A56B6161AACB3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		87558338B075B7CA11449FBD /* App */ = {
+			isa = PBXGroup;
+			children = (
+				34332F4C50F15BD299B8DDA1 /* DuelConnection.swift */,
+				A9AFBB2548154563ABF57F04 /* DuelScene.swift */,
+				D461F71917596A9C42E8F2BE /* FighterArt.swift */,
+				42D7324E37B3B4DE8DDBFB5E /* HollowAfterdarkApp.swift */,
+				6D2CB61F5BB2AD59A1DDA450 /* Models.swift */,
+				3E957E9CC40CB0205FBD112F /* NightAudio.swift */,
+				2597FF2E61131145DAD97A50 /* Resources */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B13238F3BE0A56B6161AACB3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DB83BE6C69B036C4B4DBD2C0 /* HollowAfterdark.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C1C73BCC3D98BFD9ED6D4D6A /* HollowAfterdark */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6105C479500168C8DDF890A /* Build configuration list for PBXNativeTarget "HollowAfterdark" */;
+			buildPhases = (
+				441765C8458FE02D7E2D2334 /* Sources */,
+				6714CA09E51419D180B57909 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HollowAfterdark;
+			packageProductDependencies = (
+			);
+			productName = HollowAfterdark;
+			productReference = DB83BE6C69B036C4B4DBD2C0 /* HollowAfterdark.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FAF53FBFE4C832E9B6002327 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 2BA959523400DD370F65680E /* Build configuration list for PBXProject "HollowAfterdark" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 6D3A3D5B79F43EE5F8C09DFA;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B13238F3BE0A56B6161AACB3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C1C73BCC3D98BFD9ED6D4D6A /* HollowAfterdark */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6714CA09E51419D180B57909 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4099B12C9FCB3367B5B6D8CE /* moon-station.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		441765C8458FE02D7E2D2334 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1407370A03360D30DDDDDE2C /* DuelConnection.swift in Sources */,
+				87C151EFEC63FCD4BAE1E347 /* DuelScene.swift in Sources */,
+				FCA578EDF9264B25E17CDEA5 /* FighterArt.swift in Sources */,
+				04FBB786B5B9BA37E19E8B05 /* HollowAfterdarkApp.swift in Sources */,
+				5BE92A178566DBF1B2FA6C7E /* Models.swift in Sources */,
+				A4FA56888CA338E9BB8C5228 /* NightAudio.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		83DCA28B04BF19EC1D1355B7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.afterdark.hollow.duel;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A13CA80969A766678C0D826B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.afterdark.hollow.duel;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C70F80588A9C9C5643467673 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DF9AAD93544E67DED0094475 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2BA959523400DD370F65680E /* Build configuration list for PBXProject "HollowAfterdark" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DF9AAD93544E67DED0094475 /* Debug */,
+				C70F80588A9C9C5643467673 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B6105C479500168C8DDF890A /* Build configuration list for PBXNativeTarget "HollowAfterdark" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83DCA28B04BF19EC1D1355B7 /* Debug */,
+				A13CA80969A766678C0D826B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FAF53FBFE4C832E9B6002327 /* Project object */;
+}
