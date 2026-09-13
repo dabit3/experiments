@@ -241,7 +241,6 @@ final class ArenaScene: SKScene {
       updateHUD(state)
       updateFighters(state)
       updateProjectiles(state)
-      updateOverlay(state)
       for impact in state.effects where impact.id > lastEffect {
         impactEffect(impact)
         lastEffect = max(lastEffect, impact.id)
@@ -251,6 +250,7 @@ final class ArenaScene: SKScene {
         lastPhase = state.phase
       }
     }
+    updateOverlay(state)
     if state.freeze > 0 {
       let strength: CGFloat = state.freeze > 10 ? 4 : 2
       world.position = CGPoint(
@@ -446,7 +446,9 @@ final class ArenaScene: SKScene {
         parent: overlay)
       brush("CONNECTION PAUSED", y: 328, size: 34)
       text(
-        "Waiting for peer to reconnect · match clock is frozen", x: 480, y: 283, size: 13,
+        session.connected
+          ? "Waiting for peer to reconnect · match clock is frozen"
+          : "Reconnecting to room · your match state is retained", x: 480, y: 283, size: 13,
         parent: overlay)
     } else if state.phase == "waiting" {
       panel(
@@ -556,7 +558,7 @@ struct ArenaView: UIViewRepresentable {
   func makeUIView(context: Context) -> SKView {
     let view = SKView()
     view.isMultipleTouchEnabled = true
-    view.ignoresSiblingOrder = true
+    view.ignoresSiblingOrder = false
     view.preferredFramesPerSecond = 60
     view.presentScene(ArenaScene(session: session))
     return view
