@@ -166,3 +166,39 @@ play. Reconnect pauses simulation while retaining the full roster; it is support
 within the same app process. Rooms expire one minute after all peers disconnect.
 Authentication, public hosting, persistence and spectator mode are not included.
 Native accessibility labels cover lobby/buttons; combat is primarily visual.
+
+## Record actual game audio on a macOS VM
+
+Check host audio **before booting the simulators**:
+
+```sh
+system_profiler SPAudioDataType
+# If the VM has no audio endpoint:
+brew install --cask blackhole-2ch
+# If BlackHole still does not appear, activate the installed driver:
+sudo -n killall coreaudiod
+system_profiler SPAudioDataType
+```
+
+Verify BlackHole 2ch is the default input, output and system output at 48 kHz.
+Restart any simulators that booted before the endpoint existed. Resolve recorder
+and SimulatorTrampoline microphone permission prompts before definitive capture;
+a permission-pending launch timed out in AURemoteIO during validation, then
+succeeded after permission was granted and the app relaunched.
+
+Capture the actual BlackHole loopback while recording both complete device
+screens. The verified run used a native `AVAudioEngine` input tap because ffmpeg's
+AVFoundation audio input dropped packets on this VM. The
+[capture evidence archive](https://app.devin.ai/attachments/8d01d07e-43d1-4554-893b-261e684cc187/capture-evidence.zip)
+contains the tested helper, raw CAF files, buffer timestamps and assertions. The
+[audio test report](https://app.devin.ai/attachments/be80dbb9-6ee0-43ef-9309-18de0e4b1906/report.md)
+includes exact launch/capture/composition commands.
+
+Align the first audio buffer's host timestamp with the screen capture's original
+host timestamp. Trim only that measured offset and a common end; do not stretch
+sound or add a soundtrack afterward. Require continuous `sampleTime`, enough
+stored PCM frames for the entire published interval, nonzero RMS/peak without
+clipping, and matching final stream durations. This run captured the actual mix
+of both apps. A separate isolated test terminated BRAVO and verified ALPHA's mute
+button changed five seconds of nonzero audio to exactly zero and back.
+Physical speaker quality and exact hardware latency remain untested.
