@@ -5,6 +5,7 @@ import XCTest
 /// XCTest wrapper around the game core. The exhaustive dependency-free harness lives in
 /// `Tests/CoreTests.swift` (run with `Scripts/core-tests-linux.sh`); these tests keep the
 /// same behaviours covered inside Xcode and the simulator.
+@MainActor
 final class ReelHorizonTests: XCTestCase {
   private func advance(_ session: inout FishingSession, _ seconds: Double) {
     let steps = Int(seconds * 60)
@@ -23,8 +24,8 @@ final class ReelHorizonTests: XCTestCase {
     XCTAssertEqual(p.level, 1)
     XCTAssertEqual(p.credits, 400)
     XCTAssertEqual(p.baitcoins, 20)
-    XCTAssertEqual(p.currentWaterwayID, "lone-pine-lake")
-    XCTAssertNotNil(p.license(for: "lone-pine-lake"))
+    XCTAssertEqual(p.currentWaterwayID, "lonePineLake")
+    XCTAssertNotNil(p.license(for: "lonePineLake"))
     XCTAssertTrue(p.owns(p.rig.rodID))
     XCTAssertTrue(p.owns(p.rig.reelID))
     XCTAssertTrue(p.owns(p.rig.lineID))
@@ -45,7 +46,7 @@ final class ReelHorizonTests: XCTestCase {
   }
 
   func testCastChargesAndFlies() {
-    var session = FishingSession(rig: RigSetup.starter, waterway: WaterwayCatalog.find("lone-pine-lake"), seed: 1)
+    var session = FishingSession(rig: RigSetup.starter, waterway: WaterwayCatalog.find("lonePineLake"), seed: 1)
     session.beginCast()
     XCTAssertEqual(session.phase, .charging)
     advance(&session, 0.5)
@@ -58,34 +59,31 @@ final class ReelHorizonTests: XCTestCase {
   }
 
   func testBiteStrikeAndLanding() {
-    var session = FishingSession(rig: RigSetup.starter, waterway: WaterwayCatalog.find("lone-pine-lake"), seed: 7)
+    var session = FishingSession(rig: RigSetup.starter, waterway: WaterwayCatalog.find("lonePineLake"), seed: 7)
     castAndSoak(&session)
     session.hookForTesting(speciesID: "bluegill", weightLb: 0.4, distanceFt: 30)
-    XCTAssertEqual(session.phase, .bite)
-    session.strike()
-    XCTAssertTrue(session.phase == .fighting || session.phase == .soaking)
-    if session.phase == .fighting {
-      session.setReeling(true)
-      var guardSteps = 0
-      while session.phase == .fighting && guardSteps < 60 * 90 {
-        if session.tensionZone == .red || session.tensionZone == .yellow {
-          session.setReeling(false)
-        } else {
-          session.setReeling(true)
-        }
-        session.update(dt: 1.0 / 60.0)
-        guardSteps += 1
+    XCTAssertEqual(session.phase, .fighting)
+    XCTAssertNotNil(session.fish)
+    session.setReeling(true)
+    var guardSteps = 0
+    while session.phase == .fighting && guardSteps < 60 * 90 {
+      if session.tensionZone == .red || session.tensionZone == .yellow {
+        session.setReeling(false)
+      } else {
+        session.setReeling(true)
       }
-      XCTAssertEqual(session.phase, .landed)
-      XCTAssertNotNil(session.landedCatch)
-      XCTAssertEqual(session.landedCatch?.speciesID, "bluegill")
+      session.update(dt: 1.0 / 60.0)
+      guardSteps += 1
     }
+    XCTAssertEqual(session.phase, .landed)
+    XCTAssertNotNil(session.landedCatch)
+    XCTAssertEqual(session.landedCatch?.speciesID, "bluegill")
   }
 
   func testLineSnapsUnderConstantHeavyPressure() {
-    var session = FishingSession(rig: RigSetup.starter, waterway: WaterwayCatalog.find("lone-pine-lake"), seed: 3)
+    var session = FishingSession(rig: RigSetup.starter, waterway: WaterwayCatalog.find("lonePineLake"), seed: 3)
     castAndSoak(&session)
-    session.hookForTesting(speciesID: "channel-catfish", weightLb: 18, distanceFt: 60)
+    session.hookForTesting(speciesID: "channelCatfish", weightLb: 18, distanceFt: 60)
     session.strike()
     guard session.phase == .fighting else { return }
     session.setReeling(true)
@@ -97,9 +95,9 @@ final class ReelHorizonTests: XCTestCase {
 
   func testKeepnetSellingAwardsCreditsAndXP() {
     var p = PlayerProfile.newAngler()
-    let species = SpeciesCatalog.find("largemouth-bass")
+    let species = SpeciesCatalog.find("largemouthBass")
     let record = CatchRecord(
-      speciesID: species.id, waterwayID: "lone-pine-lake", weightLb: 3.2,
+      speciesID: species.id, waterwayID: "lonePineLake", weightLb: 3.2,
       lengthIn: species.lengthFor(weightLb: 3.2), grade: species.grade(weightLb: 3.2),
       gameDay: 1, gameMinute: 480, date: Date(), kept: true)
     let creditsBefore = p.credits
