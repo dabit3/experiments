@@ -71,6 +71,22 @@ Tap the visible **AUTOMATED INPUT DRIVER** banner to pause and validate actual m
 
 Capture both simulators **simultaneously**, then compose the complete device displays side by side. Never combine unrelated matches. `simctl io <UDID> recordVideo` captures a device video; it does not capture audio. Preserve the common room/round, server JSON log and each app's `Documents/evidence.jsonl` for machine-readable assertions. A system capture with audio can supplement the device streams.
 
+### External computer-use test (autoplay disabled)
+
+[`scripts/computer_use.py`](scripts/computer_use.py) drives both visible native Simulator windows through Devin's programmatic `tools.computer` API. It clicks Create, Join, Easy, Ready, center/rim drums and rematch. It reads the chart and server log for scheduling and assertions; it sends no WebSocket gameplay inputs itself. Both app instances must launch **without** `--autoplay`, `--auto-ready`, `--create` or `--join`.
+
+This driver requires **Devin's injected `scripted_tools` runtime** with the `computer` and `exec` tools. It is not an ordinary Python command; `devin_tools` is provided only inside that runtime. To reproduce:
+
+1. Build and install the app on two distinct simulators using the commands above. Launch Hana and Sora with only `--name` and `--server`; leave both on Welcome with empty room-code fields.
+2. Set `ROOT` to this checkout and `OUT` to a new evidence directory in the script. Create that directory, then start a fresh server whose stdout goes to `OUT/server.log`, for example `npm start > build/computer-use-fb15df3/server.log 2>&1` from this game directory. Do not reuse an active room or truncate a log while the driver runs.
+3. Use a 1600×1200 desktop with both Simulator windows in landscape. In the computer tool's **1024×768** space, Hana's content occupies approximately x=14–568/y=77–333; Sora's occupies x=14–568/y=438–696. Confirm each target in `COORDS` with a screenshot and adjust coordinates if the layout differs. The tested devices were iPhone 17 Pro and iPhone 17. The `revision` in the preflight event identifies the recorded app build; update it when testing a different build.
+4. Start concurrent device/desktop and live-audio recording if evidence is needed. Paste the **entire script contents inline** into one `scripted_tools` call with `timeout_secs=220`. Do not import or execute this file through another script: the tool broker needs to see its literal SDK calls. Let it finish without competing pointer input or messages to the calling agent; an unsolicited agent message cancelled one recorded attempt.
+5. Inspect `sdk-summary.json` and `sdk-actions.jsonl`. `complete: true` or process exit 0 means the procedure completed, **not** that assertions passed. The verdict is `allRequiredChecksPassed`; individual checks retain failed thresholds. Compare delivered inputs against both apps' `manualHit` evidence and shared results.
+
+The completed external test on app revision `fb15df3` used room `974579`, 29 computer calls and two full rounds in 105 seconds. Both real peers scored through UIKit with autoplay disabled: 1500–2000, then 500–1500. **Both round-one scoring thresholds failed** (at least five positive judgments and 2500 points per peer). Each round delivered eight scheduled inputs and skipped six targets; all misses remain in the results. Full computer calls took longer than the spacing between some selected notes. This proves the external input route and shared match/rematch, not accurate full-chart play or 75 ms paired BIG hits.
+
+The evidence bundle linked from the PR preserves the exact recorded script, raw action/native/server logs, failed attempts and report. The committed driver differs from that recorded copy only in comments/docstrings. Its thresholds and executable logic are unchanged.
+
 ### Live audio on a macOS VM
 
 Establish a host audio endpoint **before booting the simulators**. This VM initially had no audio devices; the following setup restored real music and drum output without a VM reboot:
@@ -108,6 +124,14 @@ xcodebuild -project FestivalDon.xcodeproj -scheme FestivalDon \
 ```
 
 UI tests cover welcome validation and calibration controls. The mandatory complete two-iPhone recorded duel is a separate end-to-end run; a build or a protocol test does not establish that result.
+
+Lint the external driver without importing its injected SDK:
+
+```sh
+python3 -m venv build/lint-venv
+build/lint-venv/bin/python -m pip install --disable-pip-version-check ruff==0.11.13
+build/lint-venv/bin/ruff check scripts/computer_use.py
+```
 
 `npm run assets` deterministically regenerates the two original music WAVs, center/rim samples, result fanfare and four charts. The fixed bar/phrase chart source is in `server/game.mjs`; the pentatonic melody, bass, taiko accents and shaker arrangement are in `scripts/compose.mjs`.
 
