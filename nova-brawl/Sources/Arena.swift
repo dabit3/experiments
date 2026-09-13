@@ -452,7 +452,8 @@ final class ArenaRenderer: NSObject {
     if previewing {
       let angle = Float(sin(time * 0.15) * 0.3)
       camera.position = SCNVector3(5 + sin(angle) * 2, 3.1, 9)
-      camera.look(at: SCNVector3(0, 1.95, 0))
+      camera.look(
+        at: SCNVector3(0, 1.95, 0), up: SCNVector3(0, 1, 0), localFront: SCNVector3(0, 0, -1))
       rigs["preview"]?.root.eulerAngles.y = 0.3
       rigs["preview"]?.animate(time: time, flying: false)
       return
@@ -485,7 +486,8 @@ final class ArenaRenderer: NSObject {
     camera.look(
       at: SCNVector3(
         pos.x + forwardX * focusDistance, pos.y + 2.0 + (other.y - pos.y) * 0.3,
-        pos.z + forwardZ * focusDistance))
+        pos.z + forwardZ * focusDistance),
+      up: SCNVector3(0, 1, 0), localFront: SCNVector3(0, 0, -1))
     target.isHidden = !me.locked || enemy == nil || state.phase == "result"
     target.parent?.position = SCNVector3(other.x, other.y + 1.7, other.z)
   }
