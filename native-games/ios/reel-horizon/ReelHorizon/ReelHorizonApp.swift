@@ -42,6 +42,7 @@ struct RootView: View {
         }
       }
     }
+    .accessibilityElement(children: .contain)
     .accessibilityIdentifier("root.\(screenID)")
   }
 
@@ -76,6 +77,7 @@ struct HeaderBar: View {
         .accessibilityIdentifier("header.back")
       }
       Text(title).font(Theme.display(24)).textCase(.uppercase).kerning(1.5).foregroundStyle(Theme.ink)
+        .lineLimit(1).fixedSize()
         .shadow(color: .black.opacity(0.6), radius: 2, y: 1)
         .accessibilityIdentifier("header.title")
       Spacer()
@@ -95,16 +97,20 @@ struct PlayerStrip: View {
           Text(store.profile.name).font(Theme.body(12, weight: .bold)).foregroundStyle(Theme.ink)
           Text("LVL \(store.profile.level)").font(Theme.mono(10)).foregroundStyle(Theme.inkDim)
         }
+        .lineLimit(1)
         MeterBar(value: store.profile.levelProgress, height: 6).frame(width: 120)
       }
       Divider().frame(height: 26).overlay(Theme.panelStroke)
       CurrencyChip(kind: .credits, amount: store.profile.credits).accessibilityIdentifier("strip.credits")
       CurrencyChip(kind: .baitcoins, amount: store.profile.baitcoins)
     }
+    .lineLimit(1)
+    .fixedSize()
     .padding(.horizontal, 12)
     .padding(.vertical, 6)
     .background(RoundedRectangle(cornerRadius: 8).fill(Theme.panel))
     .overlay(RoundedRectangle(cornerRadius: 8).strokeBorder(Theme.panelStroke))
+    .layoutPriority(1)
   }
 }
 
