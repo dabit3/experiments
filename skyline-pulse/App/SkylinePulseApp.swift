@@ -149,9 +149,11 @@ struct RootView: View {
     } label: {
       VStack(alignment: .leading, spacing: 0) {
         ZStack(alignment: .bottomLeading) {
-          Image("aria").resizable().scaledToFill()
-            .frame(height: 140).clipped()
-            .hueRotation(.degrees(chart.id == "neon" ? 0 : 85))
+          GeometryReader { card in
+            Image("aria").resizable().scaledToFill()
+              .frame(width: card.size.width, height: card.size.height).clipped()
+              .hueRotation(.degrees(chart.id == "neon" ? 0 : 85))
+          }
           LinearGradient(
             colors: [.clear, .black.opacity(0.9)], startPoint: .top, endPoint: .bottom)
           VStack(alignment: .leading, spacing: 4) {
@@ -339,39 +341,46 @@ struct RootView: View {
   }
 
   private var results: some View {
-    ZStack {
-      Image("aria").resizable().scaledToFill().ignoresSafeArea().opacity(0.24)
-      ink.opacity(0.55).ignoresSafeArea()
-      VStack(spacing: 17) {
-        brand
-        Text("TRACK COMPLETE").font(.system(size: 12, weight: .heavy)).tracking(5).foregroundStyle(
-          gold)
-        Text(resultTitle).font(.system(size: 51, weight: .black, design: .rounded)).italic()
-        Text(
-          "\(session.chart?.title ?? "")   /   ROOM \(session.roomCode)   /   ROUND \(session.state?.round ?? 0)"
-        )
-        .font(.system(size: 11, weight: .heavy)).tracking(1).foregroundStyle(gold)
-        HStack(spacing: 18) {
-          ForEach(session.state?.players ?? []) { player in resultCard(player) }
-        }.frame(maxWidth: 800)
-        HStack(spacing: 15) {
-          ArcadeButton(title: session.me?.ready == true ? "CANCEL REMATCH" : "REMATCH", light: true)
-          { session.ready() }
-          ArcadeButton(title: "RECONNECT") { session.reconnect() }
-          ArcadeButton(title: "LEAVE ROOM") { session.leave() }
-        }.frame(maxWidth: 800)
-        Text(
-          session.me?.ready == true
-            ? "READY — waiting for your opponent"
-            : "Both players choose REMATCH to play the same chart again."
-        )
-        .font(.system(size: 12)).foregroundStyle(cyan)
-        if session.demo {
-          Text("AUTOMATED INPUT DRIVER • NETWORK-VERIFIED RESULTS").font(
-            .system(size: 10, weight: .heavy)
-          ).foregroundStyle(gold)
-        }
-      }.padding(24)
+    GeometryReader { viewport in
+      ScrollView {
+        VStack(spacing: 17) {
+          brand
+          Text("TRACK COMPLETE").font(.system(size: 12, weight: .heavy)).tracking(5)
+            .foregroundStyle(
+              gold)
+          Text(resultTitle).font(.system(size: 51, weight: .black, design: .rounded)).italic()
+          Text(
+            "\(session.chart?.title ?? "")   /   ROOM \(session.roomCode)   /   ROUND \(session.state?.round ?? 0)"
+          )
+          .font(.system(size: 11, weight: .heavy)).tracking(1).foregroundStyle(gold)
+          HStack(spacing: 18) {
+            ForEach(session.state?.players ?? []) { player in resultCard(player) }
+          }.frame(maxWidth: 800)
+          HStack(spacing: 15) {
+            ArcadeButton(
+              title: session.me?.ready == true ? "CANCEL REMATCH" : "REMATCH", light: true
+            ) { session.ready() }
+            ArcadeButton(title: "RECONNECT") { session.reconnect() }
+            ArcadeButton(title: "LEAVE ROOM") { session.leave() }
+          }.frame(maxWidth: 800)
+          Text(
+            session.me?.ready == true
+              ? "READY — waiting for your opponent"
+              : "Both players choose REMATCH to play the same chart again."
+          )
+          .font(.system(size: 12)).foregroundStyle(cyan)
+          if session.demo {
+            Text("AUTOMATED INPUT DRIVER • NETWORK-VERIFIED RESULTS").font(
+              .system(size: 10, weight: .heavy)
+            ).foregroundStyle(gold)
+          }
+        }.padding(24).frame(maxWidth: .infinity, minHeight: viewport.size.height)
+      }
+      .background {
+        Image("aria").resizable().scaledToFill()
+          .frame(width: viewport.size.width, height: viewport.size.height)
+          .clipped().opacity(0.24).overlay(ink.opacity(0.55))
+      }
     }
   }
 
