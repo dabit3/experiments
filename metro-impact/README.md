@@ -120,10 +120,15 @@ xcrun simctl io "$B" recordVideo --codec=h264 evidence/beta.mov
 # Stop each with SIGINT after the shared result, rematch and reconnect.
 # Compose the simultaneous full device displays, without cropping.
 ffmpeg -i evidence/alpha.mov -i evidence/beta.mov \
-  -filter_complex '[0:v]scale=1280:-2,pad=1280:720:0:(oh-ih)/2[a];[1:v]scale=1280:-2,pad=1280:720:0:(oh-ih)/2[b];[a][b]hstack[v]' \
+  -filter_complex '[0:v]transpose=2,scale=1280:-2,pad=1280:720:0:(oh-ih)/2[a];[1:v]transpose=2,scale=1280:-2,pad=1280:720:0:(oh-ih)/2[b];[a][b]hstack[v]' \
   -map '[v]' -c:v libx264 -crf 20 -pix_fmt yuv420p evidence/two-device.mp4
 ffprobe -v error -show_streams -show_format evidence/two-device.mp4
 ```
+
+The tested simulator captures had portrait-oriented pixels despite landscape
+windows, corrected with `transpose=2`. Inspect one raw frame first and omit that
+filter if your capture is already landscape. Approve the first-use iOS
+“Open in Metro Impact?” prompt before relying on automation deep links.
 
 Align capture start timestamps if the record processes started at different times;
 do not splice different matches. Simulator video streams may not include audio;
