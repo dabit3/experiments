@@ -83,6 +83,33 @@ from the same run. Never call two independent solo launches a multiplayer test.
 `simctl io <UDID> recordVideo` captures video but does **not** record system audio;
 use a screen/audio capture tool when audible evidence is needed.
 
+### Simulator audio on a macOS VM
+
+If the host has no audio endpoint, install BlackHole before booting simulators:
+
+```sh
+brew install blackhole-2ch
+system_profiler SPAudioDataType
+```
+
+If BlackHole is installed but still absent from the device list, restart CoreAudio
+once with `sudo -n killall coreaudiod`, then check again. Stop if administrative
+permission is unavailable. Verify BlackHole 2ch is the default input/output at
+48 kHz, then restart any simulators that booted before the endpoint existed.
+Grant microphone and screen-capture permissions through the normal macOS dialogs.
+
+BlackHole 0.7.1 was verified with both native clients: each isolated preview
+matched the original waveform, and simultaneous match/rematch output stayed
+within 5.63 ms of the shared music epoch. This verifies digital loopback, not
+physical speaker latency or subjective listening.
+
+The successful recording used ScreenCaptureKit video with software H.264 encoding
+and concurrent BlackHole stereo PCM callbacks on a shared host clock. Preserve
+source presentation timestamps and report dropped frames. For variable-frame-rate
+caption derivatives, disable B-frames and verify matching audio/video coverage,
+unchanged audio packets, nonzero audio samples and full decoding. Do not mux a
+resource WAV as a substitute for live capture.
+
 ## Checks
 
 ```sh
