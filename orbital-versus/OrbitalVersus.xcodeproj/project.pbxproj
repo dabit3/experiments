@@ -1,0 +1,477 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		12F9D3CAB727660F56A98DE6 /* orbit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 72F7AE85A69B741E08A14E7B /* orbit.wav */; };
+		132A1BE3608B0EC27E8C0F65 /* destroy.wav in Resources */ = {isa = PBXBuildFile; fileRef = F45B757456CBE46C1A599A0D /* destroy.wav */; };
+		362D047D8692141C0A8631D1 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7001E75C11514A9244598F /* Models.swift */; };
+		490DD205C49CD096B8332380 /* GameAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9A6130C48295237FDF2E0A /* GameAudio.swift */; };
+		4BD779DD1F8F2CC160890B2D /* lock.wav in Resources */ = {isa = PBXBuildFile; fileRef = 75A60A43EA06F58016B198B9 /* lock.wav */; };
+		51928977B2177D7013DE458B /* saber.wav in Resources */ = {isa = PBXBuildFile; fileRef = BD249651A0A41EFB7499F9B6 /* saber.wav */; };
+		541BE23D024B071ED6AA8F21 /* result.wav in Resources */ = {isa = PBXBuildFile; fileRef = 96092C50FC24C1B40D2B4EA4 /* result.wav */; };
+		56D1CDA32869CDFACD3113B0 /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 487B6424963F0E1BDB0798DE /* hit.wav */; };
+		626A528CACC66948BD9FE254 /* confirm.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1EE50940C57DBB30D0818BC5 /* confirm.wav */; };
+		6294EFFBC3DE091446CBF4B9 /* ArenaRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B379CA6629FC780D3368C3AA /* ArenaRenderer.swift */; };
+		63CC702EE0EC9BCC71F3FE4E /* fire.wav in Resources */ = {isa = PBXBuildFile; fileRef = 3976ADDF9388CE8D3C64D559 /* fire.wav */; };
+		8264A39A504BC6682367309F /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4B08EB9DE616BD7DD82E2F /* GameClient.swift */; };
+		A26D1726FD7053C417A643F3 /* burst.wav in Resources */ = {isa = PBXBuildFile; fileRef = BC04C5E0ECB7C8EE9B0AC46C /* burst.wav */; };
+		B79F4FC95498C9D85C61AF81 /* GameScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D2CC54FFC4D7317FF6B487 /* GameScreen.swift */; };
+		CE3A057DCC9C458596F61CB9 /* OrbitalVersusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADC120D74D237D199807B26 /* OrbitalVersusApp.swift */; };
+		DBDA560009B71C4040DEFB76 /* ManualControlsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536E443C37749ED8FDAC2DBB /* ManualControlsTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EDF5A43BCE7BBF2438CE8B02 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 30D34A0C2DC93DBEFECA3BA7 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D3E7DB305188F35F680F4D5;
+			remoteInfo = OrbitalVersus;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1C4B08EB9DE616BD7DD82E2F /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
+		1EE50940C57DBB30D0818BC5 /* confirm.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = confirm.wav; sourceTree = "<group>"; };
+		2D9A6130C48295237FDF2E0A /* GameAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAudio.swift; sourceTree = "<group>"; };
+		3976ADDF9388CE8D3C64D559 /* fire.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fire.wav; sourceTree = "<group>"; };
+		487B6424963F0E1BDB0798DE /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
+		4C7001E75C11514A9244598F /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		536E443C37749ED8FDAC2DBB /* ManualControlsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualControlsTests.swift; sourceTree = "<group>"; };
+		6811193FC24014C9EB14C17C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		72F7AE85A69B741E08A14E7B /* orbit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = orbit.wav; sourceTree = "<group>"; };
+		75A60A43EA06F58016B198B9 /* lock.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lock.wav; sourceTree = "<group>"; };
+		7ADC120D74D237D199807B26 /* OrbitalVersusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbitalVersusApp.swift; sourceTree = "<group>"; };
+		96092C50FC24C1B40D2B4EA4 /* result.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = result.wav; sourceTree = "<group>"; };
+		A3D2CC54FFC4D7317FF6B487 /* GameScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScreen.swift; sourceTree = "<group>"; };
+		B379CA6629FC780D3368C3AA /* ArenaRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaRenderer.swift; sourceTree = "<group>"; };
+		BC04C5E0ECB7C8EE9B0AC46C /* burst.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = burst.wav; sourceTree = "<group>"; };
+		BD249651A0A41EFB7499F9B6 /* saber.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = saber.wav; sourceTree = "<group>"; };
+		D606210350F99FAA8998B8EC /* OrbitalVersusUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = OrbitalVersusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD1E6C0A1E83016569FE70B8 /* OrbitalVersus.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = OrbitalVersus.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F45B757456CBE46C1A599A0D /* destroy.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = destroy.wav; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		33E7D1DDEF2E192D5D183E0B = {
+			isa = PBXGroup;
+			children = (
+				75A1CE401263D6557886CAFE /* App */,
+				F73082164933088A9223B6E1 /* Tests */,
+				36E02D5EC60A293BE60596D8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		36E02D5EC60A293BE60596D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DD1E6C0A1E83016569FE70B8 /* OrbitalVersus.app */,
+				D606210350F99FAA8998B8EC /* OrbitalVersusUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3CCAE84003D8883A36925AAB /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				BC04C5E0ECB7C8EE9B0AC46C /* burst.wav */,
+				1EE50940C57DBB30D0818BC5 /* confirm.wav */,
+				F45B757456CBE46C1A599A0D /* destroy.wav */,
+				3976ADDF9388CE8D3C64D559 /* fire.wav */,
+				487B6424963F0E1BDB0798DE /* hit.wav */,
+				75A60A43EA06F58016B198B9 /* lock.wav */,
+				72F7AE85A69B741E08A14E7B /* orbit.wav */,
+				96092C50FC24C1B40D2B4EA4 /* result.wav */,
+				BD249651A0A41EFB7499F9B6 /* saber.wav */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		75A1CE401263D6557886CAFE /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B379CA6629FC780D3368C3AA /* ArenaRenderer.swift */,
+				2D9A6130C48295237FDF2E0A /* GameAudio.swift */,
+				1C4B08EB9DE616BD7DD82E2F /* GameClient.swift */,
+				A3D2CC54FFC4D7317FF6B487 /* GameScreen.swift */,
+				6811193FC24014C9EB14C17C /* Info.plist */,
+				4C7001E75C11514A9244598F /* Models.swift */,
+				7ADC120D74D237D199807B26 /* OrbitalVersusApp.swift */,
+				3CCAE84003D8883A36925AAB /* Audio */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		F73082164933088A9223B6E1 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				536E443C37749ED8FDAC2DBB /* ManualControlsTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D3E7DB305188F35F680F4D5 /* OrbitalVersus */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F2AA83C74BA23483E9727DB5 /* Build configuration list for PBXNativeTarget "OrbitalVersus" */;
+			buildPhases = (
+				D4FB405DFFCB728EBA10093C /* Sources */,
+				0A2875459B2F4CE433B1239C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OrbitalVersus;
+			packageProductDependencies = (
+			);
+			productName = OrbitalVersus;
+			productReference = DD1E6C0A1E83016569FE70B8 /* OrbitalVersus.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D68ED74A02B39C0374731873 /* OrbitalVersusUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DC1C7A84BCECEE61CAE8B2AC /* Build configuration list for PBXNativeTarget "OrbitalVersusUITests" */;
+			buildPhases = (
+				E5ECA3B19E147CADD398FFF5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B29FB22B4D448E4BE272541F /* PBXTargetDependency */,
+			);
+			name = OrbitalVersusUITests;
+			packageProductDependencies = (
+			);
+			productName = OrbitalVersusUITests;
+			productReference = D606210350F99FAA8998B8EC /* OrbitalVersusUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		30D34A0C2DC93DBEFECA3BA7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					D68ED74A02B39C0374731873 = {
+						TestTargetID = 1D3E7DB305188F35F680F4D5;
+					};
+				};
+			};
+			buildConfigurationList = 6C551531133EB94D6F22DEE9 /* Build configuration list for PBXProject "OrbitalVersus" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 33E7D1DDEF2E192D5D183E0B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 36E02D5EC60A293BE60596D8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D3E7DB305188F35F680F4D5 /* OrbitalVersus */,
+				D68ED74A02B39C0374731873 /* OrbitalVersusUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0A2875459B2F4CE433B1239C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A26D1726FD7053C417A643F3 /* burst.wav in Resources */,
+				626A528CACC66948BD9FE254 /* confirm.wav in Resources */,
+				132A1BE3608B0EC27E8C0F65 /* destroy.wav in Resources */,
+				63CC702EE0EC9BCC71F3FE4E /* fire.wav in Resources */,
+				56D1CDA32869CDFACD3113B0 /* hit.wav in Resources */,
+				4BD779DD1F8F2CC160890B2D /* lock.wav in Resources */,
+				12F9D3CAB727660F56A98DE6 /* orbit.wav in Resources */,
+				541BE23D024B071ED6AA8F21 /* result.wav in Resources */,
+				51928977B2177D7013DE458B /* saber.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D4FB405DFFCB728EBA10093C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6294EFFBC3DE091446CBF4B9 /* ArenaRenderer.swift in Sources */,
+				490DD205C49CD096B8332380 /* GameAudio.swift in Sources */,
+				8264A39A504BC6682367309F /* GameClient.swift in Sources */,
+				B79F4FC95498C9D85C61AF81 /* GameScreen.swift in Sources */,
+				362D047D8692141C0A8631D1 /* Models.swift in Sources */,
+				CE3A057DCC9C458596F61CB9 /* OrbitalVersusApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E5ECA3B19E147CADD398FFF5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBDA560009B71C4040DEFB76 /* ManualControlsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B29FB22B4D448E4BE272541F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D3E7DB305188F35F680F4D5 /* OrbitalVersus */;
+			targetProxy = EDF5A43BCE7BBF2438CE8B02 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		450B36C7EA0A36A45DDED660 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.orbitalversus.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = OrbitalVersus;
+			};
+			name = Debug;
+		};
+		7B8D6260FF09AD952D42690B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.orbitalversus.ios;
+				PRODUCT_NAME = OrbitalVersus;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9787C9ABCA9DB0BD4D30937F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Orbital Versus";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to a local Orbital Versus arena server and other pilots.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B9FCA5D317BC4FD5F04A9BD3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.orbitalversus.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = OrbitalVersus;
+			};
+			name = Release;
+		};
+		BFE044EABD93B567924970B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.orbitalversus.ios;
+				PRODUCT_NAME = OrbitalVersus;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F35BA8262E670AF622553F95 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Orbital Versus";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to a local Orbital Versus arena server and other pilots.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6C551531133EB94D6F22DEE9 /* Build configuration list for PBXProject "OrbitalVersus" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9787C9ABCA9DB0BD4D30937F /* Debug */,
+				F35BA8262E670AF622553F95 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DC1C7A84BCECEE61CAE8B2AC /* Build configuration list for PBXNativeTarget "OrbitalVersusUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				450B36C7EA0A36A45DDED660 /* Debug */,
+				B9FCA5D317BC4FD5F04A9BD3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F2AA83C74BA23483E9727DB5 /* Build configuration list for PBXNativeTarget "OrbitalVersus" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B8D6260FF09AD952D42690B /* Debug */,
+				BFE044EABD93B567924970B6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 30D34A0C2DC93DBEFECA3BA7 /* Project object */;
+}

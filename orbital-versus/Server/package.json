@@ -1,0 +1,17 @@
+{
+  "name": "orbital-versus-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test *.test.mjs",
+    "lint": "node --check game.mjs && node --check server.mjs && node --check game.test.mjs && node --check network.test.mjs"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
