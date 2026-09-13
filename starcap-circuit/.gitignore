@@ -1,0 +1,7 @@
+.devin/
+build/
+node_modules/
+*.xcuserstate
+xcuserdata/
+evidence/
+*.jsonl
