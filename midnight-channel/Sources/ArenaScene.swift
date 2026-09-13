@@ -23,259 +23,160 @@ func points(_ values: [(Double, Double)]) -> [CGPoint] {
   values.map { CGPoint(x: $0.0, y: $0.1) }
 }
 
+private enum FighterPose: Int {
+  case idle, walkLeft, walkRight, guardUp, jump, light, windup, heavy
+  case summon, overdrive, hurt, burst
+
+  static func current(_ state: FighterState, time: Double) -> FighterPose {
+    if state.stun > 0 { return .hurt }
+    switch state.move {
+    case "light": return state.frame < 5 || state.frame > 13 ? .idle : .light
+    case "heavy": return state.frame < 13 ? .windup : .heavy
+    case "summon": return .summon
+    case "super": return state.frame < 15 ? .overdrive : .summon
+    case "burst": return .burst
+    default:
+      if state.y > 0 { return .jump }
+      if state.guard { return .guardUp }
+      if abs(state.axis) > 0.1 {
+        return Int(time * 9) % 2 == 0 ? .walkLeft : .walkRight
+      }
+      return .idle
+    }
+  }
+}
+
 final class FighterArt: SKNode {
+  private static let atlas = SKTextureAtlas(named: "Fighters")
   private let rig = SKNode()
-  private let shadow = SKShapeNode(ellipseOf: CGSize(width: 92, height: 17))
-  private let companion = SKNode()
   private let body = SKNode()
-  private let head = SKNode()
-  private let coat = SKShapeNode()
-  private let limbs = (0..<8).map { _ in SKShapeNode() }
-  private let blade = SKShapeNode()
-  private let scarf = SKShapeNode()
+  private let sprite = SKSpriteNode()
+  private let companion = SKSpriteNode()
+  private let companionGlow = SKSpriteNode()
+  private let afterimage = SKSpriteNode()
+  private let shadow = SKShapeNode(ellipseOf: CGSize(width: 94, height: 15))
   private let guardArc = SKShapeNode()
-  private let aura = SKShapeNode(ellipseOf: CGSize(width: 130, height: 210))
+  private let slash = SKShapeNode()
+  private let aura = SKShapeNode(ellipseOf: CGSize(width: 128, height: 214))
+  private let textures: [SKTexture]
+  private let spiritTextures: [SKTexture]
   private let slot: Int
   private var accent: UIColor { slot == 0 ? cyan : red }
 
   init(slot: Int) {
     self.slot = slot
+    let name = slot == 0 ? "rei" : "mika"
+    let spirit = slot == 0 ? "antenna" : "redshift"
+    textures = (0..<12).map { Self.atlas.textureNamed("\(name)-\($0)") }
+    spiritTextures = (0..<4).map { Self.atlas.textureNamed("\(spirit)-\($0)") }
     super.init()
-    shadow.fillColor = .black.withAlphaComponent(0.55)
+    for texture in textures + spiritTextures { texture.filteringMode = .linear }
+    shadow.fillColor = .black.withAlphaComponent(0.6)
     shadow.strokeColor = .clear
-    shadow.position.y = 0
     addChild(shadow)
     addChild(rig)
+    rig.addChild(companionGlow)
     rig.addChild(companion)
     rig.addChild(body)
     companion.zPosition = -2
-    aura.position.y = 88
+    companionGlow.zPosition = -3
+    for node in [sprite, companion, companionGlow, afterimage] {
+      node.size = textures[0].size()
+      node.setScale(0.48)
+      node.anchorPoint = CGPoint(x: 384.0 / 896, y: 40.0 / 640)
+    }
+    body.addChild(afterimage)
+    body.addChild(sprite)
+    afterimage.zPosition = -1
+    afterimage.color = accent
+    afterimage.colorBlendFactor = 0.8
+    afterimage.blendMode = .add
+    companionGlow.color = accent
+    companionGlow.colorBlendFactor = 1
+    companionGlow.blendMode = .add
+    aura.position.y = 98
     aura.fillColor = .clear
     aura.strokeColor = accent
     aura.lineWidth = 2
     aura.glowWidth = 5
     body.addChild(aura)
-    body.addChild(coat)
-    for limb in limbs {
-      limb.strokeColor = ink
-      limb.lineWidth = 2.6
-      body.addChild(limb)
-    }
-    let torso = polygon(
-      points([(-22, 83), (-29, 139), (-12, 151), (18, 147), (28, 96), (17, 77)]),
-      fill: slot == 0 ? ink : .white)
-    body.addChild(torso)
-    body.addChild(
-      polygon(
-        points([(-8, 145), (2, 119), (13, 148), (15, 86), (-6, 83)]),
-        fill: slot == 0 ? .white : ink))
-    body.addChild(polygon(points([(-18, 148), (-7, 122), (-13, 113), (-21, 143)]), fill: accent))
-    body.addChild(polygon(points([(14, 147), (3, 117), (16, 121), (22, 139)]), fill: accent))
-    if slot == 0 {
-      body.addChild(polygon(points([(1, 134), (7, 132), (10, 92), (3, 86), (-1, 94)]), fill: red))
-    }
-    for y in stride(from: 95, through: 130, by: 12) {
-      let button = SKShapeNode(circleOfRadius: 1.5)
-      button.fillColor = gold
-      button.position = CGPoint(x: -16, y: y)
-      body.addChild(button)
-    }
-    let belt = polygon(points([(-22, 85), (21, 83), (21, 91), (-23, 94)]), fill: ink)
-    body.addChild(belt)
-    body.addChild(polygon(points([(-2, 85), (6, 85), (6, 93), (-2, 93)]), fill: gold))
-    body.addChild(head)
-    head.position = CGPoint(x: 1, y: 151)
-    head.addChild(
-      polygon(
-        points([(-11, 1), (-14, 23), (-7, 34), (13, 34), (20, 20), (17, 4), (7, -3)]),
-        fill: UIColor(red: 1, green: 0.82, blue: 0.65, alpha: 1)))
-    let hairPoints =
-      slot == 0
-      ? [
-        (-15.0, 14.0), (-22, 32), (-14, 31), (-18, 43), (-5, 39), (4, 49), (8, 41), (21, 41),
-        (17, 34), (26, 28), (18, 20), (14, 30), (8, 20), (3, 31), (-6, 18), (-7, 30),
-      ]
-      : [
-        (-16.0, -1.0), (-23, 20), (-22, 35), (-10, 44), (11, 44), (24, 34), (26, 17), (20, 5),
-        (16, 27), (8, 22), (5, 34), (-8, 20), (-10, 1),
-      ]
-    head.addChild(
-      polygon(points(hairPoints), fill: slot == 0 ? UIColor(white: 0.85, alpha: 1) : red))
-    head.addChild(polygon(points([(-1, 18), (7, 17), (9, 20), (0, 21)]), fill: .white, width: 1))
-    head.addChild(
-      polygon(points([(11, 18), (17, 18), (18, 21), (12, 21)]), fill: .white, width: 1))
-    head.addChild(polygon(points([(5, 18), (7, 18), (7, 20), (5, 20)]), fill: accent, width: 0))
-    head.addChild(
-      polygon(points([(15, 18), (17, 18), (17, 20), (15, 20)]), fill: accent, width: 0))
-    if slot == 0 {
-      head.addChild(
-        polygon(
-          points([(-3, 16), (8, 15), (10, 22), (-3, 23)]), fill: cyan.withAlphaComponent(0.3),
-          width: 1))
-      head.addChild(
-        polygon(
-          points([(11, 15), (19, 16), (20, 23), (11, 22)]), fill: cyan.withAlphaComponent(0.3),
-          width: 1))
-    } else {
-      let ear = SKShapeNode(circleOfRadius: 7)
-      ear.fillColor = gold
-      ear.strokeColor = ink
-      ear.lineWidth = 3
-      ear.position = CGPoint(x: -13, y: 16)
-      head.addChild(ear)
-    }
-    body.addChild(scarf)
-    blade.fillColor = .white
-    blade.strokeColor = accent
-    blade.lineWidth = 2
-    body.addChild(blade)
-    guardArc.fillColor = accent.withAlphaComponent(0.12)
+    guardArc.fillColor = accent.withAlphaComponent(0.1)
     guardArc.strokeColor = accent
-    guardArc.lineWidth = 4
-    guardArc.glowWidth = 7
+    guardArc.lineWidth = 3
+    guardArc.glowWidth = 6
+    guardArc.zPosition = 2
     body.addChild(guardArc)
-    buildCompanion()
+    slash.strokeColor = accent
+    slash.lineWidth = slot == 0 ? 3 : 7
+    slash.glowWidth = 4
+    slash.blendMode = .add
+    slash.zPosition = 2
+    body.addChild(slash)
   }
 
   required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
-  private func buildCompanion() {
-    companion.position = CGPoint(x: -48, y: 24)
-    let metal =
-      slot == 0
-      ? UIColor(red: 0.76, green: 0.94, blue: 1, alpha: 1)
-      : UIColor(red: 1, green: 0.8, blue: 0.75, alpha: 1)
-    for side in [-1.0, 1.0] {
-      companion.addChild(
-        polygon(
-          points([
-            (side * 15, 128), (side * 58, 175), (side * 85, 180),
-            (side * 54, 126), (side * 92, 137), (side * 56, 96), (side * 24, 91),
-          ]),
-          fill: accent.withAlphaComponent(0.65), stroke: .white, width: 1.5))
-      companion.addChild(
-        polygon(
-          points([
-            (side * 12, 92), (side * 38, 65), (side * 31, 16),
-            (side * 8, 1), (side * 14, 50), (side * 2, 73),
-          ]), fill: metal))
-      companion.addChild(
-        polygon(
-          points([
-            (side * 25, 144), (side * 50, 142), (side * 63, 97),
-            (side * 48, 76), (side * 35, 115), (side * 18, 114),
-          ]), fill: metal))
-    }
-    companion.addChild(
-      polygon(
-        points([(-27, 145), (0, 165), (29, 145), (19, 98), (0, 78), (-18, 98)]), fill: ink,
-        stroke: accent, width: 4))
-    companion.addChild(
-      polygon(
-        points([(-22, 145), (0, 132), (23, 146), (10, 113), (0, 120), (-13, 111)]), fill: metal))
-    companion.addChild(
-      polygon(
-        points([(-17, 174), (-12, 199), (0, 210), (15, 198), (18, 175), (0, 159)]), fill: metal))
-    companion.addChild(polygon(points([(-15, 187), (16, 187), (8, 177), (-9, 177)]), fill: accent))
-    companion.addChild(
-      polygon(
-        points([(-15, 195), (-29, 221), (-4, 204), (0, 227), (4, 204), (29, 221), (15, 195)]),
-        fill: gold))
-  }
-
-  private func path(_ values: [(Double, Double)]) -> CGPath {
-    let result = CGMutablePath()
-    result.addLines(between: points(values))
-    result.closeSubpath()
-    return result
-  }
-
-  private func limb(
-    _ node: SKShapeNode, _ start: CGPoint, _ end: CGPoint, _ width: Double, _ color: UIColor
-  ) {
-    let dx = Double(end.x - start.x)
-    let dy = Double(end.y - start.y)
-    let length = max(1, hypot(dx, dy))
-    let nx = -dy / length * width
-    let ny = dx / length * width
-    node.path = path([
-      (start.x + nx, start.y + ny), (end.x + nx * 0.7, end.y + ny * 0.7),
-      (end.x - nx * 0.7, end.y - ny * 0.7), (start.x - nx, start.y - ny),
-    ])
-    node.fillColor = color
-  }
-
   func pose(_ state: FighterState, time: Double) {
-    let walking = abs(state.axis) > 0.1 && state.move.isEmpty && state.stun == 0 && !state.guard
-    let stride = walking ? sin(time * 15) * 19 : sin(time * 3) * 2
-    let phase = Double(state.frame)
-    let attacking = !state.move.isEmpty
-    let attackExtension = attacking ? sin(min(1, phase / 12) * .pi / 2) : 0
-    let bob = state.y > 0 ? 0 : sin(time * (walking ? 30 : 5)) * 2
+    let frame = Double(state.frame)
+    let pose = FighterPose.current(state, time: time)
+    let walking = pose == .walkLeft || pose == .walkRight
+    let striking = pose == .light || pose == .heavy
+    let startup = state.move == "heavy" ? 13.0 : 5.0
+    let strike = striking ? max(0, 1 - abs(frame - startup - 3) / 12) : 0
     rig.xScale = state.face
     rig.position.y = state.y * 0.75
     shadow.xScale = max(0.55, 1 - state.y / 600)
-    body.position.y = bob
-    body.zRotation = state.stun > 0 ? -0.16 : (attacking ? -0.04 : 0)
-    head.zRotation = sin(time * 3) * 0.025
-    let legLift = state.y > 0 ? 25.0 : 0
-    let hipA = CGPoint(x: -12, y: 83)
-    let hipB = CGPoint(x: 12, y: 83)
-    let kneeA = CGPoint(x: -20 - stride * 0.6, y: 45 + legLift)
-    let kneeB = CGPoint(x: 20 + stride * 0.6, y: 42 + legLift)
-    let footA = CGPoint(x: -32 - stride, y: 6 + legLift)
-    let footB = CGPoint(x: 34 + stride, y: 6 + legLift * 0.3)
-    limb(limbs[0], hipA, kneeA, 10, ink)
-    limb(limbs[1], kneeA, footA, 8, ink)
-    limb(limbs[2], hipB, kneeB, 10, UIColor(white: 0.17, alpha: 1))
-    limb(limbs[3], kneeB, footB, 8, ink)
-    let handX = state.guard ? 29.0 : attacking ? 32 + 65 * attackExtension : 31.0
-    let handY = state.guard ? 155.0 : attacking ? 124 + sin(phase * 0.15) * 10 : 101.0
-    limb(limbs[4], CGPoint(x: -24, y: 137), CGPoint(x: -37, y: 114), 9, slot == 0 ? ink : .white)
-    limb(
-      limbs[5], CGPoint(x: -37, y: 114),
-      CGPoint(x: state.guard ? 18 : -23, y: state.guard ? 147 : 99), 7, accent)
-    limb(
-      limbs[6], CGPoint(x: 21, y: 140), CGPoint(x: (handX + 20) / 2, y: handY - 10), 10,
-      slot == 0 ? ink : .white)
-    limb(limbs[7], CGPoint(x: (handX + 20) / 2, y: handY - 10), CGPoint(x: handX, y: handY), 8, ink)
-    let flutter = sin(time * 7) * 8
-    coat.path = path([
-      (-24, 129), (-38, 79), (-51 - flutter, 43), (-16, 53), (0, 88),
-      (22, 126), (27, 70), (10, 59), (7, 85),
-    ])
-    coat.fillColor = slot == 0 ? ink : .white
-    coat.strokeColor = accent
-    coat.lineWidth = 2
-    if slot == 1 {
-      scarf.path = path([
-        (-12, 151), (-40, 155), (-72 - flutter, 139), (-53, 162), (-80, 167), (-43, 174), (6, 151),
-      ])
-      scarf.fillColor = red
-      scarf.strokeColor = ink
-    }
-    if slot == 0 {
-      let tipX = attacking ? handX + 85 : handX + 25
-      let tipY = attacking ? handY + 8 : handY - 88
-      blade.path = path([
-        (handX - 3, handY + 2), (tipX, tipY), (tipX + 4, tipY + 8), (handX + 3, handY + 5),
-      ])
-    } else {
-      blade.path = path([
-        (handX - 6, handY - 7), (handX + 12, handY - 4), (handX + 14, handY + 6),
-        (handX - 6, handY + 10),
-      ])
-      blade.fillColor = accent
-    }
+    sprite.texture = textures[pose.rawValue]
+    body.position = CGPoint(
+      x: state.stun > 0 ? -7 : strike * 9,
+      y: walking ? abs(sin(time * 14)) * 2 : 0)
+    body.yScale = pose == .idle ? 1 + sin(time * 4) * 0.006 : 1
+    body.zRotation =
+      state.stun > 0 ? 0.055 : walking ? -state.axis * state.face * 0.018 : -strike * 0.025
+    sprite.color = .white
+    sprite.colorBlendFactor = state.invulnerable > 0 ? 0.15 + sin(time * 35) * 0.1 : 0
+    afterimage.texture = sprite.texture
+    afterimage.position = CGPoint(x: -15 * strike, y: 2)
+    afterimage.alpha = strike * 0.18
     guardArc.isHidden = !state.guard
-    guardArc.path = CGPath(ellipseIn: CGRect(x: 5, y: 62, width: 74, height: 114), transform: nil)
+    guardArc.path = CGPath(ellipseIn: CGRect(x: 2, y: 40, width: 79, height: 126), transform: nil)
     aura.isHidden = !state.awakened && state.invulnerable == 0
-    aura.alpha = 0.5 + sin(time * 12) * 0.3
+    aura.alpha = 0.45 + sin(time * 12) * 0.22
+    slash.isHidden = strike < 0.3
+    slash.alpha = strike * 0.7
+    let arc = CGMutablePath()
+    if pose == .heavy && slot == 0 {
+      arc.move(to: CGPoint(x: 8, y: 232))
+      arc.addQuadCurve(to: CGPoint(x: 166, y: 36), control: CGPoint(x: 219, y: 149))
+    } else {
+      arc.move(to: CGPoint(x: 31, y: 112))
+      arc.addQuadCurve(
+        to: CGPoint(x: slot == 0 ? 176 : 112, y: 119), control: CGPoint(x: 111, y: 130))
+    }
+    slash.path = arc
+    let spiritFrame: Int
+    if state.move == "super" {
+      spiritFrame = frame < 15 ? 0 : frame < 34 ? 2 : 3
+    } else if state.move == "summon" {
+      spiritFrame = frame < 18 ? 0 : frame < 29 ? 1 : 3
+    } else {
+      spiritFrame = 3
+    }
+    companion.texture = spiritTextures[spiritFrame]
     companion.isHidden = state.companion == 0
-    companion.alpha = min(0.88, Double(state.companion) / 10)
-    companion.position = CGPoint(
-      x: state.move == "super" ? 60 : -48 + attackExtension * 110, y: 20 + sin(time * 6) * 7)
-    companion.zRotation = sin(time * 4) * 0.035
+    companion.alpha = min(0.82, Double(state.companion) / 12)
+    let reaching = spiritFrame == 1 || spiritFrame == 2
+    let windup = state.move == "super" ? 15.0 : 18.0
+    let approach = min(1, frame / windup)
+    let destination = reaching ? 110.0 : spiritFrame == 0 ? -44 + approach * 154 : -44.0
+    companion.position.x += (destination - companion.position.x) * 0.28
+    companion.position.y = 16 + sin(time * 6) * 4
+    companion.zRotation = reaching ? -0.025 : sin(time * 4) * 0.012
+    companionGlow.texture = companion.texture
+    companionGlow.isHidden = companion.isHidden
+    companionGlow.position = CGPoint(x: companion.position.x - 4, y: companion.position.y + 2)
+    companionGlow.zRotation = companion.zRotation
+    companionGlow.alpha = companion.alpha * 0.3
   }
 }
 

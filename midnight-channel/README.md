@@ -121,8 +121,9 @@ Equal health is a draw and another round is played.
 Normal attacks have startup, active and recovery frames; they can whiff,
 be guarded, and be interrupted by hits. Each move can hit only once. Combos
 scale damage. There is character push collision, facing, knockback and jump
-gravity. Hitstop, impact particles, rings, shake, scarf/coat motion and
-individual limb animation communicate each action.
+gravity. Hitstop, impact particles, rings, shake, cel-illustrated combat poses,
+breathing, gait changes, recoil and independently animated companions communicate
+each action.
 
 ## Architecture and tests
 
@@ -135,6 +136,9 @@ individual limb animation communicate each action.
 - `Sources/MidnightChannelApp.swift`: lobby, versus, HUD, controls, result/rematch.
 - `scripts/audio.mjs`: deterministic original 124 BPM loop and synthesized
   effects; `node scripts/audio.mjs` regenerates bundled WAVs.
+- `scripts/prepare-fighters.swift`: dependency-free macOS image processing for
+  the combat texture atlas; `swift scripts/prepare-fighters.swift` regenerates
+  its 32 transparent textures from the retained original sheets.
 - [Protocol documentation](docs/PROTOCOL.md).
 
 `npm --prefix server test` covers startup/active/recovery and reach, guard chip,
@@ -145,11 +149,22 @@ recording provide separate UI evidence; a build is not visual proof.
 
 ## Assets and known gaps
 
-Stage and character-card illustrations were generated for this project.
-Combat fighters and companions are original SpriteKit vector artwork; all
-portraits, stage art, music and effects are used in the app. No extracted
-commercial game assets are included. The separate original illustration sheet
-is retained to reproduce the portrait crops.
+Stage, character cards and combat pose sheets were generated as original art
+for this project. Each playable fighter has 12 illustrated poses with adult
+anime proportions, expressive faces, cel shading, costume folds and articulated
+limbs. Each companion has four independently rendered poses. The server's move
+and frame select anticipation, attack and recovery art; SpriteKit adds continuous
+breathing, translation, recoil, afterimages and spectral glow. Animation uses
+these key poses rather than a fully hand-drawn frame for every simulation tick.
+
+`Resources/FighterSheets` retains the original chroma-key illustrations and is
+excluded from the app bundle. The preparation script removes green, isolates
+connected silhouettes, verifies figure counts and clipping, and aligns all
+poses to a shared foot pivot without stretching their proportions. The resulting
+`Resources/Fighters.atlas` is compiled by Xcode and used during live combat.
+All portraits, stage art, music and effects are used in the app. No extracted
+commercial game assets are included. The separate original portrait illustration
+sheet is retained to reproduce the portrait crops.
 
 This is an approximate two-rival interpretation, not pixel parity. It does not
 include the commercial reference's roster, story mode, throws, crouch/high-low

@@ -19,7 +19,7 @@ Reference: **Persona 4 Arena (2012)**. New identity: **Midnight Channel**.
 
 Landscape iPhone is the primary platform: simultaneous direction and attack touch controls suit the side-on fighter. Golden broadcast interface, checkerboard/static, animated versus cards, two original rivals (Rei / silver hair, sword and black coat; Mika / red hair, white jacket and scarf), individually rendered articulated spectral companions (Antenna / cyan plated knight; Redshift / red winged mask), rooftop transmission stage, hit sparks, hitstop and camera shake.
 
-The stage and portrait cards are original generated illustrations used inside the app. Combat character/companion art is original layered SpriteKit geometry, animated per limb. The music and effects are synthesized locally. No ROM, extracted game assets, or original trademarks are bundled.
+The stage, portrait cards and combat pose sheets are original generated illustrations used inside the app. Each playable fighter has 12 adult-proportioned, shaded anime poses with expressive faces, costume folds and articulated attacks; each independently rendered companion has four poses. SpriteKit selects poses using authoritative move/frame state and adds continuous breathing, recoil, approach, afterimages and glow. These are authored key-pose animations, not traced commercial frames. The music and effects are synthesized locally. No ROM, extracted game assets, or original trademarks are bundled.
 
 ## Evidence boundary
 

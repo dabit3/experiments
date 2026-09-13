@@ -16,7 +16,7 @@ targets:
       - path: Sources
       - path: Resources
         buildPhase: resources
-        excludes: [duel-card.png]
+        excludes: [duel-card.png, FighterSheets]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: ai.devin.midnightchannel.ios
