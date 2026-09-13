@@ -58,6 +58,10 @@ Use wired audio; Bluetooth latency varies.
 
 ## Repeatable native input driver
 
+For an external computer-use script that clicks both Simulator windows through
+the native UI without enabling this driver, see
+[the two-player GUI testing guide](scripts/GUI-TESTING.md).
+
 The optional driver is conspicuously labeled in the app. It sends ordinary
 `panelInput → tap` messages; it does not write score, health or outcome. Each
 simulator has its own persistent UUID and WebSocket.
