@@ -7,9 +7,9 @@ private struct ModalHeightKey: PreferenceKey {
   }
 }
 
-/// Modal sheet styled as a printed card resting on the drafting desk.
+/// Dialogue-box modal that pops in with a two-step cartridge reveal.
 struct PaperModal<Content: View>: View {
-  var title = "FIELD GUIDE"
+  var title = "HOW TO PLAY"
   var dismiss: (() -> Void)?
   @ViewBuilder let content: () -> Content
   @State private var revealed = false
@@ -19,34 +19,31 @@ struct PaperModal<Content: View>: View {
   var body: some View {
     GeometryReader { geometry in
       ZStack {
-        Ink.navyDeep.opacity(0.62).ignoresSafeArea()
-        Sheet(radius: 28) {
+        Ink.outline.opacity(0.7).ignoresSafeArea()
+        Panel(fill: Ink.sky) {
           VStack(spacing: 0) {
-            LinearGradient(
-              colors: [Ink.routes[0], Ink.routes[2], Ink.routes[1], Ink.routes[3]],
-              startPoint: .leading, endPoint: .trailing
-            ).frame(height: 4)
             if let dismiss {
               HStack {
-                Eyebrow(title)
+                PixelText(title, scale: 2, color: Ink.sun, shadow: Ink.outline)
                 Spacer()
                 Button(action: dismiss) {
-                  Image(systemName: "xmark")
-                    .font(.system(size: 12, weight: .bold))
-                    .frame(width: 34, height: 34)
-                    .background(Ink.paperDeep, in: Circle())
+                  PixelText("X", scale: 2, color: Ink.white)
+                    .frame(width: 30, height: 30)
+                    .background(Ink.ember)
+                    .clipShape(PixelFrame(cut: 2))
+                    .overlay(PixelFrame(cut: 2).stroke(Ink.outline, lineWidth: 2))
                 }
                 .frame(minWidth: 44, minHeight: 44)
                 .accessibilityLabel("Close")
               }
-              .foregroundStyle(Ink.navy)
-              .padding(.leading, 26)
-              .padding(.trailing, 12)
-              Rectangle().fill(Ink.rule).frame(height: 1)
+              .padding(.leading, 22)
+              .padding(.trailing, 14)
+              .padding(.top, 8)
+              Rectangle().fill(Ink.white.opacity(0.35)).frame(height: 2).padding(.horizontal, 14)
             }
             ScrollView {
               content()
-                .padding(26)
+                .padding(22)
                 .background(
                   GeometryReader { proxy in
                     Color.clear.preference(key: ModalHeightKey.self, value: proxy.size.height)
@@ -59,18 +56,18 @@ struct PaperModal<Content: View>: View {
         }
         .onPreferenceChange(ModalHeightKey.self) { contentHeight = $0 }
         .frame(maxWidth: 420)
-        .padding(.horizontal, 18)
+        .padding(.horizontal, 14)
         .padding(.vertical, 22)
-        .scaleEffect(revealed || reduceMotion ? 1 : 0.94)
+        .scaleEffect(revealed || reduceMotion ? 1 : 0.6)
         .opacity(revealed || reduceMotion ? 1 : 0)
       }
       .frame(width: geometry.size.width, height: geometry.size.height)
-      .onAppear { withAnimation(.spring(duration: 0.45, bounce: 0.2)) { revealed = true } }
+      .onAppear { withAnimation(.linear(duration: 0.12)) { revealed = true } }
     }
     .accessibilityAddTraits(.isModal)
   }
 
   private func limit(_ height: CGFloat) -> CGFloat {
-    max(120, height - 44 - (dismiss == nil ? 4 : 49))
+    max(120, height - 44 - (dismiss == nil ? 12 : 60))
   }
 }

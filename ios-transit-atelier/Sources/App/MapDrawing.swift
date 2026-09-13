@@ -6,10 +6,18 @@ struct StationGlyph: Shape {
     var path = Path()
     switch kind {
     case .circle:
-      path.addEllipse(in: rect)
+      let step = rect.width / 4
+      path.move(to: CGPoint(x: rect.minX + step, y: rect.minY))
+      path.addLine(to: CGPoint(x: rect.maxX - step, y: rect.minY))
+      path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY + step))
+      path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY - step))
+      path.addLine(to: CGPoint(x: rect.maxX - step, y: rect.maxY))
+      path.addLine(to: CGPoint(x: rect.minX + step, y: rect.maxY))
+      path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY - step))
+      path.addLine(to: CGPoint(x: rect.minX, y: rect.minY + step))
+      path.closeSubpath()
     case .square:
-      path.addRoundedRect(
-        in: rect, cornerSize: CGSize(width: rect.width * 0.12, height: rect.height * 0.12))
+      path.addRect(rect)
     case .triangle:
       path.move(to: CGPoint(x: rect.midX, y: rect.minY))
       path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
@@ -23,6 +31,28 @@ struct StationGlyph: Shape {
       path.closeSubpath()
     }
     return path
+  }
+}
+
+extension PixelFont {
+  /// Bitmap text as a single path so Canvas code can stamp labels without SwiftUI views.
+  static func path(_ text: String, scale: Double, at origin: CGPoint) -> Path {
+    var path = Path()
+    for (column, character) in text.enumerated() {
+      for (y, bits) in glyph(character).enumerated() {
+        for (x, bit) in bits.enumerated() where bit == "#" {
+          path.addRect(
+            CGRect(
+              x: origin.x + (Double(column) * 6 + Double(x)) * scale,
+              y: origin.y + Double(y) * scale, width: scale, height: scale))
+        }
+      }
+    }
+    return path
+  }
+
+  static func width(_ text: String, scale: Double) -> Double {
+    Double(text.count) * 6 * scale - scale
   }
 }
 
@@ -80,13 +110,16 @@ struct InteractiveMap: View {
   }
 }
 
-/// Renders the city as a printed transit diagram: octilinear routes with rounded bends,
-/// a layered estuary with dashed tunnel sections, and cartographic furniture.
+/// Renders the city as an overworld tile map: checkered grass, a sandy-banked pixel river,
+/// outlined octilinear rails, sprite stations and two-frame animated locomotives.
 struct MapDrawing: View {
   let game: TransitSimulation
   let selected: Int
   var decorative = false
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+  /// Two-frame animation clock driven by simulation time so it pauses with the game.
+  private var frame: Int { Int(game.elapsed * 2) % 2 }
 
   var body: some View {
     Canvas { context, size in
@@ -100,21 +133,24 @@ struct MapDrawing: View {
       for route in orderedRoutes where route.stops.count > 1 {
         let path = routePath(route, size)
         let emphasis = decorative || selected == route.id
+        let width = decorative ? 4.0 : 6.0
         context.stroke(
-          path.applying(CGAffineTransform(translationX: 0, y: 2)),
-          with: .color(Ink.navyDeep.opacity(emphasis ? 0.16 : 0.08)),
-          style: StrokeStyle(lineWidth: 9, lineCap: .round, lineJoin: .round))
+          path, with: .color(Ink.outline),
+          style: StrokeStyle(lineWidth: width + 4, lineCap: .butt, lineJoin: .miter))
         context.stroke(
-          path, with: .color(Ink.paperLight),
-          style: StrokeStyle(lineWidth: 9, lineCap: .round, lineJoin: .round))
+          path, with: .color(Ink.routes[route.id]),
+          style: StrokeStyle(lineWidth: width, lineCap: .butt, lineJoin: .miter))
         context.stroke(
-          path, with: .color(Ink.routes[route.id].opacity(emphasis ? 1 : 0.72)),
-          style: StrokeStyle(lineWidth: 5.5, lineCap: .round, lineJoin: .round))
+          path, with: .color(emphasis ? Color.white.opacity(0.5) : Ink.routesDeep[route.id]),
+          style: StrokeStyle(lineWidth: 1.5, lineCap: .butt, lineJoin: .miter, dash: [4, 4]))
         var tunnel = context
         tunnel.clip(to: river)
         tunnel.stroke(
-          path, with: .color(Ink.paperLight.opacity(0.85)),
-          style: StrokeStyle(lineWidth: 1.8, lineCap: .butt, dash: [3.5, 4.5]))
+          path, with: .color(Ink.outline),
+          style: StrokeStyle(lineWidth: width + 4, lineCap: .butt, dash: [5, 5]))
+        tunnel.stroke(
+          path, with: .color(Ink.waterDeep),
+          style: StrokeStyle(lineWidth: width, lineCap: .butt, dash: [5, 5]))
       }
       for station in game.stations { drawStation(station, context: &context, size: size) }
       for train in game.trains { drawTrain(train, context: &context, size: size) }
@@ -125,8 +161,10 @@ struct MapDrawing: View {
   // MARK: Geometry
 
   private func position(_ point: MapPoint, _ size: CGSize) -> CGPoint {
-    CGPoint(x: point.x * size.width, y: point.y * size.height)
+    CGPoint(x: snap(point.x * size.width), y: snap(point.y * size.height))
   }
+
+  private func snap(_ value: Double) -> Double { (value / 2).rounded() * 2 }
 
   /// Octilinear polyline between two stations (a 45° run followed by an axis-aligned run),
   /// canonicalised on station order so shared segments align across lines.
@@ -197,26 +235,10 @@ struct MapDrawing: View {
       let segment = segmentPoints(route.id, a, b, size)
       points += points.isEmpty ? segment : Array(segment.dropFirst())
     }
-    return roundedPath(points, radius: 11)
-  }
-
-  private func roundedPath(_ points: [CGPoint], radius: Double) -> Path {
     var path = Path()
     guard let first = points.first else { return path }
     path.move(to: first)
-    guard points.count > 2 else {
-      for point in points.dropFirst() { path.addLine(to: point) }
-      return path
-    }
-    for index in 1..<(points.count - 1) {
-      let previous = points[index - 1]
-      let corner = points[index]
-      let next = points[index + 1]
-      let r = min(radius, distance(previous, corner) / 2, distance(corner, next) / 2)
-      path.addLine(to: advance(corner, toward: previous, by: r))
-      path.addQuadCurve(to: advance(corner, toward: next, by: r), control: corner)
-    }
-    path.addLine(to: points[points.count - 1])
+    for point in points.dropFirst() { path.addLine(to: point) }
     return path
   }
 
@@ -230,7 +252,7 @@ struct MapDrawing: View {
     let from = position(game.stations[a].point, size)
     let to = position(game.stations[b].point, size)
     let length = max(1, distance(from, to))
-    let offset = (Double(index) - Double(shared.count - 1) / 2) * 7.5
+    let offset = (Double(index) - Double(shared.count - 1) / 2) * 8
     return CGPoint(x: -(to.y - from.y) / length * offset, y: (to.x - from.x) / length * offset)
   }
 
@@ -255,54 +277,67 @@ struct MapDrawing: View {
   // MARK: Terrain
 
   private func land(_ context: inout GraphicsContext, _ size: CGSize) {
-    for x in stride(from: 9.0, through: size.width, by: 18) {
-      for y in stride(from: 9.0, through: size.height, by: 18) {
-        context.fill(
-          Path(ellipseIn: CGRect(x: x, y: y, width: 1.1, height: 1.1)),
-          with: .color(Ink.navy.opacity(0.13)))
+    context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(Ink.grass))
+    let tile = decorative ? 8.0 : 12.0
+    var checker = Path()
+    let columns = Int(size.width / tile) + 1
+    let rows = Int(size.height / tile) + 1
+    for column in 0..<columns {
+      for row in 0..<rows where (column + row) % 2 == 0 {
+        checker.addRect(
+          CGRect(x: Double(column) * tile, y: Double(row) * tile, width: tile, height: tile))
       }
     }
-    for (index, phase) in [0.0, 1.9, 3.7].enumerated() {
-      var contour = Path()
-      for step in 0...40 {
-        let t = Double(step) / 40
-        let point = CGPoint(
-          x: t * size.width,
-          y: size.height * (0.18 + 0.28 * Double(index)) + sin(t * 5 + phase) * size.height * 0.05)
-        if step == 0 { contour.move(to: point) } else { contour.addLine(to: point) }
+    context.fill(checker, with: .color(Ink.grassDeep.opacity(0.55)))
+    var generator = SeededGenerator(state: game.city == .harbour ? 7 : 19)
+    let stations = game.city.stations.map { position($0, size) }
+    var tufts = Path()
+    var flowers = Path()
+    var trees: [CGPoint] = []
+    for _ in 0..<(decorative ? 40 : 110) {
+      let x = snap(Double(generator.next() % 1_000) / 1_000 * size.width)
+      let y = snap(Double(generator.next() % 1_000) / 1_000 * size.height)
+      let riverX = game.city.riverX(at: y / size.height) * size.width
+      guard abs(x - riverX) > 34 else { continue }
+      let clearance = stations.map { distance($0, CGPoint(x: x, y: y)) }.min() ?? 100
+      switch generator.next() % 10 {
+      case 0 where clearance > 40 && !decorative && trees.count < 9:
+        trees.append(CGPoint(x: x, y: y))
+      case 1, 2:
+        flowers.addRect(CGRect(x: x, y: y, width: 2, height: 2))
+      default:
+        tufts.addRect(CGRect(x: x, y: y, width: 2, height: 2))
+        tufts.addRect(CGRect(x: x + 4, y: y - 2, width: 2, height: 2))
+        tufts.addRect(CGRect(x: x + 2, y: y + 2, width: 2, height: 2))
       }
-      context.stroke(contour, with: .color(Ink.navy.opacity(0.06)), lineWidth: 0.8)
     }
-    let parks: [CGRect] = [
-      CGRect(
-        x: size.width * 0.05, y: size.height * 0.08, width: size.width * 0.16,
-        height: size.height * 0.10),
-      CGRect(
-        x: size.width * 0.66, y: size.height * 0.49, width: size.width * 0.22,
-        height: size.height * 0.09),
-      CGRect(
-        x: size.width * 0.28, y: size.height * 0.63, width: size.width * 0.11,
-        height: size.height * 0.15),
-    ]
-    for rect in parks {
-      let park = Path(roundedRect: rect, cornerRadius: min(rect.width, rect.height) * 0.45)
-      context.fill(park, with: .color(Ink.park.opacity(0.35)))
-      context.stroke(
-        park, with: .color(Ink.park.opacity(0.9)),
-        style: StrokeStyle(lineWidth: 0.8, dash: [1.5, 3]))
+    context.fill(tufts, with: .color(Ink.leaf.opacity(0.55)))
+    context.fill(flowers, with: .color(Ink.cream))
+    for tree in trees {
+      var canopy = Path()
+      canopy.addRect(CGRect(x: tree.x - 6, y: tree.y - 10, width: 12, height: 10))
+      canopy.addRect(CGRect(x: tree.x - 4, y: tree.y - 13, width: 8, height: 3))
+      canopy.addRect(CGRect(x: tree.x - 2, y: tree.y - 15, width: 4, height: 2))
+      context.fill(
+        canopy.applying(CGAffineTransform(translationX: 0, y: 2)), with: .color(Ink.outline))
+      context.fill(
+        Path(CGRect(x: tree.x - 2, y: tree.y, width: 4, height: 4)), with: .color(Ink.outline))
+      context.fill(canopy, with: .color(Ink.leaf))
+      context.fill(
+        Path(CGRect(x: tree.x - 4, y: tree.y - 11, width: 4, height: 2)), with: .color(Ink.grass))
     }
   }
 
   private func riverPath(_ size: CGSize) -> Path {
-    let half = decorative ? 12.0 : 16.0
+    let half = decorative ? 10.0 : 15.0
     var left: [CGPoint] = []
     var right: [CGPoint] = []
-    for step in -3...103 {
+    for step in stride(from: -3, through: 103, by: 2) {
       let y = Double(step) / 100
       let center = game.city.riverX(at: y) * size.width
       let width = half * (1 + 0.22 * sin(y * 9 + 0.8))
-      left.append(CGPoint(x: center - width, y: y * size.height))
-      right.append(CGPoint(x: center + width, y: y * size.height))
+      left.append(CGPoint(x: snap(center - width), y: snap(y * size.height)))
+      right.append(CGPoint(x: snap(center + width), y: snap(y * size.height)))
     }
     var path = Path()
     path.move(to: left[0])
@@ -313,193 +348,181 @@ struct MapDrawing: View {
   }
 
   private func water(_ context: inout GraphicsContext, _ river: Path, _ size: CGSize) {
-    context.stroke(river, with: .color(Ink.sea.opacity(0.10)), lineWidth: 16)
-    context.stroke(river, with: .color(Ink.sea.opacity(0.14)), lineWidth: 6)
-    context.fill(
-      river,
-      with: .linearGradient(
-        Gradient(colors: [Ink.sea, Ink.navy]), startPoint: .zero,
-        endPoint: CGPoint(x: size.width * 0.3, y: size.height)))
-    context.stroke(river, with: .color(Ink.paperLight), lineWidth: 1.2)
+    context.stroke(river, with: .color(Ink.sand), lineWidth: decorative ? 8 : 12)
+    context.stroke(river, with: .color(Ink.outline), lineWidth: 4)
+    context.fill(river, with: .color(Ink.water))
+    var deep = context
+    deep.clip(to: river)
     var channel = Path()
-    for step in -2...102 {
+    for step in stride(from: -2, through: 102, by: 2) {
       let y = Double(step) / 100
-      let point = CGPoint(x: game.city.riverX(at: y) * size.width, y: y * size.height)
+      let point = CGPoint(x: snap(game.city.riverX(at: y) * size.width), y: snap(y * size.height))
       if step == -2 { channel.move(to: point) } else { channel.addLine(to: point) }
     }
-    context.stroke(
-      channel, with: .color(Ink.paperLight.opacity(0.22)),
-      style: StrokeStyle(lineWidth: 0.7, dash: [4, 7]))
-    var waves = context
-    waves.clip(to: river)
-    for lane in [-0.55, 0.5] {
-      var ripple = Path()
-      for step in -2...102 {
-        let y = Double(step) / 100
-        let point = CGPoint(
-          x: (game.city.riverX(at: y) + lane * 0.035) * size.width + sin(y * 40) * 1.5,
-          y: y * size.height)
-        if step == -2 { ripple.move(to: point) } else { ripple.addLine(to: point) }
+    deep.stroke(channel, with: .color(Ink.waterDeep), lineWidth: decorative ? 8 : 12)
+    var waves = Path()
+    let spacing = decorative ? 10.0 : 14.0
+    var row = 0
+    for y in stride(from: 0.0, through: size.height, by: spacing) {
+      let phase = reduceMotion ? 0.0 : Double((frame + row) % 2) * 4
+      let center = game.city.riverX(at: y / size.height) * size.width
+      for lane in [-0.45, 0.4] {
+        let x = snap(center + lane * (decorative ? 14 : 22) + phase)
+        waves.addRect(CGRect(x: x, y: snap(y), width: 6, height: 2))
+        waves.addRect(CGRect(x: x + 6, y: snap(y) - 2, width: 2, height: 2))
       }
-      waves.stroke(ripple, with: .color(Ink.paperLight.opacity(0.12)), lineWidth: 0.8)
+      row += 1
     }
+    deep.fill(waves, with: .color(Ink.white.opacity(0.85)))
     if !decorative {
-      let label = position(MapPoint(x: game.city.riverX(at: 0.955), y: 0.955), size)
-      context.draw(
-        Text("R I V E R").font(.system(size: 6, weight: .semibold)).foregroundStyle(
-          Ink.paperLight.opacity(0.75)), at: label)
+      let label = position(MapPoint(x: game.city.riverX(at: 0.96), y: 0.96), size)
+      let text = "RIVER"
+      context.fill(
+        PixelFont.path(
+          text, scale: 1,
+          at: CGPoint(x: label.x - PixelFont.width(text, scale: 1) / 2, y: label.y - 3)),
+        with: .color(Ink.white))
     }
   }
 
   private func furniture(_ context: inout GraphicsContext, _ size: CGSize) {
-    let compass = CGPoint(x: size.width - 26, y: 30)
+    let origin = CGPoint(x: size.width - 34, y: 14)
+    context.fill(
+      Path(CGRect(x: origin.x - 4, y: origin.y - 4, width: 26, height: 30)),
+      with: .color(Ink.cream.opacity(0.9)))
     context.stroke(
-      Path(ellipseIn: CGRect(x: compass.x - 11, y: compass.y - 11, width: 22, height: 22)),
-      with: .color(Ink.navy.opacity(0.35)), lineWidth: 0.8)
-    var star = Path()
-    for index in 0..<4 {
-      let angle = Double(index) * .pi / 2 - .pi / 2
-      star.move(to: CGPoint(x: compass.x + cos(angle) * 15, y: compass.y + sin(angle) * 15))
-      star.addLine(
-        to: CGPoint(x: compass.x + cos(angle - 0.55) * 3.2, y: compass.y + sin(angle - 0.55) * 3.2))
-      star.addLine(
-        to: CGPoint(x: compass.x + cos(angle + 0.55) * 3.2, y: compass.y + sin(angle + 0.55) * 3.2))
-      star.closeSubpath()
-    }
-    context.fill(star, with: .color(Ink.navy.opacity(0.7)))
-    var north = Path()
-    north.move(to: CGPoint(x: compass.x, y: compass.y - 15))
-    north.addLine(
-      to: CGPoint(
-        x: compass.x + cos(-.pi / 2 - 0.55) * 3.2, y: compass.y + sin(-.pi / 2 - 0.55) * 3.2))
-    north.addLine(
-      to: CGPoint(
-        x: compass.x + cos(-.pi / 2 + 0.55) * 3.2, y: compass.y + sin(-.pi / 2 + 0.55) * 3.2))
-    north.closeSubpath()
-    context.fill(north, with: .color(Ink.routes[0]))
-    context.draw(
-      Text("N").font(.system(size: 7, weight: .semibold, design: .serif)).foregroundStyle(
-        Ink.navy.opacity(0.7)),
-      at: CGPoint(x: compass.x, y: compass.y - 22))
-    let scaleY = size.height - 14.0
+      Path(CGRect(x: origin.x - 4, y: origin.y - 4, width: 26, height: 30)),
+      with: .color(Ink.outline), lineWidth: 2)
+    var arrow = Path()
+    arrow.addRect(CGRect(x: origin.x + 8, y: origin.y, width: 2, height: 4))
+    arrow.addRect(CGRect(x: origin.x + 6, y: origin.y + 2, width: 6, height: 2))
+    arrow.addRect(CGRect(x: origin.x + 4, y: origin.y + 4, width: 10, height: 2))
+    arrow.addRect(CGRect(x: origin.x + 8, y: origin.y + 6, width: 2, height: 6))
+    context.fill(arrow, with: .color(Ink.ember))
+    context.fill(
+      PixelFont.path("N", scale: 1.5, at: CGPoint(x: origin.x + 5, y: origin.y + 14)),
+      with: .color(Ink.outline))
+    let scaleY = size.height - 16.0
     var scale = Path()
-    scale.move(to: CGPoint(x: 18, y: scaleY))
-    scale.addLine(to: CGPoint(x: 62, y: scaleY))
-    for x in [18.0, 40, 62] {
-      scale.move(to: CGPoint(x: x, y: scaleY - 3))
-      scale.addLine(to: CGPoint(x: x, y: scaleY + 3))
-    }
-    context.stroke(scale, with: .color(Ink.navy.opacity(0.5)), lineWidth: 1)
-    context.draw(
-      Text("1 KM").font(.system(size: 6, weight: .semibold)).foregroundStyle(
-        Ink.navy.opacity(0.5)),
-      at: CGPoint(x: 40, y: scaleY - 8))
+    scale.addRect(CGRect(x: 16, y: scaleY, width: 48, height: 2))
+    scale.addRect(CGRect(x: 16, y: scaleY - 4, width: 2, height: 10))
+    scale.addRect(CGRect(x: 39, y: scaleY - 2, width: 2, height: 6))
+    scale.addRect(CGRect(x: 62, y: scaleY - 4, width: 2, height: 10))
+    context.fill(scale, with: .color(Ink.outline))
+    context.fill(
+      PixelFont.path("1KM", scale: 1, at: CGPoint(x: 32, y: scaleY - 13)), with: .color(Ink.outline)
+    )
   }
 
   // MARK: Stations and trains
 
   private func drawStation(_ station: Station, context: inout GraphicsContext, size: CGSize) {
     let center = position(station.point, size)
-    let radius = decorative ? 6.5 : 10.0
+    let radius = decorative ? 6.0 : 10.0
     let interchange = game.routes.filter { $0.stops.contains(station.id) }.count > 1
+    let crowded = station.waiting.count >= TransitSimulation.crowdLimit
     if !decorative {
       if interchange {
-        let ring = Path(
-          ellipseIn: CGRect(x: center.x - 15, y: center.y - 15, width: 30, height: 30))
-        context.fill(ring, with: .color(Ink.paperLight))
-        context.stroke(ring, with: .color(Ink.navy.opacity(0.55)), lineWidth: 1.2)
+        let plate = CGRect(x: center.x - 16, y: center.y - 16, width: 32, height: 32)
+        context.fill(Path(plate), with: .color(Ink.cream))
+        context.stroke(Path(plate), with: .color(Ink.outline), lineWidth: 2)
       }
       if game.routes[selected].stops.last == station.id {
+        let reach = 20.0 + Double(frame) * 2
+        let target = CGRect(
+          x: center.x - reach, y: center.y - reach, width: reach * 2, height: reach * 2)
         context.stroke(
-          Path(ellipseIn: CGRect(x: center.x - 19, y: center.y - 19, width: 38, height: 38)),
-          with: .color(Ink.routes[selected].opacity(0.55)),
-          style: StrokeStyle(lineWidth: 1.5, dash: [2, 4]))
+          Path(target), with: .color(Ink.routes[selected]),
+          style: StrokeStyle(lineWidth: 2, dash: [6, 4]))
       }
       if station.id >= 4, game.elapsed - Double(station.id - 3) * 28 < 9 {
-        let opacity = reduceMotion ? 0.6 : 0.4 + 0.2 * sin(game.elapsed * 3)
-        context.stroke(
-          Path(ellipseIn: CGRect(x: center.x - 22, y: center.y - 22, width: 44, height: 44)),
-          with: .color(Ink.routes[0].opacity(opacity)), lineWidth: 2)
-        let tag = CGRect(x: center.x - 15, y: center.y - 38, width: 30, height: 13)
-        context.fill(Path(roundedRect: tag, cornerRadius: 6.5), with: .color(Ink.routes[0]))
-        context.draw(
-          Text("NEW").font(.system(size: 7, weight: .bold)).foregroundStyle(Ink.paperLight),
-          at: CGPoint(x: center.x, y: center.y - 31.5))
+        let bounce = reduceMotion ? 0.0 : Double(frame) * 3
+        let text = "NEW!"
+        let width = PixelFont.width(text, scale: 1.5) + 8
+        let tag = CGRect(
+          x: center.x - width / 2, y: center.y - 40 - bounce, width: width, height: 16)
+        context.fill(Path(tag), with: .color(Ink.sun))
+        context.stroke(Path(tag), with: .color(Ink.outline), lineWidth: 2)
+        context.fill(
+          PixelFont.path(text, scale: 1.5, at: CGPoint(x: tag.minX + 4, y: tag.minY + 3)),
+          with: .color(Ink.outline))
+        var pointer = Path()
+        pointer.addRect(CGRect(x: center.x - 3, y: tag.maxY, width: 6, height: 2))
+        pointer.addRect(CGRect(x: center.x - 1, y: tag.maxY + 2, width: 2, height: 2))
+        context.fill(pointer, with: .color(Ink.outline))
       }
     }
     if station.arrivalGlow > 0, !reduceMotion {
-      let spread = 18 + (1.2 - station.arrivalGlow) * 8
+      let spread = snap(16 + (1.2 - station.arrivalGlow) * 10)
       context.stroke(
         Path(
-          ellipseIn: CGRect(
-            x: center.x - spread, y: center.y - spread, width: spread * 2, height: spread * 2)),
-        with: .color(Ink.gold.opacity(station.arrivalGlow * 0.55)), lineWidth: 2)
-    }
-    if station.waiting.count >= TransitSimulation.crowdLimit {
-      let circle = Path(
-        ellipseIn: CGRect(x: center.x - 17, y: center.y - 17, width: 34, height: 34))
-      context.stroke(circle, with: .color(Ink.routes[0].opacity(0.2)), lineWidth: 3.5)
-      var arc = Path()
-      arc.addArc(
-        center: center, radius: 17, startAngle: .degrees(-90),
-        endAngle: .degrees(-90 + 360 * station.pressure / TransitSimulation.overloadDuration),
-        clockwise: false)
-      context.stroke(
-        arc, with: .color(Ink.routes[0]), style: StrokeStyle(lineWidth: 3.5, lineCap: .round))
+          CGRect(x: center.x - spread, y: center.y - spread, width: spread * 2, height: spread * 2)),
+        with: .color(Ink.sun.opacity(min(1, station.arrivalGlow))), lineWidth: 2)
     }
     let rect = CGRect(
       x: center.x - radius, y: center.y - radius, width: radius * 2, height: radius * 2)
     let shape = StationGlyph(kind: station.kind).path(in: rect)
     context.fill(
-      shape.applying(CGAffineTransform(translationX: 0, y: 1.5)),
-      with: .color(Ink.navyDeep.opacity(0.18)))
-    context.fill(shape, with: .color(Ink.paperLight))
+      shape.applying(CGAffineTransform(translationX: 0, y: 2)), with: .color(Ink.outline))
+    context.fill(shape, with: .color(crowded && frame == 0 ? Ink.ember : Ink.white))
     context.stroke(
-      shape, with: .color(Ink.navy),
-      style: StrokeStyle(lineWidth: decorative ? 2 : 2.6, lineJoin: .round))
+      shape, with: .color(Ink.outline),
+      style: StrokeStyle(lineWidth: decorative ? 2 : 3, lineJoin: .miter))
     if decorative { return }
+    if crowded {
+      let bar = CGRect(x: center.x - 15, y: center.y + 13, width: 30, height: 7)
+      context.fill(Path(bar), with: .color(Ink.outline))
+      let fill = 26 * min(1, station.pressure / TransitSimulation.overloadDuration)
+      context.fill(
+        Path(CGRect(x: bar.minX + 2, y: bar.minY + 2, width: snap(fill), height: 3)),
+        with: .color(Ink.ember))
+    }
     let failed = game.failedStation?.id == station.id
     if failed {
-      let label = CGRect(x: center.x - 27, y: center.y - 38, width: 54, height: 15)
-      context.fill(Path(roundedRect: label, cornerRadius: 7.5), with: .color(Ink.routes[0]))
-      context.draw(
-        Text("CROWDED").font(.system(size: 7, weight: .bold)).foregroundStyle(Ink.paperLight),
-        at: CGPoint(x: center.x, y: center.y - 30.5))
+      let text = "FULL!"
+      let width = PixelFont.width(text, scale: 1.5) + 8
+      let tag = CGRect(x: center.x - width / 2, y: center.y - 40, width: width, height: 16)
+      context.fill(Path(tag), with: .color(Ink.ember))
+      context.stroke(Path(tag), with: .color(Ink.outline), lineWidth: 2)
+      context.fill(
+        PixelFont.path(text, scale: 1.5, at: CGPoint(x: tag.minX + 4, y: tag.minY + 3)),
+        with: .color(Ink.white))
     }
-    let idLabel = CGRect(x: center.x - 27, y: center.y + 12, width: 23, height: 13)
-    context.fill(Path(roundedRect: idLabel, cornerRadius: 3), with: .color(Ink.paperLight))
-    context.stroke(
-      Path(roundedRect: idLabel, cornerRadius: 3), with: .color(Ink.rule), lineWidth: 0.6)
-    context.draw(
-      Text(String(format: "%02d", station.id + 1)).font(
-        .system(size: 9.5, weight: .bold, design: .monospaced)
-      ).foregroundStyle(failed ? Ink.routes[0] : Ink.navy.opacity(0.8)),
-      at: CGPoint(x: center.x - 15.5, y: center.y + 18.5))
+    if !crowded {
+      let label = String(format: "%02d", station.id + 1)
+      let plate = CGRect(x: center.x - 26, y: center.y + 12, width: 20, height: 11)
+      context.fill(Path(plate), with: .color(Ink.cream))
+      context.stroke(Path(plate), with: .color(Ink.outline), lineWidth: 1.5)
+      context.fill(
+        PixelFont.path(label, scale: 1, at: CGPoint(x: plate.minX + 4.5, y: plate.minY + 2)),
+        with: .color(Ink.outline))
+    }
     let rightSpace = size.width - center.x
-    let startX = rightSpace < 65 ? center.x - 48 : center.x + 19
+    let startX = rightSpace < 65 ? center.x - 50 : center.x + 18
     if !station.waiting.isEmpty {
       let count = min(12, station.waiting.count)
       let rows = (count + 3) / 4
       let queue = CGRect(
-        x: startX - 3, y: center.y - 11,
+        x: startX - 3, y: center.y - 12,
         width: Double(min(4, count)) * 8 + 4,
-        height: Double(rows) * 9 + (station.waiting.count > 12 ? 15 : 3))
-      let backing = Path(roundedRect: queue, cornerRadius: 4)
-      context.fill(backing, with: .color(Ink.paperLight))
-      context.stroke(backing, with: .color(Ink.rule), lineWidth: 0.6)
+        height: Double(rows) * 9 + (station.waiting.count > 12 ? 13 : 3))
+      context.fill(Path(queue), with: .color(Ink.cream))
+      context.stroke(Path(queue), with: .color(Ink.outline), lineWidth: 1.5)
     }
     for (index, kind) in station.waiting.prefix(12).enumerated() {
       let glyph = CGRect(
-        x: startX + Double(index % 4) * 8, y: center.y - 8 + Double(index / 4) * 9, width: 6,
+        x: startX + Double(index % 4) * 8, y: center.y - 9 + Double(index / 4) * 9, width: 6,
         height: 6)
-      context.fill(
-        StationGlyph(kind: kind).path(in: glyph),
-        with: .color(station.waiting.count >= 12 ? Ink.routes[0] : Ink.navy.opacity(0.85)))
+      let sprite = StationGlyph(kind: kind).path(in: glyph)
+      context.stroke(
+        sprite, with: .color(Ink.outline), style: StrokeStyle(lineWidth: 2, lineJoin: .miter))
+      context.fill(sprite, with: .color(crowded ? Ink.ember : Ink.routes[kind.rawValue % 4]))
     }
     if station.waiting.count > 12 {
-      context.draw(
-        Text("+\(station.waiting.count - 12)").font(.system(size: 7, weight: .bold))
-          .foregroundStyle(Ink.routes[0]), at: CGPoint(x: startX + 10, y: center.y + 25))
+      context.fill(
+        PixelFont.path(
+          "+\(station.waiting.count - 12)", scale: 1, at: CGPoint(x: startX, y: center.y + 17)),
+        with: .color(Ink.ember))
     }
   }
 
@@ -510,38 +533,35 @@ struct MapDrawing: View {
     guard route.stops.indices.contains(nextIndex) else { return }
     let points = segmentPoints(
       train.route, route.stops[train.stopIndex], route.stops[nextIndex], size)
-    let (center, angle) = pointAlong(points, fraction: train.progress)
+    let (exact, angle) = pointAlong(points, fraction: train.progress)
+    let center = CGPoint(x: snap(exact.x), y: snap(exact.y))
     let color = Ink.routes[train.route]
-    let scale = decorative ? 0.8 : 1.0
+    let scale = decorative ? 0.7 : 1.0
     var layer = context
     layer.translateBy(x: center.x, y: center.y)
     layer.rotate(by: .radians(angle))
     layer.scaleBy(x: scale, y: scale)
-    var body = Path()
-    body.move(to: CGPoint(x: -11, y: -5.5))
-    body.addLine(to: CGPoint(x: 7, y: -5.5))
-    body.addQuadCurve(to: CGPoint(x: 12, y: 0), control: CGPoint(x: 12, y: -5.5))
-    body.addQuadCurve(to: CGPoint(x: 7, y: 5.5), control: CGPoint(x: 12, y: 5.5))
-    body.addLine(to: CGPoint(x: -11, y: 5.5))
-    body.addQuadCurve(to: CGPoint(x: -11, y: -5.5), control: CGPoint(x: -14, y: 0))
-    body.closeSubpath()
+    let body = CGRect(x: -12, y: -6, width: 24, height: 12)
     layer.fill(
-      body.applying(CGAffineTransform(translationX: 0, y: 2.2)),
-      with: .color(Ink.navyDeep.opacity(0.28)))
-    layer.fill(body, with: .color(color))
+      Path(body.offsetBy(dx: 0, dy: 3)).applying(.identity), with: .color(Ink.outline.opacity(0.35))
+    )
+    var wheels = Path()
+    let bob = Double(frame)
+    wheels.addRect(CGRect(x: -9, y: 5 + bob, width: 5, height: 4))
+    wheels.addRect(CGRect(x: 4, y: 5 + bob, width: 5, height: 4))
+    layer.fill(wheels, with: .color(Ink.outline))
+    layer.fill(Path(body), with: .color(Ink.outline))
+    layer.fill(Path(body.insetBy(dx: 2, dy: 2)), with: .color(color))
     layer.fill(
-      Path(roundedRect: CGRect(x: -10, y: -4.5, width: 20, height: 3.5), cornerRadius: 1.5),
-      with: .color(Color.white.opacity(0.22)))
-    layer.stroke(body, with: .color(Ink.paperLight), lineWidth: 1.4)
+      Path(CGRect(x: -10, y: -4, width: 20, height: 2)), with: .color(Color.white.opacity(0.4)))
+    layer.fill(Path(CGRect(x: 6, y: -4, width: 4, height: 8)), with: .color(Ink.outline))
+    layer.fill(Path(CGRect(x: 10, y: -2, width: 2, height: 4)), with: .color(Ink.sun))
     for index in 0..<3 {
-      let window = CGRect(x: -7.5 + Double(index) * 5, y: -2, width: 3.2, height: 4)
-      let lit = index < train.passengers.count || !train.passengers.isEmpty && index == 0
-      layer.fill(
-        Path(roundedRect: window, cornerRadius: 0.8),
-        with: .color(lit ? Ink.paperLight : Ink.paperLight.opacity(0.35)))
+      let window = CGRect(x: -9 + Double(index) * 5, y: -2, width: 3, height: 4)
+      let lit =
+        index
+        < Int((Double(train.passengers.count) / Double(max(1, route.capacity)) * 3).rounded(.up))
+      layer.fill(Path(window), with: .color(lit ? Ink.sun : Ink.water))
     }
-    layer.fill(
-      Path(ellipseIn: CGRect(x: 8.5, y: -1.2, width: 2.4, height: 2.4)),
-      with: .color(Ink.gold))
   }
 }
