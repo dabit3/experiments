@@ -75,3 +75,32 @@ test('unknown rooms, room capacity and malformed frames are handled explicitly',
     }
   } finally { await service.close(); }
 });
+
+test('completed winner identity survives leaving the roster and resets on rematch', async () => {
+  const service = createServer({ port: 0, host: '127.0.0.1', logger: () => {} });
+  await once(service.server, 'listening');
+  const url = `ws://127.0.0.1:${service.server.address().port}`;
+  try {
+    const a = await peer(url), b = await peer(url);
+    send(a, { type: 'join', create: true, playerId: 'winner-a', name: 'Gold' });
+    const joined = await until(a, m => m.type === 'joined');
+    send(b, { type: 'join', code: joined.code, playerId: 'winner-b', name: 'Rose' });
+    await until(b, m => m.type === 'joined');
+    const game = service.rooms.get(joined.code);
+    const winner = game.players[0];
+    game.ready(winner.id); game.ready('winner-b');
+    game.phase = 'playing'; winner.crowns = 1;
+    game.endRound(winner, 'fixture');
+    const completed = await until(b, m => m.type === 'state' && m.phase === 'matchOver');
+    assert.deepEqual(completed.winner, { id: winner.id, name: 'Gold', color: 0 });
+    game.ready(winner.id); game.ready('winner-b');
+    assert.equal(game.snapshot().winner, null);
+    game.phase = 'playing'; winner.crowns = 1;
+    game.endRound(winner, 'fixture');
+    send(a, { type: 'leave' });
+    const departed = await until(b, m => m.type === 'state' && m.players.length === 1);
+    assert.equal(departed.phase, 'matchOver');
+    assert.equal(departed.winnerId, winner.id);
+    assert.deepEqual(departed.winner, completed.winner);
+  } finally { await service.close(); }
+});

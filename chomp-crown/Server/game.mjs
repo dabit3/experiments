@@ -62,6 +62,7 @@ export class Game {
     this.remaining = 45;
     this.phaseUntil = 0;
     this.winnerId = null;
+    this.winner = null;
     this.roundWinnerId = null;
     this.events = [];
     this.eventId = 0;
@@ -90,6 +91,7 @@ export class Game {
       this.players.forEach(p => { p.crowns = 0; p.score = 0; p.kills = 0; p.ready = false; });
       this.round = 0;
       this.winnerId = null;
+      this.winner = null;
       this.startRound();
     }
   }
@@ -131,6 +133,7 @@ export class Game {
     if (winner?.crowns >= 2) {
       this.phase = 'matchOver';
       this.winnerId = winner.id;
+      this.winner = { id: winner.id, name: winner.name, color: winner.color };
       this.players.forEach(p => { p.ready = false; });
       this.emit('matchEnd', { playerId: winner.id });
     } else {
@@ -262,7 +265,7 @@ export class Game {
       type: 'state', code: this.code, tick: this.tick, clock: this.clock,
       phase: this.phase, round: this.round, remaining: this.remaining,
       countdown: Math.max(0, this.phaseUntil - this.clock),
-      winnerId: this.winnerId, roundWinnerId: this.roundWinnerId,
+      winnerId: this.winnerId, winner: this.winner, roundWinnerId: this.roundWinnerId,
       players: this.players, ghosts: this.ghosts, pellets: [...this.pellets],
       powers: this.powers, fruit: this.fruit, maze: MAZE,
       events: this.events, pauseReason: this.pauseReason,

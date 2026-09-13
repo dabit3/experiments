@@ -43,6 +43,12 @@ struct GameEvent: Decodable, Identifiable {
   let y: Double?
 }
 
+struct WinnerState: Decodable {
+  let id: String
+  let name: String
+  let color: Int
+}
+
 struct ArenaState: Decodable {
   let code: String
   let tick: Int
@@ -52,6 +58,7 @@ struct ArenaState: Decodable {
   let remaining: Double
   let countdown: Double
   let winnerId: String?
+  let winner: WinnerState?
   let roundWinnerId: String?
   let players: [PlayerState]
   let ghosts: [GhostState]

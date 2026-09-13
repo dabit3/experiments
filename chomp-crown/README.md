@@ -108,6 +108,7 @@ two-device gameplay.
 * Last human standing earns a crown. A 45-second round limit uses cumulative
   score as a tie-break (equal score is a draw). All humans return next round;
   first to two crowns wins. Both/all peers must vote to rematch.
+  A completed winner's identity remains in the result if that guest leaves.
 * A dropped connection pauses the simulation for up to 30 seconds. The app
   retries four times and also has a reconnect button. After grace expires a
   connected peer wins by forfeit; a departed lobby guest is removed.

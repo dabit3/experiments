@@ -384,7 +384,12 @@ struct ContentView: View {
   }
   private func result(_ state: ArenaState) -> some View {
     let final = state.phase == "matchOver"
-    let winner = state.players.first { $0.id == (final ? state.winnerId : state.roundWinnerId) }
+    let winner =
+      final
+      ? state.winner
+      : state.players.first { $0.id == state.roundWinnerId }.map {
+        WinnerState(id: $0.id, name: $0.name, color: $0.color)
+      }
     return VStack(spacing: 12) {
       Image(systemName: "crown.fill").font(.system(size: 34)).foregroundStyle(Palette.gold)
         .shadow(color: Palette.gold.opacity(0.6), radius: 15)
