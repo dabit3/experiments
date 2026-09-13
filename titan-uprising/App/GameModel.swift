@@ -147,6 +147,7 @@ final class GameModel: ObservableObject {
   private var phaseAt = Date()
   private var autoStarted = false
   private var autoRematched = false
+  private let automaticRematch: Bool
   private var lastEvent = 0
   private var holdingBlock = false
   private var guardTimer: Timer?
@@ -163,6 +164,7 @@ final class GameModel: ObservableObject {
     logURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
       .appendingPathComponent("titan-client.jsonl")
     let args = ProcessInfo.processInfo.arguments
+    automaticRematch = !args.contains("--hold-result")
     func argument(_ name: String) -> String? {
       guard let i = args.firstIndex(of: name), args.indices.contains(i + 1) else { return nil }
       return args[i + 1]
@@ -394,7 +396,9 @@ final class GameModel: ObservableObject {
       }
       return
     }
-    if room.phase == "result", !autoRematched, Date().timeIntervalSince(phaseAt) > 7 {
+    if room.phase == "result", automaticRematch, !autoRematched,
+      Date().timeIntervalSince(phaseAt) > 7
+    {
       sendInput("rematch")
       autoRematched = true
       return

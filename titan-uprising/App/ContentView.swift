@@ -35,7 +35,7 @@ struct ContentView: View {
     GeometryReader { geo in
       let scale = min(geo.size.width / 1100, geo.size.height / 500)
       ZStack {
-        Color.black
+        Color.black.ignoresSafeArea()
         Group {
           if game.room?.phase == nil || game.room?.phase == "lobby" {
             lobby
@@ -47,9 +47,7 @@ struct ContentView: View {
         .scaleEffect(scale)
         .frame(width: geo.size.width, height: geo.size.height)
       }
-      .ignoresSafeArea()
     }
-    .ignoresSafeArea()
     .sheet(isPresented: $game.showGuide) { guide }
   }
 
@@ -151,7 +149,7 @@ struct ContentView: View {
           LinearGradient(
             colors: [hero.color.opacity(0.26), .black], startPoint: .top, endPoint: .bottom)
           Image(uiImage: GameArt.image("heroes-\(hero.id)")).resizable().scaledToFit()
-            .frame(width: 147, height: 192).offset(x: -16, y: 4)
+            .frame(width: 113, height: 182).scaleEffect(1.12).offset(y: 4)
           VStack(alignment: .leading) {
             HStack {
               Text(String(format: "%03d", hero.id + 1))
@@ -281,7 +279,7 @@ struct ContentView: View {
 
   private var battle: some View {
     ZStack {
-      SpriteView(scene: game.scene, options: [.ignoresSiblingOrder]).ignoresSafeArea()
+      SpriteView(scene: game.scene, preferredFramesPerSecond: 30, options: [.ignoresSiblingOrder])
       VStack(spacing: 0) {
         HStack(alignment: .top, spacing: 20) {
           if let p = game.room?.players.first { fighterHUD(p, right: false) }

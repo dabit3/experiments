@@ -115,6 +115,8 @@ xcrun simctl launch "$DEVICE_B" games.dabit.titanuprising \
 
 `alpha` and `beta` choose different factions, wait for two peers, ready up, perform normal combat actions, and accept one rematch after seven seconds on the result screen. They never write authoritative state. The driver can also be enabled or disabled at runtime:
 
+For a recorded acceptance run, add `--hold-result` on both launches to keep the result visible until both people manually press Rematch. Prefer a single desktop capture with both complete simulator windows; separate simulator video clocks can drift under VM load. The scene targets 30 FPS to reduce capture contention.
+
 ```sh
 xcrun simctl openurl "$DEVICE_A" 'titanuprising://driver?mode=alpha'
 xcrun simctl openurl "$DEVICE_B" 'titanuprising://driver?mode=beta'
