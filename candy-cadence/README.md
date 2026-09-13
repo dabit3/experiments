@@ -22,9 +22,12 @@ npm --prefix Server start
 xcodebuild -project CandyCadence.xcodeproj -scheme CandyCadence \
   -sdk iphonesimulator -configuration Debug -derivedDataPath build \
   CODE_SIGNING_ALLOWED=NO build
+bash Scripts/verify-bundle.sh build/Build/Products/Debug-iphonesimulator/CandyCadence.app
 ```
 
 Open `CandyCadence.xcodeproj` in Xcode, select an iPad simulator, then Run.
+The bundle check validates the actual packaged catalog, music, tap sounds, and
+app identity; a compiler build alone does not establish that resources are present.
 Server default: `ws://127.0.0.1:8789`. For physical iPads, run the server on a Mac
 on the same Wi-Fi and enter `ws://<Mac-LAN-IP>:8789` in each app. Local-network
 permission is required. Physical devices require ordinary Apple signing.
@@ -146,6 +149,7 @@ xcrun swift-format lint --strict --recursive App
 xcodebuild -project CandyCadence.xcodeproj -scheme CandyCadence \
   -sdk iphonesimulator -configuration Release -derivedDataPath build \
   CODE_SIGNING_ALLOWED=NO build
+bash Scripts/verify-bundle.sh build/Build/Products/Release-iphonesimulator/CandyCadence.app
 # Regenerate original assets, or project configuration:
 python3 Scripts/compose.py
 xcodegen generate
@@ -168,8 +172,9 @@ peer IDs, synchronized starts, shared scores/results, reconnect and rematch.
 - Server time validation allows 220 ms packet/clock skew; this is local friendly
   competition rather than hardened ranked anti-cheat. Unencrypted `ws` is intended
   for trusted LAN use; configure TLS before internet exposure.
-- Hardware audio output latency and Bluetooth calibration vary. Simulator
-  recordings may omit audio unless separately captured. Native music is audible
-  during actual play.
+- Hardware audio output latency and Bluetooth calibration vary. This VM has no
+  audio output/capture device: the WAVs decode with nonzero signal and both clients
+  schedule playback against the same epoch, but audible playback is unverified.
+  The test recording is silent; it does not establish acoustic synchronization.
 - iPad landscape only. Full VoiceOver rhythm gameplay and physical-device touch/
   audio latency are not asserted by simulator evidence.
