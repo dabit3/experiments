@@ -1,0 +1,7 @@
+.build/
+.devin/
+Server/node_modules/
+evidence/
+*.xcuserstate
+xcuserdata/
+Resources/*.wav
