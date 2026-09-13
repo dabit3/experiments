@@ -72,12 +72,46 @@ final class ReelHorizonUITests: XCTestCase {
     wait(cast)
     snap("fishing-ready")
 
+    // Big fish can legitimately snap the starter line, so allow a few casts before failing.
+    let keep = app.buttons["catch.keep"]
+    let release = app.buttons["catch.release"]
+    let outcome = app.buttons["outcome.continue"]
+    var landed = false
+    for attempt in 1...3 {
+      castStrikeAndFight(cast: cast, attempt: attempt)
+      if outcome.exists {
+        snap("fishing-lost-\(attempt)")
+        outcome.tap()
+        wait(cast, 6)
+        continue
+      }
+      landed = true
+      break
+    }
+    XCTAssertTrue(landed, "fish was lost on every attempt")
+    wait(keep, 4)
+    snap("catch-card")
+    XCTAssertTrue(app.staticTexts["catch.species"].exists)
+    if keep.isEnabled { keep.tap() } else { release.tap() }
+    wait(cast, 6)
+
+    app.buttons["fishing.endDay"].tap()
+    wait(app.buttons["summary.done"])
+    snap("day-summary")
+    if app.buttons["summary.sell"].isEnabled { app.buttons["summary.sell"].tap() }
+    app.buttons["summary.done"].tap()
+    wait(app.otherElements["home.map"])
+  }
+
+  /// Casts, waits for a bite, strikes and works the fish until the session shows either the
+  /// catch card or the lost-fish outcome.
+  private func castStrikeAndFight(cast: XCUIElement, attempt: Int) {
     // Hold to charge, release to cast.
     cast.press(forDuration: 0.6)
     let status = app.staticTexts["fishing.status"]
     wait(status)
     XCTAssertTrue(waitForStatus(containing: "BITE", or: "RETRIEVE", timeout: 10) || waitForStatus(containing: "STRIKE", or: "FISH ON", timeout: 1))
-    snap("fishing-soaking")
+    if attempt == 1 { snap("fishing-soaking") }
 
     // With --fast-fish a bite arrives quickly; strike as soon as the button appears.
     let strike = app.buttons["fishing.strike"]
@@ -99,41 +133,23 @@ final class ReelHorizonUITests: XCTestCase {
       }
     }
     XCTAssertTrue(hooked, "never hooked a fish")
-    snap("fishing-fight")
+    if attempt == 1 { snap("fishing-fight") }
 
-    // Pump the reel in bursts so the tension stays out of the red.
+    // Pump the reel in short bursts so the tension stays out of the red.
     let reel = app.buttons["fishing.reel"]
     let keep = app.buttons["catch.keep"]
     let release = app.buttons["catch.release"]
     let outcome = app.buttons["outcome.continue"]
-    for _ in 0..<120 {
+    for _ in 0..<240 {
       if keep.exists || release.exists || outcome.exists { break }
       let tension = app.staticTexts["fishing.tension"].label
       let pct = Int(tension.replacingOccurrences(of: "%", with: "")) ?? 50
-      if pct < 70 {
-        reel.press(forDuration: 0.5)
+      if pct < 60 {
+        reel.press(forDuration: 0.3)
       } else {
-        Thread.sleep(forTimeInterval: 0.4)
+        Thread.sleep(forTimeInterval: 0.25)
       }
     }
-    if outcome.exists {
-      snap("fishing-lost")
-      outcome.tap()
-      XCTFail("fish was lost during the fight")
-      return
-    }
-    wait(keep, 4)
-    snap("catch-card")
-    XCTAssertTrue(app.staticTexts["catch.species"].exists)
-    if keep.isEnabled { keep.tap() } else { release.tap() }
-    wait(cast, 6)
-
-    app.buttons["fishing.endDay"].tap()
-    wait(app.buttons["summary.done"])
-    snap("day-summary")
-    if app.buttons["summary.sell"].isEnabled { app.buttons["summary.sell"].tap() }
-    app.buttons["summary.done"].tap()
-    wait(app.otherElements["home.map"])
   }
 
   private func waitForStatus(containing a: String, or b: String, timeout: TimeInterval) -> Bool {
