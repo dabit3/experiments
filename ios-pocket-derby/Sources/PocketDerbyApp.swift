@@ -21,33 +21,28 @@ struct DerbyView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack {
-                CityBackdrop()
+                PixelSkyline()
                 if let scene {
                     if store.screen == .title {
                         TitleScreen(store: store, scene: scene, compact: geometry.size.height < 350)
-                            .transition(.opacity)
                     } else {
                         MatchScreen(store: store, scene: scene)
-                            .transition(.opacity)
                     }
                 }
                 if store.engine.paused, store.screen == .match {
-                    PausePanel(store: store).transition(.scale(scale: 0.94).combined(with: .opacity))
+                    PausePanel(store: store)
                 }
                 if store.screen == .results {
-                    ResultsPanel(store: store).transition(.scale(scale: 0.92).combined(with: .opacity))
+                    ResultsPanel(store: store)
                 }
                 if store.showHelp {
-                    HelpPanel(store: store).transition(.scale(scale: 0.94).combined(with: .opacity))
+                    HelpPanel(store: store)
                 }
             }
-            .foregroundStyle(Theme.cream)
-            .animation(store.reducedMotion ? nil : .spring(response: 0.42, dampingFraction: 0.8), value: store.screen)
-            .animation(store.reducedMotion ? nil : .spring(response: 0.42, dampingFraction: 0.8), value: store.showHelp)
-            .animation(
-                store.reducedMotion ? nil : .spring(response: 0.36, dampingFraction: 0.8),
-                value: store.engine.paused
-            )
+            .foregroundStyle(Theme.white)
+            .animation(nil, value: store.screen)
+            .animation(nil, value: store.showHelp)
+            .animation(nil, value: store.engine.paused)
             .onAppear {
                 store.reducedMotion = reducedMotion
                 scene = ArenaScene(store: store)
@@ -69,86 +64,84 @@ private struct TitleScreen: View {
     let scene: ArenaScene
     let compact: Bool
     var body: some View {
-        HStack(spacing: 8) {
-            VStack(alignment: .leading, spacing: compact ? 10 : 16) {
-                HStack(spacing: 9) {
-                    SpeedLines(height: 12)
-                    Text("THE ROOFTOP SERIES").tracking(3.2).font(Theme.label(10))
-                }
-                .foregroundStyle(Theme.cyan)
-                Wordmark(size: compact ? 50 : 62)
-                Text("Toy cars. Rooftop football. Ninety frantic seconds.")
-                    .font(.system(size: 13, weight: .medium)).foregroundStyle(Theme.muted)
-                    .fixedSize(horizontal: false, vertical: true)
-                Button(action: store.start) {
+        VStack(spacing: 0) {
+            HStack(alignment: .center, spacing: 20) {
+                VStack(alignment: .leading, spacing: compact ? 10 : 14) {
+                    PixelText("★ ROOFTOP SERIES ★", px: 2, color: Theme.yellow, outline: Theme.ink)
+                    Wordmark(px: compact ? 5 : 7)
+                    PixelText(
+                        "TOY CARS. ROOFTOP FOOTBALL.\n90 FRANTIC SECONDS.",
+                        px: 2,
+                        color: Theme.white,
+                        outline: Theme.ink
+                    )
+                    Blink(reduced: store.reducedMotion) { on in
+                        PixelText("1P  PUSH KICK OFF", px: 2, color: Theme.yellow, outline: Theme.ink)
+                            .opacity(on ? 1 : 0)
+                    }
+                    Button(action: store.start) {
+                        HStack(spacing: 14) {
+                            PixelText("\(PixelFont.play) KICK OFF", px: 3, color: Theme.ink)
+                            Spacer(minLength: 0)
+                            PixelText("90 SEC", px: 2, color: Theme.ink)
+                        }
+                        .padding(.horizontal, 16)
+                        .frame(width: compact ? 250 : 300, height: 52)
+                    }
+                    .buttonStyle(PixelButtonStyle())
+                    .accessibilityIdentifier("play")
                     HStack(spacing: 12) {
-                        Image(systemName: "play.fill").font(.system(size: 15, weight: .black))
-                        Text("KICK OFF").tracking(1.6)
+                        Button { store.showHelp = true } label: {
+                            PixelText("? HOW TO PLAY", px: 2, color: Theme.ink)
+                                .padding(.horizontal, 12).frame(height: 40)
+                        }
+                        .buttonStyle(PixelButtonStyle(face: Theme.sky, shade: Theme.blue))
+                        SoundButton(store: store)
+                    }
+                }
+                .fixedSize()
+                VStack(spacing: 8) {
+                    HStack {
+                        PixelText("ROOFTOP 01", px: 2, color: Theme.white, outline: Theme.ink)
                         Spacer()
-                        Text("90 s").font(Theme.label(12, weight: .bold)).opacity(0.7)
+                        Blink(interval: 0.7, reduced: store.reducedMotion) { on in
+                            PixelText("● CPU READY", px: 2, color: on ? Theme.yellow : Theme.white, outline: Theme.ink)
+                        }
                     }
-                    .font(Theme.display(16))
-                    .padding(.horizontal, 22).frame(height: 56)
-                }
-                .buttonStyle(ArcadeButtonStyle(radius: 18))
-                .accessibilityIdentifier("play")
-                HStack(spacing: 18) {
-                    Button { store.showHelp = true } label: {
-                        Label("How to play", systemImage: "gamecontroller.fill")
+                    .padding(.horizontal, 24)
+                    ArenaView(scene: scene)
+                        .allowsHitTesting(false)
+                        .frame(maxHeight: compact ? 190 : 230)
+                    HStack(spacing: 12) {
+                        StatChip(title: "WINS", value: "\(store.record.wins)")
+                        StatChip(title: "BEST", value: difference(store.record.bestDifference))
+                        StatChip(title: "PLAYED", value: "\(store.record.played)")
                     }
-                    SoundButton(store: store)
                 }
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(Theme.muted)
+                .frame(maxWidth: .infinity)
             }
-            .frame(width: compact ? 250 : 290)
-            VStack(spacing: 4) {
-                HStack {
-                    eyebrow("01 · SKYLINE COURT", color: Theme.muted)
-                    Spacer()
-                    HStack(spacing: 6) {
-                        Circle().fill(Theme.cyan).frame(width: 6, height: 6)
-                        eyebrow("CPU RIVAL READY", color: Theme.cyan)
-                    }
-                }.padding(.horizontal, 26)
-                ArenaView(scene: scene)
-                    .allowsHitTesting(false)
-                    .frame(maxHeight: compact ? 200 : 240)
-                    .rotationEffect(.degrees(-4))
-                    .shadow(color: Theme.cyan.opacity(0.18), radius: 40, y: 20)
-                HStack(spacing: 12) {
-                    StatChip(title: "WINS", value: "\(store.record.wins)")
-                    StatChip(title: "BEST DIFF", value: difference(store.record.bestDifference))
-                    StatChip(title: "MATCHES", value: "\(store.record.played)")
-                }
-            }.frame(maxWidth: .infinity)
+            Spacer(minLength: 4)
+            PixelText(
+                "2026 POCKET ATHLETIC CLUB · NO CARTRIDGE REQUIRED",
+                px: 2,
+                color: Theme.skyPale,
+                outline: Theme.ink
+            )
+            .accessibilityHidden(true)
         }
         .padding(.horizontal, 24)
-        .padding(.vertical, 14)
+        .padding(.top, 14)
+        .padding(.bottom, 8)
     }
 }
 
 private struct Wordmark: View {
-    let size: CGFloat
+    let px: CGFloat
     var body: some View {
-        VStack(alignment: .leading, spacing: -size * 0.16) {
-            Text("POCKET")
-                .foregroundStyle(Theme.cream)
-                .shadow(color: .black.opacity(0.35), radius: 0, x: 0, y: 3)
-            Text("DERBY")
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.white, Theme.cyan, Color(hex: 0x21B6DA)],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
-                .shadow(color: Theme.cyan.opacity(0.55), radius: 18, y: 4)
+        VStack(alignment: .leading, spacing: -px) {
+            PixelText("POCKET", px: px, color: Theme.white, bottom: Theme.sky, outline: Theme.ink, shadow: Theme.ink)
+            PixelText("DERBY", px: px, color: Theme.yellow, bottom: Theme.orange, outline: Theme.ink, shadow: Theme.ink)
         }
-        .font(Theme.display(size))
-        .italic()
-        .kerning(-1)
-        .fixedSize()
         .accessibilityElement(children: .combine)
     }
 }
@@ -161,23 +154,18 @@ private struct MatchScreen: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
-                HStack(spacing: 8) {
-                    SpeedLines(height: 11)
-                    Text("POCKET DERBY").tracking(2.4).font(Theme.label(10))
-                }
-                .foregroundStyle(Theme.cyan)
+                PixelText("POCKET DERBY", px: 2, color: Theme.white, outline: Theme.ink)
                 Spacer()
                 Scoreboard(store: store)
                 Spacer()
                 Button(action: store.pause) {
-                    Image(systemName: "pause.fill").font(.system(size: 15, weight: .black))
-                        .frame(width: 44, height: 44)
+                    PixelText(String(PixelFont.pause), px: 3, color: Theme.ink).frame(width: 44, height: 40)
                 }
-                .buttonStyle(ArcadeButtonStyle(primary: false, radius: 14))
+                .buttonStyle(PixelButtonStyle(face: Theme.sky, shade: Theme.blue))
                 .accessibilityLabel("Pause match").accessibilityIdentifier("pause")
             }
             .padding(.horizontal, 22)
-            .frame(height: 50)
+            .frame(height: 52)
             ZStack {
                 ArenaView(scene: scene)
                     .accessibilityLabel("Arena. Tap a location to drive there.")
@@ -185,25 +173,23 @@ private struct MatchScreen: View {
                 if store.engine.phase == .kickoff {
                     Callout(
                         headline: store.engine.phaseTime > 1.2 ? "READY?" : "GO!",
-                        caption: "YOU’RE BLUE  ·  SCORE IN THE RIGHT GOAL",
-                        tint: Theme.cyan
+                        caption: "1P IS BLUE · SCORE IN THE RIGHT GOAL",
+                        top: Theme.white,
+                        bottom: Theme.sky,
+                        reduced: store.reducedMotion
                     )
-                    .id(store.engine.phaseTime > 1.2)
-                    .transition(.scale(scale: 0.7).combined(with: .opacity))
                 }
                 if store.engine.phase == .goal {
                     Callout(
-                        headline: store.engine.lastScorerIsPlayer ? "GOAL!" : "CONCEDED",
-                        caption: store.engine.lastScorerIsPlayer ? "SKYLINE BLUE STRIKES" : "SUNSET ORANGE SCORES",
-                        tint: store.engine.lastScorerIsPlayer ? Theme.cyan : Theme.coral
+                        headline: store.engine.lastScorerIsPlayer ? "GOAL!" : "CPU GOAL",
+                        caption: store.engine.lastScorerIsPlayer ? "1P SCORES!" : "CPU RED SCORES",
+                        top: store.engine.lastScorerIsPlayer ? Theme.yellow : Theme.redLight,
+                        bottom: store.engine.lastScorerIsPlayer ? Theme.orange : Theme.red,
+                        reduced: store.reducedMotion
                     )
-                    .transition(.scale(scale: 0.6).combined(with: .opacity))
                 }
             }
-            .animation(
-                store.reducedMotion ? nil : .spring(response: 0.38, dampingFraction: 0.62),
-                value: store.engine.phase
-            )
+            .animation(nil, value: store.engine.phase)
             ControlDeck(store: store)
         }
         .padding(.bottom, 4)
@@ -213,21 +199,27 @@ private struct MatchScreen: View {
 private struct Callout: View {
     let headline: String
     let caption: String
-    let tint: Color
+    let top: Color
+    let bottom: Color
+    let reduced: Bool
     var body: some View {
-        VStack(spacing: 6) {
-            HStack(spacing: 14) {
-                SpeedLines(color: tint, height: 26)
-                Text(headline)
-                    .font(Theme.display(44)).italic().kerning(-1)
-                    .foregroundStyle(LinearGradient(colors: [.white, tint], startPoint: .top, endPoint: .bottom))
-                    .shadow(color: tint.opacity(0.6), radius: 16, y: 2)
-                SpeedLines(color: tint, height: 26).scaleEffect(x: -1)
+        VStack(spacing: 10) {
+            Blink(interval: 0.12, reduced: reduced) { on in
+                PixelText(
+                    headline,
+                    px: 7,
+                    color: on ? top : Theme.white,
+                    bottom: on ? bottom : top,
+                    outline: Theme.ink,
+                    shadow: Theme.ink,
+                    center: true
+                )
+                .offset(y: on ? 0 : -Theme.px)
             }
-            Text(caption).font(Theme.label(10)).tracking(2.2).foregroundStyle(Theme.cream.opacity(0.85))
+            PixelText(caption, px: 2, color: Theme.white)
+                .padding(.horizontal, 12).padding(.vertical, 8)
+                .pixelPanel()
         }
-        .padding(.horizontal, 30).padding(.vertical, 16)
-        .glass(radius: 24, tint: tint)
         .allowsHitTesting(false)
     }
 }
@@ -236,31 +228,27 @@ private struct Scoreboard: View {
     @ObservedObject var store: GameStore
     var body: some View {
         let closing = store.engine.remaining < 15
-        HStack(spacing: 12) {
-            TeamCrest(color: Theme.cyan, number: "01", size: 24)
-            Text("\(store.engine.playerGoals)")
-                .foregroundStyle(Theme.cyan).font(Theme.display(30)).monospacedDigit()
-                .contentTransition(.numericText())
+        HStack(spacing: 10) {
+            TeamBadge(color: Theme.blue, light: Theme.blueLight, letter: "1P")
+            PixelText("\(store.engine.playerGoals)", px: 4, color: Theme.blueLight)
             VStack(spacing: 4) {
-                Text(timeLabel)
-                    .font(.system(size: 19, weight: .heavy, design: .rounded)).monospacedDigit()
-                    .foregroundStyle(closing ? Theme.coral : Theme.cream)
-                GeometryReader { proxy in
-                    ZStack(alignment: .leading) {
-                        Capsule().fill(.white.opacity(0.1))
-                        Capsule().fill(closing ? Theme.coral : Theme.cyan)
-                            .frame(width: proxy.size.width * store.engine.remaining / 90)
+                Blink(interval: 0.5, reduced: store.reducedMotion || !closing) { on in
+                    PixelText(timeLabel, px: 3, color: closing && on ? Theme.redLight : Theme.white)
+                }
+                HStack(spacing: 2) {
+                    ForEach(0 ..< 18, id: \.self) { index in
+                        Rectangle()
+                            .fill(store.engine
+                                .remaining > Double(index) * 5 ? (closing ? Theme.redLight : Theme.yellow) : Theme.ink)
+                            .frame(width: 4, height: 4)
                     }
-                }.frame(width: 64, height: 3)
+                }
             }
-            Text("\(store.engine.opponentGoals)")
-                .foregroundStyle(Theme.coral).font(Theme.display(30)).monospacedDigit()
-                .contentTransition(.numericText())
-            TeamCrest(color: Theme.coral, number: "02", size: 24)
+            PixelText("\(store.engine.opponentGoals)", px: 4, color: Theme.redLight)
+            TeamBadge(color: Theme.red, light: Theme.redLight, letter: "CPU")
         }
-        .padding(.horizontal, 14).padding(.vertical, 5)
-        .glass(radius: 18)
-        .animation(.default, value: store.engine.playerGoals + store.engine.opponentGoals)
+        .padding(.horizontal, 10).padding(.vertical, 6)
+        .pixelPanel()
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(
             "Score: you \(store.engine.playerGoals), CPU \(store.engine.opponentGoals). \(timeLabel) remaining."
@@ -278,47 +266,49 @@ private struct ControlDeck: View {
     @ObservedObject var store: GameStore
     var body: some View {
         HStack(spacing: 16) {
-            Joystick(store: store).frame(width: 78, height: 72)
-            VStack(alignment: .leading, spacing: 4) {
-                Text("STEER").font(Theme.label(10)).tracking(2).foregroundStyle(Theme.cyan)
-                Text("Drag the stick or tap the pitch.").font(.system(size: 11, weight: .medium))
-                    .foregroundStyle(Theme.muted)
+            Joystick(store: store).frame(width: 80, height: 80)
+            VStack(alignment: .leading, spacing: 6) {
+                PixelText("STEER", px: 2, color: Theme.yellow, outline: Theme.ink)
+                PixelText("DRAG PAD OR\nTAP THE PITCH", px: 2, color: Theme.white, outline: Theme.ink)
             }
             Spacer(minLength: 0)
             Button { store.engine.brake() } label: {
-                VStack(spacing: 4) {
-                    Image(systemName: "hand.raised.fill").font(.system(size: 16, weight: .bold))
-                    Text(store.engine.brakeRemaining > 0 ? "STOPPING" : "BRAKE")
-                        .font(Theme.label(8)).tracking(0.8)
+                VStack(spacing: 6) {
+                    PixelText(String(PixelFont.down), px: 3, color: Theme.ink)
+                    PixelText(store.engine.brakeRemaining > 0 ? "STOP!" : "BRAKE", px: 2, color: Theme.ink)
                 }
-                .frame(width: 62, height: 60)
-                .foregroundStyle(store.engine.brakeRemaining > 0 ? Theme.cyan : Theme.cream)
+                .frame(width: 76, height: 60)
             }
-            .buttonStyle(ArcadeButtonStyle(primary: false, radius: 18))
+            .buttonStyle(PixelButtonStyle(
+                face: store.engine.brakeRemaining > 0 ? Theme.white : Theme.grey,
+                shade: Theme.greyDark
+            ))
             .accessibilityLabel("Brake").accessibilityIdentifier("brake")
             Button { store.engine.burst() } label: {
                 HStack(spacing: 12) {
-                    Image(systemName: "bolt.fill").font(.system(size: 24, weight: .black))
+                    PixelText(String(PixelFont.bolt), px: 4, color: Theme.ink)
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("BOOST").font(Theme.display(14)).tracking(1.4)
+                        PixelText("BOOST", px: 3, color: Theme.ink)
                         HStack(spacing: 3) {
                             ForEach(0 ..< 6, id: \.self) { index in
-                                Parallelogram()
-                                    .fill(Theme.ink
-                                        .opacity(store.engine.player.boost * 6 > Double(index) + 0.5 ? 0.85 : 0.22))
-                                    .frame(width: 11, height: 6)
+                                Rectangle()
+                                    .fill(store.engine.player.boost * 6 > Double(index) + 0.5 ? Theme.ink : Theme.ink
+                                        .opacity(0.25))
+                                    .frame(width: 12, height: 6)
                             }
                         }
                     }
                 }
-                .frame(width: 156, height: 60)
+                .frame(width: 164, height: 60)
             }
-            .buttonStyle(ArcadeButtonStyle(radius: 20))
-            .opacity(store.engine.player.boost > 0.12 ? 1 : 0.55)
+            .buttonStyle(PixelButtonStyle(
+                face: store.engine.player.boost > 0.12 ? Theme.yellow : Theme.grey,
+                shade: store.engine.player.boost > 0.12 ? Theme.orange : Theme.greyDark
+            ))
             .accessibilityLabel("Boost").accessibilityIdentifier("boost")
         }
         .padding(.horizontal, 26)
-        .frame(height: 76)
+        .frame(height: 84)
     }
 }
 
@@ -328,19 +318,28 @@ private struct PausePanel: View {
     @ObservedObject var store: GameStore
     var body: some View {
         Modal {
-            VStack(spacing: 16) {
-                eyebrow("TAKE A BREATHER", color: Theme.cyan)
-                Headline("PIT STOP", size: 40)
-                Text("Your match is right where you left it.").font(.system(size: 13)).foregroundStyle(Theme.muted)
-                HStack(spacing: 12) {
-                    ActionButton("RESUME", icon: "play.fill", primary: true, run: store.resume)
-                    ActionButton("HOW TO PLAY", icon: "gamecontroller.fill", primary: false) { store.showHelp = true }
+            VStack(spacing: 18) {
+                PixelText(
+                    "PAUSE",
+                    px: 6,
+                    color: Theme.yellow,
+                    bottom: Theme.orange,
+                    outline: Theme.ink,
+                    shadow: Theme.ink
+                )
+                Blink(reduced: store.reducedMotion) { on in
+                    PixelText("MATCH ON HOLD", px: 2, color: Theme.white).opacity(on ? 1 : 0.35)
                 }
-                HStack(spacing: 30) {
+                HStack(spacing: 14) {
+                    ActionButton("\(PixelFont.play) RESUME", run: store.resume)
+                    ActionButton("? HOW TO PLAY", face: Theme.sky, shade: Theme.blue) { store.showHelp = true }
+                }
+                HStack(spacing: 14) {
                     SoundButton(store: store)
-                    Button("End match") { store.home() }
-                }.font(.system(size: 12, weight: .semibold)).foregroundStyle(Theme.muted).frame(height: 38)
-            }.frame(width: 430)
+                    ActionButton("QUIT TO TITLE", face: Theme.grey, shade: Theme.greyDark, run: store.home)
+                }
+            }
+            .frame(width: 420)
         }
     }
 }
@@ -350,49 +349,58 @@ private struct ResultsPanel: View {
     var body: some View {
         let win = store.engine.playerGoals > store.engine.opponentGoals
         let draw = store.engine.playerGoals == store.engine.opponentGoals
-        let tint = win ? Theme.gold : draw ? Theme.cyan : Theme.coral
-        Modal(tint: tint) {
-            HStack(spacing: 34) {
-                VStack(alignment: .leading, spacing: 12) {
-                    HStack(spacing: 8) {
-                        Image(systemName: win ? "trophy.fill" : draw ? "equal.circle.fill" : "flag.checkered")
-                        eyebrow(win ? "ROOFTOP CHAMPION" : "FULL TIME · ROOFTOP 01", color: tint)
-                    }.foregroundStyle(tint)
-                    Headline(win ? "ROOFTOP\nROYALTY." : draw ? "EVEN\nSTEVENS." : "NEXT ONE\nIS YOURS.", size: 40)
-                    Text(win ? "The skyline belongs to you." : draw ? "A rivalry worth running back." :
-                        "Find the angle. Make the comeback.")
-                        .font(.system(size: 12)).foregroundStyle(Theme.muted)
-                    HStack(spacing: 10) {
-                        StatChip(title: "BEST DIFF", value: difference(store.record.bestDifference))
-                        StatChip(title: "CAREER WINS", value: "\(store.record.wins)")
-                    }
+        Modal {
+            VStack(spacing: 10) {
+                PixelText("FULL TIME · ROOFTOP 01", px: 2, color: Theme.grey)
+                Blink(interval: 0.25, reduced: store.reducedMotion || !win) { on in
+                    PixelText(
+                        win ? "YOU WIN!" : draw ? "DRAW GAME" : "YOU LOSE",
+                        px: 5,
+                        color: win ? (on ? Theme.yellow : Theme.white) : draw ? Theme.white : Theme.redLight,
+                        bottom: win ? (on ? Theme.orange : Theme.yellow) : draw ? Theme.sky : Theme.red,
+                        outline: Theme.ink,
+                        shadow: Theme.ink
+                    )
                 }
-                VStack(spacing: 14) {
-                    HStack(alignment: .center, spacing: 16) {
-                        ScoreColumn(color: Theme.cyan, number: "01", goals: store.engine.playerGoals, name: "YOU")
-                        Text(":").foregroundStyle(Theme.muted).font(.system(size: 34, weight: .light))
-                        ScoreColumn(color: Theme.coral, number: "02", goals: store.engine.opponentGoals, name: "CPU")
-                    }
-                    ActionButton("REMATCH", icon: "arrow.clockwise", primary: true, run: store.start)
-                    Button("Back to clubhouse", action: store.home)
-                        .font(.system(size: 12, weight: .semibold)).foregroundStyle(Theme.muted).frame(height: 36)
-                }.frame(width: 220)
+                HStack(alignment: .center, spacing: 22) {
+                    ScoreColumn(color: Theme.blue, light: Theme.blueLight, goals: store.engine.playerGoals, name: "1P")
+                    PixelText("-", px: 5, color: Theme.grey)
+                    ScoreColumn(color: Theme.red, light: Theme.redLight, goals: store.engine.opponentGoals, name: "CPU")
+                }
+                PixelText(
+                    win ? "THE ROOFTOP IS YOURS." : draw ? "EVEN MATCH. RUN IT BACK." : "FIND THE ANGLE. TRY AGAIN.",
+                    px: 2,
+                    color: Theme.white
+                )
+                HStack(spacing: 12) {
+                    StatChip(title: "BEST", value: difference(store.record.bestDifference))
+                    StatChip(title: "WINS", value: "\(store.record.wins)")
+                    StatChip(title: "PLAYED", value: "\(store.record.played)")
+                }
+                HStack(spacing: 14) {
+                    ActionButton("\(PixelFont.play) REMATCH", run: store.start)
+                    ActionButton("TITLE", face: Theme.grey, shade: Theme.greyDark, run: store.home)
+                }
             }
+            .frame(width: 480)
         }
     }
 }
 
 private struct ScoreColumn: View {
     let color: Color
-    let number: String
+    let light: Color
     let goals: Int
     let name: String
     var body: some View {
-        VStack(spacing: 4) {
-            TeamCrest(color: color, number: number, size: 22)
-            Text("\(goals)").foregroundStyle(color).font(Theme.display(62)).monospacedDigit()
-                .shadow(color: color.opacity(0.45), radius: 14, y: 4)
-            Text(name).font(Theme.label(10)).tracking(2).foregroundStyle(color)
+        HStack(spacing: 14) {
+            if name == "1P" {
+                TeamBadge(color: color, light: light, letter: name, px: 3)
+            }
+            PixelText("\(goals)", px: 6, color: light, outline: Theme.ink, shadow: Theme.ink)
+            if name != "1P" {
+                TeamBadge(color: color, light: light, letter: name, px: 3)
+            }
         }
     }
 }
@@ -401,109 +409,91 @@ private struct HelpPanel: View {
     @ObservedObject var store: GameStore
     var body: some View {
         Modal {
-            VStack(alignment: .leading, spacing: 15) {
-                eyebrow("YOUR FIRST KICKOFF", color: Theme.cyan)
-                Headline("DRIVE. BUMP. CELEBRATE.", size: 27)
-                HStack(alignment: .top, spacing: 22) {
-                    HelpItem(
-                        number: "01",
-                        icon: "dot.arrowtriangles.up.right.down.left.circle",
-                        title: "Find your line",
-                        text: "Drag the left stick to steer.\nOr tap the pitch to drive there."
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(alignment: .bottom) {
+                    PixelText(
+                        "HOW TO PLAY",
+                        px: 4,
+                        color: Theme.yellow,
+                        bottom: Theme.orange,
+                        outline: Theme.ink,
+                        shadow: Theme.ink
                     )
-                    HelpItem(
-                        number: "02",
-                        icon: "bolt.fill",
-                        title: "Bring the boost",
-                        text: "Tap BOOST for a speed burst.\nIt recharges while you drive."
-                    )
-                    HelpItem(
-                        number: "03",
-                        icon: "soccerball",
-                        title: "Own the rooftop",
-                        text: "Bump the ball into the right goal.\nMost goals in 90 seconds wins."
-                    )
-                }
-                HStack {
-                    Text("You’re BLUE. Turn behind the ball for a clean shot.")
-                        .font(.system(size: 12, weight: .semibold)).foregroundStyle(Theme.cyan)
                     Spacer()
-                    ActionButton("GOT IT", icon: "checkmark", primary: true) { store.showHelp = false }
-                        .frame(width: 125)
+                    PixelText("ROOKIE MANUAL", px: 2, color: Theme.grey)
                 }
-            }.frame(maxWidth: 620)
+                HelpItem(
+                    icon: PixelFont.pad, tint: Theme.sky, title: "STEER",
+                    text: "DRAG PAD OR TAP PITCH TO GO THERE."
+                )
+                HelpItem(
+                    icon: PixelFont.bolt, tint: Theme.yellow, title: "BOOST",
+                    text: "TAP TO BURST. REFILLS WHILE DRIVING."
+                )
+                HelpItem(
+                    icon: PixelFont.ball, tint: Theme.redLight, title: "SCORE",
+                    text: "BUMP THE BALL INTO THE RIGHT GOAL."
+                )
+                HStack {
+                    PixelText("YOU ARE BLUE. GET BEHIND THE BALL!", px: 2, color: Theme.blueLight)
+                    Spacer()
+                    ActionButton("\(PixelFont.check) GOT IT") { store.showHelp = false }
+                        .frame(width: 140)
+                }
+            }
+            .frame(width: 600)
         }
     }
 }
 
 private struct HelpItem: View {
-    let number: String
-    let icon: String
+    let icon: Character
+    let tint: Color
     let title: String
     let text: String
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                Image(systemName: icon).font(.system(size: 14, weight: .bold)).foregroundStyle(Theme.coral)
-                    .frame(width: 30, height: 30)
-                    .background(Theme.coral.opacity(0.14), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-                Text(number).font(Theme.display(16)).foregroundStyle(Theme.coral)
-            }
-            Text(title).font(.system(size: 14, weight: .bold))
-            Text(text).font(.system(size: 11)).foregroundStyle(Theme.muted).lineSpacing(4)
-        }.frame(maxWidth: .infinity, alignment: .leading)
+        HStack(spacing: 12) {
+            PixelText(String(icon), px: 3, color: Theme.ink)
+                .frame(width: 36, height: 36)
+                .background(tint)
+                .overlay(Rectangle().strokeBorder(Theme.ink, lineWidth: Theme.px))
+            PixelText(title, px: 2, color: tint).frame(width: 66, alignment: .leading)
+            PixelText(text, px: 2, color: Theme.white)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
 private struct Modal<Content: View>: View {
-    var tint: Color = .white
     @ViewBuilder let content: Content
     var body: some View {
         ZStack {
-            Color(hex: 0x03101A).opacity(0.82).ignoresSafeArea()
-            content.padding(26)
-                .glass(radius: 28, tint: tint)
-                .padding(18)
+            Theme.ink.opacity(0.72).ignoresSafeArea()
+            content.padding(18)
+                .pixelPanel()
+                .padding(16)
         }
-    }
-}
-
-private struct Headline: View {
-    let text: String
-    let size: CGFloat
-    init(_ text: String, size: CGFloat) {
-        self.text = text
-        self.size = size
-    }
-
-    var body: some View {
-        Text(text).font(Theme.display(size)).italic().kerning(-0.8).lineSpacing(-size * 0.18)
-            .shadow(color: .black.opacity(0.3), radius: 0, y: 2)
     }
 }
 
 private struct ActionButton: View {
     let title: String
-    let icon: String
-    let primary: Bool
+    var face = Theme.yellow
+    var shade = Theme.orange
     let run: () -> Void
-    init(_ title: String, icon: String, primary: Bool, run: @escaping () -> Void) {
+    init(_ title: String, face: Color = Theme.yellow, shade: Color = Theme.orange, run: @escaping () -> Void) {
         self.title = title
-        self.icon = icon
-        self.primary = primary
+        self.face = face
+        self.shade = shade
         self.run = run
     }
 
     var body: some View {
         Button(action: run) {
-            HStack(spacing: 9) {
-                Text(title).tracking(1)
-                Image(systemName: icon)
-            }
-            .font(Theme.display(12))
-            .frame(maxWidth: .infinity).frame(height: 48)
+            PixelText(title, px: 2, color: Theme.ink)
+                .frame(maxWidth: .infinity).frame(height: 44)
         }
-        .buttonStyle(ArcadeButtonStyle(primary: primary, radius: 15))
+        .buttonStyle(PixelButtonStyle(face: face, shade: shade))
     }
 }
 
@@ -511,12 +501,12 @@ private struct SoundButton: View {
     @ObservedObject var store: GameStore
     var body: some View {
         Button(action: store.toggleSound) {
-            Label(
-                store.sound ? "Sound on" : "Sound off",
-                systemImage: store.sound ? "speaker.wave.2.fill" : "speaker.slash.fill"
-            )
-            .frame(minHeight: 38)
-        }.accessibilityIdentifier("sound")
+            PixelText("\(PixelFont.note) SOUND \(store.sound ? "ON" : "OFF")", px: 2, color: Theme.ink)
+                .padding(.horizontal, 12).frame(height: 40)
+        }
+        .buttonStyle(PixelButtonStyle(face: Theme.grey, shade: Theme.greyDark))
+        .accessibilityLabel(store.sound ? "Sound on" : "Sound off")
+        .accessibilityIdentifier("sound")
     }
 }
 
@@ -524,65 +514,47 @@ private struct StatChip: View {
     let title: String
     let value: String
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(value).font(Theme.display(22, weight: .heavy)).foregroundStyle(Theme.cream).monospacedDigit()
-            Text(title).font(Theme.label(8)).tracking(1.4).foregroundStyle(Theme.muted)
+        VStack(alignment: .leading, spacing: 4) {
+            PixelText(value, px: 3, color: Theme.white)
+            PixelText(title, px: 2, color: Theme.yellow)
         }
-        .padding(.horizontal, 14).padding(.vertical, 8)
-        .frame(minWidth: 88, alignment: .leading)
-        .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).strokeBorder(
-            .white.opacity(0.08),
-            lineWidth: 1
-        ))
+        .padding(.horizontal, 12).padding(.vertical, 8)
+        .frame(minWidth: 96, alignment: .leading)
+        .pixelPanel()
     }
 }
 
-private func eyebrow(_ text: String, color: Color) -> some View {
-    Text(text).font(Theme.label(9)).tracking(1.8).foregroundStyle(color)
-}
-
 private func difference(_ value: Int?) -> String {
-    guard let value else { return "—" }
+    guard let value else { return "-" }
     return value > 0 ? "+\(value)" : "\(value)"
 }
 
+/// Analog stick dressed as a console D-pad; the knob snaps around the cross.
 private struct Joystick: View {
     @ObservedObject var store: GameStore
     @State private var knob = CGSize.zero
     var body: some View {
         ZStack {
-            Circle().fill(
-                RadialGradient(
-                    colors: [Color(hex: 0x0B1F2B), Color(hex: 0x17343F)],
-                    center: .center,
-                    startRadius: 6,
-                    endRadius: 40
-                )
-            )
-            .overlay(Circle().strokeBorder(.white.opacity(0.14), lineWidth: 1))
-            .shadow(color: Theme.cyan.opacity(knob == .zero ? 0.12 : 0.4), radius: 12)
-            Circle().stroke(Theme.cyan.opacity(0.18), style: StrokeStyle(lineWidth: 1, dash: [3, 5])).padding(10)
-            ForEach(0 ..< 4, id: \.self) { index in
-                Capsule().fill(Theme.cyan.opacity(0.35)).frame(width: 2, height: 6)
-                    .offset(y: -30).rotationEffect(.degrees(Double(index) * 90))
-            }
-            Circle().fill(LinearGradient(
-                colors: [Color(hex: 0x6F94A4), Color(hex: 0x2B4B58)],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            ))
-            .overlay(Circle().strokeBorder(.white.opacity(0.35), lineWidth: 1))
-            .overlay(Circle().fill(.white.opacity(0.18)).frame(width: 12, height: 6).offset(y: -9))
-            .frame(width: 38, height: 38).shadow(color: .black.opacity(0.45), radius: 5, y: 4)
-            .offset(knob)
+            Rectangle().fill(Theme.ink).frame(width: 32, height: 80)
+            Rectangle().fill(Theme.ink).frame(width: 80, height: 32)
+            Rectangle().fill(Theme.grey).frame(width: 24, height: 72)
+            Rectangle().fill(Theme.grey).frame(width: 72, height: 24)
+            PixelText(String(PixelFont.up), px: 2, color: Theme.greyDark).offset(y: -26)
+            PixelText(String(PixelFont.down), px: 2, color: Theme.greyDark).offset(y: 26)
+            PixelText(String(PixelFont.back), px: 2, color: Theme.greyDark).offset(x: -26)
+            PixelText(String(PixelFont.play), px: 2, color: Theme.greyDark).offset(x: 26)
+            Rectangle().fill(knob == .zero ? Theme.greyDark : Theme.yellow)
+                .overlay(Rectangle().strokeBorder(Theme.ink, lineWidth: Theme.px))
+                .overlay(alignment: .top) { Theme.white.frame(height: Theme.px).padding(Theme.px) }
+                .frame(width: 24, height: 24)
+                .offset(knob)
         }
-        .aspectRatio(1, contentMode: .fit)
-        .contentShape(Circle())
+        .frame(width: 80, height: 80)
+        .contentShape(Rectangle())
         .gesture(DragGesture(minimumDistance: 0).onChanged { value in
             let vector = Vector(x: value.translation.width, y: -value.translation.height)
             let normalized = vector.length > 28 ? vector.unit : vector / 28
-            knob = CGSize(width: normalized.x * 24, height: -normalized.y * 24)
+            knob = CGSize(width: (normalized.x * 24 / 4).rounded() * 4, height: (-normalized.y * 24 / 4).rounded() * 4)
             store.engine.driveTarget = nil
             store.engine.steering = normalized
         }.onEnded { _ in

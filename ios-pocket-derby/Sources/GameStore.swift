@@ -44,6 +44,21 @@ final class GameStore: ObservableObject {
         if CommandLine.arguments.contains("-autostart") {
             start()
         }
+        if let index = CommandLine.arguments.firstIndex(of: "-preview"),
+           index + 1 < CommandLine.arguments.count
+        {
+            preview(CommandLine.arguments[index + 1])
+        }
+    }
+
+    /// UI-only preview hooks for screenshots; match rules are untouched.
+    private func preview(_ name: String) {
+        switch name {
+        case "help": showHelp = true
+        case "pause": start(); pause()
+        case "results": screen = .results
+        default: break
+        }
     }
 
     func start() {

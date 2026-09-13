@@ -1,22 +1,29 @@
 import SwiftUI
 
+/// Console-era palette: a small set of saturated, hard-edged colours shared by
+/// the SwiftUI shell and the SpriteKit arena. Everything is drawn on a 4pt
+/// pixel grid (`Theme.px`) with square corners and no blur, gradients or glow.
 enum Theme {
-    static let ink = Color(hex: 0x06141E)
-    static let cream = Color(hex: 0xF7F3E7)
-    static let cyan = Color(hex: 0x5FE3FF)
-    static let coral = Color(hex: 0xFF7A55)
-    static let gold = Color(hex: 0xFFD166)
-    static let muted = Color(hex: 0x93ADB7)
-    static let panelTop = Color(hex: 0x17323F)
-    static let panelBottom = Color(hex: 0x0B1F2B)
+    static let px: CGFloat = 4
 
-    static func display(_ size: CGFloat, weight: Font.Weight = .black) -> Font {
-        .system(size: size, weight: weight, design: .rounded)
-    }
-
-    static func label(_ size: CGFloat, weight: Font.Weight = .heavy) -> Font {
-        .system(size: size, weight: weight, design: .rounded)
-    }
+    static let ink = Color(hex: 0x0C0C1C)
+    static let white = Color(hex: 0xFCFCFC)
+    static let grey = Color(hex: 0xBCBCBC)
+    static let greyDark = Color(hex: 0x7C7C7C)
+    static let sky = Color(hex: 0x3CBCFC)
+    static let skyDeep = Color(hex: 0x0058F8)
+    static let skyPale = Color(hex: 0xA4E4FC)
+    static let blue = Color(hex: 0x0058F8)
+    static let blueLight = Color(hex: 0x3CBCFC)
+    static let red = Color(hex: 0xF83800)
+    static let redLight = Color(hex: 0xF87858)
+    static let yellow = Color(hex: 0xF8D800)
+    static let orange = Color(hex: 0xFC9838)
+    static let green = Color(hex: 0x3CB43C)
+    static let greenDark = Color(hex: 0x2C982C)
+    static let purple = Color(hex: 0x201C5C)
+    static let purpleLight = Color(hex: 0x4838B8)
+    static let panel = Color(hex: 0x14143C)
 }
 
 extension Color {
@@ -25,209 +32,176 @@ extension Color {
     }
 }
 
-/// Frosted night-glass panel with a lit top edge; the app's single surface style.
-struct GlassPanel: ViewModifier {
-    var radius: CGFloat = 26
-    var tint: Color = .white
+/// Every half second flips between two states; the classic "PRESS START" blink.
+/// Static when reduced motion is on.
+struct Blink<Content: View>: View {
+    var interval = 0.5
+    var reduced = false
+    @ViewBuilder let content: (Bool) -> Content
+    var body: some View {
+        if reduced {
+            content(true)
+        } else {
+            TimelineView(.periodic(from: .now, by: interval)) { timeline in
+                content(Int(timeline.date.timeIntervalSinceReferenceDate / interval).isMultiple(of: 2))
+            }
+        }
+    }
+}
+
+/// Console dialog box: dark fill, white double border, hard-edged corners.
+struct PixelPanel: ViewModifier {
+    var fill = Theme.panel
+    var border = Theme.white
     func body(content: Content) -> some View {
         content
-            .background(
-                LinearGradient(
-                    colors: [Theme.panelTop.opacity(0.96), Theme.panelBottom.opacity(0.96)],
-                    startPoint: .top,
-                    endPoint: .bottom
-                ),
-                in: RoundedRectangle(cornerRadius: radius, style: .continuous)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .strokeBorder(
-                        LinearGradient(
-                            colors: [tint.opacity(0.35), .white.opacity(0.04), tint.opacity(0.12)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ),
-                        lineWidth: 1
-                    )
-            )
-            .shadow(color: .black.opacity(0.38), radius: 26, y: 14)
+            .background(fill)
+            .overlay(Rectangle().strokeBorder(border, lineWidth: Theme.px))
+            .padding(Theme.px)
+            .background(Theme.ink)
     }
 }
 
 extension View {
-    func glass(radius: CGFloat = 26, tint: Color = .white) -> some View {
-        modifier(GlassPanel(radius: radius, tint: tint))
+    func pixelPanel(fill: Color = Theme.panel, border: Color = Theme.white) -> some View {
+        modifier(PixelPanel(fill: fill, border: border))
     }
 }
 
-/// Chunky arcade button: gradient face, lit rim, coloured drop glow, springy press.
-struct ArcadeButtonStyle: ButtonStyle {
-    var tint = Theme.cyan
-    var primary = true
-    var radius: CGFloat = 16
+/// Chunky two-tone button with a hard drop shadow; pressing snaps it down onto
+/// the shadow with no easing, like a cartridge-era menu.
+struct PixelButtonStyle: ButtonStyle {
+    var face = Theme.yellow
+    var shade = Theme.orange
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .foregroundStyle(primary ? Theme.ink : Theme.cream)
-            .background {
-                if primary {
-                    LinearGradient(
-                        colors: [tint.mixed(.white, 0.28), tint, tint.mixed(.black, 0.12)],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                } else {
-                    Color.white.opacity(configuration.isPressed ? 0.14 : 0.08)
+        let pressed = configuration.isPressed
+        return configuration.label
+            .background(
+                VStack(spacing: 0) {
+                    face
+                    shade.frame(height: Theme.px * 2)
                 }
-            }
-            .clipShape(RoundedRectangle(cornerRadius: radius, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: radius, style: .continuous)
-                    .strokeBorder(
-                        LinearGradient(
-                            colors: [.white.opacity(primary ? 0.7 : 0.22), .white.opacity(0.02)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        ),
-                        lineWidth: 1.2
-                    )
             )
-            .shadow(color: primary ? tint.opacity(0.45) : .black.opacity(0.25), radius: primary ? 14 : 8, y: 6)
-            .scaleEffect(configuration.isPressed ? 0.96 : 1)
-            .brightness(configuration.isPressed ? -0.06 : 0)
-            .animation(.spring(response: 0.25, dampingFraction: 0.6), value: configuration.isPressed)
+            .overlay(Rectangle().strokeBorder(Theme.ink, lineWidth: Theme.px))
+            .background(
+                Theme.ink.offset(x: pressed ? 0 : Theme.px, y: pressed ? 0 : Theme.px)
+            )
+            .offset(x: pressed ? Theme.px : 0, y: pressed ? Theme.px : 0)
+            .animation(nil, value: pressed)
     }
 }
 
-/// Brand motif: three tapered speed slashes.
-struct SpeedLines: View {
-    var color = Theme.cyan
-    var height: CGFloat = 22
+/// Team badge: a square shield with the team's initial.
+struct TeamBadge: View {
+    var color: Color
+    var light: Color
+    var letter: String
+    var px: CGFloat = 2
     var body: some View {
-        HStack(spacing: height * 0.16) {
-            ForEach(0 ..< 3, id: \.self) { index in
-                Parallelogram()
-                    .fill(color.opacity(1 - Double(index) * 0.3))
-                    .frame(width: height * (0.42 - CGFloat(index) * 0.08), height: height)
+        ZStack {
+            Rectangle().fill(color)
+            VStack(spacing: 0) {
+                light.frame(height: px)
+                Spacer(minLength: 0)
             }
+            PixelText(letter, px: px, color: Theme.white)
         }
+        .frame(width: px * (CGFloat(letter.count) * 6 + 3), height: px * 9)
+        .overlay(Rectangle().strokeBorder(Theme.ink, lineWidth: px))
+        .padding(px)
+        .background(Theme.white)
+        .padding(px)
+        .background(Theme.ink)
         .accessibilityHidden(true)
     }
 }
 
-struct Parallelogram: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let skew = rect.height * 0.32
-        path.move(to: CGPoint(x: rect.minX + skew, y: rect.minY))
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
-        path.addLine(to: CGPoint(x: rect.maxX - skew, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-        path.closeSubpath()
-        return path
-    }
-}
-
-/// Small circular team crest used across scoreboard and results.
-struct TeamCrest: View {
-    var color: Color
-    var number: String
-    var size: CGFloat = 26
+/// Daytime skyline drawn as 4pt pixels: banded sky, sun, drifting-still clouds
+/// and two tiers of block towers with lit windows.
+struct PixelSkyline: View {
     var body: some View {
-        ZStack {
-            Circle().fill(
-                LinearGradient(
-                    colors: [color.mixed(.white, 0.25), color],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
-            Circle().strokeBorder(.white.opacity(0.5), lineWidth: 1)
-            Text(number).font(.system(size: size * 0.36, weight: .black, design: .rounded)).foregroundStyle(Theme.ink)
-        }
-        .frame(width: size, height: size)
-        .shadow(color: color.opacity(0.5), radius: 6, y: 2)
-    }
-}
-
-/// Night skyline behind the rooftop: gradient sky, moon, stars and two layers of lit towers.
-struct CityBackdrop: View {
-    var body: some View {
-        ZStack {
-            LinearGradient(
-                stops: [
-                    .init(color: Color(hex: 0x081328), location: 0),
-                    .init(color: Color(hex: 0x0F3448), location: 0.55),
-                    .init(color: Color(hex: 0x0A1F2C), location: 1)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            Canvas { context, size in
-                var seed: UInt32 = 9137
-                func random() -> CGFloat {
-                    seed = seed &* 1_664_525 &+ 1_013_904_223
-                    return CGFloat(seed >> 8) / CGFloat(1 << 24)
-                }
-                for _ in 0 ..< 90 {
-                    let point = CGPoint(x: random() * size.width, y: random() * size.height * 0.55)
-                    let radius = 0.5 + random() * 1.1
-                    context.fill(
-                        Path(ellipseIn: CGRect(x: point.x, y: point.y, width: radius * 2, height: radius * 2)),
-                        with: .color(.white.opacity(0.25 + random() * 0.5))
-                    )
-                }
-                let moon = CGPoint(x: size.width * 0.385, y: size.height * 0.085)
-                context.fill(
-                    Path(ellipseIn: CGRect(x: moon.x - 120, y: moon.y - 120, width: 240, height: 240)),
-                    with: .radialGradient(
-                        Gradient(colors: [Color(hex: 0xBFEFFF).opacity(0.22), .clear]),
-                        center: moon, startRadius: 0, endRadius: 120
-                    )
-                )
-                context.fill(
-                    Path(ellipseIn: CGRect(x: moon.x - 11, y: moon.y - 11, width: 22, height: 22)),
-                    with: .color(Color(hex: 0xEAF8FF).opacity(0.75))
-                )
-                for layer in 0 ..< 2 {
-                    let base = size.height * (layer == 0 ? 0.66 : 0.78)
-                    let fill = layer == 0 ? Color(hex: 0x0C2634).opacity(0.85) : Color(hex: 0x071A25)
-                    var x: CGFloat = -20
-                    while x < size.width + 40 {
-                        let width = 34 + random() * 70
-                        let height = 24 + random() * (layer == 0 ? 96 : 60)
-                        let rect = CGRect(x: x, y: base - height, width: width, height: size.height - base + height)
-                        context.fill(Path(rect), with: .color(fill))
-                        if random() > 0.6 {
-                            let cap = CGRect(x: rect.midX - 2, y: rect.minY - 14, width: 4, height: 14)
-                            context.fill(Path(cap), with: .color(fill))
-                        }
-                        var wy = rect.minY + 10
-                        while wy < base + 8 {
-                            var wx = rect.minX + 7
-                            while wx < rect.maxX - 8 {
-                                if random() > 0.55 {
-                                    let warm = random() > 0.35
-                                    context.fill(
-                                        Path(CGRect(x: wx, y: wy, width: 4, height: 6)),
-                                        with: .color((warm ? Color(hex: 0xFFD89A) : Color(hex: 0x9CEBFF))
-                                            .opacity(layer == 0 ? 0.42 : 0.22))
-                                    )
-                                }
-                                wx += 11
-                            }
-                            wy += 13
-                        }
-                        x += width + 6 + random() * 12
+        Canvas(opaque: true, rendersAsynchronously: false) { context, size in
+            let px = Theme.px
+            func rect(_ x: CGFloat, _ y: CGFloat, _ w: CGFloat, _ h: CGFloat, _ color: Color) {
+                context.fill(Path(CGRect(x: x * px, y: y * px, width: w * px, height: h * px)), with: .color(color))
+            }
+            let cols = ceil(size.width / px)
+            let rows = ceil(size.height / px)
+            var seed: UInt32 = 4211
+            func random() -> CGFloat {
+                seed = seed &* 1_664_525 &+ 1_013_904_223
+                return CGFloat(seed >> 8) / CGFloat(1 << 24)
+            }
+            // Sky bands with a dithered seam between each pair.
+            let bands: [(CGFloat, Color)] = [(0, Theme.skyDeep), (0.18, Theme.sky), (0.46, Theme.skyPale)]
+            for (index, band) in bands.enumerated() {
+                let top = floor(rows * band.0)
+                let bottom = index + 1 < bands.count ? floor(rows * bands[index + 1].0) : rows
+                rect(0, top, cols, bottom - top, band.1)
+                if index + 1 < bands.count {
+                    let next = bands[index + 1].1
+                    for x in stride(from: 0, to: cols, by: 2) {
+                        rect(x, bottom - 1, 1, 1, next)
+                        rect(x + 1, bottom, 1, 1, band.1)
                     }
                 }
-                context.fill(
-                    Path(CGRect(x: 0, y: size.height * 0.5, width: size.width, height: size.height * 0.5)),
-                    with: .linearGradient(
-                        Gradient(colors: [.clear, Color(hex: 0x061520).opacity(0.85)]),
-                        startPoint: CGPoint(x: 0, y: size.height * 0.5), endPoint: CGPoint(x: 0, y: size.height)
-                    )
-                )
             }
+            // Sun.
+            let sun = CGPoint(x: floor(cols * 0.42), y: floor(rows * 0.09))
+            let disc: [String] = [
+                "..####..",
+                ".######.",
+                "########",
+                "########",
+                "########",
+                "########",
+                ".######.",
+                "..####.."
+            ]
+            for (y, row) in disc.enumerated() {
+                for (x, bit) in row.enumerated() where bit == "#" {
+                    rect(sun.x + CGFloat(x), sun.y + CGFloat(y), 1, 1, y < 5 ? Theme.yellow : Theme.orange)
+                }
+            }
+            // Clouds.
+            let cloud: [String] = ["....####....", "..########..", ".##########.", "############", ".##########."]
+            for origin in [CGPoint(x: 0.08, y: 0.13), CGPoint(x: 0.62, y: 0.2), CGPoint(x: 0.84, y: 0.07)] {
+                let cx = floor(cols * origin.x), cy = floor(rows * origin.y)
+                for (y, row) in cloud.enumerated() {
+                    for (x, bit) in row.enumerated() where bit == "#" {
+                        rect(cx + CGFloat(x), cy + CGFloat(y), 1, 1, y == cloud.count - 1 ? Theme.grey : Theme.white)
+                    }
+                }
+            }
+            // Towers.
+            for layer in 0 ..< 2 {
+                let base = floor(rows * (layer == 0 ? 0.66 : 0.8))
+                let fill = layer == 0 ? Theme.purpleLight : Theme.purple
+                let window = layer == 0 ? Theme.skyPale : Theme.yellow
+                var x: CGFloat = -2
+                while x < cols + 4 {
+                    let width = floor(6 + random() * 12)
+                    let height = floor(5 + random() * (layer == 0 ? 22 : 14))
+                    rect(x, base - height, width, rows - base + height, fill)
+                    if random() > 0.55 {
+                        rect(x + floor(width / 2), base - height - 4, 1, 4, fill)
+                    }
+                    var wy = base - height + 2
+                    while wy < base - 1 {
+                        var wx = x + 1
+                        while wx < x + width - 1 {
+                            if random() > 0.45 {
+                                rect(wx, wy, 1, 1, window)
+                            }
+                            wx += 2
+                        }
+                        wy += 3
+                    }
+                    x += width + 1 + floor(random() * 3)
+                }
+            }
+            rect(0, rows - 6, cols, 6, Theme.purple)
+            rect(0, rows - 6, cols, 1, Theme.purpleLight)
         }
         .ignoresSafeArea()
         .accessibilityHidden(true)
