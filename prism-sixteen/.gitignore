@@ -1,0 +1,7 @@
+.DS_Store
+.devin/
+build/
+server/node_modules/
+artifacts/
+*.xcuserstate
+xcuserdata/

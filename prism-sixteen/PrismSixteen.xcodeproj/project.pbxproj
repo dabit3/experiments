@@ -1,0 +1,359 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0029719EDD016D8F389A06AE /* refraction.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DE7AA03DBCF8255D85292C /* refraction.png */; };
+		0FF111FF6A6B0E9DDF86D952 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086F7490F7D94C4E4D5D8471 /* ContentView.swift */; };
+		2B75891AAAEA88A07528F91B /* tap.wav in Resources */ = {isa = PBXBuildFile; fileRef = 58B50BD2B097ACEFC330F71D /* tap.wav */; };
+		5B6BD1E3A7DBBCD1E1BE493E /* refraction.wav in Resources */ = {isa = PBXBuildFile; fileRef = 17ACAD98A82AB62A66BB6602 /* refraction.wav */; };
+		5FC07DCBB30DEE46BF73934D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B93767011C29A255D7B4426 /* Models.swift */; };
+		7027B756D110DEAAA51AB161 /* catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = F6B4A96F2277C27F4DABFF74 /* catalog.json */; };
+		AF332AE3D0C89F14D2F77938 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 54998B886A8DB28AFBB0FE1D /* Assets.xcassets */; };
+		B44571C53FCBC5887DE53769 /* PanelBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA491D8235C9A8F55FAAA2FA /* PanelBoard.swift */; };
+		B934730C5B7DE24941CB8E07 /* PrismSixteenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CC5B3BCAC9DB26047C8811 /* PrismSixteenApp.swift */; };
+		D8B0A2E0AD4E3F729275CCE0 /* afterglow.wav in Resources */ = {isa = PBXBuildFile; fileRef = D847CDCAEA81E1E00A4211BC /* afterglow.wav */; };
+		DC59F6FFE5CBE1929671E098 /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1413007D236D4172BDBE3608 /* GameModel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		086F7490F7D94C4E4D5D8471 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1413007D236D4172BDBE3608 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		17ACAD98A82AB62A66BB6602 /* refraction.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = refraction.wav; sourceTree = "<group>"; };
+		38024DCA5DF225295D2719D4 /* PrismSixteen.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PrismSixteen.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		54998B886A8DB28AFBB0FE1D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		58B50BD2B097ACEFC330F71D /* tap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap.wav; sourceTree = "<group>"; };
+		7B93767011C29A255D7B4426 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		90CC5B3BCAC9DB26047C8811 /* PrismSixteenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrismSixteenApp.swift; sourceTree = "<group>"; };
+		A95EA13EE48084488E3D8A81 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CA491D8235C9A8F55FAAA2FA /* PanelBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelBoard.swift; sourceTree = "<group>"; };
+		D7DE7AA03DBCF8255D85292C /* refraction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refraction.png; sourceTree = "<group>"; };
+		D847CDCAEA81E1E00A4211BC /* afterglow.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = afterglow.wav; sourceTree = "<group>"; };
+		F6B4A96F2277C27F4DABFF74 /* catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = catalog.json; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0B540B2E1CDDF77DBDBA3079 = {
+			isa = PBXGroup;
+			children = (
+				117090E8C03F807202DB64CA /* App */,
+				527743063D9F94839FB48285 /* Resources */,
+				485C47419E7557F309DDE07E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		117090E8C03F807202DB64CA /* App */ = {
+			isa = PBXGroup;
+			children = (
+				086F7490F7D94C4E4D5D8471 /* ContentView.swift */,
+				1413007D236D4172BDBE3608 /* GameModel.swift */,
+				A95EA13EE48084488E3D8A81 /* Info.plist */,
+				7B93767011C29A255D7B4426 /* Models.swift */,
+				CA491D8235C9A8F55FAAA2FA /* PanelBoard.swift */,
+				90CC5B3BCAC9DB26047C8811 /* PrismSixteenApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		485C47419E7557F309DDE07E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				38024DCA5DF225295D2719D4 /* PrismSixteen.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		527743063D9F94839FB48285 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D847CDCAEA81E1E00A4211BC /* afterglow.wav */,
+				54998B886A8DB28AFBB0FE1D /* Assets.xcassets */,
+				F6B4A96F2277C27F4DABFF74 /* catalog.json */,
+				D7DE7AA03DBCF8255D85292C /* refraction.png */,
+				17ACAD98A82AB62A66BB6602 /* refraction.wav */,
+				58B50BD2B097ACEFC330F71D /* tap.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		835B029FCC58F7F5E95A023E /* PrismSixteen */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E584DEC118706CA153992282 /* Build configuration list for PBXNativeTarget "PrismSixteen" */;
+			buildPhases = (
+				49F04350F14C3C87DD050B22 /* Sources */,
+				CEC71B49A503D3516875297B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PrismSixteen;
+			packageProductDependencies = (
+			);
+			productName = PrismSixteen;
+			productReference = 38024DCA5DF225295D2719D4 /* PrismSixteen.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AE831D5DD0244633871ECFE6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 9466DAA824A9962763E1CE8C /* Build configuration list for PBXProject "PrismSixteen" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 0B540B2E1CDDF77DBDBA3079;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 485C47419E7557F309DDE07E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				835B029FCC58F7F5E95A023E /* PrismSixteen */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CEC71B49A503D3516875297B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF332AE3D0C89F14D2F77938 /* Assets.xcassets in Resources */,
+				D8B0A2E0AD4E3F729275CCE0 /* afterglow.wav in Resources */,
+				7027B756D110DEAAA51AB161 /* catalog.json in Resources */,
+				0029719EDD016D8F389A06AE /* refraction.png in Resources */,
+				5B6BD1E3A7DBBCD1E1BE493E /* refraction.wav in Resources */,
+				2B75891AAAEA88A07528F91B /* tap.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		49F04350F14C3C87DD050B22 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0FF111FF6A6B0E9DDF86D952 /* ContentView.swift in Sources */,
+				DC59F6FFE5CBE1929671E098 /* GameModel.swift in Sources */,
+				5FC07DCBB30DEE46BF73934D /* Models.swift in Sources */,
+				B44571C53FCBC5887DE53769 /* PanelBoard.swift in Sources */,
+				B934730C5B7DE24941CB8E07 /* PrismSixteenApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		6FA8FDCB07F1704AB12B32A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Prism Sixteen";
+				INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsArbitraryLoads = YES;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to your Prism Sixteen room server.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		8C281F18C3F38AC1DC1FA2A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.prismsixteen.game;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E604B5365F918670E35D9F8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Prism Sixteen";
+				INFOPLIST_KEY_NSAppTransportSecurity_NSAllowsArbitraryLoads = YES;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Connect to your Prism Sixteen room server.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		FF191BF708BBE0134B520D23 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.prismsixteen.game;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9466DAA824A9962763E1CE8C /* Build configuration list for PBXProject "PrismSixteen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6FA8FDCB07F1704AB12B32A3 /* Debug */,
+				E604B5365F918670E35D9F8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E584DEC118706CA153992282 /* Build configuration list for PBXNativeTarget "PrismSixteen" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF191BF708BBE0134B520D23 /* Debug */,
+				8C281F18C3F38AC1DC1FA2A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AE831D5DD0244633871ECFE6 /* Project object */;
+}
