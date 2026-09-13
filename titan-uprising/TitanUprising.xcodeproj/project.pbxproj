@@ -12,6 +12,7 @@
 		18D45F6D597326B40D90A39F /* heroes-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B7C915D6741C5080C590D199 /* heroes-2.png */; };
 		18EA77A057623042912022DA /* attacks-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 404344547C0600825732687A /* attacks-4.png */; };
 		19FAB5E0B14CDE167DD193CD /* start.wav in Resources */ = {isa = PBXBuildFile; fileRef = FBFF31A968C85FD196774226 /* start.wav */; };
+		1E9BB8768089A82EDE34DAE2 /* GameArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBF5CB990904BFC97C5638B /* GameArt.swift */; };
 		2FF6823C93C5DD27B2BA4DB5 /* heroes-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 547E0397DC87078D8A72E5DB /* heroes-4.png */; };
 		32DE5EC49526A6C7644C469B /* BattleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04252022244786E386149C91 /* BattleScene.swift */; };
 		3C50E99F659C5FDF95220CF4 /* heroes-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BB3F01ACEB48A0C43193CFB /* heroes-0.png */; };
@@ -75,6 +76,7 @@
 		A5BC30BE10D852E146896EAC /* attacks-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "attacks-3.png"; sourceTree = "<group>"; };
 		B7C915D6741C5080C590D199 /* heroes-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heroes-2.png"; sourceTree = "<group>"; };
 		BCF69E6EF8FE067F2B44F957 /* win.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = win.wav; sourceTree = "<group>"; };
+		BFBF5CB990904BFC97C5638B /* GameArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameArt.swift; sourceTree = "<group>"; };
 		C0AFDBD650917974694D2342 /* attacks-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "attacks-1.png"; sourceTree = "<group>"; };
 		EF18D2951B9B1679399FFE25 /* tap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap.wav; sourceTree = "<group>"; };
 		F526A672632461A408594966 /* heroes-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heroes-5.png"; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			children = (
 				04252022244786E386149C91 /* BattleScene.swift */,
 				9D5CD8163F34B447329BC422 /* ContentView.swift */,
+				BFBF5CB990904BFC97C5638B /* GameArt.swift */,
 				1CB2E6B1E7A85A9D8898CBE2 /* GameAudio.swift */,
 				7D5EB8F90DAD73EE3E52BAB4 /* GameModel.swift */,
 				4DE69A7C2F86450DBD6C3F49 /* Info.plist */,
@@ -271,6 +274,7 @@
 			files = (
 				32DE5EC49526A6C7644C469B /* BattleScene.swift in Sources */,
 				5CAF06C8C328C5F3D2642FE6 /* ContentView.swift in Sources */,
+				1E9BB8768089A82EDE34DAE2 /* GameArt.swift in Sources */,
 				3CFC983604259C7532CDFB6C /* GameAudio.swift in Sources */,
 				8F47180B43A0601706CF318C /* GameModel.swift in Sources */,
 				B9462D6AF537F8251E09939D /* TitanUprisingApp.swift in Sources */,

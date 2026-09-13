@@ -55,7 +55,9 @@ struct ContentView: View {
 
   private var lobby: some View {
     ZStack {
-      Image("arena").resizable().scaledToFill().frame(width: 1100, height: 500).clipped()
+      Image(uiImage: GameArt.image("arena")).resizable().scaledToFill().frame(
+        width: 1100, height: 500
+      ).clipped()
       LinearGradient(
         colors: [.black.opacity(0.7), Color(hex: 0x090D15).opacity(0.95)],
         startPoint: .top, endPoint: .bottom)
@@ -148,7 +150,7 @@ struct ContentView: View {
         ZStack(alignment: .topLeading) {
           LinearGradient(
             colors: [hero.color.opacity(0.26), .black], startPoint: .top, endPoint: .bottom)
-          Image("heroes-\(hero.id)").resizable().scaledToFit()
+          Image(uiImage: GameArt.image("heroes-\(hero.id)")).resizable().scaledToFit()
             .frame(width: 147, height: 192).offset(x: -16, y: 4)
           VStack(alignment: .leading) {
             HStack {
@@ -375,8 +377,10 @@ struct ContentView: View {
         ForEach(0..<3) { slot in
           let hero = Hero.all[peer.team[slot]]
           HStack(spacing: 3) {
-            Image("heroes-\(hero.id)").resizable().scaledToFill().frame(width: 28, height: 27)
-              .clipped()
+            Image(uiImage: GameArt.image("heroes-\(hero.id)")).resizable().scaledToFill().frame(
+              width: 28, height: 27
+            )
+            .clipped()
             VStack(alignment: .leading, spacing: 2) {
               Text(hero.name).font(.custom("AvenirNextCondensed-Bold", size: 9))
               Rectangle().fill(peer.hp[slot] > 0 ? hero.color : .gray).frame(
@@ -406,7 +410,8 @@ struct ContentView: View {
                 game.sendInput("tag", slot: slot)
               } label: {
                 VStack(spacing: 0) {
-                  Image("heroes-\(hero.id)").resizable().scaledToFit().frame(width: 56, height: 44)
+                  Image(uiImage: GameArt.image("heroes-\(hero.id)")).resizable().scaledToFit()
+                    .frame(width: 56, height: 44)
                   Text(hero.name).font(.custom("AvenirNextCondensed-Heavy", size: 9))
                 }.frame(width: 75, height: 61)
                   .background(hero.color.opacity(slot == me.active ? 0.28 : 0.07))
@@ -547,8 +552,10 @@ struct ContentView: View {
         if let me = game.me {
           HStack(spacing: -70) {
             ForEach(me.team, id: \.self) { hero in
-              Image("heroes-\(hero)").resizable().scaledToFit().frame(width: 200, height: 290)
-                .shadow(color: Hero.all[hero].color.opacity(0.5), radius: 20)
+              Image(uiImage: GameArt.image("heroes-\(hero)")).resizable().scaledToFit().frame(
+                width: 200, height: 290
+              )
+              .shadow(color: Hero.all[hero].color.opacity(0.5), radius: 20)
             }
           }.frame(width: 390)
         }

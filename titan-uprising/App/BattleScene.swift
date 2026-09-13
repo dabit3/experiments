@@ -22,7 +22,7 @@ final class BattleScene: SKScene {
     backgroundColor = .black
     if world.parent != nil { return }
     addChild(world)
-    let backdrop = SKSpriteNode(imageNamed: "arena")
+    let backdrop = SKSpriteNode(texture: SKTexture(image: GameArt.image("arena")))
     backdrop.name = "backdrop"
     backdrop.zPosition = -20
     world.addChild(backdrop)
@@ -109,7 +109,7 @@ final class BattleScene: SKScene {
   private func texture(hero: Int, attacking: Bool) -> SKTexture {
     let key = "\(attacking ? "attacks" : "heroes")-\(hero)"
     if let cached = textureCache[key] { return cached }
-    let texture = SKTexture(imageNamed: key)
+    let texture = SKTexture(image: GameArt.image(key))
     texture.filteringMode = .linear
     textureCache[key] = texture
     return texture
