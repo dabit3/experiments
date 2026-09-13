@@ -167,7 +167,10 @@ final class GameClient: ObservableObject {
     guard let reply = try? decoder.decode(Reply.self, from: data) else { return }
     if reply.type == "welcome" {
       let newIdentity = reply.id ?? ""
-      if newIdentity != identity { lastEvent = 0 }
+      if newIdentity != identity {
+        lastEvent = 0
+        resultFrames = 0
+      }
       identity = newIdentity
       token = reply.token ?? ""
       room = reply.code ?? room
@@ -224,7 +227,7 @@ final class GameClient: ObservableObject {
     if ["victory", "defeat"].contains(state.phase) {
       resultFrames += 1
       driverStep = "5 / SHARED OUTCOME • Round \(state.round)"
-      if Launch.has("autoRematch") && state.round == 1 && resultFrames == 90 {
+      if Launch.has("autoRematch") && state.round == 1 && resultFrames >= 90 && !me.ready {
         ready()
       }
       return
