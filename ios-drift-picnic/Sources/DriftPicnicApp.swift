@@ -530,8 +530,11 @@ struct PicnicView: View {
   private var positionBadge: some View {
     HStack(alignment: .firstTextBaseline, spacing: 4) {
       if game.mode == .trial {
-        RetroText("TIME", 22, coin).hardShadow(cherryDeep, 3)
-        RetroText("TRIAL", 10, paper)
+        VStack(alignment: .leading, spacing: 4) {
+          RetroText("TIME", 16, coin).hardShadow(cherryDeep, 3)
+          RetroText("TRIAL", 10, paper)
+        }
+        .fixedSize()
       } else {
         RetroText("\(game.race.position)", 40, coin).hardShadow(cherryDeep, 4)
           .contentTransition(.identity)
