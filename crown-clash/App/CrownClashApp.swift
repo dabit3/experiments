@@ -78,7 +78,7 @@ struct RootView: View {
               Text(peer.name.uppercased()).font(.headline)
               HStack(spacing: 3) {
                 ForEach(Array(peer.roster.enumerated()), id: \.offset) { _, member in
-                  Image("\(member.fighter)-portrait")
+                  Image("\(member.fighter)-portrait.jpg")
                     .resizable().scaledToFill().frame(width: 53, height: 48).clipped()
                     .saturation(member.hp == 0 ? 0 : 1).opacity(member.hp == 0 ? 0.4 : 1)
                 }
@@ -132,10 +132,10 @@ struct LobbyView: View {
   var body: some View {
     GeometryReader { geometry in
       ZStack {
-        Image("festival").resizable().scaledToFill()
+        Image("festival.png").resizable().scaledToFill()
           .frame(width: geometry.size.width, height: geometry.size.height).clipped()
         LinearGradient(
-          colors: [.black.opacity(0.85), Color(red: 0.025, green: 0.05, blue: 0.1).opacity(0.93)],
+          colors: [.black.opacity(0.65), Color(red: 0.025, green: 0.05, blue: 0.1).opacity(0.83)],
           startPoint: .topLeading, endPoint: .bottomTrailing)
         VStack(alignment: .leading, spacing: 9) {
           header
@@ -201,7 +201,7 @@ struct LobbyView: View {
           client.select(fighter.id)
         } label: {
           ZStack(alignment: .bottomLeading) {
-            Image("\(fighter.id)-portrait").resizable().scaledToFill()
+            Image("\(fighter.id)-portrait.jpg").resizable().scaledToFill()
               .frame(width: (width - 12) / 3, height: 89).clipped()
             LinearGradient(
               colors: [.clear, .black.opacity(0.9)], startPoint: .center, endPoint: .bottom)

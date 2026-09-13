@@ -42,8 +42,21 @@ targets:
           - CFBundleURLName: CrownClash
             CFBundleURLSchemes:
               - crownclash
+  CrownClashTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: CrownClash
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
 schemes:
   CrownClash:
     build:
       targets:
         CrownClash: all
+    test:
+      targets:
+        - CrownClashTests

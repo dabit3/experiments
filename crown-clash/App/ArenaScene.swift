@@ -36,7 +36,7 @@ final class ArenaScene: SKScene {
     guard world.parent == nil else { return }
     view.isMultipleTouchEnabled = true
     addChild(world)
-    let background = SKSpriteNode(imageNamed: "festival")
+    let background = SKSpriteNode(imageNamed: "festival.png")
     background.size = size
     background.position = CGPoint(x: 640, y: 360)
     world.addChild(background)
@@ -146,7 +146,7 @@ final class ArenaScene: SKScene {
     for side in 0..<2 {
       let left = side == 0
       let start: CGFloat = left ? 158 : 705
-      let portrait = SKSpriteNode(imageNamed: left ? "rook-portrait" : "sora-portrait")
+      let portrait = SKSpriteNode(imageNamed: left ? "rook-portrait.jpg" : "sora-portrait.jpg")
       portrait.size = CGSize(width: 74, height: 82)
       portrait.position = CGPoint(x: left ? 112 : 1168, y: 663)
       portraits["main\(side)"] = portrait
@@ -180,7 +180,7 @@ final class ArenaScene: SKScene {
         color: .white, alignment: left ? .right : .left)
       for member in 0..<3 {
         let x = left ? 174 + CGFloat(member) * 112 : 1106 - CGFloat(member) * 112
-        let small = SKSpriteNode(imageNamed: "rook-portrait")
+        let small = SKSpriteNode(imageNamed: "rook-portrait.jpg")
         small.size = CGSize(width: 33, height: 32)
         small.position = CGPoint(x: x, y: 614)
         hud.addChild(small)
@@ -314,7 +314,7 @@ final class ArenaScene: SKScene {
     bars["hp\(side)"]?.color =
       peer.member.hp < 30 ? .systemRed : UIColor(red: 0.53, green: 0.92, blue: 0.17, alpha: 1)
     bars["guard\(side)"]?.xScale = max(0.001, CGFloat(peer.guardValue) / 100)
-    portraits["main\(side)"]?.texture = SKTexture(imageNamed: "\(peer.member.fighter)-portrait")
+    portraits["main\(side)"]?.texture = SKTexture(imageNamed: "\(peer.member.fighter)-portrait.jpg")
     labels["power\(side)"]?.text = "\(peer.meter / 100)"
     labels["special\(side)"]?.text = "\(fighter.special.uppercased())  /  POWER"
     labels["combo\(side)"]?.text = peer.combo >= 2 ? "\(peer.combo) HITS" : ""
@@ -323,7 +323,8 @@ final class ArenaScene: SKScene {
         0.001, min(1, CGFloat(peer.meter - stock * 100) / 100))
     }
     for (index, member) in peer.roster.enumerated() {
-      portraits["\(side)-\(index)"]?.texture = SKTexture(imageNamed: "\(member.fighter)-portrait")
+      portraits["\(side)-\(index)"]?.texture = SKTexture(
+        imageNamed: "\(member.fighter)-portrait.jpg")
       portraits["\(side)-\(index)"]?.alpha = member.hp == 0 ? 0.23 : 1
       labels["roster\(side)-\(index)"]?.text = member.fighter.uppercased()
       labels["roster\(side)-\(index)"]?.fontColor = index == peer.active ? gold : .lightGray
@@ -563,7 +564,7 @@ private final class FighterNode: SKNode {
     } else {
       frame = "idle"
     }
-    let image = "\(key)-\(frame)"
+    let image = "\(key)-\(frame).png"
     if textureCache[image] == nil { textureCache[image] = SKTexture(imageNamed: image) }
     let texture = textureCache[image]!
     sprite.texture = texture

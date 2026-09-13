@@ -19,6 +19,7 @@
 		28DC47D41C4699A4605DBEA9 /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C0B8F1F5613125C4B30060 /* GameClient.swift */; };
 		2A1E9C9F8F3563263C800A03 /* rook-punch.png in Resources */ = {isa = PBXBuildFile; fileRef = F2F742C12F0EE3F1A170CC7C /* rook-punch.png */; };
 		2F9ECE06847536C1987C1752 /* sora-portrait.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B6CCB917C99ADFF038E57204 /* sora-portrait.jpg */; };
+		440EE7CC04171E4AA0394095 /* AssetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA87DF7410A09FD0404DE218 /* AssetTests.swift */; };
 		487EFA20D02B8B1E140CB0C9 /* atlas-idle.png in Resources */ = {isa = PBXBuildFile; fileRef = CADBBC884FCABE01AA013F36 /* atlas-idle.png */; };
 		51B50D43C0BA8FEBD7233783 /* kestrel-hurt.png in Resources */ = {isa = PBXBuildFile; fileRef = D87F9B1E5CE151F10A5AD31F /* kestrel-hurt.png */; };
 		51F7D4D9313FF2C5124CEA7C /* kestrel-punch.png in Resources */ = {isa = PBXBuildFile; fileRef = C1A1461EDC698A58FD1A1910 /* kestrel-punch.png */; };
@@ -45,6 +46,16 @@
 		FB8A0B15DA2260B3F977B9E1 /* vesper-hurt.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B83DD848FAAB84FDA1469D /* vesper-hurt.png */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		EBCE66E8626A71EB9D913DB9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 691179FA145116D39B8D92EB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1B51969CDDE880C4711E6B5;
+			remoteInfo = CrownClash;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		030BDF9A99D85A93BAD27BE4 /* vesper-punch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vesper-punch.png"; sourceTree = "<group>"; };
 		11B83DD848FAAB84FDA1469D /* vesper-hurt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vesper-hurt.png"; sourceTree = "<group>"; };
@@ -70,6 +81,7 @@
 		B6CCB917C99ADFF038E57204 /* sora-portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sora-portrait.jpg"; sourceTree = "<group>"; };
 		B714F2FD97D1806AECEBB45E /* jin-hurt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jin-hurt.png"; sourceTree = "<group>"; };
 		B7B685EDBF00EC0F87867135 /* atlas-portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "atlas-portrait.jpg"; sourceTree = "<group>"; };
+		BA87DF7410A09FD0404DE218 /* AssetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTests.swift; sourceTree = "<group>"; };
 		BD6B6C6A41D48CB69EC111E5 /* vesper-portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "vesper-portrait.jpg"; sourceTree = "<group>"; };
 		C1A1461EDC698A58FD1A1910 /* kestrel-punch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kestrel-punch.png"; sourceTree = "<group>"; };
 		C1C0B8F1F5613125C4B30060 /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
@@ -81,6 +93,7 @@
 		E5E53184DDDD3391A6F29D47 /* atlas-kick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "atlas-kick.png"; sourceTree = "<group>"; };
 		F0D4AA33C45D84CD7841C77C /* kestrel-idle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kestrel-idle.png"; sourceTree = "<group>"; };
 		F2F742C12F0EE3F1A170CC7C /* rook-punch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rook-punch.png"; sourceTree = "<group>"; };
+		F3E798304870C8EB592D6F6E /* CrownClashTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CrownClashTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F43CDF290797FF90EB35D9A1 /* sora-hurt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sora-hurt.png"; sourceTree = "<group>"; };
 		FCE22190974B70BA0A562E25 /* jin-portrait.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "jin-portrait.jpg"; sourceTree = "<group>"; };
 		FF53595AF22AC5A6F818BEA7 /* jin-idle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jin-idle.png"; sourceTree = "<group>"; };
@@ -91,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				A0719D1096AF6531FDB1F207 /* CrownClash.app */,
+				F3E798304870C8EB592D6F6E /* CrownClashTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,8 +127,17 @@
 			children = (
 				A58D59FBC5704197EF49B77F /* App */,
 				F6E03DF898D61540ECC59B37 /* Assets */,
+				BF96828508AA4037F6A13DA4 /* Tests */,
 				9BE2FAA4936E50FAB36879E6 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		BF96828508AA4037F6A13DA4 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				BA87DF7410A09FD0404DE218 /* AssetTests.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		F6E03DF898D61540ECC59B37 /* Assets */ = {
@@ -158,6 +181,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		76A710CD59E61DC0F5D4E1F5 /* CrownClashTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 009D20A02F64DA2DD9EEAB85 /* Build configuration list for PBXNativeTarget "CrownClashTests" */;
+			buildPhases = (
+				275A6CBADCF8ED13F1EEF111 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				511F8822353B9F82686017D4 /* PBXTargetDependency */,
+			);
+			name = CrownClashTests;
+			packageProductDependencies = (
+			);
+			productName = CrownClashTests;
+			productReference = F3E798304870C8EB592D6F6E /* CrownClashTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		A1B51969CDDE880C4711E6B5 /* CrownClash */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C62CA9B132762EE4F76C67FA /* Build configuration list for PBXNativeTarget "CrownClash" */;
@@ -202,6 +243,7 @@
 			projectRoot = "";
 			targets = (
 				A1B51969CDDE880C4711E6B5 /* CrownClash */,
+				76A710CD59E61DC0F5D4E1F5 /* CrownClashTests */,
 			);
 		};
 /* End PBXProject section */
@@ -260,9 +302,42 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		275A6CBADCF8ED13F1EEF111 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				440EE7CC04171E4AA0394095 /* AssetTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		511F8822353B9F82686017D4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1B51969CDDE880C4711E6B5 /* CrownClash */;
+			targetProxy = EBCE66E8626A71EB9D913DB9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		1384CE7870D3A4DD6FB37424 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit.CrownClashTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CrownClash.app/CrownClash";
+			};
+			name = Debug;
+		};
 		1F13315C8685B369C6A99D99 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -336,6 +411,23 @@
 				PRODUCT_NAME = CrownClash;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		9C5F8E4DED432AF91D0597FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.dabit.CrownClashTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CrownClash.app/CrownClash";
 			};
 			name = Release;
 		};
@@ -425,6 +517,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		009D20A02F64DA2DD9EEAB85 /* Build configuration list for PBXNativeTarget "CrownClashTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1384CE7870D3A4DD6FB37424 /* Debug */,
+				9C5F8E4DED432AF91D0597FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		3E3B5DCDD8D1ABCA421C68DE /* Build configuration list for PBXProject "CrownClash" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

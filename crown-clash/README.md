@@ -142,8 +142,18 @@ provided. Resume tokens intentionally live only in the running process.
 xcrun swift-format lint --strict --recursive App
 xcodebuild -project CrownClash.xcodeproj -scheme CrownClash \
   -sdk iphonesimulator -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+xcodebuild -project CrownClash.xcodeproj -scheme CrownClash \
+  -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+  -derivedDataPath build CODE_SIGNING_ALLOWED=NO test
 cd server && npm run check && npm test && npm audit --omit=dev
 ```
+
+The native test verifies all 31 bundled images decode through UIKit, including
+explicit JPEG portrait filenames. Python tooling is optional for asset preparation
+and evidence validation; `ruff==0.13.1` supports `ruff check scripts` and
+`ruff format --check scripts`. The one-off chroma-key preparation script requires
+`Pillow==11.3.0` plus the original generated source sheets; those unprocessed sheets
+are not required to build or play because the final extracted assets are committed.
 
 This is an authored approximation with four pose textures per fighter, not XIII's
 full hand-drawn frame library, roster or measured frame data. The original arcade
