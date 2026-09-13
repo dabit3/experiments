@@ -96,6 +96,12 @@ completion. Foes are explicitly AI; neither player is replaced with a fake peer.
 
 ## Repeatable automated two-device test
 
+For actual Devin computer-tool gestures on both native UIs, use the
+[computer-use scripts and instructions](Scripts/computer-use/README.md).
+They provide live window calibration, gesture payloads, action traces, read-only
+assertions and concurrent desktop/audio capture. A Devin session dispatches each
+payload through its computer tool and checks the resulting UI.
+
 The optional **AUTOMATED INPUT** driver exists only when `-automation` is supplied.
 It reads the same snapshots as the HUD and calls the same movement/action sender
 as touch controls. It cannot set position, health, scores, loot or outcome.
