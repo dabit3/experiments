@@ -612,44 +612,47 @@ struct ContentView: View {
   }
 
   private var guide: some View {
-    VStack(alignment: .leading, spacing: 14) {
-      HStack {
-        Text("COMBAT FIELD MANUAL").font(.custom("AvenirNextCondensed-Heavy", size: 30))
-        Spacer()
-        Button("DONE") { game.showGuide = false }.buttonStyle(ArcadeButton())
-      }
-      Text("Three cards. Two human players. One surviving team.").foregroundStyle(Color.titanGold)
-      ForEach(
-        [
-          ("QUICK", "Fast startup, low damage. Interrupt a rival winding up a strong attack."),
-          ("STRONG", "High damage with a visible windup. Wait for the rival's recovery."),
-          (
-            "BLOCK",
-            "Hold to absorb most damage. Start within 200 ms of impact to parry a normal strike."
-          ),
-          (
-            "SPECIAL",
-            "Power fills when fighting. Spend 1–3 segments; tap repeatedly during the cinematic to amplify."
-          ),
-          (
-            "TAG",
-            "Tap a reserve portrait to switch. Five-second cooldown; each hero retains health and power."
-          ),
-          (
-            "WIN",
-            "Defeat all three rival heroes. At 120 seconds, the highest remaining team health fraction wins."
-          ),
-        ], id: \.0
-      ) { title, body in
-        HStack(alignment: .top) {
-          Text(title).frame(width: 80, alignment: .leading).foregroundStyle(Color.titanGold).bold()
-          Text(body)
-        }.font(.custom("AvenirNextCondensed-Medium", size: 17))
-      }
-      Text(
-        "LAN PLAY: run the included server, enter ws://YOUR-MAC-IP:8793 on both devices, create a room and share its code. No AI opponent is substituted."
-      )
-      .font(.custom("AvenirNextCondensed-Medium", size: 14)).foregroundStyle(.gray)
-    }.padding(30).background(Color(hex: 0x101722))
+    ScrollView {
+      VStack(alignment: .leading, spacing: 14) {
+        HStack {
+          Text("COMBAT FIELD MANUAL").font(.custom("AvenirNextCondensed-Heavy", size: 30))
+          Spacer()
+          Button("DONE") { game.showGuide = false }.buttonStyle(ArcadeButton())
+        }
+        Text("Three cards. Two human players. One surviving team.").foregroundStyle(Color.titanGold)
+        ForEach(
+          [
+            ("QUICK", "Fast startup, low damage. Interrupt a rival winding up a strong attack."),
+            ("STRONG", "High damage with a visible windup. Wait for the rival's recovery."),
+            (
+              "BLOCK",
+              "Hold to absorb most damage. Start within 200 ms of impact to parry a normal strike."
+            ),
+            (
+              "SPECIAL",
+              "Power fills when fighting. Spend 1–3 segments; tap repeatedly during the cinematic to amplify."
+            ),
+            (
+              "TAG",
+              "Tap a reserve portrait to switch. Five-second cooldown; each hero retains health and power."
+            ),
+            (
+              "WIN",
+              "Defeat all three rival heroes. At 120 seconds, the highest remaining team health fraction wins."
+            ),
+          ], id: \.0
+        ) { title, body in
+          HStack(alignment: .top) {
+            Text(title).frame(width: 80, alignment: .leading).foregroundStyle(Color.titanGold)
+              .bold()
+            Text(body)
+          }.font(.custom("AvenirNextCondensed-Medium", size: 17))
+        }
+        Text(
+          "LAN PLAY: run the included server, enter ws://YOUR-MAC-IP:8793 on both devices, create a room and share its code. No AI opponent is substituted."
+        )
+        .font(.custom("AvenirNextCondensed-Medium", size: 14)).foregroundStyle(.gray)
+      }.fixedSize(horizontal: false, vertical: true).padding(30)
+    }.background(Color(hex: 0x101722))
   }
 }
