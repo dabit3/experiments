@@ -1,0 +1,17 @@
+{
+  "name": "iron-relay-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test *.test.mjs",
+    "check": "node --check game.mjs && node --check server.mjs && node --check game.test.mjs && node --check protocol.test.mjs"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  }
+}

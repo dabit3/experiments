@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4398F8F882F92FE28A9A5DFF /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8CD02324C4AAAF1F349B0C /* Audio.swift */; };
+		4D6E40BADDDFE895D75332B7 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C53DD8740C389F3DD8078E8 /* Models.swift */; };
+		8D5F3A8D1748FFE2F853548A /* ArenaScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6845105A281F7C410039219 /* ArenaScene.swift */; };
+		A1C7E6FD3D54D5F2585A805E /* FighterRig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86DB0BD4585E87E08420961C /* FighterRig.swift */; };
+		A6E57E11CF149F819ED6F65F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 989DA892BC0D2753ACFDBDC5 /* ContentView.swift */; };
+		C2CD1ABB2B767C5BAD1DDFD5 /* TouchControlsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB9026C45BACE543F4E4FF1 /* TouchControlsTests.swift */; };
+		C9F54274331C1E990E91D356 /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43348421112CA57177F0D69C /* GameClient.swift */; };
+		D8D5E7E1899C1C11F9936DE7 /* IronRelayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8622672039FA037AEF6086 /* IronRelayApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B3001C7ECC650C0CBC2BF276 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 981C9171E5B5BE92A8E51FFF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F0BA4A79626C935CA02D3368;
+			remoteInfo = IronRelay;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0C53DD8740C389F3DD8078E8 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		0D8622672039FA037AEF6086 /* IronRelayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IronRelayApp.swift; sourceTree = "<group>"; };
+		0FB9026C45BACE543F4E4FF1 /* TouchControlsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchControlsTests.swift; sourceTree = "<group>"; };
+		1498C1F246BA16FCD0328F3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3D8CD02324C4AAAF1F349B0C /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
+		43348421112CA57177F0D69C /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
+		86DB0BD4585E87E08420961C /* FighterRig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FighterRig.swift; sourceTree = "<group>"; };
+		989DA892BC0D2753ACFDBDC5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9F04C1DE94AAC4E1D7FDBED3 /* IronRelay.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = IronRelay.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6845105A281F7C410039219 /* ArenaScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaScene.swift; sourceTree = "<group>"; };
+		E89FD611BE103226DF5EE161 /* IronRelayUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = IronRelayUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		54C653828E820DF03033E102 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				0FB9026C45BACE543F4E4FF1 /* TouchControlsTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		B0B9DA150848C7F2B51111ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9F04C1DE94AAC4E1D7FDBED3 /* IronRelay.app */,
+				E89FD611BE103226DF5EE161 /* IronRelayUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B6301A66539E5E12D5A94B91 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D6845105A281F7C410039219 /* ArenaScene.swift */,
+				3D8CD02324C4AAAF1F349B0C /* Audio.swift */,
+				989DA892BC0D2753ACFDBDC5 /* ContentView.swift */,
+				86DB0BD4585E87E08420961C /* FighterRig.swift */,
+				43348421112CA57177F0D69C /* GameClient.swift */,
+				1498C1F246BA16FCD0328F3A /* Info.plist */,
+				0D8622672039FA037AEF6086 /* IronRelayApp.swift */,
+				0C53DD8740C389F3DD8078E8 /* Models.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		C42556A56B63D9FFC918F977 = {
+			isa = PBXGroup;
+			children = (
+				B6301A66539E5E12D5A94B91 /* App */,
+				54C653828E820DF03033E102 /* Tests */,
+				B0B9DA150848C7F2B51111ED /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D07662844AE85A71E9FF01AD /* IronRelayUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 192EE66000DA51AA2F5CFF9F /* Build configuration list for PBXNativeTarget "IronRelayUITests" */;
+			buildPhases = (
+				71F5D0A1B70BC0F154A78DFA /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				914CED7924A6B722521217B6 /* PBXTargetDependency */,
+			);
+			name = IronRelayUITests;
+			packageProductDependencies = (
+			);
+			productName = IronRelayUITests;
+			productReference = E89FD611BE103226DF5EE161 /* IronRelayUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F0BA4A79626C935CA02D3368 /* IronRelay */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F22144A828031F75B2F4BA7F /* Build configuration list for PBXNativeTarget "IronRelay" */;
+			buildPhases = (
+				66BE2FB3D645FC5DEC6DC859 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IronRelay;
+			packageProductDependencies = (
+			);
+			productName = IronRelay;
+			productReference = 9F04C1DE94AAC4E1D7FDBED3 /* IronRelay.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		981C9171E5B5BE92A8E51FFF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					D07662844AE85A71E9FF01AD = {
+						TestTargetID = F0BA4A79626C935CA02D3368;
+					};
+				};
+			};
+			buildConfigurationList = 0E5EBF880E180544B3123837 /* Build configuration list for PBXProject "IronRelay" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = C42556A56B63D9FFC918F977;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B0B9DA150848C7F2B51111ED /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F0BA4A79626C935CA02D3368 /* IronRelay */,
+				D07662844AE85A71E9FF01AD /* IronRelayUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		66BE2FB3D645FC5DEC6DC859 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D5F3A8D1748FFE2F853548A /* ArenaScene.swift in Sources */,
+				4398F8F882F92FE28A9A5DFF /* Audio.swift in Sources */,
+				A6E57E11CF149F819ED6F65F /* ContentView.swift in Sources */,
+				A1C7E6FD3D54D5F2585A805E /* FighterRig.swift in Sources */,
+				C9F54274331C1E990E91D356 /* GameClient.swift in Sources */,
+				D8D5E7E1899C1C11F9936DE7 /* IronRelayApp.swift in Sources */,
+				4D6E40BADDDFE895D75332B7 /* Models.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		71F5D0A1B70BC0F154A78DFA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C2CD1ABB2B767C5BAD1DDFD5 /* TouchControlsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		914CED7924A6B722521217B6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F0BA4A79626C935CA02D3368 /* IronRelay */;
+			targetProxy = B3001C7ECC650C0CBC2BF276 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		099DBD84560FE22A0ECB18DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Iron Relay";
+				INFOPLIST_KEY_NSSupportsLiveActivities = NO;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.ironrelay.arena;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		22A606AB438A89D535211BC0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		70F495F8446976AE7A5499CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.ironrelay.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = IronRelay;
+			};
+			name = Release;
+		};
+		81E6A24A2A2BAC18F11FB492 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9E63F0E67CDD0BDDF5E6A747 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Iron Relay";
+				INFOPLIST_KEY_NSSupportsLiveActivities = NO;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.ironrelay.arena;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D8BD45BA9D15AFC7139B2D04 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.ironrelay.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = IronRelay;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0E5EBF880E180544B3123837 /* Build configuration list for PBXProject "IronRelay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81E6A24A2A2BAC18F11FB492 /* Debug */,
+				22A606AB438A89D535211BC0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		192EE66000DA51AA2F5CFF9F /* Build configuration list for PBXNativeTarget "IronRelayUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8BD45BA9D15AFC7139B2D04 /* Debug */,
+				70F495F8446976AE7A5499CF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F22144A828031F75B2F4BA7F /* Build configuration list for PBXNativeTarget "IronRelay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				099DBD84560FE22A0ECB18DF /* Debug */,
+				9E63F0E67CDD0BDDF5E6A747 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 981C9171E5B5BE92A8E51FFF /* Project object */;
+}
