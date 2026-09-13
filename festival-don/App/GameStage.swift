@@ -3,9 +3,12 @@ import SwiftUI
 struct GameStage: View {
     @ObservedObject var game: GameClient
 
+    private var night: Bool { game.chart.id == "moon" }
+    private var stageInk: Color { night ? FestivalPalette.cream : FestivalPalette.ink }
+
     var body: some View {
         ZStack {
-            FestivalBackdrop(night: game.chart.id == "moon")
+            FestivalBackdrop(night: night)
             Canvas { context, _ in drawStage(context) }
                 .accessibilityHidden(true)
             VStack(spacing: 0) {
@@ -24,6 +27,7 @@ struct GameStage: View {
                 Spacer()
             }
             scoreBadge
+                .foregroundStyle(stageInk)
                 .position(x: 105, y: 90)
             VStack(spacing: 1) {
                 Text("RIVAL  \(game.rival?.name ?? "Waiting")")
@@ -31,7 +35,7 @@ struct GameStage: View {
                 Text("\(game.rival?.score ?? 0)")
                     .font(.system(size: 23, weight: .black, design: .rounded)).monospacedDigit()
                     .accessibilityIdentifier("rival-score")
-            }.foregroundStyle(FestivalPalette.ink).position(x: 835, y: 87)
+            }.foregroundStyle(stageInk).position(x: 835, y: 87)
             Text("COMBO").font(.system(size: 10, weight: .heavy)).position(x: 105, y: 193)
             Text("\(game.local?.combo ?? 0)").font(.system(size: 44, weight: .black, design: .rounded))
                 .foregroundStyle(FestivalPalette.gold).shadow(color: FestivalPalette.ink, radius: 1, x: 2, y: 2)
@@ -42,11 +46,12 @@ struct GameStage: View {
                 Text("ひびけ！").font(.system(size: 20, weight: .black))
                 Text("LET JOY\nMAKE NOISE").font(.system(size: 12, weight: .black, design: .rounded)).multilineTextAlignment(.center)
                 Text("\(game.local?.rolls ?? 0) roll hits").font(.system(size: 13, weight: .bold))
-            }.foregroundStyle(FestivalPalette.ink).position(x: 853, y: 349)
+            }.foregroundStyle(stageInk).position(x: 853, y: 337)
             VStack(spacing: 3) {
-                Text("DON • CENTER    /    KA • BLUE RIM").font(.system(size: 11, weight: .black, design: .rounded))
-                Text("Big faces: both hands together   •   Yellow: roll!").font(.system(size: 10, weight: .semibold))
-            }.foregroundStyle(FestivalPalette.ink).position(x: 530, y: 442)
+                Text("DON: center • KA: rim").font(.system(size: 11, weight: .black, design: .rounded))
+                Text("Big: both hands together\nYellow: roll!").font(.system(size: 10, weight: .semibold))
+                    .multilineTextAlignment(.center)
+            }.foregroundStyle(stageInk).position(x: 853, y: 405)
             if game.automated {
                 Button {
                     game.automationPaused.toggle()
@@ -112,9 +117,10 @@ struct GameStage: View {
             if good {
                 FestivalArt.flower(context, x: 204, y: 166, radius: 28 + recent * 18, color: FestivalPalette.gold.opacity(0.5 - recent * 0.7))
             }
-            FestivalArt.text(context, judgment, x: 280, y: 112, size: 23, color: good ? Color(red: 0.70, green: 0.26, blue: 0.04) : FestivalPalette.ink)
+            let accent = night ? FestivalPalette.gold : Color(red: 0.70, green: 0.26, blue: 0.04)
+            FestivalArt.text(context, judgment, x: 280, y: 112, size: 23, color: good ? accent : stageInk)
             if judgment == "GOOD" || judgment == "OK" {
-                FestivalArt.text(context, "\(game.local?.delta ?? 0) ms", x: 360, y: 109, size: 10)
+                FestivalArt.text(context, "\(game.local?.delta ?? 0) ms", x: 360, y: 109, size: 10, color: stageInk)
             }
         }
         FestivalArt.mascot(context, x: 145, y: 350, scale: 0.88, blue: false, time: time)
@@ -131,11 +137,11 @@ struct GameStage: View {
             let active = Double(segment) < gauge * 0.4
             let color: Color = segment < 28 ? FestivalPalette.gold : FestivalPalette.coral
             FestivalArt.box(context, CGRect(x: 417 + Double(segment) * 8.0, y: 88, width: 6, height: 15),
-                            color: active ? color : FestivalPalette.ink.opacity(0.12), radius: 1)
+                            color: active ? color : stageInk.opacity(0.20), radius: 1)
         }
-        FestivalArt.text(context, "SOUL", x: 392, y: 95, size: 10)
-        FestivalArt.text(context, "CLEAR", x: 658, y: 80, size: 8)
-        FestivalArt.line(context, [CGPoint(x: 641, y: 85), CGPoint(x: 641, y: 106)], color: FestivalPalette.ink, width: 1)
+        FestivalArt.text(context, "SOUL", x: 392, y: 95, size: 10, color: stageInk)
+        FestivalArt.text(context, "CLEAR", x: 658, y: 80, size: 8, color: stageInk)
+        FestivalArt.line(context, [CGPoint(x: 641, y: 85), CGPoint(x: 641, y: 106)], color: stageInk, width: 1)
     }
 
     private func drawLane(_ context: GraphicsContext, elapsed: Double, y: Double, radius: Double, player: Drummer?, mini: Bool) {
