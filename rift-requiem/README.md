@@ -132,6 +132,10 @@ Reconnect via the menu while the peer remains alive; both clients pause and resu
 SwiftUI owns the lobby, accessible native controls, HUD and results. SpriteKit
 renders the generated stage plus source-authored articulated vector fighters,
 weapon poses, interpolation, sparks, slash typography and cancel rings.
+The fighter rig uses separate upper/lower limbs, two-bone inverse kinematics,
+hand-anchored weapons and frame-driven anticipation, swing and recovery poses.
+Curved silhouettes, layered light/shadow regions, facial features, costume seams,
+metal bevels and independently moving coat tails are drawn in SpriteKit.
 AVAudioPlayer plays original generated audio. Node owns all gameplay and rooms.
 See [protocol](docs/PROTOCOL.md) and [reference observations](docs/REFERENCE.md).
 
