@@ -192,6 +192,26 @@ gameplay audio and mute the other through its native menu to avoid doubled music
 Never replace live capture with bundled music or fill missing capture with a
 generated soundtrack.
 
+The included recorder explicitly closes its `AVAudioFile` after stopping the tap
+and compares successful callback frames with the finalized file's frame count.
+From the game directory, after building the app:
+
+```sh
+swift format lint --strict Tools/record_loopback.swift
+swiftc Tools/record_loopback.swift -o build/record-loopback -framework AVFoundation
+build/record-loopback "$PWD/build/live-audio" 420
+# To stop early, from another terminal:
+touch "$PWD/build/live-audio.stop"
+```
+
+Use a new output prefix for each capture. The recorder writes the actual PCM to
+`<prefix>.caf` and callback timestamps, `writtenFrames`, `fileFrames` and errors
+to `<prefix>-timing.json`. It exits unsuccessfully for empty audio, write errors
+or mismatched frame counts. Independently decode the CAF with FFmpeg and compare
+its PCM length too: callback continuity alone cannot detect incomplete file
+finalization. The timed and stop-file shutdown paths both passed this comparison.
+This frame check does not by itself establish audible content or A/V alignment.
+
 The [live-audio report](https://app.devin.ai/attachments/1889f0c3-51a4-4909-b453-34c7d89154ac/runtime-report.md)
 and [machine evidence bundle](https://app.devin.ai/attachments/2bd10608-bbfb-437c-8b68-4f9f8ef2f737/runtime-evidence.zip)
 preserve the tested recorder source, commands, timestamps, assertions and rejected
