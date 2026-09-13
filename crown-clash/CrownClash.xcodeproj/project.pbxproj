@@ -30,6 +30,7 @@
 		7D41A6AEB9D8B81079A68D21 /* rook-hurt.png in Resources */ = {isa = PBXBuildFile; fileRef = 70E870DC6B35545A1E344637 /* rook-hurt.png */; };
 		7E44E3348B4D800A4FAC47EE /* kestrel-kick.png in Resources */ = {isa = PBXBuildFile; fileRef = 8762BA6489E511851D7B2264 /* kestrel-kick.png */; };
 		834130FDBB3E543B7AE2EE86 /* vesper-idle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AE0F4838067A5C4AB2697B5 /* vesper-idle.png */; };
+		894F97F017BC77AACEB482A5 /* FighterPoseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6E249F9C7476EA4A6CA5665 /* FighterPoseTests.swift */; };
 		8ED57265D7E9321C37F9D7B2 /* SoundEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74A8F5F66170944D2D116A4B /* SoundEngine.swift */; };
 		A0F8CCD8C7746B9BFD53AF5A /* ArenaScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40456F8BB374CF1ABF7A61AF /* ArenaScene.swift */; };
 		A14A26CFE790688FE82DC5FC /* atlas-kick.png in Resources */ = {isa = PBXBuildFile; fileRef = E5E53184DDDD3391A6F29D47 /* atlas-kick.png */; };
@@ -91,6 +92,7 @@
 		D87F9B1E5CE151F10A5AD31F /* kestrel-hurt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kestrel-hurt.png"; sourceTree = "<group>"; };
 		E1BC91BFFBC343E105DE818D /* rook-idle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rook-idle.png"; sourceTree = "<group>"; };
 		E5E53184DDDD3391A6F29D47 /* atlas-kick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "atlas-kick.png"; sourceTree = "<group>"; };
+		E6E249F9C7476EA4A6CA5665 /* FighterPoseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FighterPoseTests.swift; sourceTree = "<group>"; };
 		F0D4AA33C45D84CD7841C77C /* kestrel-idle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kestrel-idle.png"; sourceTree = "<group>"; };
 		F2F742C12F0EE3F1A170CC7C /* rook-punch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rook-punch.png"; sourceTree = "<group>"; };
 		F3E798304870C8EB592D6F6E /* CrownClashTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CrownClashTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				BA87DF7410A09FD0404DE218 /* AssetTests.swift */,
+				E6E249F9C7476EA4A6CA5665 /* FighterPoseTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				440EE7CC04171E4AA0394095 /* AssetTests.swift in Sources */,
+				894F97F017BC77AACEB482A5 /* FighterPoseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

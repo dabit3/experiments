@@ -518,7 +518,7 @@ final class ArenaScene: SKScene {
 }
 
 @MainActor
-private final class FighterNode: SKNode {
+final class FighterNode: SKNode {
   private let sprite = SKSpriteNode()
   private let shadow = SKShapeNode(ellipseOf: CGSize(width: 138, height: 21))
   private let shield = SKShapeNode(ellipseOf: CGSize(width: 150, height: 216))
@@ -568,6 +568,7 @@ private final class FighterNode: SKNode {
     if textureCache[image] == nil { textureCache[image] = SKTexture(imageNamed: image) }
     let texture = textureCache[image]!
     sprite.texture = texture
+    sprite.setScale(1)
     let height: CGFloat = key == "atlas" ? 257 : 243
     sprite.size = CGSize(
       width: height * texture.size().width / texture.size().height, height: height)
