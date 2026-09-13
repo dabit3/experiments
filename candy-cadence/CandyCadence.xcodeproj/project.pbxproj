@@ -7,21 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0569D8128E9C95A3FC40584F /* tap2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 46CF0496228574CFE63A01A2 /* tap2.wav */; };
 		0A12FB03BB98E7AB2D0FE8DD /* CandyCadenceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 305B7B9AC2638D232E4890FD /* CandyCadenceApp.swift */; };
 		2EB0B582DE39DAF22260531A /* CandyScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75AB5D900659E980CF562B03 /* CandyScene.swift */; };
+		69930F9B31AAA4491A107A93 /* tap3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2F77CBE0B4F5BF05DC392593 /* tap3.wav */; };
+		6FE54440CB3D0248C23FD1E5 /* tap4.wav in Resources */ = {isa = PBXBuildFile; fileRef = A97077E0112FE58E76A246A7 /* tap4.wav */; };
+		73A8FA173857FD39679C5D45 /* soda.wav in Resources */ = {isa = PBXBuildFile; fileRef = 752B4CDF7AF5920BADF6AC48 /* soda.wav */; };
+		7E01E425C396F03585A5B1D4 /* songs.json in Resources */ = {isa = PBXBuildFile; fileRef = 2F51D72141926DCD7AB41D74 /* songs.json */; };
+		81B4B7EB330EB5CC7239B582 /* tap0.wav in Resources */ = {isa = PBXBuildFile; fileRef = B78D23AE938C06BC72C2C002 /* tap0.wav */; };
 		883991D088DFE234C39DE177 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5B6AFE6CA1393A0EEAD067 /* Models.swift */; };
+		8A9116C0D5CD2BBA293E7931 /* tap1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 58A891FA87014233EF9FBC28 /* tap1.wav */; };
+		951CC00ADE5B3D1B4B03C0D8 /* sugar.wav in Resources */ = {isa = PBXBuildFile; fileRef = 40AC9CD5A1531F5F97EF8AA0 /* sugar.wav */; };
 		A74230771E2D7D3181CEA108 /* GameSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85A80D248165F95D36DE808 /* GameSurface.swift */; };
 		D588069A27640375CDC79068 /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B89C577591F205B968D15F /* GameClient.swift */; };
+		DFAE50FBB081C8ED08026A05 /* tap7.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7CAD7D3EBDD1C07324DD6F80 /* tap7.wav */; };
+		E0E362963A6ABDB0CCF46C47 /* tap5.wav in Resources */ = {isa = PBXBuildFile; fileRef = A9CF789FC6F4329E74C7A80D /* tap5.wav */; };
+		EDAF18C3FC989FFC81BCDC6E /* tap8.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7CF86F17844D01BD2023EF81 /* tap8.wav */; };
+		FB61751B6BDA2B91BC6B6C2C /* tap6.wav in Resources */ = {isa = PBXBuildFile; fileRef = BADECE0A7D05600E728CCB1A /* tap6.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0C5B6AFE6CA1393A0EEAD067 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		2F51D72141926DCD7AB41D74 /* songs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = songs.json; sourceTree = "<group>"; };
+		2F77CBE0B4F5BF05DC392593 /* tap3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap3.wav; sourceTree = "<group>"; };
 		305B7B9AC2638D232E4890FD /* CandyCadenceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyCadenceApp.swift; sourceTree = "<group>"; };
+		40AC9CD5A1531F5F97EF8AA0 /* sugar.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sugar.wav; sourceTree = "<group>"; };
+		46CF0496228574CFE63A01A2 /* tap2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap2.wav; sourceTree = "<group>"; };
+		58A891FA87014233EF9FBC28 /* tap1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap1.wav; sourceTree = "<group>"; };
+		752B4CDF7AF5920BADF6AC48 /* soda.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = soda.wav; sourceTree = "<group>"; };
 		75AB5D900659E980CF562B03 /* CandyScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandyScene.swift; sourceTree = "<group>"; };
+		7CAD7D3EBDD1C07324DD6F80 /* tap7.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap7.wav; sourceTree = "<group>"; };
+		7CF86F17844D01BD2023EF81 /* tap8.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap8.wav; sourceTree = "<group>"; };
 		84B89C577591F205B968D15F /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
 		92A43A3DFE5E446BE49D073B /* CandyCadence.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CandyCadence.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A97077E0112FE58E76A246A7 /* tap4.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap4.wav; sourceTree = "<group>"; };
+		A9CF789FC6F4329E74C7A80D /* tap5.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap5.wav; sourceTree = "<group>"; };
 		B24190B18359C5B96062AB16 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B78D23AE938C06BC72C2C002 /* tap0.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap0.wav; sourceTree = "<group>"; };
 		B85A80D248165F95D36DE808 /* GameSurface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSurface.swift; sourceTree = "<group>"; };
+		BADECE0A7D05600E728CCB1A /* tap6.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap6.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -38,6 +62,25 @@
 			path = App;
 			sourceTree = "<group>";
 		};
+		8BB00033A968351EF1600674 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				752B4CDF7AF5920BADF6AC48 /* soda.wav */,
+				2F51D72141926DCD7AB41D74 /* songs.json */,
+				40AC9CD5A1531F5F97EF8AA0 /* sugar.wav */,
+				B78D23AE938C06BC72C2C002 /* tap0.wav */,
+				58A891FA87014233EF9FBC28 /* tap1.wav */,
+				46CF0496228574CFE63A01A2 /* tap2.wav */,
+				2F77CBE0B4F5BF05DC392593 /* tap3.wav */,
+				A97077E0112FE58E76A246A7 /* tap4.wav */,
+				A9CF789FC6F4329E74C7A80D /* tap5.wav */,
+				BADECE0A7D05600E728CCB1A /* tap6.wav */,
+				7CAD7D3EBDD1C07324DD6F80 /* tap7.wav */,
+				7CF86F17844D01BD2023EF81 /* tap8.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		95C9314F17F61C62803C17E6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -50,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				3C836DE82485F9D5F3677597 /* App */,
+				8BB00033A968351EF1600674 /* Resources */,
 				95C9314F17F61C62803C17E6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -62,6 +106,7 @@
 			buildConfigurationList = D91BA32635C749AC4E05B402 /* Build configuration list for PBXNativeTarget "CandyCadence" */;
 			buildPhases = (
 				CF04FE082F00929191C10B04 /* Sources */,
+				C4B8B4A1A6C30DE84BFD423D /* Resources */,
 			);
 			buildRules = (
 			);
@@ -103,6 +148,28 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C4B8B4A1A6C30DE84BFD423D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				73A8FA173857FD39679C5D45 /* soda.wav in Resources */,
+				7E01E425C396F03585A5B1D4 /* songs.json in Resources */,
+				951CC00ADE5B3D1B4B03C0D8 /* sugar.wav in Resources */,
+				81B4B7EB330EB5CC7239B582 /* tap0.wav in Resources */,
+				8A9116C0D5CD2BBA293E7931 /* tap1.wav in Resources */,
+				0569D8128E9C95A3FC40584F /* tap2.wav in Resources */,
+				69930F9B31AAA4491A107A93 /* tap3.wav in Resources */,
+				6FE54440CB3D0248C23FD1E5 /* tap4.wav in Resources */,
+				E0E362963A6ABDB0CCF46C47 /* tap5.wav in Resources */,
+				FB61751B6BDA2B91BC6B6C2C /* tap6.wav in Resources */,
+				DFAE50FBB081C8ED08026A05 /* tap7.wav in Resources */,
+				EDAF18C3FC989FFC81BCDC6E /* tap8.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CF04FE082F00929191C10B04 /* Sources */ = {
