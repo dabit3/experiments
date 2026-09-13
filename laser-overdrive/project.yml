@@ -13,10 +13,12 @@ targets:
   LaserOverdrive:
     type: application
     platform: iOS
-    sources: [App]
-    resources:
+    sources:
+      - path: App
       - path: Resources/chart.json
+        buildPhase: resources
       - path: Resources/afterburn.m4a
+        buildPhase: resources
     info:
       path: App/Info.plist
       properties:

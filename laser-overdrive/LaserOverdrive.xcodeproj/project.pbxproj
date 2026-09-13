@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		05D96D202048D40A73BA99CC /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738F72679C63C9A91E41CB /* GameModel.swift */; };
+		3AA13D1B1088D34551CB973B /* chart.json in Resources */ = {isa = PBXBuildFile; fileRef = 40ED4C137BEF095F80EF39B3 /* chart.json */; };
 		529C678392BFAFA1A8DFC640 /* HighwayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE8F31CC55CD82BC264F7AF /* HighwayView.swift */; };
 		6B1DAD0496BB0288F6C6D9D6 /* SoundEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A58FD1B010A57DA2F8D8A7 /* SoundEngine.swift */; };
 		6C7BE6774C0547555D5FA370 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E13036938796117C2F4C55 /* Chart.swift */; };
+		92BD43F66587169BBE08576B /* afterburn.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 54A0FD04FAC82E8742E5260B /* afterburn.m4a */; };
 		A75F971BA67D7B68327C99C5 /* LaserOverdriveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A232AFAF7CF24ABE2C1E894 /* LaserOverdriveApp.swift */; };
 /* End PBXBuildFile section */
 
@@ -20,6 +22,8 @@
 		0AE8F31CC55CD82BC264F7AF /* HighwayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighwayView.swift; sourceTree = "<group>"; };
 		2E738F72679C63C9A91E41CB /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
 		34161784AB36A36DEBD25F39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		40ED4C137BEF095F80EF39B3 /* chart.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = chart.json; sourceTree = "<group>"; };
+		54A0FD04FAC82E8742E5260B /* afterburn.m4a */ = {isa = PBXFileReference; path = afterburn.m4a; sourceTree = "<group>"; };
 		5A232AFAF7CF24ABE2C1E894 /* LaserOverdriveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaserOverdriveApp.swift; sourceTree = "<group>"; };
 		87A58FD1B010A57DA2F8D8A7 /* SoundEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -46,10 +50,20 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A3C23AAEC4D38EE931B42879 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				54A0FD04FAC82E8742E5260B /* afterburn.m4a */,
+				40ED4C137BEF095F80EF39B3 /* chart.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		F624EE68C477247FF02AFD21 = {
 			isa = PBXGroup;
 			children = (
 				002887B57BE6CBB404B61D19 /* App */,
+				A3C23AAEC4D38EE931B42879 /* Resources */,
 				1E64EE7DF70608524588A49E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -62,6 +76,7 @@
 			buildConfigurationList = 2C566A7070BFCA46E3D0ECFF /* Build configuration list for PBXNativeTarget "LaserOverdrive" */;
 			buildPhases = (
 				AFC1FAAB6A5B4172662EF42D /* Sources */,
+				3C37484474BF5A812706BD13 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -103,6 +118,18 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3C37484474BF5A812706BD13 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92BD43F66587169BBE08576B /* afterburn.m4a in Resources */,
+				3AA13D1B1088D34551CB973B /* chart.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AFC1FAAB6A5B4172662EF42D /* Sources */ = {
