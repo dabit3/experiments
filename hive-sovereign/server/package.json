@@ -1,0 +1,17 @@
+{
+  "name": "hive-sovereign-server",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check game.mjs && node --check server.mjs && node --check game.test.mjs && node --check network.test.mjs",
+    "test": "node --test *.test.mjs"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  }
+}
