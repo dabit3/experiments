@@ -279,7 +279,10 @@ struct RacerPortrait: View {
         }.offset(y: 5)
         Image(systemName: "star.fill").font(.system(size: 12)).foregroundStyle(.white).offset(
           y: -10)
-      }.frame(width: geo.size.width, height: geo.size.height)
+      }
+      .frame(width: 65, height: 65)
+      .scaleEffect(min(1, min(geo.size.width, geo.size.height) / 65))
+      .frame(width: geo.size.width, height: geo.size.height)
     }
   }
 }
