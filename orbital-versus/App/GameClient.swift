@@ -2,6 +2,41 @@ import Combine
 import Foundation
 import SwiftUI
 
+private final class SocketInbox: @unchecked Sendable {
+  private let lock = NSLock()
+  private var controls: [Data] = []
+  private var latestState: Data?
+  private var failure: String?
+
+  func append(_ data: Data) {
+    let isState = (try? JSONDecoder().decode(Envelope.self, from: data))?.type == "state"
+    lock.lock()
+    defer { lock.unlock() }
+    if isState {
+      latestState = data
+    } else {
+      controls.append(data)
+      if controls.count > 16 { controls.removeFirst() }
+    }
+  }
+
+  func fail(_ message: String) {
+    lock.lock()
+    defer { lock.unlock() }
+    failure = message
+  }
+
+  func drain() -> (controls: [Data], state: Data?, failure: String?) {
+    lock.lock()
+    defer { lock.unlock() }
+    let batch = (controls, latestState, failure)
+    controls.removeAll(keepingCapacity: true)
+    latestState = nil
+    failure = nil
+    return batch
+  }
+}
+
 @MainActor
 final class GameClient: ObservableObject {
   @Published var state: ArenaState?
@@ -27,12 +62,13 @@ final class GameClient: ObservableObject {
   private var actions: [String] = []
   private var task: URLSessionWebSocketTask?
   private var session: URLSession?
+  private var reader: Task<Void, Never>?
+  private var inbox = SocketInbox()
   private var timer: Timer?
   private var sequence = 0
   private var token = ""
   private var lastEvent = 0
   private var frame = 0
-  private var generation = 0
   private var lastStateAt = Date()
   private var resultFrames = 0
   private var automaticReady = false
@@ -82,8 +118,7 @@ final class GameClient: ObservableObject {
       error = "Enter a ws:// or wss:// server address"
       return
     }
-    generation += 1
-    let currentGeneration = generation
+    reader?.cancel()
     task?.cancel(with: .goingAway, reason: nil)
     session?.invalidateAndCancel()
     error = ""
@@ -100,6 +135,8 @@ final class GameClient: ObservableObject {
     let session = URLSession(configuration: configuration)
     self.session = session
     let socket = session.webSocketTask(with: url)
+    let inbox = SocketInbox()
+    self.inbox = inbox
     task = socket
     socket.resume()
     UserDefaults.standard.set(address, forKey: "server")
@@ -107,34 +144,30 @@ final class GameClient: ObservableObject {
     send(
       ClientMessage(type: "join", name: name, code: code.uppercased(), token: rejoin ? token : nil))
     audio.start()
-    Task {
+    reader = Task.detached(priority: .userInitiated) {
       do {
         while !Task.isCancelled {
           let result = try await socket.receive()
-          guard currentGeneration == generation else { return }
           let data: Data
           switch result {
           case .data(let bytes): data = bytes
           case .string(let text): data = Data(text.utf8)
           @unknown default: continue
           }
-          receive(data)
+          inbox.append(data)
         }
       } catch {
-        guard currentGeneration == generation else { return }
-        self.connected = false
-        self.connecting = false
-        self.error = "Connection lost. Check the server, then RECONNECT."
-        log(type: "disconnect", detail: error.localizedDescription)
+        inbox.fail(error.localizedDescription)
       }
     }
   }
 
   func leave() {
-    generation += 1
+    reader?.cancel()
     task?.cancel(with: .normalClosure, reason: nil)
     session?.invalidateAndCancel()
     task = nil
+    inbox = SocketInbox()
     state = nil
     connected = false
     connecting = false
@@ -236,10 +269,20 @@ final class GameClient: ObservableObject {
       connecting = false
     } else if envelope.type == "pong", let sent = envelope.sent {
       ping = Int((Date().timeIntervalSince1970 - sent) * 1000)
+      log(type: "ping", detail: String(ping))
     }
   }
   private func update() {
     frame += 1
+    let batch = inbox.drain()
+    for data in batch.controls { receive(data) }
+    if let data = batch.state { receive(data) }
+    if let failure = batch.failure {
+      connected = false
+      connecting = false
+      error = "Connection lost. Check the server, then RECONNECT."
+      log(type: "disconnect", detail: failure)
+    }
     renderer.animate()
     guard connected else { return }
     if Date().timeIntervalSince(lastStateAt) > 6 {

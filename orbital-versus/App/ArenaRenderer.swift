@@ -23,6 +23,7 @@ final class ArenaRenderer {
   private var time: Float = 0
   private let showroom = SCNNode()
   private var cameraInitialized = false
+  private var materials: [String: SCNMaterial] = [:]
 
   init() {
     scene.background.contents = UIColor(rgb: 0x09172C)
@@ -65,6 +66,8 @@ final class ArenaRenderer {
   }
 
   func material(_ color: UInt32, glow: Bool = false, metal: CGFloat = 0.55) -> SCNMaterial {
+    let key = "\(color)-\(glow)-\(metal)"
+    if let cached = materials[key] { return cached }
     let value = SCNMaterial()
     value.lightingModel = .physicallyBased
     value.diffuse.contents = UIColor(rgb: color)
@@ -74,6 +77,7 @@ final class ArenaRenderer {
       value.emission.contents = UIColor(rgb: color)
       value.lightingModel = .constant
     }
+    materials[key] = value
     return value
   }
 
@@ -108,30 +112,31 @@ final class ArenaRenderer {
   }
 
   private func makeArena() {
-    box(scene.rootNode, SCNVector3(104, 1, 104), SCNVector3(0, -0.7, 0), 0x263E51, bevel: 0)
+    let root = SCNNode()
+    box(root, SCNVector3(104, 1, 104), SCNVector3(0, -0.7, 0), 0x263E51, bevel: 0)
     for index in -5...5 {
       let coordinate = Float(index) * 9
       box(
-        scene.rootNode, SCNVector3(0.07, 0.02, 94), SCNVector3(coordinate, -0.17, 0), 0x7094A1,
+        root, SCNVector3(0.07, 0.02, 94), SCNVector3(coordinate, -0.17, 0), 0x7094A1,
         bevel: 0)
       box(
-        scene.rootNode, SCNVector3(94, 0.02, 0.07), SCNVector3(0, -0.16, coordinate), 0x7094A1,
+        root, SCNVector3(94, 0.02, 0.07), SCNVector3(0, -0.16, coordinate), 0x7094A1,
         bevel: 0)
     }
     for side in [-1, 1] {
       let sign = Float(side)
       box(
-        scene.rootNode, SCNVector3(0.24, 0.15, 90), SCNVector3(sign * 44.5, 0, 0), 0x42E4FF,
+        root, SCNVector3(0.24, 0.15, 90), SCNVector3(sign * 44.5, 0, 0), 0x42E4FF,
         glow: true)
       box(
-        scene.rootNode, SCNVector3(90, 0.15, 0.24), SCNVector3(0, 0, sign * 44.5), 0x42E4FF,
+        root, SCNVector3(90, 0.15, 0.24), SCNVector3(0, 0, sign * 44.5), 0x42E4FF,
         glow: true)
       for index in -4...4 {
         box(
-          scene.rootNode, SCNVector3(2, 0.04, 0.65), SCNVector3(sign * 36, 0, Float(index) * 8),
+          root, SCNVector3(2, 0.04, 0.65), SCNVector3(sign * 36, 0, Float(index) * 8),
           0xFBD878, bevel: 0)
         let building = box(
-          scene.rootNode, SCNVector3(7, 8 + Float(abs(index) % 3) * 7, 8),
+          root, SCNVector3(7, 8 + Float(abs(index) % 3) * 7, 8),
           SCNVector3(sign * 61, 3, Float(index) * 17), 0x26374E, bevel: 0.3)
         for floor in 0...4 {
           box(
@@ -139,23 +144,23 @@ final class ArenaRenderer {
             floor % 2 == 0 ? 0x329DAF : 0x536C7B, glow: true)
         }
       }
-      box(scene.rootNode, SCNVector3(103, 3, 3), SCNVector3(0, 0.5, sign * 53), 0x182A40)
+      box(root, SCNVector3(103, 3, 3), SCNVector3(0, 0.5, sign * 53), 0x182A40)
       box(
-        scene.rootNode, SCNVector3(105, 0.3, 0.5), SCNVector3(0, 2.2, sign * 53), 0x54C5FF,
+        root, SCNVector3(105, 0.3, 0.5), SCNVector3(0, 2.2, sign * 53), 0x54C5FF,
         glow: true)
     }
     let pad = cylinder(
-      scene.rootNode, radius: 13, height: 0.03, position: SCNVector3(0, -0.14, 0), color: 0x334F63)
+      root, radius: 13, height: 0.03, position: SCNVector3(0, -0.14, 0), color: 0x334F63)
     pad.geometry?.firstMaterial?.roughness.contents = 0.8
     let ring = SCNTorus(ringRadius: 12, pipeRadius: 0.12)
     ring.materials = [material(0x87B9C7, glow: true)]
     let ringNode = SCNNode(geometry: ring)
     ringNode.position.y = -0.1
-    scene.rootNode.addChildNode(ringNode)
+    root.addChildNode(ringNode)
     for index in 0..<12 {
       let angle = Float(index) / 12 * .pi * 2
       let marker = box(
-        scene.rootNode, SCNVector3(0.12, 0.03, 2),
+        root, SCNVector3(0.12, 0.03, 2),
         SCNVector3(sin(angle) * 10, -0.07, cos(angle) * 10), 0xCDDDE4, bevel: 0)
       marker.eulerAngles.y = angle
     }
@@ -164,7 +169,7 @@ final class ArenaRenderer {
     planet.materials = [material(0x427CAB, metal: 0)]
     let planetNode = SCNNode(geometry: planet)
     planetNode.position = SCNVector3(-100, 66, 140)
-    scene.rootNode.addChildNode(planetNode)
+    root.addChildNode(planetNode)
     let orbit = SCNTorus(ringRadius: 48, pipeRadius: 0.55)
     orbit.materials = [material(0xA2D5E7, glow: true)]
     let orbitNode = SCNNode(geometry: orbit)
@@ -177,15 +182,16 @@ final class ArenaRenderer {
       geometry.materials = [material(0xCCE6FF, glow: true)]
       let star = SCNNode(geometry: geometry)
       star.position = SCNVector3(sin(angle) * 180, 15 + Float((index * 37) % 95), cos(angle) * 180)
-      scene.rootNode.addChildNode(star)
+      root.addChildNode(star)
     }
     for side in [-1, 1] {
       let tower = box(
-        scene.rootNode, SCNVector3(5, 45, 5), SCNVector3(Float(side) * 47, 21, 65), 0x405265,
+        root, SCNVector3(5, 45, 5), SCNVector3(Float(side) * 47, 21, 65), 0x405265,
         bevel: 0.5)
       box(tower, SCNVector3(1, 44, 5.1), SCNVector3(0, 0, 0), 0x4DD3FD, glow: true)
     }
-    box(scene.rootNode, SCNVector3(102, 3, 6), SCNVector3(0, 41, 65), 0x526878, bevel: 0.3)
+    box(root, SCNVector3(102, 3, 6), SCNVector3(0, 41, 65), 0x526878, bevel: 0.3)
+    scene.rootNode.addChildNode(root.flattenedClone())
   }
 
   private func makeMecha(team: Int) -> SCNNode {
@@ -348,7 +354,9 @@ final class ArenaRenderer {
     else {
       showroom.eulerAngles.y = time * 0.22
       camera.position = SCNVector3(10, 6, 13)
-      camera.look(at: SCNVector3(-2.5, 2.5, 0))
+      camera.look(
+        at: SCNVector3(-2.5, 2.5, 0), up: SCNVector3(0, 1, 0),
+        localFront: SCNVector3(0, 0, -1))
       return
     }
     for unit in snapshot.units {
@@ -386,9 +394,11 @@ final class ArenaRenderer {
     camera.look(
       at: SCNVector3(
         node.position.x + direction.x * 13, node.position.y + 2.6,
-        node.position.z + direction.z * 13))
-    if let target = snapshot.units.first(where: { $0.id == me.target }), let view {
-      let projected = view.projectPoint(SCNVector3(target.x, target.y + 2.5, target.z))
+        node.position.z + direction.z * 13), up: SCNVector3(0, 1, 0),
+      localFront: SCNVector3(0, 0, -1))
+    if let target = units[me.target], let view {
+      let position = target.position
+      let projected = view.projectPoint(SCNVector3(position.x, position.y + 2.5, position.z))
       reticleChanged?(
         projected.z < 1 && projected.z > 0
           ? CGPoint(x: CGFloat(projected.x), y: CGFloat(projected.y)) : CGPoint(x: -500, y: -500))
@@ -439,8 +449,8 @@ struct ArenaView: UIViewRepresentable {
     let view = SCNView()
     view.scene = renderer.scene
     view.pointOfView = renderer.camera
-    view.preferredFramesPerSecond = 60
-    view.antialiasingMode = .multisampling4X
+    view.preferredFramesPerSecond = 30
+    view.antialiasingMode = .multisampling2X
     view.isPlaying = true
     view.backgroundColor = .black
     renderer.view = view

@@ -215,17 +215,20 @@ struct GameScreen: View {
       if let target = client.target, target.hp > 0, client.state?.phase == "playing" {
         let range = distanceToTarget
         let color = range < 18 ? Color.pink : range < 65 ? orange : Color.green
-        VStack(spacing: 2) {
-          ZStack {
-            Circle().stroke(color.opacity(0.75), lineWidth: 1).frame(width: 65, height: 65)
-            Circle().trim(from: 0.03, to: 0.20).stroke(color, style: StrokeStyle(lineWidth: 3))
-              .frame(width: 72, height: 72)
-            Image(systemName: "scope").font(.system(size: 45, weight: .ultraLight)).foregroundStyle(
-              color)
+        ZStack {
+          Circle().stroke(color.opacity(0.75), lineWidth: 1).frame(width: 65, height: 65)
+          Circle().trim(from: 0.03, to: 0.20).stroke(color, style: StrokeStyle(lineWidth: 3))
+            .frame(width: 72, height: 72)
+          Image(systemName: "scope").font(.system(size: 45, weight: .ultraLight)).foregroundStyle(
+            color)
+        }
+        .overlay(alignment: .top) {
+          VStack(spacing: 2) {
+            Text(target.name).font(.system(size: 9, weight: .black)).padding(3).background(
+              navy.opacity(0.8))
+            Text("\(Int(range))m / \(Int(target.hp)) AP").font(.system(size: 8, weight: .bold))
           }
-          Text(target.name).font(.system(size: 9, weight: .black)).padding(3).background(
-            navy.opacity(0.8))
-          Text("\(Int(range))m / \(Int(target.hp)) AP").font(.system(size: 8, weight: .bold))
+          .fixedSize().offset(y: 76)
         }
         .position(x: client.reticle.x - insets.leading, y: client.reticle.y - insets.top)
         .allowsHitTesting(false)

@@ -1,6 +1,7 @@
 import http from "node:http";
 import { randomBytes, randomUUID } from "node:crypto";
 import { pathToFileURL } from "node:url";
+import { performance } from "node:perf_hooks";
 import { WebSocketServer, WebSocket } from "ws";
 import { Arena } from "./game.mjs";
 
@@ -67,12 +68,21 @@ export function createServer({ port = 8787, host = "0.0.0.0", duration = 90 } = 
     });
     socket.on("error", () => {});
   });
+  let lastClock = performance.now();
+  let accumulated = 0;
   const clock = setInterval(() => {
+    const now = performance.now();
+    accumulated += Math.min(250, now - lastClock);
+    lastClock = now;
+    const steps = Math.floor(accumulated / (1000 / 30));
+    accumulated -= steps * (1000 / 30);
     for (const room of rooms.values()) {
-      const before = room.phase;
-      room.step();
-      if (before !== room.phase) console.log(JSON.stringify({ event: "phase", room: room.code, ...room.snapshot() }));
-      if (room.tick % 2 === 0) {
+      for (let index = 0; index < steps; index++) {
+        const before = room.phase;
+        room.step();
+        if (before !== room.phase) console.log(JSON.stringify({ event: "phase", room: room.code, ...room.snapshot() }));
+      }
+      if (steps > 0 && (room.tick % 2 === 0 || steps > 1)) {
         const snapshot = room.snapshot();
         for (const peer of peers.values()) if (peer.room === room) send(peer.socket, snapshot);
       }

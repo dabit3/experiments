@@ -47,8 +47,9 @@ No server-side test victory/teleport/damage commands exist.
 
 ## Simulation and snapshots
 
-The authoritative simulation is fixed 1/30-second steps. AI is deterministic.
-Every two ticks (15 Hz) every room peer receives the same `state`:
+The authoritative simulation is fixed 1/30-second steps. A monotonic accumulator
+catches up scheduler jitter, capped at 250 ms per callback. AI is deterministic.
+Every two ticks (15 Hz, coalesced during catch-up) every room peer receives the same `state`:
 
 - `code, phase, round, tick, time, countdown`
 - `costs[2], winner` (`-1` draw/unresolved), `reason`
@@ -60,6 +61,9 @@ Every two ticks (15 Hz) every room peer receives the same `state`:
   destruction, burst, guard and respawn events
 
 Native rendering smooths suits/camera toward snapshots and never predicts damage.
+A background native socket reader keeps only the newest pending snapshot while
+preserving control messages; rendering stalls cannot build an obsolete state queue.
+SceneKit targets 30 FPS with a level world-up camera.
 Beam collision uses swept segments; short initial aim assist tracks unless the
 target steps. Hits ignore friendlies, invulnerability and phase-step windows.
 Human HP 520/cost 2000; AI HP 360/cost 1500. Teams have 6000 cost. Death respawns
