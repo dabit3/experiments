@@ -24,6 +24,11 @@ The committed Xcode project can also be opened directly. `project.yml` is its
 source of truth; regenerate with `xcodegen generate` after changing configuration.
 `swift format lint --strict --recursive Sources` is the supported Swift lint.
 The native build includes Swift type checking.
+The check script also compiles the actual native `MatchClient` with headless
+render/audio stand-ins and tests delayed welcome, rapid connect/reconnect,
+second-peer admission and cancellation against the real server through a
+latency proxy. This regression reproduced duplicate slot allocation before the
+connection guard was added.
 
 Run the server in a separate terminal:
 

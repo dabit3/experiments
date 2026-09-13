@@ -11,6 +11,7 @@ final class MatchClient: ObservableObject {
   @Published var guestName = "Guest"
   @Published var roomCode = "NITE"
   @Published var connected = false
+  @Published private(set) var connecting = false
   @Published var automated = false
   @Published var automationStep = ""
   @Published var muted = false
@@ -62,6 +63,7 @@ final class MatchClient: ObservableObject {
   }
 
   func connect() {
+    guard !connected && !connecting else { return }
     guard let url = URL(string: serverAddress),
       ["ws", "wss"].contains(url.scheme ?? ""), url.host != nil
     else {
@@ -74,8 +76,10 @@ final class MatchClient: ObservableObject {
       return
     }
     roomCode = code
+    connecting = true
     joinGeneration += 1
     let generation = joinGeneration
+    reconnectTask?.cancel()
     receiveTask?.cancel()
     socket?.cancel(with: .goingAway, reason: nil)
     intentionalClose = false
@@ -100,35 +104,38 @@ final class MatchClient: ObservableObject {
           case .string(let value): data = Data(value.utf8)
           @unknown default: continue
           }
-          self.handle(data)
+          self.handle(data, credentialsKey: key, room: code)
         }
       } catch {
         guard let self, self.joinGeneration == generation, !self.intentionalClose else { return }
         self.connected = false
+        self.connecting = false
         self.status = "SIGNAL LOST • RECONNECTING"
         self.reconnectTask = Task {
           try? await Task.sleep(for: .seconds(2))
-          if !Task.isCancelled && !self.intentionalClose { self.connect() }
+          if !Task.isCancelled && !self.intentionalClose && self.joinGeneration == generation {
+            self.connect()
+          }
         }
       }
     }
     audio.start()
   }
 
-  private func handle(_ data: Data) {
+  private func handle(_ data: Data, credentialsKey: String, room: String) {
     let decoder = JSONDecoder()
     guard let envelope = try? decoder.decode(ServerMessage.self, from: data) else { return }
     if envelope.type == "welcome", let id = envelope.playerID, let resume = envelope.token {
       playerID = id
       token = resume
       seq = envelope.lastSeq ?? 0
-      let key = "\(serverAddress)/\(roomCode)"
-      UserDefaults.standard.set(id, forKey: "\(key)/id")
-      UserDefaults.standard.set(resume, forKey: "\(key)/token")
+      UserDefaults.standard.set(id, forKey: "\(credentialsKey)/id")
+      UserDefaults.standard.set(resume, forKey: "\(credentialsKey)/token")
+      connecting = false
       connected = true
       status = "LIVE"
       log([
-        "event": "welcome", "playerID": id, "room": roomCode, "slot": String(envelope.slot ?? -1),
+        "event": "welcome", "playerID": id, "room": room, "slot": String(envelope.slot ?? -1),
       ])
     } else if envelope.type == "error" {
       error = envelope.message ?? "Server error"
@@ -193,9 +200,12 @@ final class MatchClient: ObservableObject {
 
   func leave(keepError: Bool = false) {
     intentionalClose = true
+    joinGeneration += 1
     reconnectTask?.cancel()
     receiveTask?.cancel()
     socket?.cancel(with: .normalClosure, reason: nil)
+    socket = nil
+    connecting = false
     connected = false
     state = nil
     axis = 0
@@ -209,6 +219,7 @@ final class MatchClient: ObservableObject {
   }
 
   func reconnect() {
+    guard !connecting else { return }
     status = "RECONNECTING"
     connected = false
     connect()

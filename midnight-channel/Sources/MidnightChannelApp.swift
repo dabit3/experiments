@@ -169,7 +169,8 @@ struct ChannelView: View {
               }
               entry(
                 "SERVER ADDRESS / EDIT FOR LAN", text: $client.serverAddress, id: "serverAddress")
-              panelButton("CONNECT TO ROOM") { client.connect() }
+              panelButton(client.connecting ? "TUNING IN…" : "CONNECT TO ROOM") { client.connect() }
+                .disabled(client.connecting || client.connected)
               if !client.error.isEmpty {
                 Text(client.error).font(.system(size: 10, weight: .bold)).foregroundStyle(crimson)
                   .lineLimit(2)
@@ -206,6 +207,7 @@ struct ChannelView: View {
         .padding(.horizontal, 9).frame(height: 32).background(.white.opacity(0.09))
         .overlay(alignment: .bottom) { Rectangle().fill(yellow).frame(height: 1) }
         .accessibilityIdentifier(id)
+        .disabled(client.connecting || client.connected)
     }
   }
 
@@ -433,7 +435,10 @@ struct ChannelView: View {
       heading("SIGNAL INTERRUPTED", size: 39, color: yellow)
       Text("Match paused. Waiting for your rival to reconnect.").font(
         .system(size: 15, weight: .bold))
-      panelButton("RECONNECT MY SIGNAL") { client.reconnect() }.frame(width: 310)
+      panelButton(client.connecting ? "RECONNECTING…" : "RECONNECT MY SIGNAL") {
+        client.reconnect()
+      }
+      .frame(width: 310).disabled(client.connecting)
     }.padding(30).background(black.opacity(0.95))
   }
 
