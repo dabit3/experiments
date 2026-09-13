@@ -11,6 +11,7 @@ final class ArenaRenderer {
   private var previewStyle = -1
   private var eventID = 0
   private var shake: Float = 0
+  private var airFraming: Float = 0
   private let red = FighterRig.material(
     UIColor(red: 1, green: 0.055, blue: 0.12, alpha: 1), glow: 1.3)
   private let steel = FighterRig.material(
@@ -28,20 +29,20 @@ final class ArenaRenderer {
     camera.camera?.bloomIntensity = 0.65
     camera.camera?.bloomThreshold = 1
     camera.camera?.bloomBlurRadius = 7
-    camera.camera?.exposureOffset = 0.4
+    camera.camera?.exposureOffset = 0
     scene.rootNode.addChildNode(camera)
     let ambient = SCNNode()
     ambient.light = SCNLight()
     ambient.light?.type = .ambient
     ambient.light?.color = UIColor(red: 0.53, green: 0.64, blue: 0.85, alpha: 1)
-    ambient.light?.intensity = 650
+    ambient.light?.intensity = 300
     scene.rootNode.addChildNode(ambient)
     light(
       position: SCNVector3(-3, 6, 5), color: UIColor(red: 0.8, green: 0.88, blue: 1, alpha: 1),
-      power: 2200)
+      power: 1400)
     light(
       position: SCNVector3(3, 4, -3), color: UIColor(red: 1, green: 0.07, blue: 0.14, alpha: 1),
-      power: 1800)
+      power: 1300)
     buildStage()
   }
 
@@ -180,10 +181,15 @@ final class ArenaRenderer {
     let midpoint = Float((world.players[0].x + world.players[1].x) / 2)
     let midZ = Float((world.players[0].z + world.players[1].z) / 2)
     let separation = abs(world.players[0].x - world.players[1].x)
-    let cameraZ = Float(max(7.8, 6.2 + separation * 0.75))
+    let airborne = world.players.contains {
+      $0.y > 0 || ($0.attack == "launch" && $0.age >= 9)
+    }
+    airFraming += ((airborne ? 2.65 : 0) - airFraming) * 0.16
+    let cameraZ = Float(max(7.8, 6.2 + separation * 0.75)) + airFraming * 1.9
     let impact = Float(sin(time * 105)) * shake
-    camera.position = SCNVector3(midpoint + impact, 3.0 + impact, cameraZ + midZ)
-    camera.look(at: SCNVector3(midpoint, 1.4, midZ))
+    camera.position = SCNVector3(
+      midpoint + impact, 3.0 + airFraming * 0.6 + impact, cameraZ + midZ)
+    camera.look(at: SCNVector3(midpoint, 1.4 + airFraming * 0.6, midZ))
     shake *= 0.85
     for event in world.events where event.id > eventID {
       if ["hit", "launch", "juggle", "block", "tag", "land", "wall"].contains(event.kind) {

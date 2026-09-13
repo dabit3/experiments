@@ -104,7 +104,9 @@ xcrun simctl launch "$B" games.ironrelay.arena \
 ```
 
 Both connect, ready after a short lobby pause, sidestep/guard, approach, exchange
-strikes, tag, complete rounds and mutually rematch. Alpha uses shorter attack
+strikes, execute launch → tag → aerial punch, complete rounds and mutually rematch.
+The camera widens during launch/air time to keep the airborne fighter below the HUD.
+Alpha uses shorter attack
 intervals; Bravo also sends genuine combat inputs. Both are automated humans'
 input substitutes, **not secretly simulated opponents**.
 Start both recordings concurrently before launching; compose the two complete
@@ -146,6 +148,9 @@ The stream includes local identity, complete authoritative snapshots once per
 second, all observed combat events and attack controls. It excludes reconnect
 tokens. Final visual/test evidence is attached to the PR/session rather than
 committed into this application folder.
+Add `--capture-audio` to opt into a `Documents/arena-audio.caf` recording of the
+native AVAudioEngine mixer for sound verification. This captures the sound the app
+actually renders, including mute, rather than reconstructing sound from event logs.
 
 ## Architecture
 

@@ -218,7 +218,7 @@ final class GameClient: ObservableObject {
     if !automation.isEmpty { drive(state) }
     if state.phase == "fight" {
       input("move", x: movement.x, z: movement.z)
-      if guarding { input("guard", down: true) }
+      input("guard", down: guarding)
     }
     if heartbeat % 10 == 0 {
       log(EvidenceRecord(type: "snapshot", identity: identity, state: state))
@@ -260,14 +260,41 @@ final class GameClient: ObservableObject {
       movement.z = automation == "alpha" ? 0.65 : -0.65
       guarding = automation == "bravo"
     }
-    if elapsed > 310 && !autoTagged && me.attack.isEmpty && me.stun == 0 {
+    if elapsed < 100 { return }
+    let canAttack = me.attack.isEmpty && me.stun == 0 && me.cooldown == 0 && me.y == 0
+    if automation == "alpha" {
+      if !autoTagged && opponent.y > 0 && me.attack == "launch" && me.age >= 18 {
+        action("tag")
+        autoTagged = true
+        demoStep = "05 • LAUNCH → TAG CANCEL"
+        return
+      }
+      if !autoTagged && elapsed < 300 {
+        demoStep = "04 • APPROACH → LAUNCH"
+        if canAttack && abs(dx) < 1.6 && abs(dz) < 0.3 {
+          action("launch")
+          autoActionTick = state.tick
+        }
+        return
+      }
+      if opponent.y > 0 {
+        demoStep = "06 • AERIAL FOLLOW-UP"
+        if canAttack {
+          action("punch")
+          autoActionTick = state.tick
+        }
+        return
+      }
+    }
+    if automation == "bravo" && elapsed < 175 { return }
+    if elapsed > 310 && !autoTagged && canAttack {
       action("tag")
       autoTagged = true
       demoStep = "05 • TAG RESERVE FIGHTER"
+      return
     }
-    if elapsed < 100 { return }
     let interval = automation == "alpha" ? 30 : 85
-    if state.tick - autoActionTick >= interval {
+    if canAttack && state.tick - autoActionTick >= interval {
       let step = (elapsed / interval) % 7
       let attack = step == 0 ? "launch" : step == 3 || step == 6 ? "kick" : "punch"
       action(attack)

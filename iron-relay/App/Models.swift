@@ -19,6 +19,7 @@ struct FighterState: Codable, Identifiable {
   let vz: Double
   let guardHeld: Bool
   let stun: Int
+  let cooldown: Int
   let attack: String
   let age: Int
   let tagCooldown: Int
@@ -30,7 +31,7 @@ struct FighterState: Codable, Identifiable {
 
   enum CodingKeys: String, CodingKey {
     case id, name, team, online, ready, rematch, wins, health, red, active, x, z, y
-    case vx, vz, stun, attack, age, tagCooldown, tagFlash, combo, comboDamage, facing, seq
+    case vx, vz, stun, cooldown, attack, age, tagCooldown, tagFlash, combo, comboDamage, facing, seq
     case guardHeld = "guard"
   }
 }

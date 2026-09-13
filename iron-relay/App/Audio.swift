@@ -19,6 +19,15 @@ final class ArenaAudio {
       engine.attach(music)
       engine.connect(hit, to: engine.mainMixerNode, format: format)
       engine.connect(music, to: engine.mainMixerNode, format: format)
+      if ProcessInfo.processInfo.arguments.contains("--capture-audio") {
+        let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+          .appendingPathComponent("arena-audio.caf")
+        let output = engine.mainMixerNode.outputFormat(forBus: 0)
+        let recording = try AVAudioFile(forWriting: url, settings: output.settings)
+        engine.mainMixerNode.installTap(onBus: 0, bufferSize: 2048, format: output) { buffer, _ in
+          try? recording.write(from: buffer)
+        }
+      }
       try engine.start()
       enabled = true
       if let buffer = buffer(seconds: 4, effect: "music") {
