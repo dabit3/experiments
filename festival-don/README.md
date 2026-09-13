@@ -71,6 +71,29 @@ Tap the visible **AUTOMATED INPUT DRIVER** banner to pause and validate actual m
 
 Capture both simulators **simultaneously**, then compose the complete device displays side by side. Never combine unrelated matches. `simctl io <UDID> recordVideo` captures a device video; it does not capture audio. Preserve the common room/round, server JSON log and each app's `Documents/evidence.jsonl` for machine-readable assertions. A system capture with audio can supplement the device streams.
 
+### Live audio on a macOS VM
+
+Establish a host audio endpoint **before booting the simulators**. This VM initially had no audio devices; the following setup restored real music and drum output without a VM reboot:
+
+```sh
+brew install --cask blackhole-2ch
+system_profiler SPAudioDataType
+# Only if the installed endpoint is still absent, restart CoreAudio once:
+sudo -n killall coreaudiod
+system_profiler SPAudioDataType
+ffmpeg -f avfoundation -list_devices true -i ""
+```
+
+Confirm BlackHole 2ch is the default input, output and system output at 48 kHz. If passwordless administration is unavailable, stop and ask the machine owner; do not retry with an interactive password prompt. Shut down and boot only the two target simulators if they started before the endpoint existed. Wait for `xcrun simctl bootstatus <UDID> -b` before launching the app. Accept the visible Simulator/recorder microphone permission prompts when capturing loopback input.
+
+Capture actual loopback PCM concurrently with both device videos. The verified native recorder used an `AVAudioEngine` input tap with `AVAudioTime.hostTime`, `sampleTime`, stored-frame offsets and a host-to-wall-clock anchor. Preserve those timestamps when muxing; a process launch time alone does not locate a video's first frame. Verify each peer independently with the other silent, then record the shared match. Music files may serve as correlation references, never as replacement soundtracks.
+
+Verify both buffer continuity **and the finalized file's stored sample count**. Our raw recorder lost 2,432 termination-tail frames (50.67 ms), although buffer timestamps were contiguous. The complete published match ended 5.20 seconds before stored EOF; nothing was padded or dubbed. Full-decode every final video with `ffmpeg -v error -i <VIDEO> -f null -`; use full decoding/trim for timestamp inspection because fast seeking returned stale frames in the native recordings.
+
+The audio follow-up tested unchanged gameplay revision `df7fea4`: two complete Moon/Easy rounds, independent music from both peers, actual UIKit taps and shared rematch results. Captured music starts were 2.58–13.97 ms after the server epochs (±12 ms measurement uncertainty), and manual percussion followed native input timestamps by 22.56–23.30 ms. The delivered AAC correlated with the actual captured PCM. This establishes real progressing audio and measured rhythm timing, not subjective listening quality or physical-speaker latency.
+
+The recording also exposed transient visual lag: a 180–220 ms rematch countdown delay caught up before playable notes; later sparse samples estimated 106/178 ms lag with ±70 ms video uncertainty. Consistently smooth or frame-perfect visual timing is not established. Recorder teardown timeouts, raw timestamp warnings and the missing raw-audio tail remain documented failures; all published videos fully decode.
+
 ## Checks
 
 ```sh
