@@ -217,6 +217,8 @@ final class ArenaRenderer: NSObject {
   private var link: CADisplayLink?
   private var previewing = true
   private var cameraReady = false
+  private var forwardX: Float = 0
+  private var forwardZ: Float = 1
 
   override init() {
     super.init()
@@ -470,9 +472,15 @@ final class ArenaRenderer: NSObject {
     let dx = other.x - pos.x
     let dz = other.z - pos.z
     let distance = max(0.01, sqrt(dx * dx + dz * dz))
-    let forwardX = dx / distance
-    let forwardZ = dz / distance
-    let back: Float = me.mode == "boost" ? 10.5 : 8.8
+    if distance > 2.5 {
+      forwardX = dx / distance
+      forwardZ = dz / distance
+    } else if !cameraReady {
+      forwardX = Float(sin(me.yaw))
+      forwardZ = Float(cos(me.yaw))
+    }
+    let heightDifference = other.y - pos.y
+    let back: Float = (me.mode == "boost" ? 10.5 : 8.8) + abs(heightDifference) * 1.5
     let desired = SCNVector3(
       pos.x - forwardX * back + forwardZ * 2.8, pos.y + 5.1,
       pos.z - forwardZ * back - forwardX * 2.8)
@@ -485,7 +493,7 @@ final class ArenaRenderer: NSObject {
     let focusDistance = min(distance * 0.4, 6)
     camera.look(
       at: SCNVector3(
-        pos.x + forwardX * focusDistance, pos.y + 2.0 + (other.y - pos.y) * 0.3,
+        pos.x + forwardX * focusDistance, pos.y + 2.0 + heightDifference * 0.5,
         pos.z + forwardZ * focusDistance),
       up: SCNVector3(0, 1, 0), localFront: SCNVector3(0, 0, -1))
     target.isHidden = !me.locked || enemy == nil || state.phase == "result"
