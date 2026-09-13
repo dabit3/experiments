@@ -24,7 +24,7 @@ struct DerbyView: View {
                 PixelSkyline()
                 if let scene {
                     if store.screen == .title {
-                        TitleScreen(store: store, scene: scene, compact: geometry.size.height < 350)
+                        TitleScreen(store: store, scene: scene, compact: geometry.size.height < 400)
                     } else {
                         MatchScreen(store: store, scene: scene)
                     }
