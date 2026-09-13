@@ -350,6 +350,14 @@ final class GameClient: ObservableObject {
       if (32...40).contains(autoTick) { input.guardValue = true }
       return
     }
+    let openingDamage = autoRole == "bravo" ? local.damage : opponent.damage
+    if openingDamage < 18 {
+      automationLabel = "DRIVER • 03 BRAVO OPENING ATTACK / ALPHA APPROACH"
+      if autoRole == "bravo" && autoTick % 6 == 0 {
+        action("punch", source: "automated-driver")
+      }
+      return
+    }
     let aggressive = autoRole == "alpha"
     let cadence = aggressive ? 6 : 36
     if autoTick % cadence == 0 {
