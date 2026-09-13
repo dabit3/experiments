@@ -5,3 +5,7 @@ node_modules/
 *.xcuserstate
 xcuserdata/
 artifacts/
+__pycache__/
+.ruff_cache/
+Scripts/computer-input/mouse
+Scripts/computer-input/capture-audio

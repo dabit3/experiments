@@ -54,6 +54,42 @@ marker. Tap or swipe to change direction. Play until a player earns two crowns;
 both must tap **Rematch** to start again. Toggle audio, open instructions or leave
 using the top toolbar. Leave the server running while playing.
 
+### Executable test through visible computer controls
+
+The [computer-input harness](Scripts/computer-input/README.md) drives both native
+apps with macOS CGEvent D-pad clicks and held swipes. A read-only server observer
+guides its directions; actual input reaches the native `source=touch` path.
+It verifies two distinct peers, meaningful movement and scoring, a shared winner,
+rematch voting/reset and a second complete match. Built-in drivers are disabled.
+
+Use two portrait iPhone 17 Pro / Pro Max simulators with distinct names. Discover
+their UDIDs with `xcrun simctl list devices available -j`, copy
+`Scripts/computer-input/devices.example.json` outside the source directory and
+replace the two placeholders. The harness README covers permissions, screen
+geometry, BlackHole audio capture and cleanup.
+
+From this directory, with port 8873 free:
+
+```sh
+npm ci --prefix Server
+xcodebuild -project ChompCrown.xcodeproj -scheme ChompCrown \
+  -configuration Release -sdk iphonesimulator -derivedDataPath build \
+  CODE_SIGNING_ALLOWED=NO build
+python3 Scripts/computer-input/runner.py --repo "$PWD" \
+  --devices "$HOME/chomp-devices.json" --out "$HOME/chomp-run-1" \
+  --record --screen-index 0
+```
+
+The output directory must be new. The runner starts its own server and preserves
+native input logs, actions, snapshots, assertions, source hashes and raw concurrent
+audio/video capture. Media export needs timestamp alignment and validation as
+described below. Run its OCR regression tests without simulator interaction:
+
+```sh
+python3 -B -m unittest discover -s Scripts/computer-input -p 'test_*.py' -v
+swift format lint --strict Scripts/computer-input/*.swift
+```
+
 ### Repeatable input automation (clearly labeled on screen)
 
 Optional launch arguments `--autoplay hunter` and `--autoplay runner` turn on a
