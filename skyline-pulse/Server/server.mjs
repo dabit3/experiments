@@ -136,8 +136,8 @@ export function startServer(port = 8769, host = '0.0.0.0') {
           room.phase = 'results';
           for (const p of room.players.values()) { p.ready = false; p.pointers.clear(); }
           log('results', snapshot(room));
-        }
-        if (ticks % 3 === 0) broadcast(room);
+          broadcast(room);
+        } else if (ticks % 3 === 0) broadcast(room);
       }
       if ([...room.players.values()].every((p) => !p.connected) && now - room.touched > 120000) rooms.delete(room.code);
     }
