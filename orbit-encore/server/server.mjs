@@ -98,6 +98,7 @@ export function createServer({ port = 8788, log = console.log, now = Date.now } 
           audit('judgment', { room: room.code, matchID: room.matchID, player: currentPlayer.id,
             score: currentPlayer.performance.score, judgment: currentPlayer.performance.lastJudgment });
         }
+        return;
       } else if (message.type === 'rematch') {
         if (room.phase !== 'results') return;
         currentPlayer.ready = true;

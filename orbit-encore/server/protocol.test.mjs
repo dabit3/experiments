@@ -78,3 +78,37 @@ test('real WebSocket peers: room limits, common start, independent input, reconn
     await server.close();
   }
 });
+
+test('input bursts preserve scoring without amplifying snapshot traffic', async () => {
+  let time = Date.now();
+  const server = createServer({ port: 0, now: () => time, log: () => {} });
+  await once(server.httpServer, 'listening');
+  const url = `ws://127.0.0.1:${server.httpServer.address().port}`;
+  const a = await peer(url);
+  const b = await peer(url);
+  try {
+    a.send({ type: 'join', name: 'Nova' });
+    const joined = await a.wait(m => m.type === 'joined');
+    b.send({ type: 'join', name: 'Lumi', room: joined.room });
+    await b.wait(m => m.type === 'joined');
+    a.send({ type: 'ready', ready: true });
+    b.send({ type: 'ready', ready: true });
+    const start = await a.wait(m => m.phase === 'playing');
+    await b.wait(m => m.phase === 'playing');
+    a.messages.length = 0;
+    const first = joined.charts[0].notes[0];
+    time = start.startAt + first.time * 1000;
+    for (let seq = 1; seq <= 100; seq++) {
+      a.send({ type: 'input', matchID: start.matchID, seq, at: time, pointer: 1,
+        phase: seq === 1 ? 'down' : 'move', ...target(first.lane) });
+    }
+    a.send({ type: 'ping', sentAt: time });
+    await a.wait(m => m.type === 'pong');
+    assert.ok(a.messages.filter(m => m.type === 'state').length < 10);
+    const scored = await b.wait(m => m.phase === 'playing' && m.players[0].score > 0);
+    assert.equal(scored.players[0].counts.PERFECT, 1);
+  } finally {
+    a.ws.close(); b.ws.close();
+    await server.close();
+  }
+});

@@ -11,10 +11,24 @@ extension UIColor {
 
 @MainActor
 final class OrbitScene: SKScene {
+    private struct NoteVisual {
+        let root: SKNode
+        let head: SKShapeNode
+        let route: SKShapeNode?
+        let arrows: [(segment: Int, node: SKShapeNode)]
+        let follower: SKShapeNode?
+        let holdBody: SKShapeNode?
+        let holdCore: SKShapeNode?
+        var active = false
+        var checkpoint = 0
+    }
+
     weak var client: GameClient?
     private let dynamicLayer = SKNode()
     private let art = SKNode()
     private let effectLayer = SKNode()
+    private var noteVisuals: [Int: NoteVisual] = [:]
+    private var eachLinks: [Double: SKShapeNode] = [:]
     private var targetNodes: [SKShapeNode] = []
     private var artSprite: SKSpriteNode?
     private var lastJudgment = ""
@@ -51,6 +65,8 @@ final class OrbitScene: SKScene {
         targetNodes.removeAll()
         art.removeAllChildren()
         dynamicLayer.removeAllChildren()
+        noteVisuals.removeAll()
+        eachLinks.removeAll()
         effectLayer.removeAllChildren()
         let base = circle(unit * 0.98, color: .orbitPink.withAlphaComponent(0.35), width: 2, fill: .orbitInk)
         base.position = center
@@ -143,8 +159,12 @@ final class OrbitScene: SKScene {
         artSprite?.setScale(1 + pulse * 0.025)
         artSprite?.zRotation = sin(currentTime * 0.4) * 0.04
         targetNodes.forEach { $0.strokeColor = pulse > 0.8 ? .white : .orbitCyan }
-        dynamicLayer.removeAllChildren()
-        guard client.phase == "playing", let chart = client.chart else { return }
+        guard client.phase == "playing", let chart = client.chart else {
+            dynamicLayer.removeAllChildren()
+            noteVisuals.removeAll()
+            eachLinks.removeAll()
+            return
+        }
         if !client.automation.isEmpty { driveAutomation(time: time, chart: chart) }
         let states = client.me?.notes ?? []
         let visible = chart.notes.filter { note in
@@ -152,11 +172,24 @@ final class OrbitScene: SKScene {
             return state != "done" && time >= note.time - 1.7 && time <= note.time + note.duration + 0.35
         }
         let each = visible.filter { $0.kind == "each" }
+        let visibleIDs = Set(visible.map(\.id))
+        for id in noteVisuals.keys where !visibleIDs.contains(id) {
+            noteVisuals.removeValue(forKey: id)?.root.removeFromParent()
+        }
+        let eachTimes = Set(each.map(\.time))
+        for time in eachLinks.keys where !eachTimes.contains(time) {
+            eachLinks.removeValue(forKey: time)?.removeFromParent()
+        }
         for pair in stride(from: 0, to: max(0, each.count - 1), by: 2) where each[pair].time == each[pair + 1].time {
-                let radius = max(0.09, min(0.82, 0.09 + (time - each[pair].time + 1.6) / 1.6 * 0.73))
-                let link = circle(unit * radius, color: .orbitGold.withAlphaComponent(0.5), width: 1)
+            let pairTime = each[pair].time
+            let radius = max(0.09, min(0.82, 0.09 + (time - pairTime + 1.6) / 1.6 * 0.73))
+            if eachLinks[pairTime] == nil {
+                let link = circle(unit, color: .orbitGold.withAlphaComponent(0.5), width: 1)
                 link.position = center
                 dynamicLayer.addChild(link)
+                eachLinks[pairTime] = link
+            }
+            eachLinks[pairTime]?.setScale(radius)
         }
         for note in visible {
             let state = note.id < states.count ? states[note.id] : nil
@@ -173,20 +206,65 @@ final class OrbitScene: SKScene {
 
     private func drawNote(_ note: Note, state: NoteState?, time: Double) {
         let active = state?.state == "active"
-        let color: UIColor = note.kind == "slide" ? .orbitCyan :
-            (note.kind == "each" || note.kind == "break" ? .orbitGold : .orbitPink)
+        if noteVisuals[note.id] == nil { noteVisuals[note.id] = makeNote(note) }
+        guard var visual = noteVisuals[note.id] else { return }
         let radius = max(0.09, min(0.86, 0.09 + (time - note.time + 1.6) / 1.6 * 0.73))
         let head = position(Point.target(note.lane, radius: active ? 0.82 : radius))
+        visual.head.position = head
+        visual.head.isHidden = active && note.kind != "hold"
+        if note.kind == "slide" {
+            visual.head.zRotation = CGFloat(time * 2)
+            visual.follower?.isHidden = time < note.time
+            let progress = max(0, min(1, (time - note.time - 0.15) / (note.duration - 0.15)))
+            visual.follower?.position = position(interpolate(note.path, progress: progress))
+            visual.follower?.zRotation = CGFloat(time * 3)
+        }
+        if note.kind == "hold" {
+            let tailRadius = max(0.09, min(0.82, 0.09 + (time - note.time - note.duration + 1.6) / 1.6 * 0.73))
+            let path = CGMutablePath()
+            path.move(to: position(Point.target(note.lane, radius: tailRadius)))
+            path.addLine(to: head)
+            visual.holdBody?.path = path
+            visual.holdCore?.path = path
+        }
+        if visual.active != active {
+            visual.active = active
+            visual.route?.alpha = active ? 0.85 : 0.36
+            visual.holdBody?.glowWidth = active ? 7 : 2
+            visual.holdCore?.strokeColor = active ? .white : .orbitInk
+        }
+        let checkpoint = state?.checkpoint ?? 0
+        if visual.checkpoint != checkpoint {
+            visual.checkpoint = checkpoint
+            for arrow in visual.arrows {
+                arrow.node.strokeColor = arrow.segment < checkpoint ? .orbitGold : .orbitCyan
+            }
+        }
+        noteVisuals[note.id] = visual
+    }
+
+    private func makeNote(_ note: Note) -> NoteVisual {
+        let color: UIColor = note.kind == "slide" ? .orbitCyan :
+            (note.kind == "each" || note.kind == "break" ? .orbitGold : .orbitPink)
+        let root = SKNode()
+        dynamicLayer.addChild(root)
+        var route: SKShapeNode?
+        var arrows: [(segment: Int, node: SKShapeNode)] = []
+        var follower: SKShapeNode?
+        var holdBody: SKShapeNode?
+        var holdCore: SKShapeNode?
         if note.kind == "slide" {
             let path = CGMutablePath()
             for (index, p) in note.path.enumerated() {
                 if index == 0 { path.move(to: position(p)) } else { path.addLine(to: position(p)) }
             }
-            let route = SKShapeNode(path: path)
-            route.strokeColor = color.withAlphaComponent(active ? 0.85 : 0.36)
-            route.lineWidth = 7
-            route.glowWidth = 3
-            dynamicLayer.addChild(route)
+            let line = SKShapeNode(path: path)
+            line.strokeColor = color
+            line.alpha = 0.36
+            line.lineWidth = 7
+            line.glowWidth = 3
+            root.addChild(line)
+            route = line
             for segment in 0..<(note.path.count - 1) {
                 let start = position(note.path[segment])
                 let end = position(note.path[segment + 1])
@@ -196,59 +274,50 @@ final class OrbitScene: SKScene {
                     arrowPath.addLine(to: CGPoint(x: 2, y: 0))
                     arrowPath.addLine(to: CGPoint(x: -4, y: -6))
                     let arrow = SKShapeNode(path: arrowPath)
-                    arrow.strokeColor = segment < (state?.checkpoint ?? 0) ? .orbitGold : color
+                    arrow.strokeColor = color
                     arrow.lineWidth = 2
                     arrow.position = CGPoint(x: start.x + (end.x - start.x) * fraction, y: start.y + (end.y - start.y) * fraction)
                     arrow.zRotation = atan2(end.y - start.y, end.x - start.x)
-                    dynamicLayer.addChild(arrow)
+                    root.addChild(arrow)
+                    arrows.append((segment, arrow))
                 }
             }
-            if time >= note.time {
-                let progress = max(0, min(1, (time - note.time - 0.15) / (note.duration - 0.15)))
-                let point = interpolate(note.path, progress: progress)
-                let star = SKShapeNode(path: starPath(radius: 13))
-                star.position = position(point)
-                star.fillColor = .white
-                star.strokeColor = .orbitCyan
-                star.lineWidth = 3
-                star.glowWidth = 4
-                star.zRotation = CGFloat(time * 3)
-                dynamicLayer.addChild(star)
-            }
+            let star = SKShapeNode(path: starPath(radius: 13))
+            star.fillColor = .white
+            star.strokeColor = .orbitCyan
+            star.lineWidth = 3
+            star.glowWidth = 4
+            root.addChild(star)
+            follower = star
         }
         if note.kind == "hold" {
-            let tailRadius = max(0.09, min(0.82, 0.09 + (time - note.time - note.duration + 1.6) / 1.6 * 0.73))
-            let tail = position(Point.target(note.lane, radius: tailRadius))
-            let path = CGMutablePath()
-            path.move(to: tail)
-            path.addLine(to: head)
-            let body = SKShapeNode(path: path)
+            let body = SKShapeNode()
             body.strokeColor = color
             body.lineWidth = 17
             body.lineCap = .round
-            body.glowWidth = active ? 7 : 2
-            dynamicLayer.addChild(body)
-            let core = SKShapeNode(path: path)
-            core.strokeColor = active ? .white : .orbitInk
+            body.glowWidth = 2
+            root.addChild(body)
+            holdBody = body
+            let core = SKShapeNode()
+            core.strokeColor = .orbitInk
             core.lineWidth = 8
-            dynamicLayer.addChild(core)
+            root.addChild(core)
+            holdCore = core
         }
-        if !active || note.kind == "hold" {
-            let node = note.kind == "slide" ? SKShapeNode(path: starPath(radius: 14)) :
-                circle(note.kind == "break" ? 13 : 11, color: color, width: 4, fill: .orbitInk.withAlphaComponent(0.8))
-            node.position = head
-            node.strokeColor = color
-            node.lineWidth = 4
-            node.glowWidth = note.kind == "break" ? 6 : 3
-            if note.kind == "slide" { node.fillColor = .orbitInk; node.zRotation = CGFloat(time * 2) }
-            dynamicLayer.addChild(node)
-            if note.kind == "break" {
-                let star = SKShapeNode(path: starPath(radius: 6))
-                star.fillColor = .orbitGold
-                star.strokeColor = .white
-                node.addChild(star)
-            }
+        let node = note.kind == "slide" ? SKShapeNode(path: starPath(radius: 14)) :
+            circle(note.kind == "break" ? 13 : 11, color: color, width: 4, fill: .orbitInk.withAlphaComponent(0.8))
+        node.strokeColor = color
+        node.lineWidth = 4
+        node.glowWidth = note.kind == "break" ? 6 : 3
+        if note.kind == "slide" { node.fillColor = .orbitInk }
+        root.addChild(node)
+        if note.kind == "break" {
+            let star = SKShapeNode(path: starPath(radius: 6))
+            star.fillColor = .orbitGold
+            star.strokeColor = .white
+            node.addChild(star)
         }
+        return NoteVisual(root: root, head: node, route: route, arrows: arrows, follower: follower, holdBody: holdBody, holdCore: holdCore)
     }
 
     private func interpolate(_ points: [Point], progress: Double) -> Point {
