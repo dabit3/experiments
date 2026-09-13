@@ -35,6 +35,42 @@ permission is required. Physical devices require ordinary Apple signing.
 
 ## Two simulators
 
+For live audio capture on a macOS VM without an output device, install BlackHole
+**before booting the simulators**:
+
+```sh
+brew install --cask blackhole-2ch
+system_profiler SPAudioDataType
+# If the installed device is still absent, restart CoreAudio once:
+sudo -n killall coreaudiod
+system_profiler SPAudioDataType
+ffmpeg -hide_banner -f avfoundation -list_devices true -i ""
+```
+
+BlackHole 2ch 0.7.1 was verified here as the default input/output at 48 kHz.
+The normal CoreAudio restart activated it without a host reboot. Do not use
+`launchctl kickstart` for this service: macOS rejected it under SIP. If activation
+requires a password or still fails, coordinate a host restart instead of changing
+system protections. Device-list mode may exit nonzero after printing its list.
+Restart any simulator that booted before a working host audio endpoint existed.
+Confirm BlackHole appears in both device listings before proceeding. A device
+listing alone does not verify game playback; capture and inspect the live signal.
+
+For continuous loopback, use an `AVAudioEngine.inputNode` tap writing CAF and log
+each buffer's `hostTime`, `sampleTime`, frame offset and frame count. Combined
+ffmpeg AVFoundation capture dropped audio packets on this VM. Record desktop video
+separately with original input PTS, then align the common interval using host
+timestamps. Finalize `AVAudioFile` before exit and compare decoded frames with
+callback totals; distinguish a truncated EOF from interior gaps.
+
+The [audio test report](https://app.devin.ai/attachments/0b002cd6-e974-40ea-a7a5-ab20371dd017/report.md)
+and [reproduction scripts and logs](https://app.devin.ai/attachments/a43e66f1-f8a0-4c80-b3b0-805fe5078ddf/candy-audio-evidence.tar.gz)
+document the Debug `13cae2b` two-iPad acceptance run, native tap feedback, per-peer
+mute isolation, waveform/clock checks and the timestamp-aligned video. Its CAF had
+zero interior gaps and a 6.67 ms silent EOF discrepancy after all outcomes; the
+delivered interval excludes that tail. The analysis environment used Python 3.9
+with numpy 2.0.2, scipy 1.13.1, av 15.1.0 and Pillow 11.3.0.
+
 List devices with `xcrun simctl list devices available`. Use **two different UUIDs**:
 
 ```sh
@@ -84,7 +120,9 @@ uses manual touch. Ready and rematch hooks only send their normal lobby commands
 There is deliberately no score-setting or victory-forcing endpoint.
 
 Each app logs input origin, peer identity, phase, common audio start and results to
-its sandbox `Documents/telemetry.jsonl` (tab-separated event payloads). The server
+its sandbox `Documents/telemetry.jsonl` (tab-separated event payloads). During
+playback, `audio_clock` also samples the actual `AVAudioPlayer.currentTime`,
+server/start timestamps, playback state and volume once per second. The server
 emits JSON events to stdout. Capture the same match, not separate solo runs:
 
 ```sh
@@ -172,9 +210,9 @@ peer IDs, synchronized starts, shared scores/results, reconnect and rematch.
 - Server time validation allows 220 ms packet/clock skew; this is local friendly
   competition rather than hardened ranked anti-cheat. Unencrypted `ws` is intended
   for trusted LAN use; configure TLS before internet exposure.
-- Hardware audio output latency and Bluetooth calibration vary. This VM has no
-  audio output/capture device: the WAVs decode with nonzero signal and both clients
-  schedule playback against the same epoch, but audible playback is unverified.
-  The test recording is silent; it does not establish acoustic synchronization.
+- Hardware audio output latency and Bluetooth calibration vary. BlackHole provides
+  real simulator loopback for waveform and timing checks; it does not establish
+  physical speaker, Bluetooth or iPad output latency. Earlier silent recordings
+  were captured before the virtual audio endpoint was installed.
 - iPad landscape only. Full VoiceOver rhythm gameplay and physical-device touch/
   audio latency are not asserted by simulator evidence.
