@@ -6,6 +6,7 @@ final class ArenaScene: SKScene {
     var previewStyle: String?
     private var artists: [String: FighterArt] = [:]
     private let world = SKNode()
+    private let combat = SKNode()
     private let shots = SKNode()
     private let effects = SKNode()
     private var lastEvent = 0
@@ -37,8 +38,9 @@ final class ArenaScene: SKScene {
             let float = SKAction.moveBy(x: 40, y: 150, duration: Double(4 + index % 5))
             ember.run(.repeatForever(.sequence([float, .moveBy(x: -40, y: -150, duration: 0)])))
         }
-        world.addChild(shots)
-        world.addChild(effects)
+        world.addChild(combat)
+        combat.addChild(shots)
+        combat.addChild(effects)
         effects.zPosition = 30
         if let style = previewStyle {
             let artist = FighterArt(style: style)
@@ -56,17 +58,18 @@ final class ArenaScene: SKScene {
             return
         }
         guard let state = match else { return }
+        fitCombatToSafeArea()
         for player in state.players {
             if artists[player.id] == nil {
                 let shadow = SKShapeNode(ellipseOf: CGSize(width: 120, height: 20))
                 shadow.name = "shadow-\(player.id)"
                 shadow.fillColor = UIColor.black.withAlphaComponent(0.55)
                 shadow.strokeColor = .clear
-                world.addChild(shadow)
+                combat.addChild(shadow)
                 let artist = FighterArt(style: player.style)
                 artist.zPosition = 5
                 artists[player.id] = artist
-                world.addChild(artist)
+                combat.addChild(artist)
             }
             guard let artist = artists[player.id] else { continue }
             let target = CGPoint(x: player.x, y: Double(floor) + player.y)
@@ -78,7 +81,7 @@ final class ArenaScene: SKScene {
             }
             artist.animate(pose: player.pose, frame: player.frame, time: currentTime,
                            facing: player.facing, stunned: player.stun > 0)
-            world.childNode(withName: "shadow-\(player.id)")?.position = CGPoint(x: player.x, y: floor)
+            combat.childNode(withName: "shadow-\(player.id)")?.position = CGPoint(x: player.x, y: floor)
             if player.pose == "dash" && Int(currentTime * 60) % 4 == 0 {
                 speedLines(at: artist.position, direction: player.facing)
             }
@@ -103,6 +106,16 @@ final class ArenaScene: SKScene {
             lastPhase = state.phase
             if state.phase == "fight" { announce("LET IT RIFT", color: Ink.cream, duration: 0.8) }
         }
+    }
+
+    private func fitCombatToSafeArea() {
+        guard let view, view.bounds.width > 0, view.bounds.height > 0 else { return }
+        let insets = view.window?.safeAreaInsets ?? view.safeAreaInsets
+        let margin = max(insets.left, insets.right) + 12
+        let renderScale = max(view.bounds.width / size.width, view.bounds.height / size.height)
+        let scale = min(1, max(0.5, (view.bounds.width - margin * 2) / (size.width * renderScale)))
+        combat.setScale(scale)
+        combat.position = CGPoint(x: size.width * (1 - scale) / 2, y: floor * (1 - scale))
     }
 
     private func speedLines(at point: CGPoint, direction: Double) {

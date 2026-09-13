@@ -95,6 +95,41 @@ xcodebuild -project RiftRequiem.xcodeproj -scheme RiftRequiem \
 
 ## Repeatable recorded duel
 
+### macOS simulator audio
+
+Establish a host audio endpoint **before** booting simulators. On a headless Mac:
+
+```sh
+brew install --cask blackhole-2ch
+system_profiler SPAudioDataType
+# Only if BlackHole is still missing and noninteractive sudo is authorized:
+sudo -n killall coreaudiod
+system_profiler SPAudioDataType
+```
+
+Verify BlackHole 2ch is the default input, output and system output at 48 kHz.
+The tested VM needed one CoreAudio restart, not a VM reboot. Shut down and reboot
+any simulators that were already running without an audio endpoint, then relaunch
+the apps. If sudo is unavailable, have the host administrator restore CoreAudio.
+
+For live loopback capture, SoX avoided audio-buffer loss seen with this VM's
+combined FFmpeg AVFoundation screen/audio input:
+
+```sh
+brew install sox
+sox -V3 -t coreaudio 'BlackHole 2ch' -r 48000 -c 2 -b 16 capture.wav
+# Ctrl-C after the simultaneous screen capture ends.
+```
+
+Allow microphone access for the capture process if macOS asks. Stop unrelated
+audio sources; BlackHole records all routed output. Record desktop video and
+loopback audio concurrently. Use visible mute/unmute actions near both ends
+to measure offset and drift before muxing the captured audio. Check sample count,
+RMS/peak, absence of clipping, final audio/video durations and full decode.
+Do not substitute the bundled music file for captured live audio.
+
+### Automated two-peer match
+
 Launch first guest with `-name Aria -fighter rook -connect 1 -auto 1 -evidence 1`.
 Read its room code from UI or app Documents/state.json. Launch the second with
 `-name Bram -fighter vesper -room CODE -connect 1 -auto 1 -evidence 1`.
@@ -136,6 +171,8 @@ The fighter rig uses separate upper/lower limbs, two-bone inverse kinematics,
 hand-anchored weapons and frame-driven anticipation, swing and recovery poses.
 Curved silhouettes, layered light/shadow regions, facial features, costume seams,
 metal bevels and independently moving coat tails are drawn in SpriteKit.
+Combat actors share a uniform safe-area projection, keeping device cutouts away
+from the arena boundaries without changing server coordinates or the HUD.
 AVAudioPlayer plays original generated audio. Node owns all gameplay and rooms.
 See [protocol](docs/PROTOCOL.md) and [reference observations](docs/REFERENCE.md).
 
