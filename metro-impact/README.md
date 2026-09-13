@@ -74,6 +74,18 @@ driver controls the actual guest player through the same inputs as touch.
 
 ## Reproducible two-device test
 
+### Programmatic computer use with runnable scripts
+
+[The native computer-use test kit](scripts/computer-use/README.md) includes a
+Python orchestrator, a standalone Swift/CoreGraphics mouse helper, screenshot
+OCR, capture composition, and read-only runtime assertions. It clicks the visible
+controls of two separate simulators with the in-app drivers disabled, checking
+READY gating, damage from both players, shared result, two-vote rematch and live
+SOUND output. Simulator UDIDs and screen geometry are configurable. One desktop
+pointer alternates between clients; this does not test simultaneous multitouch.
+
+### Simulator and audio preparation
+
 The testing agent owns simulator/server setup for the recorded verification.
 The following commands are for reproducing the test manually afterward:
 
