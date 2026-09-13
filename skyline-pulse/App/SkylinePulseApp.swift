@@ -87,6 +87,7 @@ struct RootView: View {
         ZStack(alignment: .bottomLeading) {
           Image("aria").resizable().scaledToFill()
             .frame(width: geo.size.width * 0.32, height: geo.size.height).clipped()
+            .allowsHitTesting(false)
           LinearGradient(colors: [.clear, ink], startPoint: .center, endPoint: .bottom)
           VStack(alignment: .leading, spacing: 12) {
             Text("SKY COURIER / 01").font(.system(size: 11, weight: .bold)).tracking(3)
@@ -106,8 +107,13 @@ struct RootView: View {
           HStack {
             brand
             Spacer()
-            Button("HOW TO PLAY") { session.guide = true }
-              .font(.system(size: 10, weight: .heavy)).foregroundStyle(gold)
+            Button {
+              session.guide = true
+            } label: {
+              Text("HOW TO PLAY")
+                .font(.system(size: 10, weight: .heavy)).foregroundStyle(gold)
+                .padding(10).contentShape(Rectangle())
+            }.buttonStyle(.plain).accessibilityIdentifier("howToPlay")
           }
           HStack {
             Text("01").foregroundStyle(gold)
@@ -153,7 +159,7 @@ struct RootView: View {
             Image("aria").resizable().scaledToFill()
               .frame(width: card.size.width, height: card.size.height).clipped()
               .hueRotation(.degrees(chart.id == "neon" ? 0 : 85))
-          }
+          }.allowsHitTesting(false)
           LinearGradient(
             colors: [.clear, .black.opacity(0.9)], startPoint: .top, endPoint: .bottom)
           VStack(alignment: .leading, spacing: 4) {
@@ -184,7 +190,9 @@ struct RootView: View {
         }.foregroundStyle(ink).padding(12).background(chosen ? gold : Color.white)
       }
       .overlay(
-        Rectangle().stroke(chosen ? gold : Color.white.opacity(0.3), lineWidth: chosen ? 3 : 1))
+        Rectangle().stroke(chosen ? gold : Color.white.opacity(0.3), lineWidth: chosen ? 3 : 1)
+      )
+      .contentShape(Rectangle())
     }
     .buttonStyle(.plain)
     .disabled(session.state != nil && session.state?.host != session.playerID)
@@ -380,6 +388,7 @@ struct RootView: View {
         Image("aria").resizable().scaledToFill()
           .frame(width: viewport.size.width, height: viewport.size.height)
           .clipped().opacity(0.24).overlay(ink.opacity(0.55))
+          .allowsHitTesting(false)
       }
     }
   }
