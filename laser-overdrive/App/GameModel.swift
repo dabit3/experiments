@@ -129,14 +129,22 @@ final class GameModel: ObservableObject {
       guard let data = try? JSONEncoder().encode(message),
         let text = String(data: data, encoding: .utf8)
       else { return }
-      task.send(.string(text)) { _ in }
+      task.send(.string(text)) { error in
+        guard message.type == "input", message.source == "touch" else { return }
+        let completedAt = Date().timeIntervalSince1970 * 1000
+        let detail = "seq=\(message.seq ?? -1) error=\(error?.localizedDescription ?? "none")"
+        Task { @MainActor [weak self] in
+          self?.log(
+            "send-completed", detail: detail, inputTime: message.time, wallTime: completedAt)
+        }
+      }
       if message.type == "input", message.source == "touch" {
         let sentAt = Date().timeIntervalSince1970 * 1000
         Task { @MainActor [weak self] in
           self?.log(
             "touch",
             detail:
-              "\(message.kind ?? "") lane=\(message.lane ?? -1) color=\(message.color ?? -1) down=\(message.down ?? false) x=\(message.x ?? -1)",
+              "\(message.kind ?? "") lane=\(message.lane ?? -1) color=\(message.color ?? -1) down=\(message.down ?? false) x=\(message.x ?? -1) seq=\(message.seq ?? -1)",
             inputTime: message.time, wallTime: sentAt)
         }
       }

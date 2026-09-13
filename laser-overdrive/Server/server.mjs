@@ -1,5 +1,5 @@
 import { createServer } from 'node:http';
-import { readFileSync, appendFileSync } from 'node:fs';
+import { readFileSync, createWriteStream } from 'node:fs';
 import { randomBytes } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import { WebSocketServer, WebSocket } from 'ws';
@@ -7,8 +7,10 @@ import { DuelEngine } from './engine.mjs';
 
 const chart = JSON.parse(readFileSync(new URL('../Resources/chart.json', import.meta.url)));
 
-export function createDuelServer({ port = 8769, startDelay = 4000, logFile } = {}) {
+export function createDuelServer({ port = 8769, startDelay = 4000, logFile, logStream } = {}) {
   const engine = new DuelEngine(chart);
+  const evidence = logStream ?? (logFile ? createWriteStream(logFile, { flags: 'a' }) : undefined);
+  evidence?.on('error', error => console.error('Evidence log failed:', error.message));
   const rooms = new Map();
   const http = createServer((request, response) => {
     response.setHeader('Content-Type', 'application/json');
@@ -20,7 +22,7 @@ export function createDuelServer({ port = 8769, startDelay = 4000, logFile } = {
   const log = (event, values) => {
     const line = JSON.stringify({ at: Date.now(), event, ...values });
     console.log(line);
-    if (logFile) appendFileSync(logFile, `${line}\n`);
+    evidence?.write(`${line}\n`);
   };
   const send = (socket, data) => {
     if (socket.readyState === WebSocket.OPEN) socket.send(JSON.stringify(data));
@@ -106,11 +108,16 @@ export function createDuelServer({ port = 8769, startDelay = 4000, logFile } = {
       } else if (message.type === 'input' && room.phase === 'playing' && message.epoch === room.epoch) {
         player = room.players.get(player.id);
         const now = (Date.now() - room.startAt) / 1000;
-        if (engine.input(player, message, now) && (player.inputCount % 120 === 0 || message.source === 'touch')) {
+        const accepted = engine.input(player, message, now);
+        if (accepted && (player.inputCount % 120 === 0 || message.source === 'touch')) {
           log('input', { room: room.code, epoch: room.epoch, id: player.id, source: message.source,
             kind: message.kind, lane: message.lane, color: message.color, x: message.x,
             seq: message.seq, time: message.time,
             score: player.score, inputs: player.inputCount });
+        } else if (!accepted) {
+          log('input-rejected', { room: room.code, epoch: room.epoch, id: player.id,
+            source: message.source, kind: message.kind, seq: message.seq, time: message.time,
+            receivedTime: now, reason: engine.inputError(player, message, now) });
         }
       } else if (message.type === 'leave') {
         room.players.get(player.id).socket = undefined;
@@ -133,7 +140,11 @@ export function createDuelServer({ port = 8769, startDelay = 4000, logFile } = {
       }
     });
   });
+  let previousTick = Date.now();
   const timer = setInterval(() => {
+    const tickAt = Date.now();
+    if (tickAt - previousTick > 100) log('tick-delay', { intervalMs: tickAt - previousTick });
+    previousTick = tickAt;
     for (const [code, room] of rooms) {
       if (room.phase === 'playing') {
         const time = (Date.now() - room.startAt) / 1000;
@@ -160,6 +171,7 @@ export function createDuelServer({ port = 8769, startDelay = 4000, logFile } = {
       for (const socket of wss.clients) socket.terminate();
       await new Promise(resolve => wss.close(resolve));
       await new Promise(resolve => http.close(resolve));
+      if (evidence && !evidence.destroyed) await new Promise(resolve => evidence.end(resolve));
     },
   };
 }

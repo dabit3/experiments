@@ -58,3 +58,13 @@ can resume without changing the start time or score. Concurrent reuse replaces
 the older connection. Wrong-token reuse and third-seat attempts are rejected.
 Outside play, disconnected seats expire after 60 seconds. Empty inactive rooms
 expire after ten minutes. Rooms and tokens are in-memory only.
+
+## Timing diagnostics
+
+`EVENT_LOG` writes JSONL asynchronously so filesystem latency cannot block input
+handling. Accepted touch entries include `seq`, `time`, `x` and server epoch-ms
+`at`; rejected inputs include the validation reason and receive song time.
+`tick-delay` records server tick intervals over 100 ms. Native `touch` and
+`send-completed` entries preserve sampling and WebSocket completion wall times.
+Compare these separately: regular sampling alone cannot prove timely delivery.
+Graceful server close drains pending evidence writes.

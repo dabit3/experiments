@@ -77,17 +77,25 @@ export class DuelEngine {
     }
   }
 
-  input(player, message, now) {
-    if (!Number.isSafeInteger(message.seq) || message.seq <= player.seq) return false;
-    if (!Number.isFinite(message.time) || Math.abs(message.time - now) > 0.25) return false;
-    const t = message.time;
-    if (t < player.lastTime - 0.025 || t < 0 || t > this.chart.duration) return false;
+  inputError(player, message, now) {
+    if (!Number.isSafeInteger(message.seq) || message.seq <= player.seq) return 'sequence';
+    if (!Number.isFinite(message.time) || Math.abs(message.time - now) > 0.25) return 'clock-skew';
+    if (message.time < player.lastTime - 0.025 || message.time < 0 || message.time > this.chart.duration) return 'time-range';
     if (message.kind === 'button') {
       if (!Number.isInteger(message.lane) || message.lane < 0 || message.lane > 5 ||
-          typeof message.down !== 'boolean') return false;
+          typeof message.down !== 'boolean') return 'button-shape';
+      if (player.buttons[message.lane].at(-1)?.down === message.down) return 'button-unchanged';
+    } else if (message.kind === 'laser') {
+      if (![0, 1].includes(message.color) || !Number.isFinite(message.x) || message.x < 0 || message.x > 1) return 'laser-shape';
+    } else return 'input-kind';
+    return null;
+  }
+
+  input(player, message, now) {
+    if (this.inputError(player, message, now)) return false;
+    const t = message.time;
+    if (message.kind === 'button') {
       const history = player.buttons[message.lane];
-      const previous = history.at(-1);
-      if (previous?.down === message.down) return false;
       history.push({ t, down: message.down });
       if (message.down) {
         let target = -1, distance = 0.121;
@@ -101,10 +109,9 @@ export class DuelEngine {
           distance <= 0.05 ? 'CRITICAL' : 'NEAR');
       }
     } else if (message.kind === 'laser') {
-      if (![0, 1].includes(message.color) || !Number.isFinite(message.x) || message.x < 0 || message.x > 1) return false;
       player.analog[message.color].push({ t, x: message.x });
       player.lasers[message.color] = message.x;
-    } else return false;
+    }
     player.seq = message.seq;
     player.lastTime = Math.max(t, player.lastTime);
     player.inputCount++;
