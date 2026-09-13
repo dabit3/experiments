@@ -79,6 +79,7 @@ final class GameClient: ObservableObject {
       while let self, current == self.generation {
         do {
           let message = try await task.receive()
+          guard current == self.generation else { return }
           let data: Data
           switch message {
           case .data(let raw): data = raw
@@ -165,7 +166,9 @@ final class GameClient: ObservableObject {
     let decoder = JSONDecoder()
     guard let reply = try? decoder.decode(Reply.self, from: data) else { return }
     if reply.type == "welcome" {
-      identity = reply.id ?? ""
+      let newIdentity = reply.id ?? ""
+      if newIdentity != identity { lastEvent = 0 }
+      identity = newIdentity
       token = reply.token ?? ""
       room = reply.code ?? room
       sequence = max(sequence, (reply.seq ?? 0) + 1)
