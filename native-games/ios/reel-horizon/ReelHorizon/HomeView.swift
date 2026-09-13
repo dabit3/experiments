@@ -16,17 +16,18 @@ struct HomeView: View {
         startPoint: .top, endPoint: .bottom
       ).ignoresSafeArea()
 
-      HStack(spacing: 14) {
-        VStack(spacing: 10) {
-          HStack {
-            Text("REEL HORIZON").font(Theme.display(26)).kerning(2).foregroundStyle(Theme.ink)
-              .shadow(color: Theme.cyan.opacity(0.6), radius: 6)
-            Text("DAY \(store.profile.gameDay)").font(Theme.mono(12)).foregroundStyle(Theme.gold)
-              .padding(.horizontal, 8).padding(.vertical, 3)
-              .background(Capsule().fill(Theme.panelLight)).overlay(Capsule().strokeBorder(Theme.panelStroke))
-            Spacer()
-            PlayerStrip()
-          }
+      VStack(spacing: 10) {
+        HStack {
+          Text("REEL HORIZON").font(Theme.display(26)).kerning(2).foregroundStyle(Theme.ink)
+            .lineLimit(1).fixedSize()
+            .shadow(color: Theme.cyan.opacity(0.6), radius: 6)
+          Text("DAY \(store.profile.gameDay)").font(Theme.mono(12)).foregroundStyle(Theme.gold)
+            .padding(.horizontal, 8).padding(.vertical, 3)
+            .background(Capsule().fill(Theme.panelLight)).overlay(Capsule().strokeBorder(Theme.panelStroke))
+          Spacer()
+          PlayerStrip()
+        }
+        HStack(spacing: 14) {
           MapView(
             waterways: WaterwayCatalog.all, profile: store.profile, selected: selected ?? store.profile.currentWaterwayID
           ) { waterway in
@@ -35,14 +36,14 @@ struct HomeView: View {
           .panel(padding: 6, radius: 12)
           .accessibilityElement(children: .contain)
           .accessibilityIdentifier("home.map")
-        }
 
-        VStack(spacing: 10) {
-          WaterwayCard(waterway: selectedWaterway)
-          Spacer(minLength: 0)
-          MenuRail()
+          VStack(spacing: 10) {
+            WaterwayCard(waterway: selectedWaterway)
+            Spacer(minLength: 0)
+            MenuRail()
+          }
+          .frame(width: 300)
         }
-        .frame(width: 300)
       }
       .padding(14)
     }

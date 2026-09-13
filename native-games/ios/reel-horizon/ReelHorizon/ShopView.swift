@@ -314,21 +314,24 @@ struct ProfileView: View {
         HStack(alignment: .top, spacing: 10) {
           VStack(alignment: .leading, spacing: 8) {
             Text("Statistics").capsLabel(13, color: Theme.cyan)
-            statRow("Level", "\(p.level)  ·  \(p.xp) XP")
-            statRow("Fish caught", "\(p.stats.totalCatches)")
-            statRow("Released", "\(p.stats.totalReleased)")
-            statRow("Species", "\(p.stats.speciesCaught.count) / \(SpeciesCatalog.all.count)")
-            statRow("Heaviest", p.stats.heaviestLb > 0 ? "\(p.stats.heaviestLb.lbOz) \(SpeciesCatalog.find(p.stats.heaviestSpeciesID ?? "bluegill").name)" : "—")
-            statRow("Casts", "\(p.stats.casts)")
-            statRow("Line breaks", "\(p.stats.lineBreaks)")
-            statRow("Lost fish", "\(p.stats.fishLost)")
-            statRow("Credits earned", "\(p.stats.creditsEarned)")
-            statRow("Days fished", "\(p.stats.daysFished)")
+            ScrollView {
+              VStack(alignment: .leading, spacing: 6) {
+                statRow("Level", "\(p.level)  ·  \(p.xp) XP")
+                statRow("Fish caught", "\(p.stats.totalCatches)")
+                statRow("Released", "\(p.stats.totalReleased)")
+                statRow("Species", "\(p.stats.speciesCaught.count) / \(SpeciesCatalog.all.count)")
+                statRow("Heaviest", p.stats.heaviestLb > 0 ? "\(p.stats.heaviestLb.lbOz) \(SpeciesCatalog.find(p.stats.heaviestSpeciesID ?? "bluegill").name)" : "—")
+                statRow("Casts", "\(p.stats.casts)")
+                statRow("Line breaks", "\(p.stats.lineBreaks)")
+                statRow("Lost fish", "\(p.stats.fishLost)")
+                statRow("Credits earned", "\(p.stats.creditsEarned)")
+                statRow("Days fished", "\(p.stats.daysFished)")
+              }
+            }
             Divider().overlay(Theme.panelStroke)
             Toggle(isOn: Binding(get: { store.profile.hapticsEnabled }, set: { store.profile.hapticsEnabled = $0; store.save() })) {
               Text("Haptics").font(Theme.body(12, weight: .bold)).foregroundStyle(Theme.ink)
             }.tint(Theme.cyanDeep)
-            Spacer()
             ChromeButton(title: confirmReset ? "Tap again to reset" : "Reset progress", tone: .red, size: 11, minWidth: 0) {
               if confirmReset { store.resetProgress() } else { confirmReset = true }
             }
