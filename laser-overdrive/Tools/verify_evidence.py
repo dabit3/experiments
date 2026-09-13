@@ -37,7 +37,7 @@ def verify(first, second, server):
         for logs, identity in zip([first, second], ids):
             samples = [entry for entry in logs if entry["event"] == "snapshot"
                        and entry["epoch"] == a["epoch"] and 4 < entry["songTime"] < 40
-                       and entry["audioTime"] is not None]
+                       and entry.get("audioTime") is not None]
             drift = [abs(entry["songTime"] - entry["audioTime"]) for entry in samples]
             check(f"local music follows song clock for {identity}", len(drift) > 15 and max(drift) < 0.18,
                   {"samples": len(drift), "maximumSeconds": max(drift) if drift else None})

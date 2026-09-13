@@ -48,6 +48,7 @@ final class GameModel: ObservableObject {
   private var pingTimer: Timer?
   private var reconnectTask: Task<Void, Never>?
   private var bestRTT = Double.infinity
+  private var awaitingJoinedState = false
   private var seq = 0
   private var createRoom = false
   private var wantsConnection = false
@@ -181,6 +182,7 @@ final class GameModel: ObservableObject {
         offset = serverNow - (sent + localTime) / 2
       }
     case "joined":
+      awaitingJoinedState = true
       connected = true
       roomCode = message.code ?? roomCode
       seq = message.nextSeq ?? seq
@@ -202,7 +204,7 @@ final class GameModel: ObservableObject {
       startAt = message.startAt ?? 0
       if nextEpoch != epoch {
         epoch = nextEpoch
-        seq = 0
+        if !awaitingJoinedState { seq = 0 }
         buttons = Array(repeating: false, count: 6)
         noteDown.removeAll()
         noteUp.removeAll()
@@ -213,6 +215,7 @@ final class GameModel: ObservableObject {
       } else if nextPhase == "playing" && phase != "playing" {
         scheduleAudio()
       }
+      awaitingJoinedState = false
       phase = nextPhase
       if phase != lastPhase {
         log("phase", detail: "\(phase), startAt=\(startAt)")
