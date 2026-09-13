@@ -12,9 +12,9 @@
 		393A303C1B807D48D8CA67C4 /* ArenaScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5941B36086B2DFE76CAF801D /* ArenaScene.swift */; };
 		46218523840F60A938F11C58 /* cancel.wav in Resources */ = {isa = PBXBuildFile; fileRef = 02D6FE82E1A1395AB64C78C9 /* cancel.wav */; };
 		47486BE0C63E332E9E33CC5E /* DuelClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738828F78F08B0435D6BDEE6 /* DuelClient.swift */; };
-		5063EEC4EAAD0E139F6B9D27 /* cathedral.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C3B2D5256D5927CD8D6CFD2 /* cathedral.png */; };
 		559BD339ADC76B2A97F9836D /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C941B430A3D3595441FB8B /* Sound.swift */; };
 		624615DFBDA5BD653B8696B9 /* slash.wav in Resources */ = {isa = PBXBuildFile; fileRef = 642325E461E759DAC712947A /* slash.wav */; };
+		700DBF47485451FB61443D2D /* Art.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8740D39211CE8F26497F0678 /* Art.xcassets */; };
 		85C86D301A1D2728990A7FF9 /* cathedral-riff.wav in Resources */ = {isa = PBXBuildFile; fileRef = FB94D2A4BAD19BF244019EAA /* cathedral-riff.wav */; };
 		93A60337F8AF9C2538AD1B0F /* block.wav in Resources */ = {isa = PBXBuildFile; fileRef = FB33F4E5006C4B35D8C4548B /* block.wav */; };
 		DCF8CD9BF7E42543CB9B67FA /* RiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E54F549F9B2A9F0303AFDA /* RiftApp.swift */; };
@@ -36,7 +36,6 @@
 
 /* Begin PBXFileReference section */
 		02D6FE82E1A1395AB64C78C9 /* cancel.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cancel.wav; sourceTree = "<group>"; };
-		0C3B2D5256D5927CD8D6CFD2 /* cathedral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cathedral.png; sourceTree = "<group>"; };
 		1F45935E2C08162B179BBE84 /* FighterArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FighterArt.swift; sourceTree = "<group>"; };
 		2C473FB8198FBA693A6296FF /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		43A2540C9669EE7F422FA561 /* finish.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = finish.wav; sourceTree = "<group>"; };
@@ -45,6 +44,7 @@
 		642325E461E759DAC712947A /* slash.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = slash.wav; sourceTree = "<group>"; };
 		66C941B430A3D3595441FB8B /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
 		738828F78F08B0435D6BDEE6 /* DuelClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuelClient.swift; sourceTree = "<group>"; };
+		8740D39211CE8F26497F0678 /* Art.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Art.xcassets; sourceTree = "<group>"; };
 		9768D2085733A38683AF53B1 /* RiftRequiemUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RiftRequiemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2E54F549F9B2A9F0303AFDA /* RiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiftApp.swift; sourceTree = "<group>"; };
 		B677BB17900E2E22C172EBCB /* ControlsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsUITests.swift; sourceTree = "<group>"; };
@@ -67,10 +67,10 @@
 		4A501F3A7E3FCC63435ECFDC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8740D39211CE8F26497F0678 /* Art.xcassets */,
 				FB33F4E5006C4B35D8C4548B /* block.wav */,
 				02D6FE82E1A1395AB64C78C9 /* cancel.wav */,
 				FB94D2A4BAD19BF244019EAA /* cathedral-riff.wav */,
-				0C3B2D5256D5927CD8D6CFD2 /* cathedral.png */,
 				43A2540C9669EE7F422FA561 /* finish.wav */,
 				E96D23EA664B0D61E5B2C045 /* hit.wav */,
 				642325E461E759DAC712947A /* slash.wav */,
@@ -188,10 +188,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				700DBF47485451FB61443D2D /* Art.xcassets in Resources */,
 				93A60337F8AF9C2538AD1B0F /* block.wav in Resources */,
 				46218523840F60A938F11C58 /* cancel.wav in Resources */,
 				85C86D301A1D2728990A7FF9 /* cathedral-riff.wav in Resources */,
-				5063EEC4EAAD0E139F6B9D27 /* cathedral.png in Resources */,
 				087591B88F6486615349B71D /* finish.wav in Resources */,
 				E25317627D6DB8FAAF8E6FBA /* hit.wav in Resources */,
 				624615DFBDA5BD653B8696B9 /* slash.wav in Resources */,
