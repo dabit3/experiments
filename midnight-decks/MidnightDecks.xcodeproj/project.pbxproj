@@ -11,6 +11,8 @@
 		5DDD29CE022B57FD47274774 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B373F5F328D9330566D06907 /* App.swift */; };
 		B1D14215BED22D5939C0CD4D /* DeckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F421EF0EA2B0418A18C8F5C0 /* DeckView.swift */; };
 		BBEB3DAAF686097D89FEF91F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414E31CE480787B3BE9858E0 /* Models.swift */; };
+		C68255E989C9E658F2E6B493 /* afterimage.wav in Resources */ = {isa = PBXBuildFile; fileRef = BFC5CC988AD73E4CA9D9E807 /* afterimage.wav */; };
+		D9EE26C1FDBA733140B2DB89 /* chart.json in Resources */ = {isa = PBXBuildFile; fileRef = 9997C147AB390B09ED8DC9B4 /* chart.json */; };
 		F71605E11581020A27CAA05B /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA03FAE2A14BBEE35B63112 /* Session.swift */; };
 /* End PBXBuildFile section */
 
@@ -18,7 +20,9 @@
 		414E31CE480787B3BE9858E0 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		5EA03FAE2A14BBEE35B63112 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		883231F30E4BF5A2DA8CA114 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
+		9997C147AB390B09ED8DC9B4 /* chart.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = chart.json; sourceTree = "<group>"; };
 		B373F5F328D9330566D06907 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		BFC5CC988AD73E4CA9D9E807 /* afterimage.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = afterimage.wav; sourceTree = "<group>"; };
 		BFCB8BB05561C0B0B87CC196 /* MidnightDecks.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = MidnightDecks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E85ED4AA36FE296B181A59AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F421EF0EA2B0418A18C8F5C0 /* DeckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeckView.swift; sourceTree = "<group>"; };
@@ -29,6 +33,7 @@
 			isa = PBXGroup;
 			children = (
 				EEF9C4220830EDE1126C7E86 /* App */,
+				FCD78162FD8A1CC355DC899C /* Resources */,
 				F8F0F2BC4A43F2FDB15720DD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,6 +59,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		FCD78162FD8A1CC355DC899C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BFC5CC988AD73E4CA9D9E807 /* afterimage.wav */,
+				9997C147AB390B09ED8DC9B4 /* chart.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -62,6 +76,7 @@
 			buildConfigurationList = D79FAFD6DDE209B8606850A6 /* Build configuration list for PBXNativeTarget "MidnightDecks" */;
 			buildPhases = (
 				1E9A53A1D01CD3E5B6F470A7 /* Sources */,
+				DAF7837333E680F3212DB6F2 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -103,6 +118,18 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DAF7837333E680F3212DB6F2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C68255E989C9E658F2E6B493 /* afterimage.wav in Resources */,
+				D9EE26C1FDBA733140B2DB89 /* chart.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1E9A53A1D01CD3E5B6F470A7 /* Sources */ = {
