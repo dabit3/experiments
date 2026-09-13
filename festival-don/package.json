@@ -1,0 +1,18 @@
+{
+  "name": "festival-don",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.mjs",
+    "test": "node --test test/*.test.mjs",
+    "lint": "node --check server/index.mjs && node --check server/game.mjs && node --check scripts/compose.mjs",
+    "assets": "node scripts/compose.mjs"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
