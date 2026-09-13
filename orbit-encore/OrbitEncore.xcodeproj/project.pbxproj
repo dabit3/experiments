@@ -9,22 +9,41 @@
 /* Begin PBXBuildFile section */
 		153F53881A21801F81FC8F2A /* OrbitEncoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA7342C538C5C69AC732A97 /* OrbitEncoreApp.swift */; };
 		41A9223F6376D8E423E6D695 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D631C2EE369BFE04F6BD01 /* Models.swift */; };
+		54DED0C43ACBB244032CF310 /* neon.wav in Resources */ = {isa = PBXBuildFile; fileRef = 90D32FABDB665623D1C084EB /* neon.wav */; };
+		AD09CED9CC2EB2B81B29AA99 /* sugar.wav in Resources */ = {isa = PBXBuildFile; fileRef = 404C564ED50AFA522CC6FF35 /* sugar.wav */; };
 		AF9FE9CEAA47159306DF5CDB /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA46376B821E5593AEBF44C /* AudioEngine.swift */; };
 		B1BA3BF3D3D1DE5A2187208D /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDABAFBF855C0AD91C1790A4 /* GameClient.swift */; };
+		CBE057C0A05D4157ED6B100F /* cosmic-bunny.png in Resources */ = {isa = PBXBuildFile; fileRef = BED9135AE613029F4D077F3F /* cosmic-bunny.png */; };
+		E5C2F1AA22DC65CB78951748 /* charts.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E4E6C55F2E6D503B3048C92 /* charts.json */; };
 		FBC967D795A5D78D1850FA38 /* OrbitScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC773A6649003FFCD49500C /* OrbitScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0BA46376B821E5593AEBF44C /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
+		404C564ED50AFA522CC6FF35 /* sugar.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sugar.wav; sourceTree = "<group>"; };
 		5AC773A6649003FFCD49500C /* OrbitScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbitScene.swift; sourceTree = "<group>"; };
+		6E4E6C55F2E6D503B3048C92 /* charts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = charts.json; sourceTree = "<group>"; };
+		90D32FABDB665623D1C084EB /* neon.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = neon.wav; sourceTree = "<group>"; };
 		95D631C2EE369BFE04F6BD01 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		9FA7342C538C5C69AC732A97 /* OrbitEncoreApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbitEncoreApp.swift; sourceTree = "<group>"; };
 		B64C2A489BF9CD4C33E6CE0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		BED9135AE613029F4D077F3F /* cosmic-bunny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cosmic-bunny.png"; sourceTree = "<group>"; };
 		CDABAFBF855C0AD91C1790A4 /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
 		F8485AF553F59E9848F607E7 /* OrbitEncore.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = OrbitEncore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		07A1CE631C9529BE89E7148E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6E4E6C55F2E6D503B3048C92 /* charts.json */,
+				BED9135AE613029F4D077F3F /* cosmic-bunny.png */,
+				90D32FABDB665623D1C084EB /* neon.wav */,
+				404C564ED50AFA522CC6FF35 /* sugar.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		332DEFA6E354C83BF43D5B92 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -42,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				332DEFA6E354C83BF43D5B92 /* App */,
+				07A1CE631C9529BE89E7148E /* Resources */,
 				DA119BC091E78F6AF94E076F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -62,6 +82,7 @@
 			buildConfigurationList = C824CD75DB0A709AD2530A71 /* Build configuration list for PBXNativeTarget "OrbitEncore" */;
 			buildPhases = (
 				A58313862C7C087FE7C81021 /* Sources */,
+				8F5E3F63F7DCDF47193D4867 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -103,6 +124,20 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8F5E3F63F7DCDF47193D4867 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E5C2F1AA22DC65CB78951748 /* charts.json in Resources */,
+				CBE057C0A05D4157ED6B100F /* cosmic-bunny.png in Resources */,
+				54DED0C43ACBB244032CF310 /* neon.wav in Resources */,
+				AD09CED9CC2EB2B81B29AA99 /* sugar.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A58313862C7C087FE7C81021 /* Sources */ = {

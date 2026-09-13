@@ -12,8 +12,10 @@ targets:
   OrbitEncore:
     type: application
     platform: iOS
-    sources: [App]
-    resources: [Resources]
+    sources:
+      - path: App
+      - path: Resources
+        buildPhase: resources
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: games.orbitencore.ios
