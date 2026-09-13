@@ -1,7 +1,8 @@
 # Paper Relics
 
-A native portrait iOS deckbuilder set in an original ink-and-paper theater.
-SwiftUI, hand-drawn vector illustrations, locally synthesized sound, and no dependencies,
+A native portrait iOS deckbuilder set in an original paper theater, drawn in a
+classic 8-bit console style.
+SwiftUI, runtime-drawn pixel art, locally synthesized sound, and no dependencies,
 login, backend, or paid services.
 
 ## Build and run
@@ -69,7 +70,12 @@ in the pause overlay. Haptics require a physical iPhone.
 
 ## Design and validation
 
-Original vector portraits and icon use an emerald, parchment and copper palette.
+All art is original pixel work rendered at runtime with SwiftUI `Canvas`: a bright
+limited console palette, authored 8x8 and 16x16 sprites, hard-edged bevelled windows,
+and a custom 5x7 bitmap font (`PixelFont` in `Sources/App/Art.swift`). Longer body
+copy uses the rounded system sans; no serif typefaces are used anywhere. Animations
+are short, stepped and linear (sprite bobbing, blink cursors, hit flashes) rather than
+eased.
 The interface supports safe areas, scrolling on compact devices, VoiceOver card labels,
 and Reduced Motion for dealing transitions. This V1 is designed for portrait iPhones;
 iPad and landscape are not targeted. Typography is deliberately sized for readable

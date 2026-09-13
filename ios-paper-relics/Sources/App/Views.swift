@@ -24,141 +24,121 @@ struct RootView: View {
       }
       if store.paused { pauseOverlay }
     }
-    .foregroundStyle(Ink.paper)
-    .animation(reduceMotion ? nil : .easeInOut(duration: 0.22), value: store.archive.run?.stage)
+    .foregroundStyle(Ink.white)
+    .animation(reduceMotion ? nil : .linear(duration: 0.12), value: store.archive.run?.stage)
     .sheet(isPresented: $store.rules) { RulesView() }
     .sheet(isPresented: $store.deckOpen) { DeckView() }
   }
 
   private func toolbar(_ run: Run) -> some View {
     HStack(spacing: 6) {
-      Text("Paper Relics").font(Ink.display(15)).tracking(1.5).foregroundStyle(Ink.gilt)
+      PixelText("PAPER RELICS", px: 1.5, color: Ink.gold, shadow: Ink.black)
       Spacer()
       Button {
         store.deckOpen = true
       } label: {
         HStack(spacing: 6) {
-          ZStack {
-            RoundedRectangle(cornerRadius: 2).fill(Ink.parchment).frame(width: 10, height: 14)
-              .rotationEffect(.degrees(-12)).offset(x: -3)
-            RoundedRectangle(cornerRadius: 2).fill(Ink.cream).frame(width: 10, height: 14)
-              .overlay(RoundedRectangle(cornerRadius: 2).stroke(Ink.bronze, lineWidth: 0.6))
-          }
-          Text("\(run.deck.count)").font(Ink.bold(14)).monospacedDigit()
+          SpriteView(Pix.cards, px: 2)
+          PixelText("\(run.deck.count)", px: 2, color: Ink.white)
         }
         .frame(minWidth: 44, minHeight: 44)
       }.accessibilityLabel("View deck")
       Button {
         store.paused = true
       } label: {
-        Image(systemName: "pause").font(.system(size: 13, weight: .semibold)).frame(
-          width: 44, height: 44
-        )
-        .overlay(Circle().stroke(Ink.copper.opacity(0.5), lineWidth: 1).padding(6))
+        SpriteView(Pix.pause, px: 2).frame(width: 44, height: 44)
       }.accessibilityLabel("Pause")
     }
-    .foregroundStyle(Ink.copper)
     .padding(.horizontal, 24)
     .padding(.top, 2)
   }
 
   private var pauseOverlay: some View {
     ZStack {
-      Ink.deep.opacity(0.96).ignoresSafeArea()
-      VStack(spacing: 22) {
-        ZStack {
-          Circle().stroke(Ink.copper.opacity(0.35), lineWidth: 1).frame(width: 96, height: 96)
-          Circle().stroke(Ink.copper.opacity(0.2), style: StrokeStyle(lineWidth: 1, dash: [2, 4]))
-            .frame(width: 112, height: 112)
-          Image(systemName: "moon.stars").font(.system(size: 36, weight: .ultraLight))
-            .foregroundStyle(Ink.gilt)
+      Ink.black.opacity(0.85).ignoresSafeArea()
+      Window {
+        VStack(spacing: 18) {
+          PixelText("PAUSED", px: 4, color: Ink.gold, shadow: Ink.maroon)
+          PixelText("YOUR STORY IS SAVED", px: 1.5, color: Ink.silver)
+          PrimaryButton(title: "RESUME") { store.paused = false }
+          MenuButton(title: "HOW TO PLAY") { store.rules = true }
+          MenuButton(
+            title: store.archive.sound ? "SOUND: ON" : "SOUND: OFF",
+            icon: store.archive.sound ? Pix.speaker : Pix.speakerOff
+          ) {
+            store.archive.sound.toggle()
+            store.save()
+          }
+          MenuButton(title: "SAVE & QUIT TO TITLE", tone: Ink.rose) {
+            store.save()
+            store.paused = false
+            store.home = true
+          }
         }
-        Eyebrow(text: "Intermission")
-        Text("The house lights\nrise a moment.").font(Ink.display(34)).multilineTextAlignment(
-          .center)
-        Text("Your story is safely saved.").font(Ink.italic(16)).foregroundStyle(Ink.faded)
-        PrimaryButton(title: "Resume story", symbol: "play.fill") { store.paused = false }
-          .padding(.top, 6)
-        Button("How to play") { store.rules = true }.frame(minHeight: 44)
-        Button {
-          store.archive.sound.toggle()
-          store.save()
-        } label: {
-          Label(
-            store.archive.sound ? "Sound on" : "Sound off",
-            systemImage: store.archive.sound ? "speaker.wave.2" : "speaker.slash")
-        }.frame(minHeight: 44)
-        Button("Save & return to title") {
-          store.save()
-          store.paused = false
-          store.home = true
-        }.frame(minHeight: 44).foregroundStyle(Ink.copper)
-      }.font(Ink.serif(16)).padding(32)
+        .padding(24)
+      }
+      .padding(28)
     }
+  }
+}
+
+struct BevelButtonStyle: ButtonStyle {
+  var fill: Color
+  var shade: Color
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .background(
+        ZStack(alignment: .top) {
+          fill
+          Ink.white.opacity(0.45).frame(height: 3)
+        }
+      )
+      .overlay(Rectangle().stroke(Ink.black, lineWidth: 2))
+      .background(alignment: .bottom) {
+        if !configuration.isPressed {
+          shade.frame(height: 4).offset(y: 4)
+        }
+      }
+      .background(alignment: .bottom) {
+        if !configuration.isPressed { Ink.black.frame(height: 4).offset(y: 6) }
+      }
+      .offset(y: configuration.isPressed ? 4 : 0)
+      .animation(.linear(duration: 0.05), value: configuration.isPressed)
   }
 }
 
 struct PrimaryButton: View {
   var title: String
-  var symbol = "arrow.right"
+  var symbol = ""
   var action: () -> Void
   var body: some View {
     Button(action: action) {
-      HStack {
-        Spacer()
-        Text(title).font(Ink.bold(17))
-        Spacer()
-        Image(systemName: symbol).font(.system(size: 13, weight: .semibold))
-      }
-      .padding(.horizontal, 20).frame(height: 56)
-      .foregroundStyle(Ink.deep)
-      .background(
-        ZStack {
-          RoundedRectangle(cornerRadius: 14).fill(Ink.sheet)
-          RoundedRectangle(cornerRadius: 14).fill(
-            LinearGradient(
-              colors: [.white.opacity(0.35), .clear], startPoint: .top, endPoint: .center))
+      PixelText(title.uppercased(), px: 2, color: Ink.white, shadow: Ink.black)
+        .frame(maxWidth: .infinity)
+        .overlay(alignment: .leading) {
+          Blink { PixelText("▶", px: 2, color: Ink.white) }.padding(.leading, 14)
         }
-      )
-      .overlay(
-        RoundedRectangle(cornerRadius: 14).strokeBorder(Ink.metal, lineWidth: 1.4)
-      )
-      .overlay(
-        RoundedRectangle(cornerRadius: 10).stroke(Ink.bronze.opacity(0.35), lineWidth: 0.6).padding(
-          4)
-      )
-      .shadow(color: Ink.gilt.opacity(0.25), radius: 12, x: 0, y: 4)
-      .shadow(color: .black.opacity(0.35), radius: 6, x: 0, y: 5)
-    }.buttonStyle(CardPressStyle())
+        .padding(.horizontal, 20).frame(height: 54)
+    }.buttonStyle(BevelButtonStyle(fill: Ink.green, shade: Ink.navy))
+      .padding(.bottom, 6)
   }
 }
 
-struct Eyebrow: View {
-  var text: String
+struct MenuButton: View {
+  var title: String
+  var icon: Sprite? = nil
+  var tone: Color = Ink.white
+  var action: () -> Void
   var body: some View {
-    HStack(spacing: 8) {
-      Diamond().fill(Ink.copper).frame(width: 4, height: 4)
-      Text(text.uppercased()).font(.system(size: 10, weight: .semibold)).tracking(2.8)
-      Diamond().fill(Ink.copper).frame(width: 4, height: 4)
-    }.foregroundStyle(Ink.copper)
-  }
-}
-
-struct Plaque<Content: View>: View {
-  var content: Content
-  init(@ViewBuilder content: () -> Content) { self.content = content() }
-  var body: some View {
-    content
-      .background(
-        RoundedRectangle(cornerRadius: 14).fill(
-          LinearGradient(
-            colors: [Ink.paper.opacity(0.09), Ink.paper.opacity(0.03)], startPoint: .top,
-            endPoint: .bottom))
-      )
-      .overlay(RoundedRectangle(cornerRadius: 14).stroke(Ink.copper.opacity(0.45), lineWidth: 0.9))
-      .overlay(
-        RoundedRectangle(cornerRadius: 10).stroke(Ink.copper.opacity(0.18), lineWidth: 0.6).padding(
-          4))
+    Button(action: action) {
+      HStack(spacing: 10) {
+        if let icon { SpriteView(icon, px: 2) }
+        PixelText(title.uppercased(), px: 1.5, color: tone)
+        Spacer(minLength: 0)
+      }
+      .padding(.horizontal, 16).frame(maxWidth: .infinity, minHeight: 46)
+    }.buttonStyle(BevelButtonStyle(fill: Ink.navy, shade: Ink.black))
+      .padding(.bottom, 6)
   }
 }
 
@@ -173,52 +153,60 @@ struct TitleView: View {
 
   var body: some View {
     GeometryReader { geometry in
-      let compact = geometry.size.height < 800
+      let compact = geometry.size.height < 700
       ScrollView {
-        VStack(spacing: compact ? 10 : 14) {
+        VStack(spacing: compact ? 10 : 16) {
           Eyebrow(text: "A pocket paper theater").padding(.top, compact ? 12 : 22)
           Spacer(minLength: 0)
           Proscenium(kind: .moth)
-            .frame(height: min(geometry.size.height * (compact ? 0.26 : 0.36), 300))
+            .frame(height: min(geometry.size.height * (compact ? 0.3 : 0.36), 320))
             .padding(.horizontal, 28)
-            .offset(y: lit || reduceMotion ? 0 : 10)
             .opacity(lit || reduceMotion ? 1 : 0)
-          VStack(spacing: -6) {
-            Text("Paper").font(Ink.display(compact ? 52 : 60)).tracking(2)
-            Text("Relics").font(Ink.display(compact ? 60 : 70)).tracking(2)
-              .foregroundStyle(Ink.metal)
-              .shadow(color: Ink.gilt.opacity(0.35), radius: 14, x: 0, y: 0)
+          VStack(spacing: compact ? 4 : 8) {
+            PixelText("PAPER", px: compact ? 5 : 6, color: Ink.white, shadow: Ink.navy)
+            PixelText("RELICS", px: compact ? 6 : 7, color: Ink.gold, shadow: Ink.maroon)
           }
-          .padding(.top, compact ? 4 : 10)
-          Flourish().frame(width: 150)
-          Text("Every card, a small rebellion.").font(Ink.italic(18)).foregroundStyle(Ink.faded)
+          .padding(.top, compact ? 6 : 12)
+          PixelRule().frame(width: 160)
+          PixelText("EVERY CARD, A SMALL REBELLION", px: 1.5, color: Ink.mint)
           if !compact {
-            Text("Build a deck. Break the strings.\nRewrite the final act.").font(Ink.serif(15))
-              .lineSpacing(4)
-              .multilineTextAlignment(.center).foregroundStyle(Ink.faded.opacity(0.85))
+            PixelText(
+              "BUILD A DECK. BREAK THE STRINGS.\nREWRITE THE FINAL ACT.", px: 1.5,
+              color: Ink.silver,
+              alignment: .center
+            ).padding(.top, 4)
           }
           Spacer(minLength: 8)
-          VStack(spacing: 8) {
-            PrimaryButton(title: canContinue ? "Continue your story" : "Enter the theater") {
+          Blink(period: 0.7) { PixelText("- PRESS START -", px: 2, color: Ink.white) }
+            .padding(.bottom, 4)
+          VStack(spacing: 10) {
+            PrimaryButton(title: canContinue ? "Continue" : "Start") {
               if canContinue { store.home = false } else { store.start() }
             }
-            Button("The art of playing") { store.rules = true }
-              .font(Ink.serif(15)).foregroundStyle(Ink.copper).frame(height: 44)
+            MenuButton(title: "How to play") { store.rules = true }
           }.padding(.horizontal, 32)
           HStack(spacing: 22) {
-            Label("\(store.archive.wins) endings rewritten", systemImage: "crown")
-            if store.archive.best > 0 { Text("Best \(store.archive.best)") }
+            HStack(spacing: 6) {
+              SpriteView(Pix.crown, px: 1.5)
+              PixelText("WINS \(store.archive.wins)", px: 1.5, color: Ink.silver)
+            }
+            if store.archive.best > 0 {
+              PixelText("BEST \(arcade(store.archive.best))", px: 1.5, color: Ink.gold)
+            }
           }
-          .font(Ink.serif(12)).foregroundStyle(Ink.faded.opacity(0.75))
           .padding(.bottom, 18)
         }
         .frame(minHeight: geometry.size.height)
       }.scrollIndicators(.hidden)
     }
     .onAppear {
-      withAnimation(.easeOut(duration: 0.7)) { lit = true }
+      withAnimation(.linear(duration: 0.3)) { lit = true }
     }
   }
+}
+
+func arcade(_ score: Int) -> String {
+  String(format: "%06d", max(0, score))
 }
 
 struct MapView: View {
@@ -227,99 +215,95 @@ struct MapView: View {
 
   var body: some View {
     ScrollView {
-      VStack(alignment: .leading, spacing: 22) {
+      VStack(alignment: .leading, spacing: 20) {
         HStack {
           Eyebrow(text: "Chapter \(run.step + 1) of 7")
           Spacer()
           GoldLabel(gold: run.gold)
         }
-        VStack(alignment: .leading, spacing: 8) {
-          Text(run.step == 6 ? "The final\ncurtain." : "A story in\nseven folds.").font(
-            Ink.display(40)
-          )
-          .lineSpacing(-4)
+        VStack(alignment: .leading, spacing: 10) {
+          PixelText(
+            run.step == 6 ? "THE FINAL\nCURTAIN" : "CHOOSE\nYOUR PATH", px: 4, color: Ink.white,
+            shadow: Ink.navy)
           Text(
             run.step == 6
               ? "The String Queen awaits. Make your ending."
-              : "Choose a path through the paper theater."
+              : "Pick a door through the paper theater."
           )
-          .font(Ink.italic(15)).foregroundStyle(Ink.faded)
+          .font(Ink.body(14)).foregroundStyle(Ink.silver)
         }
         HStack(spacing: 0) {
           ForEach(0..<7) { index in
             if index > 0 {
-              Rectangle().fill(index <= run.step ? Ink.copper : Ink.copper.opacity(0.25))
-                .frame(height: 1)
-                .overlay(
-                  Rectangle().stroke(
-                    Ink.deep, style: StrokeStyle(lineWidth: 1, dash: [3, 3])
-                  ).frame(height: 1).opacity(index <= run.step ? 0 : 1))
+              HStack(spacing: 3) {
+                ForEach(0..<3) { _ in
+                  Rectangle().fill(index <= run.step ? Ink.gold : Ink.gray).frame(height: 3)
+                }
+              }
             }
             ZStack {
-              if index == run.step {
-                Circle().fill(Ink.metal).frame(width: 32, height: 32)
-                  .shadow(color: Ink.gilt.opacity(0.5), radius: 8)
-              } else {
-                Circle().fill(index < run.step ? Ink.copper.opacity(0.35) : Ink.deep.opacity(0.7))
-                  .frame(width: 28, height: 28)
-                Circle().stroke(Ink.copper.opacity(0.5), lineWidth: 0.8).frame(
-                  width: 28, height: 28)
-              }
+              Rectangle().fill(
+                index == run.step ? Ink.gold : index < run.step ? Ink.green : Ink.navy
+              )
+              .frame(width: 28, height: 28)
+              .overlay(Rectangle().stroke(Ink.white, lineWidth: 2))
               if index == 6 {
-                Image(systemName: "crown.fill").font(.system(size: 11))
+                SpriteView(Pix.crown, px: 2)
               } else {
-                Text(index < run.step ? "✓" : "\(index + 1)").font(Ink.bold(12))
+                PixelText(
+                  index < run.step ? "✓" : "\(index + 1)", px: 2,
+                  color: index == run.step ? Ink.black : Ink.white)
               }
             }
-            .foregroundStyle(index == run.step ? Ink.deep : Ink.paper)
           }
         }.padding(.vertical, 4)
         ForEach(run.routes) { route in
           Button {
             store.act { $0.chooseRoute(route.id) }
           } label: {
-            HStack(spacing: 16) {
+            HStack(spacing: 14) {
               ZStack {
-                RoundedRectangle(cornerRadius: 12).fill(
-                  LinearGradient(colors: [Ink.moss, Ink.deep], startPoint: .top, endPoint: .bottom))
-                RadialGradient(
-                  colors: [Ink.gilt.opacity(0.25), .clear], center: .center, startRadius: 2,
-                  endRadius: 44
-                ).clipShape(RoundedRectangle(cornerRadius: 12))
+                Ink.black
                 if let enemy = route.enemy {
-                  EnemyArt(kind: enemy).padding(4)
+                  EnemyArt(kind: enemy).padding(6)
                 } else {
-                  SceneGlyph(symbol: route.symbol).padding(12)
+                  SceneGlyph(symbol: route.symbol).padding(14)
                 }
               }
-              .frame(width: 84, height: 84)
-              .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(Ink.metal, lineWidth: 1))
-              VStack(alignment: .leading, spacing: 6) {
-                Text(route.title).font(Ink.display(21)).foregroundStyle(Ink.paper)
-                Text(route.subtitle).font(Ink.serif(13)).foregroundStyle(Ink.faded)
+              .frame(width: 76, height: 76)
+              .overlay(Rectangle().stroke(Ink.white, lineWidth: 2))
+              VStack(alignment: .leading, spacing: 7) {
+                PixelText(route.title.uppercased(), px: 1.5, color: Ink.white, maxWidth: 200)
+                Text(route.subtitle).font(Ink.body(13)).foregroundStyle(Ink.silver)
                 if route.subtitle.hasPrefix("Elite") || route.subtitle.hasPrefix("Boss") {
-                  Text(route.subtitle.hasPrefix("Boss") ? "FINALE" : "ELITE")
-                    .font(.system(size: 8, weight: .bold)).tracking(1.5)
-                    .padding(.horizontal, 7).padding(.vertical, 3)
-                    .background(Ink.wine, in: Capsule()).foregroundStyle(Ink.paper)
+                  PixelText(
+                    route.subtitle.hasPrefix("Boss") ? "BOSS" : "ELITE", px: 1, color: Ink.white
+                  )
+                  .padding(.horizontal, 5).padding(.vertical, 3).background(Ink.red)
                 }
               }
               Spacer(minLength: 0)
-              Image(systemName: "chevron.right").font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(Ink.copper)
+              Blink(period: 0.6) { PixelText("▶", px: 2, color: Ink.gold) }
             }
-            .padding(14)
-            .modifier(PlaqueStyle())
-          }.buttonStyle(CardPressStyle())
+            .padding(12)
+            .frame(maxWidth: .infinity)
+          }
+          .buttonStyle(WindowButtonStyle())
         }
         HStack {
-          Label("\(run.hp) / \(run.maxHP)", systemImage: "heart.fill").foregroundStyle(Ink.red)
+          HStack(spacing: 6) {
+            SpriteView(Pix.heart, px: 2)
+            PixelText("\(run.hp)/\(run.maxHP)", px: 2, color: Ink.rose)
+          }
           Spacer()
-          Text("\(run.deck.count) cards in your deck").foregroundStyle(Ink.faded)
-        }.font(Ink.serif(14))
-        Flourish()
-        VStack(alignment: .leading, spacing: 14) {
-          Eyebrow(text: "Your keepsakes")
+          HStack(spacing: 6) {
+            SpriteView(Pix.cards, px: 2)
+            PixelText("\(run.deck.count) CARDS", px: 1.5, color: Ink.silver)
+          }
+        }
+        PixelRule()
+        VStack(alignment: .leading, spacing: 12) {
+          Eyebrow(text: "Relics")
           ForEach(run.relics, id: \.self) { relic in RelicRow(relic: relic) }
         }
       }.padding(24)
@@ -327,9 +311,11 @@ struct MapView: View {
   }
 }
 
-struct PlaqueStyle: ViewModifier {
-  func body(content: Content) -> some View {
-    Plaque { content }
+struct WindowButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .background(configuration.isPressed ? Ink.blue : Ink.navy)
+      .overlay(PixelFrame(color: configuration.isPressed ? Ink.gold : Ink.white))
   }
 }
 
@@ -337,13 +323,11 @@ struct GoldLabel: View {
   var gold: Int
   var body: some View {
     HStack(spacing: 6) {
-      ZStack {
-        Circle().fill(Ink.metal)
-        Circle().stroke(Ink.deep.opacity(0.4), lineWidth: 0.6).padding(2.5)
-      }.frame(width: 14, height: 14)
-      Text("\(gold)").font(Ink.bold(14)).monospacedDigit()
-    }.foregroundStyle(Ink.gilt)
-      .accessibilityLabel("\(gold) gold")
+      SpriteView(Pix.coin, px: 2)
+      PixelText("\(gold)", px: 2, color: Ink.gold)
+    }
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel("\(gold) gold")
   }
 }
 
@@ -361,99 +345,96 @@ struct BattleView: View {
             HStack {
               Eyebrow(text: enemy.kind == .queen ? "The finale" : "Chapter \(run.step + 1) · Duel")
               Spacer()
-              Text("Turn \(enemy.turn + 1)").font(Ink.italic(13)).foregroundStyle(Ink.faded)
+              PixelText("TURN \(enemy.turn + 1)", px: 1.5, color: Ink.silver)
             }.padding(.horizontal, 26)
             ZStack(alignment: .top) {
               Proscenium(kind: enemy.kind)
-                .frame(height: max(150, min(215, geometry.size.height * 0.27)))
+                .frame(height: max(150, min(210, geometry.size.height * 0.26)))
                 .id(enemy.kind)
-                .phaseAnimator([0, 1, 2, 3], trigger: enemy.hp) { content, phase in
-                  content.offset(
-                    x: reduceMotion || phase == 0 ? 0 : phase == 1 ? -6 : phase == 2 ? 5 : 0)
+                .phaseAnimator([0, 1, 2, 3, 4], trigger: enemy.hp) { content, phase in
+                  content
+                    .offset(x: reduceMotion || phase == 0 ? 0 : phase % 2 == 1 ? -6 : 6)
+                    .brightness(phase == 1 || phase == 3 ? 0.5 : 0)
                 } animation: { _ in
-                  .easeOut(duration: 0.07)
+                  .linear(duration: 0.05)
                 }
                 .padding(.horizontal, 22)
-                .padding(.top, 14)
-              IntentTag(intent: enemy.intent).offset(y: -4)
+                .padding(.top, 16)
+              IntentTag(intent: enemy.intent)
             }
             .overlay(alignment: .bottomTrailing) {
               if !store.enemyFeedback.isEmpty {
-                Text(store.enemyFeedback).font(Ink.display(18)).tracking(0.5)
-                  .foregroundStyle(Ink.cream)
-                  .padding(.horizontal, 12).padding(.vertical, 6)
-                  .background(Ink.wine, in: TagShape())
-                  .overlay(TagShape().stroke(Ink.gilt.opacity(0.7), lineWidth: 0.8))
-                  .shadow(color: .black.opacity(0.4), radius: 4, y: 3)
-                  .padding(.trailing, 34).padding(.bottom, 26)
-                  .transition(.move(edge: .bottom).combined(with: .opacity))
+                PixelText(store.enemyFeedback, px: 2, color: Ink.white)
+                  .padding(.horizontal, 10).padding(.vertical, 6)
+                  .background(Ink.red)
+                  .overlay(Rectangle().stroke(Ink.white, lineWidth: 2))
+                  .padding(.trailing, 34).padding(.bottom, 24)
+                  .transition(.offset(y: 12).combined(with: .opacity))
               }
             }
-            VStack(spacing: 6) {
-              Text(enemy.kind.title).font(Ink.display(compact ? 22 : 25))
+            VStack(spacing: 8) {
+              PixelText(enemy.kind.title.uppercased(), px: compact ? 2 : 2.5, color: Ink.white)
               HStack(spacing: 10) {
-                OrnateBar(value: enemy.hp, max: enemy.maxHP, color: Ink.copper).frame(width: 150)
-                Text("\(enemy.hp) / \(enemy.maxHP)").font(Ink.bold(12)).monospacedDigit()
+                PixelBar(value: enemy.hp, max: enemy.maxHP, color: barColor(enemy.hp, enemy.maxHP))
+                  .frame(width: 150)
+                PixelText("\(enemy.hp)/\(enemy.maxHP)", px: 1.5, color: Ink.white)
               }
-              HStack(spacing: 12) {
-                if enemy.block > 0 { Label("\(enemy.block) block", systemImage: "shield.fill") }
-                if enemy.poison > 0 {
-                  Label("\(enemy.poison) poison", systemImage: "drop.fill").foregroundStyle(
-                    Ink.sage)
-                }
-                if enemy.weak > 0 { Label("\(enemy.weak) weak", systemImage: "eye") }
-              }.font(Ink.serif(12)).foregroundStyle(Ink.faded).frame(height: 14)
+              HStack(spacing: 14) {
+                if enemy.block > 0 { status(Pix.shield, "\(enemy.block) BLOCK", Ink.sky) }
+                if enemy.poison > 0 { status(Pix.potion, "\(enemy.poison) POISON", Ink.mint) }
+                if enemy.weak > 0 { status(Pix.eye, "\(enemy.weak) WEAK", Ink.violet) }
+              }.frame(height: 16)
             }
           }
-          Plaque {
-            VStack(spacing: 7) {
+          Window {
+            VStack(spacing: 8) {
               HStack(spacing: 12) {
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 6) {
                   HStack(spacing: 6) {
-                    Image(systemName: run.hp * 3 <= run.maxHP ? "heart.slash.fill" : "heart.fill")
-                      .foregroundStyle(Ink.red)
-                    Text("\(run.hp)/\(run.maxHP)").font(Ink.bold(15)).monospacedDigit().fixedSize()
-                    Image(systemName: "shield.fill").foregroundStyle(Ink.faded).padding(.leading, 4)
-                    Text("\(run.block)").font(Ink.bold(15)).monospacedDigit()
+                    SpriteView(Pix.heart, px: 2)
+                    PixelText("\(run.hp)/\(run.maxHP)", px: 2, color: Ink.white)
+                    SpriteView(Pix.shield, px: 2).padding(.leading, 6)
+                    PixelText("\(run.block)", px: 2, color: Ink.white)
                   }
-                  OrnateBar(value: run.hp, max: run.maxHP, color: Ink.red, height: 5).frame(
-                    width: 128)
+                  PixelBar(
+                    value: run.hp, max: run.maxHP, color: barColor(run.hp, run.maxHP), height: 8
+                  )
+                  .frame(width: 130)
                 }
                 Spacer(minLength: 0)
-                HStack(spacing: 7) {
+                HStack(spacing: 6) {
                   ZStack {
-                    Circle().fill(
-                      RadialGradient(
-                        colors: [Ink.gilt, Ink.copper, Ink.bronze], center: .init(x: 0.35, y: 0.3),
-                        startRadius: 1, endRadius: 22))
-                    Circle().stroke(Ink.deep.opacity(0.35), lineWidth: 0.8).padding(4)
-                    Text("\(run.energy)").font(Ink.display(22)).foregroundStyle(Ink.deep)
+                    Rectangle().fill(run.energy > 0 ? Ink.gold : Ink.gray)
+                    Rectangle().stroke(Ink.black, lineWidth: 2)
+                    PixelText("\(run.energy)", px: 3, color: Ink.black)
                   }
-                  .frame(width: 40, height: 40)
-                  .shadow(color: Ink.gilt.opacity(run.energy > 0 ? 0.55 : 0), radius: 8)
-                  Text("ENERGY").font(.system(size: 8, weight: .bold)).tracking(1.4)
-                    .foregroundStyle(Ink.copper)
+                  .frame(width: 36, height: 36)
+                  .compositingGroup()
+                  .shadow(color: Ink.black, radius: 0, x: 2, y: 2)
+                  VStack(alignment: .leading, spacing: 3) {
+                    SpriteView(Pix.bolt, px: 1.5)
+                    PixelText("ENERGY", px: 1, color: Ink.gold)
+                  }
                 }
               }
-              HStack(spacing: 8) {
-                if run.weak > 0 { Text("Weak \(run.weak)").foregroundStyle(Ink.copper) }
-                if run.strength > 0 { Text("+\(run.strength) STR").foregroundStyle(Ink.copper) }
+              HStack(spacing: 10) {
+                if run.weak > 0 { PixelText("WEAK \(run.weak)", px: 1.5, color: Ink.violet) }
+                if run.strength > 0 {
+                  PixelText("+\(run.strength) STR", px: 1.5, color: Ink.copper)
+                }
                 Spacer(minLength: 0)
-                Text(store.playerFeedback)
-                  .foregroundStyle(store.playerHurt ? Ink.red : Ink.gilt)
+                PixelText(
+                  store.playerFeedback, px: 1.5, color: store.playerHurt ? Ink.rose : Ink.gold)
               }
-              .font(.system(size: 10, weight: .bold, design: .rounded))
-              .lineLimit(1).minimumScaleFactor(0.85).frame(height: 13)
+              .frame(height: 12)
             }
-            .font(.system(size: 13, weight: .medium))
-            .padding(.horizontal, 14).padding(.vertical, 10)
+            .padding(.horizontal, 14).padding(.vertical, 12)
           }
           .overlay(
-            RoundedRectangle(cornerRadius: 14).stroke(
-              run.hp * 3 <= run.maxHP ? Ink.red : .clear, lineWidth: 1.5)
+            Rectangle().stroke(run.hp * 3 <= run.maxHP ? Ink.red : .clear, lineWidth: 2).padding(3)
           )
           .padding(.horizontal, 22)
-          Text(run.lastMessage).font(Ink.italic(14)).foregroundStyle(Ink.paper)
+          Text(run.lastMessage).font(Ink.body(14)).foregroundStyle(Ink.cream)
             .lineLimit(2).multilineTextAlignment(.center).frame(height: 34).padding(.horizontal, 22)
             .accessibilityIdentifier("battleMessage")
           ScrollViewReader { reader in
@@ -471,65 +452,65 @@ struct BattleView: View {
                   .buttonStyle(CardPressStyle())
                   .id(card.id)
                   .accessibilityIdentifier("card-\(card.id)")
-                  .rotationEffect(
-                    .degrees(reduceMotion ? 0 : Double(index % 3) - 1), anchor: .bottom
-                  )
                   .transition(
                     reduceMotion
                       ? .identity
                       : .asymmetric(
-                        insertion: .offset(x: 240, y: 90).combined(with: .opacity)
-                          .combined(with: .scale(scale: 0.7)),
-                        removal: .offset(y: -60).combined(with: .opacity).combined(
-                          with: .scale(scale: 0.9))))
+                        insertion: .offset(x: 160, y: 40).combined(with: .opacity),
+                        removal: .offset(y: -40).combined(with: .opacity)))
                 }
               }
-              .padding(.horizontal, 22).padding(.top, 12).padding(.bottom, 10)
-              .animation(
-                reduceMotion ? nil : .spring(duration: 0.38, bounce: 0.22), value: run.hand)
+              .padding(.horizontal, 22).padding(.top, 12).padding(.bottom, 12)
+              .animation(reduceMotion ? nil : .linear(duration: 0.14), value: run.hand)
             }.scrollIndicators(.hidden)
               .onChange(of: run.turns) { _, _ in
                 reader.scrollTo("handStart", anchor: .leading)
               }
           }
           HStack {
-            VStack(alignment: .leading, spacing: 5) {
-              Text("\(run.hand.count) cards · tap to play · swipe hand").foregroundStyle(Ink.faded)
-              Text(
-                "Draw \(run.drawPile.count)  ·  Discard \(run.discard.count)  ·  Exhaust \(run.exhaust.count)"
-              )
-              .foregroundStyle(Ink.copper.opacity(0.9))
-            }.font(Ink.serif(12))
-            Spacer()
+            VStack(alignment: .leading, spacing: 6) {
+              PixelText(
+                "HAND \(run.hand.count) · DRAW \(run.drawPile.count)", px: 1.5, color: Ink.silver)
+              PixelText(
+                "DISCARD \(run.discard.count) EXHAUST \(run.exhaust.count)", px: 1.5,
+                color: Ink.gold)
+            }
+            Spacer(minLength: 6)
             Button {
               store.act { $0.endTurn() }
               store.chime(frequency: 330)
             } label: {
               HStack(spacing: 8) {
-                Text("End turn").font(Ink.bold(15))
-                Image(systemName: "arrow.right").font(.system(size: 12, weight: .semibold))
+                PixelText("END TURN", px: 2, color: Ink.white, shadow: Ink.black)
+                SpriteView(Pix.arrow, px: 2, tint: Ink.white)
               }
-              .padding(.horizontal, 18).frame(height: 48)
-              .background(Ink.metal, in: RoundedRectangle(cornerRadius: 12))
-              .overlay(
-                RoundedRectangle(cornerRadius: 9).stroke(Ink.deep.opacity(0.3), lineWidth: 0.7)
-                  .padding(3)
-              )
-              .foregroundStyle(Ink.deep)
-              .shadow(color: .black.opacity(0.35), radius: 5, y: 4)
-            }.buttonStyle(CardPressStyle()).accessibilityIdentifier("endTurn")
+              .padding(.horizontal, 12).frame(height: 46)
+            }
+            .buttonStyle(BevelButtonStyle(fill: Ink.copper, shade: Ink.maroon))
+            .padding(.bottom, 6)
+            .accessibilityIdentifier("endTurn")
           }.padding(.horizontal, 22).padding(.bottom, 16)
         }.padding(.top, 6)
       }.scrollIndicators(.hidden)
     }
   }
+
+  private func status(_ icon: Sprite, _ text: String, _ color: Color) -> some View {
+    HStack(spacing: 5) {
+      SpriteView(icon, px: 1.5)
+      PixelText(text, px: 1.5, color: color)
+    }
+  }
+}
+
+func barColor(_ value: Int, _ max: Int) -> Color {
+  value * 4 <= max ? Ink.red : value * 2 <= max ? Ink.gold : Ink.leaf
 }
 
 struct CardPressStyle: ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
-    configuration.label.scaleEffect(configuration.isPressed ? 0.96 : 1)
-      .brightness(configuration.isPressed ? 0.04 : 0)
-      .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
+    configuration.label.offset(y: configuration.isPressed ? -10 : 0)
+      .animation(.linear(duration: 0.06), value: configuration.isPressed)
   }
 }
 
@@ -538,9 +519,9 @@ struct RelicRow: View {
   var body: some View {
     HStack(spacing: 14) {
       RelicGlyph(relic: relic).frame(width: 46, height: 46)
-      VStack(alignment: .leading, spacing: 4) {
-        Text(relic.title).font(Ink.display(18))
-        Text(relic.text).font(Ink.serif(13)).foregroundStyle(Ink.faded)
+      VStack(alignment: .leading, spacing: 6) {
+        PixelText(relic.title.uppercased(), px: 1.5, color: Ink.gold)
+        Text(relic.text).font(Ink.body(13)).foregroundStyle(Ink.silver)
       }
     }
   }
@@ -556,9 +537,8 @@ struct CardFan: View {
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @State private var dealt = false
   var body: some View {
-    HStack(alignment: .top, spacing: -width * 0.08) {
+    HStack(alignment: .top, spacing: 10) {
       ForEach(Array(kinds.enumerated()), id: \.element) { index, kind in
-        let center = Double(index) - Double(kinds.count - 1) / 2
         Button {
           action(kind)
         } label: {
@@ -566,24 +546,19 @@ struct CardFan: View {
             CardFace(
               kind: kind, affordable: enabled(kind), unavailableLabel: unavailableLabel,
               width: width)
-            Text(footer(kind)).font(Ink.bold(12)).foregroundStyle(
-              enabled(kind) ? Ink.gilt : Ink.faded
+            PixelText(
+              footer(kind).uppercased(), px: 1.5, color: enabled(kind) ? Ink.gold : Ink.gray,
+              maxWidth: width, alignment: .center
             )
-            .multilineTextAlignment(.center).lineLimit(2).minimumScaleFactor(0.8)
             .frame(height: 30)
           }
-          .rotationEffect(.degrees(dealt ? center * 4 : 0), anchor: .bottom)
-          .offset(y: dealt ? abs(center) * 10 : 0)
         }
         .buttonStyle(CardPressStyle())
         .disabled(!enabled(kind))
         .opacity(dealt || reduceMotion ? 1 : 0)
-        .offset(y: dealt || reduceMotion ? 0 : 60)
+        .offset(y: dealt || reduceMotion ? 0 : 48)
         .animation(
-          reduceMotion ? nil : .spring(duration: 0.5, bounce: 0.2).delay(Double(index) * 0.08),
-          value: dealt
-        )
-        .zIndex(Double(index))
+          reduceMotion ? nil : .linear(duration: 0.12).delay(Double(index) * 0.1), value: dealt)
       }
     }
     .onAppear { dealt = true }
@@ -597,38 +572,47 @@ struct RewardView: View {
     GeometryReader { geometry in
       ScrollView {
         VStack(spacing: 14) {
-          Eyebrow(text: "The spoils of your story").padding(.top, 6)
-          Text("A new page.").font(Ink.display(40))
-          Text("Choose one art to add to your deck.").font(Ink.italic(15)).foregroundStyle(
-            Ink.faded)
+          Eyebrow(text: "Victory spoils").padding(.top, 6)
+          PixelText("A NEW PAGE", px: 4, color: Ink.gold, shadow: Ink.maroon)
+          Text("Choose one card to add to your deck.").font(Ink.body(14)).foregroundStyle(
+            Ink.silver)
           HStack(spacing: 22) {
-            GoldLabel(gold: run.enemy?.kind == .stag ? 40 : 25).overlay(alignment: .leading) {
-              Text("+").font(Ink.bold(14)).foregroundStyle(Ink.gilt).offset(x: -10)
+            HStack(spacing: 6) {
+              SpriteView(Pix.coin, px: 2)
+              PixelText("+\(run.enemy?.kind == .stag ? 40 : 25)", px: 2, color: Ink.gold)
             }
-            Label("Spool healed 4", systemImage: "heart.fill").foregroundStyle(Ink.red)
-          }.font(Ink.serif(13))
+            HStack(spacing: 6) {
+              SpriteView(Pix.heart, px: 2)
+              PixelText("+4 SPOOL", px: 2, color: Ink.rose)
+            }
+          }
           CardFan(
-            kinds: run.rewards, width: min(124, (geometry.size.width - 60) / 3),
+            kinds: run.rewards, width: min(118, (geometry.size.width - 104) / 3),
             footer: { _ in "Take" }, enabled: { _ in true }
           ) { kind in
             store.act { $0.claimReward(kind) }
           }.padding(.top, 14).padding(.horizontal, 12)
           if let relic = run.offeredRelic {
-            Plaque {
+            Window {
               VStack(alignment: .leading, spacing: 10) {
-                Eyebrow(text: "Your keepsake")
+                Eyebrow(text: "New relic")
                 RelicRow(relic: relic)
-                Text("Automatically included—even if you skip.")
-                  .font(Ink.italic(12)).foregroundStyle(Ink.faded)
+                Text("Yours to keep, even if you skip the card.")
+                  .font(Ink.body(12)).foregroundStyle(Ink.silver)
               }.frame(maxWidth: .infinity, alignment: .leading).padding(16)
             }
           }
         }.padding(24)
       }.scrollIndicators(.visible)
         .safeAreaInset(edge: .bottom) {
-          Button("Skip card & continue") { store.act { $0.claimReward(nil) } }
-            .font(Ink.serif(15)).foregroundStyle(Ink.copper)
-            .frame(maxWidth: .infinity, minHeight: 48).background(Ink.deep)
+          Button {
+            store.act { $0.claimReward(nil) }
+          } label: {
+            PixelText("SKIP CARD & CONTINUE", px: 1.5, color: Ink.silver)
+              .frame(maxWidth: .infinity, minHeight: 48)
+          }
+          .background(Ink.black)
+          .overlay(alignment: .top) { Rectangle().fill(Ink.white).frame(height: 2) }
         }
     }
   }
@@ -641,25 +625,24 @@ struct RewardRow: View {
     HStack(spacing: 13) {
       ZStack(alignment: .bottomTrailing) {
         ZStack {
-          RoundedRectangle(cornerRadius: 6).fill(
-            LinearGradient(colors: [Ink.moss, Ink.deep], startPoint: .top, endPoint: .bottom))
-          CardIllustration(kind: kind).padding(3)
-        }.frame(width: 60, height: 44)
-        Seal(number: kind.cost, size: 20).offset(x: 5, y: 5)
+          Ink.navy
+          CardIllustration(kind: kind).padding(6)
+        }.frame(width: 56, height: 44)
+          .overlay(Rectangle().stroke(Ink.black, lineWidth: 2))
+        CostBadge(number: kind.cost, size: 18).offset(x: 4, y: 4)
       }
-      VStack(alignment: .leading, spacing: 5) {
-        Text(kind.title).font(Ink.display(17))
-        Text(kind.text.replacingOccurrences(of: "\n", with: " ")).font(Ink.serif(13)).fixedSize(
-          horizontal: false, vertical: true)
+      VStack(alignment: .leading, spacing: 6) {
+        PixelText(kind.title.uppercased(), px: 1.5, color: Ink.black)
+        Text(kind.text.replacingOccurrences(of: "\n", with: " ")).font(Ink.body(13))
+          .foregroundStyle(Ink.night).fixedSize(horizontal: false, vertical: true)
       }
       Spacer(minLength: 0)
-      Text(trailing).font(Ink.bold(12))
+      PixelText(trailing, px: 2, color: Ink.black)
     }
-    .foregroundStyle(Ink.forest).padding(14)
-    .frame(maxWidth: .infinity, minHeight: 80, alignment: .leading)
-    .background(Ink.sheet, in: RoundedRectangle(cornerRadius: 12))
-    .overlay(
-      RoundedRectangle(cornerRadius: 12).strokeBorder(Ink.bronze.opacity(0.5), lineWidth: 0.8))
+    .padding(12)
+    .frame(maxWidth: .infinity, minHeight: 72, alignment: .leading)
+    .background(Ink.cream)
+    .overlay(Rectangle().stroke(Ink.black, lineWidth: 2))
   }
 }
 
@@ -671,36 +654,40 @@ struct RestView: View {
       VStack(spacing: 20) {
         Eyebrow(text: "A quiet interlude").padding(.top, 24)
         ZStack {
-          Circle().fill(
-            RadialGradient(
-              colors: [Ink.gilt.opacity(0.3), .clear], center: .center, startRadius: 4,
-              endRadius: 90))
-          Circle().stroke(Ink.copper.opacity(0.3), lineWidth: 1).frame(width: 150, height: 150)
-          Circle().stroke(
-            Ink.copper.opacity(0.18), style: StrokeStyle(lineWidth: 0.8, dash: [2, 5])
-          )
-          .frame(width: 170, height: 170)
-          CardIllustration(kind: .lantern).frame(width: 110, height: 100)
-        }.frame(height: 190)
-        Text("Mend the edges.").font(Ink.display(36))
-        Text("The world can wait for one small breath.").font(Ink.italic(16))
-          .foregroundStyle(Ink.faded)
-        HStack(spacing: 10) {
-          OrnateBar(value: run.hp, max: run.maxHP, color: Ink.red).frame(width: 160)
-          Text("\(run.hp) / \(run.maxHP)").font(Ink.bold(14)).foregroundStyle(Ink.red)
+          Ink.black
+          Canvas { context, size in
+            for index in 0..<40 {
+              let x = CGFloat((index * 67 + 13) % 89) / 89 * size.width
+              let y = CGFloat((index * 31 + 7) % 71) / 71 * size.height
+              context.fill(
+                Path(CGRect(x: x, y: y, width: 2, height: 2)),
+                with: .color(index % 3 == 0 ? Ink.gold : Ink.navy))
+            }
+          }
+          SpriteView(Pix.card(.lantern), px: 10)
         }
-        PrimaryButton(title: "Rest · recover 24 health", symbol: "heart.fill") {
+        .frame(height: 150).frame(maxWidth: 260)
+        .overlay(PixelFrame(color: Ink.gold, corner: Ink.black))
+        PixelText("REST STOP", px: 4, color: Ink.white, shadow: Ink.navy)
+        Text("The world can wait for one small breath.").font(Ink.body(14))
+          .foregroundStyle(Ink.silver)
+        HStack(spacing: 10) {
+          SpriteView(Pix.heart, px: 2)
+          PixelBar(value: run.hp, max: run.maxHP, color: barColor(run.hp, run.maxHP)).frame(
+            width: 150)
+          PixelText("\(run.hp)/\(run.maxHP)", px: 2, color: Ink.rose)
+        }
+        PrimaryButton(title: "Rest: heal 24") {
           store.act { $0.rest(mend: true) }
         }.padding(.top, 6)
         Button {
           store.act { $0.rest(mend: false) }
         } label: {
-          VStack(spacing: 6) {
-            Text("Rebind · gain 8 maximum health").font(Ink.bold(15))
-            Text("Also restores 8 health").font(Ink.italic(13)).foregroundStyle(Ink.faded)
+          VStack(spacing: 8) {
+            PixelText("REBIND: +8 MAX HEALTH", px: 1.5, color: Ink.gold)
+            Text("Also restores 8 health").font(Ink.body(13)).foregroundStyle(Ink.silver)
           }.frame(maxWidth: .infinity).padding(16)
-            .modifier(PlaqueStyle())
-        }.buttonStyle(CardPressStyle()).foregroundStyle(Ink.gilt)
+        }.buttonStyle(WindowButtonStyle())
       }.padding(28)
     }
   }
@@ -714,27 +701,25 @@ struct ShopView: View {
       ScrollView {
         VStack(spacing: 18) {
           Eyebrow(text: "The Night Market").padding(.top, 20)
-          Text("Rare little wonders.").font(Ink.display(34))
-          HStack(spacing: 6) {
+          PixelText("SHOP", px: 4, color: Ink.gold, shadow: Ink.maroon)
+          HStack(spacing: 8) {
             GoldLabel(gold: run.gold)
-            Text("to spend").font(Ink.italic(14)).foregroundStyle(Ink.faded)
+            PixelText("TO SPEND", px: 1.5, color: Ink.silver)
           }
           CardFan(
-            kinds: [.sever, .sanctuary, .eclipse], width: min(124, (geometry.size.width - 60) / 3),
+            kinds: [.sever, .sanctuary, .eclipse], width: min(118, (geometry.size.width - 104) / 3),
             unavailableLabel: "NEED GOLD",
-            footer: { _ in run.gold >= 45 ? "45 gold" : "Need \(45 - run.gold) more gold" },
+            footer: { _ in run.gold >= 45 ? "45 gold" : "Need \(45 - run.gold) more" },
             enabled: { _ in run.gold >= 45 }
           ) { kind in
             store.act { $0.buy(kind) }
           }.padding(.top, 14).padding(.horizontal, 12)
-          Rectangle().fill(
-            LinearGradient(
-              colors: [Ink.bronze.opacity(0.8), Ink.deep], startPoint: .top, endPoint: .bottom)
-          ).frame(height: 6).overlay(alignment: .top) {
-            Rectangle().fill(Ink.gilt.opacity(0.6)).frame(height: 1)
-          }.padding(.horizontal, 8).padding(.top, -8)
-          Text(run.lastMessage).font(Ink.italic(14)).foregroundStyle(Ink.faded)
-          PrimaryButton(title: "Continue your story") { store.act { $0.leaveShop() } }
+          Rectangle().fill(Ink.brown).frame(height: 10)
+            .overlay(alignment: .top) { Rectangle().fill(Ink.copper).frame(height: 3) }
+            .overlay(alignment: .bottom) { Rectangle().fill(Ink.black).frame(height: 2) }
+            .padding(.horizontal, 8).padding(.top, -8)
+          Text(run.lastMessage).font(Ink.body(14)).foregroundStyle(Ink.silver)
+          PrimaryButton(title: "Continue") { store.act { $0.leaveShop() } }
         }.padding(24)
       }
     }
@@ -749,42 +734,55 @@ struct ResultView: View {
     ScrollView {
       VStack(spacing: 18) {
         Eyebrow(text: won ? "An ending, rewritten" : "A story, unfinished").padding(.top, 14)
-        Proscenium(kind: won ? .moth : .queen).frame(height: 210).padding(.horizontal, 30)
-        Text(won ? "The strings\nare broken." : "The curtain\nfalls.").font(Ink.display(42))
-          .multilineTextAlignment(.center).lineSpacing(-4)
-        Text(won ? "The theater belongs to you now." : "Every torn page teaches a new art.")
-          .font(Ink.italic(16)).foregroundStyle(Ink.faded)
-        Flourish().frame(width: 170)
-        Plaque {
-          HStack(spacing: 0) {
-            resultStat("\(run.score)", label: "Run score", hero: true)
-            Rectangle().fill(Ink.copper.opacity(0.3)).frame(width: 0.6, height: 44)
-            resultStat("\(run.battles)", label: "Duels won")
-            Rectangle().fill(Ink.copper.opacity(0.3)).frame(width: 0.6, height: 44)
-            resultStat("\(run.turns)", label: "Turns")
+        Proscenium(kind: won ? .moth : .queen).frame(height: 200).padding(.horizontal, 30)
+        PixelText(
+          won ? "YOU WIN!" : "GAME OVER", px: 5, color: won ? Ink.gold : Ink.rose,
+          shadow: won ? Ink.maroon : Ink.black)
+        Text(
+          won
+            ? "The strings are broken. The theater is yours." : "Every torn page teaches a new art."
+        )
+        .font(Ink.body(14)).foregroundStyle(Ink.silver).multilineTextAlignment(.center)
+        PixelRule().frame(width: 170)
+        Window {
+          VStack(spacing: 12) {
+            PixelText("SCORE", px: 1.5, color: Ink.silver)
+            PixelText(arcade(run.score), px: 4, color: Ink.gold, shadow: Ink.black)
+            HStack(spacing: 0) {
+              resultStat("\(run.battles)", label: "Duels won")
+              Rectangle().fill(Ink.white.opacity(0.4)).frame(width: 2, height: 34)
+              resultStat("\(run.turns)", label: "Turns")
+              Rectangle().fill(Ink.white.opacity(0.4)).frame(width: 2, height: 34)
+              resultStat("\(run.gold)", label: "Gold")
+            }
           }.padding(.vertical, 16)
         }
-        Text("Personal best  \(store.archive.best)").font(Ink.bold(12)).tracking(1.5)
-          .foregroundStyle(Ink.gilt)
-        PrimaryButton(title: "Begin another story", symbol: "arrow.clockwise") { store.start() }
-        HStack {
+        if run.score >= store.archive.best && run.score > 0 {
+          Blink { PixelText("NEW HIGH SCORE!", px: 2, color: Ink.mint) }
+        } else {
+          PixelText("BEST \(arcade(store.archive.best))", px: 1.5, color: Ink.gold)
+        }
+        PrimaryButton(title: "Play again") { store.start() }
+        HStack(spacing: 10) {
           ShareLink(
             item:
               "I \(won ? "rewrote the ending" : "fought the strings") in Paper Relics: \(run.score) points, \(run.battles) duels won in \(run.turns) turns."
           ) {
-            Label("Share story", systemImage: "square.and.arrow.up")
-          }.frame(maxWidth: .infinity, minHeight: 44)
-          Button("Return to title") { store.home = true }.frame(maxWidth: .infinity, minHeight: 44)
-        }.font(Ink.serif(14)).foregroundStyle(Ink.copper)
+            PixelText("SHARE", px: 1.5, color: Ink.white).frame(maxWidth: .infinity, minHeight: 46)
+          }.buttonStyle(BevelButtonStyle(fill: Ink.navy, shade: Ink.black))
+          Button {
+            store.home = true
+          } label: {
+            PixelText("TITLE", px: 1.5, color: Ink.white).frame(maxWidth: .infinity, minHeight: 46)
+          }.buttonStyle(BevelButtonStyle(fill: Ink.navy, shade: Ink.black))
+        }.padding(.bottom, 6)
       }.padding(28)
     }.scrollIndicators(.hidden)
   }
-  private func resultStat(_ value: String, label: String, hero: Bool = false) -> some View {
-    VStack(spacing: 6) {
-      Text(value).font(Ink.display(hero ? 34 : 28)).foregroundStyle(hero ? Ink.gilt : Ink.paper)
-        .monospacedDigit()
-      Text(label.uppercased()).font(.system(size: 9, weight: .bold)).tracking(1.5)
-        .foregroundStyle(Ink.faded)
+  private func resultStat(_ value: String, label: String) -> some View {
+    VStack(spacing: 8) {
+      PixelText(value, px: 2.5, color: Ink.white)
+      PixelText(label.uppercased(), px: 1, color: Ink.silver)
     }.frame(maxWidth: .infinity)
   }
 }
@@ -797,33 +795,33 @@ struct RulesView: View {
       PaperBackground(ornaments: false)
       ScrollView {
         VStack(alignment: .leading, spacing: 22) {
-          Eyebrow(text: "The art of playing")
-          Text("Read. Fold. Strike.").font(Ink.display(34))
-          Plaque {
+          Eyebrow(text: "How to play")
+          PixelText("READ. FOLD.\nSTRIKE.", px: 3.5, color: Ink.white, shadow: Ink.navy)
+          Window {
             HStack(spacing: 14) {
               IntentTag(intent: Intent(damage: 6)).scaleEffect(0.9)
-              Image(systemName: "arrow.right").foregroundStyle(Ink.faded)
-              CardFace(kind: .guardCard, width: 72)
-            }.frame(maxWidth: .infinity).padding(.vertical, 16).padding(.horizontal, 12)
+              SpriteView(Pix.arrow, px: 2, tint: Ink.silver)
+              CardFace(kind: .guardCard, width: 76)
+            }.frame(maxWidth: .infinity).padding(.vertical, 18).padding(.horizontal, 12)
           }
           rule(
             "01", "Read the intent",
-            "The hanging tag shows the enemy's next action. Match an attack with block to protect your health."
+            "The speech bubble shows the enemy's next move. Match an attack with block to protect your health."
           )
           rule(
             "02", "Play your hand",
-            "Start with 3 energy and 5 cards. Tap a card to play; swipe to see more. The wax seal is its energy cost."
+            "Start with 3 energy and 5 cards. Tap a card to play; swipe to see more. The gold badge is its energy cost."
           )
           rule(
             "03", "Turn the page",
             "End turn lets the enemy act. Your block expires, your hand is discarded, then energy and cards refill."
           )
-          PrimaryButton(title: "Let the story begin", symbol: "sparkle") {
+          PrimaryButton(title: "Let's play") {
             store.archive.hasReadRules = true
             store.save()
             dismiss()
           }
-          DisclosureGroup("The finer arts · statuses, piles & scoring") {
+          DisclosureGroup {
             VStack(alignment: .leading, spacing: 20) {
               rule(
                 "04", "The life of a card",
@@ -842,17 +840,19 @@ struct RulesView: View {
                 "Score = 100 per duel + 5 per remaining health + gold + 500 for victory. Best score and wins stay on this device."
               )
             }.padding(.top, 20)
-          }.font(Ink.serif(14)).tint(Ink.copper)
+          } label: {
+            PixelText("MORE: STATUSES, PILES & SCORING", px: 1.5, color: Ink.gold)
+          }.tint(Ink.gold)
         }.padding(28).padding(.vertical, 15)
       }
-    }.foregroundStyle(Ink.paper).presentationDragIndicator(.visible)
+    }.foregroundStyle(Ink.white).presentationDragIndicator(.visible)
   }
   private func rule(_ number: String, _ title: String, _ text: String) -> some View {
     HStack(alignment: .top, spacing: 15) {
-      Text(number).font(Ink.display(20)).foregroundStyle(Ink.copper)
-      VStack(alignment: .leading, spacing: 6) {
-        Text(title).font(Ink.display(21))
-        Text(text).font(Ink.serif(15)).lineSpacing(3).foregroundStyle(Ink.faded)
+      PixelText(number, px: 2, color: Ink.gold)
+      VStack(alignment: .leading, spacing: 8) {
+        PixelText(title.uppercased(), px: 1.5, color: Ink.white)
+        Text(text).font(Ink.body(15)).lineSpacing(3).foregroundStyle(Ink.silver)
       }
     }
   }
@@ -867,16 +867,16 @@ struct DeckView: View {
       ScrollView {
         VStack(spacing: 18) {
           HStack {
-            Text("Your collected arts").font(Ink.display(28))
+            PixelText("YOUR DECK", px: 3, color: Ink.white, shadow: Ink.navy)
             Spacer()
             Button {
               dismiss()
             } label: {
-              Image(systemName: "xmark").frame(width: 44, height: 44)
+              SpriteView(Pix.close, px: 2).frame(width: 44, height: 44)
             }.accessibilityLabel("Close deck")
           }
-          Text("A permanent deck. Combat piles reset each duel.").font(Ink.italic(13))
-            .foregroundStyle(Ink.faded)
+          Text("A permanent deck. Combat piles reset each duel.").font(Ink.body(13))
+            .foregroundStyle(Ink.silver)
           if let run = store.archive.run {
             ForEach(
               CardKind.allCases.filter { kind in run.deck.contains { $0.kind == kind } }, id: \.self
@@ -886,6 +886,6 @@ struct DeckView: View {
           }
         }.padding(25)
       }
-    }.foregroundStyle(Ink.paper).presentationDragIndicator(.visible)
+    }.foregroundStyle(Ink.white).presentationDragIndicator(.visible)
   }
 }
