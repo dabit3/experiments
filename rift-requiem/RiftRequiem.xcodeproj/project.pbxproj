@@ -1,0 +1,414 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A72C0FEC2DC77FB310043DD /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C473FB8198FBA693A6296FF /* Models.swift */; };
+		393A303C1B807D48D8CA67C4 /* ArenaScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5941B36086B2DFE76CAF801D /* ArenaScene.swift */; };
+		47486BE0C63E332E9E33CC5E /* DuelClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738828F78F08B0435D6BDEE6 /* DuelClient.swift */; };
+		559BD339ADC76B2A97F9836D /* Sound.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C941B430A3D3595441FB8B /* Sound.swift */; };
+		DCF8CD9BF7E42543CB9B67FA /* RiftApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2E54F549F9B2A9F0303AFDA /* RiftApp.swift */; };
+		EF0A8788BCD1D8DB570F6511 /* BattleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADFC259D262E2286AC1C371 /* BattleView.swift */; };
+		F3B4A8C82B0233A5A29F9776 /* FighterArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F45935E2C08162B179BBE84 /* FighterArt.swift */; };
+		FE4A00891EFCB57CF8D2A35D /* ControlsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B677BB17900E2E22C172EBCB /* ControlsUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E0C54BA18F6F1A46A400E342 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 783042703DC814168705944E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 261BB880F990C1C9C3EDFA64;
+			remoteInfo = RiftRequiem;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1F45935E2C08162B179BBE84 /* FighterArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FighterArt.swift; sourceTree = "<group>"; };
+		2C473FB8198FBA693A6296FF /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		5941B36086B2DFE76CAF801D /* ArenaScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaScene.swift; sourceTree = "<group>"; };
+		5ADFC259D262E2286AC1C371 /* BattleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleView.swift; sourceTree = "<group>"; };
+		66C941B430A3D3595441FB8B /* Sound.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sound.swift; sourceTree = "<group>"; };
+		738828F78F08B0435D6BDEE6 /* DuelClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuelClient.swift; sourceTree = "<group>"; };
+		9768D2085733A38683AF53B1 /* RiftRequiemUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RiftRequiemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2E54F549F9B2A9F0303AFDA /* RiftApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiftApp.swift; sourceTree = "<group>"; };
+		B677BB17900E2E22C172EBCB /* ControlsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsUITests.swift; sourceTree = "<group>"; };
+		FBDB4CCE61F3470B35043CFF /* RiftRequiem.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RiftRequiem.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		43128AF4408D2A939CB70745 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FBDB4CCE61F3470B35043CFF /* RiftRequiem.app */,
+				9768D2085733A38683AF53B1 /* RiftRequiemUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		637A538A9414C0EF30685E30 = {
+			isa = PBXGroup;
+			children = (
+				B332D9C208EF93F7C3EE186F /* Sources */,
+				B536F55C98577B66A73438B5 /* Tests */,
+				43128AF4408D2A939CB70745 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B332D9C208EF93F7C3EE186F /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				5941B36086B2DFE76CAF801D /* ArenaScene.swift */,
+				5ADFC259D262E2286AC1C371 /* BattleView.swift */,
+				738828F78F08B0435D6BDEE6 /* DuelClient.swift */,
+				1F45935E2C08162B179BBE84 /* FighterArt.swift */,
+				2C473FB8198FBA693A6296FF /* Models.swift */,
+				B2E54F549F9B2A9F0303AFDA /* RiftApp.swift */,
+				66C941B430A3D3595441FB8B /* Sound.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		B536F55C98577B66A73438B5 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				B677BB17900E2E22C172EBCB /* ControlsUITests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		261BB880F990C1C9C3EDFA64 /* RiftRequiem */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C527B382BAB545725BD7C205 /* Build configuration list for PBXNativeTarget "RiftRequiem" */;
+			buildPhases = (
+				CDE56A952BB635D8B721EFA4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RiftRequiem;
+			packageProductDependencies = (
+			);
+			productName = RiftRequiem;
+			productReference = FBDB4CCE61F3470B35043CFF /* RiftRequiem.app */;
+			productType = "com.apple.product-type.application";
+		};
+		388FDC595B9E113014D9A3F8 /* RiftRequiemUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C88F7C8EE7B1CEF7B517733F /* Build configuration list for PBXNativeTarget "RiftRequiemUITests" */;
+			buildPhases = (
+				FCD4D204453CAE94D43D3FB7 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				93CA58D393044F0497FDE968 /* PBXTargetDependency */,
+			);
+			name = RiftRequiemUITests;
+			packageProductDependencies = (
+			);
+			productName = RiftRequiemUITests;
+			productReference = 9768D2085733A38683AF53B1 /* RiftRequiemUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		783042703DC814168705944E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					388FDC595B9E113014D9A3F8 = {
+						TestTargetID = 261BB880F990C1C9C3EDFA64;
+					};
+				};
+			};
+			buildConfigurationList = 9A8FAE3DF60F85EA5075FF3A /* Build configuration list for PBXProject "RiftRequiem" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 637A538A9414C0EF30685E30;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 43128AF4408D2A939CB70745 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				261BB880F990C1C9C3EDFA64 /* RiftRequiem */,
+				388FDC595B9E113014D9A3F8 /* RiftRequiemUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CDE56A952BB635D8B721EFA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				393A303C1B807D48D8CA67C4 /* ArenaScene.swift in Sources */,
+				EF0A8788BCD1D8DB570F6511 /* BattleView.swift in Sources */,
+				47486BE0C63E332E9E33CC5E /* DuelClient.swift in Sources */,
+				F3B4A8C82B0233A5A29F9776 /* FighterArt.swift in Sources */,
+				1A72C0FEC2DC77FB310043DD /* Models.swift in Sources */,
+				DCF8CD9BF7E42543CB9B67FA /* RiftApp.swift in Sources */,
+				559BD339ADC76B2A97F9836D /* Sound.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCD4D204453CAE94D43D3FB7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FE4A00891EFCB57CF8D2A35D /* ControlsUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		93CA58D393044F0497FDE968 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 261BB880F990C1C9C3EDFA64 /* RiftRequiem */;
+			targetProxy = E0C54BA18F6F1A46A400E342 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		134B90B1D51619ECF6E51FF2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.riftrequiem.duel;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		630A85AC03DD0A244AA25A31 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.riftrequiem.duel.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RiftRequiem;
+			};
+			name = Debug;
+		};
+		79EEE168A61B042E5B68E446 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.riftrequiem.duel;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CA72242041BB00D8753A9BC3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.riftrequiem.duel.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RiftRequiem;
+			};
+			name = Release;
+		};
+		D100CD7AE1B88DA3D80E9076 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F7D53BD6C4A53F57E88E41EF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9A8FAE3DF60F85EA5075FF3A /* Build configuration list for PBXProject "RiftRequiem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D100CD7AE1B88DA3D80E9076 /* Debug */,
+				F7D53BD6C4A53F57E88E41EF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C527B382BAB545725BD7C205 /* Build configuration list for PBXNativeTarget "RiftRequiem" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				79EEE168A61B042E5B68E446 /* Debug */,
+				134B90B1D51619ECF6E51FF2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C88F7C8EE7B1CEF7B517733F /* Build configuration list for PBXNativeTarget "RiftRequiemUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				630A85AC03DD0A244AA25A31 /* Debug */,
+				CA72242041BB00D8753A9BC3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 783042703DC814168705944E /* Project object */;
+}
