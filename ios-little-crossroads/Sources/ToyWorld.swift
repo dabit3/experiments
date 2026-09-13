@@ -1,27 +1,31 @@
 import SceneKit
 import UIKit
 
+/// A limited, saturated palette in the tradition of 8-bit console hardware.
 enum ToyColor {
-    static let mint = UIColor(red: 0.68, green: 0.86, blue: 0.73, alpha: 1)
-    static let dark = UIColor(red: 0.12, green: 0.27, blue: 0.25, alpha: 1)
-    static let yellow = UIColor(red: 1, green: 0.77, blue: 0.20, alpha: 1)
-    static let coral = UIColor(red: 0.94, green: 0.39, blue: 0.31, alpha: 1)
-    static let cream = UIColor(red: 1, green: 0.97, blue: 0.88, alpha: 1)
-    static let water = UIColor(red: 0.28, green: 0.67, blue: 0.68, alpha: 1)
-    static let haze = UIColor(red: 0.90, green: 0.95, blue: 0.90, alpha: 1)
-    static let meadowLight = UIColor(red: 0.74, green: 0.89, blue: 0.75, alpha: 1)
-    static let meadowDeep = UIColor(red: 0.63, green: 0.83, blue: 0.66, alpha: 1)
-    static let asphalt = UIColor(red: 0.33, green: 0.41, blue: 0.43, alpha: 1)
-    static let curb = UIColor(red: 0.86, green: 0.87, blue: 0.80, alpha: 1)
-    static let sand = UIColor(red: 0.93, green: 0.87, blue: 0.70, alpha: 1)
-    static let bark = UIColor(red: 0.58, green: 0.37, blue: 0.25, alpha: 1)
-    static let barkLight = UIColor(red: 0.85, green: 0.66, blue: 0.43, alpha: 1)
-    static let leafDeep = UIColor(red: 0.22, green: 0.52, blue: 0.40, alpha: 1)
-    static let leafMid = UIColor(red: 0.31, green: 0.62, blue: 0.45, alpha: 1)
-    static let leafLight = UIColor(red: 0.45, green: 0.73, blue: 0.51, alpha: 1)
-    static let sky = UIColor(red: 0.45, green: 0.70, blue: 0.82, alpha: 1)
-    static let blossom = UIColor(red: 0.98, green: 0.72, blue: 0.75, alpha: 1)
-    static let stone = UIColor(red: 0.78, green: 0.80, blue: 0.76, alpha: 1)
+    static let mint = UIColor(red: 0.35, green: 0.85, blue: 0.33, alpha: 1)
+    static let dark = UIColor(red: 0.05, green: 0.05, blue: 0.09, alpha: 1)
+    static let navy = UIColor(red: 0.07, green: 0.09, blue: 0.42, alpha: 1)
+    static let royal = UIColor(red: 0.13, green: 0.28, blue: 0.86, alpha: 1)
+    static let yellow = UIColor(red: 0.99, green: 0.88, blue: 0.10, alpha: 1)
+    static let coral = UIColor(red: 0.97, green: 0.24, blue: 0.09, alpha: 1)
+    static let beak = UIColor(red: 0.98, green: 0.53, blue: 0.09, alpha: 1)
+    static let cream = UIColor(red: 0.99, green: 0.99, blue: 0.99, alpha: 1)
+    static let water = UIColor(red: 0.09, green: 0.45, blue: 0.97, alpha: 1)
+    static let haze = UIColor(red: 0.36, green: 0.58, blue: 0.99, alpha: 1)
+    static let meadowLight = UIColor(red: 0.43, green: 0.78, blue: 0.16, alpha: 1)
+    static let meadowDeep = UIColor(red: 0.33, green: 0.69, blue: 0.13, alpha: 1)
+    static let asphalt = UIColor(red: 0.36, green: 0.36, blue: 0.38, alpha: 1)
+    static let curb = UIColor(red: 0.74, green: 0.74, blue: 0.74, alpha: 1)
+    static let sand = UIColor(red: 0.95, green: 0.80, blue: 0.42, alpha: 1)
+    static let bark = UIColor(red: 0.62, green: 0.36, blue: 0.09, alpha: 1)
+    static let barkLight = UIColor(red: 0.86, green: 0.60, blue: 0.21, alpha: 1)
+    static let leafDeep = UIColor(red: 0.0, green: 0.50, blue: 0.09, alpha: 1)
+    static let leafMid = UIColor(red: 0.0, green: 0.66, blue: 0.12, alpha: 1)
+    static let leafLight = UIColor(red: 0.35, green: 0.85, blue: 0.33, alpha: 1)
+    static let sky = UIColor(red: 0.36, green: 0.58, blue: 0.99, alpha: 1)
+    static let blossom = UIColor(red: 0.98, green: 0.60, blue: 0.75, alpha: 1)
+    static let stone = UIColor(red: 0.74, green: 0.74, blue: 0.74, alpha: 1)
 
     static func lighten(_ color: UIColor) -> UIColor {
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 1
@@ -35,9 +39,9 @@ enum ToyColor {
     }
 
     static func duck(_ plumage: Plumage) -> UIColor {
-        [yellow, UIColor(red: 0.46, green: 0.80, blue: 0.67, alpha: 1),
-         UIColor(red: 0.95, green: 0.62, blue: 0.64, alpha: 1),
-         UIColor(red: 0.30, green: 0.38, blue: 0.56, alpha: 1)][plumage.rawValue]
+        [yellow, UIColor(red: 0.24, green: 0.86, blue: 0.68, alpha: 1),
+         UIColor(red: 0.98, green: 0.47, blue: 0.62, alpha: 1),
+         UIColor(red: 0.27, green: 0.28, blue: 0.68, alpha: 1)][plumage.rawValue]
     }
 }
 
@@ -63,10 +67,7 @@ final class ToyWorld {
     private let impactRing = SCNNode()
 
     init() {
-        scene.background.contents = ToyColor.haze
-        scene.fogColor = ToyColor.haze
-        scene.fogStartDistance = 24
-        scene.fogEndDistance = 42
+        scene.background.contents = ToyColor.sky
         camera.camera = SCNCamera()
         camera.camera?.usesOrthographicProjection = true
         camera.camera?.orthographicScale = 7.2
@@ -76,46 +77,34 @@ final class ToyWorld {
         let ambient = SCNNode()
         ambient.light = SCNLight()
         ambient.light?.type = .ambient
-        ambient.light?.intensity = 560
-        ambient.light?.color = UIColor(red: 0.88, green: 0.95, blue: 1, alpha: 1)
+        ambient.light?.intensity = 720
+        ambient.light?.color = UIColor.white
         scene.rootNode.addChildNode(ambient)
         let sun = SCNNode()
         sun.light = SCNLight()
         sun.light?.type = .directional
-        sun.light?.intensity = 900
-        sun.light?.color = UIColor(red: 1, green: 0.97, blue: 0.90, alpha: 1)
+        sun.light?.intensity = 620
+        sun.light?.color = UIColor.white
         sun.light?.castsShadow = true
         sun.light?.shadowMode = .deferred
-        sun.light?.shadowRadius = 6
-        sun.light?.shadowSampleCount = 16
-        sun.light?.shadowColor = UIColor(red: 0.10, green: 0.25, blue: 0.30, alpha: 0.18)
+        sun.light?.shadowRadius = 0
+        sun.light?.shadowSampleCount = 1
+        sun.light?.shadowColor = UIColor(red: 0, green: 0.05, blue: 0.2, alpha: 0.30)
         sun.light?.orthographicScale = 20
-        sun.light?.shadowMapSize = CGSize(width: 2048, height: 2048)
+        sun.light?.shadowMapSize = CGSize(width: 1024, height: 1024)
         sun.eulerAngles = SCNVector3(-Float.pi / 3, -Float.pi / 4, 0)
         scene.rootNode.addChildNode(sun)
-        let shadowImage = UIGraphicsImageRenderer(size: CGSize(width: 128, height: 128)).image { context in
-            let colors = [ToyColor.dark.withAlphaComponent(0.24).cgColor, UIColor.clear.cgColor]
-            if let gradient = CGGradient(
-                colorsSpace: CGColorSpaceCreateDeviceRGB(),
-                colors: colors as CFArray,
-                locations: [0, 1]
-            ) {
-                context.cgContext.drawRadialGradient(
-                    gradient, startCenter: CGPoint(x: 64, y: 64), startRadius: 10,
-                    endCenter: CGPoint(x: 64, y: 64), endRadius: 64, options: []
-                )
-            }
-        }
-        let plane = SCNPlane(width: 1.2, height: 1.05)
+        let plane = SCNBox(width: 0.62, height: 0.01, length: 0.62, chamferRadius: 0)
         let shadowMaterial = SCNMaterial()
-        shadowMaterial.diffuse.contents = shadowImage
+        shadowMaterial.diffuse.contents = ToyColor.dark.withAlphaComponent(0.42)
         shadowMaterial.lightingModel = .constant
         shadowMaterial.writesToDepthBuffer = false
         plane.materials = [shadowMaterial]
         contactShadow.geometry = plane
-        contactShadow.eulerAngles.x = -.pi / 2
         scene.rootNode.addChildNode(contactShadow)
-        let ring = SCNTorus(ringRadius: 0.45, pipeRadius: 0.035)
+        let ring = SCNTorus(ringRadius: 0.45, pipeRadius: 0.05)
+        ring.ringSegmentCount = 8
+        ring.pipeSegmentCount = 4
         ring.materials = [material(ToyColor.cream)]
         impactRing.geometry = ring
         impactRing.isHidden = true
@@ -162,22 +151,22 @@ final class ToyWorld {
             for (node, x) in zip(nodes, lane.centers(at: time)) {
                 node.position.x = Float(x)
                 if lane.kind == .river, !reducedMotion {
-                    node.eulerAngles.x = Float(sin(time * 1.6 + x)) * 0.035
-                    node.position.y = Float(sin(time * 2.1 + x * 0.7)) * 0.012
+                    node.position.y = frame(time * 1.4 + x * 0.3, frames: 2) * 0.03
                 }
             }
         }
         if !reducedMotion {
             for (index, ripple) in ripples.enumerated() {
-                let drift = Float(sin(time * 0.9 + Double(index) * 1.3))
-                ripple.node.position.x = ripple.x + drift * 0.16
-                ripple.node.opacity = CGFloat(0.55 + Double(drift) * 0.35)
+                let drift = frame(time * 0.8 + Double(index) * 0.37, frames: 3)
+                ripple.node.position.x = ripple.x + drift * 0.12
+                ripple.node.isHidden = frame(time * 0.8 + Double(index) * 0.53, frames: 4) == 3
             }
         }
         for (row, node) in coins {
             node.isHidden = game.collectedRows.contains(row)
-            node.eulerAngles.y = reducedMotion ? 0 : Float(time * 1.8)
-            node.position.y = 0.46 + (reducedMotion ? 0 : Float(sin(time * 3 + Double(row))) * 0.05)
+            let spin: [Float] = [1, 0.6, 0.25, 0.6]
+            node.scale.x = reducedMotion ? 1 : spin[Int(frame(time * 1.6, frames: 4))]
+            node.position.y = 0.46 + (reducedMotion ? 0 : frame(time * 3 + Double(row), frames: 2) * 0.05)
         }
         let target = max(1.5, game.visibleRow + 1.9)
         cameraRow += (target - cameraRow) * min(1, delta * 5)
@@ -190,14 +179,15 @@ final class ToyWorld {
             landingSquash = 1
         }
         wasAirborne = airborne
-        landingSquash = max(0, landingSquash - delta / 0.18)
-        let idle = game.state == .playing || game.state == .ready ? sin(time * 4.2) * 0.012 : 0
+        landingSquash = max(0, landingSquash - delta / 0.14)
+        let idle = game.state == .ready ? Double(frame(time * 1.3, frames: 2)) * 0.03 : 0
+        let hopHeight = Double(frame(game.height / 0.48 * 0.999, frames: 4)) / 3 * 0.48
         duck.position = SCNVector3(
             Float(game.visibleX),
-            Float(game.height + 0.10 + (reducedMotion ? 0 : idle)),
+            Float(hopHeight + 0.10 + (reducedMotion ? 0 : idle)),
             Float(-game.visibleRow)
         )
-        let stretch = reducedMotion ? 0 : game.height / 0.48 * 0.14 - landingSquash * 0.16
+        let stretch = reducedMotion ? 0 : hopHeight / 0.48 * 0.10 - (landingSquash > 0 ? 0.14 : 0)
         duck.scale = SCNVector3(
             1.13 * Float(1 - stretch * 0.5),
             1.13 * Float(1 + stretch),
@@ -217,38 +207,44 @@ final class ToyWorld {
         if gap < -.pi {
             gap += 2 * .pi
         }
-        facing += reducedMotion ? gap : gap * Float(min(1, delta * 16))
+        facing += gap
         duck.eulerAngles.y = facing
         let onWater = game.course.lane(game.row).kind == .river
         contactShadow.position = SCNVector3(Float(game.visibleX), onWater ? 0.235 : 0.005, Float(-game.visibleRow))
         impactRing.isHidden = game.state != .finished || game.endReason == "A well-earned rest"
         if game.state == .finished {
             impactProgress = min(1, impactProgress + delta / 0.6)
-            duck.eulerAngles.z = -Float.pi / 2 * Float(reducedMotion ? 1 : min(1, impactProgress * 2))
-            duck.position.y = game.endReason.contains("splash") ? -Float(impactProgress) * 0.2 : 0.08
+            let splash = game.endReason.contains("splash")
+            let flight = reducedMotion ? 0 : impactProgress * 2.2 - impactProgress * impactProgress * 2.6
+            duck.eulerAngles.z = reducedMotion || impactProgress > 0.25 ? .pi : 0
+            duck.position.y = Float(splash ? -impactProgress * 0.5 : 0.62 + flight)
             impactRing.position = SCNVector3(Float(game.visibleX), 0.09, Float(-game.visibleRow))
-            let scale = Float(reducedMotion ? 1 : 0.6 + impactProgress * 1.5)
+            let scale = Float(reducedMotion ? 1 : 0.6 + Double(frame(impactProgress, frames: 4)) * 0.5)
             impactRing.scale = SCNVector3(scale, scale, scale)
-            impactRing.opacity = CGFloat(1 - impactProgress * 0.8)
+            impactRing.isHidden = impactRing.isHidden || impactProgress > 0.7
         } else {
             duck.eulerAngles.z = 0
         }
     }
 
+    /// Snaps a continuous phase into a small number of discrete animation frames.
+    private func frame(_ phase: Double, frames: Int) -> Float {
+        Float(Int(floor(phase * Double(frames))) % frames)
+    }
+
     private func material(_ color: UIColor) -> SCNMaterial {
         let result = SCNMaterial()
         result.diffuse.contents = color
-        result.roughness.contents = 0.85
-        result.lightingModel = .physicallyBased
+        result.lightingModel = .lambert
         return result
     }
 
     @discardableResult
     private func box(
         _ parent: SCNNode, _ width: CGFloat, _ height: CGFloat, _ length: CGFloat,
-        _ color: UIColor, _ x: Float = 0, _ y: Float = 0, _ z: Float = 0, bevel: CGFloat = 0.025
+        _ color: UIColor, _ x: Float = 0, _ y: Float = 0, _ z: Float = 0, bevel _: CGFloat = 0
     ) -> SCNNode {
-        let geometry = SCNBox(width: width, height: height, length: length, chamferRadius: bevel)
+        let geometry = SCNBox(width: width, height: height, length: length, chamferRadius: 0)
         geometry.materials = [material(color)]
         let node = SCNNode(geometry: geometry)
         node.position = SCNVector3(x, y, z)
@@ -262,7 +258,7 @@ final class ToyWorld {
         x: Float = 0, y: Float = 0, z: Float = 0
     ) -> SCNNode {
         let geometry = SCNCylinder(radius: radius, height: height)
-        geometry.radialSegmentCount = 16
+        geometry.radialSegmentCount = 8
         geometry.materials = [material(color)]
         let node = SCNNode(geometry: geometry)
         node.position = SCNVector3(x, y, z)
@@ -394,17 +390,9 @@ final class ToyWorld {
         }
         if let column = lane.coinColumn {
             let coin = SCNNode()
-            let disc = cylinder(coin, radius: 0.17, height: 0.07, color: ToyColor.yellow)
-            disc.geometry?.firstMaterial?.emission.contents = UIColor(red: 0.55, green: 0.38, blue: 0.05, alpha: 1)
-            disc.geometry?.firstMaterial?.roughness.contents = 0.45
-            disc.geometry?.firstMaterial?.metalness.contents = 0.35
-            disc.eulerAngles.x = .pi / 2
-            let rim = SCNTorus(ringRadius: 0.17, pipeRadius: 0.028)
-            rim.materials = [material(UIColor(red: 0.96, green: 0.65, blue: 0.14, alpha: 1))]
-            let rimNode = SCNNode(geometry: rim)
-            rimNode.eulerAngles.x = .pi / 2
-            coin.addChildNode(rimNode)
-            box(coin, 0.045, 0.15, 0.075, ToyColor.cream)
+            box(coin, 0.30, 0.38, 0.08, ToyColor.yellow)
+            box(coin, 0.22, 0.30, 0.09, ToyColor.beak)
+            box(coin, 0.06, 0.18, 0.10, ToyColor.yellow)
             coin.position = SCNVector3(Float(column), 0.46, 0)
             root.addChildNode(coin)
             coins[lane.row] = coin
@@ -416,13 +404,13 @@ final class ToyWorld {
         let colors = [
             ToyColor.coral,
             ToyColor.cream,
-            UIColor(red: 0.42, green: 0.68, blue: 0.80, alpha: 1),
+            ToyColor.royal,
             ToyColor.yellow,
-            UIColor(red: 0.36, green: 0.44, blue: 0.62, alpha: 1),
+            UIColor(red: 0.62, green: 0.13, blue: 0.75, alpha: 1),
         ]
         let color = colors[abs(index) % colors.count]
         let van = abs(index) % 4 == 3
-        let glass = UIColor(red: 0.21, green: 0.40, blue: 0.43, alpha: 1)
+        let glass = UIColor(red: 0.24, green: 0.74, blue: 0.99, alpha: 1)
         if van {
             box(car, 1.35, 0.30, 0.61, color, 0, 0.21, bevel: 0.07)
             box(car, 1.05, 0.34, 0.56, color, -0.12, 0.50, bevel: 0.06)
@@ -492,7 +480,7 @@ final class ToyWorld {
                 0.035,
                 0.07 + CGFloat(abs(offset)),
                 0.035,
-                UIColor(red: 0.56, green: 0.79, blue: 0.60, alpha: 1),
+                ToyColor.leafDeep,
                 x + offset,
                 0.02,
                 z + offset * 0.4,
@@ -502,8 +490,8 @@ final class ToyWorld {
     }
 
     private func pebble(_ parent: SCNNode, x: Float, z: Float) {
-        let node = sphere(parent, radius: 0.13, color: ToyColor.stone, x: x, y: -0.04, z: z)
-        node.scale = SCNVector3(1.2, 0.7, 1)
+        let node = sphere(parent, radius: 0.13, color: ToyColor.leafMid, x: x, y: -0.02, z: z)
+        node.scale = SCNVector3(1.4, 0.6, 1)
     }
 
     private func lilyPad(_ parent: SCNNode, x: Float, z: Float, bloom: Bool) {
@@ -519,8 +507,7 @@ final class ToyWorld {
 
     @discardableResult
     private func sphere(_ parent: SCNNode, radius: CGFloat, color: UIColor, x: Float, y: Float, z: Float) -> SCNNode {
-        let geometry = SCNSphere(radius: radius)
-        geometry.segmentCount = 20
+        let geometry = SCNBox(width: radius * 2, height: radius * 2, length: radius * 2, chamferRadius: 0)
         geometry.materials = [material(color)]
         let node = SCNNode(geometry: geometry)
         node.position = SCNVector3(x, y, z)
@@ -537,12 +524,10 @@ final class ToyWorld {
         y: Float,
         z: Float
     ) {
-        let geometry = SCNCone(topRadius: 0.03, bottomRadius: bottom, height: height)
-        geometry.radialSegmentCount = 18
-        geometry.materials = [material(color)]
-        let node = SCNNode(geometry: geometry)
-        node.position = SCNVector3(x, y, z)
-        parent.addChildNode(node)
+        for (step, width) in [bottom * 2, bottom * 1.3, bottom * 0.6].enumerated() {
+            let slab = height / 3
+            box(parent, width, slab, width, color, x, y - Float(height) / 2 + Float(slab) * (Float(step) + 0.5), z)
+        }
     }
 
     private func flowers(_ parent: SCNNode, x: Float, z: Float) {

@@ -7,67 +7,92 @@ guard let canvas = CGContext(
     bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue
 )
 else { fatalError("Could not create icon canvas") }
-NSGraphicsContext.saveGraphicsState()
-NSGraphicsContext.current = NSGraphicsContext(cgContext: canvas, flipped: false)
-let mint = NSColor(calibratedRed: 0.68, green: 0.86, blue: 0.73, alpha: 1)
-let dark = NSColor(calibratedRed: 0.12, green: 0.27, blue: 0.25, alpha: 1)
-let yellow = NSColor(calibratedRed: 1, green: 0.77, blue: 0.20, alpha: 1)
-let coral = NSColor(calibratedRed: 0.94, green: 0.39, blue: 0.31, alpha: 1)
-mint.setFill()
-NSBezierPath(rect: NSRect(x: 0, y: 0, width: size, height: size)).fill()
+canvas.interpolationQuality = .none
+canvas.setShouldAntialias(false)
 
-func poly(_ points: [NSPoint], _ color: NSColor) {
-    let path = NSBezierPath()
-    path.move(to: points[0])
-    for point in points.dropFirst() {
-        path.line(to: point)
+func rgb(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat) -> CGColor {
+    CGColor(red: red, green: green, blue: blue, alpha: 1)
+}
+
+let sky = rgb(0.36, 0.58, 0.99)
+let dark = rgb(0.05, 0.05, 0.09)
+let yellow = rgb(0.99, 0.88, 0.10)
+let light = rgb(0.99, 0.92, 0.37)
+let beak = rgb(0.98, 0.53, 0.09)
+let grass = rgb(0.43, 0.78, 0.16)
+let grassDeep = rgb(0.33, 0.69, 0.13)
+let road = rgb(0.36, 0.36, 0.38)
+let white = rgb(0.99, 0.99, 0.99)
+
+// The icon is a 40x40 pixel scene scaled up without smoothing.
+let grid = 40
+let unit = CGFloat(size) / CGFloat(grid)
+func pixel(_ x: Int, _ y: Int, _ color: CGColor, _ width: Int = 1, _ height: Int = 1) {
+    canvas.setFillColor(color)
+    canvas.fill(CGRect(
+        x: CGFloat(x) * unit, y: CGFloat(grid - y - height) * unit,
+        width: CGFloat(width) * unit, height: CGFloat(height) * unit
+    ))
+}
+
+pixel(0, 0, sky, grid, grid)
+pixel(0, 29, grassDeep, grid, 2)
+pixel(0, 31, grass, grid, 3)
+pixel(0, 34, road, grid, 6)
+pixel(0, 34, white, grid, 1)
+for x in stride(from: 2, to: grid, by: 7) {
+    pixel(x, 37, white, 3, 1)
+}
+
+for (x, y) in [(3, 6), (29, 3)] {
+    pixel(x, y, white, 6, 2)
+    pixel(x + 1, y - 1, white, 4, 1)
+}
+
+/// The same duck sprite that appears in the wardrobe, drawn at 16x16 and doubled.
+let duck = [
+    "................",
+    "......kkkk......",
+    ".....kyyyyk.....",
+    "....kyywyyyk....",
+    "....kyykyyykooo.",
+    "....kyyyyyyykook",
+    "....kyyyyyyyyko.",
+    ".....kyyyyyyk...",
+    "..kkkkkyyyyyk...",
+    ".kyyyyyyyyyyyk..",
+    "kyyyyyyyyyyyyyk.",
+    "kyllllyyyyyyyyk.",
+    "kylllllyyyyyyk..",
+    ".kyllllyyyyyyk..",
+    "..kkkkkkkkkkk...",
+    "....ook..ook....",
+]
+for (rowIndex, row) in duck.enumerated() {
+    for (column, character) in row.enumerated() {
+        let color: CGColor? = switch character {
+        case "k": dark
+        case "y": yellow
+        case "l": light
+        case "w": white
+        case "o": beak
+        default: nil
+        }
+        if let color {
+            pixel(column * 2 + 4, rowIndex * 2 + 1, color, 2, 2)
+        }
     }
-    path.close()
-    color.setFill()
-    path.fill()
 }
 
-func point(_ x: CGFloat, _ y: CGFloat, _ z: CGFloat) -> NSPoint {
-    NSPoint(x: 505 + (x - y) * 135, y: 270 + (x + y) * 65 + z * 140)
-}
+// Chunky console-style frame.
+pixel(0, 0, dark, grid, 1)
+pixel(0, grid - 1, dark, grid, 1)
+pixel(0, 0, dark, 1, grid)
+pixel(grid - 1, 0, dark, 1, grid)
 
-func block(_ x: CGFloat, _ y: CGFloat, _ z: CGFloat, _ w: CGFloat, _ d: CGFloat, _ h: CGFloat, _ color: NSColor) {
-    poly(
-        [point(x, y, z), point(x + w, y, z), point(x + w, y, z + h), point(x, y, z + h)],
-        color.blended(withFraction: 0.13, of: .black) ?? color
-    )
-    poly(
-        [point(x, y, z), point(x, y + d, z), point(x, y + d, z + h), point(x, y, z + h)],
-        color.blended(withFraction: 0.24, of: .black) ?? color
-    )
-    poly(
-        [point(x, y, z + h), point(x + w, y, z + h), point(x + w, y + d, z + h), point(x, y + d, z + h)],
-        color
-    )
-}
-
-block(-2.7, -2.4, -0.18, 5.4, 5.0, 0.22, NSColor(calibratedRed: 0.48, green: 0.71, blue: 0.51, alpha: 1))
-block(-2.7, 1.4, 0.05, 5.4, 1.15, 0.035, NSColor(calibratedRed: 0.28, green: 0.67, blue: 0.68, alpha: 1))
-block(-2.7, -2.4, 0.05, 5.4, 0.85, 0.035, NSColor(calibratedRed: 0.34, green: 0.43, blue: 0.43, alpha: 1))
-for x: CGFloat in [-2, -1, 0, 1, 2] {
-    block(x, -2.05, 0.09, 0.35, 0.06, 0.015, .white)
-}
-
-block(-0.5, -0.38, 0.1, 0.4, 0.63, 0.12, coral)
-block(0.45, -0.38, 0.1, 0.4, 0.63, 0.12, coral)
-block(-0.82, -0.36, 0.24, 1.78, 1.65, 1.18, yellow)
-block(-0.98, -0.25, 0.58, 0.18, 1.08, 0.57, yellow)
-block(-0.50, -0.55, 1.39, 1.32, 1.07, 1.20, yellow)
-block(-0.40, -1.15, 1.42, 1.10, 0.63, 0.25, coral)
-block(-0.44, -0.57, 2.15, 0.14, 0.035, 0.17, dark)
-block(0.53, -0.57, 2.15, 0.14, 0.035, 0.17, dark)
-block(-2, 0.45, 0.05, 0.11, 0.11, 0.46, dark)
-block(-2.13, 0.32, 0.48, 0.36, 0.36, 0.1, coral)
-block(-1.8, -1.1, 0.05, 0.11, 0.11, 0.32, dark)
-block(-1.93, -1.23, 0.35, 0.36, 0.36, 0.1, .white)
-NSGraphicsContext.restoreGraphicsState()
-guard let rendered = canvas.makeImage(),
-      let data = NSBitmapImageRep(cgImage: rendered).representation(using: .png, properties: [:])
-else { fatalError("Could not render icon") }
-let destination = CommandLine.arguments[1]
-try data.write(to: URL(fileURLWithPath: destination))
+guard let image = canvas.makeImage() else { fatalError("Could not render icon") }
+let bitmap = NSBitmapImageRep(cgImage: image)
+guard let data = bitmap.representation(using: .png, properties: [:]) else { fatalError("Could not encode icon") }
+let output = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "AppIcon.png"
+try data.write(to: URL(fileURLWithPath: output))
+print("Wrote \(output)")
