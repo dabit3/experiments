@@ -30,6 +30,7 @@ final class GameClient: ObservableObject {
   private var syncSamples = 0
   private var driverNotes = Set<Int>()
   private var driverMatch = -1
+  private var lastAudioSample = 0.0
   private var readySent = false
   private var generation = 0
   private var reconnectAttempts = 0
@@ -107,6 +108,8 @@ final class GameClient: ObservableObject {
       state = nil
       sequence = 0
       reconnectAttempts = 0
+      driverMatch = -1
+      driverNotes.removeAll()
     }
     bestRTT = .infinity
     syncSamples = 0
@@ -259,6 +262,17 @@ final class GameClient: ObservableObject {
 
   func tick() {
     audio?.volume = volume
+    let serverNow = now
+    if let state, state.phase == "playing", serverNow >= state.startAt,
+      let audio, serverNow - lastAudioSample >= 1000
+    {
+      lastAudioSample = serverNow
+      record(
+        "audio_clock",
+        detail:
+          "match=\(state.match) song=\(state.songID) server=\(serverNow) start=\(state.startAt) audio=\(audio.currentTime) playing=\(audio.isPlaying) volume=\(volume)"
+      )
+    }
     guard automated, let state, state.phase == "playing", elapsed >= 0 else { return }
     if driverMatch != state.match {
       driverMatch = state.match
