@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7A487624C19A1C7139C41C04 /* LittleCrossroadsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A8CB2BE19CF6DEF99F6413 /* LittleCrossroadsApp.swift */; };
 		A136DCEE66682CE0B8819911 /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31B6AC8CA31885C8AB540CD6 /* GameRules.swift */; };
+		AC38691F3F0CC7980933A36B /* Telemetry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37665DD2ABE7D89A4F1F6A38 /* Telemetry.swift */; };
 		C3A9AEF6D7B517894984995E /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92B34AF2E2E18C779FAE7E29 /* GameStore.swift */; };
 		D2F02BA4782A5F8491059D50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 934061F5CF0255AA8C0C1EBB /* Assets.xcassets */; };
 		F1F8DB87BFA0EDB2C8F4F5B8 /* PixelFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6346D19FCBD92D2312D1D322 /* PixelFont.swift */; };
@@ -17,6 +18,7 @@
 
 /* Begin PBXFileReference section */
 		31B6AC8CA31885C8AB540CD6 /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
+		37665DD2ABE7D89A4F1F6A38 /* Telemetry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Telemetry.swift; sourceTree = "<group>"; };
 		6346D19FCBD92D2312D1D322 /* PixelFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelFont.swift; sourceTree = "<group>"; };
 		92B34AF2E2E18C779FAE7E29 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
 		934061F5CF0255AA8C0C1EBB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 				92B34AF2E2E18C779FAE7E29 /* GameStore.swift */,
 				C4A8CB2BE19CF6DEF99F6413 /* LittleCrossroadsApp.swift */,
 				6346D19FCBD92D2312D1D322 /* PixelFont.swift */,
+				37665DD2ABE7D89A4F1F6A38 /* Telemetry.swift */,
 				CBDB49145D9CB0A4EEA437D6 /* ToyWorld.swift */,
 				0F60500BE997175470DF892F /* Core */,
 			);
@@ -145,6 +148,7 @@
 				C3A9AEF6D7B517894984995E /* GameStore.swift in Sources */,
 				7A487624C19A1C7139C41C04 /* LittleCrossroadsApp.swift in Sources */,
 				F1F8DB87BFA0EDB2C8F4F5B8 /* PixelFont.swift in Sources */,
+				AC38691F3F0CC7980933A36B /* Telemetry.swift in Sources */,
 				FAA413F144048116235C09E8 /* ToyWorld.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

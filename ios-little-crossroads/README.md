@@ -34,6 +34,18 @@ Regenerate the original icon:
 swift Scripts/GenerateIcon.swift Resources/Assets.xcassets/AppIcon.appiconset/AppIcon.png
 ```
 
+## Autopilot (debug input driver)
+
+`Scripts/Autopilot.swift` plays the visible app in the iOS Simulator with real mouse clicks on the on-screen D-pad and A button, so long runs can be demonstrated and recorded. It never touches the app, its save data or its rules: the app only broadcasts its live run state over UDP when launched with `-telemetryPort <port>` (`Sources/Telemetry.swift`; disabled otherwise), and the driver re-runs the same lane maths to pick a survivable hop.
+
+```sh
+xcrun simctl launch booted com.littlecrossroads.game -telemetryPort 47400
+swiftc -O Scripts/Autopilot.swift -o /tmp/autopilot
+/tmp/autopilot --port 47400 --target 100 --stop-at 120 --minutes 10
+```
+
+The Simulator window must be visible with device bezels hidden (Window > Show Device Bezels off). `--stop-at` pauses and quits the run once that many hops are banked so the result screen and saved best reflect the run; omit it to play until the time budget ends.
+
 ## Play
 
 - Tap **Let's hop**, then tap the countryside or **HOP** to move one row forward.

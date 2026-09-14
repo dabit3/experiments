@@ -30,6 +30,7 @@ final class GameStore: NSObject, ObservableObject {
     private var lastTick: CFTimeInterval = 0
     private var finishElapsed = 0.0
     private let audio = ToyAudio()
+    private let telemetry = Telemetry()
     var reducedMotion = false
 
     init(defaults: UserDefaults = .standard) {
@@ -133,6 +134,7 @@ final class GameStore: NSObject, ObservableObject {
             }
         }
         world.update(game, plumage: selected, delta: dt, reducedMotion: reducedMotion)
+        telemetry?.send(game)
     }
 }
 
