@@ -69,6 +69,8 @@ extension WaterTint {
     case .coldBlue: return (Color(red: 0.05, green: 0.20, blue: 0.38), Color(red: 0.30, green: 0.55, blue: 0.75))
     case .deepTeal: return (Color(red: 0.05, green: 0.25, blue: 0.28), Color(red: 0.20, green: 0.50, blue: 0.55))
     case .blackwater: return (Color(red: 0.08, green: 0.10, blue: 0.08), Color(red: 0.28, green: 0.34, blue: 0.24))
+    case .turquoise: return (Color(red: 0.05, green: 0.36, blue: 0.40), Color(red: 0.35, green: 0.75, blue: 0.72))
+    case .glacial: return (Color(red: 0.16, green: 0.34, blue: 0.36), Color(red: 0.55, green: 0.72, blue: 0.70))
     }
   }
 }
@@ -270,6 +272,12 @@ struct SceneryView: View {
     case .deepTeal:
       profileSeed = 71; hillHeight = 190; treeDensity = 50
       hillColor = Color(red: 0.36, green: 0.38, blue: 0.42); treeColor = Color(red: 0.06, green: 0.16, blue: 0.12)
+    case .turquoise:
+      profileSeed = 89; hillHeight = 14; treeDensity = 60
+      hillColor = Color(red: 0.62, green: 0.58, blue: 0.40); treeColor = Color(red: 0.16, green: 0.34, blue: 0.18)
+    case .glacial:
+      profileSeed = 97; hillHeight = 220; treeDensity = 40
+      hillColor = Color(red: 0.62, green: 0.66, blue: 0.72); treeColor = Color(red: 0.08, green: 0.18, blue: 0.14)
     }
 
     // Distant ridge
@@ -528,12 +536,12 @@ struct FishIllustration: View {
       // Markings
       ctx.clip(to: body)
       switch coloring {
-      case .bass, .pike, .walleye:
+      case .bass, .pike, .walleye, .snakehead:
         var stripe = Path()
         stripe.move(to: CGPoint(x: w * 0.1, y: midY))
         stripe.addCurve(to: CGPoint(x: w * 0.7, y: midY), control1: CGPoint(x: w * 0.3, y: midY + bh * 0.2), control2: CGPoint(x: w * 0.5, y: midY - bh * 0.1))
         ctx.stroke(stripe, with: .color(palette.marking.opacity(0.7)), style: StrokeStyle(lineWidth: bh * 0.22, dash: coloring == .bass ? [w * 0.04, w * 0.02] : []))
-      case .perch, .crappie, .sunfish, .drum:
+      case .perch, .crappie, .sunfish, .drum, .cichlid:
         for i in 0..<6 {
           let x = w * (0.16 + Double(i) * 0.09)
           var bar = Path()
@@ -541,7 +549,7 @@ struct FishIllustration: View {
           bar.addLine(to: CGPoint(x: x + w * 0.02, y: midY + bh))
           ctx.stroke(bar, with: .color(palette.marking.opacity(coloring == .perch ? 0.8 : 0.35)), lineWidth: bh * 0.16)
         }
-      case .trout:
+      case .trout, .salmon:
         var rng = SeededRandom(seed: 5)
         for _ in 0..<18 {
           let x = w * (0.12 + rng.unit() * 0.55)
@@ -552,6 +560,13 @@ struct FishIllustration: View {
         band.move(to: CGPoint(x: w * 0.1, y: midY))
         band.addLine(to: CGPoint(x: w * 0.7, y: midY))
         ctx.stroke(band, with: .color(Color(red: 0.95, green: 0.45, blue: 0.5).opacity(0.5)), lineWidth: bh * 0.3)
+      case .sturgeon:
+        for i in 0..<7 {
+          let x = w * (0.18 + Double(i) * 0.08)
+          ctx.fill(
+            Path(ellipseIn: CGRect(x: x, y: midY - bh * 0.9, width: w * 0.03, height: bh * 0.3)),
+            with: .color(palette.marking))
+        }
       case .gar, .catfish, .carp, .shiner:
         break
       }
@@ -569,11 +584,12 @@ struct FishIllustration: View {
 
   private var shape: (Double, Double) {
     switch coloring {
-    case .sunfish, .crappie: return (0.42, 0.22)
-    case .gar, .pike: return (0.16, 0.22)
+    case .sunfish, .crappie, .cichlid: return (0.42, 0.22)
+    case .gar, .pike, .snakehead: return (0.16, 0.22)
     case .catfish, .carp, .drum: return (0.32, 0.24)
-    case .shiner, .trout, .walleye: return (0.24, 0.26)
+    case .shiner, .trout, .walleye, .salmon: return (0.24, 0.26)
     case .bass, .perch: return (0.30, 0.24)
+    case .sturgeon: return (0.20, 0.20)
     }
   }
 
@@ -591,39 +607,96 @@ struct FishIllustration: View {
     case .pike: return (Color(red: 0.24, green: 0.36, blue: 0.16), Color(red: 0.90, green: 0.92, blue: 0.70), Color(red: 0.55, green: 0.35, blue: 0.14), Color(red: 0.85, green: 0.88, blue: 0.55))
     case .perch: return (Color(red: 0.38, green: 0.50, blue: 0.20), Color(red: 0.98, green: 0.82, blue: 0.30), Color(red: 0.95, green: 0.45, blue: 0.10), Color(red: 0.12, green: 0.20, blue: 0.08))
     case .drum: return (Color(red: 0.45, green: 0.45, blue: 0.48), Color(red: 0.90, green: 0.90, blue: 0.88), Color(red: 0.35, green: 0.35, blue: 0.40), Color(red: 0.25, green: 0.25, blue: 0.28))
+    case .salmon: return (Color(red: 0.20, green: 0.34, blue: 0.42), Color(red: 0.92, green: 0.88, blue: 0.85), Color(red: 0.30, green: 0.36, blue: 0.40), Color(red: 0.10, green: 0.12, blue: 0.16))
+    case .sturgeon: return (Color(red: 0.36, green: 0.38, blue: 0.36), Color(red: 0.88, green: 0.88, blue: 0.84), Color(red: 0.28, green: 0.30, blue: 0.30), Color(red: 0.70, green: 0.72, blue: 0.68))
+    case .snakehead: return (Color(red: 0.30, green: 0.26, blue: 0.16), Color(red: 0.86, green: 0.80, blue: 0.62), Color(red: 0.34, green: 0.28, blue: 0.16), Color(red: 0.12, green: 0.10, blue: 0.06))
+    case .cichlid: return (Color(red: 0.36, green: 0.44, blue: 0.16), Color(red: 0.98, green: 0.78, blue: 0.24), Color(red: 0.80, green: 0.30, blue: 0.10), Color(red: 0.10, green: 0.10, blue: 0.08))
     }
   }
 }
 
 // MARK: - Globe map
 
-/// Stylised continent with pins for every waterway; the home screen "globe".
+/// Stylised world map with pins for every waterway; the home screen "globe".
 struct MapView: View {
   let waterways: [Waterway]
   let profile: PlayerProfile
   let selected: String?
   let onSelect: (Waterway) -> Void
 
-  static let outline: [CGPoint] = [
-    CGPoint(x: 0.04, y: 0.30), CGPoint(x: 0.12, y: 0.18), CGPoint(x: 0.24, y: 0.10),
-    CGPoint(x: 0.40, y: 0.06), CGPoint(x: 0.56, y: 0.08), CGPoint(x: 0.66, y: 0.04),
-    CGPoint(x: 0.80, y: 0.10), CGPoint(x: 0.90, y: 0.14), CGPoint(x: 0.96, y: 0.24),
-    CGPoint(x: 0.92, y: 0.34), CGPoint(x: 0.84, y: 0.44), CGPoint(x: 0.80, y: 0.56),
-    CGPoint(x: 0.72, y: 0.66), CGPoint(x: 0.66, y: 0.60), CGPoint(x: 0.58, y: 0.66),
-    CGPoint(x: 0.50, y: 0.80), CGPoint(x: 0.44, y: 0.94), CGPoint(x: 0.38, y: 0.84),
-    CGPoint(x: 0.30, y: 0.70), CGPoint(x: 0.20, y: 0.58), CGPoint(x: 0.10, y: 0.50),
-    CGPoint(x: 0.06, y: 0.40),
+  /// Simplified landmasses as (longitude, latitude) rings.
+  static let landmasses: [[(Double, Double)]] = [
+    // North and Central America
+    [(-168, 66), (-140, 70), (-110, 73), (-80, 72), (-65, 60), (-55, 50), (-66, 44), (-76, 36),
+     (-80, 31), (-81, 25), (-86, 30), (-90, 29), (-97, 26), (-97, 17), (-84, 10), (-77, 8),
+     (-83, 10), (-92, 15), (-105, 20), (-110, 23), (-113, 31), (-118, 33), (-124, 41),
+     (-124, 48), (-132, 55), (-145, 60), (-152, 58), (-165, 54), (-165, 62)],
+    // South America
+    [(-78, 8), (-72, 12), (-62, 10), (-52, 4), (-35, -6), (-38, -14), (-42, -23), (-48, -28),
+     (-53, -34), (-58, -39), (-65, -42), (-68, -52), (-72, -53), (-75, -45), (-72, -30),
+     (-70, -18), (-77, -10), (-81, -4), (-78, 1)],
+    // Eurasia
+    [(-10, 36), (-9, 43), (-2, 48), (2, 51), (8, 54), (5, 58), (10, 63), (20, 70), (40, 68),
+     (60, 70), (80, 73), (105, 77), (140, 72), (170, 69), (180, 66), (170, 60), (160, 55),
+     (158, 52), (142, 48), (135, 43), (130, 35), (122, 30), (121, 23), (109, 18), (106, 10),
+     (103, 1), (99, 8), (98, 16), (90, 22), (85, 20), (80, 10), (77, 8), (72, 20), (67, 25),
+     (58, 25), (56, 20), (52, 15), (44, 12), (43, 15), (35, 28), (33, 31), (36, 36), (28, 36),
+     (23, 38), (20, 40), (16, 38), (12, 44), (6, 43), (3, 43), (-1, 38), (-6, 36)],
+    // Africa
+    [(-17, 21), (-17, 15), (-14, 10), (-8, 5), (0, 5), (8, 4), (10, 2), (9, -2), (12, -6),
+     (12, -15), (15, -22), (18, -34), (26, -34), (33, -27), (36, -20), (40, -12), (41, -2),
+     (46, 5), (51, 12), (43, 12), (37, 18), (33, 31), (30, 32), (20, 32), (10, 37), (0, 36),
+     (-6, 35), (-10, 30), (-16, 25)],
+    // Australia
+    [(114, -22), (114, -34), (118, -35), (130, -32), (138, -35), (141, -38), (146, -39),
+     (150, -37), (153, -30), (153, -25), (146, -19), (142, -11), (137, -12), (131, -12),
+     (126, -14), (122, -17), (116, -20)],
+    // British Isles
+    [(-5, 50), (1, 51), (2, 53), (-2, 56), (-4, 58), (-6, 57), (-6, 55), (-3, 54), (-5, 52),
+     (-6, 50)],
+    // Japan
+    [(130, 31), (132, 34), (136, 35), (140, 36), (142, 40), (141, 43), (145, 44), (142, 45),
+     (140, 41), (137, 37), (133, 35), (131, 33)],
+    // New Zealand
+    [(173, -35), (178, -38), (177, -40), (174, -41), (172, -44), (170, -46), (167, -46),
+     (167, -44), (171, -41), (172, -40), (174, -38)],
   ]
 
   static func project(lat: Double, lon: Double) -> CGPoint {
-    let x = ((lon + 126) / (126 - 64)).clamped(0, 1)
-    let y = ((51 - lat) / (51 - 24)).clamped(0, 1)
-    return CGPoint(x: 0.06 + x * 0.86, y: 0.08 + y * 0.78)
+    let x = ((lon + 170) / 350).clamped(0, 1)
+    let y = ((75 - lat) / 125).clamped(0, 1)
+    return CGPoint(x: 0.03 + x * 0.94, y: 0.05 + y * 0.9)
+  }
+
+  /// Projected pin positions, nudged apart so clustered waterways stay individually tappable.
+  static func pinPositions(for waterways: [Waterway], in size: CGSize) -> [String: CGPoint] {
+    var points = waterways.map { w -> CGPoint in
+      let p = project(lat: w.latitude, lon: w.longitude)
+      return CGPoint(x: p.x * size.width, y: p.y * size.height)
+    }
+    let minGap: CGFloat = 24
+    for _ in 0..<12 {
+      for i in points.indices {
+        for j in points.indices where j > i {
+          let dx = points[j].x - points[i].x
+          let dy = points[j].y - points[i].y
+          let dist = max(sqrt(dx * dx + dy * dy), 0.01)
+          guard dist < minGap else { continue }
+          let push = (minGap - dist) / 2
+          let ux = dist < 0.02 ? 1 : dx / dist
+          let uy = dist < 0.02 ? 0 : dy / dist
+          points[i].x -= ux * push; points[i].y -= uy * push
+          points[j].x += ux * push; points[j].y += uy * push
+        }
+      }
+    }
+    return Dictionary(uniqueKeysWithValues: zip(waterways.map(\.id), points))
   }
 
   var body: some View {
     GeometryReader { geo in
       let size = geo.size
+      let pins = Self.pinPositions(for: waterways, in: size)
       ZStack {
         Canvas { ctx, size in
           // Ocean grid
@@ -633,48 +706,52 @@ struct MapView: View {
           ctx.stroke(grid, with: .color(Theme.cyan.opacity(0.08)), lineWidth: 1)
 
           var land = Path()
-          for (i, pt) in Self.outline.enumerated() {
-            let p = CGPoint(x: pt.x * size.width, y: pt.y * size.height)
-            if i == 0 { land.move(to: p) } else { land.addLine(to: p) }
+          for ring in Self.landmasses {
+            for (i, (lon, lat)) in ring.enumerated() {
+              let p = Self.project(lat: lat, lon: lon)
+              let pt = CGPoint(x: p.x * size.width, y: p.y * size.height)
+              if i == 0 { land.move(to: pt) } else { land.addLine(to: pt) }
+            }
+            land.closeSubpath()
           }
-          land.closeSubpath()
           ctx.fill(land, with: .linearGradient(Gradient(colors: [Color(red: 0.16, green: 0.40, blue: 0.30), Color(red: 0.10, green: 0.26, blue: 0.22)]), startPoint: .zero, endPoint: CGPoint(x: 0, y: size.height)))
-          ctx.stroke(land, with: .color(Theme.cyan.opacity(0.7)), lineWidth: 1.5)
-          // Great lakes hint
-          var lakes = Path()
-          lakes.addEllipse(in: CGRect(x: size.width * 0.66, y: size.height * 0.22, width: size.width * 0.09, height: size.height * 0.07))
-          lakes.addEllipse(in: CGRect(x: size.width * 0.60, y: size.height * 0.20, width: size.width * 0.06, height: size.height * 0.09))
-          ctx.fill(lakes, with: .color(Color(red: 0.12, green: 0.34, blue: 0.50)))
+          ctx.stroke(land, with: .color(Theme.cyan.opacity(0.7)), lineWidth: 1.2)
           // Routes between unlocked waterways
           let unlocked = waterways.filter { profile.level >= $0.requiredLevel }
           if unlocked.count > 1 {
             var route = Path()
             for (i, w) in unlocked.enumerated() {
-              let p = Self.project(lat: w.latitude, lon: w.longitude)
-              let pt = CGPoint(x: p.x * size.width, y: p.y * size.height)
+              let pt = pins[w.id] ?? .zero
               if i == 0 { route.move(to: pt) } else { route.addLine(to: pt) }
             }
             ctx.stroke(route, with: .color(Theme.gold.opacity(0.5)), style: StrokeStyle(lineWidth: 1.5, dash: [4, 4]))
           }
         }
         ForEach(waterways) { waterway in
-          let p = Self.project(lat: waterway.latitude, lon: waterway.longitude)
+          let pt = pins[waterway.id] ?? .zero
           MapPin(
             waterway: waterway, locked: profile.level < waterway.requiredLevel,
             current: profile.currentWaterwayID == waterway.id, selected: selected == waterway.id,
             labelSide: labelSide(for: waterway)
           ) { onSelect(waterway) }
-          .position(x: p.x * size.width, y: p.y * size.height)
+          .zIndex(selected == waterway.id ? 2 : (profile.currentWaterwayID == waterway.id ? 1 : 0))
+          .position(pt)
         }
       }
     }
   }
 
-  /// Pins whose neighbours sit close enough for the captions to collide put the caption beside
-  /// the pin instead: the western pin to the left, the eastern one to the right.
+  /// Only the selected and current pins carry captions. When both sit close together the
+  /// western one puts its caption to the left and the eastern one to the right; pins near the
+  /// map edge always caption inward.
   private func labelSide(for waterway: Waterway) -> MapPin.LabelSide {
     let p = Self.project(lat: waterway.latitude, lon: waterway.longitude)
-    for other in waterways where other.id != waterway.id {
+    if p.x > 0.82 { return .leading }
+    if p.x < 0.18 { return .trailing }
+    let captioned = waterways.filter {
+      $0.id != waterway.id && ($0.id == selected || $0.id == profile.currentWaterwayID)
+    }
+    for other in captioned {
       let q = Self.project(lat: other.latitude, lon: other.longitude)
       if abs(q.x - p.x) < 0.22 && abs(q.y - p.y) < 0.12 {
         return p.x <= q.x ? .leading : .trailing
@@ -699,16 +776,17 @@ struct MapPin: View {
       marker
         .overlay {
           caption
+            .opacity(selected || current ? 1 : 0)
             .fixedSize()
             .alignmentGuide(HorizontalAlignment.center) { d in
               switch labelSide {
               case .below: return d[HorizontalAlignment.center]
-              case .leading: return d[.trailing] + 18
-              case .trailing: return d[.leading] - 18
+              case .leading: return d[.trailing] + 14
+              case .trailing: return d[.leading] - 14
               }
             }
             .alignmentGuide(VerticalAlignment.center) { d in
-              labelSide == .below ? d[.top] - 15 : d[VerticalAlignment.center]
+              labelSide == .below ? d[.top] - 12 : d[VerticalAlignment.center]
             }
         }
         .scaleEffect(selected ? 1.15 : 1)
@@ -720,10 +798,10 @@ struct MapPin: View {
   private var marker: some View {
     ZStack {
       Circle().fill(locked ? Color(red: 0.35, green: 0.38, blue: 0.42) : (current ? Theme.gold : Theme.cyan))
-        .frame(width: 26, height: 26)
+        .frame(width: 20, height: 20)
         .shadow(color: (locked ? Color.black : Theme.cyan).opacity(0.7), radius: selected ? 10 : 4)
-      Circle().strokeBorder(.white.opacity(0.9), lineWidth: 2).frame(width: 26, height: 26)
-      Image(systemName: locked ? "lock.fill" : "fish.fill").font(.system(size: 12, weight: .bold)).foregroundStyle(locked ? Theme.inkDim : .black.opacity(0.75))
+      Circle().strokeBorder(.white.opacity(0.9), lineWidth: 1.5).frame(width: 20, height: 20)
+      Image(systemName: locked ? "lock.fill" : "fish.fill").font(.system(size: 9, weight: .bold)).foregroundStyle(locked ? Theme.inkDim : .black.opacity(0.75))
     }
   }
 
