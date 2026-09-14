@@ -5,6 +5,8 @@ struct PowderlineView: View {
   @StateObject private var store = RideStore()
   @Environment(\.scenePhase) private var scenePhase
   @Environment(\.accessibilityReduceMotion) private var reduceMotion
+  @State private var blink = false
+  @State private var comboPop = false
   private let cream = Palette.cream
   private let ink = Palette.ink
 
@@ -38,91 +40,163 @@ struct PowderlineView: View {
     .onChange(of: reduceMotion, initial: true) { _, value in
       store.reduceMotion = value
     }
+    .onChange(of: store.engine.combo) { _, value in
+      guard value > 0 && !reduceMotion else { return }
+      comboPop = true
+      withAnimation(.spring(duration: 0.5, bounce: 0.55)) { comboPop = false }
+    }
+    .onAppear {
+      guard !reduceMotion else { return }
+      withAnimation(.easeInOut(duration: 0.65).repeatForever(autoreverses: true)) {
+        blink = true
+      }
+    }
     .dynamicTypeSize(.xSmall ... .xxxLarge)
   }
 
-  // MARK: Home
+  // MARK: Home (attract mode)
 
   private var home: some View {
     VStack(spacing: 0) {
-      HStack(alignment: .center) {
-        HStack(spacing: 8) {
-          GlyphView(glyph: .peaks, size: 15, weight: 1.3)
-          Text("EXPEDITION NO. 01")
-            .font(.system(size: 9, weight: .semibold))
-            .tracking(2.2)
-        }
-        .foregroundStyle(cream.opacity(0.78))
-        Spacer()
+      HStack(alignment: .center, spacing: 10) {
+        marquee(
+          label: "HI-SCORE",
+          value: store.records.rides > 0 ? store.records.bestScore.formatted() : "000000")
+        marquee(
+          label: "BEST", value: store.records.rides > 0 ? "\(store.records.bestDistance) M" : "0 M")
+        Spacer(minLength: 0)
         soundButton
       }
-      .padding(.bottom, 44)
+      .padding(.bottom, 26)
 
-      Wordmark()
-      Text("Leave everything behind.")
-        .font(.system(size: 16, weight: .regular, design: .serif))
-        .italic()
-        .foregroundStyle(cream.opacity(0.86))
-        .padding(.top, 10)
+      ZStack {
+        if !reduceMotion {
+          Starburst()
+            .fill(
+              AngularGradient(
+                colors: [Palette.amber.opacity(0.32), .clear, Palette.coral.opacity(0.24), .clear],
+                center: .center)
+            )
+            .frame(width: 300, height: 300)
+            .rotationEffect(.degrees(store.sceneryTime * 9))
+            .blendMode(.screen)
+            .allowsHitTesting(false)
+        }
+        Wordmark()
+      }
+      .frame(height: 190)
+      .clipped()
 
-      Spacer(minLength: 110)
+      HStack(spacing: 8) {
+        Rectangle().fill(Palette.mist).frame(width: 26, height: 3)
+        Text("ONE-TOUCH SNOWBOARD ARCADE")
+          .font(.system(size: 11, weight: .black, design: .rounded))
+          .tracking(2.4)
+          .foregroundStyle(Palette.mist)
+        Rectangle().fill(Palette.mist).frame(width: 26, height: 3)
+      }
+      .padding(.top, 6)
+      .shadow(color: Palette.inkDeep, radius: 0, y: 2)
 
-      VStack(spacing: 12) {
+      Spacer(minLength: 70)
+
+      VStack(spacing: 14) {
         if store.records.rides > 0 {
-          HStack(spacing: 0) {
-            recordColumn("BEST DISTANCE", value: "\(store.records.bestDistance) m")
-            divider
-            recordColumn("BEST SCORE", value: store.records.bestScore.formatted())
-            divider
-            recordColumn("BACKFLIPS", value: store.records.totalFlips.formatted())
+          HStack(spacing: 8) {
+            recordTile("RUNS", value: store.records.rides.formatted(), tint: Palette.mist)
+            recordTile("FLIPS", value: store.records.totalFlips.formatted(), tint: Palette.coral)
+            recordTile("COINS", value: store.records.totalCoins.formatted(), tint: Palette.amber)
           }
-          .padding(.vertical, 13)
-          .padding(.horizontal, 8)
-          .background(ink.opacity(0.86), in: RoundedRectangle(cornerRadius: 18))
-          .overlay(RoundedRectangle(cornerRadius: 18).stroke(cream.opacity(0.14), lineWidth: 1))
-          .padding(.bottom, 6)
         } else {
-          Text("A fresh trail. A quieter mind.")
-            .font(.system(size: 14, design: .serif))
-            .italic()
-            .foregroundStyle(ink.opacity(0.8))
-            .padding(.bottom, 8)
+          Text("INSERT COURAGE · FREE PLAY")
+            .font(.system(size: 11, weight: .black, design: .rounded))
+            .tracking(2.4)
+            .foregroundStyle(Palette.amber)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(ink, in: Capsule())
+            .overlay(Capsule().stroke(Palette.amber, lineWidth: 2))
         }
 
-        primaryButton("Begin the descent") { store.start(.expedition) }
+        Button {
+          store.start(.expedition)
+        } label: {
+          HStack(spacing: 10) {
+            GlyphView(glyph: .play, size: 14, weight: 3)
+            Text("TAP TO START")
+          }
+          .frame(maxWidth: .infinity)
+          .opacity(reduceMotion ? 1 : (blink ? 1 : 0.62))
+        }
+        .buttonStyle(ArcadeButtonStyle(height: 66))
+        .accessibilityLabel("Start expedition")
 
         HStack(spacing: 10) {
-          secondaryButton("Zen practice", glyph: .leaf) { store.start(.practice) }
-          secondaryButton("How to ride", glyph: .tap) { store.showGuide = true }
+          Button {
+            store.start(.practice)
+          } label: {
+            HStack(spacing: 8) {
+              GlyphView(glyph: .leaf, size: 13, weight: 2.2)
+              Text("ZEN MODE")
+            }
+          }
+          .buttonStyle(ChipButtonStyle(tint: Palette.lime))
+          Button {
+            store.showGuide = true
+          } label: {
+            HStack(spacing: 8) {
+              GlyphView(glyph: .tap, size: 13, weight: 2.2)
+              Text("HOW TO PLAY")
+            }
+          }
+          .buttonStyle(ChipButtonStyle())
         }
       }
-      .padding(.horizontal, 4)
     }
-    .padding(.horizontal, 26)
+    .padding(.horizontal, 24)
     .padding(.top, 4)
-    .padding(.bottom, 6)
+    .padding(.bottom, 8)
   }
 
-  private var divider: some View {
-    Rectangle().fill(cream.opacity(0.16)).frame(width: 1, height: 30)
-  }
-
-  private func recordColumn(_ label: String, value: String) -> some View {
-    VStack(spacing: 5) {
-      Text(value)
-        .font(.system(size: 19, weight: .light, design: .rounded))
-        .monospacedDigit()
-        .minimumScaleFactor(0.7)
-        .lineLimit(1)
+  private func marquee(label: String, value: String) -> some View {
+    VStack(alignment: .leading, spacing: 1) {
       Text(label)
-        .font(.system(size: 7, weight: .semibold))
-        .tracking(1.6)
+        .font(.system(size: 8, weight: .black, design: .rounded))
+        .tracking(1.8)
+        .foregroundStyle(Palette.coral)
+      Text(value)
+        .font(.system(size: 15, weight: .black, design: .rounded))
+        .monospacedDigit()
         .foregroundStyle(Palette.amber)
     }
-    .frame(maxWidth: .infinity)
+    .padding(.horizontal, 12)
+    .padding(.vertical, 6)
+    .background(ink.opacity(0.92), in: RoundedRectangle(cornerRadius: 10))
+    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Palette.violet, lineWidth: 2))
+    .accessibilityElement(children: .combine)
   }
 
-  // MARK: Ride HUD
+  private func recordTile(_ label: String, value: String, tint: Color) -> some View {
+    VStack(spacing: 2) {
+      Text(value)
+        .font(.system(size: 22, weight: .black, design: .rounded))
+        .monospacedDigit()
+        .foregroundStyle(tint)
+        .lineLimit(1)
+        .minimumScaleFactor(0.6)
+      Text(label)
+        .font(.system(size: 8, weight: .black, design: .rounded))
+        .tracking(1.6)
+        .foregroundStyle(cream.opacity(0.7))
+    }
+    .frame(maxWidth: .infinity)
+    .padding(.vertical, 10)
+    .background(ink.opacity(0.92), in: RoundedRectangle(cornerRadius: 14))
+    .overlay(RoundedRectangle(cornerRadius: 14).stroke(tint.opacity(0.6), lineWidth: 2))
+    .accessibilityElement(children: .combine)
+  }
+
+  // MARK: Riding HUD
 
   private func rideHUD(size: CGSize) -> some View {
     ZStack {
@@ -132,233 +206,325 @@ struct PowderlineView: View {
         .padding(.top, 150)
         .padding(.bottom, 110)
 
+      if !reduceMotion && store.toastTime > 1.7 {
+        RadialGradient(
+          colors: [.clear, Palette.coral.opacity((store.toastTime - 1.7) * 1.6)],
+          center: .center, startRadius: size.width * 0.3, endRadius: size.width * 0.8
+        )
+        .ignoresSafeArea()
+        .allowsHitTesting(false)
+      }
+
       VStack(spacing: 0) {
-        HStack(alignment: .top, spacing: 16) {
+        HStack(alignment: .top, spacing: 12) {
           VStack(alignment: .leading, spacing: 2) {
-            HStack(alignment: .firstTextBaseline, spacing: 4) {
-              Text("\(store.engine.distance)")
-                .font(.system(size: 46, weight: .light, design: .rounded))
-                .contentTransition(.numericText())
-              Text("m")
-                .font(.system(size: 17, weight: .light, design: .serif))
-                .italic()
-                .foregroundStyle(cream.opacity(0.7))
-            }
-            .monospacedDigit()
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Distance \(store.engine.distance) meters")
-            eyebrow(store.engine.mode == .practice ? "ZEN PRACTICE" : "DISTANCE")
-              .foregroundStyle(Palette.amber)
+            hudLabel(
+              store.engine.mode == .practice ? "ZEN · DISTANCE" : "DISTANCE", tint: Palette.mist)
+            ArcadeText(
+              text: "\(store.engine.distance) M", size: 30, fill: [cream, Palette.mist],
+              depth: 3)
           }
+          .accessibilityElement(children: .ignore)
+          .accessibilityLabel("Distance \(store.engine.distance) meters")
+
           Spacer(minLength: 0)
-          VStack(alignment: .trailing, spacing: 6) {
-            Text(store.engine.score.formatted())
-              .font(.system(size: 27, weight: .light, design: .rounded))
-              .monospacedDigit()
-              .padding(.top, 8)
-              .accessibilityLabel("Score \(store.engine.score)")
-            HStack(spacing: 5) {
-              GlyphView(glyph: .gem, size: 9, weight: 1.2)
-              Text("\(store.engine.coins)")
-                .font(.system(size: 11, weight: .medium, design: .monospaced))
-            }
-            .foregroundStyle(Palette.amber)
-            eyebrow(store.engine.mode == .practice ? "PRACTICE SCORE" : "SCORE")
-              .foregroundStyle(cream.opacity(0.6))
+
+          VStack(alignment: .trailing, spacing: 2) {
+            hudLabel(
+              store.engine.mode == .practice ? "PRACTICE SCORE" : "SCORE", tint: Palette.amber)
+            ArcadeText(
+              text: store.engine.score.formatted(), size: 34,
+              fill: [Color(hex: 0xFFF3B8), Palette.amber, Palette.orange], depth: 4
+            )
+            .contentTransition(.numericText())
+            .accessibilityLabel("Score \(store.engine.score)")
+            coinCounter
           }
+
           iconButton(.pause, label: "Pause", action: store.pause)
             .disabled(store.impactTime > 0)
         }
-        .padding(.horizontal, 26)
+        .padding(.horizontal, 22)
+        .padding(.top, 6)
+
+        HStack(alignment: .top, spacing: 12) {
+          comboBadge
+          Spacer()
+          stageTag
+        }
+        .padding(.horizontal, 22)
         .padding(.top, 8)
 
-        flowMeter
-          .padding(.horizontal, 26)
-          .padding(.top, 14)
-
-        trailRadar(width: size.width - 52)
-          .padding(.horizontal, 26)
-          .padding(.top, 10)
+        hazardTicker(width: size.width - 44)
+          .padding(.horizontal, 22)
+          .padding(.top, 8)
 
         Spacer()
         if store.impactTime > 0 {
-          Text(store.engine.crashReason)
-            .font(.system(size: 22, weight: .medium, design: .serif))
-            .padding(.horizontal, 22)
-            .padding(.vertical, 13)
-            .background(Palette.inkDeep.opacity(0.88), in: Capsule())
-            .overlay(Capsule().stroke(Palette.coral.opacity(0.7), lineWidth: 1))
-            .padding(.bottom, size.height * 0.26)
-            .allowsHitTesting(false)
-        } else if store.toastTime > 0 {
-          VStack(spacing: 6) {
-            Text(store.toast)
-              .font(.system(size: 21, weight: .semibold, design: .serif))
-              .tracking(1.5)
-            Text(store.toastDetail)
-              .font(.system(size: 11, weight: .semibold, design: .monospaced))
-              .foregroundStyle(Palette.amber)
+          VStack(spacing: 4) {
+            ArcadeText(
+              text: "WIPEOUT!", size: 46, fill: [cream, Palette.coral, Color(hex: 0xC8177A)],
+              depth: 6)
+            Text(store.engine.crashReason.uppercased())
+              .font(.system(size: 12, weight: .black, design: .rounded))
+              .tracking(1.8)
+              .foregroundStyle(cream)
+              .padding(.horizontal, 12)
+              .padding(.vertical, 5)
+              .background(ink, in: Capsule())
           }
-          .foregroundStyle(cream)
-          .padding(.horizontal, 22)
-          .padding(.vertical, 13)
-          .background(Palette.inkDeep.opacity(0.86), in: RoundedRectangle(cornerRadius: 14))
-          .overlay(RoundedRectangle(cornerRadius: 14).stroke(cream.opacity(0.16)))
           .padding(.bottom, size.height * 0.26)
           .allowsHitTesting(false)
-          .accessibilityElement(children: .combine)
+        } else if store.toastTime > 0 {
+          scorePop
+            .id(store.toastCount)
+            .transition(.scale(scale: 0.4).combined(with: .opacity))
+            .padding(.bottom, size.height * 0.26)
+            .allowsHitTesting(false)
         } else if store.engine.elapsed < 4.5 && !store.hasJumped {
           VStack(spacing: 8) {
-            Text("Find your flow.")
-              .font(.system(size: 27, weight: .regular, design: .serif))
-              .italic()
-            Text("TAP TO JUMP · HOLD FOR A BACKFLIP")
-              .font(.system(size: 9, weight: .semibold))
+            ArcadeText(
+              text: "GO!", size: 54, fill: [cream, Palette.lime, Color(hex: 0x3FB93A)], depth: 6)
+            Text("TAP TO JUMP · HOLD TO FLIP")
+              .font(.system(size: 11, weight: .black, design: .rounded))
               .tracking(2)
-              .foregroundStyle(cream.opacity(0.8))
+              .foregroundStyle(cream)
+              .padding(.horizontal, 12)
+              .padding(.vertical, 6)
+              .background(ink, in: Capsule())
           }
-          .shadow(color: Palette.inkDeep.opacity(0.5), radius: 10, y: 4)
           .padding(.bottom, size.height * 0.26)
           .allowsHitTesting(false)
         }
         Spacer().frame(height: 100)
       }
+      .animation(reduceMotion ? nil : .spring(duration: 0.4, bounce: 0.4), value: store.toastCount)
 
       VStack {
         Spacer()
-        VStack(spacing: 9) {
+        VStack(spacing: 8) {
           Group {
             if !store.engine.grounded {
               HStack(spacing: 7) {
-                GlyphView(glyph: .rotate, size: 11, weight: 1.4)
+                GlyphView(glyph: .rotate, size: 11, weight: 2.2)
                 Text(landingHint)
               }
-              .font(.system(size: 10, weight: .semibold))
-              .tracking(1)
+              .foregroundStyle(landingSafe ? Palette.lime : Palette.amber)
             } else {
               Text(
                 store.engine.mode == .practice
-                  ? "GENTLE PACE · FALLS ARE FORGIVEN" : "FIND AIR · CHASE THE HORIZON"
+                  ? "ZEN MODE · FALLS ARE FORGIVEN" : "FIND AIR · CHAIN FLIPS · CHASE THE RECORD"
               )
-              .font(.system(size: 8, weight: .semibold))
-              .tracking(2)
+              .foregroundStyle(Palette.mist)
             }
           }
-          .foregroundStyle(cream)
-          .frame(height: 22)
-          .padding(.horizontal, 12)
-          .background(Palette.inkDeep.opacity(0.82), in: Capsule())
-          .overlay(Capsule().stroke(cream.opacity(0.18), lineWidth: 1))
+          .font(.system(size: 10, weight: .black, design: .rounded))
+          .tracking(1.4)
+          .frame(height: 24)
+          .padding(.horizontal, 14)
+          .background(Palette.inkDeep.opacity(0.9), in: Capsule())
+          .overlay(Capsule().stroke(cream.opacity(0.2), lineWidth: 1))
           HoldControl(onPress: store.press, onRelease: store.release)
-            .frame(height: 56)
+            .frame(height: 60)
         }
-        .padding(.horizontal, 30)
+        .padding(.horizontal, 28)
         .padding(.bottom, 10)
       }
     }
   }
 
-  private var flowMeter: some View {
-    HStack(spacing: 10) {
-      HStack(spacing: 4) {
-        ForEach(0..<5, id: \.self) { index in
-          RoundedRectangle(cornerRadius: 1.5)
-            .fill(index < store.engine.combo ? Palette.amber : cream.opacity(0.22))
-            .frame(width: 18, height: 3)
-        }
-      }
-      .overlay(alignment: .leading) {
-        if store.engine.combo > 0 {
-          RoundedRectangle(cornerRadius: 1.5)
-            .fill(cream)
-            .frame(width: 106 * store.engine.comboTime / 5.5, height: 1)
-            .offset(y: 4)
-        }
-      }
-      Text(store.engine.combo > 0 ? "FLOW \(store.engine.combo)×" : "FLOW")
-        .font(.system(size: 11, weight: .bold, design: .monospaced))
-        .tracking(1.4)
-        .foregroundStyle(store.engine.combo > 0 ? Palette.amber : cream.opacity(0.5))
+  private var coinCounter: some View {
+    HStack(spacing: 5) {
+      GlyphView(glyph: .gem, size: 10, weight: 2)
+      Text("\(store.engine.coins)")
+        .font(.system(size: 13, weight: .black, design: .rounded))
+        .monospacedDigit()
         .contentTransition(.numericText())
-        .accessibilityLabel("\(store.engine.combo) times combo")
-      Spacer()
-      HStack(spacing: 6) {
-        Circle().fill(Palette.amber).frame(width: 4, height: 4)
-        Text(daylight)
-          .font(.system(size: 8, weight: .medium, design: .monospaced))
-          .tracking(1.6)
+      if store.coinPopTime > 0 {
+        Text("+25")
+          .font(.system(size: 11, weight: .black, design: .rounded))
+          .foregroundStyle(Palette.lime)
+          .scaleEffect(reduceMotion ? 1 : 0.8 + store.coinPopTime * 0.6)
+          .opacity(min(1, store.coinPopTime * 3))
       }
-      .foregroundStyle(cream.opacity(0.6))
     }
+    .foregroundStyle(Palette.amber)
+    .padding(.horizontal, 9)
+    .padding(.vertical, 4)
+    .background(ink.opacity(0.9), in: Capsule())
+    .overlay(Capsule().stroke(Palette.amber.opacity(0.6), lineWidth: 1.5))
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel("\(store.engine.coins) coins")
   }
 
-  /// A thin route line: the rider tick sits left and the next hazard marker
-  /// slides in from the right as it approaches.
-  private func trailRadar(width: CGFloat) -> some View {
+  private var comboBadge: some View {
+    let combo = store.engine.combo
+    let fraction = combo > 0 ? min(1, store.engine.comboTime / 5.5) : 0
+    return HStack(spacing: 10) {
+      ZStack {
+        Circle().fill(combo > 0 ? Palette.coral : ink.opacity(0.9))
+        Circle().stroke(combo > 0 ? cream : cream.opacity(0.3), lineWidth: 2.5)
+        Circle()
+          .trim(from: 0, to: fraction)
+          .stroke(Palette.amber, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+          .rotationEffect(.degrees(-90))
+          .padding(-5)
+        ArcadeText(
+          text: "×\(max(1, combo))", size: 22,
+          fill: combo > 0 ? [cream, Palette.amber] : [cream.opacity(0.5), cream.opacity(0.5)],
+          depth: 2)
+      }
+      .frame(width: 54, height: 54)
+      .scaleEffect(comboPop ? 1.3 : 1)
+      VStack(alignment: .leading, spacing: 3) {
+        Text(combo > 0 ? "COMBO" : "NO COMBO")
+          .font(.system(size: 10, weight: .black, design: .rounded))
+          .tracking(1.8)
+          .foregroundStyle(combo > 0 ? Palette.coral : cream.opacity(0.6))
+        HStack(spacing: 3) {
+          ForEach(0..<5, id: \.self) { index in
+            RoundedRectangle(cornerRadius: 2)
+              .fill(index < combo ? Palette.amber : ink.opacity(0.8))
+              .overlay(
+                RoundedRectangle(cornerRadius: 2).stroke(
+                  index < combo ? Palette.ink : cream.opacity(0.3), lineWidth: 1.5)
+              )
+              .frame(width: 14, height: 9)
+          }
+        }
+      }
+    }
+    .padding(.horizontal, 6)
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel("\(combo) times combo")
+  }
+
+  private var stageTag: some View {
+    VStack(alignment: .trailing, spacing: 3) {
+      Text("STAGE \(stage)")
+        .font(.system(size: 13, weight: .black, design: .rounded))
+        .tracking(1.2)
+        .foregroundStyle(Palette.amber)
+      Text(daylight)
+        .font(.system(size: 8, weight: .black, design: .rounded))
+        .tracking(1.8)
+        .foregroundStyle(cream.opacity(0.75))
+    }
+    .padding(.horizontal, 10)
+    .padding(.vertical, 6)
+    .background(ink.opacity(0.9), in: RoundedRectangle(cornerRadius: 10))
+    .overlay(
+      RoundedRectangle(cornerRadius: 10)
+        .stroke(Palette.violet, lineWidth: 2)
+    )
+    .accessibilityElement(children: .combine)
+  }
+
+  private var scorePop: some View {
+    VStack(spacing: 2) {
+      ArcadeText(
+        text: store.toast, size: 40, fill: [cream, Palette.coral, Color(hex: 0xC8177A)], depth: 6)
+      if store.toastPoints > 0 {
+        ArcadeText(
+          text: "+\(store.toastPoints.formatted())", size: 50,
+          fill: [Color(hex: 0xFFF3B8), Palette.amber, Palette.orange], depth: 6)
+      }
+      if !store.toastDetail.isEmpty {
+        Text(store.toastDetail)
+          .font(.system(size: 12, weight: .black, design: .rounded))
+          .tracking(2)
+          .foregroundStyle(ink)
+          .padding(.horizontal, 12)
+          .padding(.vertical, 5)
+          .background(Palette.amber, in: Capsule())
+          .overlay(Capsule().stroke(ink, lineWidth: 2))
+      }
+    }
+    .rotationEffect(.degrees(-4))
+    .accessibilityElement(children: .combine)
+  }
+
+  /// Hazard ticker: a track with the rider pinned left and the next hazard
+  /// sliding in from the right; it turns pink and flashes when danger is close.
+  private func hazardTicker(width: CGFloat) -> some View {
     let hazard = store.engine.nextHazard
     let ahead = hazard.x - store.engine.x
     let span = 520.0
+    let close = ahead < 180
     return ZStack(alignment: .leading) {
-      Line().stroke(cream.opacity(0.28), style: StrokeStyle(lineWidth: 1, dash: [2, 5]))
-        .frame(height: 1)
-      Circle().fill(cream).frame(width: 5, height: 5)
+      Capsule().fill(ink.opacity(0.85)).frame(height: 8)
+      Capsule().stroke(cream.opacity(0.25), lineWidth: 1).frame(height: 8)
+      Circle().fill(Palette.mist).frame(width: 10, height: 10)
+        .overlay(Circle().stroke(ink, lineWidth: 2))
+        .offset(x: 6)
       if ahead < span {
         let fraction = max(0, ahead / span)
-        VStack(spacing: 3) {
-          GlyphView(glyph: hazard.kind == .rock ? .rock : .flag, size: 13, weight: 1.5)
+        HStack(spacing: 4) {
+          GlyphView(glyph: .bolt, size: 12, weight: 2)
+            .opacity(close && !reduceMotion ? (blink ? 1 : 0.3) : 1)
           Text(hazard.kind == .rock ? "ROCK" : "RAVINE")
-            .font(.system(size: 8.5, weight: .bold))
-            .tracking(1.6)
+            .font(.system(size: 10, weight: .black, design: .rounded))
+            .tracking(1.4)
         }
-        .foregroundStyle(ahead < 180 ? Palette.coral : Palette.amber)
-        .shadow(color: Palette.inkDeep.opacity(0.7), radius: 3)
-        .frame(width: 52)
-        .offset(x: min(width - 22, 8 + fraction * (width - 30)) - 22, y: 13)
+        .foregroundStyle(ink)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 4)
+        .background(close ? Palette.coral : Palette.amber, in: Capsule())
+        .overlay(Capsule().stroke(ink, lineWidth: 2))
+        .frame(width: 84)
+        .offset(x: min(width - 84, 14 + fraction * (width - 98)), y: -4)
         .accessibilityIdentifier("hazardWarning")
         .accessibilityLabel(hazard.kind == .rock ? "Rock ahead" : "Ravine ahead")
       }
     }
-    .frame(height: 30, alignment: .top)
+    .frame(height: 26, alignment: .top)
   }
 
   // MARK: Pause
 
   private var pause: some View {
     ZStack {
-      Palette.inkDeep.opacity(0.74).ignoresSafeArea()
+      Palette.inkDeep.opacity(0.8).ignoresSafeArea()
+      Stripes(spacing: 34).stroke(Palette.violet.opacity(0.18), lineWidth: 10).ignoresSafeArea()
       VStack(spacing: 22) {
         HStack {
-          eyebrow("TAKE A BREATH")
+          hudLabel("GAME PAUSED", tint: Palette.mist)
           Spacer()
           soundButton
         }
         Spacer()
-        GlyphView(glyph: .snowflake, size: 34, weight: 1.2)
-          .foregroundStyle(Palette.amber)
-          .padding(.bottom, 4)
-        Text("The mountain\ncan wait.")
-          .font(.system(size: 44, weight: .semibold, design: .serif))
-          .multilineTextAlignment(.center)
-        Text("\(store.engine.distance) m into the quiet.")
-          .font(.system(size: 15, design: .serif))
-          .italic()
-          .foregroundStyle(cream.opacity(0.72))
+        ArcadeText(
+          text: "PAUSED", size: 64, fill: [cream, Palette.mist, Color(hex: 0x1FA6D4)], depth: 8)
+        HStack(spacing: 8) {
+          statChip("\(store.engine.distance) M", tint: Palette.mist)
+          statChip("\(store.engine.score.formatted()) PTS", tint: Palette.amber)
+        }
         Spacer()
-        primaryButton("Keep riding", glyph: .play, light: true, action: store.resume)
-        Button(action: store.finish) {
-          Text(store.engine.mode == .practice ? "Finish practice" : "End this ride")
-            .font(.system(size: 14, weight: .medium))
-            .frame(maxWidth: .infinity, minHeight: 48)
+        Button(action: store.resume) {
+          HStack(spacing: 10) {
+            GlyphView(glyph: .play, size: 14, weight: 3)
+            Text("RESUME")
+          }
+          .frame(maxWidth: .infinity)
         }
-        Button {
-          store.showGuide = true
-        } label: {
-          Text("TOUCH CONTROLS").font(.system(size: 9, weight: .semibold)).tracking(2)
-            .frame(minHeight: 44)
+        .buttonStyle(
+          ArcadeButtonStyle(
+            face: [Color(hex: 0xD3FFB0), Palette.lime, Color(hex: 0x3FB93A)],
+            plinth: Color(hex: 0x1D6A1E)))
+        HStack(spacing: 10) {
+          Button(action: store.finish) {
+            Text(store.engine.mode == .practice ? "END SESSION" : "END RUN")
+          }
+          .buttonStyle(ChipButtonStyle(tint: Palette.coral))
+          Button {
+            store.showGuide = true
+          } label: {
+            Text("CONTROLS")
+          }
+          .buttonStyle(ChipButtonStyle())
         }
-        .foregroundStyle(cream.opacity(0.6))
       }
-      .padding(.horizontal, 36)
+      .padding(.horizontal, 32)
       .padding(.vertical, 16)
     }
   }
@@ -367,120 +533,135 @@ struct PowderlineView: View {
 
   private var results: some View {
     ZStack {
-      Palette.inkDeep.opacity(0.78).ignoresSafeArea()
-      VStack(spacing: 14) {
+      Palette.inkDeep.opacity(0.84).ignoresSafeArea()
+      Stripes(spacing: 34).stroke(Palette.violet.opacity(0.18), lineWidth: 10).ignoresSafeArea()
+      VStack(spacing: 12) {
         HStack {
-          eyebrow(
-            store.engine.mode == .practice ? "ZEN PRACTICE · COMPLETE" : "ALPINE JOURNAL · ENTRY")
+          hudLabel(
+            store.engine.mode == .practice ? "ZEN SESSION OVER" : "GAME OVER", tint: Palette.mist)
           Spacer()
           iconButton(.close, label: "Back to title", action: store.home)
         }
-        Spacer(minLength: 4)
-        Text(
-          store.engine.mode == .practice
-            ? "A little closer\nto the flow." : "Beautiful,\nwhile it lasted."
-        )
-        .font(.system(size: 36, weight: .semibold, design: .serif))
-        .multilineTextAlignment(.center)
-        .lineSpacing(-1)
-        Text(
-          store.engine.crashReason.isEmpty
-            ? "Every descent is a new beginning."
-            : store.engine.crashReason + ". There’s always another trail."
-        )
-        .font(.system(size: 13, design: .serif))
-        .italic()
-        .multilineTextAlignment(.center)
-        .foregroundStyle(cream.opacity(0.74))
-        .fixedSize(horizontal: false, vertical: true)
-
-        journalCard
-          .padding(.top, 6)
-
-        Spacer(minLength: 2)
-        primaryButton("Ride again", light: true) { store.start(store.engine.mode) }
-        HStack {
-          Button(action: store.home) {
-            Text("Back to the lodge").frame(maxWidth: .infinity, minHeight: 44)
+        Spacer(minLength: 0)
+        ZStack {
+          if !reduceMotion {
+            Starburst(rays: 14)
+              .fill(
+                AngularGradient(
+                  colors: [Palette.amber.opacity(0.4), .clear, Palette.coral.opacity(0.3), .clear],
+                  center: .center)
+              )
+              .frame(width: 240, height: 240)
+              .rotationEffect(.degrees(store.sceneryTime * 12))
+              .blendMode(.screen)
           }
-          ShareLink(item: shareText) {
-            HStack(spacing: 7) {
-              GlyphView(glyph: .share, size: 12, weight: 1.3)
-              Text("Share ride")
-            }
-            .frame(maxWidth: .infinity, minHeight: 44)
+          VStack(spacing: -4) {
+            ArcadeText(
+              text: store.engine.crashReason.isEmpty ? "RUN COMPLETE" : "WIPEOUT!", size: 46,
+              fill: [cream, Palette.coral, Color(hex: 0xC8177A)], depth: 7)
+            rankBadge
           }
         }
-        .font(.system(size: 13, weight: .medium))
-        .foregroundStyle(cream.opacity(0.72))
+        .frame(height: 210)
+        if store.newBest {
+          StampBadge(title: "NEW HI-SCORE!", color: Palette.amber)
+            .opacity(reduceMotion ? 1 : (blink ? 1 : 0.7))
+            .padding(.top, -8)
+        }
+        scoreBoard
+        Spacer(minLength: 0)
+        Text(
+          store.engine.crashReason.isEmpty
+            ? "CLEAN RUN · PRESS PLAY AGAIN"
+            : "\(store.engine.crashReason.uppercased()) · TRY AGAIN?"
+        )
+        .font(.system(size: 11, weight: .black, design: .rounded))
+        .tracking(2)
+        .foregroundStyle(Palette.lime)
+        .opacity(reduceMotion ? 1 : (blink ? 1 : 0.35))
+        .lineLimit(1)
+        .minimumScaleFactor(0.7)
+        .padding(.bottom, 4)
+        Button {
+          store.start(store.engine.mode)
+        } label: {
+          HStack(spacing: 10) {
+            GlyphView(glyph: .rotate, size: 15, weight: 3)
+            Text("PLAY AGAIN")
+          }
+          .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(ArcadeButtonStyle())
+        HStack(spacing: 10) {
+          Button(action: store.home) {
+            Text("TITLE")
+          }
+          .buttonStyle(ChipButtonStyle())
+          ShareLink(item: shareText) {
+            HStack(spacing: 7) {
+              GlyphView(glyph: .share, size: 12, weight: 2.2)
+              Text("SHARE")
+            }
+          }
+          .buttonStyle(ChipButtonStyle(tint: Palette.amber))
+        }
       }
-      .padding(.horizontal, 28)
+      .padding(.horizontal, 26)
       .padding(.top, 4)
       .padding(.bottom, 8)
     }
   }
 
-  private var journalCard: some View {
-    VStack(spacing: 0) {
-      RidgeBand()
-        .frame(height: 46)
-        .overlay(alignment: .topLeading) {
-          eyebrow(store.engine.mode == .practice ? "PRACTICE SESSION" : "THIS DESCENT")
-            .foregroundStyle(cream)
-            .padding(.leading, 22)
-            .padding(.top, 16)
-        }
-        .overlay(alignment: .topTrailing) {
-          if store.newBest {
-            StampBadge(title: "NEW BEST").padding(.trailing, 22).padding(.top, 10)
-          }
-        }
-      VStack(spacing: 16) {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-          Text(store.engine.score.formatted())
-            .font(.system(size: 58, weight: .light, design: .rounded))
-            .monospacedDigit()
-            .minimumScaleFactor(0.6)
-            .lineLimit(1)
-          Text("points")
-            .font(.system(size: 15, design: .serif))
-            .italic()
-            .foregroundStyle(ink.opacity(0.6))
-          Spacer(minLength: 0)
-          if store.engine.bestCombo > 1 {
-            VStack(alignment: .trailing, spacing: 3) {
-              Text("\(store.engine.bestCombo)×")
-                .font(.system(size: 22, weight: .light, design: .rounded))
-              Text("BEST FLOW").font(.system(size: 7, weight: .semibold)).tracking(1.4)
-                .foregroundStyle(Palette.coral)
-            }
-          }
-        }
-        .padding(.horizontal, 22)
-        Perforation()
-        HStack(spacing: 0) {
-          resultStat("\(store.engine.distance) m", label: "DISTANCE", glyph: .peaks)
-          resultStat("\(store.engine.flips)", label: "BACKFLIPS", glyph: .rotate)
-          resultStat("\(store.engine.coins)", label: "COINS", glyph: .gem)
-        }
-        .padding(.horizontal, 14)
-        Text(
-          store.engine.mode == .practice
-            ? "Practice is separate from expedition records."
-            : "Personal best  \(store.records.bestScore.formatted()) pts  ·  \(store.records.bestDistance) m"
-        )
-        .font(.system(size: 10, weight: .medium))
-        .foregroundStyle(ink.opacity(0.6))
-        .multilineTextAlignment(.center)
-        .padding(.horizontal, 22)
-      }
-      .padding(.top, 14)
-      .padding(.bottom, 20)
+  private var rankBadge: some View {
+    HStack(spacing: 10) {
+      Text("RANK")
+        .font(.system(size: 12, weight: .black, design: .rounded))
+        .tracking(2.4)
+        .foregroundStyle(cream)
+      ArcadeText(text: rank, size: 58, fill: [cream, Palette.amber, Palette.orange], depth: 6)
+        .frame(width: 66)
     }
-    .foregroundStyle(ink)
-    .background(cream, in: RoundedRectangle(cornerRadius: 22))
-    .clipShape(RoundedRectangle(cornerRadius: 22))
-    .shadow(color: Palette.inkDeep.opacity(0.35), radius: 24, y: 12)
+    .padding(.horizontal, 18)
+    .padding(.vertical, 6)
+    .background(ink, in: RoundedRectangle(cornerRadius: 16))
+    .overlay(RoundedRectangle(cornerRadius: 16).stroke(Palette.amber, lineWidth: 2.5))
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel("Rank \(rank)")
+  }
+
+  private var scoreBoard: some View {
+    VStack(spacing: 10) {
+      VStack(spacing: 0) {
+        hudLabel(
+          store.engine.mode == .practice ? "PRACTICE SCORE" : "FINAL SCORE", tint: Palette.coral)
+        ArcadeText(
+          text: store.engine.score.formatted(), size: 60,
+          fill: [Color(hex: 0xFFF3B8), Palette.amber, Palette.orange], depth: 7)
+      }
+      .frame(maxWidth: .infinity)
+      .padding(.vertical, 14)
+      .background(ink, in: RoundedRectangle(cornerRadius: 18))
+      .overlay(RoundedRectangle(cornerRadius: 18).stroke(Palette.amber.opacity(0.7), lineWidth: 2))
+      HStack(spacing: 8) {
+        resultStat(
+          "\(store.engine.distance) M", label: "DISTANCE", glyph: .peaks, tint: Palette.mist)
+        resultStat("\(store.engine.flips)", label: "BACKFLIPS", glyph: .rotate, tint: Palette.coral)
+        resultStat("\(store.engine.coins)", label: "COINS", glyph: .gem, tint: Palette.amber)
+        resultStat(
+          "×\(store.engine.bestCombo)", label: "TOP COMBO", glyph: .bolt, tint: Palette.lime)
+      }
+      Text(
+        store.engine.mode == .practice
+          ? "ZEN MODE SCORES STAY OFF THE HI-SCORE BOARD"
+          : "HI-SCORE \(store.records.bestScore.formatted())  ·  BEST \(store.records.bestDistance) M"
+      )
+      .font(.system(size: 9, weight: .black, design: .rounded))
+      .tracking(1.6)
+      .foregroundStyle(cream.opacity(0.7))
+      .multilineTextAlignment(.center)
+      .lineLimit(1)
+      .minimumScaleFactor(0.7)
+    }
   }
 
   // MARK: Guide
@@ -488,38 +669,43 @@ struct PowderlineView: View {
   private var guide: some View {
     ZStack {
       Palette.inkDeep.ignoresSafeArea()
-      VStack(alignment: .leading, spacing: 20) {
+      Stripes(spacing: 34).stroke(Palette.violet.opacity(0.18), lineWidth: 10).ignoresSafeArea()
+      VStack(alignment: .leading, spacing: 16) {
         HStack {
-          eyebrow("A FIELD GUIDE")
+          hudLabel("CONTROLS", tint: Palette.mist)
           Spacer()
           iconButton(.close, label: "Close guide") { store.showGuide = false }
         }
-        Text("One touch.\nAn open mountain.")
-          .font(.system(size: 36, weight: .semibold, design: .serif))
-          .padding(.bottom, 4)
+        ArcadeText(
+          text: "HOW TO PLAY", size: 42, fill: [cream, Palette.mist, Color(hex: 0x1FA6D4)], depth: 6
+        )
+        .padding(.bottom, 2)
         guideRow(
-          "01", title: "Tap for air",
-          detail: "Tap anywhere on the snow or the bottom control to jump rocks and ravines.",
+          1, title: "TAP TO JUMP", tint: Palette.mist,
+          detail: "Tap anywhere on the snow or the big button to clear rocks and ravines.",
           glyph: .tap)
         guideRow(
-          "02", title: "Hold. Flip. Let go.",
-          detail:
-            "Hold for about 1.2 seconds. Release as the board comes around and the cue reads LEVEL.",
+          2, title: "HOLD TO FLIP", tint: Palette.coral,
+          detail: "Hold about 1.2 seconds in the air. Let go when the cue reads LEVEL to land it.",
           glyph: .rotate)
         guideRow(
-          "03", title: "Find your flow",
-          detail:
-            "Land backflips within 5.5 seconds of each other to build flow up to 5×. Gems add 25 points.",
-          glyph: .flow)
+          3, title: "CHAIN COMBOS", tint: Palette.amber,
+          detail: "Land flips within 5.5 seconds of each other to multiply trick points up to ×5.",
+          glyph: .bolt)
         guideRow(
-          "04", title: "Take the quiet trail",
+          4, title: "ZEN MODE", tint: Palette.lime,
           detail:
-            "Zen practice rides at a gentler pace and rescues every fall. Its progress stays separate.",
+            "A gentler pace that forgives every fall. Its score stays off the hi-score board.",
           glyph: .leaf)
         Spacer(minLength: 0)
-        primaryButton("I’m ready", light: true) { store.showGuide = false }
+        Button {
+          store.showGuide = false
+        } label: {
+          Text("LET'S RIDE").frame(maxWidth: .infinity)
+        }
+        .buttonStyle(ArcadeButtonStyle())
       }
-      .padding(.horizontal, 30)
+      .padding(.horizontal, 28)
       .padding(.vertical, 12)
     }
   }
@@ -536,109 +722,121 @@ struct PowderlineView: View {
   private func iconButton(_ glyph: Glyph, label: String, action: @escaping () -> Void) -> some View
   {
     Button(action: action) {
-      GlyphView(glyph: glyph, size: 16, weight: 1.5)
+      GlyphView(glyph: glyph, size: 16, weight: 2.4)
+        .foregroundStyle(cream)
         .frame(width: 44, height: 44)
-        .background(Palette.inkDeep.opacity(0.32), in: Circle())
-        .overlay(Circle().stroke(cream.opacity(0.28), lineWidth: 1))
+        .background(ink.opacity(0.9), in: Circle())
+        .overlay(Circle().stroke(Palette.mist, lineWidth: 2))
     }
     .buttonStyle(PressStyle())
     .accessibilityLabel(label)
   }
 
+  private func hudLabel(_ text: String, tint: Color) -> some View {
+    Text(text)
+      .font(.system(size: 9, weight: .black, design: .rounded))
+      .tracking(2)
+      .foregroundStyle(tint)
+      .shadow(color: Palette.inkDeep, radius: 0, y: 1.5)
+  }
+
+  private func statChip(_ text: String, tint: Color) -> some View {
+    Text(text)
+      .font(.system(size: 15, weight: .black, design: .rounded))
+      .monospacedDigit()
+      .foregroundStyle(tint)
+      .padding(.horizontal, 14)
+      .padding(.vertical, 8)
+      .background(ink, in: Capsule())
+      .overlay(Capsule().stroke(tint.opacity(0.7), lineWidth: 2))
+  }
+
+  private var stage: Int {
+    if store.engine.x > 19000 { return 3 }
+    if store.engine.x > 9500 { return 2 }
+    return 1
+  }
+
   private var daylight: String {
-    if store.engine.x > 19000 { return "APRICOT HOUR" }
-    if store.engine.x > 9500 { return "HIGH COUNTRY" }
-    return "FIRST LIGHT"
+    switch stage {
+    case 3: return "APRICOT HOUR"
+    case 2: return "HIGH COUNTRY"
+    default: return "FIRST LIGHT"
+    }
+  }
+
+  private var rank: String {
+    let score = store.engine.score
+    if score >= 50000 { return "S" }
+    if score >= 20000 { return "A" }
+    if score >= 8000 { return "B" }
+    if score >= 2500 { return "C" }
+    return "D"
+  }
+
+  private var landingSafe: Bool {
+    RideEngine.isSafeLanding(
+      rotation: store.engine.rotation, slope: RideEngine.slope(at: store.engine.x))
   }
 
   private var landingHint: String {
-    let safe = RideEngine.isSafeLanding(
-      rotation: store.engine.rotation, slope: RideEngine.slope(at: store.engine.x))
-    return safe ? "BOARD LEVEL · RELEASE TO LAND" : "KEEP ROTATING · FIND LEVEL"
+    landingSafe ? "LEVEL! RELEASE TO LAND" : "KEEP ROTATING · FIND LEVEL"
   }
 
   private var shareText: String {
-    let mode = store.engine.mode == .practice ? "Zen practice" : "Expedition"
+    let mode = store.engine.mode == .practice ? "Zen mode" : "Arcade run"
     return
-      "Powderline · \(mode)\n\(store.engine.distance)m through the mountains. \(store.engine.score) points, \(store.engine.flips) backflips, \(store.engine.coins) coins.\nLeave everything behind."
+      "Powderline · \(mode) · Rank \(rank)\n\(store.engine.score) points over \(store.engine.distance)m with \(store.engine.flips) backflips and \(store.engine.coins) coins."
   }
 
-  private func eyebrow(_ text: String) -> some View {
-    Text(text).font(.system(size: 8, weight: .semibold)).tracking(2)
-  }
-
-  private func resultStat(_ value: String, label: String, glyph: Glyph) -> some View {
-    VStack(spacing: 6) {
-      GlyphView(glyph: glyph, size: 13, weight: 1.3).foregroundStyle(Palette.coral)
-      Text(value).font(.system(size: 22, weight: .light, design: .rounded)).monospacedDigit()
-      Text(label).font(.system(size: 7, weight: .semibold)).tracking(1.4)
-        .foregroundStyle(ink.opacity(0.6))
+  private func resultStat(_ value: String, label: String, glyph: Glyph, tint: Color) -> some View {
+    VStack(spacing: 5) {
+      GlyphView(glyph: glyph, size: 14, weight: 2.4).foregroundStyle(tint)
+      Text(value)
+        .font(.system(size: 21, weight: .black, design: .rounded))
+        .monospacedDigit()
+        .lineLimit(1)
+        .minimumScaleFactor(0.6)
+        .foregroundStyle(tint)
+      Text(label)
+        .font(.system(size: 8, weight: .black, design: .rounded))
+        .tracking(1.4)
+        .foregroundStyle(cream.opacity(0.7))
     }
     .frame(maxWidth: .infinity)
+    .padding(.vertical, 14)
+    .background(ink, in: RoundedRectangle(cornerRadius: 14))
+    .overlay(RoundedRectangle(cornerRadius: 14).stroke(tint.opacity(0.6), lineWidth: 2))
+    .accessibilityElement(children: .combine)
   }
 
-  private func primaryButton(
-    _ title: String, glyph: Glyph = .arrow, light: Bool = false, action: @escaping () -> Void
-  ) -> some View {
-    Button(action: action) {
-      HStack {
-        Spacer()
-        Text(title).font(.system(size: 17, weight: .semibold, design: .serif))
-        Spacer()
-        GlyphView(glyph: glyph, size: 14, weight: 1.6)
-      }
-      .padding(.horizontal, 24)
-      .frame(height: 58)
-      .foregroundStyle(light ? ink : cream)
-      .background(
-        LinearGradient(
-          colors: light ? [cream, Palette.paper] : [Color(hex: 0x1D3550), Palette.inkDeep],
-          startPoint: .top, endPoint: .bottom),
-        in: Capsule()
-      )
-      .overlay(
-        Capsule().stroke(
-          (light ? Color.white : cream).opacity(light ? 0.9 : 0.18), lineWidth: 1)
-      )
-      .shadow(color: Palette.inkDeep.opacity(light ? 0.3 : 0.4), radius: 14, y: 8)
-    }
-    .buttonStyle(PressStyle())
-  }
-
-  private func secondaryButton(_ title: String, glyph: Glyph, action: @escaping () -> Void)
+  private func guideRow(_ index: Int, title: String, tint: Color, detail: String, glyph: Glyph)
     -> some View
   {
-    Button(action: action) {
-      HStack(spacing: 8) {
-        GlyphView(glyph: glyph, size: 13, weight: 1.4)
-        Text(title).font(.system(size: 14, weight: .medium, design: .serif))
-      }
-      .frame(maxWidth: .infinity, minHeight: 46)
-      .foregroundStyle(ink)
-      .background(cream.opacity(0.55), in: Capsule())
-      .overlay(Capsule().stroke(ink.opacity(0.35), lineWidth: 1))
-    }
-    .buttonStyle(PressStyle())
-  }
-
-  private func guideRow(_ index: String, title: String, detail: String, glyph: Glyph) -> some View {
-    HStack(alignment: .top, spacing: 16) {
+    HStack(alignment: .top, spacing: 14) {
       ZStack {
-        Circle().stroke(Palette.amber.opacity(0.5), lineWidth: 1)
-        GlyphView(glyph: glyph, size: 19, weight: 1.4).foregroundStyle(Palette.amber)
+        Circle().fill(tint)
+        Circle().stroke(ink, lineWidth: 2.5)
+        GlyphView(glyph: glyph, size: 20, weight: 2.4).foregroundStyle(ink)
       }
-      .frame(width: 44, height: 44)
-      VStack(alignment: .leading, spacing: 6) {
+      .frame(width: 46, height: 46)
+      VStack(alignment: .leading, spacing: 5) {
         HStack(alignment: .firstTextBaseline, spacing: 8) {
-          Text(index).font(.system(size: 9, weight: .bold, design: .monospaced))
-            .foregroundStyle(Palette.amber)
-          Text(title).font(.system(size: 19, weight: .semibold, design: .serif))
+          Text("\(index)")
+            .font(.system(size: 11, weight: .black, design: .rounded))
+            .foregroundStyle(tint)
+          Text(title)
+            .font(.system(size: 18, weight: .black, design: .rounded))
+            .tracking(1)
         }
-        Text(detail).font(.system(size: 12)).lineSpacing(4)
-          .foregroundStyle(cream.opacity(0.66))
+        Text(detail).font(.system(size: 12, weight: .semibold)).lineSpacing(3)
+          .foregroundStyle(cream.opacity(0.72))
           .fixedSize(horizontal: false, vertical: true)
       }
     }
+    .padding(12)
+    .background(ink.opacity(0.9), in: RoundedRectangle(cornerRadius: 16))
+    .overlay(RoundedRectangle(cornerRadius: 16).stroke(tint.opacity(0.5), lineWidth: 2))
   }
 }
 
@@ -648,26 +846,30 @@ struct HoldControl: View {
 
   var body: some View {
     ZStack {
-      Capsule().fill(Palette.inkDeep.opacity(0.84))
-      Capsule().stroke(Palette.cream.opacity(0.26), lineWidth: 1)
-      Capsule()
-        .trim(from: 0.02, to: 0.48)
-        .stroke(Palette.amber.opacity(0.8), style: StrokeStyle(lineWidth: 1.4, lineCap: .round))
-        .padding(3)
+      RoundedRectangle(cornerRadius: 18, style: .continuous)
+        .fill(Color(hex: 0x0B4F63))
+        .offset(y: 5)
+      RoundedRectangle(cornerRadius: 18, style: .continuous)
+        .fill(
+          LinearGradient(
+            colors: [Color(hex: 0xB8F6FF), Palette.mist, Color(hex: 0x1FA6D4)],
+            startPoint: .top, endPoint: .bottom))
+      RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(Palette.ink, lineWidth: 2.5)
       HStack(spacing: 12) {
-        GlyphView(glyph: .tap, size: 15, weight: 1.4)
-        Text("TAP TO JUMP").tracking(1.6)
-        Rectangle().fill(Palette.cream.opacity(0.3)).frame(width: 1, height: 12)
-        Text("HOLD TO FLIP").tracking(1.6)
-        GlyphView(glyph: .rotate, size: 13, weight: 1.4)
+        GlyphView(glyph: .tap, size: 17, weight: 2.6)
+        Text("TAP = JUMP").tracking(1.4)
+        Rectangle().fill(Palette.ink.opacity(0.5)).frame(width: 2, height: 16)
+        Text("HOLD = FLIP").tracking(1.4)
+        GlyphView(glyph: .rotate, size: 15, weight: 2.6)
       }
-      .font(.system(size: 9, weight: .bold))
-      .foregroundStyle(Palette.cream)
+      .font(.system(size: 14, weight: .black, design: .rounded))
+      .foregroundStyle(Palette.ink)
       .allowsHitTesting(false)
       TouchSurface(onPress: onPress, onRelease: onRelease)
         .accessibilityLabel("Jump. Hold to backflip.")
         .accessibilityIdentifier("jumpControl")
     }
+    .padding(.bottom, 5)
   }
 }
 

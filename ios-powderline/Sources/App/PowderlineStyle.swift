@@ -1,25 +1,28 @@
 import SwiftUI
 
-/// Powderline's visual system: a warm paper cream against deep alpine ink,
-/// amber sun light for rewards and one coral accent shared by the rider,
-/// flags and personal-best stamps.
+/// Powderline's arcade cabinet palette: a deep violet ink for panels,
+/// electric yellow for score and calls to action, hot pink for tricks and
+/// danger, and a cold cyan for controls and secondary information.
 enum Palette {
-  static let cream = Color(hex: 0xF6EFE1)
-  static let paper = Color(hex: 0xEFE4D0)
-  static let ink = Color(hex: 0x14263A)
-  static let inkDeep = Color(hex: 0x0C1727)
-  static let amber = Color(hex: 0xF2B15C)
-  static let coral = Color(hex: 0xE8735A)
-  static let mist = Color(hex: 0xC9D6E0)
+  static let cream = Color(hex: 0xFFF7EA)
+  static let paper = Color(hex: 0xFFE7BF)
+  static let ink = Color(hex: 0x1B0F3D)
+  static let inkDeep = Color(hex: 0x0D0726)
+  static let amber = Color(hex: 0xFFC61A)
+  static let orange = Color(hex: 0xFF7A1F)
+  static let coral = Color(hex: 0xFF3D7F)
+  static let mist = Color(hex: 0x5CE7FF)
+  static let violet = Color(hex: 0x6A2FD6)
+  static let lime = Color(hex: 0x9CFF57)
 }
 
 enum Glyph {
   case peaks, tap, rotate, flow, leaf, snowflake, pause, play, sound, muted, close, gem, flag,
-    arrow, share, rock
+    arrow, share, rock, bolt, star, chevrons
 }
 
 /// Hand-drawn line glyphs replace system symbols so every icon shares the
-/// same 1.6pt stroke, rounded joins and alpine vocabulary.
+/// same stroke, rounded joins and alpine vocabulary.
 struct GlyphShape: Shape {
   let glyph: Glyph
 
@@ -165,6 +168,28 @@ struct GlyphShape: Shape {
       path.addQuadCurve(to: point(0.46, 0.14), control: point(0.1, 0.24))
       path.addQuadCurve(to: point(0.92, 0.86), control: point(0.96, 0.3))
       path.closeSubpath()
+    case .bolt:
+      path.move(to: point(0.58, 0.04))
+      path.addLine(to: point(0.22, 0.56))
+      path.addLine(to: point(0.48, 0.56))
+      path.addLine(to: point(0.4, 0.96))
+      path.addLine(to: point(0.78, 0.42))
+      path.addLine(to: point(0.52, 0.42))
+      path.closeSubpath()
+    case .star:
+      for index in 0..<10 {
+        let angle = -Double.pi / 2 + Double(index) * .pi / 5
+        let radius = index % 2 == 0 ? 0.48 : 0.2
+        let vertex = point(0.5 + CGFloat(cos(angle) * radius), 0.5 + CGFloat(sin(angle) * radius))
+        if index == 0 { path.move(to: vertex) } else { path.addLine(to: vertex) }
+      }
+      path.closeSubpath()
+    case .chevrons:
+      for offset in [0.0, 0.34] {
+        path.move(to: point(0.14 + offset, 0.14))
+        path.addLine(to: point(0.5 + offset, 0.5))
+        path.addLine(to: point(0.14 + offset, 0.86))
+      }
     }
     return path
   }
@@ -182,22 +207,58 @@ struct GlyphView: View {
   }
 }
 
-/// The Powderline wordmark: spaced serif capitals over a single carved
-/// trail line that dips, kicks and lets the sun rise through it.
+/// Cabinet-marquee lettering: heavy rounded capitals with a hard outline and
+/// a stacked extrusion so numbers and titles read from across the room.
+struct ArcadeText: View {
+  let text: String
+  var size: CGFloat = 32
+  var fill: [Color] = [Palette.cream, Palette.amber]
+  var outline: Color = Palette.ink
+  var depth: CGFloat = 4
+  var tracking: CGFloat = 0
+
+  private var base: Text {
+    Text(text).font(.system(size: size, weight: .black, design: .rounded)).tracking(tracking)
+  }
+
+  var body: some View {
+    ZStack {
+      ForEach(0..<max(1, Int(depth)), id: \.self) { step in
+        base.foregroundStyle(outline).offset(y: CGFloat(step) + 1)
+      }
+      ForEach(0..<8, id: \.self) { index in
+        let angle = Double(index) * .pi / 4
+        base.foregroundStyle(outline)
+          .offset(x: CGFloat(cos(angle)) * 1.6, y: CGFloat(sin(angle)) * 1.6)
+      }
+      base.foregroundStyle(LinearGradient(colors: fill, startPoint: .top, endPoint: .bottom))
+    }
+    .lineLimit(1)
+    .minimumScaleFactor(0.5)
+    .padding(.bottom, depth)
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel(text)
+  }
+}
+
+/// The Powderline wordmark: two stacked marquee lines with a snowboard
+/// swoosh cutting under the letters and a sun rising at the tail.
 struct Wordmark: View {
   var body: some View {
-    VStack(spacing: 0) {
-      Text("POWDERLINE")
-        .font(.system(size: 41, weight: .semibold, design: .serif))
-        .tracking(7)
-        .minimumScaleFactor(0.72)
-        .lineLimit(1)
-        .shadow(color: Palette.inkDeep.opacity(0.28), radius: 14, y: 6)
+    VStack(spacing: -6) {
+      ArcadeText(
+        text: "POWDER", size: 62, fill: [Color(hex: 0xFFF6C8), Palette.amber, Palette.orange],
+        outline: Palette.ink, depth: 7, tracking: 1)
+      ArcadeText(
+        text: "LINE", size: 62, fill: [Color(hex: 0xFFD7EA), Palette.coral, Color(hex: 0xC8177A)],
+        outline: Palette.ink, depth: 7, tracking: 9)
       TrailLine()
         .frame(height: 30)
-        .padding(.horizontal, 6)
-        .padding(.top, 2)
+        .padding(.horizontal, 10)
+        .padding(.top, 10)
     }
+    .accessibilityElement(children: .ignore)
+    .accessibilityLabel("Powderline")
   }
 }
 
@@ -205,89 +266,71 @@ struct TrailLine: View {
   var body: some View {
     Canvas { context, size in
       let midY = size.height * 0.5
-      let sun = CGPoint(x: size.width * 0.5, y: midY + 3)
-      context.fill(
-        Path(ellipseIn: CGRect(x: sun.x - 12, y: sun.y - 12, width: 24, height: 24)),
-        with: .linearGradient(
-          Gradient(colors: [Color(hex: 0xFFF3DA), Palette.amber]),
-          startPoint: CGPoint(x: sun.x, y: sun.y - 12), endPoint: CGPoint(x: sun.x, y: sun.y + 12)))
       var line = Path()
       line.move(to: CGPoint(x: 0, y: midY - 6))
       line.addCurve(
-        to: CGPoint(x: size.width * 0.5, y: midY + 3),
+        to: CGPoint(x: size.width * 0.5, y: midY + 4),
         control1: CGPoint(x: size.width * 0.18, y: midY - 6),
-        control2: CGPoint(x: size.width * 0.34, y: midY + 3))
+        control2: CGPoint(x: size.width * 0.34, y: midY + 4))
       line.addCurve(
         to: CGPoint(x: size.width * 0.86, y: midY - 4),
-        control1: CGPoint(x: size.width * 0.66, y: midY + 3),
+        control1: CGPoint(x: size.width * 0.66, y: midY + 4),
         control2: CGPoint(x: size.width * 0.78, y: midY + 2))
       line.addQuadCurve(
         to: CGPoint(x: size.width, y: midY - 14),
         control: CGPoint(x: size.width * 0.95, y: midY - 5))
       context.stroke(
-        line, with: .color(Palette.cream), style: StrokeStyle(lineWidth: 1.6, lineCap: .round))
+        line, with: .color(Palette.ink), style: StrokeStyle(lineWidth: 7, lineCap: .round))
+      context.stroke(
+        line, with: .color(Palette.mist), style: StrokeStyle(lineWidth: 3.2, lineCap: .round))
       let rider = CGPoint(x: size.width * 0.86, y: midY - 4)
       context.fill(
-        Path(ellipseIn: CGRect(x: rider.x - 2.4, y: rider.y - 9, width: 4.8, height: 4.8)),
+        Path(ellipseIn: CGRect(x: rider.x - 5, y: rider.y - 15, width: 10, height: 10)),
+        with: .color(Palette.ink))
+      context.fill(
+        Path(ellipseIn: CGRect(x: rider.x - 3.4, y: rider.y - 13.4, width: 6.8, height: 6.8)),
         with: .color(Palette.coral))
-      var body = Path()
-      body.move(to: CGPoint(x: rider.x, y: rider.y - 5))
-      body.addLine(to: CGPoint(x: rider.x - 1.5, y: rider.y - 1))
-      context.stroke(
-        body, with: .color(Palette.cream), style: StrokeStyle(lineWidth: 1.8, lineCap: .round))
     }
   }
 }
 
-/// A miniature ridge line printed along the top of paper cards.
-struct RidgeBand: View {
-  var body: some View {
-    Canvas { context, size in
-      context.fill(
-        Path(CGRect(origin: .zero, size: size)),
-        with: .linearGradient(
-          Gradient(colors: [Color(hex: 0x233B58), Palette.ink]),
-          startPoint: .zero, endPoint: CGPoint(x: 0, y: size.height)))
-      let sun = CGPoint(x: size.width * 0.78, y: size.height * 0.36)
-      context.fill(
-        Path(ellipseIn: CGRect(x: sun.x - 8, y: sun.y - 8, width: 16, height: 16)),
-        with: .color(Palette.amber))
-      for layer in 0..<3 {
-        var path = Path()
-        path.move(to: CGPoint(x: 0, y: size.height))
-        var x = 0.0
-        while x <= size.width + 4 {
-          let world = x / 34 + Double(layer) * 2.1
-          let ridge = abs(sin(world)) * 0.6 + abs(sin(world * 2.3 + 1.1)) * 0.4
-          let y = size.height * (0.32 + Double(layer) * 0.2) - ridge * size.height * 0.3
-          path.addLine(to: CGPoint(x: x, y: y))
-          x += 4
-        }
-        path.addLine(to: CGPoint(x: size.width, y: size.height))
-        path.closeSubpath()
-        context.fill(
-          path,
-          with: .color(
-            Color.mix(Palette.mist, Palette.ink, 0.35 + Double(layer) * 0.22).opacity(0.9)))
-      }
+/// Radiating cabinet rays that sit behind titles and rank badges.
+struct Starburst: Shape {
+  var rays = 18
+
+  func path(in rect: CGRect) -> Path {
+    var path = Path()
+    let center = CGPoint(x: rect.midX, y: rect.midY)
+    let radius = max(rect.width, rect.height)
+    for index in 0..<rays {
+      let start = Double(index) / Double(rays) * 2 * .pi
+      let end = start + .pi / Double(rays)
+      path.move(to: center)
+      path.addLine(
+        to: CGPoint(
+          x: center.x + CGFloat(cos(start)) * radius, y: center.y + CGFloat(sin(start)) * radius))
+      path.addLine(
+        to: CGPoint(
+          x: center.x + CGFloat(cos(end)) * radius, y: center.y + CGFloat(sin(end)) * radius))
+      path.closeSubpath()
     }
+    return path
   }
 }
 
-/// Rounded ticket stub: a paper card with a perforated notch line.
-struct Perforation: View {
-  var body: some View {
-    HStack(spacing: 0) {
-      Circle().fill(Palette.inkDeep.opacity(0.78)).frame(width: 16, height: 16)
-        .offset(x: -8)
-      Line().stroke(
-        Palette.ink.opacity(0.28), style: StrokeStyle(lineWidth: 1, dash: [3, 4])
-      )
-      .frame(height: 1)
-      Circle().fill(Palette.inkDeep.opacity(0.78)).frame(width: 16, height: 16)
-        .offset(x: 8)
+/// Angled speed stripes for panels and tickers.
+struct Stripes: Shape {
+  var spacing: CGFloat = 14
+
+  func path(in rect: CGRect) -> Path {
+    var path = Path()
+    var x = rect.minX - rect.height
+    while x < rect.maxX {
+      path.move(to: CGPoint(x: x, y: rect.maxY))
+      path.addLine(to: CGPoint(x: x + rect.height, y: rect.minY))
+      x += spacing
     }
-    .frame(height: 16)
+    return path
   }
 }
 
@@ -300,29 +343,79 @@ struct Line: Shape {
   }
 }
 
+/// A diagonal sticker used for NEW RECORD and mode tags.
 struct StampBadge: View {
   let title: String
+  var color: Color = Palette.coral
 
   var body: some View {
     Text(title)
-      .font(.system(size: 9, weight: .bold))
-      .tracking(2)
-      .padding(.horizontal, 10)
-      .padding(.vertical, 6)
-      .overlay(RoundedRectangle(cornerRadius: 4).stroke(Palette.coral, lineWidth: 1.6))
-      .overlay(
-        RoundedRectangle(cornerRadius: 6).stroke(Palette.coral.opacity(0.5), lineWidth: 1)
-          .padding(-3)
-      )
-      .foregroundStyle(Palette.coral)
-      .rotationEffect(.degrees(-7))
+      .font(.system(size: 11, weight: .black, design: .rounded))
+      .tracking(1.6)
+      .foregroundStyle(Palette.ink)
+      .padding(.horizontal, 12)
+      .padding(.vertical, 7)
+      .background(color, in: RoundedRectangle(cornerRadius: 6))
+      .overlay(RoundedRectangle(cornerRadius: 6).stroke(Palette.ink, lineWidth: 2))
+      .rotationEffect(.degrees(-6))
+      .shadow(color: Palette.inkDeep.opacity(0.4), radius: 0, x: 0, y: 3)
+  }
+}
+
+/// Chunky cabinet button: a bright face standing on a dark plinth. Pressing
+/// pushes the face down onto the plinth like a real arcade button.
+struct ArcadeButtonStyle: ButtonStyle {
+  var face: [Color] = [Color(hex: 0xFFE27A), Palette.amber, Palette.orange]
+  var plinth: Color = Color(hex: 0x8A3B00)
+  var text: Color = Palette.ink
+  var height: CGFloat = 62
+  var depth: CGFloat = 7
+
+  func makeBody(configuration: Configuration) -> some View {
+    let pressed = configuration.isPressed
+    let shape = RoundedRectangle(cornerRadius: 18, style: .continuous)
+    return ZStack {
+      shape.fill(plinth).offset(y: depth)
+      shape.fill(LinearGradient(colors: face, startPoint: .top, endPoint: .bottom))
+        .overlay(
+          shape.inset(by: 3).trim(from: 0.53, to: 0.72)
+            .stroke(Color.white.opacity(0.55), style: StrokeStyle(lineWidth: 2, lineCap: .round))
+        )
+        .overlay(shape.stroke(Palette.ink, lineWidth: 2.5))
+        .overlay(
+          configuration.label
+            .font(.system(size: 19, weight: .black, design: .rounded))
+            .foregroundStyle(text)
+        )
+        .offset(y: pressed ? depth - 1 : 0)
+    }
+    .frame(height: height)
+    .padding(.bottom, depth)
+    .shadow(color: Palette.inkDeep.opacity(pressed ? 0.15 : 0.45), radius: 12, y: 10)
+    .animation(.spring(duration: 0.18, bounce: 0.25), value: pressed)
+  }
+}
+
+/// Outlined chip for secondary actions.
+struct ChipButtonStyle: ButtonStyle {
+  var tint: Color = Palette.mist
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .font(.system(size: 13, weight: .black, design: .rounded))
+      .foregroundStyle(tint)
+      .frame(maxWidth: .infinity, minHeight: 48)
+      .background(Palette.ink.opacity(configuration.isPressed ? 0.98 : 0.88), in: Capsule())
+      .overlay(Capsule().stroke(tint, lineWidth: 2))
+      .scaleEffect(configuration.isPressed ? 0.96 : 1)
+      .animation(.spring(duration: 0.2, bounce: 0.3), value: configuration.isPressed)
   }
 }
 
 struct PressStyle: ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .scaleEffect(configuration.isPressed ? 0.975 : 1)
+      .scaleEffect(configuration.isPressed ? 0.94 : 1)
       .opacity(configuration.isPressed ? 0.92 : 1)
       .animation(.spring(duration: 0.24, bounce: 0.2), value: configuration.isPressed)
   }

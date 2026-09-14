@@ -19,6 +19,9 @@ final class RideStore: NSObject, ObservableObject {
   @Published var toast = ""
   @Published var toastDetail = ""
   @Published var toastTime = 0.0
+  @Published var toastCount = 0
+  @Published var toastPoints = 0
+  @Published var coinPopTime = 0.0
   @Published var sceneryTime = 0.0
   @Published var newBest = false
   @Published var hasJumped = false
@@ -55,6 +58,7 @@ final class RideStore: NSObject, ObservableObject {
     screen = .riding
     toast = ""
     toastTime = 0
+    coinPopTime = 0
     savedCurrentRide = false
     newBest = false
     hasJumped = false
@@ -150,13 +154,17 @@ final class RideStore: NSObject, ObservableObject {
     sceneryTime += delta
     engine.advance(delta)
     toastTime = max(0, toastTime - delta)
+    coinPopTime = max(0, coinPopTime - delta)
     switch engine.event {
     case .coin:
+      coinPopTime = 0.7
       play("coin")
     case .landing(let count):
-      toast = count == 1 ? "BACKFLIP" : "\(count) × BACKFLIP"
-      toastDetail = "+\(count * 150 * engine.combo)  ·  \(engine.combo)× COMBO"
-      toastTime = 2.4
+      toast = count == 1 ? "BACKFLIP!" : "\(count)× BACKFLIP!"
+      toastPoints = count * 150 * engine.combo
+      toastDetail = engine.combo > 1 ? "COMBO ×\(engine.combo)" : ""
+      toastTime = 2.0
+      toastCount += 1
       play("land")
       UIImpactFeedbackGenerator(style: .medium).impactOccurred(intensity: 0.65)
     case .crash:
@@ -167,9 +175,11 @@ final class RideStore: NSObject, ObservableObject {
       players["wind"]?.pause()
       impactTime = 0.75
     case .rescued:
-      toast = "A SOFT LANDING"
-      toastDetail = "Practice gives you another chance"
-      toastTime = 2.5
+      toast = "SAVED!"
+      toastPoints = 0
+      toastDetail = "ZEN MODE FORGIVES FALLS"
+      toastTime = 2.2
+      toastCount += 1
     case .jump, nil:
       break
     }

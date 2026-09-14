@@ -36,10 +36,10 @@ struct AlpineCanvas: View {
   // MARK: Sky
 
   private func sky(_ context: inout GraphicsContext, size: CGSize) {
-    let zenith = Color.mix(Color(hex: 0x10233F), Color(hex: 0x3A2E55), sunset)
-    let dusk = Color.mix(Color(hex: 0x3F4C78), Color(hex: 0x7A5478), sunset)
-    let rose = Color.mix(Color(hex: 0xB98A9A), Color(hex: 0xD98A85), sunset)
-    let horizon = Color.mix(Color(hex: 0xE8B79E), Color(hex: 0xF8BE8A), sunset)
+    let zenith = Color.mix(Color(hex: 0x12063E), Color(hex: 0x2A0B58), sunset)
+    let dusk = Color.mix(Color(hex: 0x431A82), Color(hex: 0x6E1F86), sunset)
+    let rose = Color.mix(Color(hex: 0xA8347E), Color(hex: 0xDB3F7C), sunset)
+    let horizon = Color.mix(Color(hex: 0xFF8A4A), Color(hex: 0xFFB35C), sunset)
     context.fill(
       Path(CGRect(origin: .zero, size: size)),
       with: .linearGradient(
@@ -64,18 +64,18 @@ struct AlpineCanvas: View {
     }
 
     let sun = CGPoint(
-      x: size.width * (isHome ? 0.71 : 0.76),
-      y: size.height * (isHome ? 0.40 : 0.36)
+      x: size.width * (isHome ? 0.74 : 0.76),
+      y: size.height * (isHome ? 0.455 : 0.36)
     )
-    let sunRadius = isHome ? 26.0 : 24.0
+    let sunRadius = isHome ? 44.0 : 36.0
     for ring in 1...4 {
-      let radius = sunRadius + Double(ring) * (isHome ? 34 : 30)
+      let radius = sunRadius + Double(ring) * (isHome ? 30 : 26)
       context.stroke(
         Path(
           ellipseIn: CGRect(
             x: sun.x - radius, y: sun.y - radius, width: radius * 2, height: radius * 2)),
-        with: .color(Color(hex: 0xFFE6BF).opacity(0.13 - Double(ring) * 0.022)),
-        lineWidth: 1
+        with: .color(Color(hex: 0xFFB0D8).opacity(0.16 - Double(ring) * 0.03)),
+        lineWidth: 1.5
       )
     }
     context.fill(
@@ -84,20 +84,35 @@ struct AlpineCanvas: View {
           x: sun.x - sunRadius * 5, y: sun.y - sunRadius * 5, width: sunRadius * 10,
           height: sunRadius * 10)),
       with: .radialGradient(
-        Gradient(colors: [Color(hex: 0xFFD9A8).opacity(0.36), .clear]),
+        Gradient(colors: [Color(hex: 0xFF7AB8).opacity(0.34), .clear]),
         center: sun, startRadius: sunRadius * 0.6, endRadius: sunRadius * 5
       )
     )
-    context.fill(
-      Path(
+    var disc = context
+    disc.clip(
+      to: Path(
         ellipseIn: CGRect(
-          x: sun.x - sunRadius, y: sun.y - sunRadius, width: sunRadius * 2, height: sunRadius * 2)),
+          x: sun.x - sunRadius, y: sun.y - sunRadius, width: sunRadius * 2, height: sunRadius * 2)))
+    disc.fill(
+      Path(CGRect(origin: .zero, size: size)),
       with: .linearGradient(
-        Gradient(colors: [Color(hex: 0xFFF4DC), Color(hex: 0xFFD79F)]),
+        Gradient(stops: [
+          .init(color: Color(hex: 0xFFF6C4), location: 0),
+          .init(color: Color(hex: 0xFFC63A), location: 0.45),
+          .init(color: Color(hex: 0xFF5F9E), location: 1),
+        ]),
         startPoint: CGPoint(x: sun.x, y: sun.y - sunRadius),
         endPoint: CGPoint(x: sun.x, y: sun.y + sunRadius)
       )
     )
+    // Cabinet-style banded sun: horizontal slats thicken toward the horizon.
+    for band in 0..<5 {
+      let thickness = 1.5 + Double(band) * 1.6
+      let y = sun.y + sunRadius * (0.08 + Double(band) * 0.2)
+      disc.fill(
+        Path(CGRect(x: sun.x - sunRadius, y: y, width: sunRadius * 2, height: thickness)),
+        with: .color(rose))
+    }
 
     for index in 0..<5 {
       let width = 150.0 + Double(index % 3) * 70
@@ -126,13 +141,13 @@ struct AlpineCanvas: View {
   }
 
   private func ridges(_ context: inout GraphicsContext, size: CGSize, scale: CGFloat) {
-    let fog = Color.mix(Color(hex: 0xB596A6), Color(hex: 0xE2A794), sunset)
+    let fog = Color.mix(Color(hex: 0xD6559A), Color(hex: 0xFF8A62), sunset)
     let layers: [(Double, Double, Double, UInt32)] = [
-      (0.030, 0.560, 0.21, 0x7A7F9E),
-      (0.055, 0.600, 0.19, 0x5E6A8C),
-      (0.090, 0.640, 0.17, 0x475A79),
-      (0.150, 0.690, 0.14, 0x364967),
-      (0.230, 0.735, 0.11, 0x283A56),
+      (0.030, 0.560, 0.21, 0x8E55C4),
+      (0.055, 0.600, 0.19, 0x6F3DA8),
+      (0.090, 0.640, 0.17, 0x542C8C),
+      (0.150, 0.690, 0.14, 0x3D1F6E),
+      (0.230, 0.735, 0.11, 0x2A1454),
     ]
     for (index, layer) in layers.enumerated() {
       let base = size.height * layer.1
@@ -161,7 +176,7 @@ struct AlpineCanvas: View {
 
       let depth = Double(layers.count - 1 - index) / Double(layers.count - 1)
       let body = Color.mix(Color(hex: layer.3), fog, depth * 0.55)
-      let cap = Color.mix(Color(hex: 0xF2EEE6), fog, depth * 0.45)
+      let cap = Color.mix(Color(hex: 0xFFF1FA), fog, depth * 0.45)
       context.fill(
         path,
         with: .linearGradient(
@@ -174,8 +189,8 @@ struct AlpineCanvas: View {
         )
       )
       context.stroke(
-        ridge, with: .color(Color(hex: 0xFFE2BE).opacity(0.22 + depth * 0.18)),
-        style: StrokeStyle(lineWidth: 1, lineJoin: .round)
+        ridge, with: .color(Color(hex: 0xFFB6E4).opacity(0.3 + depth * 0.2)),
+        style: StrokeStyle(lineWidth: 1.4, lineJoin: .round)
       )
       if index >= 2 {
         context.fill(
@@ -206,10 +221,10 @@ struct AlpineCanvas: View {
         let x = origin + (Double(index) * 210 + hash * 4) * scale
         pine(
           &context, at: CGPoint(x: x, y: baseline - (16 + hash * 1.2) * scale),
-          height: (54 + hash * 1.7) * scale, color: Color(hex: 0x1D2F47))
+          height: (54 + hash * 1.7) * scale, color: Color(hex: 0x22124A))
         pine(
           &context, at: CGPoint(x: x + 24 * scale, y: baseline - (10 + hash) * scale),
-          height: (40 + hash) * scale, color: Color(hex: 0x24395A))
+          height: (40 + hash) * scale, color: Color(hex: 0x2E1B5E))
       }
       chalet(&context, at: CGPoint(x: origin + 470 * scale, y: baseline - 20 * scale), scale: scale)
       chalet(
@@ -243,7 +258,7 @@ struct AlpineCanvas: View {
     light.addLine(to: CGPoint(x: base.x + width * 0.21, y: base.y - height * 0.64))
     light.addLine(to: CGPoint(x: base.x + width * 0.06, y: base.y - height * 0.64))
     light.closeSubpath()
-    context.fill(light, with: .color(Color(hex: 0xF7D7B4).opacity(0.28)))
+    context.fill(light, with: .color(Color(hex: 0xFF9AD0).opacity(0.36)))
   }
 
   private func chalet(_ context: inout GraphicsContext, at base: CGPoint, scale: CGFloat) {
@@ -256,25 +271,25 @@ struct AlpineCanvas: View {
     body.addLine(to: CGPoint(x: base.x + width / 2, y: base.y - height))
     body.addLine(to: CGPoint(x: base.x + width / 2, y: base.y))
     body.closeSubpath()
-    context.fill(body, with: .color(Color(hex: 0x3B3540)))
+    context.fill(body, with: .color(Color(hex: 0x2A1848)))
     var roof = Path()
     roof.move(to: CGPoint(x: base.x - width * 0.62, y: base.y - height + 2 * scale))
     roof.addLine(to: CGPoint(x: base.x, y: roofTop))
     roof.addLine(to: CGPoint(x: base.x + width * 0.62, y: base.y - height + 2 * scale))
     roof.closeSubpath()
-    context.fill(roof, with: .color(Color(hex: 0xE8EFEF)))
+    context.fill(roof, with: .color(Color(hex: 0xF4E9FF)))
     var eave = Path()
     eave.move(to: CGPoint(x: base.x - width * 0.62, y: base.y - height + 2 * scale))
     eave.addLine(to: CGPoint(x: base.x, y: roofTop))
     eave.addLine(to: CGPoint(x: base.x + width * 0.62, y: base.y - height + 2 * scale))
-    context.stroke(eave, with: .color(Color(hex: 0x2A2530)), lineWidth: 2.2 * scale)
+    context.stroke(eave, with: .color(Color(hex: 0x1B0F3D)), lineWidth: 2.2 * scale)
     let glow = CGPoint(x: base.x, y: base.y - height * 0.5)
     context.fill(
       Path(
         ellipseIn: CGRect(
           x: glow.x - 42 * scale, y: glow.y - 30 * scale, width: 84 * scale, height: 60 * scale)),
       with: .radialGradient(
-        Gradient(colors: [Color(hex: 0xFFC978).opacity(0.28), .clear]), center: glow,
+        Gradient(colors: [Color(hex: 0xFFC61A).opacity(0.34), .clear]), center: glow,
         startRadius: 0, endRadius: 42 * scale)
     )
     for column in 0..<3 {
@@ -284,11 +299,11 @@ struct AlpineCanvas: View {
           roundedRect: CGRect(
             x: x - 4 * scale, y: base.y - height * 0.72, width: 8 * scale, height: 11 * scale),
           cornerRadius: 1.5 * scale),
-        with: .color(Color(hex: 0xFFD08A)))
+        with: .color(Color(hex: 0xFFD23F)))
     }
     let chimney = CGRect(
       x: base.x + width * 0.22, y: roofTop + 10 * scale, width: 7 * scale, height: 16 * scale)
-    context.fill(Path(chimney), with: .color(Color(hex: 0x2A2530)))
+    context.fill(Path(chimney), with: .color(Color(hex: 0x1B0F3D)))
     if !reduceMotion {
       for puff in 0..<3 {
         let phase = fract(time * 0.18 + Double(puff) * 0.33)
@@ -336,10 +351,10 @@ struct AlpineCanvas: View {
       surface,
       with: .linearGradient(
         Gradient(stops: [
-          .init(color: Color(hex: 0xF8F4EC), location: 0),
-          .init(color: Color(hex: 0xDCE5EA), location: 0.16),
-          .init(color: Color(hex: 0xA9BFCF), location: 0.62),
-          .init(color: Color(hex: 0x7C99B2), location: 1),
+          .init(color: Color(hex: 0xFFFBF6), location: 0),
+          .init(color: Color(hex: 0xEADFF9), location: 0.16),
+          .init(color: Color(hex: 0xBBA4EC), location: 0.62),
+          .init(color: Color(hex: 0x8368CF), location: 1),
         ]),
         startPoint: CGPoint(x: 0, y: baseline - 60 * scale), endPoint: CGPoint(x: 0, y: size.height)
       )
@@ -360,7 +375,7 @@ struct AlpineCanvas: View {
       context.fill(
         band,
         with: .linearGradient(
-          Gradient(colors: [Color(hex: 0x9FB6C8).opacity(0.34 * shade), .clear]),
+          Gradient(colors: [Color(hex: 0xA98FE0).opacity(0.4 * shade), .clear]),
           startPoint: CGPoint(x: 0, y: a.1), endPoint: CGPoint(x: 0, y: a.1 + 70 * scale)
         )
       )
@@ -374,13 +389,14 @@ struct AlpineCanvas: View {
         if index == 0 { contour.move(to: point) } else { contour.addLine(to: point) }
       }
       context.stroke(
-        contour, with: .color(Color(hex: 0x6D8CA8).opacity(depth == 34 ? 0.14 : 0.10)),
+        contour, with: .color(Color(hex: 0x6A4FBF).opacity(depth == 34 ? 0.18 : 0.12)),
         style: StrokeStyle(lineWidth: 0.8, dash: [26, 14]))
     }
 
     context.stroke(
-      top, with: .color(.white.opacity(0.55)), style: StrokeStyle(lineWidth: 5, lineJoin: .round))
-    context.stroke(top, with: .color(.white), style: StrokeStyle(lineWidth: 1.6, lineJoin: .round))
+      top, with: .color(Color(hex: 0x5CE7FF).opacity(0.45)),
+      style: StrokeStyle(lineWidth: 6, lineJoin: .round))
+    context.stroke(top, with: .color(.white), style: StrokeStyle(lineWidth: 2, lineJoin: .round))
 
     for index in 0..<12 {
       let x = fract(Double(index) * 0.313 - offset / (size.width / scale)) * size.width
@@ -414,7 +430,7 @@ struct AlpineCanvas: View {
             x: center.x - 20 * scale, y: center.y - 20 * scale, width: 40 * scale,
             height: 40 * scale)),
         with: .radialGradient(
-          Gradient(colors: [Color(hex: 0xFFC46B).opacity(0.36), .clear]), center: center,
+          Gradient(colors: [Color(hex: 0xFFC61A).opacity(0.5), .clear]), center: center,
           startRadius: 0, endRadius: 20 * scale)
       )
       var gem = Path()
@@ -426,7 +442,7 @@ struct AlpineCanvas: View {
       context.fill(
         gem,
         with: .linearGradient(
-          Gradient(colors: [Color(hex: 0xFFE7B0), Color(hex: 0xF2A950)]),
+          Gradient(colors: [Color(hex: 0xFFF3B8), Color(hex: 0xFFA21C)]),
           startPoint: CGPoint(x: center.x - width, y: center.y - height),
           endPoint: CGPoint(x: center.x + width, y: center.y + height)
         )
@@ -436,7 +452,8 @@ struct AlpineCanvas: View {
       facet.addLine(to: CGPoint(x: center.x + width, y: center.y))
       facet.addLine(to: CGPoint(x: center.x - width, y: center.y))
       facet.closeSubpath()
-      context.fill(facet, with: .color(.white.opacity(0.35)))
+      context.fill(facet, with: .color(.white.opacity(0.4)))
+      context.stroke(gem, with: .color(Color(hex: 0x1B0F3D)), lineWidth: 1.2 * scale)
     }
   }
 
@@ -462,7 +479,7 @@ struct AlpineCanvas: View {
         context.fill(
           boulder,
           with: .linearGradient(
-            Gradient(colors: [Color(hex: 0x5D6C82), Color(hex: 0x2B3A50)]),
+            Gradient(colors: [Color(hex: 0x6C5599), Color(hex: 0x2A1848)]),
             startPoint: CGPoint(x: x, y: ground - height),
             endPoint: CGPoint(x: x + width, y: ground)
           )
@@ -475,7 +492,8 @@ struct AlpineCanvas: View {
         snow.addQuadCurve(
           to: CGPoint(x: x + width * 0.08, y: ground - height * 0.62),
           control: CGPoint(x: x + width * 0.45, y: ground - height * 0.5))
-        context.fill(snow, with: .color(Color(hex: 0xF6F3EC)))
+        context.fill(snow, with: .color(Color(hex: 0xFFFBF6)))
+        context.stroke(boulder, with: .color(Color(hex: 0x1B0F3D)), lineWidth: 1.6 * scale)
       case .chasm:
         let width = hazard.width * scale
         let far = baseline - RideEngine.height(at: hazard.x + hazard.width) * scale
@@ -489,9 +507,9 @@ struct AlpineCanvas: View {
           gap,
           with: .linearGradient(
             Gradient(stops: [
-              .init(color: Color(hex: 0x6E8BA6), location: 0),
-              .init(color: Color(hex: 0x2E4360), location: 0.28),
-              .init(color: Color(hex: 0x111C2C), location: 0.7),
+              .init(color: Color(hex: 0x7C62BE), location: 0),
+              .init(color: Color(hex: 0x33205F), location: 0.28),
+              .init(color: Color(hex: 0x120A2A), location: 0.7),
             ]),
             startPoint: CGPoint(x: 0, y: min(ground, far)),
             endPoint: CGPoint(x: 0, y: baseline + 260)
@@ -504,7 +522,7 @@ struct AlpineCanvas: View {
           strata.addLine(
             to: CGPoint(x: x + width - CGFloat(layer) * 4.6 * scale, y: far + depth * 0.94))
           context.stroke(
-            strata, with: .color(Color(hex: 0x9FB8CF).opacity(0.22 - Double(layer) * 0.03)),
+            strata, with: .color(Color(hex: 0xB79CF0).opacity(0.24 - Double(layer) * 0.03)),
             lineWidth: 1)
         }
         var rim = Path()
@@ -515,7 +533,7 @@ struct AlpineCanvas: View {
         rim.addLine(to: CGPoint(x: x + width, y: far - 1))
         rim.addLine(to: CGPoint(x: x + width - 26 * scale, y: far + 28 * scale))
         context.stroke(
-          rim, with: .color(Color(hex: 0xDFF0FA).opacity(0.7)),
+          rim, with: .color(Color(hex: 0x5CE7FF).opacity(0.8)),
           style: StrokeStyle(lineWidth: 1.6, lineJoin: .round))
         flag(&context, at: CGPoint(x: x - 10 * scale, y: ground), scale: scale)
         flag(&context, at: CGPoint(x: x + width + 10 * scale, y: far), scale: scale)
@@ -528,7 +546,7 @@ struct AlpineCanvas: View {
     var pole = Path()
     pole.move(to: base)
     pole.addLine(to: CGPoint(x: base.x, y: base.y - height))
-    context.stroke(pole, with: .color(Color(hex: 0x2A3548)), lineWidth: 1.5 * scale)
+    context.stroke(pole, with: .color(Color(hex: 0x1B0F3D)), lineWidth: 1.8 * scale)
     let wave = reduceMotion ? 0 : sin(time * 5 + base.x) * 2.5 * scale
     var cloth = Path()
     cloth.move(to: CGPoint(x: base.x, y: base.y - height))
@@ -537,7 +555,7 @@ struct AlpineCanvas: View {
       control: CGPoint(x: base.x + 8 * scale, y: base.y - height + wave))
     cloth.addLine(to: CGPoint(x: base.x, y: base.y - height + 11 * scale))
     cloth.closeSubpath()
-    context.fill(cloth, with: .color(Color(hex: 0xE8735A)))
+    context.fill(cloth, with: .color(Color(hex: 0xFF3D7F)))
   }
 
   // MARK: Rider
@@ -561,7 +579,7 @@ struct AlpineCanvas: View {
         ellipseIn: CGRect(
           x: position.x - shadowWidth / 2, y: groundY - 3 * scale, width: shadowWidth,
           height: 7 * scale)),
-      with: .color(Color(hex: 0x4A6A88).opacity(0.28 - min(0.2, lift / 400))))
+      with: .color(Color(hex: 0x4A2E8C).opacity(0.3 - min(0.2, lift / 400))))
 
     // Carve groove and spray behind the board.
     if !crashing && (isHome || engine.grounded) {
@@ -576,7 +594,7 @@ struct AlpineCanvas: View {
         }
       }
       context.stroke(
-        groove, with: .color(Color(hex: 0xB9CCDA).opacity(0.7)),
+        groove, with: .color(Color(hex: 0xC4B2F2).opacity(0.75)),
         style: StrokeStyle(lineWidth: 2.4 * scale, lineCap: .round))
       for index in 0..<9 {
         let phase = fract(time * 2.6 + Double(index) * 0.11)
@@ -596,9 +614,9 @@ struct AlpineCanvas: View {
     figure.translateBy(x: position.x, y: position.y)
     figure.rotate(by: .radians(-rotation + (crashing ? 1.9 * (1 - impactTime / 0.75) : 0)))
     figure.scaleBy(x: scale, y: scale)
-    let ink = Color(hex: 0x1E2F45)
-    let jacket = Color(hex: 0xE8735A)
-    let scarf = Color(hex: 0xF7C489)
+    let ink = Color(hex: 0x1B0F3D)
+    let jacket = Color(hex: 0xFF6A2B)
+    let scarf = Color(hex: 0x5CE7FF)
 
     // Board with kicked nose and tail.
     var board = Path()
@@ -614,7 +632,7 @@ struct AlpineCanvas: View {
     var edge = Path()
     edge.move(to: CGPoint(x: -14, y: -0.4))
     edge.addLine(to: CGPoint(x: 15, y: -0.4))
-    figure.stroke(edge, with: .color(Color(hex: 0xF3B58E).opacity(0.9)), lineWidth: 0.7)
+    figure.stroke(edge, with: .color(Color(hex: 0xFFC61A).opacity(0.95)), lineWidth: 0.9)
     figure.fill(
       Path(roundedRect: CGRect(x: -9, y: -3.5, width: 5, height: 2.6), cornerRadius: 0.8),
       with: .color(ink))
@@ -708,20 +726,21 @@ struct AlpineCanvas: View {
       var halo = context
       halo.translateBy(x: position.x, y: position.y)
       halo.scaleBy(x: scale, y: scale)
-      let color = safe ? Color(hex: 0xC9F2D8) : Color(hex: 0xFFD3B0)
+      let color = safe ? Color(hex: 0x9CFF57) : Color(hex: 0xFFC61A)
       halo.stroke(
         Path(ellipseIn: CGRect(x: -34, y: -34, width: 68, height: 68)),
-        with: .color(color.opacity(0.42)), style: StrokeStyle(lineWidth: 1, dash: [3, 5]))
+        with: .color(color.opacity(0.6)), style: StrokeStyle(lineWidth: 1.6, dash: [3, 5]))
       let tick = CGPoint(
         x: 34 * cos(-engine.rotation - .pi / 2), y: 34 * sin(-engine.rotation - .pi / 2))
       halo.fill(
         Path(ellipseIn: CGRect(x: tick.x - 2.5, y: tick.y - 2.5, width: 5, height: 5)),
         with: .color(color))
-      let label = Text(safe ? "LEVEL" : "ROTATE")
-        .font(.system(size: 8, weight: .bold, design: .monospaced))
-        .foregroundStyle(Color(hex: 0x1E2F45))
-      let badge = Path(roundedRect: CGRect(x: -22, y: -60, width: 44, height: 14), cornerRadius: 7)
-      halo.fill(badge, with: .color(color.opacity(0.94)))
+      let label = Text(safe ? "LEVEL!" : "ROTATE")
+        .font(.system(size: 9, weight: .black, design: .rounded))
+        .foregroundStyle(Color(hex: 0x1B0F3D))
+      let badge = Path(roundedRect: CGRect(x: -24, y: -61, width: 48, height: 16), cornerRadius: 8)
+      halo.fill(badge, with: .color(color))
+      halo.stroke(badge, with: .color(Color(hex: 0x1B0F3D)), lineWidth: 1.5)
       halo.draw(label, at: CGPoint(x: 0, y: -53))
     }
   }
