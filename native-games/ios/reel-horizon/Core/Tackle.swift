@@ -174,6 +174,24 @@ public enum TackleCatalog {
     .rod(
       id: "rod.titan", name: "Titan Heavy 8'", brand: "MagFin", price: 1450, level: 10,
       style: .spinning, lengthFt: 8, castOz: 0.7...3, lineLb: 30),
+    .rod(
+      id: "rod.driftmaster", name: "Driftmaster 11' 6\"", brand: "Hagman", price: 780, level: 12,
+      style: .float, lengthFt: 11.5, castOz: 0.1...0.9, lineLb: 12),
+    .rod(
+      id: "rod.flycaster", name: "Riverfly 9' 8wt", brand: "MagFin", price: 1_100, level: 14,
+      style: .spinning, lengthFt: 9, castOz: 0.05...0.6, lineLb: 14),
+    .rod(
+      id: "rod.carpstalker", name: "Carp Stalker 12'", brand: "Rivertex", price: 1_650, level: 18,
+      style: .bottom, lengthFt: 12, castOz: 2...5, lineLb: 30),
+    .rod(
+      id: "rod.stormbreaker", name: "Stormbreaker 8' 6\"", brand: "MagFin", price: 2_900, level: 24,
+      style: .spinning, lengthFt: 8.5, castOz: 1...5, lineLb: 50),
+    .rod(
+      id: "rod.leviathan", name: "Leviathan 10' Surf", brand: "Hagman", price: 4_800, level: 32,
+      style: .bottom, lengthFt: 10, castOz: 3...10, lineLb: 80),
+    .rod(
+      id: "rod.colossus", name: "Colossus XH 7' 6\"", brand: "MagFin", price: 8_500, level: 44,
+      style: .spinning, lengthFt: 7.5, castOz: 2...12, lineLb: 130),
     // Reels
     .reel(
       id: "reel.minispin", name: "MiniSpin 1200", brand: "Rivertex", price: 0, level: 1,
@@ -187,6 +205,18 @@ public enum TackleCatalog {
     .reel(
       id: "reel.hardline", name: "Hardline 4500", brand: "MagFin", price: 1300, level: 10,
       drag: 26.5, ratio: 5.8, capacity: 300),
+    .reel(
+      id: "reel.centrepin", name: "Centrepin 4.5\"", brand: "Hagman", price: 1_900, level: 14,
+      drag: 8.8, ratio: 1.0, capacity: 250),
+    .reel(
+      id: "reel.bigpit", name: "Big Pit 8000", brand: "Rivertex", price: 2_600, level: 20,
+      drag: 33.0, ratio: 4.9, capacity: 420),
+    .reel(
+      id: "reel.saltguard", name: "Saltguard 10000", brand: "MagFin", price: 4_400, level: 30,
+      drag: 48.5, ratio: 5.3, capacity: 500),
+    .reel(
+      id: "reel.abyss", name: "Abyss 14000 XH", brand: "Hagman", price: 7_900, level: 42,
+      drag: 77.0, ratio: 4.6, capacity: 600),
     // Lines
     .line(
       id: "line.mono18", name: "Mono .007\" (0.18 mm)", brand: "Rivertex", price: 0, level: 1,
@@ -203,6 +233,21 @@ public enum TackleCatalog {
     .line(
       id: "line.braid20", name: "Braid .008\" (0.20 mm)", brand: "MagFin", price: 520, level: 10,
       testLb: 32.0, diameter: 0.20, yards: 300),
+    .line(
+      id: "line.fluoro40", name: "Fluoro .016\" (0.40 mm)", brand: "MagFin", price: 680, level: 14,
+      testLb: 28.0, diameter: 0.40, yards: 250),
+    .line(
+      id: "line.braid30", name: "Braid .012\" (0.30 mm)", brand: "Hagman", price: 1_150, level: 20,
+      testLb: 55.0, diameter: 0.30, yards: 400),
+    .line(
+      id: "line.mono60", name: "Mono .024\" (0.60 mm)", brand: "Rivertex", price: 1_300, level: 26,
+      testLb: 45.0, diameter: 0.60, yards: 450),
+    .line(
+      id: "line.braid45", name: "Braid .018\" (0.45 mm)", brand: "MagFin", price: 2_400, level: 34,
+      testLb: 100.0, diameter: 0.45, yards: 500),
+    .line(
+      id: "line.braid60", name: "Hollow Braid .024\" (0.60 mm)", brand: "Hagman", price: 4_200,
+      level: 44, testLb: 170.0, diameter: 0.60, yards: 600),
     // Lures
     .lure(
       id: "lure.spoon5", name: "Casting Spoon 1/6 oz", brand: "MagFin", price: 0, level: 1,
@@ -225,6 +270,36 @@ public enum TackleCatalog {
     .lure(
       id: "lure.spoon1", name: "Trolling Spoon 1 oz", brand: "MagFin", price: 150, level: 7,
       kind: .spoon, weightOz: 1.0, hook: 1),
+    .lure(
+      id: "lure.spinnerbait", name: "Willow Spinnerbait 1/2 oz", brand: "Hagman", price: 180,
+      level: 8, kind: .spinnerbait, weightOz: 0.5, hook: 1),
+    .lure(
+      id: "lure.streamer", name: "Woolly Streamer #6", brand: "MagFin", price: 60, level: 9,
+      kind: .fly, weightOz: 0.06, hook: 6),
+    .lure(
+      id: "lure.grub4", name: "Paddle Tail 4\"", brand: "Rivertex", price: 90, level: 10,
+      kind: .softGrub, weightOz: 0.4, hook: 1),
+    .lure(
+      id: "lure.jig1", name: "Football Jig 1 oz", brand: "Rivertex", price: 140, level: 12,
+      kind: .jig, weightOz: 1.0, hook: 1),
+    .lure(
+      id: "lure.deepcrank", name: "Deep Diver 1 oz", brand: "MagFin", price: 240, level: 14,
+      kind: .crankbait, weightOz: 1.0, hook: 1),
+    .lure(
+      id: "lure.swimbait6", name: "Glide Swimbait 6\"", brand: "Hagman", price: 420, level: 18,
+      kind: .swimbait, weightOz: 1.6, hook: 1),
+    .lure(
+      id: "lure.intruder", name: "Intruder Fly 4\"", brand: "MagFin", price: 160, level: 22,
+      kind: .fly, weightOz: 0.12, hook: 2),
+    .lure(
+      id: "lure.walker", name: "Walking Popper 1 oz", brand: "Hagman", price: 380, level: 26,
+      kind: .popper, weightOz: 1.0, hook: 1),
+    .lure(
+      id: "lure.bigspoon", name: "Musky Spoon 3 oz", brand: "MagFin", price: 520, level: 30,
+      kind: .spoon, weightOz: 3.0, hook: 1),
+    .lure(
+      id: "lure.swimbait10", name: "Giant Swimbait 10\"", brand: "Hagman", price: 1_200,
+      level: 38, kind: .swimbait, weightOz: 4.5, hook: 1),
     // Baits
     .bait(
       id: "bait.redworm", name: "Red Worms", brand: "Local", price: 20, level: 1, kind: .redWorm,
@@ -244,6 +319,21 @@ public enum TackleCatalog {
     .bait(
       id: "bait.cutbait", name: "Cut Bait", brand: "Local", price: 36, level: 4, kind: .cutBait,
       hook: 1, pack: 12),
+    .bait(
+      id: "bait.leech", name: "Ribbon Leeches", brand: "Local", price: 30, level: 6, kind: .leech,
+      hook: 4, pack: 15),
+    .bait(
+      id: "bait.boilie", name: "Fruit Boilies 20 mm", brand: "Hagman", price: 48, level: 8,
+      kind: .boilie, hook: 4, pack: 30),
+    .bait(
+      id: "bait.shrimp", name: "Live Shrimp", brand: "Local", price: 54, level: 10, kind: .shrimp,
+      hook: 1, pack: 12),
+    .bait(
+      id: "bait.bigminnow", name: "Jumbo Shiners", brand: "Local", price: 80, level: 16,
+      kind: .minnow, hook: 1, pack: 8),
+    .bait(
+      id: "bait.chunk", name: "Carp Chunk Bait", brand: "Local", price: 110, level: 24,
+      kind: .cutBait, hook: 1, pack: 8),
     // Terminal tackle
     .terminal(
       id: "term.float", name: "Waggler Float 3 g", brand: "Hagman", price: 22, level: 1,
@@ -254,6 +344,18 @@ public enum TackleCatalog {
     .terminal(
       id: "term.sinker", name: "Bell Sinker 1 oz", brand: "Rivertex", price: 14, level: 2,
       kind: .cutBait, weightOz: 1, hook: 0, pack: 10),
+    .terminal(
+      id: "term.swivels", name: "Ball-Bearing Swivels", brand: "MagFin", price: 26, level: 3,
+      kind: .spoon, weightOz: 0, hook: 0, pack: 20),
+    .terminal(
+      id: "term.leader", name: "Wire Leaders 12\"", brand: "Hagman", price: 40, level: 6,
+      kind: .spoon, weightOz: 0, hook: 0, pack: 6),
+    .terminal(
+      id: "term.slider", name: "Slider Float 8 g", brand: "Hagman", price: 34, level: 8,
+      kind: .minnow, weightOz: 0.3, hook: 0, pack: 1),
+    .terminal(
+      id: "term.circlehooks", name: "Circle Hooks 8/0", brand: "Rivertex", price: 58, level: 20,
+      kind: .cutBait, weightOz: 0, hook: 0, pack: 10),
   ]
 
   public static func find(_ id: String) -> TackleItem {
