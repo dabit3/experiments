@@ -145,20 +145,11 @@ private struct StatusStrip: View {
 private struct ModelMenu: View {
     @Environment(AppState.self) private var app
 
+    @State private var showPicker = false
+
     var body: some View {
-        @Bindable var app = app
-        Menu {
-            Picker("Model", selection: $app.current.modelID) {
-                ForEach(app.models) { m in
-                    VStack(alignment: .leading) {
-                        Text(m.displayName)
-                        Text("\(Self.ctx(m.contextLength)) ctx · \(Money.perMillion(m.promptPrice)) in / \(Money.perMillion(m.completionPrice)) out per 1M")
-                    }
-                    .tag(m.id)
-                }
-            }
-            .pickerStyle(.inline)
-            .onChange(of: app.current.modelID) { app.persistCurrentIfKept() }
+        Button {
+            showPicker = true
         } label: {
             HStack(spacing: 5) {
                 Text(app.currentModel.displayName)
@@ -171,10 +162,87 @@ private struct ModelMenu: View {
             .foregroundStyle(Color.ink)
         }
         .accessibilityIdentifier("modelMenu")
+        .sheet(isPresented: $showPicker) {
+            ModelPickerSheet()
+                .presentationDetents([.medium])
+                .presentationBackground(Color.paper)
+        }
+    }
+}
+
+private struct ModelPickerSheet: View {
+    @Environment(AppState.self) private var app
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text("MODEL")
+                    .font(.monoCaption)
+                    .foregroundStyle(Color.ink.opacity(0.5))
+                Spacer()
+                Button("Done") { dismiss() }
+                    .font(.mono.weight(.semibold))
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 18)
+            .padding(.bottom, 10)
+
+            ForEach(app.models) { m in
+                let selected = m.id == app.current.modelID
+                Button {
+                    app.current.modelID = m.id
+                    app.persistCurrentIfKept()
+                    dismiss()
+                } label: {
+                    HStack(alignment: .top, spacing: 12) {
+                        Image(systemName: selected ? "largecircle.fill.circle" : "circle")
+                            .font(.system(size: 15))
+                            .padding(.top, 2)
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(m.displayName)
+                                .font(.body.weight(selected ? .semibold : .regular))
+                            Text("\(Self.ctx(m.contextLength)) ctx · \(Money.perMillion(m.promptPrice)) in / \(Money.perMillion(m.completionPrice)) out per 1M tok")
+                                .font(.monoCaption)
+                                .foregroundStyle(Color.ink.opacity(0.55))
+                            HStack(spacing: 6) {
+                                if m.supportsVision { Tag("vision") }
+                                if m.supportsReasoning { Tag("reasoning") }
+                                Tag(m.id)
+                            }
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("model-\(m.id)")
+                .accessibilityAddTraits(selected ? .isSelected : [])
+                Divider().overlay(Color.ink.opacity(0.15)).padding(.leading, 20)
+            }
+            Spacer()
+        }
+        .foregroundStyle(Color.ink)
+        .background(Color.paper)
     }
 
     static func ctx(_ n: Int) -> String {
         n >= 1_000_000 ? "\(n / 1_000_000)M" : "\(n / 1024)K"
+    }
+}
+
+private struct Tag: View {
+    let text: String
+    init(_ text: String) { self.text = text }
+    var body: some View {
+        Text(text)
+            .font(.system(size: 9, design: .monospaced))
+            .padding(.horizontal, 5)
+            .padding(.vertical, 2)
+            .hairline(opacity: 0.4, radius: 2)
+            .foregroundStyle(Color.ink.opacity(0.7))
     }
 }
 
