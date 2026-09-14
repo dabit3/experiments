@@ -43,6 +43,8 @@ final class ReelHorizonTests: XCTestCase {
     }
     XCTAssertEqual(Set(SpeciesCatalog.all.map(\.id)).count, SpeciesCatalog.all.count)
     XCTAssertEqual(Set(TackleCatalog.all.map(\.id)).count, TackleCatalog.all.count)
+    XCTAssertEqual(SpeciesCatalog.all.count, 80)
+    XCTAssertEqual(WaterwayCatalog.all.count, 30)
   }
 
   func testCastChargesAndFlies() {

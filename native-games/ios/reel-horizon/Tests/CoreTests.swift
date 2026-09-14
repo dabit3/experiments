@@ -101,6 +101,12 @@ struct CoreTests {
         check(species.activity(atHour: 13) >= 0.25, "activity floor")
       }
       check(SpeciesCatalog.all.count == Set(SpeciesCatalog.all.map(\.id)).count, "unique ids")
+      check(SpeciesCatalog.all.count == 80, "80 species in the catalog")
+      let stocked = Set(WaterwayCatalog.all.flatMap(\.speciesIDs))
+      for species in SpeciesCatalog.all {
+        check(stocked.contains(species.id), "\(species.name) swims somewhere")
+        check(!species.preferredTackle.isEmpty, "\(species.name) takes some tackle")
+      }
     }
 
     test("waterways reference known species and offer licenses") {
@@ -113,6 +119,19 @@ struct CoreTests {
         }
       }
       check(WaterwayCatalog.all.first?.requiredLevel == 1, "first waterway open at level 1")
+      check(WaterwayCatalog.all.count == 30, "30 waterways in the catalog")
+      check(
+        WaterwayCatalog.all.count == Set(WaterwayCatalog.all.map(\.id)).count,
+        "unique waterway ids")
+      let levels = WaterwayCatalog.all.map(\.requiredLevel)
+      check(levels == levels.sorted(), "waterways listed in unlock order")
+      check(levels.allSatisfy { $0 <= Leveling.maxLevel }, "every waterway unlocks by max level")
+      for waterway in WaterwayCatalog.all {
+        check(
+          Set(waterway.speciesIDs).count == waterway.speciesIDs.count,
+          "\(waterway.name) lists each species once")
+        check(abs(waterway.latitude) <= 90 && abs(waterway.longitude) <= 180, "\(waterway.name) on the globe")
+      }
     }
 
     test("starter rig geometry") {

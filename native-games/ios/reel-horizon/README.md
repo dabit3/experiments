@@ -9,15 +9,15 @@ reel-speed selector and rod lift. All names, artwork and code are original.
 reel-horizon/
 ├── Core/                  pure Swift game model (no UIKit/SwiftUI; compiles on Linux)
 │   ├── SeededRandom.swift deterministic RNG
-│   ├── Species.swift      19 fictional species, activity curves, catch grades
-│   ├── Waterway.swift     5 waterways, forecasts, licences, fees, level gates
+│   ├── Species.swift      80 species, activity curves, catch grades
+│   ├── Waterway.swift     30 waterways across six continents, forecasts, licences, fees, level gates
 │   ├── Tackle.swift       rods/reels/lines/terminal tackle/lures/baits, rig maths
 │   ├── Player.swift       profile, XP/levels, keepnet, missions, shop, travel, persistence
 │   └── FishingSession.swift  cast/soak/bite/fight/land state machine
 ├── ReelHorizon/           SwiftUI app: theme, store, artwork, home/map, shop, fishing HUD
 ├── ReelHorizonTests/      XCTest unit tests (run in Xcode)
 ├── ReelHorizonUITests/    XCUITest golden path (home → shop → fish → catch → day summary)
-├── Tests/CoreTests.swift  dependency-free harness for the core (528 checks)
+├── Tests/CoreTests.swift  dependency-free harness for the core (1320 checks)
 ├── Scripts/core-tests-linux.sh      swiftc + run the core harness anywhere Swift runs
 ├── Scripts/simulator-evidence.sh    xcodebuild test + simctl screenshots (macOS)
 └── project.yml            xcodegen spec; ReelHorizon.xcodeproj is checked in
