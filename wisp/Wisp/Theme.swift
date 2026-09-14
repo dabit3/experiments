@@ -30,6 +30,31 @@ extension View {
     }
 }
 
+/// Monochrome switch: hollow ring when off, filled track with an inverted thumb when on.
+struct InkToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack {
+            configuration.label
+            Spacer()
+            Button {
+                withAnimation(.snappy(duration: 0.2)) { configuration.isOn.toggle() }
+            } label: {
+                ZStack(alignment: configuration.isOn ? .trailing : .leading) {
+                    Capsule()
+                        .fill(configuration.isOn ? Color.ink : Color.clear)
+                        .overlay(Capsule().strokeBorder(Color.ink, lineWidth: 1.5))
+                    Circle()
+                        .fill(configuration.isOn ? Color.paper : Color.ink)
+                        .padding(4)
+                }
+                .frame(width: 50, height: 30)
+            }
+            .buttonStyle(.plain)
+            .accessibilityValue(configuration.isOn ? "On" : "Off")
+        }
+    }
+}
+
 struct InkButtonStyle: ButtonStyle {
     var filled = true
     func makeBody(configuration: Configuration) -> some View {

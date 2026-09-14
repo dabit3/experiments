@@ -22,7 +22,8 @@ enum KeychainStore {
         return key
     }
 
-    static func writeAPIKey(_ key: String) {
+    @discardableResult
+    static func writeAPIKey(_ key: String) -> Bool {
         deleteAPIKey()
         let attrs: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -31,7 +32,7 @@ enum KeychainStore {
             kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly,
             kSecValueData as String: Data(key.utf8),
         ]
-        SecItemAdd(attrs as CFDictionary, nil)
+        return SecItemAdd(attrs as CFDictionary, nil) == errSecSuccess
     }
 
     static func deleteAPIKey() {

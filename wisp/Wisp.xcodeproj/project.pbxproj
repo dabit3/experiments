@@ -25,6 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		110FB70D864748DFA546F5C7 /* Wisp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Wisp.entitlements; sourceTree = "<group>"; };
 		19D8BDEAEBCF19795CA0C1E4 /* ConversationStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationStore.swift; sourceTree = "<group>"; };
 		1C016387D643C647AABE68DC /* WispApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WispApp.swift; sourceTree = "<group>"; };
 		2223C0A62FBEF5B86888F3D4 /* AbliterationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbliterationClient.swift; sourceTree = "<group>"; };
@@ -60,6 +61,7 @@
 			children = (
 				DF6926A27D1A6674186EDD1B /* Assets.xcassets */,
 				A55059B530A6F21D3781020A /* Info.plist */,
+				110FB70D864748DFA546F5C7 /* Wisp.entitlements */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -342,8 +344,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = Wisp/Resources/Wisp.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Wisp/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -362,8 +364,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGNING_ALLOWED = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_ENTITLEMENTS = Wisp/Resources/Wisp.entitlements;
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = Wisp/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -7,6 +7,8 @@ final class AppState {
     // MARK: Key
     private(set) var apiKey: String?
     var hasKey: Bool { apiKey != nil }
+    /// True if the Keychain refused the write (e.g. an unsigned build). The key then lives in memory only.
+    private(set) var keychainUnavailable = false
 
     // MARK: Models
     var models: [ModelInfo] = ModelInfo.fallback
@@ -64,7 +66,7 @@ final class AppState {
         let key = raw.trimmingCharacters(in: .whitespacesAndNewlines)
         let client = AbliterationClient(apiKey: key)
         let fetched = try await client.listModels()
-        KeychainStore.writeAPIKey(key)
+        keychainUnavailable = !KeychainStore.writeAPIKey(key)
         apiKey = key
         if !fetched.isEmpty {
             models = fetched

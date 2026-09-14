@@ -129,24 +129,23 @@ struct MessageRow: View {
     }
 
     private var footer: some View {
-        HStack(spacing: 6) {
-            if let usage = message.usage {
-                Text("\(usage.completionTokens) out")
-                Text("·")
-                Text("\(usage.promptTokens) in")
-                if app.settings.showCost, let m = message.modelID.flatMap(app.model(withID:)) {
-                    Text("·")
-                    Text(Money.format(m.cost(for: usage)))
-                }
-            }
-            if let id = message.modelID {
-                if message.usage != nil { Text("·") }
-                Text(id)
+        Text(footerParts.joined(separator: " · "))
+            .font(.monoCaption)
+            .foregroundStyle(Color.ink.opacity(0.4))
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var footerParts: [String] {
+        var parts: [String] = []
+        if let usage = message.usage {
+            parts.append("\(usage.completionTokens) out")
+            parts.append("\(usage.promptTokens) in")
+            if app.settings.showCost, let m = message.modelID.flatMap(app.model(withID:)) {
+                parts.append(Money.format(m.cost(for: usage)))
             }
         }
-        .font(.monoCaption)
-        .foregroundStyle(Color.ink.opacity(0.4))
-        .lineLimit(1)
+        if let id = message.modelID { parts.append(id) }
+        return parts
     }
 
     private func copyButton(_ text: String) -> some View {

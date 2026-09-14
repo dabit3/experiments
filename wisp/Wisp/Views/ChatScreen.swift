@@ -68,17 +68,15 @@ struct ChatScreen: View {
             .sheet(isPresented: $showSettings) {
                 SettingsView()
             }
-            .confirmationDialog(
-                "This chat is ephemeral. Start a new one and let it go?",
-                isPresented: $confirmDiscard,
-                titleVisibility: .visible
-            ) {
-                Button("Let it go", role: .destructive) { burnAndReset() }
+            .alert("This chat is ephemeral.", isPresented: $confirmDiscard) {
+                Button("Let it go") { burnAndReset() }
                 Button("Keep it, then start new") {
                     app.setKept(true)
                     app.newChat()
                 }
                 Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Start a new one and this transcript is gone for good.")
             }
         }
     }
@@ -148,20 +146,19 @@ private struct ModelMenu: View {
     @Environment(AppState.self) private var app
 
     var body: some View {
+        @Bindable var app = app
         Menu {
-            ForEach(app.models) { m in
-                Button {
-                    app.current.modelID = m.id
-                    app.persistCurrentIfKept()
-                } label: {
-                    Label {
+            Picker("Model", selection: $app.current.modelID) {
+                ForEach(app.models) { m in
+                    VStack(alignment: .leading) {
                         Text(m.displayName)
-                        Text("\(Self.ctx(m.contextLength)) ctx · \(Money.perMillion(m.promptPrice)) in / \(Money.perMillion(m.completionPrice)) out")
-                    } icon: {
-                        if m.id == app.current.modelID { Image(systemName: "checkmark") }
+                        Text("\(Self.ctx(m.contextLength)) ctx · \(Money.perMillion(m.promptPrice)) in / \(Money.perMillion(m.completionPrice)) out per 1M")
                     }
+                    .tag(m.id)
                 }
             }
+            .pickerStyle(.inline)
+            .onChange(of: app.current.modelID) { app.persistCurrentIfKept() }
         } label: {
             HStack(spacing: 5) {
                 Text(app.currentModel.displayName)

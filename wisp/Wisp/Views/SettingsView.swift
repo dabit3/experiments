@@ -18,6 +18,7 @@ struct SettingsView: View {
                     Text("Off means every new chat is ephemeral until you bookmark it. Kept chats are stored only on this device.")
                         .font(.monoCaption)
                 }
+                .listRowBackground(rowBackground)
 
                 Section {
                     Picker("Default model", selection: $app.settings.defaultModelID) {
@@ -41,6 +42,7 @@ struct SettingsView: View {
                 } header: {
                     header("MODEL")
                 }
+                .listRowBackground(rowBackground)
 
                 Section {
                     TextField("You are…", text: $app.settings.systemPrompt, axis: .vertical)
@@ -55,6 +57,7 @@ struct SettingsView: View {
                     Text("Applies to new chats. Leave empty for the raw model.")
                         .font(.monoCaption)
                 }
+                .listRowBackground(rowBackground)
 
                 Section {
                     Picker("Appearance", selection: $app.settings.appearance) {
@@ -66,6 +69,7 @@ struct SettingsView: View {
                 } header: {
                     header("APPEARANCE")
                 }
+                .listRowBackground(rowBackground)
 
                 Section {
                     LabeledContent("Endpoint") {
@@ -76,20 +80,24 @@ struct SettingsView: View {
                         Text(maskedKey)
                             .font(.mono)
                     }
-                    Button("Forget key", role: .destructive) { confirmForget = true }
+                    Button("Forget key") { confirmForget = true }
                         .foregroundStyle(Color.ink)
                         .accessibilityIdentifier("forgetKeyButton")
                 } header: {
                     header("ACCOUNT")
                 } footer: {
-                    Text("Wisp talks directly to api.abliteration.ai. No proxy, no analytics, nothing in between.")
+                    Text(app.keychainUnavailable
+                         ? "Keychain unavailable in this build — the key is held in memory only and you'll re-enter it next launch."
+                         : "Wisp talks directly to api.abliteration.ai. No proxy, no analytics, nothing in between.")
                         .font(.monoCaption)
                 }
+                .listRowBackground(rowBackground)
             }
             .scrollContentBackground(.hidden)
             .background(Color.paper)
             .foregroundStyle(Color.ink)
             .tint(.ink)
+            .toggleStyle(InkToggleStyle())
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.paper, for: .navigationBar)
@@ -100,14 +108,22 @@ struct SettingsView: View {
                         .font(.mono.weight(.semibold))
                 }
             }
-            .confirmationDialog("Forget the API key on this device?", isPresented: $confirmForget, titleVisibility: .visible) {
-                Button("Forget key", role: .destructive) {
+            .alert("Forget the API key on this device?", isPresented: $confirmForget) {
+                Button("Forget key") {
                     dismiss()
-                    app.forgetKey()
+                    Task {
+                        try? await Task.sleep(for: .milliseconds(400))
+                        app.forgetKey()
+                    }
                 }
+                Button("Cancel", role: .cancel) {}
             }
         }
         .presentationBackground(Color.paper)
+    }
+
+    private var rowBackground: some View {
+        Color.paper.overlay(Color.ink.opacity(0.05))
     }
 
     private var maskedKey: String {
