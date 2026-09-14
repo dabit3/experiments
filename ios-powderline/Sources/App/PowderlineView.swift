@@ -79,13 +79,17 @@ struct PowderlineView: View {
             )
             .frame(width: 300, height: 300)
             .rotationEffect(.degrees(store.sceneryTime * 9))
+            .mask(
+              RadialGradient(
+                colors: [.white, .white, .clear], center: .center, startRadius: 40,
+                endRadius: 150)
+            )
             .blendMode(.screen)
             .allowsHitTesting(false)
         }
         Wordmark()
       }
       .frame(height: 190)
-      .clipped()
 
       HStack(spacing: 8) {
         Rectangle().fill(Palette.mist).frame(width: 26, height: 3)
@@ -553,6 +557,11 @@ struct PowderlineView: View {
               )
               .frame(width: 240, height: 240)
               .rotationEffect(.degrees(store.sceneryTime * 12))
+              .mask(
+                RadialGradient(
+                  colors: [.white, .white, .clear], center: .center, startRadius: 30,
+                  endRadius: 120)
+              )
               .blendMode(.screen)
           }
           VStack(spacing: -4) {
