@@ -1,0 +1,28 @@
+name: Wisp
+options:
+  bundleIdPrefix: dev.dabit
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  Wisp:
+    type: application
+    platform: iOS
+    sources:
+      - path: Wisp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: dev.dabit.wisp
+        INFOPLIST_FILE: Wisp/Resources/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "1"
+        SUPPORTS_MACCATALYST: false
+        CODE_SIGN_STYLE: Automatic
+        CODE_SIGNING_ALLOWED: "NO"
