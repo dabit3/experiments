@@ -143,14 +143,14 @@ export const DemoOverlay: React.FC<OverlayProps & {scene: DemoScene}> = ({
       >
         <div style={{display: 'flex', flexDirection: 'column', gap: 10}}>
           <Eyebrow brand={brand} color={shapes.plane.textMuted}>
-            {String(scene.stage + 1).padStart(2, '0')} · {stageLabel}
+            {stageLabel}
           </Eyebrow>
           <div
             style={{
               fontFamily: brand.fontFamily,
-              fontSize: 20,
-              lineHeight: '28px',
-              letterSpacing: -0.2,
+              fontSize: 26,
+              lineHeight: '34px',
+              letterSpacing: -0.3,
               color: shapes.plane.textMuted,
             }}
           >
@@ -219,8 +219,8 @@ const Selector: React.FC<{
   const {options, from, to, switchAt} = selector;
   const show = easeOut(settled, motion.stagger * 2, motion.entranceFrames);
   const move = easeInOut(settled, switchAt, motion.transitionFrames);
-  const rowH = 40;
-  const tile = shapes.tiles.size;
+  const rowH = 46;
+  const tile = shapes.tiles.size + 4;
   const current = move < 0.5 ? from : to;
   return (
     <div style={{display: 'flex', flexDirection: 'column', gap: 8, ...enterStyle(show, 12, 'y')}}>
@@ -250,7 +250,7 @@ const Selector: React.FC<{
                 gap: 14,
                 paddingLeft: tile + 14,
                 fontFamily: brand.monoFontFamily,
-                fontSize: 17,
+                fontSize: 20,
                 letterSpacing: 0.4,
                 color: active ? shapes.plane.text : shapes.plane.textMuted,
                 boxShadow: `inset 0 -1px 0 ${shapes.plane.textMuted}`,

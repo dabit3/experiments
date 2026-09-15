@@ -11,8 +11,8 @@ export const Eyebrow: React.FC<{
   <div
     style={{
       fontFamily: brand.monoFontFamily,
-      fontSize: 14,
-      lineHeight: '20px',
+      fontSize: 16,
+      lineHeight: '22px',
       letterSpacing: 1.4,
       textTransform: 'uppercase',
       fontWeight: 500,

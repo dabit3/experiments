@@ -76,17 +76,7 @@ export const Rail: React.FC<{
               ...enterStyle(t, -motion.slideDistance / 2, 'y'),
             }}
           >
-            <div style={{display: 'flex', alignItems: 'baseline', gap: 10, whiteSpace: 'nowrap'}}>
-              <span
-                style={{
-                  fontFamily: brand.monoFontFamily,
-                  fontSize: 13,
-                  letterSpacing: 0.6,
-                  color: brand.inkSubtle,
-                }}
-              >
-                {String(i + 1).padStart(2, '0')}
-              </span>
+            <div style={{display: 'flex', alignItems: 'baseline', whiteSpace: 'nowrap'}}>
               <span
                 style={{
                   fontFamily: brand.fontFamily,

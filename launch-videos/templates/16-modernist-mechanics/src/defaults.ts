@@ -51,11 +51,11 @@ export const defaultContent: LaunchProps['content'] = {
 export const defaultMedia: LaunchProps['media'] = [
   {
     name: 'pick',
-    src: 'screenshots/devin-web-4.png',
+    src: 'screenshots/devin-web-1.png',
     kind: 'image',
-    width: 2988,
-    height: 1622,
-    crop: {x: 0.17, y: 0.2, w: 0.66, h: 0.64},
+    width: 2990,
+    height: 1624,
+    crop: {x: 0.19, y: 0.17, w: 0.62, h: 0.58},
   },
   {
     name: 'work',
@@ -180,7 +180,7 @@ export const defaultShapes: LaunchProps['shapes'] = {
   frame: {fill: '#191919', border: '#E7E7E7', borderWidth: 1},
   rule: {color: '#E7E7E7', progressColor: '#2200FF', thickness: 2, y: 920},
   tiles: {size: 14, fill: '#D6D6D6', activeFill: '#191919'},
-  plane: {fill: '#191919', text: '#FFFFFF', textMuted: '#919191', padding: 40, captionSize: 34},
+  plane: {fill: '#191919', text: '#FFFFFF', textMuted: '#919191', padding: 40, captionSize: 40},
 };
 
 export const defaultMotion: LaunchProps['motion'] = {
