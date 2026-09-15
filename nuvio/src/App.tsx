@@ -3,7 +3,7 @@ import {
   ArrowDownToLine, ArrowLeft, ArrowRight, Box, Camera, ChevronDown, ChevronRight,
   CircleHelp, CloudSun, Copy, Eye, EyeOff, FileDown, FolderOpen, Focus, Image,
   Layers, Leaf, Lightbulb, Maximize, Minus, MousePointer2, Move, PanelLeft,
-  Plus, Redo2, RotateCcw, Save, Search, SlidersHorizontal, Sun, Trash2,
+  Plus, Redo2, RefreshCw, RotateCcw, Save, Search, SlidersHorizontal, Sun, Trash2,
   Undo2, X, Check, Play, House, Grid2X2, Palette, TreePine, Armchair,
 } from 'lucide-react';
 import { addObject, commit, createProject, exportProject, MATERIALS, parseProject, redo, searchLibrary, STORAGE_KEY, undo, updateObject } from './model';
@@ -26,15 +26,27 @@ function AssetPreview({ kind }: { kind: AssetKind }) {
   useEffect(() => { if (ref.current) createLibraryPreview(kind, ref.current); }, [kind]);
   return <div className="asset-preview" ref={ref} />;
 }
-function ShotPreview({ engine, shot, objects }: { engine: SceneEngine | null; shot: CameraShot; objects: SceneObject[] }) {
+function ShotPreview({ engine, shot }: { engine: SceneEngine | null; shot: CameraShot }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const timer = window.setTimeout(() => {
       if (engine && ref.current) ref.current.replaceChildren(engine.thumbnail(shot));
     }, 350);
     return () => clearTimeout(timer);
-  }, [engine, shot, objects]);
+  }, [engine, shot.id, shot.position, shot.target, shot.ambience]);
   return <div className="shot-preview" ref={ref} />;
+}
+function NumberField({ label, value, min, max, step = 0.1, onCommit }: { label: string; value: number; min: number; max: number; step?: number; onCommit: (value: number) => void }) {
+  const [draft, setDraft] = useState(String(value));
+  useEffect(() => setDraft(String(value)), [value]);
+  function submit() {
+    const next = Number(draft);
+    if (draft.trim() && Number.isFinite(next) && next >= min && next <= max) onCommit(next);
+    else setDraft(String(value));
+  }
+  return <input aria-label={label} type="number" step={step} min={min} max={max} value={draft}
+    onChange={event => setDraft(event.target.value)} onBlur={submit}
+    onKeyDown={event => { if (event.key === 'Enter') event.currentTarget.blur(); }} />;
 }
 const clock = (value: number) => `${String(Math.floor(value)).padStart(2, '0')}:${String(Math.round((value % 1) * 60)).padStart(2, '0')}`;
 const ObjectIcon = ({ kind }: { kind: AssetKind }) => ['pine', 'maple', 'birch', 'fern'].includes(kind) ? <TreePine /> : kind === 'chair' || kind === 'bench' ? <Armchair /> : kind === 'lamp' ? <Lightbulb /> : <Box />;
@@ -103,6 +115,7 @@ export default function App() {
   }
   function ambience(patch: Partial<Ambience>) { change(p => ({ ...p, ambience: { ...p.ambience, ...patch } })); }
   function place(kind: AssetKind) {
+    if (project.objects.length >= 150) { setStatus('Object limit reached (150). Delete an object to place another.'); return; }
     const id = crypto.randomUUID();
     change(p => addObject(p, kind, id)); choose(id);
   }
@@ -190,17 +203,17 @@ export default function App() {
       </div>
       <div className="section-label"><span>{query ? 'Search results' : category === 'All' ? 'Curated for your scene' : category}</span><small>{assets.length} assets</small></div>
       <div className="assets">
-        {assets.map(asset => <button className="asset" key={asset.kind} onClick={() => place(asset.kind)} title={`Place ${asset.name} — ${asset.detail}`}>
+        {assets.map(asset => <button className="asset" key={asset.kind} onClick={() => place(asset.kind)} disabled={project.objects.length >= 150} title={project.objects.length >= 150 ? 'Object limit reached (150). Delete an object to place another.' : `Place ${asset.name} — ${asset.detail}`}>
           <div className="asset-image"><AssetPreview kind={asset.kind} /><span className="asset-add"><Plus /></span><span className="local-badge"><Check /></span></div>
           <span>{asset.name}</span><small>{asset.detail}</small>
         </button>)}
         {!assets.length && <div className="empty-state"><Search /><b>No matching assets</b><p>Try “tree”, “oak”, or “light”.</p><button onClick={() => { setQuery(''); setCategory('All'); }}>Clear filters</button></div>}
       </div>
-      <div className="library-note"><span className="green-dot" /><span>Local library <small>Click an asset to place it in your scene</small></span></div>
+      <div className="library-note"><span className="green-dot" /><span>{project.objects.length >= 150 ? '150 object limit reached' : 'Local library'} <small>{project.objects.length >= 150 ? 'Delete an object to place another' : 'Click an asset to place it in your scene'}</small></span></div>
     </aside>
     <main className="viewport-shell">
       <div ref={viewport} className="viewport" />
-      <div className="viewport-heading"><span className="live-dot" /> Real time <span className="badge">Standard</span></div>
+      <div className="viewport-heading"><span className="live-dot" /> Real time <span className="badge" title={engine?.performanceMode ? 'Reduced render resolution and forest detail for software WebGL' : 'Hardware WebGL renderer'}>{engine?.performanceMode ? 'Performance' : 'Standard'}</span></div>
       <div className="viewport-actions"><button title="Frame whole project" onClick={() => engine?.setCamera(createProject().shots[0])}><Focus /></button><button title="Presentation mode" onClick={() => setPresenting(true)}><Maximize /></button></div>
       <div className="scene-caption"><span>THE FOREST HOUSE</span><h1>A quieter kind of architecture.</h1><p>Nordic retreat · 59° 19′ N, 18° 04′ E</p></div>
       <div className="view-bottom"><span><MousePointer2 /> Drag to orbit <i /> Scroll to zoom <i /> F to focus</span><div className="compass"><span>N</span><ArrowRight /></div></div>
@@ -226,11 +239,10 @@ export default function App() {
           <label className="field">Name<input aria-label="Object name" maxLength={100} value={selected.name} onChange={event => { if (event.target.value.trim()) patchSelected({ name: event.target.value }); }} /></label>
           <div className="property-section"><h3><ChevronDown />Transform <button title="Reset selected transform" onClick={() => patchSelected({ position: [0, 0, 0], rotation: 0, scale: 1 })}><RotateCcw /></button></h3>
             <span className="field-label">Position <small>m</small></span>
-            <div className="xyz">{(['X', 'Y', 'Z'] as const).map((axis, i) => <label key={axis}><span className={`axis-${axis}`}>{axis}</span><input aria-label={`Position ${axis}`} type="number" step="0.1" min="-100" max="100" value={selected.position[i]} onChange={event => {
-              const value = Number(event.target.value); if (!Number.isFinite(value) || value < -100 || value > 100) return;
+            <div className="xyz">{(['X', 'Y', 'Z'] as const).map((axis, i) => <label key={`${selected.id}-${axis}`}><span className={`axis-${axis}`}>{axis}</span><NumberField label={`Position ${axis}`} min={-100} max={100} value={selected.position[i]} onCommit={value => {
               const position: Vec3 = [...selected.position]; position[i] = value; patchSelected({ position });
             }} /></label>)}</div>
-            <div className="two-fields"><label>Rotation <div><input aria-label="Rotation" type="number" min="-360" max="360" value={selected.rotation} onChange={event => { const value = Number(event.target.value); if (value >= -360 && value <= 360) patchSelected({ rotation: value }); }} /><span>°</span></div></label><label>Scale<div><input aria-label="Scale" type="number" min="0.1" max="5" step="0.1" value={selected.scale} onChange={event => { const value = Number(event.target.value); if (value >= 0.1 && value <= 5) patchSelected({ scale: value }); }} /><span>×</span></div></label></div>
+            <div className="two-fields"><label>Rotation <div><NumberField key={`${selected.id}-rotation`} label="Rotation" min={-360} max={360} step={1} value={selected.rotation} onCommit={value => patchSelected({ rotation: value })} /><span>°</span></div></label><label>Scale<div><NumberField key={`${selected.id}-scale`} label="Scale" min={0.1} max={5} value={selected.scale} onCommit={value => patchSelected({ scale: value })} /><span>×</span></div></label></div>
           </div>
           <div className="property-section"><h3><ChevronDown />Material</h3><div className="selected-material"><span style={{ background: MATERIALS.find(m => m.id === selected.material)?.color }} /><div>{MATERIALS.find(m => m.id === selected.material)?.name}<small>Surface finish</small></div></div>
             <div className="small-swatches">{MATERIALS.map(material => <button key={material.id} title={`Apply ${material.name}`} aria-label={`Apply ${material.name}`} className={selected.material === material.id ? 'selected' : ''} style={{ background: material.color }} onClick={() => patchSelected({ material: material.id })}>{selected.material === material.id && <Check />}</button>)}</div>
@@ -258,8 +270,8 @@ export default function App() {
       <div className="dock-header"><div className="dock-tabs"><button className={dock === 'Media' ? 'selected' : ''} onClick={() => setDock('Media')}><Image />Media</button><button className={dock === 'Materials' ? 'selected' : ''} onClick={() => setDock('Materials')}><Palette />Materials</button></div><div className="dock-header-right"><span>{dock === 'Media' ? `${project.shots.length} images` : '6 local materials'}</span>{dock === 'Media' && <button title="Save current camera as image" disabled={project.shots.length >= 20} onClick={saveShot}><Plus />Create image</button>}<button title="Collapse dock" onClick={() => setDockOpen(false)}><ChevronDown /></button></div></div>
       {dock === 'Media' ? <div className="media-strip">
         {project.shots.map(shot => <div key={shot.id} className={`shot-card ${shot.id === activeShot ? 'selected' : ''}`}>
-          <button className="shot-image" title={`Open ${shot.name}`} onClick={() => openShot(shot)}><ShotPreview shot={shot} engine={engine} objects={project.objects} /><span className="shot-number"><Image /> Image</span>{shot.id === activeShot && <span className="shot-selected"><Check /></span>}</button>
-          <div className="shot-caption"><input aria-label={`Rename ${shot.name}`} value={shot.name} maxLength={100} onChange={event => { if (event.target.value.trim()) change(p => ({ ...p, shots: p.shots.map(s => s.id === shot.id ? { ...s, name: event.target.value } : s) })); }} /><button title={`Delete ${shot.name}`} onClick={() => change(p => ({ ...p, shots: p.shots.filter(s => s.id !== shot.id) }))}><Trash2 /></button></div>
+          <button className="shot-image" title={`Open ${shot.name}`} onClick={() => openShot(shot)}><ShotPreview shot={shot} engine={engine} /><span className="shot-number"><Image /> Image</span>{shot.id === activeShot && <span className="shot-selected"><Check /></span>}</button>
+          <div className="shot-caption"><input aria-label={`Rename ${shot.name}`} value={shot.name} maxLength={100} onChange={event => { if (event.target.value.trim()) change(p => ({ ...p, shots: p.shots.map(s => s.id === shot.id ? { ...s, name: event.target.value } : s) })); }} /><button title={`Update ${shot.name} from current view`} onClick={() => { if (engine) change(p => ({ ...p, shots: p.shots.map(s => s.id === shot.id ? { ...s, ...engine.getCamera(), ambience: { ...p.ambience } } : s) })); }}><RefreshCw /></button><button title={`Delete ${shot.name}`} onClick={() => change(p => ({ ...p, shots: p.shots.filter(s => s.id !== shot.id) }))}><Trash2 /></button></div>
         </div>)}
         <button className="create-shot" onClick={saveShot} disabled={project.shots.length >= 20}><Plus /><span>Create image</span><small>Save current view</small></button>
       </div> : <div className="material-strip">{MATERIALS.map(material => <button disabled={!selected} key={material.id} title={selected ? `Apply ${material.name}` : 'Select an object to apply a material'} onClick={() => patchSelected({ material: material.id })}><div className={`material-sphere ${material.id}`} style={{ backgroundColor: material.color }} /><span>{material.name}</span></button>)}{!selected && <p>Select an object to apply a material.</p>}</div>}

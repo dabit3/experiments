@@ -19,6 +19,8 @@ const metal = standard('#292c29', 0.4);
 const bark = standard('#5e5b46');
 const whiteBark = standard('#b5b5a0');
 let foliageMap: THREE.CanvasTexture | null = null;
+let libraryRenderer: THREE.WebGLRenderer | null = null;
+const libraryWood = standard('#ab906a');
 
 function leafMaterial() {
   if (!foliageMap) {
@@ -142,6 +144,23 @@ function chair(parent: THREE.Object3D, wood: THREE.Material) {
   const back = box(parent, [0.81, 0.85, 0.11], [0, 0.93, -0.35], fabric);
   back.rotation.x = -0.2;
 }
+function batchBoxes(group: THREE.Group) {
+  group.updateMatrixWorld(true);
+  const batches = new Map<THREE.Material, THREE.Mesh[]>();
+  group.traverse(object => {
+    if (object instanceof THREE.Mesh && !(object instanceof THREE.InstancedMesh) && object.geometry === boxGeometry && !Array.isArray(object.material)) {
+      const sources = batches.get(object.material) ?? [];
+      sources.push(object); batches.set(object.material, sources);
+    }
+  });
+  batches.forEach((sources, material) => {
+    const merged = new THREE.InstancedMesh(boxGeometry, material, sources.length);
+    sources.forEach((source, i) => { merged.setMatrixAt(i, source.matrixWorld); source.removeFromParent(); });
+    merged.castShadow = sources.some(source => source.castShadow);
+    merged.receiveShadow = sources.some(source => source.receiveShadow);
+    group.add(merged);
+  });
+}
 function makeObject(object: SceneObject, wood: THREE.Material) {
   const group = new THREE.Group();
   switch (object.kind) {
@@ -194,9 +213,6 @@ function makeObject(object: SceneObject, wood: THREE.Material) {
       break;
     case 'pine': case 'maple': case 'birch':
       tree(group, object.kind, object.id.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0));
-      group.traverse(child => {
-        if (child.userData.foliage) child.userData.materialTint = object.material === 'sage' ? '#ffffff' : MATERIALS.find(m => m.id === object.material)?.color;
-      });
       break;
     case 'chair': chair(group, wood); break;
     case 'bench':
@@ -204,7 +220,7 @@ function makeObject(object: SceneObject, wood: THREE.Material) {
       [-0.65, 0.65].forEach(x => box(group, [0.1, 0.5, 0.52], [x, 0.25, 0], metal));
       break;
     case 'rock': {
-      const rock = new THREE.Mesh(new THREE.IcosahedronGeometry(0.85, 1), stone);
+      const rock = new THREE.Mesh(new THREE.IcosahedronGeometry(0.85, 2), wood);
       rock.scale.set(1.3, 0.6, 0.9); rock.position.y = 0.3;
       rock.castShadow = true; rock.receiveShadow = true; group.add(rock);
       break;
@@ -213,11 +229,15 @@ function makeObject(object: SceneObject, wood: THREE.Material) {
       foliage(group, [[0, 0.5, 0], [-0.3, 0.3, 0.1], [0.3, 0.3, -0.2]], 0.55, '#5f7943', 91, 35);
       break;
     case 'lamp':
-      box(group, [0.12, 0.82, 0.12], [0, 0.41, 0], metal);
+      box(group, [0.12, 0.82, 0.12], [0, 0.41, 0], wood);
       box(group, [0.17, 0.13, 0.17], [0, 0.74, 0], new THREE.MeshStandardMaterial({ color: '#ffdeb1', emissive: '#ffba60', emissiveIntensity: 1.4 }));
-      box(group, [0.19, 0.03, 0.19], [0, 0.82, 0], metal);
+      box(group, [0.19, 0.03, 0.19], [0, 0.82, 0], wood);
       break;
   }
+  batchBoxes(group);
+  group.traverse(child => {
+    if (child.userData.foliage) child.userData.materialTint = object.material === 'sage' ? '#ffffff' : MATERIALS.find(m => m.id === object.material)?.color;
+  });
   group.position.set(...object.position);
   group.rotation.y = THREE.MathUtils.degToRad(object.rotation);
   group.scale.setScalar(object.scale);
@@ -228,6 +248,7 @@ function makeObject(object: SceneObject, wood: THREE.Material) {
 
 export class SceneEngine {
   readonly renderer: THREE.WebGLRenderer;
+  readonly performanceMode: boolean;
   readonly scene = new THREE.Scene();
   readonly camera = new THREE.PerspectiveCamera(42, 1, 0.1, 220);
   readonly controls: OrbitControls;
@@ -250,12 +271,18 @@ export class SceneEngine {
   private pmrem: THREE.PMREMGenerator;
   private environment: THREE.WebGLRenderTarget;
   private thumbnailTarget = new THREE.WebGLRenderTarget(260, 144);
+  private reflectionSize = 512;
 
   constructor(private container: HTMLElement, onSelect: (id: string | null) => void) {
     this.onSelect = onSelect;
     this.thumbnailTarget.texture.colorSpace = THREE.SRGBColorSpace;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    const context = this.renderer.getContext();
+    const debug = context.getExtension('WEBGL_debug_renderer_info');
+    const driver = debug ? String(context.getParameter(debug.UNMASKED_RENDERER_WEBGL)) : '';
+    this.performanceMode = /swiftshader|llvmpipe|softpipe|software/i.test(driver);
+    this.reflectionSize = this.performanceMode ? 256 : 512;
+    this.renderer.setPixelRatio(this.performanceMode ? 0.75 : Math.min(window.devicePixelRatio, 1.5));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.shadowMap.autoUpdate = false;
@@ -278,14 +305,14 @@ export class SceneEngine {
     });
     this.scene.add(this.background, this.sky, this.sun);
     this.sun.castShadow = true;
-    this.sun.shadow.mapSize.set(1024, 1024);
+    this.sun.shadow.mapSize.setScalar(this.performanceMode ? 512 : 1024);
     Object.assign(this.sun.shadow.camera, { left: -29, right: 29, top: 28, bottom: -28, near: 0.5, far: 100 });
     this.sun.shadow.bias = -0.0005;
     this.sun.shadow.normalBias = 0.035;
     this.scene.add(this.sun.target);
     this.buildLandscape();
     this.batchLandscape();
-    this.water = new Reflector(new THREE.CircleGeometry(1, 96), { color: 0x7d9486, textureWidth: 512, textureHeight: 512, clipBias: 0.003 });
+    this.water = new Reflector(new THREE.CircleGeometry(1, 96), { color: 0x7d9486, textureWidth: this.reflectionSize, textureHeight: this.reflectionSize, clipBias: 0.003 });
     this.water.rotation.x = -Math.PI / 2;
     this.water.position.set(1, 0.075, 8);
     this.water.scale.set(12, 8, 1);
@@ -323,7 +350,7 @@ export class SceneEngine {
     const ground = new THREE.Mesh(terrain, new THREE.MeshStandardMaterial({ map: groundMap, roughness: 1, bumpMap: groundMap, bumpScale: 0.1 }));
     ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true;
     this.background.add(ground);
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < (this.performanceMode ? 96 : 120); i++) {
       const group = new THREE.Group();
       const side = i % 3;
       group.position.set(side === 0 ? -19 - random() * 22 : side === 1 ? 18 + random() * 26 : -25 + random() * 60,
@@ -335,7 +362,7 @@ export class SceneEngine {
       group.position.y = terrainHeight(group.position.x, group.position.z);
       const scale = 0.85 + random() * 1.4;
       group.scale.setScalar(scale);
-      tree(group, i % 4 === 0 ? 'birch' : 'pine', i + 101, i < 56 ? 38 : 20);
+      tree(group, i % 4 === 0 ? 'birch' : 'pine', i + 101, this.performanceMode ? (i < 56 ? 24 : 12) : (i < 56 ? 38 : 20));
       this.background.add(group);
     }
     for (let i = 0; i < 42; i++) {
@@ -385,6 +412,7 @@ export class SceneEngine {
     }
   }
   private batchLandscape() {
+    batchBoxes(this.background);
     this.background.updateMatrixWorld(true);
     const trunks: THREE.Mesh[] = [];
     const shadows: THREE.Mesh[] = [];
@@ -523,7 +551,7 @@ export class SceneEngine {
     this.camera.updateProjectionMatrix();
     const selected = this.selection.visible;
     this.selection.visible = false;
-    this.water.getRenderTarget().setSize(192, 192);
+    this.water.getRenderTarget().setSize(128, 128);
     this.renderer.setRenderTarget(this.thumbnailTarget);
     this.renderer.render(this.scene, this.camera);
     const pixels = new Uint8Array(260 * 144 * 4);
@@ -535,7 +563,7 @@ export class SceneEngine {
     for (let y = 0; y < 144; y++) image.data.set(pixels.subarray((143 - y) * 1040, (144 - y) * 1040), y * 1040);
     context.putImageData(image, 0, 0);
     this.renderer.setRenderTarget(null);
-    this.water.getRenderTarget().setSize(512, 512);
+    this.water.getRenderTarget().setSize(this.reflectionSize, this.reflectionSize);
     this.selection.visible = selected;
     if (previousAmbience) this.ambience(JSON.parse(previousAmbience) as Ambience);
     this.renderer.shadowMap.needsUpdate = true;
@@ -588,7 +616,8 @@ export class SceneEngine {
 }
 
 export function createLibraryPreview(kind: AssetKind, element: HTMLElement) {
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  if (!libraryRenderer) libraryRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  const renderer = libraryRenderer;
   renderer.setSize(160, 126);
   renderer.setPixelRatio(1);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -596,7 +625,7 @@ export function createLibraryPreview(kind: AssetKind, element: HTMLElement) {
   const scene = new THREE.Scene();
   scene.add(new THREE.HemisphereLight('#ffffff', '#707a6e', 3));
   const light = new THREE.DirectionalLight('#ffe4bf', 4); light.position.set(4, 8, 5); scene.add(light);
-  const object = makeObject({ id: kind, name: kind, kind, position: [0, 0, 0], rotation: 0, scale: 1, material: 'oak', visible: true }, standard('#ab906a'));
+  const object = makeObject({ id: kind, name: kind, kind, position: [0, 0, 0], rotation: 0, scale: 1, material: 'oak', visible: true }, libraryWood);
   scene.add(object);
   const bounds = new THREE.Box3().setFromObject(object);
   const center = bounds.getCenter(new THREE.Vector3());
@@ -608,12 +637,12 @@ export function createLibraryPreview(kind: AssetKind, element: HTMLElement) {
   const canvas = document.createElement('canvas'); canvas.width = 160; canvas.height = 126;
   canvas.getContext('2d')!.drawImage(renderer.domElement, 0, 0);
   element.replaceChildren(canvas);
-  renderer.dispose(); renderer.forceContextLoss();
   scene.traverse(item => {
     if (item instanceof THREE.Mesh) {
       if (![boxGeometry, leafGeometry, trunkGeometry, shadowGeometry].includes(item.geometry)) item.geometry.dispose();
       const materials = Array.isArray(item.material) ? item.material : [item.material];
-      materials.forEach(material => { if (![dark, fabric, stone, metal, bark, whiteBark, shadowMaterial].includes(material)) material.dispose(); });
+      materials.forEach(material => { if (![dark, fabric, stone, metal, bark, whiteBark, shadowMaterial, libraryWood].includes(material)) material.dispose(); });
+      if (item instanceof THREE.InstancedMesh) item.dispose();
     }
   });
 }

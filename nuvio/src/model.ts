@@ -89,7 +89,7 @@ export function addObject(project: Project, kind: AssetKind, id: string): Projec
   return { ...project, objects: [...project.objects, {
     id, kind, name: `${asset.name}${count ? ` ${String(count + 1).padStart(2, '0')}` : ''}`,
     position: [7 + count * 1.4, 0, 4], rotation: 0, scale: 1,
-    material: kind === 'chair' || kind === 'bench' ? 'oak' : 'sage', visible: true,
+    material: kind === 'chair' || kind === 'bench' ? 'oak' : kind === 'rock' ? 'limestone' : kind === 'lamp' ? 'charcoal' : 'sage', visible: true,
   }] };
 }
 export function updateObject(project: Project, id: string, patch: Partial<Omit<SceneObject, 'id' | 'kind'>>): Project {
