@@ -39,11 +39,12 @@ const WINDOW_ID_BIN = args.windowIdBin ?? join(here, 'window_id');
 const TIME_CONTROL = { initialMs: 180_000, incrementMs: 2_000 };
 const PYTHON = args.python ?? 'python3';
 const LOBBY_HOLD_MS = Number(process.env.LOBBY_HOLD_MS ?? 3000);
+const MOVE_HOLD_MS = Number(process.env.MOVE_HOLD_MS ?? 0);
 const RESULTS_HOLD_MS = Number(process.env.RESULTS_HOLD_MS ?? 0);
 const PRE_PARITY_HOLD_MS = Number(process.env.PRE_PARITY_HOLD_MS ?? 0);
-for (const hold of [LOBBY_HOLD_MS, RESULTS_HOLD_MS, PRE_PARITY_HOLD_MS]) {
-  if (!Number.isFinite(hold) || hold < 0) {
-    throw new Error('Recording hold durations must be nonnegative milliseconds');
+for (const hold of [LOBBY_HOLD_MS, MOVE_HOLD_MS, RESULTS_HOLD_MS, PRE_PARITY_HOLD_MS]) {
+  if (!Number.isFinite(hold) || hold < 0 || hold > 2_147_483_647) {
+    throw new Error('Recording hold durations must be between 0 and 2147483647 milliseconds');
   }
 }
 
@@ -397,6 +398,7 @@ async function main() {
       }
     }
     log(`  ply ${String(i + 1).padStart(2)} ${mover.padEnd(7)} ${san.padEnd(6)} seq=${report.seq}`);
+    if (MOVE_HOLD_MS > 0) await sleep(MOVE_HOLD_MS);
     if (i === 11) await shootAll('midgame');
     if (i === 22) {
       // After O-O-O: spectator flips the board and browses history.

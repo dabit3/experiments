@@ -116,6 +116,22 @@ For an annotated demonstration, set `LOBBY_HOLD_MS=25000`,
 recorder start after the lobby windows settle and stop before the browser
 resizes for parity captures. They do not alter game clocks or assertions.
 
+For a longer demonstration, add `MOVE_HOLD_MS=5000` to pause five seconds
+after each synchronized ply. It defaults to `0` and runs outside convergence
+timeouts. With the lobby and results holds, the 33-ply match takes roughly
+four minutes at real-time playback:
+
+```sh
+PLATFORMS=web,ios,macos MOVE_HOLD_MS=5000 LOBBY_HOLD_MS=25000 \
+  RESULTS_HOLD_MS=20000 PRE_PARITY_HOLD_MS=12000 \
+  ./test/multiplayer-e2e.sh --skip-build
+```
+
+Use `--skip-build` only with current automation-enabled builds. When using an
+independent annotated recorder, also set `RECORD=0` and follow the lobby and
+pre-parity log markers above. Recording holds accept finite values from `0`
+through `2147483647` milliseconds.
+
 `test/multiplayer-e2e.sh` builds every client, starts the server in
 deterministic mode (`--seed 7 --frozen-clocks --control --bot-delay-ms 0`),
 launches Chromium (Playwright), the iOS Simulator, the Android emulator and the
