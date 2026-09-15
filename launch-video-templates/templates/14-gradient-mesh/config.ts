@@ -1,0 +1,95 @@
+export const config = {
+  fps: 30,
+  width: 1920,
+  height: 1080,
+  font: '"Helvetica Neue", Helvetica, Arial, sans-serif',
+  entranceFrames: 22,
+  hueShiftFrames: 28,
+  sourceVideoStartSeconds: 12,
+  scenes: [
+    {
+      kind: 'hook',
+      seconds: 4.5,
+      eyebrow: 'INTRODUCING',
+      headline: 'Devin for\nmacOS + iOS.',
+      detail: 'Your coding agent. Now for native apps.',
+      hue: '#1971c2',
+      label: 'Native iPhone app · supplied screenshot',
+    },
+    {
+      kind: 'context',
+      seconds: 4,
+      eyebrow: 'THE OLD FEEDBACK LOOP',
+      headline: 'Build.\nWait. Repeat.',
+      detail: 'Manual QA. Or a long wait for CI.',
+      hue: '#956cde',
+      label: 'Prior workflow context',
+    },
+    {
+      kind: 'build',
+      seconds: 5,
+      eyebrow: '01 / BUILD + RUN',
+      headline: 'From code\nto running app.',
+      detail: 'Build and run in a managed Mac VM.',
+      hue: '#1971c2',
+      label: 'Illustrative workflow · supplied iOS screenshot',
+    },
+    {
+      kind: 'interact',
+      seconds: 5,
+      eyebrow: '02 / INTERACT',
+      headline: 'Tap. Type.\nScroll.',
+      detail: 'Devin works inside iOS Simulator.',
+      hue: '#0ca678',
+      label: 'Illustrative workflow · supplied iOS screenshot',
+    },
+    {
+      kind: 'repair',
+      seconds: 5.5,
+      eyebrow: '03 / ITERATE',
+      headline: 'Reproduce.\nFix. Retest.',
+      detail: 'Keep the feedback loop in one session.',
+      hue: '#956cde',
+      label: 'Illustrative workflow · no retest result asserted',
+    },
+    {
+      kind: 'evidence',
+      seconds: 6,
+      eyebrow: '04 / REVIEW',
+      headline: 'See what\nhappened.',
+      detail: 'Review the recording and test evidence.',
+      hue: '#1971c2',
+      label: 'Actual source recording · generic web QA, not iOS',
+    },
+    {
+      kind: 'outcome',
+      seconds: 5.5,
+      eyebrow: 'THE RESULT',
+      headline: 'A working app.\nIn your session.',
+      detail: 'Same price as Linux VMs.',
+      hue: '#0ca678',
+      label: 'Native iPhone app · supplied screenshot',
+    },
+    {
+      kind: 'end',
+      seconds: 4.5,
+      eyebrow: 'DEVIN',
+      headline: 'macOS + iOS',
+      detail: 'Build. Run. See it.',
+      hue: '#956cde',
+      label: '',
+    },
+  ],
+} as const;
+
+export type Scene = (typeof config.scenes)[number];
+export const durationInFrames = config.scenes.reduce(
+  (total, scene) => total + scene.seconds * config.fps,
+  0,
+);
+export const sceneStarts = config.scenes.map((_, index) =>
+  config.scenes.slice(0, index).reduce(
+    (total, scene) => total + scene.seconds * config.fps,
+    0,
+  ),
+);
