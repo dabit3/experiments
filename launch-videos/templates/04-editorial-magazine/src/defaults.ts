@@ -31,15 +31,15 @@ export const defaultProps: LaunchProps = {
     headline: "Devin now runs in a Mac VM",
     accentWord: "Mac VM",
     subhead:
-      "Build, run, and test Mac and iOS apps in a cloud Mac — with a live iPhone Simulator in your session.",
+      "Build, run, and test Mac and iOS apps in a cloud Mac, with a live iPhone Simulator in your session.",
     captions: [
-      "Pick macOS when you start a session — same price as Linux.",
+      "Pick macOS when you start a session. Same price as Linux.",
       "Devin builds the app in Xcode and runs the full test suite.",
       "It taps, types, and scrolls through the app like a person.",
-      "Watch it live in the iPhone Simulator tab — and tap in yourself.",
+      "Watch it live in the iPhone Simulator tab, and tap in yourself.",
       "Reproduce a bug, fix it, and prove the fix on screen.",
       "Check iPhone and iPad sizes, dark mode, and orientations.",
-      "Ship with a PR that shows the app working — not a 20-minute CI wait.",
+      "Ship with a PR that shows the app working, not a 20-minute CI wait.",
     ],
     useCases: [
       "Build & test a feature",
@@ -91,7 +91,7 @@ export const defaultProps: LaunchProps = {
       kind: "video",
       aspect: REC_SIDE_BY_SIDE,
       startFrom: 60,
-      crop: { x: 0.04, y: 0.05, w: 0.48, h: 0.9 },
+      crop: { x: 0.112, y: 0.108, w: 0.354, h: 0.594 },
     },
     // Six iPhone screenshots incl. dark mode, posted on the PR.
     sizes: {
@@ -114,7 +114,7 @@ export const defaultProps: LaunchProps = {
       aspect: WEB_SHOT,
       crop: { x: 0.55, y: 0.05, w: 0.45, h: 0.52 },
     },
-    // Merged PR — the actual outcome, for the closing spread.
+    // Merged PR: the actual outcome, for the closing spread.
     result: {
       src: "screenshots/devin-web-8.png",
       kind: "image",
@@ -220,7 +220,7 @@ export const defaultProps: LaunchProps = {
       layout: "closing",
       reveal: "cut",
       media: ["result"],
-      kicker: "Outcome — merged PR",
+      kicker: "Outcome: merged PR",
       mediaSide: "left",
       bleed: false,
       dark: true,
