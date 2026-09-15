@@ -1,0 +1,517 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0036D23A50811B25B056C44F /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1972869505A8264B37E90CF0 /* hit.wav */; };
+		017F8D64E0EA0A75D2E26878 /* block.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8F87A86BE33CA5838652DA4E /* block.wav */; };
+		18D45F6D597326B40D90A39F /* heroes-2.png in Resources */ = {isa = PBXBuildFile; fileRef = B7C915D6741C5080C590D199 /* heroes-2.png */; };
+		18EA77A057623042912022DA /* attacks-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 404344547C0600825732687A /* attacks-4.png */; };
+		19FAB5E0B14CDE167DD193CD /* start.wav in Resources */ = {isa = PBXBuildFile; fileRef = FBFF31A968C85FD196774226 /* start.wav */; };
+		1E9BB8768089A82EDE34DAE2 /* GameArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBF5CB990904BFC97C5638B /* GameArt.swift */; };
+		2FF6823C93C5DD27B2BA4DB5 /* heroes-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 547E0397DC87078D8A72E5DB /* heroes-4.png */; };
+		32DE5EC49526A6C7644C469B /* BattleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04252022244786E386149C91 /* BattleScene.swift */; };
+		3C50E99F659C5FDF95220CF4 /* heroes-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BB3F01ACEB48A0C43193CFB /* heroes-0.png */; };
+		3CFC983604259C7532CDFB6C /* GameAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2E6B1E7A85A9D8898CBE2 /* GameAudio.swift */; };
+		411025A239E0A05DAC971367 /* attacks-1.png in Resources */ = {isa = PBXBuildFile; fileRef = C0AFDBD650917974694D2342 /* attacks-1.png */; };
+		4429E0468825A18768E05335 /* attacks-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 30819629ED6CD4960DF45D82 /* attacks-0.png */; };
+		57C5B5BBF4AD94E5A6FC69AB /* heroes-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 244B07D7B42AC1500EDFABE6 /* heroes-1.png */; };
+		5CAF06C8C328C5F3D2642FE6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5CD8163F34B447329BC422 /* ContentView.swift */; };
+		63640FA6C3664F836E24598F /* attacks-3.png in Resources */ = {isa = PBXBuildFile; fileRef = A5BC30BE10D852E146896EAC /* attacks-3.png */; };
+		6CD5ABEC6EB72BEE5BA8ACEB /* score.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6E021F176A7C5695E5424CA4 /* score.wav */; };
+		8304BF9954CB72C4534C0A6D /* heroes-5.png in Resources */ = {isa = PBXBuildFile; fileRef = F526A672632461A408594966 /* heroes-5.png */; };
+		8F47180B43A0601706CF318C /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D5EB8F90DAD73EE3E52BAB4 /* GameModel.swift */; };
+		99138060396EF309FE62E3EF /* attacks-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 4C6B2A1ED9391137A883F38B /* attacks-2.png */; };
+		9F7EB3E267FB066F77EB2F95 /* attacks-5.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F70B4403BC84795E513548D /* attacks-5.png */; };
+		ACFC562126833F59EC4B38AA /* arena.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F5EB0A10C92B3F3651E4A3D /* arena.png */; };
+		B9462D6AF537F8251E09939D /* TitanUprisingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435F5435749AAF8AF48611EE /* TitanUprisingApp.swift */; };
+		BBAD1095DF3E1C7589CE45AB /* tag.wav in Resources */ = {isa = PBXBuildFile; fileRef = 307986AE712AAFB073369D70 /* tag.wav */; };
+		BBE99519DCF2F5765681E705 /* ko.wav in Resources */ = {isa = PBXBuildFile; fileRef = 2C9F96A3E8C14E303321A91D /* ko.wav */; };
+		CA830125DD79DD45263378C7 /* heroes-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 05B23673399F70A2A4EEF5C7 /* heroes-3.png */; };
+		CD79501B3F881D9BCB917C3A /* win.wav in Resources */ = {isa = PBXBuildFile; fileRef = BCF69E6EF8FE067F2B44F957 /* win.wav */; };
+		CFA39A6F602ADEB0A4AEAF5B /* tap.wav in Resources */ = {isa = PBXBuildFile; fileRef = EF18D2951B9B1679399FFE25 /* tap.wav */; };
+		DA3A4A1269AD5D8027A63D02 /* TouchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55DF26473F5D78B7AF25E12D /* TouchTests.swift */; };
+		F41D191E2B8ADBEFDBCC5217 /* super.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5758124B43659AED59F966E2 /* super.wav */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7E8698C136A8E310C192E4CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69BBC62B3D0677D82F22A7FC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 930D6AACF606D0780D2F79DA;
+			remoteInfo = TitanUprising;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		04252022244786E386149C91 /* BattleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleScene.swift; sourceTree = "<group>"; };
+		05B23673399F70A2A4EEF5C7 /* heroes-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heroes-3.png"; sourceTree = "<group>"; };
+		1972869505A8264B37E90CF0 /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
+		1CB2E6B1E7A85A9D8898CBE2 /* GameAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAudio.swift; sourceTree = "<group>"; };
+		244B07D7B42AC1500EDFABE6 /* heroes-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heroes-1.png"; sourceTree = "<group>"; };
+		2C9F96A3E8C14E303321A91D /* ko.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ko.wav; sourceTree = "<group>"; };
+		307986AE712AAFB073369D70 /* tag.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tag.wav; sourceTree = "<group>"; };
+		30819629ED6CD4960DF45D82 /* attacks-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "attacks-0.png"; sourceTree = "<group>"; };
+		404344547C0600825732687A /* attacks-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "attacks-4.png"; sourceTree = "<group>"; };
+		435F5435749AAF8AF48611EE /* TitanUprisingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitanUprisingApp.swift; sourceTree = "<group>"; };
+		4C6B2A1ED9391137A883F38B /* attacks-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "attacks-2.png"; sourceTree = "<group>"; };
+		4DE69A7C2F86450DBD6C3F49 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		547E0397DC87078D8A72E5DB /* heroes-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heroes-4.png"; sourceTree = "<group>"; };
+		554F7555C4A70CDB47F5505E /* TitanUprising.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TitanUprising.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		55DF26473F5D78B7AF25E12D /* TouchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchTests.swift; sourceTree = "<group>"; };
+		5758124B43659AED59F966E2 /* super.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = super.wav; sourceTree = "<group>"; };
+		6E021F176A7C5695E5424CA4 /* score.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = score.wav; sourceTree = "<group>"; };
+		6F5EB0A10C92B3F3651E4A3D /* arena.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arena.png; sourceTree = "<group>"; };
+		6F70B4403BC84795E513548D /* attacks-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "attacks-5.png"; sourceTree = "<group>"; };
+		7BB3F01ACEB48A0C43193CFB /* heroes-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heroes-0.png"; sourceTree = "<group>"; };
+		7D5EB8F90DAD73EE3E52BAB4 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		8F87A86BE33CA5838652DA4E /* block.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = block.wav; sourceTree = "<group>"; };
+		9D5CD8163F34B447329BC422 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A0A4A7BFDB4E00D2EC3E0A84 /* TitanUprisingUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TitanUprisingUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A5BC30BE10D852E146896EAC /* attacks-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "attacks-3.png"; sourceTree = "<group>"; };
+		B7C915D6741C5080C590D199 /* heroes-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heroes-2.png"; sourceTree = "<group>"; };
+		BCF69E6EF8FE067F2B44F957 /* win.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = win.wav; sourceTree = "<group>"; };
+		BFBF5CB990904BFC97C5638B /* GameArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameArt.swift; sourceTree = "<group>"; };
+		C0AFDBD650917974694D2342 /* attacks-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "attacks-1.png"; sourceTree = "<group>"; };
+		EF18D2951B9B1679399FFE25 /* tap.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = tap.wav; sourceTree = "<group>"; };
+		F526A672632461A408594966 /* heroes-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "heroes-5.png"; sourceTree = "<group>"; };
+		FBFF31A968C85FD196774226 /* start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = start.wav; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		01EC5880C95D446EAC3ABECA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6F5EB0A10C92B3F3651E4A3D /* arena.png */,
+				30819629ED6CD4960DF45D82 /* attacks-0.png */,
+				C0AFDBD650917974694D2342 /* attacks-1.png */,
+				4C6B2A1ED9391137A883F38B /* attacks-2.png */,
+				A5BC30BE10D852E146896EAC /* attacks-3.png */,
+				404344547C0600825732687A /* attacks-4.png */,
+				6F70B4403BC84795E513548D /* attacks-5.png */,
+				8F87A86BE33CA5838652DA4E /* block.wav */,
+				7BB3F01ACEB48A0C43193CFB /* heroes-0.png */,
+				244B07D7B42AC1500EDFABE6 /* heroes-1.png */,
+				B7C915D6741C5080C590D199 /* heroes-2.png */,
+				05B23673399F70A2A4EEF5C7 /* heroes-3.png */,
+				547E0397DC87078D8A72E5DB /* heroes-4.png */,
+				F526A672632461A408594966 /* heroes-5.png */,
+				1972869505A8264B37E90CF0 /* hit.wav */,
+				2C9F96A3E8C14E303321A91D /* ko.wav */,
+				6E021F176A7C5695E5424CA4 /* score.wav */,
+				FBFF31A968C85FD196774226 /* start.wav */,
+				5758124B43659AED59F966E2 /* super.wav */,
+				307986AE712AAFB073369D70 /* tag.wav */,
+				EF18D2951B9B1679399FFE25 /* tap.wav */,
+				BCF69E6EF8FE067F2B44F957 /* win.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1157DF713C824D6796108326 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				04252022244786E386149C91 /* BattleScene.swift */,
+				9D5CD8163F34B447329BC422 /* ContentView.swift */,
+				BFBF5CB990904BFC97C5638B /* GameArt.swift */,
+				1CB2E6B1E7A85A9D8898CBE2 /* GameAudio.swift */,
+				7D5EB8F90DAD73EE3E52BAB4 /* GameModel.swift */,
+				4DE69A7C2F86450DBD6C3F49 /* Info.plist */,
+				435F5435749AAF8AF48611EE /* TitanUprisingApp.swift */,
+				01EC5880C95D446EAC3ABECA /* Resources */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		494974AA2D8172C6D72335AC = {
+			isa = PBXGroup;
+			children = (
+				1157DF713C824D6796108326 /* App */,
+				8C954CFEE17D8313DB0BB7A1 /* UITests */,
+				EDDF64B6C7887F37EAD0A7D1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8C954CFEE17D8313DB0BB7A1 /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				55DF26473F5D78B7AF25E12D /* TouchTests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		EDDF64B6C7887F37EAD0A7D1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				554F7555C4A70CDB47F5505E /* TitanUprising.app */,
+				A0A4A7BFDB4E00D2EC3E0A84 /* TitanUprisingUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		930D6AACF606D0780D2F79DA /* TitanUprising */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 85A251786CF9BA4C41AA2942 /* Build configuration list for PBXNativeTarget "TitanUprising" */;
+			buildPhases = (
+				6CB937E38399EFAB2895855A /* Sources */,
+				F03000CE6823685F0BA4E66E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TitanUprising;
+			packageProductDependencies = (
+			);
+			productName = TitanUprising;
+			productReference = 554F7555C4A70CDB47F5505E /* TitanUprising.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AAA1DCC858B28F3A5AE055F4 /* TitanUprisingUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B65B16456D2BBF98364A78F2 /* Build configuration list for PBXNativeTarget "TitanUprisingUITests" */;
+			buildPhases = (
+				5720DD29E5BF0412EA3BB0C4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				43E7EC9ED83A5550F6E8C51A /* PBXTargetDependency */,
+			);
+			name = TitanUprisingUITests;
+			packageProductDependencies = (
+			);
+			productName = TitanUprisingUITests;
+			productReference = A0A4A7BFDB4E00D2EC3E0A84 /* TitanUprisingUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		69BBC62B3D0677D82F22A7FC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					AAA1DCC858B28F3A5AE055F4 = {
+						TestTargetID = 930D6AACF606D0780D2F79DA;
+					};
+				};
+			};
+			buildConfigurationList = A5EB9E82CFB3936BA37EF336 /* Build configuration list for PBXProject "TitanUprising" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 494974AA2D8172C6D72335AC;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EDDF64B6C7887F37EAD0A7D1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				930D6AACF606D0780D2F79DA /* TitanUprising */,
+				AAA1DCC858B28F3A5AE055F4 /* TitanUprisingUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F03000CE6823685F0BA4E66E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ACFC562126833F59EC4B38AA /* arena.png in Resources */,
+				4429E0468825A18768E05335 /* attacks-0.png in Resources */,
+				411025A239E0A05DAC971367 /* attacks-1.png in Resources */,
+				99138060396EF309FE62E3EF /* attacks-2.png in Resources */,
+				63640FA6C3664F836E24598F /* attacks-3.png in Resources */,
+				18EA77A057623042912022DA /* attacks-4.png in Resources */,
+				9F7EB3E267FB066F77EB2F95 /* attacks-5.png in Resources */,
+				017F8D64E0EA0A75D2E26878 /* block.wav in Resources */,
+				3C50E99F659C5FDF95220CF4 /* heroes-0.png in Resources */,
+				57C5B5BBF4AD94E5A6FC69AB /* heroes-1.png in Resources */,
+				18D45F6D597326B40D90A39F /* heroes-2.png in Resources */,
+				CA830125DD79DD45263378C7 /* heroes-3.png in Resources */,
+				2FF6823C93C5DD27B2BA4DB5 /* heroes-4.png in Resources */,
+				8304BF9954CB72C4534C0A6D /* heroes-5.png in Resources */,
+				0036D23A50811B25B056C44F /* hit.wav in Resources */,
+				BBE99519DCF2F5765681E705 /* ko.wav in Resources */,
+				6CD5ABEC6EB72BEE5BA8ACEB /* score.wav in Resources */,
+				19FAB5E0B14CDE167DD193CD /* start.wav in Resources */,
+				F41D191E2B8ADBEFDBCC5217 /* super.wav in Resources */,
+				BBAD1095DF3E1C7589CE45AB /* tag.wav in Resources */,
+				CFA39A6F602ADEB0A4AEAF5B /* tap.wav in Resources */,
+				CD79501B3F881D9BCB917C3A /* win.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5720DD29E5BF0412EA3BB0C4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA3A4A1269AD5D8027A63D02 /* TouchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6CB937E38399EFAB2895855A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				32DE5EC49526A6C7644C469B /* BattleScene.swift in Sources */,
+				5CAF06C8C328C5F3D2642FE6 /* ContentView.swift in Sources */,
+				1E9BB8768089A82EDE34DAE2 /* GameArt.swift in Sources */,
+				3CFC983604259C7532CDFB6C /* GameAudio.swift in Sources */,
+				8F47180B43A0601706CF318C /* GameModel.swift in Sources */,
+				B9462D6AF537F8251E09939D /* TitanUprisingApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		43E7EC9ED83A5550F6E8C51A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 930D6AACF606D0780D2F79DA /* TitanUprising */;
+			targetProxy = 7E8698C136A8E310C192E4CB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		5A376AEBAC675B3E8F49F86C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.dabit.titanuprising.TitanUprisingUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TitanUprising;
+			};
+			name = Debug;
+		};
+		75DF5AA0BE33B53E4AC6F102 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		87808EAD457033F84CCD4A2D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.dabit.titanuprising;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A76C4D1807DE5B6B24639878 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.dabit.titanuprising.TitanUprisingUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TitanUprising;
+			};
+			name = Release;
+		};
+		A80EDA3B73DB2E19182D0A5E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FD438CFBC0D7A3F1DEB0B19E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.dabit.titanuprising;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		85A251786CF9BA4C41AA2942 /* Build configuration list for PBXNativeTarget "TitanUprising" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD438CFBC0D7A3F1DEB0B19E /* Debug */,
+				87808EAD457033F84CCD4A2D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A5EB9E82CFB3936BA37EF336 /* Build configuration list for PBXProject "TitanUprising" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				75DF5AA0BE33B53E4AC6F102 /* Debug */,
+				A80EDA3B73DB2E19182D0A5E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B65B16456D2BBF98364A78F2 /* Build configuration list for PBXNativeTarget "TitanUprisingUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5A376AEBAC675B3E8F49F86C /* Debug */,
+				A76C4D1807DE5B6B24639878 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 69BBC62B3D0677D82F22A7FC /* Project object */;
+}
