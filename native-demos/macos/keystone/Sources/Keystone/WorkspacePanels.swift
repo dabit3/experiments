@@ -25,6 +25,7 @@ struct NumberEntry: View {
   var value: Double
   var unit: String
   var range: ClosedRange<Double>
+  var fieldWidth: CGFloat = 82
   var onCommit: (Double) -> Void
   @State private var text = ""
   @State private var invalid = false
@@ -34,10 +35,11 @@ struct NumberEntry: View {
     VStack(alignment: .leading, spacing: 4) {
       HStack(spacing: 7) {
         Text(title).font(.system(size: 11)).foregroundStyle(Ink.muted)
+          .fixedSize(horizontal: true, vertical: false)
         Spacer(minLength: 4)
         TextField(title, text: $text).textFieldStyle(.plain).multilineTextAlignment(.trailing)
           .font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.navy)
-          .padding(.horizontal, 8).padding(.vertical, 7).frame(width: 82)
+          .padding(.horizontal, 8).padding(.vertical, 7).frame(width: fieldWidth)
           .background(.white, in: RoundedRectangle(cornerRadius: 4))
           .overlay(RoundedRectangle(cornerRadius: 4).stroke(invalid ? Ink.copper : Ink.line))
           .focused($focused).onSubmit {
@@ -91,7 +93,8 @@ struct CaseEditor: View {
         .onChange(of: nameFocused) { _, active in if !active { rename() } }
         .accessibilityLabel("Case name")
       NumberEntry(
-        title: "Factor", value: studio.design.activeCase.factor, unit: "×", range: 0.01...10
+        title: "Factor", value: studio.design.activeCase.factor, unit: "×", range: 0.01...10,
+        fieldWidth: 60
       ) { value in
         studio.updateCase { $0.factor = value }
       }

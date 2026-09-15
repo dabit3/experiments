@@ -62,16 +62,16 @@ struct ContentView: View {
         Button("Save as…", action: studio.saveAs)
       } label: {
         Label("Save", systemImage: "square.and.arrow.down").foregroundStyle(.white)
-      }.menuStyle(.borderlessButton).fixedSize().padding(10)
+      }.menuStyle(.borderlessButton).environment(\.colorScheme, .dark).fixedSize().padding(10)
       Menu {
         Button("Engineering report · HTML") { studio.export(report: true) }
         Button("Vector drawing · SVG") { studio.export(report: false) }
         Button("Member & reaction schedule · CSV", action: studio.exportCSV)
       } label: {
-        Label("Export", systemImage: "arrow.up.right").foregroundStyle(Ink.navy)
-          .padding(.horizontal, 16).padding(.vertical, 11)
-          .background(Ink.sand, in: RoundedRectangle(cornerRadius: 6))
-      }.menuStyle(.borderlessButton).fixedSize()
+        Label("Export", systemImage: "arrow.up.right")
+      }.menuStyle(.borderlessButton).environment(\.colorScheme, .light).fixedSize()
+        .padding(.horizontal, 16).padding(.vertical, 11)
+        .background(Ink.sand, in: RoundedRectangle(cornerRadius: 6))
     }
     .font(.system(size: 12)).foregroundStyle(.white)
     .padding(.horizontal, 25).padding(.top, 25).padding(.bottom, 18).background(Ink.navy)
@@ -108,7 +108,8 @@ struct ContentView: View {
                 .disabled(studio.design.activeCaseID == "service")
             } label: {
               Image(systemName: "plus").foregroundStyle(Ink.sand).frame(width: 24, height: 24)
-            }.menuStyle(.borderlessButton).fixedSize().accessibilityLabel("Load case actions")
+            }.menuStyle(.borderlessButton).environment(\.colorScheme, .dark).fixedSize()
+              .accessibilityLabel("Load case actions")
           }
           ForEach(studio.design.loadCases) { loadCase in
             let active = loadCase.id == studio.design.activeCaseID

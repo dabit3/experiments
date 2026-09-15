@@ -227,6 +227,7 @@ final class Studio: ObservableObject {
 
   func undo() {
     guard let previous = history.undo(design) else { return }
+    baselineMM = nil
     design = previous
     selection = nil
     startNode = nil
@@ -236,6 +237,7 @@ final class Studio: ObservableObject {
 
   func redo() {
     guard let next = history.redo(design) else { return }
+    baselineMM = nil
     design = next
     selection = nil
     startNode = nil
