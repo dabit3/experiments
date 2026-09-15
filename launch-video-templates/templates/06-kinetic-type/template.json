@@ -1,0 +1,9 @@
+{
+  "id": "06-kinetic-type",
+  "title": "Kinetic Type",
+  "compositionId": "Launch",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "durationSeconds": 40
+}
