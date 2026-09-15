@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "slug": "08-transit-wayfinding",
+  "name": "Transit Wayfinding",
+  "description": "A restrained Mac launch route: numbered stations, crisp line traces, and marker-origin reveals into large, still product views.",
+  "compositionId": "TransitWayfinding"
+}

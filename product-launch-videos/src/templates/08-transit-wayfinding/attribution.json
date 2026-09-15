@@ -1,0 +1,74 @@
+[
+  {
+    "scene": "opening",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original transparent black lockup, proportional contain throughout.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "environment",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [4, 8.366667],
+    "sourceSeconds": null,
+    "treatment": "Contained original-pixel crop x=550, y=400, width=1900, height=1040. Preserves full composer and hosted environment menu; removes empty margins. Marker-origin reveal. Next station starts arriving 19 frames before 9 seconds.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "agent",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [8.366667, 13],
+    "sourceSeconds": [0, 4],
+    "treatment": "First source frame held during 19-frame arrival before 9 seconds, then entire source 0–4 seconds at 1x from 9–13. Full composer context, uncropped.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [13, 17.5],
+    "sourceSeconds": null,
+    "treatment": "Full unchanged Simulator screenshot and report including 8 passed, 0 failed, 1 untested. No internal state animation.",
+    "requiredLabel": "Simulator screenshot · separate session"
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [17.5, 21.366667],
+    "sourceSeconds": null,
+    "treatment": "Clean cut to separate full unchanged iPhone screenshot and final-review report. Web QA arrival begins at 21.366667 seconds.",
+    "requiredLabel": "Simulator screenshot · separate session"
+  },
+  {
+    "scene": "webQa",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [21.366667, 29],
+    "sourceSeconds": [0, 7],
+    "treatment": "First source frame held during 19-frame arrival, then source 0–7 seconds at 1x from 22–29. Uncropped footage with permanent external label.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "ipad",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [29, 35],
+    "sourceSeconds": null,
+    "treatment": "Full unchanged iPad screenshot and acceptance report. No app state animation.",
+    "requiredLabel": "Simulator screenshot · separate session"
+  },
+  {
+    "scene": "all",
+    "asset": "NBInternationalPro-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original supplied Devin website font, loaded through shared font gate before rendering; brand typography throughout.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "all",
+    "asset": "GeistMono-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original website companion font, editorial station numbers only.",
+    "requiredLabel": null
+  }
+]
