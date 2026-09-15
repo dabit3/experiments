@@ -1,0 +1,32 @@
+// !$*UTF8*$!
+{
+    archiveVersion = 1;
+    classes = {};
+    objectVersion = 56;
+    objects = {
+        A10000000000000000000001 = {isa = PBXProject; attributes = {LastUpgradeCheck = 2600;}; buildConfigurationList = A10000000000000000000002; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = A10000000000000000000003; productRefGroup = A10000000000000000000004; projectDirPath = ""; projectRoot = ""; targets = (A10000000000000000000005);};
+        A10000000000000000000002 = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000010, A10000000000000000000011); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+        A10000000000000000000003 = {isa = PBXGroup; children = (A10000000000000000000020, A10000000000000000000021, A10000000000000000000022, A10000000000000000000023, A10000000000000000000024, A10000000000000000000004); sourceTree = "<group>";};
+        A10000000000000000000004 = {isa = PBXGroup; children = (A10000000000000000000006); name = Products; sourceTree = "<group>";};
+        A10000000000000000000005 = {isa = PBXNativeTarget; buildConfigurationList = A10000000000000000000007; buildPhases = (A10000000000000000000008, A10000000000000000000009); buildRules = (); dependencies = (); name = FrameForge; productName = FrameForge; productReference = A10000000000000000000006; productType = "com.apple.product-type.application";};
+        A10000000000000000000006 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FrameForge.app; sourceTree = BUILT_PRODUCTS_DIR;};
+        A10000000000000000000007 = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000012, A10000000000000000000013); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+        A10000000000000000000008 = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000030, A10000000000000000000031, A10000000000000000000032, A10000000000000000000033); runOnlyForDeploymentPostprocessing = 0;};
+        A10000000000000000000009 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000034); runOnlyForDeploymentPostprocessing = 0;};
+        A10000000000000000000010 = {isa = XCBuildConfiguration; buildSettings = {SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SWIFT_VERSION = 5.0; ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ALWAYS_SEARCH_USER_PATHS = NO;}; name = Debug;};
+        A10000000000000000000011 = {isa = XCBuildConfiguration; buildSettings = {SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SWIFT_VERSION = 5.0; ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ALWAYS_SEARCH_USER_PATHS = NO;}; name = Release;};
+        A10000000000000000000012 = {isa = XCBuildConfiguration; buildSettings = {PRODUCT_BUNDLE_IDENTIFIER = ai.frameforge.studio; PRODUCT_NAME = "$(TARGET_NAME)"; INFOPLIST_FILE = Info.plist; TARGETED_DEVICE_FAMILY = 2; CODE_SIGN_STYLE = Automatic; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; ENABLE_USER_SCRIPT_SANDBOXING = YES; SUPPORTS_MACCATALYST = NO;}; name = Debug;};
+        A10000000000000000000013 = {isa = XCBuildConfiguration; buildSettings = {PRODUCT_BUNDLE_IDENTIFIER = ai.frameforge.studio; PRODUCT_NAME = "$(TARGET_NAME)"; INFOPLIST_FILE = Info.plist; TARGETED_DEVICE_FAMILY = 2; CODE_SIGN_STYLE = Automatic; SWIFT_OPTIMIZATION_LEVEL = "-O"; ENABLE_USER_SCRIPT_SANDBOXING = YES; SUPPORTS_MACCATALYST = NO;}; name = Release;};
+        A10000000000000000000020 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/AnimationModel.swift; sourceTree = "<group>";};
+        A10000000000000000000021 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/StudioStore.swift; sourceTree = "<group>";};
+        A10000000000000000000022 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/ArtworkRenderer.swift; sourceTree = "<group>";};
+        A10000000000000000000023 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources/FrameForgeApp.swift; sourceTree = "<group>";};
+        A10000000000000000000024 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>";};
+        A10000000000000000000030 = {isa = PBXBuildFile; fileRef = A10000000000000000000020;};
+        A10000000000000000000031 = {isa = PBXBuildFile; fileRef = A10000000000000000000021;};
+        A10000000000000000000032 = {isa = PBXBuildFile; fileRef = A10000000000000000000022;};
+        A10000000000000000000033 = {isa = PBXBuildFile; fileRef = A10000000000000000000023;};
+        A10000000000000000000034 = {isa = PBXBuildFile; fileRef = A10000000000000000000024;};
+    };
+    rootObject = A10000000000000000000001;
+}
