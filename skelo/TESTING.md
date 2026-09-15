@@ -41,7 +41,23 @@ Use **File → Restore built-in house → Restore house**. This resets entities,
 
 ## Results
 
-Shell checks and browser results are recorded after execution, with final artifact URLs delivered alongside the PR. No native-app pixel parity metrics are claimed.
+Validated on 2026-09-15 with Node 24.19.0/npm 10.8.3:
+
+- `npm ci`: passed.
+- `npm run lint`: passed, 0 warnings/errors.
+- `npm run typecheck`: passed.
+- `npm test`: 13 passed, 0 failed.
+- `npm run build`: passed; Vite reports its advisory >500 kB Three.js bundle warning.
+- `npm audit`: 0 vulnerabilities.
+- Production-browser testing on code revision `d125925070791737b4f8f260f7824c871d001f7c`: passed the final measured modeling, paint/history, grouping/delete recovery, scenes/tags/shadows, persistence/import/export and invalid-input journey.
+- All three desktop layouts passed. A 50×50×50m volume fits perspective, Right and Top views; restoring the house and Overview returns useful framing. Scene-name validation appears within the dialog; approach steps have supporting geometry.
+- Exported JSON contains ten components/four scenes with the study at `[3,2.5,2]` and `terracotta`. OBJ has 27,161 finite vertices, 9,152 faces and valid indices.
+- Continuous final runtime logging found no application, uncaught-page, request or HTTP errors. Chromium emitted software-WebGL deprecation warnings.
+- Final recording: VP9 WebM, 1440×900, 678.867 seconds, 15 source-timed annotations; full decode validated. No cuts or acceleration.
+
+[Full browser report and reproduction steps](https://app.devin.ai/attachments/d11609e7-90d6-40d2-b4d7-dc55efa60be8/final-test-report.md) · [WebM](https://app.devin.ai/attachments/9edaf0d1-330b-4ad7-ad23-a5b7f5d799f1/final-skelo-workflow.webm) · [Final screenshot](https://app.devin.ai/attachments/4ffc413c-8faa-48a4-8e14-2460a04f1a52/final-best-scene.png)
+
+The unchanged click-drawn rectangle and drag Push/Pull paths passed the earlier browser run. The final recording uses measured creation and numeric Push/Pull. Maximum-cube framing was visually tested at 1440×900 and programmatically projected at all three aspect ratios. No native-app pixel parity metrics are claimed.
 
 ## Reference and honest boundaries
 
