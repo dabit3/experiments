@@ -1,0 +1,430 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3ED371AFB1F27868AAA76BE9 /* Scenes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 922E2A162DD254CAE756F4D3 /* Scenes.swift */; };
+		5EC2327EC71419371260FCA3 /* FoldscapeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0EF1338100C4B2EF8CA4930 /* FoldscapeApp.swift */; };
+		82EC157EAE5E3C9BB506D4F0 /* PuzzleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0664D470A32B5CD52DC1534C /* PuzzleTests.swift */; };
+		C2557EAB5F2B5CEDA43CE43E /* LandscapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A549CA09AC33BF67B4FEFC /* LandscapeView.swift */; };
+		DC628C58DD8950E0E684AF52 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731B6AF8AF12EDE21BCB7FD9 /* SettingsView.swift */; };
+		E05DD67A29CC1DD6DE378872 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5249F1069B53701C72E890D7 /* Puzzle.swift */; };
+		E8DE4A331201434827FDE149 /* AtlasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B866C8B011589ADF2FB377B7 /* AtlasView.swift */; };
+		F56C0BF51728DD4B25CBD459 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36B5117BEDDFC7E418BCE230 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3294DD028FD421FA33E8EA48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABC82E153B577459D24A7469 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AA2E2B32CB868065AC8FEB82;
+			remoteInfo = Foldscape;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0664D470A32B5CD52DC1534C /* PuzzleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuzzleTests.swift; sourceTree = "<group>"; };
+		36B5117BEDDFC7E418BCE230 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5249F1069B53701C72E890D7 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
+		60A549CA09AC33BF67B4FEFC /* LandscapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandscapeView.swift; sourceTree = "<group>"; };
+		731B6AF8AF12EDE21BCB7FD9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		922E2A162DD254CAE756F4D3 /* Scenes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scenes.swift; sourceTree = "<group>"; };
+		B19DD11445159842FC0C36E5 /* Foldscape.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Foldscape.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B866C8B011589ADF2FB377B7 /* AtlasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtlasView.swift; sourceTree = "<group>"; };
+		E0EF1338100C4B2EF8CA4930 /* FoldscapeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldscapeApp.swift; sourceTree = "<group>"; };
+		E540C0ACD0F3E3537D2FB2C2 /* FoldscapeTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FoldscapeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		2C4A426931A19D1844CD7C8A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B19DD11445159842FC0C36E5 /* Foldscape.app */,
+				E540C0ACD0F3E3537D2FB2C2 /* FoldscapeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BAEF8182DD39BCD5AF492D9F /* FoldscapeTests */ = {
+			isa = PBXGroup;
+			children = (
+				0664D470A32B5CD52DC1534C /* PuzzleTests.swift */,
+			);
+			path = FoldscapeTests;
+			sourceTree = "<group>";
+		};
+		D7570803B7685A814CCD62AE = {
+			isa = PBXGroup;
+			children = (
+				EABC7A42544FE240362D95C3 /* Foldscape */,
+				BAEF8182DD39BCD5AF492D9F /* FoldscapeTests */,
+				2C4A426931A19D1844CD7C8A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EABC7A42544FE240362D95C3 /* Foldscape */ = {
+			isa = PBXGroup;
+			children = (
+				36B5117BEDDFC7E418BCE230 /* Assets.xcassets */,
+				B866C8B011589ADF2FB377B7 /* AtlasView.swift */,
+				E0EF1338100C4B2EF8CA4930 /* FoldscapeApp.swift */,
+				60A549CA09AC33BF67B4FEFC /* LandscapeView.swift */,
+				5249F1069B53701C72E890D7 /* Puzzle.swift */,
+				922E2A162DD254CAE756F4D3 /* Scenes.swift */,
+				731B6AF8AF12EDE21BCB7FD9 /* SettingsView.swift */,
+			);
+			path = Foldscape;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2A8ED0B7FC1C1779D1576AF1 /* FoldscapeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 630CA6C6F7A457D099F23AAA /* Build configuration list for PBXNativeTarget "FoldscapeTests" */;
+			buildPhases = (
+				04D27BF979EB8615E63E5819 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C4A54D4D00256E4332384EE4 /* PBXTargetDependency */,
+			);
+			name = FoldscapeTests;
+			packageProductDependencies = (
+			);
+			productName = FoldscapeTests;
+			productReference = E540C0ACD0F3E3537D2FB2C2 /* FoldscapeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		AA2E2B32CB868065AC8FEB82 /* Foldscape */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9C5FD67B88521F822F2D07D /* Build configuration list for PBXNativeTarget "Foldscape" */;
+			buildPhases = (
+				E34388E7820F00DB9E2AD1BC /* Sources */,
+				9A532983B0D8A98B6477E2C2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Foldscape;
+			packageProductDependencies = (
+			);
+			productName = Foldscape;
+			productReference = B19DD11445159842FC0C36E5 /* Foldscape.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ABC82E153B577459D24A7469 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = B0B5ABF8306F8360B30E5124 /* Build configuration list for PBXProject "Foldscape" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = D7570803B7685A814CCD62AE;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2C4A426931A19D1844CD7C8A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AA2E2B32CB868065AC8FEB82 /* Foldscape */,
+				2A8ED0B7FC1C1779D1576AF1 /* FoldscapeTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9A532983B0D8A98B6477E2C2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F56C0BF51728DD4B25CBD459 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		04D27BF979EB8615E63E5819 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82EC157EAE5E3C9BB506D4F0 /* PuzzleTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E34388E7820F00DB9E2AD1BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E8DE4A331201434827FDE149 /* AtlasView.swift in Sources */,
+				5EC2327EC71419371260FCA3 /* FoldscapeApp.swift in Sources */,
+				C2557EAB5F2B5CEDA43CE43E /* LandscapeView.swift in Sources */,
+				E05DD67A29CC1DD6DE378872 /* Puzzle.swift in Sources */,
+				3ED371AFB1F27868AAA76BE9 /* Scenes.swift in Sources */,
+				DC628C58DD8950E0E684AF52 /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C4A54D4D00256E4332384EE4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AA2E2B32CB868065AC8FEB82 /* Foldscape */;
+			targetProxy = 3294DD028FD421FA33E8EA48 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2C475F16351B105355B3C23D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_CFBundleDisplayName = Foldscape;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.foldscape.ios;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3D39665017C8129DCAF6176F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.foldscape.FoldscapeTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Foldscape.app/Foldscape";
+			};
+			name = Release;
+		};
+		96286278AEE212768DAAAA87 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		C28E80F6D268EF2E979A060A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.foldscape.FoldscapeTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Foldscape.app/Foldscape";
+			};
+			name = Debug;
+		};
+		C8D5B584F16918F776F3C9A6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_CFBundleDisplayName = Foldscape;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.foldscape.ios;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E48DFC5EDCB47E97FFD97C71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		630CA6C6F7A457D099F23AAA /* Build configuration list for PBXNativeTarget "FoldscapeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C28E80F6D268EF2E979A060A /* Debug */,
+				3D39665017C8129DCAF6176F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A9C5FD67B88521F822F2D07D /* Build configuration list for PBXNativeTarget "Foldscape" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2C475F16351B105355B3C23D /* Debug */,
+				C8D5B584F16918F776F3C9A6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B0B5ABF8306F8360B30E5124 /* Build configuration list for PBXProject "Foldscape" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96286278AEE212768DAAAA87 /* Debug */,
+				E48DFC5EDCB47E97FFD97C71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ABC82E153B577459D24A7469 /* Project object */;
+}
