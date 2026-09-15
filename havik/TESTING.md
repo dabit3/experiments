@@ -35,6 +35,7 @@ Executable tests in `src/model.test.ts` cover:
 7. Invalid JSON, unknown version, missing collections, invalid materials, non-finite coordinates, negative lengths, duplicate IDs and object-limit rejection.
 8. Sanitization of unexpected imported properties.
 9. SVG geometry, updated labels, dimensions, door arcs, selection and XML escaping.
+10. Property-form numeric validity for every fixture and catalog object, including 0.85 m chairs and precise imported dimensions.
 
 ## UI golden path and expected outcomes
 
@@ -53,9 +54,15 @@ Run against the production build, at 1440 × 900 first; inspect 1920 × 1080 and
 
 ## Results
 
-Initial clean-install verification on Node 24.19.0: `npm ci`, lint (zero warnings), TypeScript, all **20 Vitest tests**, and production build passed. `npm audit` reported **zero vulnerabilities** after selecting patched Vite 7.3.6 and Vitest 4.1.11. Vite reports a non-failing bundle-size advisory for the included Three.js renderer.
+Clean-install verification on Node 24.19.0: `npm ci`, lint (zero warnings), TypeScript, all **22 Vitest tests**, and production build passed. `npm audit` reported **zero vulnerabilities** after selecting patched Vite 7.3.6 and Vitest 4.1.11. Vite reports a non-failing bundle-size advisory for the included Three.js renderer.
 
-Production browser verification and evidence are added after the PR is opened. No native reference parity or fabricated pixel-diff score is asserted.
+Production Chrome testing passed the ten-step golden path above at 1440×900, with default and edited layouts also checked at 1920×1080 and 1280×800. At 1280, the specification panel scrolls to expose a working Apply button. Edited model snapshots were compared for exact undo/redo and reload persistence. SVG, PNG and JSON download contents were inspected; reset/reimport restored the same model, and malformed imports preserved it.
+
+Two browser-discovered defects were corrected and reverified: fractional catalog dimensions previously failed native step validation, and Fit retained OrbitControls damping momentum. Numeric forms now accept all validated real values; two immediate Fits after orbit/zoom now restore stable, pixel-identical local camera frames.
+
+The final showcase recording is VP9 WebM, 1440×900, 69.834 seconds, verified with ffprobe. Full uncropped scene/plan PNGs and the detailed report are linked from the PR. No MP4 is delivered.
+
+No JavaScript exceptions were captured. The initial optional favicon request returned 404; an original local SVG favicon was added afterward. Software-WebGL deprecation/ReadPixels warnings are recorded in the browser report. Hardware-GPU performance and non-Chrome browsers were not tested. No native reference parity or fabricated source pixel-diff score is asserted.
 
 ## References and access boundaries
 
