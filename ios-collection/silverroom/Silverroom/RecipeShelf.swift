@@ -4,38 +4,30 @@ struct RecipeShelf: View {
   @EnvironmentObject private var library: LibraryStore
   @Environment(\.dismiss) private var dismiss
   @Environment(\.dynamicTypeSize) private var typeSize
-  @State private var renaming: Recipe?
-  @State private var deleting: Recipe?
-  @State private var newName = ""
+  @State private var managing: Recipe?
   @State private var previews: [UUID: UIImage] = [:]
   var negative: Negative?
   var onApply: ((Recipe) -> Void)?
 
   var body: some View {
-    NavigationStack {
+    VStack(spacing: 0) {
+      SheetHeader(title: "Recipes") { dismiss() }
       ScrollView {
-        VStack(alignment: .leading, spacing: 24) {
-          Eyebrow(text: "Your signature looks").padding(.top, 18)
-          Text("Good light,\nremembered.")
-            .font(.system(size: 36, design: .serif)).foregroundStyle(Palette.silver)
+        VStack(alignment: .leading, spacing: 28) {
+          Text("Your saved looks.").font(TypeStyle.title).padding(.top, 16)
           Text(
             onApply == nil
-              ? "A collection of the looks you’ve made."
-              : "Choose a recipe to develop this photograph."
+              ? "Looks and adjustments, ready to use again."
+              : "Previewed on this photograph. Tap a look to apply it."
           )
-          .font(.subheadline).foregroundStyle(Palette.muted)
-          Hairline()
+          .font(TypeStyle.label).foregroundStyle(Palette.muted)
           if library.state.recipes.isEmpty {
-            VStack(alignment: .leading, spacing: 15) {
-              Image(systemName: "bookmark").font(.title).foregroundStyle(Palette.amber)
-              Text("Your first recipe starts\nwith a photograph.")
-                .font(.system(.title2, design: .serif)).foregroundStyle(Palette.silver)
-              Text(
-                "Open a negative, find a look you love, then tap Save recipe. We’ll keep the look and adjustments here."
-              )
-              .font(.subheadline).foregroundStyle(Palette.muted).lineSpacing(4)
+            VStack(alignment: .leading, spacing: 14) {
+              Hairline()
+              Text("Save your first look").font(TypeStyle.heading).padding(.top, 20)
+              Text("Open a photograph, make your adjustments, then choose Recipes → Save recipe.")
+                .font(TypeStyle.body).foregroundStyle(Palette.muted).lineSpacing(3)
             }
-            .padding(.vertical, 25)
           }
           ForEach(library.state.recipes) { recipe in
             recipeRow(recipe)
@@ -46,116 +38,78 @@ struct RecipeShelf: View {
                 else { return }
                 let settings = recipe.settings
                 previews[recipe.id] = await Task.detached(priority: .utility) {
-                  try? ImageEngine().render(data, settings: settings, maxPixel: 220)
+                  try? ImageEngine().render(data, settings: settings, maxPixel: 400)
                 }.value
               }
           }
           if !library.state.recipes.isEmpty {
             Text(
               negative == nil
-                ? "Previews shown on The cove sample." : "Previews shown on this photograph."
+                ? "Previews use The cove sample."
+                : "Applying a recipe keeps this photo’s crop and rotation."
             )
-            .font(.caption).foregroundStyle(Palette.muted)
+            .font(TypeStyle.caption).foregroundStyle(Palette.muted)
           }
         }
-        .padding(.horizontal, 26).padding(.bottom, 30)
+        .padding(.horizontal, 24).padding(.bottom, 30)
       }
-      .background(Palette.background)
-      .navigationTitle("Recipes").navigationBarTitleDisplayMode(.inline)
-      .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
-      .alert(
-        "Rename recipe",
-        isPresented: Binding(
-          get: { renaming != nil }, set: { if !$0 { renaming = nil } })
-      ) {
-        TextField("Recipe name", text: $newName)
-        Button("Cancel", role: .cancel) { renaming = nil }
-        Button("Save") {
-          if let renaming { library.renameRecipe(renaming, name: newName) }
-          renaming = nil
-        }
-        .disabled(newName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-      }
-      .confirmationDialog(
-        "Delete this recipe?",
-        isPresented: Binding(
-          get: { deleting != nil }, set: { if !$0 { deleting = nil } }),
-        titleVisibility: .visible
-      ) {
-        Button("Delete recipe", role: .destructive) {
-          if let deleting { library.deleteRecipe(deleting) }
-          deleting = nil
-        }
-      } message: {
-        Text("Edits already applied to photographs will be kept.")
-      }
+    }
+    .foregroundStyle(Palette.silver).background(Palette.background)
+    .presentationDragIndicator(.visible)
+    .sheet(item: $managing) { recipe in
+      RecipeNameSheet(
+        title: "Edit recipe", initialName: recipe.name,
+        onSave: { library.renameRecipe(recipe, name: $0) },
+        onDelete: { library.deleteRecipe(recipe) })
     }
   }
 
   private func recipeRow(_ recipe: Recipe) -> some View {
-    VStack(alignment: .leading, spacing: 13) {
-      HStack(alignment: .top, spacing: 14) {
-        Group {
-          if let preview = previews[recipe.id] {
-            Image(uiImage: preview).resizable().scaledToFill()
-          } else {
-            Palette.panel
-          }
-        }
-        .frame(width: 66, height: 88).clipped()
-        .overlay { Rectangle().stroke(Palette.line, lineWidth: 1) }
-        .accessibilityHidden(true)
-        VStack(alignment: .leading, spacing: 6) {
-          Text(recipe.name).font(.system(.title2, design: .serif)).foregroundStyle(Palette.silver)
-            .fixedSize(horizontal: false, vertical: true)
-          if !typeSize.isAccessibilitySize { recipeSummary(recipe) }
-        }
-        Spacer(minLength: 0)
-        Menu {
-          Button("Rename", systemImage: "pencil") {
-            newName = recipe.name
-            renaming = recipe
-          }
-          Button("Delete recipe", systemImage: "trash", role: .destructive) {
-            deleting = recipe
-          }
-        } label: {
-          Image(systemName: "ellipsis").frame(width: 44, height: 44).foregroundStyle(Palette.muted)
-        }
-        .accessibilityLabel("Manage \(recipe.name)")
-      }
-      if typeSize.isAccessibilitySize { recipeSummary(recipe) }
-      if let onApply {
+    VStack(alignment: .leading, spacing: 18) {
+      HStack(alignment: .top, spacing: 16) {
         Button {
-          onApply(recipe)
+          if let onApply { onApply(recipe) } else { managing = recipe }
         } label: {
-          HStack {
-            Text("Apply recipe")
-            Spacer()
-            Image(systemName: "arrow.right")
+          HStack(alignment: .top, spacing: 16) {
+            Group {
+              if let preview = previews[recipe.id] {
+                Image(uiImage: preview).resizable().scaledToFill()
+              } else {
+                Palette.panel
+              }
+            }
+            .frame(width: 84, height: 112).clipped()
+            .clipShape(RoundedRectangle(cornerRadius: 6)).accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 10) {
+              Text(recipe.name).font(TypeStyle.heading)
+                .fixedSize(horizontal: false, vertical: true)
+              if !typeSize.isAccessibilitySize { summary(recipe) }
+              if onApply != nil {
+                Text("Apply look").font(TypeStyle.label).underline()
+              }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
           }
-          .font(.subheadline).foregroundStyle(Palette.amber).frame(minHeight: 44)
         }
-        .accessibilityLabel("Apply \(recipe.name)")
+        .buttonStyle(.plain)
+        .accessibilityLabel(onApply == nil ? "Edit \(recipe.name)" : "Apply \(recipe.name)")
+        RoundControl(symbol: "ellipsis", label: "Manage \(recipe.name)") { managing = recipe }
       }
+      if typeSize.isAccessibilitySize { summary(recipe) }
       Hairline()
     }
   }
 
-  private func recipeSummary(_ recipe: Recipe) -> some View {
+  private func summary(_ recipe: Recipe) -> some View {
     VStack(alignment: .leading, spacing: 6) {
       Text(
-        recipe.settings.film.title + " / "
-          + String(format: "%+.2f EV", recipe.settings.exposure)
-      )
-      .font(.system(.caption, design: .monospaced))
+        recipe.settings.film.title + " · " + String(format: "%+.2f EV", recipe.settings.exposure))
       Text(
         String(
-          format: "Contrast %.2f · Warmth %+.0f", recipe.settings.contrast,
-          recipe.settings.warmth * 100)
-      )
-      .font(.caption)
+          format: "%.2f contrast · %+.0f warmth", recipe.settings.contrast,
+          recipe.settings.warmth * 100))
     }
-    .foregroundStyle(Palette.muted).fixedSize(horizontal: false, vertical: true)
+    .font(TypeStyle.caption).foregroundStyle(Palette.muted)
+    .fixedSize(horizontal: false, vertical: true)
   }
 }

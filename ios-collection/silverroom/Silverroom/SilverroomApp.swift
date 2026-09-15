@@ -8,72 +8,199 @@ struct SilverroomApp: App {
     WindowGroup {
       LibraryView()
         .environmentObject(library)
+        .font(TypeStyle.body)
+        .fontDesign(.serif)
         .preferredColorScheme(.dark)
-        .tint(Palette.amber)
+        .tint(Palette.silver)
     }
   }
 }
 
 enum Palette {
   static let background = Color(red: 0.067, green: 0.071, blue: 0.071)
+  static let canvas = Color(red: 0.043, green: 0.047, blue: 0.047)
   static let panel = Color(red: 0.105, green: 0.11, blue: 0.11)
-  static let silver = Color(red: 0.90, green: 0.89, blue: 0.86)
-  static let muted = Color(red: 0.57, green: 0.58, blue: 0.56)
-  static let amber = Color(red: 0.86, green: 0.66, blue: 0.38)
-  static let line = Color.white.opacity(0.13)
+  static let silver = Color(red: 0.937, green: 0.933, blue: 0.914)
+  static let muted = Color(red: 0.643, green: 0.647, blue: 0.624)
+  static let amber = Color(red: 0.824, green: 0.69, blue: 0.486)
+  static let line = Color.white.opacity(0.12)
 }
 
-struct Eyebrow: View {
-  let text: String
-  var body: some View {
-    Text(text.uppercased())
-      .font(.system(.caption2, design: .monospaced))
-      .tracking(2)
-      .foregroundStyle(Palette.muted)
-  }
-}
-
-struct DarkroomMark: View {
-  var body: some View {
-    ZStack {
-      RoundedRectangle(cornerRadius: 4).stroke(Palette.amber, lineWidth: 1)
-      Circle().stroke(Palette.amber, lineWidth: 1).padding(7)
-      Rectangle().fill(Palette.amber).frame(width: 1).rotationEffect(.degrees(35)).padding(6)
-    }
-    .frame(width: 31, height: 35)
-    .accessibilityHidden(true)
-  }
+enum TypeStyle {
+  static let display = Font.custom("Georgia", size: 38, relativeTo: .largeTitle)
+  static let title = Font.custom("Georgia", size: 28, relativeTo: .title2)
+  static let heading = Font.system(.headline, design: .serif)
+  static let body = Font.system(.body, design: .serif)
+  static let label = Font.system(.subheadline, design: .serif)
+  static let caption = Font.system(.caption, design: .serif)
+  static let value = Font.system(.title2, design: .serif).monospacedDigit()
 }
 
 struct RoundControl: View {
   let symbol: String
   let label: String
   var action: () -> Void
+  @Environment(\.isEnabled) private var enabled
+
   var body: some View {
     Button(action: action) {
       Image(systemName: symbol)
-        .font(.system(size: 18, weight: .regular))
-        .frame(width: 46, height: 46)
-        .background(Palette.panel, in: Circle())
+        .font(.system(size: 18, weight: .regular, design: .serif))
+        .frame(width: 44, height: 44)
+        .contentShape(Rectangle())
     }
-    .foregroundStyle(Palette.silver)
+    .buttonStyle(.plain)
+    .foregroundStyle(enabled ? Palette.silver : Palette.muted.opacity(0.35))
     .accessibilityLabel(label)
   }
 }
 
-struct AmberButton: ButtonStyle {
+struct PrimaryButton: ButtonStyle {
+  @Environment(\.isEnabled) private var enabled
+
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .font(.system(.subheadline, weight: .semibold))
+      .font(TypeStyle.heading)
       .foregroundStyle(Palette.background)
       .padding(.horizontal, 22)
-      .frame(minHeight: 52)
+      .frame(minHeight: 54)
       .background(
-        Palette.amber.opacity(configuration.isPressed ? 0.7 : 1),
-        in: RoundedRectangle(cornerRadius: 7))
+        Palette.silver.opacity(enabled ? (configuration.isPressed ? 0.75 : 1) : 0.3),
+        in: RoundedRectangle(cornerRadius: 14))
   }
 }
 
 struct Hairline: View {
-  var body: some View { Rectangle().fill(Palette.line).frame(height: 1) }
+  var body: some View { Rectangle().fill(Palette.line).frame(height: 0.5) }
+}
+
+struct SheetHeader: View {
+  let title: String
+  var onClose: () -> Void
+
+  var body: some View {
+    HStack(spacing: 16) {
+      Text(title).font(TypeStyle.heading)
+        .frame(maxWidth: .infinity, alignment: .leading)
+      RoundControl(symbol: "xmark", label: "Close \(title)", action: onClose)
+    }
+    .foregroundStyle(Palette.silver)
+    .padding(.leading, 24).padding(.trailing, 12).padding(.top, 12)
+    .padding(.bottom, 8)
+    .background(Palette.background)
+  }
+}
+
+struct NoticeSheet: View {
+  @Environment(\.dismiss) private var dismiss
+  let title: String
+  let detail: String
+  let actionTitle: String
+  var action: () -> Void
+
+  var body: some View {
+    VStack(spacing: 0) {
+      SheetHeader(title: title) { dismiss() }
+      ScrollView {
+        VStack(alignment: .leading, spacing: 24) {
+          Text(detail).font(TypeStyle.body).foregroundStyle(Palette.muted)
+            .fixedSize(horizontal: false, vertical: true)
+          Button {
+            action()
+            dismiss()
+          } label: {
+            Text(actionTitle).frame(maxWidth: .infinity)
+          }
+          .buttonStyle(PrimaryButton())
+        }
+        .padding(24)
+      }
+    }
+    .background(Palette.background)
+    .presentationDetents([.medium, .large])
+    .presentationDragIndicator(.visible)
+  }
+}
+
+struct RecipeNameSheet: View {
+  @Environment(\.dismiss) private var dismiss
+  @FocusState private var focused: Bool
+  @State private var name: String
+  @State private var confirmingDelete = false
+  let title: String
+  var onSave: (String) -> Void
+  var onDelete: (() -> Void)?
+
+  init(
+    title: String, initialName: String, onSave: @escaping (String) -> Void,
+    onDelete: (() -> Void)? = nil
+  ) {
+    self.title = title
+    _name = State(initialValue: initialName)
+    self.onSave = onSave
+    self.onDelete = onDelete
+  }
+
+  var body: some View {
+    VStack(spacing: 0) {
+      SheetHeader(title: confirmingDelete ? "Delete recipe?" : title) { dismiss() }
+      ScrollView {
+        VStack(alignment: .leading, spacing: 24) {
+          if confirmingDelete, let onDelete {
+            Text("This removes the saved recipe. Photographs with this look keep their edits.")
+              .font(TypeStyle.body).foregroundStyle(Palette.muted)
+            Button {
+              onDelete()
+              dismiss()
+            } label: {
+              Text("Delete recipe").frame(maxWidth: .infinity)
+            }
+            .buttonStyle(PrimaryButton())
+            Button("Keep recipe") { confirmingDelete = false }
+              .font(TypeStyle.body).frame(maxWidth: .infinity, minHeight: 44)
+          } else {
+            VStack(alignment: .leading, spacing: 10) {
+              Text("Recipe name").font(TypeStyle.label).foregroundStyle(Palette.muted)
+              TextField("Name your look", text: $name)
+                .font(TypeStyle.title).tint(Palette.silver)
+                .padding(16).background(Palette.panel, in: RoundedRectangle(cornerRadius: 12))
+                .focused($focused).submitLabel(.done)
+                .onSubmit { save() }
+            }
+            Text(
+              "Saves the look, exposure, contrast and warmth. Crop and rotation stay with the photo."
+            )
+            .font(TypeStyle.label).foregroundStyle(Palette.muted)
+            Button {
+              save()
+            } label: {
+              Text("Save recipe").frame(maxWidth: .infinity)
+            }
+            .buttonStyle(PrimaryButton()).disabled(trimmedName.isEmpty)
+            if onDelete != nil {
+              Button("Delete recipe") {
+                focused = false
+                confirmingDelete = true
+              }
+              .font(TypeStyle.label).foregroundStyle(Palette.muted)
+              .frame(maxWidth: .infinity, minHeight: 44)
+            }
+          }
+        }
+        .padding(24)
+      }
+    }
+    .foregroundStyle(Palette.silver)
+    .background(Palette.background)
+    .presentationDetents([.large])
+    .presentationDragIndicator(.visible)
+  }
+
+  private var trimmedName: String { name.trimmingCharacters(in: .whitespacesAndNewlines) }
+
+  private func save() {
+    guard !trimmedName.isEmpty else { return }
+    onSave(trimmedName)
+    dismiss()
+  }
 }

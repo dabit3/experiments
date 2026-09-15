@@ -12,6 +12,9 @@ backend, or API keys.
 - Five carefully composed looks: Original, Silver, Noir, Dune, and Faded.
   Each filmstrip thumbnail previews the active photograph.
 - Exposure (−2…+2 EV), contrast (0.5…1.5), and warmth (−100…+100).
+- Undo and redo, including grouped slider gestures, recipes, framing and reset.
+- A fixed photo workspace with Georgia and New York serif typography throughout
+  the app's own interface, including forms and confirmation sheets.
 - Hold to compare with the unedited original; VoiceOver can toggle comparison.
 - Clockwise rotation, centered square crop, original ratio, and confirmed reset.
 - Save, apply, rename, and delete editing recipes. A recipe includes the look
@@ -60,12 +63,16 @@ xcrun swift Scripts/GenerateIcon.swift Silverroom/Assets.xcassets/AppIcon.appico
 Tap a contact-sheet frame to edit it. Changes save automatically; Back returns
 to the library. **Looks** changes the film, **Adjust** exposes the three sliders,
 and **Frame** rotates or crops. Hold the comparison row to see the original.
-Holding the photograph also compares. Each adjustment has a **Neutral** reset.
-At accessibility text sizes, the adjustment selector becomes a menu and frame
-and recipe actions stack vertically; the darkroom toolbar remains fixed.
-The bookmark opens recipes; **Save recipe** names the current settings.
+Holding the photograph also compares. Each adjustment has a **Reset value** action.
+Undo/redo sits below the photo; a complete slider drag counts as one edit.
+History holds the last 100 edits in the current editor session. Applied settings
+persist across relaunch, while undo history does not.
+At accessibility text sizes, the workspace scrolls and selectors scroll
+horizontally; the toolbar remains fixed.
+The **Recipes** tab saves a new recipe or opens saved looks.
 Recipe previews include all saved adjustment values; deletion requires confirmation.
-Long-press an imported photograph in the library to remove its local copy.
+Tap the minus beside an imported photograph to confirm removal of its local copy.
+Export previews and dimensions are read from the actual rendered JPEG.
 
 The pipeline applies EXIF orientation once, then exposure, temperature, film
 saturation/contrast, tone curve, rotation, and centered crop. Parameters clamp
@@ -88,3 +95,5 @@ deletes this local library; there is no sync or account recovery.
   and App Store submission are not part of this build.
 - Original imports and generated exports consume local storage. Exports remain
   in the app sandbox; V1 does not include automatic export-cache cleanup.
+- Apple's Photos picker, keyboard and native share sheet retain system typography.
+  All app-owned labels, numbers, forms and sheets use serif fonts.

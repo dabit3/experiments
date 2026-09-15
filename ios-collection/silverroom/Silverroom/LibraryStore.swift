@@ -113,6 +113,7 @@ final class LibraryStore: ObservableObject {
 @MainActor
 final class Darkroom: ObservableObject {
   @Published var settings: EditSettings
+  @Published private var history = EditHistory()
   @Published var preview: UIImage?
   @Published var original: UIImage?
   @Published var films: [Film: UIImage] = [:]
@@ -124,6 +125,33 @@ final class Darkroom: ObservableObject {
   private var revision = 0
 
   init(settings: EditSettings) { self.settings = settings.normalized }
+
+  var canUndo: Bool { !history.undoStack.isEmpty }
+  var canRedo: Bool { !history.redoStack.isEmpty }
+
+  func edit(_ change: (inout EditSettings) -> Void) {
+    var next = settings
+    change(&next)
+    next = next.normalized
+    history.record(from: settings, to: next)
+    settings = next
+  }
+
+  func setAdjusting(_ active: Bool) {
+    if active {
+      history.beginGesture(at: settings)
+    } else {
+      history.endGesture(at: settings)
+    }
+  }
+
+  func undo() {
+    if let previous = history.undo(settings) { settings = previous }
+  }
+
+  func redo() {
+    if let next = history.redo(settings) { settings = next }
+  }
 
   func load(data: Data) async {
     bytes = data
@@ -192,6 +220,6 @@ final class Darkroom: ObservableObject {
     var applied = recipe.settings.recipe
     applied.quarterTurns = settings.quarterTurns
     applied.squareCrop = settings.squareCrop
-    settings = applied
+    edit { $0 = applied }
   }
 }

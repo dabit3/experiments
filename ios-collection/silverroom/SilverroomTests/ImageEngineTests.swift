@@ -158,3 +158,77 @@ final class ImageEngineTests: XCTestCase {
     XCTAssertEqual(restored.recipes[0].name, "Summer")
   }
 }
+
+final class EditHistoryTests: XCTestCase {
+  func testSliderGestureUndoesAsOneEditAndRedoesFinalValue() {
+    var history = EditHistory()
+    let original = EditSettings(film: .noir)
+    var current = original
+    history.beginGesture(at: original)
+    for value in stride(from: 0.05, through: 1.0, by: 0.05) {
+      var next = current
+      next.exposure = value
+      history.record(from: current, to: next)
+      current = next
+    }
+    XCTAssertTrue(history.undoStack.isEmpty)
+    history.endGesture(at: current)
+    XCTAssertEqual(history.undoStack.count, 1)
+    XCTAssertEqual(history.undo(current), original)
+    XCTAssertEqual(history.redo(original), current)
+  }
+
+  func testNoOpGestureKeepsRedoAvailable() {
+    var history = EditHistory()
+    let original = EditSettings()
+    let edited = EditSettings(film: .dune)
+    history.record(from: original, to: edited)
+    XCTAssertEqual(history.undo(edited), original)
+    history.beginGesture(at: original)
+    history.endGesture(at: original)
+    XCTAssertEqual(history.redo(original), edited)
+  }
+
+  func testNewEditAfterUndoInvalidatesRedo() {
+    var history = EditHistory()
+    let original = EditSettings()
+    let edited = EditSettings(film: .silver)
+    history.record(from: original, to: edited)
+    XCTAssertEqual(history.undo(edited), original)
+    history.record(from: original, to: EditSettings(warmth: 0.5))
+    XCTAssertNil(history.redo(EditSettings(warmth: 0.5)))
+  }
+
+  func testHistoryIsBoundedAndEmptyOperationsAreSafe() {
+    var history = EditHistory()
+    XCTAssertNil(history.undo(EditSettings()))
+    XCTAssertNil(history.redo(EditSettings()))
+    for index in 0..<150 {
+      let previous = EditSettings(exposure: Double(index % 20) / 10)
+      let next = EditSettings(exposure: Double((index + 1) % 20) / 10)
+      history.record(from: previous, to: next)
+    }
+    XCTAssertEqual(history.undoStack.count, 100)
+  }
+
+  @MainActor
+  func testRecipeAndResetCanBeUndoneWithoutLosingFraming() {
+    let original = EditSettings(film: .noir, quarterTurns: 1, squareCrop: true)
+    let room = Darkroom(settings: original)
+    room.apply(Recipe(name: "Warm", settings: EditSettings(film: .dune, exposure: 0.5)))
+    let applied = room.settings
+    XCTAssertEqual(applied.quarterTurns, 1)
+    XCTAssertTrue(applied.squareCrop)
+    XCTAssertEqual(applied.film, .dune)
+    room.edit { $0 = EditSettings() }
+    room.undo()
+    XCTAssertEqual(room.settings, applied)
+    room.undo()
+    XCTAssertEqual(room.settings, original)
+    room.redo()
+    XCTAssertEqual(room.settings, applied)
+    XCTAssertTrue(room.canRedo)
+    room.edit { $0.warmth = 0.3 }
+    XCTAssertFalse(room.canRedo)
+  }
+}
