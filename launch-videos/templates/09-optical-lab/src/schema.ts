@@ -50,6 +50,16 @@ export const mediaSlotSchema = z.object({
   startFrom: z.number().int().min(0).optional().describe("Video start offset in frames"),
   crop: fractionRectSchema.optional(),
   playbackRate: z.number().positive().optional(),
+  highlight: z
+    .object({
+      rect: fractionRectSchema,
+      color: zColor().optional(),
+      radius: z.number().min(0).optional(),
+    })
+    .optional()
+    .describe(
+      "Editorial hover/selection tint multiplied over a region of the media (fractions of the full frame). Text and icons underneath stay untouched.",
+    ),
 });
 
 export const mediaSchema = z.record(mediaSlotSchema);
@@ -95,6 +105,9 @@ export const layoutSchema = z.object({
   stageRadius: z.number(),
   windowRadius: z.number(),
   windowBorder: z.number().describe("Outline thickness of the inspection window in px"),
+  logoHeight: z.number().describe("Height of the margin lockup in px"),
+  outroLogoHeight: z.number().describe("Height of the outro lockup in px"),
+  showSceneCounter: z.boolean().describe("Show a 01 / 06 counter above each caption"),
   showMagnification: z
     .boolean()
     .describe("Show the real magnification factor (e.g. 2.1x) next to the inspection label"),

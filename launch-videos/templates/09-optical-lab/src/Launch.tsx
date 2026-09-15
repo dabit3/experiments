@@ -31,7 +31,7 @@ const LicensedFontFace: React.FC = () => (
 );
 
 const Outro: React.FC<{ props: LaunchProps; frame: number }> = ({ props, frame }) => {
-  const { brand, content } = props;
+  const { brand, content, layout } = props;
   const a = easeOut(frame, 0, 15);
   const b = easeOut(frame, 8, 15);
   const c = easeOut(frame, 16, 15);
@@ -47,7 +47,7 @@ const Outro: React.FC<{ props: LaunchProps; frame: number }> = ({ props, frame }
     >
       <Img
         src={staticFile(brand.logoLight)}
-        style={{ height: 48, opacity: a, transform: `translateY(${(1 - a) * 12}px)` }}
+        style={{ height: layout.outroLogoHeight, opacity: a, transform: `translateY(${(1 - a) * 12}px)` }}
       />
       <div
         style={{
@@ -210,6 +210,7 @@ export const Launch: React.FC<LaunchProps> = (props) => {
         content={content}
         column={column}
         logoSrc={staticFile(brand.logoLight)}
+        logoHeight={layout.logoHeight}
         safeMargin={layout.safeMargin}
         opacity={chromeOpacity}
       />

@@ -142,9 +142,11 @@ export const CaptionBlock: React.FC<{
       transform: `translateY(${rise}px)`,
     }}
   >
-    <div style={{ ...type.eyebrow(brand), opacity: captionOpacity }}>
-      {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-    </div>
+    {layout.showSceneCounter ? (
+      <div style={{ ...type.eyebrow(brand), opacity: captionOpacity }}>
+        {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+      </div>
+    ) : null}
     <div style={{ ...type.caption(brand), opacity: captionOpacity }}>{caption}</div>
     {label ? (
       <div
@@ -185,9 +187,10 @@ export const MarginChrome: React.FC<{
   content: Content;
   column: Column;
   logoSrc: string;
+  logoHeight: number;
   safeMargin: number;
   opacity: number;
-}> = ({ brand, content, column, logoSrc, safeMargin, opacity }) => (
+}> = ({ brand, content, column, logoSrc, logoHeight, safeMargin, opacity }) => (
   <>
     <Img
       src={logoSrc}
@@ -195,7 +198,7 @@ export const MarginChrome: React.FC<{
         position: "absolute",
         left: column.x,
         top: safeMargin,
-        height: 28,
+        height: logoHeight,
         opacity,
       }}
     />

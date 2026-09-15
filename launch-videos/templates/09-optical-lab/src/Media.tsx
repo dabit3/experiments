@@ -13,6 +13,8 @@ type Props = {
   /** Translation, in output pixels, applied after zooming. */
   offsetX?: number;
   offsetY?: number;
+  /** Fallback tint for `slot.highlight` when it has no color of its own. */
+  highlightColor?: string;
 };
 
 /**
@@ -27,6 +29,7 @@ export const Media: React.FC<Props> = ({
   zoom = 1,
   offsetX = 0,
   offsetY = 0,
+  highlightColor = "#EFEFEF",
 }) => {
   const crop = slot.crop ?? FULL_CROP;
   const boxW = width * zoom;
@@ -63,6 +66,21 @@ export const Media: React.FC<Props> = ({
       ) : (
         <Img src={staticFile(slot.src)} style={style} />
       )}
+      {slot.highlight ? (
+        <div
+          style={{
+            position: "absolute",
+            left: (slot.highlight.rect.x - crop.x) * fullW,
+            top: (slot.highlight.rect.y - crop.y) * fullH,
+            width: slot.highlight.rect.w * fullW,
+            height: slot.highlight.rect.h * fullH,
+            borderRadius: (slot.highlight.radius ?? 0.004) * fullW,
+            background: slot.highlight.color ?? highlightColor,
+            mixBlendMode: "multiply",
+            pointerEvents: "none",
+          }}
+        />
+      ) : null}
     </div>
   );
 };

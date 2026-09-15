@@ -52,7 +52,7 @@ export const Stage: React.FC<Props> = ({
         boxShadow: `0 0 0 1px ${brand.line}, 0 4px 8px rgba(0,0,0,.22), 0 1px 1.5px rgba(0,0,0,.14)`,
       }}
     >
-      <Media slot={slot} width={stage.w} height={stage.h} />
+      <Media slot={slot} width={stage.w} height={stage.h} highlightColor={brand.surface} />
 
       {lens && line ? (
         <>
@@ -113,6 +113,7 @@ export const Stage: React.FC<Props> = ({
               zoom={lens.zoom}
               offsetX={-lens.focus.x * lens.zoom}
               offsetY={-lens.focus.y * lens.zoom}
+              highlightColor={brand.surface}
             />
           </div>
         </>
