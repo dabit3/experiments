@@ -24,7 +24,7 @@ struct TerrainCanvas: UIViewRepresentable {
 
   func makeUIView(context: Context) -> SCNView {
     let view = SCNView()
-    view.backgroundColor = UIColor(red: 0.947, green: 0.941, blue: 0.909, alpha: 1)
+    view.backgroundColor = UIColor(red: 0.935, green: 0.935, blue: 0.910, alpha: 1)
     view.antialiasingMode = .multisampling4X
     view.preferredFramesPerSecond = 30
     view.autoenablesDefaultLighting = false
@@ -66,24 +66,24 @@ struct TerrainCanvas: UIViewRepresentable {
       scene.rootNode.addChildNode(terrainNode)
       terrainNode.name = "terrain"
       scene.rootNode.addChildNode(skirtNode)
-      let base = SCNBox(width: 10.16, height: 0.42, length: 10.16, chamferRadius: 0.07)
-      base.firstMaterial?.diffuse.contents = UIColor(red: 0.43, green: 0.40, blue: 0.32, alpha: 1)
+      let base = SCNBox(width: 10.16, height: 0.22, length: 10.16, chamferRadius: 0.035)
+      base.firstMaterial?.diffuse.contents = UIColor(red: 0.28, green: 0.32, blue: 0.28, alpha: 1)
       let baseNode = SCNNode(geometry: base)
-      baseNode.position.y = -0.23
+      baseNode.position.y = -0.13
       scene.rootNode.addChildNode(baseNode)
 
       let floor = SCNFloor()
       floor.reflectivity = 0
       floor.firstMaterial?.diffuse.contents = UIColor(
-        red: 0.947, green: 0.941, blue: 0.909, alpha: 1)
+        red: 0.935, green: 0.935, blue: 0.910, alpha: 1)
       floor.firstMaterial?.lightingModel = .constant
       let floorNode = SCNNode(geometry: floor)
-      floorNode.position.y = -0.46
+      floorNode.position.y = -0.26
       scene.rootNode.addChildNode(floorNode)
 
       let shadowImage = UIGraphicsImageRenderer(size: CGSize(width: 256, height: 256)).image {
         context in
-        let colors = [UIColor.black.withAlphaComponent(0.2).cgColor, UIColor.clear.cgColor]
+        let colors = [UIColor.black.withAlphaComponent(0.16).cgColor, UIColor.clear.cgColor]
         if let gradient = CGGradient(
           colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: colors as CFArray, locations: [0, 1])
         {
@@ -98,24 +98,17 @@ struct TerrainCanvas: UIViewRepresentable {
       shadow.firstMaterial?.writesToDepthBuffer = false
       let shadowNode = SCNNode(geometry: shadow)
       shadowNode.eulerAngles.x = -.pi / 2
-      shadowNode.position = SCNVector3(0.35, -0.45, 0.35)
+      shadowNode.position = SCNVector3(0.35, -0.25, 0.35)
       scene.rootNode.addChildNode(shadowNode)
 
       let water = SCNBox(width: 10.02, height: 0.035, length: 10.02, chamferRadius: 0)
       let waterMaterial = SCNMaterial()
-      waterMaterial.diffuse.contents = UIColor(red: 0.27, green: 0.66, blue: 0.66, alpha: 1)
+      waterMaterial.diffuse.contents = UIColor(red: 0.40, green: 0.62, blue: 0.61, alpha: 1)
       waterMaterial.metalness.contents = 0.12
       waterMaterial.roughness.contents = 0.28
       waterMaterial.lightingModel = .constant
-      waterMaterial.shaderModifiers = [
-        .surface: """
-        float ripples = sin(_surface.position.x * 34.0 + _surface.position.z * 21.0)
-            * sin(_surface.position.z * 38.0) * 0.006;
-        _surface.diffuse.rgb += float3(ripples);
-        """
-      ]
       let waterSide = SCNMaterial()
-      waterSide.diffuse.contents = UIColor(red: 0.20, green: 0.53, blue: 0.53, alpha: 1)
+      waterSide.diffuse.contents = UIColor(red: 0.29, green: 0.49, blue: 0.48, alpha: 1)
       waterSide.lightingModel = .constant
       water.materials = [waterSide, waterSide, waterSide, waterSide, waterMaterial, waterSide]
       waterNode.geometry = water
@@ -190,7 +183,7 @@ struct TerrainCanvas: UIViewRepresentable {
       cameraNode.look(
         at: SCNVector3(0, 0.5, 0), up: SCNVector3(0, 1, 0),
         localFront: SCNVector3(0, 0, -1))
-      cameraNode.camera?.orthographicScale = Double(8.0 / model.zoom)
+      cameraNode.camera?.orthographicScale = Double(7.4 / model.zoom)
     }
 
     func rebuildMesh() {
@@ -267,17 +260,17 @@ struct TerrainCanvas: UIViewRepresentable {
       let skirt = SCNGeometry(
         sources: [SCNGeometrySource(vertices: skirtVertices)],
         elements: [SCNGeometryElement(indices: skirtIndices, primitiveType: .triangles)])
-      skirt.firstMaterial?.diffuse.contents = UIColor(red: 0.39, green: 0.36, blue: 0.25, alpha: 1)
+      skirt.firstMaterial?.diffuse.contents = UIColor(red: 0.45, green: 0.44, blue: 0.35, alpha: 1)
       skirt.firstMaterial?.isDoubleSided = true
       skirtNode.geometry = skirt
     }
 
     func terrainColor(_ height: Float, slope: Float, water: Float) -> [Float] {
-      let sand: [Float] = [0.77, 0.73, 0.49, 1]
-      let moss: [Float] = [0.35, 0.47, 0.25, 1]
-      let forest: [Float] = [0.19, 0.34, 0.23, 1]
-      let stone: [Float] = [0.58, 0.60, 0.55, 1]
-      let snow: [Float] = [0.90, 0.90, 0.84, 1]
+      let sand: [Float] = [0.79, 0.77, 0.61, 1]
+      let moss: [Float] = [0.40, 0.49, 0.30, 1]
+      let forest: [Float] = [0.23, 0.35, 0.27, 1]
+      let stone: [Float] = [0.64, 0.65, 0.59, 1]
+      let snow: [Float] = [0.91, 0.91, 0.86, 1]
       if height < water + 0.045 { return sand }
       if height > 0.80 { return mix(stone, snow, min(1, (height - 0.80) * 5)) }
       if height > 0.56 || slope > 0.25 {

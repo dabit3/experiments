@@ -6,6 +6,18 @@ workspace; SceneKit renders an actual editable 81 × 81 heightfield, with calcul
 height/slope colors, shadows and contour shading. All sample artwork is generated locally
 from the same deterministic terrain engine. No network, accounts or third-party packages.
 
+## Workspace design
+
+The interface uses the native Georgia serif family throughout, including controls, values,
+library, export and guide panels. A warm mineral palette, fine rules and flat selection
+indicators keep the editable landscape prominent. The scene uses matte teal water, limestone
+and moss surface colors, a thin graphite plinth and soft contact shadows.
+
+Tool selection is marked by both a checkmark and a leading rule. View scale, elevation range,
+mesh resolution and storage scope are explicit. Buttons have at least 44-point targets;
+the tool inspector and sheets scroll when space is limited. Apple-owned alerts and share
+sheets retain their platform typography.
+
 ## Prerequisites
 
 - Native macOS with full Xcode 26.6 (verified with Swift 6.3.3).
@@ -42,12 +54,13 @@ Any supplied app zip is **Simulator-only**, not an installable iPhone/iPad or Ap
 6. Switch between **Natural** and **Contours**. Contours use 50 illustrative metre intervals.
 7. **Undo** / **Redo** restore whole strokes, water adjustments, presets and reopened snapshots.
    Up to 30 transactions are retained in memory. Starting a new edit clears redo history.
-8. **Save** (also Command-S) stores a snapshot. **My landscapes** reopens any saved snapshot.
+8. **Save snapshot** (Command-S) stores a version. **Library** reopens any saved snapshot.
+   Command-Z and Shift-Command-Z trigger Undo and Redo.
 9. **Export** creates a real OBJ triangle mesh or a PNG from the current rendered scene.
    **Share or Save to Files** opens the native share workflow.
 10. Terminate and relaunch: the current terrain and waterline restore automatically.
 
-The field guide in the sidebar also documents these controls. Brush selection and viewport
+The Studio guide in the sidebar also documents these controls. Brush selection and viewport
 are session preferences; terrain, waterline and saved snapshots survive relaunch.
 
 ## Persistence and exports

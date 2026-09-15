@@ -14,7 +14,7 @@ final class StudioModel: ObservableObject {
   @Published var contours = false
   @Published var history = TerrainHistory()
   @Published var saved: [SavedWorld] = []
-  @Published var status = "Your island, your imagination."
+  @Published var status = "Alpine island ready"
   @Published var error: String?
   @Published var revision = 0
   @Published var homeRevision = 0
@@ -32,7 +32,7 @@ final class StudioModel: ObservableObject {
         let restored = try JSONDecoder().decode(Terrain.self, from: Data(contentsOf: autosaveURL))
         guard restored.isValid else { throw CocoaError(.fileReadCorruptFile) }
         terrain = restored
-        status = "Welcome back. Your landscape is restored."
+        status = "Current landscape restored"
       }
       if FileManager.default.fileExists(atPath: libraryURL.path) {
         saved = try JSONDecoder().decode([SavedWorld].self, from: Data(contentsOf: libraryURL))
@@ -62,7 +62,7 @@ final class StudioModel: ObservableObject {
   func sculpt(x: Float, z: Float) {
     terrain.apply(brush, x: x, z: z, radius: radius, strength: strength)
     revision += 1
-    status = "\(brush.rawValue) brush · one stroke, one undo"
+    status = "\(brush.rawValue) stroke applied"
   }
 
   func setWater(_ value: Float) {
@@ -122,7 +122,7 @@ final class StudioModel: ObservableObject {
       try JSONEncoder().encode(next).write(to: libraryURL, options: .atomic)
       saved = next
       persist()
-      status = "Snapshot saved to My landscapes"
+      status = "Snapshot saved to Library"
     } catch {
       self.error = "Could not save snapshot: \(error.localizedDescription)"
     }
