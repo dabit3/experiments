@@ -17,10 +17,15 @@ npx remotion studio                       # live preview
 npx tsc --noEmit                          # typecheck
 ```
 
-Contact sheet of 10 evenly spaced frames (requires ffmpeg):
+Contact sheet of 10 evenly spaced frames, cropped to the 2.39:1 picture area (requires ffmpeg):
 
 ```sh
-ffmpeg -y -i out/video.mp4 -vf "select='not(mod(n\,150))',scale=640:-1,tile=2x5" -frames:v 1 out/contact-sheet.png
+mkdir -p out/frames
+for n in 60 210 360 510 660 810 960 1110 1260 1350; do
+  ffmpeg -v error -y -i out/video.mp4 -vf "select=eq(n\,$n)" -frames:v 1 out/frames/frame-$(printf %04d $n).png
+done
+ffmpeg -y -pattern_type glob -i 'out/frames/frame-*.png' \
+  -vf "crop=1920:803:0:138,scale=640:-1,tile=2x5:padding=8:margin=8:color=black" -frames:v 1 out/contact-sheet.png
 ```
 
 ## Structure
