@@ -67,6 +67,61 @@ struct Negative: Codable, Identifiable, Equatable {
   var settings = EditSettings()
 }
 
+struct SliderScale {
+  let range: ClosedRange<Double>
+  var step: Double = 0.05
+
+  func value(at fraction: Double) -> Double {
+    let fraction = fraction.isFinite ? min(1, max(0, fraction)) : 0
+    let distance = fraction * (range.upperBound - range.lowerBound)
+    let value = range.lowerBound + (distance / step).rounded() * step
+    return min(range.upperBound, max(range.lowerBound, value))
+  }
+
+  func fraction(for value: Double) -> Double {
+    guard value.isFinite, range.upperBound > range.lowerBound else { return 0 }
+    return min(1, max(0, (value - range.lowerBound) / (range.upperBound - range.lowerBound)))
+  }
+}
+
+struct EditHistory {
+  private(set) var undoStack: [EditSettings] = []
+  private(set) var redoStack: [EditSettings] = []
+  private var gestureStart: EditSettings?
+  private let limit = 100
+
+  mutating func beginGesture(at settings: EditSettings) {
+    if gestureStart == nil { gestureStart = settings }
+  }
+
+  mutating func endGesture(at settings: EditSettings) {
+    guard let start = gestureStart else { return }
+    gestureStart = nil
+    record(from: start, to: settings)
+  }
+
+  mutating func record(from previous: EditSettings, to next: EditSettings) {
+    guard gestureStart == nil, previous != next else { return }
+    undoStack.append(previous)
+    if undoStack.count > limit { undoStack.removeFirst() }
+    redoStack.removeAll()
+  }
+
+  mutating func undo(_ current: EditSettings) -> EditSettings? {
+    endGesture(at: current)
+    guard let previous = undoStack.popLast() else { return nil }
+    redoStack.append(current)
+    return previous
+  }
+
+  mutating func redo(_ current: EditSettings) -> EditSettings? {
+    endGesture(at: current)
+    guard let next = redoStack.popLast() else { return nil }
+    undoStack.append(current)
+    return next
+  }
+}
+
 struct Recipe: Codable, Identifiable, Equatable {
   var id = UUID()
   var name: String
