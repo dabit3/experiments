@@ -58,7 +58,7 @@ or still. Partial configuration objects are not merged.
 - `motion.iphoneSplit`: fraction of the iPhone scene given to the first still,
   default 0.5. Use at least two frames to show both; use several seconds each
   for readable reports.
-- `editorial`: index labels and explicit still/recording/montage descriptions.
+- `editorial`: rail labels and explicit still/recording/montage descriptions.
 
 The `controls` descriptor lists the main editable fields for gallery discovery.
 All config fields remain editable through typed source or full JSON props.
@@ -118,6 +118,9 @@ Validated on 2026-09-15:
 - Inspected rendered title, masked transitions, hosted menu, agent menu,
   both iPhone stills, web QA, iPad and CTA. Settled captions fit their rails;
   report counts and the persistent web QA label remain visible.
+- Re-rendered the full sample after removing the repeated feature header and
+  top-right labels. Lint, typecheck, direction tests, build and full video decode
+  passed; the refreshed poster and contact sheet confirm the clear header.
 - The delivered poster is decoded frame 450. The contact sheet contains
   decoded frames 45, 128, 180, 330, 450, 525, 600, 750, 870, 888, 960 and 1140
   from the actual default MP4. Frames 128 and 870 deliberately show reveals

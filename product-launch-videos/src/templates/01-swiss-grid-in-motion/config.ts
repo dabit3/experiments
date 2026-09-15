@@ -23,8 +23,6 @@ export type SwissConfig = LaunchConfig & {
   editorial: {
     openingRail: string;
     closingRail: string;
-    openingIndex: string;
-    closingIndex: string;
     montageLabel: string;
     environmentLabel: string;
     agentLabel: string;
@@ -82,8 +80,6 @@ export const config: SwissConfig = {
   editorial: {
     openingRail: '01',
     closingRail: 'Mac',
-    openingIndex: 'Launch / Mac',
-    closingIndex: 'Devin on Mac',
     montageLabel: 'Examples from separate sessions',
     environmentLabel: 'Hosted environment · Source still',
     agentLabel: 'Agent selection · Recording · 1×',

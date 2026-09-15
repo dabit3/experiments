@@ -33,7 +33,7 @@ const TypeMask = ({children, amount, travel, style}: {
 const Rule = ({color, ...style}: CSSProperties & {color: string}) =>
   <div style={{position: 'absolute', backgroundColor: color, ...style}} />;
 
-const PageGrid = ({config, title, children}: Props & {title: string; children: ReactNode}) => {
+const PageGrid = ({config, children}: Props & {children: ReactNode}) => {
   const {margin, gutter, grid} = config.layout;
   const {height} = useVideoConfig();
   const left = margin + grid.railWidth + gutter;
@@ -42,13 +42,6 @@ const PageGrid = ({config, title, children}: Props & {title: string; children: R
     <div style={{position: 'absolute', left: margin - 8, top: margin - 9}}>
       <SourceImage {...config.media.logo} width={164} height={56} />
     </div>
-    <div style={{
-      position: 'absolute', left, top: margin + 2, ...labelStyle(config),
-    }}>{config.copy.featureName}</div>
-    <div style={{
-      position: 'absolute', right: margin, top: margin + 2,
-      ...labelStyle(config), color: config.brand.colors.secondaryInk,
-    }}>{title}</div>
     <Rule {...hairline} left={margin} right={margin}
       top={margin + grid.headerHeight - 34} height={grid.ruleWidth} />
     <Rule {...hairline} left={left - gutter / 2}
@@ -76,7 +69,7 @@ const Opening = ({config, duration}: Props & {duration: number}) => {
   const panel = revealAmount(frame, config.motion.panelRevealFrames, duration);
   const {typography, colors, spacing} = config.brand;
   const headingSize = typography.headingSize * Math.min(1, 28 / config.copy.opening.length);
-  return <PageGrid config={config} title={config.editorial.openingIndex}>
+  return <PageGrid config={config}>
     <div style={{
       position: 'absolute', left: margin, top: grid.titleTop + 7,
       fontSize: 104, lineHeight: 1, letterSpacing: typography.headingTracking,
@@ -145,7 +138,7 @@ const ProductScene = ({config, scene}: Props & {scene: SceneTiming & {id: Produc
     return Math.min(typography.bodySize, typography.bodySize * captionWidth / widestWord,
       config.layout.captionHeight / (Math.max(1, Math.ceil(caption.length / 9)) * typography.bodyLineHeight));
   }, [caption, captionWidth, config.layout.captionHeight, typography]);
-  return <PageGrid config={config} title={`${String(index + 1).padStart(2, '0')} / 05`}>
+  return <PageGrid config={config}>
     <div style={{
       position: 'absolute', left: margin, top: top + 8,
       fontSize: typography.headingSize * 0.73, lineHeight: 1,
@@ -185,7 +178,7 @@ const Closing = ({config, duration}: Props & {duration: number}) => {
   const left = margin + grid.railWidth + gutter;
   const amount = revealAmount(frame + 4, config.motion.typeRevealFrames, duration);
   const panel = revealAmount(frame, config.motion.panelRevealFrames, duration);
-  return <PageGrid config={config} title={config.editorial.closingIndex}>
+  return <PageGrid config={config}>
     <div style={{
       position: 'absolute', left: margin, top: grid.titleTop + 7,
       fontSize: 104, lineHeight: 1, letterSpacing: typography.headingTracking,
