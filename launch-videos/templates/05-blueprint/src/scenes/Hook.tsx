@@ -43,7 +43,7 @@ export const Hook: React.FC = () => {
         />
       </svg>
       <div style={{ position: "absolute", left: MARGIN, top: baseline + 48, opacity: useEnter(40) }}>
-        <Label color={bp.textFaint} size={15}>
+        <Label color={bp.textFaint} size={18}>
           Writes and tests code for Mac and iOS apps
         </Label>
       </div>

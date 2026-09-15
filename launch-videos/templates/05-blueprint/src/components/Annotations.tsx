@@ -26,7 +26,7 @@ export const Dimension: React.FC<DimProps> = ({ x1, y1, x2, y2, label, progress,
   const textOpacity = Math.max(0, (progress - 0.6) / 0.4);
   const labelStyle: React.CSSProperties = {
     fontFamily: FONT_MONO,
-    fontSize: 15,
+    fontSize: 17,
     letterSpacing: type.tracking.caps,
     textTransform: "uppercase",
     fill: bp.textDim,
@@ -70,7 +70,7 @@ type LeaderProps = {
 
 /** Leader annotation: dot on the target, elbow line, short horizontal shelf, label. */
 export const Leader: React.FC<LeaderProps> = ({ tx, ty, lx, ly, side, label, sub, progress }) => {
-  const shelf = 120;
+  const shelf = 140;
   const ex = side === "right" ? lx + shelf : lx - shelf;
   const d = `M${tx},${ty} L${lx},${ly} L${ex},${ly}`;
   const textOpacity = Math.max(0, (progress - 0.7) / 0.3);
@@ -83,11 +83,11 @@ export const Leader: React.FC<LeaderProps> = ({ tx, ty, lx, ly, side, label, sub
       <DrawPath d={d} progress={progress} width={1.25} />
       <text
         x={textX}
-        y={ly - 10}
+        y={ly - 12}
         textAnchor={anchor}
         style={{
           fontFamily: FONT_MONO,
-          fontSize: type.sizes1080p.label,
+          fontSize: 20,
           fontWeight: 500,
           letterSpacing: type.tracking.caps,
           textTransform: "uppercase",
@@ -100,11 +100,11 @@ export const Leader: React.FC<LeaderProps> = ({ tx, ty, lx, ly, side, label, sub
       {sub ? (
         <text
           x={textX}
-          y={ly + 22}
+          y={ly + 24}
           textAnchor={anchor}
           style={{
             fontFamily: FONT_MONO,
-            fontSize: 15,
+            fontSize: 17,
             letterSpacing: type.tracking.caps,
             textTransform: "uppercase",
             fill: bp.textDim,

@@ -56,7 +56,7 @@ export const Outcome: React.FC = () => {
         const y = TOP + i * ROW_H;
         return (
           <div key={r.key} style={{ position: "absolute", left: MARGIN, top: y, width: TABLE_W, height: ROW_H, opacity: o }}>
-            <div style={{ position: "absolute", left: 0, top: 38, display: "flex", gap: 20, alignItems: "baseline" }}>
+            <div style={{ position: "absolute", left: 0, top: 37, display: "flex", gap: 20, alignItems: "baseline" }}>
               <Label color={bp.line} style={{ fontWeight: 500 }}>
                 {r.key}
               </Label>
@@ -66,10 +66,10 @@ export const Outcome: React.FC = () => {
               style={{
                 position: "absolute",
                 left: 340,
-                top: 28,
+                top: 25,
                 fontFamily: FONT_SANS,
                 fontWeight: 500,
-                fontSize: type.sizes1080p.h3,
+                fontSize: 46,
                 lineHeight: 1,
                 letterSpacing: type.tracking.heading,
                 color: bp.text,

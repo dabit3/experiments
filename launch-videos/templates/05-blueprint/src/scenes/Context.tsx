@@ -58,6 +58,8 @@ export const Context: React.FC = () => {
         />
       </svg>
       <Narration
+        size={56}
+        maxWidth={1160}
         lines={[
           { text: "Before: QA by hand, or a 20+ minute CI wait.", at: 6 },
           { text: "No agent could tap through an iPhone app.", at: 96 },

@@ -49,7 +49,7 @@ export const End: React.FC = () => {
           textAlign: "center",
           fontFamily: FONT_SANS,
           fontWeight: 500,
-          fontSize: type.sizes1080p.h3,
+          fontSize: 46,
           letterSpacing: type.tracking.heading,
           color: bp.text,
           opacity: line,
@@ -58,7 +58,7 @@ export const End: React.FC = () => {
       >
         Build, run and test iOS apps in the cloud.
       </div>
-      <div style={{ position: "absolute", left: 0, right: 0, top: py + ph + 124, display: "flex", justifyContent: "center", opacity: url }}>
+      <div style={{ position: "absolute", left: 0, right: 0, top: py + ph + 132, display: "flex", justifyContent: "center", opacity: url }}>
         <Label color={bp.textDim}>devin.ai</Label>
       </div>
     </AbsoluteFill>

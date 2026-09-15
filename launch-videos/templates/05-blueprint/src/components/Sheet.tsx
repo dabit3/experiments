@@ -44,7 +44,7 @@ export const Sheet: React.FC = () => {
   );
 };
 
-const BLOCK_W = 540;
+const BLOCK_W = 560;
 const SPLIT = 380;
 const BLOCK_H = 120;
 
@@ -59,7 +59,7 @@ const TitleBlock: React.FC = () => {
   const intro = interpolate(frame, [6, 30], [0, 1], { extrapolateRight: "clamp", easing: easeOut });
   const label: React.CSSProperties = {
     fontFamily: FONT_MONO,
-    fontSize: 13,
+    fontSize: 14,
     letterSpacing: type.tracking.caps,
     textTransform: "uppercase",
     color: bp.textFaint,
@@ -67,7 +67,7 @@ const TitleBlock: React.FC = () => {
   };
   const value: React.CSSProperties = {
     fontFamily: FONT_MONO,
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: 500,
     color: bp.text,
     lineHeight: 1,

@@ -33,8 +33,8 @@ type Props = {
   assembleAt?: number;
 };
 
-const LEFT_X = 320;
-const RIGHT_X = 1600;
+const LEFT_X = 365;
+const RIGHT_X = 1555;
 
 /** One product-in-action moment: figure + dimension + leaders + narration. */
 export const Feature: React.FC<Props> = ({

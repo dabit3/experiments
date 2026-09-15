@@ -12,8 +12,8 @@ const RISE = 16;
  */
 export const Narration: React.FC<{ lines: Line[]; size?: number; maxWidth?: number }> = ({
   lines,
-  size = type.sizes1080p.h2,
-  maxWidth = 1200,
+  size = 60,
+  maxWidth = 1140,
 }) => {
   const frame = useCurrentFrame();
   return (
@@ -72,7 +72,7 @@ export const Label: React.FC<{
   size?: number;
   color?: string;
   style?: React.CSSProperties;
-}> = ({ children, size = type.sizes1080p.label, color = bp.textDim, style }) => (
+}> = ({ children, size = 20, color = bp.textDim, style }) => (
   <div
     style={{
       fontFamily: FONT_MONO,
