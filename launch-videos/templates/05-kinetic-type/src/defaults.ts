@@ -1,0 +1,171 @@
+import type { LaunchProps } from "./schema";
+
+export const FPS = 30;
+export const WIDTH = 1920;
+export const HEIGHT = 1080;
+/** Mid-demo frame used for the poster still (beat 03, iPhone Simulator). */
+export const HERO_FRAME = 690;
+
+export const defaultProps: LaunchProps = {
+  brand: {
+    paper: "#F7F6F5",
+    surface: "#EFEFEF",
+    line: "#E7E7E7",
+    ink: "#191919",
+    inkMuted: "#7D7D7D",
+    inkSubtle: "#919191",
+    accent: "#2200FF",
+    black: "#141414",
+    blackRaised: "#1F1F1F",
+    white: "#FFFFFF",
+    fontFamily:
+      '"NB International Pro", "Inter", "Helvetica Neue", Arial, sans-serif',
+    monoFontFamily:
+      '"Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace',
+    logoLight: "logos/devin-lockup-horizontal-black.png",
+    logoDark: "logos/devin-lockup-horizontal-white.png",
+  },
+  content: {
+    featureName: "Devin on Mac",
+    eyebrow: "New",
+    headline: "Devin now runs in a Mac VM",
+    accentWord: "Mac VM",
+    subhead:
+      "Build, run, and test Mac and iOS apps in a cloud Mac — with a live iPhone Simulator in your session.",
+    captions: [
+      "Pick macOS when you start a session — same price as Linux.",
+      "Devin builds the app in Xcode and runs the full test suite.",
+      "It taps, types, and scrolls through the app like a person.",
+      "Watch it live in the iPhone Simulator tab — and tap in yourself.",
+      "Reproduce a bug, fix it, and prove the fix on screen.",
+      "Check iPhone and iPad sizes, dark mode, and orientations.",
+      "Ship with a PR that shows the app working — not a 20-minute CI wait.",
+    ],
+    useCases: [
+      "Build & test a feature",
+      "Reproduce & fix a bug",
+      "QA before shipping",
+      "Screens, sizes & dark mode",
+      "Upgrade Swift & dependencies",
+    ],
+    stages: ["Request", "Build", "Run & test", "Verify", "PR"],
+    cta: { label: "Start a Mac session", url: "app.devin.ai" },
+    outroLine: "The only coding agent with a cloud Mac.",
+    speedBadge: "3x",
+  },
+  media: {
+    pick: {
+      src: "screenshots/devin-web-4.png",
+      kind: "image",
+      naturalWidth: 2988,
+      naturalHeight: 1622,
+      crop: { x: 0.2, y: 0.2, w: 0.6, h: 0.58 },
+    },
+    work: {
+      src: "screenshots/devin-web-9.png",
+      kind: "image",
+      naturalWidth: 2988,
+      naturalHeight: 1628,
+      align: "top",
+    },
+    verify: {
+      src: "screenshots/devin-web-18.png",
+      kind: "image",
+      naturalWidth: 2978,
+      naturalHeight: 1626,
+      align: "top",
+    },
+    simulator: {
+      src: "recordings/androidios.mp4",
+      kind: "video",
+      naturalWidth: 1920,
+      naturalHeight: 1148,
+      crop: { x: 0.06, y: 0.12, w: 0.3, h: 0.74 },
+      startFrom: 30,
+    },
+    sizes: {
+      src: "screenshots/devin-web-17.png",
+      kind: "image",
+      naturalWidth: 2978,
+      naturalHeight: 1620,
+      align: "top",
+    },
+    ipad: {
+      src: "screenshots/devin-web-19.png",
+      kind: "image",
+      naturalWidth: 2982,
+      naturalHeight: 1626,
+      align: "top",
+    },
+    result: {
+      src: "screenshots/devin-web-12.png",
+      kind: "image",
+      naturalWidth: 2978,
+      naturalHeight: 1622,
+      align: "top",
+    },
+  },
+  scenes: [
+    { kind: "title", id: "title", durationInFrames: 120 },
+    {
+      kind: "beat",
+      id: "pick",
+      durationInFrames: 180,
+      captionIndex: 0,
+      media: ["pick"],
+      layout: "top",
+      index: "01",
+    },
+    {
+      kind: "beat",
+      id: "build",
+      durationInFrames: 240,
+      captionIndex: 1,
+      media: ["work", "verify"],
+      layout: "left",
+      index: "02",
+    },
+    {
+      kind: "beat",
+      id: "taps",
+      durationInFrames: 210,
+      captionIndex: 2,
+      media: ["simulator"],
+      layout: "right",
+      index: "03",
+    },
+    {
+      kind: "beat",
+      id: "sizes",
+      durationInFrames: 240,
+      captionIndex: 5,
+      media: ["sizes", "ipad"],
+      layout: "bottom",
+      index: "04",
+    },
+    {
+      kind: "beat",
+      id: "ship",
+      durationInFrames: 180,
+      captionIndex: 6,
+      media: ["result"],
+      layout: "left",
+      index: "05",
+    },
+    { kind: "end", id: "end", durationInFrames: 180 },
+  ],
+  timing: {
+    phraseHoldFrames: 34,
+    morphFrames: 22,
+    mediaInFrames: 18,
+    dissolveFrames: 12,
+    exitFrames: 10,
+  },
+  typography: {
+    phraseSize: 68,
+    captionSize: 34,
+    displaySize: 92,
+    margin: 96,
+    frameRadius: 16,
+  },
+};
