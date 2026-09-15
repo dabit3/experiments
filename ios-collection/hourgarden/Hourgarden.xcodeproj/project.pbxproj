@@ -1,0 +1,436 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		121F3EC2D7D092A0A32F168B /* GardenStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC6D04406DABA9A43822FE3 /* GardenStoreTests.swift */; };
+		1380BCEE352F4FE2093F12B9 /* Botanical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CE80ED994F93B5AEC20050 /* Botanical.swift */; };
+		22D9FCF3CDC0C594BC2ED88F /* RhythmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E438445574F3FA49189B71 /* RhythmView.swift */; };
+		7351B527166967499053E901 /* HourgardenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC7CA651CC0770D91AB96C3 /* HourgardenApp.swift */; };
+		A659B4F22F84A2B6B9DDD0FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F456F175C8E349AA3B72D1C /* Assets.xcassets */; };
+		E752FA1A355F1FE079B7AA28 /* HerbariumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11F024D28A92F73484EC506 /* HerbariumView.swift */; };
+		E84B8568FEB63F24B0028E49 /* GardenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DCAE52A433722139B91DA3 /* GardenStore.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A30121543E5B74A8906A81C4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C753B0939410B00FD3241BBA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1804179057DA5481B19A62D7;
+			remoteInfo = Hourgarden;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		19E438445574F3FA49189B71 /* RhythmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RhythmView.swift; sourceTree = "<group>"; };
+		21DCAE52A433722139B91DA3 /* GardenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenStore.swift; sourceTree = "<group>"; };
+		2BC6D04406DABA9A43822FE3 /* GardenStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GardenStoreTests.swift; sourceTree = "<group>"; };
+		2BC7CA651CC0770D91AB96C3 /* HourgardenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourgardenApp.swift; sourceTree = "<group>"; };
+		42EE862AB468825926E258C7 /* HourgardenTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = HourgardenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F456F175C8E349AA3B72D1C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		78CE80ED994F93B5AEC20050 /* Botanical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Botanical.swift; sourceTree = "<group>"; };
+		A11F024D28A92F73484EC506 /* HerbariumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HerbariumView.swift; sourceTree = "<group>"; };
+		DD462CBFDD562743CFCEBF82 /* Hourgarden.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Hourgarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		4471E9747494A9FD7C7E8807 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DD462CBFDD562743CFCEBF82 /* Hourgarden.app */,
+				42EE862AB468825926E258C7 /* HourgardenTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		56B44C04F2F319AD4AF984B5 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4F456F175C8E349AA3B72D1C /* Assets.xcassets */,
+				78CE80ED994F93B5AEC20050 /* Botanical.swift */,
+				21DCAE52A433722139B91DA3 /* GardenStore.swift */,
+				A11F024D28A92F73484EC506 /* HerbariumView.swift */,
+				2BC7CA651CC0770D91AB96C3 /* HourgardenApp.swift */,
+				19E438445574F3FA49189B71 /* RhythmView.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		CCB91B7639DBF262387FCAD8 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				2BC6D04406DABA9A43822FE3 /* GardenStoreTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		FCFDBE4CEEDE217811E8254C = {
+			isa = PBXGroup;
+			children = (
+				56B44C04F2F319AD4AF984B5 /* Sources */,
+				CCB91B7639DBF262387FCAD8 /* Tests */,
+				4471E9747494A9FD7C7E8807 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1804179057DA5481B19A62D7 /* Hourgarden */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8D59E7F89B12726445CE6D69 /* Build configuration list for PBXNativeTarget "Hourgarden" */;
+			buildPhases = (
+				7BFACD9E68E8CB06B9ED4993 /* Sources */,
+				49B61E270C7A55385988A47E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hourgarden;
+			packageProductDependencies = (
+			);
+			productName = Hourgarden;
+			productReference = DD462CBFDD562743CFCEBF82 /* Hourgarden.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E517C5294376DD75671C9CC4 /* HourgardenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0825C151C4C321118362F078 /* Build configuration list for PBXNativeTarget "HourgardenTests" */;
+			buildPhases = (
+				E4A229FE05A26900CF8F0C84 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1D3F3CE870D223BEF021829E /* PBXTargetDependency */,
+			);
+			name = HourgardenTests;
+			packageProductDependencies = (
+			);
+			productName = HourgardenTests;
+			productReference = 42EE862AB468825926E258C7 /* HourgardenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C753B0939410B00FD3241BBA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					1804179057DA5481B19A62D7 = {
+						ProvisioningStyle = Automatic;
+					};
+					E517C5294376DD75671C9CC4 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 2AF8B28ECB093843AB82CF1B /* Build configuration list for PBXProject "Hourgarden" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = FCFDBE4CEEDE217811E8254C;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 4471E9747494A9FD7C7E8807 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1804179057DA5481B19A62D7 /* Hourgarden */,
+				E517C5294376DD75671C9CC4 /* HourgardenTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		49B61E270C7A55385988A47E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A659B4F22F84A2B6B9DDD0FD /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7BFACD9E68E8CB06B9ED4993 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1380BCEE352F4FE2093F12B9 /* Botanical.swift in Sources */,
+				E84B8568FEB63F24B0028E49 /* GardenStore.swift in Sources */,
+				E752FA1A355F1FE079B7AA28 /* HerbariumView.swift in Sources */,
+				7351B527166967499053E901 /* HourgardenApp.swift in Sources */,
+				22D9FCF3CDC0C594BC2ED88F /* RhythmView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E4A229FE05A26900CF8F0C84 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				121F3EC2D7D092A0A32F168B /* GardenStoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1D3F3CE870D223BEF021829E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1804179057DA5481B19A62D7 /* Hourgarden */;
+			targetProxy = A30121543E5B74A8906A81C4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		19D0C3C5C97F46551EDB012D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Hourgarden;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hourgarden.ritual;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2A6CC85AE515F64876088E04 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.hourgarden.HourgardenTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hourgarden.app/Hourgarden";
+			};
+			name = Release;
+		};
+		B9FAA0695517330853AD9DD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		C7BD8FB6BE0C6B8A1C3DB9F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Hourgarden;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hourgarden.ritual;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F070B9BCE869291ADB6F7E9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		F634834B13A2B2090A4B2DDE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.hourgarden.HourgardenTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hourgarden.app/Hourgarden";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0825C151C4C321118362F078 /* Build configuration list for PBXNativeTarget "HourgardenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F634834B13A2B2090A4B2DDE /* Debug */,
+				2A6CC85AE515F64876088E04 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2AF8B28ECB093843AB82CF1B /* Build configuration list for PBXProject "Hourgarden" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F070B9BCE869291ADB6F7E9C /* Debug */,
+				B9FAA0695517330853AD9DD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8D59E7F89B12726445CE6D69 /* Build configuration list for PBXNativeTarget "Hourgarden" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19D0C3C5C97F46551EDB012D /* Debug */,
+				C7BD8FB6BE0C6B8A1C3DB9F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C753B0939410B00FD3241BBA /* Project object */;
+}
