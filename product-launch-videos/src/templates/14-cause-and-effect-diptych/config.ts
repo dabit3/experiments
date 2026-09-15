@@ -12,11 +12,8 @@ export type Pairing = {
 
 export type DiptychConfig = LaunchConfig & {
   labels: {
-    edition: string;
-    montage: string;
     source: string;
     playback: string;
-    next: string;
     agentAction: string;
     agentObservation: string;
     agentPair: string;
@@ -42,18 +39,22 @@ export type DiptychConfig = LaunchConfig & {
     closingCtaAt: number;
     shutterFrames: number;
     dividerWidth: number;
+    dividerOpacity: number;
+    showPanelLabels: boolean;
+    highlightMacOS: boolean;
   };
 };
 
 export const config: DiptychConfig = {
   ...structuredClone(defaultLaunchConfig),
-  layout: {margin: 56, gutter: 24, padding: 12, captionHeight: 112, grid: {panelLabelHeight: 48, footerHeight: 48}},
+  brand: {
+    ...structuredClone(defaultLaunchConfig.brand),
+    typography: {...defaultLaunchConfig.brand.typography, headingSize: 100, bodySize: 42},
+  },
+  layout: {margin: 48, gutter: 24, padding: 8, captionHeight: 112, grid: {panelLabelHeight: 56, footerHeight: 0}},
   labels: {
-    edition: '14 / ACTION & OBSERVATION',
-    montage: 'Examples from separate sessions',
     source: 'Two views · one source',
     playback: 'Original recording · 1×',
-    next: 'Devin on Mac',
     agentAction: 'Agent menu',
     agentObservation: 'Visible options',
     agentPair: 'Composer + menu · same source',
@@ -70,8 +71,8 @@ export const config: DiptychConfig = {
       note: 'Selection detail + complete source screenshot',
       leftCrop: {x: 620, y: 920, width: 650, height: 445},
       rightCrop: null,
-      balancedRatio: 0.36,
-      activeRatio: 0.27,
+      balancedRatio: 0.50,
+      activeRatio: 0.43,
     },
     iphone: [
       {
@@ -80,8 +81,8 @@ export const config: DiptychConfig = {
         note: 'Afterhours Maze · same screenshot',
         leftCrop: {x: 1948, y: 138, width: 1038, height: 940},
         rightCrop: {x: 0, y: 0, width: 1948, height: 1626},
-        balancedRatio: 0.45,
-        activeRatio: 0.36,
+        balancedRatio: 0.50,
+        activeRatio: 0.43,
       },
       {
         leftLabel: 'Test step + observed result',
@@ -89,8 +90,8 @@ export const config: DiptychConfig = {
         note: 'Large Dispatch · separate session',
         leftCrop: {x: 1940, y: 138, width: 1038, height: 780},
         rightCrop: {x: 0, y: 0, width: 1940, height: 1626},
-        balancedRatio: 0.45,
-        activeRatio: 0.36,
+        balancedRatio: 0.50,
+        activeRatio: 0.43,
       },
     ],
     ipad: {
@@ -99,8 +100,8 @@ export const config: DiptychConfig = {
       note: 'Terra Table · same screenshot',
       leftCrop: {x: 1948, y: 138, width: 1034, height: 900},
       rightCrop: {x: 0, y: 0, width: 1948, height: 1626},
-      balancedRatio: 0.45,
-      activeRatio: 0.36,
+      balancedRatio: 0.50,
+      activeRatio: 0.43,
     },
   },
   motion: {
@@ -110,9 +111,12 @@ export const config: DiptychConfig = {
     unifyAt: 0.76,
     iphoneSwitchAt: 0.5,
     openingSplit: 0.57,
-    videoRailRatio: 0.16,
+    videoRailRatio: 0,
     closingCtaAt: 0.28,
     shutterFrames: 12,
-    dividerWidth: 2,
+    dividerWidth: 1,
+    dividerOpacity: 0.14,
+    showPanelLabels: false,
+    highlightMacOS: true,
   },
 };

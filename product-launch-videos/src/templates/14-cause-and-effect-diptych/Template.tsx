@@ -5,15 +5,17 @@ import {
   type ImageSelection, type SceneTiming, type VideoSelection,
 } from '../../shared';
 import type {DiptychConfig, Pairing} from './config';
+import {EnvironmentImage} from './EnvironmentImage';
 
-const rule = (config: DiptychConfig): string => `1px solid ${config.brand.colors.ink}30`;
 const animate = (frame: number, from: number, duration: number): number =>
   easeInOut(progress(frame, from, duration));
+const panelLabelHeight = (config: DiptychConfig): number =>
+  config.motion.showPanelLabels ? config.layout.grid.panelLabelHeight : 0;
 
 const Label = ({children, config, style}: {
   children: ReactNode; config: DiptychConfig; style?: CSSProperties;
 }) => <div style={{
-  fontSize: config.brand.typography.bodySize * 0.67,
+  fontSize: config.brand.typography.bodySize * 0.85,
   lineHeight: config.brand.typography.bodyLineHeight * 0.893,
   letterSpacing: config.brand.typography.bodyTracking,
   ...style,
@@ -22,15 +24,15 @@ const Label = ({children, config, style}: {
 const Logo = ({config, width = 174}: {config: DiptychConfig; width?: number}) =>
   <SourceImage {...config.media.logo} width={width} height={width * 0.344} />;
 
-const Frame = ({config, caption, index, note, children}: {
-  config: DiptychConfig; caption: string; index: string; note: string; children: ReactNode;
+const Frame = ({config, caption, children}: {
+  config: DiptychConfig; caption: string; children: ReactNode;
 }) => {
-  const {width, height} = useVideoConfig();
+  const {width} = useVideoConfig();
   const {margin, captionHeight, grid} = config.layout;
   return <>
     <div style={{position: 'absolute', top: 44, left: margin, width: width - margin * 2 - 205}}>
       <div style={{
-        fontSize: config.brand.typography.headingSize * 0.62,
+        fontSize: config.brand.typography.headingSize * 0.8,
         lineHeight: config.brand.typography.headingLineHeight * 1.08,
         letterSpacing: config.brand.typography.headingTracking,
       }}>{caption}</div>
@@ -40,24 +42,17 @@ const Frame = ({config, caption, index, note, children}: {
       position: 'absolute', left: margin, right: margin, top: margin + captionHeight,
       bottom: margin + grid.footerHeight,
     }}>{children}</div>
-    <div style={{
-      position: 'absolute', left: margin, right: margin, top: height - margin - 16,
-      display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    }}>
-      <Label config={config}>{index} / {config.copy.featureName}</Label>
-      <Label config={config} style={{color: config.brand.colors.secondaryInk}}>{note}</Label>
-    </div>
   </>;
 };
 
 const Panel = ({config, label, width, height, children}: {
   config: DiptychConfig; label: string; width: number; height: number; children: ReactNode;
 }) => <div style={{width, height, position: 'relative'}}>
-  <Label config={config} style={{
+  {config.motion.showPanelLabels ? <Label config={config} style={{
     height: config.layout.grid.panelLabelHeight, display: 'flex', alignItems: 'flex-start',
-  }}>{label}</Label>
+  }}>{label}</Label> : null}
   <div style={{
-    position: 'absolute', top: config.layout.grid.panelLabelHeight,
+    position: 'absolute', top: panelLabelHeight(config),
     bottom: 0, width, background: config.brand.colors.mediaMat, overflow: 'hidden',
     display: 'flex', alignItems: 'center', justifyContent: 'center',
   }}>{children}</div>
@@ -71,7 +66,7 @@ const ImagePair = ({config, media, pair, duration}: {
   const {margin, gutter, padding, captionHeight, grid} = config.layout;
   const w = width - margin * 2;
   const h = height - margin * 2 - captionHeight - grid.footerHeight;
-  const imageH = h - grid.panelLabelHeight - padding * 2;
+  const imageH = h - panelLabelHeight(config) - padding * 2;
   const movement = Math.min(config.motion.dividerFrames, duration * 0.07);
   const active = animate(frame, duration * config.motion.activeAt, movement);
   const balanced = animate(frame, duration * config.motion.balancedAt, movement);
@@ -82,23 +77,23 @@ const ImagePair = ({config, media, pair, duration}: {
   return <>
     <div style={{display: 'flex', gap: gutter, opacity: 1 - unified}}>
       <Panel config={config} label={pair.leftLabel} width={leftW} height={h}>
-        <SourceImage {...media} framing={{...media.framing, crop: pair.leftCrop}}
+        <EnvironmentImage {...media} highlight={config.motion.highlightMacOS} framing={{...media.framing, crop: pair.leftCrop}}
           width={leftW - padding * 2} height={imageH} />
       </Panel>
       <Panel config={config} label={pair.rightLabel} width={rightW} height={h}>
-        <SourceImage {...media}
+        <EnvironmentImage {...media} highlight={config.motion.highlightMacOS}
           framing={pair.rightCrop ? {...media.framing, crop: pair.rightCrop} : media.framing}
           width={rightW - padding * 2} height={imageH} />
       </Panel>
     </div>
     <div style={{
-      position: 'absolute', top: grid.panelLabelHeight, bottom: 0,
+      position: 'absolute', top: panelLabelHeight(config), bottom: 0,
       left: leftW + gutter / 2, width: config.motion.dividerWidth,
-      background: config.brand.colors.ink, opacity: 1 - unified,
+      background: config.brand.colors.ink, opacity: (1 - unified) * config.motion.dividerOpacity,
     }} />
     <div style={{position: 'absolute', inset: 0, opacity: unified}}>
       <Panel config={config} label={`${config.labels.source} / ${pair.note}`} width={w} height={h}>
-        <SourceImage {...media} width={w - padding * 2} height={imageH} />
+        <EnvironmentImage {...media} highlight={config.motion.highlightMacOS} width={w - padding * 2} height={imageH} />
       </Panel>
     </div>
   </>;
@@ -113,17 +108,17 @@ const VideoPair = ({config, media, duration, webQa}: {
   const w = width - margin * 2;
   const h = height - margin * 2 - captionHeight - grid.footerHeight;
   const railW = (w - gutter) * config.motion.videoRailRatio;
-  const videoW = w - railW - gutter;
+  const videoW = railW > 0 ? w - railW - gutter : w;
   const reveal = animate(frame, 0, config.motion.shutterFrames);
   return <div style={{display: 'flex', gap: gutter, height: h}}>
-    <div style={{width: railW, paddingTop: grid.panelLabelHeight, position: 'relative'}}>
-      <div style={{height: 2, width: mix(0, railW - 32, reveal), background: config.brand.colors.ink}} />
+    {railW > 0 ? <div style={{width: railW, paddingTop: panelLabelHeight(config), position: 'relative'}}>
+      <div style={{height: config.motion.dividerWidth, opacity: config.motion.dividerOpacity, width: mix(0, railW - 32, reveal), background: config.brand.colors.ink}} />
       <div style={{
         paddingTop: 28, fontSize: config.brand.typography.bodySize * 1.15,
         lineHeight: config.brand.typography.headingLineHeight * 1.05,
         letterSpacing: config.brand.typography.headingTracking,
       }}>{webQa ? config.labels.qaAction : config.labels.agentAction}</div>
-      <div style={{height: 52, width: 2, background: config.brand.colors.ink, margin: '26px 0'}} />
+      <div style={{height: 52, width: config.motion.dividerWidth, opacity: config.motion.dividerOpacity, background: config.brand.colors.ink, margin: '26px 0'}} />
       <div style={{fontSize: config.brand.typography.bodySize * 1.15,
         lineHeight: config.brand.typography.headingLineHeight * 1.05}}>
         {webQa ? config.labels.qaObservation : config.labels.agentObservation}
@@ -131,17 +126,18 @@ const VideoPair = ({config, media, duration, webQa}: {
       <Label config={config} style={{position: 'absolute', bottom: 24, width: railW - 20}}>
         {config.labels.playback}
       </Label>
-    </div>
+    </div> : null}
     <Panel config={config} label={webQa ? config.labels.qaPair : config.labels.agentPair}
       width={videoW} height={h}>
       <SourceVideo {...media} width={videoW - padding * 2}
-        height={h - grid.panelLabelHeight - padding * 2} durationInFrames={duration}
-        labelStyle={{fontFamily: config.brand.typography.fontFamily, fontSize: 28}} />
+        height={h - panelLabelHeight(config) - padding * 2} durationInFrames={duration}
+        labelHeight={56}
+        labelStyle={{fontFamily: config.brand.typography.fontFamily, fontSize: config.brand.typography.bodySize * 0.85}} />
     </Panel>
-    <div style={{
-      position: 'absolute', left: railW + gutter / 2, top: grid.panelLabelHeight,
-      bottom: 0, width: config.motion.dividerWidth, background: config.brand.colors.ink,
-    }} />
+    {railW > 0 ? <div style={{
+      position: 'absolute', left: railW + gutter / 2, top: panelLabelHeight(config),
+      bottom: 0, width: config.motion.dividerWidth, background: config.brand.colors.ink, opacity: config.motion.dividerOpacity,
+    }} /> : null}
   </div>;
 };
 
@@ -153,16 +149,16 @@ const Opening = ({config}: {config: DiptychConfig}) => {
   const open = animate(frame, 4, config.motion.dividerFrames * 2);
   return <>
     <div style={{position: 'absolute', left: margin, top: margin}}><Logo config={config} width={270} /></div>
-    <Label config={config} style={{position: 'absolute', right: margin, top: margin + 16}}>{config.labels.edition}</Label>
     <div style={{
       position: 'absolute', left: divider, top: margin + 172, bottom: margin + 72,
       width: config.motion.dividerWidth, background: config.brand.colors.ink,
+      opacity: config.motion.dividerOpacity,
       transform: `scaleY(${open})`, transformOrigin: 'center',
     }} />
     <div style={{
       position: 'absolute', left: margin, top: height * 0.35,
       width: divider - margin - gutter * 3,
-      fontSize: config.brand.typography.headingSize * 1.45,
+      fontSize: config.brand.typography.headingSize * 1.65,
       lineHeight: config.brand.typography.headingLineHeight,
       letterSpacing: config.brand.typography.headingTracking,
       clipPath: `inset(0 ${100 * (1 - open)}% 0 0)`,
@@ -171,16 +167,12 @@ const Opening = ({config}: {config: DiptychConfig}) => {
       position: 'absolute', left: divider + gutter * 3, right: margin,
       top: height * 0.36, opacity: open,
     }}>
-      <Label config={config} style={{marginBottom: config.brand.spacing.titleGap}}>{config.copy.featureName}</Label>
       <div style={{
-        fontSize: config.brand.typography.headingSize * 0.69,
+        fontSize: config.brand.typography.headingSize * 0.86,
         lineHeight: config.brand.typography.headingLineHeight * 1.08,
         letterSpacing: config.brand.typography.headingTracking,
       }}>{config.copy.benefit}</div>
     </div>
-    <Label config={config} style={{position: 'absolute', bottom: margin, left: margin}}>
-      {config.labels.montage}
-    </Label>
   </>;
 };
 
@@ -199,20 +191,20 @@ const Closing = ({config, duration}: {config: DiptychConfig; duration: number}) 
       clipPath: `inset(0 ${100 * (1 - cta)}% 0 0)`,
     }}>
       <div style={{position: 'absolute', left: margin, top: margin}}><Logo config={config} width={270} /></div>
-      <Label config={config} style={{position: 'absolute', right: margin, top: margin + 16}}>{config.labels.next}</Label>
       <div style={{
         position: 'absolute', left: margin, top: height * 0.36,
         width: divider - margin - gutter * 3,
-        fontSize: config.brand.typography.headingSize,
+        fontSize: config.brand.typography.headingSize * 1.18,
         lineHeight: config.brand.typography.headingLineHeight * 1.04,
         letterSpacing: config.brand.typography.headingTracking,
       }}>{config.copy.closing}</div>
       <div style={{
         position: 'absolute', left: divider, top: 242, bottom: 152,
         width: config.motion.dividerWidth, background: config.brand.colors.ink,
+        opacity: config.motion.dividerOpacity,
       }} />
       <div style={{position: 'absolute', top: height * 0.37, left: divider + gutter * 3, right: margin}}>
-        <div style={{fontSize: config.brand.typography.headingSize * 0.68,
+        <div style={{fontSize: config.brand.typography.headingSize * 0.88,
           lineHeight: config.brand.typography.headingLineHeight * 1.05,
           letterSpacing: config.brand.typography.headingTracking}}>{config.copy.cta}</div>
         <div style={{
@@ -220,9 +212,6 @@ const Closing = ({config, duration}: {config: DiptychConfig; duration: number}) 
           color: config.brand.colors.white, fontSize: config.brand.typography.bodySize,
           borderRadius: 2, display: 'inline-block',
         }}>{config.copy.url}</div>
-      </div>
-      <div style={{position: 'absolute', bottom: margin, left: margin, right: margin, borderTop: rule(config), paddingTop: 24}}>
-        <Label config={config}>{config.copy.featureName}</Label>
       </div>
     </AbsoluteFill>
   </>;
@@ -233,15 +222,15 @@ const ProductScene = ({config, scene}: {config: DiptychConfig; scene: SceneTimin
     Math.round(scene.durationInFrames * config.motion.iphoneSwitchAt)));
   switch (scene.id) {
     case 'environment':
-      return <Frame config={config} caption={config.copy.environment} index="01" note={config.pairings.environment.note}>
+      return <Frame config={config} caption={config.copy.environment}>
         <ImagePair config={config} media={config.media.environment} pair={config.pairings.environment} duration={scene.durationInFrames} />
       </Frame>;
     case 'agent':
-      return <Frame config={config} caption={config.copy.agent} index="02" note={config.labels.playback}>
+      return <Frame config={config} caption={config.copy.agent}>
         <VideoPair config={config} media={config.media.agent} duration={scene.durationInFrames} webQa={false} />
       </Frame>;
     case 'iphone':
-      return <Frame config={config} caption={config.copy.iphone} index="03" note={config.labels.iphoneNote}>
+      return <Frame config={config} caption={config.copy.iphone}>
         <Sequence durationInFrames={split} layout="none">
           <ImagePair config={config} media={config.media.iphone[0]} pair={config.pairings.iphone[0]} duration={split} />
         </Sequence>
@@ -250,11 +239,11 @@ const ProductScene = ({config, scene}: {config: DiptychConfig; scene: SceneTimin
         </Sequence>
       </Frame>;
     case 'webQa':
-      return <Frame config={config} caption={config.copy.webQa} index="04" note={config.labels.qaNote}>
+      return <Frame config={config} caption={config.copy.webQa}>
         <VideoPair config={config} media={config.media.webQa} duration={scene.durationInFrames} webQa />
       </Frame>;
     case 'ipad':
-      return <Frame config={config} caption={config.copy.ipad} index="05" note={config.pairings.ipad.note}>
+      return <Frame config={config} caption={config.copy.ipad}>
         <ImagePair config={config} media={config.media.ipad} pair={config.pairings.ipad} duration={scene.durationInFrames} />
       </Frame>;
     case 'opening':

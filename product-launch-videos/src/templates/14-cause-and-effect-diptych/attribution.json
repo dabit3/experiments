@@ -20,7 +20,7 @@
     "asset": "devin-web-4.png",
     "outputSeconds": [4, 9],
     "sourceSeconds": null,
-    "treatment": "Same-source selection detail x620 y920 w650 h445 on left; complete screenshot on right. Moving divider returns to comparison, then complete original image. No simulated selection action.",
+    "treatment": "Same-source selection detail x620 y920 w650 h445 on left; complete screenshot on right. User-requested background correction removes Ubuntu hover emphasis and highlights the already-checked macOS row. Only light neutral pixels in x669 y1078 w530 h150 are adjusted, in memory; dark text, colored icons, Ubuntu star and macOS checkmark remain intact. Both crop and full-source views use the same correction. No simulated selection action. Disable motion.highlightMacOS for unmodified source.",
     "requiredLabel": null
   },
   {
@@ -28,7 +28,7 @@
     "asset": "agent-selector-cloud.mp4",
     "outputSeconds": [9, 13],
     "sourceSeconds": [0, 4],
-    "treatment": "1x complete contained recording; stable editorial action/options rail outside UI. Does not claim macOS selection.",
+    "treatment": "1x complete contained recording, enlarged with no editorial rail by default. Does not claim macOS selection.",
     "requiredLabel": null
   },
   {
@@ -44,7 +44,7 @@
     "asset": "devin-web-18.png",
     "outputSeconds": [17.5, 22],
     "sourceSeconds": null,
-    "treatment": "Separate Large Dispatch session, explicitly labeled. Left report detail x1940 y138 w1038 h780; right Simulator crop x0 y0 w1940 h1626. Complete screenshot replaces crops for last part of hold. Static app pixels.",
+    "treatment": "Separate Large Dispatch session. Left report detail x1940 y138 w1038 h780; right Simulator crop x0 y0 w1940 h1626. Complete screenshot replaces crops for last part of hold. Static app pixels.",
     "requiredLabel": null
   },
   {
@@ -52,7 +52,7 @@
     "asset": "devin-testing-2.mp4",
     "outputSeconds": [22, 29],
     "sourceSeconds": [0, 7],
-    "treatment": "1x complete contained original recording and original report together; stable editorial rail. SourceVideo supplies persistent Web QA example footer below source controls.",
+    "treatment": "1x complete contained original recording and original report together, enlarged with no editorial rail by default. SourceVideo supplies persistent Web QA example footer below source controls.",
     "requiredLabel": "Web QA example"
   },
   {

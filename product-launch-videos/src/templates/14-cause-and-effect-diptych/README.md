@@ -3,11 +3,12 @@
 A refined moving seam connects an actual test step and its recorded observation
 to the Simulator still from **that same source screenshot**. The divider gives
 the Simulator more room, returns to comparison, and dissolves into the complete
-original source. The iPad result eventually occupies the full canvas before the
+source. The iPad result eventually occupies the full canvas before the
 quiet two-column pricing/CTA card.
 
-The videos remain complete, normal-speed recordings with a narrow editorial
-action/observation rail. In Web QA the recording already contains the genuine
+The default layout removes editorial numbering, panel labels and the recording
+rail, enlarges captions and media, and uses one-pixel rules at 14% opacity.
+The videos remain complete, normal-speed recordings. In Web QA the recording already contains the genuine
 side-by-side report. There are no invented counterpart screens or comparisons
 between unrelated sessions. Neither video is described as Simulator footage.
 
@@ -24,7 +25,7 @@ npm run typecheck
 npm test
 npm run build
 npm run render -- --template 14-cause-and-effect-diptych
-npm run still -- --template 14-cause-and-effect-diptych --frame 450
+npm run still -- --template 14-cause-and-effect-diptych --frame 180
 npm run still -- --template 14-cause-and-effect-diptych \
   --frames 0,60,180,330,450,570,750,960,1065,1150
 npm run contact-sheet -- out/14-cause-and-effect-diptych
@@ -50,18 +51,21 @@ The iPhone scene contains two ordered still holds.
 | `durations` | Seven scene durations in seconds; metadata and scene boundaries recalculate |
 | `media` | Source assets, source trim seconds, fit and anchors |
 | `pairings.environment`, `pairings.iphone[0/1]`, `pairings.ipad` | Same-source left/right crop windows in original pixels, literal labels, provenance note, comparison/active ratios |
-| `labels` | Editable editorial labels; required Web QA label is protected by shared SourceVideo |
+| `labels` | Optional panel/rail labels; required Web QA label is protected by shared SourceVideo |
 | `brand.colors` | Canvas, ink, white, secondary text and media mat; never recolors source pixels |
 | `brand.typography` | Original font family, heading/body size, tracking and heading/body line height |
 | `layout` | Margin, gutter, media padding, header height, panel-label and footer heights |
 | `motion.dividerFrames` | Deterministic synchronized seam travel, capped to 7% of each still hold |
 | `motion.activeAt / balancedAt / unifyAt` | Normalized within each still hold; active result, comparison, complete-source cues |
 | `motion.iphoneSwitchAt` | Fraction of iPhone scene devoted to the first still |
-| `motion.videoRailRatio` | Stable rail share beside each complete recording |
+| `motion.videoRailRatio` | Optional rail share; default `0` removes the rail and maximizes the recording |
 | `motion.openingSplit` | Opening and CTA dividing line as canvas-width fraction |
 | `motion.closingCtaAt` | Closing fraction held on full-canvas result before CTA |
 | `motion.shutterFrames` | Editorial rule reveal length; never hides source-video actions |
 | `motion.dividerWidth` | Seam weight in output pixels |
+| `motion.dividerOpacity` | Line opacity; default `0.14`, or `0` to remove rules |
+| `motion.showPanelLabels` | Optional source labels, hidden by default; space is returned to the media |
+| `motion.highlightMacOS` | Requested menu highlight correction, applied only to `devin-web-4.png` |
 
 Each pairing resolves both sides from **one** `media` selection by design. To
 replace media, replace the selection and update both original-pixel crops after
@@ -101,8 +105,24 @@ you want `metadata.json` and `resolved-props.json` to describe the sample.
 `attribution.json` maps the default output timeline and source-coordinate crops.
 The Afterhours Maze detail preserves **8 passed / 0 failed / 1 untested**. Report
 details select the summary and first test step; the full uncut screenshot returns
-at the end of each hold so lower report rows remain available. Distinct sessions
-are named literally and never presented as before/after states.
+at the end of each hold so lower report rows remain available. The samples come
+from distinct sessions and are never presented as before/after states.
+
+### Requested macOS menu correction
+
+The source already checks macOS but shows Ubuntu's hover background. Per the
+requested revision, `EnvironmentImage.tsx` moves the visual emphasis to macOS in
+every view of that screenshot. A deterministic, source-coordinate canvas pass
+clears light neutral background pixels in the Ubuntu row (`669,1078,530,75`)
+and adds the matching rounded gray treatment in the macOS row immediately
+below it. Original dark text, colored icons, the Ubuntu star, and the macOS
+checkmark are retained. Only light neutral background/antialias pixels in those
+two rows are adjusted. This is an editorial correction, not recorded interaction.
+
+The original asset is unchanged on disk. The corrected image is generated in
+memory, gated before frame capture, and shared by the crop and full-source views.
+There is no extra binary to install or commit. Set `motion.highlightMacOS=false`
+to render the original hover state. Other media selections bypass the correction.
 
 Fonts and source media live only in ignored `public/assets/`. Render artifacts
 live only in ignored `out/`. Nothing is publicly deployed. No soundtrack.
@@ -115,10 +135,13 @@ Validated on 2026-09-15:
   seconds**, no audio track. `ffprobe` passed; full FFmpeg decode found no errors.
 - Alternate full render: 1920 × 1080, 30/1 fps, **540 frames / 18.000 seconds**.
   Changed agent caption was rendered and visually verified at frame 180.
-- Poster is rendered frame 450. Contact sheet uses ten actual full-size rendered
+- Poster is rendered frame 180. Contact sheet uses ten actual full-size rendered
   frames: 0, 60, 180, 330, 450, 570, 750, 960, 1065, 1150.
 - Inspected product stages, original report counts, captions, proportional logo,
   original font rendering, divider states, complete-frame iPad result and CTA.
+- Revised title, product captions and CTA are larger; editorial indices and
+  default panel/rail labels are absent. macOS is highlighted and checked, and
+  Ubuntu retains its star without the hover background.
 - Shared asset verification passed for all 45 assets. Template discovery, ESLint,
   TypeScript, all 8 TypeScript tests and 3 Python tests, and Vite build passed.
   Vite prints a non-fatal dependency `"use client"` directive warning.

@@ -10,10 +10,13 @@ const motionControls: ConfigControl[] = [
   {path: 'motion.unifyAt', label: 'Complete source cue', type: 'number', description: 'Fraction when both crops resolve into the uncut source screenshot.', min: 0, max: 1, step: 0.01},
   {path: 'motion.iphoneSwitchAt', label: 'iPhone example cut', type: 'number', description: 'Fraction of the iPhone scene devoted to the first source.', min: 0.1, max: 0.9, step: 0.01},
   {path: 'motion.openingSplit', label: 'Title divider position', type: 'number', description: 'Title and CTA divider as a fraction of canvas width.', min: 0.4, max: 0.65, step: 0.01},
-  {path: 'motion.videoRailRatio', label: 'Recording label rail', type: 'number', description: 'Proportion reserved for stable action/result labels beside the complete recording.', min: 0.1, max: 0.25, step: 0.01},
+  {path: 'motion.videoRailRatio', label: 'Recording label rail', type: 'number', description: 'Optional labels beside the recording. Zero removes the rail and enlarges the source.', min: 0, max: 0.25, step: 0.01},
   {path: 'motion.closingCtaAt', label: 'Closing CTA cue', type: 'number', description: 'Fraction of closing held on the full-frame result before the CTA.', min: 0, max: 0.8, step: 0.01},
   {path: 'motion.shutterFrames', label: 'Rail reveal', type: 'number', description: 'Frames for the editorial rail rule; never masks source video.', min: 0, max: 60, step: 1},
-  {path: 'motion.dividerWidth', label: 'Divider weight', type: 'number', description: 'Divider width in output pixels.', min: 1, max: 8, step: 1},
+  {path: 'motion.dividerWidth', label: 'Divider weight', type: 'number', description: 'Divider width in output pixels. Zero removes the line.', min: 0, max: 8, step: 0.5},
+  {path: 'motion.dividerOpacity', label: 'Divider opacity', type: 'number', description: 'Line contrast against the presentation canvas.', min: 0, max: 1, step: 0.01},
+  {path: 'motion.showPanelLabels', label: 'Show panel labels', type: 'boolean', description: 'Optional labels above source panels; hidden by default.'},
+  {path: 'motion.highlightMacOS', label: 'Highlight selected macOS row', type: 'boolean', description: 'Requested background correction for devin-web-4.png; preserves the original macOS checkmark.'},
 ];
 
 export const template = defineTemplate({
