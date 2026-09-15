@@ -1,0 +1,23 @@
+{
+  "name": "launch-video-02-midnight-glow",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Devin launch video template 02 — Midnight Glow (Remotion)",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render Main out/video.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.524",
+    "@remotion/google-fonts": "4.0.524",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remotion": "4.0.524"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.8.3"
+  }
+}
