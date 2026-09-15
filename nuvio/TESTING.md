@@ -55,7 +55,9 @@ Test the production preview with a fresh/reset fixture at 1440×900:
 4. Undo material, then redo it. Duplicate the bench, hide/show the copy and delete
    it. Undo delete. Expect actual scene and object counts to follow each action.
 5. Choose Ambience. Change time, Autumn season, Mist weather and haze.
-   Expect lighting, foliage and depth haze to visibly change.
+   Expect lighting, foliage and depth haze to visibly change. Range edits commit on
+   pointer release, blur or a 200ms keyboard pause. Hold/repeat arrow keys rapidly;
+   expect correct final values without React update-depth errors.
 6. Drag to a new composition. Create image, rename it `Autumn retreat`.
    Switch to another media image, then return. Expect camera and saved ambience
    restored. Enter Present, use next/previous camera, exit with Escape.

@@ -56,6 +56,23 @@ function NumberField({ label, value, min, max, step = 0.1, onCommit }: { label: 
     onChange={event => setDraft(event.target.value)} onBlur={submit}
     onKeyDown={event => { if (event.key === 'Enter') event.currentTarget.blur(); }} />;
 }
+function RangeField({ id, label, value, min, max, step = 1, onCommit }: { id: string; label: string; value: number; min: number; max: number; step?: number; onCommit: (value: number) => void }) {
+  const input = useRef<HTMLInputElement>(null);
+  const timer = useRef<number | undefined>(undefined);
+  useEffect(() => {
+    clearTimeout(timer.current);
+    if (input.current) input.current.value = String(value);
+  }, [value]);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  function submit() {
+    clearTimeout(timer.current);
+    if (input.current) onCommit(Number(input.current.value));
+  }
+  return <input ref={input} id={id} className="range" aria-label={label} type="range"
+    min={min} max={max} step={step} defaultValue={value}
+    onChange={() => { clearTimeout(timer.current); timer.current = window.setTimeout(submit, 200); }}
+    onPointerUp={submit} onBlur={submit} />;
+}
 const clock = (value: number) => `${String(Math.floor(value)).padStart(2, '0')}:${String(Math.round((value % 1) * 60)).padStart(2, '0')}`;
 const ObjectIcon = ({ kind }: { kind: AssetKind }) => ['pine', 'maple', 'birch', 'fern'].includes(kind) ? <TreePine /> : kind === 'chair' || kind === 'bench' ? <Armchair /> : kind === 'lamp' ? <Lightbulb /> : <Box />;
 
@@ -263,14 +280,14 @@ export default function App() {
           <div className="sky-preview"><Sun /><span>{project.ambience.time < 15 ? 'Daylight' : project.ambience.time > 19 ? 'Blue hour' : 'Golden hour'}<small>Nordic summer sky</small></span></div>
           <div className="property-section"><h3><ChevronDown />Sun</h3>
             <label className="range-label" htmlFor="time">Time of day <b>{clock(project.ambience.time)}</b></label>
-            <input id="time" aria-label="Time of day" className="range" type="range" min="6" max="21" step="0.25" value={project.ambience.time} onChange={event => ambience({ time: Number(event.target.value) })} />
+            <RangeField id="time" label="Time of day" min={6} max={21} step={0.25} value={project.ambience.time} onCommit={time => ambience({ time })} />
             <div className="range-ends"><span>06:00</span><Sun /><span>21:00</span></div>
           </div>
           <div className="property-section"><h3><ChevronDown />Weather & season</h3>
             <label className="field">Weather<select aria-label="Weather" value={project.ambience.weather} onChange={event => ambience({ weather: event.target.value as Ambience['weather'] })}><option>Clear</option><option>Overcast</option><option>Mist</option></select></label>
             <span className="field-label">Season</span><div className="segmented">{(['Summer', 'Autumn', 'Winter'] as const).map(season => <button key={season} className={project.ambience.season === season ? 'selected' : ''} onClick={() => ambience({ season })}>{season}</button>)}</div>
           </div>
-          <div className="property-section"><h3><ChevronDown />Atmosphere</h3><label className="range-label" htmlFor="fog">Haze <b>{project.ambience.fog}%</b></label><input id="fog" aria-label="Haze" className="range" type="range" min="0" max="100" value={project.ambience.fog} onChange={event => ambience({ fog: Number(event.target.value) })} /></div>
+          <div className="property-section"><h3><ChevronDown />Atmosphere</h3><label className="range-label" htmlFor="fog">Haze <b>{project.ambience.fog}%</b></label><RangeField id="fog" label="Haze" min={0} max={100} value={project.ambience.fog} onCommit={fog => ambience({ fog })} /></div>
         </>}
       </div>
     </aside>
