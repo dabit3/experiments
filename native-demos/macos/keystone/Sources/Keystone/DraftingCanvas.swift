@@ -306,7 +306,10 @@ struct DraftingCanvas: View {
           color: Ink.copper, width: 2)
         text(
           &context, String(format: "%.1f kN", abs(load.y)),
-          at: CGPoint(x: p.x + 11, y: startY + 4), size: 11, color: Ink.copper, anchor: .leading)
+          at: CGPoint(
+            x: p.x + (load.y > 0 && node.support != .free ? 26 : 11),
+            y: load.y > 0 ? endY + 24 : startY + 4),
+          size: 11, color: Ink.copper, anchor: .leading)
       }
       if abs(load.x) > 0.001 {
         let sign = load.x > 0 ? 1.0 : -1.0
