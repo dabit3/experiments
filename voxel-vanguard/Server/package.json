@@ -1,0 +1,17 @@
+{
+  "name": "voxel-vanguard-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check game.mjs && node --check server.mjs && node --check test.mjs",
+    "test": "node --test test.mjs"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  }
+}

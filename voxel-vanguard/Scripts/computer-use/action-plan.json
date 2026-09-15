@@ -1,0 +1,664 @@
+[
+  {
+    "label": "P01-final-entry",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.895,
+          0.884
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.4
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.623,
+          0.72
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.4
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.7,
+          0.576
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.3
+      },
+      {
+        "kind": "key",
+        "text": "super+a"
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.2
+      },
+      {
+        "kind": "type",
+        "text": "{{ROOM}}"
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.3
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.7,
+          0.576
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.3
+      },
+      {
+        "kind": "key",
+        "text": "super+a"
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.2
+      },
+      {
+        "kind": "type",
+        "text": "{{ROOM}}"
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.3
+      }
+    ]
+  },
+  {
+    "label": "P02-focus-leave",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.895,
+          0.876
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.3
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.623,
+          0.72
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.3
+      }
+    ]
+  },
+  {
+    "label": "P03-room-fields",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.7,
+          0.576
+        ]
+      },
+      {
+        "kind": "key",
+        "text": "super+a"
+      },
+      {
+        "kind": "type",
+        "text": "{{ROOM}}"
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.7,
+          0.576
+        ]
+      },
+      {
+        "kind": "key",
+        "text": "super+a"
+      },
+      {
+        "kind": "type",
+        "text": "{{ROOM}}"
+      }
+    ]
+  },
+  {
+    "label": "P04-create-join",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.64,
+          0.675
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.4
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.78,
+          0.675
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 2.2
+      }
+    ]
+  },
+  {
+    "label": "P05-aster-ready",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.46,
+          0.74
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 1
+      }
+    ]
+  },
+  {
+    "label": "P06-ready-combat",
+    "player": "bramble",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.46,
+          0.74
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.3
+      },
+      {
+        "kind": "hold",
+        "at": [
+          0.797,
+          0.79
+        ],
+        "seconds": 2
+      },
+      {
+        "kind": "hold",
+        "at": [
+          0.868,
+          0.77
+        ],
+        "seconds": 2
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.73,
+          0.79
+        ]
+      },
+      {
+        "player": "aster",
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "player": "aster",
+        "kind": "hold",
+        "at": [
+          0.797,
+          0.79
+        ],
+        "seconds": 2
+      },
+      {
+        "player": "aster",
+        "kind": "hold",
+        "at": [
+          0.868,
+          0.77
+        ],
+        "seconds": 2
+      },
+      {
+        "player": "aster",
+        "kind": "tap",
+        "at": [
+          0.73,
+          0.79
+        ]
+      }
+    ]
+  },
+  {
+    "label": "P07-heal-range",
+    "player": "bramble",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.765,
+          0.655
+        ]
+      },
+      {
+        "kind": "hold",
+        "at": [
+          0.797,
+          0.79
+        ],
+        "seconds": 2
+      },
+      {
+        "player": "aster",
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "player": "aster",
+        "kind": "tap",
+        "at": [
+          0.765,
+          0.655
+        ]
+      },
+      {
+        "player": "aster",
+        "kind": "hold",
+        "at": [
+          0.797,
+          0.79
+        ],
+        "seconds": 2
+      }
+    ]
+  },
+  {
+    "label": "P08-joystick-approach",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "drag",
+        "from": [
+          0.158,
+          0.715
+        ],
+        "to": [
+          0.166,
+          0.79
+        ],
+        "seconds": 1
+      },
+      {
+        "kind": "hold",
+        "at": [
+          0.868,
+          0.77
+        ],
+        "seconds": 1.5
+      },
+      {
+        "kind": "hold",
+        "at": [
+          0.797,
+          0.79
+        ],
+        "seconds": 1.5
+      },
+      {
+        "player": "bramble",
+        "kind": "drag",
+        "from": [
+          0.158,
+          0.715
+        ],
+        "to": [
+          0.166,
+          0.79
+        ],
+        "seconds": 1
+      },
+      {
+        "player": "bramble",
+        "kind": "hold",
+        "at": [
+          0.868,
+          0.77
+        ],
+        "seconds": 1.5
+      },
+      {
+        "player": "bramble",
+        "kind": "hold",
+        "at": [
+          0.797,
+          0.79
+        ],
+        "seconds": 1.5
+      }
+    ]
+  },
+  {
+    "label": "P09-cache-approach",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "drag",
+        "from": [
+          0.158,
+          0.715
+        ],
+        "to": [
+          0.195,
+          0.715
+        ],
+        "seconds": 0.5
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.264,
+          0.75
+        ]
+      },
+      {
+        "player": "bramble",
+        "kind": "drag",
+        "from": [
+          0.158,
+          0.715
+        ],
+        "to": [
+          0.195,
+          0.715
+        ],
+        "seconds": 0.5
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.264,
+          0.75
+        ]
+      }
+    ]
+  },
+  {
+    "label": "P10-open-cards",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.46,
+          0.63
+        ]
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.46,
+          0.63
+        ]
+      }
+    ]
+  },
+  {
+    "label": "P11-equip-both",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.366,
+          0.65
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 0.4
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.65
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 1
+      }
+    ]
+  },
+  {
+    "label": "P12-enable-visible-drivers",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.85,
+          0.876
+        ]
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "player": "bramble",
+        "kind": "tap",
+        "at": [
+          0.85,
+          0.876
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 8
+      }
+    ]
+  },
+  {
+    "label": "P13-aster-driver-precise",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.1
+        ]
+      },
+      {
+        "kind": "hold",
+        "at": [
+          0.842,
+          0.884
+        ],
+        "seconds": 0.15
+      },
+      {
+        "kind": "wait",
+        "seconds": 8
+      }
+    ]
+  },
+  {
+    "label": "P14-manual-rematch",
+    "player": "aster",
+    "steps": [
+      {
+        "kind": "tap",
+        "at": [
+          0.5,
+          0.05
+        ]
+      },
+      {
+        "kind": "tap",
+        "at": [
+          0.443,
+          0.69
+        ]
+      },
+      {
+        "kind": "wait",
+        "seconds": 5
+      }
+    ]
+  }
+]
