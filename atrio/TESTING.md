@@ -80,7 +80,7 @@ Use the production preview in a maximized Chrome window.
    and confirm edited project geometry persists. Restore the fixture, then
    **File → Open project file** and select the saved file. Edits return.
 10. Try invalid JSON import: a visible rejection appears and current geometry
-    remains unchanged. Search Navigator for an element name and select it.
+    remains unchanged. Search Navigator for a view label such as Roof and select it.
     Open and dismiss Help/Element Settings using Escape; check keyboard focus.
 11. Restore a clean campus, return to Axonometry / All elements / Surfaces /
     Afternoon. Capture a full uncropped PNG and an annotated WebM recording.
@@ -88,12 +88,38 @@ Use the production preview in a maximized Chrome window.
 
 ## Results
 
-Lint and typecheck pass; all 11 programmatic tests pass; the production build
-passes; npm audit reports zero vulnerabilities. Vite reports a bundle-size
-advisory for the Three.js application. The first browser run passed the editing,
-history, story/filter, export and persistence sequence. It found compact-layout
-overflow, a missing favicon and decorative wall meshes crossing door openings.
-Those fixes await the final production browser retest.
+Verified on 2026-09-15. Clean `npm ci`, lint, typecheck, all 11 programmatic tests,
+production build and npm audit pass (zero vulnerabilities). Vite reports a
+bundle-size advisory for the Three.js application.
+
+Production Chrome acceptance passed on application commit
+`092f17f44c18a55eb7b313db2e2c253dd35102bf`:
+
+- Default and selected states at 1280×800, 1440×900 and 1920×1080; Quick Options
+  remained visible and functional.
+- Orbit, zoom, Fit, wall/door/slab editing, material undo/redo, linked plan/3D
+  selection, camera/cutaway/appearance/layer changes and story navigation.
+- A 2.8m hosted door remained clear through timber slats and glass transoms.
+  Duplicate placement was rejected; movement/rotation preserved host linkage.
+- Downloaded SVG dimensions were 880×780, 440×390 and 176×156mm at the three
+  scales, with edited dimensions and active story/filter metadata.
+- Save28 → reload28 → reset25 → Open28 reproduced the exact edited project.
+  Malformed JSON was rejected without changing the project.
+- View-label search, dialog keyboard focus wrapping, Escape dismissal and focus
+  restoration. Navigator does not search element names.
+- Local favicon returned HTTP200. No captured JavaScript exceptions, console
+  errors or failed assets; nine Chromium software-WebGL warnings remained.
+- Full uncropped 1920×1080 PNG and annotated VP9 WebM captured. The 2m45s
+  annotated recording and 11m58s full-speed recording both decoded without errors.
+
+The saved test host was 8×3.6m with Terracotta after separate Timber/Glass
+door-clearance checks. The earlier run's 4m-height edit was not repeated in the
+final recording. Hardware-GPU performance was not measured. The browser was
+returned to the clean 25-element campus.
+
+The attached acceptance report contains the actual interaction sequence,
+state/file checks and evidence inventory. Evidence lives outside committed
+source under `.devin/clone-this/atrio/evidence/`.
 
 ## Reference and parity boundaries
 

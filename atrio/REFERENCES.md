@@ -36,7 +36,7 @@ Inspected 15 September 2026. Single reference version: Archicad 28, Internationa
 
 - Route `/`: all local workspace states; model and plan tabs share elements.
 - Toolbox: select, wall, slab, door; other native object families explicitly disabled.
-- Navigator: story navigation and axonometric/perspective views; actual name search.
+- Navigator: story navigation and axonometric/perspective views; view-label search.
 - Quick Options: layer combination, model appearance, scale, and sun preset.
 - Local model: editable building primitives, dimensional units in metres,
   linked wall openings, transactions, undo/redo, strict project import/export.
