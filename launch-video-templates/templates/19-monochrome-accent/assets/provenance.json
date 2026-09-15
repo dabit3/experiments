@@ -1,0 +1,98 @@
+[
+  {
+    "file": "phone-maze.png",
+    "source": "devin-web-14.png",
+    "crop": [
+      700,
+      250,
+      550,
+      1100
+    ],
+    "pixels_retained_at_original_rgb": 22534,
+    "colored_pixels_desaturated": 93185,
+    "retained_hue_degrees": [
+      194,
+      224
+    ]
+  },
+  {
+    "file": "phone-wisp.png",
+    "source": "devin-web-10.png",
+    "crop": [
+      684,
+      236,
+      576,
+      1184
+    ],
+    "pixels_retained_at_original_rgb": 15349,
+    "colored_pixels_desaturated": 7938,
+    "retained_hue_degrees": [
+      194,
+      224
+    ]
+  },
+  {
+    "file": "phone-charts.png",
+    "source": "devin-web-18.png",
+    "crop": [
+      680,
+      236,
+      580,
+      1186
+    ],
+    "pixels_retained_at_original_rgb": 558160,
+    "colored_pixels_desaturated": 64498,
+    "retained_hue_degrees": [
+      194,
+      224
+    ]
+  },
+  {
+    "file": "native-review.png",
+    "source": "devin-web-18.png",
+    "crop": [
+      0,
+      0,
+      2978,
+      1626
+    ],
+    "pixels_retained_at_original_rgb": 1588987,
+    "colored_pixels_desaturated": 603683,
+    "retained_hue_degrees": [
+      194,
+      224
+    ]
+  },
+  {
+    "file": "wisp-review.png",
+    "source": "devin-web-10.png",
+    "crop": [
+      1948,
+      140,
+      1042,
+      1484
+    ],
+    "pixels_retained_at_original_rgb": 127030,
+    "colored_pixels_desaturated": 3984,
+    "retained_hue_degrees": [
+      194,
+      224
+    ]
+  },
+  {
+    "file": "mac-session.png",
+    "source": "devin-web-13.png",
+    "crop": [
+      585,
+      660,
+      1980,
+      590
+    ],
+    "pixels_retained_at_original_rgb": 0,
+    "colored_pixels_desaturated": 0,
+    "retained_hue_degrees": [
+      194,
+      224
+    ]
+  }
+]
