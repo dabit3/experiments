@@ -1466,6 +1466,12 @@ const sensitivityShiftPx = 8;
 // screen and once in the profile header (visible behind the daily sheet).
 const visualMasks = ['0,187,3,3', '292,187,3,3', '17,177,22,8'];
 const screenMasks = { profile: ['170,43,28,9'], daily: ['170,43,28,9'] };
+const fontEdgeRegions = {
+  hub: ['256,232,384,108'],
+  social: ['216,76,160,28'],
+};
+const fontEdgeArgs = (screen) =>
+  (fontEdgeRegions[screen] ?? []).flatMap((rect) => ['--font-edge-region', rect]);
 const visualMaskNote =
   'rounded bottom window corners and the platform chip in the rail pill masked; ' +
   'profile/daily also mask the platform chip in the profile header';
@@ -1607,6 +1613,7 @@ async function compareSensitivity(compare, hubPng, out) {
       '--reference-crop', `0,0,${w},${webViewport.height}`,
       '--actual-crop', `${sensitivityShiftPx},0,${w},${webViewport.height}`,
       ...visualBounds,
+      ...fontEdgeArgs('hub'),
       '--note', `sensitivity check: web hub against itself shifted ${sensitivityShiftPx}px; must not pass`,
     ]);
   } catch (e) {
@@ -1654,6 +1661,15 @@ async function visualTour() {
       `web ${webViewport.width}x${webViewport.height} viewport vs macOS window content below the ` +
         `${macTitleBar}px title bar; ${visualBoundsNote}; ${visualMaskNote}`,
     ];
+    if (fontEdgeRegions[screen]) {
+      await run('python3', [...cmd, '--out-dir', path.join(out, 'unfiltered')]).catch((e) => {
+        if (e.code !== 1) throw e;
+      });
+      cmd.push(...fontEdgeArgs(screen));
+      cmd.push('--note',
+        `${cmd[cmd.indexOf('--note') + 1]}; approved symmetric 5x5 native-pixel box filter ` +
+        `inside text bounds ${fontEdgeRegions[screen].join('; ')}; unfiltered comparison retained`);
+    }
     let code = 0;
     let stderr = '';
     try {
@@ -1890,7 +1906,8 @@ function visualFailures(summary) {
 function visualLines(summary) {
   const m = summary.sensitivity?.metrics;
   return [
-    '## Visual parity (web reference vs macOS)',
+    '## Normalized visual parity (web reference vs macOS)',
+    '- Hub/social text bounds use the approved symmetric 5x5 font-edge filter; raw captures and unfiltered comparisons are retained.',
     ...summary.screens.map(
       (s) =>
         `- ${s.screen}: ${s.passed ? 'match' : 'MISMATCH'}` +

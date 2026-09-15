@@ -389,11 +389,13 @@ if (report.visual?.screens?.length) {
     })
     .join('');
   const passed = v.screens.filter((s) => s.passed).length;
+  const fontFiltered = v.screens.some((s) => s.metrics?.font_edge_normalization?.regions?.length);
   await stillPart(
     await render(
       header(`Chapter 1 · <b>Hub & visual parity</b>`) + `<div class="pairs">${pairs}</div>` +
         caption(1, `Same signed-in player, same hub screens: ${v.reference} (reference) vs ${v.actual}`,
-          `${passed}/${v.screens.length} screens match after normalisation (window chrome cropped, platform chip masked)`),
+          `${passed}/${v.screens.length} normalized matches · chrome cropped, platform chip masked` +
+          (fontFiltered ? ' · hub/social font edges filtered; raw evidence retained' : '')),
       path.join(work, 'parity.png'), { solid: true },
     ),
     7, 'Hub & visual parity', 'web vs macOS hub tour comparison',
