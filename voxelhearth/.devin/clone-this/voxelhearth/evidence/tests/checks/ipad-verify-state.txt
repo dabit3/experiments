@@ -1,0 +1,59 @@
+Completion gate failed:
+- status must be active or complete. Blocked and paused runs cannot pass.
+- blockers must be an empty array before completion.
+- items[2].verified_revision does not match the current revision.
+- items[3].verified_revision does not match the current revision.
+- items[4].verified_revision does not match the current revision.
+- items[5].verified_revision does not match the current revision.
+- items[6].verified_revision does not match the current revision.
+- items[7].verified_revision does not match the current revision.
+- items[8].verified_revision does not match the current revision.
+- items[9].verified_revision does not match the current revision.
+- items[10].verified_revision does not match the current revision.
+- items[11].verified_revision does not match the current revision.
+- items[12].verified_revision does not match the current revision.
+- items[13].verified_revision does not match the current revision.
+- items[14].verified_revision does not match the current revision.
+- items[15].verified_revision does not match the current revision.
+- items[16].verified_revision does not match the current revision.
+- items[17].verified_revision does not match the current revision.
+- items[18].verified_revision does not match the current revision.
+- items[19].verified_revision does not match the current revision.
+- items[20].verified_revision does not match the current revision.
+- items[21].verified_revision does not match the current revision.
+- items[22].verified_revision does not match the current revision.
+- items[23].status must be 'verified'.
+- items[23].verified_revision does not match the current revision.
+- items[24].verified_revision does not match the current revision.
+- items[25].verified_revision does not match the current revision.
+- items[26].verified_revision does not match the current revision.
+- items[27].status must be 'verified'.
+- items[27].verified_revision does not match the current revision.
+- items[28].verified_revision does not match the current revision.
+- items[29].verified_revision does not match the current revision.
+- items[30].verified_revision does not match the current revision.
+- items[31].status must be 'verified'.
+- items[31].verified_revision does not match the current revision.
+- items[32].verified_revision does not match the current revision.
+- items[33].verified_revision does not match the current revision.
+- items[34].verified_revision does not match the current revision.
+- items[35].verified_revision does not match the current revision.
+- items[36].verified_revision does not match the current revision.
+- items[31].comparison must be an object.
+- audits[0].verified_revision does not match the current revision.
+- audits[1].verified_revision does not match the current revision.
+- audits[2].verified_revision does not match the current revision.
+- audits[3].verified_revision does not match the current revision.
+- audits[4].verified_revision does not match the current revision.
+- audits[5].verified_revision does not match the current revision.
+- audits[6].verified_revision does not match the current revision.
+- audits[7].verified_revision does not match the current revision.
+- audits[8].verified_revision does not match the current revision.
+- audits[9].verified_revision does not match the current revision.
+- checks[0].verified_revision does not match the current revision.
+- checks[1].verified_revision does not match the current revision.
+- checks[2].verified_revision does not match the current revision.
+- checks[3].verified_revision does not match the current revision.
+- checks[4].verified_revision does not match the current revision.
+- sweeps[2].revision does not match the current revision.
+- sweeps[3].revision does not match the current revision.
