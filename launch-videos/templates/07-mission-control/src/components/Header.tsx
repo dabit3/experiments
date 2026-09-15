@@ -15,7 +15,7 @@ type Props = {
 
 export const Header: React.FC<Props> = ({ rect, brand, content, stage, opacity }) => {
   const stageIndex = content.stages.findIndex((s) => s.id === stage);
-  const logoH = 22;
+  const logoH = 36;
 
   return (
     <div
@@ -31,16 +31,16 @@ export const Header: React.FC<Props> = ({ rect, brand, content, stage, opacity }
         opacity,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
         <Img
           src={staticFile(brand.logoDark)}
           style={{ height: logoH, width: (logoH * 2984) / 1024, display: "block" }}
         />
-        <div style={{ width: 1, height: 20, background: brand.consoleLine }} />
+        <div style={{ width: 1, height: 28, background: brand.consoleLine }} />
         <span
           style={{
             fontFamily: brand.fontFamily,
-            fontSize: 18,
+            fontSize: 26,
             fontWeight: 500,
             letterSpacing: -0.2,
             color: brand.white,
@@ -50,7 +50,7 @@ export const Header: React.FC<Props> = ({ rect, brand, content, stage, opacity }
         </span>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
         {content.stages.map((s, i) => {
           const done = stageIndex >= 0 && i < stageIndex;
           const current = i === stageIndex;
@@ -58,19 +58,19 @@ export const Header: React.FC<Props> = ({ rect, brand, content, stage, opacity }
           return (
             <React.Fragment key={s.id}>
               {i > 0 ? (
-                <div style={{ width: 16, height: 1, background: brand.consoleLine }} />
+                <div style={{ width: 20, height: 1, background: brand.consoleLine }} />
               ) : null}
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <div
                   style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: 3,
+                    width: 8,
+                    height: 8,
+                    borderRadius: 4,
                     background: current ? brand.accent : done ? brand.inkMuted : "transparent",
                     boxShadow: current || done ? "none" : `0 0 0 1px ${brand.inkSubtle}`,
                   }}
                 />
-                <MonoLabel brand={brand} color={color} size={13}>
+                <MonoLabel brand={brand} color={color} size={16}>
                   {s.label}
                 </MonoLabel>
               </div>

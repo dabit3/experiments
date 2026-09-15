@@ -4,7 +4,7 @@ import type { Bay, BayStatus, Brand, MediaSlot, StatusLabels } from "../schema";
 import { Media } from "./Media";
 import { MonoLabel, Panel } from "./Panel";
 
-export const BAY_HEADER = 40;
+export const BAY_HEADER = 48;
 
 type Props = {
   bays: Bay[];
@@ -31,8 +31,8 @@ const StatusChip: React.FC<{ status: BayStatus; brand: Brand; labels: StatusLabe
         display: "flex",
         alignItems: "center",
         gap: 8,
-        height: 22,
-        padding: "0 10px",
+        height: 28,
+        padding: "0 12px",
         borderRadius: 8,
         background: live ? brand.accent : "transparent",
         boxShadow: live ? "none" : `inset 0 0 0 1px ${brand.consoleLine}`,
@@ -40,7 +40,7 @@ const StatusChip: React.FC<{ status: BayStatus; brand: Brand; labels: StatusLabe
     >
       <MonoLabel
         brand={brand}
-        size={11}
+        size={14}
         color={live ? brand.white : status === "held" ? brand.inkMuted : brand.inkSubtle}
       >
         {labels[status]}
@@ -92,10 +92,10 @@ export const Bays: React.FC<Props> = ({
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <MonoLabel brand={brand} color={brand.inkMuted} size={12}>
+                <MonoLabel brand={brand} color={brand.inkMuted} size={15}>
                   {String(i + 1).padStart(2, "0")}
                 </MonoLabel>
-                <MonoLabel brand={brand} color={brand.white} size={12}>
+                <MonoLabel brand={brand} color={brand.white} size={15}>
                   {bay.label}
                 </MonoLabel>
               </div>

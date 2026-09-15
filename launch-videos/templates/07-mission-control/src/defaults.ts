@@ -34,15 +34,15 @@ export const defaultProps: LaunchProps = {
     headline: "Devin now runs in a Mac VM",
     headlineAccent: "Mac VM",
     subhead:
-      "Build, run, and test Mac and iOS apps in a cloud Mac — with a live iPhone Simulator in your session.",
+      "Build, run, and test Mac and iOS apps in a cloud Mac, with a live iPhone Simulator in your session.",
     captions: [
-      "Pick macOS when you start a session — same price as Linux.",
+      "Pick macOS when you start a session, same price as Linux.",
       "Devin builds the app in Xcode and runs the full test suite.",
       "It taps, types, and scrolls through the app like a person.",
-      "Watch it live in the iPhone Simulator tab — and tap in yourself.",
+      "Watch it live in the iPhone Simulator tab, and tap in yourself.",
       "Reproduce a bug, fix it, and prove the fix on screen.",
       "Check iPhone and iPad sizes, dark mode, and orientations.",
-      "Ship with a PR that shows the app working — not a 20-minute CI wait.",
+      "Ship with a PR that shows the app working, not a 20-minute CI wait.",
     ],
     useCases: [
       "Build & test a feature",
@@ -84,10 +84,10 @@ export const defaultProps: LaunchProps = {
     },
     // Primary-display sources, one per inspected stage.
     pick: {
-      src: "screenshots/devin-web-4.png",
+      src: "screenshots/devin-web-5.png",
       kind: "image",
-      aspectRatio: 2988 / 1622,
-      crop: { x: 0.14, y: 0.28, w: 0.72, h: 0.56 },
+      aspectRatio: 2988 / 1624,
+      crop: { x: 0.18, y: 0.3, w: 0.64, h: 0.48 },
     },
     build: {
       src: "recordings/devin-working-4.mp4",
@@ -100,7 +100,7 @@ export const defaultProps: LaunchProps = {
       kind: "video",
       aspectRatio: 1920 / 1148,
       startFrom: 60,
-      crop: { x: 0.07, y: 0.13, w: 0.29, h: 0.727 },
+      crop: { x: 0.152, y: 0.13, w: 0.21, h: 0.727 },
     },
     verify: {
       src: "recordings/devin-testing-2.mp4",
@@ -128,13 +128,13 @@ export const defaultProps: LaunchProps = {
   layout: {
     safeMargin: 96,
     gutter: 24,
-    headerHeight: 48,
-    captionHeight: 120,
+    headerHeight: 60,
+    captionHeight: 136,
     primaryFraction: 0.69,
     baysSide: "right",
     panelRadius: 16,
-    transitionFrames: 14,
-    consolidateFrames: 22,
+    transitionFrames: 8,
+    consolidateFrames: 14,
   },
   scenes: [
     {

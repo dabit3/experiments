@@ -37,9 +37,9 @@ export const CaptionBar: React.FC<Props> = ({
         opacity,
       }}
     >
-      <div style={{ height: 13, display: "flex", alignItems: "center" }}>
+      <div style={{ height: 17, display: "flex", alignItems: "center" }}>
         {useCase ? (
-          <MonoLabel brand={brand} color={brand.inkMuted}>
+          <MonoLabel brand={brand} color={brand.inkMuted} size={17}>
             {useCase}
           </MonoLabel>
         ) : null}
@@ -47,14 +47,14 @@ export const CaptionBar: React.FC<Props> = ({
       <div
         style={{
           fontFamily: brand.fontFamily,
-          fontSize: 30,
-          lineHeight: "38px",
-          letterSpacing: -0.5,
+          fontSize: 40,
+          lineHeight: "50px",
+          letterSpacing: -0.7,
           fontWeight: 400,
           color: brand.white,
           opacity: progress,
           transform: `translateY(${(1 - progress) * 10}px)`,
-          minHeight: 38,
+          minHeight: 50,
         }}
       >
         {caption ?? ""}

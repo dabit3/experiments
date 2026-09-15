@@ -1,4 +1,4 @@
-# 07 — Mission Control
+# 07 Mission Control
 
 A reusable 16:9 Remotion launch-video template organised like a control room:
 one large **primary display**, three fixed **contextual bays** (Request, Active
@@ -27,17 +27,17 @@ npm run still      # -> out/poster.png  (frame 1245, the hero lockup)
 Media is served from `launch-videos/assets/` via `Config.setPublicDir("../../assets")`
 and referenced with `staticFile()`. Nothing is copied into this directory.
 
-## Scene table (default props — 1350 frames / 45s)
+## Scene table (default props, 1350 frames / 45s)
 
 | # | Scene id   | Frames | Seconds | Primary display                                   | Active bay  | Stage strip | Caption |
 |---|------------|-------:|--------:|---------------------------------------------------|-------------|-------------|---------|
-| 1 | `open`     | 150    | 0–5     | Title card: eyebrow, headline, subhead            | —           | none        | —       |
-| 2 | `request`  | 180    | 5–11    | `devin-web-4.png` — OS picker with macOS         | Request     | Request     | 1       |
-| 3 | `build`    | 210    | 11–18   | `devin-working-4.mp4` — Devin working in Xcode    | Active work | Build       | 2       |
+| 1 | `open`     | 150    | 0–5     | Title card: eyebrow, headline, subhead            | none        | none        | none    |
+| 2 | `request`  | 180    | 5–11    | `devin-web-5.png`: OS picker, macOS selected        | Request     | Request     | 1       |
+| 3 | `build`    | 210    | 11–18   | `devin-working-4.mp4`: Devin working in Xcode   | Active work | Build       | 2       |
 | 4 | `simulate` | 270    | 18–27   | `androidios.mp4` cropped to the iPhone Simulator  | Active work | Run & test  | 3, 4    |
-| 5 | `verify`   | 240    | 27–35   | `devin-testing-2.mp4` — testing/verification tab  | Active work | Verify      | 5       |
-| 6 | `pr`       | 150    | 35–40   | `devin-web-12.png` — "Ready to merge" PR view     | Artifact    | PR          | 7       |
-| 7 | `hero`     | 150    | 40–45   | Hero lockup: logo, headline, CTA, outro           | —           | PR          | —       |
+| 5 | `verify`   | 240    | 27–35   | `devin-testing-2.mp4`: testing/verification tab | Active work | Verify      | 5       |
+| 6 | `pr`       | 150    | 35–40   | `devin-web-12.png`: "Ready to merge" PR view    | Artifact    | PR          | 7       |
+| 7 | `hero`     | 150    | 40–45   | Hero lockup: logo, headline, CTA, outro           | none        | PR          | none    |
 
 Bay defaults: Request → `devin-web-1.png` (prompt box with macOS pill),
 Active work → `devin-web-9.png` (Wisp Simulator embed + test counts),
@@ -64,7 +64,7 @@ Set `startFrom` in source frames (30fps) to choose the playback range.
 
 ## Swapping in another launch
 
-1. Edit `defaultProps` in `src/defaults.ts` — replace `content.*` with the new
+1. Edit `defaultProps` in `src/defaults.ts`; replace `content.*` with the new
    approved copy, point `media.*` at the new screenshots/recordings under
    `launch-videos/assets/`, adjust crops/`startFrom`, and retime `scenes`.
 2. Or leave the code alone and pass a JSON file:
@@ -80,7 +80,7 @@ Headings/body default to `"NB International Pro", "Inter", …`. Inter is loaded
 from `@remotion/google-fonts/Inter`, Geist Mono from
 `@remotion/google-fonts/GeistMono`. To use the licensed NB International Pro,
 drop the files in `launch-videos/assets/fonts/` and load them with
-`@font-face` (e.g. in `src/fonts.ts` via `staticFile("fonts/…")`) — the
+`@font-face` (e.g. in `src/fonts.ts` via `staticFile("fonts/…")`); the
 `brand.fontFamily` stack already lists it first, so nothing else changes.
 
 ## Decisions made where the brief was open

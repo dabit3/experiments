@@ -68,23 +68,23 @@ export const TitleCard: React.FC<TitleProps> = ({ brand, content, width, height,
       }}
     >
       <div style={{ opacity: steps[0], transform: rise(steps[0]) }}>
-        <MonoLabel brand={brand} color={brand.accent} size={14}>
+        <MonoLabel brand={brand} color={brand.accent} size={18}>
           {content.eyebrow}
         </MonoLabel>
       </div>
       <div style={{ opacity: steps[1], transform: rise(steps[1]), maxWidth: width - pad * 2 }}>
-        <Headline brand={brand} content={content} size={84} align="left" />
+        <Headline brand={brand} content={content} size={100} align="left" />
       </div>
       <div
         style={{
           opacity: steps[2],
           transform: rise(steps[2]),
           fontFamily: brand.fontFamily,
-          fontSize: 28,
-          lineHeight: "38px",
-          letterSpacing: -0.4,
+          fontSize: 34,
+          lineHeight: "46px",
+          letterSpacing: -0.5,
           color: brand.inkMuted,
-          maxWidth: Math.min(880, width - pad * 2),
+          maxWidth: Math.min(1000, width - pad * 2),
         }}
       >
         {content.subhead}
@@ -104,7 +104,7 @@ type HeroProps = {
 /** Closing lockup: logo, headline, CTA, outro line. */
 export const HeroCard: React.FC<HeroProps> = ({ brand, content, width, height, steps }) => {
   const rise = (p: number) => `translateY(${(1 - p) * 14}px)`;
-  const logoH = 40;
+  const logoH = 64;
   return (
     <div
       style={{
@@ -127,8 +127,8 @@ export const HeroCard: React.FC<HeroProps> = ({ brand, content, width, height, s
           style={{ height: logoH, width: (logoH * 2984) / 1024, display: "block" }}
         />
       </div>
-      <div style={{ opacity: steps[1], transform: rise(steps[1]), maxWidth: 1200 }}>
-        <Headline brand={brand} content={content} size={88} align="center" />
+      <div style={{ opacity: steps[1], transform: rise(steps[1]), maxWidth: 1400 }}>
+        <Headline brand={brand} content={content} size={108} align="center" />
       </div>
       <div
         style={{
@@ -142,13 +142,13 @@ export const HeroCard: React.FC<HeroProps> = ({ brand, content, width, height, s
       >
         <div
           style={{
-            height: 52,
-            padding: "0 22px",
+            height: 64,
+            padding: "0 28px",
             borderRadius: 2,
             background: brand.white,
             color: brand.ink,
             fontFamily: brand.fontFamily,
-            fontSize: 20,
+            fontSize: 26,
             fontWeight: 500,
             letterSpacing: -0.2,
             display: "flex",
@@ -160,7 +160,7 @@ export const HeroCard: React.FC<HeroProps> = ({ brand, content, width, height, s
         <span
           style={{
             fontFamily: brand.monoFontFamily,
-            fontSize: 18,
+            fontSize: 22,
             color: brand.inkMuted,
           }}
         >
@@ -172,8 +172,8 @@ export const HeroCard: React.FC<HeroProps> = ({ brand, content, width, height, s
           opacity: steps[3],
           transform: rise(steps[3]),
           fontFamily: brand.fontFamily,
-          fontSize: 24,
-          letterSpacing: -0.3,
+          fontSize: 30,
+          letterSpacing: -0.4,
           color: brand.inkMuted,
         }}
       >

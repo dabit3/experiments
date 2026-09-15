@@ -105,10 +105,10 @@ export const Launch: React.FC<LaunchProps> = (props) => {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <MonoLabel brand={brand} color={brand.inkMuted} size={12}>
+            <MonoLabel brand={brand} color={brand.inkMuted} size={15}>
               00
             </MonoLabel>
-            <MonoLabel brand={brand} color={brand.white} size={12}>
+            <MonoLabel brand={brand} color={brand.white} size={15}>
               Primary display
             </MonoLabel>
           </div>
@@ -116,21 +116,21 @@ export const Launch: React.FC<LaunchProps> = (props) => {
             {scene.speedBadge ? (
               <div
                 style={{
-                  height: 22,
-                  padding: "0 10px",
+                  height: 28,
+                  padding: "0 12px",
                   borderRadius: 8,
                   boxShadow: `inset 0 0 0 1px ${brand.consoleLine}`,
                   display: "flex",
                   alignItems: "center",
                 }}
               >
-                <MonoLabel brand={brand} color={brand.white} size={11}>
+                <MonoLabel brand={brand} color={brand.white} size={14}>
                   {content.speedBadge}
                 </MonoLabel>
               </div>
             ) : null}
             {inspecting ? (
-              <MonoLabel brand={brand} color={brand.inkMuted} size={12}>
+              <MonoLabel brand={brand} color={brand.inkMuted} size={15}>
                 {inspecting}
               </MonoLabel>
             ) : null}
