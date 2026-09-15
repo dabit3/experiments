@@ -22,7 +22,7 @@ npm run still          # out/poster.png (frame 470)
 | # | id          | Frames | Time        | Footage (`assets/`)                                          | Caption / label                                     |
 |---|-------------|--------|-------------|--------------------------------------------------------------|-----------------------------------------------------|
 | 1 | `statement` | 75     | 0.0 – 2.5 s | —                                                            | Lockup · eyebrow · headline (accent “Mac VM”) · subhead |
-| 2 | `request`   | 150    | 2.5 – 7.5 s | `devin-web-1.png` → match cut → `devin-web-4.png` (OS picker) | 01 · Request — “Pick macOS when you start a session…” |
+| 2 | `request`   | 150    | 2.5 – 7.5 s | `devin-web-1.png` → match cut → `devin-web-5.png` (Virtual environment → macOS ✓) | 01 · Request — “Pick macOS when you start a session…” |
 | 3 | `build`     | 144    | 7.5 – 12.3 s| `devin-working-4.mp4` at 3× (badge shown)                     | 02 · Build · `3x` — “Devin builds the app in Xcode…” |
 | 4 | `simulator` | 210    | 12.3 – 19.3 s| `androidios.mp4`, cropped to the iPhone Simulator, 1×        | 03 · Run & test (right column) — “It taps, types, and scrolls…” |
 | 5 | `live`      | 165    | 19.3 – 24.8 s| `devin-web-14.png` (testing recording, 8 passed / 0 failed)  | 03 · Run & test — “Watch it live in the iPhone Simulator tab…” |
@@ -71,8 +71,11 @@ retime scenes and the composition length follows.
   template uses `devin-web-14` (Afterhours Maze, 8 passed / 0 failed) for the “watch it live”
   beat and `devin-web-12` for the delivered result so no beat shows failing checks.
 - `androidios.mp4` shows an iPhone Simulator beside an Android emulator; it is cropped to
-  the iPhone side (with the Simulator menu bar for context) because the launch is
-  iOS-only. The crop is a prop.
+  a column centered on the iPhone (with the Simulator menu bar for context) because the
+  launch is iOS-only. The crop is a prop.
+- `devin-web-4.png` (the flat OS picker) has Ubuntu hover-highlighted with macOS only
+  check-marked, which reads as the wrong selection; the request beat uses `devin-web-5.png`
+  instead, where the Virtual environment row is highlighted and macOS is checked.
 - The speed badge lives in the caption line (next to the stage label) rather than over the
   footage, so it never covers product UI.
 - `useCases` is carried in props for future scenes but not rendered by default; the five

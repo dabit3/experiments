@@ -61,7 +61,7 @@ export const defaultMedia: LaunchProps["media"] = {
     crop: { x: 0.15, y: 0.2, w: 0.7, h: 0.7 },
   },
   osPicker: {
-    src: "screenshots/devin-web-4.png",
+    src: "screenshots/devin-web-5.png",
     kind: "image",
     width: 2988,
     height: 1622,
@@ -83,8 +83,8 @@ export const defaultMedia: LaunchProps["media"] = {
     startFrom: 90,
     playbackRate: 1,
     // The recording shows a Mac desktop with an iPhone Simulator (left) and an Android
-    // emulator (right); crop to the iPhone half of the desktop for the iOS beat.
-    crop: { x: 0.07, y: 0.127, w: 0.29, h: 0.66 },
+    // emulator (right); crop to a column centered on the iPhone for the iOS beat.
+    crop: { x: 0.152, y: 0.127, w: 0.208, h: 0.66 },
   },
   live: {
     src: "screenshots/devin-web-14.png",
