@@ -33,7 +33,7 @@ Nothing is copied into this directory.
 | 2 | `pick`      | `spread`  | 135 (4.5s)  | wipe   | `screenshots/devin-web-4.png`: OS picker open (Ubuntu / macOS / Windows) | caption 0 |
 | 3 | `work`      | `full`    | 180 (6.0s)  | cut    | `recordings/devin-working-4.mp4`: Devin working in a session | caption 1 in a narrow left column |
 | 4 | `simulator` | `spread`  | 135 (4.5s)  | wipe   | `screenshots/devin-web-10.png`: iPhone Simulator + "It should…" checklist | caption 2, margin word "Taps." |
-| 5 | `live`      | `full`    | 180 (6.0s)  | cut    | `recordings/androidios.mp4`: live iPhone Simulator (cropped to the iPhone half) | caption 3, margin word "Live." |
+| 5 | `live`      | `full`    | 180 (6.0s)  | cut    | `recordings/androidios.mp4`: live iPhone Simulator (cropped to the two centered devices, wallpaper bands trimmed) | caption 3, margin word "Live." |
 | 6 | `sizes`     | `dense`   | 135 (4.5s)  | wipe   | `screenshots/devin-web-17.png` (six iPhone screenshots incl. dark mode) + `screenshots/devin-web-19.png` (iPad Pro) | caption 5 |
 | 7 | `pr`        | `spread`  | 150 (5.0s)  | cut    | `screenshots/devin-web-12.png`: PR "Ready to merge" panel | caption 6, margin word "Shipped." |
 | 8 | `closing`   | `closing` | 150 (5.0s)  | cut    | `screenshots/devin-web-8.png`: merged PR header (the actual outcome) | `outroLine`, CTA button + URL, on `brand.black` |
@@ -101,8 +101,8 @@ Alternatively pass a props JSON at render time:
 
 - The cover shows the prompt box from `devin-web-1.png` cropped tight so the
   macOS selector is readable at cover scale, rather than the full window.
-- `androidios.mp4` is cropped to its left half so only the iPhone Simulator
-  is shown (the Android emulator half is out of scope for the Mac launch).
+- `androidios.mp4` is cropped to the two device windows, centered, with the
+  menu bar, dock and wallpaper bands above and below the desktop trimmed off.
 - The closing "actual outcome" is the merged-PR header from `devin-web-8.png`;
   the PR-review scene uses the "Ready to merge" panel from `devin-web-12.png`.
 - Margin words ("Taps.", "Live.", "Shipped.") describe visible actions in the

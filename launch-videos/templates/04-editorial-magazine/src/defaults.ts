@@ -91,7 +91,7 @@ export const defaultProps: LaunchProps = {
       kind: "video",
       aspect: REC_SIDE_BY_SIDE,
       startFrom: 60,
-      crop: { x: 0.112, y: 0.108, w: 0.354, h: 0.594 },
+      crop: { x: 0.154, y: 0.158, w: 0.4, h: 0.612 },
     },
     // Six iPhone screenshots incl. dark mode, posted on the PR.
     sizes: {
