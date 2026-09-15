@@ -1,0 +1,58 @@
+;FFMETADATA1
+title=Brickfolk normalization review
+comment=BLOCKED overall; web/macOS subset passed
+[CHAPTER]
+TIMEBASE=1/1000
+START=0
+END=7000
+title=Overall status - blocked
+[CHAPTER]
+TIMEBASE=1/1000
+START=7000
+END=19000
+title=Failed four-client retry
+[CHAPTER]
+TIMEBASE=1/1000
+START=19000
+END=24000
+title=Web/macOS subset - Intro
+[CHAPTER]
+TIMEBASE=1/1000
+START=24000
+END=31000
+title=Web/macOS subset - Hub & visual parity
+[CHAPTER]
+TIMEBASE=1/1000
+START=31000
+END=36000
+title=Web/macOS subset - Lobby
+[CHAPTER]
+TIMEBASE=1/1000
+START=36000
+END=66400
+title=Web/macOS subset - Gameplay
+[CHAPTER]
+TIMEBASE=1/1000
+START=66400
+END=81400
+title=Web/macOS subset - Results
+[CHAPTER]
+TIMEBASE=1/1000
+START=81400
+END=91400
+title=Web/macOS subset - Brick Tycoon
+[CHAPTER]
+TIMEBASE=1/1000
+START=91400
+END=101400
+title=Web/macOS subset - Freeze Tag Arena
+[CHAPTER]
+TIMEBASE=1/1000
+START=101400
+END=107400
+title=Web/macOS subset - Verdict
+[CHAPTER]
+TIMEBASE=1/1000
+START=107400
+END=114400
+title=Android resume condition

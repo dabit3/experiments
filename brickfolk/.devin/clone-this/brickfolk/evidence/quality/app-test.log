@@ -16,9 +16,9 @@ Try `flutter pub outdated` for more information.
 00:00 +5: BrickfolkApp rejects an invalid name locally
 00:00 +6: BrickfolkApp lays out on a compact 320px phone without overflow
 00:00 +7: BrickfolkApp signed-in hub lays out on phone without errors
-00:00 +8: BrickfolkApp signed-in hub lays out on tablet without errors
-00:00 +9: BrickfolkApp signed-in hub lays out on desktop without errors
-00:00 +10: BrickfolkApp entering a room dismisses the pushed place details page
+00:01 +8: BrickfolkApp signed-in hub lays out on tablet without errors
+00:01 +9: BrickfolkApp signed-in hub lays out on desktop without errors
+00:01 +10: BrickfolkApp entering a room dismisses the pushed place details page
 00:01 +11: BrickfolkApp arcade hub supports a 320px viewport and enlarged text
 00:01 +12: BrickfolkApp forced dark theme applies
 00:01 +13: portrait Tag camera keeps corner spawns visible above touch controls

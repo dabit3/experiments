@@ -1,0 +1,226 @@
+{
+  "output": "review.mp4",
+  "durationSec": 88.4,
+  "chapters": [
+    {
+      "title": "Intro",
+      "start": 0,
+      "end": 5
+    },
+    {
+      "title": "Hub & visual parity",
+      "start": 5,
+      "end": 12
+    },
+    {
+      "title": "Lobby",
+      "start": 12,
+      "end": 17
+    },
+    {
+      "title": "Gameplay",
+      "start": 17,
+      "end": 47.4
+    },
+    {
+      "title": "Results",
+      "start": 47.4,
+      "end": 62.4
+    },
+    {
+      "title": "Brick Tycoon",
+      "start": 62.4,
+      "end": 72.4
+    },
+    {
+      "title": "Freeze Tag Arena",
+      "start": 72.4,
+      "end": 82.4
+    },
+    {
+      "title": "Verdict",
+      "start": 82.4,
+      "end": 88.4
+    }
+  ],
+  "segments": [
+    {
+      "type": "still",
+      "source": "review-parts/title.png",
+      "seconds": 5,
+      "chapter": "Intro",
+      "description": "title card"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/parity.png",
+      "seconds": 7,
+      "chapter": "Hub & visual parity",
+      "description": "web vs macOS hub tour comparison"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/lobby.png",
+      "seconds": 5,
+      "chapter": "Lobby",
+      "description": "lobby screenshots"
+    },
+    {
+      "type": "clip",
+      "chapter": "Gameplay",
+      "caption": "Countdown, then Skyline Obby starts on all clients at the same server tick",
+      "speed": 1,
+      "wallClock": {
+        "from": "2026-09-15T22:19:23.614Z",
+        "to": "2026-09-15T22:19:35.634Z"
+      },
+      "seconds": 12.02,
+      "tiles": [
+        {
+          "platform": "web",
+          "source": "recording-web.webm",
+          "inSeconds": 3.901,
+          "box": {
+            "x": 48,
+            "y": 247,
+            "w": 904,
+            "h": 582
+          }
+        },
+        {
+          "platform": "macos",
+          "source": "recording-macos.mp4",
+          "inSeconds": 0.358,
+          "box": {
+            "x": 968,
+            "y": 235,
+            "w": 904,
+            "h": 606
+          }
+        }
+      ]
+    },
+    {
+      "type": "clip",
+      "chapter": "Gameplay",
+      "caption": "Scripted inputs drive every client through the course",
+      "note": "4× speed · server-authoritative simulation at 30 ticks/s",
+      "speed": 4,
+      "wallClock": {
+        "from": "2026-09-15T22:19:35.634Z",
+        "to": "2026-09-15T22:20:29.103Z"
+      },
+      "seconds": 13.36725,
+      "tiles": [
+        {
+          "platform": "web",
+          "source": "recording-web.webm",
+          "inSeconds": 15.921,
+          "box": {
+            "x": 48,
+            "y": 247,
+            "w": 904,
+            "h": 582
+          }
+        },
+        {
+          "platform": "macos",
+          "source": "recording-macos.mp4",
+          "inSeconds": 12.378,
+          "box": {
+            "x": 968,
+            "y": 235,
+            "w": 904,
+            "h": 606
+          }
+        }
+      ]
+    },
+    {
+      "type": "still",
+      "source": "review-parts/gameplay.png",
+      "seconds": 5,
+      "chapter": "Gameplay",
+      "description": "gameplay screenshots"
+    },
+    {
+      "type": "clip",
+      "chapter": "Results",
+      "caption": "Finish → results screen on every client",
+      "note": "Checksum 0604703a reported by all 2 clients and the server",
+      "speed": 1,
+      "wallClock": {
+        "from": "2026-09-15T22:20:29.103Z",
+        "to": "2026-09-15T22:20:39.103Z"
+      },
+      "seconds": 10,
+      "tiles": [
+        {
+          "platform": "web",
+          "source": "recording-web.webm",
+          "inSeconds": 69.39,
+          "box": {
+            "x": 48,
+            "y": 247,
+            "w": 904,
+            "h": 582
+          }
+        },
+        {
+          "platform": "macos",
+          "source": "recording-macos.mp4",
+          "inSeconds": 65.847,
+          "box": {
+            "x": 968,
+            "y": 235,
+            "w": 904,
+            "h": 606
+          }
+        }
+      ]
+    },
+    {
+      "type": "still",
+      "source": "review-parts/results.png",
+      "seconds": 5,
+      "chapter": "Results",
+      "description": "results screenshots"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/extra-5-gameplay.png",
+      "seconds": 5,
+      "chapter": "Brick Tycoon",
+      "description": "gameplay screenshots"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/extra-5-results.png",
+      "seconds": 5,
+      "chapter": "Brick Tycoon",
+      "description": "results screenshots"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/extra-6-gameplay.png",
+      "seconds": 5,
+      "chapter": "Freeze Tag Arena",
+      "description": "gameplay screenshots"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/extra-6-results.png",
+      "seconds": 5,
+      "chapter": "Freeze Tag Arena",
+      "description": "results screenshots"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/verdict.png",
+      "seconds": 6,
+      "chapter": "Verdict",
+      "description": "verdict card with leaderboard"
+    }
+  ],
+  "generatedBy": "test/e2e/review_video.mjs"
+}

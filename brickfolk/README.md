@@ -159,6 +159,34 @@ The harness (`test/e2e/run.mjs`):
 
 Exit code is non-zero on any mismatch or missing artefact.
 
+### Font-edge normalization
+
+The web/macOS hub tour compares 1180×760 content captures after a 4× box
+downscale. The approved font-edge normalization applies the same fixed 5×5
+box filter independently to each capture **only** inside two text bounds
+(x, y, width, height in content pixels):
+
+| Screen | Text | Bounds |
+|---|---|---|
+| Hub | “Small bricks. Big adventures.” | `256,232,384,108` |
+| Social | “Friends & party” | `216,76,160,28` |
+
+The filter has a two-pixel radius, cannot read or write outside these bounds,
+and runs before downscaling. It does not alter the app or the raw screenshots.
+The previous comparison is retained under each screen's `unfiltered/`
+directory, including its metrics and diff. The existing channel tolerance
+(48), edge threshold (24), edge-cell budget (56), cluster limit (8),
+one-cell neighbourhood search and platform-label/window-corner masks remain
+unchanged. The expected result is **normalized visual parity**.
+
+The independent 8px-shift control uses this filter too and must still fail.
+Comparator tests additionally reject missing, changed, recoloured and shifted
+glyphs inside the filtered region, and changes outside it:
+
+```sh
+python3 -B -m unittest discover -s test/e2e -p 'test_*.py' -v
+```
+
 Emulator notes: on hosts without Hypervisor.framework (virtualised CI
 machines) the wrapper script automatically falls back to a legacy emulator
 build under `~/android-legacy` that still supports `-accel off` (pure

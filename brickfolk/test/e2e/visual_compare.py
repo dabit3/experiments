@@ -18,6 +18,10 @@ when every cell stays under the tolerance). Any masked region and every
 threshold is listed explicitly in the metrics so the normalization stays
 narrow and inspectable.
 
+Explicit font-edge regions receive a symmetric 5x5 box filter at native
+resolution before downscaling. Pixels outside those text bounds are untouched;
+the filter reads only the image it transforms, never the other capture.
+
 Outputs: normalized reference PNG, normalized actual PNG, a diff PNG (differing
 cells in red and edge cells in orange over a dimmed reference) and a JSON
 metrics file.
@@ -96,6 +100,27 @@ def encode_png(width: int, height: int, raw: bytes) -> bytes:
     )
 
 
+def normalize_font_edges(
+    width: int, height: int, raw: bytes, regions: list[tuple[int, int, int, int]]
+) -> bytes:
+    out = bytearray(raw)
+    for x, y, w, h in regions:
+        if x < 0 or y < 0 or w <= 0 or h <= 0 or x + w > width or y + h > height:
+            raise ValueError("font-edge region must lie inside the cropped image")
+        for py in range(y, y + h):
+            for px in range(x, x + w):
+                neighbours = [
+                    (ny * width + nx) * 3
+                    for ny in range(max(y, py - 2), min(y + h, py + 3))
+                    for nx in range(max(x, px - 2), min(x + w, px + 3))
+                ]
+                for channel in range(3):
+                    out[(py * width + px) * 3 + channel] = (
+                        sum(raw[i + channel] for i in neighbours) // len(neighbours)
+                    )
+    return bytes(out)
+
+
 def parse_rect(text: str) -> tuple[int, int, int, int]:
     x, y, w, h = (int(v) for v in text.split(","))
     return x, y, w, h
@@ -116,6 +141,8 @@ def main() -> int:
     ap.add_argument("--max-edge-cells", type=int, default=0, help="edge cells tolerated")
     ap.add_argument("--max-cluster", type=int, default=0, help="largest 8-connected run of edge or differing cells tolerated (0 = unlimited)")
     ap.add_argument("--mask", type=parse_rect, action="append", default=[], help="x,y,w,h region (in normalized pixels) excluded from the count")
+    ap.add_argument("--font-edge-region", type=parse_rect, action="append", default=[],
+                    help="x,y,w,h text bounds in cropped native pixels for symmetric 5x5 box filtering")
     ap.add_argument("--note", default="", help="human-readable reason for every mask")
     args = ap.parse_args()
     edge_tolerance = args.tolerance if args.edge_tolerance is None else args.edge_tolerance
@@ -133,6 +160,11 @@ def main() -> int:
     if (rw, rh) != (aw, ah):
         raise SystemExit(f"dimension mismatch after crop: reference {rw}x{rh} vs actual {aw}x{ah}")
 
+    try:
+        rraw = normalize_font_edges(rw, rh, rraw, args.font_edge_region)
+        araw = normalize_font_edges(aw, ah, araw, args.font_edge_region)
+    except ValueError as error:
+        ap.error(str(error))
     nw, nh, nref = downscale(rw, rh, rraw, args.scale)
     _, _, nact = downscale(aw, ah, araw, args.scale)
 
@@ -231,6 +263,11 @@ def main() -> int:
         "max_cluster_allowed": args.max_cluster,
         "masks": args.mask,
         "mask_note": args.note,
+        "font_edge_normalization": {
+            "method": "symmetric-native-5x5-box" if args.font_edge_region else "none",
+            "regions": args.font_edge_region,
+            "radius_native_pixels": 2 if args.font_edge_region else 0,
+        },
         "normalized_size": [nw, nh],
         "total_pixels": nw * nh,
         "masked_pixels": masked_pixels,

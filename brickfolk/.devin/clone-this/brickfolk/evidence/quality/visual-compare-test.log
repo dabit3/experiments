@@ -1,0 +1,16 @@
+test_change_outside_region_still_fails (test_visual_compare.ComparisonControlTests) ... ok
+test_changed_glyph_fails (test_visual_compare.ComparisonControlTests) ... ok
+test_eight_pixel_text_shift_fails (test_visual_compare.ComparisonControlTests) ... ok
+test_identical_capture_passes_with_explicit_bounds (test_visual_compare.ComparisonControlTests) ... ok
+test_missing_glyph_fails (test_visual_compare.ComparisonControlTests) ... ok
+test_recoloured_text_fails (test_visual_compare.ComparisonControlTests) ... ok
+test_filter_cannot_read_or_write_outside_text_bounds (test_visual_compare.FontEdgeFilterTests) ... ok
+test_filter_has_two_pixel_support_and_does_not_mutate_source (test_visual_compare.FontEdgeFilterTests) ... ok
+test_invalid_regions_fail_closed (test_visual_compare.FontEdgeFilterTests) ... ok
+test_no_regions_preserves_every_byte (test_visual_compare.FontEdgeFilterTests) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.827s
+
+OK
+exit=0

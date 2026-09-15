@@ -179,6 +179,7 @@ test/e2e/package-lock.json
 test/e2e/package.json
 test/e2e/review_video.mjs
 test/e2e/run.mjs
+test/e2e/test_visual_compare.py
 test/e2e/visual_compare.py
 test/manifest/build_manifest.py
 test/manifest/clean_checkout_build.sh

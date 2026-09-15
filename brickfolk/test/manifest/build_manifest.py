@@ -210,6 +210,8 @@ def build_items(ev, e2e, tycoon, tag):
             ev.problems.append(f"missing visual metrics: {metrics_rel}")
             continue
         metrics = json.loads(metrics_path.read_text())
+        if not metrics["passed"]:
+            ev.problems.append(f"visual comparison failed: {metrics_rel}")
         comparison = {
             "mode": "normalized",
             "reference": f"{base}/{metrics['reference']}",
@@ -227,6 +229,12 @@ def build_items(ev, e2e, tycoon, tag):
             comparison=comparison,
             raw_captures={"web": f"{vis}/web-{screen}.png", "macos": f"{vis}/macos-{screen}.png"},
         ))
+        if metrics.get("font_edge_normalization", {}).get("regions"):
+            items[-1]["evidence"] += ev(
+                f"{base}/unfiltered/hub-{screen}-metrics.json",
+                f"{base}/unfiltered/hub-{screen}-diff.png",
+                f"{q}/visual-compare-test.log",
+            )
     return items
 
 
@@ -271,7 +279,7 @@ def build_checks(ev, e2e, tycoon, tag):
         "build": [f"{q}/clean-checkout.log", f"{q}/build-web.log", f"{q}/build-ios.log",
                   f"{q}/build-apk.log", f"{q}/build-macos.log"],
         "quality": [f"{q}/format.log", f"{q}/analyze.log", f"{q}/node-check.log",
-                    f"{q}/python-check.log"],
+                    f"{q}/python-check.log", f"{q}/visual-compare-test.log"],
         "security": [f"{a}/security.md", f"{q}/secret-scan.txt", f"{q}/pub-outdated.log"],
     }
     return [
