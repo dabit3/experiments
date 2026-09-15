@@ -1,0 +1,113 @@
+@font-face {
+  font-family: Outfit;
+  src: url('./assets/outfit.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: Barlow;
+  src: url('./assets/barlow-condensed.ttf') format('truetype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+:root {
+  color-scheme: dark;
+  --bg: #191722;
+  --ink: #211c2b;
+  --paper: #fff5de;
+  --yellow: #f7cf57;
+  --mint: #8ee5cb;
+  --pink: #f58ca9;
+  --muted: #a8a1b5;
+  --flag: #ff5b7f;
+  --danger: #ff8b9d;
+  --success: #a7edb5;
+  --face-fill: #ffda57;
+  --face-stroke: #ce8432;
+  --cell: 48px;
+  --cell-gap: 3px;
+  --font-mono: 'Outfit', monospace;
+  font-family: Outfit, sans-serif;
+  font-size: 16px;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  min-width: 340px;
+  background: var(--bg);
+  color: var(--paper);
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 13% 40%, #44324a55, transparent 48%),
+    radial-gradient(ellipse at 95% 15%, #30635d20, transparent 50%), radial-gradient(#d4c8e512 0.7px, transparent 0.7px);
+  background-size:
+    auto,
+    auto,
+    7px 7px;
+}
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+}
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--pink);
+  outline-offset: 4px;
+}
+button {
+  touch-action: manipulation;
+}
+svg {
+  display: block;
+}
+button,
+.board {
+  user-select: none;
+}
+::selection {
+  background: var(--pink);
+  color: var(--ink);
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

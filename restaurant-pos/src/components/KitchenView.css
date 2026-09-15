@@ -1,0 +1,135 @@
+.kitchen-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.kitchen-empty {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+.ticket-rail {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-auto-rows: max-content;
+  gap: 22px;
+  padding: 28px 32px;
+}
+
+.ticket {
+  display: flex;
+  flex-direction: column;
+  background: #fffefa;
+  color: #1f1a14;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--mono);
+  position: relative;
+  animation: pop-in 200ms var(--ease);
+}
+
+.ticket::before {
+  content: '';
+  height: 3px;
+  border-radius: 8px 8px 0 0;
+  background: var(--amber);
+}
+
+.ticket.focus::before {
+  background: var(--brand);
+}
+
+.ticket.bumped {
+  opacity: 0.75;
+}
+
+.ticket-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 12px 14px 8px;
+  border-bottom: 1px dashed #c9bda6;
+}
+
+.ticket-table {
+  display: block;
+  font-size: 29px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-family: var(--serif);
+}
+
+.ticket-course {
+  font-size: 12px;
+  color: #6b5d45;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.ticket-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 12px;
+  color: #6b5d45;
+}
+
+.ticket-lines {
+  list-style: none;
+  margin: 0;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ticket-lines li {
+  display: flex;
+  gap: 10px;
+}
+
+.ticket-seat {
+  flex: none;
+  width: 30px;
+  height: 26px;
+  border-radius: 6px;
+  background: #1f1a14;
+  color: #fbf7ee;
+  font-weight: 600;
+  font-size: 12px;
+  display: grid;
+  place-items: center;
+}
+
+.ticket-item {
+  font-family: var(--sans);
+  font-weight: 550;
+  font-size: 14px;
+}
+
+.ticket-mods {
+  font-size: 12.5px;
+  color: #4a3f2c;
+}
+
+.ticket-note {
+  margin-top: 2px;
+  font-size: 12.5px;
+  color: #b0431a;
+  font-weight: 600;
+}
+
+.ticket .bump {
+  margin: 4px 14px 14px;
+  min-height: 48px;
+  font-family: var(--sans);
+}
