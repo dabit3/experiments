@@ -1,6 +1,5 @@
 .build/
 .build-cache/
-dist/
 .DS_Store
 *.xcuserstate
 .devin/config.local.json
