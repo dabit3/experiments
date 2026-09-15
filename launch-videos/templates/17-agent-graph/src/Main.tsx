@@ -4,14 +4,14 @@ import { Heading, Label, Seq, useEnterExit } from "./components";
 import { FeatureScene, FeatureStep } from "./FeatureScene";
 import { Graph } from "./Graph";
 import { SCENES, Scene } from "./scenes";
-import { MARGIN, color, font, type, useFrame } from "./theme";
+import { MARGIN, color, font, fs, type, useFrame } from "./theme";
 
 const Hook: React.FC<{ scene: Scene }> = ({ scene }) => (
   <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", gap: 36 }}>
     <Label from={scene.from + 4} to={scene.to} align="center">
       Devin · macOS · native iOS
     </Label>
-    <Heading from={scene.from + 10} to={scene.to} size={type.sizes1080p.hero} align="center">
+    <Heading from={scene.from + 10} to={scene.to} size={fs.hero} align="center">
       Devin now runs on Mac.
     </Heading>
   </AbsoluteFill>
@@ -46,7 +46,7 @@ const Plan: React.FC<{ scene: Scene }> = ({ scene }) => (
       <Label from={scene.from + 6} to={scene.to + 6}>
         Agent plan · 7 steps
       </Label>
-      <Heading from={scene.from + 12} to={scene.to + 6} size={type.sizes1080p.h3}>
+      <Heading from={scene.from + 12} to={scene.to + 6} size={fs.h3}>
         Devin plans the work, then runs it in a Mac VM.
       </Heading>
     </div>
@@ -90,7 +90,7 @@ const End: React.FC<{ scene: Scene }> = ({ scene }) => {
         style={{
           fontFamily: font.sans,
           fontWeight: 400,
-          fontSize: type.sizes1080p.body,
+          fontSize: fs.body,
           letterSpacing: type.tracking.body,
           color: color.gray300,
           opacity: line.opacity,
@@ -103,7 +103,7 @@ const End: React.FC<{ scene: Scene }> = ({ scene }) => {
         style={{
           fontFamily: font.mono,
           fontWeight: 500,
-          fontSize: type.sizes1080p.label,
+          fontSize: fs.label,
           letterSpacing: type.tracking.caps,
           color: color.gray500,
           opacity: frame > scene.from + 28 ? line.opacity : 0,
@@ -120,13 +120,13 @@ const BUILD: FeatureStep[] = [
     index: 0,
     shot: { file: "screens/devin-web-13.png", origin: "50% 70%" },
     headline: "Devin clones the repo and reads the brief.",
-    log: "git clone dabit3/experiments · main",
+    log: "git clone dabit3/experiments",
   },
   {
     index: 1,
     shot: { file: "screens/devin-desktop-5.png", origin: "50% 25%", position: "50% 14%", scale: 1.08 },
     headline: "It builds the app in Xcode, inside the session.",
-    log: "xcodebuild build → BUILD SUCCEEDED",
+    log: "xcodebuild → BUILD SUCCEEDED",
   },
 ];
 
@@ -135,13 +135,13 @@ const SIMULATOR: FeatureStep[] = [
     index: 2,
     shot: { file: "screens/devin-web-11.png", origin: "32% 45%" },
     headline: "It boots a live iPhone Simulator you can watch.",
-    log: "simctl boot 'iPhone 17 Pro' · iOS 26.5",
+    log: "simctl boot 'iPhone 17 Pro'",
   },
   {
     index: 3,
     shot: { file: "screens/devin-web-10.png", origin: "32% 50%" },
     headline: "It taps and types like a person, and reproduces the bug.",
-    log: "stream reply test → 3 FAILED",
+    log: "UI test → FAILED",
   },
 ];
 
@@ -150,13 +150,13 @@ const FIX: FeatureStep[] = [
     index: 4,
     shot: { file: "screens/devin-desktop-7.png", origin: "55% 25%", position: "50% 14%", scale: 1.08 },
     headline: "It fixes the code and rebuilds.",
-    log: "fix @MainActor → BUILD SUCCEEDED",
+    log: "fix @MainActor → BUILD OK",
   },
   {
     index: 5,
     shot: { file: "screens/devin-desktop-9.png", origin: "30% 45%", position: "50% 25%" },
     headline: "Then re-runs the UI tests in the Simulator.",
-    log: "xcodebuild test → 5 passed, 0 failed",
+    log: "xcodebuild test → 5 passed",
   },
 ];
 
@@ -165,7 +165,7 @@ const PR: FeatureStep[] = [
     index: 6,
     shot: { file: "screens/devin-web-9.png", origin: "70% 30%" },
     headline: "It opens a PR with the Simulator recording attached.",
-    log: "gh pr create → #161 · Ready to merge",
+    log: "gh pr create → #161 ready",
   },
 ];
 

@@ -60,8 +60,8 @@ export const Graph: React.FC = () => {
 
   const pts = HERO.map((h, i) => ({ x: lerp(h.x, RAIL[i].x, t), y: lerp(h.y, RAIL[i].y, t) }));
   const nodeR = lerp(20, 9, t);
-  const labelGap = lerp(44, 34, t);
-  const labelSize = lerp(18, 15, t);
+  const labelGap = lerp(52, 40, t);
+  const labelSize = lerp(24, 20, t);
 
   const scale = lerp(1, 0.78, ot);
   const shiftY = lerp(0, 150, ot);

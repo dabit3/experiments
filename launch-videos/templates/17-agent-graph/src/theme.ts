@@ -13,6 +13,12 @@ export const shadow = tokens.shadow;
 export const type = tokens.type;
 export const MARGIN = tokens.space.frameMargin1080p;
 
+/** Token sizes scaled up for the dark stage / long viewing distance. */
+const TYPE_SCALE = 1.4;
+export const fs = Object.fromEntries(
+  Object.entries(type.sizes1080p).map(([k, v]) => [k, Math.round(v * TYPE_SCALE)]),
+) as Record<keyof typeof type.sizes1080p, number>;
+
 export const font = {
   sans: `${inter.fontFamily}, ${type.body}`,
   mono: `${geistMono.fontFamily}, ${type.mono}`,

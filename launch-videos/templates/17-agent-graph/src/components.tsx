@@ -1,6 +1,6 @@
 import React from "react";
 import { Img, Sequence, staticFile } from "remotion";
-import { OffsetCtx, color, easeIn, easeInOut, easeOut, font, lerp, radius, ramp, shadow, type, useFrame } from "./theme";
+import { OffsetCtx, color, easeIn, easeInOut, easeOut, font, fs, lerp, radius, ramp, shadow, type, useFrame } from "./theme";
 
 export const Seq: React.FC<{ from: number; dur: number; name: string; children: React.ReactNode }> = ({ from, dur, name, children }) => (
   <Sequence from={from} durationInFrames={dur} name={name}>
@@ -26,7 +26,7 @@ type TextProps = {
   maxWidth?: number;
 };
 
-export const Heading: React.FC<TextProps> = ({ from, to, children, size = type.sizes1080p.h2, colorOverride, align = "left", maxWidth }) => {
+export const Heading: React.FC<TextProps> = ({ from, to, children, size = fs.h2, colorOverride, align = "left", maxWidth }) => {
   const { opacity, rise } = useEnterExit(from, to);
   return (
     <div
@@ -56,7 +56,7 @@ export const Label: React.FC<TextProps> = ({ from, to, children, colorOverride, 
       style={{
         fontFamily: font.mono,
         fontWeight: 500,
-        fontSize: type.sizes1080p.label,
+        fontSize: fs.label,
         letterSpacing: type.tracking.caps,
         textTransform: "uppercase",
         color: colorOverride ?? color.gray400,
@@ -83,7 +83,7 @@ export const Typed: React.FC<{ from: number; to: number; text: string; cps?: num
       style={{
         fontFamily: font.mono,
         fontWeight: 400,
-        fontSize: type.sizes1080p.caption,
+        fontSize: fs.caption,
         letterSpacing: "0",
         color: color.gray400,
         opacity: frame >= from ? 1 - exit : 0,

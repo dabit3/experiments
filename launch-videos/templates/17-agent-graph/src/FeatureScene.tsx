@@ -3,7 +3,7 @@ import { AbsoluteFill } from "remotion";
 import { Heading, Label, ScreenCard, Shot, Typed } from "./components";
 import { RAIL_Y, railX } from "./Graph";
 import { Scene, STEPS, STEP_ACTIVATION, StepIndex } from "./scenes";
-import { MARGIN, easeIn, easeOut, lerp, ramp, type, useFrame } from "./theme";
+import { MARGIN, easeIn, easeOut, fs, lerp, ramp, useFrame } from "./theme";
 
 export type FeatureStep = {
   index: StepIndex;
@@ -12,11 +12,11 @@ export type FeatureStep = {
   log: string;
 };
 
-const CARD_W = 1080;
-const CARD_H = 587;
+const CARD_W = 1000;
+const CARD_H = 544;
 const CARD_X = 1920 - MARGIN - CARD_W;
-const CARD_Y = 176;
-const TEXT_W = CARD_X - MARGIN - 80;
+const CARD_Y = 190;
+const TEXT_W = CARD_X - MARGIN - 48;
 
 export const FeatureScene: React.FC<{ scene: Scene; steps: FeatureStep[] }> = ({ scene, steps }) => {
   const frame = useFrame();
@@ -71,7 +71,7 @@ export const FeatureScene: React.FC<{ scene: Scene; steps: FeatureStep[] }> = ({
               <Label from={from} to={to}>
                 Step {n} / {String(STEPS.length).padStart(2, "0")} · {STEPS[s.index].label}
               </Label>
-              <Heading from={from} to={to} size={type.sizes1080p.h3}>
+              <Heading from={from} to={to} size={fs.h3}>
                 {s.headline}
               </Heading>
               <Typed from={from + 14} to={to} text={s.log} />
