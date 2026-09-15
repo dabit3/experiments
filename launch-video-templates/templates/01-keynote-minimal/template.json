@@ -1,0 +1,9 @@
+{
+  "id": "01-keynote-minimal",
+  "title": "Keynote Minimal",
+  "compositionId": "Launch",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "durationSeconds": 44
+}
