@@ -51,11 +51,35 @@ Run against the production preview at desktop **1440 × 900**, then inspect **19
 9. Hide Box 001 with its eye button, verify disappearance in all viewports; Undo restores it. File → Open Vexel project imports the prior JSON with edited data intact.
 10. Finish with the best composed gallery scene, take a full uncropped PNG, and inspect browser console for uncaught errors.
 
+Playback regression: while playing, focus **Current frame**, select all, enter `25`, and press Enter. Playback must pause on focus and stay at frame 25. With Box X keys of 2.8 at frame 0 and 4 at frame 50, X must be 3.4. Resume, focus Position X, and verify playback pauses before editing. Manual first/previous/next/last transport seeks also pause playback.
+
 The testing agent owns browser/server setup and records setup, named test starts and consolidated assertions. Delivery requires WebM (VP9/VP8), not MP4. A conversion, if needed, must preserve the full recording and be validated using `ffprobe`.
 
 ## Results
 
-Pending final programmatic and production browser verification; updated after execution.
+Verified on **2026-09-15** against production preview. Application revision: `87890a3723810eeb94466493662f1f9c9c34d827`. Broad browser coverage ran on `3176329d8a986f57c52d5bb72319ba0ced4b5f95`; the final revision only adds pause-on-focus behavior, which passed a focused browser regression and a fresh recorded editing workflow.
+
+| Check | Actual outcome |
+| --- | --- |
+| Clean install | `npm ci` passed |
+| Lint | 0 warnings, 0 errors |
+| TypeScript | Passed |
+| Vitest | 18 tests passed |
+| Production build | Passed; non-fatal Three.js bundle-size advisory |
+| Dependency audit | 0 vulnerabilities |
+| Scene/editing | Reset to 25 objects; raycast and Explorer selection; transforms; undo/redo; Box creation to 26; scale `[1,3,0.35]`; visible 135° Twist |
+| Material/persistence | Copper `#546e65`, roughness 0.4, metalness 0.35 and edits survived reload |
+| Animation | Keys 0/50 interpolated X=3.4 at frame 25; elapsed-time playback caught up after delayed rendering; final focus/seek regressions passed |
+| View controls | Maximize, orbit, zoom, camera reset, restore and subsequent repaints passed |
+| JSON | Download contained 26 objects and edited values/keys; delete/import restored scene; malformed `{"version":1}` preserved valid data and displayed an error |
+| OBJ | Visible export: 98,100 finite vertices / 32,700 faces including Box. Hidden export: 97,128 vertices / 32,376 faces excluding Box |
+| Search/visibility | Empty search state, clearing search, hidden geometry and undo restore passed |
+| Desktop layout | 1440×900, 1920×1080 and 1280×800 passed; lower Command Panel controls remain reachable by scrolling |
+| Runtime | No application JavaScript exceptions/errors; software-WebGL fallback and GPU readback stall warnings observed |
+
+Software rendering can skip displayed frames. Playback computes a nominal 24 FPS timeline from elapsed time; render smoothness depends on GPU capability. DOM samples observed 314 frame advances over 13.94 seconds, approximately 22.53 per second, with jumps and stale samples. This does not establish smooth or exact 24 rendered FPS. The initial callback-count playback defect and numeric-focus race were fixed and retested.
+
+Evidence and downloadable report are linked from [PR #208](https://github.com/dabit3/experiments/pull/208). No public deployment is required.
 
 ## Reference access, fidelity and boundaries
 
