@@ -1,0 +1,430 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3A7797BEE88708EC05F647BE /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21C94E5003DB5896B74C5D4 /* GameModel.swift */; };
+		6C2DA003EFB86AB0A8C35752 /* Rhythm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26834E8803BAA8DF694DD9CC /* Rhythm.swift */; };
+		A83DA6E078142D0A0F59518D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 58847D39E598C37A49BD65CB /* Assets.xcassets */; };
+		D8A7AD736150C81243880C41 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4C7FB57F6F379481A0A9E2B /* ContentView.swift */; };
+		DD5D93FF41ED7CAA9E96C647 /* RippletoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 49476903D0EECDF4C7895BF1 /* RippletoneApp.swift */; };
+		EA12DD7BDCF7D06BEE6ECC74 /* RhythmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79DA512CA69B24B403DC906B /* RhythmTests.swift */; };
+		EC2EFDAB2930D83F20FA8A3D /* PondArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB6CFE1384954A2632B9CF8 /* PondArt.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BEC9D9CC657527BF902461D1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0048F5261CD8063ECC15BE1D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AB93E7ABE82B3001E98E44A1;
+			remoteInfo = Rippletone;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1EB0F2F39ABA77585BA64FCC /* RippletoneTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RippletoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		26834E8803BAA8DF694DD9CC /* Rhythm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rhythm.swift; sourceTree = "<group>"; };
+		49476903D0EECDF4C7895BF1 /* RippletoneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RippletoneApp.swift; sourceTree = "<group>"; };
+		58847D39E598C37A49BD65CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		634121109A31C068F192758F /* Rippletone.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Rippletone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		79DA512CA69B24B403DC906B /* RhythmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RhythmTests.swift; sourceTree = "<group>"; };
+		C4C7FB57F6F379481A0A9E2B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DDB6CFE1384954A2632B9CF8 /* PondArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PondArt.swift; sourceTree = "<group>"; };
+		E21C94E5003DB5896B74C5D4 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		104B46D00D733EA2960C8B39 = {
+			isa = PBXGroup;
+			children = (
+				5E7EA6E663CCC1E5B6A2D927 /* Rippletone */,
+				14742FCF468E7327EB9B7F7E /* Tests */,
+				56BE2EB1A98996A1C9F362E1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		14742FCF468E7327EB9B7F7E /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				79DA512CA69B24B403DC906B /* RhythmTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		56BE2EB1A98996A1C9F362E1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				634121109A31C068F192758F /* Rippletone.app */,
+				1EB0F2F39ABA77585BA64FCC /* RippletoneTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5E7EA6E663CCC1E5B6A2D927 /* Rippletone */ = {
+			isa = PBXGroup;
+			children = (
+				58847D39E598C37A49BD65CB /* Assets.xcassets */,
+				C4C7FB57F6F379481A0A9E2B /* ContentView.swift */,
+				E21C94E5003DB5896B74C5D4 /* GameModel.swift */,
+				DDB6CFE1384954A2632B9CF8 /* PondArt.swift */,
+				26834E8803BAA8DF694DD9CC /* Rhythm.swift */,
+				49476903D0EECDF4C7895BF1 /* RippletoneApp.swift */,
+			);
+			path = Rippletone;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9DD4A2A1C79A43BEDEC377A0 /* RippletoneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45207B38E6B8C3B082B0F305 /* Build configuration list for PBXNativeTarget "RippletoneTests" */;
+			buildPhases = (
+				62B4F403C1DA91D6D41705E5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EFE727B44520A3073BCA9AD7 /* PBXTargetDependency */,
+			);
+			name = RippletoneTests;
+			packageProductDependencies = (
+			);
+			productName = RippletoneTests;
+			productReference = 1EB0F2F39ABA77585BA64FCC /* RippletoneTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		AB93E7ABE82B3001E98E44A1 /* Rippletone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E53192CD49C129A33C695B80 /* Build configuration list for PBXNativeTarget "Rippletone" */;
+			buildPhases = (
+				50E6BEA0AC3A74D8F5711DBE /* Sources */,
+				BF0A02AF17929EBA5F00DB3E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Rippletone;
+			packageProductDependencies = (
+			);
+			productName = Rippletone;
+			productReference = 634121109A31C068F192758F /* Rippletone.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0048F5261CD8063ECC15BE1D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 27D2E8A2206FF42CF1B0D0F5 /* Build configuration list for PBXProject "Rippletone" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 104B46D00D733EA2960C8B39;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 56BE2EB1A98996A1C9F362E1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AB93E7ABE82B3001E98E44A1 /* Rippletone */,
+				9DD4A2A1C79A43BEDEC377A0 /* RippletoneTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BF0A02AF17929EBA5F00DB3E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A83DA6E078142D0A0F59518D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		50E6BEA0AC3A74D8F5711DBE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8A7AD736150C81243880C41 /* ContentView.swift in Sources */,
+				3A7797BEE88708EC05F647BE /* GameModel.swift in Sources */,
+				EC2EFDAB2930D83F20FA8A3D /* PondArt.swift in Sources */,
+				6C2DA003EFB86AB0A8C35752 /* Rhythm.swift in Sources */,
+				DD5D93FF41ED7CAA9E96C647 /* RippletoneApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		62B4F403C1DA91D6D41705E5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA12DD7BDCF7D06BEE6ECC74 /* RhythmTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EFE727B44520A3073BCA9AD7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AB93E7ABE82B3001E98E44A1 /* Rippletone */;
+			targetProxy = BEC9D9CC657527BF902461D1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		02F2637DBC1E6DDE4A102FDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Rippletone;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_UIColorName = LaunchBackground;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.experiments.rippletone;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		110F0CCA3C83FD92EA873C12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.experiments.RippletoneTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rippletone.app/Rippletone";
+			};
+			name = Debug;
+		};
+		4D101D4B46B0EF95B807013F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Rippletone;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_UIColorName = LaunchBackground;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.experiments.rippletone;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A436E4BA005792A9F3D681E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		BC3CEBCEAB1B9DAF7E88DB81 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		CACC4FAA47B3D23D6A600985 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.experiments.RippletoneTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Rippletone.app/Rippletone";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		27D2E8A2206FF42CF1B0D0F5 /* Build configuration list for PBXProject "Rippletone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC3CEBCEAB1B9DAF7E88DB81 /* Debug */,
+				A436E4BA005792A9F3D681E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		45207B38E6B8C3B082B0F305 /* Build configuration list for PBXNativeTarget "RippletoneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				110F0CCA3C83FD92EA873C12 /* Debug */,
+				CACC4FAA47B3D23D6A600985 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E53192CD49C129A33C695B80 /* Build configuration list for PBXNativeTarget "Rippletone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4D101D4B46B0EF95B807013F /* Debug */,
+				02F2637DBC1E6DDE4A102FDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0048F5261CD8063ECC15BE1D /* Project object */;
+}
