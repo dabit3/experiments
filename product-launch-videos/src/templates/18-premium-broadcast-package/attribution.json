@@ -1,0 +1,12 @@
+[
+  {"scene":"opening","asset":"BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png","outputSeconds":[0,4],"sourceSeconds":null,"treatment":"Original transparent black lockup, contained without distortion.","requiredLabel":null},
+  {"scene":"opening","asset":"devin-web-4.png","outputSeconds":[0,4],"sourceSeconds":null,"treatment":"Authentic environment-selection still in opening panel. Source crop x580 y460 width1840 height910 preserves composer and macOS menu.","requiredLabel":null},
+  {"scene":"environment","asset":"devin-web-4.png","outputSeconds":[4,9],"sourceSeconds":null,"treatment":"Same source crop x580 y460 width1840 height910, contained in the dominant product bay.","requiredLabel":null},
+  {"scene":"agent","asset":"agent-selector-cloud.mp4","outputSeconds":[9,13],"sourceSeconds":[0,4],"treatment":"Complete source view at 1x. No wipe covers video actions; sting is outside the UI.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-14.png","outputSeconds":[13,17.5],"sourceSeconds":null,"treatment":"Whole authentic still, contained; report preserves 8 passed, 0 failed, 1 untested. No internal animation.","requiredLabel":"Simulator still 1/2"},
+  {"scene":"iphone","asset":"devin-web-18.png","outputSeconds":[17.5,22],"sourceSeconds":null,"treatment":"Whole authentic still of a separate session, contained with original final-review report.","requiredLabel":"Simulator still 2/2"},
+  {"scene":"webQa","asset":"devin-testing-2.mp4","outputSeconds":[22,29],"sourceSeconds":[0,7],"treatment":"Complete source view at 1x with persistent reserved footer. This is web QA, not iOS Simulator footage.","requiredLabel":"Web QA example"},
+  {"scene":"ipad","asset":"devin-web-19.png","outputSeconds":[29,35],"sourceSeconds":null,"treatment":"Whole authentic Terra Table iPad still and acceptance report; no fabricated state changes.","requiredLabel":"Simulator still"},
+  {"scene":"closing","asset":"DEVIN_LOCKUP_HORIZONTAL_WHITE_TRANSPARENT.png","outputSeconds":[35,40],"sourceSeconds":null,"treatment":"Original white lockup on approved dark presentation surface.","requiredLabel":null},
+  {"scene":"all","asset":"NBInternationalPro-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Original brand website WOFF2, loaded through shared render font gate. Primary Regular typography throughout.","requiredLabel":null}
+]
