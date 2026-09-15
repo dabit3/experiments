@@ -1,0 +1,16 @@
+Fri Sep 11 03:33:06 UTC 2026
+restarting adbd as root
+timeout expired while waiting for device
+Fri Sep 11 03:43:38 UTC 2026
+adbd is already running as root
+BOOTED
+Fri Sep 11 04:03:50 UTC 2026
+Performing Streamed Install
+Success
+Starting: Intent { cmp=dev.swapmate.swapmate/.MainActivity (has extras) }
+Status: timeout
+LaunchState: UNKNOWN (-1)
+Activity: dev.swapmate.swapmate/.MainActivity
+WaitTime: 141220
+Complete
+Fri Sep 11 04:24:23 UTC 2026

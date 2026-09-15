@@ -1,0 +1,483 @@
+{
+  "comparisons": [
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/android-spec-home-dark-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/android-spec-home-dark-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-android-spec-home-dark.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/android-spec-home-dark.png",
+      "width": 540,
+      "height": 1200,
+      "total_pixels": 648000,
+      "exact_different_pixels": 163173,
+      "antialiased_pixels": 1598,
+      "edge_pixels": 12470,
+      "edge_zone_pixels": 82093,
+      "edge_zone_fraction": 0.1267,
+      "shift_pixels": 5,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [],
+        "crop_actual": [
+          0,
+          0,
+          540,
+          1200
+        ],
+        "crop_reference": null
+      },
+      "different_pixels": 137,
+      "name": "android-spec-home-dark"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/android-spec-home-light-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/android-spec-home-light-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-android-spec-home-light.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/android-spec-home-light.png",
+      "width": 540,
+      "height": 1200,
+      "total_pixels": 648000,
+      "exact_different_pixels": 183466,
+      "antialiased_pixels": 1467,
+      "edge_pixels": 4901,
+      "edge_zone_pixels": 93257,
+      "edge_zone_fraction": 0.1439,
+      "shift_pixels": 0,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [],
+        "crop_actual": [
+          0,
+          0,
+          540,
+          1200
+        ],
+        "crop_reference": null
+      },
+      "different_pixels": 0,
+      "name": "android-spec-home-light"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/android-spec-results-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/android-spec-results-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-android-spec-results.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/android-spec-results.png",
+      "width": 540,
+      "height": 1200,
+      "total_pixels": 648000,
+      "exact_different_pixels": 45791,
+      "antialiased_pixels": 1271,
+      "edge_pixels": 23097,
+      "edge_zone_pixels": 133886,
+      "edge_zone_fraction": 0.2066,
+      "shift_pixels": 0,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [],
+        "crop_actual": [
+          0,
+          0,
+          540,
+          1200
+        ],
+        "crop_reference": null
+      },
+      "different_pixels": 7,
+      "name": "android-spec-results"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/ios-spec-home-dark-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/ios-spec-home-dark-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-ios-spec-home-dark.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/ios-spec-home-dark.png",
+      "width": 1206,
+      "height": 2334,
+      "total_pixels": 2814804,
+      "exact_different_pixels": 1192489,
+      "antialiased_pixels": 4,
+      "edge_pixels": 24025,
+      "edge_zone_pixels": 211972,
+      "edge_zone_fraction": 0.0753,
+      "shift_pixels": 0,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [],
+        "crop_actual": [
+          0,
+          186,
+          1206,
+          2334
+        ],
+        "crop_reference": null
+      },
+      "different_pixels": 0,
+      "name": "ios-spec-home-dark"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/ios-spec-home-light-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/ios-spec-home-light-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-ios-spec-home-light.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/ios-spec-home-light.png",
+      "width": 1206,
+      "height": 2334,
+      "total_pixels": 2814804,
+      "exact_different_pixels": 1206627,
+      "antialiased_pixels": 2,
+      "edge_pixels": 16296,
+      "edge_zone_pixels": 254694,
+      "edge_zone_fraction": 0.0905,
+      "shift_pixels": 0,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [],
+        "crop_actual": [
+          0,
+          186,
+          1206,
+          2334
+        ],
+        "crop_reference": null
+      },
+      "different_pixels": 0,
+      "name": "ios-spec-home-light"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/ios-spec-results-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/ios-spec-results-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-ios-spec-results.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/ios-spec-results.png",
+      "width": 1206,
+      "height": 2334,
+      "total_pixels": 2814804,
+      "exact_different_pixels": 1022403,
+      "antialiased_pixels": 29312,
+      "edge_pixels": 241667,
+      "edge_zone_pixels": 389902,
+      "edge_zone_fraction": 0.1385,
+      "shift_pixels": 251,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [],
+        "crop_actual": [
+          0,
+          186,
+          1206,
+          2334
+        ],
+        "crop_reference": null
+      },
+      "different_pixels": 595805,
+      "name": "ios-spec-results"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-dark-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-dark-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-spec-home-dark.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-spec-home-dark.png",
+      "width": 1180,
+      "height": 800,
+      "total_pixels": 944000,
+      "exact_different_pixels": 666477,
+      "antialiased_pixels": 0,
+      "edge_pixels": 7008,
+      "edge_zone_pixels": 52914,
+      "edge_zone_fraction": 0.0561,
+      "shift_pixels": 0,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [
+          [
+            0,
+            786,
+            14,
+            14
+          ],
+          [
+            1166,
+            786,
+            14,
+            14
+          ]
+        ],
+        "crop_actual": [
+          0,
+          32,
+          1180,
+          800
+        ],
+        "crop_reference": null
+      },
+      "different_pixels": 0,
+      "name": "macos-spec-home-dark"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-light-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-light-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-spec-home-light.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-spec-home-light.png",
+      "width": 1180,
+      "height": 800,
+      "total_pixels": 944000,
+      "exact_different_pixels": 662819,
+      "antialiased_pixels": 0,
+      "edge_pixels": 6738,
+      "edge_zone_pixels": 59271,
+      "edge_zone_fraction": 0.0628,
+      "shift_pixels": 0,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [
+          [
+            0,
+            786,
+            14,
+            14
+          ],
+          [
+            1166,
+            786,
+            14,
+            14
+          ]
+        ],
+        "crop_actual": [
+          0,
+          32,
+          1180,
+          800
+        ],
+        "crop_reference": null
+      },
+      "different_pixels": 0,
+      "name": "macos-spec-home-light"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-lobby-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-lobby-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-spec-lobby.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-spec-lobby.png",
+      "width": 1180,
+      "height": 800,
+      "total_pixels": 944000,
+      "exact_different_pixels": 44618,
+      "antialiased_pixels": 0,
+      "edge_pixels": 5948,
+      "edge_zone_pixels": 57838,
+      "edge_zone_fraction": 0.0613,
+      "shift_pixels": 0,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [
+          [
+            0,
+            786,
+            14,
+            14
+          ],
+          [
+            1166,
+            786,
+            14,
+            14
+          ]
+        ],
+        "crop_actual": [
+          0,
+          32,
+          1180,
+          800
+        ],
+        "crop_reference": null
+      },
+      "different_pixels": 0,
+      "name": "macos-spec-lobby"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-results-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-results-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-spec-results.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/macos-spec-results.png",
+      "width": 1180,
+      "height": 800,
+      "total_pixels": 944000,
+      "exact_different_pixels": 75437,
+      "antialiased_pixels": 0,
+      "edge_pixels": 15208,
+      "edge_zone_pixels": 173338,
+      "edge_zone_fraction": 0.1836,
+      "shift_pixels": 0,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [
+          [
+            0,
+            786,
+            14,
+            14
+          ],
+          [
+            1166,
+            786,
+            14,
+            14
+          ]
+        ],
+        "crop_actual": [
+          0,
+          32,
+          1180,
+          800
+        ],
+        "crop_reference": null
+      },
+      "different_pixels": 0,
+      "name": "macos-spec-results"
+    }
+  ],
+  "negative_controls": [
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-lobby-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-results-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-lobby-reference.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-results-actual.png",
+      "width": 1180,
+      "height": 800,
+      "total_pixels": 944000,
+      "exact_different_pixels": 649140,
+      "antialiased_pixels": 29786,
+      "edge_pixels": 33218,
+      "edge_zone_pixels": 57838,
+      "edge_zone_fraction": 0.0613,
+      "shift_pixels": 184,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [],
+        "crop_actual": null,
+        "crop_reference": null
+      },
+      "different_pixels": 253096,
+      "name": "screen-swap"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-dark-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-dark-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-dark-reference.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-dark-actual.png",
+      "width": 1176,
+      "height": 796,
+      "total_pixels": 936096,
+      "exact_different_pixels": 689495,
+      "antialiased_pixels": 2577,
+      "edge_pixels": 26481,
+      "edge_zone_pixels": 52914,
+      "edge_zone_fraction": 0.0565,
+      "shift_pixels": 178,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [],
+        "crop_actual": [
+          4,
+          4,
+          1176,
+          796
+        ],
+        "crop_reference": [
+          0,
+          0,
+          1176,
+          796
+        ]
+      },
+      "different_pixels": 10484,
+      "name": "shift-4px"
+    },
+    {
+      "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-dark-reference.png",
+      "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-light-actual.png",
+      "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-dark-reference.png",
+      "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/macos-spec-home-light-actual.png",
+      "width": 1180,
+      "height": 800,
+      "total_pixels": 944000,
+      "exact_different_pixels": 943753,
+      "antialiased_pixels": 5233,
+      "edge_pixels": 50518,
+      "edge_zone_pixels": 52914,
+      "edge_zone_fraction": 0.0561,
+      "shift_pixels": 0,
+      "normalization": {
+        "tolerance_per_channel": 16,
+        "edge_tolerance_per_channel": 255,
+        "edge_radius": 2,
+        "edge_threshold": 40,
+        "ignore_antialiasing": true,
+        "shift_radius": 1,
+        "masks": [],
+        "crop_actual": null,
+        "crop_reference": null
+      },
+      "different_pixels": 885796,
+      "name": "theme-swap"
+    }
+  ],
+  "passed": false
+}

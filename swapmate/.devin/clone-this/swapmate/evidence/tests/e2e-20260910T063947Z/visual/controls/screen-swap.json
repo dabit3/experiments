@@ -1,0 +1,27 @@
+{
+  "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T063947Z/visual/macos-spec-lobby-reference.png",
+  "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T063947Z/visual/macos-spec-results-actual.png",
+  "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T063947Z/visual/macos-spec-lobby-reference.png",
+  "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T063947Z/visual/macos-spec-results-actual.png",
+  "width": 1180,
+  "height": 800,
+  "total_pixels": 944000,
+  "exact_different_pixels": 649143,
+  "antialiased_pixels": 25280,
+  "edge_pixels": 59826,
+  "edge_zone_pixels": 139556,
+  "edge_zone_fraction": 0.1478,
+  "shift_pixels": 0,
+  "normalization": {
+    "tolerance_per_channel": 16,
+    "edge_tolerance_per_channel": 255,
+    "edge_radius": 2,
+    "edge_threshold": 16,
+    "ignore_antialiasing": true,
+    "shift_radius": 1,
+    "masks": [],
+    "crop_actual": null,
+    "crop_reference": null
+  },
+  "different_pixels": 230421
+}

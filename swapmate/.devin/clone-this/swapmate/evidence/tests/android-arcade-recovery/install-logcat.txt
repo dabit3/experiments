@@ -1,0 +1,106 @@
+1
+--------- beginning of system
+09-10 21:13:48.068   781  1809 D OomAdjuster: Not killing cached processes
+09-10 21:13:48.163   781  1809 I ActivityManager: PendingStartActivityUids startActivity to updateOomAdj delay:1967ms, uid:10114
+09-10 21:13:48.237   781  1809 W ActivityManager: Slow operation: 4961ms so far, now at attachApplicationLocked: after updateOomAdjLocked
+--------- beginning of events
+09-10 21:13:48.466  1488  1488 I wm_on_start_called: [229616369,com.android.fakesystemapp.launcher.EmptyHomeActivity,handleStartActivity,4]
+09-10 21:13:48.494   781   820 W Looper  : Slow dispatch took 24021ms android.ui h=com.android.server.am.ActivityManagerService$UiHandler c=null m=68
+09-10 21:13:48.537  1488  1488 I wm_on_resume_called: [229616369,com.android.fakesystemapp.launcher.EmptyHomeActivity,RESUME_ACTIVITY,3]
+--------- beginning of main
+09-10 21:13:48.559   781  1066 W system_server: Long monitor contention with owner android.ui (820) at void com.android.server.DeviceIdleController.addPowerSaveTempWhitelistAppDirectInternal(int, int, long, int, boolean, int, java.lang.String)(DeviceIdleController.java:3296) waiters=0 in void com.android.server.DeviceIdleController$MyHandler.handleMessage(android.os.Message) for 18.993s
+09-10 21:13:48.798   781   874 W BroadcastLoopers: Found previously unknown looper Thread[PackageManager,5,main]
+09-10 21:13:48.928   781  1066 I dvm_lock_sample: [system_server,0,appscheduling.default,18993,DeviceIdleController.java,2056,void com.android.server.DeviceIdleController$MyHandler.handleMessage(android.os.Message),-,3296,void com.android.server.DeviceIdleController.addPowerSaveTempWhitelistAppDirectInternal(int, int, long, int, boolean, int, java.lang.String),100]
+09-10 21:13:49.089   781  1795 I dvm_lock_sample: [system_server,1,binder:781_A,16135,ActivityManagerService.java,14230,int com.android.server.am.ActivityManagerService.bindServiceInstance(android.app.IApplicationThread, android.os.IBinder, android.content.Intent, java.lang.String, android.app.IServiceConnection, long, java.lang.String, boolean, int, java.lang.String, android.app.IApplicationThread, java.lang.String, int),,0,null,100]
+09-10 21:13:49.273  1488  1488 I wm_on_top_resumed_gained_called: [229616369,com.android.fakesystemapp.launcher.EmptyHomeActivity,topStateChangedWhenResumed]
+09-10 21:13:49.140   781   819 W Looper  : Slow dispatch took 162ms android.fg h=android.os.Handler c=com.android.server.location.injector.SystemAppForegroundHelper$$ExternalSyntheticLambda1@e5cace5 m=0
+09-10 21:13:49.326  1488  1488 I Choreographer: Skipped 34 frames!  The application may be doing too much work on its main thread.
+09-10 21:13:49.562   781  1094 I InputDispatcher: 63466c3 com.android.fakesystemapp/com.android.fakesystemapp.launcher.FallbackHome (server) spent 2174ms processing FocusEvent(hasFocus=false)
+09-10 21:13:49.606   781   820 W Looper  : Slow dispatch took 864ms android.ui h=com.android.server.am.ActivityManagerService$UiHandler c=com.android.server.am.UidObserverController$$ExternalSyntheticLambda0@1f0e784 m=0
+09-10 21:13:49.695  1398  1405 W rkstack.process: Long monitor contention with owner FinalizerWatchdogDaemon (1407) at void java.lang.Object.wait(long, int)(Object.java:-2) waiters=0 in void java.lang.Daemons$FinalizerWatchdogDaemon.monitoringNeeded(int) for 682ms
+09-10 21:13:49.687   781  1066 W Looper  : Slow dispatch took 20597ms appscheduling.default h=com.android.server.DeviceIdleController$MyHandler c=null m=13
+09-10 21:13:49.718   781  1870 D CoreBackPreview: Window{aa47aae u0 com.android.fakesystemapp/com.android.fakesystemapp.launcher.EmptyHomeActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@84193ba, mPriority=0, mIsAnimationCallback=false}
+09-10 21:13:50.027  1398  1405 I dvm_lock_sample: [com.android.networkstack.process,0,FinalizerDaemon,682,Daemons.java,-1,void java.lang.Daemons$FinalizerWatchdogDaemon.monitoringNeeded(int),Object.java,-2,void java.lang.Object.wait(long, int),100]
+09-10 21:13:50.049   781   839 I dvm_lock_sample: [system_server,1,ActivityManager:procStart,17191,ProcessList.java,2200,void com.android.server.am.ProcessList.lambda$handleProcessStart$1(com.android.server.am.ProcessRecord, java.lang.String, int[], int, int, int, java.lang.String, java.lang.String, java.lang.String, long),,0,null,100]
+09-10 21:13:50.125   781   823 I input_focus: [Focus request aa47aae com.android.fakesystemapp/com.android.fakesystemapp.launcher.EmptyHomeActivity,reason=UpdateInputWindows]
+09-10 21:13:50.306   781   839 W ActivityManager: Slow operation: 20494ms so far, now at startProcess: done updating battery stats
+09-10 21:13:50.678   592   592 I netd    : tetherGetStats() -> {[]} <628.19ms>
+09-10 21:13:50.775   781   839 I am_proc_start: [0,1984,1000,com.android.keychain,service,{com.android.keychain/com.android.keychain.KeyChainService}]
+09-10 21:13:50.890  1482  1482 I service_manager_slow: [22,carrier_config]
+--------- beginning of radio
+09-10 21:13:50.908  1482  1482 W CarrierConfigManager: Error getting config for subId -1 ICarrierConfigLoader is null
+09-10 21:13:50.888   781   839 W ActivityManager: Slow operation: 21078ms so far, now at startProcess: building log message
+09-10 21:13:50.997   781   839 I ActivityManager: Start proc 1984:com.android.keychain/1000 for service {com.android.keychain/com.android.keychain.KeyChainService}
+09-10 21:13:51.155   781   839 W ActivityManager: Slow operation: 21324ms so far, now at startProcess: starting to update pids map
+09-10 21:13:51.159  1482  1482 W CarrierConfigManager: CarrierConfigLoader is not available.
+09-10 21:13:51.232   781   839 W ActivityManager: Slow operation: 21422ms so far, now at startProcess: done updating pids map
+09-10 21:13:51.351   781  1107 I dvm_lock_sample: [system_server,1,StorageManagerService,17690,ActivityManagerService.java,14230,int com.android.server.am.ActivityManagerService.bindServiceInstance(android.app.IApplicationThread, android.os.IBinder, android.content.Intent, java.lang.String, android.app.IServiceConnection, long, java.lang.String, boolean, int, java.lang.String, android.app.IApplicationThread, java.lang.String, int),,0,null,100]
+09-10 21:13:51.339   781   839 W ActivityManager: Slow operation: 10848ms so far, now at startProcess: asking zygote to start proc
+09-10 21:13:51.565  1488  1488 I viewroot_draw_event: [VRI[EmptyHomeActivity],reportDrawFinished seqId=0]
+09-10 21:13:51.607   781  1107 I StorageUserConnection: Bound to the ExternalStorageService for user 0
+09-10 21:13:51.688   781  1881 I dvm_lock_sample: [system_server,1,binder:781_F,11999,ActivityManagerService.java,-1,void com.android.server.am.ActivityManagerService.registerStrictModeCallback(android.os.IBinder),,0,null,100]
+09-10 21:13:52.101   781   838 I dvm_lock_sample: [system_server,1,ActivityManager,8391,ActivityManagerService.java,1914,void com.android.server.am.ActivityManagerService$MainHandler.handleMessage(android.os.Message),,0,null,100]
+09-10 21:13:52.188   781   838 I ActivityManager: Force stopping com.android.providers.media.module appid=10126 user=0: storage_session_controller reset
+09-10 21:13:52.287  1482  1482 I service_manager_slow: [250,carrier_config]
+09-10 21:13:52.454  1482  1482 W CarrierConfigManager: Error getting config for subId -1 ICarrierConfigLoader is null
+09-10 21:13:52.583  1482  1482 W CarrierConfigManager: CarrierConfigLoader is not available.
+09-10 21:13:52.996  1482  1482 I service_manager_slow: [294,carrier_config]
+09-10 21:13:53.098  1482  1482 W CarrierConfigManager: Error getting config for subId -1 ICarrierConfigLoader is null
+09-10 21:13:53.211  1482  1482 W CarrierConfigManager: CarrierConfigLoader is not available.
+09-10 21:13:53.248   588   588 D Zygote  : Forked child process 1998
+09-10 21:13:53.282   781  1881 I DefaultPermGrantPolicy: Revoking permissions from disabled data services for user:0
+09-10 21:13:53.456  1482  1482 E DSM-I-0 : Can't find the binding package
+09-10 21:13:53.789  1482  1482 D DCM-0   : DataConfigManager created.
+09-10 21:13:53.843  1488  1488 I Choreographer: Skipped 61 frames!  The application may be doing too much work on its main thread.
+09-10 21:13:54.344   781   839 W ActivityManager: Slow operation: 13853ms so far, now at startProcess: returned from zygote!
+09-10 21:13:54.335  1957  1957 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+09-10 21:13:54.794  1957  1957 D ApplicationLoaders: Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+09-10 21:13:56.520  1482  1482 W CarrierConfigManager: Error getting config for subId -1 ICarrierConfigLoader is null
+09-10 21:13:57.066   781   819 I wm_activity_launch_time: [0,229616369,com.android.fakesystemapp/.launcher.EmptyHomeActivity,12034]
+09-10 21:13:57.103   781   838 W system_server: Long monitor contention with owner android.anim (823) at void com.android.server.wm.WindowSurfacePlacer$Traverser.run()(WindowSurfacePlacer.java:58) waiters=0 in boolean com.android.server.wm.ActivityTaskManagerService$LocalService.onForceStopPackage(java.lang.String, boolean, boolean, int) for 4.807s
+09-10 21:13:57.207   781   838 I dvm_lock_sample: [system_server,1,ActivityManager,4807,ActivityTaskManagerService.java,6664,boolean com.android.server.wm.ActivityTaskManagerService$LocalService.onForceStopPackage(java.lang.String, boolean, boolean, int),WindowSurfacePlacer.java,58,void com.android.server.wm.WindowSurfacePlacer$Traverser.run(),100]
+09-10 21:13:57.240   781  1870 W system_server: Long monitor contention with owner android.anim (823) at void com.android.server.wm.WindowSurfacePlacer$Traverser.run()(WindowSurfacePlacer.java:58) waiters=1 in void com.android.server.wm.ActivityClientController.activityIdle(android.os.IBinder, android.content.res.Configuration, boolean) for 1.299s
+09-10 21:13:57.283   781  1870 I dvm_lock_sample: [system_server,0,binder:781_E,1299,ActivityClientController.java,179,void com.android.server.wm.ActivityClientController.activityIdle(android.os.IBinder, android.content.res.Configuration, boolean),WindowSurfacePlacer.java,58,void com.android.server.wm.WindowSurfacePlacer$Traverser.run(),100]
+09-10 21:13:57.421   781  1870 I wm_destroy_activity: [0,209185396,2,com.android.fakesystemapp/.launcher.FallbackHome,finish-idle]
+09-10 21:13:57.297   781   819 I ActivityTaskManager: Displayed com.android.fakesystemapp/.launcher.EmptyHomeActivity for user 0: +12s34ms
+09-10 21:13:57.633  1488  1488 I wm_on_stop_called: [209185396,com.android.fakesystemapp.launcher.FallbackHome,LIFECYCLER_STOP_ACTIVITY,18]
+09-10 21:13:57.604   781   819 W Looper  : Slow dispatch took 662ms android.fg h=android.os.Handler c=com.android.server.wm.ActivityMetricsLogger$$ExternalSyntheticLambda0@8d9422f m=0
+09-10 21:13:58.227   781   823 I Choreographer: Skipped 45 frames!  The application may be doing too much work on its main thread.
+09-10 21:13:58.419   781   838 I am_uid_stopped: 10126
+09-10 21:13:59.412   438   537 E IPCThreadState: binder thread pool (4 threads) starved for 120 ms
+09-10 21:13:59.805   781   824 I Choreographer: Skipped 48 frames!  The application may be doing too much work on its main thread.
+09-10 21:13:59.828  1998  1998 I nect.controller: Using CollectorTypeCMC GC.
+09-10 21:13:59.764  1324  2000 D AccessibilitySourceService: enabled a11y services count 0
+09-10 21:14:00.116   438   535 E IPCThreadState: binder thread pool (4 threads) starved for 133 ms
+09-10 21:14:00.061   781  1094 I input_focus: [Focus entering aa47aae com.android.fakesystemapp/com.android.fakesystemapp.launcher.EmptyHomeActivity (server),reason=Window became focusable. Previous reason: NOT_VISIBLE]
+09-10 21:14:01.216  1324  2000 D AccessibilitySourceService: a11y source sending 0 issue to sc
+09-10 21:14:01.300  1998  1998 E nect.controller: Not starting debugger since process cannot load the jdwp agent.
+09-10 21:14:01.637   781   850 W system_server: Long monitor contention with owner binder:781_A (1795) at java.lang.Object android.app.PropertyInvalidatedCache.query(java.lang.Object)(PropertyInvalidatedCache.java:953) waiters=0 in java.lang.Object android.app.PropertyInvalidatedCache.query(java.lang.Object) for 191ms
+09-10 21:14:02.936   781   850 I dvm_lock_sample: [system_server,0,bgres-controller,191,PropertyInvalidatedCache.java,1000,java.lang.Object android.app.PropertyInvalidatedCache.query(java.lang.Object),-,953,java.lang.Object android.app.PropertyInvalidatedCache.query(java.lang.Object),38]
+09-10 21:14:03.741   781   838 W system_server: Long monitor contention with owner binder:781_A (1795) at java.util.List com.android.server.appop.AppOpsService.getPackagesForOpsForDevice(int[], java.lang.String)(AppOpsService.java:1772) waiters=0 in void com.android.server.appop.AppOpsService.updateUidProcState(int, int, int) for 4.872s
+09-10 21:14:03.752   781   838 I dvm_lock_sample: [system_server,1,ActivityManager,4872,AppOpsService.java,1630,void com.android.server.appop.AppOpsService.updateUidProcState(int, int, int),-,1772,java.util.List com.android.server.appop.AppOpsService.getPackagesForOpsForDevice(int[], java.lang.String),100]
+09-10 21:14:03.834   781   838 I ActivityManager: Killing 1957:com.android.providers.media.module/u0a126 (adj 0): stop com.android.providers.media.module due to storage_session_controller reset
+09-10 21:14:03.884   781   838 I am_kill : [0,1957,com.android.providers.media.module,0,stop com.android.providers.media.module due to storage_session_controller reset,98556]
+09-10 21:14:04.136   781   850 W system_server: Long monitor contention with owner binder:781_A (1795) at java.util.List com.android.server.appop.AppOpsService.getPackagesForOpsForDevice(int[], java.lang.String)(AppOpsService.java:1772) waiters=1 in int com.android.server.appop.AppOpsService.checkOperationUnchecked(int, int, java.lang.String, java.lang.String, int, boolean) for 595ms
+09-10 21:14:04.176   781  1834 I service_manager_slow: [130,user]
+09-10 21:14:04.264   781   850 I dvm_lock_sample: [system_server,0,bgres-controller,595,AppOpsService.java,2868,int com.android.server.appop.AppOpsService.checkOperationUnchecked(int, int, java.lang.String, java.lang.String, int, boolean),-,1772,java.util.List com.android.server.appop.AppOpsService.getPackagesForOpsForDevice(int[], java.lang.String),100]
+09-10 21:14:04.213   781   838 I Watchdog: Interesting Java process com.android.providers.media.module died. Pid 1957
+09-10 21:14:04.376   781  1809 W system_server: Long monitor contention with owner binder:781_C (1834) at android.os.IBinder android.os.ServiceManager.rawGetService(java.lang.String)(ServiceManager.java:476) waiters=0 in android.os.IBinder android.os.ServiceManager.rawGetService(java.lang.String) for 152ms
+09-10 21:14:04.452   781  1809 I dvm_lock_sample: [system_server,1,binder:781_B,152,ServiceManager.java,439,android.os.IBinder android.os.ServiceManager.rawGetService(java.lang.String),-,476,android.os.IBinder android.os.ServiceManager.rawGetService(java.lang.String),30]
+09-10 21:14:04.540   781  1809 I service_manager_slow: [158,user]
+09-10 21:14:04.607   781  1834 D SafetySourceDataValidat: No cert check requested for package com.android.permissioncontroller
+09-10 21:14:04.703  1324  2004 I service_manager_slow: [315,location]
+09-10 21:14:04.509  1482  1482 D DCM-0   : Carrier config updated. Config is not carrier specific.
+09-10 21:14:05.024   781   838 D OomAdjuster: Not killing cached processes
+09-10 21:14:05.119   592   592 I netd    : tetherGetStats() -> {[]} <389.25ms>
+09-10 21:14:05.277   781  1834 V SafetyCenterRefreshTrac: Refresh with id: d6d1e9b1-8ebd-428d-b508-2dcb965132e7_0 completed for source id: AndroidPermissionAutoRevoke, user id: 0, duration: null, successful: true, data changed: false, tracking: false, now 4 tracked sources in flight
+09-10 21:14:05.504   781  1085 W system_server: Long monitor contention with owner ActivityManager (838) at com.android.server.am.ProcessRecord com.android.server.am.ProcessList.removeProcessNameLocked(java.lang.String, int, com.android.server.am.ProcessRecord)(ProcessList.java:3472) waiters=0 in boolean com.android.server.am.ActivityManagerService.isAppStartModeDisabled(int, java.lang.String) for 1.692s
+09-10 21:14:05.586   781   838 I ActivityManager:   Force stopping service ServiceRecord{e88d1e0 u0 com.android.providers.media.module/com.android.providers.media.fuse.ExternalStorageServiceImpl c:android}
+09-10 21:14:05.665   781  1985 I StorageUserConnection: Service: [ComponentInfo{com.android.providers.media.module/com.android.providers.media.fuse.ExternalStorageServiceImpl}] died. User [0]
+09-10 21:14:05.684   781  1085 I dvm_lock_sample: [system_server,0,AlarmManager,1692,ActivityManagerService.java,6314,boolean com.android.server.am.ActivityManagerService.isAppStartModeDisabled(int, java.lang.String),ProcessList.java,3472,com.android.server.am.ProcessRecord com.android.server.am.ProcessList.removeProcessNameLocked(java.lang.String, int, com.android.server.am.ProcessRecord),100]
+09-10 21:14:05.712   781  1985 I StorageUserConnection: Closing connection for user 0
+09-10 21:14:06.058   781  1834 I service_manager_slow: [383,user]
+09-10 21:14:06.344   781   822 I dvm_lock_sample: [system_server,1,android.display,19968,ProcessRecord.java,1623,void com.android.server.am.ProcessRecord.onStartActivity(int, boolean, java.lang.String, long),,0,null,100]
+09-10 21:14:06.488   781  1126 I dvm_lock_sample: [system_server,0,WifiHandlerThread,19639,ActivityManagerService.java,16310,int com.android.server.am.ActivityManagerService.broadcastIntentWithFeature(android.app.IApplicationThread, java.lang.String, android.content.Intent, java.lang.String, android.content.IIntentReceiver, int, java.lang.String, android.os.Bundle, java.lang.String[], java.lang.String[], java.lang.String[], int, android.os.Bundle, boolean, boolean, int),,0,null,100]
+--------- beginning of kernel
+09-10 21:14:06.796   175   175 I logd    : logdr: UID=0 GID=0 PID=2012 n tail=100 logMask=bf pid=0 start=0ns deadline=0ns

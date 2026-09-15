@@ -1,0 +1,14 @@
+[Event "Swapmate match"]
+[Site "Swapmate"]
+[Date "2026.09.10"]
+[WhiteA "Web player"]
+[BlackA "iPhone player"]
+[WhiteB "Bishop Bell"]
+[BlackB "Mac player"]
+[TimeControl "1800+0"]
+[Variant "bughouse"]
+[Result "1-0"]
+
+1B. e4 {1799.279} 1A. e4 {1798.182} 1a. e5 {1799.652} 2A. Qh5 {1797.891}
+2a. Nc6 {1799.377} 3A. Bc4 {1797.603} 3a. a6 {1789.976} 4A. Qxf7# {1797.353}
+{BA checkmated} 1-0

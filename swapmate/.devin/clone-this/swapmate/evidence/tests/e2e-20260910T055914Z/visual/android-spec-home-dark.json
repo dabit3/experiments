@@ -1,0 +1,32 @@
+{
+  "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/android-spec-home-dark-reference.png",
+  "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/visual/android-spec-home-dark-actual.png",
+  "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/web-android-spec-home-dark.png",
+  "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T055914Z/android-spec-home-dark.png",
+  "width": 540,
+  "height": 1200,
+  "total_pixels": 648000,
+  "exact_different_pixels": 163173,
+  "antialiased_pixels": 1598,
+  "edge_pixels": 12470,
+  "edge_zone_pixels": 82093,
+  "edge_zone_fraction": 0.1267,
+  "shift_pixels": 5,
+  "normalization": {
+    "tolerance_per_channel": 16,
+    "edge_tolerance_per_channel": 255,
+    "edge_radius": 2,
+    "edge_threshold": 40,
+    "ignore_antialiasing": true,
+    "shift_radius": 1,
+    "masks": [],
+    "crop_actual": [
+      0,
+      0,
+      540,
+      1200
+    ],
+    "crop_reference": null
+  },
+  "different_pixels": 137
+}

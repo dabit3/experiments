@@ -1,0 +1,32 @@
+{
+  "reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T062550Z/visual/ios-spec-results-reference.png",
+  "actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T062550Z/visual/ios-spec-results-actual.png",
+  "source_reference": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T062550Z/web-ios-spec-results.png",
+  "source_actual": "/Users/devin/repos/experiments/swapmate/.devin/clone-this/swapmate/evidence/tests/e2e-20260910T062550Z/ios-spec-results.png",
+  "width": 1206,
+  "height": 2334,
+  "total_pixels": 2814804,
+  "exact_different_pixels": 113555,
+  "antialiased_pixels": 0,
+  "edge_pixels": 39033,
+  "edge_zone_pixels": 493082,
+  "edge_zone_fraction": 0.1752,
+  "shift_pixels": 0,
+  "normalization": {
+    "tolerance_per_channel": 16,
+    "edge_tolerance_per_channel": 255,
+    "edge_radius": 2,
+    "edge_threshold": 16,
+    "ignore_antialiasing": true,
+    "shift_radius": 1,
+    "masks": [],
+    "crop_actual": [
+      0,
+      186,
+      1206,
+      2334
+    ],
+    "crop_reference": null
+  },
+  "different_pixels": 0
+}

@@ -1,0 +1,42 @@
+--------- beginning of crash
+09-10 19:20:54.147   730   758 F libc    : Fatal signal 6 (SIGABRT), code -6 (SI_TKILL) in tid 758 (Signal Catcher), pid 730 (system_server)
+09-10 19:21:46.296  1348  1348 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-10 19:21:46.301  1348  1348 F DEBUG   : Build fingerprint: 'Android/sdk_slim_arm64/emu64a:15/AE3A.240806.019/12368160:userdebug/test-keys'
+09-10 19:21:46.305  1348  1348 F DEBUG   : Revision: '0'
+09-10 19:21:46.309  1348  1348 F DEBUG   : ABI: 'arm64'
+09-10 19:21:46.322  1348  1348 F DEBUG   : Timestamp: 2026-09-10 19:21:15.131745008-0700
+09-10 19:21:46.335  1348  1348 F DEBUG   : Process uptime: 414s
+09-10 19:21:46.343  1348  1348 F DEBUG   : Cmdline: system_server
+09-10 19:21:46.353  1348  1348 F DEBUG   : pid: 730, tid: 758, name: Signal Catcher  >>> system_server <<<
+09-10 19:21:46.366  1348  1348 F DEBUG   : uid: 1000
+09-10 19:21:46.385  1348  1348 F DEBUG   : tagged_addr_ctrl: 0000000000000001 (PR_TAGGED_ADDR_ENABLE)
+09-10 19:21:46.400  1348  1348 F DEBUG   : signal 6 (SIGABRT), code -6 (SI_TKILL), fault addr --------
+09-10 19:21:46.408  1348  1348 F DEBUG   : Abort message: 'Caused HeapTaskDaemon failure : SuspendAll timeout: Unsuspended threads: Thread[2,tid=758,Runnable,Thread*=0xb40000756eb13f50,peer=0x14002cc0,"Signal Catcher"], Info for Thread[2,tid=758,Runnable,Thread*=0xb40000756eb13f50,peer=0x14002cc0,"Signal Catcher"]:Signal Catcher tid: 758, state&flags: 0x9, priority: 10,  barrier value: 1, Target states: [758 (Signal Catcher) R 374 374 0 0 -1 4194368 48856 0 702 0 15892 19415 0 0 0 -20 169 0 6, 758 (Signal Catcher) S 374 374 0 0 -1 4194368 49002 0 703 0 16018 19586 0 0 0 -20 169 0 6]1@500409720268 Final wait time: 2.257s'
+09-10 19:21:46.437  1348  1348 F DEBUG   :     x0  0000000000000000  x1  0000000000000081  x2  0000000000000001  x3  0000000000000000
+09-10 19:21:46.448  1348  1348 F DEBUG   :     x4  0000000000000000  x5  0000000000000000  x6  0000000000000000  x7  203a734d79636e65
+09-10 19:21:46.464  1348  1348 F DEBUG   :     x8  0000000000000062  x9  0000000000000000  x10 00000000ffffffff  x11 0000000000000001
+09-10 19:21:46.475  1348  1348 F DEBUG   :     x12 0000000000000001  x13 0000007771dfca0c  x14 000000000000042f  x15 0000000000000000
+09-10 19:21:46.499  1348  1348 F DEBUG   :     x16 00000074bce22bb0  x17 0000007771d88490  x18 0000007421f7c000  x19 b40000756eb13f50
+09-10 19:21:46.509  1348  1348 F DEBUG   :     x20 00000074836281e8  x21 b4000074deb4aa80  x22 00000074bd00d000  x23 000000000000005c
+09-10 19:21:46.524  1348  1348 F DEBUG   :     x24 b40000766eb16090  x25 000000000000005d  x26 b4000074deb4ad88  x27 0000000000000000
+09-10 19:21:46.539  1348  1348 F DEBUG   :     x28 00000074bd007d88  x29 0000007483628150
+09-10 19:21:46.562  1348  1348 F DEBUG   :     lr  00000074bc961070  sp  00000074836280e0  pc  00000074bc961070  pst 0000000000001000
+09-10 19:21:46.593  1348  1348 F DEBUG   : 8 total frames
+09-10 19:21:46.610  1348  1348 F DEBUG   : backtrace:
+09-10 19:21:46.640  1348  1348 F DEBUG   :       #00 pc 0000000000561070  /apex/com.android.art/lib64/libart.so (art::ThreadList::RunCheckpoint(art::Closure*, art::Closure*, bool)+1944) (BuildId: 05bfa63ad29b97d7dde4e764ce193f37)
+09-10 19:21:46.648  1348  1348 F DEBUG   :       #01 pc 00000000005193e0  /apex/com.android.art/lib64/libart.so (art::ThreadList::Dump(std::__1::basic_ostream<char, std::__1::char_traits<char>>&, bool)+292) (BuildId: 05bfa63ad29b97d7dde4e764ce193f37)
+09-10 19:21:46.652  1348  1348 F DEBUG   :       #02 pc 00000000004e9a20  /apex/com.android.art/lib64/libart.so (art::ThreadList::DumpForSigQuit(std::__1::basic_ostream<char, std::__1::char_traits<char>>&)+288) (BuildId: 05bfa63ad29b97d7dde4e764ce193f37)
+09-10 19:21:46.658  1348  1348 F DEBUG   :       #03 pc 00000000004e8e80  /apex/com.android.art/lib64/libart.so (art::Runtime::DumpForSigQuit(std::__1::basic_ostream<char, std::__1::char_traits<char>>&)+48) (BuildId: 05bfa63ad29b97d7dde4e764ce193f37)
+09-10 19:21:46.660  1348  1348 F DEBUG   :       #04 pc 00000000004e8acc  /apex/com.android.art/lib64/libart.so (art::SignalCatcher::HandleSigQuit()+612) (BuildId: 05bfa63ad29b97d7dde4e764ce193f37)
+09-10 19:21:46.663  1348  1348 F DEBUG   :       #05 pc 000000000064bce4  /apex/com.android.art/lib64/libart.so (art::SignalCatcher::Run(void*)+416) (BuildId: 05bfa63ad29b97d7dde4e764ce193f37)
+09-10 19:21:46.667  1348  1348 F DEBUG   :       #06 pc 000000000006c354  /apex/com.android.runtime/lib64/bionic/libc.so (__pthread_start(void*)+196) (BuildId: 1b9fecf834d610f77e641f026ca7269b)
+09-10 19:21:46.670  1348  1348 F DEBUG   :       #07 pc 000000000005efc4  /apex/com.android.runtime/lib64/bionic/libc.so (__start_thread+64) (BuildId: 1b9fecf834d610f77e641f026ca7269b)
+09-10 19:22:00.867  1274  1274 E AndroidRuntime: FATAL EXCEPTION: main
+09-10 19:22:00.867  1274  1274 E AndroidRuntime: Process: com.android.permissioncontroller, PID: 1274
+09-10 19:22:00.867  1274  1274 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+09-10 19:22:00.861  1303  1303 E AndroidRuntime: FATAL EXCEPTION: main
+09-10 19:22:00.861  1303  1303 E AndroidRuntime: Process: com.android.networkstack.process, PID: 1303
+09-10 19:22:00.861  1303  1303 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+09-10 19:22:01.251  1323  1323 E AndroidRuntime: FATAL EXCEPTION: main
+09-10 19:22:01.251  1323  1323 E AndroidRuntime: PID: 1323
+09-10 19:22:01.251  1323  1323 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause

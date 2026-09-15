@@ -1,0 +1,172 @@
+{
+  "sweep": 2,
+  "kind": "independent repeat inspection of final e2e artifacts, docs and live server HTTP surface",
+  "revision": "sha256:8bf8e288b2e47c5190c833d9e8bb211fa168c8fb9a26b9c5986edc2e49fa427f",
+  "timestamp": "2026-09-10T06:58:06.404953+00:00",
+  "audits_revisited": [
+    "source",
+    "navigation",
+    "roles",
+    "states",
+    "responsive",
+    "data",
+    "assets",
+    "accessibility",
+    "reliability",
+    "rebrand"
+  ],
+  "run": ".devin/clone-this/swapmate/evidence/tests/e2e-20260910T063947Z",
+  "screenshots_px": {
+    "web-lobby": [
+      1180,
+      800
+    ],
+    "web-game": [
+      1180,
+      800
+    ],
+    "web-results": [
+      1180,
+      800
+    ],
+    "ios-lobby": [
+      1206,
+      2622
+    ],
+    "ios-game": [
+      1206,
+      2622
+    ],
+    "ios-results": [
+      1206,
+      2622
+    ],
+    "android-lobby": [
+      540,
+      1200
+    ],
+    "android-game": [
+      540,
+      1200
+    ],
+    "android-results": [
+      540,
+      1200
+    ],
+    "macos-lobby": [
+      1180,
+      832
+    ],
+    "macos-game": [
+      1180,
+      832
+    ],
+    "macos-results": [
+      1180,
+      832
+    ]
+  },
+  "recording_bytes": 61232122,
+  "summary_passed": true,
+  "summary_problems": [],
+  "summary_final": {
+    "fenA": "r1bqkbnr/pppp1Qpp/2n4p/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR[P] b KQkq - 0 4",
+    "fenB": "rnb1kbnr/ppp1pppp/8/q7/8/2N5/PPPP1PPP/R1BQKBNR[p] w KQkq - 0 4",
+    "moves": 13,
+    "moveText": "1A. e4 1a. e5 1B. e4 1b. d5 2A. Qh5 2a. Nc6 2B. exd5 2b. Qxd5 3A. Bc4 3a. P@h6 3B. Nc3 3b. Qa5 4A. Qxf7#",
+    "score": "1-0",
+    "result": {
+      "winner": "1",
+      "reason": "checkmate",
+      "board": "a",
+      "loser": "ab"
+    },
+    "over": true,
+    "gameId": "SWAP-1"
+  },
+  "per_client": {
+    "web": {
+      "screen": "results",
+      "platform": "web",
+      "name": "Web player",
+      "seat": "aw",
+      "chats": 1
+    },
+    "ios": {
+      "screen": "results",
+      "platform": "ios",
+      "name": "iPhone player",
+      "seat": "ab",
+      "chats": 0
+    },
+    "android": {
+      "screen": "results",
+      "platform": "android",
+      "name": "Android player",
+      "seat": "bw",
+      "chats": 0
+    },
+    "macos": {
+      "screen": "results",
+      "platform": "macos",
+      "name": "Mac player",
+      "seat": "bb",
+      "chats": 1
+    }
+  },
+  "all_clients_on_results_screen": true,
+  "four_distinct_seats": true,
+  "e2e_log_agreement_line": true,
+  "e2e_log_pass": true,
+  "bpgn_result": [
+    "1-0"
+  ],
+  "bpgn_move_count": 13,
+  "visual_comparisons": [
+    "android-spec-home-dark",
+    "android-spec-home-light",
+    "android-spec-results",
+    "ios-spec-home-dark",
+    "ios-spec-home-light",
+    "ios-spec-results",
+    "macos-spec-home-dark",
+    "macos-spec-home-light",
+    "macos-spec-lobby",
+    "macos-spec-results"
+  ],
+  "all_normalized_zero": true,
+  "negative_controls_nonzero": {
+    "theme-swap": 868599,
+    "shift-4px": 4148,
+    "screen-swap": 230421
+  },
+  "unexpected_exceptions_in_logs": [],
+  "live_http_default_mode": {
+    "/healthz": {
+      "status": 200,
+      "body": "{\"ok\":true,\"rooms\":0,\"clients\":0,\"testMode\":false}"
+    },
+    "/rooms/NOPE": {
+      "status": 404
+    },
+    "/test/clients": {
+      "status": 404
+    },
+    "/test/command": {
+      "status": 404
+    }
+  },
+  "live_http_test_mode": {
+    "/healthz": {
+      "status": 200,
+      "body": "{\"ok\":true,\"rooms\":0,\"clients\":0,\"testMode\":true}"
+    },
+    "/test/clients": {
+      "status": 200,
+      "body": "{\"clients\":[]}"
+    }
+  },
+  "new_items": 0,
+  "frontier_empty": true,
+  "notes": "All 12 platform screenshots present with expected geometries; summary.passed with no problems; four clients on four distinct seats all on the results screen with one shared final state; BPGN result 1-0 with 13 moves; all 10 visual comparisons normalized-zero and 3 nonzero negative controls; no exceptions in harness/server logs; /healthz answers, unknown room snapshot is 404, /test/* is 404 unless --test (matches PROTOCOL.md and the security review). No new requirement discovered."
+}

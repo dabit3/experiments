@@ -1,0 +1,199 @@
+Fresh source copy: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate (no generated build/dependency directories copied)
+Fri Sep 11 05:08:50 UTC 2026
+Resolving dependencies...
+Downloading packages...
++ _fe_analyzer_shared 107.0.0
++ analyzer 14.3.0
++ args 2.7.0
++ async 2.13.1
++ boolean_selector 2.1.2
++ cli_config 0.2.0
++ collection 1.19.1
++ convert 3.1.2
++ coverage 1.15.1
++ crypto 3.0.7
++ file 7.0.1
++ frontend_server_client 4.0.0
++ glob 2.2.0
++ http_multi_server 3.2.2
++ http_parser 4.1.2
++ io 1.1.0
++ lints 6.1.0
++ logging 1.3.0
++ matcher 0.12.20
++ meta 1.19.0
++ mime 2.1.0
++ node_preamble 2.0.2
++ package_config 3.0.0
++ path 1.9.1
++ pool 1.5.3
++ pub_semver 2.2.1
++ shelf 1.4.2
++ shelf_packages_handler 3.0.2
++ shelf_static 1.1.3
++ shelf_web_socket 3.0.0
++ source_map_stack_trace 2.1.2
++ source_maps 0.10.14
++ source_span 1.10.2
++ stack_trace 1.12.2
++ stream_channel 2.1.4
++ string_scanner 1.4.1
++ term_glyph 1.2.2
++ test 1.32.0
++ test_api 0.7.14
++ test_core 0.6.20
++ typed_data 1.4.0
++ vm_service 15.3.0
++ watcher 1.2.1
++ web 1.1.1
++ web_socket 1.0.1
++ web_socket_channel 3.0.3
++ webkit_inspection_protocol 1.2.1
++ yaml 3.1.4
+Changed 48 dependencies!
+Analyzing swapmate_core...
+No issues found!
+00:00 +0: loading test/position_test.dart
+00:00 +0: test/position_test.dart: Position initial position has 20 legal moves and standard FEN
+00:00 +1: test/position_test.dart: Position FEN round trip
+00:00 +2: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +3: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +4: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +5: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +6: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +7: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +8: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +9: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +10: test/match_test.dart: BughouseMatch captured pieces are passed to the partner on the other board
+00:00 +11: test/position_test.dart: Position moveFromSan parses drops and moves
+00:00 +12: test/position_test.dart: Position moveFromSan parses drops and moves
+00:00 +13: test/match_test.dart: BughouseMatch clocks run independently and increment applies
+00:00 +14: test/position_test.dart: Move uci round trip
+00:00 +15: test/match_test.dart: BughouseMatch flag fall ends the match for the other team
+00:00 +16: test/match_test.dart: BughouseMatch checkmate on either board ends the whole match
+00:00 +17: test/match_test.dart: BughouseMatch BPGN export lists both boards chronologically
+00:00 +18: test/match_test.dart: BughouseMatch snapshot json round trip
+00:00 +19: test/match_test.dart: Bot is deterministic for a given seed
+00:00 +20: test/match_test.dart: Bot takes mate in one
+00:00 +21: test/match_test.dart: Bot two bots finish a match
+00:01 +22: All tests passed!
+Resolving dependencies...
+Downloading packages...
+Got dependencies!
+Analyzing server...
+No issues found!
+00:00 +0: loading test/server_test.dart
+00:00 +0: test/server_test.dart: four clients on four platforms play a complete match to checkmate
+00:00 +1: test/server_test.dart: bots fill a room and finish a match on their own
+00:00 +2: test/server_test.dart: two bots facing each other end the game by themselves
+00:01 +3: test/server_test.dart: premove executes when it becomes legal, and is dropped when it is not
+00:01 +4: test/server_test.dart: reconnecting with a resume token restores the seat
+00:01 +5: test/server_test.dart: quick chat goes to the partner only; room chat reaches spectators
+00:01 +6: test/server_test.dart: errors are reported for illegal moves and wrong turns
+00:01 +7: test/server_test.dart: chat flooding is rate limited
+00:01 +8: test/server_test.dart: over-long chat text is truncated
+00:01 +9: test/server_test.dart: healthz and rooms endpoints answer over HTTP
+00:01 +10: All tests passed!
+Generated: /Users/devin/swapmate-arcade-clean-20260911T050849Z/server
+
+added 3 packages in 337ms
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing app...
+No issues found! (ran in 1.6s)
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/home_screen_test.dart
+00:00 +0: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/home_screen_test.dart: phone theme control remains reachable while scrolling
+00:00 +1: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/home_screen_test.dart: home screen shows the brand, entry points and join form
+00:00 +2: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/move_list_test.dart: narrow move lists keep capture and drop notation on one line
+00:00 +3: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/move_list_test.dart: narrow move lists keep capture and drop notation on one line
+00:00 +4: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/move_list_test.dart: narrow move lists keep capture and drop notation on one line
+00:01 +5: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(320.0, 640.0) dark with full reserves
+00:01 +6: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(320.0, 640.0) light with full reserves
+00:01 +7: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(390.0, 844.0) dark with full reserves
+00:02 +8: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(390.0, 844.0) light with full reserves
+00:02 +9: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(800.0, 600.0) dark with full reserves
+00:02 +10: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(800.0, 600.0) light with full reserves
+00:02 +11: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(1180.0, 800.0) dark with full reserves
+00:02 +12: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/arcade_layout_test.dart: all screens fit Size(1180.0, 800.0) light with full reserves
+00:02 +13: /Users/devin/swapmate-arcade-clean-20260911T050849Z/swapmate/app/test/arcade_layout_test.dart: (tearDownAll)
+00:02 +13: All tests passed!
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Compiling lib/main.dart for the Web...
+Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+Use --no-wasm-dry-run to disable these warnings.
+Expected to find fonts for (MaterialIcons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 13528 bytes (99.2% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Compiling lib/main.dart for the Web...                             15.9s
+✓ Built build/web
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Building macOS application...
+warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
+✓ Built build/macos/Build/Products/Release/Swapmate.app (45.6MB)
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Building dev.swapmate.swapmate for simulator (ios)...
+Running Xcode build...
+Xcode build done.                                           14.1s
+✓ Built build/ios/iphonesimulator/Runner.app
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleRelease'...
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 7316 bytes (99.6% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Running Gradle task 'assembleRelease'...                           19.0s
+✓ Built build/app/outputs/flutter-apk/app-release.apk (52.3MB)
+CLEAN CHECKOUT PASS: server, web, iOS simulator, Android release, macOS release

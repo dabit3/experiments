@@ -1,0 +1,11 @@
+--------- beginning of main
+09-10 21:56:50.673   588   588 E Zygote  : Zygote failed to write to system_server FD: Connection refused
+09-10 21:56:50.748   588   588 I Zygote  : Process 781 exited due to signal 11 (Segmentation fault)
+09-10 21:56:51.372   588   588 E Zygote  : Exit zygote because system server (pid 781) has terminated
+--------- beginning of crash
+09-10 21:56:52.577  3299  3299 E AndroidRuntime: FATAL EXCEPTION: main
+09-10 21:56:52.577  3299  3299 E AndroidRuntime: Process: com.android.phone, PID: 3299
+09-10 21:56:52.577  3299  3299 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
+09-10 21:56:55.088  3354  3354 E AndroidRuntime: FATAL EXCEPTION: main
+09-10 21:56:55.088  3354  3354 E AndroidRuntime: Process: com.android.bluetooth, PID: 3354
+09-10 21:56:55.088  3354  3354 E AndroidRuntime: DeadSystemException: The system died; earlier logs will point to the root cause
