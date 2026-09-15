@@ -1,0 +1,8 @@
+DerivedData/
+build/
+build-ui/
+*.xcuserstate
+xcuserdata/
+*.mov
+*.mp4
+.DS_Store
