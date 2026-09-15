@@ -15,17 +15,27 @@ export const brandSchema = z.object({
   white: zColor(),
   fontFamily: z.string(),
   monoFontFamily: z.string(),
-  logoLight: z.string().describe("Lockup used on light backgrounds (staticFile path)"),
-  logoDark: z.string().describe("Lockup used on dark backgrounds (staticFile path)"),
+  logoLight: z
+    .string()
+    .describe("Lockup used on light backgrounds (staticFile path)"),
+  logoDark: z
+    .string()
+    .describe("Lockup used on dark backgrounds (staticFile path)"),
   customFontFaces: z
     .array(
       z.object({
         family: z.string(),
-        src: z.string().describe("staticFile path, e.g. fonts/NBInternationalPro-Regular.woff2"),
+        src: z
+          .string()
+          .describe(
+            "staticFile path, e.g. fonts/NBInternationalPro-Regular.woff2",
+          ),
         weight: z.number(),
       }),
     )
-    .describe("Optional @font-face declarations, e.g. the licensed NB International Pro files"),
+    .describe(
+      "Optional @font-face declarations, e.g. the licensed NB International Pro files",
+    ),
 });
 
 export const contentSchema = z.object({
@@ -34,7 +44,9 @@ export const contentSchema = z.object({
   headline: z.string(),
   accentWord: z
     .string()
-    .describe("Substring of the headline set in the accent color (first match)"),
+    .describe(
+      "Substring of the headline set in the accent color (first match)",
+    ),
   subhead: z.string(),
   captions: z.array(z.string()),
   useCases: z.array(z.string()),
@@ -42,7 +54,11 @@ export const contentSchema = z.object({
   cta: z.object({ label: z.string(), url: z.string() }),
   outroLine: z.string(),
   speedBadge: z.string(),
-  issueLabel: z.string().describe("Running head shown top-right when layoutTokens.showRunningHead is on"),
+  issueLabel: z
+    .string()
+    .describe(
+      "Running head shown top-right when layoutTokens.showRunningHead is on",
+    ),
 });
 
 export const cropSchema = z.object({
@@ -53,18 +69,35 @@ export const cropSchema = z.object({
 });
 
 export const mediaSlotSchema = z.object({
-  src: z.string().describe("Path under launch-videos/assets, e.g. screenshots/devin-web-1.png"),
+  src: z
+    .string()
+    .describe(
+      "Path under launch-videos/assets, e.g. screenshots/devin-web-1.png",
+    ),
   kind: z.enum(["image", "video"]),
   aspect: z
     .number()
-    .describe("Intrinsic width / height of the source. Used to place the crop window.")
+    .describe(
+      "Intrinsic width / height of the source. Used to place the crop window.",
+    )
     .default(16 / 9),
   startFrom: z.number().int().min(0).optional(),
   playbackRate: z.number().positive().optional(),
   crop: cropSchema.optional(),
+  highlight: cropSchema
+    .optional()
+    .describe(
+      "Source rect (fractions of the intrinsic size) to call out with a brand.accent outline. Drawn over the media; pixels are untouched.",
+    ),
 });
 
-export const layoutSchema = z.enum(["cover", "full", "spread", "dense", "closing"]);
+export const layoutSchema = z.enum([
+  "cover",
+  "full",
+  "spread",
+  "dense",
+  "closing",
+]);
 export const revealSchema = z.enum(["cut", "wipe"]);
 
 export const sceneSchema = z.object({
@@ -74,7 +107,9 @@ export const sceneSchema = z.object({
   reveal: revealSchema.default("cut"),
   media: z
     .array(z.string())
-    .describe("Keys into `media`. cover/full/spread use [0]; dense uses [0] and [1]; closing uses [0] as the outcome"),
+    .describe(
+      "Keys into `media`. cover/full/spread use [0]; dense uses [0] and [1]; closing uses [0] as the outcome",
+    ),
   captionIndex: z
     .number()
     .int()
@@ -85,10 +120,18 @@ export const sceneSchema = z.object({
   marginWord: z
     .string()
     .optional()
-    .describe("Oversized word placed in the empty margin, never over the media"),
+    .describe(
+      "Oversized word placed in the empty margin, never over the media",
+    ),
   mediaSide: z.enum(["left", "right"]).default("right"),
-  bleed: z.boolean().default(false).describe("Let the media run off the frame edge"),
-  dark: z.boolean().default(false).describe("Set the page on brand.black instead of paper"),
+  bleed: z
+    .boolean()
+    .default(false)
+    .describe("Let the media run off the frame edge"),
+  dark: z
+    .boolean()
+    .default(false)
+    .describe("Set the page on brand.black instead of paper"),
   mediaWidth: z
     .number()
     .min(0.3)

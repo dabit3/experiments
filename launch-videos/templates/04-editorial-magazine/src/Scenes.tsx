@@ -124,7 +124,7 @@ const Cover: React.FC<SceneProps> = ({ scene, props, page, total }) => {
   const slot = slotOf(props, scene.media[0]);
   const { content } = props;
 
-  const mediaW = 880;
+  const mediaW = Math.round((scene.mediaWidth ?? 0.46) * FRAME_W);
   const mediaH = 728;
   const mediaX = scene.bleed ? FRAME_W - mediaW : FRAME_W - margin - mediaW;
   const mediaY = 176;

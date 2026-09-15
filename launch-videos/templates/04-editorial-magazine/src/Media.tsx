@@ -1,5 +1,11 @@
 import React from "react";
-import { Img, OffthreadVideo, staticFile } from "remotion";
+import {
+  Img,
+  OffthreadVideo,
+  interpolate,
+  staticFile,
+  useCurrentFrame,
+} from "remotion";
 import type { Brand, LayoutTokens, MediaSlot } from "./schema";
 
 type Props = {
@@ -35,6 +41,18 @@ export const Media: React.FC<Props> = ({
   const dispH = srcH * scale;
   const left = -crop.x * dispW + (width - crop.w * dispW) / 2;
   const top = -crop.y * dispH + (height - crop.h * dispH) / 2;
+
+  const frame = useCurrentFrame();
+  const hl = slot.highlight;
+  const hlIn = interpolate(
+    frame,
+    [tokens.textEnterFrames, tokens.textEnterFrames * 2],
+    [0, 1],
+    {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    },
+  );
 
   const inner: React.CSSProperties = {
     position: "absolute",
@@ -72,6 +90,23 @@ export const Media: React.FC<Props> = ({
       ) : (
         <Img src={staticFile(slot.src)} style={inner} />
       )}
+      {hl ? (
+        <div
+          style={{
+            position: "absolute",
+            left: left + hl.x * dispW,
+            top: top + hl.y * dispH,
+            width: hl.w * dispW,
+            height: hl.h * dispH,
+            borderRadius: tokens.radius * 0.5,
+            border: `2px solid ${brand.accent}`,
+            background: `${brand.accent}12`,
+            opacity: hlIn,
+            transform: `scale(${0.96 + 0.04 * hlIn})`,
+            pointerEvents: "none",
+          }}
+        />
+      ) : null}
     </div>
   );
 };

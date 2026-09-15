@@ -68,6 +68,8 @@ export const defaultProps: LaunchProps = {
       kind: "image",
       aspect: WEB_SHOT,
       crop: { x: 0.17, y: 0.27, w: 0.46, h: 0.58 },
+      // The selected macOS row in the picker.
+      highlight: { x: 0.222, y: 0.711, w: 0.181, h: 0.047 },
     },
     // Devin working through a task in a web session.
     work: {
@@ -130,6 +132,7 @@ export const defaultProps: LaunchProps = {
       mediaSide: "right",
       bleed: true,
       dark: false,
+      mediaWidth: 0.52,
     },
     {
       id: "pick",
@@ -232,7 +235,7 @@ export const defaultProps: LaunchProps = {
     showFolio: true,
     showRunningHead: false,
     showPageNumbers: false,
-    logoHeight: 40,
+    logoHeight: 48,
   },
   type: {
     display: 132,
