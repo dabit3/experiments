@@ -2,7 +2,7 @@ import React from "react";
 import { AbsoluteFill } from "remotion";
 import { ms } from "../anim";
 import { headlineStyle, Rise } from "../components/Text";
-import { type } from "../tokens";
+import { SIZE } from "../components/Layout";
 
 const lines: { text: string; from: number; to: number }[] = [
   {
@@ -21,7 +21,7 @@ export const Context: React.FC = () => (
   <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", textAlign: "center" }}>
     {lines.map((l) => (
       <div key={l.text} style={{ position: "absolute" }}>
-        <Rise from={l.from} to={l.to} style={headlineStyle(type.sizes1080p.h2)}>
+        <Rise from={l.from} to={l.to} style={headlineStyle(SIZE.headline)}>
           {l.text}
         </Rise>
       </div>

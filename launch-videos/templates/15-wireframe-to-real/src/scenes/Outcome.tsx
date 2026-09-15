@@ -3,7 +3,7 @@ import { AbsoluteFill } from "remotion";
 import { ms } from "../anim";
 import { SketchText } from "../components/SketchText";
 import { headlineStyle } from "../components/Text";
-import { type } from "../tokens";
+import { SIZE } from "../components/Layout";
 
 const lines = [
   "Minutes, not 20+ minute CI round-trips.",
@@ -13,7 +13,7 @@ const lines = [
 
 export const Outcome: React.FC<{ duration: number }> = ({ duration }) => (
   <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 40 }}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 48 }}>
       {lines.map((text, i) => (
         <SketchText
           key={text}
@@ -22,7 +22,7 @@ export const Outcome: React.FC<{ duration: number }> = ({ duration }) => (
           to={duration}
           mode="bar"
           seed={20 + i}
-          style={headlineStyle(type.sizes1080p.h2)}
+          style={headlineStyle(SIZE.headline)}
         >
           {text}
         </SketchText>

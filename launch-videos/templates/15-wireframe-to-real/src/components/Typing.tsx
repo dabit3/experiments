@@ -51,7 +51,7 @@ export const Typing: React.FC<Props> = ({
         display: "flex",
         alignItems: "center",
         fontFamily: FONT_SANS,
-        fontSize,
+        fontSize: fontSize * (stageW / 1240),
         color: color.ink,
         letterSpacing: "-0.01em",
         whiteSpace: "nowrap",
@@ -63,7 +63,7 @@ export const Typing: React.FC<Props> = ({
         style={{
           display: "inline-block",
           width: 1.5,
-          height: fontSize * 1.15,
+          height: fontSize * (stageW / 1240) * 1.15,
           background: color.ink,
           marginLeft: 1,
           opacity: caretOn ? 1 : 0,

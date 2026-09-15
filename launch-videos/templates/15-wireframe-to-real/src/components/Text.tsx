@@ -2,6 +2,7 @@ import React from "react";
 import { useCurrentFrame } from "remotion";
 import { easeIn, easeOut, ms, prog } from "../anim";
 import { color, FONT_MONO, FONT_SANS, type } from "../tokens";
+import { SIZE } from "./Layout";
 
 export const headlineStyle = (size: number): React.CSSProperties => ({
   fontFamily: FONT_SANS,
@@ -27,7 +28,7 @@ export const bodyStyle = (size: number): React.CSSProperties => ({
 
 export const labelStyle: React.CSSProperties = {
   fontFamily: FONT_MONO,
-  fontSize: type.sizes1080p.label,
+  fontSize: SIZE.label,
   fontWeight: type.weights.regular,
   letterSpacing: type.tracking.caps,
   textTransform: "uppercase",

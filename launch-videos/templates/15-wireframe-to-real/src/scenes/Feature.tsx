@@ -5,6 +5,7 @@ import { Cursor, CursorKey } from "../components/Cursor";
 import {
   CAPTION_Y,
   LABEL_Y,
+  SIZE,
   STAGE_H,
   STAGE_W,
   STAGE_X,
@@ -14,7 +15,7 @@ import { headlineStyle, labelStyle, Rise } from "../components/Text";
 import { Typing } from "../components/Typing";
 import { Prim, Wireframe } from "../components/Wireframe";
 import { featureBeats } from "../scenes";
-import { color, radius, shadow, type } from "../tokens";
+import { color, radius, shadow } from "../tokens";
 
 export type Shot = {
   /** file under assets/screens, e.g. "devin-web-1.png" */
@@ -73,19 +74,17 @@ export const Feature: React.FC<Props> = ({
   const exit = 1 - prog(frame, duration - exitDuration, exitDuration, easeIn);
   const enter = prog(frame, 0, ms(300), easeOut);
 
-  const label = `${String(index).padStart(2, "0")}  /  ${title}`;
-
   return (
     <AbsoluteFill style={{ opacity: exit }}>
       {/* mono label: wireframe -> built */}
       <div style={{ position: "absolute", left: STAGE_X, top: LABEL_Y }}>
         <Rise from={0} to={resolveAt + ms(200)} style={labelStyle} rise={0}>
-          {label} · Wireframe
+          {title} · Wireframe
         </Rise>
       </div>
       <div style={{ position: "absolute", left: STAGE_X, top: LABEL_Y }}>
         <Rise from={resolveAt + ms(100)} style={labelStyle} rise={0}>
-          {label} · <span style={{ color: color.accent }}>Built</span>
+          {title} · <span style={{ color: color.accent }}>Built</span>
         </Rise>
       </div>
 
@@ -186,7 +185,7 @@ export const Feature: React.FC<Props> = ({
             textAlign: "center",
           }}
         >
-          <Rise from={c.from} to={c.to} style={headlineStyle(type.sizes1080p.h3)}>
+          <Rise from={c.from} to={c.to} style={headlineStyle(SIZE.caption)}>
             {c.text}
           </Rise>
         </div>
