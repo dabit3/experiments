@@ -1,0 +1,17 @@
+{
+  "name": "hollow-afterdark-server",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check combat.mjs",
+    "test": "node --test ../Tests/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  }
+}

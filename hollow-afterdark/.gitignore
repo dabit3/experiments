@@ -1,0 +1,8 @@
+node_modules/
+build/
+.devin/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+artifacts/
+__pycache__/
