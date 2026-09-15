@@ -11,6 +11,7 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+npm audit
 npm run preview
 ```
 
@@ -22,7 +23,7 @@ The built-in `createProject()` fixture creates the same 15 objects and four came
 
 ## Executable test coverage
 
-`src/model.test.ts` tests actual object geometry and state: independent default fixtures; immutable edits; clone isolation; add/delete; multistep undo/redo and redo invalidation; bounded history; JSON export/import including materials, cameras and keys; malformed, oversized and incompatible imports; duplicate IDs, invalid transforms, colors and bookmarks; animation interpolation, clamping and replacement; finite geometry bounds; full-height spiral stairs; detailed scene mesh count; Blender Z-up ↔ Three.js Y-up coordinate conversion.
+`src/model.test.ts` tests actual object geometry and state: independent default fixtures; immutable edits; clone isolation; add/delete; multistep undo/redo and redo invalidation; bounded history; JSON export/import including materials, cameras and keys; malformed, oversized and incompatible imports; duplicate IDs, invalid transforms, colors and bookmarks; animation interpolation, clamping and replacement; finite geometry bounds; full-height spiral stairs; detailed scene mesh count; Blender Z-up ↔ Three.js Y-up coordinate conversion; nonempty selection edges for rounded furniture and smooth primitives.
 
 ## Browser golden path
 
@@ -39,9 +40,22 @@ The built-in `createProject()` fixture creates the same 15 objects and four came
 
 ## Results
 
-2026-09-15: `npm ci`, lint, typecheck, all 22 Vitest tests, production build and `npm audit` passed. Audit reports zero vulnerabilities. The build reports one non-fatal 850 kB JavaScript chunk warning (Three.js and the editor are loaded together).
+2026-09-15: `npm ci`, lint, typecheck, all 23 Vitest tests, production build and `npm audit` passed. Audit reports zero vulnerabilities. The build reports one non-fatal 850 kB JavaScript chunk warning (Three.js and the editor are loaded together).
 
-Browser validation and evidence are pending on the initial PR revision; the final delivery report will record actual outcomes.
+Production browser validation passed on runtime commit `38f2ddd047a6271caa90c6f905016efd6737c19f`. Final delivery documentation changes do not alter this tested runtime.
+
+- Real viewport clicks and Outliner selection synchronize Properties and orange geometry edges. Rounded cube, sofa and chair outlines are visible.
+- Numeric edits, typed G/R/S transforms, transform handles, material changes, duplicate/delete and undo/redo work. Saved edits survive reload.
+- Transform keyframes interpolate at intermediate frames; playback advances and pauses. Material/Solid/Wireframe shading and the grid change actual viewport rendering.
+- Orbit and pan select Custom view; camera bookmarks, saved custom views and Home reset update the camera label and framing.
+- Exported JSON deep-matches the persisted project, including 16 objects, 5 cameras and animation keys. Reimport restores it; malformed JSON is rejected without replacing the document.
+- PNG export produces a real 1591×835 image without editor overlays. Downloaded content and image dimensions were inspected.
+- Default and edited layouts work at 1280×800, 1440×900 and 1920×1080. The final screenshot restores the built-in loft, Material mode and overview camera.
+- No JavaScript exceptions or console errors occurred. Network inspection recorded an initial missing favicon request (HTTP 404). Three.js emitted a shadow-map deprecation warning and Chromium's software WebGL renderer emitted performance/readback warnings.
+
+The browser run initially used an overly broad test selector that clicked Duplicate instead of Move. The extra object was removed and exact G/R/S controls and reload persistence were retested on the intended 16-object fixture. This was a test procedure correction, not an application failure.
+
+The PR and session deliver the full PNG, annotated VP9 WebM and a detailed testing report. Earlier interrupted recordings are not final evidence.
 
 ## Source references and observed geometry
 
