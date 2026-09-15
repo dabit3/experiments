@@ -8,12 +8,15 @@ struct DraftingTransform {
     let minX = min(0, design.nodes.map(\.x).min() ?? 0)
     let maxX = max(12, design.nodes.map(\.x).max() ?? 12)
     let minY = min(0, design.nodes.map(\.y).min() ?? 0)
-    let maxY = max(4, design.nodes.map(\.y).max() ?? 4)
+    let maxY = max(3, design.nodes.map(\.y).max() ?? 3)
+    let drawingArea = CGRect(
+      x: 65, y: 205, width: max(1, size.width - 130), height: max(1, size.height - 317))
     scale =
-      max(1, min((size.width - 130) / (maxX - minX), (size.height - 250) / (maxY - minY))) * zoom
+      max(1, min(drawingArea.width / (maxX - minX), drawingArea.height / (maxY - minY)))
+      * zoom
     origin = CGPoint(
-      x: (size.width - (maxX - minX) * scale) / 2 - minX * scale + pan.width,
-      y: (size.height + (maxY - minY) * scale) / 2 + minY * scale + 5 + pan.height)
+      x: drawingArea.midX - (minX + maxX) * scale / 2 + pan.width,
+      y: drawingArea.midY + (minY + maxY) * scale / 2 + pan.height)
   }
   func screen(_ x: Double, _ y: Double) -> CGPoint {
     CGPoint(x: origin.x + x * scale, y: origin.y - y * scale)
