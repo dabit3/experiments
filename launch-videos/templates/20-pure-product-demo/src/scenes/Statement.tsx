@@ -21,7 +21,7 @@ export const Statement: React.FC<Props> = ({ brand, content, layout }) => {
           position: "absolute",
           left: layout.marginX,
           top: layout.marginTop,
-          height: 36,
+          height: 72,
           ...logo,
         }}
       />
@@ -39,17 +39,17 @@ export const Statement: React.FC<Props> = ({ brand, content, layout }) => {
           style={{
             ...type.eyebrow,
             color: brand.inkMuted,
-            marginBottom: 24,
+            marginBottom: 32,
             display: "flex",
             alignItems: "center",
-            gap: 10,
+            gap: 14,
             ...eyebrow,
           }}
         >
           <span
             style={{
-              width: 8,
-              height: 8,
+              width: 12,
+              height: 12,
               borderRadius: 9999,
               backgroundColor: brand.accent,
               display: "inline-block",
@@ -57,10 +57,10 @@ export const Statement: React.FC<Props> = ({ brand, content, layout }) => {
           />
           {content.eyebrow} · {content.featureName}
         </div>
-        <div style={{ ...type.display, maxWidth: 1400, ...headline }}>
+        <div style={{ ...type.display, maxWidth: 1700, ...headline }}>
           <AccentText text={content.headline} accent={content.headlineAccent} brand={brand} />
         </div>
-        <div style={{ ...type.h5, color: brand.inkMuted, maxWidth: 1100, marginTop: 28, ...subhead }}>
+        <div style={{ ...type.h5, color: brand.inkMuted, maxWidth: 1500, marginTop: 36, ...subhead }}>
           {content.subhead}
         </div>
       </div>

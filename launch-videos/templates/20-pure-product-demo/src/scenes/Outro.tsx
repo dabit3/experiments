@@ -28,8 +28,8 @@ export const Outro: React.FC<Props> = ({ brand, content, layout }) => {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: 20,
-            marginTop: 48,
+            gap: 28,
+            marginTop: 64,
             ...cta,
           }}
         >
@@ -37,9 +37,9 @@ export const Outro: React.FC<Props> = ({ brand, content, layout }) => {
             style={{
               backgroundColor: brand.ink,
               color: brand.white,
-              borderRadius: 2,
-              height: 42,
-              padding: "0 16px",
+              borderRadius: 4,
+              height: 60,
+              padding: "0 24px",
               display: "flex",
               alignItems: "center",
               ...type.body,
@@ -51,8 +51,8 @@ export const Outro: React.FC<Props> = ({ brand, content, layout }) => {
           <div
             style={{
               fontFamily: brand.monoFontFamily,
-              fontSize: 18,
-              lineHeight: "24px",
+              fontSize: 26,
+              lineHeight: "34px",
               color: brand.inkMuted,
             }}
           >
@@ -68,7 +68,7 @@ export const Outro: React.FC<Props> = ({ brand, content, layout }) => {
           transform: "translateX(-50%)",
         }}
       >
-        <Img src={staticFile(brand.logoLight)} style={{ height: 36, display: "block", ...logo }} />
+        <Img src={staticFile(brand.logoLight)} style={{ height: 72, display: "block", ...logo }} />
       </div>
     </AbsoluteFill>
   );

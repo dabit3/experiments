@@ -2,17 +2,17 @@ import React from "react";
 import { Easing, interpolate, useCurrentFrame } from "remotion";
 import type { Brand } from "./schema";
 
-// Site scale x1.27 for 1920px (brief/brand.md).
+// brief/brand.md site scale, enlarged ~1.35x for video legibility at 1920px.
 export const type = {
-  display: { fontSize: 89, lineHeight: "89px", letterSpacing: -3.4, fontWeight: 500 },
-  h2: { fontSize: 81, lineHeight: "94px", letterSpacing: -3, fontWeight: 500 },
-  h5: { fontSize: 27, lineHeight: "41px", letterSpacing: -0.4, fontWeight: 400 },
-  body: { fontSize: 20, lineHeight: "28px", letterSpacing: -0.4, fontWeight: 400 },
-  label: { fontSize: 18, lineHeight: "25px", letterSpacing: -0.2, fontWeight: 400 },
+  display: { fontSize: 120, lineHeight: "124px", letterSpacing: -4.5, fontWeight: 500 },
+  h2: { fontSize: 104, lineHeight: "116px", letterSpacing: -3.8, fontWeight: 500 },
+  h5: { fontSize: 38, lineHeight: "52px", letterSpacing: -0.6, fontWeight: 400 },
+  body: { fontSize: 28, lineHeight: "38px", letterSpacing: -0.5, fontWeight: 400 },
+  label: { fontSize: 24, lineHeight: "32px", letterSpacing: -0.3, fontWeight: 400 },
   eyebrow: {
-    fontSize: 14.4,
-    lineHeight: "22px",
-    letterSpacing: 0.36,
+    fontSize: 22,
+    lineHeight: "30px",
+    letterSpacing: 0.6,
     fontWeight: 500,
     textTransform: "uppercase" as const,
   },

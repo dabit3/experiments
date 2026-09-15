@@ -12,8 +12,6 @@ type Props = {
   layout: Layout;
 };
 
-const pad2 = (n: number) => String(n).padStart(2, "0");
-
 const Caption: React.FC<{
   scene: DemoScene;
   brand: Brand;
@@ -30,23 +28,17 @@ const Caption: React.FC<{
         <div
           style={{
             fontFamily: brand.monoFontFamily,
-            fontSize: 16,
-            lineHeight: "22px",
-            letterSpacing: 0.2,
+            fontSize: 22,
+            lineHeight: "30px",
+            letterSpacing: 0.3,
             color: brand.inkMuted,
-            marginBottom: 10,
+            marginBottom: 14,
             display: "flex",
             alignItems: "center",
-            gap: 14,
+            gap: 18,
           }}
         >
-          {stageLabel ? (
-            <span>
-              {scene.stage === null ? "" : pad2(scene.stage + 1)}
-              <span style={{ color: brand.inkSubtle }}> · </span>
-              {stageLabel}
-            </span>
-          ) : null}
+          {stageLabel ? <span>{stageLabel}</span> : null}
           {scene.speedLabel ? <SpeedBadge label={scene.speedLabel} brand={brand} /> : null}
         </div>
       ) : null}
@@ -56,7 +48,7 @@ const Caption: React.FC<{
             fontFamily: brand.fontFamily,
             fontSize: layout.captionSize,
             lineHeight: `${Math.round(layout.captionSize * 1.3)}px`,
-            letterSpacing: -0.5,
+            letterSpacing: -0.8,
             fontWeight: 400,
           }}
         >
@@ -73,13 +65,13 @@ const SpeedBadge: React.FC<{ label: string; brand: Brand }> = ({ label, brand })
   <span
     style={{
       fontFamily: brand.monoFontFamily,
-      fontSize: 13,
-      lineHeight: "18px",
+      fontSize: 18,
+      lineHeight: "24px",
       fontWeight: 500,
       color: brand.white,
       backgroundColor: brand.ink,
       borderRadius: 8,
-      padding: "2px 8px",
+      padding: "3px 10px",
     }}
   >
     {label}

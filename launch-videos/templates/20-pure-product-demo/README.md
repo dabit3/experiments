@@ -22,12 +22,12 @@ npm run still          # out/poster.png (frame 470)
 | # | id          | Frames | Time        | Footage (`assets/`)                                          | Caption / label                                     |
 |---|-------------|--------|-------------|--------------------------------------------------------------|-----------------------------------------------------|
 | 1 | `statement` | 75     | 0.0 – 2.5 s | —                                                            | Lockup · eyebrow · headline (accent “Mac VM”) · subhead |
-| 2 | `request`   | 150    | 2.5 – 7.5 s | `devin-web-1.png` → match cut → `devin-web-5.png` (Virtual environment → macOS ✓) | 01 · Request — “Pick macOS when you start a session…” |
-| 3 | `build`     | 144    | 7.5 – 12.3 s| `devin-working-4.mp4` at 3× (badge shown)                     | 02 · Build · `3x` — “Devin builds the app in Xcode…” |
-| 4 | `simulator` | 210    | 12.3 – 19.3 s| `androidios.mp4`, cropped to the iPhone Simulator, 1×        | 03 · Run & test (right column) — “It taps, types, and scrolls…” |
-| 5 | `live`      | 165    | 19.3 – 24.8 s| `devin-web-14.png` (testing recording, 8 passed / 0 failed)  | 03 · Run & test — “Watch it live in the iPhone Simulator tab…” |
-| 6 | `sizes`     | 180    | 24.8 – 30.8 s| `devin-web-19.png` (iPad) → match cut → `devin-web-18.png` (dark iPhone) | 04 · Verify — “Check iPhone and iPad sizes, dark mode…” |
-| 7 | `result`    | 246    | 30.8 – 39.0 s| `devin-web-12.png` (PR “Ready to merge” with Simulator demo videos) | 05 · PR — “Ship with a PR that shows the app working…” |
+| 2 | `request`   | 150    | 2.5 – 7.5 s | `devin-web-1.png` → match cut → `devin-web-5.png` (Virtual environment → macOS ✓) | Request — “Pick macOS when you start a session…” |
+| 3 | `build`     | 144    | 7.5 – 12.3 s| `devin-working-4.mp4` at 3× (badge shown)                     | Build · `3x` — “Devin builds the app in Xcode…” |
+| 4 | `simulator` | 210    | 12.3 – 19.3 s| `androidios.mp4`, cropped to the iPhone Simulator, 1×        | Run & test (right column) — “It taps, types, and scrolls…” |
+| 5 | `live`      | 165    | 19.3 – 24.8 s| `devin-web-14.png` (testing recording, 8 passed / 0 failed)  | Run & test — “Watch it live in the iPhone Simulator tab…” |
+| 6 | `sizes`     | 180    | 24.8 – 30.8 s| `devin-web-19.png` (iPad) → match cut → `devin-web-18.png` (dark iPhone) | Verify — “Check iPhone and iPad sizes, dark mode…” |
+| 7 | `result`    | 246    | 30.8 – 39.0 s| `devin-web-12.png` (PR “Ready to merge” with Simulator demo videos) | PR — “Ship with a PR that shows the app working…” |
 | 8 | `outro`     | 180    | 39.0 – 45.0 s| —                                                            | Outro line · CTA button · URL · lockup              |
 
 Total duration is derived from the scene list by `calculateMetadata`; add, remove, or
@@ -60,7 +60,7 @@ retime scenes and the composition length follows.
 1. Add the new screenshots/recordings to `launch-videos/assets/` (shared, never copied here).
 2. Either edit `src/defaults.ts`, or write a JSON file with the full `LaunchProps` object
    and render with `npx remotion render Launch out/launch.mp4 --props=./my-launch.json`.
-3. Keep captions to one line at `layout.captionSize` (≈70 characters) and keep result
+3. Keep captions to one line at `layout.captionSize` (≈45 characters) and keep result
    holds ≥ 2.5 s. Use `speedLabel` whenever a recording plays faster than 1×.
 
 ## Decisions on ambiguous points

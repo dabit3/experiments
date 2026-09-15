@@ -187,11 +187,11 @@ export const defaultLayout: LaunchProps["layout"] = {
   marginX: 64,
   marginTop: 56,
   marginBottom: 56,
-  captionBand: 104,
-  captionColumn: 480,
-  gap: 32,
+  captionBand: 150,
+  captionColumn: 560,
+  gap: 40,
   frameRadius: 12,
-  captionSize: 30,
+  captionSize: 44,
 };
 
 export const defaultProps: LaunchProps = {
