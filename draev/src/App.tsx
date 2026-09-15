@@ -84,14 +84,15 @@ export default function App() {
   const pan = useRef<{ start: Point; view: View } | null>(null)
   const drag = useRef<{ start: Point; entity: Entity } | null>(null)
   const latestDrag = useRef<Entity | null>(null)
-  const ready = useRef(false)
+  const fitted = useRef(true)
 
   const log = useCallback((message: string) => setLogs(old => [...old, message].slice(-30)), [])
   const change = useCallback((updater: (d: Drawing) => Drawing) => setHistory(h => commit(h, updater(h.present))), [])
-  const fit = useCallback(() => setView(fitView(drawing.entities, size.width / size.height)), [drawing.entities, size])
+  const fit = useCallback(() => { fitted.current = true; setView(fitView(drawing.entities, size.width / size.height)) }, [drawing.entities, size])
   const cancel = useCallback(() => { setDraft(null); setPendingMove(false); setInput(''); setPanMode(false); log('Command: *Cancel*') }, [log])
 
   useEffect(() => {
+    initialEntities.current = drawing.entities
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(drawing)); setSaveError(false) }
     catch { setSaveError(true) }
   }, [drawing])
@@ -103,7 +104,7 @@ export default function App() {
       if (!width || !height) return
       setSize({ width, height })
       setView(old => {
-        if (!ready.current) { ready.current = true; return fitView(initialEntities.current, width / height) }
+        if (fitted.current) return fitView(initialEntities.current, width / height)
         const newHeight = old.width * height / width
         return { ...old, height: newHeight, y: old.y + (old.height - newHeight) / 2 }
       })
@@ -247,7 +248,7 @@ export default function App() {
     return { x: round(point.x), y: round(point.y) }
   }
   const preview = draft?.first ? createGeometry(draft, cursor, drawing.currentLayer, 'preview') : null
-  const zoom = (factor: number) => setView(v => zoomView(v, factor, { x: v.x + v.width / 2, y: v.y + v.height / 2 }))
+  const zoom = (factor: number) => { fitted.current = false; setView(v => zoomView(v, factor, { x: v.x + v.width / 2, y: v.y + v.height / 2 })) }
   const visibleCount = drawing.entities.filter(e => drawing.layers.find(l => l.id === e.layer)?.visible).length
   const selectedAnchor = selected ? anchor(selected) : null
   const prompt = pendingMove ? 'Specify displacement DX,DY:' : draft ? `${TOOL_NAMES[draft.tool]}  ${draft.first ? draft.tool === 'circle' ? 'Specify radius:' : 'Specify next point:' : 'Specify first point:'}` : 'Type a command'
@@ -309,11 +310,12 @@ export default function App() {
           <div className="navigation-bar"><button aria-label="Zoom extents" title="Zoom extents" onClick={fit}><Maximize /></button><button aria-label="Pan view" title="Pan (or middle-button drag)" className={panMode ? 'active' : ''} onClick={() => { setPanMode(v => !v); setDraft(null) }}><Hand /></button><button aria-label="Zoom in" title="Zoom in" onClick={() => zoom(.8)}><ZoomIn /></button><button aria-label="Zoom out" title="Zoom out" onClick={() => zoom(1.25)}><ZoomOut /></button></div>
           <svg ref={canvasRef} className={`drawing-svg ${draft || panMode ? 'drawing-mode' : ''}`} data-testid="drawing-canvas" aria-label="Courtyard residence drafting canvas" viewBox={`${view.x} ${view.y} ${view.width} ${view.height}`} onWheel={event => {
             const p = worldPoint(event.clientX, event.clientY, false)
+            fitted.current = false
             setView(v => zoomView(v, event.deltaY > 0 ? 1.12 : .89, { x: p.x, y: -p.y }))
           }} onPointerDown={event => {
             if (event.button !== 0 && event.button !== 1) return
             const p = worldPoint(event.clientX, event.clientY)
-            if (event.button === 1 || panMode) { event.preventDefault(); pan.current = { start: { x: event.clientX, y: event.clientY }, view }; event.currentTarget.setPointerCapture(event.pointerId); return }
+            if (event.button === 1 || panMode) { event.preventDefault(); fitted.current = false; pan.current = { start: { x: event.clientX, y: event.clientY }, view }; event.currentTarget.setPointerCapture(event.pointerId); return }
             if (draft) { applyPoint(p); return }
             const target = event.target instanceof Element ? event.target.closest('[data-entity]') : null
             const id = target?.getAttribute('data-entity')
@@ -425,7 +427,7 @@ export default function App() {
       if (!file) return
       if (file.size > 6_000_000) log('OPEN: Project exceeds the 6 MB limit.')
       else {
-        try { const parsed = parseDrawing(await file.text()); if (parsed) { change(() => parsed); setSelectedId(null); setDraft(null); setView(fitView(parsed.entities, size.width / size.height)); log(`OPEN: ${parsed.title}, ${parsed.entities.length} objects loaded.`) } else log('OPEN: Invalid Draev project. Current drawing was not changed.') }
+        try { const parsed = parseDrawing(await file.text()); if (parsed) { change(() => parsed); setSelectedId(null); setDraft(null); fitted.current = true; setView(fitView(parsed.entities, size.width / size.height)); log(`OPEN: ${parsed.title}, ${parsed.entities.length} objects loaded.`) } else log('OPEN: Invalid Draev project. Current drawing was not changed.') }
         catch { log('OPEN: Could not read the file. Current drawing was not changed.') }
       }
       event.target.value = ''
@@ -433,7 +435,7 @@ export default function App() {
     <dialog ref={dialogRef} className="dialog" onCancel={() => setModal(null)} onClick={event => { if (event.target === event.currentTarget) setModal(null) }}>
       <div className="dialog-title"><span>{modal === 'help' ? 'Draev · Drafting reference' : modal === 'reset' ? 'Restore courtyard residence' : modal === 'text' ? 'Single-line text' : 'Export drawing'}</span><button aria-label="Close dialog" onClick={() => setModal(null)}><X size={17} /></button></div>
       {modal === 'help' && <div className="dialog-body help-body"><div className="help-brand">D<span>DRAEV<small>PRECISION, IN EVERY LINE.</small></span></div><p>A local drafting workspace. Draw in millimeters; X increases right, Y increases up. Every element of the residence is editable vector geometry.</p><table><tbody><tr><td>LINE 1000,1000 5000,1000</td><td>Draw a line; Enter ends it</td></tr><tr><td>RECTANGLE 1000,2000 4000,4000</td><td>Opposite corners</td></tr><tr><td>CIRCLE 8000,8000 750</td><td>Center, radius</td></tr><tr><td>@500,0</td><td>Relative to previous point</td></tr><tr><td>MOVE 500,0 / COPY / ERASE</td><td>Modify the selection</td></tr><tr><td>Wheel / middle-button drag</td><td>Zoom / pan</td></tr><tr><td>F3 / F7 / F8 / F9</td><td>Object snap / grid / ortho / grid snap</td></tr><tr><td>Ctrl+Z / Ctrl+Y / Ctrl+S</td><td>Undo / redo / save</td></tr></tbody></table><p>Select an object to edit Properties. Drag a blue grip to move it. Layer bulbs toggle visibility, locks prevent editing, and swatches change color. Changes save locally; export Project JSON for a portable copy.</p><p className="muted">AutoCAD-inspired browser V1. Native DWG, 3D solids, parametric constraints, blocks and collaboration are unavailable. Source: Autodesk’s official desktop UI tour. Not affiliated with Autodesk.</p></div>}
-      {modal === 'reset' && <div className="dialog-body"><p>Replace the current drawing with the original courtyard residence?</p><p className="muted">You can undo this action. Export a Project JSON first if you want to keep a separate copy.</p><div className="dialog-actions"><button onClick={() => setModal(null)}>Cancel</button><button className="primary" onClick={() => { const d = createResidence(); change(() => d); setDraft(null); setSelectedId(null); setLayout('Model'); setView(fitView(d.entities, size.width / size.height)); setModal(null); log('Sample restored. Undo is available.') }}>Restore sample</button></div></div>}
+      {modal === 'reset' && <div className="dialog-body"><p>Replace the current drawing with the original courtyard residence?</p><p className="muted">You can undo this action. Export a Project JSON first if you want to keep a separate copy.</p><div className="dialog-actions"><button onClick={() => setModal(null)}>Cancel</button><button className="primary" onClick={() => { const d = createResidence(); change(() => d); setDraft(null); setSelectedId(null); setLayout('Model'); fitted.current = true; setView(fitView(d.entities, size.width / size.height)); setModal(null); log('Sample restored. Undo is available.') }}>Restore sample</button></div></div>}
       {modal === 'export' && <div className="dialog-body"><p className="muted">{drawing.title} · {drawing.entities.length.toLocaleString()} objects</p><button className="export-option" onClick={() => exportFile('svg')}><FileText /><span>SVG drawing<small>Visible layers · editable vector artwork</small></span><Download size={17} /></button><button className="export-option" onClick={() => exportFile('dxf')}><File /><span>DXF drawing<small>ASCII geometry · millimeters · all layers</small></span><Download size={17} /></button><button className="export-option" onClick={() => exportFile('json')}><FileJson /><span>Draev project<small>Lossless JSON · geometry, colors and layer state</small></span><Download size={17} /></button></div>}
       {modal === 'text' && <form className="dialog-body" onSubmit={event => {
         event.preventDefault()

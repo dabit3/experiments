@@ -48,7 +48,7 @@ Use the default `A-SKETCH` layer for test geometry. Model coordinates are millim
 9. Reload. Confirm geometry, colors and visibility persisted. Import the exported Project JSON and confirm the same geometry. Attempt a malformed JSON project and confirm current geometry remains.
 10. At 1920×1080 and 1280×800, inspect default and changed-state layouts. Primary draft, command, layer, property and export controls must remain reachable. Inspect console and network for runtime errors.
 
-UI verification results and final evidence are recorded below after the production browser run.
+The production browser run used this sequence; detailed performed steps, exported-file assertions and captures are included in the attached test report.
 
 ## Reference identity, source URLs and observations
 
@@ -72,6 +72,7 @@ Draev adapts these proportions to a 29 px title, 27 px tab row, 100 px ribbon, 3
 - A-101 is a paper presentation of the same live drawing, not an independently scaled plot/viewport engine. The `1:100` labels identify the conceptual architectural sheet scale; the browser zoom is arbitrary.
 - LocalStorage is the only automatic persistence. Storage failure is surfaced with an export-backup prompt. Project files are versioned/validated and limited to 6 MB, 10,000 entities and 100 layers.
 - One selected object at a time. Grip drag translates an object; it does not stretch individual vertices. Undo/redo keeps 40 drawing revisions and resets after browser reload.
+- Invalid numeric geometry inputs revert to their last valid value. This prevents zero/negative dimensions, but there is no inline explanation.
 - Desktop first: tested target widths are 1280, 1440 and 1920. Below 1000 px the workspace maintains a desktop minimum width; no mobile CAD redesign is claimed.
 
 ## Results
@@ -85,4 +86,10 @@ Draev adapts these proportions to a 29 px title, 27 px tab row, 100 px ribbon, 3
 - `npm run build`: passed; Vite 7.3.6 static production bundle.
 - `npm audit`: 0 vulnerabilities.
 
-Production browser verification is pending.
+Production browser testing passed: the deterministic 960-entity/11-layer sample, exact rectangle Width4500/Y2000 edits and MOVE to X12500, undo/redo, typed LINE/CIRCLE, mouse geometry, 100mm grid snap, horizontal Ortho, isolated endpoint object snap, layer filtering/visibility/color/lock, wheel zoom/pan/extents, A-101, Help, text insertion and palettes.
+
+Actual exported files were inspected: SVG escaped text and visible-layer filtering, DXF metric units/geometry/layers, and JSON geometry/state. Exported JSON matched reloaded, imported and malformed-import-rejected state. Invalid input retained the previous geometry. Default and edited views were inspected at 1440×900, 1920×1080 and 1280×800. No observed runtime errors; console was empty and current assets returned HTTP 200. A complete historical HTTP-status archive was not retained.
+
+The first run identified a resize issue: an already fitted view could clip bottom drawing labels after moving to a wider viewport. The viewport now recomputes extents on resize while fitted; manual pan/zoom remains manual until TOP/extents is used. A focused browser regression of this correction follows the main run.
+
+Evidence: full uncropped PNGs, a 117.875-second annotated VP9 WebM golden path and a 23.167-second supplemental exact-snap WebM. Recording-tool input/coordinate misfires required retries, which are disclosed in the attached report. No MP4 is delivered.
