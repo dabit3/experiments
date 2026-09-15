@@ -62,6 +62,11 @@ Launch the sidecar in another terminal using the same `VENV` and `EVIDENCE`:
 
 ## Record and run
 
+In Devin, use the built-in testing agent with `test_mode`, a focused test plan,
+and `recording_start` / `annotate_recording` / `recording_stop`. Keep the native
+app on the left and the executing-source sidecar on the right for the entire
+capture.
+
 Start one recorder on the main monitor with the pointer visible. In the
 scenario terminal, use a fresh take directory:
 
@@ -72,9 +77,10 @@ SPACE_EVIDENCE="$EVIDENCE/take-$(date +%s)" \
 
 Run ordinary Python, without `-O`: the saved-property readback uses assertions.
 The script arranges the app on the left, creates and edits the scene, orbits
-and dollies, saves the export camera, saves/closes/reopens the project, then
-exports PNG and SceneKit. Leave the complete scene visible for the closing
-hold, then stop recording. An exception stops the script and records failure.
+and dollies using Option-scroll, saves the export camera, saves/closes/reopens
+the project, then exports PNG and SceneKit. Leave the complete scene visible
+for the closing hold, then stop recording. An exception stops the script and
+records failure.
 
 Outputs include `ORBIT.devin`, `ORBIT.png`, `ORBIT.scn`, full-desktop screenshots,
 and `assertions.json`. The renderer exports 1600×1200 pixels. Video is captured
@@ -83,10 +89,15 @@ by the recorder separately; this script does not synthesize application frames.
 Inspect the resulting video at several points, including the native color
 panel, held orbit, save/reopen and closing view. Ensure source lines are readable
 and the run's duration matches the evidence timestamps. The recorded reference
-run lasted 155.6 seconds and completed 47 runtime checks. Orbit/dolly and visual
-composition require separate pixel review; the numeric count does not imply
+run completed 47 runtime checks. Orbit/dolly and visual composition require
+separate pixel review; the numeric count does not imply
 those visual assertions ran automatically. Native SceneKit loading was checked
 separately; external-editor compatibility was not tested.
+
+With the default SceneKit camera controls, plain scroll pans the view.
+Option-modified scroll performs a dolly: three positive line events move the
+camera away from the scene. Verify reduced object size and camera movement along
+the view direction, with unchanged camera orientation and field of view.
 
 Some AVFoundation recordings report misleading average-frame-rate metadata.
 If recorder post-processing produces an implausibly short clip, preserve the

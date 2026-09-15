@@ -193,6 +193,7 @@ def dolly(amount):
     for _ in range(abs(amount)):
         event=Q.CGEventCreateScrollWheelEvent(
             None,Q.kCGScrollEventUnitLine,1,1 if amount>0 else -1)
+        Q.CGEventSetFlags(event, Q.kCGEventFlagMaskAlternate)
         Q.CGEventPost(Q.kCGHIDEventTap,event)
         time.sleep(.12)
     time.sleep(.5)

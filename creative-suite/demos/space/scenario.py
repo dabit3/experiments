@@ -39,7 +39,7 @@ def compose():
 
 def camera_and_delivery():
     chapter("04 / Find the angle",
-            "Physical orbit drag, dolly, saved export camera.")
+            "Physical orbit drag, Option-scroll dolly, saved camera.")
     shot("before-orbit")
     ui.drag((850, 660), (815, 670), duration=3,
             during=lambda: shot("orbit-pointer-held"))
