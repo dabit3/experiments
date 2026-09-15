@@ -8,12 +8,14 @@ enum EditorTool: String, CaseIterable {
   case node = "Node"
   case member = "Member"
   case load = "Load"
+  case pan = "Pan"
   var icon: String {
     switch self {
     case .select: return "cursorarrow"
     case .node: return "plus.circle"
     case .member: return "line.diagonal"
     case .load: return "arrow.down.to.line"
+    case .pan: return "hand.draw"
     }
   }
   var hint: String {
@@ -22,6 +24,7 @@ enum EditorTool: String, CaseIterable {
     case .node: return "Click the drafting canvas to add a node"
     case .member: return "Click two nodes to connect a new member"
     case .load: return "Click a node to place a 100 kN downward load"
+    case .pan: return "Drag the drawing to pan · Fit resets the view"
     }
   }
 }
@@ -52,6 +55,12 @@ final class Studio: ObservableObject {
   @Published var errorMessage: String?
   @Published var baselineMM: Double?
   @Published var history = DesignHistory()
+  @Published var zoom = 1.0
+  @Published var pan = CGSize.zero
+  @Published var deformationScale = 100.0
+  @Published var showReactions = false
+  @Published var documentURL: URL?
+  @Published var savedDesign: Design?
   private let autosaveURL: URL
 
   init() {
@@ -77,11 +86,22 @@ final class Studio: ObservableObject {
   }
   var canUndo: Bool { !history.undoStack.isEmpty }
   var canRedo: Bool { !history.redoStack.isEmpty }
+  var isDirty: Bool { savedDesign != design }
 
   func change(_ update: (inout Design) -> Void) {
     var next = design
     update(&next)
     guard next != design else { return }
+    do { _ = try next.validated(allowDraft: true) } catch {
+      errorMessage = error.localizedDescription
+      return
+    }
+    if next.activeCase != design.activeCase
+      || next.nodes.map({ [$0.loadKN, $0.loadXKN] })
+        != design.nodes.map({ [$0.loadKN, $0.loadXKN] })
+    {
+      baselineMM = nil
+    }
     history.record(design)
     design = next
     refresh()
@@ -126,6 +146,83 @@ final class Studio: ObservableObject {
     analysisError = nil
     mode = .geometry
     notice = "Example loaded · \(name)"
+    documentURL = nil
+    savedDesign = nil
+    fitDrawing()
+  }
+
+  func fitDrawing() {
+    zoom = 1
+    pan = .zero
+  }
+
+  func selectCase(_ id: String) {
+    NSApp.keyWindow?.makeFirstResponder(nil)
+    change { $0.activeCaseID = id }
+    baselineMM = nil
+    notice = "Active case · \(design.activeCase.name)"
+  }
+
+  func updateCase(_ update: (inout LoadCase) -> Void) {
+    change { design in
+      guard let i = design.loadCases.firstIndex(where: { $0.id == design.activeCaseID }) else {
+        return
+      }
+      update(&design.loadCases[i])
+    }
+  }
+
+  func addCase(duplicate: Bool) {
+    NSApp.keyWindow?.makeFirstResponder(nil)
+    guard design.loadCases.count < 12 else {
+      errorMessage = "A project supports up to 12 load cases."
+      return
+    }
+    let loadCase = LoadCase(
+      name: duplicate
+        ? String(design.activeCase.name.prefix(50)) + " copy"
+        : "Load case \(design.loadCases.count + 1)",
+      factor: duplicate ? design.activeCase.factor : 1,
+      includesSelfWeight: duplicate && design.activeCase.includesSelfWeight,
+      loads: duplicate ? design.nodes.map { design.nodalLoad($0.id) } : [])
+    change {
+      $0.loadCases.append(loadCase)
+      $0.activeCaseID = loadCase.id
+    }
+    notice =
+      duplicate
+      ? "Load case duplicated · edits are independent"
+      : "Empty load case added · place loads on joints"
+  }
+
+  func removeCase() {
+    NSApp.keyWindow?.makeFirstResponder(nil)
+    guard design.activeCaseID != "service" else { return }
+    change { design in
+      design.loadCases.removeAll { $0.id == design.activeCaseID }
+      design.activeCaseID = "service"
+    }
+    notice = "Load case removed · Undo is available"
+  }
+
+  func setLoad(_ load: NodalLoad) {
+    change { $0.setLoad(load) }
+  }
+
+  func setMember(_ id: Int, _ update: (inout Member) -> Void) {
+    change { design in
+      guard let i = design.members.firstIndex(where: { $0.id == id }) else { return }
+      update(&design.members[i])
+    }
+  }
+
+  func applySection(_ section: SectionPreset, all: Bool) {
+    change { design in
+      for i in design.members.indices where all || selection == .member(design.members[i].id) {
+        design.members[i].apply(section)
+      }
+    }
+    notice = "\(section.name) applied · \(all ? "all members" : "selected member")"
   }
 
   func undo() {
@@ -153,6 +250,9 @@ final class Studio: ObservableObject {
       case .node(let id):
         design.nodes.removeAll { $0.id == id }
         design.members.removeAll { $0.a == id || $0.b == id }
+        for i in design.loadCases.indices {
+          design.loadCases[i].loads?.removeAll { $0.nodeID == id }
+        }
       case .member(let id): design.members.removeAll { $0.id == id }
       }
     }
@@ -171,7 +271,9 @@ final class Studio: ObservableObject {
   func setArea(_ id: Int, area: Double) {
     change { design in
       guard let i = design.members.firstIndex(where: { $0.id == id }) else { return }
-      design.members[i].areaCM2 = min(100, max(5, area))
+      design.members[i].areaCM2 = area
+      design.members[i].inertiaCM4 = nil
+      design.members[i].sectionName = nil
     }
   }
 
@@ -179,6 +281,7 @@ final class Studio: ObservableObject {
     switch tool {
     case .select:
       selection = node.map(Selection.node) ?? member.map(Selection.member)
+    case .pan: break
     case .node:
       if let node {
         selection = .node(node)
@@ -196,7 +299,9 @@ final class Studio: ObservableObject {
         notice = "Place loads on a node"
         return
       }
-      setNode(node) { $0.loadKN = 100 }
+      var load = design.nodalLoad(node)
+      load.downKN = 100
+      setLoad(load)
       selection = .node(node)
       notice = "100 kN load placed · adjust it in the inspector"
     case .member:
@@ -232,18 +337,35 @@ final class Studio: ObservableObject {
   }
 
   func save() {
+    NSApp.keyWindow?.makeFirstResponder(nil)
+    if let documentURL {
+      writeDesign(to: documentURL)
+    } else {
+      saveAs()
+    }
+  }
+
+  func saveAs() {
+    NSApp.keyWindow?.makeFirstResponder(nil)
     let panel = NSSavePanel()
     panel.title = "Save bridge design"
-    panel.nameFieldStringValue = "River crossing.keystone"
+    panel.nameFieldStringValue = documentURL?.lastPathComponent ?? "Bridge study.keystone"
     panel.allowedContentTypes = [UTType(filenameExtension: "keystone") ?? .json]
     guard panel.runModal() == .OK, let url = panel.url else { return }
+    writeDesign(to: url)
+  }
+
+  private func writeDesign(to url: URL) {
     do {
       try DesignExport.json(design).write(to: url, options: .atomic)
+      documentURL = url
+      savedDesign = design
       notice = "Saved \(url.lastPathComponent)"
     } catch { errorMessage = "Save failed: \(error.localizedDescription)" }
   }
 
   func open() {
+    NSApp.keyWindow?.makeFirstResponder(nil)
     let panel = NSOpenPanel()
     panel.title = "Open bridge design"
     panel.allowsMultipleSelection = false
@@ -255,11 +377,35 @@ final class Studio: ObservableObject {
       selection = nil
       startNode = nil
       baselineMM = nil
+      documentURL = url
+      savedDesign = loaded
+      fitDrawing()
       notice = "Opened \(url.lastPathComponent)"
     } catch { errorMessage = "Open failed: \(error.localizedDescription)" }
   }
 
+  func exportCSV() {
+    NSApp.keyWindow?.makeFirstResponder(nil)
+    analyzed = true
+    solve()
+    guard let result else {
+      errorMessage = "Restore a stable design before exporting a computed schedule."
+      return
+    }
+    let panel = NSSavePanel()
+    panel.title = "Export member and reaction schedule"
+    panel.allowedContentTypes = [.commaSeparatedText]
+    panel.nameFieldStringValue = "Keystone Schedule.csv"
+    guard panel.runModal() == .OK, let url = panel.url else { return }
+    do {
+      try DesignExport.csv(design, analysis: result).write(
+        to: url, atomically: true, encoding: .utf8)
+      notice = "Exported \(url.lastPathComponent)"
+    } catch { errorMessage = "Export failed: \(error.localizedDescription)" }
+  }
+
   func export(report: Bool) {
+    NSApp.keyWindow?.makeFirstResponder(nil)
     if report {
       analyzed = true
       solve()
@@ -294,6 +440,8 @@ enum Ink {
   static let copper = Color(red: 0.72, green: 0.35, blue: 0.21)
   static let blue = Color(red: 0.20, green: 0.43, blue: 0.54)
   static let green = Color(red: 0.24, green: 0.44, blue: 0.36)
+  static let sand = Color(red: 0.87, green: 0.76, blue: 0.57)
+  static let panel = Color(red: 0.99, green: 0.985, blue: 0.96)
 }
 
 @main
@@ -314,7 +462,9 @@ struct KeystoneApp: App {
     .commands {
       CommandGroup(replacing: .newItem) {
         Button("Open Design…", action: studio.open).keyboardShortcut("o")
-        Button("Save Design…", action: studio.save).keyboardShortcut("s")
+        Button("Save Design", action: studio.save).keyboardShortcut("s")
+        Button("Save Design As…", action: studio.saveAs).keyboardShortcut(
+          "s", modifiers: [.command, .shift])
       }
       CommandGroup(replacing: .undoRedo) {
         Button("Undo", action: studio.undo).keyboardShortcut("z").disabled(!studio.canUndo)

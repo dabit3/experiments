@@ -3,60 +3,35 @@ import SwiftUI
 
 struct ContentView: View {
   @EnvironmentObject var studio: Studio
+  @State private var workspace = "Drawing"
+  @State private var inspectorTab = "Inspect"
+  @State private var showProject = false
+
   var body: some View {
     VStack(spacing: 0) {
       header.fixedSize(horizontal: false, vertical: true)
       HStack(spacing: 0) {
-        library.frame(width: 194)
-        Rectangle().fill(Ink.line).frame(width: 1)
+        projectRail.frame(width: 216)
         VStack(spacing: 0) {
-          tools
-          ZStack(alignment: .topLeading) {
-            DraftingCanvas()
-            VStack(alignment: .leading, spacing: 7) {
-              Text("STRUCTURAL STUDY / 01").font(
-                .system(size: 10, weight: .semibold, design: .monospaced)
-              ).tracking(2)
-              Text(studio.design.name.components(separatedBy: " / ").last ?? studio.design.name)
-                .font(.system(size: 29, weight: .regular, design: .serif))
-              Text(
-                "\(studio.design.nodes.count) NODES  /  \(studio.design.members.count) MEMBERS  /  METERS"
-              )
-              .font(.system(size: 10, design: .monospaced)).foregroundStyle(Ink.muted)
-            }
-            .padding(26).allowsHitTesting(false)
-            VStack {
-              Spacer()
-              if let error = studio.analysisError {
-                HStack(spacing: 12) {
-                  Image(systemName: "exclamationmark.triangle").font(.title2)
-                  VStack(alignment: .leading, spacing: 3) {
-                    Text("UNSTABLE STRUCTURE").font(.system(size: 11, weight: .bold)).tracking(1)
-                    Text(error).font(.system(size: 11)).fixedSize(horizontal: false, vertical: true)
-                  }
-                  Spacer()
-                  Button("Undo", action: studio.undo).disabled(!studio.canUndo)
-                }
-                .foregroundStyle(Ink.copper).padding(16).background(Ink.paper)
-                .overlay(Rectangle().stroke(Ink.copper.opacity(0.4)))
-                .padding(.horizontal, 24).padding(.bottom, 8)
-              }
-              canvasLegend
-            }.frame(maxWidth: .infinity).padding(.bottom, 18)
-          }
+          workspaceBar
+          if workspace == "Drawing" { drawing } else { ResultSchedule() }
           metrics
-        }
+        }.frame(maxWidth: .infinity, maxHeight: .infinity)
         Rectangle().fill(Ink.line).frame(width: 1)
-        inspector.frame(width: 250)
+        inspector.frame(width: 276)
       }.frame(maxHeight: .infinity).clipped()
       footer.fixedSize(horizontal: false, vertical: true)
     }
-    .background(Ink.paper).foregroundStyle(Ink.navy)
-    .buttonStyle(.plain)
+    .background(Ink.paper).foregroundStyle(Ink.navy).buttonStyle(.plain)
+    .onChange(of: studio.selection) { _, selection in
+      if selection != nil { inspectorTab = "Inspect" }
+    }
+    .sheet(isPresented: $showProject) { ProjectDetails().environmentObject(studio) }
     .alert(
       "Keystone",
       isPresented: Binding(
-        get: { studio.errorMessage != nil }, set: { if !$0 { studio.errorMessage = nil } })
+        get: { studio.errorMessage != nil }, set: { if !$0 { studio.errorMessage = nil } }
+      )
     ) {
       Button("OK") { studio.errorMessage = nil }
     } message: {
@@ -65,438 +40,377 @@ struct ContentView: View {
   }
 
   private var header: some View {
-    HStack(spacing: 16) {
-      Image(systemName: "point.3.connected.trianglepath.dotted").font(
-        .system(size: 29, weight: .light))
-      VStack(alignment: .leading, spacing: 2) {
-        Text("KEYSTONE").font(.system(size: 21, weight: .medium, design: .serif)).tracking(4)
-        Text("THE STRUCTURAL PLAYGROUND").font(.system(size: 8, weight: .medium)).tracking(2)
-          .foregroundStyle(.white.opacity(0.6))
+    HStack(spacing: 14) {
+      Image(systemName: "point.3.connected.trianglepath.dotted")
+        .font(.system(size: 30, weight: .ultraLight)).foregroundStyle(Ink.sand)
+      VStack(alignment: .leading, spacing: 4) {
+        Text("KEYSTONE").font(.system(size: 21, design: .serif)).tracking(4)
+        Text("STRUCTURAL DESIGN STUDIO").font(.system(size: 8, weight: .medium)).tracking(1.7)
+          .foregroundStyle(.white.opacity(0.5))
       }
-      Rectangle().fill(.white.opacity(0.15)).frame(width: 1, height: 28).padding(.horizontal, 10)
-      Text("Build beautifully.\nUnderstand the forces.").font(.system(size: 11)).lineSpacing(3)
-        .foregroundStyle(.white.opacity(0.72))
-      Spacer()
-      headerButton("Open", icon: "folder", action: studio.open)
-      headerButton("Save", icon: "square.and.arrow.down", action: studio.save)
+      Rectangle().fill(.white.opacity(0.14)).frame(width: 1, height: 30).padding(.horizontal, 16)
+      VStack(alignment: .leading, spacing: 5) {
+        Text(studio.documentURL?.lastPathComponent ?? "Untitled study")
+          .font(.system(size: 12, weight: .medium)).lineLimit(1)
+        Text(studio.isDirty ? "Local autosave · unsaved file changes" : "Saved to file")
+          .font(.system(size: 10)).foregroundStyle(.white.opacity(0.55)).lineLimit(1)
+      }
+      Spacer(minLength: 10)
+      Button(action: studio.open) { Label("Open", systemImage: "folder").padding(10) }
+      Menu {
+        Button("Save", action: studio.save)
+        Button("Save as…", action: studio.saveAs)
+      } label: {
+        Label("Save", systemImage: "square.and.arrow.down").foregroundStyle(.white)
+      }.menuStyle(.borderlessButton).fixedSize().padding(10)
       Menu {
         Button("Engineering report · HTML") { studio.export(report: true) }
         Button("Vector drawing · SVG") { studio.export(report: false) }
+        Button("Member & reaction schedule · CSV", action: studio.exportCSV)
       } label: {
-        Label("Export", systemImage: "square.and.arrow.up").font(.system(size: 12, weight: .medium))
-          .foregroundColor(.white)
-          .padding(.horizontal, 14).padding(.vertical, 10)
-          .background(.white.opacity(0.12), in: RoundedRectangle(cornerRadius: 5))
-      }.menuStyle(.borderlessButton).tint(.white).fixedSize()
+        Label("Export", systemImage: "arrow.up.right").foregroundStyle(Ink.navy)
+          .padding(.horizontal, 16).padding(.vertical, 11)
+          .background(Ink.sand, in: RoundedRectangle(cornerRadius: 6))
+      }.menuStyle(.borderlessButton).fixedSize()
     }
-    .foregroundStyle(.white).padding(.leading, 28).padding(.trailing, 22).padding(.top, 26).padding(
-      .bottom, 19
-    )
-    .background(Ink.navy)
+    .font(.system(size: 12)).foregroundStyle(.white)
+    .padding(.horizontal, 25).padding(.top, 25).padding(.bottom, 18).background(Ink.navy)
   }
 
-  private func headerButton(_ title: String, icon: String, action: @escaping () -> Void)
-    -> some View
-  {
-    Button(action: action) {
-      Label(title, systemImage: icon).font(.system(size: 12)).padding(9)
-    }.accessibilityLabel(title)
-  }
-
-  private var library: some View {
-    GeometryReader { geometry in
-      ScrollView {
-        libraryContent
-          .padding(20)
-          .frame(minHeight: geometry.size.height, alignment: .topLeading)
-      }
-    }.background(Color.white.opacity(0.32))
-  }
-
-  private var libraryContent: some View {
-    VStack(alignment: .leading, spacing: 20) {
-      eyebrow("DESIGN LIBRARY")
-      VStack(spacing: 10) {
-        exampleCard("01", title: "Warren", detail: "Balanced / 3.0 m rise", height: 3)
-        exampleCard("02", title: "Highline", detail: "Deeper / 4.5 m rise", height: 4.5)
-        exampleCard("03", title: "Low profile", detail: "Slender / 1.5 m rise", height: 1.5)
-      }
-      Divider().overlay(Ink.line)
-      VStack(alignment: .leading, spacing: 12) {
-        eyebrow("THE EXPERIMENT")
-        instruction("1", "Shape the span", detail: "Move a joint or connect a member.")
-        instruction("2", "Follow the forces", detail: "Apply load. Inspect the colored members.")
-        instruction(
-          "3", "Find a better balance", detail: "Reduce deflection. Watch the material cost.")
-      }
-      Spacer(minLength: 4)
-      VStack(alignment: .leading, spacing: 9) {
-        Image(systemName: "triangle.lefthalf.filled").font(.system(size: 23)).foregroundStyle(
-          Ink.copper)
-        Text("Strength comes\nfrom geometry.").font(.system(size: 18, design: .serif)).lineSpacing(
-          3)
-        Text("A local, offline engineering desk.\nNo two spans need be the same.")
-          .font(.system(size: 10)).foregroundStyle(Ink.muted).lineSpacing(4)
-      }
-    }.fixedSize(horizontal: false, vertical: true)
-  }
-
-  private func exampleCard(_ number: String, title: String, detail: String, height: Double)
-    -> some View
-  {
-    Button {
-      studio.example(height, name: "\(title) / River crossing")
-    } label: {
-      VStack(alignment: .leading, spacing: 8) {
-        HStack {
-          Text(number).font(.system(size: 9, design: .monospaced)).foregroundStyle(Ink.muted)
-          Spacer()
-          Image(systemName: "arrow.up.right").font(.system(size: 9)).foregroundStyle(Ink.copper)
+  private var projectRail: some View {
+    ScrollView {
+      VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 12) {
+          railLabel("01 / PROJECT")
+          Button {
+            showProject = true
+          } label: {
+            VStack(alignment: .leading, spacing: 9) {
+              Text(studio.design.name).font(.system(size: 22, design: .serif))
+                .lineLimit(4).multilineTextAlignment(.leading).lineSpacing(3)
+              Label("Project details", systemImage: "pencil").font(.system(size: 10))
+                .foregroundStyle(Ink.sand)
+            }
+          }.accessibilityLabel("Edit project details")
+          Text(String(format: "%.1f m span  /  %.0f kg", studio.design.spanM, studio.design.massKg))
+            .font(.system(size: 10, design: .monospaced)).foregroundStyle(.white.opacity(0.55))
         }
-        MiniTruss(rise: height).frame(height: 32)
-        Text(title).font(.system(size: 13, weight: .semibold))
-        Text(detail).font(.system(size: 9)).foregroundStyle(Ink.muted)
-      }.padding(12).background(Ink.paper)
-        .overlay(RoundedRectangle(cornerRadius: 4).stroke(Ink.line))
-    }.accessibilityLabel("Load \(title) example")
+        Rectangle().fill(.white.opacity(0.13)).frame(height: 1)
+        VStack(alignment: .leading, spacing: 10) {
+          HStack {
+            railLabel("02 / LOAD CASES")
+            Spacer()
+            Menu {
+              Button("New empty case") { studio.addCase(duplicate: false) }
+              Button("Duplicate active case") { studio.addCase(duplicate: true) }
+              Divider()
+              Button("Remove active case", action: studio.removeCase)
+                .disabled(studio.design.activeCaseID == "service")
+            } label: {
+              Image(systemName: "plus").foregroundStyle(Ink.sand).frame(width: 24, height: 24)
+            }.menuStyle(.borderlessButton).fixedSize().accessibilityLabel("Load case actions")
+          }
+          ForEach(studio.design.loadCases) { loadCase in
+            let active = loadCase.id == studio.design.activeCaseID
+            Button {
+              studio.selectCase(loadCase.id)
+            } label: {
+              HStack(spacing: 10) {
+                Image(systemName: "arrow.down.right").font(.system(size: 12))
+                VStack(alignment: .leading, spacing: 5) {
+                  Text(loadCase.name).font(.system(size: 12, weight: .medium))
+                    .lineLimit(2).multilineTextAlignment(.leading)
+                  Text(
+                    String(format: "×%.2f", loadCase.factor)
+                      + (loadCase.includesSelfWeight ? "  + self-weight" : "  nodal loads")
+                  )
+                  .font(.system(size: 9, design: .monospaced)).opacity(0.6)
+                }
+                Spacer(minLength: 0)
+                if active { Circle().fill(Ink.copper).frame(width: 5, height: 5) }
+              }.padding(12).foregroundStyle(active ? Ink.navy : .white.opacity(0.75))
+                .background(
+                  active ? Ink.paper : .white.opacity(0.04), in: RoundedRectangle(cornerRadius: 6))
+            }.accessibilityLabel("Activate \(loadCase.name)")
+          }
+          CaseEditor()
+        }
+        Rectangle().fill(.white.opacity(0.13)).frame(height: 1)
+        VStack(alignment: .leading, spacing: 12) {
+          railLabel("03 / STARTING POINTS")
+          template("Warren", height: 3, detail: "Balanced")
+          template("Highline", height: 4.5, detail: "Deep span")
+          template("Low profile", height: 1.5, detail: "Slender")
+        }
+        VStack(alignment: .leading, spacing: 7) {
+          Text("Resolve the forces.\nRefine the structure.")
+            .font(.system(size: 16, design: .serif)).lineSpacing(3)
+          Text("LOCAL WORKSPACE / SI UNITS").font(.system(size: 8, design: .monospaced))
+            .foregroundStyle(.white.opacity(0.4))
+        }.padding(.top, 4)
+      }.padding(20).foregroundStyle(.white)
+    }.background(Ink.navy)
   }
 
-  private func instruction(_ number: String, _ title: String, detail: String) -> some View {
-    HStack(alignment: .top, spacing: 8) {
-      Text(number).font(.system(size: 10, design: .monospaced)).foregroundStyle(Ink.copper)
-        .frame(width: 17, height: 17).overlay(Circle().stroke(Ink.line))
-      VStack(alignment: .leading, spacing: 4) {
-        Text(title).font(.system(size: 11, weight: .medium))
-        Text(detail).font(.system(size: 10)).foregroundStyle(Ink.muted).lineSpacing(3)
-      }
-    }
+  private func railLabel(_ text: String) -> some View {
+    Text(text).font(.system(size: 9, weight: .medium, design: .monospaced))
+      .tracking(0.5).foregroundStyle(.white.opacity(0.45))
   }
 
-  private var tools: some View {
+  private func template(_ name: String, height: Double, detail: String) -> some View {
+    Button {
+      studio.example(height, name: "\(name) / River crossing")
+      workspace = "Drawing"
+    } label: {
+      HStack(spacing: 10) {
+        MiniTruss(rise: height, color: Ink.sand).frame(width: 53, height: 28)
+        VStack(alignment: .leading, spacing: 4) {
+          Text(name).font(.system(size: 11, weight: .medium))
+          Text("\(detail) · \(String(format: "%.1f", height)) m").font(.system(size: 9))
+            .foregroundStyle(.white.opacity(0.45))
+        }
+        Spacer(minLength: 0)
+        Image(systemName: "arrow.up.right").font(.system(size: 9)).foregroundStyle(Ink.sand)
+      }.padding(.vertical, 6)
+    }.accessibilityLabel("Load \(name) example")
+  }
+
+  private var workspaceBar: some View {
     HStack(spacing: 4) {
-      ForEach(EditorTool.allCases, id: \.self) { tool in
+      ForEach(["Drawing", "Schedules"], id: \.self) { tab in
         Button {
-          studio.tool = tool
-          studio.startNode = nil
+          workspace = tab
         } label: {
-          Label(tool.rawValue, systemImage: tool.icon).font(.system(size: 11, weight: .medium))
-            .padding(.horizontal, 10).padding(.vertical, 9)
+          Label(tab, systemImage: tab == "Drawing" ? "square.and.pencil" : "tablecells")
+            .font(.system(size: 11, weight: .medium))
+            .padding(.horizontal, 12).padding(.vertical, 10)
+            .foregroundStyle(workspace == tab ? Ink.navy : Ink.muted)
             .background(
-              studio.tool == tool ? Ink.navy : Color.clear, in: RoundedRectangle(cornerRadius: 4)
-            )
-            .foregroundStyle(studio.tool == tool ? Ink.paper : Ink.navy)
-        }.help(tool.hint).accessibilityLabel("\(tool.rawValue) tool")
+              workspace == tab ? Ink.line.opacity(0.35) : .clear,
+              in: RoundedRectangle(cornerRadius: 5))
+        }.accessibilityLabel("\(tab) workspace")
       }
-      Spacer(minLength: 8)
-      Button(action: studio.undo) {
-        Image(systemName: "arrow.uturn.backward").frame(width: 25, height: 30)
-      }
-      .disabled(!studio.canUndo).opacity(studio.canUndo ? 1 : 0.3).help("Undo · ⌘Z")
-      .accessibilityLabel("Undo")
-      Button(action: studio.redo) {
-        Image(systemName: "arrow.uturn.forward").frame(width: 25, height: 30)
-      }
-      .disabled(!studio.canRedo).opacity(studio.canRedo ? 1 : 0.3).help("Redo · ⇧⌘Z")
-      .accessibilityLabel("Redo")
-    }.padding(.horizontal, 18).padding(.vertical, 10).background(Color.white.opacity(0.4))
+      Spacer()
+      Text(studio.result == nil ? "MODEL" : "LIVE ANALYSIS")
+        .font(.system(size: 8, weight: .semibold, design: .monospaced)).tracking(1)
+        .foregroundStyle(studio.result == nil ? Ink.muted : Ink.green)
+      Circle().fill(studio.result == nil ? Ink.muted : Ink.green).frame(width: 5, height: 5)
+    }.padding(.horizontal, 16).padding(.vertical, 8).background(Ink.panel)
       .overlay(alignment: .bottom) { Rectangle().fill(Ink.line).frame(height: 1) }
   }
 
-  private var canvasLegend: some View {
-    VStack(spacing: 15) {
-      if studio.mode != .geometry, studio.result != nil {
-        HStack(spacing: 18) {
-          legendItem("COMPRESSION", color: Ink.blue)
-          legendItem("TENSION", color: Ink.copper)
-          legendItem("NEAR ZERO", color: Ink.muted.opacity(0.5))
-        }.font(.system(size: 9, weight: .medium, design: .monospaced))
-        if studio.mode == .deflection {
-          Text("DEFORMATION ×100 · ORIGINAL GEOMETRY DASHED")
-            .font(.system(size: 9, design: .monospaced)).foregroundStyle(Ink.muted)
+  private var drawing: some View {
+    VStack(spacing: 0) {
+      HStack(spacing: 2) {
+        ForEach(EditorTool.allCases, id: \.self) { tool in
+          Button {
+            studio.tool = tool
+            studio.startNode = nil
+            if tool == .node || tool == .member || tool == .load { studio.mode = .geometry }
+          } label: {
+            Label(tool.rawValue, systemImage: tool.icon).font(.system(size: 10, weight: .medium))
+              .padding(.horizontal, 9).padding(.vertical, 9)
+              .background(
+                studio.tool == tool ? Ink.navy : .clear, in: RoundedRectangle(cornerRadius: 4)
+              )
+              .foregroundStyle(studio.tool == tool ? Ink.paper : Ink.muted)
+          }.help(tool.hint).accessibilityLabel("\(tool.rawValue) tool")
         }
-      }
-      HStack(spacing: 6) {
-        Image(systemName: studio.tool.icon)
-        Text(studio.tool.hint)
-      }.font(.system(size: 10)).foregroundStyle(Ink.muted)
-    }.allowsHitTesting(false)
+        Spacer(minLength: 2)
+        Button(action: studio.undo) {
+          Image(systemName: "arrow.uturn.backward").frame(width: 28, height: 30)
+        }
+        .disabled(!studio.canUndo).opacity(studio.canUndo ? 1 : 0.3).help("Undo · ⌘Z")
+        .accessibilityLabel("Undo")
+        Button(action: studio.redo) {
+          Image(systemName: "arrow.uturn.forward").frame(width: 28, height: 30)
+        }
+        .disabled(!studio.canRedo).opacity(studio.canRedo ? 1 : 0.3).help("Redo · ⇧⌘Z")
+        .accessibilityLabel("Redo")
+      }.padding(.horizontal, 14).padding(.vertical, 4)
+      ZStack(alignment: .topLeading) {
+        DraftingCanvas().clipped()
+        VStack(alignment: .leading, spacing: 7) {
+          Eyebrow(text: "STRUCTURAL STUDY / \(studio.mode.rawValue.uppercased())")
+          Text(studio.design.name.components(separatedBy: " / ").last ?? studio.design.name)
+            .font(.system(size: 29, design: .serif)).lineLimit(1)
+          Text(
+            "\(studio.design.nodes.count) JOINTS  ·  \(studio.design.members.count) MEMBERS  ·  \(studio.design.activeCase.name.uppercased())"
+          )
+          .font(.system(size: 9, design: .monospaced)).foregroundStyle(Ink.muted).lineLimit(1)
+        }.padding(.horizontal, 26).padding(.top, 14).allowsHitTesting(false)
+        VStack {
+          Spacer()
+          if let error = studio.analysisError {
+            HStack(spacing: 10) {
+              Image(systemName: "exclamationmark.triangle")
+              VStack(alignment: .leading, spacing: 4) {
+                Text("ANALYSIS UNAVAILABLE").font(.system(size: 10, weight: .bold)).tracking(1)
+                Text(error).font(.system(size: 10)).fixedSize(horizontal: false, vertical: true)
+              }
+              Spacer(minLength: 0)
+              Button("Undo", action: studio.undo).font(.system(size: 11)).disabled(!studio.canUndo)
+            }.foregroundStyle(Ink.copper).padding(13).background(
+              Ink.panel, in: RoundedRectangle(cornerRadius: 6)
+            )
+            .overlay(RoundedRectangle(cornerRadius: 6).stroke(Ink.copper.opacity(0.25)))
+            .padding(.horizontal, 18)
+          }
+          HStack(spacing: 14) {
+            if studio.mode != .geometry, studio.result != nil {
+              legend("TENSION", Ink.copper)
+              legend("COMPRESSION", Ink.blue)
+              if studio.mode == .deflection {
+                Text("×\(Int(studio.deformationScale))").font(.system(size: 9, design: .monospaced))
+              }
+            } else {
+              Text(studio.tool.hint).font(.system(size: 10)).foregroundStyle(Ink.muted).lineLimit(1)
+            }
+            Spacer(minLength: 0)
+            HStack(spacing: 0) {
+              Button {
+                studio.zoom = max(0.5, studio.zoom - 0.25)
+              } label: {
+                Image(systemName: "minus").frame(width: 25, height: 26)
+              }.accessibilityLabel("Zoom out")
+              Button(action: studio.fitDrawing) {
+                Text(studio.zoom == 1 && studio.pan == .zero ? "Fit" : "\(Int(studio.zoom * 100))%")
+                  .font(.system(size: 10, design: .monospaced)).frame(width: 39)
+              }.accessibilityLabel("Fit drawing")
+              Button {
+                studio.zoom = min(3, studio.zoom + 0.25)
+              } label: {
+                Image(systemName: "plus").frame(width: 25, height: 26)
+              }.accessibilityLabel("Zoom in")
+            }.background(Ink.panel, in: RoundedRectangle(cornerRadius: 4))
+              .overlay(RoundedRectangle(cornerRadius: 4).stroke(Ink.line))
+          }.padding(.horizontal, 22).padding(.top, 8).padding(.bottom, 12)
+        }.frame(maxWidth: .infinity)
+      }.frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
   }
 
-  private func legendItem(_ text: String, color: Color) -> some View {
+  private func legend(_ title: String, _ color: Color) -> some View {
     HStack(spacing: 5) {
-      Capsule().fill(color).frame(width: 18, height: 3)
-      Text(text)
+      Capsule().fill(color).frame(width: 16, height: 3)
+      Text(title).font(.system(size: 8, weight: .medium, design: .monospaced)).foregroundStyle(
+        Ink.muted)
+    }
+  }
+
+  private var inspector: some View {
+    VStack(spacing: 0) {
+      HStack(spacing: 0) {
+        ForEach(["Inspect", "Checks"], id: \.self) { tab in
+          Button {
+            inspectorTab = tab
+          } label: {
+            Text(tab).font(.system(size: 11, weight: .medium)).frame(maxWidth: .infinity)
+              .padding(.vertical, 17).foregroundStyle(inspectorTab == tab ? Ink.navy : Ink.muted)
+              .overlay(alignment: .bottom) {
+                Rectangle().fill(inspectorTab == tab ? Ink.copper : .clear).frame(height: 2)
+              }
+          }.accessibilityLabel("\(tab) panel")
+        }
+      }.background(Ink.panel)
+      ScrollView {
+        VStack(alignment: .leading, spacing: 22) {
+          Button(action: studio.applyLoad) {
+            HStack {
+              Image(systemName: "waveform.path")
+              Text(studio.analyzed ? "Recalculate" : "Run analysis").fontWeight(.semibold)
+              Spacer()
+              Image(systemName: "arrow.right")
+            }.font(.system(size: 12)).padding(14).foregroundStyle(.white)
+              .background(Ink.copper, in: RoundedRectangle(cornerRadius: 6))
+          }.accessibilityIdentifier("applyLoad").accessibilityLabel("Run analysis")
+          if inspectorTab == "Checks" {
+            StudyChecks()
+          } else {
+            viewControls
+            Divider()
+            SelectionInspector()
+            Divider()
+            MaterialInspector()
+          }
+          Text(
+            "PRELIMINARY 2D TRUSS STUDY\nIdeal joints · linear elastic members\nNo design-code certification"
+          )
+          .font(.system(size: 9)).foregroundStyle(Ink.muted).lineSpacing(4)
+        }.padding(18)
+      }
+    }.background(Ink.panel.opacity(0.6))
+  }
+
+  private var viewControls: some View {
+    VStack(alignment: .leading, spacing: 12) {
+      Eyebrow(text: "DISPLAY")
+      HStack(spacing: 0) {
+        ForEach(DisplayMode.allCases, id: \.self) { mode in
+          Button {
+            studio.mode = mode
+            if mode != .geometry, !studio.analyzed {
+              studio.analyzed = true
+              studio.solve()
+            }
+          } label: {
+            Text(mode.rawValue).font(.system(size: 10, weight: .medium)).frame(maxWidth: .infinity)
+              .padding(.vertical, 9).background(studio.mode == mode ? Ink.navy : .clear)
+              .foregroundStyle(studio.mode == mode ? .white : Ink.muted)
+          }.accessibilityLabel("\(mode.rawValue) view")
+        }
+      }.background(Ink.line.opacity(0.3)).clipShape(RoundedRectangle(cornerRadius: 5))
+      HStack {
+        Toggle("Grid", isOn: $studio.showGrid)
+        Spacer()
+        Toggle("Labels", isOn: $studio.showLabels)
+      }.toggleStyle(.checkbox).font(.system(size: 11))
+      Toggle("Support reactions", isOn: $studio.showReactions).toggleStyle(.checkbox).font(
+        .system(size: 11))
+      if studio.mode == .deflection {
+        Picker("Magnification", selection: $studio.deformationScale) {
+          ForEach([1.0, 10, 50, 100, 250, 500], id: \.self) { Text("×\(Int($0))").tag($0) }
+        }.font(.system(size: 11))
+        Text("Dashed = original geometry").font(.system(size: 10)).foregroundStyle(Ink.muted)
+      }
     }
   }
 
   private var metrics: some View {
     HStack(spacing: 0) {
       metric(
-        "MAX DISPLACEMENT",
-        value: studio.result.map { String(format: "%.2f", $0.maxDisplacementMM) } ?? "—", unit: "mm"
-      )
-      Rectangle().fill(Ink.line).frame(width: 1, height: 42)
+        "DISPLACEMENT", studio.result.map { String(format: "%.2f", $0.maxDisplacementMM) } ?? "—",
+        "mm", Ink.navy)
+      Rectangle().fill(Ink.line).frame(width: 1, height: 44)
       metric(
-        "AXIAL YIELD USE",
-        value: studio.result.map { String(format: "%.1f", $0.maxUtilization * 100) } ?? "—",
-        unit: "%")
-      Rectangle().fill(Ink.line).frame(width: 1, height: 42)
-      metric("MATERIAL ESTIMATE", value: String(format: "%.0f", studio.design.cost), unit: "$")
-    }.padding(.vertical, 20).background(Color.white.opacity(0.5))
+        (studio.result?.missingBucklingChecks ?? 0) > 0 ? "D/C · INCOMPLETE" : "DEMAND / CAPACITY",
+        studio.result.map { String(format: "%.0f", $0.maxCapacityUtilization * 100) } ?? "—", "%",
+        (studio.result?.maxCapacityUtilization ?? 0) > 1 ? Ink.copper : Ink.navy)
+      Rectangle().fill(Ink.line).frame(width: 1, height: 44)
+      metric("MATERIAL COST", String(format: "%.0f", studio.design.cost), "$", Ink.navy)
+    }.padding(.vertical, 18).background(Ink.panel)
       .overlay(alignment: .top) { Rectangle().fill(Ink.line).frame(height: 1) }
   }
 
-  private func metric(_ title: String, value: String, unit: String) -> some View {
-    VStack(alignment: .leading, spacing: 7) {
-      Text(title).font(.system(size: 8, weight: .semibold)).tracking(1).foregroundStyle(Ink.muted)
+  private func metric(_ title: String, _ value: String, _ unit: String, _ color: Color) -> some View
+  {
+    VStack(alignment: .leading, spacing: 8) {
+      Text(title).font(.system(size: 8, weight: .medium)).tracking(0.8).foregroundStyle(Ink.muted)
       HStack(alignment: .firstTextBaseline, spacing: 4) {
-        Text(value).font(.system(size: 27, weight: .light, design: .rounded)).monospacedDigit()
-        Text(unit).font(.system(size: 12)).foregroundStyle(Ink.muted)
+        Text(value).font(.system(size: 29, weight: .light, design: .rounded)).monospacedDigit()
+          .foregroundStyle(color)
+        Text(unit).font(.system(size: 11)).foregroundStyle(Ink.muted)
       }
-    }.frame(maxWidth: .infinity, alignment: .leading).padding(.leading, 22)
+    }.frame(maxWidth: .infinity, alignment: .leading).padding(.leading, 20)
   }
 
-  private var inspector: some View {
-    ScrollView {
-      VStack(alignment: .leading, spacing: 20) {
-        HStack {
-          eyebrow("ANALYSIS DESK")
-          Spacer()
-          Circle().fill(
-            studio.analysisError != nil
-              ? Ink.copper : (studio.result == nil ? Ink.muted : Ink.green)
-          ).frame(width: 6, height: 6)
-        }
-        Button(action: studio.applyLoad) {
-          HStack {
-            Image(systemName: "arrow.down").font(.system(size: 13))
-            Text("Apply load").font(.system(size: 13, weight: .semibold))
-            Spacer()
-            Image(systemName: "play.fill").font(.system(size: 9))
-          }.padding(14).foregroundStyle(.white).background(
-            Ink.copper, in: RoundedRectangle(cornerRadius: 5))
-        }.accessibilityIdentifier("applyLoad")
-        VStack(alignment: .leading, spacing: 10) {
-          eyebrow("VIEW")
-          HStack(spacing: 0) {
-            ForEach(DisplayMode.allCases, id: \.self) { mode in
-              Button {
-                studio.mode = mode
-                if mode != .geometry, !studio.analyzed {
-                  studio.analyzed = true
-                  studio.solve()
-                }
-              } label: {
-                Text(mode.rawValue).font(.system(size: 10, weight: .medium)).frame(
-                  maxWidth: .infinity
-                )
-                .padding(.vertical, 9).background(studio.mode == mode ? Ink.navy : .clear)
-                .foregroundStyle(studio.mode == mode ? .white : Ink.muted)
-              }.accessibilityLabel("\(mode.rawValue) view")
-            }
-          }.background(Ink.line.opacity(0.35)).clipShape(RoundedRectangle(cornerRadius: 4))
-          HStack {
-            Toggle("Grid", isOn: $studio.showGrid)
-            Spacer()
-            Toggle("Labels", isOn: $studio.showLabels)
-          }.toggleStyle(.checkbox).font(.system(size: 11))
-        }
-        Divider()
-        selectionPanel
-        Divider()
-        materialPanel
-        if let baseline = studio.baselineMM, let result = studio.result, baseline > 1e-8 {
-          let improvement = (1 - result.maxDisplacementMM / baseline) * 100
-          VStack(alignment: .leading, spacing: 7) {
-            eyebrow("AGAINST FIRST LOAD")
-            Text(String(format: "%+.1f%%", improvement)).font(
-              .system(size: 24, weight: .light, design: .rounded)
-            )
-            .foregroundStyle(improvement >= 0 ? Ink.green : Ink.copper)
-            Text("deflection improvement").font(.system(size: 10)).foregroundStyle(Ink.muted)
-            Button("Set current as reference") { studio.baselineMM = result.maxDisplacementMM }
-              .font(.system(size: 10)).foregroundStyle(Ink.copper)
-          }.padding(12).frame(maxWidth: .infinity, alignment: .leading).background(
-            Ink.line.opacity(0.24))
-        }
-        Text(
-          "LINEAR 2D TRUSS\nAxial elasticity only. No buckling,\nbending, self-weight or code checks."
-        )
-        .font(.system(size: 9)).foregroundStyle(Ink.muted).lineSpacing(4)
-      }.padding(20)
-    }.background(Color.white.opacity(0.32))
-  }
-
-  @ViewBuilder
-  private var selectionPanel: some View {
-    if let member = studio.selectedMember {
-      VStack(alignment: .leading, spacing: 13) {
-        eyebrow("MEMBER INSPECTOR")
-        HStack(alignment: .firstTextBaseline) {
-          Text("M\(member.id + 1)").font(.system(size: 27, design: .serif))
-          Spacer()
-          Text("N\(member.a + 1) → N\(member.b + 1)").font(.system(size: 10, design: .monospaced))
-            .foregroundStyle(Ink.muted)
-        }
-        infoRow("Length", String(format: "%.2f m", studio.design.length(member)))
-        stepRow(
-          "Area", value: String(format: "%.0f cm²", member.areaCM2),
-          minus: {
-            studio.setArea(member.id, area: member.areaCM2 - 5)
-          }, plus: { studio.setArea(member.id, area: member.areaCM2 + 5) })
-        if let r = studio.result?.members[member.id] {
-          infoRow("Axial force", String(format: "%+.2f kN", r.forceKN))
-          infoRow("Stress", String(format: "%+.2f MPa", r.stressMPa))
-          Text(
-            abs(r.forceKN) < 0.001
-              ? "NEAR ZERO FORCE" : (r.forceKN < 0 ? "IN COMPRESSION" : "IN TENSION")
-          )
-          .font(.system(size: 9, weight: .bold)).tracking(1).foregroundStyle(
-            r.forceKN < 0 ? Ink.blue : Ink.copper)
-        }
-        removeButton("Remove member")
-      }
-    } else if let node = studio.selectedNode {
-      VStack(alignment: .leading, spacing: 13) {
-        eyebrow("NODE INSPECTOR")
-        Text("N\(node.id + 1)").font(.system(size: 27, design: .serif))
-        infoRow("Position", String(format: "%.1f, %.1f m", node.x, node.y))
-        Picker(
-          "Support",
-          selection: Binding(
-            get: { node.support },
-            set: { support in studio.setNode(node.id) { $0.support = support } })
-        ) {
-          ForEach(Support.allCases, id: \.self) { support in Text(support.rawValue).tag(support) }
-        }.font(.system(size: 11))
-        stepRow(
-          "Load ↓", value: String(format: "%.0f kN", node.loadKN),
-          minus: {
-            studio.setNode(node.id) { $0.loadKN = max(0, $0.loadKN - 25) }
-          }, plus: { studio.setNode(node.id) { $0.loadKN = min(1000, $0.loadKN + 25) } })
-        if let d = studio.result?.displacement[node.id] {
-          infoRow("Vertical Δ", String(format: "%+.3f mm", d.y * 1000))
-        }
-        if node.loadKN != 0 {
-          Button("Clear load") { studio.setNode(node.id) { $0.loadKN = 0 } }
-            .font(.system(size: 11)).foregroundStyle(Ink.copper)
-        }
-        removeButton("Remove node")
-      }
-    } else {
-      VStack(alignment: .leading, spacing: 12) {
-        eyebrow("DESIGN INSPECTOR")
-        Text("Every member\nhas a story.").font(.system(size: 22, design: .serif)).lineSpacing(2)
-        Text(
-          "Select a beam to see its force,\nor a joint to change its load\nand support conditions."
-        )
-        .font(.system(size: 11)).foregroundStyle(Ink.muted).lineSpacing(4)
-        infoRow(
-          "Span",
-          String(
-            format: "%.1f m",
-            (studio.design.nodes.map(\.x).max() ?? 0) - (studio.design.nodes.map(\.x).min() ?? 0)))
-        infoRow(
-          "Applied load",
-          String(format: "%.0f kN", studio.design.nodes.reduce(0) { $0 + $1.loadKN }))
-      }
-    }
-  }
-
-  private var materialPanel: some View {
-    VStack(alignment: .leading, spacing: 12) {
-      eyebrow("MATERIAL & BUDGET")
-      Picker(
-        "Material",
-        selection: Binding(
-          get: { studio.design.material.name },
-          set: { name in
-            studio.change { $0.material = name == Material.steel.name ? .steel : .aluminum }
-          })
-      ) {
-        Text("Steel · 200 GPa").tag(Material.steel.name)
-        Text("Aluminum · 69 GPa").tag(Material.aluminum.name)
-      }.labelsHidden().font(.system(size: 11))
-      infoRow("Total mass", String(format: "%.0f kg", studio.design.massKg))
-      stepRow(
-        "Budget", value: String(format: "$%.0f", studio.design.budget),
-        minus: {
-          studio.change { $0.budget = max(500, $0.budget - 500) }
-        }, plus: { studio.change { $0.budget = min(20000, $0.budget + 500) } })
-      GeometryReader { geometry in
-        ZStack(alignment: .leading) {
-          Capsule().fill(Ink.line)
-          Capsule().fill(studio.design.cost > studio.design.budget ? Ink.copper : Ink.green)
-            .frame(width: geometry.size.width * min(1, studio.design.cost / studio.design.budget))
-        }
-      }.frame(height: 4)
-      Text(
-        studio.design.cost > studio.design.budget
-          ? "OVER BUDGET · raw material only" : "WITHIN BUDGET · raw material only"
-      )
-      .font(.system(size: 8, weight: .medium)).foregroundStyle(Ink.muted)
-      Button {
-        studio.change { design in
-          for i in design.members.indices {
-            design.members[i].areaCM2 = min(100, design.members[i].areaCM2 + 5)
-          }
-        }
-      } label: {
-        Label("Thicken all +5 cm²", systemImage: "plus").font(.system(size: 11, weight: .medium))
-          .frame(maxWidth: .infinity).padding(.vertical, 10)
-          .overlay(RoundedRectangle(cornerRadius: 4).stroke(Ink.line))
-      }
-    }
-  }
-
-  private func removeButton(_ title: String) -> some View {
-    Button(action: studio.deleteSelection) {
-      Label(title, systemImage: "trash").font(.system(size: 11)).foregroundStyle(Ink.copper)
-        .padding(.vertical, 6)
-    }
-  }
-
-  private func stepRow(
-    _ title: String, value: String, minus: @escaping () -> Void, plus: @escaping () -> Void
-  ) -> some View {
-    HStack(spacing: 7) {
-      Text(title).font(.system(size: 11)).foregroundStyle(Ink.muted)
-      Spacer()
-      Button(action: minus) {
-        Image(systemName: "minus").frame(width: 25, height: 25).background(
-          Ink.line.opacity(0.4), in: RoundedRectangle(cornerRadius: 3))
-      }
-      .accessibilityLabel("Decrease \(title)")
-      Text(value).font(.system(size: 11, weight: .medium, design: .monospaced)).monospacedDigit()
-        .frame(minWidth: 53)
-      Button(action: plus) {
-        Image(systemName: "plus").frame(width: 25, height: 25).background(
-          Ink.line.opacity(0.4), in: RoundedRectangle(cornerRadius: 3))
-      }
-      .accessibilityLabel("Increase \(title)")
-    }
-  }
-
-  private func infoRow(_ label: String, _ value: String) -> some View {
-    HStack {
-      Text(label).font(.system(size: 11)).foregroundStyle(Ink.muted)
-      Spacer()
-      Text(value).font(.system(size: 11, weight: .medium, design: .monospaced)).monospacedDigit()
-    }
-  }
-  private func eyebrow(_ title: String) -> some View {
-    Text(title).font(.system(size: 9, weight: .semibold)).tracking(1.4).foregroundStyle(Ink.muted)
-  }
   private var footer: some View {
     HStack {
-      Circle().fill(Ink.green).frame(width: 5, height: 5)
+      Circle().fill(studio.analysisError == nil ? Ink.green : Ink.copper).frame(width: 5, height: 5)
       Text(studio.notice).lineLimit(1)
       Spacer()
-      Text("PIN + ROLLER").tracking(1)
-      Text("·").padding(.horizontal, 6)
-      Text("SI UNITS").tracking(1)
-      Text("·").padding(.horizontal, 6)
-      Text("KEYSTONE 1.0").tracking(1)
+      Text("0.5 m SNAP  /  SI UNITS  /  KEYSTONE 2.0")
+        .font(.system(size: 8, design: .monospaced)).tracking(0.3)
     }.font(.system(size: 9)).foregroundStyle(Ink.muted)
       .padding(.horizontal, 22).padding(.vertical, 10)
       .overlay(alignment: .top) { Rectangle().fill(Ink.line).frame(height: 1) }
@@ -505,6 +419,7 @@ struct ContentView: View {
 
 struct MiniTruss: View {
   var rise: Double
+  var color = Ink.navy
   var body: some View {
     Canvas { context, size in
       let y = size.height - 4
@@ -520,7 +435,7 @@ struct MiniTruss: View {
       }
       path.move(to: CGPoint(x: size.width / 8, y: top))
       path.addLine(to: CGPoint(x: size.width * 7 / 8, y: top))
-      context.stroke(path, with: .color(Ink.navy), lineWidth: 1.2)
+      context.stroke(path, with: .color(color), lineWidth: 1.2)
     }
   }
 }
