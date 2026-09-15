@@ -1,0 +1,32 @@
+{
+  "name": "@launch-videos/20-pure-product-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Devin launch video template 20: Pure Product Demonstration (Remotion)",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render Launch out/launch.mp4",
+    "still": "remotion still Launch out/poster.png --frame=470",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.522",
+    "@remotion/google-fonts": "4.0.522",
+    "@remotion/zod-types": "4.0.522",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.522",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.522",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "eslint": "9.39.5",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
