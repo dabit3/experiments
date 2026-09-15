@@ -89,8 +89,25 @@ Programmatic verification, September 15, 2026: clean install, lint (0 warnings/e
 TypeScript, all 19 unit tests, production build and dependency audit (0 vulnerabilities)
 passed. Production browser tests have verified real viewport selection, transforms,
 materials, undo/redo, environment/media/presentation, actual PNG/JSON exports, reload
-persistence and import boundaries. Final regression of import error recovery,
-visibility-driven thumbnails, responsive layouts and recording is in progress.
+persistence and import boundaries. Import error recovery, visibility-driven thumbnails
+and panel restoration passed at 1440×900, 1920×1080 and 1280×800.
+
+Final executable revision `cc7c1cf12583ac6abae90e219ad72382a9a198ef` passed the
+rapid-arrow range regression, range undo/redo, saved ambience restoration and a
+continuous seven-step production golden path. No captured React exceptions or failed
+network requests remained. Unchanged comprehensive workflows retain their earlier
+revision evidence, explicitly identified in the report.
+
+Software WebGL measured approximately 2.3 seconds median / 6 seconds maximum from
+interaction to two animation frames, and approximately 22 seconds for thumbnails.
+These are observed rendering/scheduling delays, not isolated event-handler timings.
+
+- [Full test report and exact steps](https://app.devin.ai/attachments/41ef7988-cf5e-4161-b8a9-03ebdf4c25e1/nuvio-final-report.md)
+- [Full workspace screenshot](https://app.devin.ai/attachments/3d4ea03f-eca5-4832-a50b-7abc5bec5760/final-nuvio-cc7c1cf.png)
+- [Complete captioned VP9 WebM](https://app.devin.ai/attachments/bd761553-9f94-4589-ab9e-d3852876f09d/nuvio-golden-cc7c1cf.webm):
+  1440×900, 388.416 seconds, 6,080,467 bytes; verified with ffprobe and decoded
+  beginning/middle/end frames. A shortened recorder output was rejected; the final
+  artifact uses a continuous direct X11 capture with source-timed annotations.
 
 ## Boundaries
 
