@@ -1,0 +1,23 @@
+{
+  "name": "launch-video-20-screencast-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Devin launch video template 20 — Screencast Studio (Screen Studio / Loom-style polish)",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render Main out/video.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.522",
+    "@remotion/google-fonts": "4.0.522",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "remotion": "4.0.522"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.10",
+    "@types/react-dom": "19.1.7",
+    "typescript": "5.9.2"
+  }
+}
