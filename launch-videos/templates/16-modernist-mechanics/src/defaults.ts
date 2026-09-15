@@ -120,6 +120,7 @@ export const defaultScenes: LaunchProps['scenes'] = [
     caption: 0,
     stage: 0,
     label: 'Choose macOS',
+    selector: {options: ['Ubuntu', 'macOS', 'Windows'], from: 0, to: 1, switchAt: 45},
   },
   {
     id: 'build',

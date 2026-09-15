@@ -76,6 +76,15 @@ export const demoSceneSchema = z.object({
   stage: z.number().int().min(0).describe('Index into content.stages'),
   label: z.string().optional().describe('Short literal label above the caption'),
   showSpeedBadge: z.boolean().optional(),
+  selector: z
+    .object({
+      options: z.array(z.string()).min(2),
+      from: z.number().int().min(0).describe('Index selected when the plane settles'),
+      to: z.number().int().min(0).describe('Index the indicator moves to'),
+      switchAt: z.number().int().min(0).describe('Frames after settle before the move'),
+    })
+    .optional()
+    .describe('Brand-styled selector in the caption plane (not a UI redraw)'),
   split: z
     .number()
     .min(0.4)

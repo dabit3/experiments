@@ -157,6 +157,15 @@ export const DemoOverlay: React.FC<OverlayProps & {scene: DemoScene}> = ({
             {scene.label}
           </div>
         </div>
+        {scene.selector ? (
+          <Selector
+            brand={brand}
+            shapes={shapes}
+            motion={motion}
+            selector={scene.selector}
+            settled={env.settled}
+          />
+        ) : null}
         <div
           style={{
             fontFamily: brand.fontFamily,
@@ -196,6 +205,63 @@ export const DemoOverlay: React.FC<OverlayProps & {scene: DemoScene}> = ({
         );
       })}
     </>
+  );
+};
+
+/** Option list with a single tile indicator that slides from `from` to `to`. */
+const Selector: React.FC<{
+  brand: LaunchProps['brand'];
+  shapes: LaunchProps['shapes'];
+  motion: LaunchProps['motion'];
+  selector: NonNullable<DemoScene['selector']>;
+  settled: number;
+}> = ({brand, shapes, motion, selector, settled}) => {
+  const {options, from, to, switchAt} = selector;
+  const show = easeOut(settled, motion.stagger * 2, motion.entranceFrames);
+  const move = easeInOut(settled, switchAt, motion.transitionFrames);
+  const rowH = 40;
+  const tile = shapes.tiles.size;
+  const current = move < 0.5 ? from : to;
+  return (
+    <div style={{display: 'flex', flexDirection: 'column', gap: 8, ...enterStyle(show, 12, 'y')}}>
+      <Eyebrow brand={brand} color={shapes.plane.textMuted}>
+        Virtual environment
+      </Eyebrow>
+      <div style={{position: 'relative', display: 'flex', flexDirection: 'column'}}>
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: (rowH - tile) / 2 + (from + (to - from) * move) * rowH,
+            width: tile,
+            height: tile,
+            background: shapes.plane.text,
+          }}
+        />
+        {options.map((opt, i) => {
+          const active = i === current;
+          return (
+            <div
+              key={opt}
+              style={{
+                height: rowH,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 14,
+                paddingLeft: tile + 14,
+                fontFamily: brand.monoFontFamily,
+                fontSize: 17,
+                letterSpacing: 0.4,
+                color: active ? shapes.plane.text : shapes.plane.textMuted,
+                boxShadow: `inset 0 -1px 0 ${shapes.plane.textMuted}`,
+              }}
+            >
+              {opt}
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 

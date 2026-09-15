@@ -67,7 +67,7 @@ file (or pass `--props`) to persist changes.
 | `brand` | `paper`, `surface`, `line`, `ink`, `inkMuted`, `inkSubtle`, `accent`, `white`, `fontFamily`, `monoFontFamily`, `logoLight`, `logoDark` |
 | `content` | `featureName`, `eyebrow`, `headline`, `headlineAccent`, `subhead`, `captions[]`, `useCases[]`, `stages[]`, `cta.{label,url}`, `outroLine`, `speedBadge` |
 | `media[]` | `name` (slot name scenes refer to), `src` (relative to `launch-videos/assets`), `kind` (`image`/`video`), `width`, `height` (intrinsic px), `startFrom`, `playbackRate`, `crop.{x,y,w,h}` (fractions; trim only) |
-| `scenes[]` | discriminated on `type`: `open` · `demo` (`composition`, `media[]`, `caption`, `stage`, `label`, `split`, `showSpeedBadge`) · `result` (`media`, `caption`, `stage`, `label`) · `outro` (`media`); every scene has `durationInFrames` |
+| `scenes[]` | discriminated on `type`: `open` · `demo` (`composition`, `media[]`, `caption`, `stage`, `label`, `split`, `showSpeedBadge`, `selector`) · `result` (`media`, `caption`, `stage`, `label`) · `outro` (`media`); every scene has `durationInFrames` |
 | `shapes` | `frame.{fill,border,borderWidth}` · `rule.{color,progressColor,thickness,y}` · `tiles.{size,fill,activeFill}` · `plane.{fill,text,textMuted,padding,captionSize}` |
 | `motion` | `transitionFrames` (boundary move), `entranceFrames`, `slideDistance` (px a shape travels when entering), `stagger` |
 | `layout` | `margin`, `gutter`, `radius`, `defaultSplit` (share of safe width given to the frame), `maxPlaneWidth` |
@@ -96,6 +96,11 @@ needs no other edits.
 - `recordings/androidios.mp4` shows an iPhone Simulator next to an Android
   emulator; only the iPhone is cropped in so the Android device is never
   implied as part of this launch.
+- No supplied asset shows Ubuntu selected before macOS is picked, so the
+  `pick` scene carries a brand-styled `selector` in the caption plane
+  (`options`, `from`, `to`, `switchAt`): a tile indicator slides from Ubuntu to
+  macOS on the ink plane. It is typographic, not a redraw of the product menu;
+  the real picker screenshot stays untouched beside it. Omit `selector` to drop it.
 - The `3x` speed badge is wired (`showSpeedBadge`) but off by default: the
   supplied recordings play at 1× in this template.
 - `useCases` is kept in the content props for parity with the brief but is not
