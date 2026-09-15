@@ -1,3 +1,4 @@
+import AppKit
 import KeystoneCore
 import SwiftUI
 
@@ -23,6 +24,10 @@ struct ContentView: View {
       footer.fixedSize(horizontal: false, vertical: true)
     }
     .background(Ink.paper).foregroundStyle(Ink.navy).buttonStyle(.plain)
+    .onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) {
+      _ in
+      studio.commitPendingEdits()
+    }
     .onChange(of: studio.selection) { _, selection in
       if selection != nil { inspectorTab = "Inspect" }
     }

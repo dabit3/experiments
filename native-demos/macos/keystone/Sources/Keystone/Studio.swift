@@ -42,7 +42,9 @@ enum Selection: Equatable {
 @MainActor
 final class Studio: ObservableObject {
   @Published var design = Design.example()
-  @Published var selection: Selection?
+  @Published var selection: Selection? {
+    willSet { commitPendingEdits() }
+  }
   @Published var tool = EditorTool.select
   @Published var mode = DisplayMode.geometry
   @Published var result: Analysis?
@@ -61,6 +63,7 @@ final class Studio: ObservableObject {
   @Published var showReactions = false
   @Published var documentURL: URL?
   @Published var savedDesign: Design?
+  private var pendingEdits: [UUID: () -> Void] = [:]
   private let autosaveURL: URL
 
   init() {
@@ -88,7 +91,18 @@ final class Studio: ObservableObject {
   var canRedo: Bool { !history.redoStack.isEmpty }
   var isDirty: Bool { savedDesign != design }
 
+  func stageEdit(_ id: UUID, _ edit: (() -> Void)?) {
+    pendingEdits[id] = edit
+  }
+
+  func commitPendingEdits() {
+    let edits = Array(pendingEdits.values)
+    pendingEdits.removeAll()
+    for edit in edits { edit() }
+  }
+
   func change(_ update: (inout Design) -> Void) {
+    commitPendingEdits()
     var next = design
     update(&next)
     guard next != design else { return }
@@ -126,6 +140,7 @@ final class Studio: ObservableObject {
   }
 
   func applyLoad() {
+    commitPendingEdits()
     analyzed = true
     solve()
     if let result, baselineMM == nil { baselineMM = result.maxDisplacementMM }
@@ -174,6 +189,7 @@ final class Studio: ObservableObject {
   }
 
   func addCase(duplicate: Bool) {
+    commitPendingEdits()
     NSApp.keyWindow?.makeFirstResponder(nil)
     guard design.loadCases.count < 12 else {
       errorMessage = "A project supports up to 12 load cases."
@@ -227,6 +243,7 @@ final class Studio: ObservableObject {
   }
 
   func undo() {
+    commitPendingEdits()
     guard let previous = history.undo(design) else { return }
     baselineMM = nil
     design = previous
@@ -237,6 +254,7 @@ final class Studio: ObservableObject {
   }
 
   func redo() {
+    commitPendingEdits()
     guard let next = history.redo(design) else { return }
     baselineMM = nil
     design = next
@@ -340,6 +358,7 @@ final class Studio: ObservableObject {
   }
 
   func save() {
+    commitPendingEdits()
     NSApp.keyWindow?.makeFirstResponder(nil)
     if let documentURL {
       writeDesign(to: documentURL)
@@ -349,6 +368,7 @@ final class Studio: ObservableObject {
   }
 
   func saveAs() {
+    commitPendingEdits()
     NSApp.keyWindow?.makeFirstResponder(nil)
     let panel = NSSavePanel()
     panel.title = "Save bridge design"
@@ -368,6 +388,7 @@ final class Studio: ObservableObject {
   }
 
   func open() {
+    commitPendingEdits()
     NSApp.keyWindow?.makeFirstResponder(nil)
     let panel = NSOpenPanel()
     panel.title = "Open bridge design"
@@ -388,6 +409,7 @@ final class Studio: ObservableObject {
   }
 
   func exportCSV() {
+    commitPendingEdits()
     NSApp.keyWindow?.makeFirstResponder(nil)
     analyzed = true
     solve()
@@ -408,6 +430,7 @@ final class Studio: ObservableObject {
   }
 
   func export(report: Bool) {
+    commitPendingEdits()
     NSApp.keyWindow?.makeFirstResponder(nil)
     if report {
       analyzed = true

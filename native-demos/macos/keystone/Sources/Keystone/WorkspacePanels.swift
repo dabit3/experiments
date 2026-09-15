@@ -21,6 +21,7 @@ struct InfoRow: View {
 }
 
 struct NumberEntry: View {
+  @EnvironmentObject var studio: Studio
   var title: String
   var value: Double
   var unit: String
@@ -29,6 +30,7 @@ struct NumberEntry: View {
   var onCommit: (Double) -> Void
   @State private var text = ""
   @State private var invalid = false
+  @State private var editID = UUID()
   @FocusState private var focused: Bool
 
   var body: some View {
@@ -37,16 +39,17 @@ struct NumberEntry: View {
         Text(title).font(.system(size: 11)).foregroundStyle(Ink.muted)
           .fixedSize(horizontal: true, vertical: false)
         Spacer(minLength: 4)
-        TextField(title, text: $text).textFieldStyle(.plain).multilineTextAlignment(.trailing)
+        TextField(title, text: Binding(get: { text }, set: { stage($0) }))
+          .textFieldStyle(.plain).multilineTextAlignment(.trailing)
           .font(.system(size: 11, design: .monospaced)).foregroundStyle(Ink.navy)
           .padding(.horizontal, 8).padding(.vertical, 7).frame(width: fieldWidth)
           .background(.white, in: RoundedRectangle(cornerRadius: 4))
           .overlay(RoundedRectangle(cornerRadius: 4).stroke(invalid ? Ink.copper : Ink.line))
           .focused($focused).onSubmit {
-            commit()
+            studio.commitPendingEdits()
             focused = false
           }
-          .onChange(of: focused) { _, active in if !active { commit() } }
+          .onChange(of: focused) { _, active in if !active { studio.commitPendingEdits() } }
           .accessibilityLabel(title).help(
             "Enter \(range.lowerBound)…\(range.upperBound) \(unit); Return to apply")
         Text(unit).font(.system(size: 10)).foregroundStyle(Ink.muted).frame(
@@ -64,35 +67,39 @@ struct NumberEntry: View {
       text = String(format: "%g", new)
       invalid = false
     }
-    .onDisappear { commit() }
+    .onDisappear { studio.commitPendingEdits() }
   }
 
-  private func commit() {
-    guard let number = Double(text), number.isFinite, range.contains(number) else {
+  private func stage(_ input: String) {
+    text = input
+    guard let number = Double(input), number.isFinite, range.contains(number) else {
       invalid = true
+      studio.stageEdit(editID, nil)
       return
     }
     invalid = false
-    if number != value { onCommit(number) }
+    studio.stageEdit(editID, number == value ? nil : { onCommit(number) })
   }
 }
 
 struct CaseEditor: View {
   @EnvironmentObject var studio: Studio
   @State private var name = ""
+  @State private var editID = UUID()
   @FocusState private var nameFocused: Bool
 
   var body: some View {
     let caseID = studio.design.activeCaseID
     VStack(alignment: .leading, spacing: 10) {
-      TextField("Case name", text: $name).textFieldStyle(.plain)
+      TextField("Case name", text: Binding(get: { name }, set: { stageName($0, caseID) }))
+        .textFieldStyle(.plain)
         .font(.system(size: 11, weight: .medium)).foregroundStyle(Ink.navy)
         .padding(8).background(.white, in: RoundedRectangle(cornerRadius: 4))
         .focused($nameFocused).onSubmit {
-          rename(caseID)
+          studio.commitPendingEdits()
           nameFocused = false
         }
-        .onChange(of: nameFocused) { _, active in if !active { rename(caseID) } }
+        .onChange(of: nameFocused) { _, active in if !active { studio.commitPendingEdits() } }
         .accessibilityLabel("Case name")
       NumberEntry(
         title: "Factor", value: studio.design.activeCase.factor, unit: "×", range: 0.01...10,
@@ -113,16 +120,17 @@ struct CaseEditor: View {
     }.padding(10).background(Ink.paper, in: RoundedRectangle(cornerRadius: 5))
       .onAppear { name = studio.design.activeCase.name }
       .onChange(of: studio.design.activeCase.name) { _, value in name = value }
-      .onDisappear { rename(caseID) }
+      .onDisappear { studio.commitPendingEdits() }
   }
 
-  private func rename(_ caseID: String) {
-    let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
-    guard !trimmed.isEmpty,
-      let original = studio.design.loadCases.first(where: { $0.id == caseID })?.name,
-      trimmed != original
-    else { return }
-    studio.updateCase(id: caseID) { $0.name = trimmed }
+  private func stageName(_ input: String, _ caseID: String) {
+    name = input
+    let trimmed = input.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmed.isEmpty else {
+      studio.stageEdit(editID, nil)
+      return
+    }
+    studio.stageEdit(editID) { studio.updateCase(id: caseID) { $0.name = trimmed } }
   }
 }
 
