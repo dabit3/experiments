@@ -65,8 +65,41 @@ Only newly placed elements receive random UUIDs.
 
 ## Results
 
-Initial implementation: lint and TypeScript checks passed; all 17 model tests
-passed; production build passed. Browser verification follows PR creation.
+Verified on 2026-09-15 against production application revision
+`e8316b80cf97a4dbe5b52323903dc19059a4bbfd` (subsequent changes document results):
+
+| Check | Actual result |
+| --- | --- |
+| `npm ci` | Passed; clean lockfile installation, 0 audit vulnerabilities |
+| `npm run lint` | Passed |
+| `npm run typecheck` | Passed |
+| `npm test` | 18 passed, 0 failed |
+| `npm run build` | Passed; relative local assets |
+| Camera / cube / orbit | Passed in the production browser |
+| Wall / properties / hosted door | Passed with 8.5 m Timber wall, 3.2 m height, 1.2 × 2.4 m door |
+| Coordinated views / actual door opening | Passed; selection follows the model across views |
+| Undo / redo / delete / category visibility | Passed; geometry and properties restored |
+| Save / reload | Passed; 34-element edited model and hidden Roof persist |
+| JSON / CSV / SVG content | Passed; edited dimensions, IDs, door host and valid XML checked |
+| Reset / reopen / invalid import | Passed; malformed import leaves model unchanged |
+| 1440×900 / 1920×1080 / 1280×800 | Default and edited desktop layouts inspected |
+| Browser diagnostics | No observed console errors; one nonfatal shadow API deprecation warning |
+
+The first UI run found an oversized Home icon caused by an over-broad SVG
+selector. It was fixed and its 17×17 icon inside a 24×22 button was reverified.
+CSV gained a Host ID column and a regression test after export content review.
+
+Final recording evidence uses WebM/VP9. Shrinking the desktop during recording
+stopped the first screen capture after the coherent editing/export/import flow.
+A separately recorded fixed-resolution supplement covers history/visibility
+rechecks. The final report labels both segments and the capture gap; full PNGs
+document all three desktop sizes. This is not represented as uninterrupted
+recording of the resize checks.
+
+Build diagnostics include Vite's advisory >500 kB chunk warning for the bundled
+Three.js engine (approximately 216 kB gzipped). Browser diagnostics include the
+nonfatal Three.js `PCFSoftShadowMap` deprecation. Neither blocked rendering or
+the tested workflows. No repository CI jobs are configured for this PR.
 
 ## Source references and method
 
