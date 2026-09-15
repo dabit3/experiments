@@ -76,16 +76,18 @@ The compositor must be invoked with a Python that has Pillow.
 - `NN-*.png/json`: uncropped full viewport screenshots and read-only snapshots.
 - Downloaded `.svg`, `.dxf`, `.draev.json`, `expected.json`,
   `export-assertions.txt`, `runtime-events.json`, `run.json`.
-- `computer-use-split.webm`: final **VP9**,2560×1080.
-- `split-view.png`: full split-screen frame; `webm-validation.json`: ffprobe.
+- `computer-use-steps.webm`: final **VP9**,2560×1080.
+- `steps-view.png`: full split-screen frame; `steps-webm-validation.json`: ffprobe.
 
 The final video is explicitly **postprocessed compositing**, not a fake browser
 or a mock. LEFT is every original desktop frame scaled proportionally to
-1600×900 and padded (never cropped); RIGHT is the actual executable flow source
-with the current step highlighted/scrolled and real assertion events.
+1600×900 and padded (never cropped); RIGHT lists the actual programmatic test
+steps from `test_start` events. The current step is highlighted, completed steps
+are marked passed only when their completion assertion occurs, and real
+assertion results are displayed below the list.
 Synchronization uses ffmpeg first progress/out-time plus monotonic event times,
 quantized to24fps when rendering. No excerpts, cuts, speed-ups or idle removal.
-Helper implementations remain in the accompanying executable source files.
+Executable test and helper implementations remain in the accompanying source files.
 
 The runner stops at the first failure, captures the failure state, and exits1.
 Inspect `events.jsonl` and PNGs before retrying; retain failed evidence rather

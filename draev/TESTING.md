@@ -51,9 +51,12 @@ at 1920×1080; no runtime exceptions, console errors or request-loading failures
 were observed. Earlier resize, import and snapping coverage was not repeated.
 
 The resulting 78.084-second VP9 WebM places every full app frame on the **left**
-and the actual executed script on the **right**, synchronized to timestamped
-test and assertion events. The code pane is disclosed postprocessed compositing.
+and the programmatic list of steps on the **right**, synchronized to timestamped
+test and assertion events. The current step and actual pass/fail results update
+as execution progresses. The step pane is disclosed postprocessed compositing.
 No footage is cropped, cut or accelerated; no MP4 is delivered.
+The step-list revision reuses the preserved real run and its event log; it does
+not represent a new browser run.
 
 ## Browser golden path
 

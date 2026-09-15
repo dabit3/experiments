@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Composite uncut desktop LEFT and timestamp-synchronized executable code RIGHT.
+"""Composite uncut desktop LEFT and timestamp-synchronized test steps RIGHT.
 
 Requires Pillow, ffmpeg and ffprobe. Never crops or time-compresses app footage.
 Usage: /usr/bin/python3 scripts/computer-use-compose.py EVIDENCE_DIR
@@ -13,7 +13,6 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 root = Path(sys.argv[1]).resolve()
-source = (root / "executed-script.mjs").read_text().splitlines()
 events = [json.loads(s) for s in (root / "events.jsonl").read_text().splitlines()]
 metadata = json.loads((root / "run.json").read_text())
 probe = json.loads(subprocess.check_output([
@@ -25,9 +24,11 @@ font_file = os.environ.get("CU_FONT",
 font = ImageFont.truetype(font_file, 18)
 small = ImageFont.truetype(font_file, 16)
 title_font = ImageFont.truetype(font_file, 23)
-starts = [i for i,line in enumerate(source) if "// STEP " in line]
-starts.append(next(i for i,line in enumerate(source) if "} catch" in line))
-panels = root / "code-panels"
+step_font = ImageFont.truetype(font_file, 22)
+steps = [event for event in events if event["type"] == "test_start"]
+step_states = {event["step"]: "QUEUED" for event in steps}
+step_titles = {event["step"]: event["label"] for event in steps}
+panels = root / "step-panels"
 panels.mkdir(exist_ok=True)
 latest_passes = []
 
@@ -44,31 +45,40 @@ def render(event, name):
         "Full app frame, scaled without cropping", font=small, fill="#a7c0d2")
     d.text((26,1010), "REAL APP VIDEO  /  uncut  /  24 fps", font=title_font,
         fill="#6cddc2")
-    d.text((26,1046), "Right pane: actual executed source + timestamped assertions"
+    d.text((26,1046), "Right pane: executed test steps + timestamped assertions"
         " (postprocessed composite)", font=small, fill="#a7c0d2")
-    d.text((1624,22), "EXECUTABLE TEST SCRIPT", font=title_font, fill="#edf4fa")
-    d.text((1624,58), "scripts/computer-use-test.mjs", font=small, fill="#a7c0d2")
+    d.text((1624,22), "PROGRAMMATIC TEST STEPS", font=title_font, fill="#edf4fa")
+    d.text((1624,58), "npm run test:computer  /  actual execution log",
+        font=small, fill="#a7c0d2")
     step = event["step"]
-    heading = f"STEP {step}/7" if step else "SETUP"
+    if event["type"] == "test_start":
+        step_states[step] = "RUNNING"
+    elif event["type"] == "assertion" and step in step_states:
+        if event.get("result") == "failed":
+            step_states[step] = "FAILED"
+        elif event["label"] == step_titles[step]:
+            step_states[step] = "PASSED"
+    passed = sum(state == "PASSED" for state in step_states.values())
+    heading = f"STEP {step}/{len(steps)}" if step else "SETUP"
     d.rectangle((1624,94,2535,136), fill="#193f4b")
-    d.text((1637,103), heading+"  |  "+event["type"].upper(),
+    d.text((1637,103), f"{heading}  |  {passed}/{len(steps)} PASSED",
         font=font, fill="#8decd1")
-    # Scroll to the real current executable callback, preserving source lines.
-    lo = starts[step-1] if step else 0
-    hi = starts[step] if step else starts[0]
-    lo = max(0, lo)
-    y = 163
-    for i in range(lo, min(hi, len(source))):
-        line = source[i]
-        chunks = textwrap.wrap(line, width=77, replace_whitespace=False,
-            drop_whitespace=False) or [""]
-        for j,chunk in enumerate(chunks):
-            d.rectangle((1624,y-3,2535,y+25), fill="#18323f")
-            d.text((1633,y), f"{i+1:3}" if j == 0 else "  >",
-                font=small, fill="#7193a8")
-            color = "#83c6a7" if line.lstrip().startswith("//") else "#edf4fa"
-            d.text((1682,y),chunk,font=font,fill=color)
-            y += 29
+    colors = {"QUEUED": "#7193a8", "RUNNING": "#f7ce81",
+        "PASSED": "#8decd1", "FAILED": "#f4999c"}
+    for index, item in enumerate(steps):
+        y = 158 + index * 81
+        state = step_states[item["step"]]
+        color = colors[state]
+        active = item["step"] == step
+        d.rectangle((1624,y,2535,y+73), fill="#214052" if active else "#152737")
+        d.rectangle((1624,y,1628,y+73), fill=color)
+        d.text((1646,y+23), f"{item['step']:02}", font=step_font, fill=color)
+        d.text((1701,y+10), item["label"], font=step_font,
+            fill="#edf4fa" if state != "QUEUED" else "#90a5b4")
+        d.text((1701,y+43), state, font=small, fill=color)
+        if state != "QUEUED":
+            d.text((1820,y+43), f"Started at {item['time']:05.2f}s",
+                font=small, fill="#a7c0d2")
     d.text((1624,755), "OBSERVED ASSERTIONS",font=font,fill="#a7c0d2")
     if event["type"] == "test_start":
         latest_passes.clear()
@@ -86,7 +96,7 @@ def render(event, name):
         " | fail-fast assertions",font=small,fill="#7193a8")
     im.save(panels / name)
 
-# One code/status panel per actual event. The full uncut source video is retained.
+# One progress panel per actual event. The full uncut source video is retained.
 timeline = []
 for i,e in enumerate(events):
     start = max(0, e["time"])
@@ -103,7 +113,7 @@ for i,(start,name) in enumerate(timeline):
     concat += [f"file '{name}'", f"duration {end-start:.6f}"]
 concat.append(f"file '{timeline[-1][1]}'")
 (panels / "timeline.txt").write_text("\n".join(concat)+"\n")
-output = root / "computer-use-split.webm"
+output = root / "computer-use-steps.webm"
 cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "warning",
     "-i", str(root / "desktop.mkv"),
     "-f", "concat", "-safe", "0", "-i", str(panels / "timeline.txt"),
@@ -112,12 +122,12 @@ cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "warning",
     "[1:v]fps=24[panel];[panel][app]overlay=0:90:shortest=1[out]",
     "-map", "[out]", "-t", str(duration), "-an",
     "-c:v", "libvpx-vp9", "-b:v", "0", "-crf", "24",
-    "-cpu-used", "4", "-row-mt", "1", "-threads", "4", str(output)]
+    "-cpu-used", "6", "-row-mt", "1", "-threads", "4", str(output)]
 subprocess.run(cmd, check=True)
 validation = subprocess.check_output(["ffprobe","-v","error",
     "-show_entries","stream=codec_name,width,height",
     "-show_entries","format=format_name,duration,size","-of","json",str(output)])
-(root / "webm-validation.json").write_bytes(validation)
+(root / "steps-webm-validation.json").write_bytes(validation)
 v = json.loads(validation)
 assert v["streams"][0]["codec_name"] in ("vp8","vp9")
 assert "webm" in v["format"]["format_name"]
@@ -126,6 +136,6 @@ assert abs(float(v["format"]["duration"]) - duration) < 0.2
 e = next(e for e in events if e["step"] == 3 and
     e["label"].startswith("Geometry") and '"y":2000' in e["label"])
 subprocess.run(["ffmpeg","-y","-loglevel","error","-ss",str(e["time"]+0.35),
-    "-i",str(output),"-frames:v","1",str(root / "split-view.png")],check=True)
+    "-i",str(output),"-frames:v","1",str(root / "steps-view.png")],check=True)
 print(output)
 print(validation.decode())
