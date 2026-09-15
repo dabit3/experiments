@@ -1,7 +1,7 @@
 import {useMemo, type CSSProperties, type ReactNode} from 'react';
 import {AbsoluteFill, Sequence, useCurrentFrame, useVideoConfig} from 'remotion';
 import {
-  SourceImage, SourceVideo, easeInOut, makeTimeline, progress,
+  SourceImage, SourceVideo, assets, easeInOut, makeTimeline, mediaGeometry, progress,
   type ImageSelection, type SceneId, type SceneTiming,
 } from '../../shared';
 import type {EditorialConfig} from './config';
@@ -94,12 +94,49 @@ const ImagePlate = ({
   config: c, selection, width, height, pad = true,
 }: Props & {selection: ImageSelection; width: number; height: number; pad?: boolean}) => {
   const p = pad ? c.layout.padding : 0;
+  const innerWidth = width - p * 2;
+  const innerHeight = height - p * 2;
+  const highlight = c.editorial.environmentHighlight;
+  const geometry = mediaGeometry(assets[selection.asset], {width: innerWidth, height: innerHeight}, selection.framing);
+  const scale = geometry.mediaWidth / assets[selection.asset].width;
   return <div style={{width, height, padding: p, boxSizing: 'border-box', background: c.brand.colors.mediaMat}}>
-    <SourceImage {...selection} width={width - p * 2} height={height - p * 2} />
+    <div style={{position: 'relative', width: innerWidth, height: innerHeight, overflow: 'hidden', isolation: 'isolate'}}>
+      <SourceImage {...selection} width={innerWidth} height={innerHeight} />
+      {highlight?.enabled && highlight.asset === selection.asset ? <div style={{
+        position: 'absolute', overflow: 'hidden',
+        left: geometry.cropLeft, top: geometry.cropTop,
+        width: geometry.cropWidth, height: geometry.cropHeight,
+      }}>
+        <div style={{
+          position: 'absolute', left: geometry.mediaLeft, top: geometry.mediaTop,
+          width: assets[selection.asset].width, height: assets[selection.asset].height,
+          transform: `scale(${scale})`, transformOrigin: 'top left',
+        }}>
+          <div style={{
+            position: 'absolute', left: highlight.previousRow.x, top: highlight.previousRow.y,
+            filter: `brightness(${255 / highlight.shade})`,
+          }}>
+            <SourceImage asset={selection.asset}
+              framing={{fit: 'contain', anchorX: 0, anchorY: 0, crop: highlight.previousRow}}
+              width={highlight.previousRow.width} height={highlight.previousRow.height} />
+          </div>
+          <div style={{
+            position: 'absolute', left: highlight.selectedRow.x, top: highlight.selectedRow.y,
+            width: highlight.selectedRow.width, height: highlight.selectedRow.height,
+            borderRadius: highlight.radius, overflow: 'hidden',
+            filter: `brightness(${highlight.shade / 255})`,
+          }}>
+            <SourceImage asset={selection.asset}
+              framing={{fit: 'contain', anchorX: 0, anchorY: 0, crop: highlight.selectedRow}}
+              width={highlight.selectedRow.width} height={highlight.selectedRow.height} />
+          </div>
+        </div>
+      </div> : null}
+    </div>
   </div>;
 };
 
-const Masthead = ({config: c, frame, page}: Props & {frame: number; page: string}) => {
+const Masthead = ({config: c, frame}: Props & {frame: number}) => {
   const m = c.layout.margin;
   return <>
     <div style={{position: 'absolute', left: m, top: 40}}>
@@ -115,7 +152,6 @@ const Masthead = ({config: c, frame, page}: Props & {frame: number; page: string
     <Small config={c} style={{position: 'absolute', left: m, bottom: 29}}>
       {c.editorial.montageNote}
     </Small>
-    <Small config={c} style={{position: 'absolute', right: m, bottom: 29}}>{page} / 07</Small>
   </>;
 };
 
@@ -123,7 +159,7 @@ const Cover = ({config: c, frame, duration}: Props & {frame: number; duration: n
   const {margin: m, grid: g} = c.layout;
   const image = {x: g.coverMediaX, y: g.coverMediaY, width: 1920 - m - g.coverMediaX, height: g.coverMediaHeight};
   return <>
-    <Masthead config={c} frame={frame} page="01" />
+    <Masthead config={c} frame={frame} />
     <Copy config={c} text={c.copy.featureName}
       box={{x: m - 5, y: 195, width: g.coverTextWidth, height: 420}}
       size={c.editorial.coverTypeSize} />
@@ -145,7 +181,7 @@ const Environment = ({config: c, frame, duration}: Props & {frame: number; durat
   const imageX = m + g.environmentRail + gutter;
   const image = {x: imageX, y: g.environmentMediaY, width: 1920 - m - imageX, height: g.environmentMediaHeight};
   return <>
-    <Masthead config={c} frame={frame} page="02" />
+    <Masthead config={c} frame={frame} />
     <Small config={c} style={{position: 'absolute', left: m, top: 174}}>{c.editorial.environmentKicker}</Small>
     <Copy config={c} text={c.copy.environment}
       box={{x: m, y: 255, width: g.environmentRail, height: 310}} size={c.editorial.sideTypeSize} />
@@ -169,12 +205,10 @@ const Demo = ({config: c, scene, frame}: Props & {scene: SceneTiming; frame: num
   const y = c.layout.captionHeight + 8;
   const height = 1080 - y - 56;
   const firstPhone = frame < Math.round(scene.durationInFrames * c.motion.iphoneSplit);
-  const page = isAgent ? '03' : isPhone ? '04' : '05';
   return <>
     <Copy config={c} text={caption}
       box={{x: m, y: 34, width: width - 160, height: c.layout.captionHeight - 56}}
       size={c.editorial.captionTypeSize} />
-    <Small config={c} style={{position: 'absolute', right: m, top: 46}}>{page} / 07</Small>
     <div style={{
       position: 'absolute', left: m, right: m, top: c.layout.captionHeight - 10,
       height: 1, background: c.brand.colors.ink,
@@ -207,7 +241,6 @@ const Ipad = ({config: c, frame, duration}: Props & {frame: number; duration: nu
   const railX = image.x + image.width + gutter;
   return <>
     <Small config={c} style={{position: 'absolute', left: m, top: 38}}>{c.editorial.edition}</Small>
-    <Small config={c} style={{position: 'absolute', right: m, top: 38}}>06 / 07</Small>
     <Copy config={c} text={c.editorial.layoutWord}
       box={{x: m - 5, y: 78, width: image.width, height: 146}}
       size={c.editorial.marginTypeSize} />
@@ -232,7 +265,7 @@ const Closing = ({config: c, frame, duration}: Props & {frame: number; duration:
   const textWidth = 1920 - m - textX;
   const image = {x: m, y: g.closingMediaY, width: g.closingMediaWidth, height: g.closingMediaWidth / 1.835};
   return <>
-    <Masthead config={c} frame={frame} page="07" />
+    <Masthead config={c} frame={frame} />
     <Small config={c} style={{position: 'absolute', left: m, top: g.closingMediaY - 56}}>{c.editorial.ipadNote}</Small>
     <Reveal config={c} box={image} frame={frame} duration={duration}>
       <ImagePlate config={c} selection={c.media.ipad} width={image.width} height={image.height} pad={false} />

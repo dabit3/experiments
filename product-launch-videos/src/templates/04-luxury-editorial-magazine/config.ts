@@ -1,4 +1,4 @@
-import {defaultLaunchConfig, type Framing, type LaunchConfig} from '../../shared';
+import {defaultLaunchConfig, type Crop, type Framing, type ImageAssetId, type LaunchConfig} from '../../shared';
 
 export type EditorialConfig = LaunchConfig & {
   editorial: {
@@ -13,6 +13,14 @@ export type EditorialConfig = LaunchConfig & {
     iphoneNotes: [string, string];
     ipadNote: string;
     coverFraming: Framing;
+    environmentHighlight?: {
+      enabled: boolean;
+      asset: ImageAssetId;
+      previousRow: Crop;
+      selectedRow: Crop;
+      radius: number;
+      shade: number;
+    };
     coverTypeSize: number;
     captionTypeSize: number;
     marginTypeSize: number;
@@ -65,14 +73,14 @@ export const config: EditorialConfig = {
     },
   },
   editorial: {
-    edition: 'LAUNCH EDITION / 04',
+    edition: 'LAUNCH EDITION',
     montageNote: 'Examples from separate sessions',
     environmentWord: 'Mac',
     layoutWord: 'Layouts',
-    coverKicker: '01 — MAC ENVIRONMENT',
-    environmentKicker: '01 / ENVIRONMENT',
+    coverKicker: 'MAC ENVIRONMENT',
+    environmentKicker: 'ENVIRONMENT',
     environmentNote: 'Hosted environment / macOS selected',
-    ipadKicker: '05 / SIMULATOR',
+    ipadKicker: 'SIMULATOR',
     iphoneNotes: [
       'Afterhours Maze / iPhone Simulator still',
       'Large Dispatch / iPhone Simulator still',
@@ -83,6 +91,14 @@ export const config: EditorialConfig = {
       anchorX: 0.5,
       anchorY: 0.5,
       crop: {x: 600, y: 895, width: 880, height: 495},
+    },
+    environmentHighlight: {
+      enabled: true,
+      asset: 'devin-web-4.png',
+      previousRow: {x: 668, y: 1077, width: 532, height: 77},
+      selectedRow: {x: 669, y: 1154, width: 530, height: 75},
+      radius: 14,
+      shade: 240,
     },
     coverTypeSize: 176,
     captionTypeSize: 48,

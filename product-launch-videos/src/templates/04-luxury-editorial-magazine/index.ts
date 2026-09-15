@@ -23,6 +23,7 @@ export const template = defineTemplate({
     control('editorial.sideTypeSize', 'Side explanation', 'Type size in the environment and iPad explanation columns.', 32, 64),
     control('editorial.closingTypeSize', 'Closing statement', 'Type size for the pricing statement on the final spread.', 52, 96),
     control('editorial.logoWidth', 'Logo width', 'Proportional contained original logo; never stretched.', 120, 200),
+    {path: 'editorial.environmentHighlight.enabled', label: 'Highlight macOS', type: 'boolean', description: 'Move the captured Ubuntu hover background to the checked macOS row in both environment crops.'},
     {path: 'editorial.edition', label: 'Edition label', type: 'string', description: 'Small editorial masthead label, separate from product content.'},
     {path: 'editorial.montageNote', label: 'Montage label', type: 'string', description: 'Explains that the examples come from separate sessions.'},
     {path: 'editorial.environmentWord', label: 'Environment margin word', type: 'string', description: 'Oversized word in the environment spread, outside UI.'},

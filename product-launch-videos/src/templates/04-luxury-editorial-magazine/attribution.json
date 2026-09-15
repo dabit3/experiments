@@ -4,7 +4,7 @@
     "asset": "devin-web-4.png",
     "outputSeconds": [0, 4],
     "sourceSeconds": null,
-    "treatment": "Cover detail of the genuine Mac environment menu. Source-pixel crop x=600 y=895 width=880 height=495; contained in a matte window and briefly revealed horizontally.",
+    "treatment": "Cover detail of the Mac environment menu. Source-pixel crop x=600 y=895 width=880 height=495; contained in a matte window and briefly revealed horizontally. User-requested presentation retouch removes the captured Ubuntu hover background and highlights macOS while retaining the existing macOS checkmark.",
     "requiredLabel": null
   },
   {
@@ -12,7 +12,7 @@
     "asset": "devin-web-4.png",
     "outputSeconds": [4, 9],
     "sourceSeconds": null,
-    "treatment": "Source-pixel crop x=610 y=480 width=1800 height=900 retains the actual composer, hosted menu and macOS selection. Large image opposite editorial explanation.",
+    "treatment": "Source-pixel crop x=610 y=480 width=1800 height=900 retains the actual composer, hosted menu and macOS selection. Large image opposite editorial explanation. Same user-requested row-background retouch as the cover: macOS is highlighted and remains checked; source file is unchanged.",
     "requiredLabel": null
   },
   {

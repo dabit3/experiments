@@ -56,6 +56,12 @@ complete object using `--props path/to/props.json`. Partial configs are not merg
 - `editorial.coverFraming`: independent opening crop on `media.environment.asset`.
   The default is x600/y895/w880/h495 in the 2988×1622 original screenshot. If
   replacing the environment source, update both crop windows to fit its pixels.
+- `editorial.environmentHighlight`: user-requested row-background retouch for the
+  Mac environment screenshot. Source-coordinate rectangles remove the Ubuntu
+  hover background and add the same neutral highlight to the checked macOS row.
+  It follows both crop geometries without altering the original asset file.
+  Disable `enabled` to show the untouched screenshot, and update the coordinates
+  and matching asset when replacing the source.
 - `brand`: neutral presentation colors, approved font family, heading/body
   sizing, line height, tracking, and title gap. Heading size scales the editorial
   type sizes proportionally; typography is regular NB International throughout.
@@ -92,7 +98,10 @@ test recording. iPhone/iPad scenes are composed stills from separate sessions.
 Afterhours Maze's **8 passed / 0 failed / 1 untested** counts are not changed,
 cropped, or concealed. No unrelated app is presented as a before/after result.
 No customer names, endorsements, App Store, signing, or real-device claims are
-added. Source screenshots remain unmodified, including text in their real reports.
+added. Test reports remain unmodified. At the user's request, the environment
+menu's row background is retouched in the composition so macOS is both
+highlighted and checked. Decorative edition, section, and page numbers are
+removed throughout; genuine numbers inside the product screenshots stay intact.
 
 ## Validation
 
