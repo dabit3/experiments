@@ -28,7 +28,7 @@ Use **File → New · reset gallery… → Reset gallery**. This restores Forma 
 2. Unique primitive IDs and default coordinates.
 3. Immutable object edits.
 4. Undo/redo, divergent redo truncation, no-op identity and bounded history.
-5. Animation interpolation, endpoint clamping, key replacement/sorting.
+5. Animation interpolation, endpoint clamping, key replacement/sorting, and elapsed-time playback across skipped frames and loop boundaries.
 6. Editing already-keyed objects at current frame and Auto Key frame-zero preservation.
 7. JSON round trips and rejection of malformed documents, invalid values, duplicate IDs, unordered keys and oversized files.
 8. Every fixture creates finite nonempty world geometry.

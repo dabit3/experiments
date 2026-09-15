@@ -20,7 +20,7 @@ Production: `npm run build && npm run preview -- --port 4173`. Vite uses `base: 
 - Accurate numeric world transforms; add box/sphere/cylinder/torus primitives, clone/delete objects, change name and material, and apply a real vertex Twist modifier.
 - Material presets and numeric roughness/metalness; studio/daylight lighting.
 - Alt+W or viewport corner buttons maximize/restore views. Perspective supports orbit, pan and zoom; orthographic views support zoom.
-- A 0–100 frame timeline at 24 FPS with linear position/rotation/scale keys. Set Key captures the current pose. Editing an already-keyed object updates the current frame; Auto Key adds keys to unkeyed objects.
+- A 0–100 frame timeline at 24 FPS with linear position/rotation/scale keys. Elapsed-time playback maintains animation speed when rendering skips frames. Set Key captures the current pose. Editing an already-keyed object updates the current frame; Auto Key adds keys to unkeyed objects.
 - Undo/redo up to 60 scene revisions. Project automatically saves to `localStorage`; File menu imports/exports validated JSON. OBJ export bakes modifiers and the sampled animation frame into real triangle geometry.
 
 ### Shortcuts
