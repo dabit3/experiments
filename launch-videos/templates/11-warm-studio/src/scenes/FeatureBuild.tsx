@@ -81,7 +81,6 @@ export const FeatureBuild: React.FC = () => {
   });
   return (
     <FeatureLayout
-      index="01"
       label="Build and run"
       beats={[
         { at: 4, text: "You describe the feature." },

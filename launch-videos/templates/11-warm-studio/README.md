@@ -1,6 +1,6 @@
 # 11 · Warm Studio
 
-Devin launch video template — *Devin on macOS / native iOS*.
+Devin launch video template: *Devin on macOS / native iOS*.
 Direction: Notion / Claude / Scandinavian product design. Paper background,
 soft rounded product frames, medium-weight Inter, a single electric-blue
 accent, and slow, calm motion (800 ms fades, gentle drifts). On-screen copy

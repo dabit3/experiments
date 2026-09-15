@@ -12,7 +12,6 @@ export const FeatureFix: React.FC = () => {
   const toPr = crossfade(frame, swapAt);
   return (
     <FeatureLayout
-      index="03"
       label="Reproduce, fix, ship"
       beats={[
         { at: 4, text: "It reproduces the bug and fixes it." },

@@ -11,7 +11,6 @@ export const FeatureMatrix: React.FC = () => {
   const swapAt = ms(3000);
   return (
     <FeatureLayout
-      index="04"
       label="Every screen, every size"
       beats={[
         {

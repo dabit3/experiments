@@ -2,7 +2,14 @@ import React from "react";
 import { MONO, SANS } from "../fonts";
 import { color, type } from "../tokens";
 
-const sizes = type.sizes1080p;
+const sizes = {
+  hero: 144,
+  h1: 104,
+  h2: 72,
+  h3: 52,
+  body: 36,
+  label: 24,
+};
 
 type TextProps = {
   children: React.ReactNode;

@@ -13,7 +13,7 @@ export const fadeOut = (frame: number, total: number, length = dur.slow): number
 
 /** Scene-level opacity: in at the start, out at the end. */
 export const sceneOpacity = (frame: number, total: number): number =>
-  Math.min(fadeIn(frame, 0, dur.slow), fadeOut(frame, total, dur.base));
+  Math.min(fadeIn(frame, 0, dur.base), fadeOut(frame, total, dur.fast));
 
 /** Gentle upward drift that settles, paired with fadeIn for text entrances. */
 export const rise = (frame: number, start = 0, length = dur.slow, distance = 24): number =>

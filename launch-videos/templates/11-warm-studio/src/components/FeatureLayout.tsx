@@ -10,7 +10,6 @@ export const FIGURE_WIDTH = WIDTH - MARGIN * 2;
 export const FIGURE_TOP = 400;
 
 type FeatureLayoutProps = {
-  index: string;
   label: string;
   beats: Beat[];
   children: React.ReactNode;
@@ -21,19 +20,15 @@ type FeatureLayoutProps = {
  * two-line-max narration up top, and a wide product frame that bleeds off the
  * bottom edge so the screenshot reads as one continuous surface.
  */
-export const FeatureLayout: React.FC<FeatureLayoutProps> = ({ index, label, beats, children }) => {
+export const FeatureLayout: React.FC<FeatureLayoutProps> = ({ label, beats, children }) => {
   const frame = useCurrentFrame();
   return (
     <Scene>
-      <div style={{ position: "absolute", left: MARGIN, top: 128, opacity: fadeIn(frame) }}>
-        <Label>
-          <span style={{ color: color.accent }}>{index}</span>
-          <span style={{ margin: "0 12px" }}>·</span>
-          {label}
-        </Label>
+      <div style={{ position: "absolute", left: MARGIN, top: 120, opacity: fadeIn(frame) }}>
+        <Label style={{ color: color.accent }}>{label}</Label>
       </div>
-      <div style={{ position: "absolute", left: MARGIN, top: 176, right: MARGIN }}>
-        <Narration beats={beats} size="h2" maxWidth={1240} />
+      <div style={{ position: "absolute", left: MARGIN, top: 172, right: MARGIN }}>
+        <Narration beats={beats} size="h2" maxWidth={1680} />
       </div>
       <div
         style={{

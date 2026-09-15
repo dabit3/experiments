@@ -11,7 +11,6 @@ export const FeatureSimulator: React.FC = () => {
   const swapAt = ms(3000);
   return (
     <FeatureLayout
-      index="02"
       label="Live iPhone Simulator"
       beats={[
         {

@@ -18,7 +18,7 @@ export const Outcome: React.FC = () => {
   const stagger = ms(260);
   return (
     <Scene>
-      <div style={{ position: "absolute", left: MARGIN, right: MARGIN, top: 330 }}>
+      <div style={{ position: "absolute", left: MARGIN, right: MARGIN, top: 250 }}>
         <Headline
           size="h1"
           style={{
@@ -26,13 +26,15 @@ export const Outcome: React.FC = () => {
             transform: `translateY(${rise(frame, headAt, undefined, 32)}px)`,
           }}
         >
-          Minutes, not 20-minute CI round-trips.
+          Minutes, not
+          <br />
+          20-minute CI round-trips.
         </Headline>
         <div
           style={{
             display: "flex",
             gap: 64,
-            marginTop: 200,
+            marginTop: 120,
             borderTop: `1px solid ${color.border}`,
             paddingTop: 40,
           }}

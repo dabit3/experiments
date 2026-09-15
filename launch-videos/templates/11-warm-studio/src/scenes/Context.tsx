@@ -16,7 +16,10 @@ export const Context: React.FC = () => (
             at: 6,
             text: (
               <>
-                Before, you tested iPhone apps by hand —<br />
+                Before, you tested
+                <br />
+                iPhone apps by hand,
+                <br />
                 or waited 20 minutes for CI.
               </>
             ),
@@ -25,9 +28,9 @@ export const Context: React.FC = () => (
             at: ms(3300),
             text: (
               <>
-                No coding agent could build, run and
+                No coding agent could build, run
                 <br />
-                tap through an iPhone app on its own.
+                and tap through an iPhone app.
               </>
             ),
           },

@@ -10,14 +10,14 @@ export const EndCard: React.FC = () => {
   const lineAt = ms(900);
   const urlAt = ms(1500);
   return (
-    <Scene>
+    <Scene logo={false}>
       <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <Img
             src={staticFile("brand/devin-lockup-horizontal-black.png")}
             style={{
-              width: 560,
-              height: Math.round((560 * 1024) / 2984),
+              width: 720,
+              height: Math.round((720 * 1024) / 2984),
               display: "block",
               opacity: fadeIn(frame, 4),
               transform: `translateY(${rise(frame, 4, undefined, 20)}px)`,
