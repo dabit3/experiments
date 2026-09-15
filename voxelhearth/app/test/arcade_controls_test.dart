@@ -168,4 +168,49 @@ void main() {
     expect(tester.takeException(), isNull);
     await tester.pumpWidget(const SizedBox());
   });
+
+  testWidgets('tablet lobby keeps the composer and Send reachable under the keyboard', (tester) async {
+    const screen = Size(1210, 834);
+    await tester.binding.setSurfaceSize(screen);
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    SharedPreferences.setMockInitialValues({});
+    final settings = await Settings.load();
+    final client = GameClient(platform: 'ios');
+    final session = RoomSession(1234)
+      ..youId = 'tablet'
+      ..hostId = 'web'
+      ..roomName = 'Testing'
+      ..code = 'HEARTH'
+      ..chat.add(ChatEntry(1, 'Web', 'Hello from Web', false, DateTime(2026)));
+    addTearDown(client.dispose);
+    addTearDown(settings.dispose);
+
+    Widget lobby(double keyboard) => MaterialApp(
+      home: MediaQuery(
+        data: MediaQueryData(
+          size: screen,
+          padding: const EdgeInsets.fromLTRB(0, 24, 0, 20),
+          viewInsets: EdgeInsets.only(bottom: keyboard),
+        ),
+        child: LobbyScreen(client: client, session: session, settings: settings),
+      ),
+    );
+
+    await tester.pumpWidget(lobby(0));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(TextField));
+    await tester.enterText(find.byType(TextField), 'tablet draft');
+    await tester.pumpWidget(lobby(340));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    expect(find.text('tablet draft'), findsOneWidget);
+    final send = find.widgetWithText(PxButton, 'Send');
+    expect(send, findsOneWidget);
+    final box = tester.getRect(send);
+    expect(box.height, greaterThan(0));
+    expect(box.bottom, lessThanOrEqualTo(screen.height - 340));
+    expect(tester.getSize(find.byType(TextField)).height, greaterThan(0));
+    expect(tester.getRect(find.byType(TextField)).bottom, lessThanOrEqualTo(screen.height - 340));
+    await tester.pumpWidget(const SizedBox());
+  });
 }

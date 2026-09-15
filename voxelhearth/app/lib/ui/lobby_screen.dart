@@ -252,6 +252,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
     return Scaffold(
       backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,
       body: PxScreen(
         background: DirtBackground(dirt: widget.assets?.dirt),
         footer: footer,

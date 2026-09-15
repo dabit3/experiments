@@ -1011,8 +1011,10 @@ class PxScreen extends StatelessWidget {
         ?footer,
       ],
     );
-    // When the on-screen keyboard shrinks the viewport below the screen's
-    // natural height, scroll instead of overflowing.
+    // The on-screen keyboard is handled here rather than by resizing the
+    // scaffold: the screen keeps its unobstructed height and scrolls, so the
+    // composer and footer stay reachable instead of being squeezed away.
+    final keyboard = MediaQuery.viewInsetsOf(context).bottom;
     final minHeight = 170.0 * s;
     return Stack(
       fit: StackFit.expand,
@@ -1020,9 +1022,13 @@ class PxScreen extends StatelessWidget {
         background,
         SafeArea(
           child: LayoutBuilder(
-            builder: (context, bc) => SingleChildScrollView(
-              child: SizedBox(height: math.max(bc.maxHeight, minHeight), child: column),
-            ),
+            builder: (context, bc) {
+              return SingleChildScrollView(
+                padding: EdgeInsets.only(bottom: keyboard),
+                reverse: keyboard > 0,
+                child: SizedBox(height: math.max(bc.maxHeight, minHeight), child: column),
+              );
+            },
           ),
         ),
       ],
