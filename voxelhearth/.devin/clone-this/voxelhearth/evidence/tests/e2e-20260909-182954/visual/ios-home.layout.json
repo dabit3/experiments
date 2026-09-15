@@ -1,0 +1,498 @@
+{
+ "ok": true,
+ "screen": "home",
+ "viewport": [
+  402,
+  874
+ ],
+ "dpr": 3,
+ "nodes": [
+  {
+   "text": "󰁿",
+   "x": 25,
+   "y": 87,
+   "w": 14,
+   "h": 14
+  },
+  {
+   "text": "iOS",
+   "x": 43,
+   "y": 86,
+   "w": 19,
+   "h": 16
+  },
+  {
+   "text": "iOS",
+   "x": 43,
+   "y": 86,
+   "w": 19,
+   "h": 16
+  },
+  {
+   "text": "",
+   "x": 310,
+   "y": 82,
+   "w": 24,
+   "h": 24
+  },
+  {
+   "text": "󰉘",
+   "x": 358,
+   "y": 82,
+   "w": 24,
+   "h": 24
+  },
+  {
+   "text": "Voxelhearth",
+   "x": 57,
+   "y": 134,
+   "w": 197,
+   "h": 34
+  },
+  {
+   "text": "Voxelhearth",
+   "x": 57,
+   "y": 134,
+   "w": 197,
+   "h": 34
+  },
+  {
+   "text": "Gather. Build. Keep the hearth lit through the night — together, on any device.",
+   "x": 16,
+   "y": 176,
+   "w": 370,
+   "h": 44
+  },
+  {
+   "text": "Gather. Build. Keep the hearth lit through the night — together, on any device.",
+   "x": 16,
+   "y": 176,
+   "w": 370,
+   "h": 44
+  },
+  {
+   "text": "YOUR NAME",
+   "x": 40,
+   "y": 268,
+   "w": 322,
+   "h": 16
+  },
+  {
+   "text": "YOUR NAME",
+   "x": 40,
+   "y": 268,
+   "w": 322,
+   "h": 16
+  },
+  {
+   "text": "YOUR NAME",
+   "x": 40,
+   "y": 268,
+   "w": 322,
+   "h": 16
+  },
+  {
+   "text": "Wanderer",
+   "x": 92,
+   "y": 308,
+   "w": 250,
+   "h": 20
+  },
+  {
+   "text": "Wanderer",
+   "x": 92,
+   "y": 308,
+   "w": 250,
+   "h": 20
+  },
+  {
+   "text": "󰁬",
+   "x": 52,
+   "y": 305,
+   "w": 24,
+   "h": 24
+  },
+  {
+   "text": "󰛖",
+   "x": 135,
+   "y": 373,
+   "w": 18,
+   "h": 18
+  },
+  {
+   "text": "Create a world",
+   "x": 161,
+   "y": 373,
+   "w": 106,
+   "h": 19
+  },
+  {
+   "text": "Create a world",
+   "x": 161,
+   "y": 373,
+   "w": 106,
+   "h": 19
+  },
+  {
+   "text": "Create a world",
+   "x": 161,
+   "y": 373,
+   "w": 106,
+   "h": 19
+  },
+  {
+   "text": "JOIN WITH A CODE",
+   "x": 40,
+   "y": 422,
+   "w": 322,
+   "h": 16
+  },
+  {
+   "text": "JOIN WITH A CODE",
+   "x": 40,
+   "y": 422,
+   "w": 322,
+   "h": 16
+  },
+  {
+   "text": "JOIN WITH A CODE",
+   "x": 40,
+   "y": 422,
+   "w": 322,
+   "h": 16
+  },
+  {
+   "text": "ABCDE",
+   "x": 92,
+   "y": 463,
+   "w": 172,
+   "h": 20
+  },
+  {
+   "text": "ABCDE",
+   "x": 92,
+   "y": 463,
+   "w": 172,
+   "h": 20
+  },
+  {
+   "text": "󰍃",
+   "x": 52,
+   "y": 460,
+   "w": 24,
+   "h": 24
+  },
+  {
+   "text": "Join",
+   "x": 312,
+   "y": 463,
+   "w": 30,
+   "h": 19
+  },
+  {
+   "text": "Join",
+   "x": 312,
+   "y": 463,
+   "w": 30,
+   "h": 19
+  },
+  {
+   "text": "",
+   "x": 40,
+   "y": 516,
+   "w": 18,
+   "h": 18
+  },
+  {
+   "text": "Server",
+   "x": 62,
+   "y": 517,
+   "w": 40,
+   "h": 16
+  },
+  {
+   "text": "Server",
+   "x": 62,
+   "y": 517,
+   "w": 40,
+   "h": 16
+  },
+  {
+   "text": "Connected · 1 ms",
+   "x": 269,
+   "y": 517,
+   "w": 93,
+   "h": 16
+  },
+  {
+   "text": "Connected · 1 ms",
+   "x": 269,
+   "y": 517,
+   "w": 93,
+   "h": 16
+  },
+  {
+   "text": "HOW TO PLAY",
+   "x": 40,
+   "y": 604,
+   "w": 322,
+   "h": 16
+  },
+  {
+   "text": "HOW TO PLAY",
+   "x": 40,
+   "y": 604,
+   "w": 322,
+   "h": 16
+  },
+  {
+   "text": "HOW TO PLAY",
+   "x": 40,
+   "y": 604,
+   "w": 322,
+   "h": 16
+  },
+  {
+   "text": "",
+   "x": 40,
+   "y": 634,
+   "w": 20,
+   "h": 20
+  },
+  {
+   "text": "Look around",
+   "x": 72,
+   "y": 634,
+   "w": 80,
+   "h": 20
+  },
+  {
+   "text": "Look around",
+   "x": 72,
+   "y": 634,
+   "w": 80,
+   "h": 20
+  },
+  {
+   "text": "Drag or move the mouse · touch-drag on phones",
+   "x": 72,
+   "y": 654,
+   "w": 273,
+   "h": 16
+  },
+  {
+   "text": "Drag or move the mouse · touch-drag on phones",
+   "x": 72,
+   "y": 654,
+   "w": 273,
+   "h": 16
+  },
+  {
+   "text": "",
+   "x": 40,
+   "y": 682,
+   "w": 20,
+   "h": 20
+  },
+  {
+   "text": "Move",
+   "x": 72,
+   "y": 682,
+   "w": 35,
+   "h": 20
+  },
+  {
+   "text": "Move",
+   "x": 72,
+   "y": 682,
+   "w": 35,
+   "h": 20
+  },
+  {
+   "text": "WASD / arrows · joystick on touch · Space to jump · Shift to sneak",
+   "x": 72,
+   "y": 702,
+   "w": 290,
+   "h": 32
+  },
+  {
+   "text": "WASD / arrows · joystick on touch · Space to jump · Shift to sneak",
+   "x": 72,
+   "y": 702,
+   "w": 290,
+   "h": 32
+  },
+  {
+   "text": "",
+   "x": 40,
+   "y": 746,
+   "w": 20,
+   "h": 20
+  },
+  {
+   "text": "Build",
+   "x": 72,
+   "y": 746,
+   "w": 32,
+   "h": 20
+  },
+  {
+   "text": "Build",
+   "x": 72,
+   "y": 746,
+   "w": 32,
+   "h": 20
+  },
+  {
+   "text": "Hold left click / tap to break · right click / long-press to place",
+   "x": 72,
+   "y": 766,
+   "w": 290,
+   "h": 32
+  },
+  {
+   "text": "Hold left click / tap to break · right click / long-press to place",
+   "x": 72,
+   "y": 766,
+   "w": 290,
+   "h": 32
+  },
+  {
+   "text": "",
+   "x": 40,
+   "y": 810,
+   "w": 20,
+   "h": 20
+  },
+  {
+   "text": "Craft",
+   "x": 72,
+   "y": 810,
+   "w": 35,
+   "h": 20
+  },
+  {
+   "text": "Craft",
+   "x": 72,
+   "y": 810,
+   "w": 35,
+   "h": 20
+  },
+  {
+   "text": "E opens your pack · build a Workbench for bigger recipes",
+   "x": 72,
+   "y": 830,
+   "w": 290,
+   "h": 32
+  },
+  {
+   "text": "E opens your pack · build a Workbench for bigger recipes",
+   "x": 72,
+   "y": 830,
+   "w": 290,
+   "h": 32
+  },
+  {
+   "text": "Open worlds",
+   "x": 40,
+   "y": 950,
+   "w": 274,
+   "h": 29
+  },
+  {
+   "text": "Open worlds",
+   "x": 40,
+   "y": 950,
+   "w": 274,
+   "h": 29
+  },
+  {
+   "text": "Open worlds",
+   "x": 40,
+   "y": 950,
+   "w": 274,
+   "h": 29
+  },
+  {
+   "text": "󰃩",
+   "x": 326,
+   "y": 952,
+   "w": 24,
+   "h": 24
+  },
+  {
+   "text": "󰍼",
+   "x": 66,
+   "y": 1025,
+   "w": 24,
+   "h": 24
+  },
+  {
+   "text": "Hearth e2e",
+   "x": 112,
+   "y": 1008,
+   "w": 82,
+   "h": 24
+  },
+  {
+   "text": "Hearth e2e",
+   "x": 112,
+   "y": 1008,
+   "w": 82,
+   "h": 24
+  },
+  {
+   "text": "HEARTH · Survival · 3 players",
+   "x": 112,
+   "y": 1034,
+   "w": 145,
+   "h": 32
+  },
+  {
+   "text": "HEARTH · Survival · 3 players",
+   "x": 112,
+   "y": 1034,
+   "w": 145,
+   "h": 32
+  },
+  {
+   "text": "Results",
+   "x": 265,
+   "y": 1029,
+   "w": 41,
+   "h": 16
+  },
+  {
+   "text": "Results",
+   "x": 265,
+   "y": 1029,
+   "w": 41,
+   "h": 16
+  },
+  {
+   "text": "",
+   "x": 322,
+   "y": 1025,
+   "w": 24,
+   "h": 24
+  },
+  {
+   "text": "An original voxel sandbox. Not affiliated with any other game.",
+   "x": 25,
+   "y": 816,
+   "w": 352,
+   "h": 16
+  },
+  {
+   "text": "An original voxel sandbox. Not affiliated with any other game.",
+   "x": 25,
+   "y": 816,
+   "w": 352,
+   "h": 16
+  }
+ ],
+ "t": "drive_done",
+ "id": "d97",
+ "player": "iOS",
+ "playerId": "p-7bddcc6c"
+}

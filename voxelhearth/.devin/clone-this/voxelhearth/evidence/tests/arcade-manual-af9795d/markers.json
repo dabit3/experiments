@@ -1,0 +1,142 @@
+[
+  {
+    "t": 6.96,
+    "title": "01-movement-baseline",
+    "caption": "Rebuilt af9795d facing oak and Web avatar before movement",
+    "platform": "both",
+    "capture_elapsed_seconds": 0.08
+  },
+  {
+    "t": 32.65,
+    "title": "02-up-release",
+    "caption": "Up approaches oak; released stick centered and camera stationary",
+    "platform": "both",
+    "capture_elapsed_seconds": 25.77
+  },
+  {
+    "t": 70.72,
+    "title": "03-movement-complete",
+    "caption": "All four joystick directions and release verified relative to oak/avatar",
+    "platform": "both",
+    "capture_elapsed_seconds": 63.84
+  },
+  {
+    "t": 198.03,
+    "title": "04-name-keyboard",
+    "caption": "Name draft retained; touch scroll exposes Server Address and Done above keyboard",
+    "platform": "both",
+    "capture_elapsed_seconds": 191.15
+  },
+  {
+    "t": 311.45,
+    "title": "05-lobby-focus",
+    "caption": "Fresh BRU2K: phone message sent to both; new draft retains focus after resize",
+    "platform": "both",
+    "capture_elapsed_seconds": 304.57
+  },
+  {
+    "t": 410.99,
+    "title": "06-oak-before",
+    "caption": "Both cameras see same intact oak beside snow before stationary touch break",
+    "platform": "both",
+    "capture_elapsed_seconds": 404.11
+  },
+  {
+    "t": 440.37,
+    "title": "07-oak-gap",
+    "caption": "Stationary touch breaks upper trunk; both cameras show same missing log",
+    "platform": "both",
+    "capture_elapsed_seconds": 433.49
+  },
+  {
+    "t": 460.44,
+    "title": "08-shared-phone-torch",
+    "caption": "iOS Place 8 to 7; torch visibly appears in front of stump on both cameras",
+    "platform": "both",
+    "capture_elapsed_seconds": 453.56
+  },
+  {
+    "t": 488.91,
+    "title": "09-shared-removal",
+    "caption": "Web left hold removes phone torch; both show no torch; Web count 8 to 9",
+    "platform": "both",
+    "capture_elapsed_seconds": 482.03
+  },
+  {
+    "t": 503.44,
+    "title": "10-shared-web-placement",
+    "caption": "Web locked right-click puts torch back; both cameras show same torch; count 9 to 8",
+    "platform": "both",
+    "capture_elapsed_seconds": 496.56
+  },
+  {
+    "t": 606.21,
+    "title": "11-game-chat",
+    "caption": "Both game histories show web game hello and iOS game hello",
+    "platform": "both",
+    "capture_elapsed_seconds": 599.33
+  },
+  {
+    "t": 676.25,
+    "title": "12-inventory-before",
+    "caption": "Web eight torches moved into upper-right inventory; phone has one log and craftable four planks",
+    "platform": "both",
+    "capture_elapsed_seconds": 669.37
+  },
+  {
+    "t": 701.07,
+    "title": "13-crafted-reopened",
+    "caption": "Phone log consumed into four planks; seven torches moved and retained after reopening",
+    "platform": "both",
+    "capture_elapsed_seconds": 694.19
+  },
+  {
+    "t": 802.61,
+    "title": "14-options-persist",
+    "caption": "Web 121 percent and iOS 151 percent sensitivity retained; Sound OFF on both; clean helper/layering",
+    "platform": "both",
+    "capture_elapsed_seconds": 795.73
+  },
+  {
+    "t": 863.17,
+    "title": "15-reload-baseline",
+    "caption": "Nondefault Web location by stump; BRU2K exactly two players; inventory has eight moved torches",
+    "platform": "both",
+    "capture_elapsed_seconds": 856.29
+  },
+  {
+    "t": 888.11,
+    "title": "16-reload-restored",
+    "caption": "Plain reload retained exact oak viewpoint BRU2K name web score2 and two-player roster",
+    "platform": "both",
+    "capture_elapsed_seconds": 881.23
+  },
+  {
+    "t": 903.04,
+    "title": "17-reload-inventory",
+    "caption": "Eight torches remain in moved top-right inventory slot after plain reload",
+    "platform": "both",
+    "capture_elapsed_seconds": 896.16
+  },
+  {
+    "t": 937.23,
+    "title": "18-results",
+    "caption": "Both results show ios5 web2 and world 629922f4; Web final Match over chat present",
+    "platform": "both",
+    "capture_elapsed_seconds": 930.35
+  },
+  {
+    "t": 963.2,
+    "title": "19-result-hashes",
+    "caption": "Phone scroll exposes matching world and chat fingerprints; final Match over visible on Web",
+    "platform": "both",
+    "capture_elapsed_seconds": 956.32
+  },
+  {
+    "t": 995.45,
+    "title": "20-return-lobby",
+    "caption": "Both return BRU2K two players; final Match over chat readable on both including phone",
+    "platform": "both",
+    "capture_elapsed_seconds": 988.57
+  }
+]

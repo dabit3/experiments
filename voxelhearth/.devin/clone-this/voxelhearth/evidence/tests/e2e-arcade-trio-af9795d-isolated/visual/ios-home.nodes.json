@@ -1,0 +1,421 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-trio-af9795d-isolated/visual/web-home.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-trio-af9795d-isolated/visual/ios-home.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  874,
+  402
+ ],
+ "nodes": 28,
+ "matched": 0,
+ "exact": 0,
+ "within_tolerance": [],
+ "mismatched": [
+  {
+   "reference": {
+    "text": "",
+    "x": 58,
+    "y": 30,
+    "w": 28,
+    "h": 28
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "HEARTHBOUND ADVENTURES",
+    "x": 94,
+    "y": 37,
+    "w": 230,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "HEARTHBOUND ADVENTURES",
+    "x": 94,
+    "y": 37,
+    "w": 230,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "󰊿",
+    "x": 1104,
+    "y": 36,
+    "w": 16,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "ONLINE · 1 ms",
+    "x": 1127,
+    "y": 37,
+    "w": 83,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "ONLINE · 1 ms",
+    "x": 1127,
+    "y": 37,
+    "w": 83,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "ONLINE · 1 ms",
+    "x": 1127,
+    "y": 37,
+    "w": 83,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "BIG WORLDS. BETTER TOGETHER.",
+    "x": 58,
+    "y": 158,
+    "w": 294,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "BIG WORLDS. BETTER TOGETHER.",
+    "x": 58,
+    "y": 158,
+    "w": 294,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "VOXEL\nHEARTH",
+    "x": 58,
+    "y": 190,
+    "w": 354,
+    "h": 150
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "VOXEL\nHEARTH",
+    "x": 58,
+    "y": 190,
+    "w": 354,
+    "h": 150
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "A spark. A block. An entire world of possibility.\nBring your friends. Leave your mark.",
+    "x": 58,
+    "y": 364,
+    "w": 396,
+    "h": 54
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "A spark. A block. An entire world of possibility.\nBring your friends. Leave your mark.",
+    "x": 58,
+    "y": 364,
+    "w": 396,
+    "h": 54
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Play Online",
+    "x": 232,
+    "y": 469,
+    "w": 141,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Play Online",
+    "x": 232,
+    "y": 469,
+    "w": 141,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Create World",
+    "x": 94,
+    "y": 546,
+    "w": 167,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Create World",
+    "x": 94,
+    "y": 546,
+    "w": 167,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player: Hearthling",
+    "x": 316,
+    "y": 546,
+    "w": 225,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player: Hearthling",
+    "x": 316,
+    "y": 546,
+    "w": 225,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Options...",
+    "x": 115,
+    "y": 616,
+    "w": 123,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Options...",
+    "x": 115,
+    "y": 616,
+    "w": 123,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "How to Play",
+    "x": 354,
+    "y": 616,
+    "w": 147,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "How to Play",
+    "x": 354,
+    "y": 616,
+    "w": 147,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "01 / EXPLORE · BUILD · BELONG",
+    "x": 58,
+    "y": 759,
+    "w": 1134,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "01 / EXPLORE · BUILD · BELONG",
+    "x": 58,
+    "y": 759,
+    "w": 1134,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "01 / EXPLORE · BUILD · BELONG",
+    "x": 58,
+    "y": 759,
+    "w": 1134,
+    "h": 13
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "WEB",
+    "x": 1192,
+    "y": 760,
+    "w": 30,
+    "h": 12
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "WEB",
+    "x": 1192,
+    "y": 760,
+    "w": 30,
+    "h": 12
+   },
+   "actual": null
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "",
+    "x": 84,
+    "y": 14,
+    "w": 28,
+    "h": 28
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "HEARTHBOUND ADVENTURES",
+    "x": 120,
+    "y": 23,
+    "w": 187,
+    "h": 11
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "HEARTHBOUND ADVENTURES",
+    "x": 120,
+    "y": 23,
+    "w": 187,
+    "h": 11
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "󰊿",
+    "x": 664,
+    "y": 20,
+    "w": 16,
+    "h": 16
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "ONLINE · 16 ms",
+    "x": 687,
+    "y": 21,
+    "w": 90,
+    "h": 14
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "ONLINE · 16 ms",
+    "x": 687,
+    "y": 21,
+    "w": 90,
+    "h": 14
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "ONLINE · 16 ms",
+    "x": 687,
+    "y": 21,
+    "w": 90,
+    "h": 14
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "VOXEL\nHEARTH",
+    "x": 84,
+    "y": 70,
+    "w": 193,
+    "h": 82
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "VOXEL\nHEARTH",
+    "x": 84,
+    "y": 70,
+    "w": 193,
+    "h": 82
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Gather. Build. Make it yours.",
+    "x": 84,
+    "y": 162,
+    "w": 181,
+    "h": 20
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Gather. Build. Make it yours.",
+    "x": 84,
+    "y": 162,
+    "w": 181,
+    "h": 20
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Play Online",
+    "x": 211,
+    "y": 207,
+    "w": 95,
+    "h": 20
+   }
+  }
+ ],
+ "mismatched_count": 54,
+ "ok": false
+}

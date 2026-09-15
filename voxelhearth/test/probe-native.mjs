@@ -1,0 +1,30 @@
+// Drive an already-running native client (default target: @macos) through a
+// short create → play → place → results flow, printing each step.
+import { Director, sleep } from './lib/director.mjs';
+const who = process.argv[2] ?? '@macos';
+const room = process.argv[3] ?? 'NATIVE';
+const d = new Director('ws://localhost:8787/ws');
+await d.connect();
+const log = (l, r) => console.log(l.padEnd(14), JSON.stringify(r).slice(0, 200));
+log('screen', await d.drive(who, { t: 'screen' }));
+await d.must(who, { t: 'create_room', code: room, seed: 1234, bots: 1, freezeTime: true, startTime: 6000 });
+await d.must(who, { t: 'wait_screen', screen: 'lobby' });
+await sleep(1500);
+await d.must(who, { t: 'start_match' });
+log('wait_game', await d.drive(who, { t: 'wait_game' }, { timeout: 60000 }));
+await sleep(1500);
+const s = await d.drive(who, { t: 'state' });
+log('state', s);
+const fx = Math.floor(s.x), fz = Math.floor(s.z), fy = Math.floor(s.y);
+log('give', await d.drive(who, { t: 'give', id: 9, count: 8, slot: 4 }));
+log('select', await d.drive(who, { t: 'select_slot', slot: 4 }));
+log('place_at', await d.drive(who, { t: 'place_at', x: fx, y: fy, z: fz + 2 }));
+log('chat', await d.drive(who, { t: 'chat', text: `hello from ${who}` }));
+await sleep(500);
+log('hashes', await d.hashes(room));
+await sleep(3000);
+log('end', await d.drive(who, { t: 'end_match' }));
+await d.must(who, { t: 'wait_screen', screen: 'results' });
+await sleep(1500);
+log('screen', await d.drive(who, { t: 'screen' }));
+d.close();

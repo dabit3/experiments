@@ -1,0 +1,201 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-home.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-home.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  1280,
+  800
+ ],
+ "nodes": 34,
+ "matched": 25,
+ "exact": 25,
+ "within_tolerance": [],
+ "mismatched": [
+  {
+   "reference": {
+    "text": "Keep the hearth lit!",
+    "x": 829,
+    "y": 211,
+    "w": 266,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Keep the hearth lit!",
+    "x": 829,
+    "y": 211,
+    "w": 266,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Keep the hearth lit!",
+    "x": 829,
+    "y": 211,
+    "w": 266,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Voxelhearth 1.0 · Web",
+    "x": 6,
+    "y": 764,
+    "w": 277,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Voxelhearth 1.0 · Web",
+    "x": 6,
+    "y": 764,
+    "w": 277,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Voxelhearth 1.0 · Web",
+    "x": 6,
+    "y": 764,
+    "w": 277,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Connected · 1 ms",
+    "x": 301,
+    "y": 764,
+    "w": 215,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Connected · 1 ms",
+    "x": 301,
+    "y": 764,
+    "w": 215,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Connected · 1 ms",
+    "x": 301,
+    "y": 764,
+    "w": 215,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Keep the hearth lit!",
+    "x": 832,
+    "y": 211,
+    "w": 266,
+    "h": 30
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Keep the hearth lit!",
+    "x": 832,
+    "y": 211,
+    "w": 266,
+    "h": 30
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Keep the hearth lit!",
+    "x": 832,
+    "y": 211,
+    "w": 266,
+    "h": 30
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Voxelhearth 1.0 · macOS",
+    "x": 6,
+    "y": 764,
+    "w": 310,
+    "h": 30
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Voxelhearth 1.0 · macOS",
+    "x": 6,
+    "y": 764,
+    "w": 310,
+    "h": 30
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Voxelhearth 1.0 · macOS",
+    "x": 6,
+    "y": 764,
+    "w": 310,
+    "h": 30
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Connected · 1 ms",
+    "x": 334,
+    "y": 764,
+    "w": 215,
+    "h": 30
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Connected · 1 ms",
+    "x": 334,
+    "y": 764,
+    "w": 215,
+    "h": 30
+   }
+  },
+  {
+   "reference": null,
+   "actual": {
+    "text": "Connected · 1 ms",
+    "x": 334,
+    "y": 764,
+    "w": 215,
+    "h": 30
+   }
+  }
+ ],
+ "mismatched_count": 18,
+ "ok": false
+}

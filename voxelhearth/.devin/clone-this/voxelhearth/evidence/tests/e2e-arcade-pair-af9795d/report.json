@@ -1,0 +1,67 @@
+{
+  "startedAt": "2026-09-11T04:10:41.449Z",
+  "platforms": [
+    "web",
+    "ios"
+  ],
+  "room": "HEARTH",
+  "seed": 1234,
+  "steps": [
+    {
+      "label": "launch web",
+      "ms": 10286,
+      "ok": true
+    },
+    {
+      "label": "launch ios",
+      "ms": 19886,
+      "ok": true
+    },
+    {
+      "label": "connect Web",
+      "ms": 1131,
+      "ok": true
+    },
+    {
+      "label": "connect iOS",
+      "ms": 2404,
+      "ok": true
+    },
+    {
+      "label": "create room",
+      "ms": 1250,
+      "ok": true
+    },
+    {
+      "label": "host in lobby",
+      "ms": 1,
+      "ok": false,
+      "error": "Web wait_screen failed: {\"t\":\"drive_done\",\"id\":\"d7\",\"ok\":false,\"error\":\"no such player Web\"}"
+    }
+  ],
+  "checks": [],
+  "failures": [
+    "exception: Web wait_screen failed: {\"t\":\"drive_done\",\"id\":\"d7\",\"ok\":false,\"error\":\"no such player Web\"}"
+  ],
+  "iosCaptureOrientation": "LandscapeRight",
+  "recordingLayout": [
+    "web",
+    "ios"
+  ],
+  "recording": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d/four-way-recording.mp4",
+  "markers": [
+    {
+      "frame": 0,
+      "title": "Join & Lobby",
+      "caption": "Every client joins the same room by code and readies up",
+      "notes": [
+        "room HEARTH · seed 1234",
+        "Web on web",
+        "iOS on ios"
+      ]
+    }
+  ],
+  "reviewVideo": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d/review-video.mp4",
+  "finishedAt": "2026-09-11T04:11:40.229Z",
+  "passed": false
+}

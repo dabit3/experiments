@@ -1,0 +1,421 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/web-results.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-arcade-pair-af9795d-isolated/visual/ios-results.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  874,
+  402
+ ],
+ "nodes": 196,
+ "matched": 0,
+ "exact": 0,
+ "within_tolerance": [],
+ "mismatched": [
+  {
+   "reference": {
+    "text": "THE WORLD IS BETTER BECAUSE YOU BUILT IT",
+    "x": 439,
+    "y": 30,
+    "w": 402,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "THE WORLD IS BETTER BECAUSE YOU BUILT IT",
+    "x": 439,
+    "y": 30,
+    "w": 402,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "A HEARTH TO REMEMBER",
+    "x": 390,
+    "y": 50,
+    "w": 500,
+    "h": 44
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "A HEARTH TO REMEMBER",
+    "x": 390,
+    "y": 50,
+    "w": 500,
+    "h": 44
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 510,
+    "y": 100,
+    "w": 36,
+    "h": 36
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "RANK #1  ·  9 POINTS",
+    "x": 554,
+    "y": 106,
+    "w": 217,
+    "h": 25
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "RANK #1  ·  9 POINTS",
+    "x": 554,
+    "y": 106,
+    "w": 217,
+    "h": 25
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "THE BUILDERS CLUB",
+    "x": 33,
+    "y": 166,
+    "w": 893,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "THE BUILDERS CLUB",
+    "x": 33,
+    "y": 166,
+    "w": 893,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "THE BUILDERS CLUB",
+    "x": 33,
+    "y": 166,
+    "w": 893,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "#",
+    "x": 34,
+    "y": 215,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "#",
+    "x": 34,
+    "y": 215,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "#",
+    "x": 34,
+    "y": 215,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player",
+    "x": 70,
+    "y": 215,
+    "w": 303,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player",
+    "x": 70,
+    "y": 215,
+    "w": 303,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player",
+    "x": 70,
+    "y": 215,
+    "w": 303,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Player",
+    "x": 70,
+    "y": 215,
+    "w": 303,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Placed",
+    "x": 373,
+    "y": 215,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Placed",
+    "x": 373,
+    "y": 215,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Placed",
+    "x": 373,
+    "y": 215,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Broken",
+    "x": 487,
+    "y": 215,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Broken",
+    "x": 487,
+    "y": 215,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Broken",
+    "x": 487,
+    "y": 215,
+    "w": 114,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Crafted",
+    "x": 601,
+    "y": 215,
+    "w": 132,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Crafted",
+    "x": 601,
+    "y": 215,
+    "w": 132,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Crafted",
+    "x": 601,
+    "y": 215,
+    "w": 132,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Kills",
+    "x": 733,
+    "y": 215,
+    "w": 90,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Kills",
+    "x": 733,
+    "y": 215,
+    "w": 90,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Kills",
+    "x": 733,
+    "y": 215,
+    "w": 90,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Score",
+    "x": 823,
+    "y": 215,
+    "w": 102,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Score",
+    "x": 823,
+    "y": 215,
+    "w": 102,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Score",
+    "x": 823,
+    "y": 215,
+    "w": 102,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "1",
+    "x": 34,
+    "y": 277,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "1",
+    "x": 34,
+    "y": 277,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "1",
+    "x": 34,
+    "y": 277,
+    "w": 36,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 70,
+    "y": 277,
+    "w": 144,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 70,
+    "y": 277,
+    "w": 144,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 70,
+    "y": 277,
+    "w": 144,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 70,
+    "y": 277,
+    "w": 144,
+    "h": 30
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "  Web",
+    "x": 214,
+    "y": 277,
+    "w": 64,
+    "h": 30
+   },
+   "actual": null
+  }
+ ],
+ "mismatched_count": 377,
+ "ok": false
+}

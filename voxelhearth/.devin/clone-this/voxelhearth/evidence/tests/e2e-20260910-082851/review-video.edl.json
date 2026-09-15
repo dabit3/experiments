@@ -1,0 +1,102 @@
+{
+  "title": "Voxelhearth · Web × iOS multiplayer",
+  "output": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/review-video.mp4",
+  "clips": [
+    "c00-title.mp4",
+    "c01-card.mp4",
+    "c01-seg.mp4",
+    "c02-card.mp4",
+    "c02-seg.mp4",
+    "c03-card.mp4",
+    "c03-seg.mp4",
+    "c04-card.mp4",
+    "c04-seg.mp4",
+    "c05-card.mp4",
+    "c05-seg.mp4",
+    "c06-card.mp4",
+    "c06-seg.mp4",
+    "c07-card.mp4",
+    "c07-seg.mp4",
+    "c99-summary.mp4"
+  ],
+  "chapters": [
+    {
+      "title": "Join & Lobby",
+      "caption": "Every client joins the same room by code and readies up",
+      "notes": [
+        "room HEARTH · seed 1234",
+        "Web on web",
+        "iOS on ios",
+        "Mac on macos"
+      ],
+      "from": 0,
+      "to": 4
+    },
+    {
+      "title": "Gameplay",
+      "caption": "Match starts: frozen noon, deterministic world, one server bot",
+      "notes": [
+        "lobby → playing on every client"
+      ],
+      "from": 4,
+      "to": 6
+    },
+    {
+      "title": "Shared structure",
+      "caption": "Each client places two stone blocks in one shared row",
+      "notes": [
+        "cells [[41,34,45],[42,34,45],[40,34,45]]",
+        "placed on the server, echoed to every client"
+      ],
+      "from": 6,
+      "to": 12
+    },
+    {
+      "title": "Breaking & chat",
+      "caption": "Each client breaks the block placed by the next one, then chats",
+      "notes": [
+        "round-robin break",
+        "chat history compared on every client"
+      ],
+      "from": 12,
+      "to": 18
+    },
+    {
+      "title": "Reconnect",
+      "caption": "Web drops its socket mid-match and rejoins with its session token",
+      "notes": [
+        "same room, same identity, converged state"
+      ],
+      "from": 18,
+      "to": 20
+    },
+    {
+      "title": "Results",
+      "caption": "Host ends the match: identical scoreboard and fingerprints everywhere",
+      "notes": [],
+      "from": 20,
+      "to": 23
+    },
+    {
+      "title": "Visual parity fixtures",
+      "caption": "Every client renders identical fixture data; web is the layout baseline",
+      "notes": [
+        "lobby, results, home fixtures",
+        "text/icon nodes compared within 2 logical px"
+      ],
+      "from": 23,
+      "to": 31
+    }
+  ],
+  "sources": {
+    "web": {
+      "frames": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/frames/web",
+      "label": "Web (Chrome via Playwright)"
+    },
+    "ios": {
+      "frames": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/frames/ios",
+      "label": "iOS Simulator"
+    }
+  },
+  "checks": 16
+}

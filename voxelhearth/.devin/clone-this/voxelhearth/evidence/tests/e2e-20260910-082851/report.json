@@ -1,0 +1,2392 @@
+{
+  "startedAt": "2026-09-10T15:29:38.256Z",
+  "platforms": [
+    "web",
+    "ios",
+    "macos"
+  ],
+  "room": "HEARTH",
+  "seed": 1234,
+  "steps": [
+    {
+      "label": "launch web",
+      "ms": 2043,
+      "ok": true
+    },
+    {
+      "label": "launch ios",
+      "ms": 2256,
+      "ok": true
+    },
+    {
+      "label": "launch macos",
+      "ms": 206,
+      "ok": true
+    },
+    {
+      "label": "connect Web",
+      "ms": 12,
+      "ok": true
+    },
+    {
+      "label": "connect iOS",
+      "ms": 3054,
+      "ok": true
+    },
+    {
+      "label": "connect Mac",
+      "ms": 1013,
+      "ok": true
+    },
+    {
+      "label": "create room",
+      "ms": 125,
+      "ok": true
+    },
+    {
+      "label": "host in lobby",
+      "ms": 542,
+      "ok": true
+    },
+    {
+      "label": "iOS joins",
+      "ms": 5,
+      "ok": true
+    },
+    {
+      "label": "Mac joins",
+      "ms": 4,
+      "ok": true
+    },
+    {
+      "label": "all in lobby",
+      "ms": 53,
+      "ok": true
+    },
+    {
+      "label": "all ready",
+      "ms": 466,
+      "ok": true
+    },
+    {
+      "label": "start match",
+      "ms": 3,
+      "ok": true
+    },
+    {
+      "label": "all in game",
+      "ms": 1174,
+      "ok": true
+    },
+    {
+      "label": "host state",
+      "ms": 97,
+      "ok": true
+    },
+    {
+      "label": "give blocks",
+      "ms": 160,
+      "ok": true
+    },
+    {
+      "label": "give picks",
+      "ms": 122,
+      "ok": true
+    },
+    {
+      "label": "select blocks",
+      "ms": 166,
+      "ok": true
+    },
+    {
+      "label": "Web places 41,34,45",
+      "ms": 1465,
+      "ok": true
+    },
+    {
+      "label": "iOS places 42,34,45",
+      "ms": 63,
+      "ok": true
+    },
+    {
+      "label": "Mac places 40,34,45",
+      "ms": 60,
+      "ok": true
+    },
+    {
+      "label": "Web places 41,35,45",
+      "ms": 392,
+      "ok": true
+    },
+    {
+      "label": "iOS places 42,35,45",
+      "ms": 45,
+      "ok": true
+    },
+    {
+      "label": "Mac places 40,35,45",
+      "ms": 63,
+      "ok": true
+    },
+    {
+      "label": "select picks",
+      "ms": 116,
+      "ok": true
+    },
+    {
+      "label": "Web breaks 42,35,45",
+      "ms": 1667,
+      "ok": true
+    },
+    {
+      "label": "iOS breaks 40,35,45",
+      "ms": 743,
+      "ok": true
+    },
+    {
+      "label": "Mac breaks 41,35,45",
+      "ms": 767,
+      "ok": true
+    },
+    {
+      "label": "Web chats",
+      "ms": 1490,
+      "ok": true
+    },
+    {
+      "label": "iOS chats",
+      "ms": 3,
+      "ok": true
+    },
+    {
+      "label": "Mac chats",
+      "ms": 23,
+      "ok": true
+    },
+    {
+      "label": "open chat everywhere",
+      "ms": 96,
+      "ok": true
+    },
+    {
+      "label": "close chat",
+      "ms": 1218,
+      "ok": true
+    },
+    {
+      "label": "Web drops connection and rejoins",
+      "ms": 2006,
+      "ok": true
+    },
+    {
+      "label": "rejoined client is in-match again",
+      "ms": 13,
+      "ok": true
+    },
+    {
+      "label": "hashes",
+      "ms": 126,
+      "ok": true
+    },
+    {
+      "label": "end match",
+      "ms": 1548,
+      "ok": true
+    },
+    {
+      "label": "all on results",
+      "ms": 27,
+      "ok": true
+    },
+    {
+      "label": "fixture lobby",
+      "ms": 822,
+      "ok": true
+    },
+    {
+      "label": "fixture results",
+      "ms": 2009,
+      "ok": true
+    },
+    {
+      "label": "fixture home",
+      "ms": 407,
+      "ok": true
+    }
+  ],
+  "checks": [
+    {
+      "name": "all players in one lobby",
+      "ok": true,
+      "detail": "Bot Ashwick(bot), Web(web), iOS(ios), Mac(macos)"
+    },
+    {
+      "name": "found a flat row for the shared structure",
+      "ok": true,
+      "detail": "[[41,34,45],[42,34,45],[40,34,45]]"
+    },
+    {
+      "name": "dropped client rejoined the same room",
+      "ok": true,
+      "detail": "{\"ok\":true,\"dropped\":true,\"rejoined\":true,\"room\":\"HEARTH\",\"phase\":\"playing\",\"phaseBefore\":\"playing\",\"state\":\"connected\",\"error\":null,\"t\":\"drive_done\",\"id\":\"d65\",\"player\":\"Web\",\"playerId\":\"p-000f6823\"}"
+    },
+    {
+      "name": "every client answered the hash request",
+      "ok": true,
+      "detail": "missing=[]"
+    },
+    {
+      "name": "world hash identical on all clients + server",
+      "ok": true,
+      "detail": "{\"server\":\"fac9c64e\",\"clients\":{\"Web\":\"fac9c64e\",\"iOS\":\"fac9c64e\",\"Mac\":\"fac9c64e\"}}"
+    },
+    {
+      "name": "chat hash identical on all clients + server",
+      "ok": true,
+      "detail": "{\"server\":\"65d71bfe\",\"clients\":{\"Web\":\"65d71bfe\",\"iOS\":\"65d71bfe\",\"Mac\":\"65d71bfe\"}}"
+    },
+    {
+      "name": "structure region identical on all clients",
+      "ok": true,
+      "detail": "\"12e88ebe\""
+    },
+    {
+      "name": "server structure matches script (lower row placed, upper row broken)",
+      "ok": true,
+      "detail": "[9,9,9,0,0,0]"
+    },
+    {
+      "name": "chat history identical on all clients",
+      "ok": true,
+      "detail": "11 lines"
+    },
+    {
+      "name": "every player line present in chat",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "final scoreboard identical on all clients",
+      "ok": true,
+      "detail": "[{\"name\":\"Web\",\"platform\":\"web\",\"bot\":false,\"score\":3,\"placed\":2,\"broken\":1,\"crafted\":0,\"kills\":0,\"deaths\":0},{\"name\":\"iOS\",\"platform\":\"ios\",\"bot\":false,\"score\":3,\"placed\":2,\"broken\":1,\"crafted\":0,\"kills\":0,\"deaths\":0},{\"name\":\"Mac\",\"platform\":\"macos\",\"bot\":false,\"score\":3,\"placed\":2,\"broken\":1,\"crafted\":0,\"kills\":0,\"deaths\":0},{\"name\":\"Bot Ashwick\",\"platform\":\"bot\",\"bot\":true,\"score\":2,\"placed\":1,\"broken\":1,\"crafted\":0,\"kills\":0,\"deaths\":0}]"
+    },
+    {
+      "name": "final world/chat fingerprints identical on all clients",
+      "ok": true,
+      "detail": "[\"fac9c64e\",\"65d71bfe\"]"
+    },
+    {
+      "name": "final world/chat fingerprints match server",
+      "ok": true,
+      "detail": "{\"client\":[\"fac9c64e\",\"65d71bfe\"],\"server\":[\"fac9c64e\",\"65d71bfe\"]}"
+    },
+    {
+      "name": "scoreboard credits 2 placed + 1 broken per player",
+      "ok": true,
+      "detail": "[[\"Web\",\"web\",3,2,1],[\"iOS\",\"ios\",3,2,1],[\"Mac\",\"macos\",3,2,1]]"
+    },
+    {
+      "name": "visual layout parity web→macos (lobby)",
+      "ok": true,
+      "detail": "{\"nodes\":\"137/137\",\"exact\":137,\"mismatched\":0,\"normalizedPx\":0,\"layoutPx\":0,\"rawPx\":742999,\"total\":1024000}"
+    },
+    {
+      "name": "visual layout parity web→macos (results)",
+      "ok": true,
+      "detail": "{\"nodes\":\"198/198\",\"exact\":198,\"mismatched\":0,\"normalizedPx\":0,\"layoutPx\":0,\"rawPx\":893018,\"total\":1024000}"
+    }
+  ],
+  "failures": [],
+  "fps": {
+    "Web": 20,
+    "iOS": 48,
+    "Mac": 60
+  },
+  "gameplayState": {
+    "Web": {
+      "ok": true,
+      "x": 41.5,
+      "y": 34,
+      "z": 42.5,
+      "yaw": 0.322,
+      "pitch": -0.038,
+      "phase": "playing",
+      "hp": 20,
+      "food": 20,
+      "score": 3,
+      "selected": 4,
+      "held": [
+        111,
+        1
+      ],
+      "worldHash": "fac9c64e",
+      "chatHash": "65d71bfe",
+      "chatLines": 11,
+      "fps": 20,
+      "pixelScale": 1.8000000000000007,
+      "players": 4,
+      "ready": true,
+      "ground": true,
+      "spawn": [
+        41.5,
+        34,
+        42.5
+      ],
+      "spawnReady": true,
+      "t": "drive_done",
+      "id": "d70",
+      "player": "Web",
+      "playerId": "p-000f6823"
+    },
+    "iOS": {
+      "ok": true,
+      "x": 41.5,
+      "y": 34,
+      "z": 42.5,
+      "yaw": -0.3217505543966422,
+      "pitch": -0.037929132924045615,
+      "phase": "playing",
+      "hp": 20,
+      "food": 20,
+      "score": 3,
+      "selected": 4,
+      "held": [
+        111,
+        1
+      ],
+      "worldHash": "fac9c64e",
+      "chatHash": "65d71bfe",
+      "chatLines": 11,
+      "fps": 48,
+      "pixelScale": 3,
+      "players": 4,
+      "ready": true,
+      "ground": true,
+      "spawn": [
+        41.5,
+        34,
+        42.5
+      ],
+      "spawnReady": true,
+      "t": "drive_done",
+      "id": "d71",
+      "player": "iOS",
+      "playerId": "p-7bddcc6c"
+    },
+    "Mac": {
+      "ok": true,
+      "x": 41.5,
+      "y": 34,
+      "z": 42.5,
+      "yaw": 0,
+      "pitch": -0.03997868712328919,
+      "phase": "playing",
+      "hp": 20,
+      "food": 20,
+      "score": 3,
+      "selected": 4,
+      "held": [
+        111,
+        1
+      ],
+      "worldHash": "fac9c64e",
+      "chatHash": "65d71bfe",
+      "chatLines": 11,
+      "fps": 60,
+      "pixelScale": 3,
+      "players": 4,
+      "ready": true,
+      "ground": true,
+      "spawn": [
+        41.5,
+        34,
+        42.5
+      ],
+      "spawnReady": true,
+      "t": "drive_done",
+      "id": "d72",
+      "player": "Mac",
+      "playerId": "p-47bd5a7a"
+    }
+  },
+  "results": {
+    "ok": true,
+    "phase": "results",
+    "worldHash": "fac9c64e",
+    "chatHash": "65d71bfe",
+    "results": [
+      {
+        "name": "Web",
+        "platform": "web",
+        "bot": false,
+        "score": 3,
+        "placed": 2,
+        "broken": 1,
+        "crafted": 0,
+        "kills": 0,
+        "deaths": 0
+      },
+      {
+        "name": "iOS",
+        "platform": "ios",
+        "bot": false,
+        "score": 3,
+        "placed": 2,
+        "broken": 1,
+        "crafted": 0,
+        "kills": 0,
+        "deaths": 0
+      },
+      {
+        "name": "Mac",
+        "platform": "macos",
+        "bot": false,
+        "score": 3,
+        "placed": 2,
+        "broken": 1,
+        "crafted": 0,
+        "kills": 0,
+        "deaths": 0
+      },
+      {
+        "name": "Bot Ashwick",
+        "platform": "bot",
+        "bot": true,
+        "score": 2,
+        "placed": 1,
+        "broken": 1,
+        "crafted": 0,
+        "kills": 0,
+        "deaths": 0
+      }
+    ],
+    "t": "drive_done",
+    "id": "d77",
+    "player": "Web",
+    "playerId": "p-000f6823"
+  },
+  "visual": [
+    {
+      "screen": "lobby",
+      "platform": "ios",
+      "baseline": "web",
+      "viewport": [
+        874,
+        402
+      ],
+      "sameViewport": false,
+      "nodes": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-lobby.layout.json",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-lobby.layout.json",
+        "tolerance_px": 2,
+        "reference_viewport": [
+          1280,
+          800
+        ],
+        "actual_viewport": [
+          874,
+          402
+        ],
+        "nodes": 137,
+        "matched": 0,
+        "exact": 0,
+        "within_tolerance": [],
+        "mismatched": [
+          {
+            "reference": {
+              "text": "Fixture world",
+              "x": 549,
+              "y": 18,
+              "w": 182,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Fixture world",
+              "x": 549,
+              "y": 18,
+              "w": 182,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Fixture world",
+              "x": 549,
+              "y": 18,
+              "w": 182,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Code: ",
+              "x": 345,
+              "y": 51,
+              "w": 76,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Code: ",
+              "x": 345,
+              "y": 51,
+              "w": 76,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Code: ",
+              "x": 345,
+              "y": 51,
+              "w": 76,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "FIXTR",
+              "x": 421,
+              "y": 51,
+              "w": 72,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "FIXTR",
+              "x": 421,
+              "y": 51,
+              "w": 72,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "FIXTR",
+              "x": 421,
+              "y": 51,
+              "w": 72,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  ·  Survival  ·  seed 1234  ·  5 in lobby",
+              "x": 493,
+              "y": 51,
+              "w": 442,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  ·  Survival  ·  seed 1234  ·  5 in lobby",
+              "x": 493,
+              "y": 51,
+              "w": 442,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  ·  Survival  ·  seed 1234  ·  5 in lobby",
+              "x": 493,
+              "y": 51,
+              "w": 442,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  ·  Survival  ·  seed 1234  ·  5 in lobby",
+              "x": 493,
+              "y": 51,
+              "w": 442,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Players",
+              "x": 72,
+              "y": 99,
+              "w": 507,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Players",
+              "x": 72,
+              "y": 99,
+              "w": 507,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Players",
+              "x": 72,
+              "y": 99,
+              "w": 507,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "W",
+              "x": 92,
+              "y": 165,
+              "w": 21,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "W",
+              "x": 92,
+              "y": 165,
+              "w": 21,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "W",
+              "x": 92,
+              "y": 165,
+              "w": 21,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 135,
+              "y": 150,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 135,
+              "y": 150,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 135,
+              "y": 150,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 135,
+              "y": 150,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " (you)",
+              "x": 279,
+              "y": 150,
+              "w": 75,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " (you)",
+              "x": 279,
+              "y": 150,
+              "w": 75,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " (you)",
+              "x": 279,
+              "y": 150,
+              "w": 75,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " host",
+              "x": 353,
+              "y": 150,
+              "w": 72,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " host",
+              "x": 353,
+              "y": 150,
+              "w": 72,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": " host",
+              "x": 353,
+              "y": 150,
+              "w": 72,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Web",
+              "x": 135,
+              "y": 180,
+              "w": 52,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Web",
+              "x": 135,
+              "y": 180,
+              "w": 52,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Web",
+              "x": 135,
+              "y": 180,
+              "w": 52,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Ready",
+              "x": 480,
+              "y": 165,
+              "w": 81,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Ready",
+              "x": 480,
+              "y": 165,
+              "w": 81,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Ready",
+              "x": 480,
+              "y": 165,
+              "w": 81,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "m",
+              "x": 92,
+              "y": 237,
+              "w": 21,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "m",
+              "x": 92,
+              "y": 237,
+              "w": 21,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "m",
+              "x": 92,
+              "y": 237,
+              "w": 21,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Desk Dweller",
+              "x": 135,
+              "y": 222,
+              "w": 166,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Desk Dweller",
+              "x": 135,
+              "y": 222,
+              "w": 166,
+              "h": 30
+            },
+            "actual": null
+          }
+        ],
+        "mismatched_count": 274,
+        "ok": false
+      },
+      "layout": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-lobby.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-lobby.layout.normalized.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-lobby.layout.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "layoutRaw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-lobby.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-lobby.layout.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-lobby.layout.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "raw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-lobby.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-lobby.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-lobby.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          2622,
+          1206
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      }
+    },
+    {
+      "screen": "lobby",
+      "platform": "macos",
+      "baseline": "web",
+      "viewport": [
+        1280,
+        800
+      ],
+      "sameViewport": true,
+      "nodes": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-lobby.layout.json",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-lobby.layout.json",
+        "tolerance_px": 2,
+        "reference_viewport": [
+          1280,
+          800
+        ],
+        "actual_viewport": [
+          1280,
+          800
+        ],
+        "nodes": 137,
+        "matched": 137,
+        "exact": 137,
+        "within_tolerance": [],
+        "mismatched": [],
+        "mismatched_count": 0,
+        "ok": true
+      },
+      "layout": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-lobby.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-lobby.layout.normalized.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-lobby.layout.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          1280,
+          800
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 0
+      },
+      "layoutRaw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-lobby.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-lobby.layout.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-lobby.layout.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          1280,
+          800
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 0
+      },
+      "raw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-lobby.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-lobby.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-lobby.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          1280,
+          800
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 742999
+      }
+    },
+    {
+      "screen": "results",
+      "platform": "ios",
+      "baseline": "web",
+      "viewport": [
+        874,
+        402
+      ],
+      "sameViewport": false,
+      "nodes": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-results.layout.json",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-results.layout.json",
+        "tolerance_px": 2,
+        "reference_viewport": [
+          1280,
+          800
+        ],
+        "actual_viewport": [
+          874,
+          402
+        ],
+        "nodes": 198,
+        "matched": 0,
+        "exact": 0,
+        "within_tolerance": [],
+        "mismatched": [
+          {
+            "reference": {
+              "text": "You lit the hearth brightest!",
+              "x": 252,
+              "y": 30,
+              "w": 776,
+              "h": 60
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "You lit the hearth brightest!",
+              "x": 252,
+              "y": 30,
+              "w": 776,
+              "h": 60
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "You lit the hearth brightest!",
+              "x": 252,
+              "y": 30,
+              "w": 776,
+              "h": 60
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Fixture world  ·  Survival  ·  seed 1234",
+              "x": 402,
+              "y": 96,
+              "w": 476,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Fixture world  ·  Survival  ·  seed 1234",
+              "x": 402,
+              "y": 96,
+              "w": 476,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Fixture world  ·  Survival  ·  seed 1234",
+              "x": 402,
+              "y": 96,
+              "w": 476,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Scoreboard",
+              "x": 33,
+              "y": 156,
+              "w": 893,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Scoreboard",
+              "x": 33,
+              "y": 156,
+              "w": 893,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Scoreboard",
+              "x": 33,
+              "y": 156,
+              "w": 893,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "#",
+              "x": 33,
+              "y": 198,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "#",
+              "x": 33,
+              "y": 198,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "#",
+              "x": 33,
+              "y": 198,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player",
+              "x": 69,
+              "y": 198,
+              "w": 305,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player",
+              "x": 69,
+              "y": 198,
+              "w": 305,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player",
+              "x": 69,
+              "y": 198,
+              "w": 305,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player",
+              "x": 69,
+              "y": 198,
+              "w": 305,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Placed",
+              "x": 374,
+              "y": 198,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Placed",
+              "x": 374,
+              "y": 198,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Placed",
+              "x": 374,
+              "y": 198,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Broken",
+              "x": 488,
+              "y": 198,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Broken",
+              "x": 488,
+              "y": 198,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Broken",
+              "x": 488,
+              "y": 198,
+              "w": 114,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Crafted",
+              "x": 602,
+              "y": 198,
+              "w": 132,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Crafted",
+              "x": 602,
+              "y": 198,
+              "w": 132,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Crafted",
+              "x": 602,
+              "y": 198,
+              "w": 132,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Kills",
+              "x": 734,
+              "y": 198,
+              "w": 90,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Kills",
+              "x": 734,
+              "y": 198,
+              "w": 90,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Kills",
+              "x": 734,
+              "y": 198,
+              "w": 90,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Score",
+              "x": 824,
+              "y": 198,
+              "w": 102,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Score",
+              "x": 824,
+              "y": 198,
+              "w": 102,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Score",
+              "x": 824,
+              "y": 198,
+              "w": 102,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "1",
+              "x": 33,
+              "y": 240,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "1",
+              "x": 33,
+              "y": 240,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "1",
+              "x": 33,
+              "y": 240,
+              "w": 36,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 69,
+              "y": 240,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 69,
+              "y": 240,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 69,
+              "y": 240,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Hearthling",
+              "x": 69,
+              "y": 240,
+              "w": 144,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  Web",
+              "x": 213,
+              "y": 240,
+              "w": 64,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "  Web",
+              "x": 213,
+              "y": 240,
+              "w": 64,
+              "h": 30
+            },
+            "actual": null
+          }
+        ],
+        "mismatched_count": 382,
+        "ok": false
+      },
+      "layout": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-results.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-results.layout.normalized.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-results.layout.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "layoutRaw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-results.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-results.layout.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-results.layout.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "raw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-results.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-results.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-results.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          2622,
+          1206
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      }
+    },
+    {
+      "screen": "results",
+      "platform": "macos",
+      "baseline": "web",
+      "viewport": [
+        1280,
+        800
+      ],
+      "sameViewport": true,
+      "nodes": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-results.layout.json",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-results.layout.json",
+        "tolerance_px": 2,
+        "reference_viewport": [
+          1280,
+          800
+        ],
+        "actual_viewport": [
+          1280,
+          800
+        ],
+        "nodes": 198,
+        "matched": 198,
+        "exact": 198,
+        "within_tolerance": [],
+        "mismatched": [],
+        "mismatched_count": 0,
+        "ok": true
+      },
+      "layout": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-results.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-results.layout.normalized.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-results.layout.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          1280,
+          800
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 0
+      },
+      "layoutRaw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-results.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-results.layout.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-results.layout.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          1280,
+          800
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 0
+      },
+      "raw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-results.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-results.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-results.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          1280,
+          800
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 893018
+      }
+    },
+    {
+      "screen": "home",
+      "platform": "ios",
+      "baseline": "web",
+      "viewport": [
+        874,
+        402
+      ],
+      "sameViewport": false,
+      "nodes": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-home.layout.json",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-home.layout.json",
+        "tolerance_px": 2,
+        "reference_viewport": [
+          1280,
+          800
+        ],
+        "actual_viewport": [
+          874,
+          402
+        ],
+        "nodes": 34,
+        "matched": 0,
+        "exact": 0,
+        "within_tolerance": [],
+        "mismatched": [
+          {
+            "reference": {
+              "text": "VOXELHEARTH",
+              "x": 367,
+              "y": 84,
+              "w": 546,
+              "h": 89
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "VOXELHEARTH",
+              "x": 367,
+              "y": 84,
+              "w": 546,
+              "h": 89
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "VOXELHEARTH",
+              "x": 367,
+              "y": 84,
+              "w": 546,
+              "h": 89
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "An original voxel sandbox",
+              "x": 476,
+              "y": 179,
+              "w": 328,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "An original voxel sandbox",
+              "x": 476,
+              "y": 179,
+              "w": 328,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "An original voxel sandbox",
+              "x": 476,
+              "y": 179,
+              "w": 328,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Keep the hearth lit!",
+              "x": 829,
+              "y": 211,
+              "w": 266,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Keep the hearth lit!",
+              "x": 829,
+              "y": 211,
+              "w": 266,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Keep the hearth lit!",
+              "x": 829,
+              "y": 211,
+              "w": 266,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Play Online",
+              "x": 573,
+              "y": 333,
+              "w": 134,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Play Online",
+              "x": 573,
+              "y": 333,
+              "w": 134,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Play Online",
+              "x": 573,
+              "y": 333,
+              "w": 134,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Create World",
+              "x": 552,
+              "y": 405,
+              "w": 176,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Create World",
+              "x": 552,
+              "y": 405,
+              "w": 176,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Create World",
+              "x": 552,
+              "y": 405,
+              "w": 176,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player Name: Hearthling",
+              "x": 481,
+              "y": 477,
+              "w": 317,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player Name: Hearthling",
+              "x": 481,
+              "y": 477,
+              "w": 317,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Player Name: Hearthling",
+              "x": 481,
+              "y": 477,
+              "w": 317,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Options...",
+              "x": 426,
+              "y": 585,
+              "w": 123,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Options...",
+              "x": 426,
+              "y": 585,
+              "w": 123,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Options...",
+              "x": 426,
+              "y": 585,
+              "w": 123,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "How to Play",
+              "x": 717,
+              "y": 585,
+              "w": 152,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "How to Play",
+              "x": 717,
+              "y": 585,
+              "w": 152,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "How to Play",
+              "x": 717,
+              "y": 585,
+              "w": 152,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Voxelhearth 1.0 · Web",
+              "x": 6,
+              "y": 764,
+              "w": 277,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Voxelhearth 1.0 · Web",
+              "x": 6,
+              "y": 764,
+              "w": 277,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Voxelhearth 1.0 · Web",
+              "x": 6,
+              "y": 764,
+              "w": 277,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Connected · 1 ms",
+              "x": 301,
+              "y": 764,
+              "w": 215,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Connected · 1 ms",
+              "x": 301,
+              "y": 764,
+              "w": 215,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Connected · 1 ms",
+              "x": 301,
+              "y": 764,
+              "w": 215,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Original game & art. Not affiliated with any other title.",
+              "x": 532,
+              "y": 764,
+              "w": 742,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Original game & art. Not affiliated with any other title.",
+              "x": 532,
+              "y": 764,
+              "w": 742,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Original game & art. Not affiliated with any other title.",
+              "x": 532,
+              "y": 764,
+              "w": 742,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Original game & art. Not affiliated with any other title.",
+              "x": 532,
+              "y": 764,
+              "w": 742,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "VOXELHEARTH",
+              "x": 255,
+              "y": 56,
+              "w": 364,
+              "h": 59
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "VOXELHEARTH",
+              "x": 255,
+              "y": 56,
+              "w": 364,
+              "h": 59
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "VOXELHEARTH",
+              "x": 255,
+              "y": 56,
+              "w": 364,
+              "h": 59
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "An original voxel sandbox",
+              "x": 327,
+              "y": 119,
+              "w": 221,
+              "h": 20
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "An original voxel sandbox",
+              "x": 327,
+              "y": 119,
+              "w": 221,
+              "h": 20
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "An original voxel sandbox",
+              "x": 327,
+              "y": 119,
+              "w": 221,
+              "h": 20
+            }
+          }
+        ],
+        "mismatched_count": 68,
+        "ok": false
+      },
+      "layout": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-home.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-home.layout.normalized.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-home.layout.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "layoutRaw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-home.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-home.layout.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-home.layout.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          874,
+          402
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      },
+      "raw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-home.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-home.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/ios-home.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          2622,
+          1206
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 1024000,
+        "error": "dimension mismatch"
+      }
+    },
+    {
+      "screen": "home",
+      "platform": "macos",
+      "baseline": "web",
+      "viewport": [
+        1280,
+        800
+      ],
+      "sameViewport": true,
+      "nodes": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-home.layout.json",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-home.layout.json",
+        "tolerance_px": 2,
+        "reference_viewport": [
+          1280,
+          800
+        ],
+        "actual_viewport": [
+          1280,
+          800
+        ],
+        "nodes": 34,
+        "matched": 25,
+        "exact": 25,
+        "within_tolerance": [],
+        "mismatched": [
+          {
+            "reference": {
+              "text": "Keep the hearth lit!",
+              "x": 829,
+              "y": 211,
+              "w": 266,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Keep the hearth lit!",
+              "x": 829,
+              "y": 211,
+              "w": 266,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Keep the hearth lit!",
+              "x": 829,
+              "y": 211,
+              "w": 266,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Voxelhearth 1.0 · Web",
+              "x": 6,
+              "y": 764,
+              "w": 277,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Voxelhearth 1.0 · Web",
+              "x": 6,
+              "y": 764,
+              "w": 277,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Voxelhearth 1.0 · Web",
+              "x": 6,
+              "y": 764,
+              "w": 277,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Connected · 1 ms",
+              "x": 301,
+              "y": 764,
+              "w": 215,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Connected · 1 ms",
+              "x": 301,
+              "y": 764,
+              "w": 215,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": {
+              "text": "Connected · 1 ms",
+              "x": 301,
+              "y": 764,
+              "w": 215,
+              "h": 30
+            },
+            "actual": null
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Keep the hearth lit!",
+              "x": 832,
+              "y": 211,
+              "w": 266,
+              "h": 30
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Keep the hearth lit!",
+              "x": 832,
+              "y": 211,
+              "w": 266,
+              "h": 30
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Keep the hearth lit!",
+              "x": 832,
+              "y": 211,
+              "w": 266,
+              "h": 30
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Voxelhearth 1.0 · macOS",
+              "x": 6,
+              "y": 764,
+              "w": 310,
+              "h": 30
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Voxelhearth 1.0 · macOS",
+              "x": 6,
+              "y": 764,
+              "w": 310,
+              "h": 30
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Voxelhearth 1.0 · macOS",
+              "x": 6,
+              "y": 764,
+              "w": 310,
+              "h": 30
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Connected · 1 ms",
+              "x": 334,
+              "y": 764,
+              "w": 215,
+              "h": 30
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Connected · 1 ms",
+              "x": 334,
+              "y": 764,
+              "w": 215,
+              "h": 30
+            }
+          },
+          {
+            "reference": null,
+            "actual": {
+              "text": "Connected · 1 ms",
+              "x": 334,
+              "y": 764,
+              "w": 215,
+              "h": 30
+            }
+          }
+        ],
+        "mismatched_count": 18,
+        "ok": false
+      },
+      "layout": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-home.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-home.layout.normalized.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-home.layout.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          1280,
+          800
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 11010
+      },
+      "layoutRaw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-home.layout.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-home.layout.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-home.layout.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          1280,
+          800
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 10500
+      },
+      "raw": {
+        "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/web-home.png",
+        "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-home.png",
+        "diff": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/visual/macos-home.raw.diff.png",
+        "reference_size": [
+          1280,
+          800
+        ],
+        "actual_size": [
+          1280,
+          800
+        ],
+        "total_pixels": 1024000,
+        "different_pixels": 690160
+      }
+    }
+  ],
+  "recordingLayout": [
+    "web",
+    "ios",
+    "macos"
+  ],
+  "recording": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/four-way-recording.mp4",
+  "markers": [
+    {
+      "frame": 0,
+      "title": "Join & Lobby",
+      "caption": "Every client joins the same room by code and readies up",
+      "notes": [
+        "room HEARTH · seed 1234",
+        "Web on web",
+        "iOS on ios",
+        "Mac on macos"
+      ]
+    },
+    {
+      "frame": 4,
+      "title": "Gameplay",
+      "caption": "Match starts: frozen noon, deterministic world, one server bot",
+      "notes": [
+        "lobby → playing on every client"
+      ]
+    },
+    {
+      "frame": 6,
+      "title": "Shared structure",
+      "caption": "Each client places two stone blocks in one shared row",
+      "notes": [
+        "cells [[41,34,45],[42,34,45],[40,34,45]]",
+        "placed on the server, echoed to every client"
+      ]
+    },
+    {
+      "frame": 12,
+      "title": "Breaking & chat",
+      "caption": "Each client breaks the block placed by the next one, then chats",
+      "notes": [
+        "round-robin break",
+        "chat history compared on every client"
+      ]
+    },
+    {
+      "frame": 18,
+      "title": "Reconnect",
+      "caption": "Web drops its socket mid-match and rejoins with its session token",
+      "notes": [
+        "same room, same identity, converged state"
+      ]
+    },
+    {
+      "frame": 20,
+      "title": "Verification",
+      "caption": "World, chat and structure hashes compared across clients and server",
+      "notes": [
+        "director hash request → every client answers"
+      ]
+    },
+    {
+      "frame": 20,
+      "title": "Results",
+      "caption": "Host ends the match: identical scoreboard and fingerprints everywhere",
+      "notes": []
+    },
+    {
+      "frame": 23,
+      "title": "Visual parity fixtures",
+      "caption": "Every client renders identical fixture data; web is the layout baseline",
+      "notes": [
+        "lobby, results, home fixtures",
+        "text/icon nodes compared within 2 logical px"
+      ]
+    }
+  ],
+  "reviewVideo": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082851/review-video.mp4",
+  "finishedAt": "2026-09-10T15:31:53.207Z",
+  "passed": true
+}

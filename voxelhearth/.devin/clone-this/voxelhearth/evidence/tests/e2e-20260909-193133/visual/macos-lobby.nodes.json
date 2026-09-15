@@ -1,0 +1,53 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-193133/visual/web-lobby.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-193133/visual/macos-lobby.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  1280,
+  800
+ ],
+ "nodes": 110,
+ "matched": 110,
+ "exact": 108,
+ "within_tolerance": [
+  {
+   "text": "Fixture world",
+   "reference": [
+    80,
+    12,
+    168,
+    34
+   ],
+   "actual": [
+    80,
+    12,
+    167,
+    34
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "Fixture world",
+   "reference": [
+    80,
+    12,
+    168,
+    34
+   ],
+   "actual": [
+    80,
+    12,
+    167,
+    34
+   ],
+   "delta_px": 1
+  }
+ ],
+ "mismatched": [],
+ "mismatched_count": 0,
+ "ok": true
+}

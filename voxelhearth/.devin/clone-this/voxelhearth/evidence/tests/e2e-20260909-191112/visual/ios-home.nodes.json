@@ -1,0 +1,421 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-191112/visual/web-home.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-191112/visual/ios-home.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  402,
+  874
+ ],
+ "nodes": 69,
+ "matched": 0,
+ "exact": 0,
+ "within_tolerance": [],
+ "mismatched": [
+  {
+   "reference": {
+    "text": "",
+    "x": 25,
+    "y": 21,
+    "w": 14,
+    "h": 14
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Web",
+    "x": 43,
+    "y": 20,
+    "w": 24,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Web",
+    "x": 43,
+    "y": 20,
+    "w": 24,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 1200,
+    "y": 16,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "󰉘",
+    "x": 1240,
+    "y": 16,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Voxelhearth",
+    "x": 108,
+    "y": 64,
+    "w": 284,
+    "h": 48
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Voxelhearth",
+    "x": 108,
+    "y": 64,
+    "w": 284,
+    "h": 48
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Gather. Build. Keep the hearth lit through the night — together, on any device.",
+    "x": 50,
+    "y": 120,
+    "w": 522,
+    "h": 44
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Gather. Build. Keep the hearth lit through the night — together, on any device.",
+    "x": 50,
+    "y": 120,
+    "w": 522,
+    "h": 44
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "YOUR NAME",
+    "x": 74,
+    "y": 212,
+    "w": 474,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "YOUR NAME",
+    "x": 74,
+    "y": 212,
+    "w": 474,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "YOUR NAME",
+    "x": 74,
+    "y": 212,
+    "w": 474,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Wanderer",
+    "x": 126,
+    "y": 252,
+    "w": 402,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Wanderer",
+    "x": 126,
+    "y": 252,
+    "w": 402,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "󰁬",
+    "x": 86,
+    "y": 249,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "󰛖",
+    "x": 245,
+    "y": 317,
+    "w": 18,
+    "h": 18
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Create a world",
+    "x": 271,
+    "y": 317,
+    "w": 106,
+    "h": 19
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Create a world",
+    "x": 271,
+    "y": 317,
+    "w": 106,
+    "h": 19
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Create a world",
+    "x": 271,
+    "y": 317,
+    "w": 106,
+    "h": 19
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "JOIN WITH A CODE",
+    "x": 74,
+    "y": 366,
+    "w": 474,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "JOIN WITH A CODE",
+    "x": 74,
+    "y": 366,
+    "w": 474,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "JOIN WITH A CODE",
+    "x": 74,
+    "y": 366,
+    "w": 474,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "ABCDE",
+    "x": 126,
+    "y": 407,
+    "w": 324,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "ABCDE",
+    "x": 126,
+    "y": 407,
+    "w": 324,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "󰍃",
+    "x": 86,
+    "y": 404,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Join",
+    "x": 498,
+    "y": 407,
+    "w": 30,
+    "h": 19
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Join",
+    "x": 498,
+    "y": 407,
+    "w": 30,
+    "h": 19
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 74,
+    "y": 460,
+    "w": 18,
+    "h": 18
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Server",
+    "x": 96,
+    "y": 461,
+    "w": 40,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Server",
+    "x": 96,
+    "y": 461,
+    "w": 40,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Connected · 4 ms",
+    "x": 452,
+    "y": 461,
+    "w": 96,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Connected · 4 ms",
+    "x": 452,
+    "y": 461,
+    "w": 96,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "HOW TO PLAY",
+    "x": 74,
+    "y": 548,
+    "w": 474,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "HOW TO PLAY",
+    "x": 74,
+    "y": 548,
+    "w": 474,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "HOW TO PLAY",
+    "x": 74,
+    "y": 548,
+    "w": 474,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 74,
+    "y": 578,
+    "w": 20,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Look around",
+    "x": 106,
+    "y": 578,
+    "w": 80,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Look around",
+    "x": 106,
+    "y": 578,
+    "w": 80,
+    "h": 20
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Drag or move the mouse · touch-drag on phones",
+    "x": 106,
+    "y": 598,
+    "w": 273,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Drag or move the mouse · touch-drag on phones",
+    "x": 106,
+    "y": 598,
+    "w": 273,
+    "h": 16
+   },
+   "actual": null
+  }
+ ],
+ "mismatched_count": 138,
+ "ok": false
+}

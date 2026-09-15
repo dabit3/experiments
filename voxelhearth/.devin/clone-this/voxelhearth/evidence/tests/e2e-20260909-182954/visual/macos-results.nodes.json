@@ -1,0 +1,277 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-182954/visual/web-results.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-182954/visual/macos-results.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  1280,
+  800
+ ],
+ "nodes": 158,
+ "matched": 158,
+ "exact": 142,
+ "within_tolerance": [
+  {
+   "text": "You lit the hearth brightest",
+   "reference": [
+    386,
+    88,
+    508,
+    44
+   ],
+   "actual": [
+    387,
+    88,
+    506,
+    44
+   ],
+   "delta_px": 2
+  },
+  {
+   "text": "You lit the hearth brightest",
+   "reference": [
+    386,
+    88,
+    508,
+    44
+   ],
+   "actual": [
+    387,
+    88,
+    506,
+    44
+   ],
+   "delta_px": 2
+  },
+  {
+   "text": "Scoreboard",
+   "reference": [
+    137,
+    197,
+    114,
+    25
+   ],
+   "actual": [
+    137,
+    197,
+    113,
+    25
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "Scoreboard",
+   "reference": [
+    137,
+    197,
+    114,
+    25
+   ],
+   "actual": [
+    137,
+    197,
+    113,
+    25
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "Shared world",
+   "reference": [
+    767,
+    197,
+    106,
+    24
+   ],
+   "actual": [
+    767,
+    197,
+    105,
+    24
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "Shared world",
+   "reference": [
+    767,
+    197,
+    106,
+    24
+   ],
+   "actual": [
+    767,
+    197,
+    105,
+    24
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "World edits",
+   "reference": [
+    767,
+    234,
+    308,
+    16
+   ],
+   "actual": [
+    767,
+    234,
+    307,
+    16
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "World edits",
+   "reference": [
+    767,
+    234,
+    308,
+    16
+   ],
+   "actual": [
+    767,
+    234,
+    307,
+    16
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "World edits",
+   "reference": [
+    767,
+    234,
+    308,
+    16
+   ],
+   "actual": [
+    767,
+    234,
+    307,
+    16
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "f1x7ur3d",
+   "reference": [
+    1083,
+    233,
+    52,
+    17
+   ],
+   "actual": [
+    1082,
+    233,
+    53,
+    17
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "f1x7ur3d",
+   "reference": [
+    1083,
+    233,
+    52,
+    17
+   ],
+   "actual": [
+    1082,
+    233,
+    53,
+    17
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "Chat history",
+   "reference": [
+    767,
+    265,
+    306,
+    16
+   ],
+   "actual": [
+    767,
+    265,
+    305,
+    16
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "Chat history",
+   "reference": [
+    767,
+    265,
+    306,
+    16
+   ],
+   "actual": [
+    767,
+    265,
+    305,
+    16
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "Chat history",
+   "reference": [
+    767,
+    265,
+    306,
+    16
+   ],
+   "actual": [
+    767,
+    265,
+    305,
+    16
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "c4a7f1x7",
+   "reference": [
+    1081,
+    264,
+    54,
+    17
+   ],
+   "actual": [
+    1080,
+    264,
+    55,
+    17
+   ],
+   "delta_px": 1
+  },
+  {
+   "text": "c4a7f1x7",
+   "reference": [
+    1081,
+    264,
+    54,
+    17
+   ],
+   "actual": [
+    1080,
+    264,
+    55,
+    17
+   ],
+   "delta_px": 1
+  }
+ ],
+ "mismatched": [],
+ "mismatched_count": 0,
+ "ok": true
+}

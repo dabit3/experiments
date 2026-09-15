@@ -1,0 +1,276 @@
+{
+ "sweep": 7,
+ "revision": "sha256:3b6df07fc2b5f62efab566427037ee8c37e88f116eb167e2e9710e86e1bfdc6d",
+ "captured_at": "2026-09-11T04:21:11.804841+00:00",
+ "git_head": "af9795db2995005bd536a54661536fdfc0dad74b",
+ "e2e_run": "evidence/tests/e2e-arcade-trio-af9795d-isolated",
+ "files_inspected": 39,
+ "audit_ids": [
+  "source",
+  "navigation",
+  "roles",
+  "states",
+  "responsive",
+  "data",
+  "assets",
+  "accessibility",
+  "reliability",
+  "rebrand"
+ ],
+ "new_items": 0,
+ "frontier_empty": true,
+ "audits": {
+  "source": {
+   "reference": "public documentation only (commercial title; not runnable here)",
+   "documented_facts": [
+    "S-01",
+    "S-02",
+    "S-03",
+    "S-04",
+    "S-05",
+    "S-06",
+    "S-07",
+    "S-08",
+    "S-09",
+    "S-10",
+    "S-11",
+    "S-12"
+   ],
+   "urls": [
+    "https://minecraft.wiki/w/Gameplay"
+   ],
+   "reference_changed_during_run": false,
+   "new_requirements": []
+  },
+  "navigation": {
+   "screens": [
+    "game_screen",
+    "home_screen",
+    "lobby_screen",
+    "results_screen"
+   ],
+   "overlays": [
+    "arcade",
+    "chat_panel",
+    "hud",
+    "inventory_ui",
+    "pixel",
+    "settings_sheet",
+    "theme",
+    "touch_controls"
+   ],
+   "director_actions": [],
+   "flows_checked": [
+    "home->create->lobby->game->results->lobby",
+    "home->join code->lobby",
+    "game->pause->options",
+    "game->inventory/crafting",
+    "reconnect->rejoin room"
+   ],
+   "e2e_checks_passed": [
+    "all players in one lobby",
+    "found a flat row for the shared structure",
+    "dropped client rejoined the same room",
+    "every client answered the hash request",
+    "world hash identical on all clients + server",
+    "chat hash identical on all clients + server",
+    "structure region identical on all clients",
+    "server structure matches script (lower row placed, upper row broken)",
+    "chat history identical on all clients",
+    "every player line present in chat",
+    "server is in results phase",
+    "final scoreboard identical on all clients",
+    "final world/chat fingerprints identical on all clients",
+    "final world/chat fingerprints match server",
+    "scoreboard credits 2 placed + 1 broken per player",
+    "visual layout parity web\u2192macos (lobby)",
+    "visual layout parity web\u2192macos (results)"
+   ],
+   "e2e_checks_failed": [],
+   "new_requirements": []
+  },
+  "roles": {
+   "identity_model": "display name + deterministic player id; no accounts (source has no per-room roles beyond host/op)",
+   "host_gated_actions_found": 24,
+   "sample": [
+    "app/lib/net/game_client.dart:100: String? hostId;",
+    "app/lib/net/game_client.dart:122: bool get isHost => hostId == youId;",
+    "app/lib/net/game_client.dart:525: s.hostId = m['host'] as String?;",
+    "app/lib/net/game_client.dart:552: s.hostId = m['host'] as String? ?? s.hostId;",
+    "app/lib/shell.dart:295: ..hostId = 'fx-1'",
+    "app/lib/ui/hud.dart:538: p.name + (p.id == sess.hostId ? ' (host)' : ''),",
+    "app/lib/ui/hud.dart:648: final isHost = sess.hostId == sess.youId;",
+    "app/lib/ui/hud.dart:681: if (isHost) ...["
+   ],
+   "new_requirements": []
+  },
+  "states": {
+   "empty_loading_error_widgets": 27,
+   "toasts_snackbars": 20,
+   "keyboard_shortcuts": 20,
+   "e2e_state_transitions": [
+    "lobby ready toggles",
+    "match start",
+    "block place/break",
+    "chat send",
+    "web disconnect+rejoin",
+    "match end -> results"
+   ],
+   "new_requirements": []
+  },
+  "responsive": {
+   "gui_scale": "integer 2-4 from min(width/320, height/240) (app/lib/ui/pixel.dart)",
+   "form_factors": [
+    "phone landscape (iOS sim 874x402 logical)",
+    "desktop/web 1280x800"
+   ],
+   "orientation": "mobile locked to landscape (main.dart, Info.plist, AndroidManifest.xml)",
+   "visual_matrix": [
+    {
+     "screen": "lobby",
+     "platform": "ios",
+     "sameViewport": false,
+     "nodes": "0/120",
+     "note": null
+    },
+    {
+     "screen": "lobby",
+     "platform": "macos",
+     "sameViewport": true,
+     "nodes": "120/120",
+     "note": null
+    },
+    {
+     "screen": "results",
+     "platform": "ios",
+     "sameViewport": false,
+     "nodes": "0/196",
+     "note": null
+    },
+    {
+     "screen": "results",
+     "platform": "macos",
+     "sameViewport": true,
+     "nodes": "196/196",
+     "note": null
+    },
+    {
+     "screen": "home",
+     "platform": "ios",
+     "sameViewport": false,
+     "nodes": "0/28",
+     "note": null
+    },
+    {
+     "screen": "home",
+     "platform": "macos",
+     "sameViewport": true,
+     "nodes": "19/28",
+     "note": null
+    }
+   ],
+   "design_pass": "evidence/tests/design-pass/DESIGN-PASS.md",
+   "new_requirements": []
+  },
+  "data": {
+   "persistence": "server saves/<room>.json (world diff, inventories, containers, chat); clients keep settings in SharedPreferences",
+   "e2e_saves": [
+    "HEARTH.json"
+   ],
+   "hash_checks": [
+    "missing=[]",
+    "{\"server\":\"eaaa9c81\",\"clients\":{\"Web\":\"eaaa9c81\",\"iOS\":\"eaaa9c81\",\"Mac\":\"eaaa9c81\"}}",
+    "{\"server\":\"65d71bfe\",\"clients\":{\"Web\":\"65d71bfe\",\"iOS\":\"65d71bfe\",\"Mac\":\"65d71bfe\"}}",
+    "[\"eaaa9c81\",\"aafaf3a7\"]",
+    "{\"client\":[\"eaaa9c81\",\"aafaf3a7\"],\"server\":[\"eaaa9c81\",\"aafaf3a7\"]}"
+   ],
+   "integrations": "none external (local WebSocket server only)",
+   "new_requirements": []
+  },
+  "assets": {
+   "fonts": [
+    "Fraunces-Variable.ttf",
+    "OFL-Fraunces.txt",
+    "OFL-Outfit.txt",
+    "OFL-PixelifySans.txt",
+    "Outfit-Variable.ttf",
+    "PixelifySans-Variable.ttf"
+   ],
+   "font_licenses_present": [
+    "OFL-Fraunces.txt",
+    "OFL-Outfit.txt",
+    "OFL-PixelifySans.txt"
+   ],
+   "ui_font": "Outfit (OFL) for arcade headings/buttons; Pixelify Sans (OFL) for the pixel HUD",
+   "textures": "procedural original atlas (app/lib/game/atlas.dart)",
+   "key_art": "app/assets/hearth-keyart.png: original generated promotional illustration",
+   "audio": [
+    "break_hard.wav",
+    "break_soft.wav",
+    "chat.wav",
+    "craft.wav",
+    "dig.wav",
+    "eat.wav",
+    "hurt.wav",
+    "match_end.wav",
+    "match_start.wav",
+    "night.wav",
+    "pickup.wav",
+    "place.wav",
+    "ready.wav",
+    "sleep.wav",
+    "smelt.wav",
+    "splash.wav",
+    "ui_back.wav",
+    "ui_confirm.wav",
+    "ui_tap.wav"
+   ],
+   "icons": "generated by tools/gen_icons.py (original mark)",
+   "new_requirements": []
+  },
+  "accessibility": {
+   "tooltips": 2,
+   "semantics": 12,
+   "compact_menu_button_logical_px": 40,
+   "touch_button_logical_px": [
+    60,
+    64
+   ],
+   "keyboard_paths": "home form, lobby chat, hotbar 1-9, E/T/Esc/Tab in game",
+   "new_requirements": []
+  },
+  "reliability": {
+   "e2e_passed": true,
+   "e2e_error_lines": [],
+   "fps_samples": {
+    "Web": 20,
+    "iOS": 31,
+    "Mac": 48
+   },
+   "review_video": null,
+   "known_environment_issues": [
+    "Android emulator cannot boot on this host (HVF unsupported) - blocker",
+    "software-rendered host: web fps below 60 - blocker"
+   ],
+   "new_requirements": []
+  },
+  "rebrand": {
+   "trademark_hits_in_clone": [],
+   "product_name_sites": {
+    "web_title": [
+     "app/web/index.html:33: <title>Voxelhearth</title>"
+    ],
+    "ios_display_name": [
+     "app/ios/Runner/Info.plist:15: <string>Voxelhearth</string>"
+    ],
+    "android_label": [
+     "app/android/app/src/main/AndroidManifest.xml:4: android:label=\"Voxelhearth\""
+    ],
+    "macos_product": [
+     "app/macos/Runner/Configs/AppInfo.xcconfig:8: PRODUCT_NAME = Voxelhearth"
+    ]
+   },
+   "new_requirements": []
+  }
+ }
+}

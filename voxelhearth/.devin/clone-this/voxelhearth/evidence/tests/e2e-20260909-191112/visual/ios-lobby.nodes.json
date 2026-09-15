@@ -1,0 +1,421 @@
+{
+ "reference": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-191112/visual/web-lobby.layout.json",
+ "actual": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260909-191112/visual/ios-lobby.layout.json",
+ "tolerance_px": 2,
+ "reference_viewport": [
+  1280,
+  800
+ ],
+ "actual_viewport": [
+  402,
+  874
+ ],
+ "nodes": 110,
+ "matched": 0,
+ "exact": 0,
+ "within_tolerance": [],
+ "mismatched": [
+  {
+   "reference": {
+    "text": "",
+    "x": 40,
+    "y": 25,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Fixture world",
+    "x": 80,
+    "y": 12,
+    "w": 168,
+    "h": 34
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Fixture world",
+    "x": 80,
+    "y": 12,
+    "w": 168,
+    "h": 34
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Survival · seed 1234 · 5 in lobby",
+    "x": 80,
+    "y": 46,
+    "w": 170,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Survival · seed 1234 · 5 in lobby",
+    "x": 80,
+    "y": 46,
+    "w": 170,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "FIXTR",
+    "x": 1083,
+    "y": 23,
+    "w": 83,
+    "h": 29
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "FIXTR",
+    "x": 1083,
+    "y": 23,
+    "w": 83,
+    "h": 29
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 1174,
+    "y": 29,
+    "w": 16,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "󰉘",
+    "x": 1216,
+    "y": 25,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Players",
+    "x": 74,
+    "y": 112,
+    "w": 499,
+    "h": 29
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Players",
+    "x": 74,
+    "y": 112,
+    "w": 499,
+    "h": 29
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Players",
+    "x": 74,
+    "y": 112,
+    "w": 499,
+    "h": 29
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 581,
+    "y": 114,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 625,
+    "y": 114,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 95,
+    "y": 175,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 139,
+    "y": 167,
+    "w": 79,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 139,
+    "y": 167,
+    "w": 79,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Hearthling",
+    "x": 139,
+    "y": 167,
+    "w": 79,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "you",
+    "x": 224,
+    "y": 171,
+    "w": 20,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "you",
+    "x": 224,
+    "y": 171,
+    "w": 20,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 250,
+    "y": 171,
+    "w": 16,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Web",
+    "x": 139,
+    "y": 191,
+    "w": 26,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Web",
+    "x": 139,
+    "y": 191,
+    "w": 26,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 620,
+    "y": 175,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 94,
+    "y": 240,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Desk Dweller",
+    "x": 138,
+    "y": 232,
+    "w": 97,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Desk Dweller",
+    "x": 138,
+    "y": 232,
+    "w": 97,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Desk Dweller",
+    "x": 138,
+    "y": 232,
+    "w": 97,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "macOS",
+    "x": 138,
+    "y": 256,
+    "w": 41,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "macOS",
+    "x": 138,
+    "y": 256,
+    "w": 41,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 621,
+    "y": 240,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 94,
+    "y": 304,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Droid Delver",
+    "x": 138,
+    "y": 296,
+    "w": 93,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Droid Delver",
+    "x": 138,
+    "y": 296,
+    "w": 93,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Droid Delver",
+    "x": 138,
+    "y": 296,
+    "w": 93,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Android",
+    "x": 138,
+    "y": 320,
+    "w": 46,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Android",
+    "x": 138,
+    "y": 320,
+    "w": 46,
+    "h": 16
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "",
+    "x": 621,
+    "y": 304,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "󰁿",
+    "x": 94,
+    "y": 368,
+    "w": 24,
+    "h": 24
+   },
+   "actual": null
+  },
+  {
+   "reference": {
+    "text": "Pocket Pioneer",
+    "x": 138,
+    "y": 360,
+    "w": 110,
+    "h": 24
+   },
+   "actual": null
+  }
+ ],
+ "mismatched_count": 220,
+ "ok": false
+}

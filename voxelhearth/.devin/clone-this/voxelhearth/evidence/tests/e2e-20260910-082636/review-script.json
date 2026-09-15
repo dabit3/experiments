@@ -1,0 +1,142 @@
+{
+  "title": "Voxelhearth · Web × iOS multiplayer",
+  "subtitle": "Automated e2e · room HEARTH · seed 1234 · 2026-09-10 15:27:15Z",
+  "footer": "PASSED · 14/14 checks · evidence e2e-20260910-082636",
+  "fps": 0.8333333333333334,
+  "sources": {
+    "web": {
+      "frames": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082636/frames/web",
+      "label": "Web (Chrome via Playwright)"
+    },
+    "ios": {
+      "frames": "/Users/devin/repos/experiments/voxelhearth/.devin/clone-this/voxelhearth/evidence/tests/e2e-20260910-082636/frames/ios",
+      "label": "iOS Simulator"
+    }
+  },
+  "chapters": [
+    {
+      "title": "Join & Lobby",
+      "caption": "Every client joins the same room by code and readies up",
+      "notes": [
+        "room HEARTH · seed 1234",
+        "Web on web",
+        "iOS on ios"
+      ],
+      "from": 0,
+      "to": 3
+    },
+    {
+      "title": "Gameplay",
+      "caption": "Match starts: frozen noon, deterministic world, one server bot",
+      "notes": [
+        "lobby → playing on every client"
+      ],
+      "from": 3,
+      "to": 5
+    },
+    {
+      "title": "Shared structure",
+      "caption": "Each client places two stone blocks in one shared row",
+      "notes": [
+        "cells [[41,34,45],[42,34,45]]",
+        "placed on the server, echoed to every client"
+      ],
+      "from": 5,
+      "to": 10
+    },
+    {
+      "title": "Breaking & chat",
+      "caption": "Each client breaks the block placed by the next one, then chats",
+      "notes": [
+        "round-robin break",
+        "chat history compared on every client"
+      ],
+      "from": 10,
+      "to": 16
+    },
+    {
+      "title": "Reconnect",
+      "caption": "Web drops its socket mid-match and rejoins with its session token",
+      "notes": [
+        "same room, same identity, converged state"
+      ],
+      "from": 16,
+      "to": 18
+    },
+    {
+      "title": "Results",
+      "caption": "Host ends the match: identical scoreboard and fingerprints everywhere",
+      "notes": [],
+      "from": 18,
+      "to": 20
+    },
+    {
+      "title": "Visual parity fixtures",
+      "caption": "Every client renders identical fixture data; web is the layout baseline",
+      "notes": [
+        "lobby, results, home fixtures",
+        "text/icon nodes compared within 2 logical px"
+      ],
+      "from": 20,
+      "to": 28
+    }
+  ],
+  "checks": [
+    {
+      "name": "all players in one lobby",
+      "ok": true
+    },
+    {
+      "name": "found a flat row for the shared structure",
+      "ok": true
+    },
+    {
+      "name": "dropped client rejoined the same room",
+      "ok": true
+    },
+    {
+      "name": "every client answered the hash request",
+      "ok": true
+    },
+    {
+      "name": "world hash identical on all clients + server",
+      "ok": true
+    },
+    {
+      "name": "chat hash identical on all clients + server",
+      "ok": true
+    },
+    {
+      "name": "structure region identical on all clients",
+      "ok": true
+    },
+    {
+      "name": "server structure matches script (lower row placed, upper row broken)",
+      "ok": true
+    },
+    {
+      "name": "chat history identical on all clients",
+      "ok": true
+    },
+    {
+      "name": "every player line present in chat",
+      "ok": true
+    },
+    {
+      "name": "final scoreboard identical on all clients",
+      "ok": true
+    },
+    {
+      "name": "final world/chat fingerprints identical on all clients",
+      "ok": true
+    },
+    {
+      "name": "final world/chat fingerprints match server",
+      "ok": true
+    },
+    {
+      "name": "scoreboard credits 2 placed + 1 broken per player",
+      "ok": true
+    }
+  ]
+}
