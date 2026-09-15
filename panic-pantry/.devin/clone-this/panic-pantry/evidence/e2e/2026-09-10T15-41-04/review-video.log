@@ -1,0 +1,26 @@
+2026-09-10T15:51:03.540Z e2e run: .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04 (PASS), smoke: .devin/clone-this/panic-pantry/evidence/tests/ui-smoke, recording: .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov
+2026-09-10T15:51:03.850Z segment seg-001.mp4 title 4s — Title
+2026-09-10T15:51:04.178Z segment seg-002.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov @27.2s +6.0s — 4 clients joined room E2E4
+2026-09-10T15:51:04.408Z segment seg-003.mp4 board 4s — Lobby board
+2026-09-10T15:51:04.900Z segment seg-004.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov @35.4s +7.0s — Match started — countdown, then the scripted shift
+2026-09-10T15:51:05.437Z segment seg-005.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov @57.0s +6.0s — Mid-match: every client at tick 511, score 36
+2026-09-10T15:51:05.720Z segment seg-006.mp4 board 4s — Gameplay board
+2026-09-10T15:51:06.305Z segment seg-007.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov @88.1s +6.0s — Late shift — combos, tips and expiring tickets
+2026-09-10T15:51:06.875Z segment seg-008.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/four-way-match.mov @188.8s +7.0s — Time's up — results on all four clients
+2026-09-10T15:51:07.111Z segment seg-009.mp4 board 4s — Results board
+2026-09-10T15:51:07.466Z segment seg-010.mp4 assertion 6s — Assertion table
+2026-09-10T15:51:07.754Z segment seg-011.mp4 title 3s — Browser smoke title
+2026-09-10T15:51:07.976Z segment seg-012.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @0.9s +2.8s — auto-host lands in lobby
+2026-09-10T15:51:08.209Z segment seg-013.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @4.2s +2.8s — leave returns to home
+2026-09-10T15:51:08.423Z segment seg-014.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @4.2s +2.8s — empty room is closed on leave
+2026-09-10T15:51:08.630Z segment seg-015.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @6.2s +2.8s — how-to-play sheet keeps the home route underneath
+2026-09-10T15:51:08.837Z segment seg-016.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @7.6s +2.8s — joining a missing room stays on home with an error
+2026-09-10T15:51:09.032Z segment seg-017.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @8.4s +2.8s — joining a full room is rejected
+2026-09-10T15:51:09.249Z segment seg-018.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @14.1s +2.8s — host from home opens a lobby on the requested level
+2026-09-10T15:51:09.448Z segment seg-019.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @16.8s +2.8s — second leave returns to home
+2026-09-10T15:51:09.644Z segment seg-020.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @16.8s +2.8s — web console has no errors
+2026-09-10T15:51:09.903Z segment seg-021.mp4 assertion 5s — Smoke checks
+2026-09-10T15:51:10.191Z segment seg-022.mp4 verdict 5s — Verdict
+2026-09-10T15:51:10.259Z wrote .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/review-video.mp4 (92.4s, 22 segments)
+2026-09-10T15:51:10.905Z wrote .devin/clone-this/panic-pantry/evidence/e2e/2026-09-10T15-41-04/review-video.gif (4x speed preview)
+2026-09-10T15:51:10.905Z done

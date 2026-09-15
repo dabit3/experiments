@@ -1,0 +1,40 @@
+Resolving dependencies...
+Downloading packages...
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+4 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/devin/repos/experiments/panic-pantry/app/test/arcade_layout_test.dart
+00:00 +0: tablet touch clock stays at the right safe edge
+══╡ EXCEPTION CAUGHT BY FLUTTER TEST FRAMEWORK ╞════════════════════════════════════════════════════
+The following TestFailure was thrown running a test:
+Expected: a numeric value within <0.1> of <1012>
+  Actual: <643.5999984741211>
+   Which:  differs by <368.4000015258789>
+
+When the exception was thrown, this was the stack:
+#4      main.<anonymous closure> (file:///Users/devin/repos/experiments/panic-pantry/app/test/arcade_layout_test.dart:101:5)
+<asynchronous suspension>
+#5      testWidgets.<anonymous closure>.<anonymous closure> (package:flutter_test/src/widget_tester.dart:192:15)
+<asynchronous suspension>
+#6      TestWidgetsFlutterBinding._runTestBody (package:flutter_test/src/binding.dart:1953:5)
+<asynchronous suspension>
+<asynchronous suspension>
+(elided one frame from package:stack_trace)
+
+This was caught by the test expectation on the following line:
+  file:///Users/devin/repos/experiments/panic-pantry/app/test/arcade_layout_test.dart line 101
+The test description was:
+  tablet touch clock stays at the right safe edge
+════════════════════════════════════════════════════════════════════════════════════════════════════
+00:00 +0 -1: tablet touch clock stays at the right safe edge [E]
+  Test failed. See exception logs above.
+  The test description was: tablet touch clock stays at the right safe edge
+  
+00:00 +0 -1: Some tests failed.
+
+Failing tests:
+  /Users/devin/repos/experiments/panic-pantry/app/test/arcade_layout_test.dart: tablet touch clock stays at the right safe edge

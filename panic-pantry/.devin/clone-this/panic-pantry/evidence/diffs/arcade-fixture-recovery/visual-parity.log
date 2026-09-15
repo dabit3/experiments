@@ -1,0 +1,39 @@
+[   0.9s] server: [server] listening on ws://0.0.0.0:8787/ws (test harness enabled)
+[   1.1s] server :8787, web reference :8080, platforms [ios, android, macos], states [home, lobby, results]
+[   1.1s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[   4.7s] server: [server] Chef joined VIS1 (1/4)
+[  11.7s] server: [server] Chef disconnected from VIS1
+[  11.7s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  13.2s] server: [server] Chef joined VIS1 (1/4)
+[  19.8s] server: [server] Chef disconnected from VIS1
+[  20.2s] PASS ios     lobby   raw 1206x2334 0.13% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); 2 mask(s)
+[  20.2s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  21.4s] server: [server] Chef joined VIS1 (1/4)
+[  50.2s] server: [server] Chef disconnected from VIS1
+[  50.2s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  51.1s] server: [server] Chef joined VIS1 (1/4)
+[  80.4s] PASS ios     results raw 1206x2334 0.18% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); 2 mask(s)
+[  80.4s] server: [server] Chef disconnected from VIS1
+[  80.4s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  87.6s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  95.6s] PASS ios     home    raw 1206x2334 0.24% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); 0 mask(s)
+[  95.6s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 119.6s] server: [server] Chef joined VIS1 (1/4)
+[ 360.9s] FAIL android: timed out waiting for lobby report from p9krsl5
+[ 361.2s] server: [server] Chef disconnected from VIS1
+[ 361.2s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 362.4s] server: [server] Chef joined VIS1 (1/4)
+[ 362.4s] macos: flutter: The Dart VM service is listening on http://127.0.0.1:49364/SJLtyHnS_5E=/
+[ 362.4s] macos! [IMPORTANT:flutter/shell/platform/darwin/macos/framework/Source/FlutterEngine.mm(685)] Using the Skia rendering backend (Metal).
+[ 368.6s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 368.6s] server: [server] Chef disconnected from VIS1
+[ 369.4s] server: [server] Chef joined VIS1 (1/4)
+[ 374.6s] server: [server] Chef disconnected from VIS1
+[ 375.5s] FAIL macos   lobby   raw 800x600 23.15% differ; blocks 26986 <= 2 (group 19036 <= 3); core 95015 <= 2 (group 74220 <= 3); 6 mask(s)
+[ 375.5s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 378.0s] server: [server] Chef joined VIS1 (1/4)
+[ 378.0s] macos: flutter: The Dart VM service is listening on http://127.0.0.1:49560/4amCFRfHOLc=/
+[ 378.0s] macos! [IMPORTANT:flutter/shell/platform/darwin/macos/framework/Source/FlutterEngine.mm(685)] Using the Skia rendering backend (Metal).
+[ 406.5s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 406.5s] server: [server] Chef disconnected from VIS1
+[ 407.5s] server: [server] Chef joined VIS1 (1/4)

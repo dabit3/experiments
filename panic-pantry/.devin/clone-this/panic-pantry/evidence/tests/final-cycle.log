@@ -1,0 +1,267 @@
+[   0.9s] server: [server] listening on ws://0.0.0.0:8787/ws (test harness enabled)
+[   1.0s] server :8787, web reference :8080, platforms [ios, android, macos], states [home, lobby, results]
+[   1.1s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[   5.3s] server: [server] Chef joined VIS1 (1/4)
+[  13.0s] server: [server] Chef disconnected from VIS1
+[  13.0s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  14.5s] server: [server] Chef joined VIS1 (1/4)
+[  21.2s] server: [server] Chef disconnected from VIS1
+[  21.5s] PASS ios     lobby   raw 1206x2334 0.12% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 2 mask(s)
+[  21.5s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  22.6s] server: [server] Chef joined VIS1 (1/4)
+[  51.5s] server: [server] Chef disconnected from VIS1
+[  51.5s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  52.4s] server: [server] Chef joined VIS1 (1/4)
+[  81.3s] server: [server] Chef disconnected from VIS1
+[  81.8s] PASS ios     results raw 1206x2334 0.18% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 2 mask(s)
+[  81.8s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  88.9s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[  96.6s] PASS ios     home    raw 1206x2334 0.24% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 0 mask(s)
+[  96.6s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 115.3s] server: [server] Chef joined VIS1 (1/4)
+[ 142.9s] server: [server] Chef disconnected from VIS1
+[ 143.0s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 143.7s] server: [server] Chef joined VIS1 (1/4)
+[ 150.4s] server: [server] Chef disconnected from VIS1
+[ 150.6s] PASS android lobby   raw 1024x696 0.02% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 2 mask(s)
+[ 150.6s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 162.4s] server: [server] Chef joined VIS1 (1/4)
+[ 199.5s] server: [server] Chef disconnected from VIS1
+[ 199.5s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 200.3s] server: [server] Chef joined VIS1 (1/4)
+[ 229.4s] PASS android results raw 1024x696 0.10% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 2 mask(s)
+[ 229.4s] server: [server] Chef disconnected from VIS1
+[ 229.4s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 260.4s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 267.6s] PASS android home    raw 1024x696 0.00% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 0 mask(s)
+[ 267.6s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 269.4s] server: [server] Chef joined VIS1 (1/4)
+[ 269.4s] macos: flutter: The Dart VM service is listening on http://127.0.0.1:58467/3o5bXQh5aIM=/
+[ 269.4s] macos! [IMPORTANT:flutter/shell/platform/darwin/macos/framework/Source/FlutterEngine.mm(685)] Using the Skia rendering backend (Metal).
+[ 274.2s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 274.2s] server: [server] Chef disconnected from VIS1
+[ 275.0s] server: [server] Chef joined VIS1 (1/4)
+[ 281.9s] PASS macos   lobby   raw 960x608 0.21% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 6 mask(s)
+[ 281.9s] server: [server] Chef disconnected from VIS1
+[ 281.9s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 282.0s] macos! [IMPORTANT:flutter/shell/platform/darwin/macos/framework/Source/FlutterEngine.mm(685)] Using the Skia rendering backend (Metal).
+[ 282.0s] macos: flutter: The Dart VM service is listening on http://127.0.0.1:58559/rZIGK0V-eVA=/
+[ 282.4s] server: [server] Chef joined VIS1 (1/4)
+[ 312.0s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 312.0s] server: [server] Chef disconnected from VIS1
+[ 313.1s] server: [server] Chef joined VIS1 (1/4)
+[ 342.0s] server: [server] Chef disconnected from VIS1
+[ 342.2s] PASS macos   results raw 960x608 0.44% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 1 <= 2 (group 1 <= 3); 6 mask(s)
+[ 342.2s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 342.3s] macos! [IMPORTANT:flutter/shell/platform/darwin/macos/framework/Source/FlutterEngine.mm(685)] Using the Skia rendering backend (Metal).
+[ 342.3s] macos: flutter: The Dart VM service is listening on http://127.0.0.1:59046/hiepK3r4tg4=/
+[ 350.0s] server: [server] room VIS1 created (seed 23, level corner-cafe)
+[ 357.1s] PASS macos   home    raw 960x608 0.25% differ; blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3); 4 mask(s)
+[ 357.3s] PASS: 9/9 comparisons within threshold
+PASS ios lobby: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios lobby: erased 16x16 logical px element at 184,112 is caught (blocks 40 <= 2 (group 40 <= 3); core 134 <= 2 (group 134 <= 3); density 8 <= 2 (group 8 <= 3))
+PASS ios lobby: erased 24x24 logical px element at 136,152 is caught (blocks 100 <= 2 (group 100 <= 3); core 403 <= 2 (group 403 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS ios lobby: 80x14 logical px strip at 56,184 moved 3 px is caught (blocks 2 <= 2 (group 1 <= 3); core 17 <= 2 (group 7 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios lobby: 80x14 logical px strip at 56,184 moved 4 px is caught (blocks 7 <= 2 (group 2 <= 3); core 22 <= 2 (group 7 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios lobby: 40x16 logical px recolour at 96,112 is caught (blocks 44 <= 2 (group 18 <= 3); core 226 <= 2 (group 226 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS ios results: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios results: erased 16x16 logical px element at 480,1344 is caught (blocks 22 <= 2 (group 20 <= 3); core 43 <= 2 (group 43 <= 3); density 4 <= 2 (group 4 <= 3))
+PASS ios results: erased 24x24 logical px element at 632,216 is caught (blocks 84 <= 2 (group 84 <= 3); core 193 <= 2 (group 193 <= 3); density 8 <= 2 (group 8 <= 3))
+PASS ios results: 80x14 logical px strip at 232,696 moved 3 px is caught (blocks 6 <= 2 (group 2 <= 3); core 6 <= 2 (group 6 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios results: 80x14 logical px strip at 232,696 moved 4 px is caught (blocks 28 <= 2 (group 4 <= 3); core 18 <= 2 (group 12 <= 3); density 5 <= 2 (group 3 <= 3))
+PASS ios results: 40x16 logical px recolour at 592,240 is caught (blocks 61 <= 2 (group 47 <= 3); core 170 <= 2 (group 135 <= 3); density 11 <= 2 (group 11 <= 3))
+PASS ios home: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios home: erased 16x16 logical px element at 328,1992 is caught (blocks 18 <= 2 (group 15 <= 3); core 19 <= 2 (group 13 <= 3); density 3 <= 2 (group 3 <= 3))
+PASS ios home: erased 24x24 logical px element at 592,1616 is caught (blocks 72 <= 2 (group 72 <= 3); core 166 <= 2 (group 166 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS ios home: 80x14 logical px strip at 664,1168 moved 3 px is caught (blocks 9 <= 2 (group 1 <= 3); core 3 <= 2 (group 3 <= 3); density 12 <= 2 (group 7 <= 3))
+PASS ios home: 80x14 logical px strip at 664,1168 moved 4 px is caught (blocks 35 <= 2 (group 6 <= 3); core 47 <= 2 (group 15 <= 3); density 17 <= 2 (group 17 <= 3))
+PASS ios home: 40x16 logical px recolour at 504,1248 is caught (blocks 13 <= 2 (group 4 <= 3); core 24 <= 2 (group 13 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS android lobby: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS android lobby: erased 16x16 logical px element at 56,24 is caught (blocks 45 <= 2 (group 45 <= 3); core 157 <= 2 (group 157 <= 3); density 4 <= 2 (group 4 <= 3))
+PASS android lobby: erased 24x24 logical px element at 48,24 is caught (blocks 87 <= 2 (group 86 <= 3); core 271 <= 2 (group 271 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS android lobby: 80x14 logical px strip at 352,120 moved 3 px is caught (blocks 0 <= 2 (group 0 <= 3); core 26 <= 2 (group 6 <= 3); density 8 <= 2 (group 5 <= 3))
+PASS android lobby: 80x14 logical px strip at 352,120 moved 4 px is caught (blocks 8 <= 2 (group 2 <= 3); core 108 <= 2 (group 36 <= 3); density 18 <= 2 (group 18 <= 3))
+PASS android lobby: 40x16 logical px recolour at 32,24 is caught (blocks 66 <= 2 (group 31 <= 3); core 430 <= 2 (group 430 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS android results: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS android results: erased 16x16 logical px element at 600,80 is caught (blocks 13 <= 2 (group 13 <= 3); core 14 <= 2 (group 14 <= 3); density 2 <= 2 (group 2 <= 3))
+PASS android results: erased 24x24 logical px element at 592,72 is caught (blocks 101 <= 2 (group 62 <= 3); core 280 <= 2 (group 159 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS android results: 80x14 logical px strip at 304,376 moved 3 px is caught (blocks 20 <= 2 (group 5 <= 3); core 8 <= 2 (group 8 <= 3); density 8 <= 2 (group 4 <= 3))
+PASS android results: 80x14 logical px strip at 304,376 moved 4 px is caught (blocks 21 <= 2 (group 4 <= 3); core 24 <= 2 (group 9 <= 3); density 10 <= 2 (group 6 <= 3))
+PASS android results: 40x16 logical px recolour at 296,376 is caught (blocks 22 <= 2 (group 6 <= 3); core 71 <= 2 (group 36 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS android home: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS android home: erased 16x16 logical px element at 144,584 is caught (blocks 23 <= 2 (group 23 <= 3); core 63 <= 2 (group 63 <= 3); density 4 <= 2 (group 4 <= 3))
+PASS android home: erased 24x24 logical px element at 680,168 is caught (blocks 74 <= 2 (group 40 <= 3); core 159 <= 2 (group 82 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS android home: 80x14 logical px strip at 272,584 moved 3 px is caught (blocks 11 <= 2 (group 2 <= 3); core 2 <= 2 (group 2 <= 3); density 13 <= 2 (group 8 <= 3))
+PASS android home: 80x14 logical px strip at 272,584 moved 4 px is caught (blocks 31 <= 2 (group 4 <= 3); core 73 <= 2 (group 30 <= 3); density 14 <= 2 (group 8 <= 3))
+PASS android home: 40x16 logical px recolour at 184,608 is caught (blocks 13 <= 2 (group 2 <= 3); core 30 <= 2 (group 16 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS macos lobby: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS macos lobby: erased 16x16 logical px element at 56,24 is caught (blocks 46 <= 2 (group 46 <= 3); core 153 <= 2 (group 153 <= 3); density 4 <= 2 (group 4 <= 3))
+PASS macos lobby: erased 24x24 logical px element at 48,24 is caught (blocks 89 <= 2 (group 88 <= 3); core 272 <= 2 (group 272 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS macos lobby: 80x14 logical px strip at 352,120 moved 3 px is caught (blocks 4 <= 2 (group 2 <= 3); core 15 <= 2 (group 3 <= 3); density 8 <= 2 (group 5 <= 3))
+PASS macos lobby: 80x14 logical px strip at 352,120 moved 4 px is caught (blocks 16 <= 2 (group 4 <= 3); core 115 <= 2 (group 38 <= 3); density 21 <= 2 (group 21 <= 3))
+PASS macos lobby: 40x16 logical px recolour at 32,24 is caught (blocks 47 <= 2 (group 20 <= 3); core 219 <= 2 (group 219 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS macos results: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 1 <= 2 (group 1 <= 3))
+PASS macos results: erased 16x16 logical px element at 768,560 is caught (blocks 11 <= 2 (group 4 <= 3); core 8 <= 2 (group 8 <= 3); density 3 <= 2 (group 2 <= 3))
+PASS macos results: erased 24x24 logical px element at 768,552 is caught (blocks 21 <= 2 (group 10 <= 3); core 20 <= 2 (group 12 <= 3); density 7 <= 2 (group 6 <= 3))
+PASS macos results: 80x14 logical px strip at 64,536 moved 3 px is caught (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 5 <= 2 (group 1 <= 3))
+PASS macos results: 80x14 logical px strip at 64,536 moved 4 px is caught (blocks 1 <= 2 (group 1 <= 3); core 9 <= 2 (group 4 <= 3); density 3 <= 2 (group 1 <= 3))
+PASS macos results: 40x16 logical px recolour at 352,496 is caught (blocks 94 <= 2 (group 94 <= 3); core 527 <= 2 (group 527 <= 3); density 11 <= 2 (group 10 <= 3))
+PASS macos home: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS macos home: erased 16x16 logical px element at 752,208 is caught (blocks 7 <= 2 (group 4 <= 3); core 37 <= 2 (group 37 <= 3); density 2 <= 2 (group 2 <= 3))
+PASS macos home: erased 24x24 logical px element at 216,552 is caught (blocks 51 <= 2 (group 41 <= 3); core 132 <= 2 (group 132 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS macos home: 80x14 logical px strip at 744,208 moved 3 px is caught (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 4 <= 2 (group 2 <= 3))
+PASS macos home: 80x14 logical px strip at 744,208 moved 4 px is caught (blocks 6 <= 2 (group 2 <= 3); core 18 <= 2 (group 12 <= 3); density 8 <= 2 (group 5 <= 3))
+PASS macos home: 40x16 logical px recolour at 752,208 is caught (blocks 97 <= 2 (group 96 <= 3); core 520 <= 2 (group 520 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS: gate reproduces verdicts and catches every injected defect
+PASS ios lobby: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios lobby: erased 16x16 logical px element at 184,112 is caught (blocks 40 <= 2 (group 40 <= 3); core 134 <= 2 (group 134 <= 3); density 8 <= 2 (group 8 <= 3))
+PASS ios lobby: erased 24x24 logical px element at 136,152 is caught (blocks 100 <= 2 (group 100 <= 3); core 403 <= 2 (group 403 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS ios lobby: 80x14 logical px strip at 56,184 moved 3 px is caught (blocks 2 <= 2 (group 1 <= 3); core 17 <= 2 (group 7 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios lobby: 80x14 logical px strip at 56,184 moved 4 px is caught (blocks 7 <= 2 (group 2 <= 3); core 22 <= 2 (group 7 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios lobby: 40x16 logical px recolour at 96,112 is caught (blocks 44 <= 2 (group 18 <= 3); core 226 <= 2 (group 226 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS ios results: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios results: erased 16x16 logical px element at 480,1344 is caught (blocks 22 <= 2 (group 20 <= 3); core 43 <= 2 (group 43 <= 3); density 4 <= 2 (group 4 <= 3))
+PASS ios results: erased 24x24 logical px element at 632,216 is caught (blocks 84 <= 2 (group 84 <= 3); core 193 <= 2 (group 193 <= 3); density 8 <= 2 (group 8 <= 3))
+PASS ios results: 80x14 logical px strip at 232,696 moved 3 px is caught (blocks 6 <= 2 (group 2 <= 3); core 6 <= 2 (group 6 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios results: 80x14 logical px strip at 232,696 moved 4 px is caught (blocks 28 <= 2 (group 4 <= 3); core 18 <= 2 (group 12 <= 3); density 5 <= 2 (group 3 <= 3))
+PASS ios results: 40x16 logical px recolour at 592,240 is caught (blocks 61 <= 2 (group 47 <= 3); core 170 <= 2 (group 135 <= 3); density 11 <= 2 (group 11 <= 3))
+PASS ios home: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS ios home: erased 16x16 logical px element at 328,1992 is caught (blocks 18 <= 2 (group 15 <= 3); core 19 <= 2 (group 13 <= 3); density 3 <= 2 (group 3 <= 3))
+PASS ios home: erased 24x24 logical px element at 592,1616 is caught (blocks 72 <= 2 (group 72 <= 3); core 166 <= 2 (group 166 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS ios home: 80x14 logical px strip at 664,1168 moved 3 px is caught (blocks 9 <= 2 (group 1 <= 3); core 3 <= 2 (group 3 <= 3); density 12 <= 2 (group 7 <= 3))
+PASS ios home: 80x14 logical px strip at 664,1168 moved 4 px is caught (blocks 35 <= 2 (group 6 <= 3); core 47 <= 2 (group 15 <= 3); density 17 <= 2 (group 17 <= 3))
+PASS ios home: 40x16 logical px recolour at 504,1248 is caught (blocks 13 <= 2 (group 4 <= 3); core 24 <= 2 (group 13 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS android lobby: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS android lobby: erased 16x16 logical px element at 56,24 is caught (blocks 45 <= 2 (group 45 <= 3); core 157 <= 2 (group 157 <= 3); density 4 <= 2 (group 4 <= 3))
+PASS android lobby: erased 24x24 logical px element at 48,24 is caught (blocks 87 <= 2 (group 86 <= 3); core 271 <= 2 (group 271 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS android lobby: 80x14 logical px strip at 352,120 moved 3 px is caught (blocks 0 <= 2 (group 0 <= 3); core 26 <= 2 (group 6 <= 3); density 8 <= 2 (group 5 <= 3))
+PASS android lobby: 80x14 logical px strip at 352,120 moved 4 px is caught (blocks 8 <= 2 (group 2 <= 3); core 108 <= 2 (group 36 <= 3); density 18 <= 2 (group 18 <= 3))
+PASS android lobby: 40x16 logical px recolour at 32,24 is caught (blocks 66 <= 2 (group 31 <= 3); core 430 <= 2 (group 430 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS android results: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS android results: erased 16x16 logical px element at 600,80 is caught (blocks 13 <= 2 (group 13 <= 3); core 14 <= 2 (group 14 <= 3); density 2 <= 2 (group 2 <= 3))
+PASS android results: erased 24x24 logical px element at 592,72 is caught (blocks 101 <= 2 (group 62 <= 3); core 280 <= 2 (group 159 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS android results: 80x14 logical px strip at 304,376 moved 3 px is caught (blocks 20 <= 2 (group 5 <= 3); core 8 <= 2 (group 8 <= 3); density 8 <= 2 (group 4 <= 3))
+PASS android results: 80x14 logical px strip at 304,376 moved 4 px is caught (blocks 21 <= 2 (group 4 <= 3); core 24 <= 2 (group 9 <= 3); density 10 <= 2 (group 6 <= 3))
+PASS android results: 40x16 logical px recolour at 296,376 is caught (blocks 22 <= 2 (group 6 <= 3); core 71 <= 2 (group 36 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS android home: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS android home: erased 16x16 logical px element at 144,584 is caught (blocks 23 <= 2 (group 23 <= 3); core 63 <= 2 (group 63 <= 3); density 4 <= 2 (group 4 <= 3))
+PASS android home: erased 24x24 logical px element at 680,168 is caught (blocks 74 <= 2 (group 40 <= 3); core 159 <= 2 (group 82 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS android home: 80x14 logical px strip at 272,584 moved 3 px is caught (blocks 11 <= 2 (group 2 <= 3); core 2 <= 2 (group 2 <= 3); density 13 <= 2 (group 8 <= 3))
+PASS android home: 80x14 logical px strip at 272,584 moved 4 px is caught (blocks 31 <= 2 (group 4 <= 3); core 73 <= 2 (group 30 <= 3); density 14 <= 2 (group 8 <= 3))
+PASS android home: 40x16 logical px recolour at 184,608 is caught (blocks 13 <= 2 (group 2 <= 3); core 30 <= 2 (group 16 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS macos lobby: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS macos lobby: erased 16x16 logical px element at 56,24 is caught (blocks 46 <= 2 (group 46 <= 3); core 153 <= 2 (group 153 <= 3); density 4 <= 2 (group 4 <= 3))
+PASS macos lobby: erased 24x24 logical px element at 48,24 is caught (blocks 89 <= 2 (group 88 <= 3); core 272 <= 2 (group 272 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS macos lobby: 80x14 logical px strip at 352,120 moved 3 px is caught (blocks 4 <= 2 (group 2 <= 3); core 15 <= 2 (group 3 <= 3); density 8 <= 2 (group 5 <= 3))
+PASS macos lobby: 80x14 logical px strip at 352,120 moved 4 px is caught (blocks 16 <= 2 (group 4 <= 3); core 115 <= 2 (group 38 <= 3); density 21 <= 2 (group 21 <= 3))
+PASS macos lobby: 40x16 logical px recolour at 32,24 is caught (blocks 47 <= 2 (group 20 <= 3); core 219 <= 2 (group 219 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS macos results: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 1 <= 2 (group 1 <= 3))
+PASS macos results: erased 16x16 logical px element at 768,560 is caught (blocks 11 <= 2 (group 4 <= 3); core 8 <= 2 (group 8 <= 3); density 3 <= 2 (group 2 <= 3))
+PASS macos results: erased 24x24 logical px element at 768,552 is caught (blocks 21 <= 2 (group 10 <= 3); core 20 <= 2 (group 12 <= 3); density 7 <= 2 (group 6 <= 3))
+PASS macos results: 80x14 logical px strip at 64,536 moved 3 px is caught (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 5 <= 2 (group 1 <= 3))
+PASS macos results: 80x14 logical px strip at 64,536 moved 4 px is caught (blocks 1 <= 2 (group 1 <= 3); core 9 <= 2 (group 4 <= 3); density 3 <= 2 (group 1 <= 3))
+PASS macos results: 40x16 logical px recolour at 352,496 is caught (blocks 94 <= 2 (group 94 <= 3); core 527 <= 2 (group 527 <= 3); density 11 <= 2 (group 10 <= 3))
+PASS macos home: gate reproduces recorded verdict (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 0 <= 2 (group 0 <= 3))
+PASS macos home: erased 16x16 logical px element at 752,208 is caught (blocks 7 <= 2 (group 4 <= 3); core 37 <= 2 (group 37 <= 3); density 2 <= 2 (group 2 <= 3))
+PASS macos home: erased 24x24 logical px element at 216,552 is caught (blocks 51 <= 2 (group 41 <= 3); core 132 <= 2 (group 132 <= 3); density 9 <= 2 (group 9 <= 3))
+PASS macos home: 80x14 logical px strip at 744,208 moved 3 px is caught (blocks 0 <= 2 (group 0 <= 3); core 0 <= 2 (group 0 <= 3); density 4 <= 2 (group 2 <= 3))
+PASS macos home: 80x14 logical px strip at 744,208 moved 4 px is caught (blocks 6 <= 2 (group 2 <= 3); core 18 <= 2 (group 12 <= 3); density 8 <= 2 (group 5 <= 3))
+PASS macos home: 40x16 logical px recolour at 752,208 is caught (blocks 97 <= 2 (group 96 <= 3); core 520 <= 2 (group 520 <= 3); density 10 <= 2 (group 10 <= 3))
+PASS: gate reproduces verdicts and catches every injected defect
+2026-09-11T04:07:56.195Z server: [server] listening on ws://0.0.0.0:8791/ws (test harness enabled)
+2026-09-11T04:07:56.836Z browser recording started -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm
+2026-09-11T04:07:57.865Z web client id p3g9xjw
+2026-09-11T04:07:57.910Z server: [server] room XUQL created (seed 327445271, level training)
+2026-09-11T04:07:57.911Z server: [server] Smoke joined XUQL (1/4)
+2026-09-11T04:08:01.621Z PASS auto-host lands in lobby — room XUQL
+2026-09-11T04:08:02.273Z screenshot 01-lobby-light.png
+2026-09-11T04:08:02.277Z server: [server] Smoke left XUQL
+[server] room XUQL closed
+2026-09-11T04:08:04.908Z PASS leave returns to home
+2026-09-11T04:08:04.912Z PASS empty room is closed on leave — 0 room(s) left
+2026-09-11T04:08:04.977Z screenshot 02-home-light.png
+2026-09-11T04:08:06.522Z screenshot 03-how-to-play.png
+2026-09-11T04:08:06.929Z PASS how-to-play sheet keeps the home route underneath
+2026-09-11T04:08:07.897Z screenshot 04-home-after-dismiss.png
+2026-09-11T04:08:08.303Z PASS joining a missing room stays on home with an error — No kitchen with code ZZZZ
+2026-09-11T04:08:08.658Z screenshot 05-join-error-toast.png
+2026-09-11T04:08:08.661Z server: [server] room FULL created (seed 3, level training)
+2026-09-11T04:08:09.077Z PASS joining a full room is rejected — That kitchen is full
+2026-09-11T04:08:10.040Z screenshot 06-home-dark.png
+2026-09-11T04:08:11.589Z screenshot 07-how-to-play-dark.png
+2026-09-11T04:08:12.196Z server: [server] room DWHQ created (seed 273680600, level drift-deck)
+[server] Smoke joined DWHQ (1/4)
+2026-09-11T04:08:14.840Z PASS host from home opens a lobby on the requested level — level drift-deck
+2026-09-11T04:08:14.898Z screenshot 08-lobby-dark.png
+2026-09-11T04:08:14.919Z server: [server] Smoke left DWHQ
+[server] room DWHQ closed
+2026-09-11T04:08:17.530Z PASS second leave returns to home
+2026-09-11T04:08:17.530Z PASS web console has no errors
+2026-09-11T04:08:17.530Z PASS: 9/9 smoke checks passed
+[   1.0s] server ready on :8787
+[   1.0s] web build served on :8080
+[   1.1s] room E2E4 created (seed 23, level corner-cafe, speed 1)
+[   1.1s] screen recording -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/four-way-match.mov
+[   3.5s] web client opened
+[   4.9s] ios client launched on 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89: dev.panicpantry.panicPantry: 38929
+[  28.6s] android client launched
+[  31.0s] macos client launched
+[  31.0s] lobby: Pip(ios, slot 0), Webby(web, slot 1), Andi(android, slot 2), Mac(macos, slot 3)
+[  36.7s] screenshot ios/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/ios-lobby.png
+[  36.8s] screenshot web/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/web-lobby.png
+[  37.4s] screenshot android/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/android-lobby.png
+[  37.5s] screenshot macos/lobby -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/macos-lobby.png
+[  38.5s] plan: 3061 ticks, expected score 405, 1 star(s)
+[  38.6s] queued 3061 scripted ticks for Pip
+[  38.6s] queued 3061 scripted ticks for Webby
+[  38.6s] queued 3061 scripted ticks for Andi
+[  38.6s] queued 3061 scripted ticks for Mac
+[  39.1s] match started
+[  63.0s] screenshot ios/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/ios-gameplay.png
+[  63.1s] screenshot web/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/web-gameplay.png
+[  65.0s] screenshot android/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/android-gameplay.png
+[  65.2s] screenshot macos/gameplay -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/macos-gameplay.png
+[  66.3s] mid-match ios: phase=playing tick=523 score=36 rtt=1ms
+[  66.3s] mid-match web: phase=playing tick=523 score=36 rtt=0ms
+[  66.3s] mid-match android: phase=playing tick=523 score=36 rtt=3ms
+[  66.3s] mid-match macos: phase=playing tick=523 score=36 rtt=1ms
+[  91.5s] screenshot ios/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/ios-gameplay-late.png
+[  91.7s] screenshot web/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/web-gameplay-late.png
+[  93.5s] screenshot android/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/android-gameplay-late.png
+[  93.7s] screenshot macos/gameplay-late -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/macos-gameplay-late.png
+[ 196.9s] screenshot ios/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/ios-results.png
+[ 197.0s] screenshot web/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/web-results.png
+[ 198.2s] screenshot android/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/android-results.png
+[ 198.4s] screenshot macos/results -> /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/macos-results.png
+[ 198.9s] ios     final: score=405 stars=1 served=11 tips=185 combo=4 screen=results
+[ 198.9s] web     final: score=405 stars=1 served=11 tips=185 combo=4 screen=results
+[ 198.9s] android final: score=405 stars=1 served=11 tips=185 combo=4 screen=results
+[ 198.9s] macos   final: score=405 stars=1 served=11 tips=185 combo=4 screen=results
+[ 198.9s] PASS: 4 client(s) [ios, web, android, macos] + 0 bot(s) agree: score 405, 1 star(s), served 11
+[ 202.4s] evidence: /Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18
+2026-09-11T04:11:42.359Z e2e run: .devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18 (PASS), smoke: .devin/clone-this/panic-pantry/evidence/tests/ui-smoke, recording: .devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/four-way-match.mov
+2026-09-11T04:11:42.983Z segment seg-001.mp4 title 4s — Title
+2026-09-11T04:11:43.460Z segment seg-002.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/four-way-match.mov @27.9s +6.0s — 4 clients joined room E2E4
+2026-09-11T04:11:43.746Z segment seg-003.mp4 board 4s — Lobby board
+2026-09-11T04:11:44.354Z segment seg-004.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/four-way-match.mov @37.0s +7.0s — Match started — countdown, then the scripted shift
+2026-09-11T04:11:44.994Z segment seg-005.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/four-way-match.mov @59.2s +6.0s — Mid-match: every client at tick 523, score 36
+2026-09-11T04:11:45.290Z segment seg-006.mp4 board 4s — Gameplay board
+2026-09-11T04:11:45.932Z segment seg-007.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/four-way-match.mov @90.4s +6.0s — Late shift — combos, tips and expiring tickets
+2026-09-11T04:11:46.522Z segment seg-008.mp4 clip .devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/four-way-match.mov @190.8s +7.0s — Time's up — results on all four clients
+2026-09-11T04:11:46.773Z segment seg-009.mp4 board 4s — Results board
+2026-09-11T04:11:47.228Z segment seg-010.mp4 assertion 6s — Assertion table
+2026-09-11T04:11:47.485Z segment seg-011.mp4 title 3s — Browser smoke title
+2026-09-11T04:11:47.695Z segment seg-012.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @2.6s +2.8s — auto-host lands in lobby
+2026-09-11T04:11:47.890Z segment seg-013.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @5.9s +2.8s — leave returns to home
+2026-09-11T04:11:48.095Z segment seg-014.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @5.9s +2.8s — empty room is closed on leave
+2026-09-11T04:11:48.303Z segment seg-015.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @7.9s +2.8s — how-to-play sheet keeps the home route underneath
+2026-09-11T04:11:48.517Z segment seg-016.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @9.3s +2.8s — joining a missing room stays on home with an error
+2026-09-11T04:11:48.739Z segment seg-017.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @10.0s +2.8s — joining a full room is rejected
+2026-09-11T04:11:48.955Z segment seg-018.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @15.8s +2.8s — host from home opens a lobby on the requested level
+2026-09-11T04:11:49.194Z segment seg-019.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @18.5s +2.8s — second leave returns to home
+2026-09-11T04:11:49.407Z segment seg-020.mp4 clip .devin/clone-this/panic-pantry/evidence/tests/ui-smoke/browser-smoke.webm @18.5s +2.8s — web console has no errors
+2026-09-11T04:11:49.678Z segment seg-021.mp4 assertion 5s — Smoke checks
+2026-09-11T04:11:49.982Z segment seg-022.mp4 verdict 5s — Verdict
+2026-09-11T04:11:50.052Z wrote .devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/review-video.mp4 (92.9s, 22 segments)
+2026-09-11T04:11:50.926Z wrote .devin/clone-this/panic-pantry/evidence/e2e/2026-09-11T04-08-18/review-video.gif (4x speed preview)
+2026-09-11T04:11:50.926Z done

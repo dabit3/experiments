@@ -1,0 +1,824 @@
+{
+  "reference": "web build (Chromium, Playwright) at the native client's logical viewport and pixel ratio",
+  "normalization": [
+    "native capture cropped to the Flutter view inside the safe area",
+    "web viewport sized to the native logical size, deviceScaleFactor = native pixel ratio",
+    "light theme and identical player name/room/seed/level on both sides",
+    "the local player's device label (the only UI that differs by design) is excluded using the rectangles both clients report via PlatformMark; its text is verified separately through the report channel",
+    "macOS only: the 20px window corners the OS rounds are excluded",
+    "block pass: box-average of 2x2 logical px, per-channel tolerance 80/255, placement allowance 1 block(s), intersected with a logical-pixel pass using the same tolerance and allowance; passes when differing blocks <= 2 and the largest connected group <= 3",
+    "core pass: logical-pixel comparison with the same tolerance and 1 px allowance, then morphological closing and one erosion (thin drift lines vanish, moved/missing/recoloured elements keep a core); passes when surviving pixels <= 2 and the largest connected group <= 3",
+    "density pass: 8x8 logical px box averages, per-channel tolerance 32/255, no placement allowance; differing cells <= 2, largest connected group <= 3",
+    "a pair passes only when all three passes pass; test/visual/selftest.mjs proves the gate catches injected defects on the captured pairs"
+  ],
+  "gate": {
+    "block": 2,
+    "tolerance": 80,
+    "shift": 1,
+    "maxBlocks": 2,
+    "maxCore": 2,
+    "maxCluster": 3
+  },
+  "seed": 23,
+  "level": "corner-cafe",
+  "finishedAt": "2026-09-11T04:07:43.977Z",
+  "pass": true,
+  "results": [
+    {
+      "platform": "ios",
+      "state": "lobby",
+      "view": {
+        "width": 402,
+        "height": 778,
+        "dpr": 3
+      },
+      "fullView": {
+        "width": 402,
+        "height": 874,
+        "dpr": 3,
+        "padding": {
+          "top": 62,
+          "bottom": 34,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "masks": [
+        {
+          "id": "lobby-device",
+          "x": 352,
+          "y": 1089,
+          "w": 117,
+          "h": 63
+        },
+        {
+          "id": "lobby-device",
+          "x": 352,
+          "y": 1089,
+          "w": 143,
+          "h": 63
+        }
+      ],
+      "raw": {
+        "width": 1206,
+        "height": 2334,
+        "compared": 2805795,
+        "differing": 3438,
+        "ratio": 0.00123,
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/lobby-web-for-ios.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/lobby-ios.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-ios.png"
+      },
+      "normalized": {
+        "block": 2,
+        "tolerance": 80,
+        "shift": 1,
+        "maxBlocks": 2,
+        "maxCore": 2,
+        "maxCluster": 3,
+        "width": 201,
+        "height": 389,
+        "blocks": {
+          "compared": 77914,
+          "differing": 0,
+          "coarseOnly": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "core": {
+          "compared": 311748,
+          "rawDiffering": 1,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "density": {
+          "block": 8,
+          "tolerance": 32,
+          "compared": 4829,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/lobby-web-for-ios.normalized.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/lobby-ios.normalized.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-ios.normalized.png",
+        "coreDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-ios.core.png",
+        "densityDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-ios.density.png"
+      },
+      "pass": true
+    },
+    {
+      "platform": "ios",
+      "state": "results",
+      "view": {
+        "width": 402,
+        "height": 778,
+        "dpr": 3
+      },
+      "fullView": {
+        "width": 402,
+        "height": 874,
+        "dpr": 3,
+        "padding": {
+          "top": 62,
+          "bottom": 34,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "masks": [
+        {
+          "id": "results-device",
+          "x": 990,
+          "y": 1915,
+          "w": 66,
+          "h": 63
+        },
+        {
+          "id": "results-device",
+          "x": 964,
+          "y": 1915,
+          "w": 92,
+          "h": 63
+        }
+      ],
+      "raw": {
+        "width": 1206,
+        "height": 2334,
+        "compared": 2809008,
+        "differing": 5110,
+        "ratio": 0.00182,
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/results-web-for-ios.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/results-ios.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-ios.png"
+      },
+      "normalized": {
+        "block": 2,
+        "tolerance": 80,
+        "shift": 1,
+        "maxBlocks": 2,
+        "maxCore": 2,
+        "maxCluster": 3,
+        "width": 201,
+        "height": 389,
+        "blocks": {
+          "compared": 78013,
+          "differing": 0,
+          "coarseOnly": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "core": {
+          "compared": 312074,
+          "rawDiffering": 6,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "density": {
+          "block": 8,
+          "tolerance": 32,
+          "compared": 4834,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/results-web-for-ios.normalized.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/results-ios.normalized.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-ios.normalized.png",
+        "coreDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-ios.core.png",
+        "densityDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-ios.density.png"
+      },
+      "pass": true
+    },
+    {
+      "platform": "ios",
+      "state": "home",
+      "view": {
+        "width": 402,
+        "height": 778,
+        "dpr": 3
+      },
+      "fullView": {
+        "width": 402,
+        "height": 874,
+        "dpr": 3,
+        "padding": {
+          "top": 62,
+          "bottom": 34,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "masks": [],
+      "raw": {
+        "width": 1206,
+        "height": 2334,
+        "compared": 2814804,
+        "differing": 6827,
+        "ratio": 0.00243,
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/home-web-for-ios.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/home-ios.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-ios.png"
+      },
+      "normalized": {
+        "block": 2,
+        "tolerance": 80,
+        "shift": 1,
+        "maxBlocks": 2,
+        "maxCore": 2,
+        "maxCluster": 3,
+        "width": 201,
+        "height": 389,
+        "blocks": {
+          "compared": 78189,
+          "differing": 0,
+          "coarseOnly": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "core": {
+          "compared": 312756,
+          "rawDiffering": 16,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "density": {
+          "block": 8,
+          "tolerance": 32,
+          "compared": 4850,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/home-web-for-ios.normalized.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/home-ios.normalized.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-ios.normalized.png",
+        "coreDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-ios.core.png",
+        "densityDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-ios.density.png"
+      },
+      "pass": true
+    },
+    {
+      "platform": "android",
+      "state": "lobby",
+      "view": {
+        "width": 1024,
+        "height": 696,
+        "dpr": 1
+      },
+      "fullView": {
+        "width": 1024,
+        "height": 720,
+        "dpr": 1,
+        "padding": {
+          "top": 24,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "masks": [
+        {
+          "id": "lobby-device",
+          "x": 673,
+          "y": 302,
+          "w": 69,
+          "h": 21
+        },
+        {
+          "id": "lobby-device",
+          "x": 673,
+          "y": 302,
+          "w": 48,
+          "h": 21
+        }
+      ],
+      "raw": {
+        "width": 1024,
+        "height": 696,
+        "compared": 711255,
+        "differing": 123,
+        "ratio": 0.00017,
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/lobby-web-for-android.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/lobby-android.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-android.png"
+      },
+      "normalized": {
+        "block": 2,
+        "tolerance": 80,
+        "shift": 1,
+        "maxBlocks": 2,
+        "maxCore": 2,
+        "maxCluster": 3,
+        "width": 512,
+        "height": 348,
+        "blocks": {
+          "compared": 177791,
+          "differing": 0,
+          "coarseOnly": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "core": {
+          "compared": 711255,
+          "rawDiffering": 13,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "density": {
+          "block": 8,
+          "tolerance": 32,
+          "compared": 11100,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/lobby-web-for-android.normalized.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/lobby-android.normalized.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-android.normalized.png",
+        "coreDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-android.core.png",
+        "densityDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-android.density.png"
+      },
+      "pass": true
+    },
+    {
+      "platform": "android",
+      "state": "results",
+      "view": {
+        "width": 1024,
+        "height": 696,
+        "dpr": 1
+      },
+      "fullView": {
+        "width": 1024,
+        "height": 720,
+        "dpr": 1,
+        "padding": {
+          "top": 24,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "masks": [
+        {
+          "id": "results-device",
+          "x": 884,
+          "y": 262,
+          "w": 52,
+          "h": 21
+        },
+        {
+          "id": "results-device",
+          "x": 905,
+          "y": 262,
+          "w": 31,
+          "h": 21
+        }
+      ],
+      "raw": {
+        "width": 1024,
+        "height": 696,
+        "compared": 711612,
+        "differing": 686,
+        "ratio": 0.00096,
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/results-web-for-android.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/results-android.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-android.png"
+      },
+      "normalized": {
+        "block": 2,
+        "tolerance": 80,
+        "shift": 1,
+        "maxBlocks": 2,
+        "maxCore": 2,
+        "maxCluster": 3,
+        "width": 512,
+        "height": 348,
+        "blocks": {
+          "compared": 177890,
+          "differing": 0,
+          "coarseOnly": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "core": {
+          "compared": 711612,
+          "rawDiffering": 53,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "density": {
+          "block": 8,
+          "tolerance": 32,
+          "compared": 11108,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/results-web-for-android.normalized.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/results-android.normalized.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-android.normalized.png",
+        "coreDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-android.core.png",
+        "densityDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-android.density.png"
+      },
+      "pass": true
+    },
+    {
+      "platform": "android",
+      "state": "home",
+      "view": {
+        "width": 1024,
+        "height": 696,
+        "dpr": 1
+      },
+      "fullView": {
+        "width": 1024,
+        "height": 720,
+        "dpr": 1,
+        "padding": {
+          "top": 24,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "masks": [],
+      "raw": {
+        "width": 1024,
+        "height": 696,
+        "compared": 712704,
+        "differing": 0,
+        "ratio": 0,
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/home-web-for-android.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/home-android.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-android.png"
+      },
+      "normalized": {
+        "block": 2,
+        "tolerance": 80,
+        "shift": 1,
+        "maxBlocks": 2,
+        "maxCore": 2,
+        "maxCluster": 3,
+        "width": 512,
+        "height": 348,
+        "blocks": {
+          "compared": 178176,
+          "differing": 0,
+          "coarseOnly": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "core": {
+          "compared": 712704,
+          "rawDiffering": 0,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "density": {
+          "block": 8,
+          "tolerance": 32,
+          "compared": 11136,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/home-web-for-android.normalized.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/home-android.normalized.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-android.normalized.png",
+        "coreDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-android.core.png",
+        "densityDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-android.density.png"
+      },
+      "pass": true
+    },
+    {
+      "platform": "macos",
+      "state": "lobby",
+      "view": {
+        "width": 960,
+        "height": 608,
+        "dpr": 1
+      },
+      "fullView": {
+        "width": 960,
+        "height": 608,
+        "dpr": 1,
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "masks": [
+        {
+          "id": "lobby-device",
+          "x": 637,
+          "y": 302,
+          "w": 61,
+          "h": 21
+        },
+        {
+          "id": "lobby-device",
+          "x": 637,
+          "y": 302,
+          "w": 48,
+          "h": 21
+        },
+        {
+          "id": "window-corner-tl",
+          "x": 0,
+          "y": 0,
+          "w": 20,
+          "h": 20
+        },
+        {
+          "id": "window-corner-tr",
+          "x": 940,
+          "y": 0,
+          "w": 20,
+          "h": 20
+        },
+        {
+          "id": "window-corner-bl",
+          "x": 0,
+          "y": 588,
+          "w": 20,
+          "h": 20
+        },
+        {
+          "id": "window-corner-br",
+          "x": 940,
+          "y": 588,
+          "w": 20,
+          "h": 20
+        }
+      ],
+      "raw": {
+        "width": 960,
+        "height": 608,
+        "compared": 580799,
+        "differing": 1243,
+        "ratio": 0.00214,
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/lobby-web-for-macos.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/lobby-macos.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-macos.png"
+      },
+      "normalized": {
+        "block": 2,
+        "tolerance": 80,
+        "shift": 1,
+        "maxBlocks": 2,
+        "maxCore": 2,
+        "maxCluster": 3,
+        "width": 480,
+        "height": 304,
+        "blocks": {
+          "compared": 145179,
+          "differing": 0,
+          "coarseOnly": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "core": {
+          "compared": 580799,
+          "rawDiffering": 127,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "density": {
+          "block": 8,
+          "tolerance": 32,
+          "compared": 9048,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/lobby-web-for-macos.normalized.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/lobby-macos.normalized.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-macos.normalized.png",
+        "coreDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-macos.core.png",
+        "densityDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/lobby-macos.density.png"
+      },
+      "pass": true
+    },
+    {
+      "platform": "macos",
+      "state": "results",
+      "view": {
+        "width": 960,
+        "height": 608,
+        "dpr": 1
+      },
+      "fullView": {
+        "width": 960,
+        "height": 608,
+        "dpr": 1,
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "masks": [
+        {
+          "id": "results-device",
+          "x": 860,
+          "y": 262,
+          "w": 44,
+          "h": 21
+        },
+        {
+          "id": "results-device",
+          "x": 873,
+          "y": 262,
+          "w": 31,
+          "h": 21
+        },
+        {
+          "id": "window-corner-tl",
+          "x": 0,
+          "y": 0,
+          "w": 20,
+          "h": 20
+        },
+        {
+          "id": "window-corner-tr",
+          "x": 940,
+          "y": 0,
+          "w": 20,
+          "h": 20
+        },
+        {
+          "id": "window-corner-bl",
+          "x": 0,
+          "y": 588,
+          "w": 20,
+          "h": 20
+        },
+        {
+          "id": "window-corner-br",
+          "x": 940,
+          "y": 588,
+          "w": 20,
+          "h": 20
+        }
+      ],
+      "raw": {
+        "width": 960,
+        "height": 608,
+        "compared": 581156,
+        "differing": 2532,
+        "ratio": 0.00436,
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/results-web-for-macos.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/results-macos.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-macos.png"
+      },
+      "normalized": {
+        "block": 2,
+        "tolerance": 80,
+        "shift": 1,
+        "maxBlocks": 2,
+        "maxCore": 2,
+        "maxCluster": 3,
+        "width": 480,
+        "height": 304,
+        "blocks": {
+          "compared": 145278,
+          "differing": 0,
+          "coarseOnly": 19,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "core": {
+          "compared": 581156,
+          "rawDiffering": 285,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "density": {
+          "block": 8,
+          "tolerance": 32,
+          "compared": 9060,
+          "differing": 1,
+          "largestCluster": 1,
+          "pass": true
+        },
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/results-web-for-macos.normalized.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/results-macos.normalized.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-macos.normalized.png",
+        "coreDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-macos.core.png",
+        "densityDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/results-macos.density.png"
+      },
+      "pass": true
+    },
+    {
+      "platform": "macos",
+      "state": "home",
+      "view": {
+        "width": 960,
+        "height": 608,
+        "dpr": 1
+      },
+      "fullView": {
+        "width": 960,
+        "height": 608,
+        "dpr": 1,
+        "padding": {
+          "top": 0,
+          "bottom": 0,
+          "left": 0,
+          "right": 0
+        }
+      },
+      "masks": [
+        {
+          "id": "window-corner-tl",
+          "x": 0,
+          "y": 0,
+          "w": 20,
+          "h": 20
+        },
+        {
+          "id": "window-corner-tr",
+          "x": 940,
+          "y": 0,
+          "w": 20,
+          "h": 20
+        },
+        {
+          "id": "window-corner-bl",
+          "x": 0,
+          "y": 588,
+          "w": 20,
+          "h": 20
+        },
+        {
+          "id": "window-corner-br",
+          "x": 940,
+          "y": 588,
+          "w": 20,
+          "h": 20
+        }
+      ],
+      "raw": {
+        "width": 960,
+        "height": 608,
+        "compared": 582080,
+        "differing": 1427,
+        "ratio": 0.00245,
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/home-web-for-macos.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/home-macos.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-macos.png"
+      },
+      "normalized": {
+        "block": 2,
+        "tolerance": 80,
+        "shift": 1,
+        "maxBlocks": 2,
+        "maxCore": 2,
+        "maxCluster": 3,
+        "width": 480,
+        "height": 304,
+        "blocks": {
+          "compared": 145520,
+          "differing": 0,
+          "coarseOnly": 8,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "core": {
+          "compared": 582080,
+          "rawDiffering": 209,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "density": {
+          "block": 8,
+          "tolerance": 32,
+          "compared": 9084,
+          "differing": 0,
+          "largestCluster": 0,
+          "pass": true
+        },
+        "reference": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/reference/home-web-for-macos.normalized.png",
+        "clone": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/clone/home-macos.normalized.png",
+        "diff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-macos.normalized.png",
+        "coreDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-macos.core.png",
+        "densityDiff": "/Users/devin/repos/experiments/panic-pantry/.devin/clone-this/panic-pantry/evidence/diffs/home-macos.density.png"
+      },
+      "pass": true
+    }
+  ]
+}

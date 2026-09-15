@@ -1,0 +1,3 @@
+flutter: The Dart VM service is listening on http://127.0.0.1:62526/dNYinCScGI4=/
+[IMPORTANT:flutter/shell/platform/darwin/macos/framework/Source/FlutterEngine.mm(685)] Using the Skia rendering backend (Metal).
+Assertion failed: (_currentStorage[APVResourceClassCommandBuffer].currentOffset), function -[AppleParavirtCommandBuffer endCurrentChunk], file AppleParavirtCommandBuffer.mm, line 369.

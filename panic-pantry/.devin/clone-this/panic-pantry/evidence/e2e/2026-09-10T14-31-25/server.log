@@ -1,0 +1,8 @@
+[server] listening on ws://0.0.0.0:8787/ws (test harness enabled)
+[server] room E2E4 created (seed 23, level corner-cafe)
+[server] Webby joined E2E4 (1/4)
+[server] Pip joined E2E4 (2/4)
+[server] Andi joined E2E4 (3/4)
+[server] Mac joined E2E4 (4/4)
+[server] Mac disconnected from E2E4
+[server] Webby disconnected from E2E4
