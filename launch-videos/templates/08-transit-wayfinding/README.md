@@ -28,7 +28,7 @@ If the headless browser did not download during install: `npx remotion browser e
 | # | Scene id     | Type    | Frames    | Length | What you see                                                                                                  |
 |---|--------------|---------|-----------|--------|---------------------------------------------------------------------------------------------------------------|
 | 1 | `open`       | open    | 0–104     | 3.5s   | Headline + subhead, route revealed by a left-to-right wipe, accent line traced from the origin toward station 01. |
-| 2 | `s1-request` | station | 105–284   | 6.0s   | **Request** — `screenshots/devin-web-4.png` (macOS chosen in the Hosted VM menu) expands from the marker. Caption 1. |
+| 2 | `s1-request` | station | 105–284   | 6.0s   | **Request** — `screenshots/devin-web-5.png` (Virtual environment → macOS, checked) expands from the marker. Caption 1. |
 | 3 | `l1`         | link    | 285–320   | 1.2s   | Back on the map: line runs Request → Build, arrival pulse.                                                    |
 | 4 | `s2-build`   | station | 321–500   | 6.0s   | **Build** — `recordings/devin-working-4.mp4` (Devin working, Desktop tab). Caption 2.                          |
 | 5 | `l2`         | link    | 501–536   | 1.2s   | Build → Run & test.                                                                                           |

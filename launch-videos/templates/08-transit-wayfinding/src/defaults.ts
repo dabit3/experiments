@@ -47,13 +47,13 @@ export const defaultProps: LaunchProps = {
     speedBadge: "3x",
   },
   media: {
-    // Home with the OS picker open (Ubuntu / macOS / Windows), cropped to the prompt box.
+    // Home with Virtual environment -> macOS (checked) open, cropped to the prompt box.
     pick: {
-      src: "screenshots/devin-web-4.png",
+      src: "screenshots/devin-web-5.png",
       kind: "image",
       sourceWidth: 2988,
-      sourceHeight: 1622,
-      crop: { x: 0.17, y: 0.24, w: 0.66, h: 0.62 },
+      sourceHeight: 1624,
+      crop: { x: 0.17, y: 0.25, w: 0.66, h: 0.56 },
     },
     // Devin working through a task: timeline of steps, embedded recording.
     work: {
