@@ -1,0 +1,8 @@
+.build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+MidnightBilliards.xcodeproj/
+Info.plist
+*.xcresult/
+.DS_Store
