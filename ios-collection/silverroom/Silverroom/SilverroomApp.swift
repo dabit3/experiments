@@ -21,7 +21,7 @@ enum Palette {
   static let canvas = Color(red: 0.043, green: 0.047, blue: 0.047)
   static let panel = Color(red: 0.105, green: 0.11, blue: 0.11)
   static let silver = Color(red: 0.937, green: 0.933, blue: 0.914)
-  static let muted = Color(red: 0.643, green: 0.647, blue: 0.624)
+  static let muted = Color(red: 0.71, green: 0.714, blue: 0.69)
   static let amber = Color(red: 0.824, green: 0.69, blue: 0.486)
   static let line = Color.white.opacity(0.12)
 }
@@ -32,7 +32,7 @@ enum TypeStyle {
   static let heading = Font.system(.headline, design: .serif)
   static let body = Font.system(.body, design: .serif)
   static let label = Font.system(.subheadline, design: .serif)
-  static let caption = Font.system(.caption, design: .serif)
+  static let caption = Font.system(.footnote, design: .serif)
   static let value = Font.system(.title2, design: .serif).monospacedDigit()
 }
 
@@ -124,6 +124,7 @@ struct NoticeSheet: View {
 
 struct RecipeNameSheet: View {
   @Environment(\.dismiss) private var dismiss
+  @Environment(\.dynamicTypeSize) private var typeSize
   @FocusState private var focused: Bool
   @State private var name: String
   @State private var confirmingDelete = false
@@ -167,17 +168,13 @@ struct RecipeNameSheet: View {
                 .focused($focused).submitLabel(.done)
                 .onSubmit { save() }
             }
-            Text(
-              "Saves the look, exposure, contrast and warmth. Crop and rotation stay with the photo."
-            )
-            .font(TypeStyle.label).foregroundStyle(Palette.muted)
-            Button {
-              save()
-            } label: {
-              Text("Save recipe").frame(maxWidth: .infinity)
+            if !focused {
+              Text(
+                "Saves the look and adjustments. Crop and rotation stay with the photo."
+              )
+              .font(TypeStyle.label).foregroundStyle(Palette.muted)
             }
-            .buttonStyle(PrimaryButton()).disabled(trimmedName.isEmpty)
-            if onDelete != nil {
+            if onDelete != nil && !focused {
               Button("Delete recipe") {
                 focused = false
                 confirmingDelete = true
@@ -189,10 +186,23 @@ struct RecipeNameSheet: View {
         }
         .padding(24)
       }
+      .scrollDismissesKeyboard(.interactively)
+    }
+    .safeAreaInset(edge: .bottom, spacing: 0) {
+      if !confirmingDelete {
+        Button {
+          save()
+        } label: {
+          Text("Save recipe").frame(maxWidth: .infinity)
+        }
+        .buttonStyle(PrimaryButton()).disabled(trimmedName.isEmpty)
+        .padding(.horizontal, 24).padding(.top, 12).padding(.bottom, 16)
+        .background(Palette.background)
+      }
     }
     .foregroundStyle(Palette.silver)
     .background(Palette.background)
-    .presentationDetents([.large])
+    .presentationDetents(typeSize.isAccessibilitySize ? [.large] : [.medium, .large])
     .presentationDragIndicator(.visible)
   }
 

@@ -61,14 +61,16 @@ struct EditorView: View {
     VStack(spacing: 0) {
       toolbar
       if typeSize.isAccessibilitySize {
-        ScrollView {
-          VStack(spacing: 0) {
-            photo(height: 260)
-            historyBar
-            tools
+        GeometryReader { geometry in
+          ScrollView {
+            VStack(spacing: 0) {
+              photo(height: geometry.size.width * 1.15)
+              historyBar
+              tools
+            }
           }
+          .scrollIndicators(.visible)
         }
-        .scrollIndicators(.hidden)
       } else {
         GeometryReader { geometry in
           photo(height: geometry.size.height)
@@ -136,37 +138,54 @@ struct EditorView: View {
   }
 
   private var toolbar: some View {
-    HStack(spacing: 10) {
-      RoundControl(symbol: "chevron.left", label: "Back to library") { dismiss() }
-      VStack(alignment: .leading, spacing: 3) {
-        Text(negative.title).font(TypeStyle.heading)
-        if room.outputSize != .zero {
-          Text("\(Int(room.outputSize.width)) × \(Int(room.outputSize.height))")
-            .font(TypeStyle.caption).foregroundStyle(Palette.muted).monospacedDigit()
+    VStack(alignment: .leading, spacing: 4) {
+      HStack(spacing: 10) {
+        RoundControl(symbol: "chevron.left", label: "Back to library") { dismiss() }
+        if typeSize.isAccessibilitySize {
+          Spacer()
+        } else {
+          photographTitle
         }
+        exportButton
       }
-      .lineLimit(1)
-      .frame(maxWidth: .infinity, alignment: .leading)
-      Button {
-        Task {
-          let directory = library.disk.directory.appendingPathComponent(
-            "Exports", isDirectory: true)
-          if let url = await room.export(directory: directory) { exportFile = ExportFile(url: url) }
-        }
-      } label: {
-        HStack(spacing: 7) {
-          if room.exporting { ProgressView().tint(Palette.background) }
-          Text(room.exporting ? "Exporting" : "Export").font(TypeStyle.label)
-        }
-        .padding(.horizontal, 16).frame(minHeight: 44)
-        .foregroundStyle(Palette.background)
-        .background(Palette.silver, in: Capsule())
+      if typeSize.isAccessibilitySize {
+        photographTitle.padding(.leading, 12)
       }
-      .disabled(room.preview == nil || room.exporting)
-      .opacity(room.preview == nil ? 0.4 : 1)
-      .accessibilityLabel(room.exporting ? "Exporting" : "Export photograph")
     }
     .padding(.leading, 8).padding(.trailing, 20).padding(.vertical, 8)
+  }
+
+  private var photographTitle: some View {
+    VStack(alignment: .leading, spacing: 3) {
+      Text(negative.title).font(TypeStyle.heading)
+        .fixedSize(horizontal: false, vertical: true)
+      if room.outputSize != .zero {
+        Text("\(Int(room.outputSize.width)) × \(Int(room.outputSize.height))")
+          .font(TypeStyle.caption).foregroundStyle(Palette.muted).monospacedDigit()
+      }
+    }
+    .frame(maxWidth: .infinity, alignment: .leading)
+  }
+
+  private var exportButton: some View {
+    Button {
+      Task {
+        let directory = library.disk.directory.appendingPathComponent(
+          "Exports", isDirectory: true)
+        if let url = await room.export(directory: directory) { exportFile = ExportFile(url: url) }
+      }
+    } label: {
+      HStack(spacing: 7) {
+        if room.exporting { ProgressView().tint(Palette.background) }
+        Text(room.exporting ? "Exporting" : "Export").font(TypeStyle.label)
+      }
+      .padding(.horizontal, 16).frame(minHeight: 44)
+      .foregroundStyle(Palette.background)
+      .background(Palette.silver, in: Capsule())
+    }
+    .disabled(room.preview == nil || room.exporting)
+    .opacity(room.preview == nil ? 0.4 : 1)
+    .accessibilityLabel(room.exporting ? "Exporting" : "Export photograph")
   }
 
   private func photo(height: CGFloat) -> some View {
@@ -195,13 +214,16 @@ struct EditorView: View {
       RoundControl(symbol: "arrow.uturn.forward", label: "Redo edit") { room.redo() }
         .disabled(!room.canRedo)
       Spacer(minLength: 0)
-      Text(comparing ? "Original" : "Hold to compare")
+      Text(comparing ? "Original" : (typeSize.isAccessibilitySize ? "Compare" : "Hold to compare"))
         .font(TypeStyle.caption)
         .foregroundStyle(comparing ? Palette.silver : Palette.muted)
         .frame(minHeight: 44).contentShape(Rectangle())
         .onLongPressGesture(minimumDuration: 0.01, pressing: { comparing = $0 }, perform: {})
         .accessibilityLabel("Compare with original")
         .accessibilityValue(comparing ? "Showing original" : "Showing edited photograph")
+        .accessibilityHint(
+          "Touch and hold to see the original. Double-tap with VoiceOver to toggle."
+        )
         .accessibilityAddTraits(.isButton)
         .accessibilityAction { comparing.toggle() }
       Spacer(minLength: 0)
@@ -214,6 +236,13 @@ struct EditorView: View {
   private var tools: some View {
     VStack(spacing: 0) {
       Hairline()
+      if typeSize.isAccessibilitySize {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 4) {
+          ForEach(ToolTab.allCases, id: \.self) { tabButton($0) }
+        }
+        .padding(12)
+        Hairline()
+      }
       Group {
         switch tab {
         case .looks: filmstrip
@@ -224,31 +253,35 @@ struct EditorView: View {
       }
       .frame(height: typeSize.isAccessibilitySize ? nil : 218)
       .padding(.vertical, typeSize.isAccessibilitySize ? 14 : 0)
-      ViewThatFits(in: .horizontal) {
-        tabButtons
-        ScrollView(.horizontal, showsIndicators: false) { tabButtons }
+      if !typeSize.isAccessibilitySize {
+        ViewThatFits(in: .horizontal) {
+          tabButtons
+          ScrollView(.horizontal, showsIndicators: true) { tabButtons }
+        }
+        .padding(.horizontal, 12).padding(.top, 4).padding(.bottom, 8)
       }
-      .padding(.horizontal, 12).padding(.top, 4).padding(.bottom, 8)
     }
     .background(Palette.background.ignoresSafeArea(edges: .bottom))
   }
 
   private var tabButtons: some View {
     HStack(spacing: 4) {
-      ForEach(ToolTab.allCases, id: \.self) { item in
-        Button {
-          withAnimation(reduceMotion ? nil : .easeOut(duration: 0.16)) { tab = item }
-        } label: {
-          Text(item.rawValue).font(TypeStyle.label)
-            .fixedSize().frame(maxWidth: .infinity, minHeight: 46)
-            .padding(.horizontal, 10)
-            .foregroundStyle(tab == item ? Palette.silver : Palette.muted)
-            .background(
-              tab == item ? Palette.panel : .clear, in: RoundedRectangle(cornerRadius: 10))
-        }
-        .buttonStyle(.plain).accessibilityAddTraits(tab == item ? .isSelected : [])
-      }
+      ForEach(ToolTab.allCases, id: \.self) { tabButton($0) }
     }
+  }
+
+  private func tabButton(_ item: ToolTab) -> some View {
+    Button {
+      withAnimation(reduceMotion ? nil : .easeOut(duration: 0.16)) { tab = item }
+    } label: {
+      Text(item.rawValue).font(TypeStyle.label)
+        .fixedSize().frame(maxWidth: .infinity, minHeight: 46)
+        .padding(.horizontal, 10)
+        .foregroundStyle(tab == item ? Palette.silver : Palette.muted)
+        .background(
+          tab == item ? Palette.panel : .clear, in: RoundedRectangle(cornerRadius: 10))
+    }
+    .buttonStyle(.plain).accessibilityAddTraits(tab == item ? .isSelected : [])
   }
 
   private var filmstrip: some View {
@@ -274,7 +307,7 @@ struct EditorView: View {
                       Palette.panel
                     }
                   }
-                  .frame(width: filmWidth, height: filmWidth * 1.35).clipped()
+                  .frame(width: min(filmWidth, 72), height: min(filmWidth, 72) * 1.35).clipped()
                   .clipShape(RoundedRectangle(cornerRadius: 5)).padding(3)
                   .overlay {
                     RoundedRectangle(cornerRadius: 8)

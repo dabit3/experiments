@@ -67,8 +67,9 @@ Holding the photograph also compares. Each adjustment has a **Reset value** acti
 Undo/redo sits below the photo; a complete slider drag counts as one edit.
 History holds the last 100 edits in the current editor session. Applied settings
 persist across relaunch, while undo history does not.
-At accessibility text sizes, the workspace scrolls and selectors scroll
-horizontally; the toolbar remains fixed.
+At accessibility text sizes, the workspace scrolls, the photo grows, and tool
+tabs form a two-column grid. The toolbar remains fixed and the full title wraps.
+Recipe saving stays above the keyboard; compact forms use a half-height sheet.
 The **Recipes** tab saves a new recipe or opens saved looks.
 Recipe previews include all saved adjustment values; deletion requires confirmation.
 Tap the minus beside an imported photograph to confirm removal of its local copy.
