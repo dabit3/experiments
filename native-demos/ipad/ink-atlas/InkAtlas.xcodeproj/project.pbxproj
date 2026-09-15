@@ -1,0 +1,119 @@
+// !$*UTF8*$!
+{
+    archiveVersion = 1;
+    classes = {};
+    objectVersion = 77;
+    objects = {
+        A10000000000000000000001 = {
+            isa = PBXProject;
+            attributes = { BuildIndependentTargetsInParallel = YES; LastUpgradeCheck = 2660; };
+            buildConfigurationList = A10000000000000000000002;
+            compatibilityVersion = "Xcode 16.0";
+            developmentRegion = en;
+            hasScannedForEncodings = 0;
+            knownRegions = (en, Base);
+            mainGroup = A10000000000000000000003;
+            productRefGroup = A10000000000000000000004;
+            projectDirPath = "";
+            projectRoot = "";
+            targets = (A10000000000000000000005);
+        };
+        A10000000000000000000002 = {
+            isa = XCConfigurationList;
+            buildConfigurations = (A10000000000000000000010, A10000000000000000000011);
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Release;
+        };
+        A10000000000000000000003 = {
+            isa = PBXGroup;
+            children = (A10000000000000000000006, A10000000000000000000007, A10000000000000000000004);
+            sourceTree = "<group>";
+        };
+        A10000000000000000000004 = {
+            isa = PBXGroup;
+            children = (A10000000000000000000008);
+            name = Products;
+            sourceTree = "<group>";
+        };
+        A10000000000000000000005 = {
+            isa = PBXNativeTarget;
+            buildConfigurationList = A10000000000000000000009;
+            buildPhases = (A10000000000000000000012, A10000000000000000000013, A10000000000000000000014);
+            buildRules = ();
+            dependencies = ();
+            fileSystemSynchronizedGroups = (A10000000000000000000006, A10000000000000000000007);
+            name = InkAtlas;
+            productName = InkAtlas;
+            productReference = A10000000000000000000008;
+            productType = "com.apple.product-type.application";
+        };
+        A10000000000000000000006 = { isa = PBXFileSystemSynchronizedRootGroup; path = App; sourceTree = "<group>"; };
+        A10000000000000000000007 = { isa = PBXFileSystemSynchronizedRootGroup; path = Core; sourceTree = "<group>"; };
+        A10000000000000000000008 = { isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InkAtlas.app; sourceTree = BUILT_PRODUCTS_DIR; };
+        A10000000000000000000009 = {
+            isa = XCConfigurationList;
+            buildConfigurations = (A10000000000000000000015, A10000000000000000000016);
+            defaultConfigurationIsVisible = 0;
+            defaultConfigurationName = Release;
+        };
+        A10000000000000000000010 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CLANG_ENABLE_MODULES = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+                SDKROOT = iphoneos;
+                SWIFT_VERSION = 5.0;
+                SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+                DEBUG_INFORMATION_FORMAT = dwarf;
+            };
+            name = Debug;
+        };
+        A10000000000000000000011 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CLANG_ENABLE_MODULES = YES;
+                IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+                SDKROOT = iphoneos;
+                SWIFT_VERSION = 5.0;
+                SWIFT_COMPILATION_MODE = wholemodule;
+                SWIFT_OPTIMIZATION_LEVEL = "-O";
+            };
+            name = Release;
+        };
+        A10000000000000000000012 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+        A10000000000000000000013 = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+        A10000000000000000000014 = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+        A10000000000000000000015 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CODE_SIGNING_ALLOWED = NO;
+                CODE_SIGN_STYLE = Automatic;
+                GENERATE_INFOPLIST_FILE = NO;
+                INFOPLIST_FILE = Info.plist;
+                PRODUCT_BUNDLE_IDENTIFIER = com.inkatlas.demo;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+                TARGETED_DEVICE_FAMILY = 2;
+                SWIFT_EMIT_LOC_STRINGS = YES;
+                ENABLE_PREVIEWS = YES;
+            };
+            name = Debug;
+        };
+        A10000000000000000000016 = {
+            isa = XCBuildConfiguration;
+            buildSettings = {
+                CODE_SIGNING_ALLOWED = NO;
+                CODE_SIGN_STYLE = Automatic;
+                GENERATE_INFOPLIST_FILE = NO;
+                INFOPLIST_FILE = Info.plist;
+                PRODUCT_BUNDLE_IDENTIFIER = com.inkatlas.demo;
+                PRODUCT_NAME = "$(TARGET_NAME)";
+                SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+                TARGETED_DEVICE_FAMILY = 2;
+                SWIFT_EMIT_LOC_STRINGS = YES;
+            };
+            name = Release;
+        };
+    };
+    rootObject = A10000000000000000000001;
+}
