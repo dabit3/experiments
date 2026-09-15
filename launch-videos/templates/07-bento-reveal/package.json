@@ -1,0 +1,22 @@
+{
+  "name": "launch-video-07-bento-reveal",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render Main out/video.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.522",
+    "@remotion/google-fonts": "4.0.522",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.522"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.9.3"
+  }
+}
