@@ -1,0 +1,177 @@
+{
+  "card_knight": {
+    "size": [
+      448,
+      560
+    ],
+    "sha256": "d15f9ef985f7c918b7de7cf6eec458b0ac0bb400e178d4cb55c955db51e93c6b"
+  },
+  "card_archers": {
+    "size": [
+      448,
+      560
+    ],
+    "sha256": "0c9f671eb220abcd107edcac34fac76d9c6616c29abf67d65195aab867e453f8"
+  },
+  "card_giant": {
+    "size": [
+      448,
+      560
+    ],
+    "sha256": "efdc9cbc0f302ed5115dfe3cb08980e0b8b356b2f3cd9cfda666078cf6fabc8e"
+  },
+  "card_duelist": {
+    "size": [
+      448,
+      560
+    ],
+    "sha256": "b57a8cb51e52750bb7369bd6a9dfc713ef3673b63f0f4131cbdac52fa5e29e79"
+  },
+  "card_sharpshooter": {
+    "size": [
+      448,
+      560
+    ],
+    "sha256": "cdab602138ca15aff8af4ed84d5f9869f9631e71f8ff4e302567f7ce0ee22bc4"
+  },
+  "card_gremlins": {
+    "size": [
+      448,
+      560
+    ],
+    "sha256": "beede290c4be4d2c670a2024f6d89cbd278f8136ad4067a92f68f78bb786174a"
+  },
+  "card_bones": {
+    "size": [
+      448,
+      560
+    ],
+    "sha256": "216471b5e2429d708d0f07421d58a8cdba932b7db377faf5246733bc5d12e789"
+  },
+  "card_whelp": {
+    "size": [
+      448,
+      560
+    ],
+    "sha256": "fb34c156d1f6cf750a368e8b1e5129f1d0872ceb685fb6d3dba5ea7e67c7910b"
+  },
+  "card_meteor": {
+    "size": [
+      448,
+      560
+    ],
+    "sha256": "288176fb22940f2a5d566744d98939c2d266849a65b1a1f1dc8be3305554b1ce"
+  },
+  "card_volley": {
+    "size": [
+      448,
+      560
+    ],
+    "sha256": "697a4351f9bbe6283641d41556a0f78e10b026625352d24d2f22971dc5ffdf59"
+  },
+  "units_knight": {
+    "size": [
+      1536,
+      512
+    ],
+    "sha256": "32df3d06655887564eb8f4704b62398d38aeda1227b7edcd68bf75287329c7e2"
+  },
+  "units_archers": {
+    "size": [
+      1536,
+      512
+    ],
+    "sha256": "b4a0204510836c03e7afd34b52442f571f5deb416163418abc4e6f50ba13f849"
+  },
+  "units_giant": {
+    "size": [
+      1536,
+      512
+    ],
+    "sha256": "bd370870d64ba377511657f551c4e9d72934b8ace6e4f0f497d3ed8d90723523"
+  },
+  "units_duelist": {
+    "size": [
+      1536,
+      512
+    ],
+    "sha256": "6149edd653d181b1c8e4cd9bfad83a92bfd43551e7947d492a9b698122aa3e3f"
+  },
+  "units_sharpshooter": {
+    "size": [
+      1536,
+      512
+    ],
+    "sha256": "db6eb0c9fc8b6c18a8fee92ea78300d919fd6c5096955b8eee28ba411c8ae12d"
+  },
+  "units_gremlins": {
+    "size": [
+      1536,
+      512
+    ],
+    "sha256": "75be33d7f56b863f6f3bfe6e1db1663eff1295802b6e42d35ba3664816bed1b4"
+  },
+  "units_bones": {
+    "size": [
+      1536,
+      512
+    ],
+    "sha256": "85aa247f9dc3483a864c11c388acd6c857cac5571f1bbe88bc641df80b189c0e"
+  },
+  "units_whelp": {
+    "size": [
+      1536,
+      512
+    ],
+    "sha256": "41ef7f4ab75eb61c3a512f2454028e622ea71b1215bb0f4154942565868fcb20"
+  },
+  "hero": {
+    "size": [
+      1200,
+      1100
+    ],
+    "sha256": "d01aa17b868445b5f8aaccc1add6180764dba14f5690d73ed951cfc2c642d92f"
+  },
+  "emblem": {
+    "size": [
+      512,
+      512
+    ],
+    "sha256": "bb3f15a73294ae6f6fb39f6ba2c945ffb8212469d3e3717677498f6d17fa80c0"
+  },
+  "arena": {
+    "size": [
+      900,
+      1600
+    ],
+    "sha256": "f187b307d0703eb49b280ab5f585b87772f0b36fd7c249ffadc6404e8a2c9286"
+  },
+  "tower_keep_blue": {
+    "size": [
+      448,
+      448
+    ],
+    "sha256": "0bdb95d369529d1a5a0ae38497c1ee923bbdac6b8c74e957d266499124ac1921"
+  },
+  "tower_keep_red": {
+    "size": [
+      448,
+      448
+    ],
+    "sha256": "42b1fe57282ebabf2b75f7a31879a77c946881ec66b36ffa45d50f5c8e174c33"
+  },
+  "tower_guard_blue": {
+    "size": [
+      448,
+      448
+    ],
+    "sha256": "eb0825eedd349955a6a40447b027c5207ad55c1c91501e35a907c6462b3b3619"
+  },
+  "tower_guard_red": {
+    "size": [
+      448,
+      448
+    ],
+    "sha256": "bd45ac0196d96374a9f69498faf5d4a2372c16a5bb3bc15476b62caaa17435f4"
+  }
+}

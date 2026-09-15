@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.dabit3.towertussle.BattleEngineTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-09-11T02:14:40" hostname="ip-172-16-4-2.us-west-2.compute.internal" time="0.348">
+  <properties/>
+  <testcase name="destroyingKeepAwardsThreeCrowns" classname="com.dabit3.towertussle.BattleEngineTest" time="0.034"/>
+  <testcase name="rejectsDeployWithoutSelection" classname="com.dabit3.towertussle.BattleEngineTest" time="0.0"/>
+  <testcase name="doubleElixirAndOvertimeTiming" classname="com.dabit3.towertussle.BattleEngineTest" time="0.116"/>
+  <testcase name="deployingCyclesHandAndSpendsElixir" classname="com.dabit3.towertussle.BattleEngineTest" time="0.013"/>
+  <testcase name="matchEndsWithResultAfterOvertimeAtLatest" classname="com.dabit3.towertussle.BattleEngineTest" time="0.164"/>
+  <testcase name="troopsMustDeployOnPlayerSideButSpellsAnywhere" classname="com.dabit3.towertussle.BattleEngineTest" time="0.0"/>
+  <testcase name="startsWithHandNextCardAndTowers" classname="com.dabit3.towertussle.BattleEngineTest" time="0.0"/>
+  <testcase name="surrenderRecordsDefeat" classname="com.dabit3.towertussle.BattleEngineTest" time="0.0"/>
+  <testcase name="rejectsTroopDeployOnEnemySide" classname="com.dabit3.towertussle.BattleEngineTest" time="0.007"/>
+  <testcase name="elixirRegeneratesAndCaps" classname="com.dabit3.towertussle.BattleEngineTest" time="0.012"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
