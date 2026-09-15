@@ -28,8 +28,8 @@
     "asset": "devin-web-4.png",
     "outputSeconds": [4, 9],
     "sourceSeconds": null,
-    "treatment": "Static source crop x=560, y=410, width=1920, height=1030 retains composer and actual macOS menu. Two-stage exterior aperture reveal; source colors unchanged.",
-    "requiredLabel": null
+    "treatment": "User-requested recreated environment selection within the source crop x=560, y=410, width=1920, height=1030. Original menu labels/icons are composited over reconstructed row backgrounds; highlight and pointer move from Ubuntu to macOS, then the check and trigger update. Final macOS row remains highlighted and checked. This interaction is animated from the still, not captured footage; other source UI is unchanged.",
+    "requiredLabel": "Environment selection animation"
   },
   {
     "scene": "agent",

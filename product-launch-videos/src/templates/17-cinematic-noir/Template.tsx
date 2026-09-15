@@ -6,6 +6,7 @@ import {
 } from '../../shared';
 import type {NoirConfig} from './config';
 import {boundedTransition, openingAmount, shutterClip, splitStillFrames} from './motion';
+import {EnvironmentSelection} from './EnvironmentSelection';
 
 type Props = {config: NoirConfig};
 type ProductScene = Exclude<SceneTiming['id'], 'opening' | 'closing'>;
@@ -57,11 +58,12 @@ const Aperture = ({
   </div>;
 
 const Pane = ({
-  config, selection, duration, amount = 1,
+  config, selection, duration, amount = 1, environment = false,
 }: Props & {
   selection: ImageSelection | VideoSelection;
   duration?: number;
   amount?: number;
+  environment?: boolean;
 }) => {
   const {width, height} = useVideoConfig();
   const {margin, captionHeight, gutter} = config.layout;
@@ -89,6 +91,9 @@ const Pane = ({
           fontSize: 26, padding: 0,
           letterSpacing: config.brand.typography.bodyTracking,
         }}
+      /> : environment ? <EnvironmentSelection
+        config={config} selection={selection} width={paneWidth} height={paneHeight}
+        duration={duration ?? 1}
       /> : <SourceImage {...selection} width={paneWidth} height={paneHeight} />}
     </Aperture>
   </div>;
@@ -167,15 +172,16 @@ const QuietTitle = ({
 };
 
 const Still = ({
-  config, selection, duration, exit = false,
-}: Props & {selection: ImageSelection; duration: number; exit?: boolean}) => {
+  config, selection, duration, exit = false, environment = false,
+}: Props & {selection: ImageSelection; duration: number; exit?: boolean; environment?: boolean}) => {
   const frame = useCurrentFrame();
   const entering = openingAmount(frame, boundedTransition(config.motion.shutterFrames, duration));
   const exitFrames = boundedTransition(config.motion.stillExitFrames, duration);
   const leaving = exit && exitFrames > 0
     ? 1 - openingAmount(frame - (duration - exitFrames - 1), exitFrames)
     : 1;
-  return <Pane config={config} selection={selection} amount={Math.min(entering, leaving)} />;
+  return <Pane config={config} selection={selection} duration={duration}
+    environment={environment} amount={Math.min(entering, leaving)} />;
 };
 
 const Demonstration = ({
@@ -189,7 +195,9 @@ const Demonstration = ({
   const split = splitStillFrames(scene.durationInFrames - intertitle, config.motion.iphoneSplit);
   const video = scene.id === 'agent' || scene.id === 'webQa';
   const secondary = video ? config.labels.recording
-    : scene.id === 'environment' ? '' : config.labels.still;
+    : scene.id === 'environment' && config.media.environment.asset === 'devin-web-4.png'
+      ? config.labels.environment ?? 'Environment selection animation'
+      : scene.id === 'environment' ? '' : config.labels.still;
   if (frame < intertitle) {
     return <QuietTitle config={config} title={caption} />;
   }
@@ -198,7 +206,8 @@ const Demonstration = ({
     {scene.id === 'agent' || scene.id === 'webQa' ?
       <Pane config={config} selection={config.media[scene.id]} duration={scene.durationInFrames} /> : null}
     {scene.id === 'environment' || scene.id === 'ipad' ?
-      <Still config={config} selection={config.media[scene.id]} duration={scene.durationInFrames} /> : null}
+      <Still config={config} selection={config.media[scene.id]} duration={scene.durationInFrames}
+        environment={scene.id === 'environment'} /> : null}
     {scene.id === 'iphone' ? <>
       <Sequence from={intertitle} durationInFrames={split}>
         <Still config={config} selection={config.media.iphone[0]} duration={split} exit />

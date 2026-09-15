@@ -2,8 +2,9 @@
 
 Restrained brand darkness, stationary typography, and a two-stage mechanical
 aperture: first a narrow slit, then a clean rectangular opening. Thin white rails
-sit strictly outside the product. No source dimming, simulated app interaction,
-filters, atmospheric effects, or sound.
+sit strictly outside the product. The environment menu includes a user-requested
+recreated Ubuntu-to-macOS selection animation. Other source UI is unchanged;
+no atmospheric effects, dimming or sound.
 
 ## Render
 
@@ -17,11 +18,12 @@ npm run templates:list
 npm run lint
 npm run typecheck
 npm test
+npx tsx --test src/templates/17-cinematic-noir/motion.test.ts
 npm run build
 npm run render -- --template 17-cinematic-noir
-npm run still -- --template 17-cinematic-noir --frame 600
+npm run still -- --template 17-cinematic-noir --frame 240
 npm run still -- --template 17-cinematic-noir \
-  --frames 60,127,145,180,330,400,450,540,600,750,960,1080,1140
+  --frames 60,127,155,171,191,240,330,450,600,750,960,1140
 npm run contact-sheet -- out/17-cinematic-noir
 ffprobe -v error -select_streams v:0 \
   -show_entries stream=width,height,r_frame_rate,nb_frames:format=duration \
@@ -70,13 +72,25 @@ All outputs are ignored under `out/17-cinematic-noir/`.
   typography remain stationary during recordings.
 - **Lighting:** `lightingEnabled`, `edgeLightOpacity`, `edgeLightLength`,
   `edgeLightTravel` change the exterior rails only. No source pixels are tinted.
+- **Environment selection:** `environmentAnimationEnabled`,
+  `environmentHoldFrames`, `environmentMoveFrames`, `environmentClickFrames`
+  control the initial Ubuntu hold, highlight/pointer movement and macOS click.
+  Timing compresses automatically in shorter scenes to reserve the final macOS
+  hold. Disabling animation holds macOS highlighted and checked. Older complete
+  configs without these optional fields use the default animation.
+  The reconstruction uses source-coordinate icon/text crops from `devin-web-4.png`
+  and follows the configured media framing. Ubuntu's grey sprite background is
+  normalized before compositing onto the moving highlight. The initial trigger
+  and check show Ubuntu; they switch to macOS after the pointer arrives.
+  Replacing the environment asset disables the source-specific reconstruction.
+  `labels.environment` defaults to **Environment selection animation**.
 
 ## Default edit
 
 | Time | Treatment |
 | --- | --- |
 | 0–4 | Spacious logo/opening/benefit on #191919 |
-| 4–9 | Real macOS menu revealed with mechanical aperture |
+| 4–9 | Recreated Ubuntu-to-macOS selection, then highlighted/checked macOS hold |
 | 9–13 | Unmasked agent-selection recording, source 0–4 seconds |
 | 13–13.6 | Brief quiet iPhone caption composition |
 | 13.6–17.8 | Afterhours Maze full still and original report |
@@ -115,16 +129,19 @@ Validated 2026-09-15:
   **40.000 seconds**, silent. Full FFmpeg decode completed without errors.
 - `assets:check`, template discovery, ESLint, TypeScript, Vite build and the
   shared test suites passed (8 TypeScript tests and 3 Python tests).
+  Five template-specific tests cover the selection sequence, compressed timing,
+  disabled animation, zero-duration transitions and older configurations.
 - The alternate config above resolved to **1245 frames / 41.5 seconds**;
   frame 180 rendered with its edited caption fully visible.
-- Original full-size stills and 12 frames decoded from the final MP4 were
+- Original full-size stills and frames decoded from the final MP4 were
   inspected across titles, shutters, all five product scenes and closing.
   No unintended clipping, caption/source overlap or missing media was found.
   The first iPhone report retains **8 passed / 0 failed / 1 untested**.
-- Delivered poster is final MP4 frame **600**. The contact sheet uses actual
-  decoded MP4 frames **60, 127, 180, 330, 400, 450, 540, 600, 750, 960,
-  1080, 1140**, in reading order. It includes the intentionally narrow
-  shutter states so the mechanical motion is visible in the comparison.
+- Revision poster is final MP4 frame **240**, showing macOS highlighted and
+  checked. The revised contact sheet uses actual decoded MP4 frames **60, 127,
+  155, 171, 191, 240, 330, 450, 600, 750, 960, 1140**, in reading order.
+  Frames 155–240 show the initial Ubuntu state, moving highlight, macOS selection
+  and stable final hold. The environment clip is the full 4–9 second scene.
 
 The final artifact URLs are reported with the producer handoff.
 UI testing and public deployment are outside this media-rendering task.

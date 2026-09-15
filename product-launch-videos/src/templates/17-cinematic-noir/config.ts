@@ -5,6 +5,7 @@ export type NoirConfig = LaunchConfig & {
     montage: string;
     still: string;
     recording: string;
+    environment?: string;
   };
   motion: {
     shutterFrames: number;
@@ -20,6 +21,10 @@ export type NoirConfig = LaunchConfig & {
     edgeLightLength: number;
     edgeLightTravel: number;
     lightingEnabled: boolean;
+    environmentAnimationEnabled?: boolean;
+    environmentHoldFrames?: number;
+    environmentMoveFrames?: number;
+    environmentClickFrames?: number;
   };
 };
 
@@ -68,6 +73,7 @@ export const config: NoirConfig = {
     montage: 'Separate session examples',
     still: 'Simulator still',
     recording: 'Source recording · 1×',
+    environment: 'Environment selection animation',
   },
   motion: {
     shutterFrames: 24,
@@ -83,5 +89,9 @@ export const config: NoirConfig = {
     edgeLightLength: 120,
     edgeLightTravel: 100,
     lightingEnabled: true,
+    environmentAnimationEnabled: true,
+    environmentHoldFrames: 18,
+    environmentMoveFrames: 18,
+    environmentClickFrames: 8,
   },
 };

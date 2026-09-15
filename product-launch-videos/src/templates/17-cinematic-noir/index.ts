@@ -30,6 +30,14 @@ const motionControls: ConfigControl[] = [
     description: 'Vertical travel of the exterior rail while the still shutter opens.'},
   {path: 'motion.lightingEnabled', label: 'Exterior lighting', type: 'boolean',
     description: 'Enable the thin exterior border and highlights; never affects source pixels.'},
+  {path: 'motion.environmentAnimationEnabled', label: 'Environment selection animation', type: 'boolean',
+    description: 'Move from Ubuntu to macOS; when disabled, hold macOS highlighted and checked.'},
+  {path: 'motion.environmentHoldFrames', label: 'Ubuntu hold', type: 'number', min: 0, max: 60, step: 1,
+    description: 'Initial Ubuntu state after the shutter opens; shortened automatically for short scenes.'},
+  {path: 'motion.environmentMoveFrames', label: 'Environment highlight travel', type: 'number', min: 0, max: 60, step: 1,
+    description: 'Move the highlight and pointer from Ubuntu to macOS.'},
+  {path: 'motion.environmentClickFrames', label: 'macOS selection delay', type: 'number', min: 0, max: 30, step: 1,
+    description: 'Pointer press after arriving on macOS; then update the check and selected environment.'},
 ];
 
 export const template = defineTemplate({
