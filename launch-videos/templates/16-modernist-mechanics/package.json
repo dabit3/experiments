@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "remotion studio",
     "render": "remotion render Launch out/launch.mp4",
-    "still": "remotion still Launch out/poster.png --frame=120",
+    "still": "remotion still Launch out/poster.png --frame=100",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src"
   },

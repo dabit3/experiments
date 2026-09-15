@@ -21,7 +21,7 @@ npm run dev        # Remotion Studio
 npm run typecheck
 npm run lint
 npm run render     # out/launch.mp4
-npm run still      # out/poster.png (frame 120)
+npm run still      # out/poster.png (frame 100)
 ```
 
 If the headless browser download fails: `npx remotion browser ensure`.

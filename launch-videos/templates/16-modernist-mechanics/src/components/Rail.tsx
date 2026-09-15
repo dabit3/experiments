@@ -69,13 +69,37 @@ export const Rail: React.FC<{
             style={{
               position: 'absolute',
               left: x,
-              top: rule.y - tiles.size / 2,
+              top: rule.y - tiles.size / 2 - 34,
               display: 'flex',
-              alignItems: 'center',
+              flexDirection: 'column',
               gap: 12,
               ...enterStyle(t, -motion.slideDistance / 2, 'y'),
             }}
           >
+            <div style={{display: 'flex', alignItems: 'baseline', gap: 10, whiteSpace: 'nowrap'}}>
+              <span
+                style={{
+                  fontFamily: brand.monoFontFamily,
+                  fontSize: 13,
+                  letterSpacing: 0.6,
+                  color: brand.inkSubtle,
+                }}
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span
+                style={{
+                  fontFamily: brand.fontFamily,
+                  fontSize: 18,
+                  lineHeight: '22px',
+                  letterSpacing: -0.2,
+                  fontWeight: current ? 500 : 400,
+                  color: current ? brand.ink : brand.inkMuted,
+                }}
+              >
+                {label}
+              </span>
+            </div>
             <div
               style={{
                 width: tiles.size,
@@ -84,29 +108,6 @@ export const Rail: React.FC<{
                 outline: `${rule.thickness}px solid ${brand.paper}`,
               }}
             />
-            <span
-              style={{
-                fontFamily: brand.monoFontFamily,
-                fontSize: 13,
-                letterSpacing: 0.6,
-                color: brand.inkSubtle,
-                marginRight: 4,
-              }}
-            >
-              {String(i + 1).padStart(2, '0')}
-            </span>
-            <span
-              style={{
-                fontFamily: brand.fontFamily,
-                fontSize: 18,
-                letterSpacing: -0.2,
-                fontWeight: current ? 500 : 400,
-                color: current ? brand.ink : brand.inkMuted,
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {label}
-            </span>
           </div>
         );
       })}
