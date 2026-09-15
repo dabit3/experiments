@@ -1,0 +1,66 @@
+[
+  {
+    "scene": "opening and closing",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original transparent black lockup in the persistent header, aspect ratio contained in 164 × 56 pixels.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "all typography",
+    "asset": "NBInternationalPro-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original brand font, loaded through the shared render-blocking font gate; regular weight throughout.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "environment",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [4, 9],
+    "sourceSeconds": null,
+    "treatment": "Source-pixel crop x=580, y=465, width=1830, height=920 removes surrounding blank canvas while preserving the full composer, Devin mark and hosted environment menu. Contained without stretching. 18-frame rectangular region expansion, then still.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "agent",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [9, 13],
+    "sourceSeconds": [0, 4],
+    "treatment": "Full original recording contained at 1×; no reveal obscures source action. Stable caption outside the UI.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [13, 17.5],
+    "sourceSeconds": null,
+    "treatment": "Full screenshot contained, including 8 passed, 0 failed, 1 untested. Initial 18-frame region expansion then stationary hold. Explicit source-still label.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [17.5, 22],
+    "sourceSeconds": null,
+    "treatment": "Full screenshot contained with intact final-review report; clean cut from a separate example, no simulated internal state motion.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "webQa",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [22, 29],
+    "sourceSeconds": [0, 7],
+    "treatment": "Full source recording contained at 1×, without masking or interruption. Shared persistent 48-pixel label reserved below the source.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "ipad",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [29, 35],
+    "sourceSeconds": null,
+    "treatment": "Full iPad screenshot and acceptance report contained. 18-frame region expansion, then unchanged still. Separate-session montage, not a continuation of the iPhone app.",
+    "requiredLabel": null
+  }
+]
