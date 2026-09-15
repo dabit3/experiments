@@ -1,0 +1,16 @@
+included:
+  - Sources
+  - Tests
+only_rules:
+  - force_cast
+  - force_try
+  - empty_count
+  - duplicate_imports
+  - trailing_whitespace
+  - vertical_whitespace
+  - return_arrow_whitespace
+  - closure_spacing
+  - unused_optional_binding
+  - fatal_error_message
+  - unneeded_break_in_switch
+  - redundant_nil_coalescing
