@@ -1,0 +1,112 @@
+export const design = {
+  paper: '#f4f3ed',
+  ink: '#080808',
+  accent: '#1971c2',
+  font: '"Helvetica Neue", Arial, sans-serif',
+  mono: 'Menlo, Consolas, monospace',
+  inset: 88,
+  tickerHeight: 80,
+  tickerPixelsPerFrame: 3,
+  entranceFrames: 20,
+} as const;
+
+export const scenes = [
+  {
+    id: 'hook',
+    seconds: 4,
+    eyebrow: 'DEVIN / NATIVE WORKFLOWS',
+    title: ['DEVIN.', 'NOW', 'NATIVE.'],
+    underline: 2,
+    size: 204,
+    supporting: 'macOS + iOS apps.',
+    footer: 'THE CODING AGENT. NOW ON MANAGED MAC VMs.',
+  },
+  {
+    id: 'context',
+    seconds: 4,
+    eyebrow: 'THE OLD FEEDBACK LOOP',
+    title: ['MANUAL QA.', 'OR WAIT.'],
+    underline: 1,
+    size: 180,
+    supporting: 'Teams waited 20+ minutes for CI feedback.',
+    footer: 'PRIOR WORKFLOW CONTEXT / NOT A DEMO BENCHMARK',
+  },
+  {
+    id: 'build',
+    seconds: 5,
+    eyebrow: '01 / BUILD + RUN',
+    title: ['BUILD IT.', 'RUN IT.'],
+    underline: 1,
+    size: 192,
+    supporting: 'Native apps. Managed Mac VMs.',
+    footer: 'XCODE / macOS / iOS',
+  },
+  {
+    id: 'interact',
+    seconds: 6,
+    eyebrow: '02 / INTERACT IN SIMULATOR',
+    title: ['TAP.', 'TYPE.', 'SCROLL.'],
+    underline: 0,
+    size: 200,
+    supporting: 'An iPhone. In your session.',
+    footer: 'iOS SIMULATOR / ILLUSTRATIVE WORKFLOW',
+  },
+  {
+    id: 'fix',
+    seconds: 5,
+    eyebrow: '03 / CLOSE THE LOOP',
+    title: ['REPRODUCE.', 'FIX.', 'RETEST.'],
+    underline: 2,
+    size: 139,
+    supporting: 'Work through the bug.',
+    footer: 'ILLUSTRATIVE WORKFLOW / SOURCE CHECKS INCLUDE FAILURES',
+  },
+  {
+    id: 'review',
+    seconds: 6,
+    eyebrow: '04 / REVIEW RECORDED EVIDENCE',
+    title: ['SEE', 'WHAT', 'HAPPENED.'],
+    underline: 1,
+    size: 130,
+    supporting: 'Review the recording.',
+    footer: 'ACTUAL SOURCE RECORDING / GENERIC WEB-APP QA',
+  },
+  {
+    id: 'outcome',
+    seconds: 6,
+    eyebrow: 'THE OUTCOME',
+    title: ['A WORKING', 'APP.', 'IN VIEW.'],
+    underline: 2,
+    size: 160,
+    supporting: 'Same price as Linux VMs.',
+    footer: 'INSPECT THE APP IN YOUR DEVIN SESSION.',
+  },
+  {
+    id: 'end',
+    seconds: 4,
+    eyebrow: 'DEVIN / macOS + iOS',
+    title: ['BUILD. RUN. SEE IT.'],
+    underline: 0,
+    size: 92,
+    supporting: 'macOS + iOS',
+    footer: 'NATIVE WORKFLOWS. SAME PRICE AS LINUX VMs.',
+  },
+] as const;
+
+export type Scene = (typeof scenes)[number];
+
+export const interactionStages = [
+  {second: 0, action: 'TAP', asset: 'devin-web-14.png', sourceWidth: 2986},
+  {second: 2, action: 'TYPE', asset: 'devin-web-10.png', sourceWidth: 2990},
+  {second: 4, action: 'SCROLL', asset: 'devin-web-18.png', sourceWidth: 2978},
+] as const;
+
+export const media = {
+  phoneCrop: {x: 550, y: 173, width: 850, height: 1270},
+  video: 'assets/devin-testing-2.mp4',
+  videoInSeconds: 12,
+  videoLabel: 'SOURCE RECORDING / WEB-APP QA',
+  phoneLabel: 'IPHONE SIMULATOR',
+  stagedLabel: 'Illustrative workflow',
+  ticker: ['BUILD / RUN', 'TAP / TYPE / SCROLL', 'REPRODUCE / FIX / RETEST', 'REVIEW EVIDENCE'],
+} as const;
