@@ -114,11 +114,11 @@ public struct Room: Identifiable, Codable, Equatable, Sendable {
     Room(
       name: "Sunday in Copenhagen",
       furniture: [
-        Furniture(kind: .rug, x: 3, z: 2.8),
+        Furniture(kind: .rug, x: 3, z: 2.6),
         Furniture(kind: .sofa, x: 3, z: 1.25),
-        Furniture(kind: .coffeeTable, x: 3, z: 2.7),
-        Furniture(kind: .chair, x: 1.25, z: 3.2, rotation: 90),
-        Furniture(kind: .console, x: 3.2, z: 4.6),
+        Furniture(kind: .coffeeTable, x: 3, z: 2.45),
+        Furniture(kind: .chair, x: 1.4, z: 2.45, rotation: 270),
+        Furniture(kind: .console, x: 3.2, z: 4.6, rotation: 180),
         Furniture(kind: .plant, x: 5.45, z: 0.55),
         Furniture(kind: .lamp, x: 1.4, z: 1.2),
       ])

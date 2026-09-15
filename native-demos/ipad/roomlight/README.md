@@ -42,6 +42,8 @@ This is a Simulator-only build, not a signed installable iPad/App Store release.
 
 “Sunday in Copenhagen” opens on first launch: linen Arc sofa, bouclé lounge chair, walnut Pebble table, fluted oak sideboard, woven rug, fiddle leaf plant and paper lantern. The eighth available piece is an oak Gather dining table. Every object is editable. Furniture, plan artwork, floor grain and room geometry are all generated locally with native drawing and SceneKit.
 
+The sofa and chair face the coffee table with 40–55 cm between the seat fronts and table edges; the sideboard opens toward the room. Furniture at 0° faces south in the plan; each Rotate 90° action turns clockwise (west, north, east). Seat cushions and backrests show the same orientation in plan and 3D.
+
 ## Persistence and exports
 
 Current edits and named rooms are stored atomically in the app's Documents directory as `roomlight-rooms.json`. Relaunch restores the active room. Named saves are snapshots and change only when Save is used again for that room.
@@ -63,13 +65,13 @@ Invalid room geometry is sanitized on read. An unreadable JSON file displays an 
 ./scripts/check.sh
 ```
 
-Runs the Xcode-bundled `swift-format lint --strict`, five meaningful Swift Testing model tests, and a native Simulator build/typecheck. To format intentionally edited Swift source:
+Runs the Xcode-bundled `swift-format lint --strict`, six meaningful Swift Testing model tests, and a native Simulator build/typecheck. To format intentionally edited Swift source:
 
 ```sh
 xcrun swift-format format --in-place --recursive App Sources Tests scripts/generate-icon.swift Package.swift
 ```
 
-Tests cover quarter-turn bounds, grid snapping, invalid dimensions/coordinates, all eight footprints in a minimum room, atomic JSON round-trip, named-save replacement and corrupt input. UI verification must additionally exercise native drag placement, materials, view switching, undo, save/reopen, relaunch and real PDF export.
+Tests cover sample seating direction and table clearance, quarter-turn bounds, grid snapping, invalid dimensions/coordinates, all eight footprints in a minimum room, atomic JSON round-trip, named-save replacement and corrupt input. UI verification must additionally exercise native drag placement, materials, view switching, undo, save/reopen, relaunch and real PDF export.
 
 An Xcode build phase draws the original architectural app icon with AppKit into the built app. Only the generator source is tracked; no prebuilt images or binaries are required.
 
