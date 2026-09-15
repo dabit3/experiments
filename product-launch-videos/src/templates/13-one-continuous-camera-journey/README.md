@@ -3,7 +3,7 @@
 Eight destinations occupy one long, left-to-right canvas. The camera follows a
 thin continuous baseline, settles exactly at each stop and stays still while the
 UI is read. A restrained 2.5% pullback is confined to the 0.6-second travels.
-Nothing rotates, dissolves or swaps between screens. The two iPhone screenshots
+No camera cuts, rotations or scene dissolves are used. The two iPhone screenshots
 are separate spatial destinations, explicitly labeled as stills from different
 apps. The title and CTA are large, quiet typographic destinations.
 
@@ -16,16 +16,17 @@ npm ci
 npm run assets:setup -- /absolute/path/to/shared-assets.zip
 npm run assets:check
 npm run render -- --template 13-one-continuous-camera-journey
-npm run still -- --template 13-one-continuous-camera-journey --frame 450
+npm run still -- --template 13-one-continuous-camera-journey --frame 225
 npm run still -- --template 13-one-continuous-camera-journey \
-  --frames 0,108,150,270,330,399,450,516,570,650,750,879,960,1040,1140,1199
+  --frames 0,108,150,171,195,225,270,330,399,450,516,570,650,750,879,960,1040,1140,1199
 npm run contact-sheet -- out/13-one-continuous-camera-journey
 ```
 
 The expected full film is 1920 × 1080, 30 fps, 1,200 frames / 40 seconds, silent
 H.264. Outputs stay in the ignored `out/13-one-continuous-camera-journey/`.
 Original footage, screenshots, logos and fonts stay in ignored `public/assets/`.
-No network fonts or generated replacement product media are used.
+No network fonts are used. The environment menu is a user-requested vector UI
+recreation; other product media remain the supplied screenshots and recordings.
 
 ## Editability
 
@@ -47,6 +48,10 @@ npm run still -- --template 13-one-continuous-camera-journey \
 | Input | Effect |
 | --- | --- |
 | `copy.*`, `labels.*` | Launch captions, benefit, pricing, CTA and editorial context |
+| `environmentMenu.enabled` | Use the animated recreation; disable to restore the source environment screenshot |
+| `environmentMenu.width`, `rowHeight`, `fontSize` | Menu geometry; automatically scaled to fit the media area |
+| `environmentMenu.moveStart`, `selectAt` | Fractions of the environment scene for cursor travel start and macOS selection; `0 ≤ moveStart < selectAt ≤ 0.75` |
+| `environmentMenu.heading`, `ubuntu`, `macos`, `windows` | Menu text |
 | `durations.*` | Seven scene durations; recomputes actual Remotion duration and all camera stops |
 | `media.*.asset` | Original image/video selection; iPhone is an ordered two-still tuple |
 | `media.*.framing` | Contain/cover, normalized anchors and optional source-pixel crop |
@@ -77,8 +82,14 @@ First/last genuine clip frames are held during surrounding travel, without
 altering the complete 1× recording interval. These brief edge-frame holds are
 framing bridges, not additional captured action.
 
-The Mac environment screenshot uses a fixed, configurable crop
-`{x:560,y:440,width:1920,height:990}` to enlarge the authentic composer/menu.
+The environment destination recreates the supplied menu at the user's request.
+Ubuntu starts highlighted and checked. At 5.1s the pointer and highlight begin
+moving to macOS; at 6.3s the checkmark and current environment switch to macOS.
+The pointer fades away and macOS stays highlighted and checked for the final
+hold. Timing derives from the scene duration. Its footer identifies it as an
+animated illustration. Platform icons are vector approximations of the reference.
+Disabling `environmentMenu.enabled` restores the original screenshot with the
+configurable crop `{x:560,y:440,width:1920,height:990}`.
 All report screenshots remain uncropped. Captions and editorial source labels
 are outside the UI. The shared video component supplies the persistent **Web QA
 example** footer. The Afterhours report's 8 passed / 0 failed / 1 untested summary
@@ -110,11 +121,12 @@ durations and positions.
 - The complete default MP4 rendered with concurrency 2. `ffprobe` verified H.264,
   1920 × 1080, 30/1 fps, 1,200 frames and 40.000000 seconds. FFmpeg decoded the
   entire film without errors. The encoder reports full-range 4:2:0 (`yuvj420p`).
-- Sixteen exact frames were inspected across the intro, every travel, all
-  product destinations and the final CTA. The deliverable poster is frame 450;
+- Nineteen exact frames were inspected across the intro, menu selection, every travel,
+  product destinations and the final CTA. The deliverable poster is frame 225;
   the final contact sheet and poster are extracted from the encoded MP4.
 - The diagnostic configuration resolved to 1,290 frames / 43 seconds. Rendered
-  frame 210 displays “Choose your hosted Mac.” and frame 1289 displays the CTA.
+  frame 210 displays “Choose your hosted Mac.”, frame 285 holds macOS highlighted
+  and checked, and frame 1289 displays the CTA.
   This verifies actual metadata and rendered copy changes, beyond unit tests.
 
 ### Limits

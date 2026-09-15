@@ -4,6 +4,18 @@ import manifest from './manifest.json';
 import {Template} from './Template';
 
 const controls: ConfigControl[] = [
+  {path: 'environmentMenu.enabled', label: 'Animate environment menu', type: 'boolean',
+    description: 'Recreated Ubuntu-to-macOS selection; disable to use the original environment still.'},
+  ...(['width', 'rowHeight', 'fontSize', 'moveStart', 'selectAt'] as const)
+    .map((key): ConfigControl => ({
+      path: `environmentMenu.${key}`, label: `Environment menu ${key}`, type: 'number',
+      description: 'Menu geometry in pixels; moveStart/selectAt are scene fractions with 0 ≤ start < select ≤ 0.75.',
+    })),
+  ...(['heading', 'ubuntu', 'macos', 'windows'] as const)
+    .map((key): ConfigControl => ({
+      path: `environmentMenu.${key}`, label: `Environment menu ${key}`, type: 'string',
+      description: 'Editable text in the recreated environment menu.',
+    })),
   {path: 'motion.travelSeconds', label: 'Camera travel', type: 'number', min: 0.1, max: 1.2, step: 0.1,
     description: 'Seconds per move, automatically capped to retain still reading time.'},
   {path: 'motion.iphoneSplit', label: 'iPhone destination split', type: 'number', min: 0.25, max: 0.75, step: 0.05,

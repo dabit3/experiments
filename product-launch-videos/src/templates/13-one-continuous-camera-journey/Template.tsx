@@ -2,6 +2,7 @@ import type {CSSProperties, ReactNode} from 'react';
 import {AbsoluteFill, Freeze, useCurrentFrame, useVideoConfig} from 'remotion';
 import {SourceImage, SourceVideo, type SceneTiming} from '../../shared';
 import {stopIds, type JourneyConfig, type StopId} from './config';
+import {EnvironmentMenu} from './EnvironmentMenu';
 import {cameraAt, planJourney} from './journey';
 
 const VideoAt = ({
@@ -48,6 +49,11 @@ export const Template = ({config}: {config: JourneyConfig}) => {
     closing: config.copy.closing,
   };
   const mediaFor = (id: StopId): ReactNode => {
+    if (id === 'environment' && config.environmentMenu.enabled) return <EnvironmentMenu
+      config={config} frame={frame - scene('environment').from}
+      durationInFrames={scene('environment').durationInFrames}
+      width={imageWidth} height={imageHeight}
+    />;
     if (id === 'agent' || id === 'webQa') return <VideoAt
       config={config} kind={id} scene={scene(id)} frame={frame}
       width={imageWidth} height={imageHeight}

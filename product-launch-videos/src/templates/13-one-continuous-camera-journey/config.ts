@@ -6,6 +6,18 @@ export const stopIds = [
 export type StopId = typeof stopIds[number];
 export type Point = {x: number; y: number};
 export type JourneyConfig = LaunchConfig & {
+  environmentMenu: {
+    enabled: boolean;
+    width: number;
+    rowHeight: number;
+    fontSize: number;
+    moveStart: number;
+    selectAt: number;
+    heading: string;
+    ubuntu: string;
+    macos: string;
+    windows: string;
+  };
   canvas: {
     stops: Record<StopId, Point>;
     railY: number;
@@ -38,6 +50,18 @@ export type JourneyConfig = LaunchConfig & {
 
 export const config: JourneyConfig = {
   ...structuredClone(defaultLaunchConfig),
+  environmentMenu: {
+    enabled: true,
+    width: 800,
+    rowHeight: 112,
+    fontSize: 46,
+    moveStart: 0.22,
+    selectAt: 0.46,
+    heading: 'Hosted',
+    ubuntu: 'Ubuntu',
+    macos: 'macOS',
+    windows: 'Windows',
+  },
   layout: {margin: 60, gutter: 60, padding: 12, captionHeight: 100, grid: {}},
   media: {
     ...structuredClone(defaultLaunchConfig.media),
@@ -71,7 +95,7 @@ export const config: JourneyConfig = {
   },
   labels: {
     introduction: 'A new environment.',
-    environment: 'Hosted environment',
+    environment: 'Hosted environment · animated illustration',
     agent: 'Agent selection · 1×',
     iphoneFirst: 'iPhone · Afterhours Maze · still',
     iphoneSecond: 'iPhone · Large Dispatch · still',
