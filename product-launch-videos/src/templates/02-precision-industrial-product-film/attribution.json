@@ -1,0 +1,90 @@
+[
+  {
+    "scene": "opening",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [0, 4],
+    "sourceSeconds": null,
+    "treatment": "Original hosted macOS menu still. Camera pulls from source crop x600 y850 w1400 h760 to x400 y420 w2180 h1180; no UI state changes, no source upscaling.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "environment",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [4, 9],
+    "sourceSeconds": null,
+    "treatment": "Continue the detail pullback into the complete original screenshot; shallow 1.8 degree transition only, then flat stable hold.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "agent",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [9, 13],
+    "sourceSeconds": [0, 4],
+    "treatment": "Full recording at 1x, front-facing from its first frame, with composer/menu context and no camera movement.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [13, 17.5],
+    "sourceSeconds": null,
+    "treatment": "Uncropped, contained still; report including 8 passed, 0 failed, 1 untested remains intact. No internal animation.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [17.5, 22],
+    "sourceSeconds": null,
+    "treatment": "Uncropped still from a separate Large Dispatch session. Clean editorial cut; no before/after claim.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "webQa",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [22, 29],
+    "sourceSeconds": [0, 7],
+    "treatment": "Full 1x recording, unchanged pixels, no perspective or camera movement; 48px reserved label footer outside the recording.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "ipad",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [29, 35],
+    "sourceSeconds": null,
+    "treatment": "Full contained Terra Table iPad Simulator screenshot and acceptance report. Static hold.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "closing",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [35, 40],
+    "sourceSeconds": null,
+    "treatment": "Same genuine stable result pulls to an uncropped left-hand plane while pricing and CTA occupy the right-side negative space.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "opening",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [0, 4],
+    "sourceSeconds": null,
+    "treatment": "Supplied black transparent lockup, original aspect ratio and pixels.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "closing",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [35, 40],
+    "sourceSeconds": null,
+    "treatment": "Supplied black transparent lockup, original aspect ratio and pixels.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "all",
+    "asset": "NBInternationalPro-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original website font with render-blocking shared font loader; verified neutral Figma tokens. No network fonts.",
+    "requiredLabel": null
+  }
+]
