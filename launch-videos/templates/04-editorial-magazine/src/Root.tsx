@@ -25,7 +25,7 @@ export const RemotionRoot: React.FC = () => (
       width={FRAME_W}
       height={FRAME_H}
       fps={30}
-      durationInFrames={1350}
+      durationInFrames={1200}
     />
     <Still
       id="Poster"

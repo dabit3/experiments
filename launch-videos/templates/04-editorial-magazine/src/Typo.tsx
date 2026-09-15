@@ -1,5 +1,11 @@
 import React from "react";
-import { Easing, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import {
+  Easing,
+  Img,
+  interpolate,
+  staticFile,
+  useCurrentFrame,
+} from "remotion";
 import type { Brand, LayoutTokens, TypeScale } from "./schema";
 
 export type Theme = {
@@ -25,7 +31,13 @@ export const Enter: React.FC<{
     easing: easeOut,
   });
   return (
-    <div style={{ opacity: t, transform: `translateY(${(1 - t) * 16}px)`, ...style }}>
+    <div
+      style={{
+        opacity: t,
+        transform: `translateY(${(1 - t) * 16}px)`,
+        ...style,
+      }}
+    >
       {children}
     </div>
   );
@@ -47,15 +59,17 @@ export const Reveal: React.FC<{
       })
     : 1;
   return (
-    <div style={{ clipPath: `inset(0 ${(1 - t) * 100}% 0 0)`, ...style }}>{children}</div>
+    <div style={{ clipPath: `inset(0 ${(1 - t) * 100}% 0 0)`, ...style }}>
+      {children}
+    </div>
   );
 };
 
-export const Eyebrow: React.FC<{ theme: Theme; children: React.ReactNode; color?: string }> = ({
-  theme,
-  children,
-  color,
-}) => (
+export const Eyebrow: React.FC<{
+  theme: Theme;
+  children: React.ReactNode;
+  color?: string;
+}> = ({ theme, children, color }) => (
   <div
     style={{
       fontFamily: theme.brand.monoFontFamily,
@@ -98,7 +112,11 @@ export const Headline: React.FC<{
       }}
     >
       {parts[0]}
-      {parts[1] ? <span style={{ color: theme.brand.accent, whiteSpace: "nowrap" }}>{parts[1]}</span> : null}
+      {parts[1] ? (
+        <span style={{ color: theme.brand.accent, whiteSpace: "nowrap" }}>
+          {parts[1]}
+        </span>
+      ) : null}
       {parts[2]}
     </div>
   );
@@ -180,11 +198,11 @@ export const MarginWord: React.FC<{
 );
 
 /** Small hairline rule; accent only when asked. */
-export const Rule: React.FC<{ theme: Theme; width: number; accent?: boolean }> = ({
-  theme,
-  width,
-  accent,
-}) => (
+export const Rule: React.FC<{
+  theme: Theme;
+  width: number;
+  accent?: boolean;
+}> = ({ theme, width, accent }) => (
   <div
     style={{
       width,
@@ -202,48 +220,63 @@ export const Folio: React.FC<{
   left: string;
   dark?: boolean;
 }> = ({ theme, page, total, left, dark }) => {
-  const { margin } = theme.tokens;
+  const { margin, showRunningHead, showPageNumbers, logoHeight } = theme.tokens;
   const color = dark ? theme.brand.white : theme.brand.ink;
   const muted = dark ? theme.brand.inkSubtle : theme.brand.inkMuted;
   return (
     <>
       <Img
         src={staticFile(dark ? theme.brand.logoDark : theme.brand.logoLight)}
-        style={{ position: "absolute", left: margin, top: 44, height: 26 }}
+        style={{
+          position: "absolute",
+          left: margin,
+          top: 40,
+          height: logoHeight,
+        }}
       />
-      <div
-        style={{
-          position: "absolute",
-          right: margin,
-          top: 48,
-          fontFamily: theme.brand.monoFontFamily,
-          fontSize: theme.type.eyebrow,
-          letterSpacing: "0.06em",
-          textTransform: "uppercase",
-          color: muted,
-        }}
-      >
-        {left}
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          right: margin,
-          bottom: 44,
-          fontFamily: theme.brand.monoFontFamily,
-          fontSize: theme.type.eyebrow,
-          letterSpacing: "0.06em",
-          color,
-        }}
-      >
-        {String(page).padStart(2, "0")}
-        <span style={{ color: muted }}> / {String(total).padStart(2, "0")}</span>
-      </div>
+      {showRunningHead ? (
+        <div
+          style={{
+            position: "absolute",
+            right: margin,
+            top: 48,
+            fontFamily: theme.brand.monoFontFamily,
+            fontSize: theme.type.eyebrow,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            color: muted,
+          }}
+        >
+          {left}
+        </div>
+      ) : null}
+      {showPageNumbers ? (
+        <div
+          style={{
+            position: "absolute",
+            right: margin,
+            bottom: 44,
+            fontFamily: theme.brand.monoFontFamily,
+            fontSize: theme.type.eyebrow,
+            letterSpacing: "0.06em",
+            color,
+          }}
+        >
+          {String(page).padStart(2, "0")}
+          <span style={{ color: muted }}>
+            {" "}
+            / {String(total).padStart(2, "0")}
+          </span>
+        </div>
+      ) : null}
     </>
   );
 };
 
-export const SpeedBadge: React.FC<{ theme: Theme; label: string }> = ({ theme, label }) => (
+export const SpeedBadge: React.FC<{ theme: Theme; label: string }> = ({
+  theme,
+  label,
+}) => (
   <div
     style={{
       position: "absolute",
@@ -262,11 +295,11 @@ export const SpeedBadge: React.FC<{ theme: Theme; label: string }> = ({ theme, l
   </div>
 );
 
-export const Button: React.FC<{ theme: Theme; label: string; dark?: boolean }> = ({
-  theme,
-  label,
-  dark,
-}) => (
+export const Button: React.FC<{
+  theme: Theme;
+  label: string;
+  dark?: boolean;
+}> = ({ theme, label, dark }) => (
   <div
     style={{
       display: "inline-flex",

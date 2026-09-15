@@ -42,7 +42,7 @@ export const contentSchema = z.object({
   cta: z.object({ label: z.string(), url: z.string() }),
   outroLine: z.string(),
   speedBadge: z.string(),
-  issueLabel: z.string().describe("Small running head, e.g. 'Launch notes · 04'"),
+  issueLabel: z.string().describe("Running head shown top-right when layoutTokens.showRunningHead is on"),
 });
 
 export const cropSchema = z.object({
@@ -117,7 +117,10 @@ export const launchPropsSchema = z.object({
     radius: z.number(),
     revealFrames: z.number().int().describe("Length of the horizontal reveal"),
     textEnterFrames: z.number().int(),
-    showFolio: z.boolean().describe("Page numbers + running head"),
+    showFolio: z.boolean().describe("Logo in the top-left corner"),
+    showRunningHead: z.boolean().describe("content.issueLabel top-right"),
+    showPageNumbers: z.boolean().describe("'01 / 08' bottom-right"),
+    logoHeight: z.number().describe("Height of the corner logo in px"),
   }),
   type: typeScaleSchema,
 });

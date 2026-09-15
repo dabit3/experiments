@@ -144,9 +144,11 @@ const Cover: React.FC<SceneProps> = ({ scene, props, page, total }) => {
         }}
       >
         <Enter frames={textEnterFrames}>
-          <Eyebrow theme={theme}>
-            {content.eyebrow} · {content.featureName}
-          </Eyebrow>
+          {content.eyebrow || content.featureName ? (
+            <Eyebrow theme={theme}>
+              {[content.eyebrow, content.featureName].filter(Boolean).join(" · ")}
+            </Eyebrow>
+          ) : null}
         </Enter>
         <Enter frames={textEnterFrames} delay={4}>
           <Headline

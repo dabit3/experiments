@@ -6,7 +6,7 @@ tight/unexpected crops of the real product UI, asymmetric margins, and a
 deliberate alternation between dense and quiet pages.
 
 - Composition `Launch`: 1920×1080 @ 30fps. Duration is derived from the sum of
-  `scenes[].durationInFrames` (defaults total 1350 frames = 45s).
+  `scenes[].durationInFrames` (defaults total 1200 frames = 40s).
 - Composition `Poster`: a still of the cover at frame 60 (`npm run still`).
 - No audio track.
 
@@ -29,16 +29,16 @@ Nothing is copied into this directory.
 
 | # | id          | Layout    | Frames (s)  | Reveal | Media (asset)                                              | Copy |
 |---|-------------|-----------|-------------|--------|------------------------------------------------------------|------|
-| 1 | `cover`     | `cover`   | 150 (5.0s)  | cut    | `screenshots/devin-web-1.png` — tight crop of the prompt box with the macOS selector, bleeding off the right edge | Eyebrow, headline with accent word, subhead |
-| 2 | `pick`      | `spread`  | 150 (5.0s)  | wipe   | `screenshots/devin-web-4.png` — OS picker open (Ubuntu / macOS / Windows) | caption 0 |
-| 3 | `work`      | `full`    | 210 (7.0s)  | cut    | `recordings/devin-working-4.mp4` — Devin working in a session | caption 1 in a narrow left column |
-| 4 | `simulator` | `spread`  | 150 (5.0s)  | wipe   | `screenshots/devin-web-10.png` — iPhone Simulator + "It should…" checklist | caption 2, margin word "Taps." |
-| 5 | `live`      | `full`    | 210 (7.0s)  | cut    | `recordings/androidios.mp4` — live iPhone Simulator (cropped to the iPhone half) | caption 3, margin word "Live." |
-| 6 | `sizes`     | `dense`   | 150 (5.0s)  | wipe   | `screenshots/devin-web-17.png` (six iPhone screenshots incl. dark mode) + `screenshots/devin-web-19.png` (iPad Pro) | caption 5 |
-| 7 | `pr`        | `spread`  | 165 (5.5s)  | cut    | `screenshots/devin-web-12.png` — PR "Ready to merge" panel | caption 6, margin word "Shipped." |
-| 8 | `closing`   | `closing` | 165 (5.5s)  | cut    | `screenshots/devin-web-8.png` — merged PR header (the actual outcome) | `outroLine`, CTA button + URL, on `brand.black` |
+| 1 | `cover`     | `cover`   | 135 (4.5s)  | cut    | `screenshots/devin-web-1.png` — tight crop of the prompt box with the macOS selector, bleeding off the right edge | Headline with accent word, subhead (optional eyebrow when `content.eyebrow`/`featureName` are set) |
+| 2 | `pick`      | `spread`  | 135 (4.5s)  | wipe   | `screenshots/devin-web-4.png` — OS picker open (Ubuntu / macOS / Windows) | caption 0 |
+| 3 | `work`      | `full`    | 180 (6.0s)  | cut    | `recordings/devin-working-4.mp4` — Devin working in a session | caption 1 in a narrow left column |
+| 4 | `simulator` | `spread`  | 135 (4.5s)  | wipe   | `screenshots/devin-web-10.png` — iPhone Simulator + "It should…" checklist | caption 2, margin word "Taps." |
+| 5 | `live`      | `full`    | 180 (6.0s)  | cut    | `recordings/androidios.mp4` — live iPhone Simulator (cropped to the iPhone half) | caption 3, margin word "Live." |
+| 6 | `sizes`     | `dense`   | 135 (4.5s)  | wipe   | `screenshots/devin-web-17.png` (six iPhone screenshots incl. dark mode) + `screenshots/devin-web-19.png` (iPad Pro) | caption 5 |
+| 7 | `pr`        | `spread`  | 150 (5.0s)  | cut    | `screenshots/devin-web-12.png` — PR "Ready to merge" panel | caption 6, margin word "Shipped." |
+| 8 | `closing`   | `closing` | 150 (5.0s)  | cut    | `screenshots/devin-web-8.png` — merged PR header (the actual outcome) | `outroLine`, CTA button + URL, on `brand.black` |
 
-Every caption is on screen for the whole scene (≥ 5s), well above the 2.5s
+Every caption is on screen for the whole scene (≥ 4.5s), well above the 2.5s
 minimum. Captions are `content.captions[captionIndex]` — caption 4
 ("Reproduce a bug…") is in the default copy but unused by the default scene
 list; add a scene with `captionIndex: 4` to use it.
@@ -58,7 +58,7 @@ list; add a scene with `captionIndex: 4` to use it.
 Per the direction only three moves exist: a clean `cut`, an aligned image
 replacement (consecutive scenes share the same margin grid, so media blocks
 land on the same edges), and a brief horizontal `wipe` reveal
-(`layoutTokens.revealFrames`, default 14 frames). No page flips, no
+(`layoutTokens.revealFrames`, default 10 frames). No page flips, no
 ornamental effects, no stock or lifestyle imagery.
 
 ## Editable props (`src/schema.ts`, defaults in `src/defaults.ts`)
@@ -68,15 +68,15 @@ ornamental effects, no stock or lifestyle imagery.
 | `brand.*` colors (`paper`, `surface`, `ink`, `inkMuted`, `accent`, `black`, …) | Brand tokens from `brief/brand.md`. |
 | `brand.fontFamily`, `brand.monoFontFamily` | Font stacks. Defaults: `"NB International Pro", Inter, …` and `"Geist Mono", …`. Inter and Geist Mono are loaded via `@remotion/google-fonts`. |
 | `brand.customFontFaces[]` | Optional `@font-face` declarations (`family`, `src` under `assets/`, `weight`) — drop the licensed NB International Pro files into `launch-videos/assets/fonts/` and list them here; the stack already prefers that family. |
-| `brand.logoLight` / `brand.logoDark` | Lockups used in the running head on paper / black pages. |
+| `brand.logoLight` / `brand.logoDark` | Lockups shown top-left on paper / black pages (`layoutTokens.logoHeight`, default 40px). |
 | `content.featureName`, `eyebrow`, `headline`, `accentWord`, `subhead` | Cover copy. `accentWord` is the first matching substring of `headline`, set in `brand.accent` and kept on one line. |
 | `content.captions[]` | Scene explanations, referenced by `scenes[].captionIndex`. |
 | `content.cta`, `outroLine` | Closing spread. |
-| `content.issueLabel` | Running head on every page ("Launch notes · No. 04"). |
+| `content.issueLabel` | Optional running head, top-right; hidden unless `layoutTokens.showRunningHead` is true. |
 | `content.useCases`, `stages`, `speedBadge` | Available for custom scenes/variants (not used by the default layouts). |
 | `media.<key>` | `src` (under `assets/`), `kind` (`image` \| `video`), `aspect` (source w/h — needed to place the crop correctly), `startFrom`, `playbackRate`, `crop` `{x,y,w,h}` in 0–1 source fractions. Crops only *window* the pixels — media is never stretched, skewed or recolored. |
 | `scenes[]` | Order, `durationInFrames`, `layout`, `reveal`, `media` keys, `captionIndex`, `kicker`, `marginWord`, `mediaSide`, `bleed`, `dark`, `mediaWidth`. |
-| `layoutTokens` | `margin`, `gutter`, `radius`, `revealFrames`, `textEnterFrames`, `showFolio`. |
+| `layoutTokens` | `margin`, `gutter`, `radius`, `revealFrames`, `textEnterFrames`, `showFolio` (corner logo), `showRunningHead`, `showPageNumbers` (both off by default), `logoHeight`. |
 | `type` | Type scale in px: `display`, `heading`, `body`, `small`, `eyebrow`, `marginWord`. |
 
 ## Swapping in a new launch
