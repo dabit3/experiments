@@ -6,6 +6,7 @@ import {
 } from '../../shared';
 import type {KineticConfig} from './config';
 import {boundedFrames, fitPhrase, iphoneCut, type PhraseLayout} from './phrase';
+import {EnvironmentSelector} from './EnvironmentSelector';
 
 type Props = {config: KineticConfig};
 type DemoId = Exclude<SceneId, 'opening' | 'closing'>;
@@ -166,6 +167,10 @@ export const Demo = ({
       durationInFrames={scene.durationInFrames}
       labelStyle={{fontSize: 28, backgroundColor: config.brand.colors.ink,
         color: config.brand.colors.white, fontFamily: config.brand.typography.fontFamily}} />;
+  } else if (scene.id === 'environment') {
+    source = <EnvironmentSelector selection={config.media.environment}
+      width={mediaWidth} height={mediaHeight} duration={scene.durationInFrames}
+      background={config.brand.colors.mediaMat} settings={config.selector} />;
   } else {
     const selection = scene.id === 'iphone' ? config.media.iphone[iphoneIndex] : config.media[scene.id];
     source = <Still selection={selection} width={mediaWidth} height={mediaHeight} config={config} />;

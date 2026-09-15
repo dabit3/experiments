@@ -29,6 +29,12 @@ export const template = defineTemplate({
   defaultConfig: config,
   controls: [
     ...motionControls,
+    {path: 'selector.enabled', label: 'Animate hosted selector', type: 'boolean',
+      description: 'Recreate the supplied environment selector, moving Ubuntu to highlighted and checked macOS.'},
+    {path: 'selector.holdFrames', label: 'Ubuntu hold', type: 'number', min: 0, max: 90, step: 1,
+      description: 'Hold Ubuntu before the highlight moves; bounded for shorter environment scenes.'},
+    {path: 'selector.moveFrames', label: 'Selector movement', type: 'number', min: 0, max: 60, step: 1,
+      description: 'Slide the highlight onto macOS, then update the check and trigger and hold the final state.'},
     {path: 'typography.titleSize', label: 'Title maximum size', type: 'number', min: 72, max: 240, step: 1,
       description: 'Titles fit complete words into the configured width and line count.'},
     {path: 'typography.captionSize', label: 'Caption maximum size', type: 'number', min: 30, max: 64, step: 1,

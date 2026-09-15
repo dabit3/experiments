@@ -19,11 +19,11 @@ npm run templates:list
 npm run lint
 npm run typecheck
 npm test
-npx tsx --test src/templates/05-kinetic-typography-title-sequence/phrase.test.ts
+npx tsx --test src/templates/05-kinetic-typography-title-sequence/*.test.ts
 npm run render -- --template 05-kinetic-typography-title-sequence
-npm run still -- --template 05-kinetic-typography-title-sequence --frame 450
+npm run still -- --template 05-kinetic-typography-title-sequence --frame 240
 npm run still -- --template 05-kinetic-typography-title-sequence \
-  --frames 24,126,150,285,330,450,540,675,750,900,1056,1140
+  --frames 24,156,168,240,330,450,540,675,750,900,1056,1140
 npm run contact-sheet -- out/05-kinetic-typography-title-sequence
 ffprobe -v error -select_streams v:0 \
   -show_entries stream=width,height,r_frame_rate,nb_frames:format=duration \
@@ -66,9 +66,19 @@ object: the CLI does not deep-merge partial props.
   `endCardRevealFrames` are documented by exported `controls`. All animation is
   a deterministic function of the Remotion frame. There are no springs, CSS
   clocks, per-letter animation, source speed changes, or external network fonts.
+- **Hosted selector:** `selector.enabled` switches the authored Ubuntu-to-macOS
+  interaction on or off. It holds Ubuntu selected and highlighted for
+  `selector.holdFrames` (36 by default), then slides the highlight down one row
+  over `selector.moveFrames` (24). On arrival the check and trigger both switch
+  to macOS, leaving a three-second final hold in the default edit. Both intervals
+  are bounded to leave a final hold when the environment scene is shortened.
+  This reconstruction is only applied to `devin-web-4.png`; substitute media
+  renders normally. It follows the source's configured crop, fit and anchors.
 
 `Title`, `Demo`, `Caption`, `Transition`, and `EndCard` are exported components.
 The source `phrase.ts` helper fits complete words using loaded-font measurements.
+`EnvironmentSelector` composites the requested selection animation in original
+source coordinates; `selector.ts` exposes its deterministic timing.
 
 ## Content and provenance
 
@@ -76,6 +86,13 @@ This is a montage of independent examples. The iPhone and iPad images are honest
 stills. Neither MP4 is Simulator footage. The Web QA example label remains outside
 the source image for its entire seven-second clip. The Afterhours Maze report
 retains **8 passed, 0 failed, 1 untested**. Product views occupy 31 of 40 seconds.
+
+The environment selector is an **authored reconstruction requested by the user**,
+not a captured interaction. Its original screenshot has macOS checked but Ubuntu
+hover-highlighted. The template replaces only the menu row backgrounds, selected
+check and trigger, reusing original label/icon/star/check fragments. Ubuntu's
+baked hover gray is normalized to white before compositing. The surrounding
+composer, source screenshot file and all other product evidence are unchanged.
 
 See `attribution.json` for the default source/output timeline, and the shared
 `MEDIA-ATTRIBUTION.md` for source provenance and exact-hash inventory. Brand values
@@ -87,6 +104,8 @@ in ignored `out/`. None are redistributed with this template's source.
 
 This generates a complete alternate input with longer opening/caption/CTA text,
 64px margins, a faster 12-frame phrase dock, 144px travel, and a 60/40 iPhone split.
+It also changes selector timing to an 18-frame hold and 12-frame move and applies
+an offset source crop to verify the overlay tracks the media geometry.
 Its seven scenes total **15 seconds / 450 frames**. It is an editability diagnostic,
 not the comparable launch sample.
 
@@ -100,7 +119,7 @@ npm run still -- \
   --entry src/templates/05-kinetic-typography-title-sequence/entry.tsx \
   --composition KineticTypographyTitleSequence \
   --props out/05-kinetic-typography-title-sequence/diagnostic-props.json \
-  --frames 30,90,150,235,300,360,420
+  --frames 30,75,84,90,150,235,300,360,420
 ```
 
 The independent-entry invocation puts these diagnostic artifacts in
@@ -114,14 +133,16 @@ The independent-entry invocation puts these diagnostic artifacts in
   **15.000000 seconds**. Inspected its three-line opening, long single-line
   caption and two-line CTA without unintended clipping or overlapping UI.
 - `assets:check`, `lint`, `typecheck`, `build`, `templates:list`, all **11 shared
-  tests**, and both template tests passed. The template tests are run by the
+  tests**, and all four template tests passed. The template tests are run by the
   explicit `npx tsx --test ...` command above.
 - Inspected default frames across the opening, phrase docking, both recordings,
   both iPhone reports, iPad and end-card hold. The partial text at entrance frames
   is the intentional rectangular title mask; held phrases are fully visible.
-- Delivered poster is default frame **450**. The delivered contact sheet uses
+- Delivered poster is default frame **240**, with macOS highlighted and checked.
+  The delivered contact sheet uses
   twelve actual frames **decoded from the completed MP4** at the listed positions,
-  rather than a separate mockup. Extra inspection included frames 0 and 90.
+  rather than a separate mockup. Extra selector inspection covers frames
+  120, 156, 168, 180 and 240: Ubuntu hold, moving highlight and macOS final hold.
 - The original NB International font and supplied proportional logo are present.
   The full Afterhours Maze counts and persistent Web QA footer remain readable.
 

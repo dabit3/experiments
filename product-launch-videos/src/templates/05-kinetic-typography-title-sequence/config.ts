@@ -1,6 +1,8 @@
 import {defaultLaunchConfig, type LaunchConfig} from '../../shared';
+import {selectorDefaults} from './selector';
 
 export type KineticConfig = LaunchConfig & {
+  selector: typeof selectorDefaults;
   typography: {
     titleSize: number;
     titleMinSize: number;
@@ -31,6 +33,7 @@ export type KineticConfig = LaunchConfig & {
 
 export const config: KineticConfig = {
   ...structuredClone(defaultLaunchConfig),
+  selector: {...selectorDefaults},
   layout: {
     margin: 48,
     gutter: 24,

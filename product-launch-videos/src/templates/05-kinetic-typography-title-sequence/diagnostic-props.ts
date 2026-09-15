@@ -11,6 +11,12 @@ alternate.layout.margin = 64;
 alternate.motion.phraseDockFrames = 12;
 alternate.motion.phraseTravel = 144;
 alternate.motion.iphoneSplit = 0.6;
+alternate.selector.holdFrames = 18;
+alternate.selector.moveFrames = 12;
+alternate.media.environment.framing = {
+  fit: 'contain', anchorX: 0.35, anchorY: 0.45,
+  crop: {x: 550, y: 480, width: 1950, height: 1050},
+};
 
 const output = path.resolve('out/05-kinetic-typography-title-sequence/diagnostic-props.json');
 await mkdir(path.dirname(output), {recursive: true});
