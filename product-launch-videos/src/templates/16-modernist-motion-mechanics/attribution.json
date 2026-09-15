@@ -1,0 +1,82 @@
+[
+  {
+    "scene": "opening, environment, agent, iphone, webQa, ipad, closing",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original transparent black lockup, contained at its original aspect ratio; no redraw.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "all",
+    "asset": "NBInternationalPro-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original font supplied from the Devin website. Shared font gate blocks render until loaded.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "opening, environment, agent, iphone, webQa, ipad",
+    "asset": "GeistMono-Regular.woff2",
+    "outputSeconds": [0, 35],
+    "sourceSeconds": null,
+    "treatment": "Website companion font used only for editorial two-digit indices, not the primary heading.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "environment",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [4, 9],
+    "sourceSeconds": null,
+    "treatment": "Contained static source-pixel crop x=550 y=420 width=1880 height=980. Preserves entire composer and actual hosted menu with macOS selected; removes excess surrounding blank canvas.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "agent",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [9, 13],
+    "sourceSeconds": [0, 4],
+    "treatment": "Full recording contained, 1×, visible from first frame, no aperture overlay on actions. Shows agent selection, not macOS selection.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [13, 17.5],
+    "sourceSeconds": null,
+    "treatment": "Full genuine still, contained. Preserves report: 8 passed, 0 failed, 1 untested. Only surrounding matte moves during entry.",
+    "requiredLabel": "Simulator still"
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [17.5, 22],
+    "sourceSeconds": null,
+    "treatment": "Full genuine Large Dispatch still, contained with final-review report intact. Separate example, no fabricated app-state changes.",
+    "requiredLabel": "Simulator still"
+  },
+  {
+    "scene": "webQa",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [22, 29],
+    "sourceSeconds": [0, 7],
+    "treatment": "Full recording contained at 1×. Persistent high-contrast 48px label reserved below source viewport. Caption remains still and outside controls.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "ipad",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [29, 35],
+    "sourceSeconds": null,
+    "treatment": "Full genuine Terra Table iPad still with acceptance report intact. Contained, no internal source animation.",
+    "requiredLabel": "Simulator still"
+  },
+  {
+    "scene": "closing",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [35, 40],
+    "sourceSeconds": null,
+    "treatment": "The same full iPad still moves as one intact image into the final CTA composition, then holds. This repeated smaller view is contextual; the readable report appears in the preceding six-second scene.",
+    "requiredLabel": "iPad Simulator · Still"
+  }
+]
