@@ -114,14 +114,14 @@ input[type="checkbox"] { accent-color: #397d9c; width: 12px; height: 12px; margi
 .view-description { font-size: 10px; color: #869497; }
 .phase-chip { font-size: 8px; letter-spacing: 1px; color: #8c999b; border-left: 1px solid #bec6c5; padding: 5px 0 5px 16px; }
 .view-cube { position: absolute; width: 115px; height: 138px; top: 24px; right: 27px; color: #88969e; }
-.view-cube svg { width: 102px; height: 96px; margin-left: 6px; filter: drop-shadow(0 3px 3px #627d8419); }
-.view-cube svg path { stroke: #a6b5bd; stroke-width: .9; cursor: pointer; }
+.view-cube > svg { width: 102px; height: 96px; margin-left: 6px; filter: drop-shadow(0 3px 3px #627d8419); }
+.view-cube > svg path { stroke: #a6b5bd; stroke-width: .9; cursor: pointer; }
 .cube-top { fill: #f7fafb; }
 .cube-front { fill: #e2e8eb; }
 .cube-right { fill: #cdd8dd; }
-.view-cube svg path:hover { fill: #a5d3ea; }
+.view-cube > svg path:hover { fill: #a5d3ea; }
 .view-cube text { fill: #758992; font-size: 8px; font-family: Arial,sans-serif; }
-.cube-home { display: block; padding: 0; height: 22px; margin-left: 0; color: #8b9ca5; }
+.cube-home { display: flex; align-items: center; justify-content: center; padding: 0; width: 24px; height: 22px; margin-left: 0; color: #8b9ca5; }
 .compass { display: flex; justify-content: space-between; width: 98px; margin: -10px auto 0; border-bottom: 1px solid #b5bfc1; border-radius: 50%; height: 25px; font-size: 9px; transform: rotate(-7deg); }
 .compass span:nth-child(2) { align-self: flex-end; margin-bottom: -6px; background: #e3e7e1; padding: 0 5px; }
 .navigation-bar { position: absolute; right: 12px; top: 204px; display: flex; flex-direction: column; align-items: center; width: 32px; border: 1px solid #b9c3c9; background: #f6f8f9da; box-shadow: 0 2px 4px #34464c0c; border-radius: 3px; padding: 3px 0; color: #7a8f9e; }
