@@ -1,0 +1,90 @@
+[
+  {
+    "scene": "opening",
+    "asset": "DEVIN_LOCKUP_HORIZONTAL_WHITE_TRANSPARENT.png",
+    "outputSeconds": [0, 4],
+    "sourceSeconds": null,
+    "treatment": "Supplied white transparent lockup, contained at its original aspect ratio, on dark title composition.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone intertitle",
+    "asset": "DEVIN_LOCKUP_HORIZONTAL_WHITE_TRANSPARENT.png",
+    "outputSeconds": [13, 13.6],
+    "sourceSeconds": null,
+    "treatment": "Same proportional white lockup on quiet title composition before the two separate still examples.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "closing CTA",
+    "asset": "DEVIN_LOCKUP_HORIZONTAL_WHITE_TRANSPARENT.png",
+    "outputSeconds": [36.4, 40],
+    "sourceSeconds": null,
+    "treatment": "Same proportional white lockup on final dark CTA composition.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "environment",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [4, 9],
+    "sourceSeconds": null,
+    "treatment": "Static source crop x=560, y=410, width=1920, height=1030 retains composer and actual macOS menu. Two-stage exterior aperture reveal; source colors unchanged.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "agent",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [9, 13],
+    "sourceSeconds": [0, 4],
+    "treatment": "Full contained recording at 1x from scene frame zero. No shutter, overlay, or missing action frames. It shows agent selection, not choosing macOS.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone first example",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [13.6, 17.8],
+    "sourceSeconds": null,
+    "treatment": "Complete contained still after 0.6-second title; 24-frame opening shutter and 8-frame closing shutter. Report retains 8 passed, 0 failed, 1 untested.",
+    "requiredLabel": "Simulator still"
+  },
+  {
+    "scene": "iphone second example",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [17.8, 22],
+    "sourceSeconds": null,
+    "treatment": "Complete contained still from a separate Large Dispatch session; 24-frame shutter reveal, then static hold. Full report is preserved.",
+    "requiredLabel": "Simulator still"
+  },
+  {
+    "scene": "webQa",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [22, 29],
+    "sourceSeconds": [0, 7],
+    "treatment": "Full contained source recording at 1x, visible from its first frame. Shared persistent footer stays outside source pixels.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "ipad and closing result",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [29, 36.4],
+    "sourceSeconds": null,
+    "treatment": "Complete contained Terra Table iPad still with report; 24-frame opening shutter, steady hold through scene boundary, 12-frame close before CTA.",
+    "requiredLabel": "Simulator still"
+  },
+  {
+    "scene": "all",
+    "asset": "NBInternationalPro-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Verified brand website font. Loaded by shared blocking font gate; regular weight. Font binary remains ignored.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "product captions",
+    "asset": "GeistMono-Regular.woff2",
+    "outputSeconds": [4, 36.4],
+    "sourceSeconds": null,
+    "treatment": "Verified brand website companion font, used only for editorial scene indices. Font binary remains ignored.",
+    "requiredLabel": null
+  }
+]
