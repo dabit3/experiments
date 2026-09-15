@@ -12,6 +12,7 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+npm audit
 npm run preview -- --port 4173
 ```
 
@@ -46,6 +47,9 @@ session-only. The local project is the durable state.
    missing door host and oversized door rejection.
 9. Actual SVG geometry, escaped text, wall dimensions, story filtering and
    physical export scales of 1:100, 1:200 and 1:500.
+
+`src/scene.test.ts` adds two Three.js raycast tests: timber slats and glass
+transoms must leave a hosted doorway clear while the adjacent wall stays solid.
 
 ## Browser acceptance sequence
 
@@ -84,9 +88,12 @@ Use the production preview in a maximized Chrome window.
 
 ## Results
 
-Initial implementation: lint and typecheck pass; all 9 programmatic tests pass;
-production build passes. Browser acceptance is pending the post-PR test run.
-Final observed browser results and evidence will be added after that run.
+Lint and typecheck pass; all 11 programmatic tests pass; the production build
+passes; npm audit reports zero vulnerabilities. Vite reports a bundle-size
+advisory for the Three.js application. The first browser run passed the editing,
+history, story/filter, export and persistence sequence. It found compact-layout
+overflow, a missing favicon and decorative wall meshes crossing door openings.
+Those fixes await the final production browser retest.
 
 ## Reference and parity boundaries
 

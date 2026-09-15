@@ -69,15 +69,25 @@ export function buildCampus(project: Project, combination: Combination, cutaway:
           if (door && Math.abs(x - (door.offset ?? 0)) < door.width / 2) continue
           box(group, x, e.height / 2, 0, .055, e.height, e.depth + .055, paints.steel)
         }
-        for (const y of [.06, e.height * .64, e.height - .06]) box(group, 0, y, 0, e.width, .06, e.depth + .06, paints.steel)
+        for (const y of [.06, e.height * .64, e.height - .06]) {
+          if (door && y - .03 < door.height) {
+            const left = (door.offset ?? 0) - door.width / 2 + e.width / 2
+            const right = e.width - left - door.width
+            if (left > .001) box(group, -e.width / 2 + left / 2, y, 0, left, .06, e.depth + .06, paints.steel)
+            if (right > .001) box(group, e.width / 2 - right / 2, y, 0, right, .06, e.depth + .06, paints.steel)
+          } else box(group, 0, y, 0, e.width, .06, e.depth + .06, paints.steel)
+        }
       } else if (e.material === 'timber' && appearance !== 'White model') {
         const n = Math.floor(e.width / .25)
         const slats = new THREE.InstancedMesh(cube, paints.timber, n * 2)
         const dummy = new THREE.Object3D()
         for (let i = 0; i < n; i++) {
           for (let side = 0; side < 2; side++) {
-            dummy.position.set(-e.width / 2 + .12 + i * .25, e.height / 2, (side ? -1 : 1) * (e.depth / 2 + .06))
-            dummy.scale.set(.11, e.height, .14)
+            const x = -e.width / 2 + .12 + i * .25
+            const aboveDoor = door && Math.abs(x - (door.offset ?? 0)) < door.width / 2 + .055
+            const base = aboveDoor ? door.height : 0
+            dummy.position.set(x, base + (e.height - base) / 2, (side ? -1 : 1) * (e.depth / 2 + .06))
+            dummy.scale.set(.11, e.height - base, .14)
             dummy.updateMatrix()
             slats.setMatrixAt(i * 2 + side, dummy.matrix)
           }
