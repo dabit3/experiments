@@ -68,13 +68,13 @@ ornamental effects, no stock or lifestyle imagery.
 | `brand.*` colors (`paper`, `surface`, `ink`, `inkMuted`, `accent`, `black`, …) | Brand tokens from `brief/brand.md`. |
 | `brand.fontFamily`, `brand.monoFontFamily` | Font stacks. Defaults: `"NB International Pro", Inter, …` and `"Geist Mono", …`. Inter and Geist Mono are loaded via `@remotion/google-fonts`. |
 | `brand.customFontFaces[]` | Optional `@font-face` declarations (`family`, `src` under `assets/`, `weight`) — drop the licensed NB International Pro files into `launch-videos/assets/fonts/` and list them here; the stack already prefers that family. |
-| `brand.logoLight` / `brand.logoDark` | Lockups shown top-left on paper / black pages (`layoutTokens.logoHeight`, default 40px). |
+| `brand.logoLight` / `brand.logoDark` | Lockups shown top-left on paper / black pages (`layoutTokens.logoHeight`, default 48px). |
 | `content.featureName`, `eyebrow`, `headline`, `accentWord`, `subhead` | Cover copy. `accentWord` is the first matching substring of `headline`, set in `brand.accent` and kept on one line. |
 | `content.captions[]` | Scene explanations, referenced by `scenes[].captionIndex`. |
 | `content.cta`, `outroLine` | Closing spread. |
 | `content.issueLabel` | Optional running head, top-right; hidden unless `layoutTokens.showRunningHead` is true. |
 | `content.useCases`, `stages`, `speedBadge` | Available for custom scenes/variants (not used by the default layouts). |
-| `media.<key>` | `src` (under `assets/`), `kind` (`image` \| `video`), `aspect` (source w/h — needed to place the crop correctly), `startFrom`, `playbackRate`, `crop` `{x,y,w,h}` in 0–1 source fractions. Crops only *window* the pixels — media is never stretched, skewed or recolored. |
+| `media.<key>` | `src` (under `assets/`), `kind` (`image` \| `video`), `aspect` (source w/h — needed to place the crop correctly), `startFrom`, `playbackRate`, `crop` `{x,y,w,h}` in 0–1 source fractions, optional `highlight` `{x,y,w,h}` (same coordinates) drawn as an accent outline + translucent fill over the media. Crops only *window* the pixels and the highlight is an overlay — media is never stretched, skewed or recolored. |
 | `scenes[]` | Order, `durationInFrames`, `layout`, `reveal`, `media` keys, `captionIndex`, `kicker`, `marginWord`, `mediaSide`, `bleed`, `dark`, `mediaWidth`. |
 | `layoutTokens` | `margin`, `gutter`, `radius`, `revealFrames`, `textEnterFrames`, `showFolio` (corner logo), `showRunningHead`, `showPageNumbers` (both off by default), `logoHeight`. |
 | `type` | Type scale in px: `display`, `heading`, `body`, `small`, `eyebrow`, `marginWord`. |
