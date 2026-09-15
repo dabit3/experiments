@@ -63,6 +63,9 @@ editing guides. Unzip it and open `gallery/index.html`; no server or login is
 needed. Playback is manual and videos use `preload="none"`. The separate
 editable-source ZIP includes the sources, lockfile, shared assets, original beat
 and template helpers, without rendered output or dependencies.
+Some browsers, including Safari in local-file mode, open MP4 links in a player
+rather than downloading another copy. Originals are in the gallery's `videos`
+folder; the cards label both behaviors.
 
 For a checkout, first render the templates and run each template's documented
 poster/contact-sheet helper. Store outputs as `out/<id>.mp4` and

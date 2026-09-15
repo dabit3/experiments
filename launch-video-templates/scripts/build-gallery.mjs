@@ -39,7 +39,7 @@ const cards = templates.map(({id, title, durationSeconds}) => {
   <div class="card-body"><p class="eyebrow">${id.slice(0, 2)} / ${durationSeconds} seconds</p>
     <h2 id="title-${id}">${escape(title)}</h2><p>${escape(directions[id])}</p>
     <p class="sound">${id === '06-kinetic-type' ? 'Original beat · audio on playback' : 'Silent · source audio muted'}</p>
-    <div class="actions"><a href="videos/${id}.mp4" download>Download MP4</a><a href="guides/${id}.html">Editing guide</a></div>
+    <div class="actions"><a href="videos/${id}.mp4" download>Download / open MP4</a><a href="guides/${id}.html">Editing guide</a></div>
     <details><summary>Edit and render this direction</summary>
       <p>In the editable source package, change <code>templates/${id}/config.ts</code> for copy and timing;
       use <code>index.tsx</code> for layout and motion. See the editing guide for direction-specific files.</p>
@@ -58,6 +58,7 @@ writeFileSync(resolve(gallery, 'index.html'), `<!doctype html>
 <p class="intro">Build. Run. See it. Explore twenty independent motion systems for native app development.</p>
 <div class="facts"><span>20 editable templates</span><span>1920 × 1080 · 30 fps</span><span>40–44 seconds</span><span>Offline previews</span></div>
 <p class="hint">Choose a poster and press play. Videos load only when requested. Kinetic Type includes an original beat; the other directions are silent.</p>
+<p class="hint">MP4 links download in supporting browsers and open in a player otherwise. The extracted gallery already contains every original in its <code>videos</code> folder.</p>
 <nav><a href="#collection">Browse the collection</a><a href="#source">Use the editable sources</a><a href="#notes">Read the production notes</a></nav></header>
 <main><section class="collection" id="collection" aria-label="Twenty launch videos">${cards}</section>
 <section class="notes" id="source"><p class="eyebrow">Make it yours</p><h2>Edit the source. Render a new film.</h2>

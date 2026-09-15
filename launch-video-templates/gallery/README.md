@@ -5,6 +5,10 @@ styles and editing guides are local. No server, authentication, JavaScript,
 autoplay, external fonts or CDN is required. Kinetic Type has an original beat;
 the other videos are silent.
 
+MP4 links download in supporting browsers and open in a player otherwise.
+Safari may open the video when this page is viewed as a local file. Every
+original is already included in the extracted gallery's `videos` folder.
+
 ## Populate from the source project
 
 The checked-in gallery excludes rendered media and generated guide copies.
