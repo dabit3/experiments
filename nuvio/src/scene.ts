@@ -2,31 +2,57 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { Reflector } from 'three/addons/objects/Reflector.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { MATERIALS, seededRandom, sunPosition } from './model';
+import { MATERIALS, seededRandom, sunPosition, terrainHeight } from './model';
 import type { Ambience, AssetKind, CameraShot, MaterialId, Project, SceneObject, Vec3 } from './model';
 
 const UP = new THREE.Vector3(0, 1, 0);
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-const leafGeometry = new THREE.IcosahedronGeometry(1, 0);
-const trunkGeometry = new THREE.CylinderGeometry(0.6, 1, 1, 7);
+const leafGeometry = new THREE.PlaneGeometry(1, 1);
+const trunkGeometry = new THREE.CylinderGeometry(0.6, 1, 1, 12);
 const standard = (color: string | number, roughness = 0.85) => new THREE.MeshStandardMaterial({ color, roughness });
 const dark = standard('#272d2c');
 const fabric = standard('#c9c8b5');
-const stone = standard('#a6aaa0');
+const stone = standard('#555d52');
 const metal = standard('#292c29', 0.4);
 const bark = standard('#5e5b46');
 const whiteBark = standard('#b5b5a0');
+let foliageMap: THREE.CanvasTexture | null = null;
 
-function texture(kind: 'wood' | 'stone') {
+function leafMaterial() {
+  if (!foliageMap) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 128; canvas.height = 128;
+    const ctx = canvas.getContext('2d')!;
+    ctx.strokeStyle = '#79866a'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(64, 125); ctx.quadraticCurveTo(76, 64, 58, 8); ctx.stroke();
+    const random = seededRandom(718);
+    for (let i = 0; i < 14; i++) {
+      const y = 17 + i * 6.5, side = i % 2 ? 1 : -1;
+      const x = 65 + side * (17 + random() * 9);
+      ctx.beginPath(); ctx.moveTo(65, y + 12); ctx.lineTo(x, y); ctx.stroke();
+      ctx.save(); ctx.translate(x, y); ctx.rotate(side * 0.5);
+      const fill = ctx.createLinearGradient(-12, 0, 12, 0);
+      fill.addColorStop(0, '#78876a'); fill.addColorStop(0.48, '#e3e9cd'); fill.addColorStop(1, '#99aa7b');
+      ctx.fillStyle = fill; ctx.beginPath(); ctx.ellipse(0, 0, 13 + random() * 3, 6 + random() * 2, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#9ba884'; ctx.lineWidth = 0.6;
+      ctx.beginPath(); ctx.moveTo(-12, 0); ctx.lineTo(12, 0); ctx.stroke();
+      ctx.restore();
+    }
+    foliageMap = new THREE.CanvasTexture(canvas);
+    foliageMap.colorSpace = THREE.SRGBColorSpace;
+  }
+  return new THREE.MeshStandardMaterial({ color: '#ffffff', map: foliageMap, alphaTest: 0.4, side: THREE.DoubleSide, roughness: 0.85 });
+}
+function texture(kind: 'wood' | 'stone' | 'soil') {
   const canvas = document.createElement('canvas');
   canvas.width = 256; canvas.height = 256;
   const ctx = canvas.getContext('2d')!;
   const random = seededRandom(42);
-  ctx.fillStyle = kind === 'wood' ? '#c2aa88' : '#bbbbaf';
+  ctx.fillStyle = kind === 'wood' ? '#c2aa88' : kind === 'soil' ? '#414c31' : '#bbbbaf';
   ctx.fillRect(0, 0, 256, 256);
-  for (let i = 0; i < 2500; i++) {
+  for (let i = 0; i < (kind === 'soil' ? 18000 : 2500); i++) {
     const value = Math.floor(100 + random() * 100);
-    ctx.strokeStyle = `rgba(${value},${value},${value},${kind === 'wood' ? 0.19 : 0.2})`;
+    ctx.strokeStyle = kind === 'soil' ? `rgba(${65 + random() * 70},${69 + random() * 70},${35 + random() * 50},0.35)` : `rgba(${value},${value},${value},${kind === 'wood' ? 0.19 : 0.2})`;
     ctx.beginPath();
     const x = random() * 256, y = random() * 256;
     ctx.moveTo(x, y);
@@ -57,7 +83,7 @@ function cylinder(parent: THREE.Object3D, start: Vec3, end: Vec3, radius: number
 }
 function foliage(parent: THREE.Object3D, centers: Vec3[], radius: number, color: string, seed: number, count = 60) {
   const random = seededRandom(seed);
-  const mesh = new THREE.InstancedMesh(leafGeometry, standard('#ffffff'), centers.length * count);
+  const mesh = new THREE.InstancedMesh(leafGeometry, leafMaterial(), centers.length * count);
   const dummy = new THREE.Object3D();
   const shade = new THREE.Color();
   let index = 0;
@@ -68,8 +94,8 @@ function foliage(parent: THREE.Object3D, centers: Vec3[], radius: number, color:
       const r = Math.cbrt(random()) * radius;
       dummy.position.set(center[0] + Math.sqrt(1 - z * z) * Math.cos(theta) * r,
         center[1] + z * r * 0.75, center[2] + Math.sqrt(1 - z * z) * Math.sin(theta) * r);
-      const size = 0.18 + random() * 0.22;
-      dummy.scale.set(size * 1.6, size * 0.48, size);
+      const size = 0.5 + random() * 0.48;
+      dummy.scale.set(size * 1.1, size, size);
       dummy.rotation.set(random() * 3, random() * 6, random() * 3);
       dummy.updateMatrix();
       mesh.setMatrixAt(index, dummy.matrix);
@@ -96,7 +122,7 @@ function tree(parent: THREE.Object3D, kind: 'pine' | 'maple' | 'birch', seed: nu
     cylinder(parent, [0, y - 0.7, 0], end, 0.055, kind === 'birch' ? whiteBark : bark);
     centers.push(end);
   }
-  foliage(parent, centers, kind === 'maple' ? 1.2 : 1.25, kind === 'maple' ? '#687749' : kind === 'birch' ? '#86905c' : '#4a6247', seed, 55);
+  foliage(parent, centers, kind === 'maple' ? 1.2 : 1.25, kind === 'maple' ? '#8caa52' : kind === 'birch' ? '#abc273' : '#668565', seed, 85);
 }
 function chair(parent: THREE.Object3D, wood: THREE.Material) {
   [-0.43, 0.43].forEach(x => {
@@ -224,7 +250,7 @@ export class SceneEngine {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.shadowMap.autoUpdate = false;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.05;
+    this.renderer.toneMappingExposure = 0.95;
     this.renderer.domElement.setAttribute('aria-label', 'Interactive 3D forest retreat. Drag to orbit, scroll to zoom, click an object to select.');
     this.renderer.domElement.setAttribute('role', 'img');
     container.appendChild(this.renderer.domElement);
@@ -263,7 +289,7 @@ export class SceneEngine {
     this.scene.add(waterTint);
     this.selection.visible = false;
     this.scene.add(this.selection);
-    this.camera.position.set(22, 12, 27);
+    this.camera.position.set(19, 8.8, 23);
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.target.set(0, 2.2, -1);
     this.controls.minDistance = 4; this.controls.maxDistance = 80;
@@ -279,59 +305,62 @@ export class SceneEngine {
   }
   private buildLandscape() {
     const random = seededRandom(311);
-    const ground = new THREE.Mesh(new THREE.PlaneGeometry(240, 240), standard('#687562'));
+    const groundMap = texture('soil'); groundMap.repeat.set(35, 35);
+    const terrain = new THREE.PlaneGeometry(240, 240, 100, 100);
+    const vertices = terrain.attributes.position;
+    for (let i = 0; i < vertices.count; i++) vertices.setZ(i, terrainHeight(vertices.getX(i), -vertices.getY(i)));
+    terrain.computeVertexNormals();
+    const ground = new THREE.Mesh(terrain, new THREE.MeshStandardMaterial({ map: groundMap, roughness: 1, bumpMap: groundMap, bumpScale: 0.1 }));
     ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true;
     this.background.add(ground);
-    for (let i = 0; i < 56; i++) {
+    for (let i = 0; i < 120; i++) {
       const group = new THREE.Group();
       const side = i % 3;
       group.position.set(side === 0 ? -19 - random() * 22 : side === 1 ? 18 + random() * 26 : -25 + random() * 60,
         0, side === 2 ? -20 - random() * 25 : -12 - random() * 30);
+      if (i >= 56) {
+        const angle = i * 2.399, distance = 40 + random() * 40;
+        group.position.set(Math.cos(angle) * distance, 0, Math.sin(angle) * distance);
+      }
+      group.position.y = terrainHeight(group.position.x, group.position.z);
       const scale = 0.85 + random() * 1.4;
       group.scale.setScalar(scale);
       tree(group, i % 4 === 0 ? 'birch' : 'pine', i + 101);
       this.background.add(group);
     }
-    const farForest = new THREE.Group();
-    for (let i = 0; i < 48; i++) {
-      const mountain = new THREE.Mesh(new THREE.ConeGeometry(4 + random() * 4, 13 + random() * 14, 8), standard('#65786d'));
-      mountain.position.set(-110 + i * 4.7, 3, -65 - random() * 15);
-      farForest.add(mountain);
-    }
-    this.background.add(farForest);
-    for (let i = 0; i < 65; i++) {
+    for (let i = 0; i < 42; i++) {
       const angle = random() * Math.PI * 2;
       const x = 1 + Math.cos(angle) * (12.2 + random() * 2);
       const z = 8 + Math.sin(angle) * (8.3 + random());
       if (z < 3 && x > -6 && x < 7) continue;
-      const rock = new THREE.Mesh(new THREE.IcosahedronGeometry(0.6, 1), stone);
-      rock.position.set(x, 0.2, z);
-      rock.scale.set(0.7 + random() * 1.3, 0.45 + random() * 0.6, 0.65 + random());
+      const rock = new THREE.Mesh(new THREE.IcosahedronGeometry(0.6, 2), stone);
+      rock.position.set(x, 0.06, z);
+      rock.scale.set(0.5 + random(), 0.3 + random() * 0.4, 0.5 + random());
       rock.rotation.set(random(), random(), random());
       rock.castShadow = true; rock.receiveShadow = true;
       this.background.add(rock);
     }
     const grassGeometry = new THREE.BufferGeometry();
-    grassGeometry.setAttribute('position', new THREE.Float32BufferAttribute([-0.08, 0, 0, 0.1, 0, 0, 0.2, 0.75, 0, 0, 0, -0.1, 0, 0, 0.1, -0.15, 0.65, 0.05], 3));
+    grassGeometry.setAttribute('position', new THREE.Float32BufferAttribute([-0.014, 0, 0, 0.014, 0, 0, 0.055, 0.27, 0, 0, 0, -0.012, 0, 0, 0.012, -0.04, 0.24, 0.01], 3));
     grassGeometry.computeVertexNormals();
-    const grassMaterial = new THREE.MeshStandardMaterial({ color: '#839260', side: THREE.DoubleSide, roughness: 1 });
-    const grass = new THREE.InstancedMesh(grassGeometry, grassMaterial, 5500);
+    const grassMaterial = new THREE.MeshStandardMaterial({ color: '#ffffff', side: THREE.DoubleSide, roughness: 1 });
+    const grass = new THREE.InstancedMesh(grassGeometry, grassMaterial, 18000);
     const dummy = new THREE.Object3D();
     const shade = new THREE.Color();
-    for (let i = 0; i < 5500; i++) {
+    for (let i = 0; i < 18000; i++) {
       let x = -29 + random() * 58, z = -19 + random() * 47;
       const pond = ((x - 1) / 13) ** 2 + ((z - 8) / 9) ** 2 < 1;
       const house = x > -7.4 && x < 7.7 && z > -8 && z < 4;
       const path = x > -8 && x < -4.1 && z > 3;
       if (pond || house || path) { x = -27 + random() * 54; z = -14 - random() * 8; }
-      dummy.position.set(x, 0.03, z);
+      dummy.position.set(x, terrainHeight(x, z) + 0.03, z);
       dummy.rotation.y = random() * Math.PI;
-      dummy.scale.setScalar(0.4 + random() * 0.7);
+      dummy.scale.setScalar(0.35 + random() * 0.55);
       dummy.updateMatrix(); grass.setMatrixAt(i, dummy.matrix);
-      shade.set('#839260').multiplyScalar(0.6 + random() * 0.7);
+      shade.set('#657543').multiplyScalar(0.65 + random() * 0.65);
       grass.setColorAt(i, shade);
     }
-    this.background.add(grass);
+    grass.receiveShadow = true; this.background.add(grass);
     const boardwalk = new THREE.Group();
     for (let i = 0; i < 61; i++) box(boardwalk, [2.6, 0.1, 0.19], [0, 0.2, i * 0.21], this.materials.get('cedar')!);
     boardwalk.position.set(-6, 0, 6.6);
@@ -361,7 +390,7 @@ export class SceneEngine {
       sources.forEach((source, i) => { merged.setMatrixAt(i, source.matrixWorld); source.removeFromParent(); });
       merged.castShadow = true; this.background.add(merged);
     });
-    const mergedLeaves = new THREE.InstancedMesh(leafGeometry, standard('#ffffff'), leaves.reduce((sum, mesh) => sum + mesh.count, 0));
+    const mergedLeaves = new THREE.InstancedMesh(leafGeometry, leafMaterial(), leaves.reduce((sum, mesh) => sum + mesh.count, 0));
     let index = 0;
     leaves.forEach(source => {
       for (let i = 0; i < source.count; i++) {
@@ -415,7 +444,7 @@ export class SceneEngine {
     this.sun.position.set(...sunPosition(a.time));
     this.sun.color.set('#fff4d9').lerp(new THREE.Color('#ffc47b'), evening);
     this.sun.intensity = a.weather === 'Clear' ? Math.max(0.4, 3.8 - evening * 1.6) : 0.8;
-    this.sky.intensity = a.time > 19 ? 0.85 : 1.8;
+    this.sky.intensity = a.time > 19 ? 0.4 : 0.95;
     this.scene.traverse(object => {
       if (object instanceof THREE.InstancedMesh && object.userData.foliage) {
         const material = object.material;

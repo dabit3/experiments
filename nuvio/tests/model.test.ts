@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { addObject, commit, createProject, exportProject, parseProject, redo, searchLibrary, seededRandom, sunPosition, undo, updateObject } from '../src/model';
+import { addObject, commit, createProject, exportProject, parseProject, redo, searchLibrary, seededRandom, sunPosition, terrainHeight, undo, updateObject } from '../src/model';
 import type { History } from '../src/model';
 
 describe('Forest House fixture', () => {
@@ -89,6 +89,12 @@ describe('Persistence and genuine project export', () => {
   });
 });
 describe('Procedural geometry and sun', () => {
+  it('keeps the pavilion and pond level while raising the surrounding forest terrain', () => {
+    for (let x = -14; x <= 14; x += 2) for (let z = -8; z <= 17; z += 2) expect(terrainHeight(x, z)).toBe(0);
+    expect(terrainHeight(45, -60)).toBeGreaterThan(1);
+    expect(terrainHeight(1000, 1000)).toBeLessThanOrEqual(7);
+    expect(terrainHeight(-1000, -1000)).toBeGreaterThanOrEqual(0);
+  });
   it('uses a deterministic vegetation generator within its range', () => {
     const a = seededRandom(311), b = seededRandom(311), c = seededRandom(312);
     const sequence = Array.from({ length: 100 }, a);

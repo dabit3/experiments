@@ -71,7 +71,7 @@ export function createProject(): Project {
       { id: 'lamp-1', name: 'Path light', kind: 'lamp', position: [-7, 0, 6], rotation: 0, scale: 1, material: 'charcoal', visible: true },
     ],
     shots: [
-      { id: 'hero', name: '01 · Forest arrival', position: [22, 12, 27], target: [0, 2.2, -1], ambience: { ...DEFAULT_AMBIENCE } },
+      { id: 'hero', name: '01 · Forest arrival', position: [19, 8.8, 23], target: [0, 2.2, -1], ambience: { ...DEFAULT_AMBIENCE } },
       { id: 'terrace', name: '02 · On the terrace', position: [13, 6, 12], target: [0, 2.2, -3], ambience: { ...DEFAULT_AMBIENCE, time: 17.5 } },
       { id: 'aerial', name: '03 · Above the canopy', position: [23, 29, 27], target: [0, 0, -2], ambience: { ...DEFAULT_AMBIENCE, time: 12 } },
     ],
@@ -137,6 +137,10 @@ export function exportProject(project: Project): string {
 export function sunPosition(time: number): Vec3 {
   const angle = ((time - 6) / 15) * Math.PI;
   return [Math.cos(angle) * 35, Math.max(2, Math.sin(angle) * 27), 12];
+}
+export function terrainHeight(x: number, z: number): number {
+  const distance = Math.hypot(x * 0.8, z * 0.7);
+  return Math.min(7, Math.max(0, distance - 22) * 0.09) * (0.7 + Math.sin(x * 0.075) * Math.cos(z * 0.055) * 0.3);
 }
 export function seededRandom(seed: number) {
   return () => {
