@@ -1,0 +1,44 @@
+.canvas-frame {
+  position: relative;
+  line-height: 0;
+  box-shadow:
+    0 1px 3px #0006,
+    0 15px 38px #0004;
+  overflow: hidden;
+}
+.paint-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: white;
+  cursor: crosshair;
+  touch-action: none;
+}
+.canvas-frame[data-tool='brush'] .paint-canvas,
+.canvas-frame[data-tool='eraser'] .paint-canvas {
+  cursor: none;
+}
+.canvas-frame[data-tool='fill'] .paint-canvas {
+  cursor: cell;
+}
+.brush-cursor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #333;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-9999px, -9999px);
+  box-shadow: 0 0 0 1px #ffffffb3;
+}
+.canvas-frame:not([data-tool='brush']):not([data-tool='eraser']) .brush-cursor {
+  display: none;
+}
+.canvas-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(#60606033 1px, transparent 1px),
+    linear-gradient(90deg, #60606033 1px, transparent 1px);
+}

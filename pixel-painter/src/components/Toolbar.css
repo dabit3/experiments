@@ -1,0 +1,106 @@
+.tool-rail {
+  width: 60px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 0;
+  gap: 7px;
+  z-index: 3;
+}
+.rail-handle {
+  display: flex;
+  gap: 3px;
+  margin: 0 0 12px;
+}
+.rail-handle span {
+  width: 14px;
+  height: 2px;
+  background: #55585b;
+}
+.rail-tool {
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #a6a8ad;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.rail-tool:hover {
+  background: #353638;
+  color: white;
+}
+.rail-tool.active {
+  color: var(--accent);
+  background: #47372c;
+  border-color: #725039;
+}
+.rail-tool.active:before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  height: 20px;
+  width: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+.rail-tool.group-start {
+  margin-top: 14px;
+}
+.rail-tool.group-start:after {
+  content: '';
+  position: absolute;
+  top: -11px;
+  height: 1px;
+  width: 24px;
+  background: var(--border);
+}
+.tool-tooltip {
+  position: absolute;
+  left: 46px;
+  top: 4px;
+  background: #111214;
+  box-shadow: 0 4px 20px #0006;
+  border: 1px solid var(--border);
+  color: #eee;
+  border-radius: 5px;
+  padding: 8px 10px;
+  white-space: nowrap;
+  pointer-events: none;
+  display: none;
+  gap: 16px;
+  font-size: 11px;
+}
+.rail-tool:hover .tool-tooltip {
+  display: flex;
+}
+.rail-colors {
+  position: relative;
+  width: 34px;
+  height: 36px;
+  margin-top: 24px;
+}
+.rail-colors span {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border: 2px solid var(--panel);
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px #555;
+  right: 0;
+  bottom: 0;
+}
+.rail-colors span:last-child {
+  top: 0;
+  left: 0;
+}
+.help-tool {
+  margin-top: auto;
+}
