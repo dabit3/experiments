@@ -1,0 +1,15 @@
+{
+  "name": "prism-sixteen-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check game.mjs && node --check test.mjs",
+    "test": "node --test test.mjs",
+    "assets": "node ../scripts/generate-music.mjs"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  }
+}
