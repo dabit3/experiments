@@ -1,0 +1,85 @@
+[08:08:05] building web
+Compiling lib/main.dart for the Web...                          
+Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+Use --no-wasm-dry-run to disable these warnings.
+Font asset "CupertinoIcons.ttf" was tree-shaken, reducing it from 257628 to 1472 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 17112 bytes (99.0% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Compiling lib/main.dart for the Web...                             23.0s
+✓ Built build/web
+[08:08:29] building ios (simulator)
+Building com.lastfort.lastfort for simulator (ios)...
+Running Xcode build...                                          
+Xcode build done.                                            8.3s
+✓ Built build/ios/iphonesimulator/Runner.app
+[08:08:43] starting server on :8790
+Monitoring boot status for iPhone 17 (113E2F1A-A37A-4546-A7AE-8A9CA23C7F89).
+Device already booted, nothing to do.
+
+[08:08:44] ios simulator ready: 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89
+[08:08:44] starting 2-way screen recording (twoup layout)
+[08:08:45] launching web client
+[["Web", "web"]]
+[08:08:49] launching ios client
+com.lastfort.lastfort: 13233
+[08:09:00] waiting for 2 humans in room LFE2E
+[["Web", "web"], ["Ios", "ios"]]
+[08:09:01] screenshots: lobby
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-080805/ios-lobby.png
+[08:09:02] waiting for the match to start
+bus
+[08:09:06] screenshots: bus
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-080805/ios-bus.png
+playing
+[08:09:23] screenshots: gameplay
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-080805/ios-gameplay.png
+[08:09:48] screenshots: midgame
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-080805/ios-midgame.png
+[08:09:49] waiting for all 2 clients to report the final summary
+ios,web
+[08:11:00] screenshots: matchover
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-080805/ios-matchover.png
+[08:11:06] screenshots: results
+Detected file type from extension: PNG
+Note: No display specified. Defaulting to display: 280E0E68-0ECC-4464-BB0A-B6E606F6C62C (screenID: 1, name: LCD)
+Wrote screenshot to: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-080805/ios-results.png
+# Lastfort four-way multiplayer match
+
+Room `LFE2E` — PASS
+
+| platform | player | digest | snapshots |
+|---|---|---|---|
+| web | Web (#1) | `5B0FF7B1` | 2331 |
+| ios | Ios (#2) | `5B0FF7B1` | 2331 |
+
+| placement | name | platform | team | elims | dmg | harvested | built | chests | survived s |
+|---|---|---|---|---|---|---|---|---|---|
+| 1 | Gale | bot | 1 | 4 | 306 | 146 | 12 | 3 | 117 |
+| 1 | Rook | bot | 1 | 1 | 125 | 226 | 8 | 1 | 117 |
+| 1 | Ashfall | bot | 1 | 1 | 67 | 194 | 12 | 1 | 117 |
+| 1 | Tarn | bot | 1 | 4 | 639 | 286 | 12 | 1 | 102 |
+| 2 | Web | web | 0 | 0 | 64 | 112 | 6 | 0 | 108 |
+| 2 | Ios | ios | 0 | 1 | 78 | 190 | 7 | 1 | 108 |
+| 2 | Marrow | bot | 0 | 0 | 0 | 72 | 3 | 1 | 117 |
+| 2 | Juniper | bot | 0 | 0 | 27 | 248 | 6 | 0 | 115 |
+| 3 | Ivory | bot | 2 | 1 | 189 | 79 | 3 | 0 | 36 |
+| 3 | Hollow | bot | 2 | 0 | 12 | 89 | 3 | 0 | 38 |
+| 3 | Ember | bot | 2 | 0 | 72 | 0 | 6 | 1 | 41 |
+| 3 | Sable | bot | 2 | 0 | 0 | 211 | 6 | 0 | 97 |
+| 4 | Pike | bot | 3 | 0 | 0 | 186 | 4 | 0 | 51 |
+| 4 | Nettle | bot | 3 | 0 | 125 | 0 | 0 | 0 | 13 |
+| 4 | Flint | bot | 3 | 0 | 0 | 100 | 2 | 0 | 38 |
+| 4 | Dusk | bot | 3 | 0 | 0 | 16 | 0 | 0 | 15 |
+[08:11:07] cutting review video
+review video: /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-080805/review.mp4 (44.9s, 10 chapters)
+[08:11:12] PASS (PARTIAL: web,ios only) — evidence in /Users/devin/repos/experiments/lastfort/.devin/clone-this/lastfort/evidence/tests/e2e-20260910-080805
+[08:11:12] cleaning up

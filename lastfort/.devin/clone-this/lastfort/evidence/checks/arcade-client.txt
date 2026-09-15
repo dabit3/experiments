@@ -1,0 +1,9 @@
+Formatted lib/app/widgets.dart
+Formatted 23 files (1 changed) in 0.18 seconds.
+Formatted 23 files (0 changed) in 0.18 seconds.
+Analyzing client...
+No issues found! (ran in 2.8s)
+00:00 +0: loading /Users/devin/repos/experiments/lastfort/client/test/widget_test.dart
+00:00 +0: platform name is one of the four supported targets
+00:00 +1: themes build for both brightnesses
+00:00 +2: All tests passed!

@@ -1,0 +1,22 @@
+# Android emulator acceleration check (2026-09-10T00:48:48Z)
+
+$ sysctl kern.hv_support kern.hv_vmm_present
+kern.hv_support: 0
+kern.hv_vmm_present: 1
+
+$ $ANDROID_HOME/emulator/emulator -accel-check
+accel:
+0
+Hypervisor.Framework OS X Version 26.5
+accel
+exit: 0
+
+$ $ANDROID_HOME/emulator/emulator -list-avds
+lastfort
+
+$ ls -la client/build/app/outputs/flutter-apk/
+total 360584
+drwxr-xr-x  4 devin  staff        128 Sep  9 16:26 .
+drwxr-xr-x  5 devin  staff        160 Sep  9 16:26 ..
+-rw-r--r--  1 devin  staff  172952120 Sep  9 17:40 app-debug.apk
+-rw-r--r--  1 devin  staff         40 Sep  9 17:40 app-debug.apk.sha1

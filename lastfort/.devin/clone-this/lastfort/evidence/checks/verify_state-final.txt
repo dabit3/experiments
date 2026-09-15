@@ -1,0 +1,19 @@
+Completion gate failed:
+- frontier must be an empty array before completion.
+- blockers must be an empty array before completion.
+- items[23].status must be 'verified'.
+- items[23].verified_revision does not match the current revision.
+- items[29].status must be 'verified'.
+- items[29].verified_revision does not match the current revision.
+- items[30].status must be 'verified'.
+- items[30].verified_revision does not match the current revision.
+- items[31].status must be 'verified'.
+- items[31].verified_revision does not match the current revision.
+- items[29].comparison still has 358576 differing pixels.
+- items[30].comparison still has 361367 differing pixels.
+- items[31].comparison still has 290835 differing pixels.
+- checks[0].status must be 'passed'.
+- checks[0].verified_revision does not match the current revision.
+- checks[1].status must be 'passed'.
+- checks[1].verified_revision does not match the current revision.
+- sweeps must contain two consecutive final discovery sweeps.

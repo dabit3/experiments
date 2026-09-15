@@ -1,0 +1,57 @@
+{
+  "sweep": 2,
+  "revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+  "method": "Independent second pass: enumerated PROTOCOL.md operations and every harness screenshot phase from the final run, mapping each to an inventory item; inspected settings/locker/pass screens in evidence/screens for controls without an item.",
+  "protocol_ops": [
+    "autopilot",
+    "error",
+    "hello",
+    "input",
+    "op",
+    "pause",
+    "ping",
+    "pong",
+    "ready",
+    "report",
+    "snapshot",
+    "start",
+    "state",
+    "step",
+    "summary",
+    "t",
+    "welcome",
+    "you"
+  ],
+  "screenshot_phases": [
+    "bus",
+    "gameplay",
+    "lobby",
+    "matchover",
+    "midgame",
+    "results",
+    "web-macos-lobby",
+    "web-macos-matchover",
+    "web-macos-results",
+    "web-macos-results-tol32"
+  ],
+  "unmapped_phases": [],
+  "new_items": 0,
+  "frontier_empty": false,
+  "frontier": [
+    "Android runtime leg of journey-four-platform-match (blocked: no virtualization on this host)",
+    "Renderer-independent visual capture so visual-*-parity can reach zero differing pixels"
+  ],
+  "audit_ids": [
+    "source",
+    "navigation",
+    "roles",
+    "states",
+    "responsive",
+    "data",
+    "assets",
+    "accessibility",
+    "reliability",
+    "rebrand"
+  ],
+  "note": "No new requirement discovered; all protocol operations are exercised by the harness or server tests and every captured phase maps to an inventoried item. Frontier remains non-empty for the two disclosed open items."
+}

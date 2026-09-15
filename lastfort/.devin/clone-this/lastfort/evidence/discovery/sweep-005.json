@@ -1,0 +1,91 @@
+{
+  "sweep": 5,
+  "revision": "sha256:3e65f74b794470cc1641e3ff8526a126bb7181affdb808a1ba4d30e6104f1b1c",
+  "method": "Post design-pass sweep: enumerated every hub surface reachable from the new top-bar navigation (Play/Locker/Pass/Settings, help dialog, join-code dialog, mode selector, profile pill), every HUD panel in hud_panels.dart (top-right cluster, vitals, squad, hotbar, materials, feed, compass, minimap, match-over slab) and every PROTOCOL.md operation, mapping each to an inventory item; enumerated screenshot phases of runs e2e-20260910-071442 (web+iOS) and e2e-20260910-071751 (web+iOS+macOS) plus the 16 evidence/screens hub captures.",
+  "surfaces": {
+    "hub": [
+      "Play (route-lobby)",
+      "Locker (route-locker)",
+      "Pass (route-pass)",
+      "Settings (route-settings)",
+      "help dialog (feature-input)",
+      "join-with-code dialog (feature-rooms)",
+      "mode selector (feature-squads)",
+      "profile/tier pill (feature-progression)"
+    ],
+    "hud": [
+      "top-right cluster: storm timer, players left, elims (feature-storm, feature-hud)",
+      "vitals shield/health (feature-health-shield)",
+      "squad panel (feature-squads)",
+      "hotbar + tool slot (feature-loot)",
+      "materials (feature-harvest, feature-building)",
+      "feed (feature-combat)",
+      "compass + minimap (feature-hud)",
+      "match-over slab (route-results, feature-spectate)"
+    ]
+  },
+  "note": "No new requirement discovered; the redesigned surfaces are re-arrangements of already inventoried features and every captured phase maps to an item. The edited review video is evidence for journey-web-ios-parallel.",
+  "protocol_ops": [
+    "autopilot",
+    "createRoom",
+    "error",
+    "hello",
+    "input",
+    "joinRoom",
+    "leaveRoom",
+    "matchEnd",
+    "matchStart",
+    "op",
+    "pause",
+    "ping",
+    "pong",
+    "ready",
+    "report",
+    "returnToLobby",
+    "roomState",
+    "setLoadout",
+    "setMode",
+    "snapshot",
+    "start",
+    "startMatch",
+    "state",
+    "step",
+    "summary",
+    "t",
+    "testAck",
+    "testControl",
+    "welcome",
+    "you"
+  ],
+  "screenshot_phases": [
+    "bus",
+    "diff-web-macos-lobby",
+    "diff-web-macos-matchover",
+    "diff-web-macos-results",
+    "diff-web-macos-results-tol32",
+    "gameplay",
+    "lobby",
+    "matchover",
+    "midgame",
+    "results"
+  ],
+  "unmapped_phases": [],
+  "new_items": 0,
+  "frontier_empty": false,
+  "frontier": [
+    "Android runtime leg of journey-four-platform-match (blocked: no virtualization on this host)",
+    "Renderer-independent visual capture so visual-*-parity can reach zero differing pixels"
+  ],
+  "audit_ids": [
+    "source",
+    "navigation",
+    "roles",
+    "states",
+    "responsive",
+    "data",
+    "assets",
+    "accessibility",
+    "reliability",
+    "rebrand"
+  ]
+}

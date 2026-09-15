@@ -1,0 +1,36 @@
+{
+  "sweep": 1,
+  "revision": "sha256:0c317a5d9eebe3c955ada5cfefa1ffa248e7bd902ef4e479d7dbe0c4697a375a",
+  "method": "Re-read evidence/discovery/source-reference.md and checked each reference requirement term against the inventory labels; re-listed client screens (client/lib/screens) and server ops (PROTOCOL.md) for uninventoried surfaces.",
+  "screens": [
+    "hub_screen.dart",
+    "hud.dart",
+    "locker_screen.dart",
+    "match_screen.dart",
+    "pass_screen.dart",
+    "results_screen.dart",
+    "settings_screen.dart",
+    "touch_controls.dart"
+  ],
+  "reference_terms_checked": 28,
+  "reference_terms_unrepresented": [],
+  "new_items": 0,
+  "frontier_empty": false,
+  "frontier": [
+    "Android runtime leg of journey-four-platform-match (blocked: no virtualization on this host)",
+    "Renderer-independent visual capture so visual-*-parity can reach zero differing pixels"
+  ],
+  "audit_ids": [
+    "source",
+    "navigation",
+    "roles",
+    "states",
+    "responsive",
+    "data",
+    "assets",
+    "accessibility",
+    "reliability",
+    "rebrand"
+  ],
+  "note": "No new requirement discovered. Frontier is not empty: the Android runtime leg is blocked by the host and the web/macOS pixel comparison is non-zero; both remain open items rather than new discoveries."
+}
