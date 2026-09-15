@@ -237,15 +237,15 @@ export const defaultProps: LaunchProps = {
     headline: "Devin now runs in a Mac VM",
     headlineAccent: "Mac VM",
     subhead:
-      "Build, run, and test Mac and iOS apps in a cloud Mac — with a live iPhone Simulator in your session.",
+      "Build, run, and test Mac and iOS apps in a cloud Mac, with a live iPhone Simulator in your session.",
     captions: [
-      "Pick macOS when you start a session — same price as Linux.",
+      "Pick macOS when you start a session. Same price as Linux.",
       "Devin builds the app in Xcode and runs the full test suite.",
       "It taps, types, and scrolls through the app like a person.",
-      "Watch it live in the iPhone Simulator tab — and tap in yourself.",
+      "Watch it live in the iPhone Simulator tab, and tap in yourself.",
       "Reproduce a bug, fix it, and prove the fix on screen.",
       "Check iPhone and iPad sizes, dark mode, and orientations.",
-      "Ship with a PR that shows the app working — not a 20-minute CI wait.",
+      "Ship with a PR that shows the app working, not a 20-minute CI wait.",
     ],
     useCases: [
       "Build & test a feature",
@@ -323,6 +323,6 @@ export const defaultProps: LaunchProps = {
     moveFrames: 18,
     exitFrames: 10,
     captionFadeFrames: 10,
-    showPanelNumbers: true,
+    showPanelNumbers: false,
   },
 };

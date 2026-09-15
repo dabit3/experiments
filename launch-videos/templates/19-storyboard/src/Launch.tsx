@@ -147,6 +147,7 @@ export const Launch: React.FC<LaunchProps> = (props) => {
           brand={brand}
           text={oldCaption.text}
           number={oldCaption.number}
+          showNumber={sb.showPanelNumbers}
           placement={oldCaption.placement}
           anchor={oldCaption.anchor}
           progress={oldCaption.progress}
@@ -158,6 +159,7 @@ export const Launch: React.FC<LaunchProps> = (props) => {
           brand={brand}
           text={curCaption.text}
           number={curCaption.number}
+          showNumber={sb.showPanelNumbers}
           placement={curCaption.placement}
           anchor={curCaption.anchor}
           progress={curCaption.progress}

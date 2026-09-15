@@ -10,13 +10,23 @@ export const Caption: React.FC<{
   brand: Brand;
   text: string;
   number: number;
+  showNumber: boolean;
   placement: Scene["captionPlacement"];
   anchor: Rect;
   progress: number;
   speedBadge: string | null;
-}> = ({ brand, text, number, placement, anchor, progress, speedBadge }) => {
+}> = ({
+  brand,
+  text,
+  number,
+  showNumber,
+  placement,
+  anchor,
+  progress,
+  speedBadge,
+}) => {
   const rise = (1 - progress) * 8;
-  const index = (
+  const index = showNumber ? (
     <span
       style={{
         fontFamily: brand.monoFontFamily,
@@ -28,7 +38,7 @@ export const Caption: React.FC<{
     >
       {String(number).padStart(2, "0")}
     </span>
-  );
+  ) : null;
   const badge = speedBadge ? (
     <span
       style={{
@@ -64,10 +74,12 @@ export const Caption: React.FC<{
           transform: `translateY(${rise}px)`,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center" }}>
-          {index}
-          {badge}
-        </div>
+        {index || badge ? (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            {index}
+            {badge}
+          </div>
+        ) : null}
         <div
           style={{
             fontFamily: brand.fontFamily,
@@ -99,10 +111,12 @@ export const Caption: React.FC<{
         transform: `translateY(${rise}px)`,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
-        {index}
-        {badge}
-      </div>
+      {index || badge ? (
+        <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+          {index}
+          {badge}
+        </div>
+      ) : null}
       <div
         style={{
           fontFamily: brand.fontFamily,

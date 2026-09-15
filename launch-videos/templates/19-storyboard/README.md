@@ -1,4 +1,4 @@
-# 19 — Graphic Storyboard
+# 19: Graphic Storyboard
 
 A reusable 16:9 Remotion launch-video template that tells the product story as a
 composed storyboard: numbered panels on a paper page, a fixed 12-column grid with
@@ -25,14 +25,14 @@ npm run still      # out/poster.png (frame 1010, the Verify beat)
 
 | # | id | start | frames | stage | active panel (media) | caption |
 |---|----|-------|--------|-------|----------------------|---------|
-| 0 | `title` | 0:00.0 | 105 | – | 01 `hero` — `devin-web-1.png` crop of the prompt box (`macOS` chip) | headline / subhead in the left half |
-| 1 | `establish` | 0:03.5 | 120 | Request | 02 `pick` — `devin-web-4.png` crop of the Hosted OS menu | 1 |
-| 2 | `pick` | 0:07.5 | 180 | Request | 03 `selector` — `agent-selector-cloud.mp4` (9 cols) | 1 |
-| 3 | `build` | 0:13.5 | 195 | Build | 04 `work` — `devin-working-4.mp4` (9 cols) | 2 |
-| 4 | `run` | 0:20.0 | 180 | Run & test | 05 `simulator` — `androidios.mp4` cropped to the iPhone, full content height; caption *beside* | 3 |
-| 5 | `live` | 0:26.0 | 120 | Run & test | 06 `live` — `devin-web-14.png` (Simulator + test list) opens beside the phone | 4 |
-| 6 | `verify` | 0:30.0 | 180 | Verify | 07 `verify` — `devin-testing-2.mp4` from frame 750 (9 cols) | 5 |
-| 7 | `ship` | 0:36.0 | 105 | PR | 08 `result` — `devin-web-12.png` (PR "Ready to merge" + passing test recording) | 7 |
+| 0 | `title` | 0:00.0 | 105 | – | 01 `hero`: `devin-web-1.png` crop of the prompt box (`macOS` chip) | headline / subhead in the left half |
+| 1 | `establish` | 0:03.5 | 120 | Request | 02 `pick`: `devin-web-4.png` crop of the Hosted OS menu | 1 |
+| 2 | `pick` | 0:07.5 | 180 | Request | 03 `selector`: `agent-selector-cloud.mp4` (9 cols) | 1 |
+| 3 | `build` | 0:13.5 | 195 | Build | 04 `work`: `devin-working-4.mp4` (9 cols) | 2 |
+| 4 | `run` | 0:20.0 | 180 | Run & test | 05 `simulator`: `androidios.mp4` cropped to the iPhone, full content height; caption *beside* | 3 |
+| 5 | `live` | 0:26.0 | 120 | Run & test | 06 `live`: `devin-web-14.png` (Simulator + test list) opens beside the phone | 4 |
+| 6 | `verify` | 0:30.0 | 180 | Verify | 07 `verify`: `devin-testing-2.mp4` from frame 750 (9 cols) | 5 |
+| 7 | `ship` | 0:36.0 | 105 | PR | 08 `result`: `devin-web-12.png` (PR "Ready to merge" + passing test recording) | 7 |
 | 8 | `full` | 0:39.5 | 90 | PR | 08 `result` grows to the full frame; header/chrome fade out | – |
 | 9 | `outro` | 0:42.5 | 75 | – | – | logo, outro line, CTA |
 
@@ -81,7 +81,7 @@ numbers are assigned automatically in first-appearance order.
 ## Swapping in another launch
 
 1. Replace the copy in `content` (headline, `headlineAccent`, captions, stages,
-   CTA, outro line) — keep captions to one or two lines.
+   CTA, outro line): keep captions to one or two lines.
 2. Add/replace `media` slots. Set `aspect` to the real source ratio and, for
    video, `durationInFrames` at 30fps (`ffprobe`). Use `crop` to isolate a region
    of a screenshot; crops scale but never skew or recolor the source.

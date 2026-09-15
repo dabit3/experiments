@@ -25,7 +25,7 @@ export const Outro: React.FC<{
     >
       <Img
         src={staticFile(brand.logoLight)}
-        style={{ height: 40, width: "auto", display: "block" }}
+        style={{ height: 72, width: "auto", display: "block" }}
       />
       <div
         style={{
