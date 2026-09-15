@@ -29,10 +29,18 @@ function AssetPreview({ kind }: { kind: AssetKind }) {
 function ShotPreview({ engine, shot }: { engine: SceneEngine | null; shot: CameraShot }) {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      if (engine && ref.current) ref.current.replaceChildren(engine.thumbnail(shot));
-    }, 350);
-    return () => clearTimeout(timer);
+    const element = ref.current;
+    if (!engine || !element) return;
+    let timer: number | undefined;
+    const observer = new IntersectionObserver(entries => {
+      clearTimeout(timer);
+      if (entries.some(entry => entry.isIntersecting)) timer = window.setTimeout(() => {
+        element.replaceChildren(engine.thumbnail(shot));
+        observer.disconnect();
+      }, 350);
+    });
+    observer.observe(element);
+    return () => { observer.disconnect(); clearTimeout(timer); };
   }, [engine, shot.id, shot.position, shot.target, shot.ambience]);
   return <div className="shot-preview" ref={ref} />;
 }
@@ -288,7 +296,7 @@ export default function App() {
       const file = event.target.files?.[0]; if (!file) return;
       if (file.size > 500_000) { setError('Project is too large. Maximum size is 500 KB.'); event.target.value = ''; return; }
       const parsed = parseProject(await file.text());
-      if (parsed) { change(parsed); choose(null); if (parsed.shots[0]) { engine?.setCamera(parsed.shots[0]); setActiveShot(parsed.shots[0].id); } }
+      if (parsed) { setError(''); change(parsed); choose(null); if (parsed.shots[0]) { engine?.setCamera(parsed.shots[0]); setActiveShot(parsed.shots[0].id); } }
       else setError('This is not a valid Nuvio V1 project. The current scene was kept.');
       event.target.value = '';
     }} />
