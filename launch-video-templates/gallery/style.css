@@ -1,0 +1,44 @@
+:root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif; color: #172321; background: #f5f6f2; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: #165843; text-underline-offset: 4px; }
+a:hover { color: #0a3326; }
+a:focus-visible, summary:focus-visible, video:focus-visible { outline: 3px solid #1971c2; outline-offset: 5px; }
+header, main, footer { max-width: 1600px; margin: auto; padding: 0 48px; }
+header { padding-top: 72px; padding-bottom: 52px; }
+.eyebrow { font-size: 12px; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; color: #4b655c; }
+h1 { font-size: clamp(48px, 7vw, 100px); line-height: .98; font-weight: 500; letter-spacing: -.065em; margin: 30px 0; }
+.intro { max-width: 720px; font-size: 22px; line-height: 1.5; }
+.facts { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 20px; }
+.facts span { padding: 10px 15px; border: 1px solid #cbd9d1; border-radius: 24px; font-size: 13px; }
+.hint { max-width: 780px; font-size: 14px; color: #56635e; line-height: 1.6; }
+nav, .actions { display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 14px; }
+nav { margin-top: 30px; }
+.collection { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; }
+.card { background: #fff; border: 1px solid #dbe2dc; border-radius: 12px; overflow: hidden; scroll-margin-top: 24px; }
+video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #111; }
+.card-body { padding: 22px 26px 26px; }
+h2 { font-size: 26px; font-weight: 550; letter-spacing: -.03em; margin: 10px 0; }
+.card-body > p:not(.eyebrow) { line-height: 1.5; }
+.sound { font-size: 13px; color: #59665f; }
+.actions { margin: 22px 0; }
+details { border-top: 1px solid #e2e7e3; padding-top: 16px; font-size: 14px; }
+summary { cursor: pointer; color: #285540; }
+details p, .notes p { line-height: 1.65; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; }
+code { overflow-wrap: anywhere; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #f0f4f0; padding: 18px; border-radius: 7px; line-height: 1.7; }
+.notes { margin-top: 52px; border-top: 1px solid #cbd9d1; padding-top: 30px; max-width: 920px; }
+footer { padding-top: 60px; padding-bottom: 44px; font-size: 13px; color: #58665e; }
+.guide { max-width: 1120px; padding-top: 36px; padding-bottom: 36px; }
+.guide h1 { font-size: 48px; }
+.readme { background: #fff; font-size: 15px; padding: 28px; }
+.skip { position: absolute; left: 16px; top: -80px; padding: 14px; background: white; z-index: 2; }
+.skip:focus { top: 16px; }
+@media (max-width: 760px) {
+  header, main, footer { padding-left: 20px; padding-right: 20px; }
+  header { padding-top: 40px; }
+  .collection { grid-template-columns: 1fr; gap: 22px; }
+  .card-body { padding: 20px; }
+  h2 { font-size: 24px; }
+}

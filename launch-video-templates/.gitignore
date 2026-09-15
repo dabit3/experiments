@@ -3,4 +3,5 @@ out/
 .DS_Store
 gallery/videos/
 gallery/posters/
+gallery/guides/
 *.zip
