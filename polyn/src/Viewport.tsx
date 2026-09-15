@@ -249,7 +249,8 @@ export default forwardRef<ViewportHandle, Props>(function Viewport(props, ref) {
     if (group?.visible) {
       group.traverse(child => {
         if (child instanceof THREE.Mesh) {
-          const edge = new THREE.LineSegments(new THREE.EdgesGeometry(child.geometry, 32), new THREE.LineBasicMaterial({ color: '#f58b31', transparent: true, opacity: 0.85 }))
+          const edge = new THREE.LineSegments(new THREE.EdgesGeometry(child.geometry, 32), new THREE.LineBasicMaterial({ color: '#f58b31', transparent: true, opacity: 0.9, depthTest: false, depthWrite: false, toneMapped: false }))
+          edge.renderOrder = 2
           edge.position.copy(child.position)
           edge.rotation.copy(child.rotation)
           edge.scale.copy(child.scale)
