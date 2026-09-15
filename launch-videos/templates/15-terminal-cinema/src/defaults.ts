@@ -1,0 +1,147 @@
+import type { LaunchProps } from "./schema";
+
+export const FPS = 30;
+export const WIDTH = 1920;
+export const HEIGHT = 1080;
+
+export const defaultProps: LaunchProps = {
+  brand: {
+    paper: "#F7F6F5",
+    surface: "#EFEFEF",
+    line: "#E7E7E7",
+    ink: "#191919",
+    inkMuted: "#7D7D7D",
+    inkSubtle: "#919191",
+    accent: "#2200FF",
+    black: "#141414",
+    white: "#FFFFFF",
+    fontFamily: '"NB International Pro", "Inter", "Helvetica Neue", Arial, sans-serif',
+    monoFontFamily: '"Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace',
+    logoLight: "logos/devin-lockup-horizontal-black.png",
+    logoDark: "logos/devin-lockup-horizontal-white.png",
+  },
+  content: {
+    featureName: "Devin on Mac",
+    eyebrow: "New",
+    headline: "Devin now runs in a Mac VM",
+    headlineAccentWord: "Mac",
+    subhead:
+      "Build, run, and test Mac and iOS apps in a cloud Mac — with a live iPhone Simulator in your session.",
+    captions: [
+      "Pick macOS when you start a session — same price as Linux.",
+      "Devin builds the app in Xcode and runs the full test suite.",
+      "It taps, types, and scrolls through the app like a person.",
+      "Watch it live in the iPhone Simulator tab — and tap in yourself.",
+      "Reproduce a bug, fix it, and prove the fix on screen.",
+      "Check iPhone and iPad sizes, dark mode, and orientations.",
+      "Ship with a PR that shows the app working — not a 20-minute CI wait.",
+    ],
+    useCases: [
+      "Build & test a feature",
+      "Reproduce & fix a bug",
+      "QA before shipping",
+      "Screens, sizes & dark mode",
+      "Upgrade Swift & dependencies",
+    ],
+    stages: ["Request", "Build", "Run & test", "Verify", "PR"],
+    cta: { label: "Start a Mac session", url: "app.devin.ai" },
+    outroLine: "The only coding agent with a cloud Mac.",
+    speedBadge: "3x",
+  },
+  media: {
+    pick: {
+      src: "screenshots/devin-web-4.png",
+      kind: "image",
+      crop: { x: 0.17, y: 0.24, w: 0.66, h: 0.62 },
+    },
+    work: {
+      src: "recordings/devin-working-4.mp4",
+      kind: "video",
+      startFrom: 0,
+    },
+    simulator: {
+      src: "recordings/androidios.mp4",
+      kind: "video",
+      startFrom: 60,
+      crop: { x: 0.06, y: 0.125, w: 0.3, h: 0.735 },
+    },
+    verify: {
+      src: "recordings/devin-testing-2.mp4",
+      kind: "video",
+      startFrom: 1140,
+    },
+    result: {
+      src: "screenshots/devin-web-12.png",
+      kind: "image",
+      crop: { x: 0.03, y: 0, w: 0.97, h: 1 },
+    },
+  },
+  scenes: [
+    { id: "open", type: "open", durationInFrames: 150 },
+    {
+      id: "pick",
+      type: "demo",
+      durationInFrames: 195,
+      captionIndex: 0,
+      label: "Request",
+      media: "pick",
+      captionPlacement: "top",
+    },
+    {
+      id: "work",
+      type: "demo",
+      durationInFrames: 240,
+      captionIndex: 1,
+      label: "Build",
+      media: "work",
+      captionPlacement: "top",
+    },
+    {
+      id: "simulator",
+      type: "demo",
+      durationInFrames: 240,
+      captionIndex: 2,
+      label: "Run & test",
+      media: "simulator",
+      captionPlacement: "top",
+    },
+    {
+      id: "verify",
+      type: "demo",
+      durationInFrames: 195,
+      captionIndex: 4,
+      label: "Verify",
+      media: "verify",
+      captionPlacement: "top",
+    },
+    {
+      id: "result",
+      type: "demo",
+      durationInFrames: 210,
+      captionIndex: 6,
+      label: "PR",
+      media: "result",
+      captionPlacement: "top",
+    },
+    { id: "outro", type: "outro", durationInFrames: 120 },
+  ],
+  cursor: {
+    glyph: "block",
+    blinkFrames: 24,
+    charsPerFrame: 1.6,
+    color: "accent",
+  },
+  layout: {
+    safeMargin: 96,
+    statementSize: 56,
+    labelSize: 22,
+    frameRadius: 16,
+  },
+  timing: {
+    holdAfterType: 18,
+    settle: 16,
+    rule: 12,
+    expand: 18,
+    exitFade: 8,
+  },
+};
