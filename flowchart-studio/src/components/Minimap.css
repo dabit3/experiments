@@ -1,0 +1,35 @@
+.minimap {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  user-select: none;
+}
+
+.minimap svg {
+  display: block;
+  cursor: pointer;
+  background: var(--canvas);
+}
+
+.minimap-view {
+  fill: color-mix(in srgb, var(--accent) 10%, transparent);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.minimap-caption {
+  padding: 6px 10px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--mono);
+  text-align: center;
+  background: var(--panel);
+}
