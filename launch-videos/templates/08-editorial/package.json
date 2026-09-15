@@ -1,0 +1,24 @@
+{
+  "name": "launch-video-08-editorial",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Devin launch video template 08 — Editorial (Remotion)",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render Main out/video.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.522",
+    "@remotion/google-fonts": "4.0.522",
+    "@remotion/transitions": "4.0.522",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.522"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.9.2"
+  }
+}
