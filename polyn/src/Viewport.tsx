@@ -3,7 +3,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { TransformControls } from 'three/addons/controls/TransformControls.js'
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js'
-import { buildObject, applyTransform, readTransform, disposeGroup } from './geometry'
+import { buildObject, applyTransform, readTransform, disposeGroup, selectionEdges } from './geometry'
 import { defaultCameras, sampleObject, type CameraBookmark, type Project, type SceneObject } from './model'
 
 export type Shading = 'material' | 'solid' | 'wireframe'
@@ -249,7 +249,7 @@ export default forwardRef<ViewportHandle, Props>(function Viewport(props, ref) {
     if (group?.visible) {
       group.traverse(child => {
         if (child instanceof THREE.Mesh) {
-          const edge = new THREE.LineSegments(new THREE.EdgesGeometry(child.geometry, 32), new THREE.LineBasicMaterial({ color: '#f58b31', transparent: true, opacity: 0.9, depthTest: false, depthWrite: false, toneMapped: false }))
+          const edge = new THREE.LineSegments(selectionEdges(child.geometry), new THREE.LineBasicMaterial({ color: '#f58b31', transparent: true, opacity: 0.9, depthTest: false, depthWrite: false, toneMapped: false }))
           edge.renderOrder = 2
           edge.position.copy(child.position)
           edge.rotation.copy(child.rotation)

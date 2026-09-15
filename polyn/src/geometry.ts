@@ -6,6 +6,13 @@ const charcoal = '#282a27'
 const oak = '#9c7650'
 const cream = '#d9cfb9'
 
+export function selectionEdges(geometry: THREE.BufferGeometry): THREE.EdgesGeometry {
+  const edges = new THREE.EdgesGeometry(geometry, 15)
+  if (edges.getAttribute('position').count > 0) return edges
+  edges.dispose()
+  return new THREE.EdgesGeometry(geometry, 1)
+}
+
 export function buildObject(data: SceneObject): THREE.Group {
   const group = new THREE.Group()
   const materials = new Map<string, THREE.MeshStandardMaterial>()

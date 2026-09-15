@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Box3, Group, Mesh, Vector3 } from 'three'
 import { addObject, createProject, duplicateObject, historyReducer, parseProject, removeObject, sampleObject, serializeProject, setKeyframe, updateObject, type History, type Vec3 } from './model'
-import { applyTransform, buildObject, disposeGroup, readTransform } from './geometry'
+import { applyTransform, buildObject, disposeGroup, readTransform, selectionEdges } from './geometry'
 
 describe('project editing and history', () => {
   it('starts with a complete architectural fixture and independent mutable values', () => {
@@ -108,6 +108,20 @@ describe('animation', () => {
 })
 
 describe('real scene geometry', () => {
+  it('produces visible selection segments for rounded furniture and smooth primitives', () => {
+    const p = addObject(addObject(createProject(), 'cube', 'cube'), 'sphere', 'sphere')
+    for (const object of p.objects.filter(o => ['sofa', 'chair', 'cube', 'sphere'].includes(o.kind))) {
+      const group = buildObject(object)
+      group.traverse(child => {
+        if (child instanceof Mesh) {
+          const edges = selectionEdges(child.geometry)
+          expect(edges.getAttribute('position').count).toBeGreaterThan(0)
+          edges.dispose()
+        }
+      })
+      disposeGroup(group)
+    }
+  })
   it('builds every architectural component with finite bounds', () => {
     for (const object of createProject().objects) {
       const group = buildObject(object)
