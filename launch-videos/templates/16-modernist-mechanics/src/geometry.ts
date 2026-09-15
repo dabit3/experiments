@@ -54,8 +54,11 @@ export const safeArea = (props: LaunchProps): Safe => {
   };
 };
 
+export const findSlot = (media: LaunchProps['media'], name: string): MediaSlot | undefined =>
+  media.find((m) => m.name === name);
+
 const slotOf = (props: LaunchProps, name: string): MediaSlot => {
-  const slot = props.media[name];
+  const slot = findSlot(props.media, name);
   if (!slot) {
     throw new Error(`Unknown media slot "${name}"`);
   }

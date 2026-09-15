@@ -48,21 +48,24 @@ export const defaultContent: LaunchProps['content'] = {
 
 // Media slots — every path is relative to launch-videos/assets (see brief/assets.md).
 // Crops are fractions of the source; they only trim, never redraw.
-export const defaultMedia: LaunchProps['media'] = {
-  pick: {
+export const defaultMedia: LaunchProps['media'] = [
+  {
+    name: 'pick',
     src: 'screenshots/devin-web-4.png',
     kind: 'image',
     width: 2988,
     height: 1622,
     crop: {x: 0.17, y: 0.2, w: 0.66, h: 0.64},
   },
-  work: {
+  {
+    name: 'work',
     src: 'screenshots/devin-web-13.png',
     kind: 'image',
     width: 2982,
     height: 1620,
   },
-  simulator: {
+  {
+    name: 'simulator',
     // macOS desktop with iPhone Simulator + Android emulator; cropped to the iPhone.
     src: 'recordings/androidios.mp4',
     kind: 'video',
@@ -71,35 +74,39 @@ export const defaultMedia: LaunchProps['media'] = {
     startFrom: 0,
     crop: {x: 0.163, y: 0.145, w: 0.19, h: 0.645},
   },
-  verify: {
+  {
+    name: 'verify',
     src: 'recordings/devin-testing-2.mp4',
     kind: 'video',
     width: 1918,
     height: 1080,
     startFrom: 0,
   },
-  ipad: {
+  {
+    name: 'ipad',
     src: 'screenshots/devin-web-19.png',
     kind: 'image',
     width: 2982,
     height: 1626,
     crop: {x: 0.07, y: 0.13, w: 0.515, h: 0.735},
   },
-  darkPhone: {
+  {
+    name: 'darkPhone',
     src: 'screenshots/devin-web-18.png',
     kind: 'image',
     width: 2978,
     height: 1626,
     crop: {x: 0.225, y: 0.125, w: 0.2, h: 0.76},
   },
-  result: {
+  {
+    name: 'result',
     src: 'screenshots/devin-web-12.png',
     kind: 'image',
     width: 2978,
     height: 1622,
     crop: {x: 0, y: 0, w: 1, h: 0.84},
   },
-};
+];
 
 // 1350 frames = 45s at 30fps
 export const defaultScenes: LaunchProps['scenes'] = [

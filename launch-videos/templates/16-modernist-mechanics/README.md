@@ -58,12 +58,15 @@ next move, so copy is never read over a moving shape. The result holds for
 ## Editable props
 
 All props are validated by `src/schema.ts` and editable in Remotion Studio.
+Studio edits preview live; "save default props" is not available because the
+defaults live in `src/defaults.ts` rather than inline in `Root.tsx` — edit that
+file (or pass `--props`) to persist changes.
 
 | Group | Fields |
 | --- | --- |
 | `brand` | `paper`, `surface`, `line`, `ink`, `inkMuted`, `inkSubtle`, `accent`, `white`, `fontFamily`, `monoFontFamily`, `logoLight`, `logoDark` |
 | `content` | `featureName`, `eyebrow`, `headline`, `headlineAccent`, `subhead`, `captions[]`, `useCases[]`, `stages[]`, `cta.{label,url}`, `outroLine`, `speedBadge` |
-| `media.<slot>` | `src` (relative to `launch-videos/assets`), `kind` (`image`/`video`), `width`, `height` (intrinsic px), `startFrom`, `playbackRate`, `crop.{x,y,w,h}` (fractions; trim only) |
+| `media[]` | `name` (slot name scenes refer to), `src` (relative to `launch-videos/assets`), `kind` (`image`/`video`), `width`, `height` (intrinsic px), `startFrom`, `playbackRate`, `crop.{x,y,w,h}` (fractions; trim only) |
 | `scenes[]` | discriminated on `type`: `open` · `demo` (`composition`, `media[]`, `caption`, `stage`, `label`, `split`, `showSpeedBadge`) · `result` (`media`, `caption`, `stage`, `label`) · `outro` (`media`); every scene has `durationInFrames` |
 | `shapes` | `frame.{fill,border,borderWidth}` · `rule.{color,progressColor,thickness,y}` · `tiles.{size,fill,activeFill}` · `plane.{fill,text,textMuted,padding,captionSize}` |
 | `motion` | `transitionFrames` (boundary move), `entranceFrames`, `slideDistance` (px a shape travels when entering), `stagger` |
@@ -81,7 +84,7 @@ needs no other edits.
 
 1. Replace `content` in `src/defaults.ts` (or pass props) with the new launch
    copy. Use the approved copy verbatim.
-2. Point each `media` slot at footage in `launch-videos/assets/`, set its
+2. Point each `media[]` slot at footage in `launch-videos/assets/`, set its
    intrinsic `width`/`height`, and add a `crop` if only part of the frame is
    relevant. Crops scale uniformly and only trim — never skew or recolor.
 3. Rebuild `scenes`: pick a `composition` per demo, reference slot names, and

@@ -2,6 +2,7 @@ import React from 'react';
 import {useCurrentFrame} from 'remotion';
 import type {DemoScene, LaunchProps, OutroScene, ResultScene} from '../schema';
 import type {Rect, SceneGeometry} from '../geometry';
+import {findSlot} from '../geometry';
 import {easeInOut, easeOut, enterStyle} from '../motion';
 import {AccentText, Eyebrow} from './Label';
 import {Media} from './Media';
@@ -172,7 +173,7 @@ export const DemoOverlay: React.FC<OverlayProps & {scene: DemoScene}> = ({
       </div>
       {geo.frames.slice(1).map((r, i) => {
         const name = scene.media[i + 1];
-        const slot = props.media[name];
+        const slot = findSlot(props.media, name);
         if (!slot) {
           return null;
         }

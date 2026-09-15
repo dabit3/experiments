@@ -40,6 +40,7 @@ export const cropSchema = z.object({
 });
 
 export const mediaSlotSchema = z.object({
+  name: z.string().describe('Slot name that scenes refer to'),
   src: z.string().describe('Path relative to launch-videos/assets'),
   kind: z.enum(['image', 'video']),
   width: z.number().describe('Intrinsic pixel width of the source'),
@@ -49,7 +50,7 @@ export const mediaSlotSchema = z.object({
   crop: cropSchema.optional(),
 });
 
-export const mediaSchema = z.record(z.string(), mediaSlotSchema);
+export const mediaSchema = z.array(mediaSlotSchema).min(1);
 
 /** Where the product frame sits and what the caption plane does. */
 export const compositionSchema = z.enum([

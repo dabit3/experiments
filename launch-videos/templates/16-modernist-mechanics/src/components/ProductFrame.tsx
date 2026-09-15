@@ -1,7 +1,7 @@
 import React from 'react';
 import {Sequence} from 'remotion';
 import type {LaunchProps} from '../schema';
-import {CANVAS_W, primaryMediaName} from '../geometry';
+import {CANVAS_W, findSlot, primaryMediaName} from '../geometry';
 import type {FrameState} from '../timeline';
 import {Media} from './Media';
 import {easeOut, enterStyle} from '../motion';
@@ -54,9 +54,9 @@ export const ProductFrame: React.FC<{props: LaunchProps; state: FrameState; fram
           if (!name) {
             return null;
           }
-          const slot = props.media[name];
+          const slot = findSlot(props.media, name);
           const prev = i > 0 ? primaryMediaName(spans[i - 1].scene) : null;
-          if (prev === name) {
+          if (!slot || prev === name) {
             // Same media continues from the previous scene; that Sequence covers it.
             return null;
           }
