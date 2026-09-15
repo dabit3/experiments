@@ -1,0 +1,335 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		05D96D202048D40A73BA99CC /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E738F72679C63C9A91E41CB /* GameModel.swift */; };
+		3AA13D1B1088D34551CB973B /* chart.json in Resources */ = {isa = PBXBuildFile; fileRef = 40ED4C137BEF095F80EF39B3 /* chart.json */; };
+		529C678392BFAFA1A8DFC640 /* HighwayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE8F31CC55CD82BC264F7AF /* HighwayView.swift */; };
+		6B1DAD0496BB0288F6C6D9D6 /* SoundEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A58FD1B010A57DA2F8D8A7 /* SoundEngine.swift */; };
+		6C7BE6774C0547555D5FA370 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E13036938796117C2F4C55 /* Chart.swift */; };
+		92BD43F66587169BBE08576B /* afterburn.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 54A0FD04FAC82E8742E5260B /* afterburn.m4a */; };
+		A75F971BA67D7B68327C99C5 /* LaserOverdriveApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A232AFAF7CF24ABE2C1E894 /* LaserOverdriveApp.swift */; };
+		CFC698F374B9C439657DA103 /* GameInputStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7767154B2949CA3AB86F8 /* GameInputStream.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		05A5C20C0260D8187ED08154 /* LaserOverdrive.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LaserOverdrive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		07E13036938796117C2F4C55 /* Chart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
+		0AE8F31CC55CD82BC264F7AF /* HighwayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighwayView.swift; sourceTree = "<group>"; };
+		2E738F72679C63C9A91E41CB /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		34161784AB36A36DEBD25F39 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		40ED4C137BEF095F80EF39B3 /* chart.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = chart.json; sourceTree = "<group>"; };
+		54A0FD04FAC82E8742E5260B /* afterburn.m4a */ = {isa = PBXFileReference; path = afterburn.m4a; sourceTree = "<group>"; };
+		5A232AFAF7CF24ABE2C1E894 /* LaserOverdriveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaserOverdriveApp.swift; sourceTree = "<group>"; };
+		87A58FD1B010A57DA2F8D8A7 /* SoundEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEngine.swift; sourceTree = "<group>"; };
+		94F7767154B2949CA3AB86F8 /* GameInputStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInputStream.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		002887B57BE6CBB404B61D19 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				07E13036938796117C2F4C55 /* Chart.swift */,
+				94F7767154B2949CA3AB86F8 /* GameInputStream.swift */,
+				2E738F72679C63C9A91E41CB /* GameModel.swift */,
+				0AE8F31CC55CD82BC264F7AF /* HighwayView.swift */,
+				34161784AB36A36DEBD25F39 /* Info.plist */,
+				5A232AFAF7CF24ABE2C1E894 /* LaserOverdriveApp.swift */,
+				87A58FD1B010A57DA2F8D8A7 /* SoundEngine.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		1E64EE7DF70608524588A49E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				05A5C20C0260D8187ED08154 /* LaserOverdrive.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A3C23AAEC4D38EE931B42879 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				54A0FD04FAC82E8742E5260B /* afterburn.m4a */,
+				40ED4C137BEF095F80EF39B3 /* chart.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F624EE68C477247FF02AFD21 = {
+			isa = PBXGroup;
+			children = (
+				002887B57BE6CBB404B61D19 /* App */,
+				A3C23AAEC4D38EE931B42879 /* Resources */,
+				1E64EE7DF70608524588A49E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F5DAA73F261D69C88A4274D4 /* LaserOverdrive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2C566A7070BFCA46E3D0ECFF /* Build configuration list for PBXNativeTarget "LaserOverdrive" */;
+			buildPhases = (
+				AFC1FAAB6A5B4172662EF42D /* Sources */,
+				3C37484474BF5A812706BD13 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LaserOverdrive;
+			packageProductDependencies = (
+			);
+			productName = LaserOverdrive;
+			productReference = 05A5C20C0260D8187ED08154 /* LaserOverdrive.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EC64C762D2EDE8619F04354B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 3CDDCFDD39A78B2BDE42C0EF /* Build configuration list for PBXProject "LaserOverdrive" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F624EE68C477247FF02AFD21;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1E64EE7DF70608524588A49E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F5DAA73F261D69C88A4274D4 /* LaserOverdrive */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3C37484474BF5A812706BD13 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92BD43F66587169BBE08576B /* afterburn.m4a in Resources */,
+				3AA13D1B1088D34551CB973B /* chart.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AFC1FAAB6A5B4172662EF42D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C7BE6774C0547555D5FA370 /* Chart.swift in Sources */,
+				CFC698F374B9C439657DA103 /* GameInputStream.swift in Sources */,
+				05D96D202048D40A73BA99CC /* GameModel.swift in Sources */,
+				529C678392BFAFA1A8DFC640 /* HighwayView.swift in Sources */,
+				A75F971BA67D7B68327C99C5 /* LaserOverdriveApp.swift in Sources */,
+				6B1DAD0496BB0288F6C6D9D6 /* SoundEngine.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		708F1DC50D4F7112466F704B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.arcade.laseroverdrive;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		88684CE35B2A35E8BF3B2F4D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BEB85B2CC8B6D5B5A815DF7A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FE88DE8529B1EEE0D11E8E47 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.arcade.laseroverdrive;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2C566A7070BFCA46E3D0ECFF /* Build configuration list for PBXNativeTarget "LaserOverdrive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE88DE8529B1EEE0D11E8E47 /* Debug */,
+				708F1DC50D4F7112466F704B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3CDDCFDD39A78B2BDE42C0EF /* Build configuration list for PBXProject "LaserOverdrive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				88684CE35B2A35E8BF3B2F4D /* Debug */,
+				BEB85B2CC8B6D5B5A815DF7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EC64C762D2EDE8619F04354B /* Project object */;
+}
