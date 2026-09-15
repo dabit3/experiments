@@ -175,7 +175,7 @@ function Properties({
     />
   );
 }
-function PropertyForm({
+export function PropertyForm({
   selection,
   item,
   project,
@@ -198,7 +198,6 @@ function PropertyForm({
     value: number,
     min: number,
     max: number,
-    step = 0.1,
   ) => (
     <label>
       {label}
@@ -209,7 +208,7 @@ function PropertyForm({
           value={Number.isNaN(value) ? "" : value}
           min={min}
           max={max}
-          step={step}
+          step="any"
           required
           onChange={(e) => update(key, e.target.valueAsNumber)}
         />
@@ -322,7 +321,6 @@ function PropertyForm({
               (draft as Wall).thickness,
               0.08,
               0.6,
-              0.01,
             )}
             {numeric("Wall height", "height", (draft as Wall).height, 2, 6)}
           </div>
@@ -374,7 +372,6 @@ function PropertyForm({
             (draft as Furniture).rotation,
             -360,
             360,
-            15,
           )}
         </>
       )}
