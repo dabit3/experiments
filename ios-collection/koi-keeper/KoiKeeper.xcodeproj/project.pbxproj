@@ -1,0 +1,428 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03FD5E84678D04F3DEB73355 /* PondArt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24F25E37D09FD46C7510ED6D /* PondArt.swift */; };
+		23BD6D15E8616B30C5CC200C /* PondModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E772A7EDD3DA8623467F78C9 /* PondModel.swift */; };
+		63778F5A1AB5EB1633F95D7D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B18AB9DFAF525A40F0A0CCD /* Assets.xcassets */; };
+		B891762CAB2540F107C9A414 /* PondEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F6F113C1216DC5F11A87DF /* PondEngine.swift */; };
+		C190B3711A8EC648CB0EF046 /* PondModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25223D782B382E1A3FDAF29A /* PondModelTests.swift */; };
+		CB74F706EC4922194407E6E6 /* KoiKeeperApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2432C0C281DFD77DFC39D5F9 /* KoiKeeperApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B40487E0F95DC990670AB780 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1BBB2BD59D6A3ACE392A2346 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 200DA80B4CD93A0B335A306B;
+			remoteInfo = KoiKeeper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0B18AB9DFAF525A40F0A0CCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2432C0C281DFD77DFC39D5F9 /* KoiKeeperApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KoiKeeperApp.swift; sourceTree = "<group>"; };
+		24F25E37D09FD46C7510ED6D /* PondArt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PondArt.swift; sourceTree = "<group>"; };
+		25223D782B382E1A3FDAF29A /* PondModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PondModelTests.swift; sourceTree = "<group>"; };
+		69C8CB8CAD348A223E503CF5 /* KoiKeeper.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = KoiKeeper.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7BEB8FDDCF5D39C950E7B9E3 /* KoiKeeperTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = KoiKeeperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		97F6F113C1216DC5F11A87DF /* PondEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PondEngine.swift; sourceTree = "<group>"; };
+		E772A7EDD3DA8623467F78C9 /* PondModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PondModel.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1A06741F40A204C46B4AC13E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				0B18AB9DFAF525A40F0A0CCD /* Assets.xcassets */,
+				2432C0C281DFD77DFC39D5F9 /* KoiKeeperApp.swift */,
+				24F25E37D09FD46C7510ED6D /* PondArt.swift */,
+				97F6F113C1216DC5F11A87DF /* PondEngine.swift */,
+				E772A7EDD3DA8623467F78C9 /* PondModel.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		3EBD9CA458F3FCC6B16EC024 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				69C8CB8CAD348A223E503CF5 /* KoiKeeper.app */,
+				7BEB8FDDCF5D39C950E7B9E3 /* KoiKeeperTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9B3B34A8B00E8678D2137CD4 = {
+			isa = PBXGroup;
+			children = (
+				1A06741F40A204C46B4AC13E /* Sources */,
+				9DEB824FAF7B2F7969637A06 /* Tests */,
+				3EBD9CA458F3FCC6B16EC024 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9DEB824FAF7B2F7969637A06 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				25223D782B382E1A3FDAF29A /* PondModelTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		200DA80B4CD93A0B335A306B /* KoiKeeper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E90B788F5C86050FDDC37F9F /* Build configuration list for PBXNativeTarget "KoiKeeper" */;
+			buildPhases = (
+				D4A6B1837B74A69389E5AF1C /* Sources */,
+				FF2E46946CC8A0A2F599C233 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KoiKeeper;
+			packageProductDependencies = (
+			);
+			productName = KoiKeeper;
+			productReference = 69C8CB8CAD348A223E503CF5 /* KoiKeeper.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4AC0DC046C0D165D72CB7EEB /* KoiKeeperTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B394F95CDAF6D01BB1DD720E /* Build configuration list for PBXNativeTarget "KoiKeeperTests" */;
+			buildPhases = (
+				333A78799091E8E91B010FE7 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7E43881ED58F5429B63FC074 /* PBXTargetDependency */,
+			);
+			name = KoiKeeperTests;
+			packageProductDependencies = (
+			);
+			productName = KoiKeeperTests;
+			productReference = 7BEB8FDDCF5D39C950E7B9E3 /* KoiKeeperTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1BBB2BD59D6A3ACE392A2346 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					200DA80B4CD93A0B335A306B = {
+						ProvisioningStyle = Automatic;
+					};
+					4AC0DC046C0D165D72CB7EEB = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 5E315BD0AD419BCDC712EF77 /* Build configuration list for PBXProject "KoiKeeper" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 9B3B34A8B00E8678D2137CD4;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 3EBD9CA458F3FCC6B16EC024 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				200DA80B4CD93A0B335A306B /* KoiKeeper */,
+				4AC0DC046C0D165D72CB7EEB /* KoiKeeperTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FF2E46946CC8A0A2F599C233 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63778F5A1AB5EB1633F95D7D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		333A78799091E8E91B010FE7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C190B3711A8EC648CB0EF046 /* PondModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4A6B1837B74A69389E5AF1C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB74F706EC4922194407E6E6 /* KoiKeeperApp.swift in Sources */,
+				03FD5E84678D04F3DEB73355 /* PondArt.swift in Sources */,
+				B891762CAB2540F107C9A414 /* PondEngine.swift in Sources */,
+				23BD6D15E8616B30C5CC200C /* PondModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7E43881ED58F5429B63FC074 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 200DA80B4CD93A0B335A306B /* KoiKeeper */;
+			targetProxy = B40487E0F95DC990670AB780 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		080274A5DBAD5955919A15DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		146056C68626EA66F48C430C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = garden.koikeeper.KoiKeeperTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KoiKeeper.app/KoiKeeper";
+			};
+			name = Release;
+		};
+		72177312AC59FC0DE686794E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = garden.koikeeper.KoiKeeperTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KoiKeeper.app/KoiKeeper";
+			};
+			name = Debug;
+		};
+		7683D0461C1971EEF619C313 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Koi Keeper";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = garden.koikeeper.ios;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9B353060232C8D22B0D92D93 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Koi Keeper";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = garden.koikeeper.ios;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B0BDDE23024C484ACC962C23 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5E315BD0AD419BCDC712EF77 /* Build configuration list for PBXProject "KoiKeeper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				080274A5DBAD5955919A15DF /* Debug */,
+				B0BDDE23024C484ACC962C23 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B394F95CDAF6D01BB1DD720E /* Build configuration list for PBXNativeTarget "KoiKeeperTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				72177312AC59FC0DE686794E /* Debug */,
+				146056C68626EA66F48C430C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E90B788F5C86050FDDC37F9F /* Build configuration list for PBXNativeTarget "KoiKeeper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7683D0461C1971EEF619C313 /* Debug */,
+				9B353060232C8D22B0D92D93 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1BBB2BD59D6A3ACE392A2346 /* Project object */;
+}
