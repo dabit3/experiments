@@ -65,8 +65,9 @@ extension Design {
     return NodalLoad(nodeID: id, xKN: node(id)?.loadXKN ?? 0, downKN: node(id)?.loadKN ?? 0)
   }
 
-  public mutating func setLoad(_ load: NodalLoad) {
-    guard let index = loadCases.firstIndex(where: { $0.id == activeCaseID }),
+  public mutating func setLoad(_ load: NodalLoad, caseID: String? = nil) {
+    let targetID = caseID ?? activeCaseID
+    guard let index = loadCases.firstIndex(where: { $0.id == targetID }),
       let nodeIndex = nodes.firstIndex(where: { $0.id == load.nodeID })
     else { return }
     if loadCases[index].loads == nil {

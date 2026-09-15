@@ -134,7 +134,7 @@ struct ContentView: View {
                   active ? Ink.paper : .white.opacity(0.04), in: RoundedRectangle(cornerRadius: 6))
             }.accessibilityLabel("Activate \(loadCase.name)")
           }
-          CaseEditor()
+          CaseEditor().id(studio.design.activeCaseID)
         }
         Rectangle().fill(.white.opacity(0.13)).frame(height: 1)
         VStack(alignment: .leading, spacing: 12) {

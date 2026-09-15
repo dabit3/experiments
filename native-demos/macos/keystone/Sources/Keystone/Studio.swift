@@ -163,9 +163,10 @@ final class Studio: ObservableObject {
     notice = "Active case · \(design.activeCase.name)"
   }
 
-  func updateCase(_ update: (inout LoadCase) -> Void) {
+  func updateCase(id: String? = nil, _ update: (inout LoadCase) -> Void) {
     change { design in
-      guard let i = design.loadCases.firstIndex(where: { $0.id == design.activeCaseID }) else {
+      let targetID = id ?? design.activeCaseID
+      guard let i = design.loadCases.firstIndex(where: { $0.id == targetID }) else {
         return
       }
       update(&design.loadCases[i])
@@ -205,8 +206,8 @@ final class Studio: ObservableObject {
     notice = "Load case removed · Undo is available"
   }
 
-  func setLoad(_ load: NodalLoad) {
-    change { $0.setLoad(load) }
+  func setLoad(_ load: NodalLoad, caseID: String? = nil) {
+    change { $0.setLoad(load, caseID: caseID) }
   }
 
   func setMember(_ id: Int, _ update: (inout Member) -> Void) {

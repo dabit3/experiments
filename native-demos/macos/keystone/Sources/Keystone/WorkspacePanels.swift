@@ -64,6 +64,7 @@ struct NumberEntry: View {
       text = String(format: "%g", new)
       invalid = false
     }
+    .onDisappear { commit() }
   }
 
   private func commit() {
@@ -82,21 +83,22 @@ struct CaseEditor: View {
   @FocusState private var nameFocused: Bool
 
   var body: some View {
+    let caseID = studio.design.activeCaseID
     VStack(alignment: .leading, spacing: 10) {
       TextField("Case name", text: $name).textFieldStyle(.plain)
         .font(.system(size: 11, weight: .medium)).foregroundStyle(Ink.navy)
         .padding(8).background(.white, in: RoundedRectangle(cornerRadius: 4))
         .focused($nameFocused).onSubmit {
-          rename()
+          rename(caseID)
           nameFocused = false
         }
-        .onChange(of: nameFocused) { _, active in if !active { rename() } }
+        .onChange(of: nameFocused) { _, active in if !active { rename(caseID) } }
         .accessibilityLabel("Case name")
       NumberEntry(
         title: "Factor", value: studio.design.activeCase.factor, unit: "×", range: 0.01...10,
         fieldWidth: 60
       ) { value in
-        studio.updateCase { $0.factor = value }
+        studio.updateCase(id: caseID) { $0.factor = value }
       }
       Toggle(
         "Include self-weight",
@@ -109,16 +111,18 @@ struct CaseEditor: View {
         .font(.system(size: 9)).foregroundStyle(Ink.muted).fixedSize(
           horizontal: false, vertical: true)
     }.padding(10).background(Ink.paper, in: RoundedRectangle(cornerRadius: 5))
-      .id(studio.design.activeCaseID)
       .onAppear { name = studio.design.activeCase.name }
       .onChange(of: studio.design.activeCase.name) { _, value in name = value }
+      .onDisappear { rename(caseID) }
   }
 
-  private func rename() {
+  private func rename(_ caseID: String) {
     let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
-    guard trimmed != studio.design.activeCase.name else { return }
-    studio.updateCase { $0.name = trimmed }
-    name = studio.design.activeCase.name
+    guard !trimmed.isEmpty,
+      let original = studio.design.loadCases.first(where: { $0.id == caseID })?.name,
+      trimmed != original
+    else { return }
+    studio.updateCase(id: caseID) { $0.name = trimmed }
   }
 }
 
@@ -218,6 +222,7 @@ struct SelectionInspector: View {
 
   private func nodePanel(_ node: Node) -> some View {
     let load = studio.design.nodalLoad(node.id)
+    let caseID = studio.design.activeCaseID
     return VStack(alignment: .leading, spacing: 13) {
       Eyebrow(text: "JOINT / N\(node.id + 1)")
       Text("N\(node.id + 1)").font(.system(size: 30, design: .serif))
@@ -241,19 +246,21 @@ struct SelectionInspector: View {
         value in
         var next = load
         next.xKN = value
-        studio.setLoad(next)
+        studio.setLoad(next, caseID: caseID)
       }
       NumberEntry(title: "Vertical ↓", value: load.downKN, unit: "kN", range: -10000...10000) {
         value in
         var next = load
         next.downKN = value
-        studio.setLoad(next)
+        studio.setLoad(next, caseID: caseID)
       }
       Text("Negative values act left / upward.\nSelf-weight is added by the solver.")
         .font(.system(size: 9)).foregroundStyle(Ink.muted).lineSpacing(3)
       if load.xKN != 0 || load.downKN != 0 {
-        Button("Clear case load") { studio.setLoad(NodalLoad(nodeID: node.id)) }
-          .font(.system(size: 11)).foregroundStyle(Ink.copper)
+        Button("Clear case load") {
+          studio.setLoad(NodalLoad(nodeID: node.id), caseID: caseID)
+        }
+        .font(.system(size: 11)).foregroundStyle(Ink.copper)
       }
       if let d = studio.result?.displacement[node.id] {
         InfoRow(title: "Δx / Δy", value: String(format: "%.2f / %.2f mm", d.x * 1000, d.y * 1000))
