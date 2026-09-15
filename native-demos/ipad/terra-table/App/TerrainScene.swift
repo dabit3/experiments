@@ -234,7 +234,7 @@ struct TerrainCanvas: UIViewRepresentable {
       cameraNode.look(
         at: SCNVector3(0, 0.5, 0), up: SCNVector3(0, 1, 0),
         localFront: SCNVector3(0, 0, -1))
-      let scale = model.journeyActive ? journey.scale : model.zoom
+      let scale = model.journeyActive && !model.reducedMotion ? journey.scale : model.zoom
       cameraNode.camera?.orthographicScale = Double(7.4 / scale)
     }
 
