@@ -9,6 +9,17 @@ export type BayConfig = {
 };
 
 export type MissionControlConfig = LaunchConfig & {
+  environmentSelector: {
+    width: number;
+    rowHeight: number;
+    labelSize: number;
+    surface: string;
+    border: string;
+    highlight: string;
+    transitionStartRatio: number;
+    transitionFrames: number;
+    labels: {hosted: string; ubuntu: string; macos: string; windows: string};
+  };
   panels: {
     primaryWidth: number;
     displayTop: number;
@@ -55,6 +66,12 @@ const base = structuredClone(defaultLaunchConfig);
 
 export const config: MissionControlConfig = {
   ...base,
+  environmentSelector: {
+    width: 840, rowHeight: 94, labelSize: 42,
+    surface: '#ffffff', border: 'rgba(25,25,25,0.08)', highlight: '#edeceb',
+    transitionStartRatio: 0.22, transitionFrames: 22,
+    labels: {hosted: 'Hosted', ubuntu: 'Ubuntu', macos: 'macOS', windows: 'Windows'},
+  },
   brand: {
     ...base.brand,
     typography: {
@@ -102,7 +119,7 @@ export const config: MissionControlConfig = {
     closingNote: 'Devin on Mac',
     sceneSources: {
       opening: 'FEATURE INTRODUCTION',
-      environment: 'HOSTED ENVIRONMENT / STILL',
+      environment: 'ENVIRONMENT SELECTION / ANIMATION',
       agent: 'AGENT SELECTION / RECORDING',
       iphone: 'IPHONE SIMULATOR / STILLS',
       webQa: 'WEB QA / RECORDING',
@@ -113,7 +130,7 @@ export const config: MissionControlConfig = {
       {
         number: '01', title: 'Session setup',
         detail: 'Hosted Mac.\nYour choice of agent.',
-        sourceNote: 'Environment + agent menu',
+        sourceNote: 'Selector + agent menu',
         scenes: ['environment', 'agent'],
       },
       {

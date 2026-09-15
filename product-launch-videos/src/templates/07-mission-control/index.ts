@@ -29,6 +29,14 @@ export const template = defineTemplate({
   defaultConfig: config,
   controls: [
     ...motionControls,
+    {path: 'environmentSelector.transitionStartRatio', label: 'Environment switch start',
+      type: 'number', min: 0, max: 0.8, step: 0.01,
+      description: 'Fraction of the environment scene to hold Ubuntu before switching to macOS.'},
+    {path: 'environmentSelector.transitionFrames', label: 'Environment switch duration',
+      type: 'number', min: 0, max: 60, step: 1,
+      description: 'Frames for the highlight and checkmark to move together; zero makes a cut.'},
+    {path: 'environmentSelector.highlight', label: 'Environment selection fill',
+      type: 'color', description: 'Fill shared by the Ubuntu and macOS selection indicator.'},
     ...Object.keys(config.panels).map((key): ConfigControl => ({
       path: `panels.${key}`, label: key, type: 'number',
       description: 'Display geometry in 1920 × 1080 composition pixels.',

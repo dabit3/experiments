@@ -13,6 +13,8 @@ edited.motion.apertureFrames = 12;
 edited.motion.baySettleFrames = 10;
 edited.motion.bayStaggerFrames = 2;
 edited.motion.consolidationFrames = 12;
+edited.environmentSelector.transitionStartRatio = 0.1;
+edited.environmentSelector.transitionFrames = 8;
 const directory = new URL('../../../out/07-mission-control/editability/', import.meta.url);
 await mkdir(directory, {recursive: true});
 const output = new URL('props.json', directory);

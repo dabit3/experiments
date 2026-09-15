@@ -8,7 +8,9 @@ execution status. The bays do not imply concurrent agents or app continuity.
 The opening aperture settles into the display structure. Source changes retain
 the same viewport and caption location; a short selection rule points from the
 relevant bay to the primary display. Demo typography and media geometry remain
-stationary. The iPad result holds for six seconds, then the primary display
+stationary. The environment selector is a user-requested recreation: its highlight
+and checkmark move as one element from Ubuntu to macOS, then hold on macOS.
+The iPad result holds for six seconds, then the primary display
 consolidates into a full-width closing hero.
 
 ## Run
@@ -25,8 +27,8 @@ npm run typecheck
 npm test
 npm run build
 npm run render -- --template 07-mission-control
-npm run still -- --template 07-mission-control --frame 450
-npm run still -- --template 07-mission-control --frames 0,18,90,150,270,330,450,540,675,750,960,1062,1140
+npm run still -- --template 07-mission-control --frame 195
+npm run still -- --template 07-mission-control --frames 0,18,90,135,164,195,270,330,450,540,675,750,960,1062,1140
 npm run contact-sheet -- out/07-mission-control
 ffprobe -v error -select_streams v:0 \
   -show_entries stream=width,height,r_frame_rate,nb_frames:format=duration \
@@ -47,6 +49,13 @@ shared registry changes are needed. Outputs and private inputs remain ignored.
 - `media`: originals, source-pixel crops, contain/cover fit, crop anchors and
   video source-start seconds. Video playback ranges are source start through
   source start + scene duration. Shared validation rejects source overruns.
+  `media.environment` remains in the shared contract as source reference; the
+  environment scene now renders `environmentSelector` instead of the screenshot.
+- `environmentSelector`: row labels, width, row height, type size, panel colors,
+  selection fill and transition timing. `transitionStartRatio` controls the
+  initial Ubuntu hold within the scene; `transitionFrames` controls the move.
+  The move is capped at the remaining scene length. Set it to zero for a cut.
+  The selected header updates as the indicator crosses between the rows.
 - `brand`: colors and font family, heading/body size, tracking and line height;
   original bundled fonts block render until loaded. Use the supplied white
   artwork on the default dark presentation.
@@ -90,8 +99,11 @@ before rendering defaults again.
 
 `attribution.json` records the exact default edit, crops, source trims, fonts and
 logo. See the shared `MEDIA-ATTRIBUTION.md` for original provenance and hashes.
-The environment crop emphasizes the actual hosted Mac menu. The agent crop
-retains the original composer and menu. Both recordings play at 1×; neither
+The environment selector uses the supplied menu as a visual reference, with
+recreated React/SVG text, icons and selection animation authorized by the user.
+It is identified as an animation in the main-display header and is not a capture
+of an actual interaction. The original screenshot remains untouched.
+The agent crop retains the original composer and menu. Both recordings play at 1×; neither
 recording depicts an iOS Simulator. All three native-app examples are genuine
 stills from separate sessions. The native screenshots are uncropped, preserving
 failed/untested counts and reports. Web QA carries the persistent shared label.
@@ -103,7 +115,7 @@ Simulator state is used.
 
 ## Validation
 
-Verified on 2026-09-15:
+Selector revision verified on 2026-09-15:
 
 - `assets:check`: all 45 supplied originals match the foundation manifest.
 - `lint`, `typecheck`, `build` and template discovery pass. The shared suite
@@ -113,6 +125,12 @@ Verified on 2026-09-15:
 - Edited diagnostic: 1920 × 1080, 30/1 fps, 480 frames, exactly 16 seconds.
   The changed environment caption was rendered and visually checked. Agent
   source offset is 1 second and web QA offset is 3 seconds in that diagnostic.
+  The selector uses an 8-frame move starting at 10% of its shortened scene.
+- Checked frames 135, 164 and 195 for initial Ubuntu selection, the moving
+  highlight/checkmark, and final macOS selection. Both indicators share the same
+  transform. The default switch runs from 5.10 to 5.83 seconds and holds macOS
+  through the end of the environment scene. Verified the final selection again
+  in the encoded MP4. The 5-second excerpt contains all 150 environment frames.
 - Inspected representative opening, selection, iPhone, web QA, iPad and closing
   frames, plus the opening/closing motion and source boundaries. The initial
   reference-bay text wrap was corrected before the final render.
@@ -120,17 +138,18 @@ Verified on 2026-09-15:
   fixed demo typography were checked in full-size frames. Afterhours Maze
   retains “8 passed / 0 failed / 1 untested,” including in the encoded MP4.
 
-The delivered poster is full-size frame 450. The compact contact sheet uses
-eight frames extracted from the actual encoded MP4 at 3, 5, 11, 15, 18, 25, 32
-and 38 seconds, in reading order. Reproduce that sheet after the main render:
+The updated poster is full-size frame 195 with macOS highlighted and checked.
+The compact contact sheet uses eight frames extracted from the actual encoded
+MP4 at 3, 4.5, 6.5, 11, 15, 25, 32 and 38 seconds, in reading order. This includes
+the Ubuntu and macOS states. Reproduce that sheet after the main render:
 
 ```sh
-mkdir -p out/07-mission-control/contact-frames
-ffmpeg -v error -i out/07-mission-control/07-mission-control.mp4 \
-  -vf "select='eq(n,90)+eq(n,150)+eq(n,330)+eq(n,450)+eq(n,540)+eq(n,750)+eq(n,960)+eq(n,1140)'" \
-  -vsync 0 -frame_pts 1 out/07-mission-control/contact-frames/frame-%06d.png
-npm run contact-sheet -- out/07-mission-control/contact-frames
-cp out/07-mission-control/contact-frames/contact-sheet.png \
+mkdir -p out/07-mission-control/selector-contact-frames
+ffmpeg -y -v error -i out/07-mission-control/07-mission-control.mp4 \
+  -vf "select='eq(n,90)+eq(n,135)+eq(n,195)+eq(n,330)+eq(n,450)+eq(n,750)+eq(n,960)+eq(n,1140)'" \
+  -vsync 0 -frame_pts 1 out/07-mission-control/selector-contact-frames/frame-%06d.png
+npm run contact-sheet -- out/07-mission-control/selector-contact-frames
+cp out/07-mission-control/selector-contact-frames/contact-sheet.png \
   out/07-mission-control/contact-sheet.png
 ```
 

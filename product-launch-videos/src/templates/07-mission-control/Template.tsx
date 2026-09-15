@@ -5,6 +5,7 @@ import {
   type SceneId, type SceneTiming,
 } from '../../shared';
 import type {MissionControlConfig} from './config';
+import {EnvironmentSelector} from './EnvironmentSelector';
 
 const mono = (config: MissionControlConfig): CSSProperties => ({
   fontFamily: config.brand.typography.monoFamily,
@@ -118,8 +119,11 @@ const Product = ({
   config: MissionControlConfig; scene: SceneTiming; width: number; height: number;
 }) => {
   const frame = useCurrentFrame();
-  const selection = scene.id === 'environment' ? config.media.environment
-    : scene.id === 'ipad' ? config.media.ipad
+  if (scene.id === 'environment') {
+    return <EnvironmentSelector config={config} width={width} height={height}
+      durationInFrames={scene.durationInFrames} />;
+  }
+  const selection = scene.id === 'ipad' ? config.media.ipad
     : config.media.iphone[frame < Math.round(scene.durationInFrames * config.motion.iphoneSplitRatio) ? 0 : 1];
   if (scene.id === 'agent' || scene.id === 'webQa') {
     return <SourceVideo
