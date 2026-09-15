@@ -54,7 +54,10 @@ export const StageScene: React.FC<{
   const SLIDE = 240;
   const shiftIn = scene.enter === "slide" ? (1 - tIn) * SLIDE : 0;
   const shiftOut = exit === "slide" ? -tOut * SLIDE : 0;
-  const planeOpacity = scene.enter === "slide" ? Math.min(tIn, exit === "slide" ? 1 - tOut : 1) : exit === "slide" ? 1 - tOut : 1;
+  // Sliding sections never drop to zero at the cut, so consecutive stages read as one continuous pan.
+  const fadeIn = scene.enter === "slide" ? 0.35 + 0.65 * clamp(frame, 0, 10) : 1;
+  const fadeOut = exit === "slide" ? 1 - 0.65 * clamp(frame, scene.durationInFrames - 10, scene.durationInFrames - 1) : 1;
+  const planeOpacity = Math.min(fadeIn, fadeOut);
 
   const railOpacity = scene.enter === "forward" ? clamp(frame, timing.move - 4, timing.move + 10) : 1;
   const gridOpacity = scene.enter === "forward" ? 1 - tIn : exit === "back" ? tOut : 0;
@@ -74,8 +77,8 @@ export const StageScene: React.FC<{
     <AbsoluteFill style={{ backgroundColor: brand.paper }}>
       <Grid brand={brand} opacity={gridOpacity} />
       <SheetMarks brand={brand} opacity={1 - railOpacity} />
-      <div style={{ position: "absolute", left: MARGIN, top: MARGIN - 2, opacity: 1 - railOpacity }}>
-        <Logo brand={brand} height={30} />
+      <div style={{ position: "absolute", left: MARGIN, top: MARGIN - 10, opacity: 1 - railOpacity }}>
+        <Logo brand={brand} height={48} />
       </div>
       <StageRail brand={brand} content={content} current={scene.stage} opacity={railOpacity * chromeOut} />
 
@@ -117,7 +120,7 @@ export const StageScene: React.FC<{
         const textT = clamp(frame, a.startFrame, a.startFrame + timing.enter + 4);
         const leaderT = clamp(frame, a.startFrame + 6, a.startFrame + 6 + timing.leader, easeInOut) * (settled ? 1 : 0);
         const fromX = a.side === "right" ? column.x - 20 : column.x + column.w + 20;
-        const from = { x: fromX, y: boxTop + 44 };
+        const from = { x: fromX, y: boxTop + 52 };
         const captionText = content.captions[a.caption] ?? "";
         const figure = `Fig. ${String(k + 1).padStart(2, "0")} · ${stage.label}`;
         return (
@@ -133,11 +136,11 @@ export const StageScene: React.FC<{
                 transform: `translateY(${(1 - textT) * 10}px)`,
               }}
             >
-              <Mono brand={brand} size={12} color={brand.inkSubtle}>
+              <Mono brand={brand} size={15} color={brand.inkSubtle}>
                 {figure}
               </Mono>
-              <div style={{ width: 56, height: 1, background: brand.ink, margin: "10px 0 14px" }} />
-              <Body brand={brand} size={30}>
+              <div style={{ width: 64, height: 1, background: brand.ink, margin: "12px 0 16px" }} />
+              <Body brand={brand} size={38}>
                 {captionText}
               </Body>
             </div>

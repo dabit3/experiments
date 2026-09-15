@@ -51,20 +51,20 @@ export const OverviewScene: React.FC<{ props: LaunchProps; scene: OverviewSceneP
     <AbsoluteFill style={{ backgroundColor: brand.paper }}>
       <Grid brand={brand} opacity={1} />
       <SheetMarks brand={brand} opacity={1} />
-      <div style={{ position: "absolute", left: MARGIN, top: MARGIN - 2 }}>
-        <Logo brand={brand} height={30} />
+      <div style={{ position: "absolute", left: MARGIN, top: MARGIN - 10 }}>
+        <Logo brand={brand} height={48} />
       </div>
 
-      <div style={{ position: "absolute", left: MARGIN, top: 196, opacity: headingT }}>
+      <div style={{ position: "absolute", left: MARGIN, top: 190, opacity: headingT }}>
         <Eyebrow brand={brand}>Section A–A · {content.featureName}</Eyebrow>
         <div
           style={{
             marginTop: 12,
             fontFamily: brand.fontFamily,
             fontWeight: 500,
-            fontSize: 40,
-            lineHeight: "46px",
-            letterSpacing: -1.2,
+            fontSize: 52,
+            lineHeight: "58px",
+            letterSpacing: -1.6,
             color: brand.ink,
           }}
         >
@@ -123,10 +123,10 @@ export const OverviewScene: React.FC<{ props: LaunchProps; scene: OverviewSceneP
                 transform: `translateY(${(1 - labelsT) * 8}px)`,
               }}
             >
-              <Mono brand={brand} size={12} color={brand.inkSubtle}>
+              <Mono brand={brand} size={15} color={brand.inkSubtle}>
                 {String(i + 1).padStart(2, "0")}
               </Mono>
-              <Body brand={brand} size={24} style={{ marginTop: 4, fontWeight: 500 }}>
+              <Body brand={brand} size={30} style={{ marginTop: 4, fontWeight: 500 }}>
                 {stage.label}
               </Body>
             </div>
@@ -144,7 +144,7 @@ export const OverviewScene: React.FC<{ props: LaunchProps; scene: OverviewSceneP
       />
 
       <div style={{ position: "absolute", left: MARGIN, bottom: MARGIN - 40, opacity: tIn }}>
-        <Mono brand={brand} size={12}>
+        <Mono brand={brand} size={15}>
           Planes: product UI, 1:1 · Marks: explanatory
         </Mono>
       </div>

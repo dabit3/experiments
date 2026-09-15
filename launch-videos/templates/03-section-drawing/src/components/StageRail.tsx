@@ -37,15 +37,15 @@ export const StageRail: React.FC<{
         return (
           <div key={stage.id} style={{ position: "absolute", left: box.x, top: MARGIN + 6, width: box.w }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: 10 }}>
-              <Mono brand={brand} size={12} color={isCurrent ? brand.accent : brand.inkSubtle}>
+              <Mono brand={brand} size={15} color={isCurrent ? brand.accent : brand.inkSubtle}>
                 {String(i + 1).padStart(2, "0")}
               </Mono>
               <div
                 style={{
                   fontFamily: brand.fontFamily,
-                  fontSize: 18,
-                  lineHeight: "24px",
-                  letterSpacing: -0.2,
+                  fontSize: 24,
+                  lineHeight: "30px",
+                  letterSpacing: -0.3,
                   fontWeight: isCurrent ? 500 : 400,
                   color: isCurrent ? brand.ink : done ? brand.inkMuted : brand.inkSubtle,
                 }}

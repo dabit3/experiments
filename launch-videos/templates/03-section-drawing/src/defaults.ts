@@ -54,8 +54,8 @@ export const defaultProps: LaunchProps = {
       { id: "request", label: "Request", media: "pick" },
       { id: "build", label: "Build", media: "build" },
       { id: "run", label: "Run & test", media: "simulator" },
-      { id: "verify", label: "Verify", media: "verifyPhone" },
-      { id: "pr", label: "PR", media: "result" },
+      { id: "verify", label: "Verify", media: "verify" },
+      { id: "pr", label: "PR", media: "pr" },
     ],
     connections: [
       [0, 1],
@@ -85,20 +85,13 @@ export const defaultProps: LaunchProps = {
       height: 1622,
       crop: { x: 0.18, y: 0.27, w: 0.64, h: 0.56 },
     },
-    // Session "Build Native Abliteration iOS App": Wisp in the Simulator + its PR.
+    // Session "Build Native Abliteration iOS App" (chat pane): Wisp Simulator recording, 12 passed.
     build: {
       src: "screenshots/devin-web-9.png",
       kind: "image",
       width: 2988,
       height: 1628,
-    },
-    // Devin working through a task: worklog of steps on the left, Desktop tab on the right.
-    work: {
-      src: "recordings/devin-working-4.mp4",
-      kind: "video",
-      width: 1918,
-      height: 1080,
-      startFrom: 0,
+      crop: { x: 0, y: 0, w: 0.555, h: 1 },
     },
     // iPhone Simulator on a Mac desktop (Android emulator on the right cropped out).
     simulator: {
@@ -109,36 +102,28 @@ export const defaultProps: LaunchProps = {
       startFrom: 45,
       crop: { x: 0.055, y: 0.105, w: 0.315, h: 0.77 },
     },
-    // Testing recording: dark iPhone app, 5 passed / 0 failed.
-    verifyPhone: {
-      src: "screenshots/devin-web-18.png",
+    // Testing recording "Wisp Simulator Feature Checks": iPhone Simulator + "It should ..." checklist.
+    verify: {
+      src: "screenshots/devin-web-10.png",
       kind: "image",
-      width: 2978,
-      height: 1626,
-      crop: { x: 0.215, y: 0.12, w: 0.235, h: 0.77 },
+      width: 2990,
+      height: 1624,
+      crop: { x: 0.03, y: 0.085, w: 0.95, h: 0.83 },
     },
-    // Testing recording: iPad app, 6 passed / 0 failed.
-    verifyPad: {
-      src: "screenshots/devin-web-19.png",
+    // Same session (PR pane): "Add Wisp: native iOS chat client", Ready to merge.
+    pr: {
+      src: "screenshots/devin-web-9.png",
       kind: "image",
-      width: 2982,
-      height: 1626,
-      crop: { x: 0.06, y: 0.14, w: 0.54, h: 0.74 },
+      width: 2988,
+      height: 1628,
+      crop: { x: 0.555, y: 0, w: 0.445, h: 1 },
     },
-    // Testing recording pass list (right column of the iPad recording).
-    verifyList: {
-      src: "screenshots/devin-web-19.png",
-      kind: "image",
-      width: 2982,
-      height: 1626,
-      crop: { x: 0.655, y: 0.09, w: 0.345, h: 0.6 },
-    },
-    // Session with the PR "Ready to merge" and embedded Simulator demo videos.
+    // Completed result: the whole session — Wisp running in the Simulator beside its PR.
     result: {
-      src: "screenshots/devin-web-12.png",
+      src: "screenshots/devin-web-9.png",
       kind: "image",
-      width: 2978,
-      height: 1622,
+      width: 2988,
+      height: 1628,
     },
   },
   scenes: [
@@ -170,15 +155,15 @@ export const defaultProps: LaunchProps = {
       durationInFrames: 180,
       stage: 1,
       layout: "wide",
-      media: ["work"],
+      media: ["build"],
       enter: "slide",
       annotations: [
         {
-          media: "work",
-          anchor: { x: 0.135, y: 0.3 },
+          media: "build",
+          anchor: { x: 0.235, y: 0.245 },
           caption: 1,
           side: "left",
-          y: 0.4,
+          y: 0.3,
           startFrame: 30,
         },
       ],
@@ -207,16 +192,16 @@ export const defaultProps: LaunchProps = {
       id: "verify",
       durationInFrames: 180,
       stage: 3,
-      layout: "split",
-      media: ["verifyPhone", "verifyPad"],
+      layout: "wide",
+      media: ["verify"],
       enter: "slide",
       annotations: [
         {
-          media: "verifyPad",
-          anchor: { x: 0.33, y: 0.48 },
-          caption: 5,
+          media: "verify",
+          anchor: { x: 0.72, y: 0.39 },
+          caption: 4,
           side: "right",
-          y: 0.42,
+          y: 0.36,
           startFrame: 30,
         },
       ],
@@ -227,15 +212,15 @@ export const defaultProps: LaunchProps = {
       durationInFrames: 150,
       stage: 4,
       layout: "wide",
-      media: ["result"],
+      media: ["pr"],
       enter: "slide",
       annotations: [
         {
-          media: "result",
-          anchor: { x: 0.185, y: 0.26 },
+          media: "pr",
+          anchor: { x: 0.625, y: 0.385 },
           caption: 6,
           side: "left",
-          y: 0.3,
+          y: 0.34,
           startFrame: 26,
         },
       ],

@@ -10,9 +10,9 @@ export const Eyebrow: React.FC<{ brand: Brand; children: React.ReactNode; style?
   <div
     style={{
       fontFamily: brand.fontFamily,
-      fontSize: 14,
-      lineHeight: "20px",
-      letterSpacing: 0.4,
+      fontSize: 20,
+      lineHeight: "26px",
+      letterSpacing: 0.5,
       textTransform: "uppercase",
       fontWeight: 500,
       color: brand.inkMuted,
@@ -61,7 +61,7 @@ export const Body: React.FC<{
   size?: number;
   color?: string;
   style?: React.CSSProperties;
-}> = ({ brand, children, size = 27, color, style }) => (
+}> = ({ brand, children, size = 32, color, style }) => (
   <div
     style={{
       fontFamily: brand.fontFamily,
@@ -83,7 +83,7 @@ export const Mono: React.FC<{
   size?: number;
   color?: string;
   style?: React.CSSProperties;
-}> = ({ brand, children, size = 12, color, style }) => (
+}> = ({ brand, children, size = 15, color, style }) => (
   <div
     style={{
       fontFamily: brand.monoFontFamily,
@@ -101,7 +101,7 @@ export const Mono: React.FC<{
 
 export const Logo: React.FC<{ brand: Brand; height?: number; style?: React.CSSProperties }> = ({
   brand,
-  height = 32,
+  height = 48,
   style,
 }) => (
   <Img

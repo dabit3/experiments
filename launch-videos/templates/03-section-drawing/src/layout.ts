@@ -4,8 +4,8 @@ import type { MediaSlot } from "./schema";
 export const WIDTH = 1920;
 export const HEIGHT = 1080;
 export const MARGIN = 96;
-export const RAIL_HEIGHT = 44;
-export const CAPTION_COLUMN = 440;
+export const RAIL_HEIGHT = 54;
+export const CAPTION_COLUMN = 540;
 export const COLUMN_GAP = 56;
 
 export type Rect = { x: number; y: number; w: number; h: number };
@@ -88,7 +88,7 @@ export const anchorPoint = (slot: MediaSlot, rect: Rect, anchor: { x: number; y:
   };
 };
 
-export const OVERVIEW_ROW_Y = 372;
+export const OVERVIEW_ROW_Y = 392;
 export const OVERVIEW_ROW_H = 250;
 
 /**

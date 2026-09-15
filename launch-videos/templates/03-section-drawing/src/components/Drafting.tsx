@@ -64,11 +64,11 @@ export const TitleBlock: React.FC<{
     return null;
   }
   const cell: React.CSSProperties = {
-    padding: "6px 12px",
+    padding: "8px 14px",
     borderLeft: `1px solid ${brand.line}`,
     fontFamily: brand.monoFontFamily,
-    fontSize: 12,
-    lineHeight: "16px",
+    fontSize: 15,
+    lineHeight: "20px",
     letterSpacing: 0.28,
     textTransform: "uppercase",
     color: brand.inkMuted,
@@ -130,10 +130,10 @@ export const DimensionLine: React.FC<{
             position: "absolute",
             left: x1,
             width: x2 - x1,
-            top: y - 22,
+            top: y - 26,
             textAlign: "center",
             fontFamily: brand.monoFontFamily,
-            fontSize: 12,
+            fontSize: 15,
             letterSpacing: 0.28,
             textTransform: "uppercase",
             color: stroke,

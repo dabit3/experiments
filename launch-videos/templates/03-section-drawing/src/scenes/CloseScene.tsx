@@ -15,8 +15,10 @@ export const CloseScene: React.FC<{ props: LaunchProps; scene: CloseSceneProps }
   const { brand, content, media, timing } = props;
   const n = content.stages.length;
   const resultSlot = media[scene.result];
+  const matchIndex = content.stages.findIndex((s) => s.media === scene.result);
+  const resultStage = matchIndex === -1 ? n - 1 : matchIndex;
 
-  const target = fitRect(slotAspect(resultSlot), { x: (WIDTH - 1040) / 2, y: 150, w: 1040, h: 560 });
+  const target = fitRect(slotAspect(resultSlot), { x: (WIDTH - 1080) / 2, y: 140, w: 1080, h: 540 });
   const tMerge = clamp(frame, 4, 4 + timing.move + 14, easeInOut);
   const tLabel = clamp(frame, timing.move + 18, timing.move + 18 + timing.enter);
   const tOutro = clamp(frame, timing.move + 30, timing.move + 30 + timing.move, easeInOut);
@@ -26,15 +28,15 @@ export const CloseScene: React.FC<{ props: LaunchProps; scene: CloseSceneProps }
     <AbsoluteFill style={{ backgroundColor: brand.paper }}>
       <Grid brand={brand} opacity={1} />
       <SheetMarks brand={brand} opacity={1} />
-      <div style={{ position: "absolute", left: MARGIN, top: MARGIN - 2 }}>
-        <Logo brand={brand} height={30} />
+      <div style={{ position: "absolute", left: MARGIN, top: MARGIN - 10 }}>
+        <Logo brand={brand} height={48} />
       </div>
 
       {content.stages.map((stage, i) => {
         const isResult = stage.media === scene.result;
         const from = overviewPlaneRect(media[stage.media], i, n);
         const rect = lerpRect(from, target, tMerge);
-        const fade = isResult ? 1 : 1 - clamp(tMerge, 0.55, 1);
+        const fade = isResult ? 0 : 1 - clamp(tMerge, 0.55, 1);
         if (fade <= 0) {
           return null;
         }
@@ -46,10 +48,16 @@ export const CloseScene: React.FC<{ props: LaunchProps; scene: CloseSceneProps }
             brand={brand}
             radius={6 + 6 * tMerge}
             opacity={fade}
-            shadow={isResult || tMerge < 0.5}
+            shadow={tMerge < 0.5}
           />
         );
       })}
+      <Plane
+        slot={resultSlot}
+        rect={lerpRect(overviewPlaneRect(resultSlot, resultStage, n), target, tMerge)}
+        brand={brand}
+        radius={6 + 6 * tMerge}
+      />
 
       <DimensionLine
         brand={brand}
@@ -62,7 +70,7 @@ export const CloseScene: React.FC<{ props: LaunchProps; scene: CloseSceneProps }
 
       <div style={{ position: "absolute", left: 0, top: target.y + target.h + 84, width: WIDTH, textAlign: "center" }}>
         <MaskReveal progress={tOutro}>
-          <Headline brand={brand} text={content.outroLine} accent={content.outroAccent} size={60} />
+          <Headline brand={brand} text={content.outroLine} accent={content.outroAccent} size={76} />
         </MaskReveal>
       </div>
 
@@ -70,7 +78,7 @@ export const CloseScene: React.FC<{ props: LaunchProps; scene: CloseSceneProps }
         style={{
           position: "absolute",
           left: 0,
-          top: target.y + target.h + 176,
+          top: target.y + target.h + 200,
           width: WIDTH,
           display: "flex",
           justifyContent: "center",
@@ -85,18 +93,18 @@ export const CloseScene: React.FC<{ props: LaunchProps; scene: CloseSceneProps }
             background: brand.ink,
             color: brand.white,
             borderRadius: 2,
-            padding: "0 20px",
-            height: 48,
+            padding: "0 26px",
+            height: 58,
             display: "flex",
             alignItems: "center",
             fontFamily: brand.fontFamily,
-            fontSize: 22,
+            fontSize: 27,
             letterSpacing: -0.3,
           }}
         >
           {content.cta.label}
         </div>
-        <Mono brand={brand} size={16} color={brand.inkMuted} style={{ textTransform: "none" }}>
+        <Mono brand={brand} size={20} color={brand.inkMuted} style={{ textTransform: "none" }}>
           {content.cta.url}
         </Mono>
       </div>
