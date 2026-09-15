@@ -1,0 +1,10 @@
+.devin/
+build/
+node_modules/
+.DS_Store
+evidence/
+Assets/*-green.png
+Assets/portraits.png
+*.log
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/

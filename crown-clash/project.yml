@@ -1,0 +1,62 @@
+name: CrownClash
+options:
+  bundleIdPrefix: com.dabit
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    CODE_SIGNING_ALLOWED: NO
+targets:
+  CrownClash:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      - path: Assets
+        buildPhase: resources
+        excludes:
+          - "*-green.png"
+          - "portraits.png"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.dabit.crownclash
+        PRODUCT_NAME: CrownClash
+        GENERATE_INFOPLIST_FILE: NO
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Crown Clash
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSLocalNetworkUsageDescription: Connect to your friend's Crown Clash tournament server on the local network.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+        CFBundleURLTypes:
+          - CFBundleURLName: CrownClash
+            CFBundleURLSchemes:
+              - crownclash
+  CrownClashTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: CrownClash
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  CrownClash:
+    build:
+      targets:
+        CrownClash: all
+    test:
+      targets:
+        - CrownClashTests
