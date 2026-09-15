@@ -1,0 +1,187 @@
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url('./fonts/Inter-var.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('./fonts/BarlowCondensed-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('./fonts/BarlowCondensed-700.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('./fonts/BarlowCondensed-800.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('./fonts/JetBrainsMono-500.woff2') format('woff2');
+}
+
+:root {
+  --bg: #071b29;
+  --bg-2: #0a1120;
+  --panel: #102d3e;
+  --panel-2: #173c4f;
+  --panel-3: #234e60;
+  --line: rgba(146, 172, 214, 0.14);
+  --line-strong: rgba(146, 172, 214, 0.3);
+  --text: #f2f4e6;
+  --text-dim: #a1b9c5;
+  --text-faint: #789ba9;
+  --water: #103d4f;
+  --water-2: #144f62;
+  --water-hover: #207c89;
+  --ship: #b6c3d3;
+  --ship-dark: #6b7d94;
+  --hit: #ff5436;
+  --hit-dark: #a8281a;
+  --miss: #6fc6ff;
+  --sunk: #5f1a12;
+  --heat-rgb: 255, 170, 40;
+  --accent: #ffcd63;
+  --accent-2: #ffe6a7;
+  --accent-deep: #9a6410;
+  --accent-ink: #1a1100;
+  --teal: #65e6d7;
+  --teal-rgb: 101, 230, 215;
+  --good: #3ddc97;
+  --bad: #ff6b7a;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --cell: clamp(28px, calc((100vw - 584px) / 20), 48px);
+  --gap: 2px;
+  --sans: 'Inter', 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
+  --display: 'Barlow Condensed', 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --mono:
+    'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  --shadow-lg:
+    0 30px 60px -30px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(0, 0, 0, 0.4);
+  --gold-gradient: linear-gradient(
+    180deg,
+    #ffe4a1 0%,
+    #ffca5d 75%,
+    #f2b348 100%
+  );
+
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text);
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: 'cv11', 'ss01';
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  position: relative;
+  background:
+    radial-gradient(ellipse at 0% 50%, #16445266, transparent 65%),
+    radial-gradient(ellipse at 100% 0%, #28737333, transparent 60%), var(--bg);
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(146, 172, 214, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(146, 172, 214, 0.045) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(
+    ellipse at 50% 30%,
+    rgba(0, 0, 0, 0.9),
+    transparent 75%
+  );
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  background: none;
+}
+
+button:focus-visible,
+[role='switch']:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(240, 183, 63, 0.35);
+}
+
+.eyebrow {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
