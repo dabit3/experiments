@@ -65,12 +65,14 @@ export default function App() {
   const [menu, setMenu] = useState<string | null>(null)
   const [dialog, setDialog] = useState<'scene' | 'reset' | 'help' | null>(null)
   const [sceneName, setSceneName] = useState('')
+  const [sceneError, setSceneError] = useState('')
   const [activeScene, setActiveScene] = useState('scene-1')
   const [viewName, setViewName] = useState('Perspective')
   const [outlinerSearch, setOutlinerSearch] = useState('')
   const viewport = useRef<ViewportApi | null>(null)
   const inputFile = useRef<HTMLInputElement>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const restoreView = useRef(false)
   const entity = project.entities.find(e => e.id === selected[0])
   const paint = materials.find(m => m.id === activeMaterial)!
   const change = (next: Project) => setHistory(h => commit(h, next))
@@ -78,11 +80,13 @@ export default function App() {
   const selectTool = (next: Tool) => { setTool(next); setHint(''); setMeasurements(''); setMenu(null) }
   const setView = (name: string) => {
     const view = standardViews[name]
-    viewport.current?.setView(view.position, view.target)
+    if (name === 'Courtyard') viewport.current?.setView(view.position, view.target)
+    else viewport.current?.fit(view.position.map((n, i) => n - view.target[i]) as Vec3)
     setViewName(name)
     setActiveScene('')
     setMenu(null)
   }
+  const fitModel = () => { viewport.current?.fit(); setActiveScene(''); setMenu(null) }
   const saveProject = () => { download(serializeProject(project), `${project.name.replace(/[^\w-]+/g, '-')}.skelo.json`, 'application/json'); setHint('Project exported. All objects, materials, tags and scenes are included.') }
   const deleteSelected = () => { change({ ...project, entities: project.entities.filter(e => !selected.includes(e.id)) }); setSelected([]) }
   const makeGroup = () => safe(() => { change(groupEntities(project, selected)); setHint(`${selected.length} components grouped. Click any member to select the assembly.`) })
@@ -126,20 +130,22 @@ export default function App() {
     setActiveScene(id)
     setViewName(scene.name.includes('Plan') ? 'Top' : 'Perspective')
   }
-  const saveScene = () => safe(() => {
-    if (!sceneName.trim()) throw new Error('Enter a scene name.')
-    if (project.scenes.length >= 30) throw new Error('This project supports up to 30 scenes.')
+  const saveScene = () => {
+    if (!sceneName.trim()) { setSceneError('Enter a scene name.'); return }
+    if (project.scenes.length >= 30) { setSceneError('This project supports up to 30 scenes.'); return }
     const camera = viewport.current?.camera()
-    if (!camera) throw new Error('The viewport is not ready yet.')
+    if (!camera) { setSceneError('The viewport is not ready yet.'); return }
     const id = crypto.randomUUID()
     change({ ...project, scenes: [...project.scenes, { id, name: sceneName.trim(), ...camera, tags: { ...project.tags } }] })
     setActiveScene(id)
     setDialog(null)
-  })
+  }
   useEffect(() => {
     try { localStorage.setItem(STORAGE_KEY, serializeProject(project)); setStatus('Saved locally') } catch { setStatus('Save unavailable'); setNotice('Browser storage is full or disabled. Use File → Save project to keep a backup.') }
+    if (restoreView.current) { setView('Perspective'); setActiveScene('scene-1'); restoreView.current = false }
   }, [project])
   useEffect(() => {
+    setSceneError('')
     if (dialog) dialogRef.current?.showModal()
     else dialogRef.current?.close()
   }, [dialog])
@@ -195,7 +201,7 @@ export default function App() {
       <div className="toolbar-set"><Button icon="open" label="Open project" onClick={() => inputFile.current?.click()} /><Button icon="save" label="Save project" onClick={saveProject} /></div>
       <div className="toolbar-set"><Button icon="undo" label="Undo" onClick={() => setHistory(undo)} disabled={!history.past.length} /><Button icon="redo" label="Redo" onClick={() => setHistory(redo)} disabled={!history.future.length} /></div>
       <div className="toolbar-set">{(['select', 'rectangle', 'pull', 'paint'] as Tool[]).map(t => <Button key={t} icon={t} label={toolLabels[t]} active={tool === t} onClick={() => selectTool(t)} />)}</div>
-      <div className="toolbar-set">{(['orbit', 'pan', 'zoom'] as Tool[]).map(t => <Button key={t} icon={t} label={toolLabels[t]} active={tool === t} onClick={() => selectTool(t)} />)}<Button icon="fit" label="Zoom extents" onClick={() => setView('Perspective')} /></div>
+      <div className="toolbar-set">{(['orbit', 'pan', 'zoom'] as Tool[]).map(t => <Button key={t} icon={t} label={toolLabels[t]} active={tool === t} onClick={() => selectTool(t)} />)}<Button icon="fit" label="Zoom extents" onClick={fitModel} /></div>
       <div className="toolbar-set view-set"><Button icon="home" label="Isometric view" onClick={() => setView('Perspective')} /><Button icon="top" label="Top view" onClick={() => setView('Top')} /><Button icon="front" label="Front view" onClick={() => setView('Front')} /><Button icon="right" label="Right view" onClick={() => setView('Right')} /></div>
       <div className="toolbar-set"><Button icon="sun" label="Toggle shadows" active={project.shadows} onClick={() => change({ ...project, shadows: !project.shadows })} /><Button icon="axes" label="Toggle axes" active={project.axes} onClick={() => change({ ...project, axes: !project.axes })} /></div>
       <span className="toolbar-spacer" /><button className="outlined-button save-scene" onClick={() => { setSceneName(`Scene ${project.scenes.length + 1}`); setDialog('scene') }}><Icon name="cube" size={17} />Save scene</button>
@@ -207,7 +213,7 @@ export default function App() {
         <div className="palette-rule" />
         <div className="palette-grid"><Button icon="rectangle" label="Draw rectangle (R)" active={tool === 'rectangle'} onClick={() => selectTool('rectangle')} /><Button icon="pull" label="Push/Pull (P)" active={tool === 'pull'} onClick={() => selectTool('pull')} /><Button icon="group" label="Make Group" disabled={selected.length < 2} onClick={makeGroup} /><Button icon="trash" label="Delete selected" disabled={!selected.length} onClick={deleteSelected} /></div>
         <div className="palette-rule" />
-        <div className="palette-grid">{(['orbit', 'pan', 'zoom'] as Tool[]).map(t => <Button key={t} icon={t} label={`${toolLabels[t]} tool`} active={tool === t} onClick={() => selectTool(t)} />)}<Button icon="fit" label="Fit model" onClick={() => setView('Perspective')} /></div>
+        <div className="palette-grid">{(['orbit', 'pan', 'zoom'] as Tool[]).map(t => <Button key={t} icon={t} label={`${toolLabels[t]} tool`} active={tool === t} onClick={() => selectTool(t)} />)}<Button icon="fit" label="Fit model" onClick={fitModel} /></div>
         <div className="palette-rule" />
         <div className="palette-grid"><Button icon="top" label="Plan view" onClick={() => setView('Top')} /><Button icon="front" label="Elevation view" onClick={() => setView('Front')} /><Button icon="eye" label="Toggle edges" active={project.edges} onClick={() => change({ ...project, edges: !project.edges })} /><Button icon="axes" label="Show axes" active={project.axes} onClick={() => change({ ...project, axes: !project.axes })} /></div>
         <div className="palette-bottom"><Button icon="info" label="Modeling guide" onClick={() => setDialog('help')} /></div>
@@ -266,8 +272,8 @@ export default function App() {
     }} />
     <dialog ref={dialogRef} onCancel={() => setDialog(null)} className="dialog">
       <div className="dialog-title">{dialog === 'scene' ? 'Add Scene' : dialog === 'reset' ? 'Restore Komorebi House' : 'Welcome to Skelo'}<button aria-label="Close dialog" onClick={() => setDialog(null)}>×</button></div>
-      {dialog === 'scene' && <form onSubmit={e => { e.preventDefault(); saveScene() }}><p>Save the current camera and tag visibility as a scene.</p><label>Scene name<input autoFocus maxLength={100} value={sceneName} onChange={e => setSceneName(e.target.value)} /></label><div className="dialog-actions"><button type="button" onClick={() => setDialog(null)}>Cancel</button><button className="primary" type="submit">Add Scene</button></div></form>}
-      {dialog === 'reset' && <div className="dialog-body"><p>Replace the current project with the original courtyard house? You can undo this action.</p><div className="dialog-actions"><button onClick={() => setDialog(null)}>Cancel</button><button className="primary" onClick={() => { change(createProject()); setSelected([]); setView('Perspective'); setActiveScene('scene-1'); setDialog(null); setNotice('') }}>Restore house</button></div></div>}
+      {dialog === 'scene' && <form onSubmit={e => { e.preventDefault(); saveScene() }}><p>Save the current camera and tag visibility as a scene.</p><label>Scene name<input autoFocus maxLength={100} aria-invalid={!!sceneError} aria-describedby={sceneError ? 'scene-error' : undefined} value={sceneName} onChange={e => { setSceneName(e.target.value); setSceneError('') }} /></label>{sceneError && <p id="scene-error" className="dialog-error" role="alert">{sceneError}</p>}<div className="dialog-actions"><button type="button" onClick={() => setDialog(null)}>Cancel</button><button className="primary" type="submit">Add Scene</button></div></form>}
+      {dialog === 'reset' && <div className="dialog-body"><p>Replace the current project with the original courtyard house? You can undo this action.</p><div className="dialog-actions"><button onClick={() => setDialog(null)}>Cancel</button><button className="primary" onClick={() => { restoreView.current = true; change(createProject()); setSelected([]); setDialog(null); setNotice('') }}>Restore house</button></div></div>}
       {dialog === 'help' && <div className="dialog-body guide"><p>A quiet place to explore architecture. Every element in this courtyard is real, editable 3D geometry.</p><dl><dt>Space · Select</dt><dd>Click a component. Shift-click to select several; Ctrl+G groups them.</dd><dt>R · Rectangle</dt><dd>Click two ground corners or type width, depth, height below (meters).</dd><dt>P · Push/Pull</dt><dd>Drag a component vertically or enter a height. The whole parametric component resizes.</dd><dt>B · Paint</dt><dd>Choose a swatch, then click a component or use Paint selected.</dd><dt>O / H / Z · Navigate</dt><dd>Orbit, pan, zoom. Middle drag or right drag works from any tool.</dd><dt>Ctrl+Z / Ctrl+Y</dt><dd>Undo / redo. Changes autosave in this browser. File exports a portable JSON project or OBJ model.</dd></dl><p className="guide-boundary">Browser V1 · No SKP/DWG import, native extensions, freeform face topology or commercial rendering kernel. Inspired by SketchUp Pro; independently built.</p><button className="primary" onClick={() => setDialog(null)}>Start modeling</button></div>}
     </dialog>
   </main>

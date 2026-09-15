@@ -22,7 +22,7 @@ Use **File → Restore built-in house → Restore house**. This resets entities,
 
 ## Programmatic coverage
 
-`src/model.test.ts` exercises project round-trips, rectangle coordinate normalization and degeneracy/capacity limits, immutable push/pull and paint changes, grouped selection, undo/redo and branch invalidation, history bounds, strict import validation, measurement parsing, actual Three.js bounds, full-model finite geometry, tag visibility, and OBJ vertices/faces.
+`src/model.test.ts` exercises project round-trips, rectangle coordinate normalization and degeneracy/capacity limits, immutable push/pull and paint changes, grouped selection, undo/redo and branch invalidation, history bounds, strict import validation, measurement parsing, actual Three.js bounds, full-model finite geometry, tag visibility, OBJ vertices/faces, and camera-fit projection of default/maximum-size geometry at the three desktop aspect ratios.
 
 ## Browser golden path and expected results
 
@@ -37,6 +37,7 @@ Use **File → Restore built-in house → Restore house**. This resets entities,
 9. Save project through File. Inspect the downloaded `.skelo.json`: version=1; the named entity has correct size and material; the saved scene and tags are present. Export 3D model as OBJ; inspect real `v` and `f` records with finite numeric values.
 10. Reload. Changes persist. Restore house and open the exported JSON. The edited geometry, scene and properties return. Try invalid JSON: a visible error must appear without replacing the current project.
 11. Return to a clean overview, capture a full uncropped screenshot and verify no browser console/runtime errors. Record the meaningful editing journey with setup/test/assertion annotations. Final video must be WebM VP8/VP9, never MP4.
+12. Regression: create a `50,50,50` volume and use Zoom extents/Fit model. The full visible model must fit with a margin, preserving viewing direction. Restore house; inspect default framing and Front/Right views for supported approach stairs. Try saving a blank scene name: the error must appear within the dialog.
 
 ## Results
 
@@ -49,6 +50,7 @@ See [REFERENCES.md](REFERENCES.md) for the exact official SketchUp Pro 2023 scre
 - The browser V1 uses original procedural geometry, synthetic/local data and no commercial engine. It does not load or export SKP, DWG or BIM; no extensions, 3D Warehouse, cloud sync, geo-location provider, native license or physically based offline renderer is included.
 - Push/Pull resizes parametric components, not arbitrary native face topology. Rectangle creates a rectangular prism on the y=0.7 modeling plane; Measurements creates a volume in the clear front-right study area. There are no freeform line/arc/boolean tools.
 - Material painting changes the primary material of a component; roofs, glass, framing and furnishings retain architectural finishes. OBJ is geometry-only, in meters, includes the site and visible tags, and has no MTL/textures. JSON preserves editable components and all material assignments.
+- Tags apply to the editable components in Outliner. The fixed site context (terraces, approach, decorative bushes, fence and lantern) remains visible.
 - Camera views use perspective projection (including the top view). Scenes capture camera and tag visibility, not a full animation track. The compass is a fixed north marker for the scene, not a dynamic orbit indicator.
 - Changes autosave in one browser; multi-tab merging is not supported. Undo history is intentionally session-local and limited to 50 operations. Imports are capped at 2 MB, 300 components and 30 scenes.
 - Desktop 1280×800 and up is the target. Under 1000 px, the desktop workspace scrolls horizontally instead of hiding core panels or introducing a mobile redesign.

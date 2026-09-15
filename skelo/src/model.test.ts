@@ -3,6 +3,7 @@ import assert from 'node:assert/strict'
 import * as THREE from 'three'
 import { buildEntity, buildModel, disposeObject } from './geometry.ts'
 import { exportObj } from './export.ts'
+import { fitCamera } from './camera.ts'
 import { commit, createProject, createVolume, groupEntities, parseMeasurements, parseProject, redo, selectionFor, serializeProject, undo, ungroupEntities, updateEntity, volume } from './model.ts'
 import type { History, Project } from './model.ts'
 
@@ -126,4 +127,28 @@ test('OBJ export contains actual transformed triangles and respects hidden tags'
   assert.match(text, /^v 4 3\.2[0-9]* 6$/m)
   assert.match(text, /^f \d+\/\d+\/\d+ /m)
   assert.doesNotMatch(text, /NaN|Infinity/)
+})
+
+test('camera fit frames default and maximum volumes at every desktop aspect ratio', () => {
+  for (const project of [createProject(), createVolume(createProject(), [8, .7, 6.5], [58, .7, 56.5], 50)]) {
+    const model = buildModel(project)
+    const bounds = new THREE.Box3().setFromObject(model)
+    for (const aspect of [1090 / 730, 1540 / 910, 955 / 630]) {
+      for (const direction of [new THREE.Vector3(26, 17, 30), new THREE.Vector3(0, 42, .01), new THREE.Vector3(37, 6, 0)]) {
+        const view = fitCamera(bounds, direction, 38, aspect)
+        const camera = new THREE.PerspectiveCamera(38, aspect, .1, Math.max(300, view.distance * 6))
+        camera.position.copy(view.position)
+        camera.lookAt(view.target)
+        camera.updateMatrixWorld()
+        assert.ok(!bounds.containsPoint(camera.position))
+        assert.ok(camera.position.clone().sub(view.target).normalize().distanceTo(direction.clone().normalize()) < 1e-9)
+        for (const x of [bounds.min.x, bounds.max.x]) for (const y of [bounds.min.y, bounds.max.y]) for (const z of [bounds.min.z, bounds.max.z]) {
+          const projected = new THREE.Vector3(x, y, z).project(camera)
+          assert.ok(Math.abs(projected.x) < .9 && Math.abs(projected.y) < .9)
+          assert.ok(projected.z > -1 && projected.z < 1)
+        }
+      }
+    }
+    disposeObject(model)
+  }
 })

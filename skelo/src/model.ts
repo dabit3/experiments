@@ -45,7 +45,7 @@ export const materials: { id: MaterialId; name: string; color: string; family: s
 export const tagNames: Tag[] = ['Architecture', 'Landscape', 'Furniture', 'Study']
 export const allTags: Record<Tag, boolean> = { Architecture: true, Landscape: true, Furniture: true, Study: true }
 export const standardViews: Record<string, { position: Vec3; target: Vec3 }> = {
-  Perspective: { position: [26, 19, 30], target: [0, 1.8, 0] },
+  Perspective: { position: [30, 24, 35], target: [0, 3.1, 0] },
   Top: { position: [0, 42, 0.01], target: [0, 0, 0] },
   Front: { position: [0, 8, 37], target: [0, 2, 0] },
   Right: { position: [37, 8, 0], target: [0, 2, 0] },

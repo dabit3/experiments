@@ -198,7 +198,8 @@ export function buildSite(): THREE.Group {
   }
   for (let i = 0; i < 5; i++) box(root, [4.1, .18, .62], [5, -.15 + i * .17, 8.4 - i * .58], '#d0cdbb')
   for (let i = 0; i < 5; i++) {
-    box(root, [1.6, .08, .7], [4.6 - i * .5, -.255, 10.8 + i * .7], '#c8c8b7')
+    const height = .985 - i * .19
+    box(root, [1.6, height, .74], [4.6 - i * .5, -1.2 + height / 2, 10.8 + i * .7], '#c8c8b7')
   }
   for (const [x, z] of [[-11, 7], [-10, 6], [10, 4.8], [11, 3.7], [10.5, -9], [-11, -8], [-7.5, 7.5]]) {
     for (let i = 0; i < 5; i++) {

@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 import { buildModel, disposeObject } from './geometry'
 import { exportObj } from './export'
+import { fitCamera } from './camera'
 import type { Project, Vec3 } from './model'
 import { standardViews } from './model'
 
@@ -12,6 +13,7 @@ export interface ViewportApi {
   camera: () => { position: Vec3; target: Vec3 }
   exportObj: () => string
   zoom: (factor: number) => void
+  fit: (direction?: Vec3) => void
 }
 interface Props {
   project: Project
@@ -86,11 +88,27 @@ export function Viewport(props: Props) {
     const selection = new THREE.Group()
     scene.add(selection)
     world.current = { scene, model, selection, sun, axes, controls }
+    function fit(direction?: Vec3) {
+      const bounds = new THREE.Box3().setFromObject(world.current!.model)
+      const offset = direction ? new THREE.Vector3().fromArray(direction) : camera.position.clone().sub(controls.target)
+      const view = fitCamera(bounds, offset, camera.fov, camera.aspect)
+      controls.maxDistance = Math.max(110, view.distance * 3)
+      camera.far = Math.max(300, view.distance * 6)
+      camera.updateProjectionMatrix()
+      if (scene.fog instanceof THREE.Fog) {
+        scene.fog.near = Math.max(75, view.distance * 1.4)
+        scene.fog.far = Math.max(180, view.distance * 4)
+      }
+      camera.position.copy(view.position)
+      controls.target.copy(view.target)
+      controls.update()
+    }
     props.api.current = {
       setView(position, target) { camera.position.fromArray(position); controls.target.fromArray(target); controls.update() },
       camera() { return { position: camera.position.toArray(), target: controls.target.toArray() } },
       exportObj() { return exportObj(current.current.project) },
       zoom(factor) { camera.position.sub(controls.target).multiplyScalar(factor).add(controls.target); controls.update() },
+      fit,
     }
     const raycaster = new THREE.Raycaster()
     const pointer = new THREE.Vector2()
@@ -175,11 +193,13 @@ export function Viewport(props: Props) {
     parent.addEventListener('pointermove', pointerMove)
     parent.addEventListener('pointerup', pointerUp)
     window.addEventListener('keydown', keyDown)
+    let initialized = false
     const resize = new ResizeObserver(() => {
       const { width, height } = parent.getBoundingClientRect()
       renderer.setSize(width, height)
       camera.aspect = width / height
       camera.updateProjectionMatrix()
+      if (!initialized) { fit(); initialized = true }
     })
     resize.observe(parent)
     let frame = 0
