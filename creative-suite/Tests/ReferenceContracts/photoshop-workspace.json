@@ -1,0 +1,47 @@
+[
+  {
+    "id": "photoshop.document-tabs.behavior",
+    "featureIDs": ["pixel.workspace-document-tabs"],
+    "referenceVersion": "Photoshop 27.10.0 baseline; current Adobe documentation",
+    "references": ["https://helpx.adobe.com/ca/photoshop/desktop/get-started/learn-the-basics/rearrange-document-windows.html"],
+    "evidenceKind": "documentedBehavior",
+    "coversWholeFeature": false,
+    "observationFile": "workspace-behavior.json",
+    "expected": {
+      "sameWindow": true,
+      "twoTabs": true,
+      "independentUndo": true,
+      "sessionState": true,
+      "newDialog": true,
+      "dismissNewDialog": true,
+      "createAction": true,
+      "cancelClose": true,
+      "backgroundUnsaved": true,
+      "busyClose": true,
+      "duplicateOpen": true,
+      "lastTab": true,
+      "reopenEmpty": true
+    }
+  },
+  {
+    "id": "photoshop.grouped-tools.behavior",
+    "featureIDs": ["pixel.workspace-grouped-tool-flyouts"],
+    "referenceVersion": "Photoshop 27.10.0 baseline; current toolbar documentation and supplied toolbar image",
+    "references": [
+      "https://helpx.adobe.com/ca/photoshop/desktop/get-started/set-up-toolbars-panels/customize-the-toolbar.html",
+      "https://www.teachucomp.com/the-photoshop-workspace-overview/"
+    ],
+    "evidenceKind": "documentedBehavior",
+    "coversWholeFeature": false,
+    "observationFile": "workspace-behavior.json",
+    "expected": {
+      "nativeGroupControl": true,
+      "arrowFlyout": true,
+      "menuDispatch": true,
+      "menuRelease": true,
+      "heldFlyout": true,
+      "rightFlyout": true,
+      "rememberVariant": true
+    }
+  }
+]
