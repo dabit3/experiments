@@ -1,0 +1,74 @@
+[
+  {
+    "scene": "opening",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [0, 4],
+    "sourceSeconds": null,
+    "treatment": "Original transparent black logo, contained without stretching on the gallery wall.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "closing",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [35, 40],
+    "sourceSeconds": null,
+    "treatment": "Original transparent black logo, contained without stretching on the CTA wall.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "environment",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [4, 9],
+    "sourceSeconds": null,
+    "treatment": "Composed still; source-pixel crop x560 y410 width1920 height1080 preserves the composer and actual macOS-selected menu. Front-facing 96% to 100% approach.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "agent",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [9, 13],
+    "sourceSeconds": [0, 4],
+    "treatment": "Contained, fixed front-facing display, 1x playback. Agent menu only, not macOS selection.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [13, 17.5],
+    "sourceSeconds": null,
+    "treatment": "Full contained authentic still; all 8 passed, 0 failed, 1 untested counts retained. Exterior display moves briefly then holds.",
+    "requiredLabel": "Afterhours Maze · still"
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [17.5, 22],
+    "sourceSeconds": null,
+    "treatment": "Full contained authentic still and final-review report; deliberate cut between separate examples.",
+    "requiredLabel": "Large Dispatch · still"
+  },
+  {
+    "scene": "webQa",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [22, 29],
+    "sourceSeconds": [0, 7],
+    "treatment": "Contained, stationary, 1x playback; persistent 48px secondary label outside the source viewport.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "ipad",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [29, 35],
+    "sourceSeconds": null,
+    "treatment": "Full contained final display; genuine Terra Table still and complete acceptance report. No animated internal application state.",
+    "requiredLabel": "Terra Table · still"
+  },
+  {
+    "scene": "all",
+    "asset": "NBInternationalPro-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Supplied original website font, loaded through the shared render-blocking font gate. Provenance: brand-reference.md.",
+    "requiredLabel": null
+  }
+]
