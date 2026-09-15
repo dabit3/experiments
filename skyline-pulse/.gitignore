@@ -1,0 +1,9 @@
+.build/
+.devin/
+Server/node_modules/
+*.xcuserstate
+xcuserdata/
+Evidence/
+.build-log.txt
+Assets/neon.wav
+Assets/aurora.wav
