@@ -133,6 +133,14 @@ test('CSV exports edited quantities, quotes names and neutralizes spreadsheet fo
   assert.ok(csv.endsWith('"4","0.25","3","3"'))
   assert.equal(csv.split('\r\n').length, 2)
 })
+test('CSV retains door host relationships with empty host for unhosted elements', () => {
+  const { project, wall } = fixture()
+  const door = placeDoor(project, { x: 0, z: 0 }, 'door')
+  const rows = exportSchedule({ ...project, elements: [wall, door] }).split('\r\n')
+  assert.ok(rows[0].includes('"Material","Host ID","Level (m)"'))
+  assert.ok(rows[1].includes('"Plaster","","0"'))
+  assert.ok(rows[2].includes('"Timber","test-wall","0"'))
+})
 test('SVG exports visible Level 1 geometry with real coordinates and safe text', () => {
   const { project, wall } = fixture()
   const svg = exportPlan({ ...project, name: 'Gallery <&>', elements: [wall, { ...wall, id: 'upper', y: 4.42 }] })

@@ -193,8 +193,8 @@ export function parseProject(text: string): Project {
 export const serializeProject = (project: Project) => JSON.stringify(project, null, 2)
 const csvCell = (value: string | number) => `"${String(typeof value === 'string' && /^[=+\-@\t\r]/.test(value) ? `'${value}` : value).replaceAll('"', '""')}"`
 export function exportSchedule(project: Project): string {
-  const header = ['ID', 'Category', 'Name', 'Material', 'Level (m)', 'Length (m)', 'Thickness (m)', 'Height (m)', 'Volume (m3)']
-  return [header, ...project.elements.map(e => [e.id, e.category, e.name, e.material, e.y, e.w, e.d, e.h, round(e.w * e.d * e.h)])].map(row => row.map(csvCell).join(',')).join('\r\n')
+  const header = ['ID', 'Category', 'Name', 'Material', 'Host ID', 'Level (m)', 'Length (m)', 'Thickness (m)', 'Height (m)', 'Volume (m3)']
+  return [header, ...project.elements.map(e => [e.id, e.category, e.name, e.material, e.hostId ?? '', e.y, e.w, e.d, e.h, round(e.w * e.d * e.h)])].map(row => row.map(csvCell).join(',')).join('\r\n')
 }
 export const escapeXml = (value: string) => value.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
 export function exportPlan(project: Project): string {
