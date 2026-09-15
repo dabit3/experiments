@@ -1,0 +1,473 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0D28C6E7F9EB687D9FACAAD0 /* AutoPilot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FBFB1378497203F4496FAC5 /* AutoPilot.swift */; };
+		2659518C3B0E7258AB8CEE63 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC742FB445A25201CC763609 /* ContentView.swift */; };
+		51E89141053AC29E4D1B039D /* ChompCrownApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD2025C589C69EE5B77094C /* ChompCrownApp.swift */; };
+		5332E2A49733AE32205E4C99 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3300B5F6F56D33CC80AE1C40 /* Models.swift */; };
+		7508890EEB036C3BFE26BA63 /* bump.wav in Resources */ = {isa = PBXBuildFile; fileRef = 050F53A063F0B1A30AE846F4 /* bump.wav */; };
+		76C6F5B83AEF9A6ED3767C79 /* roundEnd.wav in Resources */ = {isa = PBXBuildFile; fileRef = 520E46B046A8854723866585 /* roundEnd.wav */; };
+		83E18F29E6D74EE1887B2B01 /* neon-loop.wav in Resources */ = {isa = PBXBuildFile; fileRef = E94117B4FA69D95AA68B6355 /* neon-loop.wav */; };
+		92261B56DB9F8CE9A5B386D8 /* ghostEaten.wav in Resources */ = {isa = PBXBuildFile; fileRef = F4C76B71B60C8F74672A969C /* ghostEaten.wav */; };
+		93F478CE1A1938C6CBB37ACF /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4051216DC9614DBF330463 /* GameClient.swift */; };
+		A594A224F0D8FB9762A97940 /* ControlsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D21DAC4F389F2CB9EE834C /* ControlsTests.swift */; };
+		B447B608F68B0D322EAE8564 /* go.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0F75691BE19BC5FB4746BCBE /* go.wav */; };
+		CC327DD19E034CA7998E5E3C /* power.wav in Resources */ = {isa = PBXBuildFile; fileRef = 80A0332E8556BF18FF633E58 /* power.wav */; };
+		E0F7C51D1AEBD5F07F55192D /* eliminated.wav in Resources */ = {isa = PBXBuildFile; fileRef = D9C627CAC3BA70173015279B /* eliminated.wav */; };
+		E150227A0335E0B128F84739 /* pellet.wav in Resources */ = {isa = PBXBuildFile; fileRef = C626AA34203C9F9E74106F0E /* pellet.wav */; };
+		E659FB16EC60AEB03E59DBA8 /* ArenaScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A2EC1496E1EB5D457EA6EDD /* ArenaScene.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		785E4082EA588F26DAF7C7DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F61E256E87EF8B84A8A2352 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 491786F055D344B98CCC3684;
+			remoteInfo = ChompCrown;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		050F53A063F0B1A30AE846F4 /* bump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = bump.wav; sourceTree = "<group>"; };
+		0F75691BE19BC5FB4746BCBE /* go.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = go.wav; sourceTree = "<group>"; };
+		2A2EC1496E1EB5D457EA6EDD /* ArenaScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaScene.swift; sourceTree = "<group>"; };
+		2FBFB1378497203F4496FAC5 /* AutoPilot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoPilot.swift; sourceTree = "<group>"; };
+		3300B5F6F56D33CC80AE1C40 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		520E46B046A8854723866585 /* roundEnd.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = roundEnd.wav; sourceTree = "<group>"; };
+		5692CD04DF5CAB93513EC051 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		773EE788B5C67FFCDB5A5BF9 /* ChompCrown.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = ChompCrown.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		80A0332E8556BF18FF633E58 /* power.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = power.wav; sourceTree = "<group>"; };
+		AC742FB445A25201CC763609 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BDD2025C589C69EE5B77094C /* ChompCrownApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChompCrownApp.swift; sourceTree = "<group>"; };
+		C626AA34203C9F9E74106F0E /* pellet.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = pellet.wav; sourceTree = "<group>"; };
+		CD4051216DC9614DBF330463 /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
+		CDE67CEA60DE1AADC7CC542C /* ChompCrownUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = ChompCrownUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9C627CAC3BA70173015279B /* eliminated.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = eliminated.wav; sourceTree = "<group>"; };
+		E94117B4FA69D95AA68B6355 /* neon-loop.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "neon-loop.wav"; sourceTree = "<group>"; };
+		F1D21DAC4F389F2CB9EE834C /* ControlsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsTests.swift; sourceTree = "<group>"; };
+		F4C76B71B60C8F74672A969C /* ghostEaten.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ghostEaten.wav; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		106ACF3DFC652F491C6E8E09 /* ChompCrownUITests */ = {
+			isa = PBXGroup;
+			children = (
+				F1D21DAC4F389F2CB9EE834C /* ControlsTests.swift */,
+			);
+			path = ChompCrownUITests;
+			sourceTree = "<group>";
+		};
+		161AFEDDC6F619C933A2D861 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				050F53A063F0B1A30AE846F4 /* bump.wav */,
+				D9C627CAC3BA70173015279B /* eliminated.wav */,
+				F4C76B71B60C8F74672A969C /* ghostEaten.wav */,
+				0F75691BE19BC5FB4746BCBE /* go.wav */,
+				E94117B4FA69D95AA68B6355 /* neon-loop.wav */,
+				C626AA34203C9F9E74106F0E /* pellet.wav */,
+				80A0332E8556BF18FF633E58 /* power.wav */,
+				520E46B046A8854723866585 /* roundEnd.wav */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		339E47126438C7F47FA1132F = {
+			isa = PBXGroup;
+			children = (
+				AAB261BEF917A3E47339EC97 /* App */,
+				106ACF3DFC652F491C6E8E09 /* ChompCrownUITests */,
+				B8B681A8C97297CCD635331E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AAB261BEF917A3E47339EC97 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				2A2EC1496E1EB5D457EA6EDD /* ArenaScene.swift */,
+				2FBFB1378497203F4496FAC5 /* AutoPilot.swift */,
+				BDD2025C589C69EE5B77094C /* ChompCrownApp.swift */,
+				AC742FB445A25201CC763609 /* ContentView.swift */,
+				CD4051216DC9614DBF330463 /* GameClient.swift */,
+				5692CD04DF5CAB93513EC051 /* Info.plist */,
+				3300B5F6F56D33CC80AE1C40 /* Models.swift */,
+				161AFEDDC6F619C933A2D861 /* Audio */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B8B681A8C97297CCD635331E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				773EE788B5C67FFCDB5A5BF9 /* ChompCrown.app */,
+				CDE67CEA60DE1AADC7CC542C /* ChompCrownUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		491786F055D344B98CCC3684 /* ChompCrown */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65AF02CA10C19F3D4BD2BE2B /* Build configuration list for PBXNativeTarget "ChompCrown" */;
+			buildPhases = (
+				D2DD30CE3334D32B5F15BE0B /* Sources */,
+				63A021236BD896BDB16D7E4D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChompCrown;
+			packageProductDependencies = (
+			);
+			productName = ChompCrown;
+			productReference = 773EE788B5C67FFCDB5A5BF9 /* ChompCrown.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E3EA4563121DF1ED63A14343 /* ChompCrownUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3333D2D32F040C951EFE2422 /* Build configuration list for PBXNativeTarget "ChompCrownUITests" */;
+			buildPhases = (
+				49749A5223BC2E284DFB1475 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F541608F1E437BCA75DA339A /* PBXTargetDependency */,
+			);
+			name = ChompCrownUITests;
+			packageProductDependencies = (
+			);
+			productName = ChompCrownUITests;
+			productReference = CDE67CEA60DE1AADC7CC542C /* ChompCrownUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9F61E256E87EF8B84A8A2352 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					E3EA4563121DF1ED63A14343 = {
+						TestTargetID = 491786F055D344B98CCC3684;
+					};
+				};
+			};
+			buildConfigurationList = 31F11DD4293D68A0EA48FF3A /* Build configuration list for PBXProject "ChompCrown" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 339E47126438C7F47FA1132F;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B8B681A8C97297CCD635331E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				491786F055D344B98CCC3684 /* ChompCrown */,
+				E3EA4563121DF1ED63A14343 /* ChompCrownUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		63A021236BD896BDB16D7E4D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7508890EEB036C3BFE26BA63 /* bump.wav in Resources */,
+				E0F7C51D1AEBD5F07F55192D /* eliminated.wav in Resources */,
+				92261B56DB9F8CE9A5B386D8 /* ghostEaten.wav in Resources */,
+				B447B608F68B0D322EAE8564 /* go.wav in Resources */,
+				83E18F29E6D74EE1887B2B01 /* neon-loop.wav in Resources */,
+				E150227A0335E0B128F84739 /* pellet.wav in Resources */,
+				CC327DD19E034CA7998E5E3C /* power.wav in Resources */,
+				76C6F5B83AEF9A6ED3767C79 /* roundEnd.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		49749A5223BC2E284DFB1475 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A594A224F0D8FB9762A97940 /* ControlsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D2DD30CE3334D32B5F15BE0B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E659FB16EC60AEB03E59DBA8 /* ArenaScene.swift in Sources */,
+				0D28C6E7F9EB687D9FACAAD0 /* AutoPilot.swift in Sources */,
+				51E89141053AC29E4D1B039D /* ChompCrownApp.swift in Sources */,
+				2659518C3B0E7258AB8CEE63 /* ContentView.swift in Sources */,
+				93F478CE1A1938C6CBB37ACF /* GameClient.swift in Sources */,
+				5332E2A49733AE32205E4C99 /* Models.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F541608F1E437BCA75DA339A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 491786F055D344B98CCC3684 /* ChompCrown */;
+			targetProxy = 785E4082EA588F26DAF7C7DC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		09E756C925CB8E0DBCA58943 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Chomp Crown";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.chompcrown.neon;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2580DE4B9CBD41FC08BD0E80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Chomp Crown";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.chompcrown.neon;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6EB559FA265570E4EE6F4205 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.chompcrown.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ChompCrown;
+			};
+			name = Release;
+		};
+		DDE49BB4B47DCCE003FEBD68 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.chompcrown.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ChompCrown;
+			};
+			name = Debug;
+		};
+		F7C019BC89D6CF8C2AAD1F1D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		FA88C42464CD1DF5A99EFE57 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		31F11DD4293D68A0EA48FF3A /* Build configuration list for PBXProject "ChompCrown" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA88C42464CD1DF5A99EFE57 /* Debug */,
+				F7C019BC89D6CF8C2AAD1F1D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3333D2D32F040C951EFE2422 /* Build configuration list for PBXNativeTarget "ChompCrownUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDE49BB4B47DCCE003FEBD68 /* Debug */,
+				6EB559FA265570E4EE6F4205 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		65AF02CA10C19F3D4BD2BE2B /* Build configuration list for PBXNativeTarget "ChompCrown" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2580DE4B9CBD41FC08BD0E80 /* Debug */,
+				09E756C925CB8E0DBCA58943 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9F61E256E87EF8B84A8A2352 /* Project object */;
+}

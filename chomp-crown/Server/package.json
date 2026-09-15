@@ -1,0 +1,17 @@
+{
+  "name": "chomp-crown-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check server.mjs && node --check game.mjs && node --check bot.mjs",
+    "test": "node --test ../Tests/*.test.mjs"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  }
+}
