@@ -1,0 +1,487 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		06638D6CE56E6438737EAE9F /* FestivalDonUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9AC2AD3A3E99993B3A6D98 /* FestivalDonUITests.swift */; };
+		0C6ADC0B3699D30E787BCA63 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5505C922542FBEBB92EF4BF9 /* Models.swift */; };
+		25FB47969119B109BA9BE0DD /* FestivalAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEC2424B58653558E501B38 /* FestivalAudio.swift */; };
+		2F509662C34AC000F5C426B8 /* lantern.wav in Resources */ = {isa = PBXBuildFile; fileRef = 017E561D69B37B3452DB941A /* lantern.wav */; };
+		34E84ED59FBA5FD16EE25941 /* don.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5FDAD7FFE3A599582F96A789 /* don.wav */; };
+		5528CC502291D51197111DAE /* lantern-festival.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D1E6145EEF7F2D8F289D76E /* lantern-festival.json */; };
+		715F3BE40C153FFA0A66C142 /* GameStage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1133B1D33A3A56E6B07962DA /* GameStage.swift */; };
+		71C4DEDBEFF22BD5B69300DB /* FestivalDonApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F818D681C044D38A725530D2 /* FestivalDonApp.swift */; };
+		73990852BEC8DA796CFE01CF /* fanfare.wav in Resources */ = {isa = PBXBuildFile; fileRef = FDCF1064C3840FFFEE0A0D30 /* fanfare.wav */; };
+		944263908364EB3EA8E6919A /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34725F4F7FB81A6EA8A36F4F /* GameClient.swift */; };
+		A0347BE8F0A970193F91DB9A /* ka.wav in Resources */ = {isa = PBXBuildFile; fileRef = BA9D008E094C602C1BD25787 /* ka.wav */; };
+		BC85CC04FB8756FB666E6EEE /* moon.wav in Resources */ = {isa = PBXBuildFile; fileRef = 40B08CDA6D94D7F3694443AB /* moon.wav */; };
+		BD83021BB9718B11B140C369 /* CalibrationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8938933F4ADAD831F42C5FF /* CalibrationScreen.swift */; };
+		C860311F6572E0DA83C10C3A /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1040E68A149E16534B9FD06B /* Artwork.swift */; };
+		D31FCDA051AD69CE2C37E0F8 /* moon-easy.json in Resources */ = {isa = PBXBuildFile; fileRef = 8E1B95440979DCEC47D90516 /* moon-easy.json */; };
+		E16CE4F0E854109B61764D12 /* DrumTouchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F74E7AC59DF6BAD56D85BEBB /* DrumTouchView.swift */; };
+		E452EF9AB085AFE7A54A8538 /* moon-festival.json in Resources */ = {isa = PBXBuildFile; fileRef = EA5B9569D4BA67BF5AAEE254 /* moon-festival.json */; };
+		F3BD14232F12758EF4A133AA /* lantern-easy.json in Resources */ = {isa = PBXBuildFile; fileRef = 88464A9C11AB8BBD1DD19EB0 /* lantern-easy.json */; };
+		F94BA0184C116EC27C01B689 /* ResultScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6554A286120D0FEAC22DC5 /* ResultScreen.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4FA5C2CA9EFEFF6E20DECBC6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1155DA27BAB6893F09918321 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0B314F4CAAB9EF1FD312D1B3;
+			remoteInfo = FestivalDon;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		017E561D69B37B3452DB941A /* lantern.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lantern.wav; sourceTree = "<group>"; };
+		01E8CA93A160214CC33C9CB4 /* FestivalDon.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FestivalDon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1040E68A149E16534B9FD06B /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
+		1133B1D33A3A56E6B07962DA /* GameStage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStage.swift; sourceTree = "<group>"; };
+		34725F4F7FB81A6EA8A36F4F /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
+		3D1E6145EEF7F2D8F289D76E /* lantern-festival.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "lantern-festival.json"; sourceTree = "<group>"; };
+		40B08CDA6D94D7F3694443AB /* moon.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = moon.wav; sourceTree = "<group>"; };
+		4F9AC2AD3A3E99993B3A6D98 /* FestivalDonUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalDonUITests.swift; sourceTree = "<group>"; };
+		5505C922542FBEBB92EF4BF9 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		5FDAD7FFE3A599582F96A789 /* don.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = don.wav; sourceTree = "<group>"; };
+		6B6554A286120D0FEAC22DC5 /* ResultScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultScreen.swift; sourceTree = "<group>"; };
+		88464A9C11AB8BBD1DD19EB0 /* lantern-easy.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "lantern-easy.json"; sourceTree = "<group>"; };
+		8E1B95440979DCEC47D90516 /* moon-easy.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "moon-easy.json"; sourceTree = "<group>"; };
+		970FCE0618409051EBF7DBE1 /* FestivalDonUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FestivalDonUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8938933F4ADAD831F42C5FF /* CalibrationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationScreen.swift; sourceTree = "<group>"; };
+		BA9D008E094C602C1BD25787 /* ka.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ka.wav; sourceTree = "<group>"; };
+		CAEC2424B58653558E501B38 /* FestivalAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalAudio.swift; sourceTree = "<group>"; };
+		EA5B9569D4BA67BF5AAEE254 /* moon-festival.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "moon-festival.json"; sourceTree = "<group>"; };
+		F74E7AC59DF6BAD56D85BEBB /* DrumTouchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrumTouchView.swift; sourceTree = "<group>"; };
+		F818D681C044D38A725530D2 /* FestivalDonApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FestivalDonApp.swift; sourceTree = "<group>"; };
+		FDCF1064C3840FFFEE0A0D30 /* fanfare.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fanfare.wav; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		020BB39424AFD29AFB974B63 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				1040E68A149E16534B9FD06B /* Artwork.swift */,
+				A8938933F4ADAD831F42C5FF /* CalibrationScreen.swift */,
+				F74E7AC59DF6BAD56D85BEBB /* DrumTouchView.swift */,
+				CAEC2424B58653558E501B38 /* FestivalAudio.swift */,
+				F818D681C044D38A725530D2 /* FestivalDonApp.swift */,
+				34725F4F7FB81A6EA8A36F4F /* GameClient.swift */,
+				1133B1D33A3A56E6B07962DA /* GameStage.swift */,
+				5505C922542FBEBB92EF4BF9 /* Models.swift */,
+				6B6554A286120D0FEAC22DC5 /* ResultScreen.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		6C869E3A0657B33209B4F04A = {
+			isa = PBXGroup;
+			children = (
+				020BB39424AFD29AFB974B63 /* App */,
+				B5441DB35661471FBFA843AB /* Resources */,
+				97B509C354F84D23553EE8CA /* UITests */,
+				B5369C74B090BAE8D525936D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		97B509C354F84D23553EE8CA /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				4F9AC2AD3A3E99993B3A6D98 /* FestivalDonUITests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		B5369C74B090BAE8D525936D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				01E8CA93A160214CC33C9CB4 /* FestivalDon.app */,
+				970FCE0618409051EBF7DBE1 /* FestivalDonUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B5441DB35661471FBFA843AB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5FDAD7FFE3A599582F96A789 /* don.wav */,
+				FDCF1064C3840FFFEE0A0D30 /* fanfare.wav */,
+				BA9D008E094C602C1BD25787 /* ka.wav */,
+				88464A9C11AB8BBD1DD19EB0 /* lantern-easy.json */,
+				3D1E6145EEF7F2D8F289D76E /* lantern-festival.json */,
+				017E561D69B37B3452DB941A /* lantern.wav */,
+				8E1B95440979DCEC47D90516 /* moon-easy.json */,
+				EA5B9569D4BA67BF5AAEE254 /* moon-festival.json */,
+				40B08CDA6D94D7F3694443AB /* moon.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0B314F4CAAB9EF1FD312D1B3 /* FestivalDon */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 384B1671C310315146C6D868 /* Build configuration list for PBXNativeTarget "FestivalDon" */;
+			buildPhases = (
+				A27FEDB6EE06808ADDCC2B5D /* Sources */,
+				7665A1C4C7FBC1373E856EFB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FestivalDon;
+			packageProductDependencies = (
+			);
+			productName = FestivalDon;
+			productReference = 01E8CA93A160214CC33C9CB4 /* FestivalDon.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FBBF010628FD2E54C4547071 /* FestivalDonUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FEA4092EB4628F50021BAFF5 /* Build configuration list for PBXNativeTarget "FestivalDonUITests" */;
+			buildPhases = (
+				32315E6E75878008875CD99A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7979BB45D697B1A5A90DB57D /* PBXTargetDependency */,
+			);
+			name = FestivalDonUITests;
+			packageProductDependencies = (
+			);
+			productName = FestivalDonUITests;
+			productReference = 970FCE0618409051EBF7DBE1 /* FestivalDonUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1155DA27BAB6893F09918321 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					FBBF010628FD2E54C4547071 = {
+						TestTargetID = 0B314F4CAAB9EF1FD312D1B3;
+					};
+				};
+			};
+			buildConfigurationList = 360F3D4A2904C2BF9980394C /* Build configuration list for PBXProject "FestivalDon" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 6C869E3A0657B33209B4F04A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B5369C74B090BAE8D525936D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0B314F4CAAB9EF1FD312D1B3 /* FestivalDon */,
+				FBBF010628FD2E54C4547071 /* FestivalDonUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7665A1C4C7FBC1373E856EFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				34E84ED59FBA5FD16EE25941 /* don.wav in Resources */,
+				73990852BEC8DA796CFE01CF /* fanfare.wav in Resources */,
+				A0347BE8F0A970193F91DB9A /* ka.wav in Resources */,
+				F3BD14232F12758EF4A133AA /* lantern-easy.json in Resources */,
+				5528CC502291D51197111DAE /* lantern-festival.json in Resources */,
+				2F509662C34AC000F5C426B8 /* lantern.wav in Resources */,
+				D31FCDA051AD69CE2C37E0F8 /* moon-easy.json in Resources */,
+				E452EF9AB085AFE7A54A8538 /* moon-festival.json in Resources */,
+				BC85CC04FB8756FB666E6EEE /* moon.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		32315E6E75878008875CD99A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06638D6CE56E6438737EAE9F /* FestivalDonUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A27FEDB6EE06808ADDCC2B5D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C860311F6572E0DA83C10C3A /* Artwork.swift in Sources */,
+				BD83021BB9718B11B140C369 /* CalibrationScreen.swift in Sources */,
+				E16CE4F0E854109B61764D12 /* DrumTouchView.swift in Sources */,
+				25FB47969119B109BA9BE0DD /* FestivalAudio.swift in Sources */,
+				71C4DEDBEFF22BD5B69300DB /* FestivalDonApp.swift in Sources */,
+				944263908364EB3EA8E6919A /* GameClient.swift in Sources */,
+				715F3BE40C153FFA0A66C142 /* GameStage.swift in Sources */,
+				0C6ADC0B3699D30E787BCA63 /* Models.swift in Sources */,
+				F94BA0184C116EC27C01B689 /* ResultScreen.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7979BB45D697B1A5A90DB57D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0B314F4CAAB9EF1FD312D1B3 /* FestivalDon */;
+			targetProxy = 4FA5C2CA9EFEFF6E20DECBC6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		14BDD15D25B05F0C0E4C3E4A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.festivaldon.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FestivalDon;
+			};
+			name = Debug;
+		};
+		3171D1F7F52874FB91097E57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Festival Don";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIViewControllerBasedStatusBarAppearance = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		798A5F954AC72098B00B1EBD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Festival Don";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = YES;
+				INFOPLIST_KEY_UIViewControllerBasedStatusBarAppearance = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8549D9268C6B42E79223402F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.festivaldon.rhythm;
+				PRODUCT_NAME = FestivalDon;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E3CF86B942711AA7197F55B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.festivaldon.rhythm;
+				PRODUCT_NAME = FestivalDon;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FB48C0696C9EAD07DA6DD22E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.festivaldon.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FestivalDon;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		360F3D4A2904C2BF9980394C /* Build configuration list for PBXProject "FestivalDon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				798A5F954AC72098B00B1EBD /* Debug */,
+				3171D1F7F52874FB91097E57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		384B1671C310315146C6D868 /* Build configuration list for PBXNativeTarget "FestivalDon" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8549D9268C6B42E79223402F /* Debug */,
+				E3CF86B942711AA7197F55B0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FEA4092EB4628F50021BAFF5 /* Build configuration list for PBXNativeTarget "FestivalDonUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14BDD15D25B05F0C0E4C3E4A /* Debug */,
+				FB48C0696C9EAD07DA6DD22E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1155DA27BAB6893F09918321 /* Project object */;
+}
