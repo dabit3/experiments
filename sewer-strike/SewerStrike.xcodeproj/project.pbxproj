@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		24D26F4D8E5AAA4F80794E67 /* GameAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69C64FD15B5A595072450CD2 /* GameAudio.swift */; };
+		266ED471A189E38B09438041 /* power.wav in Resources */ = {isa = PBXBuildFile; fileRef = 64BF8CCB110D21B9D9BB5D64 /* power.wav */; };
+		269359565CA085E17CE7ED5A /* undercurrent.wav in Resources */ = {isa = PBXBuildFile; fileRef = 89EC198917C22F03BF86E9FE /* undercurrent.wav */; };
+		37DD6E4E4D7AF83CC2FFD105 /* clear.wav in Resources */ = {isa = PBXBuildFile; fileRef = 111B103E9AA385CD07B694C7 /* clear.wav */; };
+		4F1E8A12FBE9B41733E6E9BD /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B31B39B5E9A5803F8D6A487 /* GameClient.swift */; };
+		64A9CE947293D7A3F5D8982A /* heal.wav in Resources */ = {isa = PBXBuildFile; fileRef = CE8F719B92D69A82B92AB1D3 /* heal.wav */; };
+		72140B28AA0EB3CD1EFEACBB /* slam.wav in Resources */ = {isa = PBXBuildFile; fileRef = 66B40795B38B1FD94C0EAB3E /* slam.wav */; };
+		73717D1C67E5F10EB35D8886 /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 05751186387FA8B3DA4F07B5 /* hit.wav */; };
+		8F1A1181E0FA6015A8F72446 /* ManualControlsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAD2FB8544B395C96F29979 /* ManualControlsTests.swift */; };
+		8F85FE807D6394F4A5F89CEE /* jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9BE08A19C38E28D67B35DFCB /* jump.wav */; };
+		E196977C4CFC2E68F0C52BA7 /* SewerStrikeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C627E946FF9A2CE82524697 /* SewerStrikeApp.swift */; };
+		E26BC418D3B4229CCBE2D369 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90130C1FB2C945A7D2CDC4E3 /* Models.swift */; };
+		EE91C3C4965284B33BEDD426 /* GameWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FA2E6B69F04460C7906F3 /* GameWorld.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		236954EA0E7991CADABB8791 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8DF0FCDA2538D4AC05EB23DA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA2465BED35BFD2EB183533C;
+			remoteInfo = SewerStrike;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		05751186387FA8B3DA4F07B5 /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
+		111B103E9AA385CD07B694C7 /* clear.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = clear.wav; sourceTree = "<group>"; };
+		2D18F51BA5EE73142B6FD79D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		64BF8CCB110D21B9D9BB5D64 /* power.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = power.wav; sourceTree = "<group>"; };
+		66B40795B38B1FD94C0EAB3E /* slam.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = slam.wav; sourceTree = "<group>"; };
+		69C64FD15B5A595072450CD2 /* GameAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAudio.swift; sourceTree = "<group>"; };
+		7A74B4B59E4BFD35C8A832D3 /* SewerStrikeUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SewerStrikeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B31B39B5E9A5803F8D6A487 /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
+		89EC198917C22F03BF86E9FE /* undercurrent.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = undercurrent.wav; sourceTree = "<group>"; };
+		8C627E946FF9A2CE82524697 /* SewerStrikeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SewerStrikeApp.swift; sourceTree = "<group>"; };
+		90130C1FB2C945A7D2CDC4E3 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		9BAD2FB8544B395C96F29979 /* ManualControlsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualControlsTests.swift; sourceTree = "<group>"; };
+		9BE08A19C38E28D67B35DFCB /* jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = jump.wav; sourceTree = "<group>"; };
+		A998F9E2377CEBE85A34E858 /* SewerStrike.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SewerStrike.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE8F719B92D69A82B92AB1D3 /* heal.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = heal.wav; sourceTree = "<group>"; };
+		F32FA2E6B69F04460C7906F3 /* GameWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWorld.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0C2A28161245C6CD689D31C6 = {
+			isa = PBXGroup;
+			children = (
+				8A2FF851853A0111A09F6A1E /* App */,
+				119E8C27F414BBEF9C3B39A0 /* Resources */,
+				528D14387FBE63473EC6E897 /* Tests */,
+				EB7103918A63CDC1FCE1D657 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		119E8C27F414BBEF9C3B39A0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				111B103E9AA385CD07B694C7 /* clear.wav */,
+				CE8F719B92D69A82B92AB1D3 /* heal.wav */,
+				05751186387FA8B3DA4F07B5 /* hit.wav */,
+				9BE08A19C38E28D67B35DFCB /* jump.wav */,
+				64BF8CCB110D21B9D9BB5D64 /* power.wav */,
+				66B40795B38B1FD94C0EAB3E /* slam.wav */,
+				89EC198917C22F03BF86E9FE /* undercurrent.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		528D14387FBE63473EC6E897 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				9BAD2FB8544B395C96F29979 /* ManualControlsTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		8A2FF851853A0111A09F6A1E /* App */ = {
+			isa = PBXGroup;
+			children = (
+				69C64FD15B5A595072450CD2 /* GameAudio.swift */,
+				7B31B39B5E9A5803F8D6A487 /* GameClient.swift */,
+				F32FA2E6B69F04460C7906F3 /* GameWorld.swift */,
+				2D18F51BA5EE73142B6FD79D /* Info.plist */,
+				90130C1FB2C945A7D2CDC4E3 /* Models.swift */,
+				8C627E946FF9A2CE82524697 /* SewerStrikeApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		EB7103918A63CDC1FCE1D657 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A998F9E2377CEBE85A34E858 /* SewerStrike.app */,
+				7A74B4B59E4BFD35C8A832D3 /* SewerStrikeUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		12B6CFF14178C907BE16153B /* SewerStrikeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 409004E63249DD35B73EAC39 /* Build configuration list for PBXNativeTarget "SewerStrikeUITests" */;
+			buildPhases = (
+				D407B60209B9EE27586ED5D9 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8053853F22E082013217AFA7 /* PBXTargetDependency */,
+			);
+			name = SewerStrikeUITests;
+			packageProductDependencies = (
+			);
+			productName = SewerStrikeUITests;
+			productReference = 7A74B4B59E4BFD35C8A832D3 /* SewerStrikeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		CA2465BED35BFD2EB183533C /* SewerStrike */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 348C82E1054B5338D80C8032 /* Build configuration list for PBXNativeTarget "SewerStrike" */;
+			buildPhases = (
+				E66CFE7DF6B655798F4D1160 /* Sources */,
+				B3C556D68BA7D91D498AA623 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SewerStrike;
+			packageProductDependencies = (
+			);
+			productName = SewerStrike;
+			productReference = A998F9E2377CEBE85A34E858 /* SewerStrike.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8DF0FCDA2538D4AC05EB23DA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					12B6CFF14178C907BE16153B = {
+						TestTargetID = CA2465BED35BFD2EB183533C;
+					};
+				};
+			};
+			buildConfigurationList = 014BC34E5271F0BBBF686F0B /* Build configuration list for PBXProject "SewerStrike" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 0C2A28161245C6CD689D31C6;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EB7103918A63CDC1FCE1D657 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CA2465BED35BFD2EB183533C /* SewerStrike */,
+				12B6CFF14178C907BE16153B /* SewerStrikeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B3C556D68BA7D91D498AA623 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37DD6E4E4D7AF83CC2FFD105 /* clear.wav in Resources */,
+				64A9CE947293D7A3F5D8982A /* heal.wav in Resources */,
+				73717D1C67E5F10EB35D8886 /* hit.wav in Resources */,
+				8F85FE807D6394F4A5F89CEE /* jump.wav in Resources */,
+				266ED471A189E38B09438041 /* power.wav in Resources */,
+				72140B28AA0EB3CD1EFEACBB /* slam.wav in Resources */,
+				269359565CA085E17CE7ED5A /* undercurrent.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D407B60209B9EE27586ED5D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F1A1181E0FA6015A8F72446 /* ManualControlsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E66CFE7DF6B655798F4D1160 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				24D26F4D8E5AAA4F80794E67 /* GameAudio.swift in Sources */,
+				4F1E8A12FBE9B41733E6E9BD /* GameClient.swift in Sources */,
+				EE91C3C4965284B33BEDD426 /* GameWorld.swift in Sources */,
+				E26BC418D3B4229CCBE2D369 /* Models.swift in Sources */,
+				E196977C4CFC2E68F0C52BA7 /* SewerStrikeApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8053853F22E082013217AFA7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA2465BED35BFD2EB183533C /* SewerStrike */;
+			targetProxy = 236954EA0E7991CADABB8791 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		067A66C2889019BCE9C24744 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.sewerstrike.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SewerStrike;
+			};
+			name = Release;
+		};
+		4126F13DB005C59ADDDB86BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4476950B9870BE544E3A65C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.sewerstrike.ios;
+				PRODUCT_NAME = SewerStrike;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4FF5E4A6041911C90DFA676B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C9437939958060041266024A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.sewerstrike.ios;
+				PRODUCT_NAME = SewerStrike;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D61BFF51A56272757510ED32 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.devin.sewerstrike.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SewerStrike;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		014BC34E5271F0BBBF686F0B /* Build configuration list for PBXProject "SewerStrike" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4FF5E4A6041911C90DFA676B /* Debug */,
+				4126F13DB005C59ADDDB86BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		348C82E1054B5338D80C8032 /* Build configuration list for PBXNativeTarget "SewerStrike" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C9437939958060041266024A /* Debug */,
+				4476950B9870BE544E3A65C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		409004E63249DD35B73EAC39 /* Build configuration list for PBXNativeTarget "SewerStrikeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D61BFF51A56272757510ED32 /* Debug */,
+				067A66C2889019BCE9C24744 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8DF0FCDA2538D4AC05EB23DA /* Project object */;
+}
