@@ -29,6 +29,10 @@ export const template = defineTemplate({
   defaultConfig: config,
   controls: [
     ...paperControls,
+    {path: 'environmentSelector.enabled', label: 'Animate environment selection', type: 'boolean', description: 'Recreates the supplied selector and animates Ubuntu to macOS. Disable to use the original environment screenshot.'},
+    {path: 'environmentSelector.width', label: 'Environment menu width', type: 'number', description: 'Width of the complete selector illustration; scales proportionally to fit its carrier.', min: 700, max: 1150},
+    {path: 'environmentSelector.moveAt', label: 'Cursor movement starts', type: 'number', description: 'Fraction of the environment scene before moving toward macOS; capped before selection.', min: 0, max: 0.65, step: 0.01},
+    {path: 'environmentSelector.selectAt', label: 'Select macOS', type: 'number', description: 'Fraction of the environment scene at which the cursor clicks macOS and updates the header/checkmark.', min: 0.15, max: 0.85, step: 0.01},
     ...Object.keys(config.copy).map((key): ConfigControl => ({
       path: `copy.${key}`, label: `Copy: ${key}`, type: 'string', description: 'Editable launch copy.',
     })),

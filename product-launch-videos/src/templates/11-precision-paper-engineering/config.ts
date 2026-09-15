@@ -1,6 +1,12 @@
 import {defaultLaunchConfig, type LaunchConfig} from '../../shared';
 
 export type PaperConfig = LaunchConfig & {
+  environmentSelector: {
+    enabled: boolean;
+    width: number;
+    moveAt: number;
+    selectAt: number;
+  };
   paper: {
     layers: number;
     layerOffsetX: number;
@@ -35,6 +41,12 @@ export type PaperConfig = LaunchConfig & {
 
 export const config: PaperConfig = {
   ...structuredClone(defaultLaunchConfig),
+  environmentSelector: {
+    enabled: true,
+    width: 1080,
+    moveAt: 0.2,
+    selectAt: 0.52,
+  },
   brand: {
     ...structuredClone(defaultLaunchConfig.brand),
     typography: {
@@ -73,7 +85,7 @@ export const config: PaperConfig = {
     closingImageWidth: 850,
     labels: {
       opening: 'Cloud environments',
-      environment: 'Hosted environment',
+      environment: 'Hosted environment · animated recreation',
       agent: 'Agent selection · 1× recording',
       iphoneFirst: 'Afterhours Maze · iPhone Simulator still',
       iphoneSecond: 'Large Dispatch · separate iPhone Simulator still',

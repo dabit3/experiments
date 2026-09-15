@@ -5,6 +5,7 @@ import {
   type ImageSelection, type SceneTiming,
 } from '../../shared';
 import type {PaperConfig} from './config';
+import {EnvironmentSelector} from './EnvironmentSelector';
 
 type Box = {x: number; y: number; width: number; height: number};
 const boxStyle = (box: Box): CSSProperties => ({
@@ -115,7 +116,9 @@ const Caption = ({
   </Paper>;
 };
 
-const ProductScene = ({config, timing}: {config: PaperConfig; timing: SceneTiming}) => {
+const ProductScene = ({config, timing, holdEnvironment = false}: {
+  config: PaperConfig; timing: SceneTiming; holdEnvironment?: boolean;
+}) => {
   const frame = useCurrentFrame();
   const {stage, media} = getLayout(config);
   const {id, durationInFrames} = timing;
@@ -135,7 +138,10 @@ const ProductScene = ({config, timing}: {config: PaperConfig; timing: SceneTimin
   return <AbsoluteFill>
     <Paper config={config} box={stage}>
       <div style={{...boxStyle(media), background: config.brand.colors.white}}>
-        {video ? <SourceVideo
+        {id === 'environment' && config.environmentSelector.enabled ? <EnvironmentSelector
+          config={config} frame={holdEnvironment ? 0 : frame}
+          durationInFrames={durationInFrames} width={media.width} height={media.height}
+        /> : video ? <SourceVideo
           {...video} width={media.width} height={media.height}
           durationInFrames={durationInFrames}
           labelStyle={{background: config.brand.colors.ink, color: config.brand.colors.white}}
@@ -166,7 +172,7 @@ const Opening = ({config, durationInFrames}: {config: PaperConfig; durationInFra
   const {margin} = config.layout;
   const width = 1920 - margin * 2 - config.paper.foldWidth;
   return <AbsoluteFill>
-    <ProductScene config={config} timing={{id: 'environment', from: 0, durationInFrames}} />
+    <ProductScene config={config} timing={{id: 'environment', from: 0, durationInFrames}} holdEnvironment />
     <Paper config={config} box={{x: margin, y: margin, width, height: 1080 - margin * 2}}
       style={{transform: `translateX(${-reveal * 2100}px)`}}>
       <div style={{position: 'absolute', left: 76, top: 64}}>
