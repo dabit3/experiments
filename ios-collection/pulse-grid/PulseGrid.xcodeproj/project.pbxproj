@@ -1,0 +1,440 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1CE6EEFDA258E648F7DD60EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 277F6C412A832C2F0A43777B /* Assets.xcassets */; };
+		283CE2B4D57E6E9598448E4E /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A504A453B4315A853DCFE56 /* ProgressStore.swift */; };
+		3914D1E1D7EA1D0577BDDA45 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30ED5D9AEA68B28E64A9D392 /* GameView.swift */; };
+		51705195D02E8363D9E8DCB4 /* PulseGridApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8037D12AB6138C33D4054F /* PulseGridApp.swift */; };
+		94CFB41B166831A67463E5F6 /* LibraryViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D833CD058DF1FBA5CF57B8 /* LibraryViews.swift */; };
+		A5AB04F7DA630E95920C2AF1 /* CircuitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6C672BCD8D3DC4D027C3458 /* CircuitTests.swift */; };
+		B3736A40BA2C46CA738FFF2B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B273EE2A84165B671800AF /* Theme.swift */; };
+		FCBEA7F9B63937C6DF19A937 /* Circuit.swift in Sources */ = {isa = PBXBuildFile; fileRef = D296B6820FF762E64D9E3BFB /* Circuit.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		51AEE06C0E266046816AA7B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EEAE46674B85F6D2DCE23CF0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 935F7198EF15782A1F615E91;
+			remoteInfo = PulseGrid;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		277F6C412A832C2F0A43777B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		30ED5D9AEA68B28E64A9D392 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		6A504A453B4315A853DCFE56 /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
+		7549DBF1EB8FEA8C7F02D557 /* PulseGridTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PulseGridTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6C73361858E01E79220B445 /* PulseGrid.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = PulseGrid.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D296B6820FF762E64D9E3BFB /* Circuit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circuit.swift; sourceTree = "<group>"; };
+		D6C672BCD8D3DC4D027C3458 /* CircuitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircuitTests.swift; sourceTree = "<group>"; };
+		D6D833CD058DF1FBA5CF57B8 /* LibraryViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryViews.swift; sourceTree = "<group>"; };
+		EA8037D12AB6138C33D4054F /* PulseGridApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PulseGridApp.swift; sourceTree = "<group>"; };
+		F197EB868A7FE81270AD8669 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F7B273EE2A84165B671800AF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		10A830EBEBA1AE45AF160B01 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B6C73361858E01E79220B445 /* PulseGrid.app */,
+				7549DBF1EB8FEA8C7F02D557 /* PulseGridTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A670823EF24A434EBFA80C2B /* PulseGrid */ = {
+			isa = PBXGroup;
+			children = (
+				277F6C412A832C2F0A43777B /* Assets.xcassets */,
+				D296B6820FF762E64D9E3BFB /* Circuit.swift */,
+				30ED5D9AEA68B28E64A9D392 /* GameView.swift */,
+				F197EB868A7FE81270AD8669 /* Info.plist */,
+				D6D833CD058DF1FBA5CF57B8 /* LibraryViews.swift */,
+				6A504A453B4315A853DCFE56 /* ProgressStore.swift */,
+				EA8037D12AB6138C33D4054F /* PulseGridApp.swift */,
+				F7B273EE2A84165B671800AF /* Theme.swift */,
+			);
+			path = PulseGrid;
+			sourceTree = "<group>";
+		};
+		A84948ABE1BE24DD26C5BC9B /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				D6C672BCD8D3DC4D027C3458 /* CircuitTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		E15B75497E34E194E523B57D = {
+			isa = PBXGroup;
+			children = (
+				A670823EF24A434EBFA80C2B /* PulseGrid */,
+				A84948ABE1BE24DD26C5BC9B /* Tests */,
+				10A830EBEBA1AE45AF160B01 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		868A9118C4AFF937AB2E057A /* PulseGridTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 694B965F33B168510B9BCB3C /* Build configuration list for PBXNativeTarget "PulseGridTests" */;
+			buildPhases = (
+				66073BE6798F90382698B3CF /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				528E46EC2A8E7528875D6452 /* PBXTargetDependency */,
+			);
+			name = PulseGridTests;
+			packageProductDependencies = (
+			);
+			productName = PulseGridTests;
+			productReference = 7549DBF1EB8FEA8C7F02D557 /* PulseGridTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		935F7198EF15782A1F615E91 /* PulseGrid */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2ED6607CBDC0859BBF706222 /* Build configuration list for PBXNativeTarget "PulseGrid" */;
+			buildPhases = (
+				884EAED9604662AB870A2A7C /* Sources */,
+				4AF9EDD09661FBB3CC09C14A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PulseGrid;
+			packageProductDependencies = (
+			);
+			productName = PulseGrid;
+			productReference = B6C73361858E01E79220B445 /* PulseGrid.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EEAE46674B85F6D2DCE23CF0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 0F02A6794C77B7B35995DD97 /* Build configuration list for PBXProject "PulseGrid" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = E15B75497E34E194E523B57D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 10A830EBEBA1AE45AF160B01 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				935F7198EF15782A1F615E91 /* PulseGrid */,
+				868A9118C4AFF937AB2E057A /* PulseGridTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4AF9EDD09661FBB3CC09C14A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CE6EEFDA258E648F7DD60EA /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		66073BE6798F90382698B3CF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5AB04F7DA630E95920C2AF1 /* CircuitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		884EAED9604662AB870A2A7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCBEA7F9B63937C6DF19A937 /* Circuit.swift in Sources */,
+				3914D1E1D7EA1D0577BDDA45 /* GameView.swift in Sources */,
+				94CFB41B166831A67463E5F6 /* LibraryViews.swift in Sources */,
+				283CE2B4D57E6E9598448E4E /* ProgressStore.swift in Sources */,
+				51705195D02E8363D9E8DCB4 /* PulseGridApp.swift in Sources */,
+				B3736A40BA2C46CA738FFF2B /* Theme.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		528E46EC2A8E7528875D6452 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 935F7198EF15782A1F615E91 /* PulseGrid */;
+			targetProxy = 51AEE06C0E266046816AA7B2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		12C8409F41278E4B2B12AD19 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.PulseGridTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PulseGrid.app/PulseGrid";
+			};
+			name = Debug;
+		};
+		6E9A4FA2C435587B14950580 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PulseGrid/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pulse Grid";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.pulsegrid;
+				PRODUCT_NAME = PulseGrid;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		711583D176CA1A971CB5E622 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		AE1CB1746D2782C6843EA896 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B9D46B27748423F96D622D81 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.PulseGridTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PulseGrid.app/PulseGrid";
+			};
+			name = Release;
+		};
+		BEDEA3BF4F6F1F242A77FCCB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PulseGrid/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pulse Grid";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nader.pulsegrid;
+				PRODUCT_NAME = PulseGrid;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0F02A6794C77B7B35995DD97 /* Build configuration list for PBXProject "PulseGrid" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE1CB1746D2782C6843EA896 /* Debug */,
+				711583D176CA1A971CB5E622 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2ED6607CBDC0859BBF706222 /* Build configuration list for PBXNativeTarget "PulseGrid" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BEDEA3BF4F6F1F242A77FCCB /* Debug */,
+				6E9A4FA2C435587B14950580 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		694B965F33B168510B9BCB3C /* Build configuration list for PBXNativeTarget "PulseGridTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				12C8409F41278E4B2B12AD19 /* Debug */,
+				B9D46B27748423F96D622D81 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EEAE46674B85F6D2DCE23CF0 /* Project object */;
+}
