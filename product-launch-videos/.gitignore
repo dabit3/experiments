@@ -1,0 +1,9 @@
+node_modules/
+public/assets/*
+public/renders/
+out/
+dist/
+.cache/
+__pycache__/
+*.tsbuildinfo
+.DS_Store

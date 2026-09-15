@@ -1,0 +1,19 @@
+@font-face {
+  font-family: nbInternationalPro;
+  src: url('/assets/NBInternationalPro-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: block;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #f7f6f5; color: #191919; font-family: nbInternationalPro; }
+main { max-width: 1920px; margin: auto; padding: 48px; }
+header { margin-bottom: 48px; }
+h1 { font-weight: 400; font-size: 64px; letter-spacing: -0.0266em; margin: 24px 0; }
+h2 { font-weight: 400; font-size: 28px; }
+p { line-height: 1.4; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 720px), 1fr)); gap: 48px; }
+article { min-width: 0; padding-bottom: 24px; border-bottom: 1px solid #191919; }
+details { padding: 16px 0; }
+summary { cursor: pointer; }
+pre { overflow: auto; max-height: 320px; font-size: 12px; }
+@media (max-width: 800px) { main { padding: 20px; } h1 { font-size: 40px; } }

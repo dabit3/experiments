@@ -1,0 +1,356 @@
+{
+  "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png": {
+    "bytes": 54779,
+    "file": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "height": 1024,
+    "kind": "image",
+    "sha256": "bc4d65fd9f080ef10372e36987dde651444fd4a621d8092ec9f02f5a4e41980f",
+    "width": 2984
+  },
+  "DEVIN_AVATAR_SQUARE_BLACK_NO_BG.png": {
+    "bytes": 18866,
+    "file": "DEVIN_AVATAR_SQUARE_BLACK_NO_BG.png",
+    "height": 1024,
+    "kind": "image",
+    "sha256": "846fd00f248997d0534e31ba92000c44ba2ceb74b279c09bb3409c2d37e3aa10",
+    "width": 1024
+  },
+  "DEVIN_AVATAR_SQUARE_WHITE_NO_BG.png": {
+    "bytes": 18665,
+    "file": "DEVIN_AVATAR_SQUARE_WHITE_NO_BG.png",
+    "height": 1024,
+    "kind": "image",
+    "sha256": "b35d22d3d517a15f272c5d18ba772a3c07187085f38e3145191e159919f02c39",
+    "width": 1024
+  },
+  "DEVIN_LOCKUP_HORIZONTAL_WHITE_TRANSPARENT.png": {
+    "bytes": 58673,
+    "file": "DEVIN_LOCKUP_HORIZONTAL_WHITE_TRANSPARENT.png",
+    "height": 1024,
+    "kind": "image",
+    "sha256": "b3176322b4aaaeaed4307e2f45d66e980f153eb634265e07184204a4f327031b",
+    "width": 2984
+  },
+  "GeistMono-Regular.woff2": {
+    "bytes": 29440,
+    "file": "GeistMono-Regular.woff2",
+    "kind": "font",
+    "sha256": "d36b33c5a832621b5c8789c9726f58bb5c88c3c2aeadd9dcd2a417b57659b80f"
+  },
+  "NBInternationalPro-Light.woff2": {
+    "bytes": 40980,
+    "file": "NBInternationalPro-Light.woff2",
+    "kind": "font",
+    "sha256": "f9e598bd09bef05fd3c5e5d5b652cae512171b587b59e912039640db77d36868"
+  },
+  "NBInternationalPro-Regular.woff2": {
+    "bytes": 34848,
+    "file": "NBInternationalPro-Regular.woff2",
+    "kind": "font",
+    "sha256": "bb76dd8aff795128103a9b82ae0dcc24b89b52690ec15d739d01e8d8d7589b25"
+  },
+  "agent-selector-cloud.mp4": {
+    "bytes": 550897,
+    "durationSeconds": 9.166667,
+    "file": "agent-selector-cloud.mp4",
+    "fps": 30.0,
+    "frameCount": 275,
+    "height": 1080,
+    "kind": "video",
+    "sha256": "a4e4730e46a1262ddb5ccc55005278433472dbbe0029d87bb52eefce6dc01b61",
+    "width": 1918
+  },
+  "brand-reference.md": {
+    "bytes": 4041,
+    "file": "brand-reference.md",
+    "kind": "document",
+    "sha256": "164b0c5c8ab5f7269cd9cdb7a5360d30dde676ab805a5287d6fe12e9f9f9d324"
+  },
+  "devin-cli-1.png": {
+    "bytes": 838546,
+    "file": "devin-cli-1.png",
+    "height": 2122,
+    "kind": "image",
+    "sha256": "5853ef0dd317aa28159b51bcde53ce56bd39857071e6424e276dcc822b3f8b9e",
+    "width": 3130
+  },
+  "devin-cli-2.png": {
+    "bytes": 798527,
+    "file": "devin-cli-2.png",
+    "height": 2122,
+    "kind": "image",
+    "sha256": "d7cefa8e2128ddc6ae2b171456d2ff2070ad9add040ee1d340570c6c3c3098a0",
+    "width": 3130
+  },
+  "devin-cli-3.png": {
+    "bytes": 653645,
+    "file": "devin-cli-3.png",
+    "height": 2122,
+    "kind": "image",
+    "sha256": "8e09372f7f21c9adcef6a095b3a635ebca68c5b8266ebe310ec355a3772fb12e",
+    "width": 3130
+  },
+  "devin-desktop-1.png": {
+    "bytes": 630961,
+    "file": "devin-desktop-1.png",
+    "height": 1858,
+    "kind": "image",
+    "sha256": "1f300f8724dc539db09cf296e55fb8546fab084179d81ccbb930741ed898daa5",
+    "width": 2626
+  },
+  "devin-desktop-2.png": {
+    "bytes": 759710,
+    "file": "devin-desktop-2.png",
+    "height": 1858,
+    "kind": "image",
+    "sha256": "7565ca2a709c255fc4a9d33d76da93e7be3bd916106ac074f63f19171763ca79",
+    "width": 2626
+  },
+  "devin-desktop-3.png": {
+    "bytes": 828882,
+    "file": "devin-desktop-3.png",
+    "height": 1858,
+    "kind": "image",
+    "sha256": "f5d9d3c0fc893adbdd8f29a3a667863f290cdcc3ea509f3f9019ebd942b37796",
+    "width": 2626
+  },
+  "devin-desktop-4.png": {
+    "bytes": 807854,
+    "file": "devin-desktop-4.png",
+    "height": 1858,
+    "kind": "image",
+    "sha256": "854fc9fe201ced9081a4c4ce034a3eb74e7b4827a61f5a9343d19683e95cc531",
+    "width": 2626
+  },
+  "devin-desktop-5.png": {
+    "bytes": 1066591,
+    "file": "devin-desktop-5.png",
+    "height": 1858,
+    "kind": "image",
+    "sha256": "c3ae0323d8bd447cf5fa546a2de32226f1d3d6ea16012214ffbdebcb1694047e",
+    "width": 2626
+  },
+  "devin-desktop-6.png": {
+    "bytes": 760276,
+    "file": "devin-desktop-6.png",
+    "height": 1858,
+    "kind": "image",
+    "sha256": "6ff6d5f9056aa8cf4df16be1d838d52ea1eed665b3a018a81c50ac5a993c8e90",
+    "width": 2626
+  },
+  "devin-desktop-7.png": {
+    "bytes": 968995,
+    "file": "devin-desktop-7.png",
+    "height": 1858,
+    "kind": "image",
+    "sha256": "e02ed45006c3c7a6f193501d5cdc8efdc64f1e4d112eb3b47bf34be846863758",
+    "width": 2626
+  },
+  "devin-desktop-8.png": {
+    "bytes": 829045,
+    "file": "devin-desktop-8.png",
+    "height": 1938,
+    "kind": "image",
+    "sha256": "5026f10614c7e138e9dba6f9ec73aceb5bfc6f23f6ee643d9a88543027d0c1e4",
+    "width": 2790
+  },
+  "devin-desktop-9.png": {
+    "bytes": 1612717,
+    "file": "devin-desktop-9.png",
+    "height": 1898,
+    "kind": "image",
+    "sha256": "dd90344ba832a1f7d72c78788aec66693de58b3a7c05f66bbb659cbe796f8c54",
+    "width": 3024
+  },
+  "devin-testing-2.mp4": {
+    "bytes": 13179993,
+    "durationSeconds": 59.133333,
+    "file": "devin-testing-2.mp4",
+    "fps": 30.0,
+    "frameCount": 1774,
+    "height": 1080,
+    "kind": "video",
+    "sha256": "ee3a552f2ae278e816ecb87f28a43f6da09bc5e189565c6aa4a5332214289891",
+    "width": 1918
+  },
+  "devin-web-1.png": {
+    "bytes": 144505,
+    "file": "devin-web-1.png",
+    "height": 1624,
+    "kind": "image",
+    "sha256": "c050d677ba39834bc45e447ed988fa81a698a9d6762394969f389444c1e7c539",
+    "width": 2990
+  },
+  "devin-web-10.png": {
+    "bytes": 1057175,
+    "file": "devin-web-10.png",
+    "height": 1624,
+    "kind": "image",
+    "sha256": "813fee2acf3a6ec4d0e8694e33cbc0ea2f23102db3b40f0c1115b96d97da1bb7",
+    "width": 2990
+  },
+  "devin-web-11.png": {
+    "bytes": 1022130,
+    "file": "devin-web-11.png",
+    "height": 1630,
+    "kind": "image",
+    "sha256": "b605a0429f46c6d738127a397fcf84d2d086dcdeec29ea042d0bcfa3cd5d201a",
+    "width": 2986
+  },
+  "devin-web-12.png": {
+    "bytes": 1319591,
+    "file": "devin-web-12.png",
+    "height": 1622,
+    "kind": "image",
+    "sha256": "8f10824018b3133d32533c96e7d5bca56f0b098054604e452977db414397e574",
+    "width": 2978
+  },
+  "devin-web-13.png": {
+    "bytes": 445110,
+    "file": "devin-web-13.png",
+    "height": 1620,
+    "kind": "image",
+    "sha256": "89022f2a294364c1511d943ae3c59cb64feb3cc278eefd73bb8d21f770c99820",
+    "width": 2982
+  },
+  "devin-web-14.png": {
+    "bytes": 2586730,
+    "file": "devin-web-14.png",
+    "height": 1626,
+    "kind": "image",
+    "sha256": "f43fec8872884c8f71d4f530168ef9d72120bdcbfb8335edda7f22027696cc56",
+    "width": 2986
+  },
+  "devin-web-15.png": {
+    "bytes": 280122,
+    "file": "devin-web-15.png",
+    "height": 1628,
+    "kind": "image",
+    "sha256": "4a5aa709bf8bb5ef383eef4096e7bda242ddbc50b2890b07e3b51c81eae7ed18",
+    "width": 2984
+  },
+  "devin-web-16.png": {
+    "bytes": 377772,
+    "file": "devin-web-16.png",
+    "height": 1632,
+    "kind": "image",
+    "sha256": "50cde1c71809f9669a75dbe5438f4cc3f39d4a6fb6fed5dd4d8d450a730acd87",
+    "width": 2984
+  },
+  "devin-web-17.png": {
+    "bytes": 936568,
+    "file": "devin-web-17.png",
+    "height": 1620,
+    "kind": "image",
+    "sha256": "86ee451077f33aca6f011805fa297b5ef08ded4084cf73770b1c1cd9c256deb8",
+    "width": 2978
+  },
+  "devin-web-18.png": {
+    "bytes": 1170937,
+    "file": "devin-web-18.png",
+    "height": 1626,
+    "kind": "image",
+    "sha256": "f7a78bb52a98f2e7e75e73ae288273780c259bdb1283f590790a7fdb5349f20e",
+    "width": 2978
+  },
+  "devin-web-19.png": {
+    "bytes": 1100570,
+    "file": "devin-web-19.png",
+    "height": 1626,
+    "kind": "image",
+    "sha256": "518d41651b6d142526566e003546277697e131ad517c4dff3dc45cac07c3e57b",
+    "width": 2982
+  },
+  "devin-web-2.png": {
+    "bytes": 219510,
+    "file": "devin-web-2.png",
+    "height": 1622,
+    "kind": "image",
+    "sha256": "445a906fe71b211731d18f450ecfe5d0591a6820df6377746b330351c3fe013a",
+    "width": 2986
+  },
+  "devin-web-3.png": {
+    "bytes": 276411,
+    "file": "devin-web-3.png",
+    "height": 1620,
+    "kind": "image",
+    "sha256": "7f72d7610b05dc923e85cb55ed9154fd8b6fdae17ff1ee9adf2aabf9801c4a7b",
+    "width": 2986
+  },
+  "devin-web-4.png": {
+    "bytes": 172433,
+    "file": "devin-web-4.png",
+    "height": 1622,
+    "kind": "image",
+    "sha256": "239b824b41ba57efe63954172bff511edc2428eb22ab6050b7870a2c62702209",
+    "width": 2988
+  },
+  "devin-web-5.png": {
+    "bytes": 217074,
+    "file": "devin-web-5.png",
+    "height": 1624,
+    "kind": "image",
+    "sha256": "5ff54e5aec963c702e208729707c2f216e7d1e39a07924038c018d8ee73ab40f",
+    "width": 2988
+  },
+  "devin-web-6.png": {
+    "bytes": 210883,
+    "file": "devin-web-6.png",
+    "height": 1620,
+    "kind": "image",
+    "sha256": "f064b1925dd12938f752a5242eaa4e9dbaef7ac72ba72e2d249780450147e6e0",
+    "width": 2982
+  },
+  "devin-web-7.png": {
+    "bytes": 295648,
+    "file": "devin-web-7.png",
+    "height": 1616,
+    "kind": "image",
+    "sha256": "37d324dff7d37dd0173bb8395cb349ffd62310f549964cde61ba069f3839b157",
+    "width": 2980
+  },
+  "devin-web-8.png": {
+    "bytes": 526380,
+    "file": "devin-web-8.png",
+    "height": 1618,
+    "kind": "image",
+    "sha256": "1b7c0f0f965f33963724fb3551ce02d7fc12ccbe6a82ce436cc058543a91126c",
+    "width": 2990
+  },
+  "devin-web-9.png": {
+    "bytes": 698413,
+    "file": "devin-web-9.png",
+    "height": 1628,
+    "kind": "image",
+    "sha256": "2a4619f322f9b869291addd35b64ba6b5f2949fee2243301e46583387dd29ad8",
+    "width": 2988
+  },
+  "figma-cloud-hero.png": {
+    "bytes": 89752,
+    "file": "figma-cloud-hero.png",
+    "height": 906,
+    "kind": "image",
+    "sha256": "0ea997608bda04749895e59e287931deaab43a3121bb7b52e884d43a0b218fc6",
+    "width": 1440
+  },
+  "figma-cloud.png": {
+    "bytes": 158602,
+    "file": "figma-cloud.png",
+    "height": 1800,
+    "kind": "image",
+    "sha256": "6232ce37912b99283528f70b1a7c3b4e29a06f72b1ac6de539322753986d89d4",
+    "width": 377
+  },
+  "pasted-1789430547875.txt": {
+    "bytes": 24856,
+    "file": "pasted-1789430547875.txt",
+    "kind": "document",
+    "sha256": "7c782e0c6e85e085d597817388cc4b9e7a412a86e28ffe0fc870f08e29f90958"
+  },
+  "production-brief.md": {
+    "bytes": 9566,
+    "file": "production-brief.md",
+    "kind": "document",
+    "sha256": "9a7ce713bcec990bd7fec35c274d39739041cc0d32db70b3397b05f844259111"
+  }
+}
