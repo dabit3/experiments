@@ -1,29 +1,32 @@
 ---
 name: motion-native-e2e
-description: Run and record the native macOS Motion SIGNAL demonstration with a live source-and-results sidecar, genuine AX/Quartz input, and saved/exported artifact checks.
+description: Test native macOS Motion through real AX/Quartz input and deliver Devin's built-in processed, annotated testing recording with the live script beside the app.
 ---
 
 # Native Motion testing
 
-Use `creative-suite/demos/motion/README.md` and `TEST_PLAN.md` as the tested
-workflow. This harness targets an unlocked 1600×1200 macOS desktop, not a
-browser. The static artwork is disclosed; GUI actions create the animation.
+Use `creative-suite/demos/motion/README.md` and `TEST_PLAN.md` for the native
+layout and GUI assertions. The harness targets an unlocked 1600×1200 macOS
+desktop. The seed artwork is disclosed; real GUI actions create the animation.
 
 ## Devin Secrets Needed
 
 None. Accessibility and Screen Recording permissions are local OS grants.
 
-## Important setup details
+## Setup
 
-- Package into a new persistent `DEVIN_DIST` directory. Never rebuild over a
-  running app. Stop the passive sidecar before recompiling its executable.
+- Package into a persistent `DEVIN_DIST`; never overwrite a running app.
+  Compile helpers into a fresh directory, or stop their old processes first.
 - Compile `NativeInput.swift` and `ScriptViewer.swift` with `swiftc`; no
   third-party Swift packages or Python Quartz module are needed.
-- Wait for the native project window before arranging it. A launch may create
-  an unused default sample window; close only that known sample.
-- A newly opened project resets splitters and panel expansion. Restore the
-  documented layout and confirm the static seed before running the driver.
-- Use fresh output paths to avoid unhandled replacement prompts.
+- Confirm AX trust, screen-capture access, the exact display size, and a
+  visible fresh seed window before executing.
+- Closing the last Motion window may terminate the app. Wait for shutdown
+  before reopening, rather than assuming an immediate open command succeeded.
+- Close only a known unused sample window, never an unrelated document.
+- Freshly opened projects reset splitters and panel disclosures. Restore the
+  documented layout and use fresh save/export paths.
+- Dismiss OS notifications before recording; keep both panels unobscured.
 
 ## Native input pitfalls
 
@@ -38,16 +41,28 @@ None. Accessibility and Screen Recording permissions are local OS grants.
 - For native Save As, wait for `saveAsNameTextField`; after Cmd-Shift-G wait
   for `PathTextField`. Enter the parent folder and filename separately.
 
-## Evidence
+## Devin testing replay and evidence
 
-- The sidecar must show actual source/current line and only observed results.
-- Record continuously with the pointer visible, and annotate meaningful
-  assertions. Capture a screenshot while the scrub mouse button is held.
+- Use `test_mode` planning, then execution with the test-plan path.
+- Use `recording_start(hide_cursor=false)`, `annotate_recording`, and
+  `recording_stop`. This is the documented built-in testing-recording
+  workflow; do not require a separate replay registration API.
+- Put the real Motion app left and the actual executing source/results right.
+  The custom sidecar is a visual aid within the recorded desktop.
+- Pause the GUI action script at meaningful checkpoints when needed to align
+  built-in annotations with the state still visible on screen. Preserve actual
+  source/current-line reporting and observed-only assertions.
+- Annotate test starts before their actions and assertions only after checks.
+  Capture a scrub checkpoint while the mouse button remains held.
+- Deliver the processed testing result returned by `recording_stop`, together
+  with its recording ID. Keep annotation metadata and raw files as backup.
+  Do not substitute a raw concatenation, custom web report, or exported
+  animation for the requested testing result.
+- Inspect the processed video itself: decode the whole file, check annotation
+  timestamps, and inspect full-size frames for readable source, correct state,
+  coherent flow, and unobscured app/sidecar. Built-in speed adjustments are
+  expected; a shorter processed duration is not itself a processing failure.
 - Inspect saved JSON read-only and decode the whole rendered movie. Metadata
   alone does not prove varying frames or successful complete decoding.
-- Inspect output duration: automatic recording cuts may be much shorter than
-  the real run. Retain raw segments and create a natural-speed continuous MP4
-  when required. Normalize segment-boundary timestamps rather than speeding
-  through edits. Inspect full-size frames for legibility and panel visibility.
-- Leave the real Motion app running visibly with final playback.
+- Leave the real app visible with final playback after video inspection.
 - Report UI/harness workarounds and untested scope; do not claim Adobe parity.

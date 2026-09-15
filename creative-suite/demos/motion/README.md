@@ -9,9 +9,9 @@ back only for assertions.
 source, current line, process ID, elapsed time and observed results. A failed
 assertion stops the harness and displays FAIL. The app remains visible.
 
-This is a local native automation harness and recording workflow. The sidecar
-is not Devin's built-in native test replay, and this harness does not register
-a replay with Devin.
+Use this harness with Devin's built-in testing mode and recording tools.
+The sidecar is a visual aid within the recorded desktop; the testing result
+is the processed, annotated recording returned by Devin.
 
 ## Requirements
 
@@ -83,20 +83,18 @@ Outputs: `SIGNAL.devin`, `SIGNAL-render.mp4`, `live-state.json`, per-step
 screenshots, three graph screenshots, `held-scrub.png`, `final-desktop.png`.
 The exported animation is **not** the desktop recording.
 
-Inspect the recording at full resolution. Some recording tooling creates a
-short automatic cut; check its duration rather than assuming it is continuous.
-Retain the raw segments and, if needed, concatenate them without editorial
-cuts or speed changes, normalizing duplicate segment-boundary timestamps:
+In Devin, use testing mode for planning and execution, then `recording_start`
+with the cursor visible, `annotate_recording` at meaningful checkpoints,
+and `recording_stop`. Annotate test starts before actions and assertion
+results after observing them. Keep the actual script and current state
+visible while recording each checkpoint.
 
-```sh
-ffmpeg -f concat -safe 0 -i continuous-recording.txt -vf fps=15 \
-  -c:v libx264 -preset fast -crf 16 -pix_fmt yuv420p -movflags +faststart \
-  SIGNAL-screen-recording.mp4
-```
-
-The concat list must contain the actual raw segment paths in chronological
-order. Use the capture's actual frame rate, not an assumed 15 fps on other
-machines. Preserve the annotation JSON and raw files.
+Deliver the processed testing recording returned by `recording_stop`.
+Built-in speed adjustments can make it much shorter than the real run.
+Inspect that processed result at full resolution and decode it completely:
+both panels must stay readable and the demonstrated flow must remain coherent.
+Retain raw segments and annotation metadata as backup. Do not replace the
+testing result with the animation export or a manually concatenated recording.
 
 ## Harness and artifact checks
 
