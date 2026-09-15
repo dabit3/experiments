@@ -1,0 +1,16 @@
+Unhandled exception:
+SocketException: Failed to create server socket (OS Error: Address already in use, errno = 48), address = 0.0.0.0, port = 8765
+#0      _NativeSocket.bind (dart:io-patch/socket_patch.dart:1248:7)
+<asynchronous suspension>
+#1      _RawServerSocket.bind.<anonymous closure> (dart:io-patch/socket_patch.dart:2195:12)
+<asynchronous suspension>
+#2      _ServerSocket.bind.<anonymous closure> (dart:io-patch/socket_patch.dart:2515:12)
+<asynchronous suspension>
+#3      _HttpServer.bind.<anonymous closure> (dart:_http/http_impl.dart:3479:24)
+<asynchronous suspension>
+#4      serve (package:shelf/shelf_io.dart:62:16)
+<asynchronous suspension>
+#5      GambitCourtServer.start (package:gambit_court_server/src/server.dart:94:13)
+<asynchronous suspension>
+#6      main (file:///Users/devin/repos/experiments/gambit-court/server/bin/server.dart:58:3)
+<asynchronous suspension>

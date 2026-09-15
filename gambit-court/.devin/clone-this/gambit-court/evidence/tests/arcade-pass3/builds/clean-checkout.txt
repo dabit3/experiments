@@ -1,0 +1,182 @@
+Clean detached checkout: e32b2282c49549cad700457e173e58a9068ed9f6
+sha256:98257eae21b750008b86eec9ec737c66267d2ac43234cedd932636ffc376389b
+Resolving dependencies...
+Downloading packages...
+  lints 5.1.1 (6.1.0 available)
+Got dependencies!
+1 package has newer versions incompatible with dependency constraints.
+Try `dart pub outdated` for more information.
+Analyzing gambit_court_core...
+No issues found!
+00:00 +0: loading test/rules_test.dart
+00:00 +0: test/rules_test.dart: FEN round-trips the start position
+00:00 +1: test/rules_test.dart: FEN rejects malformed input
+00:00 +2: test/rules_test.dart: perft (well-known reference node counts) start position
+00:00 +3: test/rules_test.dart: perft (well-known reference node counts) kiwipete covers castling, en passant, promotions, and checks
+00:00 +4: test/rules_test.dart: perft (well-known reference node counts) position 3 (rook and pawn endgame with en passant)
+00:00 +5: test/rules_test.dart: perft (well-known reference node counts) position 4 (promotions and castling into check)
+00:00 +6: test/rules_test.dart: perft (well-known reference node counts) position 5
+00:00 +7: test/rules_test.dart: special moves castling moves the rook and clears rights
+00:00 +8: test/rules_test.dart: special moves castling is illegal through check
+00:00 +9: test/rules_test.dart: special moves en passant removes the captured pawn
+00:00 +10: test/rules_test.dart: special moves promotion requires an explicit piece over the wire
+00:00 +11: test/rules_test.dart: game end detection fools mate is checkmate
+00:00 +12: test/rules_test.dart: game end detection stalemate
+00:00 +13: test/rules_test.dart: game end detection insufficient material
+00:00 +14: test/rules_test.dart: game end detection mating material for the timeout rule
+00:00 +15: test/rules_test.dart: game end detection threefold repetition ends the game
+00:00 +16: test/rules_test.dart: game end detection fifty-move rule
+00:00 +17: test/rules_test.dart: game end detection takeback reopens a finished game
+00:00 +18: test/rules_test.dart: SAN disambiguates by file, rank, and square
+00:00 +19: test/rules_test.dart: SAN parses checks, captures, and promotions
+00:00 +20: test/rules_test.dart: PGN export then import reproduces the game
+00:00 +21: test/rules_test.dart: PGN import tolerates comments, variations, NAGs, and results
+00:00 +22: test/rules_test.dart: PGN import reports the first illegal move
+00:00 +23: test/rules_test.dart: engine finds mate in one
+00:00 +24: test/rules_test.dart: engine is deterministic for a fixed seed
+00:00 +25: test/rules_test.dart: engine takes free material
+00:00 +26: test/rules_test.dart: time control categories and labels
+00:00 +27: All tests passed!
+Resolving dependencies...
+Downloading packages...
+  lints 5.1.1 (6.1.0 available)
+Got dependencies!
+1 package has newer versions incompatible with dependency constraints.
+Try `dart pub outdated` for more information.
+Analyzing server...
+No issues found!
+00:00 +0: loading test/server_test.dart
+00:00 +0: test/server_test.dart: two players and two spectators converge on the same state
+00:00 +1: test/server_test.dart: illegal, out-of-turn and spectator moves are rejected
+00:00 +2: test/server_test.dart: bot fills a room, replies deterministically, and accepts takebacks
+00:00 +3: test/server_test.dart: quick pair matches two waiting clients with the same time control
+00:00 +4: test/server_test.dart: a disconnected player can reconnect and resume
+00:00 +5: test/server_test.dart: flag falls when the running clock hits zero
+00:00 +6: All tests passed!
+Resolving dependencies...
+Downloading packages...
+  code_assets 1.2.1 (2.0.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  objective_c 9.5.0 (9.6.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+8 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Resolving dependencies...
+Downloading packages...
+  code_assets 1.2.1 (2.0.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  objective_c 9.5.0 (9.6.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+8 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing app...                                                
+No issues found! (ran in 3.2s)
+Resolving dependencies...
+Downloading packages...
+  code_assets 1.2.1 (2.0.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  objective_c 9.5.0 (9.6.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+8 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+00:00 +0: loading /Users/devin/gcx/arcade-clean-pass3/gambit-court/app/test/chess_board_test.dart
+00:00 +0: /Users/devin/gcx/arcade-clean-pass3/gambit-court/app/test/clock_display_test.dart: a running clock extrapolates from the snapshot time
+00:00 +1: /Users/devin/gcx/arcade-clean-pass3/gambit-court/app/test/chess_board_test.dart: renders all 32 pieces of the initial position
+00:00 +2: /Users/devin/gcx/arcade-clean-pass3/gambit-court/app/test/chess_board_test.dart: renders all 32 pieces of the initial position
+00:00 +3: /Users/devin/gcx/arcade-clean-pass3/gambit-court/app/test/chess_board_test.dart: renders all 32 pieces of the initial position
+00:00 +4: /Users/devin/gcx/arcade-clean-pass3/gambit-court/app/test/chess_board_test.dart: tapping a square reports its index for either orientation
+00:00 +5: /Users/devin/gcx/arcade-clean-pass3/gambit-court/app/test/chess_board_test.dart: light and dark themes both lay out without overflow
+00:00 +6: All tests passed!
+Formatted 37 files (0 changed) in 0.12 seconds.
+All checks passed!
+
+added 1 package, and audited 2 packages in 904ms
+
+found 0 vulnerabilities
+Resolving dependencies...
+Downloading packages...
+  code_assets 1.2.1 (2.0.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  objective_c 9.5.0 (9.6.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+8 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Compiling lib/main.dart for the Web...                          
+Wasm dry run succeeded. Consider building and testing your application with the `--wasm` flag. See docs for more info: https://docs.flutter.dev/platform-integration/web/wasm
+Use --no-wasm-dry-run to disable these warnings.
+Expected to find fonts for (MaterialIcons, packages/cupertino_icons/CupertinoIcons), but found (MaterialIcons). This usually means you are referring to font families in an IconData class but not including them in the assets section of your pubspec.yaml, are missing the package that would include them, or are missing "uses-material-design: true".
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 13076 bytes (99.2% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Compiling lib/main.dart for the Web...                             19.1s
+✓ Built build/web
+Resolving dependencies...
+Downloading packages...
+  code_assets 1.2.1 (2.0.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  objective_c 9.5.0 (9.6.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+8 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Building macOS application...                                   
+warning: Run script build phase 'Run Script' will be run during every build because it does not specify any outputs. To address this issue, either add output dependencies to the script phase, or configure it to run in every build by unchecking "Based on dependency analysis" in the script phase. (in target 'Flutter Assemble' from project 'Runner')
+✓ Built build/macos/Build/Products/Release/Gambit Court.app (48.0MB)
+Resolving dependencies...
+Downloading packages...
+  code_assets 1.2.1 (2.0.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  objective_c 9.5.0 (9.6.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+8 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Building dev.gambitcourt.gambitCourt for simulator (ios)...
+Running Xcode build...                                          
+Xcode build done.                                           39.5s
+✓ Built build/ios/iphonesimulator/Runner.app
+Resolving dependencies...
+Downloading packages...
+  code_assets 1.2.1 (2.0.0 available)
+  hooks 2.0.2 (2.2.0 available)
+  material_color_utilities 0.13.0 (0.13.1 available)
+  meta 1.18.3 (1.19.0 available)
+  objective_c 9.5.0 (9.6.0 available)
+  record_use 0.6.0 (1.1.1 available)
+  test_api 0.7.12 (0.7.14 available)
+  vector_math 2.4.0 (2.4.2 available)
+Got dependencies!
+8 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleRelease'...                        
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 6992 bytes (99.6% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Running Gradle task 'assembleRelease'...                           61.9s
+✓ Built build/app/outputs/flutter-apk/app-release.apk (55.3MB)
+
+ALL CLEAN-CHECKOUT CHECKS AND FOUR BUILDS PASSED

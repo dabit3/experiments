@@ -1,0 +1,54 @@
+{
+  "method": "WCAG relative luminance, token colors only; excludes translucent overlays, imagery and disabled controls",
+  "results": [
+    {
+      "label": "primary button",
+      "foreground": "101B46",
+      "background": "FFD34D",
+      "contrast": 11.582,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark body on raised surface",
+      "foreground": "F6F8FF",
+      "background": "203465",
+      "contrast": 11.37,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark secondary on raised surface",
+      "foreground": "BBC9EB",
+      "background": "203465",
+      "contrast": 7.278,
+      "normal_text_aa": true
+    },
+    {
+      "label": "dark faint on raised surface",
+      "foreground": "8FA4D1",
+      "background": "203465",
+      "contrast": 4.825,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light body",
+      "foreground": "101B46",
+      "background": "F8FAFF",
+      "contrast": 15.869,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light secondary",
+      "foreground": "4E638A",
+      "background": "F8FAFF",
+      "contrast": 5.786,
+      "normal_text_aa": true
+    },
+    {
+      "label": "light faint",
+      "foreground": "60769E",
+      "background": "F8FAFF",
+      "contrast": 4.388,
+      "normal_text_aa": false
+    }
+  ]
+}

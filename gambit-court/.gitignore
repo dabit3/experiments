@@ -1,0 +1,15 @@
+# Node harness
+test/e2e/node_modules/
+test/e2e/window_id
+
+# Dart / Flutter
+.dart_tool/
+build/
+*.iml
+
+# clone-this evidence: the manifest (state.json, events.jsonl) and small JSON
+# results are committed; screenshots, recordings and logs are attached to the
+# PR instead.
+.devin/clone-this/**/*.png
+.devin/clone-this/**/*.mov
+.devin/clone-this/**/*.log
