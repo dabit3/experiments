@@ -1,0 +1,14 @@
+included:
+  - App
+disabled_rules:
+  - identifier_name
+  - trailing_comma
+  - opening_brace
+  - large_tuple
+line_length:
+  warning: 160
+  error: 220
+type_body_length: 650
+file_length: 800
+function_body_length: 150
+cyclomatic_complexity: 30

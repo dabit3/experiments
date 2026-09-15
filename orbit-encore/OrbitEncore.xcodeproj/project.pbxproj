@@ -1,0 +1,341 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		153F53881A21801F81FC8F2A /* OrbitEncoreApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FA7342C538C5C69AC732A97 /* OrbitEncoreApp.swift */; };
+		41A9223F6376D8E423E6D695 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95D631C2EE369BFE04F6BD01 /* Models.swift */; };
+		542482B50725731F0AFD1B3A /* Artwork.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A72F1C735BC0E14726AB74E /* Artwork.xcassets */; };
+		54DED0C43ACBB244032CF310 /* neon.wav in Resources */ = {isa = PBXBuildFile; fileRef = 90D32FABDB665623D1C084EB /* neon.wav */; };
+		AD09CED9CC2EB2B81B29AA99 /* sugar.wav in Resources */ = {isa = PBXBuildFile; fileRef = 404C564ED50AFA522CC6FF35 /* sugar.wav */; };
+		AF9FE9CEAA47159306DF5CDB /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BA46376B821E5593AEBF44C /* AudioEngine.swift */; };
+		B1BA3BF3D3D1DE5A2187208D /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDABAFBF855C0AD91C1790A4 /* GameClient.swift */; };
+		E5C2F1AA22DC65CB78951748 /* charts.json in Resources */ = {isa = PBXBuildFile; fileRef = 6E4E6C55F2E6D503B3048C92 /* charts.json */; };
+		FBC967D795A5D78D1850FA38 /* OrbitScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC773A6649003FFCD49500C /* OrbitScene.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0BA46376B821E5593AEBF44C /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
+		1A72F1C735BC0E14726AB74E /* Artwork.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Artwork.xcassets; sourceTree = "<group>"; };
+		404C564ED50AFA522CC6FF35 /* sugar.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sugar.wav; sourceTree = "<group>"; };
+		5AC773A6649003FFCD49500C /* OrbitScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbitScene.swift; sourceTree = "<group>"; };
+		6E4E6C55F2E6D503B3048C92 /* charts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = charts.json; sourceTree = "<group>"; };
+		90D32FABDB665623D1C084EB /* neon.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = neon.wav; sourceTree = "<group>"; };
+		95D631C2EE369BFE04F6BD01 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		9FA7342C538C5C69AC732A97 /* OrbitEncoreApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbitEncoreApp.swift; sourceTree = "<group>"; };
+		B64C2A489BF9CD4C33E6CE0A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CDABAFBF855C0AD91C1790A4 /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
+		F8485AF553F59E9848F607E7 /* OrbitEncore.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = OrbitEncore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		07A1CE631C9529BE89E7148E /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1A72F1C735BC0E14726AB74E /* Artwork.xcassets */,
+				6E4E6C55F2E6D503B3048C92 /* charts.json */,
+				90D32FABDB665623D1C084EB /* neon.wav */,
+				404C564ED50AFA522CC6FF35 /* sugar.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		332DEFA6E354C83BF43D5B92 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				0BA46376B821E5593AEBF44C /* AudioEngine.swift */,
+				CDABAFBF855C0AD91C1790A4 /* GameClient.swift */,
+				B64C2A489BF9CD4C33E6CE0A /* Info.plist */,
+				95D631C2EE369BFE04F6BD01 /* Models.swift */,
+				9FA7342C538C5C69AC732A97 /* OrbitEncoreApp.swift */,
+				5AC773A6649003FFCD49500C /* OrbitScene.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		BCB821EB8ADCDF5B3D5C1FE6 = {
+			isa = PBXGroup;
+			children = (
+				332DEFA6E354C83BF43D5B92 /* App */,
+				07A1CE631C9529BE89E7148E /* Resources */,
+				DA119BC091E78F6AF94E076F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DA119BC091E78F6AF94E076F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F8485AF553F59E9848F607E7 /* OrbitEncore.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6EA1A8206EA0691032F87454 /* OrbitEncore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C824CD75DB0A709AD2530A71 /* Build configuration list for PBXNativeTarget "OrbitEncore" */;
+			buildPhases = (
+				A58313862C7C087FE7C81021 /* Sources */,
+				8F5E3F63F7DCDF47193D4867 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OrbitEncore;
+			packageProductDependencies = (
+			);
+			productName = OrbitEncore;
+			productReference = F8485AF553F59E9848F607E7 /* OrbitEncore.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B8C46B497C8810E8C0C08BFD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = C37870BCBC2F7B9E9398B900 /* Build configuration list for PBXProject "OrbitEncore" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = BCB821EB8ADCDF5B3D5C1FE6;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = DA119BC091E78F6AF94E076F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6EA1A8206EA0691032F87454 /* OrbitEncore */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8F5E3F63F7DCDF47193D4867 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				542482B50725731F0AFD1B3A /* Artwork.xcassets in Resources */,
+				E5C2F1AA22DC65CB78951748 /* charts.json in Resources */,
+				54DED0C43ACBB244032CF310 /* neon.wav in Resources */,
+				AD09CED9CC2EB2B81B29AA99 /* sugar.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A58313862C7C087FE7C81021 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF9FE9CEAA47159306DF5CDB /* AudioEngine.swift in Sources */,
+				B1BA3BF3D3D1DE5A2187208D /* GameClient.swift in Sources */,
+				41A9223F6376D8E423E6D695 /* Models.swift in Sources */,
+				153F53881A21801F81FC8F2A /* OrbitEncoreApp.swift in Sources */,
+				FBC967D795A5D78D1850FA38 /* OrbitScene.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		42DD8212FB550F2538FCE172 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Orbit Encore";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.orbitencore.ios;
+				PRODUCT_NAME = OrbitEncore;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		514700CBDEE72D593DEB6933 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Orbit Encore";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = games.orbitencore.ios;
+				PRODUCT_NAME = OrbitEncore;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7AC360F1D97072E8F16807AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		7EEBECB70FC6BB8BAA3F3933 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C37870BCBC2F7B9E9398B900 /* Build configuration list for PBXProject "OrbitEncore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7AC360F1D97072E8F16807AF /* Debug */,
+				7EEBECB70FC6BB8BAA3F3933 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C824CD75DB0A709AD2530A71 /* Build configuration list for PBXNativeTarget "OrbitEncore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				42DD8212FB550F2538FCE172 /* Debug */,
+				514700CBDEE72D593DEB6933 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B8C46B497C8810E8C0C08BFD /* Project object */;
+}

@@ -1,0 +1,42 @@
+name: OrbitEncore
+options:
+  bundleIdPrefix: games.orbitencore
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    CODE_SIGNING_ALLOWED: NO
+    TARGETED_DEVICE_FAMILY: "1"
+targets:
+  OrbitEncore:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      - path: Resources
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: games.orbitencore.ios
+        PRODUCT_NAME: OrbitEncore
+        INFOPLIST_KEY_CFBundleDisplayName: Orbit Encore
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Orbit Encore
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UIRequiresFullScreen: true
+        NSLocalNetworkUsageDescription: Connect to your local Orbit Encore score battle server.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+schemes:
+  OrbitEncore:
+    build:
+      targets:
+        OrbitEncore: all
+    run:
+      config: Debug
