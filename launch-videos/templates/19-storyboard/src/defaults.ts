@@ -38,16 +38,16 @@ const WEB = 2990 / 1624; // devin-web-*.png
 const REC = 1918 / 1080; // screen recordings
 const SIM_SRC = 1920 / 1148; // androidios.mp4
 
-const HERO_CROP = { x: 0.15, y: 0.22, w: 0.66, h: 0.44 };
+const HERO_CROP = { x: 0.18, y: 0.27, w: 0.64, h: 0.38 };
 const PICK_CROP = { x: 0.2, y: 0.365, w: 0.4, h: 0.475 };
-const SIM_CROP = { x: 0.13, y: 0.12, w: 0.23, h: 0.68 };
+const SIM_CROP = { x: 0.137, y: 0.15, w: 0.24, h: 0.62 };
 const LIVE_CROP = { x: 0, y: 0, w: 1, h: 1 };
 
 const cropAspect = (aspect: number, c: { w: number; h: number }) =>
   (aspect * c.w) / c.h;
-const HERO = cropAspect(WEB, HERO_CROP); // ~2.76
+const HERO = cropAspect(WEB, HERO_CROP); // ~3.1
 const PICK = cropAspect(WEB, PICK_CROP); // ~1.47
-const SIM = cropAspect(SIM_SRC, SIM_CROP); // ~0.57
+const SIM = cropAspect(SIM_SRC, SIM_CROP); // ~0.65
 const LIVE = cropAspect(WEB, LIVE_CROP); // ~1.84
 
 const active = (slot: string, r: Rect, revealDelay?: number): ScenePanel => ({
@@ -106,7 +106,7 @@ export const defaultScenes: Scene[] = [
     panels: [
       active(
         "hero",
-        rect(colX(6), CONTENT_TOP + (CONTENT_H - fitH(colW(6), HERO)) / 2, colW(6), fitH(colW(6), HERO)),
+        rect(colX(5), CONTENT_TOP + (CONTENT_H - fitH(colW(7), HERO)) / 2, colW(7), fitH(colW(7), HERO)),
         30,
       ),
     ],
