@@ -4,15 +4,19 @@ import SwiftUI
 struct DraftingTransform {
   let scale: Double
   let origin: CGPoint
-  init(size: CGSize, design: Design) {
+  init(size: CGSize, design: Design, zoom: Double = 1, pan: CGSize = .zero) {
     let minX = min(0, design.nodes.map(\.x).min() ?? 0)
     let maxX = max(12, design.nodes.map(\.x).max() ?? 12)
     let minY = min(0, design.nodes.map(\.y).min() ?? 0)
-    let maxY = max(4, design.nodes.map(\.y).max() ?? 4)
-    scale = max(1, min((size.width - 100) / (maxX - minX), (size.height - 250) / (maxY - minY)))
+    let maxY = max(3, design.nodes.map(\.y).max() ?? 3)
+    let drawingArea = CGRect(
+      x: 65, y: 205, width: max(1, size.width - 130), height: max(1, size.height - 317))
+    scale =
+      max(1, min(drawingArea.width / (maxX - minX), drawingArea.height / (maxY - minY)))
+      * zoom
     origin = CGPoint(
-      x: (size.width - (maxX - minX) * scale) / 2 - minX * scale,
-      y: (size.height + (maxY - minY) * scale) / 2 + minY * scale + 15)
+      x: drawingArea.midX - (minX + maxX) * scale / 2 + pan.width,
+      y: drawingArea.midY + (minY + maxY) * scale / 2 + pan.height)
   }
   func screen(_ x: Double, _ y: Double) -> CGPoint {
     CGPoint(x: origin.x + x * scale, y: origin.y - y * scale)
@@ -20,8 +24,8 @@ struct DraftingTransform {
   func screen(_ node: Node) -> CGPoint { screen(node.x, node.y) }
   func world(_ point: CGPoint) -> SIMD2<Double> {
     SIMD2(
-      min(24, max(-6, ((point.x - origin.x) / scale * 2).rounded() / 2)),
-      min(12, max(-3, ((origin.y - point.y) / scale * 2).rounded() / 2)))
+      min(100, max(-100, ((point.x - origin.x) / scale * 2).rounded() / 2)),
+      min(100, max(-100, ((origin.y - point.y) / scale * 2).rounded() / 2)))
   }
 }
 
@@ -30,10 +34,12 @@ struct DraftingCanvas: View {
   @State private var dragging: Int?
   @State private var dragPosition: SIMD2<Double>?
   @State private var didMove = false
+  @State private var panStart: CGSize?
 
   var body: some View {
     GeometryReader { geometry in
-      let transform = DraftingTransform(size: geometry.size, design: studio.design)
+      let transform = DraftingTransform(
+        size: geometry.size, design: studio.design, zoom: studio.zoom, pan: studio.pan)
       Canvas { context, size in
         drawBackground(&context, size: size, transform: transform)
         drawBridge(&context, transform: transform)
@@ -43,7 +49,22 @@ struct DraftingCanvas: View {
       .gesture(
         DragGesture(minimumDistance: 0)
           .onChanged { value in
+            if studio.tool == .pan {
+              if panStart == nil { panStart = studio.pan }
+              if let start = panStart {
+                studio.pan = CGSize(
+                  width: start.width + value.translation.width,
+                  height: start.height + value.translation.height)
+              }
+              return
+            }
             guard studio.tool == .select else { return }
+            guard studio.mode != .deflection else {
+              if hypot(value.translation.width, value.translation.height) > 4 {
+                studio.notice = "Switch to Geometry or Stress to move a joint"
+              }
+              return
+            }
             if dragging == nil, !didMove {
               dragging = nearestNode(value.startLocation, transform: transform)
             }
@@ -54,6 +75,10 @@ struct DraftingCanvas: View {
             }
           }
           .onEnded { value in
+            if studio.tool == .pan {
+              panStart = nil
+              return
+            }
             if didMove, let dragging, let position = dragPosition {
               let occupied = studio.design.nodes.contains {
                 $0.id != dragging && hypot($0.x - position.x, $0.y - position.y) < 0.1
@@ -89,7 +114,8 @@ struct DraftingCanvas: View {
       return transform.screen(dragPosition.x, dragPosition.y)
     }
     if deform, studio.mode == .deflection, let d = studio.result?.displacement[node.id] {
-      return transform.screen(node.x + d.x * 100, node.y + d.y * 100)
+      return transform.screen(
+        node.x + d.x * studio.deformationScale, node.y + d.y * studio.deformationScale)
     }
     return transform.screen(node)
   }
@@ -147,7 +173,7 @@ struct DraftingCanvas: View {
   ) {
     context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(Ink.paper))
     if studio.showGrid {
-      let step = transform.scale * 0.5
+      let step = max(8, transform.scale * 0.5)
       let xStart = transform.origin.x.truncatingRemainder(dividingBy: step)
       let yStart = transform.origin.y.truncatingRemainder(dividingBy: step)
       for x in stride(from: xStart, through: size.width, by: step) {
@@ -176,6 +202,7 @@ struct DraftingCanvas: View {
   }
 
   private func drawBridge(_ context: inout GraphicsContext, transform: DraftingTransform) {
+    let appliedLoads = studio.result?.appliedLoadsKN ?? studio.design.effectiveLoads()
     for member in studio.design.members {
       guard let a = studio.design.node(member.a), let b = studio.design.node(member.b) else {
         continue
@@ -263,8 +290,9 @@ struct DraftingCanvas: View {
           &context, "N\(node.id + 1)", at: CGPoint(x: p.x, y: p.y + (upper ? -20 : 17)), size: 9,
           color: selected ? Ink.copper : Ink.navy)
       }
-      if node.loadKN != 0 {
-        let sign = node.loadKN >= 0 ? 1.0 : -1.0
+      let load = appliedLoads[node.id] ?? .zero
+      if abs(load.y) > 0.001 {
+        let sign = load.y < 0 ? 1.0 : -1.0
         let endY = p.y - 13 * sign
         let startY = endY - 68 * sign
         line(
@@ -277,13 +305,40 @@ struct DraftingCanvas: View {
           &context, CGPoint(x: p.x + 5, y: endY - 9 * sign), CGPoint(x: p.x, y: endY),
           color: Ink.copper, width: 2)
         text(
-          &context, String(format: "%.0f kN", abs(node.loadKN)),
-          at: CGPoint(x: p.x + 11, y: startY + 4), size: 11, color: Ink.copper, anchor: .leading)
+          &context, String(format: "%.1f kN", abs(load.y)),
+          at: CGPoint(
+            x: p.x + (load.y > 0 && node.support != .free ? 26 : 11),
+            y: load.y > 0 ? endY + 24 : startY + 4),
+          size: 11, color: Ink.copper, anchor: .leading)
+      }
+      if abs(load.x) > 0.001 {
+        let sign = load.x > 0 ? 1.0 : -1.0
+        let end = CGPoint(x: p.x - 14 * sign, y: p.y)
+        line(&context, CGPoint(x: end.x - 62 * sign, y: end.y), end, color: Ink.copper, width: 2)
+        for dy in [-5.0, 5.0] {
+          line(
+            &context, CGPoint(x: end.x - 9 * sign, y: end.y + dy), end, color: Ink.copper, width: 2)
+        }
+        text(
+          &context, String(format: "%.1f kN", abs(load.x)),
+          at: CGPoint(x: end.x - 35 * sign, y: end.y - 14),
+          size: 10, color: Ink.copper)
+      }
+      if studio.showReactions, node.support != .free, let r = studio.result?.reactionsKN[node.id] {
+        text(
+          &context, String(format: "Ry %+.1f", r.y), at: CGPoint(x: p.x, y: p.y + 56), size: 9,
+          color: Ink.green)
+        if node.support == .pin {
+          text(
+            &context, String(format: "Rx %+.1f", r.x), at: CGPoint(x: p.x, y: p.y + 68), size: 9,
+            color: Ink.green)
+        }
       }
     }
     if studio.result != nil, studio.mode != .geometry {
       text(
-        &context, "MEMBER LABELS: MPa", at: CGPoint(x: 26, y: 127), size: 9, color: Ink.muted,
+        &context, "MEMBER LABELS: MPa / LOADS & REACTIONS: kN", at: CGPoint(x: 26, y: 105), size: 8,
+        color: Ink.muted,
         anchor: .leading)
     }
   }

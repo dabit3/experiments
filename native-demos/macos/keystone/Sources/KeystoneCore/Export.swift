@@ -4,14 +4,14 @@ public enum DesignExport {
   public static func json(_ design: Design) throws -> Data {
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-    return try encoder.encode(design.validated())
+    return try encoder.encode(design.validated(allowDraft: true))
   }
 
   public static func decode(_ data: Data) throws -> Design {
     guard data.count <= 2_000_000 else {
       throw AnalysisError.invalid("Design files must be under 2 MB.")
     }
-    return try JSONDecoder().decode(Design.self, from: data).validated()
+    return try JSONDecoder().decode(Design.self, from: data).validated(allowDraft: true)
   }
 
   public static func escape(_ text: String) -> String {
@@ -22,6 +22,7 @@ public enum DesignExport {
   }
 
   public static func svg(_ design: Design, analysis: Analysis?) -> String {
+    let appliedLoads = analysis?.appliedLoadsKN ?? design.effectiveLoads()
     let minX = design.nodes.map(\.x).min() ?? 0
     let maxX = design.nodes.map(\.x).max() ?? 12
     let minY = design.nodes.map(\.y).min() ?? 0
@@ -34,7 +35,7 @@ public enum DesignExport {
       <svg xmlns="http://www.w3.org/2000/svg" width="1100" height="680" viewBox="0 0 1100 680">
       <rect width="1100" height="680" fill="#f5f2e9"/>
       <text x="60" y="55" fill="#193448" font-family="Helvetica" font-size="28">KEYSTONE / \(escape(design.name))</text>
-      <text x="60" y="85" fill="#6c7679" font-family="Helvetica" font-size="14">\(analysis == nil ? "GEOMETRY · NOT ANALYZED" : "AXIAL STRESS · BLUE COMPRESSION / COPPER TENSION")</text>
+      <text x="60" y="85" fill="#6c7679" font-family="Helvetica" font-size="14">\(escape(design.activeCase.name)) · ×\(design.activeCase.factor) · \(analysis == nil ? "NOT ANALYZED" : "BLUE COMPRESSION / COPPER TENSION")</text>
       """
     for member in design.members {
       guard let a = design.node(member.a), let b = design.node(member.b) else { continue }
@@ -59,18 +60,26 @@ public enum DesignExport {
       if node.support != .free {
         body += "<path d=\"M \(p.0) \(p.1 + 10) l -12 20 h 24 Z\" fill=\"#193448\"/>"
       }
-      if node.loadKN != 0 {
-        let end = p.1 - 16
+      let load = appliedLoads[node.id] ?? .zero
+      if abs(load.y) > 0.0001 {
+        let sign = load.y < 0 ? 1.0 : -1.0
+        let end = p.1 - 16 * sign
         body +=
-          "<path d=\"M \(p.0) \(end - 65) V \(end) m -5 -8 l 5 8 l 5 -8\" fill=\"none\" stroke=\"#ba613d\" stroke-width=\"2\"/>"
+          "<path d=\"M \(p.0) \(end - 65 * sign) V \(end) m -5 \(-8 * sign) l 5 \(8 * sign) l 5 \(-8 * sign)\" fill=\"none\" stroke=\"#ba613d\" stroke-width=\"2\"/>"
         body +=
-          "<text x=\"\(p.0 + 12)\" y=\"\(end - 50)\" font-family=\"Helvetica\" fill=\"#ba613d\" font-size=\"13\">\(node.loadKN) kN ↓</text>"
+          "<text x=\"\(p.0 + 12)\" y=\"\(end - 50 * sign)\" font-family=\"Helvetica\" fill=\"#ba613d\" font-size=\"13\">\(abs(load.y)) kN \(load.y < 0 ? "↓" : "↑")</text>"
+      }
+      if abs(load.x) > 0.0001 {
+        let sign = load.x > 0 ? 1.0 : -1.0
+        let end = p.0 - 16 * sign
+        body +=
+          "<path d=\"M \(end - 65 * sign) \(p.1) H \(end) m \(-8 * sign) -5 l \(8 * sign) 5 l \(-8 * sign) 5\" fill=\"none\" stroke=\"#ba613d\" stroke-width=\"2\"/><text x=\"\(end - 50 * sign)\" y=\"\(p.1 - 12)\" font-family=\"Helvetica\" fill=\"#ba613d\" font-size=\"13\">\(abs(load.x)) kN \(load.x > 0 ? "→" : "←")</text>"
       }
     }
     body +=
       "<text x=\"60\" y=\"620\" font-family=\"Helvetica\" font-size=\"14\" fill=\"#193448\">\(analysis.map { String(format: "Max displacement %.3f mm · Axial yield utilization %.1f%%", $0.maxDisplacementMM, $0.maxUtilization * 100) } ?? "Run analysis to compute member forces.")</text>"
     body +=
-      "<text x=\"60\" y=\"650\" font-family=\"Helvetica\" font-size=\"11\" fill=\"#6c7679\">Educational linear 2D pin-jointed model. No buckling, self-weight, bending or design-code checks.</text></svg>"
+      "<text x=\"60\" y=\"650\" font-family=\"Helvetica\" font-size=\"11\" fill=\"#6c7679\">Preliminary linear 2D truss study. Euler screening where inertia is defined. No design-code certification.</text></svg>"
     return body
   }
 
@@ -79,30 +88,75 @@ public enum DesignExport {
       guard let r = analysis.members[member.id] else { return "" }
       return String(
         format:
-          "<tr><td>M%d</td><td>N%d → N%d</td><td>%.3f</td><td>%.1f</td><td>%+.3f</td><td>%+.3f</td><td>%.1f%%</td></tr>",
+          "<tr><td>M%d</td><td>N%d → N%d</td><td>%.3f</td><td>%.1f</td><td>%+.3f</td><td>%+.3f</td><td>%.1f%%</td>",
         member.id + 1, member.a + 1, member.b + 1, design.length(member), member.areaCM2,
         r.forceKN, r.stressMPa, r.utilization * 100)
+        + "<td>\(escape(member.sectionName ?? "Custom area"))</td><td>\(member.inertiaCM4.map { String(format: "%.2f", $0) } ?? "Not specified")</td><td>\(member.effectiveLengthFactor)</td><td>\(String(format: "%.1f%%", r.capacityUtilization * 100)) · \(r.governingMode)\(member.inertiaCM4 == nil && r.forceKN < -0.001 ? " · buckling unchecked" : "")</td></tr>"
     }.joined()
     let nodes = design.nodes.map { node -> String in
       let d = analysis.displacement[node.id] ?? .zero
       let r = analysis.reactionsKN[node.id] ?? .zero
+      let f = analysis.appliedLoadsKN[node.id] ?? .zero
       return String(
         format:
-          "<tr><td>N%d</td><td>%@</td><td>%.2f</td><td>%+.4f</td><td>%+.4f</td><td>%+.3f</td><td>%+.3f</td></tr>",
-        node.id + 1, escape(node.support.rawValue), node.loadKN, d.x * 1000, d.y * 1000, r.x, r.y)
+          "<tr><td>N%d</td><td>%@</td><td>%+.2f</td><td>%+.2f</td><td>%+.4f</td><td>%+.4f</td><td>%+.3f</td><td>%+.3f</td></tr>",
+        node.id + 1, escape(node.support.rawValue), f.x, f.y, d.x * 1000, d.y * 1000, r.x, r.y)
     }.joined()
     return """
       <!doctype html><html><head><meta charset="utf-8"><title>Keystone · \(escape(design.name))</title>
       <style>body{background:#f5f2e9;color:#193448;font:15px Helvetica,sans-serif;max-width:1100px;margin:50px auto;padding:30px}h1{font-size:36px}h2{margin-top:40px}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}th,td{text-align:left;padding:12px;border-bottom:1px solid #d5d7ce}th{font-size:12px;text-transform:uppercase}svg{width:100%;height:auto}.metrics{font-size:22px;border-block:1px solid #b9c1bd;padding:24px 0}p{line-height:1.6}</style></head><body>
-      <p>KEYSTONE / STRUCTURAL STUDY 01</p><h1>\(escape(design.name))</h1>
+      <p>KEYSTONE / STRUCTURAL STUDY</p><h1>\(escape(design.name))</h1><p>\(escape(design.projectNote))</p>
+      <p>Load case: \(escape(design.activeCase.name)) · factor \(design.activeCase.factor) on nodal loads and self-weight · self-weight \(design.activeCase.includesSelfWeight ? "included" : "excluded"). Other cases are not enveloped.</p>
       <p>\(escape(design.material.name)) · E \(design.material.modulusGPa) GPa · axial yield \(design.material.yieldMPa) MPa</p>
       <div class="metrics">\(String(format: "%.3f mm displacement · %.1f%% yield utilization · %.1f kg · $%.0f estimate", analysis.maxDisplacementMM, analysis.maxUtilization * 100, design.massKg, design.cost))</div>
       \(svg(design, analysis: analysis))
       <h2>Member schedule</h2><p>Positive = tension. Negative = compression. Stress is axial force / area.</p>
-      <table><tr><th>Member</th><th>Nodes</th><th>Length m</th><th>Area cm²</th><th>Force kN</th><th>Stress MPa</th><th>Yield use</th></tr>\(rows)</table>
-      <h2>Nodal displacements &amp; reactions</h2><table><tr><th>Node</th><th>Support</th><th>Load kN ↓</th><th>Ux mm</th><th>Uy mm</th><th>Rx kN</th><th>Ry kN</th></tr>\(nodes)</table>
+      <table><tr><th>Member</th><th>Nodes</th><th>Length m</th><th>Area cm²</th><th>Force kN</th><th>Stress MPa</th><th>Yield use</th><th>Section</th><th>I cm⁴</th><th>K</th><th>Demand / capacity</th></tr>\(rows)</table>
+      <h2>Study criteria</h2><p>Resistance divisor γ = \(design.resistanceFactor). Euler Pcr = π²EI/(KL)². Demand / capacity = |N|γ/min(Afy, Pcr) for compression; |N|γ/Afy for tension. Missing buckling checks: \(analysis.missingBucklingChecks). Max vertical displacement \(String(format: "%.3f", analysis.maxVerticalMM)) mm; limit \(String(format: "%.3f", design.allowedVerticalMM)) mm (horizontal model extent / \(design.deflectionRatio)). These are user-selected screening criteria, not a design standard.</p>
+      <h2>Nodal displacements &amp; reactions</h2><table><tr><th>Node</th><th>Support</th><th>Fx kN →</th><th>Fy kN ↑</th><th>Ux mm</th><th>Uy mm</th><th>Rx kN</th><th>Ry kN</th></tr>\(nodes)</table>
       <h2>Method &amp; limits</h2><p>Small-displacement 2D truss direct stiffness method: assemble EA/L · bᵀb, constrain pinned X/Y and roller Y degrees of freedom, then solve with a scaled-pivot Cholesky factorization. Pivots ≤ 10⁻¹⁰ of the largest free diagonal are rejected as unstable or ill-conditioned. Free-DOF residual: \(analysis.residualN) N.</p>
-      <p>Ideal frictionless joints, axial-only members, linear elastic material and nodal vertical loads. No self-weight, bending, buckling, joint capacity, dynamics, geometric nonlinearity or code compliance. Yield utilization is not a safety certification. Compression can buckle below yield. Budget includes raw material only. Educational use only.</p></body></html>
+      <p>Ideal frictionless joints and linear axial elasticity. Self-weight, when enabled, is lumped equally to each member end using g=9.80665 m/s². Square hollow sections use ideal sharp corners, not manufacturer properties. I must be the least relevant bending inertia and K an assumed effective-length factor. Euler screening omits local and inelastic buckling, joint capacity, lateral bracing, bending, dynamics, geometric nonlinearity and code compliance. A green study check is not a safety certification. Budget includes raw material only. For preliminary studies, not construction approval.</p></body></html>
       """
+  }
+
+  public static func csv(_ design: Design, analysis: Analysis) -> String {
+    func cell(_ value: String) -> String {
+      let safe = "'\(value)"
+      return "\"\(safe.replacingOccurrences(of: "\"", with: "\"\""))\""
+    }
+    var lines = [
+      "Project,\(cell(design.name))", "Load case,\(cell(design.activeCase.name))",
+      "Load factor,\(design.activeCase.factor)",
+      "Self-weight,\(design.activeCase.includesSelfWeight)",
+      "Resistance divisor,\(design.resistanceFactor)",
+      "Vertical limit mm,\(design.allowedVerticalMM)",
+      "Scope,Active case only; preliminary linear truss; Euler screening only", "",
+      "Member,Node A,Node B,Length m,Area cm2,I cm4,K,Force kN,Stress MPa,Yield ratio,Demand capacity ratio,Buckling checked",
+    ]
+    for member in design.members {
+      guard let r = analysis.members[member.id] else { continue }
+      lines.append(
+        [
+          "M\(member.id + 1)", "N\(member.a + 1)", "N\(member.b + 1)",
+          String(design.length(member)),
+          String(member.areaCM2), member.inertiaCM4.map { String($0) } ?? "",
+          String(member.effectiveLengthFactor), String(r.forceKN), String(r.stressMPa),
+          String(r.utilization), String(r.capacityUtilization),
+          r.forceKN >= -0.001
+            ? "Not in compression" : (member.inertiaCM4 == nil ? "No" : "Euler only"),
+        ].joined(separator: ","))
+    }
+    lines += ["", "Node,Fx kN,Fy kN,Ux mm,Uy mm,Rx kN,Ry kN"]
+    for node in design.nodes {
+      let f = analysis.appliedLoadsKN[node.id] ?? .zero
+      let d = analysis.displacement[node.id] ?? .zero
+      let r = analysis.reactionsKN[node.id] ?? .zero
+      lines.append(
+        [
+          "N\(node.id + 1)", String(f.x), String(f.y), String(d.x * 1000),
+          String(d.y * 1000), String(r.x), String(r.y),
+        ].joined(separator: ","))
+    }
+    return lines.joined(separator: "\r\n") + "\r\n"
   }
 }

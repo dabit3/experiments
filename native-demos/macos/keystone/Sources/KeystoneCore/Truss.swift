@@ -12,6 +12,7 @@ public struct Node: Codable, Identifiable, Equatable, Sendable {
   public var y: Double
   public var support: Support
   public var loadKN: Double
+  public var loadXKN: Double = 0
 
   public init(id: Int, x: Double, y: Double, support: Support = .free, loadKN: Double = 0) {
     self.id = id
@@ -20,6 +21,17 @@ public struct Node: Codable, Identifiable, Equatable, Sendable {
     self.support = support
     self.loadKN = loadKN
   }
+
+  private enum CodingKeys: String, CodingKey { case id, x, y, support, loadKN, loadXKN }
+  public init(from decoder: Decoder) throws {
+    let c = try decoder.container(keyedBy: CodingKeys.self)
+    id = try c.decode(Int.self, forKey: .id)
+    x = try c.decode(Double.self, forKey: .x)
+    y = try c.decode(Double.self, forKey: .y)
+    support = try c.decode(Support.self, forKey: .support)
+    loadKN = try c.decode(Double.self, forKey: .loadKN)
+    loadXKN = try c.decodeIfPresent(Double.self, forKey: .loadXKN) ?? 0
+  }
 }
 
 public struct Member: Codable, Identifiable, Equatable, Sendable {
@@ -27,12 +39,35 @@ public struct Member: Codable, Identifiable, Equatable, Sendable {
   public var a: Int
   public var b: Int
   public var areaCM2: Double
+  public var inertiaCM4: Double?
+  public var effectiveLengthFactor: Double = 1
+  public var sectionName: String?
 
   public init(id: Int, a: Int, b: Int, areaCM2: Double = 20) {
     self.id = id
     self.a = a
     self.b = b
     self.areaCM2 = areaCM2
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case id, a, b, areaCM2, inertiaCM4, effectiveLengthFactor, sectionName
+  }
+  public init(from decoder: Decoder) throws {
+    let c = try decoder.container(keyedBy: CodingKeys.self)
+    id = try c.decode(Int.self, forKey: .id)
+    a = try c.decode(Int.self, forKey: .a)
+    b = try c.decode(Int.self, forKey: .b)
+    areaCM2 = try c.decode(Double.self, forKey: .areaCM2)
+    inertiaCM4 = try c.decodeIfPresent(Double.self, forKey: .inertiaCM4)
+    effectiveLengthFactor = try c.decodeIfPresent(Double.self, forKey: .effectiveLengthFactor) ?? 1
+    sectionName = try c.decodeIfPresent(String.self, forKey: .sectionName)
+  }
+
+  public mutating func apply(_ section: SectionPreset) {
+    areaCM2 = section.areaCM2
+    inertiaCM4 = section.inertiaCM4
+    sectionName = section.name
   }
 }
 
@@ -50,12 +85,17 @@ public struct Material: Codable, Equatable, Sendable {
 }
 
 public struct Design: Codable, Equatable, Sendable {
-  public var version = 1
+  public var version = 2
   public var name: String
   public var nodes: [Node]
   public var members: [Member]
   public var material: Material
   public var budget: Double
+  public var projectNote = ""
+  public var loadCases = [LoadCase.service]
+  public var activeCaseID = "service"
+  public var resistanceFactor: Double = 1.5
+  public var deflectionRatio: Double = 360
 
   public init(
     name: String, nodes: [Node], members: [Member], material: Material = .steel,
@@ -66,6 +106,28 @@ public struct Design: Codable, Equatable, Sendable {
     self.members = members
     self.material = material
     self.budget = budget
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case version, name, nodes, members, material, budget, projectNote, loadCases, activeCaseID
+    case resistanceFactor, deflectionRatio
+  }
+  public init(from decoder: Decoder) throws {
+    let c = try decoder.container(keyedBy: CodingKeys.self)
+    let storedVersion = try c.decode(Int.self, forKey: .version)
+    guard (1...2).contains(storedVersion) else {
+      throw AnalysisError.invalid("Unsupported design version.")
+    }
+    name = try c.decode(String.self, forKey: .name)
+    nodes = try c.decode([Node].self, forKey: .nodes)
+    members = try c.decode([Member].self, forKey: .members)
+    material = try c.decode(Material.self, forKey: .material)
+    budget = try c.decode(Double.self, forKey: .budget)
+    projectNote = try c.decodeIfPresent(String.self, forKey: .projectNote) ?? ""
+    loadCases = try c.decodeIfPresent([LoadCase].self, forKey: .loadCases) ?? [.service]
+    activeCaseID = try c.decodeIfPresent(String.self, forKey: .activeCaseID) ?? "service"
+    resistanceFactor = try c.decodeIfPresent(Double.self, forKey: .resistanceFactor) ?? 1.5
+    deflectionRatio = try c.decodeIfPresent(Double.self, forKey: .deflectionRatio) ?? 360
   }
 
   public static func example(height: Double = 3, name: String = "Warren / River crossing") -> Design
@@ -95,15 +157,20 @@ public struct Design: Codable, Equatable, Sendable {
   }
   public var cost: Double { massKg * material.costPerKg }
 
-  public func validated() throws -> Design {
-    guard version == 1 else { throw AnalysisError.invalid("Unsupported design version.") }
-    guard (2...100).contains(nodes.count), (1...300).contains(members.count) else {
+  public func validated(allowDraft: Bool = false) throws -> Design {
+    guard version == 2 else { throw AnalysisError.invalid("Unsupported design version.") }
+    guard ((allowDraft ? 0 : 2)...100).contains(nodes.count),
+      ((allowDraft ? 0 : 1)...300).contains(members.count)
+    else {
       throw AnalysisError.invalid("Use 2–100 nodes and 1–300 members.")
     }
     guard Set(nodes.map(\.id)).count == nodes.count,
       Set(members.map(\.id)).count == members.count
     else { throw AnalysisError.invalid("Node and member IDs must be unique.") }
-    guard !name.isEmpty, name.count <= 120,
+    guard !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, name.count <= 120,
+      material.name.count <= 120, projectNote.count <= 2000,
+      resistanceFactor.isFinite, (1...5).contains(resistanceFactor),
+      deflectionRatio.isFinite, (50...2000).contains(deflectionRatio),
       [material.modulusGPa, material.yieldMPa, material.density, material.costPerKg, budget]
         .allSatisfy({ $0.isFinite && $0 > 0 && $0 <= 1e9 })
     else {
@@ -113,19 +180,26 @@ public struct Design: Codable, Equatable, Sendable {
       nodes.allSatisfy({
         $0.x.isFinite && $0.y.isFinite && abs($0.x) <= 100 && abs($0.y) <= 100
           && $0.loadKN.isFinite && abs($0.loadKN) <= 10000
+          && $0.loadXKN.isFinite && abs($0.loadXKN) <= 10000
+          && (0...1_000_000).contains($0.id)
       })
     else { throw AnalysisError.invalid("Invalid node coordinates or loads.") }
     var pairs = Set<String>()
     for member in members {
-      guard node(member.a) != nil, node(member.b) != nil, member.a != member.b,
+      guard (0...1_000_000).contains(member.id),
+        node(member.a) != nil, node(member.b) != nil, member.a != member.b,
         length(member) >= 0.1, member.areaCM2.isFinite,
-        (0.1...1000).contains(member.areaCM2)
+        (0.1...1000).contains(member.areaCM2),
+        member.inertiaCM4.map({ $0.isFinite && (0.01...1_000_000).contains($0) }) ?? true,
+        member.effectiveLengthFactor.isFinite, (0.5...3).contains(member.effectiveLengthFactor),
+        (member.sectionName?.count ?? 0) <= 120
       else { throw AnalysisError.invalid("Members need distinct nodes and a valid cross-section.") }
       let key = "\(min(member.a, member.b)):\(max(member.a, member.b))"
       guard pairs.insert(key).inserted else {
         throw AnalysisError.invalid("Duplicate members are not allowed.")
       }
     }
+    try validateLoadCases()
     return self
   }
 }
@@ -146,6 +220,9 @@ public struct MemberResult: Sendable {
   public var forceKN: Double
   public var stressMPa: Double
   public var utilization: Double
+  public var eulerCriticalKN: Double?
+  public var capacityUtilization: Double
+  public var governingMode: String
 }
 
 public struct Analysis: Sendable {
@@ -155,6 +232,10 @@ public struct Analysis: Sendable {
   public var maxDisplacementMM: Double
   public var maxUtilization: Double
   public var residualN: Double
+  public var appliedLoadsKN: [Int: SIMD2<Double>]
+  public var maxCapacityUtilization: Double
+  public var maxVerticalMM: Double
+  public var missingBucklingChecks: Int
 }
 
 public enum Solver {
@@ -166,8 +247,10 @@ public enum Solver {
     var stiffness = Array(repeating: Array(repeating: 0.0, count: count), count: count)
     var loads = Array(repeating: 0.0, count: count)
     var fixed = Set<Int>()
+    let applied = design.effectiveLoads()
     for (i, node) in design.nodes.enumerated() {
-      loads[2 * i + 1] = -node.loadKN * 1000
+      loads[2 * i] = (applied[node.id]?.x ?? 0) * 1000
+      loads[2 * i + 1] = (applied[node.id]?.y ?? 0) * 1000
       if node.support == .pin { fixed.insert(2 * i) }
       if node.support != .free { fixed.insert(2 * i + 1) }
     }
@@ -228,9 +311,20 @@ public enum Solver {
         (displacement[2 * bi] - displacement[2 * ai]) * (b.x - a.x) / length
         + (displacement[2 * bi + 1] - displacement[2 * ai + 1]) * (b.y - a.y) / length
       let stress = design.material.modulusGPa * 1000 * extensionM / length
+      let force = stress * member.areaCM2 * 0.1
+      let yieldKN = design.material.yieldMPa * member.areaCM2 * 0.1
+      let euler = member.inertiaCM4.map {
+        Double.pi * Double.pi * design.material.modulusGPa * 1e9 * $0 * 1e-8
+          / pow(member.effectiveLengthFactor * length, 2) / 1000
+      }
+      let capacity = force < -0.001 ? min(yieldKN, euler ?? yieldKN) : yieldKN
       memberResults[member.id] = MemberResult(
-        forceKN: stress * member.areaCM2 * 0.1, stressMPa: stress,
-        utilization: abs(stress) / design.material.yieldMPa)
+        forceKN: force, stressMPa: stress,
+        utilization: abs(stress) / design.material.yieldMPa,
+        eulerCriticalKN: euler,
+        capacityUtilization: abs(force) * design.resistanceFactor / capacity,
+        governingMode: force < -0.001 && (euler ?? .infinity) < yieldKN
+          ? "Euler buckling" : "Axial yield")
     }
     var displacements: [Int: SIMD2<Double>] = [:]
     var reactions: [Int: SIMD2<Double>] = [:]
@@ -252,7 +346,13 @@ public enum Solver {
     return Analysis(
       members: memberResults, displacement: displacements, reactionsKN: reactions,
       maxDisplacementMM: displacements.values.map { hypot($0.x, $0.y) * 1000 }.max() ?? 0,
-      maxUtilization: memberResults.values.map(\.utilization).max() ?? 0, residualN: residual)
+      maxUtilization: memberResults.values.map(\.utilization).max() ?? 0, residualN: residual,
+      appliedLoadsKN: applied,
+      maxCapacityUtilization: memberResults.values.map(\.capacityUtilization).max() ?? 0,
+      maxVerticalMM: displacements.values.map { abs($0.y) * 1000 }.max() ?? 0,
+      missingBucklingChecks: design.members.filter {
+        $0.inertiaCM4 == nil && (memberResults[$0.id]?.forceKN ?? 0) < -0.001
+      }.count)
   }
 }
 
