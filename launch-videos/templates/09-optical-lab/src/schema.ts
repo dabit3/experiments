@@ -107,6 +107,7 @@ export const layoutSchema = z.object({
   windowBorder: z.number().describe("Outline thickness of the inspection window in px"),
   logoHeight: z.number().describe("Height of the margin lockup in px"),
   outroLogoHeight: z.number().describe("Height of the outro lockup in px"),
+  showFeatureName: z.boolean().describe("Show content.featureName at the bottom of the margin"),
   showSceneCounter: z.boolean().describe("Show a 01 / 06 counter above each caption"),
   showMagnification: z
     .boolean()

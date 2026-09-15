@@ -32,17 +32,17 @@ const type = {
   }),
   caption: (brand: Brand): React.CSSProperties => ({
     fontFamily: brand.fontFamily,
-    fontSize: 34,
-    lineHeight: "42px",
-    letterSpacing: -0.5,
+    fontSize: 40,
+    lineHeight: "48px",
+    letterSpacing: -0.8,
     color: brand.ink,
     fontWeight: 500,
   }),
   label: (brand: Brand): React.CSSProperties => ({
     fontFamily: brand.fontFamily,
-    fontSize: 19,
-    lineHeight: "26px",
-    letterSpacing: -0.2,
+    fontSize: 22,
+    lineHeight: "30px",
+    letterSpacing: -0.3,
     color: brand.inkMuted,
     fontWeight: 400,
   }),
@@ -153,19 +153,19 @@ export const CaptionBlock: React.FC<{
         style={{
           display: "flex",
           alignItems: "flex-start",
-          gap: 12,
+          gap: 14,
           opacity: labelOpacity,
           marginTop: 4,
+          paddingLeft: 2,
         }}
       >
         <div
           style={{
-            width: 20,
-            height: 20,
-            marginTop: 3,
+            width: 2,
+            alignSelf: "stretch",
             flexShrink: 0,
-            borderRadius: 4,
-            boxShadow: `0 0 0 1.5px ${brand.accent}`,
+            borderRadius: 1,
+            background: brand.accent,
           }}
         />
         <div style={type.label(brand)}>
@@ -190,7 +190,8 @@ export const MarginChrome: React.FC<{
   logoHeight: number;
   safeMargin: number;
   opacity: number;
-}> = ({ brand, content, column, logoSrc, logoHeight, safeMargin, opacity }) => (
+  showFeatureName: boolean;
+}> = ({ brand, content, column, logoSrc, logoHeight, safeMargin, opacity, showFeatureName }) => (
   <>
     <Img
       src={logoSrc}
@@ -202,17 +203,19 @@ export const MarginChrome: React.FC<{
         opacity,
       }}
     />
-    <div
-      style={{
-        position: "absolute",
-        left: column.x,
-        bottom: safeMargin,
-        ...type.mono(brand),
-        opacity,
-      }}
-    >
-      {content.featureName}
-    </div>
+    {showFeatureName ? (
+      <div
+        style={{
+          position: "absolute",
+          left: column.x,
+          bottom: safeMargin,
+          ...type.mono(brand),
+          opacity,
+        }}
+      >
+        {content.featureName}
+      </div>
+    ) : null}
   </>
 );
 

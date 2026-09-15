@@ -213,6 +213,7 @@ export const Launch: React.FC<LaunchProps> = (props) => {
         logoHeight={layout.logoHeight}
         safeMargin={layout.safeMargin}
         opacity={chromeOpacity}
+        showFeatureName={layout.showFeatureName}
       />
     </AbsoluteFill>
   );

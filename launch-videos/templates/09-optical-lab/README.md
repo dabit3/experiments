@@ -67,7 +67,8 @@ Remotion Studio or via `--props`.
   - `label` — the annotation shown under the caption.
   - `openAt` / `closeAt` — frames within the scene.
 - **`layout`** — `safeMargin`, `marginWidth`, `gap`, `stageRadius`, `windowRadius`,
-  `windowBorder`, `logoHeight`, `outroLogoHeight`, `showSceneCounter` (a `01 / 06`
+  `windowBorder`, `logoHeight`, `outroLogoHeight`, `showFeatureName` (feature name at
+  the bottom of the margin, off by default), `showSceneCounter` (a `01 / 06`
   eyebrow above each caption, off by default), `showMagnification` (prints the real
   factor, e.g. `2.3x`, next to the label), `crossfadeFrames`.
 
@@ -96,7 +97,8 @@ limit — widen `focus` or pick a higher-resolution asset.
 - Only one inspection window exists at a time; the outline, hairline connector and
   label are the entire "instrument". No measurements, scanlines or overlays.
 - The focus outline and connector use the brand accent (`#2200FF`) at 1.5 px so they
-  read as editorial marks, not UI.
+  read as editorial marks, not UI. The margin annotation is set off by a 2 px accent
+  rule rather than a repeated outline glyph.
 - `assets/fonts/` is empty by design; optional `@font-face` rules for NB
   International Pro are declared and fall back to Inter (loaded through
   `@remotion/google-fonts/Inter`). Geist Mono is loaded through
