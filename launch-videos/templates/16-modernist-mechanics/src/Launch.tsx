@@ -27,7 +27,7 @@ export const Launch: React.FC<LaunchProps> = (props) => {
           ...enterStyle(lockupT, -12, 'y'),
         }}
       >
-        <Lockup src={brand.logoLight} height={26} />
+        <Lockup src={brand.logoLight} height={36} />
       </div>
 
       <ProductFrame props={props} state={state} frame={frame} />

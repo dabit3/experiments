@@ -88,7 +88,7 @@ export const defaultMedia: LaunchProps['media'] = [
     kind: 'image',
     width: 2982,
     height: 1626,
-    crop: {x: 0.07, y: 0.13, w: 0.515, h: 0.735},
+    crop: {x: 0.063, y: 0.147, w: 0.526, h: 0.716},
   },
   {
     name: 'darkPhone',
@@ -96,7 +96,7 @@ export const defaultMedia: LaunchProps['media'] = [
     kind: 'image',
     width: 2978,
     height: 1626,
-    crop: {x: 0.225, y: 0.125, w: 0.2, h: 0.76},
+    crop: {x: 0.2217, y: 0.124, w: 0.2083, h: 0.7455},
   },
   {
     name: 'result',
@@ -184,7 +184,7 @@ export const defaultShapes: LaunchProps['shapes'] = {
 };
 
 export const defaultMotion: LaunchProps['motion'] = {
-  transitionFrames: 20,
+  transitionFrames: 28,
   entranceFrames: 14,
   slideDistance: 48,
   stagger: 3,

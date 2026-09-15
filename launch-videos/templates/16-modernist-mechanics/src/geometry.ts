@@ -101,9 +101,11 @@ export const sceneGeometry = (scene: Scene, props: LaunchProps): SceneGeometry =
           frames.unshift({x, y: safe.top, w, h});
           x -= gutter;
         }
+        // The plane grows to meet the tiles so all gaps equal the gutter.
+        const tilesPlaneW = Math.min(maxPlaneWidth, frames[0].x - gutter - safe.left);
         return {
           frames,
-          plane: {x: safe.left, y: safe.top, w: planeW, h},
+          plane: {x: safe.left, y: safe.top, w: tilesPlaneW, h},
           text: null,
         };
       }
