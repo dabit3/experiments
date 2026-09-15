@@ -16,8 +16,8 @@ export const Header: React.FC<{
         position: "absolute",
         left: MARGIN,
         right: MARGIN,
-        top: 60,
-        height: 40,
+        top: 46,
+        height: 52,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -26,7 +26,7 @@ export const Header: React.FC<{
     >
       <Img
         src={staticFile(brand.logoLight)}
-        style={{ height: 40, width: "auto", display: "block" }}
+        style={{ height: 52, width: "auto", display: "block" }}
       />
       <div
         style={{

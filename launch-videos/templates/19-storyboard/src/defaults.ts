@@ -5,19 +5,19 @@ export const WIDTH = 1920;
 export const HEIGHT = 1080;
 
 /**
- * Page geometry. 96px safe margin, 12 columns, 24px gutters (brand.md).
+ * Page geometry. 64px safe margin, 12 columns, 24px gutters (brand.md).
  * The header sits in the top margin, captions in the bottom margin, panels in
  * the content box between them.
  */
-export const MARGIN = 96;
+export const MARGIN = 64;
 export const GUTTER = 24;
 export const COLUMNS = 12;
-export const CONTENT_TOP = 148;
-export const CONTENT_BOTTOM = 900;
-export const CONTENT_W = WIDTH - 2 * MARGIN; // 1728
-export const CONTENT_H = CONTENT_BOTTOM - CONTENT_TOP; // 752
-export const COL_W = (CONTENT_W - (COLUMNS - 1) * GUTTER) / COLUMNS; // 122
-export const COL_STEP = COL_W + GUTTER; // 146
+export const CONTENT_TOP = 136;
+export const CONTENT_BOTTOM = 944;
+export const CONTENT_W = WIDTH - 2 * MARGIN; // 1792
+export const CONTENT_H = CONTENT_BOTTOM - CONTENT_TOP; // 808
+export const COL_W = (CONTENT_W - (COLUMNS - 1) * GUTTER) / COLUMNS; // ~127
+export const COL_STEP = COL_W + GUTTER; // ~151
 
 /** x of column `i` (0-based). */
 export const colX = (i: number) => MARGIN + i * COL_STEP;
@@ -63,8 +63,13 @@ const context = (slot: string, r: Rect): ScenePanel => ({
 });
 
 // Common rects
-const wideActive = rect(colX(3), CONTENT_TOP + 13, colW(9), fitH(colW(9), REC)); // 1290x726
-const ctxW = colW(3); // 414
+const wideActive = rect(
+  colX(3),
+  CONTENT_TOP + (CONTENT_H - fitH(colW(9), REC)) / 2,
+  colW(9),
+  fitH(colW(9), REC),
+); // ~1320x743
+const ctxW = colW(3); // ~430
 const ctxTop = (h: number) => rect(colX(0), CONTENT_TOP, ctxW, h);
 const ctxBelow = (above: Rect, h: number) =>
   rect(colX(0), above.y + above.h + GUTTER, ctxW, h);
@@ -101,7 +106,7 @@ export const defaultScenes: Scene[] = [
     panels: [
       active(
         "hero",
-        rect(colX(7), CONTENT_TOP + (CONTENT_H - fitH(colW(5), HERO)) / 2, colW(5), fitH(colW(5), HERO)),
+        rect(colX(6), CONTENT_TOP + (CONTENT_H - fitH(colW(6), HERO)) / 2, colW(6), fitH(colW(6), HERO)),
         30,
       ),
     ],
@@ -113,8 +118,8 @@ export const defaultScenes: Scene[] = [
     stage: 0,
     captionIndex: 0,
     panels: [
-      context("hero", rect(colX(0), CONTENT_TOP + 120, colW(4), fitH(colW(4), HERO))),
-      active("pick", rect(colX(4), CONTENT_TOP + 120, colW(4), fitH(colW(4), PICK)), 10),
+      context("hero", rect(colX(0), CONTENT_TOP + 96, colW(5), fitH(colW(5), HERO))),
+      active("pick", rect(colX(5), CONTENT_TOP + 96, colW(5), fitH(colW(5), PICK)), 10),
     ],
   }),
   // 0:07.5 The selector recording expands to inspectable size.
@@ -173,10 +178,10 @@ export const defaultScenes: Scene[] = [
     stage: 3,
     captionIndex: 4,
     panels: [
-      context("simulator", rect(colX(0), CONTENT_TOP, 180, fitH(180, SIM))),
+      context("simulator", rect(colX(0), CONTENT_TOP, 200, fitH(200, SIM))),
       context(
         "live",
-        rect(colX(0), CONTENT_TOP + fitH(180, SIM) + GUTTER, ctxW, fitH(ctxW, LIVE)),
+        rect(colX(0), CONTENT_TOP + fitH(200, SIM) + GUTTER, ctxW, fitH(ctxW, LIVE)),
       ),
       active("verify", wideActive),
     ],
