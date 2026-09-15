@@ -1,0 +1,32 @@
+{
+  "name": "@launch-videos/14-diptych",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Launch video template 14: Cause-and-Effect Diptych (Remotion)",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render Launch out/launch.mp4",
+    "still": "remotion still Launch out/poster.png --frame=720",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.521",
+    "@remotion/google-fonts": "4.0.521",
+    "@remotion/zod-types": "4.0.521",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.521",
+    "zod": "^3.22.3"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.521",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "eslint": "9.19.0",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
