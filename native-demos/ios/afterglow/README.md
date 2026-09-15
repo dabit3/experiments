@@ -32,7 +32,8 @@ it is not a signed iPhone or App Store release.
 - **Import:** choose one or more originals from the native Photos picker or Files.
   JPEG, PNG, and HEIC are accepted, up to 50 megapixels and 80 MB per file.
   Files are copied into the local library with generated filenames; their sources stay untouched.
-- **Starred:** favorites persist across relaunch. The collection shows real edited thumbnails.
+- **Starred:** favorites and the selected collection filter persist across editor navigation
+  and relaunch. The collection shows real edited thumbnails.
 - Photographic dimensions honor EXIF orientation. Imported titles come from filenames
   when importing from Files; Photos-picker imports receive a generic title.
 - The bundled studies remain available alongside your imported photographs.

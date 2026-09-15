@@ -5,7 +5,7 @@ import UniformTypeIdentifiers
 struct LibraryView: View {
   @ObservedObject var store: EditorStore
   let openPhoto: (SamplePhoto) -> Void
-  @State private var favoritesOnly = false
+  @AppStorage("favoritesOnly") private var favoritesOnly = false
   @State private var importSources = false
   @State private var filePicker = false
   @State private var photoPicker = false
