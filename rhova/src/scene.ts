@@ -5,6 +5,16 @@ import type { Entity, Point, Project } from './model'
 
 export type DisplayMode = 'Shaded' | 'Wireframe' | 'Rendered'
 
+function raycastControlPoint(this: THREE.Mesh, raycaster: THREE.Raycaster, intersections: THREE.Intersection[]) {
+  if (!this.geometry.boundingSphere) this.geometry.computeBoundingSphere()
+  const sphere = this.geometry.boundingSphere?.clone().applyMatrix4(this.matrixWorld)
+  if (!sphere) return
+  const point = raycaster.ray.intersectSphere(sphere, new THREE.Vector3())
+  if (!point) return
+  const distance = raycaster.ray.origin.distanceTo(point)
+  if (distance >= raycaster.near && distance <= raycaster.far) intersections.push({ distance, point, object: this })
+}
+
 function material(color: string, opacity = 1, metalness = 0): THREE.MeshStandardMaterial {
   return new THREE.MeshStandardMaterial({ color, roughness: 0.64, metalness, transparent: opacity < 1, opacity, side: THREE.DoubleSide })
 }
@@ -201,6 +211,7 @@ export function buildModel(project: Project, mode: DisplayMode, selected: string
         handle.renderOrder = 10
         handle.userData.pointIndex = index
         handle.userData.entityId = object.id
+        handle.raycast = raycastControlPoint
         group.add(handle)
       })
     }
@@ -208,6 +219,18 @@ export function buildModel(project: Project, mode: DisplayMode, selected: string
   }
   root.updateMatrixWorld(true)
   return root
+}
+
+export function pickModelHit(root: THREE.Object3D, raycaster: THREE.Raycaster, preferPoints: boolean) {
+  const hits = raycaster.intersectObject(root, true).filter(intersection => {
+    let node: THREE.Object3D | null = intersection.object
+    while (node) {
+      if (node.userData.decoration) return false
+      node = node.parent
+    }
+    return true
+  })
+  return (preferPoints ? hits.find(hit => typeof hit.object.userData.pointIndex === 'number') : undefined) ?? hits[0]
 }
 
 export function disposeObject(root: THREE.Object3D) {

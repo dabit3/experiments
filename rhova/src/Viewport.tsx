@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { buildModel, disposeObject } from './scene'
+import { buildModel, disposeObject, pickModelHit } from './scene'
 import type { DisplayMode } from './scene'
 import { inversePoint, transformPoint } from './model'
 import type { Point, Project } from './model'
@@ -107,14 +107,7 @@ export function Viewport(props: Props) {
     const drawingPlane = () => new THREE.Plane(new THREE.Vector3(...(props.view === 'Front' ? [0, 1, 0] as Point : props.view === 'Right' ? [1, 0, 0] as Point : [0, 0, 1] as Point)), 0)
     const hit = () => {
       const root = runtime.current?.model
-      return root ? raycaster.intersectObject(root, true).find(intersection => {
-        let node: THREE.Object3D | null = intersection.object
-        while (node) {
-          if (node.userData.decoration) return false
-          node = node.parent
-        }
-        return true
-      }) : undefined
+      return root ? pickModelHit(root, raycaster, latest.current.showPoints) : undefined
     }
     const down = (event: PointerEvent) => {
       latest.current.onActive()
@@ -126,7 +119,8 @@ export function Viewport(props: Props) {
         const id = String(intersection.object.userData.entityId)
         const index = Number(intersection.object.userData.pointIndex)
         const entity = latest.current.project.objects.find(object => object.id === id)
-        if (!entity) return
+        const layer = latest.current.project.layers.find(layer => layer.id === entity?.layerId)
+        if (!entity || layer?.locked) return
         latest.current.onPoint(index)
         const world = transformPoint(entity.points[index], entity)
         const plane = drawingPlane()

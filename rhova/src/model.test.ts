@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest'
+import * as THREE from 'three'
 import { commit, createMuseum, extrudeCurve, inversePoint, loftCurves, parseProject, redo, serializeProject, transformPoint, undo, updateEntity } from './model'
 import type { History, Point } from './model'
 import { canopyProfile, sampleCurve, stripGeometry, surfaceGeometry } from './geometry'
-import { buildModel, disposeObject, exportOBJ } from './scene'
+import { buildModel, disposeObject, exportOBJ, pickModelHit } from './scene'
 
 describe('local project lifecycle', () => {
   it('round trips the deterministic museum through the persistence parser', () => {
@@ -97,6 +98,25 @@ describe('geometry operations', () => {
 })
 
 describe('scene/export integration', () => {
+  it('picks displayed control handles ahead of occluding geometry and ignores decorations', () => {
+    const project = createMuseum()
+    const curve = project.objects[4]
+    project.objects = [curve]
+    const root = buildModel(project, 'Wireframe', [curve.id], true)
+    const [x, y, z] = curve.points[2]
+    const foreground = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2), new THREE.MeshBasicMaterial())
+    foreground.position.set(x, y - 10, z)
+    const decoration = foreground.clone()
+    decoration.position.y -= 5
+    decoration.userData.decoration = true
+    root.add(foreground, decoration)
+    root.updateMatrixWorld(true)
+    const ray = new THREE.Raycaster(new THREE.Vector3(x, y - 30, z), new THREE.Vector3(0, 1, 0))
+    expect(pickModelHit(root, ray, false)?.object).toBe(foreground)
+    expect(pickModelHit(root, ray, true)?.object.userData.pointIndex).toBe(2)
+    expect(pickModelHit(root, ray, true)?.object.userData.entityId).toBe(curve.id)
+    disposeObject(root)
+  })
   it('respects layer visibility when constructing display geometry', () => {
     const project = createMuseum()
     project.layers[0].visible = false
