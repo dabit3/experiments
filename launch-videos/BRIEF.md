@@ -46,9 +46,12 @@ orientations", "Upgrading dependencies or Swift versions and confirming the app 
 - Generous negative space. Nothing on screen that isn't doing work. No decorative particles, no stock icons.
 - Text: short, declarative, one idea at a time. Never more than ~8 words per line, never more than two lines at once
   (except where the direction explicitly calls for a list or grid).
-- Use the type, color, spacing, radius and shadow tokens from `assets/tokens.json`. Fonts: Inter (load via
-  `@remotion/google-fonts/Inter`) and JetBrains Mono (`@remotion/google-fonts/JetBrainsMono`) unless the direction
-  specifies a serif/other face — then use a Google Font that matches the direction.
+- Use the type, color, spacing, radius and shadow tokens from `assets/tokens.json` (pulled from the Devin design file
+  in Figma). Key points: ink `#191919` on paper `#F7F6F5`/white, dark scenes on `#121111`, the single accent is
+  electric blue `#2200FF`, headlines are Medium (500) weight with tight negative tracking, never bold.
+- Fonts: the brand face is NB International Pro (licensed, not bundled). Use Inter as the stand-in
+  (`@remotion/google-fonts/Inter`, weights 400/500 only) and Geist Mono (`@remotion/google-fonts/GeistMono`) for
+  labels and code, unless the direction specifies a serif/other face — then use a Google Font that matches.
 - Consistent light source, consistent corner radius, consistent frame margins (120px at 1080p).
 - Output must feel finished: no placeholder text, no misaligned elements, no clipped text.
 
@@ -61,7 +64,7 @@ orientations", "Upgrading dependencies or Swift versions and confirming the app 
   provided: simulate motion by animating over the screenshots (Ken Burns push-ins, panning, cursor overlays, typed
   text overlays, cross-fading between sequential screenshots such as web-3 → web-4 → web-5). Do not invent a UI that
   contradicts the screenshots; you may crop, mask, and re-compose them.
-- `assets/tokens.json` — design tokens.
+- `assets/tokens.json` — design tokens (source: https://www.figma.com/design/evS5ExlrnLrUCMPm395OHw/Devin).
 
 Remotion cannot load files outside its public directory, so point each template at the shared assets:
 `Config.setPublicDir("../../assets")` in `remotion.config.ts`, and reference files with `staticFile("screens/devin-web-1.png")`.
