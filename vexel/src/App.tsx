@@ -112,6 +112,7 @@ function NumberField({
   label,
   value,
   onChange,
+  onFocus,
   min = -1000,
   max = 1000,
   step = 0.1,
@@ -119,6 +120,7 @@ function NumberField({
   label: string
   value: number
   onChange: (n: number) => void
+  onFocus?: () => void
   min?: number
   max?: number
   step?: number
@@ -138,6 +140,7 @@ function NumberField({
       min={min}
       max={max}
       step={step}
+      onFocus={onFocus}
       onChange={(e) => setDraft(e.target.value)}
       onBlur={submit}
       onKeyDown={(e) => {
@@ -940,7 +943,7 @@ export default function App() {
               <Settings2 />
             </IconButton>
           </div>
-          <div className="command-scroll">
+          <div className="command-scroll" onFocus={() => setPlaying(false)}>
             {panel === 'Create' ? (
               <>
                 <div className="create-category">
@@ -1312,6 +1315,7 @@ export default function App() {
               max={100}
               step={1}
               onChange={seek}
+              onFocus={() => setPlaying(false)}
             />
           </label>
         </div>
