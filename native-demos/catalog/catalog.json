@@ -1,0 +1,1572 @@
+[
+  {
+    "app": {
+      "name": "Lumen Drift",
+      "platform": "ios",
+      "slug": "lumen-drift",
+      "session_id": "f95c34e81f8d4e24908b1e48aa50a2f2",
+      "session_url": "https://app.devin.ai/sessions/f95c34e81f8d4e24908b1e48aa50a2f2"
+    },
+    "description": "Carve through a luminous canyon in a native arcade game. Steer through procedural waves, collect shields, build combos and chase a persistent high score.",
+    "result": {
+      "name": "Lumen Drift",
+      "tests": [
+        "bash Scripts/check.sh: strict Swift formatting and 75,546 assertions passed across 10 suites, including procedural fairness over 329 waves, scoring/collision/combo logic, pause, restart, frame-rate independence and persistence recovery, bash Scripts/build.sh: native universal arm64/x86_64 iOS Simulator build succeeded, plutil project validation and git diff whitespace checks passed, Native UI: deliberate LEFT\u2192RIGHT\u2192CENTER practice collections increased energy 0\u21923 while preserving both shields, Native UI: pause froze score 416, distance 181m and visible canyon for over ten seconds; resume continued, Native UI: three intentional collisions consumed two shields and ended at 838 points; Fly again reset the flight, Native UI: endless click/swipe and real energy collection; independent records 367 endless / 838 practice survived process relaunch, PR CI: no configured checks, no failures or pending checks"
+      ],
+      "branch": "devin/1789091227-lumen-drift",
+      "commit": "5e4f28435cd4c4c1aca13c3b54ee5406e8cfe699",
+      "pr_url": "https://github.com/dabit3/experiments/pull/57",
+      "status": "complete",
+      "summary": "Built polished native SwiftUI/SpriteKit neon canyon arcade game with playable slow practice, procedural endless waves, tap/swipe steering, shields, combos, pause/resume, restart and separate persisted records. Native UI testing passed. Final annotated recording, three full screenshots, test report and Simulator app ZIP delivered. PR ready; app remains running on its hangar.",
+      "platform": "ios",
+      "limitations": [
+        "Simulator-only app artifact; not a signed physical iPhone or App Store release, Other device sizes, physical haptics, sustained performance and background auto-pause were not UI-tested, Initial endless targeting missed two fast waves before a successful collection; pause overlay obscured exact guide countdown while score/distance and visible scene freeze were verified, No audio or online services; portrait composition with fixed typography and no fully nonvisual gameplay mode, Stylized discrete-lane collision model; unfinished flights do not resume after process termination, while saved records persist"
+      ],
+      "session_url": "https://app.devin.ai/sessions/f95c34e81f8d4e24908b1e48aa50a2f2",
+      "build_passed": true,
+      "app_directory": "native-demos/ios/lumen-drift",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/3ae1ae61-83b2-463e-bf20-5aa66ef7519d/LumenDrift-iPhone-Simulator.zip"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/db83832d-883c-4f4c-a039-38a8c40a8765/lumen-drift-native-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/34d74e67-a0af-4360-af49-dc53dc2d27a3/lumen-final-home.png",
+        "https://app.devin.ai/attachments/b1127b2d-3df8-4a58-8fb1-9c47101021ad/ss_e4c45b03.png",
+        "https://app.devin.ai/attachments/bc4bc180-4ca7-4066-b088-9836d4d4a07c/lumen-result.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/dc8df7a9-7441-482a-85d1-fcbd540746d1/Test-Report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2; Xcode 26.6 (17F113); Swift 6.3.3; iPhone 17 Simulator with iOS 26.5, UUID 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent inspected final native gameplay and hangar screenshots, read detailed executed test report, and verified PR is open and mergeable at the reported revision. Original annotated recording linked."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/f95c34e81f8d4e24908b1e48aa50a2f2?testRecording=513981b3-641b-47af-88a9-04df29ca8bd8"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Tidepool",
+      "platform": "ios",
+      "slug": "tidepool",
+      "session_id": "6f158651431d4c07a90de50c40b98754",
+      "session_url": "https://app.devin.ai/sessions/6f158651431d4c07a90de50c40b98754"
+    },
+    "description": "Restore five miniature coastal ecosystems. Place marine life, balance habitat rules and watch illustrated tidepools come alive.",
+    "result": {
+      "name": "Tidepool",
+      "tests": [
+        "Strict swift-format lint passed., 51 model assertions passed, covering all five solutions, solver continuation, adjacency, habitat, inventory and JSON persistence/recovery., Xcode iOS Simulator build passed for arm64 and x86_64., Full native UI playthrough on 50fb51c: all five shores solved with real drags; inspection/select placement, invalid-drop recovery, hints, pending adjacency and health passed., Full native UI playthrough on 50fb51c: undo/replacement, moving placed residents, reset confirmation, undo reset, locked progression and saved boards across relaunch passed., Focused final verification on a525881: reinstall without uninstalling and terminate/launch retained exact Mosaic board, 7/7 thriving and all five completed shores; corrected restored welcome text verified., Final-commit screenshots confirm restored Mosaic, all-shores map and Sandy board. Actual UI-earned save copied read-only with board counts 3/4/4/5/7."
+      ],
+      "branch": "devin/1789091294-tidepool",
+      "commit": "a5258815bc7c1c27bfa3cd33f3cd079f1e6a47fd",
+      "pr_url": "https://github.com/dabit3/experiments/pull/60",
+      "status": "complete",
+      "summary": "Completed a native SwiftUI marine-restoration puzzle with five handcrafted shores, procedural creature artwork, animated water, real drag placement, deterministic habitat and adjacency rules, health indicators, solver-backed hints, undo/reset, and local saved progress. Focused PR contains reproducible build scripts, documentation and meaningful model tests. Native UI testing passed and final artifacts are attached.",
+      "platform": "ios",
+      "limitations": [
+        "Unsigned Simulator-only artifact; not an installable physical-iPhone or App Store release., Full core recording is from 50fb51c; final a525881 recording is a focused relaunch addendum after the welcome-copy fix., Physical devices, alternate screen sizes, Dynamic Type, VoiceOver and adverse storage conditions were not tested., The partial-board welcome-copy branch was not separately tested through UI., Ecological relationships are simplified deterministic puzzle rules."
+      ],
+      "session_url": "https://app.devin.ai/sessions/6f158651431d4c07a90de50c40b98754",
+      "build_passed": true,
+      "app_directory": "native-demos/ios/tidepool",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/215c4f1b-a393-46cd-bd81-fc9e5a40e925/Tidepool-a525881-iOS-Simulator.app.zip",
+        "https://app.devin.ai/attachments/37c5b9f6-3973-4e76-a360-ebacc67ed8ca/tidepool-actual-progress.json"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/9b13330c-e990-4cf0-994d-b3e1d4c3baad/tidepool-final-50fb51c-edited.mp4",
+        "https://app.devin.ai/attachments/db293d7c-441e-4cf4-b16d-9d4a869fc6cb/tidepool-a525881-relaunch-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/942ba8a0-8af6-4f5c-aac0-f9f06394d3aa/tidepool-final-mosaic.png",
+        "https://app.devin.ai/attachments/74f2e1bc-90f1-4d97-b281-c53e296bdd9e/tidepool-final-shores.png",
+        "https://app.devin.ai/attachments/eb991397-2685-482a-83c6-1ef1f74464be/tidepool-final-sandy.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/c6db6fd3-18c2-4a89-94a5-860d9ca0ca1b/tidepool-test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2; Xcode 26.6 (17F113); Swift 6.3.3; iPhone 17 Simulator running iOS 26.5",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the final restored-ecosystem screenshot and full five-shore report, checked both annotated recordings (149.1-second playthrough and 16.3-second final-revision addendum), and verified the open PR's revision and directory isolation. The report explicitly distinguishes the earlier playthrough from the final greeting-only change."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/6f158651431d4c07a90de50c40b98754?testRecording=f34d2487-a077-4e78-be2d-d84a4b22f429",
+        "https://app.devin.ai/sessions/6f158651431d4c07a90de50c40b98754?testRecording=75d7eac2-7ab0-4b2f-b467-625ed07b10bb"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Trailhead",
+      "platform": "ios",
+      "slug": "trailhead",
+      "session_id": "d0a707bcfef7439abf3f92a69810554c",
+      "session_url": "https://app.devin.ai/sessions/d0a707bcfef7439abf3f92a69810554c"
+    },
+    "description": "Plan an expedition across illustrated trail maps. Explore elevation profiles, add waypoints, pack your gear and export a paginated field guide.",
+    "result": {
+      "name": "Trailhead",
+      "tests": [
+        "./scripts/check.sh: strict Apple swift-format lint and plist/project validation passed., 33 Swift 6 model checks passed: haversine reference, interpolation, ascent and duration, route fixtures, input validation, waypoint ordering, save deduplication, atomic disk roundtrip and invalid archive rejection., ./scripts/build.sh: native Debug iOS Simulator xcodebuild passed with warnings as errors., Native UI acceptance on 80908da passed: map pan/zoom/recenter, elevation scrub, waypoint creation, gear editing and rename, save/reopen, terminate/relaunch persistence, reset and undo., Final polish checks passed: synthetic contours in map/collection/PDF, first waypoint visibility, scrolled Route-to-Gear reset, and PDF continuation heading., Real two-page itinerary opened in native PDFKit and Share; read-only PDFKit text checks confirmed trip, waypoint, packed items and illustrative-data disclaimer., Earlier 3847067 native run additionally passed all three route selections, blank-input rejection, waypoint/gear removal and undo, save deduplication and reset cancellation., PR has no CI checks configured; working tree was clean after final commit."
+      ],
+      "branch": "devin/1789091284-trailhead",
+      "commit": "80908dae29cc27720daf1785063ae1994ba749a9",
+      "pr_url": "https://github.com/dabit3/experiments/pull/72",
+      "status": "complete",
+      "summary": "Completed a native SwiftUI iPhone expedition planner with three bundled illustrative trail regions, original vector contour artwork, interactive map and elevation profile, editable waypoints and gear, saved trips with persistence and undo, and real paginated PDF export. Final native UI acceptance and polished annotated recording passed; source, report, screenshots, PDF and Simulator app archive are delivered.",
+      "platform": "ios",
+      "limitations": [
+        "Coordinates and elevations are authored illustrative fixtures; contours and water features are decorative synthetic artwork, not navigation data., Duration uses a simplified distance/ascent estimate and excludes breaks, weather and individual fitness., App archive is an unsigned Simulator build, not a physical-device or App Store release., Native UI coverage used iPhone 17 / iOS 26.5; physical hardware, other screen sizes, VoiceOver, pinch gestures and long-export stress cases were not tested., Corrupt archive rejection is covered by model checks; native UI recovery from a corrupt archive was not exercised., Decorative map labels can sit beneath fixed map controls."
+      ],
+      "session_url": "https://app.devin.ai/sessions/d0a707bcfef7439abf3f92a69810554c",
+      "build_passed": true,
+      "app_directory": "native-demos/ios/trailhead",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/11dd904a-3626-4890-a439-d9a8386b400a/final-Ridge-escape.pdf",
+        "https://app.devin.ai/attachments/bd8ef025-7f46-4779-a9f3-d68622a7399b/Trailhead-iOS-Simulator-80908da.zip"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/46af31ef-fdad-4213-a5d9-458e05d19f81/trailhead-final-80908da-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/85d98702-f756-45e6-b3cd-cdec070fa78a/final-01-map-waypoints.png",
+        "https://app.devin.ai/attachments/0be4289a-7d5f-4c0d-8ea0-9c987b71dec9/final-02-gear.png",
+        "https://app.devin.ai/attachments/072d6f37-fad8-46e1-9fe8-06a45c859b92/final-03-pdf-preview.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/7728e26e-2c08-4759-9e19-c00923f11730/report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2; Xcode 26.6 (17F113); iPhone 17 Simulator running iOS 26.5",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native map screenshot, final report covering live map/profile gestures, waypoints, gear, save/reopen/relaunch, recovery and real PDF export; checked the 79.6-second annotated recording and verified PR revision and app-directory isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/d0a707bcfef7439abf3f92a69810554c?testRecording=aea1765a-eda3-479a-ab69-3cf2f24f8507"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Mise",
+      "platform": "ios",
+      "slug": "mise",
+      "session_id": "28325f9132004954a8db89c8c0dac533",
+      "session_url": "https://app.devin.ai/sessions/28325f9132004954a8db89c8c0dac533"
+    },
+    "description": "A quiet, illustrated cooking companion. Scale ingredients, follow preparation steps, run independent timers and keep your favorite recipes close.",
+    "result": {
+      "name": "Mise",
+      "tests": [
+        "./scripts/check.sh passed serially: strict Swift-format lint, six Swift Testing logic tests, Xcode project plist validation and unsigned native iOS Simulator build., Logic tests passed for quantity scaling/fractions, serving and step bounds, independent timer pause/resume/restart, persisted state and elapsed deadlines, malformed-save errors, and recipe consistency., Real native UI opened all five recipes and verified distinct artwork/readable layout., Real native UI scaled pomodoro from two to four servings, checked ingredients, reset preparation and restored it with Undo., Real native UI verified substitutions, bookmark, native Share\u2192Copy and actual four-serving export., Real native UI started two independent timers, moved forward/back through cooking steps, observed actual 15-second READY, and verified pause/resume/restart/cancel., Terminate/relaunch preserved active step, servings, checklist, favorite and absolute timer deadlines; short timer completed while terminated., Saved recipes resumed step 02/05; Dinner is served survived relaunch; confirmed restart preserved prep and timers., Final rebuilt application icon verified on SpringBoard; Simulator reinstall retained all state., Simulator app zip passed unzip integrity validation; repository working tree clean; PR has no configured CI checks."
+      ],
+      "branch": "devin/1789091288-mise",
+      "commit": "7f22d30bb27de726d287ac75be850410223813c3",
+      "pr_url": "https://github.com/dabit3/experiments/pull/69",
+      "status": "complete",
+      "summary": "Built and demonstrated a polished native SwiftUI iPhone cooking companion with five complete illustrated recipes, ingredient scaling, preparation checklists with reset/undo, substitutions, favorites, focused cooking, independent persistent timers and native scaled-recipe export. Native build and real UI acceptance passed; final annotated recording, three uncropped screenshots, report, export and Simulator app zip delivered. App remains running.",
+      "platform": "ios",
+      "limitations": [
+        "Timer completion is visual in-app only; no audible alarms, background notifications or Live Activities., App artifact is unsigned and Simulator-only, not a physical-iPhone or App Store release., Native UI acceptance covered one iPhone model and iOS version; exhaustive accessibility and all other recipe methods were not tested., Ingredient quantities scale linearly; heat, pan size and recipe cooking duration do not. Device-clock changes affect timer deadlines., Recipes are bundled editorial content, not user-editable recipe authoring. No actual-food preparation claims., Final recording resumes an existing cooking session; first-time Begin cooking was exercised in the earlier run."
+      ],
+      "session_url": "https://app.devin.ai/sessions/28325f9132004954a8db89c8c0dac533",
+      "build_passed": true,
+      "app_directory": "native-demos/ios/mise",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/919ef32b-5eac-44ca-8793-a5d987c1a2bb/Mise-iPhone-Simulator.zip",
+        "https://app.devin.ai/attachments/c13fa1fb-10a4-49ea-80df-18b83670ed0d/exported-pomodoro-4-servings.txt",
+        "https://app.devin.ai/attachments/faccc056-46b2-4a81-b1a5-fa4a8f01a320/mise-native-checks.log"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/f4bda613-1c6a-4fc0-b44f-41c1cb662851/mise-final-native-acceptance-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/7dd80036-27fd-4af2-a464-fba6f56fc9a0/01-collection.png",
+        "https://app.devin.ai/attachments/f431d949-22e6-4696-b453-cea0f997eb1b/02-scaled-prep.png",
+        "https://app.devin.ai/attachments/72cbb50d-0dae-491f-bed6-18b7a4c9949b/03-two-timer-board.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/67b71494-c44d-4ae0-bdc6-636fd235be34/acceptance-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 (25F84), Xcode 26.6 (17F113), iPhone 17 Simulator running iOS 26.5; native SwiftUI app com.nader.mise.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native recipe screenshot, final report covering scaling, reset/undo, two independent timers, recipe completion, relaunch and real text export, and the 135.2-second recording with attached annotation metadata; verified PR revision and app-directory isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/28325f9132004954a8db89c8c0dac533?testRecording=c4dc40ce-d05c-4e77-9a93-512f1006118e"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Tessera",
+      "platform": "ios",
+      "slug": "tessera",
+      "session_id": "94adce8ad0784728b8a9d8d10248d5ca",
+      "session_url": "https://app.devin.ai/sessions/94adce8ad0784728b8a9d8d10248d5ca"
+    },
+    "description": "Route light through six architectural puzzle chambers. Rotate optical elements, combine RGB beams and illuminate each room.",
+    "result": {
+      "name": "Tessera",
+      "tests": [
+        "bash scripts/check.sh: Apple swift-format strict lint and project plutil validation passed; all 9 XCTest tests passed., Logic coverage: six exact physical solutions, every required optic, reflection reversibility, directional prism intake, RGB separation, wrong-color receivers, walls, undo/reset and save recovery., bash scripts/build.sh: unsigned universal arm64/x86_64 iOS Simulator build succeeded on final revision 1ce0a317., Native computer taps solved all six chambers from a fresh installation on final revision; verified first two solves, misdirected beam and Undo, prism challenge, hints, Reset/Undo, help, collection locking/unlocking and replay., Terminate/relaunch preserved current chamber3, 3/6 completion, solved arrangement, moves and working Undo; subsequent native play reached 6/6., Final coordinate readability inspected after polish; no clipping or functional failures observed., PR47 CI status: no configured checks (0 passed, 0 failed, 0 pending)."
+      ],
+      "branch": "devin/1789091247-tessera",
+      "commit": "1ce0a317d230a704a1013cbc96681a3c47655220",
+      "pr_url": "https://github.com/dabit3/experiments/pull/47",
+      "status": "complete",
+      "summary": "Completed native SwiftUI optical puzzle game with six solvable architectural chambers, real cardinal ray tracing and RGB routing, animated beams, hints, undo/reset and persistent progress. Final native build and full computer-use UI test passed. All six chambers solved visibly; annotated recording, three full screenshots, test report and Simulator app archive delivered. App remains ready in illuminated prism chamber.",
+      "platform": "ios",
+      "limitations": [
+        "Unsigned Simulator-only artifact, not a signed physical iPhone/App Store release., Fixed cardinal grid and directional RGB puzzle rules rather than physical wave-optics simulation; optics rotate on fixed pedestals., Portrait iPhone app; no export feature, cloud sync or audio., UI tested on iPhone 17/iOS26.5 only; other devices/text sizes, physical haptics, VoiceOver, Reduce Motion and save-error/corruption UI not exercised., Persistence visually verified at 3/6 completion, not repeated after 6/6."
+      ],
+      "session_url": "https://app.devin.ai/sessions/94adce8ad0784728b8a9d8d10248d5ca",
+      "build_passed": true,
+      "app_directory": "native-demos/ios/tessera",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/82ed00b4-6075-46a3-9781-438add13bc35/Tessera-iOS-Simulator.zip",
+        "https://app.devin.ai/attachments/5e5a4993-3e13-456e-938a-48eb290d6311/tessera-final-native-annotations.json"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/00c38d7b-4e5e-4bf2-b673-473b4109b19d/tessera-final-native-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/3148cd4e-265d-441f-ae8c-cabdaa4e30e9/final-01-prism.png",
+        "https://app.devin.ai/attachments/3a1edef1-d432-45de-8982-7cc08cc37fc6/final-02-finale.png",
+        "https://app.devin.ai/attachments/0b444986-b25e-4657-85b0-3c01a31b7ad2/final-03-collection.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/d6deccb7-8c65-4eda-a85a-9b24a44fb81c/final-test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 arm64; Xcode 26.6 (17F113); iPhone 17 Simulator running iOS 26.5; device 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89",
+      "_review": {
+        "accepted": true,
+        "notes": "Native visual, test-report and PR-isolation review passed. Child restored the original recording's annotation sidecar, and the final attachment metadata confirms the association. Video content and source revision are unchanged."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/94adce8ad0784728b8a9d8d10248d5ca?testRecording=1907be52-8f22-45fb-81c5-1aad929ec5bb"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Afterglow",
+      "platform": "ios",
+      "slug": "afterglow",
+      "session_id": "c5728553dae34eccb83ecca1167c50e1",
+      "session_url": "https://app.devin.ai/sessions/c5728553dae34eccb83ecca1167c50e1"
+    },
+    "description": "An intimate Core Image darkroom. Apply film-inspired looks, tune exposure, reframe photographs and develop real JPEG exports.",
+    "result": {
+      "name": "Afterglow",
+      "tests": [
+        "bash Scripts/check.sh: strict swift-format lint, seven Swift/Core Image tests, project plist validation and shell syntax checks passed., bash Scripts/build.sh: xcodebuild Debug iOS Simulator build passed., Core tests covered bounded history, undo/reset/branching, input sanitization, crop geometry, serialization, actual film-look and exposure pixel changes, rotation and JPEG round-trip., Native UI tests passed for photo navigation, film looks, tonal adjustment, crop/reframe/rotation, original comparison, undo/redo, reset cancellation/recovery, export/native sharing and relaunch persistence., Latest revision precision ruler continuity passed: held/released/Redo matched +0.86 EV, -0.57 EV and 1.29x crop zoom; Undo restored +0.23 EV and 1.00x., Latest annotated golden-path demonstration passed on 6ff3271, including another held/released/Redo match at +0.68 EV., Actual UI-created JPEG decoded to 1024x1280, 426579 bytes. Mean absolute RGB error was 1.7836/255 versus persisted-edit rendering and 21.4461/255 versus neutral crop, confirming edited pixels., PR checks reported no configured checks: 0 passed, 0 failed, 0 pending."
+      ],
+      "branch": "devin/1789091189-afterglow",
+      "commit": "6ff3271ef46fe30934ce0ff2367b358a02b31756",
+      "pr_url": "https://github.com/dabit3/experiments/pull/58",
+      "status": "complete",
+      "summary": "Completed native SwiftUI/Core Image pocket darkroom with three original bundled images, five film looks, exposure/contrast/saturation/warmth precision controls, crop/rotate/reframe, held original comparison, persistent undo/redo/reset, and real JPEG export. Corrected crop-guide alignment and ruler release continuity. Built and tested on native macOS with final annotated native UI demonstration, screenshots, verified exported JPEG and Simulator app archive.",
+      "platform": "ios",
+      "limitations": [
+        "Simulator-only app archive; not a signed physical-iPhone or App Store release., Physical-device usability and VoiceOver were not tested; exhaustive Contrast/Color/Warmth ruler variations were not tested through UI., Bounded V1 edits three bundled original AI-generated photographic studies; no Photos-library import, RAW editing, camera or cloud sync., Film looks are explicit Core Image recipes rather than measured physical film emulations., Preview is downsampled to a 1000-pixel longest edge; exports preserve cropped source resolution as flattened sRGB JPEG without capture metadata."
+      ],
+      "session_url": "https://app.devin.ai/sessions/c5728553dae34eccb83ecca1167c50e1",
+      "build_passed": true,
+      "app_directory": "native-demos/ios/afterglow",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/4b129989-1c23-442a-8d09-4186acf26a1d/Afterglow-iOS-Simulator-6ff3271.app.zip",
+        "https://app.devin.ai/attachments/ee6e1780-eec2-42c4-ba35-7be55dea830a/Afterglow-dunes-3F41BD75.jpg"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/a01bf0df-694f-4914-a646-4069819b9fac/afterglow-6ff3271-demo-edited.mp4",
+        "https://app.devin.ai/attachments/58772e54-d6ee-4221-bcac-af851a3e07eb/afterglow-ruler-verification-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/ce74b01d-2bdc-4955-afbd-a9f51b8537bc/afterglow-6ff3271-darkroom.png",
+        "https://app.devin.ai/attachments/01bee4f5-3530-4182-b178-1ca3704998d2/afterglow-6ff3271-crop.png",
+        "https://app.devin.ai/attachments/cc9372ad-4e1a-446a-8911-4b98b78f7df6/afterglow-6ff3271-export.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/f502f7eb-f4e9-4aff-ac16-36685ecfc3c7/afterglow-6ff3271-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 arm64; Xcode 26.6 (17F113); Swift 6.3.3; iPhone 17 Simulator running iOS 26.5",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native darkroom screenshot, final report covering corrected ruler continuity, film looks, crop, comparison, persistent history and exported-pixel verification; checked the 54-second annotated final demo and supplementary precision recording metadata, and verified PR revision/isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/c5728553dae34eccb83ecca1167c50e1?testRecording=1d879a11-946d-4c48-861b-e906362fb235",
+        "https://app.devin.ai/sessions/c5728553dae34eccb83ecca1167c50e1?testRecording=d753891b-3c2d-41a2-87c9-2a82fd8706b5"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Pocket Press",
+      "platform": "ios",
+      "slug": "pocket-press",
+      "session_id": "57a3a94161a1443899b7dabf04e52c6b",
+      "session_url": "https://app.devin.ai/sessions/57a3a94161a1443899b7dabf04e52c6b"
+    },
+    "description": "Turn a journey into a pocket magazine. Compose illustrated pages, edit typography and themes, reorder a story and export a multipage PDF.",
+    "result": {
+      "name": "Pocket Press",
+      "tests": [
+        "./scripts/build.sh: native iOS Simulator xcodebuild succeeded, ./scripts/check.sh: strict swift-format lint, ten Swift Testing model tests and both plist validations passed, Native UI: created an issue from the template and saved title/caption edits, Native UI: invalid blank title disabled Save; Cancel restored saved content, Native UI: added and edited a photo essay, changed its bundled photograph, reordered pages, deleted an interior page and restored exact order with Undo, Native UI: switched themes and previewed all five pages using swipes and arrows, Native UI: exported and reopened a real five-page PDF; checked horizontal navigation, full-page fit, zoom and native Share sheet, Native UI: cold launch retained all three issues, edited title/captions, theme, photograph and exact five-page order, Read-only PDFKit inspection: five pages with 420 \u00d7 594-point media boxes, selectable edited text and correct page order, Simulator app archive: unzip integrity validation passed, PR inspection: no configured CI checks; no merge conflicts"
+      ],
+      "branch": "devin/1789091222-pocket-press",
+      "commit": "91a2470bb64025e86f6fc92d23b6ded2b9ed2021",
+      "pr_url": "https://github.com/dabit3/experiments/pull/65",
+      "status": "complete",
+      "summary": "Built and polished a native SwiftUI iPhone travel magazine editor with four editable page layouts, bundled photography, three themes, page management, undo, persistent projects and real matching multipage PDF export. Final native UI testing passed; PR includes reproducible source, checks and evidence. App remains ready in the iPhone Simulator.",
+      "platform": "ios",
+      "limitations": [
+        "Unsigned Simulator-only app archive; not a physical iPhone or App Store release, Personal-photo import and external share delivery were not exercised, Fixed portrait RGB editorial pages; no CMYK, bleeds, printer imposition or automatic text flow into new pages, Editorial canvas typography does not expand with Dynamic Type; PDF reader supports zoom, Undo history and last-export shortcut are session-local; saved projects and PDF files persist, No CI checks are configured on the PR; validation was performed locally on native macOS"
+      ],
+      "session_url": "https://app.devin.ai/sessions/57a3a94161a1443899b7dabf04e52c6b",
+      "build_passed": true,
+      "app_directory": "native-demos/ios/pocket-press",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/9d1524a6-33eb-4279-bb93-ae162d743f33/A-slower-kind-of-summer-CC237ED1.pdf",
+        "https://app.devin.ai/attachments/5da6fd31-172b-41a2-b9aa-d9a4e5020eb1/PocketPress-iOS-Simulator-91a2470.zip"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/5f58a1ef-f9da-466e-8504-ab6714f6c4ee/pocket-press-final-91a2470-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/fc1204d7-2013-44fd-8c50-8e077c0cdbd2/pocket-press-final-studio.png",
+        "https://app.devin.ai/attachments/04ab6f54-06ae-46a9-aaf4-2379ea522ed6/pocket-press-final-pdf.png",
+        "https://app.devin.ai/attachments/4213976c-0fdd-4ccf-8a54-fb6f7f1ab25c/pocket-press-final-read.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/2d34533f-9501-477a-8b45-29943fe34e17/pocket-press-final-test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS arm64 Darwin 25.5.0; Xcode 26.6; iPhone 17 Simulator running iOS 26.5",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native editor screenshot, final five-page editing/persistence/export report and independent PDFKit verification; checked the 122.7-second annotated recording and verified PR revision and app-directory isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/57a3a94161a1443899b7dabf04e52c6b?testRecording=69bd0fb5-8ee8-4bc6-9fe8-76b5555baadf"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Groovebox",
+      "platform": "ios",
+      "slug": "groovebox",
+      "session_id": "bf33dd25df424ac1a901b925ffa9864c",
+      "session_url": "https://app.devin.ai/sessions/bf33dd25df424ac1a901b925ffa9864c"
+    },
+    "description": "A pocket rhythm machine with four synthesized voices. Play live pads, program a 16-step beat, dial in swing, save patterns and export WAV audio.",
+    "result": {
+      "name": "Groovebox",
+      "tests": [
+        "Release iPhone Simulator build passed via scripts/build.sh at de6c9cd., Strict swift-format lint passed via scripts/check.sh., All 12 SwiftPM/XCTest core tests passed, covering synthesis, timing, swing, tempo phase, mute/solo, stop, headroom, persistence, corruption and WAV encoding., Offline 112 BPM render passed: 232114 frames, 4.835708 seconds, RMS 0.1139143, peak 0.70265824., Final native UI acceptance passed: four pads, independent step edits, playback LEDs, tempo controls including off-glyph taps, mute/solo, swing/master, named save, factory load and saved reload., Clear cancellation, confirmed Clear and Undo restoration passed., Native WAV sharing and Save to Files passed; Files copy checksum matched the app export., Stop, background behavior, terminate/relaunch persistence, playback restart and guide passed without repeat crash on the stable route., Supplemental repeated-letter entry and library text/interior hit checks passed., Actual 114 BPM UI export independently verified: 48 kHz 16-bit mono, 228505 frames, 4.760520833 seconds, 213100 nonzero samples, RMS 0.1085084616, peak 0.6167297363., Final live BlackHole capture independently verified: 48 kHz 16-bit stereo, 398.186667 seconds, 6795812 nonzero samples, RMS 0.0170751180, peak 0.22314453125; first and last seconds silent., PR CI check query reported no configured checks; all validation was performed on native macOS."
+      ],
+      "branch": "devin/1789091314-groovebox",
+      "commit": "de6c9cd8ae4af9533c1a123412114938a82d6472",
+      "pr_url": "https://github.com/dabit3/experiments/pull/71",
+      "status": "complete",
+      "summary": "Completed a polished native SwiftUI iPhone drum instrument with four real synthesized voices, sample-clock 16-step sequencing, tempo, swing, master volume, mute/solo, presets, named pattern persistence, undo and WAV export. Native build, core tests and recorded UI acceptance passed. Focused PR updated with final evidence; Simulator archive, annotated recordings, three screenshots, report and actual audio artifacts delivered.",
+      "platform": "ios",
+      "limitations": [
+        "Unsigned Simulator-only artifact; physical-speaker output, physical-device latency and App Store distribution were not tested., The VM initially lacked an audio output route. BlackHole installation and Simulator bridge refresh restored playback; one route-transition startup abort did not recur during final testing., One-bar, four-voice V1 with no MIDI, microphone recording, velocity, effects, song chaining or background playback. Audio callbacks use a short bounded lock., The attached exported WAV contains the unmuted saved take before the final on-screen Clap mute., Workspace blueprint and reusable testing-skill suggestions were submitted for future sessions; their approval remains optional and pending."
+      ],
+      "session_url": "https://app.devin.ai/sessions/bf33dd25df424ac1a901b925ffa9864c",
+      "build_passed": true,
+      "app_directory": "native-demos/ios/groovebox",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/22d5c3a5-7ce0-4c63-95eb-b3b29187adab/Groovebox-iPhone-Simulator.zip",
+        "https://app.devin.ai/attachments/7a9047fa-354f-44e5-a7d6-83d15afa62d6/Neon-afterglow-I-114bpm.wav",
+        "https://app.devin.ai/attachments/c2b4865e-40dd-4a4e-8a6e-d7c4586a6ac6/groovebox-de6c9cd-live.wav",
+        "https://app.devin.ai/attachments/551b235c-06b2-403a-9dc0-1984c414e3fb/native-audio-setup.md"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/6579c674-3daf-42ee-a3ab-2240ba879cc5/groovebox-de6c9cd-demo-edited.mp4",
+        "https://app.devin.ai/attachments/8dc82c7d-5524-42dd-998d-1c0405ff31be/groovebox-de6c9cd-input-check-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/86a3ca39-2809-449d-a098-69a6e0675fd8/groovebox-de6c9cd-main.png",
+        "https://app.devin.ai/attachments/f9b788a8-23ee-4418-815f-0bf23d884387/groovebox-de6c9cd-mixer.png",
+        "https://app.devin.ai/attachments/888618c0-d653-41dc-805e-cd2d5c206ab0/groovebox-de6c9cd-patterns.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/0df8e4db-f1a2-4872-90d6-1f4d63893fe6/groovebox-native-test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 arm64; Xcode 26.6 build 17F113; Swift 6.3.3; iPhone 17 Simulator running iOS 26.5, UUID 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89; BlackHole 2ch 0.7.1 virtual audio at 48 kHz.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native instrument screenshot and final report for step editing, live playback, mixer controls, save/reload/relaunch, undo and real WAV/loopback PCM validation; checked the 98.9-second annotated demo and supplemental input recording metadata, and verified PR revision/isolation. Physical audio output and latency remain untested."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/bf33dd25df424ac1a901b925ffa9864c?testRecording=b71ac36e-97f5-447e-ae68-e2992cf5c618",
+        "https://app.devin.ai/sessions/bf33dd25df424ac1a901b925ffa9864c?testRecording=2bc470af-773f-4063-8a6c-77ad5a0ebdb1"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Verdant",
+      "platform": "ios",
+      "slug": "verdant",
+      "session_id": "ea0c39a7a072434fbaec0dbe5cff300c",
+      "session_url": "https://app.devin.ai/sessions/ea0c39a7a072434fbaec0dbe5cff300c"
+    },
+    "description": "A personal conservatory with original botanical illustrations. Organize plants, manage watering schedules, write growth notes and export your garden journal.",
+    "result": {
+      "name": "Verdant",
+      "tests": [
+        "scripts/build.sh: xcodebuild Simulator build succeeded on final revision with CODE_SIGNING_ALLOWED=NO., scripts/check.sh: strict swift-format, Xcode project plist validation, shared-scheme XML validation and shell syntax checks passed., Seven Swift Testing model tests passed: seeded specimens, watering/undo/repeat, schedule edits, input validation, serialization/export, calendar/DST behavior and corrupt-file preservation., Native computer use verified collection and detail screens, needs-care/bright-light filters, matching search and unmatched empty state., Native add/edit passed: created Silver morning and edited location, light and cadence; due status recalculated correctly., Native water \u2192 Undo \u2192 repeat passed, including exact restoration of due state and timeline., Native empty-note validation and real note entry passed., Native process termination and relaunch preserved nine plants, zero due, eighteen timeline events, edited settings, notes and the persisted undo snapshot., First and repeated native Markdown exports after relaunch displayed the actual document and sharing activities; exported contents were inspected., Final annotated native recording and three full uncropped 1206\u00d72622 screenshots captured on the tested revision., Final repository working tree is clean; PR #73 remains open and mergeable."
+      ],
+      "branch": "devin/1789091311-verdant",
+      "commit": "d949ed876d60d60d9f16c92be9093d4a9fd649de",
+      "pr_url": "https://github.com/dabit3/experiments/pull/73",
+      "status": "complete",
+      "summary": "Completed a native SwiftUI iPhone greenhouse journal with six original vector specimens, editable collection and care schedules, due filters, watering with persisted undo, growth notes, atomic local JSON storage and real Markdown export. Native UI testing passed after fixing share-sheet presentation, status-area scrolling and singular care copy. PR is open and mergeable; all tracked changes are confined to the assigned app directory.",
+      "platform": "ios",
+      "limitations": [
+        "The attached unsigned arm64 .app archive is Simulator-only, not a physical iPhone or App Store release., UI testing used one portrait iPhone Simulator at default text size; physical hardware, larger accessibility text and VoiceOver were not certified., Calendar rollover and corrupt-storage behavior were covered by model tests rather than native UI scenarios., The native share sheet and actual Markdown file were verified; delivery to an external share destination was not tested., One intended capitalized phrase appeared lowercase after native entry. Pre-save editor text was not captured, so input/autocorrection versus typing mismatch remains inconclusive; UI, persisted JSON and export agree., Care schedules are local calendar-day reminders, not moisture sensing or botanical diagnosis. No push notifications, cloud sync, camera or automatic growth measurements are included."
+      ],
+      "session_url": "https://app.devin.ai/sessions/ea0c39a7a072434fbaec0dbe5cff300c",
+      "build_passed": true,
+      "app_directory": "native-demos/ios/verdant",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/3bd184ad-0228-4061-995e-5b6f688e3b8e/Verdant-iPhone-Simulator.zip",
+        "https://app.devin.ai/attachments/689302b9-fd38-49f3-8295-79aeeae0d728/verdant-journal.md",
+        "https://app.devin.ai/attachments/7e0e50c6-6fc6-4300-860f-9a9fea156aad/TEST-REPORT.md"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/56e2b470-873a-42ad-9b58-c550e4f81bcd/verdant-d949ed8-final-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/7c9343f2-930c-4a47-831d-4e1ef322276d/01-home-collection.png",
+        "https://app.devin.ai/attachments/457b368c-9387-434f-ac35-0476e2932e31/02-silver-morning-hero.png",
+        "https://app.devin.ai/attachments/471137a0-0046-4bec-8ff3-b2389ff441d4/03-growth-diary.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/5fc95147-003c-4dc6-ac48-0bb4146cae4d/TEST-REPORT.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS 26.5.2 (25F84), Apple Silicon; Xcode 26.6 (17F113), Swift 6.3.3; iPhone 17 Simulator running iOS 26.5, portrait. Local device UUID: 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native botanical screenshot, care/journal/recovery/persistence/export report and 96.9-second recording; verified PR revision/isolation. Annotation association was restored without source or recording changes; parent verified identical MP4 checksums and the updated report."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/ea0c39a7a072434fbaec0dbe5cff300c?testRecording=fbf6f410-84e2-4c21-a8dc-a1d81d248199"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Fairshare",
+      "platform": "ios",
+      "slug": "fairshare",
+      "session_id": "2c17208418d64305bc2116ed76b2e12b",
+      "session_url": "https://app.devin.ai/sessions/2c17208418d64305bc2116ed76b2e12b"
+    },
+    "description": "Keep a shared trip balanced to the cent. Track expenses, customize splits, settle balances and explore category insights in an illustrated travel ledger.",
+    "result": {
+      "name": "Fairshare",
+      "tests": [
+        "bash scripts/check.sh: strict swift-format lint, plist validation and 12 XCTest tests passed with 0 failures., Logic tests cover 1,716 allocation/conservation combinations, deterministic rounding, excluded travelers, payer changes, custom splits, settlement validation, JSON persistence/corruption, CSV safety and large aggregate formatting., bash scripts/build.sh: native unsigned iOS Simulator xcodebuild succeeded., Final native UI run on 8fc4c15463dd1fda54b63f204bf7fa25a4d0f24b passed restore-example, \u20ac83.21 expense creation excluding Sam, exact \u20ac27.74/\u20ac27.74/\u20ac27.73 allocation and payer edit to Jamie., Custom total rejection and corrected \u20ac20/\u20ac30/\u20ac33.21 allocation passed through native UI., Confirmed Sam to You \u20ac220.74 payment, updated history/plan, expense deletion and header undo passed., Insights totals/ring, visible tab icon and singular category labels passed., Native export sheet and actual 753-byte CSV verified: six expenses, custom allocation and one payment., Terminate/relaunch preserved payer, excluded participant, custom shares, payment and balances: Alex +\u20ac23.24; Jamie -\u20ac164.05; Sam \u20ac0.00; You +\u20ac140.81., No unexpected clipping or overlapping controls observed in visited screens., PR has no configured CI checks; local checks and native testing completed."
+      ],
+      "branch": "devin/1789091319-fairshare",
+      "commit": "8fc4c15463dd1fda54b63f204bf7fa25a4d0f24b",
+      "pr_url": "https://github.com/dabit3/experiments/pull/75",
+      "status": "complete",
+      "summary": "Completed polished native SwiftUI trip-expense ledger with original Lisbon artwork, exact-cent equal/custom splits, balances, simplified settlements, payment recording, atomic persistence, undo/reset, CSV export and category insights. Native build and final UI golden path passed. Focused PR, annotated recording, three full screenshots, test report, real CSV and unsigned Simulator app ZIP delivered.",
+      "platform": "ios",
+      "limitations": [
+        "Unsigned iPhone Simulator artifact; not a signed physical-device or App Store release., Fixed four-person roster, EUR only, portrait iPhone layout., Deterministic greedy settlement plan does not claim globally minimal transfer count for arbitrary groups., Native UI coverage limited to iPhone 17/iOS 26.5 at default text size., External sharing destinations, accessibility, corrupt-file UI recovery, very-large totals in UI and one-total-expense singular labels were not UI-tested; corruption and large amount formatting have core test coverage."
+      ],
+      "session_url": "https://app.devin.ai/sessions/2c17208418d64305bc2116ed76b2e12b",
+      "build_passed": true,
+      "app_directory": "native-demos/ios/fairshare",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/bc252e14-436f-48c7-bc07-76765047385a/Fairshare-iPhone-Simulator-8fc4c15.zip",
+        "https://app.devin.ai/attachments/a29b2cfe-505b-40c0-822d-dab933c01470/Fairshare-Lisbon.csv"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/c8e03dd0-83e2-47cd-bd25-a8aa02bef948/fairshare-8fc4c1-final-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/bf5963d7-f3da-4cdd-8de0-512ef33659f5/01-trip.png",
+        "https://app.devin.ai/attachments/a5fd8976-5a62-4f4a-8b56-abd7bef95704/02-balances-payment.png",
+        "https://app.devin.ai/attachments/4641674e-1afb-4e05-8e66-959fc3de7988/03-insights.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/9f5acb14-361f-4998-ab72-c0f227f4b263/TEST-REPORT.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS Darwin 25.5.0 arm64; Xcode 26.6; Swift 6.3.3; iPhone 17 Simulator running iOS 26.5; device UUID 113E2F1A-A37A-4546-A7AE-8A9CA23C7F89",
+      "_review": {
+        "accepted": true,
+        "notes": "Native screenshot, arithmetic/export/persistence report and PR revision/isolation passed parent review. The final recording's annotation association is restored with seven test starts and 21 assertions; parent verified the replacement MP4 is byte-identical."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/2c17208418d64305bc2116ed76b2e12b?testRecording=2dc85867-7ba4-45e3-a52c-de55e663e33d"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Form Foundry",
+      "platform": "ipad",
+      "slug": "form-foundry",
+      "session_id": "753702ca044c44bfb5316a6333788e8c",
+      "session_url": "https://app.devin.ai/sessions/753702ca044c44bfb5316a6333788e8c"
+    },
+    "description": "A tactile studio for everyday objects. Dimension rectangular and elliptical extrusions, arrange an assembly, explore it in 3D and export an OBJ mesh.",
+    "result": {
+      "name": "Form Foundry",
+      "tests": [
+        "Scripts/check.sh: strict Apple swift-format lint and plist/project validation passed., 288 model checks passed: topology, manifold edges, outward winding, mesh/analytic volumes, transforms, dimension propagation, JSON round trips, invalid values, history branching and OBJ indexing., Scripts/build.sh: xcodebuild Debug iOS Simulator build succeeded on final commit 69c7cae., Native UI: rectangle creation, width 40 to 100 visibly updating geometry, 100\u00d76\u00d724 extrusion and sage material passed., Native UI: 36\u00d724\u00d78 ellipse creation, positioning, 15\u00b0 rotation and material changes passed., Native UI: invalid 501 mm input rejected with alert and unchanged valid geometry; duplicate/delete and undo/redo recovery passed., Native UI: held-pointer drag orbit, zoom buttons, Top/Front/Right/Studio and camera reset passed., Native UI: fresh Atelier 02 snapshot save, subsequent modification and reopen restored nine solids; terminate/relaunch preserved edited geometry and materials., Native UI: export disclosure and path fully readable; native share sheet opened and dismissed without sending., Actual UI-exported OBJ verified: 9 objects, 312 finite vertices, 588 triangles, valid indices and every undirected edge shared by two triangles., Final annotated native Simulator recording and three upright, full uncropped desktop screenshots captured."
+      ],
+      "branch": "devin/1789091315-form-foundry",
+      "commit": "69c7cae0b4dfd7662ecf2292fb162a181e9f6a82",
+      "pr_url": "https://github.com/dabit3/experiments/pull/67",
+      "status": "complete",
+      "summary": "Completed a native SwiftUI/SceneKit iPad modeling studio with editable rectangular and elliptical extrusions, dimensioned profiles, transforms, materials, camera controls, snapping, undo/redo, atomic persistence, named projects and real OBJ export. Built successfully, fixed an export disclosure wrapping issue found through native UI testing, and passed the final annotated golden-path run. Three full screenshots, recording, test report, Simulator-only app ZIP and actual exported mesh delivered. App remains running in the finished Atelier 02 Studio view. Focused PR is open and mergeable; no CI checks are configured.",
+      "platform": "ipad",
+      "limitations": [
+        "Primitive modeler: no Boolean unions, holes, fillets, arbitrary sketches or constraint solver. Overlapping solids remain independent shells., Ellipses use 64-segment tessellation; displayed volume is an analytic sum including overlaps. OBJ exports geometry without MTL materials., Simulator-only unsigned app artifact; physical iPads and other screen sizes were not tested., Multitouch pinch, external share transmission and downstream CAD import were not tested; native zoom buttons and share-sheet presentation were verified., Initial Simulator SpringBoard crash/install stall recovered with shutdown and rerun before the final passing recording."
+      ],
+      "session_url": "https://app.devin.ai/sessions/753702ca044c44bfb5316a6333788e8c",
+      "build_passed": true,
+      "app_directory": "native-demos/ipad/form-foundry",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/d6798b50-f2f0-4e0f-9fe5-b7a54eb313aa/FormFoundry-iPad-Simulator.zip",
+        "https://app.devin.ai/attachments/cf8c586d-27b9-4601-9c31-2b539291e27a/FormFoundry.obj",
+        "https://app.devin.ai/attachments/924f5d9e-ac47-41ba-ab42-163ce5a894ee/Atelier-02-workspace.json",
+        "https://app.devin.ai/attachments/5e9b87ad-843a-4ca7-a138-19f31181d9f3/obj-validation.txt",
+        "https://app.devin.ai/attachments/155def9f-7521-43ef-9054-2514243dd8d3/check.log",
+        "https://app.devin.ai/attachments/310e32ee-af90-42a5-bea6-f646d820e6a2/build.log"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/1aafb9a2-8b8f-4d8a-ae30-6b03d956c94c/form-foundry-69c7cae-final-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/85fa75ab-b262-4e5a-8fe7-8f479bdfa531/final-01-pristine.png",
+        "https://app.devin.ai/attachments/1f890b10-2ad5-4cb3-af7a-f443089b0e3e/final-02-export.png",
+        "https://app.devin.ai/attachments/4e5ce0cf-a9e6-446e-a404-5122a8fa4cc9/final-03-atelier-studio.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/ba9d53aa-c8d3-4df3-8ad7-ec5070d399f0/final-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS 26.5.2 arm64, Xcode 26.6 (17F113), iOS 26.5 Simulator on iPad Pro 13-inch (M5), landscape. Device UDID 997FAD4D-649B-4EA5-BBAC-80BAB4CBB7F7.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native CAD screenshot, final modeling/dimension/error/undo/persistence/export report and real OBJ mesh validation; checked the 95.7-second annotated recording and verified PR revision/isolation. Primitive shells remain separate, without Boolean fusion or printability claims."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/753702ca044c44bfb5316a6333788e8c?testRecording=eb8e462e-6ff1-4b50-915c-b6e06d8b3e68"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Roomlight",
+      "platform": "ipad",
+      "slug": "roomlight",
+      "session_id": "56bd182cfa8d409bafac7da2906a91a7",
+      "session_url": "https://app.devin.ai/sessions/56bd182cfa8d409bafac7da2906a91a7"
+    },
+    "description": "Compose a room in synchronized plan and 3D views. Place furniture, tune materials and dimensions, save variations and export a furnished floor plan.",
+    "result": {
+      "name": "Roomlight",
+      "tests": [
+        "Final 7ad92b9: strict Xcode swift-format lint passed for app, model, tests and icon generator., Final 7ad92b9: five Swift Testing tests passed covering rotated bounds, snapping/invalid geometry, all eight footprints in minimum rooms, atomic serialization/named save replacement and corrupt archive rejection., Final 7ad92b9: xcodebuild Debug iOS Simulator build passed with CODE_SIGNING_ALLOWED=NO., Native UI individually added all eight procedural furniture types and verified drag placement, rotation, selection dimensions, synchronized 3D, material changes and delete/undo before rendering/sheet-only fixes., Comprehensive f5c2f09 annotated native demo passed empty-room sofa/table furnishing, drag/rotation, delete/undo, materials, room dimensions, Plan/Studio/3D, camera controls, named save/sample/reopen and cold-process persistence., Final 7ad92b9 annotated regression passed custom home-icon launch, first PDF export after cold launch, aligned eight-row schedule, native share sheet, Done, saved reopen, drag/rotate/two-step undo, view switching and camera reset., Actual exported one-page PDF and JSON archive match the eight-piece saved room., Final Simulator ZIP passed unzip integrity validation; SHA-256 76e1ee869bcc366436d8243efcbad775c439eaba3b8f1a82891a076c2acf3335., PR has no configured CI checks; final working tree is clean."
+      ],
+      "branch": "devin/1789091186-roomlight",
+      "commit": "7ad92b9f5166f7d93faff5b1c88eef7fa9a6e19b",
+      "pr_url": "https://github.com/dabit3/experiments/pull/55",
+      "status": "complete",
+      "summary": "Built and polished a native landscape iPad interior studio with synchronized metre-based floor plan and procedural SceneKit room, eight furniture pieces, drag/snap/rotate, materials, room dimensions, camera controls, undo, named saves, relaunch persistence and real PDF export. Native UI testing found and corrected background contrast and first-export presentation issues. Final app remains running with the saved eight-piece Sage Reading Atelier composition. Source, Simulator-only app ZIP, real PDF/JSON, three final screenshots, annotated recordings and reports are delivered.",
+      "platform": "ipad",
+      "limitations": [
+        "Simulator-only artifact and testing; not signed for physical iPad installation or App Store distribution., Only iPad Pro 13-inch Simulator layout was tested; smaller iPad layouts and physical hardware remain untested., Final revision received targeted regression after icon/PDF alignment polish; the comprehensive recording is from f5c2f09, with all eight individual additions verified in earlier runs., Rectangular concept rooms, decorative fixed openings, artistic lighting and procedural approximate furniture; overlaps are permitted and there is no collision/clearance solver., Export contains a high-resolution raster plan and native PDF text, not editable vector CAD., Corrupt archive parsing has logic coverage; storage-failure UI, disk failures, screen-reader behavior and external share delivery were not tested., Undo history and camera position reset on launch; saved rooms and current room persist locally without cloud synchronization."
+      ],
+      "session_url": "https://app.devin.ai/sessions/56bd182cfa8d409bafac7da2906a91a7",
+      "build_passed": true,
+      "app_directory": "native-demos/ipad/roomlight",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/68d3d205-cb0f-4f0d-90ad-72452981c0fb/Roomlight-iPad-Simulator-7ad92b9.zip",
+        "https://app.devin.ai/attachments/455050b5-b557-4e82-b9f9-3c1cc678f32b/Roomlight-plan-7ad92b9.pdf",
+        "https://app.devin.ai/attachments/2e8ee375-408e-4c27-845f-f7f062e0b8d6/roomlight-rooms-7ad92b9.json",
+        "https://app.devin.ai/attachments/7b5901e8-3e8d-48c0-a6ac-6d1f2878c843/Roomlight-build-verification.md"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/2d334a74-68a2-41b8-8b7a-3e0f27186a0c/roomlight-7ad92b9-polish-edited.mp4",
+        "https://app.devin.ai/attachments/c46e57f1-c46a-4fa4-b563-1fcdf990a7ad/roomlight-f5c2f09-demo-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/5220f743-ba7f-47c7-b14e-a5c17d9ff9bd/roomlight-7ad92b9-studio-landscape.png",
+        "https://app.devin.ai/attachments/6f49b171-023a-4a26-9c46-2da8791cea6a/roomlight-7ad92b9-pdf-landscape.png",
+        "https://app.devin.ai/attachments/7151a9ca-6f4c-4b22-8907-e83526b14bb3/roomlight-7ad92b9-3d-landscape.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/db9d0853-da6b-46d0-8284-465f719cf569/roomlight-final-test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 (25F84), Apple Silicon arm64; Xcode 26.6 (17F113); iOS 26.5 SDK/runtime; iPad Pro 13-inch (M5) Simulator, UUID 997FAD4D-6\u2026 (27 chars truncated)",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native plan/3D screenshot and revision-labeled reports for furnishing, geometry/material changes, save/reopen/relaunch, undo and real PDF export; checked the annotated final polish recording and supplementary comprehensive recording metadata, and verified PR revision/isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/56bd182cfa8d409bafac7da2906a91a7?testRecording=685673b5-cc22-4a0f-8a15-bb23a1fc5b0b",
+        "https://app.devin.ai/sessions/56bd182cfa8d409bafac7da2906a91a7?testRecording=a7c0398c-1c8c-4d82-bf49-3f512aad9f54"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Ink Atlas",
+      "platform": "ipad",
+      "slug": "ink-atlas",
+      "session_id": "ed0c4f0667194c2ebb2ccaa5e4d6d5a7",
+      "session_url": "https://app.devin.ai/sessions/ed0c4f0667194c2ebb2ccaa5e4d6d5a7"
+    },
+    "description": "An expansive canvas for visual thinking. Combine freehand ink, cards, text, shapes and connected ideas, then export the board as PDF or SVG.",
+    "result": {
+      "name": "Ink Atlas",
+      "tests": [
+        "scripts/build.sh: native xcodebuild Simulator build succeeded on final revision., scripts/check.sh: strict swift-format lint and plist validation passed; 10 XCTest geometry/history/serialization/SVG tests passed., Actual native mouse/keyboard interactions verified sample board, readable library title and guide., Created and renamed a board; drew freehand ink; added and edited text, cards and ellipse; changed colors., Two bound connectors followed object movement and resizing; empty-paper tap cancelled a pending connector., Whitespace validation, Cancel, Delete/Undo/Redo and Clear/Undo passed., Hand pan, zoom controls and Fit passed., Board switching and terminate/relaunch preserved custom content and the selected board., PDF and SVG exports saved; both native share sheets opened without external sending., PDFKit verified a one-page PDF with custom text; SVG parsed as well-formed XML with custom content., Simulator ZIP integrity passed; binary includes arm64 and x86_64 Simulator slices., Final recording contains 23 visible test/assertion captions with the full native screen preserved., No CI checks were listed on the PR."
+      ],
+      "branch": "devin/1789091235-ink-atlas",
+      "commit": "7cd4993f65251a2ce907807471d18245304c6fdd",
+      "pr_url": "https://github.com/dabit3/experiments/pull/64",
+      "status": "complete",
+      "summary": "Completed a native SwiftUI/UIKit iPad spatial sketchbook with editable sample boards, freehand ink, cards, text, ellipses, dynamically bound connectors, geometry editing, colors, pan/zoom, undo/redo, atomic local persistence and real PDF/SVG export. Native build, 10 logic tests and the full mouse-driven iPad Simulator workflow passed. Fixed library-title truncation and re-tested the final revision. Delivered a 2m18s annotated native recording, three full screenshots, detailed test report, genuine exports and a Simulator-only app ZIP. PR is open and unmerged; the app remains on a composed sample board.",
+      "platform": "ipad",
+      "limitations": [
+        "Simulator-only app artifact; no signed App Store release or physical iPad/Pencil validation. Intel execution was not tested., Alternative pen widths, pinch gestures, narrow layouts and external share delivery were not tested., Simulator typing initially altered punctuation/capitalization; corrected final wording was verified, but punctuation-input fidelity remains unestablished., SVG font metrics and approximate text wrapping may vary by viewer., Pencil pressure/tilt, collaboration, multi-selection and per-object VoiceOver navigation are outside V1., Undo history, selection and viewport are transient; board content and selected board persist."
+      ],
+      "session_url": "https://app.devin.ai/sessions/ed0c4f0667194c2ebb2ccaa5e4d6d5a7",
+      "build_passed": true,
+      "app_directory": "native-demos/ipad/ink-atlas",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/1460e063-1a4e-4fe0-8878-c13de749f471/InkAtlas-iPad-Simulator-7cd4993.zip",
+        "https://app.devin.ai/attachments/fd8cfe87-d587-4233-98ef-607ba39e1378/A-gentler-morning-2026-09-11T02-10-25Z.pdf",
+        "https://app.devin.ai/attachments/8c8e6b21-2ee1-4e53-9256-b7640345f159/A-gentler-morning-2026-09-11T02-10-40Z.svg"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/da388675-b032-4e4d-a2ef-d8fc30ae56b3/Ink-Atlas-native-annotated-7cd4993.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/65bd9338-9822-4bc7-a98d-8ac78b106f46/01-pristine-sample.png",
+        "https://app.devin.ai/attachments/afaf029c-dbd1-4163-86e4-2ae5532844bd/02-created-board-after-relaunch.png",
+        "https://app.devin.ai/attachments/052a034a-4fd9-4d40-bf18-6002894078db/03-export-saved.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/959f948e-a829-4e4a-b1b8-cff5e055d239/test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 arm64; Xcode 26.6; iPad Pro 13-inch (M5), iOS 26.5 Simulator, landscape. Device UUID 997FAD4D-649B-4EA5-BBAC-80BAB4CBB7F7.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent inspected the full native sample screenshot and a video frame with visible test captions, read the executed editing/persistence/export report, checked the 138-second recording, and verified the open PR's revision and directory isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/attachments/da388675-b032-4e4d-a2ef-d8fc30ae56b3/Ink-Atlas-native-annotated-7cd4993.mp4"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Frame Forge",
+      "platform": "ipad",
+      "slug": "frame-forge",
+      "session_id": "f89e769911b24e27a303f16e4667a30a",
+      "session_url": "https://app.devin.ai/sessions/f89e769911b24e27a303f16e4667a30a"
+    },
+    "description": "A frame-by-frame animation studio. Draw and erase, work with onion skins, tune playback, organize frames and export a real animated GIF.",
+    "result": {
+      "name": "Frame Forge",
+      "tests": [
+        "bash Scripts/check.sh: strict swift-format lint, plist/Xcode project validation and six Swift Testing model tests passed., bash Scripts/build.sh: native unsigned iPad Simulator build passed on 1dcc870f7cf791f912e47d59fe2f47057b016ee9., Native computer-use acceptance on final revision: actual drawing, eraser and Undo, duplicate/add frames, onion tracing, FPS adjustment, looping playback and pause passed., Native persistence acceptance on final revision: rename/save, Studio switching and reopening, process termination and home-screen relaunch preserved artwork and timing., Final native Guide readability, illustrated icon, uniform scrollable export sheet and GIF share sheet verified., Redo, reorder left/right, delete/Undo and last-frame deletion guard passed at 148db62; relevant model remained unchanged., Final UI-exported GIF independently verified using Scripts/verify-gif.swift: 10 frames, 9 distinct decoded RGBA images, 800x520 pixels, 0.1-second delays and infinite-loop metadata., PR checks queried: no CI checks configured (0 passed, 0 failed, 0 pending)."
+      ],
+      "branch": "devin/1789091238-frame-forge",
+      "commit": "1dcc870f7cf791f912e47d59fe2f47057b016ee9",
+      "pr_url": "https://github.com/dabit3/experiments/pull/48",
+      "status": "complete",
+      "summary": "Polished native iPad animation studio with editable sample artwork, drawing and erasing, frame timeline, onion skins, undo/redo, adjustable playback, saved projects and real GIF export. Built successfully, verified through native Simulator interaction and demonstrated in a final annotated recording. PR is open; app left ready to inspect.",
+      "platform": "ipad",
+      "limitations": [
+        "Unsigned Simulator-only .app; not a signed physical-device or App Store release., Physical-device/Pencil input, extreme frame counts and external share delivery remain untested., Landscape-first layout; portrait and narrow multitasking layouts are outside V1., Frame-by-frame animation without tweening, audio tracks or vector transforms; fixed 800x520 opaque GIF exports., Undo history is session-local and does not persist across relaunch."
+      ],
+      "session_url": "https://app.devin.ai/sessions/f89e769911b24e27a303f16e4667a30a",
+      "build_passed": true,
+      "app_directory": "native-demos/ipad/frame-forge",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/5fbab4c6-a3b6-405c-bb52-83ccd3d3fd88/FrameForge-84BC4623.gif",
+        "https://app.devin.ai/attachments/e0b16f5b-f38a-4325-9015-ea091fd3c3b5/FrameForge-iPad-Simulator.zip"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/288cda1f-da2e-4077-8689-f8f2e0e46a8f/frame-forge-final-1dcc870-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/e225177d-a129-426d-913c-ddfc42f5ce4c/frame-forge-final-desk.png",
+        "https://app.devin.ai/attachments/eebf2050-dad3-4a25-bf79-e5c9ac89ad89/frame-forge-final-onion.png",
+        "https://app.devin.ai/attachments/fb992681-ff11-414d-badb-1883a008b10d/frame-forge-final-share.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/d16a7c99-a443-4b27-9448-51e1912e0439/frame-forge-final-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS arm64; Xcode 26.6 (17F113); iOS 26.5 Simulator; iPad Pro 13-inch (M5), landscape; device UUID 997FAD4D-649B-4EA5-BBAC-80BAB4CBB7F7",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full animation desk screenshot and native acceptance report, including independent decoded-GIF verification; checked the 74.9-second annotated recording and verified the reported PR revision and directory isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/f89e769911b24e27a303f16e4667a30a?testRecording=21da00ab-aaca-4afa-8834-a9a3c3ab767e"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Circuit Garden",
+      "platform": "ipad",
+      "slug": "circuit-garden",
+      "session_id": "2633a64cce72461ebed254834adf1fa9",
+      "session_url": "https://app.devin.ai/sessions/2633a64cce72461ebed254834adf1fa9"
+    },
+    "description": "Build a working series circuit on an illustrated electronics bench. Connect terminals, change components and watch measurements and lamp brightness respond.",
+    "result": {
+      "name": "Circuit Garden",
+      "tests": [
+        "scripts/check.sh passed: strict Apple swift-format lint, Info.plist validation, nine Swift Testing model tests, Swift 6 Simulator compilation with warnings-as-errors., Model tests cover Ohm's law, voltage/resistance effects, lamp power, open-switch/open-wire repair, branches, disconnected loops, ideal shorts, invalid data and JSON round trips., Native UI at 2f9c943: blank workbench, four component placements, four manually tapped wire connections, switch close/open/close, resistance and voltage changes passed., Native UI verified 9 V/220 \u03a9 resistor/100 \u03a9 lamp gives 28.1 mA and 65%; 470 \u03a9 gives 15.8 mA and 20%; 6 V gives 18.8 mA and 29%., Native UI verified live wire attachment during held drag, centered lamp glow, disconnect/manual repair/Undo, clear cancellation/confirmation/Undo and both examples., Named project and moved layout survived reopening and terminate/relaunch; real JSON/TXT export, both native ShareLinks, Save to Files and JSON import into a blank board passed., Final annotated recording and three full upright uncropped screenshots captured on the tested app revision 2f9c943. Final commit ceb6b2d only replaces launch-script filtering with native simctl; app source and binary are unchanged. Shell syntax and native device filtering passed., codesign --verify --deep --strict passed for the packaged Simulator app; git diff --check passed; working tree clean; PR has no configured CI checks."
+      ],
+      "branch": "devin/1789091210-circuit-garden",
+      "commit": "ceb6b2d70e8371e64d59310c4e58494f1ce20263",
+      "pr_url": "https://github.com/dabit3/experiments/pull/50",
+      "status": "complete",
+      "summary": "Built and polished a native SwiftUI iPad electronics workbench with real series-circuit calculations, terminal wiring, live measurements, power-driven lamp glow, editable voltage/resistance, undo, persistent projects and actual JSON/text exports. Completed the full native computer-use demo and annotated recording. App remains running on the saved flowing circuit. One focused PR contains all source, scripts, documentation and tests within the assigned directory.",
+      "platform": "ipad",
+      "limitations": [
+        "Supported model is one ideal DC battery and one connected unbranched series loop. Lamps are fixed 100 \u03a9 loads with an illustrative power-to-brightness mapping; no nonlinear diode, thermal, transient, parallel-network or hardware simulation., App artifact is ad-hoc signed for Apple Silicon iPad Simulator only, not a physical-device or App Store release., Landscape full-screen iPad canvas; portrait and small multitasking windows are unsupported. Only iPad Pro 11-inch (M5) Simulator was UI-tested., Malformed-import UI, fine-tune boundaries, physical hardware, other display sizes and full accessibility auditing were not exercised. Model validation is covered by unit tests., Final UI run reused Simulator data; pristine first launch was verified on the initial V1 before visual fixes."
+      ],
+      "session_url": "https://app.devin.ai/sessions/2633a64cce72461ebed254834adf1fa9",
+      "build_passed": true,
+      "app_directory": "native-demos/ipad/circuit-garden",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/104d66d0-e123-47c9-bf3d-abf294a3a4a3/CircuitGarden-iPad-Simulator-only.zip",
+        "https://app.devin.ai/attachments/f34ef1ca-45c0-43e7-a67f-cdfa1c287382/CircuitGarden-project.json",
+        "https://app.devin.ai/attachments/967c0aa5-9f32-4de2-87f7-1278e2f2b468/CircuitGarden-readings.txt"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/afa3e7e0-88bb-4328-b0bb-99102d9c91a3/circuit-garden-final-2f9c943-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/abc9a58e-05af-4181-b2f8-604e94bc70c6/ss_f7971f9c.png",
+        "https://app.devin.ai/attachments/48388ad8-8c14-4549-8a9e-3929cee9d886/ss_8086c08a.png",
+        "https://app.devin.ai/attachments/5dbb4052-237c-4dad-abfc-9a00ffbb805f/ss_107d9cd0.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/9527e9f6-c6a4-436d-8eab-72f689d94c41/native-ui-test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS arm64 (Darwin 25.5.0), Xcode 26.6; iPad Pro 11-inch (M5) Simulator running iOS 26.5 in landscape.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent inspected the full native circuit screenshot and final report covering manual wiring, measurements, lamp glow, repair, persistence and JSON round trip; checked the 120.9-second annotated recording and verified PR directory isolation. Final commit only adjusts the Simulator launch script."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/2633a64cce72461ebed254834adf1fa9?testRecording=e66b3e86-237d-48e5-86cf-4132e5fd597e"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Terra Table",
+      "platform": "ipad",
+      "slug": "terra-table",
+      "session_id": "27e37df92ff442a891eb0c3974301cac",
+      "session_url": "https://app.devin.ai/sessions/27e37df92ff442a891eb0c3974301cac"
+    },
+    "description": "Shape a small world with your fingertips. Raise mountains, carve valleys, flood the shore, inspect contours and export the actual terrain as an OBJ mesh.",
+    "result": {
+      "name": "Terra Table",
+      "tests": [
+        "Scripts/check.sh passed: strict swift-format lint, plist/project validation and all 12 Swift Testing tests., Scripts/build.sh passed: native Xcode Release iPad Simulator build for arm64 and x86_64 with CODE_SIGNING_ALLOWED=NO., Terrain tests passed: deterministic seeded presets, bounded compact-support brushes, smoothing, invalid inputs, history branching/capacity, serialization, OBJ topology and monotonic inundation., Three model persistence regressions reproduced failures before fixes and passed afterward: missing/late slider callbacks, in-flight water durability/undo and saved-snapshot independence., Native final acceptance passed: Raise changed 549 samples, Carve lowered 644, Smooth changed 645; single Undo exactly restored each pre-stroke state and Redo recovered edits., Native final acceptance passed: radius/strength, flooding, water Undo/Redo, orbit, zoom buttons, symmetric camera reset, terrain-anchored contours, Natural mode and all presets., Native final acceptance passed: save/modify/exact reopen, five guide sections, native share preview, real OBJ with 6,561 vertices and 12,800 triangles, and real 2260\u00d71595 PNG., Exact persistence regression passed: reopen\u2192guide\u2192track click\u2192compact water drag; visible 300m immediately matched disk water 0.30030048. Relaunch preserved exact current terrain/water and Library JSON., Simulator-only .app zip passed unzip integrity validation; final annotated recording is 87.37 seconds."
+      ],
+      "branch": "devin/1789091370-terra-table",
+      "commit": "103324981c2df86dc70ddf28a89726775688ee44",
+      "pr_url": "https://github.com/dabit3/experiments/pull/74",
+      "status": "complete",
+      "summary": "Built and polished a native SwiftUI/SceneKit iPad terrain sculpting studio with an editable 81\u00d781 heightfield, raise/carve/smooth brushes, water flooding, terrain contours, orbit/zoom, three presets, undo/redo, persistent snapshots and genuine OBJ/PNG exports. Native acceptance passed on the final revision, including the repaired camera reset, clean water edges and exact water/terrain persistence after relaunch. PR source, reproducible scripts, 12 tests and documentation are isolated to the assigned app directory. Final annotated recording, three screenshots, report, exports and Simulator-only app archive are uploaded.",
+      "platform": "ipad",
+      "limitations": [
+        "Simulator-only archive; no physical iPad or App Store signing validation., Multitouch pinch was not tested; plus/minus zoom buttons were tested., Native share preview and actual local exports were verified; external delivery and Files-provider round trips were not tested., Slider thumb dragging works; tapping the track alone did not change the value in native testing., Terrain is a bounded 81\u00d781 heightfield without caves or overhangs; water is planar with no fluid or erosion simulation., UI metres are illustrative; OBJ exports the open terrain surface without water, plinth, colors or materials., SceneKit is deprecated in newer Apple SDKs but functional for this offline demo."
+      ],
+      "session_url": "https://app.devin.ai/sessions/27e37df92ff442a891eb0c3974301cac",
+      "build_passed": true,
+      "app_directory": "native-demos/ipad/terra-table",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/ae32c60c-cc89-4591-9533-80cfbb3b887c/TerraTable-1033249-Simulator-only.zip",
+        "https://app.devin.ai/attachments/3363b060-1209-4f48-ae4a-ae6cc1d8190d/TerraTable-1033249.obj",
+        "https://app.devin.ai/attachments/1ad439b1-fbd3-42e9-895b-1ff8779aa10e/TerraTable-1033249.png"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/c78c0e10-9eda-452a-881d-b10b1eef5766/terra-1033249-acceptance-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/2cc13481-7dcc-4706-affd-65265aa345f3/1033249-natural.png",
+        "https://app.devin.ai/attachments/d0f83776-62e9-439a-8f4e-3ad406c6b47a/1033249-contours.png",
+        "https://app.devin.ai/attachments/1dcd249a-3c1c-4c53-b91e-f7797d0abe14/1033249-sharing.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/9a1a48e4-3e0b-410f-9729-56fe6b5ab0a2/1033249-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS Darwin 25.5 arm64; Xcode 26.6 (17F113), Swift 6.3.3; iPad Pro 13-inch M5 Simulator on iOS 26.5 in landscape. Release Simulator app built for arm64 and x86_64.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native terrain screenshot and executed sculpting, history, camera, persistence, OBJ/PNG export and native-sharing report; checked the 87.4-second recording and annotation association, and verified the PR revision and source isolation. Physical iPad, pinch and external file delivery remain untested."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/27e37df92ff442a891eb0c3974301cac?testRecording=a7774629-496f-476b-bf26-2f6bbac92805"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Shotboard",
+      "platform": "ipad",
+      "slug": "shotboard",
+      "session_id": "6b55bb0fb4374d0081b91fa41ad482eb",
+      "session_url": "https://app.devin.ai/sessions/6b55bb0fb4374d0081b91fa41ad482eb"
+    },
+    "description": "A cinematic workspace for planning a film. Sketch frames, set camera metadata, arrange shots, play a timed presentation and export a storyboard PDF.",
+    "result": {
+      "name": "Shotboard",
+      "tests": [
+        "Native xcodebuild Debug iOS Simulator build passed with CODE_SIGNING_ALLOWED=NO., Strict swift-format lint passed; Info.plist and Xcode project plutil validation passed., Five Swift Testing tests passed: sample validation, identity-preserving reorder, playback boundaries, archive/artwork round trip, and rejection of invalid projects and drawing data., Real native computer-use testing passed for add shot, freehand drawing, metadata and notes edits, aspect ratios, composition guides, thumbnail selection and reordering., Recovery and creation checks passed: Clear artwork then Undo, scene input validation, Cancel/create/Undo, and inspector visibility., Presentation timing, Pause, next/previous and Restart passed., Native full-screen PDF preview, complete footer and Share sheet passed., New film, project-library reopening and terminate/relaunch preserved artwork, metadata, notes, shot order, 7 shots, 3 scenes and 00:46 runtime., Supplemental PDFKit verification passed for all seven actual exported pages against the saved project: order, titles, sizes, movements, durations, ratios, director notes, runtime and 842\u00d7595 landscape page bounds., PR CI returned no configured checks: zero passed, failed, pending or skipped."
+      ],
+      "branch": "devin/1789091219-shotboard",
+      "commit": "9501e1e31d7a55736e061d3d400d3fc00e387d1b",
+      "pr_url": "https://github.com/dabit3/experiments/pull/62",
+      "status": "complete",
+      "summary": "Built and polished a native landscape iPad storyboard studio with original editable six-shot sample film, vector drawing, scene and camera metadata, composition guides, shot reordering, bounded undo, local project persistence, timed presentation and real ordered PDF export. Final native UI run passed after fixing thumbnail selection and PDF footer layout. Focused PR remains open; all source is isolated in the assigned directory. Durable final recording, three screenshots, Simulator app, editable project, exported PDF and test report are attached.",
+      "platform": "ipad",
+      "limitations": [
+        "App archive is an unsigned Simulator-only development build, not a signed physical-device or App Store release., Landscape-only iPad workspace; changing aspect ratio stretches normalized artwork., Presentation has one-second timing resolution and does not export video., UI coverage excludes import/error flows, fresh sample-copy action, destructive shot deletion and extended-note PDF continuation; core tests cover invalid serialized input., Physical Apple Pencil input and delivery to an external share destination were not tested; the native Share sheet was tested."
+      ],
+      "session_url": "https://app.devin.ai/sessions/6b55bb0fb4374d0081b91fa41ad482eb",
+      "build_passed": true,
+      "app_directory": "native-demos/ipad/shotboard",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/e64f115b-a701-47ff-9b89-8531c1adb81f/Shotboard-iPad-Simulator-9501e1e.zip",
+        "https://app.devin.ai/attachments/05910a90-1b56-43d9-a199-5d042bc4c281/The-Last-Light-Directors-Cut.pdf",
+        "https://app.devin.ai/attachments/8c3d2ae5-861f-4667-b44d-51c8aa0f74b0/The-Last-Light-Directors-Cut.shotboard",
+        "https://app.devin.ai/attachments/efca024c-9fe5-4ace-bac0-692b1918642d/pdf-verification.log",
+        "https://app.devin.ai/attachments/9ee1f933-9903-4a12-9687-d25c8f32a646/VerifyPDF.swift"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/3cad3ec2-e134-4942-b943-74b4df4b047f/shotboard-final-9501e1e-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/181fe560-1e43-4771-934e-28696498eb0d/01-studio.png",
+        "https://app.devin.ai/attachments/694685d7-b72b-4e9b-b33f-276d29363e08/02-presentation.png",
+        "https://app.devin.ai/attachments/9322e993-350d-47e9-bad5-4d65b36942fd/03-pdf-export.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/3eb0dfe8-8ff5-4085-81eb-334e7e51b6b1/test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 arm64; Xcode 26.6; Swift 6.3.3; iOS 26.5 Simulator on iPad Pro 13-inch (M5), device UUID 997FAD4D-649B-4EA5-BBAC-80BAB4CBB7F7.",
+      "_review": {
+        "accepted": true,
+        "notes": "Native studio screenshot, final drawing/presentation/PDF/persistence report and PR revision/isolation passed parent review. Recording annotation association is restored with six test starts and six passed assertions; parent verified the replacement MP4 is byte-identical."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/6b55bb0fb4374d0081b91fa41ad482eb?testRecording=8d8b6174-8100-4f49-9673-1f6b636a28e2"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Patchwork",
+      "platform": "ipad",
+      "slug": "patchwork",
+      "session_id": "0b00f6e743f1467caf5435075bad6fb8",
+      "session_url": "https://app.devin.ai/sessions/0b00f6e743f1467caf5435075bad6fb8"
+    },
+    "description": "Patch a playable modular synthesizer. Connect oscillator and filter modules, sculpt sound, watch a live waveform and export the result as WAV.",
+    "result": {
+      "name": "Patchwork",
+      "tests": [
+        "Strict swift-format lint and plutil validation passed., Seven Swift tests passed, including graph validation, serialization, pitch, filtering, bounded output, envelope, silence and AVAudioEngine offline rendering., AVAudioEngine offline test produced peak buffer RMS 0.18717198715312264; disconnected RMS was 0., Native iPad Simulator xcodebuild passed., Native UI tests passed for cable routing, note triggers, all waveforms, sliders, Hold, scope, disconnect-to-silence, Undo, cycle and occupied-input errors, presets, save/load/update, relaunch persistence, export and landscape layout., Latest revision scope rerun passed at 80% volume across sine, saw and triangle., Export independently checked with afinfo and ffmpeg: 48000 Hz mono Float32, 144000 samples, 3 seconds, peak -11.792992 dB, RMS -16.028140 dB, no NaNs., Simulator app ZIP integrity passed., Final annotated native recording verified as H.264, 1600\u00d71200, 58.33 seconds., Final git working tree was clean; merge-base diff whitespace check passed. PR checks reported no configured checks."
+      ],
+      "branch": "devin/1789091223-patchwork",
+      "commit": "e8ed228af88766adbac901b6ee6a357d8d0a5f5a",
+      "pr_url": "https://github.com/dabit3/experiments/pull/51",
+      "status": "complete",
+      "summary": "Completed a native SwiftUI iPad modular synthesizer with real AVAudioEngine DSP, validated cable routing, responsive controls, keyboard and Hold, auto-scaling live waveform, editable presets, save/load persistence, undo and genuine WAV export. Native build and UI tests passed; final annotated recording, three screenshots, test report, exported audio and unsigned Simulator app ZIP are uploaded. Focused PR is open with all tracked changes inside the assigned directory; no CI checks are configured.",
+      "platform": "ipad",
+      "limitations": [
+        "Unsigned Simulator-only iPad app; no physical device or App Store signing validation., Physical speaker output, hardware touch latency, accessibility audit and audio interruption behavior were not tested., Deliberately bounded graph and simplified two-pole low-pass/exponential envelope model; modeling and real-time constraints are documented in the README., Headless macOS audio required BlackHole and Core Audio/Simulator restart; workspace setup suggestion is pending approval."
+      ],
+      "session_url": "https://app.devin.ai/sessions/0b00f6e743f1467caf5435075bad6fb8",
+      "build_passed": true,
+      "app_directory": "native-demos/ipad/patchwork",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/2b61e92c-8adc-4c12-99c8-a2b933a4a344/Copper-bloom-e8ed228.wav",
+        "https://app.devin.ai/attachments/0abe2c99-a0b1-42de-8f65-5bcd97e83c18/Patchwork-iPad-Simulator-e8ed228.zip"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/a538ab4f-1ad7-475f-92b5-715a15c0ee24/patchwork-e8ed228-final-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/5a2e9028-e154-4385-856b-1b4821a24254/e8ed228-01-full-waveform.png",
+        "https://app.devin.ai/attachments/dbcb8714-c188-4029-9daf-68fb9b0d7c49/e8ed228-02-library.png",
+        "https://app.devin.ai/attachments/ddc12594-8407-4fb6-b166-c3757bba71d4/e8ed228-03-copper-bloom.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/858219d3-5a67-44b3-918e-22f1304eacd2/report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 arm64; Xcode 26.6; iPad Pro 11-inch (M5) Simulator running iOS 26.5; BlackHole 2ch audio output at 48 kHz.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native instrument screenshot, revision-labeled report for live audio callbacks, routing, feedback rejection, library persistence and real WAV analysis; checked the 58.3-second annotated final recording and verified PR revision/isolation. Audio used a virtual output; physical listening fidelity remains untested."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/0b00f6e743f1467caf5435075bad6fb8?testRecording=96999d70-6412-4040-a118-70c208dd4dce"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Celestia",
+      "platform": "ipad",
+      "slug": "celestia",
+      "session_id": "6b311a0d9a45462db114448b34acd989",
+      "session_url": "https://app.devin.ai/sessions/6b311a0d9a45462db114448b34acd989"
+    },
+    "description": "Plan an evening under the stars. Explore a site- and time-dependent sky, inspect altitude curves and save an observing list with field notes.",
+    "result": {
+      "name": "Celestia",
+      "tests": [
+        "bash scripts/build.sh: xcodebuild unsigned Debug iOS Simulator build succeeded., bash scripts/check.sh: strict swift-format lint and plist/project validation passed., 28 native Swift logic checks passed for astronomy geometry, catalog integrity, time zones, target ordering/validation, Markdown export, saved-plan identity, JSON round-trip and corrupt-archive rejection., Real native UI verified site changes, time dragging, \u00b11h controls, date picker, current-time and sample-time restore with coherent sky/altitude changes., Real native UI verified star/chart selection, constellation lines and Lyra filtering, below-horizon filtering, empty-search recovery, pan, zoom and scope reset., Real native UI verified target addition before polish and removal/undo on the final revision, exact proper-name/notes entry, blank-name validation, save/new/reopen and relaunch persistence., Real native UI verified genuine Markdown export, native share sheet, export invalidation/re-export and modeling documentation., Final annotated native Simulator recording and two full uncropped screenshots captured on commit 778ed743752908d51b691f993a8ee08babaf10e2."
+      ],
+      "branch": "devin/1789091256-celestia",
+      "commit": "778ed743752908d51b691f993a8ee08babaf10e2",
+      "pr_url": "https://github.com/dabit3/experiments/pull/66",
+      "status": "complete",
+      "summary": "Completed a polished native SwiftUI iPad sky atlas and observing planner with 50 real-coordinate stars, five sites, site/time-dependent projection, constellation selection, pan/zoom, altitude curves, horizon filtering, persistent observing queues and notes, undo, saved evenings and genuine Markdown export. Native build and core UI workflows passed. Final annotated recording, two full screenshots, Simulator-only app ZIP, export and test report were delivered. One focused PR is open; nothing was merged.",
+      "platform": "ipad",
+      "limitations": [
+        "Exact automated slider endpoint placement remains inconclusive: the final thumb sometimes differs from the requested pointer endpoint, including after Simulator resizing. Actual dragging updates time and sky coherently, and precise \u00b11h controls passed. Cause unresolved., Fixed rounded J2000 coordinates and geometric horizon omit precession, nutation, proper motion, refraction, parallax, terrain, weather, darkness and solar-system objects. Horizon glow is decorative., The ZIP is an unsigned Simulator-only build, not a signed physical-iPad or App Store release., Physical devices, other iPad screen sizes, pinch gesture, external share delivery and damaged-archive recovery through UI were not exercised."
+      ],
+      "session_url": "https://app.devin.ai/sessions/6b311a0d9a45462db114448b34acd989",
+      "build_passed": true,
+      "app_directory": "native-demos/ipad/celestia",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/1dc5ab25-5610-4288-bc41-f8d531b016fc/Celestia-iPad-Simulator-only.zip",
+        "https://app.devin.ai/attachments/a4eba6b9-2b74-43fe-9463-300ae613a767/Celestia-observing-plan.md"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/65510e22-6fd2-4f9e-8401-fb9d47ef15fb/celestia-final-778ed74-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/6bb11101-9d69-4c41-ad06-df7824f60e2f/celestia-778ed74-field-guide-landscape.png",
+        "https://app.devin.ai/attachments/e6376263-eaac-4ae0-a532-059dde8ccbaa/celestia-778ed74-saved-evening-landscape.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/ff52d1fb-05b3-424f-b8e5-4704d4b5ed26/Celestia-test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS 26.5.2 arm64, Xcode 26.6; iPad Pro 13-inch M5 Simulator running iOS 26.5 in landscape. Deployment target iPadOS 17.0; no external dependencies or signing credentials.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native atlas screenshot, report covering sky/time changes, search, targets, blank-name recovery, persistence and Markdown export; checked the 136.1-second annotated recording and verified PR revision/isolation. Exact automated slider endpoint precision remains explicitly inconclusive; precise one-hour controls passed."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/6b311a0d9a45462db114448b34acd989?testRecording=94bcd3d7-64fc-4e1e-9f85-fb052b612cf7"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Archipelago",
+      "platform": "ipad",
+      "slug": "archipelago",
+      "session_id": "2f9f2efd858a48288c376abde6cb2aa0",
+      "session_url": "https://app.devin.ai/sessions/2f9f2efd858a48288c376abde6cb2aa0"
+    },
+    "description": "Connect five illustrated islands with a working ferry network. Assign boats, move resources, balance your budget and bring a distant lighthouse to life.",
+    "result": {
+      "name": "Archipelago",
+      "tests": [
+        "bash scripts/check.sh: strict swift-format lint, six Swift tests and Xcode project plist validation passed., bash scripts/build.sh: native generic iOS Simulator build passed at final commit 24e1bcba., Logic tests: 5,000-step conservation, loading/capacity, arrival/return/rewards, cargo recovery, transactional invalid inputs/budget, assignment uniqueness, deterministic save/reload and goal, corrupt save rejection., Real native UI: created two routes, assigned Marigold/Juniper, observed moving boats and actual inventory/reward changes, rerouted grain to Lantern Isle and completed both goals., Real native UI: all four ferries, pause and speed controls, duplicate-error recovery, unassignment, removal/refund/undo, restart cancel/confirm/undo, checkpoint reload and field guide passed., Real native UI: exported real JSON with balanced resource ledgers, opened native share sheet, swipe-closed and relaunched app; completed voyage restored paused., Full gameplay recording tested 8d76241; final custom-icon/launch supplement tested 24e1bcba. Runtime Swift source is identical between these revisions. Combined annotated recording is 133.29 seconds, upright and uncropped., PR checks: zero failed or pending checks; no CI checks configured for this PR."
+      ],
+      "branch": "devin/1789091281-archipelago",
+      "commit": "24e1bcba115fc4e3e4a42486b41a06eb150b03fa",
+      "pr_url": "https://github.com/dabit3/experiments/pull/70",
+      "status": "complete",
+      "summary": "Built and demonstrated a native landscape iPad logistics game with five original isometric islands, four ferries, deterministic resource transport, editable routes, budget and delivery goals, persistence, undo/restart, JSON export and custom icon. The completed voyage remains open, paused, with 120 deliveries, 540 coins and Lantern Isle supplied. All tracked source is isolated to the assigned app directory; one focused PR is open.",
+      "platform": "ipad",
+      "limitations": [
+        "App archive is Simulator-only, not a signed physical-device or App Store release., Native UI coverage is one 13-inch iPad Simulator at default text sizing; other devices and large Dynamic Type remain untested., External share delivery, exhaustive route combinations and corrupt-save UI were not exercised. Corrupt-save rejection is covered by logic tests., Peaceful bounded model: no collisions, pathfinding, fluctuating markets, background catch-up or cloud sync; documented production/consumption rules and normalized travel distances., Initial Simulator migration encountered a recoverable SpringBoard crash before testing; subsequent final runs succeeded."
+      ],
+      "session_url": "https://app.devin.ai/sessions/2f9f2efd858a48288c376abde6cb2aa0",
+      "build_passed": true,
+      "app_directory": "native-demos/ipad/archipelago",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/6c024c0e-481e-4af6-82e7-01f77a4c21e8/Archipelago-iPad-Simulator.zip",
+        "https://app.devin.ai/attachments/c0c318cf-9249-41dc-accf-f9c9fa40d828/final-Archipelago-voyage.json"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/f03112fa-09ce-46b7-a6be-5ca8042e68b5/archipelago-final-8d76241-edited.mp4",
+        "https://app.devin.ai/attachments/9978235c-9917-49e3-bfcf-327ebcd5e92b/archipelago-icon-final-24e1bc-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/80ddabcb-875b-4b93-bb2b-2d95aad1b0e9/final-01-initial.png",
+        "https://app.devin.ai/attachments/344d65f7-a6bc-4d82-a369-032755cc3a94/final-02-active.png",
+        "https://app.devin.ai/attachments/99d92f8c-cbdd-4840-b1ef-10ed1c1c3335/final-03-completed-24e1bc.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/1ea36e31-33df-4c10-8382-8ad06e51e5c7/final-test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS 26.5.2 (25F84), Xcode 26.6 (17F113), Swift 6.3.3; iPad Pro 13-inch (M5) Simulator running iOS 26.5, UDID 997FAD4D-649B-4EA5-BBAC-80BAB4CBB7F7; landscape 1600\u00d71200 full-screen evidence.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed full native screenshots, ferry-economy/recovery/persistence/export report and PR revision/isolation. Verified the final source delta is limited to icon/build metadata and documentation. Original gameplay and icon recordings have restored annotation associations, 17 passed assertions, and verified durations of 121.6 and 11.7 seconds."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/2f9f2efd858a48288c376abde6cb2aa0?testRecording=c16fa938-20bd-4734-997c-63ed3f450ece",
+        "https://app.devin.ai/sessions/2f9f2efd858a48288c376abde6cb2aa0?testRecording=007b671a-8602-4665-ae3a-2a99342c8219"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Kerf",
+      "platform": "macos",
+      "slug": "kerf",
+      "session_id": "4f30154e56be4da29a2836697895b351",
+      "session_url": "https://app.devin.ai/sessions/4f30154e56be4da29a2836697895b351"
+    },
+    "description": "Design a sheet for laser fabrication. Draw in physical units, organize cut and engraving layers, inspect overlaps and export kerf-adjusted SVG geometry.",
+    "result": {
+      "name": "Kerf",
+      "tests": [
+        "Strict Swift formatter lint passed., swift build -Xswiftc -warnings-as-errors passed., swift test: eight meaningful logic tests passed, zero failures., scripts/build.sh produced native release Kerf.app; codesign --verify --deep --strict passed., Native UI: coaster dimension86\u219290mm, duplication overlap/export-block and free-position recovery passed., Native UI: rectangle/circle drawing, four-vertex polyline, movement/handle resize, numeric dimensions, snap nudges and invalid-input rejection passed., Native UI: cut/engrave changes, delete/undo/redo, plywood/acrylic previews and window resizing passed., Native UI: Save/Open restored14 objects and90mm diameter; quit/relaunch restored geometry, material, kerf0.2 and compensation., Actual nominal and compensated SVGs parsed as XML: all14 geometries matched saved objects, sheet360\u00d7240mm,7cut/7engrave, Alpine centre67,70 and radii45/45.1mm., No CI checks configured; no pending or failed checks."
+      ],
+      "branch": "devin/1789091200-kerf",
+      "commit": "ecd728e780c09ee28bf3ab4bc28bb4d868add0fe",
+      "pr_url": "https://github.com/dabit3/experiments/pull/54",
+      "status": "complete",
+      "summary": "Built and tested a polished native SwiftUI/AppKit fabrication editor with physical-unit rectangle/circle/polyline editing, grid snapping, dimensions, overlap/sheet preflight, cut/engrave layers, outside kerf compensation, undo/redo, save/open/autosave and verified SVG export. Native UI golden path passed; app remains open with a valid 14-object sheet. PR, macOS app archive, 146-second annotated recording, three screenshots, editable design, two actual SVG exports and test report delivered.",
+      "platform": "macos",
+      "limitations": [
+        "App archive is Apple Silicon macOS and ad-hoc signed; not notarized or an App Store release., Outside compensation supports rectangle/circle exterior silhouettes only. Open polylines export centreline paths; their collision checks conservatively use bounds., Free placement is deterministic single-object grid search. No optimized nesting, grouping, rotation, boolean paths or inside-hole offsets., No physical laser run or machine/material calibration performed., Saved editable kerf-demo.kerf precedes final kerf edits and has kerf0.15 with compensation off; compensated SVG uses0.2mm kerf., Draft/material view mode resets on relaunch; document material and geometry persist., Input-tool retries were needed for drag sequencing, rapid vertex clicks and native folder navigation; successful real interactions are recorded."
+      ],
+      "session_url": "https://app.devin.ai/sessions/4f30154e56be4da29a2836697895b351",
+      "build_passed": true,
+      "app_directory": "native-demos/macos/kerf",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/978d4fd5-943c-4483-bab9-515bf08edb2d/Kerf-macOS-arm64.zip",
+        "https://app.devin.ai/attachments/91f901b9-8bc8-4e76-8138-1236b17aed66/kerf-demo.kerf",
+        "https://app.devin.ai/attachments/cefef570-5b3e-46c6-a13e-83b743392060/kerf-nominal.svg",
+        "https://app.devin.ai/attachments/6d8e8375-7855-4cf5-ac21-b1be7e7ab789/kerf-compensated.svg"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/d520b759-60c0-4d26-8c84-448748474376/kerf-native-e2e-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/0d9c84d7-267b-4a14-a1da-5fa6c4e9e206/01-final-draft.png",
+        "https://app.devin.ai/attachments/51810446-2ff6-4538-8d1c-60d2aa75ced1/02-final-acrylic.png",
+        "https://app.devin.ai/attachments/548b3f56-b96a-4459-a722-916346411b47/03-final-plywood.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/6c451605-3bb1-4c96-a6c0-4621c94264aa/test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS 26.5.2 (25F84), Apple Silicon arm64, Xcode 26.6 (17F113), Swift 6.3.3; no browser or simulator used.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent inspected two full native screenshots, read the executed native UI and SVG test report, verified the 146-second recording and its annotation metadata, and confirmed the PR is open with all 14 changed files confined to the assigned app directory at the reported commit."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/4f30154e56be4da29a2836697895b351?testRecording=be3b4839-e332-4c82-92e8-907991886817"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Prism",
+      "platform": "macos",
+      "slug": "prism",
+      "session_id": "caaafdfa2d1c4c3a88cd941d4a9d3ecd",
+      "session_url": "https://app.devin.ai/sessions/caaafdfa2d1c4c3a88cd941d4a9d3ecd"
+    },
+    "description": "Build an image with a visible processing graph. Wire Core Image operations, blend procedural artwork, adjust the result and export a rendered PNG.",
+    "result": {
+      "name": "Prism",
+      "tests": [
+        "bash scripts/check.sh: strict swift-format lint, five XCTest cases, release Swift build and ad-hoc .app signing passed., Logic tests cover cycle rollback, input replacement, deletion cleanup, protected output, JSON round-trip and invalid projects, required blend inputs, mixed pixels, linear-light exposure doubling, grayscale, blur bounds and PNG serialization., Native port-click workflow built a six-node/six-connection image/exposure/saturation/blur/blend/output graph., Native exposure, saturation, blur and blend adjustment, original comparison, header dragging and graph zoom passed., Cycle rejection preserved connections; delete/Undo restored the render. Reset, Redo and disconnect/disabled-export recovery passed on the immediately preceding revision with unchanged implementation., Native default filename, project save/open, changed-value restoration and unsaved-edit autosave after quit/relaunch passed., Copied native app launched outside the repository and rendered both bundled artwork sources., UI-exported baseline/final PNGs independently decoded as 1600\u00d71100 sRGB with distinct hashes; 1,759,996 of 1,760,000 RGB pixels changed; channel MAE 29.1161/255., codesign --verify --deep --strict dist/Prism.app passed; macOS arm64 .app packaged as ZIP., PR checks snapshot: no configured checks, failures or pending checks."
+      ],
+      "branch": "devin/1789091178-prism",
+      "commit": "43eb44060d72622e11b9e07aee056a08130412f7",
+      "pr_url": "https://github.com/dabit3/experiments/pull/49",
+      "status": "complete",
+      "summary": "Built and polished a native SwiftUI/Core Image node compositor with original procedural artwork, real DAG evaluation, exposure/saturation/blur/blend controls, port wiring, graph movement and zoom, cycle rejection, undo/redo, autosave, project save/open and real PNG export. Completed native UI acceptance and an annotated demonstration; delivered app archive, three screenshots, recording, report, project and PNG exports. One focused PR is open with a clean working tree.",
+      "platform": "macos",
+      "limitations": [
+        "Local Apple Silicon development build is ad-hoc signed, not notarized or an App Store release., V1 supports two bundled equal-size original sources and crossfade blending; arbitrary image import, masks and additional blend modes are not implemented., Rendering is synchronous; large-graph performance and minimum-size window layout were not UI-tested., Copied-app launch was tested outside the repository while the original checkout remained present; a separate clean Mac was not tested., Malformed project handling was covered by logic tests rather than native UI., Original comparison refers to the project's first image node. Undo history, selection, zoom and manually saved file URL do not persist across launches."
+      ],
+      "session_url": "https://app.devin.ai/sessions/caaafdfa2d1c4c3a88cd941d4a9d3ecd",
+      "build_passed": true,
+      "app_directory": "native-demos/macos/prism",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/35430075-563e-425d-9bda-ca2bad44fd06/Prism-macOS-arm64.zip",
+        "https://app.devin.ai/attachments/23bdfe99-2e92-4298-8700-11e8e7d64d5c/baseline.png",
+        "https://app.devin.ai/attachments/dfded7f0-e87f-4465-8dda-580d4d76ca73/final.png",
+        "https://app.devin.ai/attachments/00d92cd7-1648-475d-abc7-3085faf8ce0c/Soft-Solstice.prism"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/b62d18c1-cce3-4c1e-9888-1301feb32fa0/prism-final-43eb440.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/efd435d5-9c7c-4c29-b6ff-3b7e7c594f6b/01-baseline-workspace.png",
+        "https://app.devin.ai/attachments/aa4dfa3e-878f-4eb4-841e-03847fc344e5/02-final-composite.png",
+        "https://app.devin.ai/attachments/6c0ce5dc-64cf-41f3-a40d-62240b6ce292/03-copied-app-nocturne.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/c80490ad-0237-4998-b568-34118dcc9de5/TEST-REPORT.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 (25F84), Apple Silicon arm64; Xcode 26.6 (17F113); Swift 6.3.3. Native macOS .app tested through computer use at 1600\u00d71200 desktop resolution.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent inspected the full graph/composite screenshot, read the executed native and pixel-export test report, checked the 90-second recording and annotation metadata, and verified the open PR's revision and directory isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/caaafdfa2d1c4c3a88cd941d4a9d3ecd?testRecording=d43be269-1531-424f-9509-8cadc2b45e4d"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Cutline",
+      "platform": "macos",
+      "slug": "cutline",
+      "session_id": "3bb2775767ed4018a92ffb5c3d36628a",
+      "session_url": "https://app.devin.ai/sessions/3bb2775767ed4018a92ffb5c3d36628a"
+    },
+    "description": "Make a short travel film in a native editing suite. Trim and arrange animated clips, compose an opening title and export a real MP4.",
+    "result": {
+      "name": "Cutline",
+      "tests": [
+        "Release Swift build and ad-hoc signed macOS .app packaging passed on final revision., Strict Xcode swift-format lint passed., All six XCTest tests passed on final revision: trimmed cut boundaries, invalid trim atomicity, reorder identity, serialization/reference validation, version rejection, and real AVFoundation sample/export/frame/import integration., Native UI final run passed: clear/append three clips, trim/reorder, invalid numeric recovery, active-field synchronization after undo/selection, title editing, focused text undo, scrub and playback across both cuts., Native save/open and quit/relaunch persistence passed; correct .cutline extension and fully visible trim fields verified., Native MP4 export and QuickTime title/three-scene playback passed; import/append/remove/undo was verified in prior runs., Independent final UI-export validation passed: 17.000 seconds, one H.264 video track, 1280x720, 24fps, no audio, full-stream ffmpeg decoding and inspected burned-in title frame., codesign verification, app ZIP integrity and git diff whitespace checks passed."
+      ],
+      "branch": "devin/1789091209-cutline",
+      "commit": "b9d756a9e69e915ccf9784e20f0e4c36c21363eb",
+      "pr_url": "https://github.com/dabit3/experiments/pull/61",
+      "status": "complete",
+      "summary": "Built and polished a native SwiftUI/AppKit video editor with three original generated motion clips, AVFoundation composition playback, trimming/reordering, title presets, local import and persistence, undo and actual MP4 export. Final native computer-use tests passed with a 95-second annotated recording, two full screenshots, a packaged macOS app and a validated 17-second exported film.",
+      "platform": "macos",
+      "limitations": [
+        "Silent single video track, hard cuts, 720p/24fps; no audio, transitions, grading or long-form editing., Sample videos are original procedurally animated travel illustrations, not photographic location footage., Saved projects reference app-managed local media and are not portable archives; undo history is session-local., App ZIP is a local ad-hoc signed Apple Silicon macOS build, not notarized or an App Store release., Compiler emits one AVVideoComposition initializer deprecation warning; native build and real rendering pass., Import/remove/undo and untouched-default save submission were verified in prior runs rather than repeated in the final recording."
+      ],
+      "session_url": "https://app.devin.ai/sessions/3bb2775767ed4018a92ffb5c3d36628a",
+      "build_passed": true,
+      "app_directory": "native-demos/macos/cutline",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/6872f5e3-23f6-4a8f-9b8c-b966a723e943/Cutline-macOS-arm64.zip",
+        "https://app.devin.ai/attachments/a3bedaea-72c0-48d6-8589-c154a99126bc/Cutline%20Acceptance%20b9d756a.mp4",
+        "https://app.devin.ai/attachments/44a1c8eb-b7fb-4a5d-bc3f-5adfb11a2a71/cutline-final-b9d756a-annotations.json"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/d42175b6-c877-4f76-b620-fa969728c2ed/cutline-final-b9d756a-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/55827f9e-5854-40b2-a54c-e243de282b86/final-b9d756a-editor.png",
+        "https://app.devin.ai/attachments/c4211002-b754-4608-8c00-0847b24e2a1c/final-b9d756a-quicktime-title.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/d3af32ed-325c-4955-86be-d06b71426e08/Cutline-Test-Report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Apple Silicon arm64 macOS 26.5.2 (25F84), Xcode 26.6 (17F113), Swift 6.3.3; native desktop app with AVPlayerLayer and QuickTime export playback.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native editing screenshot, final build/logic/rendering/UI report and 95.3-second recording; verified PR revision/isolation. The original recording association was restored without source or recording changes; parent verified identical MP4 checksums and nine passed assertions."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/3bb2775767ed4018a92ffb5c3d36628a?testRecording=54873e8c-f6d1-4b47-9bce-204a0447bff4"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Wavecraft",
+      "platform": "macos",
+      "slug": "wavecraft",
+      "session_id": "e27f2aac6aae4809b3027d1016cbf385",
+      "session_url": "https://app.devin.ai/sessions/e27f2aac6aae4809b3027d1016cbf385"
+    },
+    "description": "A focused stereo audio workbench. Inspect waveforms, select and trim passages, shape fades and gain, recover with undo and export edited audio.",
+    "result": {
+      "name": "Wavecraft",
+      "tests": [
+        "Strict swift-format lint passed., Seven Swift Testing tests passed: exact trims, fades, gain/clipping/saturation, WAV serialization, project persistence, deterministic samples and invalid inputs., Release Swift build, generated native icon and ad-hoc codesign verification passed., Native waveform drag, audition, play/stop, seek, rewind and zoom preserving selection passed., Native Command-A field replacement, precise 0.500\u20133.000 second selection and trim to 2.500 seconds passed., First/last 250 ms fades, +18 dB gain clipping feedback, Undo/Redo and safe recovery passed., Native asynchronous WAV save/open sheets, cancellation, WAV reopen and AIFF import passed., Quit/relaunch restored edited audio and exact 0.400\u20131.800 second selection., Invalid-range alert/recovery, Clear, library sample loading/Undo and Reveal export passed., Final WAV verified: 110250 stereo frames at 44100 Hz, exactly 2.500 seconds, zero endpoint PCM frames, maximum quantization error 1.5272106290320497e-05., Every frozen project sample matched reconstructed Tidal pulse trim and linear edge fades exactly; maximum float difference 0.0., Final annotated recording validated as H.264, 1600\u00d71200, 83.25 seconds; three full uncropped native screenshots captured., PR has no configured CI checks; validation ran locally on native macOS."
+      ],
+      "branch": "devin/1789091222-wavecraft",
+      "commit": "0c3ca70e833b02b4282b5385efac066f7103e509",
+      "pr_url": "https://github.com/dabit3/experiments/pull/46",
+      "status": "complete",
+      "summary": "Completed native SwiftUI audio workbench with three generated samples, actual stereo waveforms, selection/zoom/transport, trim/fades/gain/clipping, undo/redo, persistence and WAV/AIFF import/WAV export. Native build, numerical validation and full recorded UI flow passed. Focused PR remains open; final app is running with edited audio and a useful selection.",
+      "platform": "macos",
+      "limitations": [
+        "Playback verified through virtual output; physical speaker/headphone fidelity not assessed., Slider-track clicks passed; knob dragging not conclusively verified with the computer tool., Native file paths used clipboard paste because direct tool typing dropped some characters., App ZIP is ad-hoc signed for local macOS arm64 use, not notarized or an App Store release., Bounded V1 supports mono/stereo WAV/AIFF up to 120 seconds; no resampling, multitrack engine or guaranteed gapless looping. Undo history resets at exit."
+      ],
+      "session_url": "https://app.devin.ai/sessions/e27f2aac6aae4809b3027d1016cbf385",
+      "build_passed": true,
+      "app_directory": "native-demos/macos/wavecraft",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/76e3704d-59eb-489b-a5bd-7bd6b4cef8f6/Wavecraft-macOS-arm64.zip",
+        "https://app.devin.ai/attachments/8b10d073-6549-4b05-96cf-0c8c9a5b35ae/Wavecraft-Final-0c3ca70.wav",
+        "https://app.devin.ai/attachments/5b2bd990-e3eb-406f-a26e-451e01e718e7/Wavecraft-Final-0c3ca70.wavecraft",
+        "https://app.devin.ai/attachments/27df08c0-1f4c-457e-9b2a-573bd87991bc/verify_demo.swift"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/efd20c11-c5a2-46e2-9dc1-d808387a02a0/wavecraft-final-0c3ca70-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/dfd42043-daea-4919-b3e6-6cf1d79d9c00/01-before-editing-0c3ca70.png",
+        "https://app.devin.ai/attachments/8c5825f9-daef-4e09-9f47-6fc6f6d7aafb/02-after-export-0c3ca70.png",
+        "https://app.devin.ai/attachments/e5e8884c-1280-4214-9b3c-13f7e02f381e/03-restored-session-0c3ca70.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/9661b78e-eaca-4e35-b920-3e3fa983819b/Wavecraft-Test-Report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 arm64 on Apple M4 virtual Mac; Xcode 26.6; Swift 6.3.3; BlackHole 2ch 0.7.1 virtual Core Audio output at 48 kHz.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native waveform screenshot, native editing/recovery/persistence report and independent per-sample export analysis; checked the 83.25-second annotated recording and verified PR revision and app-directory isolation. Playback used virtual output; physical listening fidelity remains untested."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/e27f2aac6aae4809b3027d1016cbf385?testRecording=e0edd6af-fb52-499f-8336-ad8abca9efe8"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Railway",
+      "platform": "macos",
+      "slug": "railway",
+      "session_id": "059a558c5ba04f06817254a2498a8d63",
+      "session_url": "https://app.devin.ai/sessions/059a558c5ba04f06817254a2498a8d63"
+    },
+    "description": "Dispatch two trains through a miniature forest railway. Set switches and signals, respect route interlocking and complete station deliveries.",
+    "result": {
+      "name": "Railway",
+      "tests": [
+        "Final commit 6f02a8e: ./scripts/check.sh passed strict Swift format lint, icon-script typechecking, six Swift Testing tests, release build with warnings treated as errors, and plist validation., Six logic tests passed: graphRoutesAreContinuous; signalOccupancySwitchAndDelivery; persistencePauseAndCorruptRecovery; scenicRouteAndSpeed; occupiedDestinationPreventsConflict; allRoutesRemainSafeUnderRandomControls, including 2,400 simulation steps., Final commit 6f02a8e: ./scripts/build.sh produced native dist/Railway.app; codesign --verify --deep --strict dist/Railway.app passed., Final commit 6f02a8e: real native UI verified custom Dock icon, reset to paused initial state, both dispatches, STOP hold, occupied-block hold, W2 alignment, and two safe deliveries., Final commit 6f02a8e: native UI Save \u2192 signal change \u2192 Reload restored paused completed shift; exported CSV matched red arrival 00:26 and blue arrival 00:47. App left paused at 00:48 with 2/2 delivered and matching autosave/checkpoint., Carried-forward native UI coverage on 9842a69: quit/relaunch restoration., Carried-forward native UI coverage on bd30aa4: field guide, destination editing, locked switches, reset cancellation/recovery, speed restoration, forest loop and minimum-window usability., PR checks reported 0 passed, 0 failed, 0 pending, 0 skipped; validation was executed locally on native macOS."
+      ],
+      "branch": "devin/1789091248-railway",
+      "commit": "6f02a8eaa2fcc03cbb3ed08bd74fcd4e3d285149",
+      "pr_url": "https://github.com/dabit3/experiments/pull/53",
+      "status": "complete",
+      "summary": "Complete native SwiftUI macOS miniature railway dispatch simulator with original forest diorama, three stations, branching routes, two moving trains, signals, switch controls, interlocking, timetable, pause/speed, reset recovery, validated local persistence and CSV export. Native build and final annotated computer-use demonstration passed; app remains paused with 2/2 deliveries. Focused PR is open and all final artifacts are uploaded.",
+      "platform": "macos",
+      "limitations": [
+        "Conservative whole-junction Block 01 allows one train in the conflict zone at a time; no automatic deadlock solver, arbitrary track editor or service cancellation., Train consists are decorative rigid bodies moving at constant speed; locomotive reversal, wheel physics and acceleration are not modeled., Attached app is local ad-hoc-signed arm64, not notarized or an App Store release., Abrupt-kill recovery was not exercised; autosave may lose up to two simulated seconds., Quantitative speed scaling, malformed saves and all route permutations are covered by logic tests rather than exhaustive native UI tests. Earlier UI regression coverage is labeled by revision in the report."
+      ],
+      "session_url": "https://app.devin.ai/sessions/059a558c5ba04f06817254a2498a8d63",
+      "build_passed": true,
+      "app_directory": "native-demos/macos/railway",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/4481235d-ba76-4176-980b-38744a6a66c3/Railway-macOS-arm64-6f02a8e.zip",
+        "https://app.devin.ai/attachments/0593598d-6c5e-4edb-aa38-d432e54285ed/Railway-timetable.csv"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/4a3b9a06-fe1d-449c-8d8b-c1679710ecec/railway-6f02a8e-final-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/db351dcd-aa37-4652-8858-3b349cf09be9/01-initial-diorama.png",
+        "https://app.devin.ai/attachments/660105aa-1de9-41b4-86bd-fbca91d8df45/02-interlocking-hold.png",
+        "https://app.devin.ai/attachments/ce17fba0-d8eb-4488-9379-a1f6501863bb/03-final-deliveries.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/5fd8f05c-a11f-4367-9feb-90bac8840a4d/report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS 26.5.2 (25F84), arm64; Xcode 26.6 (17F113); Swift 6.3.3; full 1600\u00d71200 native desktop screenshots.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full forest-diorama screenshot, final native dispatch/interlocking/export report and explicitly revision-labeled persistence regression evidence; checked the 43.9-second annotated recording and verified PR revision and app-directory isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/059a558c5ba04f06817254a2498a8d63?testRecording=99f1c579-4ba3-4245-87da-b339ce89c46a"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Aster",
+      "platform": "macos",
+      "slug": "aster",
+      "session_id": "dd3f54bd5f314dc78be191aba19bb2b7",
+      "session_url": "https://app.devin.ai/sessions/dd3f54bd5f314dc78be191aba19bb2b7"
+    },
+    "description": "A hands-on orbital laboratory. Explore a two-body simulation, plan burns, inspect predicted trajectories and use time warp to complete a mission.",
+    "result": {
+      "name": "Aster",
+      "tests": [
+        "Strict swift-format lint passed., swift build -Xswiftc -warnings-as-errors passed., swift test: seven tests passed covering circular elements, ten-orbit conservation, transfer objective/radial impulse, eccentric prediction, impact/escape, mission JSON validation and CSV., Ten unpowered orbits met relative energy error <1e-7, angular momentum drift <1e-10 and position closure <10 km., Release native Aster.app build and codesign --verify --deep --strict passed., Real native UI: both numeric burn inputs and held slider drags update predicted trajectory; recipe, prediction toggle and execution passed., +460 m/s burn achieved 2381 km apoapsis /450 km periapsis and mission COMPLETE., Native 120\u00d7/600\u00d7 coasting visibly moved probe and updated telemetry; pause, 1\u00d7/30\u00d7 selection, undo and re-execution passed., Native toolbar/sidebar and keyboard save/reset/reload restored a distinct nonzero-time checkpoint; quit while running and relaunch restored the working session paused., Native CSV export and cancellation passed; exported file contains421 finite samples with increasing timestamps matching restored telemetry., Flight guide wrapping and compact window/scrolling inspector passed on final revision."
+      ],
+      "branch": "devin/1789091243-aster",
+      "commit": "364dc482dffaa6edda2208bec1a3fc4b1185ba06",
+      "pr_url": "https://github.com/dabit3/experiments/pull/56",
+      "status": "complete",
+      "summary": "Completed a polished native SwiftUI/AppKit orbital laboratory with actual two-body simulation, editable burn prediction, mission objectives, time warp, undo, persistence and real CSV export. Native build, seven numerical tests and full computer-use mission workflow passed. Fixed flight-guide clipping and captured a final annotated recording plus three full screenshots. App remains ready, complete and paused.",
+      "platform": "macos",
+      "limitations": [
+        "Educational planar Earth-only gravity with instantaneous impulses; no atmosphere, fuel, finite thrust, attitude or other bodies. Schematic globe and capped viewport; impact resolved within an integration substep., Impact/escape and malformed persistence covered by logic tests rather than UI. Filesystem failures, input extremes and100-burn cap were not exercised through native UI., Download is a locally ad-hoc-signed Apple silicon macOS app, not notarized or an App Store release."
+      ],
+      "session_url": "https://app.devin.ai/sessions/dd3f54bd5f314dc78be191aba19bb2b7",
+      "build_passed": true,
+      "app_directory": "native-demos/macos/aster",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/bab7c8d0-819b-47f9-88e3-505aaa5d03db/Aster-macOS-arm64.zip",
+        "https://app.devin.ai/attachments/3aa9c6d9-fb13-42b2-8ec9-3226ebc32006/Aster-trajectory-final.csv",
+        "https://app.devin.ai/attachments/b297623b-38f1-4019-b34b-1b44b933374d/Aster-build-verification.md"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/4ddcda43-9881-4ff6-b2c7-ad79e2577d3f/aster-final-native-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/d069b48c-baa7-4fd5-a1f0-d4100069f84c/01-planned-transfer.png",
+        "https://app.devin.ai/attachments/f1be4f29-073f-47eb-b0e8-09d54d7c915a/02-completed-coast.png",
+        "https://app.devin.ai/attachments/957da2a2-4cbb-40f3-9c6f-c9d748bc13fe/03-restored-exported.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/8a187cbf-8cc7-484a-afe8-656f189523ed/Aster-native-test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS 26.5.2 (25F84), Apple silicon; Xcode 26.6 (17F113); Swift 6.3.3; desktop screenshots 1600\u00d71200. Native macOS .app, not a Simulator or browser app.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent inspected the full completed-orbit screenshot and final native test report, verified the 105.5-second recording and annotation metadata, and confirmed the open PR's reported revision with all changes confined to the assigned app directory."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/dd3f54bd5f314dc78be191aba19bb2b7?testRecording=5c111119-3c9d-4ddd-ac47-6e1de3703e0d"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Margin",
+      "platform": "macos",
+      "slug": "margin",
+      "session_id": "625a0e5108d941fa867f3e276b1d2331",
+      "session_url": "https://app.devin.ai/sessions/625a0e5108d941fa867f3e276b1d2331"
+    },
+    "description": "Read, collect and write in one research studio. Search a source PDF, preserve cited excerpts, develop a brief and export finished documents.",
+    "result": {
+      "name": "Margin",
+      "tests": [
+        "PASS: Xcode Swift format strict lint., PASS: Swift release compilation with warnings treated as errors., PASS: Six Swift Testing tests covering Unicode serialization, invalid project rejection, citation page sorting/deduplication, library search, complete source PDF text extraction, and long multipage PDF export without truncation., PASS: scripts/build.sh generated complete native Margin.app with source PDF/icon and local ad-hoc signature; codesign strict verification succeeded., PASS: Actual native PDF search returned three pause matches; next-match navigation worked., PASS: Real mouse drag selected source text; two passages captured on pages 2 and 3 with correct citations and highlights., PASS: Native draft editing, caret-aware citation insertion, 106-word count, collection undo/removal, library filtering and native text undo., PASS: Native project save/open restored a saved snapshot; quit/relaunch preserved the brief, both passages and oxblood highlights., PASS: Native Markdown/PDF export; independent PDFKit extraction and saved-text comparisons verified complete title, draft, citations and bibliography; PDF inspected in native Preview., PASS: No-match recovery, reset cancellation and invalid-project rejection preserved workspace state., PR check snapshot: zero configured checks, zero failures, zero pending."
+      ],
+      "branch": "devin/1789091287-margin",
+      "commit": "fe9ed9008155c2bf2ff08988946630c5f768bb26",
+      "pr_url": "https://github.com/dabit3/experiments/pull/68",
+      "status": "complete",
+      "summary": "Built and demonstrated a polished native macOS research studio with a generated five-page source PDF, PDFKit search and real text selection, cited excerpt collection, editable research brief, atomic local persistence, project save/open, undo, and verified PDF/Markdown exports. The complete native UI workflow passed, with an annotated recording, three full screenshots, app archive, editable project and exported documents delivered. Margin remains open in the final persisted workspace.",
+      "platform": "macos",
+      "limitations": [
+        "The attached arm64 macOS app is an ad-hoc-signed local development build, not notarized or an App Store release., V1 uses one bundled original illustrative source essay; arbitrary PDF import, OCR, cloud sync and collaboration are outside scope., The editor stores plain text; PDF export typesets prose rather than interpreting Markdown markup., Minimum-size windows and multi-page mouse selections were not exercised in native UI; long multipage exports were covered by logic tests., Computer typing altered capitalization/path separators during testing; native clipboard paste recovered exact input. No application failures remained."
+      ],
+      "session_url": "https://app.devin.ai/sessions/625a0e5108d941fa867f3e276b1d2331",
+      "build_passed": true,
+      "app_directory": "native-demos/macos/margin",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/3957b67f-0cf3-4756-873b-b06826047aa7/Margin-macOS-arm64.app.zip",
+        "https://app.devin.ai/attachments/dfb5dc5f-0b80-4ac2-af8b-b5fe6b838e3d/Attentive%20City.margin",
+        "https://app.devin.ai/attachments/12f032e9-f3c3-4c78-99c3-66581be77284/Margin%20Brief.md",
+        "https://app.devin.ai/attachments/e06a06ee-3305-412d-be69-e5b55d19c6f4/Margin%20Brief.pdf",
+        "https://app.devin.ai/attachments/b886e30b-1349-4d50-bf0b-78d43a8cf967/exported-pdf-text.txt"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/5b554ecb-cae2-441e-8d81-3b95cffd84c9/margin-native-e2e-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/9065b625-4885-4658-974c-ae539fb39965/01-initial-native-workspace.png",
+        "https://app.devin.ai/attachments/be4ee15a-092f-4c82-9bcf-ab1f67fcb7d6/02-final-cited-brief.png",
+        "https://app.devin.ai/attachments/c2604f87-2ea9-4227-ade9-df4287111456/03-native-pdf-export.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/e70e0a98-fb29-4d00-ab53-7272fa9f6ffc/Margin-Test-Report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS 26.5.2 (25F84), Apple Silicon arm64; Xcode 26.6 (17F113), Swift 6.3.3; SwiftUI/AppKit/PDFKit/CoreText desktop .app. Full screenshots at 1600\u00d71200.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent inspected the full cited-workspace and native PDF-export screenshots, read the detailed executed test report, verified the 124.7-second recording and its annotation metadata, and confirmed the open PR contains only the assigned app directory at the reported commit."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/625a0e5108d941fa867f3e276b1d2331?testRecording=a8066e3f-3a9c-4d28-a66b-00f180e481cd"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Loom",
+      "platform": "macos",
+      "slug": "loom",
+      "session_id": "7d69681bb3f74a5cbc5215ee17d02615",
+      "session_url": "https://app.devin.ai/sessions/7d69681bb3f74a5cbc5215ee17d02615"
+    },
+    "description": "Turn CSV data into an editorial chart. Map fields, filter and aggregate values, explore bar, line and scatter views, then export PNG or vector PDF.",
+    "result": {
+      "name": "Loom",
+      "tests": [
+        "./scripts/check.sh passed: strict swift-format lint, warnings-as-errors Swift build, 16 XCTest cases and Info.plist validation., ./scripts/build.sh passed: release native .app build and local ad-hoc signing; codesign --verify --deep --strict passed., Native CSV import and mapping verified 16 rows, total 692 and Amsterdam 148; average aggregation verified Amsterdam 74 and total 346., Year = 2025 filtering verified 8 rows, total 422 and Amsterdam 86; line/scatter switching, numeric X mapping and hover inspection passed., Native title/subtitle/theme editing, value toggle, source-table collapse, save/open, reset/undo and quit/relaunch persistence passed., Invalid CSV import preserved the current story; quoted CSV import verified quoted commas, escaped quotes and multiline fields., Final bd55019 native regression verified nonoverlapping scatter labels, separate Barcelona 28 and Strasbourg 32 hover values, legible line values, window resizing and inspector/source-table scrolling., Fresh native PNG and PDF exports opened in Preview: upright 2080\u00d71480 PNG and single-page 1040\u00d7740 vector PDFs with text/paths and zero image objects., Final annotated native recording: H.264, 1600\u00d71200, 59.25 seconds; full decode passed., Final git working tree clean; focused PR updated with final test evidence and durable artifact links."
+      ],
+      "branch": "devin/1789091228-loom",
+      "commit": "bd5501907246874e59269a11fb7bbe06864aaadf",
+      "pr_url": "https://github.com/dabit3/experiments/pull/52",
+      "status": "complete",
+      "summary": "Delivered a polished native SwiftUI/AppKit CSV storytelling studio with validated imports, bar/line/scatter charts, field mapping, aggregation/filtering/sorting, hover inspection, editable editorial presentation, autosave, project save/open, undo/reset and matching PNG/vector PDF exports. PR is open and mergeable. Final app archive, annotated native recording, three screenshots, project, exports and test report are uploaded and attached.",
+      "platform": "macos",
+      "limitations": [
+        "Comprehensive import/error/persistence UI coverage ran on 3cff104; subsequent menu-contrast and label-placement changes received targeted native regression. Final media and exports are from bd55019., App archive is a local Apple Silicon ad-hoc-signed macOS build, not notarized or an App Store release., Bundled datasets are synthetic illustrative data. Line charts use categorical spacing. Other bounded V1 data/rendering limits are documented in the app README., Dense-data label omission was not exhaustively UI-tested; horizontal table overflow was not exercised because tested columns fit., Exports support PNG and vector PDF; SVG is not implemented."
+      ],
+      "session_url": "https://app.devin.ai/sessions/7d69681bb3f74a5cbc5215ee17d02615",
+      "build_passed": true,
+      "app_directory": "native-demos/macos/loom",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/34d69ae6-0df8-45f1-b60e-61d9f8fe4f18/Loom-macOS-arm64-bd55019.zip",
+        "https://app.devin.ai/attachments/081f9b0e-7281-4dc2-9b66-a6e18d7ffb7f/bd55019-Cities.loom",
+        "https://app.devin.ai/attachments/3e655a15-cc47-46a1-8787-77838230cb4f/bd55019-Cities.png",
+        "https://app.devin.ai/attachments/b9b7a02c-f499-46d3-8652-7db48f39b6eb/bd55019-Cities.pdf",
+        "https://app.devin.ai/attachments/e4276981-712a-4c83-940c-6c9c989b16ab/bd55019-Scatter.pdf"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/03741137-e2dc-43b4-83ea-8c00ae3923fc/loom-final-bd55019-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/7d091798-5a10-472b-88b6-11fe514a816b/bd55019-01-scatter.png",
+        "https://app.devin.ai/attachments/4bdd5f13-5158-45a4-9bd4-bcbb12528be0/bd55019-02-line.png",
+        "https://app.devin.ai/attachments/93372f77-d541-4957-9f04-e5cb915ac872/bd55019-03-design.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/28934aa2-f2bb-4db5-ac2e-421f4a3ed1be/final-test-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2, Apple Silicon arm64; Xcode 26.6; Swift 6.3.3; native SwiftUI/AppKit desktop .app; no external dependencies or credentials.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full final scatter screenshot and the revision-labeled native report covering import, chart mapping, filters, error recovery, persistence, PNG and vector PDF; checked the 59.25-second annotated final regression recording and verified PR revision, scoped renderer changes and app-directory isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/7d69681bb3f74a5cbc5215ee17d02615?testRecording=62376428-68a4-41a4-9447-d278a5bafbca"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Keystone",
+      "platform": "macos",
+      "slug": "keystone",
+      "session_id": "9dc52a8bfd7c4216b6226909a4f3bc23",
+      "session_url": "https://app.devin.ai/sessions/9dc52a8bfd7c4216b6226909a4f3bc23"
+    },
+    "description": "Design and analyze a miniature truss bridge. Edit joints and members, inspect stresses and deflection, compare material costs and export an engineering report.",
+    "result": {
+      "name": "Keystone",
+      "tests": [
+        "bash scripts/check.sh passed: strict swift-format lint, 8 XCTest cases, release Swift build, locally ad hoc signed native .app., codesign --verify --deep --strict dist/Keystone.app passed., Logic tests passed: analytic triangle forces/displacement, reaction equilibrium, symmetry, load/area scaling, singular/disconnected structures, example stiffness ordering, invalid model data, serialization/export escaping, undo/redo branching., Native UI verified on final revision: initial Warren geometry-only state; Apply load computes 4.23 mm displacement and 20.0% axial yield utilization; M8 force -55.90 kN and stress -27.95 MPa., Real node drag snapped N7 to (4.5, 3.5), changed displacement from 4.23 to 3.95 mm, and Undo restored baseline., Removing a diagonal displayed UNSTABLE and cleared computed results; banner Undo recovered a stable solution., Thickening members to 25 cm\u00b2 produced 3.38 mm displacement and +20.0% improvement; deflection view showed dashed original geometry and \u00d7100 legend., Native authoring tested: duplicate member rejection, node creation, member connection and undo recovery., Native save/open restored edited geometry, Aluminum material, 25 cm\u00b2 sections and 125 kN load. Quit/relaunch restored the model; Apply load recomputed 11.44 mm and 19.5% yield utilization., Actual HTML/SVG exports contained matching 11.442 mm analysis, 15 members and 9 nodes; SVG parsed and HTML was self-contained., Compact 1120\u00d7720, approximately default and fullscreen layouts passed after fix; both sidebars scrolled, header/footer remained visible and Export label was readable."
+      ],
+      "branch": "devin/1789091267-keystone",
+      "commit": "7b8acdb2707d453d730e2ac9b41b86b235ef83fa",
+      "pr_url": "https://github.com/dabit3/experiments/pull/63",
+      "status": "complete",
+      "summary": "Built and polished Keystone, a native SwiftUI/AppKit bridge-engineering sandbox with editable nodes/members, real linear truss stiffness analysis, stress and deflection views, material/budget controls, undo/redo, examples, local persistence and HTML/SVG exports. Native computer-use testing passed after fixing compact-window clipping. Final annotated recording, three uncropped screenshots, runtime report, saved design, exports and macOS app ZIP delivered. App remains maximized, stable and analyzed.",
+      "platform": "macos",
+      "limitations": [
+        "Educational small-displacement, linear-elastic, axial-only 2D truss model. Excludes buckling, bending, self-weight, joint capacity, dynamics, geometric nonlinearity and design-code checks; yield utilization is not safety certification., Material pricing is illustrative raw-material cost only. Deflection drawing is magnified \u00d7100., Exported HTML/SVG contents and SVG XML were verified; browser rendering was not tested because no browser was installed., Download is a native macOS arm64 .app with local ad hoc signing, not notarized or an App Store release., Undo history, view preferences and comparison reference are session-only; saved geometry, loads, materials and supports persist."
+      ],
+      "session_url": "https://app.devin.ai/sessions/9dc52a8bfd7c4216b6226909a4f3bc23",
+      "build_passed": true,
+      "app_directory": "native-demos/macos/keystone",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/d27a8821-f168-4a5e-b14e-4169cbba3cb6/Keystone-macOS-arm64.app.zip",
+        "https://app.devin.ai/attachments/6d1c57d8-01bb-41ab-b3c4-9e73d87ea461/improved%20span.keystone",
+        "https://app.devin.ai/attachments/7315a19b-9e6f-4c30-a056-518d1f196ffc/Keystone%20Report.html",
+        "https://app.devin.ai/attachments/673e0eda-89e3-4945-9c30-7340e62d03e5/Keystone%20Drawing.svg"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/a8708a80-cd56-44d5-8132-719e299e16ea/keystone-final-7b8acdb-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/b6bec1aa-e01b-49e0-a8b7-7bb3716e20bc/stress-analysis.png",
+        "https://app.devin.ai/attachments/1de70609-e4ca-4b5f-b86e-53456290dde5/improved-deflection.png",
+        "https://app.devin.ai/attachments/e66d1015-9422-4729-ae09-c1801f2d8187/compact-layout.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/83e45432-392d-4655-9951-d1cb097dc68e/runtime-report.md",
+      "ui_tests_passed": true,
+      "native_environment": "Native macOS 26.5.2 (25F84), Apple Silicon arm64; Xcode 26.6 (17F113); Swift 6.3.3. Native desktop .app, no simulator or browser required.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full stress-analysis screenshot and native report covering solver metrics, editing, instability recovery, export and persistence; checked the 104.8-second annotated recording and verified the open PR's revision and directory isolation."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/9dc52a8bfd7c4216b6226909a4f3bc23?testRecording=d2530fe6-e903-449e-a8c3-6adaf4d35403"
+      ]
+    },
+    "review_state": "Ready"
+  },
+  {
+    "app": {
+      "name": "Nightjar",
+      "platform": "macos",
+      "slug": "nightjar",
+      "session_id": "52757d60255345389a32b453a5734ec2",
+      "session_url": "https://app.devin.ai/sessions/52757d60255345389a32b453a5734ec2"
+    },
+    "description": "Compose light for a virtual stage. Aim colored fixtures, record and arrange looks, run timed crossfades and export the cue sheet.",
+    "result": {
+      "name": "Nightjar",
+      "tests": [
+        "b533b6a: ./scripts/check.sh passed strict Swift format lint, eight Swift Testing tests and release compilation., b533b6a: ./scripts/build.sh produced native Nightjar.app; plist lint and strict codesign verification passed., b533b6a: Native UI verified floor aiming, contrasting gel colors, intensity and beam adjustments, real scenery illumination, cue recording/renaming/reordering and Update cue roundtrip., b533b6a: Native UI verified crossfade pause freezes values, resume advances, stop retains light/unlocks controls, and sequence reaches its final endpoint., b533b6a: Default and explicit show/CSV filenames retained single extensions; after relaunch Open/edit/Save updated the same file., b533b6a: Native save/open restored saved data; unsaved title and live look survived quit/relaunch., b533b6a: Actual final show JSON and CSV verified seven cues and 42 fixture rows with matching order, identities, intensity, beam, colors, timing, positions and targets., 729cdbc: Native UI created three contrasting looks and verified rig position, aim height, delete/Undo, malformed-file recovery and minimum-window inspector scrolling; unchanged coverage retained after panel-only patch., Final native demo recorded with annotations on b533b6a; three full uncropped screenshots captured., Native app ZIP passed archive integrity verification. No CI checks configured on the PR."
+      ],
+      "branch": "devin/1789091240-nightjar",
+      "commit": "b533b6af066925690874cfff72b40bfd10f309fd",
+      "pr_url": "https://github.com/dabit3/experiments/pull/59",
+      "status": "complete",
+      "summary": "Completed native SwiftUI/SceneKit lighting desk with six editable fixtures, cinematic stage, cue recording/reordering/updating, timed crossfades, undo, autosave, native show files and genuine CSV export. Native build and UI tests passed. Final annotated recording, three full screenshots, test report, Apple Silicon app archive and real exported show/cue sheet are delivered. PR is open and working tree is clean.",
+      "platform": "macos",
+      "limitations": [
+        "App archive is an ad-hoc-signed Apple Silicon macOS build; not notarized or an App Store release., Haze uses additive translucent cones rather than volumetric scattering; intensity is artistic rather than calibrated lux, and colors interpolate in sRGB., Entirely virtual: no physical DMX, Art-Net or sACN output., One stage, six fixtures and up to 100 cues; sequences play once. Camera/haze/playback position are not restored as show data., Exhaustive shortcuts, custom color picker, timing bounds and maximum cue capacity were not UI tested; frame-time performance was not benchmarked., Rig/aim-height edits, delete/Undo, malformed-file recovery and minimum-window tests passed on729cdbc and were not repeated after the native-panel-only b533b6a change."
+      ],
+      "session_url": "https://app.devin.ai/sessions/52757d60255345389a32b453a5734ec2",
+      "build_passed": true,
+      "app_directory": "native-demos/macos/nightjar",
+      "artifact_urls": [
+        "https://app.devin.ai/attachments/97ab3339-4ad6-41ec-9df3-2b099f12cc92/Nightjar-macOS-arm64-b533b6a.zip",
+        "https://app.devin.ai/attachments/e2be4fc7-07af-4863-837e-f26692cf5d7d/nightjar%20nocturne%20-%20restored.nightjar",
+        "https://app.devin.ai/attachments/a20a13b9-aa1d-4d8f-8fce-b7a84d237f0a/nightjar%20nocturne%20-%20restored%20%E2%80%94%20cue%20sheet.csv"
+      ],
+      "recording_urls": [
+        "https://app.devin.ai/attachments/0b0ae11b-ff46-4dcc-a99d-fb85f3f61ba3/nightjar-final-b533b6a-edited.mp4"
+      ],
+      "screenshot_urls": [
+        "https://app.devin.ai/attachments/dc8d87c1-d693-4f29-acef-c456afc96747/copper-dawn.png",
+        "https://app.devin.ai/attachments/f2942e20-c039-4169-a453-66aac2520aad/orchid-eclipse.png",
+        "https://app.devin.ai/attachments/f41f210d-a6a1-4422-8823-0b39dd4e8d54/glacial-finale.png"
+      ],
+      "test_report_url": "https://app.devin.ai/attachments/c9f78c8f-4fb6-47c9-b26f-390f65ee6754/TEST-REPORT.md",
+      "ui_tests_passed": true,
+      "native_environment": "macOS 26.5.2 (25F84), Apple Silicon arm64, Xcode 26.6 (17F113), Swift 6.3.3; deployment target macOS 14.",
+      "_review": {
+        "accepted": true,
+        "notes": "Parent reviewed the full native stage screenshot, revision-labeled lighting/cue/crossfade/file-panel/persistence report and matching JSON/CSV validation; checked the 81.4-second annotated final recording and verified PR revision/isolation. This is a virtual lighting studio with no physical lighting output."
+      },
+      "annotated_recording_urls": [
+        "https://app.devin.ai/sessions/52757d60255345389a32b453a5734ec2?testRecording=3be13896-d274-4e53-8945-8fc994461d1c"
+      ]
+    },
+    "review_state": "Ready"
+  }
+]
