@@ -1,0 +1,11 @@
+[
+  {"scene":"opening","asset":"BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png","outputSeconds":[0,4],"sourceSeconds":null,"treatment":"Supplied transparent black logo, proportional contain.","requiredLabel":null},
+  {"scene":"closing","asset":"BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png","outputSeconds":[35,40],"sourceSeconds":null,"treatment":"Supplied transparent black logo above the crisp feature-name lockup, proportional contain.","requiredLabel":null},
+  {"scene":"all","asset":"NBInternationalPro-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Original Devin website font, loaded through shared BrandFonts before frame rendering; no font binary committed.","requiredLabel":null},
+  {"scene":"environment","asset":"devin-web-4.png","outputSeconds":[4,9],"sourceSeconds":null,"treatment":"Full original screenshot, contained without crop; title plane shrinks and reveals a larger composed still over 26 frames.","requiredLabel":null},
+  {"scene":"agent","asset":"agent-selector-cloud.mp4","outputSeconds":[9,13],"sourceSeconds":[0,4],"treatment":"Contained 1× video in a fixed viewport; complete action caption settles in reserved header space. Shows agent selection only.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-14.png","outputSeconds":[13,17.5],"sourceSeconds":null,"treatment":"Full contained still; entire source report retained including 8 passed, 0 failed, 1 untested; no internal UI motion.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-18.png","outputSeconds":[17.5,22],"sourceSeconds":null,"treatment":"Clean aligned cut to full contained still from a separate session. Large Dispatch final-review report preserved.","requiredLabel":null},
+  {"scene":"webQa","asset":"devin-testing-2.mp4","outputSeconds":[22,29],"sourceSeconds":[0,7],"treatment":"Contained 1× source in a fixed viewport. Shared video component reserves an outside footer for persistent disclosure.","requiredLabel":"Web QA example"},
+  {"scene":"ipad","asset":"devin-web-19.png","outputSeconds":[29,35],"sourceSeconds":null,"treatment":"Full contained iPad still with Terra Table acceptance report, then stable feature-name end card. No simulated app behavior.","requiredLabel":null}
+]

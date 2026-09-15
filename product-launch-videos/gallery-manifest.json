@@ -1,0 +1,1006 @@
+{
+  "schemaVersion": 1,
+  "title": "Devin on Mac \u2014 20 launch directions",
+  "foundationCommit": "81abbc4d7f9ee2fefaa8467c940e465b61439ec4",
+  "sourceBundleUrl": "https://app.devin.ai/attachments/d758018d-f527-41bd-acfc-2b07b85e3a28/shared-assets.zip",
+  "expected": {
+    "count": 20,
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "durationSeconds": 40,
+    "frames": 1200
+  },
+  "notes": [
+    "Separate session examples form a launch montage; they do not establish causality.",
+    "Native iPhone/iPad scenes are authentic stills. The two recordings show agent selection and Web QA at 1x.",
+    "Source media, original fonts and final renders remain outside git. Attachment URLs require Devin authentication.",
+    "Producer checks are reported by the independent sessions; collection checks are independently measured."
+  ],
+  "templates": [
+    {
+      "number": 1,
+      "name": "Swiss Grid in Motion",
+      "slug": "01-swiss-grid-in-motion",
+      "description": "Asymmetric grid regions expand along shared alignment lines; rectangular masks reveal complete phrases.",
+      "branch": "devin/1789432053-swiss-grid-in-motion",
+      "commit": "6a9c7ffd3476a5a116096be52100f66bf0b0c930",
+      "video_url": "https://app.devin.ai/attachments/6643f595-c75e-44d7-9e41-5566a95ccf08/01-swiss-grid-in-motion.mp4",
+      "poster_url": "https://app.devin.ai/attachments/df3f39ad-682e-4b6a-bbdf-277829e5a549/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/99ec94e1-bef5-4a4b-ae3e-0bca9b0e7354/contact-sheet.png",
+      "producerChecks": "Default full render, full decode, edited 12-second full render, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/01-swiss-grid-in-motion/",
+      "local": {
+        "video": "renders/01-swiss-grid-in-motion/sample.mp4",
+        "poster": "renders/01-swiss-grid-in-motion/poster.png",
+        "contact_sheet": "renders/01-swiss-grid-in-motion/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 9 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 2674714,
+            "sha256": "c8bb139a0543729b56b09e1a2108c1683493d5b733f2a0eb8816bc3fd790072a"
+          },
+          "poster": {
+            "bytes": 1219523,
+            "sha256": "e6784dabe04efe19fd29086ee3a2b79471125a349a830022d112335ed0209d90",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 442851,
+            "sha256": "7f55446a7598d8f464337d06d89457e99612240efa2240b8bbee4be8fc5cb40e",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 2,
+      "name": "Precision Industrial Product Film",
+      "slug": "02-precision-industrial-product-film",
+      "description": "Deliberate detail-to-wide framing, controlled studio lighting and a flat display during each demonstration.",
+      "branch": "devin/1789432054-precision-industrial-film",
+      "commit": "e0bf619688bf08bc4ca5954c94432c643ba77223",
+      "video_url": "https://app.devin.ai/attachments/0152367c-edd2-4aa9-b7e2-9f28be1c5b84/02-precision-industrial-product-film.mp4",
+      "poster_url": "https://app.devin.ai/attachments/d8a1827e-7968-4ab3-a9f6-1390f6028cc1/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/bbb4e468-c997-4b43-9434-3490de6880b0/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 16-second full render/decode, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/02-precision-industrial-product-film/",
+      "local": {
+        "video": "renders/02-precision-industrial-product-film/sample.mp4",
+        "poster": "renders/02-precision-industrial-product-film/poster.png",
+        "contact_sheet": "renders/02-precision-industrial-product-film/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 3285812,
+            "sha256": "173aac6f8e20d4013e456efc2398ac190d76fc149b4315e33b41e7fbd173eb77"
+          },
+          "poster": {
+            "bytes": 773677,
+            "sha256": "b895ecd4a83fd5998edc641e93530f6c896a3e35116471fcb1ea2afb1898f263",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 475272,
+            "sha256": "99f77439c0c209cb2febe70c0290e7e2bf26b2db31a831a4142d305816808c99",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 3,
+      "name": "Architectural Section Drawing",
+      "slug": "03-architectural-section-drawing",
+      "description": "Orthographic planes, sliding sections and precise leader lines organize a measured presentation.",
+      "branch": "devin/1789432068-architectural-section",
+      "commit": "40190c537fa65143be29b25985c8a304c1b2fef9",
+      "video_url": "https://app.devin.ai/attachments/fe39fca5-85c7-4034-9922-f451a5dab892/03-architectural-section-drawing.mp4",
+      "poster_url": "https://app.devin.ai/attachments/b4dbcba1-877e-43c7-87e2-5433d7459dbe/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/d903e0d4-8162-44c8-a145-a50444fafb5b/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 20-second full render, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/03-architectural-section-drawing/",
+      "local": {
+        "video": "renders/03-architectural-section-drawing/sample.mp4",
+        "poster": "renders/03-architectural-section-drawing/poster.png",
+        "contact_sheet": "renders/03-architectural-section-drawing/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 4272542,
+            "sha256": "dcc3a875ad749b5ffe968c9e4f2afbd838f8d3ce58be5f8858fcc9b8f33fea05"
+          },
+          "poster": {
+            "bytes": 861930,
+            "sha256": "5075e8fc3409ff330b7808fcb3b0d182454edef31cb34b5b7989ac14c05057e9",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 575752,
+            "sha256": "759253c1e7d1fe669b2a4ca3c090f290f95ae81b9dc5ebdc15b035d219f8bbcf",
+            "width": 1960,
+            "height": 1120
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 4,
+      "name": "Luxury Editorial Magazine",
+      "slug": "04-luxury-editorial-magazine",
+      "description": "Confident type scale, asymmetric spreads and aligned image replacements create an editorial rhythm.",
+      "branch": "devin/1789432067-luxury-editorial-magazine",
+      "commit": "6cf3d27124a057f2f6b5605e69b9d30adb96c000",
+      "video_url": "https://app.devin.ai/attachments/3e6ad6fc-3139-482a-8f31-55ebc14ecff3/04-luxury-editorial-magazine.mp4",
+      "poster_url": "https://app.devin.ai/attachments/85a614ff-3817-47a8-8220-1170cded1e77/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/5fafbca8-d8a2-4a09-8080-deaa29761a73/contact-sheet.png",
+      "producerChecks": "Default full render, edited 28-second full render, ffprobe/frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/04-luxury-editorial-magazine/",
+      "local": {
+        "video": "renders/04-luxury-editorial-magazine/sample.mp4",
+        "poster": "renders/04-luxury-editorial-magazine/poster.png",
+        "contact_sheet": "renders/04-luxury-editorial-magazine/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 1736654,
+            "sha256": "4c8dcee9ccd424414e89ef8cb15bf4bf3a6114b4aff30d6bd85edfbd9bcee940"
+          },
+          "poster": {
+            "bytes": 234152,
+            "sha256": "2791f50489ba36da08929b959764d2a9b7b4408891fbe70b903a70fc463fccb9",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 448907,
+            "sha256": "0024cdddaa77b8c52ab477d3aa687ad252d33824792e1c465eb9c18673ed9804",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 5,
+      "name": "Kinetic Typography Title Sequence",
+      "slug": "05-kinetic-typography-title-sequence",
+      "description": "Complete phrases establish frames, move into the margin and become still captions beside the product.",
+      "branch": "devin/1789432043-05-kinetic-typography",
+      "commit": "096ba3f1825cfa31248923f30af0a84f3d664076",
+      "video_url": "https://app.devin.ai/attachments/5ec184bc-8c46-458a-8cba-bf9a48ce9c2d/05-kinetic-typography-title-sequence.mp4",
+      "poster_url": "https://app.devin.ai/attachments/a77a5e0b-ce19-42f0-a838-c6b73098188e/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/b11075e5-b08f-43f4-b073-74aac8af7a78/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 15-second full render, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/05-kinetic-typography-title-sequence/",
+      "local": {
+        "video": "renders/05-kinetic-typography-title-sequence/sample.mp4",
+        "poster": "renders/05-kinetic-typography-title-sequence/poster.png",
+        "contact_sheet": "renders/05-kinetic-typography-title-sequence/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 10 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 5139904,
+            "sha256": "186e96a8d51a14ed4714b3d6427ff8de37204936cecc60b4168db37c03ffe78a"
+          },
+          "poster": {
+            "bytes": 1316039,
+            "sha256": "6d7b1cb45b2701f018bef591ad85f55254c705c8edb6013cde4492a91b04a079",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 505026,
+            "sha256": "f0b49c500927809520f7eda8bb747cf5acfa2b6920a20563186435d717f8a5bf",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 6,
+      "name": "Contemporary Museum Gallery",
+      "slug": "06-contemporary-museum-gallery",
+      "description": "Quiet exhibit surfaces, concise labels and short lateral moves give each product example its own space.",
+      "branch": "devin/1789432051-museum-gallery",
+      "commit": "bc2cabf54bfa40ea705f541ad210395b1356f95d",
+      "video_url": "https://app.devin.ai/attachments/aef85ee5-234d-4769-8688-f017ddfa6c5c/06-contemporary-museum-gallery.mp4",
+      "poster_url": "https://app.devin.ai/attachments/3c319c35-05c6-45de-85c3-b7bf2bccf9c7/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/4e406743-7c59-4018-8978-ee46eb37ef93/contact-sheet.png",
+      "producerChecks": "Default full render, edited 38-second full render, encoded frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/06-contemporary-museum-gallery/",
+      "local": {
+        "video": "renders/06-contemporary-museum-gallery/sample.mp4",
+        "poster": "renders/06-contemporary-museum-gallery/poster.png",
+        "contact_sheet": "renders/06-contemporary-museum-gallery/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 5502863,
+            "sha256": "1f147190dd02af71f401e983fa6b43fa19275dece7ea59fd137734df117c8089"
+          },
+          "poster": {
+            "bytes": 1121239,
+            "sha256": "ed6f0077cbfdef56c06d9ab7a0fc34d4dcd7be505a6990c46e97de2fce048622",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 752414,
+            "sha256": "1f8482a3c3a59b3548f8ce26a7d4f586c037a4f3292f3aef226aba6933fd47a3",
+            "width": 1960,
+            "height": 1120
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 7,
+      "name": "Mission Control",
+      "slug": "07-mission-control",
+      "description": "Fixed display bays keep context in place while one dominant view holds the active demonstration.",
+      "branch": "devin/1789432063-mission-control",
+      "commit": "a5e1ad68b56d513c22414af99fcd6ba2216b13a5",
+      "video_url": "https://app.devin.ai/attachments/e8d39826-d0c8-4835-b92d-77397e5a56eb/07-mission-control.mp4",
+      "poster_url": "https://app.devin.ai/attachments/636021ea-8d9f-49d9-8ffb-50c392862e45/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/d66633a6-8245-44e5-a276-1f9eb203f6aa/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 16-second full render, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/07-mission-control/",
+      "local": {
+        "video": "renders/07-mission-control/sample.mp4",
+        "poster": "renders/07-mission-control/poster.png",
+        "contact_sheet": "renders/07-mission-control/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 2219493,
+            "sha256": "4e7ec52adf96508feb05c975e00acdfefcb05951a5203af88d2129d80688d91c"
+          },
+          "poster": {
+            "bytes": 860848,
+            "sha256": "da5054ca005dbde65449d0d75754eed55698c9061daf748ab98785540d8c7656",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 392500,
+            "sha256": "fcd48fde36f9f86cbb12486485d30be189ab46192b6783825c48c0e9e86c19b8",
+            "width": 1960,
+            "height": 564
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 8,
+      "name": "Transit Wayfinding",
+      "slug": "08-transit-wayfinding",
+      "description": "A simple labeled route advances between stations that expand into large, readable product views.",
+      "branch": "devin/1789432058-08-transit-wayfinding",
+      "commit": "f09647b1b5ff881d6aaf2fa41558356da1f3ca84",
+      "video_url": "https://app.devin.ai/attachments/f4e3889f-5be7-45f9-b05b-f223bf59d9ad/08-transit-wayfinding.mp4",
+      "poster_url": "https://app.devin.ai/attachments/2bb382ad-afa1-414b-ad85-c56aecd7345b/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/f34afbbe-c1f0-4be2-9f9c-6395d6930700/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 13-second full render, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/08-transit-wayfinding/",
+      "local": {
+        "video": "renders/08-transit-wayfinding/sample.mp4",
+        "poster": "renders/08-transit-wayfinding/poster.png",
+        "contact_sheet": "renders/08-transit-wayfinding/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 1747364,
+            "sha256": "34579d2d49df1c3d3af9c26e24ea5d65af5eb04c93eb70f46f947f4277fdc727"
+          },
+          "poster": {
+            "bytes": 947270,
+            "sha256": "b52d6ff70a23cdb853ca9d5db788897a1be1ce65b8b01dde2ad18e6eb11ab5c6",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 488569,
+            "sha256": "2a7f8b05954f43b6d0f5ead1455216b61b67a43370df22951815cecc8ffd806c",
+            "width": 1960,
+            "height": 1120
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 9,
+      "name": "Optical Laboratory",
+      "slug": "09-optical-laboratory",
+      "description": "One inspection window enlarges a real source region while preserving the surrounding interface context.",
+      "branch": "devin/1789432051-optical-laboratory",
+      "commit": "1553cb5dc7146466bfb315faa7c1c569a24a38be",
+      "video_url": "https://app.devin.ai/attachments/aae29ebe-51bf-4c56-a673-ae9b14d8068d/09-optical-laboratory.mp4",
+      "poster_url": "https://app.devin.ai/attachments/06ed70bc-57c9-4e42-9729-374ca6aadee2/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/ab96ec19-e881-451e-ab72-9205f3851b9e/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 11-second full render, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/09-optical-laboratory/",
+      "local": {
+        "video": "renders/09-optical-laboratory/sample.mp4",
+        "poster": "renders/09-optical-laboratory/poster.png",
+        "contact_sheet": "renders/09-optical-laboratory/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 7 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 6514273,
+            "sha256": "4725cba90681cdc91534d45a79ed39fe6cdfad1b8d7d76c55fcc930297352cc9"
+          },
+          "poster": {
+            "bytes": 151282,
+            "sha256": "863a91543b7ea7b703f23fdf160e7640f02e459b5ffa58afdfb88a6dc05bbe36",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 473147,
+            "sha256": "c7a44be7bf6fcf59e3e9b4b5f687597897d04c9655841b136dcdeb14e1ad313e",
+            "width": 1960,
+            "height": 1120
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 10,
+      "name": "Cinema Contact Sheet",
+      "slug": "10-cinema-contact-sheet",
+      "description": "Genuine indexed frames expand from a contact sheet into large demonstrations with a quiet chapter marker.",
+      "branch": "devin/1789432047-cinema-contact-sheet",
+      "commit": "55a6deaf7b268bb2356352e6dad6b48a904b0ccb",
+      "video_url": "https://app.devin.ai/attachments/a63b2b64-74ac-467a-a019-01b6925f7662/10-cinema-contact-sheet.mp4",
+      "poster_url": "https://app.devin.ai/attachments/1c969d38-9d65-4357-a62b-171a09eb923c/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/9cca559d-9213-4d98-adad-10bab654df72/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 27-second full render/decode, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/10-cinema-contact-sheet/",
+      "local": {
+        "video": "renders/10-cinema-contact-sheet/sample.mp4",
+        "poster": "renders/10-cinema-contact-sheet/poster.png",
+        "contact_sheet": "renders/10-cinema-contact-sheet/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 10 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 7437981,
+            "sha256": "f5a627c9daa2d2cc562977236e8919e20c7841c00b7556ccb0015e685132c3c0"
+          },
+          "poster": {
+            "bytes": 650181,
+            "sha256": "ba98e7e96c7d55fa8761f40f99c916e999870136e7264fedac951d63e7da7d86",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 861822,
+            "sha256": "a67e777b59cc52282dbcdf7f86a658fff24778ee44221e7e0d154bb643bd5cee",
+            "width": 1960,
+            "height": 1120
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 11,
+      "name": "Precision Paper Engineering",
+      "slug": "11-precision-paper-engineering",
+      "description": "Matte sleeves and measured dividers uncover an undistorted interface, then settle into flat framing.",
+      "branch": "devin/1789432058-precision-paper-engineering",
+      "commit": "3e1480cdec78ba20895e0b69bce9085af0055bea",
+      "video_url": "https://app.devin.ai/attachments/a67ddb82-d3cc-48ac-b220-cf8cae4efcf2/11-precision-paper-engineering.mp4",
+      "poster_url": "https://app.devin.ai/attachments/8980714a-4df4-425c-923d-cc419ffd65e2/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/ce0a14e4-e197-4f8e-ad0d-8789f9246336/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 12-second full render, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/11-precision-paper-engineering/",
+      "local": {
+        "video": "renders/11-precision-paper-engineering/sample.mp4",
+        "poster": "renders/11-precision-paper-engineering/poster.png",
+        "contact_sheet": "renders/11-precision-paper-engineering/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 7 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 1693131,
+            "sha256": "2c6fd740ba9630a83695dc863715cf2865f488f31ee2f51947b7fc2e00875a0d"
+          },
+          "poster": {
+            "bytes": 164421,
+            "sha256": "b6abfe5096723165063b8340b8258a73a9ca247ab8c6062a995da83673ae848c",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 442943,
+            "sha256": "1dfd2e0d82d051c2b093aa2e8ade554f87a3e0cc2269738779fd530d6bbbddbf",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 12,
+      "name": "Musical Score",
+      "slug": "12-musical-score",
+      "description": "Editorial tracks and restrained event cues establish narrative progression beneath the product.",
+      "branch": "devin/1789432046-12-musical-score",
+      "commit": "fdfac516e9780ffd424bf9ae82bc2fc5b724603f",
+      "video_url": "https://app.devin.ai/attachments/8d417afe-bdde-4bce-887c-81205da5a27c/12-musical-score.mp4",
+      "poster_url": "https://app.devin.ai/attachments/2795a400-e51e-4b45-a718-3a5339d40eed/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/87611fe4-aedf-4baf-a534-c21dc90bd4c0/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 12-second full render/decode, frame inspection, lint/types/tests/build passed.",
+      "limitations": "Optional sound accents were not exercised; the shared renderer produces silent output.",
+      "sourcePath": "product-launch-videos/src/templates/12-musical-score/",
+      "local": {
+        "video": "renders/12-musical-score/sample.mp4",
+        "poster": "renders/12-musical-score/poster.png",
+        "contact_sheet": "renders/12-musical-score/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 2045019,
+            "sha256": "43f5af881cd331887fcda54af348976ee0cf02ccb340043d0d0f1338afa1d0c4"
+          },
+          "poster": {
+            "bytes": 833574,
+            "sha256": "7df6ca99069db2cba1920fa8c8670c57678cc17c1762e4c1f57220042d9f74b8",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 402195,
+            "sha256": "a854e9070100d7a4d2ab7db624eec3821b3726ad842ca84bc324a62e1b1e8e8b",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 13,
+      "name": "One Continuous Camera Journey",
+      "slug": "13-one-continuous-camera-journey",
+      "description": "A continuous spatial path connects short travels with stationary, front-facing reading stops.",
+      "branch": "devin/1789432047-continuous-camera",
+      "commit": "8d8ea5d92cede163277b611b809b91bdb9dc1573",
+      "video_url": "https://app.devin.ai/attachments/09b15f7b-50ff-410d-9d99-c0da85594a06/13-one-continuous-camera-journey.mp4",
+      "poster_url": "https://app.devin.ai/attachments/475c87c8-655b-4057-9ef0-0b38a4aaf56a/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/47e62571-8cdc-4f0b-a0dd-adb7482706f6/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 43-second metadata and two stills, frame inspection, lint/types/tests/build passed.",
+      "limitations": "The alternate configuration was checked through metadata/stills, not a second full video.",
+      "sourcePath": "product-launch-videos/src/templates/13-one-continuous-camera-journey/",
+      "local": {
+        "video": "renders/13-one-continuous-camera-journey/sample.mp4",
+        "poster": "renders/13-one-continuous-camera-journey/poster.png",
+        "contact_sheet": "renders/13-one-continuous-camera-journey/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 10 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 5139314,
+            "sha256": "e0afad106a544dd76656ab9b743ae940aa5ce11a05c0999ce1ab5df5e8424e21"
+          },
+          "poster": {
+            "bytes": 1148322,
+            "sha256": "c9e7b84681f07d654b2d2b858e956be7f323bf313421c6d2a3a20cd3a102fa27",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 690503,
+            "sha256": "a76532f8908bbae660128f62a346ff4d5006f45dab9b181a8374ed1dbd37f72b",
+            "width": 1960,
+            "height": 1120
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 14,
+      "name": "Cause-and-Effect Diptych",
+      "slug": "14-cause-and-effect-diptych",
+      "description": "A measured two-panel frame changes its divider ratio only around relationships supported by a source.",
+      "branch": "devin/1789432063-cause-effect-diptych",
+      "commit": "951d816ba554236b6260dd8b49554c1c51de41b4",
+      "video_url": "https://app.devin.ai/attachments/608d4e43-89c8-413f-b064-8ba40c23b5ba/14-cause-and-effect-diptych.mp4",
+      "poster_url": "https://app.devin.ai/attachments/022b5a35-e611-4bcb-ad3b-6386e8d8160c/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/6667cbe2-53d5-4828-adf1-a289d085e72b/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 18-second full render, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/14-cause-and-effect-diptych/",
+      "local": {
+        "video": "renders/14-cause-and-effect-diptych/sample.mp4",
+        "poster": "renders/14-cause-and-effect-diptych/poster.png",
+        "contact_sheet": "renders/14-cause-and-effect-diptych/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 6128012,
+            "sha256": "f2e8d31b48b062c7ac3f11b42c001c014c4dc0ade8be01e7eede6850967b3d5f"
+          },
+          "poster": {
+            "bytes": 755734,
+            "sha256": "2fe9a9e1d03b6693e2ff1301aa6fa390626901b9ebf1a251464e1ec4947e8242",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 397820,
+            "sha256": "9ef9120cfed82c3b427a2501e07d58dd0c5e1948f0330ba6707fc5da9be24083",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 15,
+      "name": "Terminal-First Cinema",
+      "slug": "15-terminal-first-cinema",
+      "description": "An editorial caret and complete lines introduce product views without fabricated commands or logs.",
+      "branch": "devin/1789432068-terminal-first-cinema",
+      "commit": "53c3cd350ad26d1b0277fc7ff6055e92c97d3aab",
+      "video_url": "https://app.devin.ai/attachments/93846f9f-0ec3-4eaf-be13-233ef15c52ab/15-terminal-first-cinema.mp4",
+      "poster_url": "https://app.devin.ai/attachments/b9dffd6f-2d30-4e54-b09c-b6ce068324f6/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/05f1b382-3118-4d0b-917e-537d6c8ef132/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 11-second full render/decode, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/15-terminal-first-cinema/",
+      "local": {
+        "video": "renders/15-terminal-first-cinema/sample.mp4",
+        "poster": "renders/15-terminal-first-cinema/poster.png",
+        "contact_sheet": "renders/15-terminal-first-cinema/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 10 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 1797994,
+            "sha256": "5c2cfc115ea245a0987c09b4930c50e97e0f4f22851be46f414105f6b998ad3f"
+          },
+          "poster": {
+            "bytes": 1015897,
+            "sha256": "11692bd659c597bd8c2e207ef7b6883180ad260c8f43c22ff0fb4e2b3f4d406a",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 438537,
+            "sha256": "ba9cfb910c303554fede25ec254883b04755859d2a08012ce4cc3f9d866aec4e",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 16,
+      "name": "Modernist Motion Mechanics",
+      "slug": "16-modernist-motion-mechanics",
+      "description": "A small vocabulary of rectangles, lines and tiles moves precisely into stable product frames.",
+      "branch": "devin/1789432050-modernist-motion-mechanics",
+      "commit": "02c1d0ce17c2184c63461b5bc2cd3880122999ef",
+      "video_url": "https://app.devin.ai/attachments/eca7e40c-464f-468f-8712-33bd32d416c8/16-modernist-motion-mechanics.mp4",
+      "poster_url": "https://app.devin.ai/attachments/f48d411e-e451-479d-8116-a695ad51a738/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/3c7281bc-acbb-4f9c-a450-09897ee12b24/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 12-second full render/decode, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/16-modernist-motion-mechanics/",
+      "local": {
+        "video": "renders/16-modernist-motion-mechanics/sample.mp4",
+        "poster": "renders/16-modernist-motion-mechanics/poster.png",
+        "contact_sheet": "renders/16-modernist-motion-mechanics/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 2693979,
+            "sha256": "4eed41f5c097e8279bf5026cf91e7bc0f0141fbb2f9b444439a50b9ccf1342b7"
+          },
+          "poster": {
+            "bytes": 914017,
+            "sha256": "4b60f1a170cf527d305340f5688bf3864b671e3889a575c620cd0723bb3d4529",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 506886,
+            "sha256": "de53bd255792e110c4118c2f1b297faca3f349e96e17e15112edd725aba94005",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 17,
+      "name": "Cinematic Noir",
+      "slug": "17-cinematic-noir",
+      "description": "Approved dark surfaces and precise shutter reveals alternate with fully visible, unmodified product holds.",
+      "branch": "devin/1789432051-cinematic-noir",
+      "commit": "5db9a919a2f563253c5136d8fd5fd403fcf4385c",
+      "video_url": "https://app.devin.ai/attachments/6000395d-3311-49e0-8d3a-2f0313b5c5db/17-cinematic-noir.mp4",
+      "poster_url": "https://app.devin.ai/attachments/41b661ab-42a2-4851-8bbc-42c01c3a18ba/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/27f4439e-51f1-461b-903d-1b5985a77c36/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 41.5-second metadata and one still, frame inspection, lint/types/tests/build passed.",
+      "limitations": "The alternate configuration was checked through metadata/a still, not a second full video.",
+      "sourcePath": "product-launch-videos/src/templates/17-cinematic-noir/",
+      "local": {
+        "video": "renders/17-cinematic-noir/sample.mp4",
+        "poster": "renders/17-cinematic-noir/poster.png",
+        "contact_sheet": "renders/17-cinematic-noir/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 9 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 1838732,
+            "sha256": "70e43a4e250492c56ddc98598ef117ff949a732d1bfb3729c6501bb030e1b7ec"
+          },
+          "poster": {
+            "bytes": 577915,
+            "sha256": "1d6f2b403025dd2c9b87cd895c10dd4151815d23e0b52b58c439788fe37e0fa4",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 405774,
+            "sha256": "785c4132c2343ccb15685f8ecaf1c999f91a0717dd9d1f623a9094ec085ca760",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 18,
+      "name": "Premium Broadcast Package",
+      "slug": "18-premium-broadcast-package",
+      "description": "Modular segments, restrained wipes and reserved lower thirds give each action a clear headline.",
+      "branch": "devin/1789432046-premium-broadcast-package",
+      "commit": "1d5ee7918d365f4402693691cf1da176312138e1",
+      "video_url": "https://app.devin.ai/attachments/8f5cba9d-790f-46a9-9c8f-dd5be9a93d89/18-premium-broadcast-package.mp4",
+      "poster_url": "https://app.devin.ai/attachments/fdee993a-b4af-437f-a7af-98535c5163be/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/3ea76a74-1044-417f-b424-6e793315402e/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 10-second full render, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/18-premium-broadcast-package/",
+      "local": {
+        "video": "renders/18-premium-broadcast-package/sample.mp4",
+        "poster": "renders/18-premium-broadcast-package/poster.png",
+        "contact_sheet": "renders/18-premium-broadcast-package/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 1458317,
+            "sha256": "d123ba081c9d22ed10050dcb06145eb5f79f7f587fbbb69c2329da8f523ef6c1"
+          },
+          "poster": {
+            "bytes": 125381,
+            "sha256": "6d09bc607fa95d00e5ae813f92839e510bf7dcf5b9bf0e6a2e0acb49ef548d5e",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 365647,
+            "sha256": "feb7c5413dbf207e9eff61352ade7d284c4b8c5b7baa6453f6d13c4bc6bef093",
+            "width": 1960,
+            "height": 1120
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 19,
+      "name": "Graphic Storyboard",
+      "slug": "19-graphic-storyboard",
+      "description": "Sequential panels and moving gutters open one readable active view while prior panels recede.",
+      "branch": "devin/1789432047-19-graphic-storyboard",
+      "commit": "053a4091ec0382f89eb86ff4b80072e00e6ad18f",
+      "video_url": "https://app.devin.ai/attachments/73288079-fc89-46e2-b105-b233cf1e8276/19-graphic-storyboard.mp4",
+      "poster_url": "https://app.devin.ai/attachments/762a818b-08e0-4dc2-8a0d-b9bf6ce32614/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/734dc207-9c9e-478a-9f02-2ffbbd5e7757/contact-sheet.png",
+      "producerChecks": "Default full render, edited 12-second full render, encoded frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/19-graphic-storyboard/",
+      "local": {
+        "video": "renders/19-graphic-storyboard/sample.mp4",
+        "poster": "renders/19-graphic-storyboard/poster.png",
+        "contact_sheet": "renders/19-graphic-storyboard/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 8 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 3472346,
+            "sha256": "7c331aeab6f50f135fde5ccd8f03396600d8dbe1e8e13e99e95f3a6221de3d60"
+          },
+          "poster": {
+            "bytes": 125267,
+            "sha256": "04853d55d1db6874fe34fd36f4e0510bfb9108a720c345dc22b86599c732a728",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 450539,
+            "sha256": "d00c05bd8d8d2a208bfa8bd65eb011554539ff07b4d880ac3cebaa883fdc81f9",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    },
+    {
+      "number": 20,
+      "name": "Pure Product Demonstration",
+      "slug": "20-pure-product-demonstration",
+      "description": "Minimal framing, exact source edits and restrained crops keep the genuine product dominant.",
+      "branch": "devin/1789432049-pure-product-demonstration",
+      "commit": "2e2b27f3d8757e3c020ce798a68d6224f2d54b28",
+      "video_url": "https://app.devin.ai/attachments/239adaae-bd0e-415c-9483-bec7c4504d47/20-pure-product-demonstration.mp4",
+      "poster_url": "https://app.devin.ai/attachments/3935c590-74e5-4920-a644-88ae409c5805/poster.png",
+      "contact_sheet_url": "https://app.devin.ai/attachments/619f851d-8886-4c8b-a7c5-a0dec141be1e/contact-sheet.png",
+      "producerChecks": "Default full render/decode, edited 13-second full render/decode, frame inspection, lint/types/tests/build passed.",
+      "sourcePath": "product-launch-videos/src/templates/20-pure-product-demonstration/",
+      "local": {
+        "video": "renders/20-pure-product-demonstration/sample.mp4",
+        "poster": "renders/20-pure-product-demonstration/poster.png",
+        "contact_sheet": "renders/20-pure-product-demonstration/contact-sheet.png"
+      },
+      "checks": {
+        "source": "PASS: 10 files identical to producer commit",
+        "video": {
+          "codec": "h264",
+          "width": 1920,
+          "height": 1080,
+          "fps": "30/1",
+          "frames": 1200,
+          "durationSeconds": 40.0
+        },
+        "decode": "PASS: complete MP4 decoded without errors",
+        "artifacts": {
+          "video": {
+            "bytes": 1761136,
+            "sha256": "456e151b7861b4d2d2021781f429b0c7f1fdeb7b3b148c603eb14f893c8a4044"
+          },
+          "poster": {
+            "bytes": 593809,
+            "sha256": "8c0d669c6025c9083fbf9fb35d8f96f9685b660c61f06e3580b01f885757cfdd",
+            "width": 1920,
+            "height": 1080
+          },
+          "contact_sheet": {
+            "bytes": 477937,
+            "sha256": "496d81ae2d2261ad96d4ea8b7e346562c879ee4bc71c6a9581ca10d5f8085139",
+            "width": 1960,
+            "height": 842
+          }
+        }
+      },
+      "status": "complete"
+    }
+  ],
+  "completedCount": 20
+}

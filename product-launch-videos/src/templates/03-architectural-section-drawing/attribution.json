@@ -1,0 +1,18 @@
+[
+  {"scene":"opening","asset":"BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png","outputSeconds":[0,4],"sourceSeconds":null,"treatment":"Original black transparent lockup, contained proportionally on canvas.","requiredLabel":null},
+  {"scene":"opening","asset":"devin-web-19.png","outputSeconds":[0,4],"sourceSeconds":null,"treatment":"Back orthographic overview plane, full-image contain. Editorial montage; enlarged later at 29 seconds.","requiredLabel":null},
+  {"scene":"opening","asset":"devin-web-14.png","outputSeconds":[0,4],"sourceSeconds":null,"treatment":"Middle orthographic overview plane, full-image contain. Enlarged later with report intact.","requiredLabel":null},
+  {"scene":"opening","asset":"devin-web-4.png","outputSeconds":[0,4],"sourceSeconds":null,"treatment":"Front orthographic plane. Source-pixel crop x550 y450 width1900 height950 contains composer and complete environment menu.","requiredLabel":null},
+  {"scene":"environment","asset":"devin-web-4.png","outputSeconds":[4,9],"sourceSeconds":null,"treatment":"Short planar expansion to a fixed contained crop: x550 y450 width1900 height950. Leader ends at menu bottom x945 y1313 then fades.","requiredLabel":null},
+  {"scene":"agent","asset":"agent-selector-cloud.mp4","outputSeconds":[9,13],"sourceSeconds":[0,4],"treatment":"Full-source contain at 1x, no obscuring reveal, fixed caption and editorial framing outside controls.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-14.png","outputSeconds":[13,17.5],"sourceSeconds":null,"treatment":"Complete contained still. 8 passed, 0 failed, 1 untested preserved. No internal state animation.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-18.png","outputSeconds":[17.5,22],"sourceSeconds":null,"treatment":"Complete contained still, direct cut to separate Large Dispatch example. Report preserved.","requiredLabel":null},
+  {"scene":"webQa","asset":"devin-testing-2.mp4","outputSeconds":[22,29],"sourceSeconds":[0,7],"treatment":"Complete contained 1x recording; fixed caption above and persistent separate black label footer below source.","requiredLabel":"Web QA example"},
+  {"scene":"ipad","asset":"devin-web-19.png","outputSeconds":[29,35],"sourceSeconds":null,"treatment":"Complete contained still, report preserved. Leader meets Simulator upper edge and fades.","requiredLabel":null},
+  {"scene":"closing","asset":"BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png","outputSeconds":[35,40],"sourceSeconds":null,"treatment":"Original contained lockup with pricing and CTA.","requiredLabel":null},
+  {"scene":"closing","asset":"devin-web-4.png","outputSeconds":[35,40],"sourceSeconds":null,"treatment":"Back recap plane with same source crop as environment scene.","requiredLabel":null},
+  {"scene":"closing","asset":"devin-web-18.png","outputSeconds":[35,40],"sourceSeconds":null,"treatment":"Middle full-image recap plane; separate example, not causal intermediate state.","requiredLabel":null},
+  {"scene":"closing","asset":"devin-web-19.png","outputSeconds":[35,40],"sourceSeconds":null,"treatment":"Front complete still on assembled drawing, no invented outcome.","requiredLabel":null},
+  {"scene":"all","asset":"NBInternationalPro-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Bundled original primary brand font, loaded through shared render font gate. Website provenance in shared MEDIA-ATTRIBUTION.md.","requiredLabel":null},
+  {"scene":"all","asset":"GeistMono-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Bundled website companion font for drawing identifiers only, loaded through shared font gate.","requiredLabel":null}
+]

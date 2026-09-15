@@ -1,0 +1,122 @@
+[
+  {
+    "scene": "opening and recurring header",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Supplied transparent black logo, contained at its original aspect ratio.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "environment",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [4, 9],
+    "sourceSeconds": null,
+    "treatment": "Authentic still; source-pixel crop x=540,y=410,width=1900,height=1080 preserves the full composer and actual macOS menu. Enlarged from archive during the end of opening.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "agent",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [9, 13],
+    "sourceSeconds": [0, 4],
+    "treatment": "Complete 1x clip, contained at full reading size for all 120 frames. Last selected source frame freezes during the index return at 13–14.067 seconds.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone first still",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [13, 17.5],
+    "sourceSeconds": null,
+    "treatment": "Afterhours Maze, full source contained. Incoming selection follows the preceding recorded agent action; no internal UI animation. The report with 8 passed, 0 failed, 1 untested is preserved.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone second still",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [17.5, 22],
+    "sourceSeconds": null,
+    "treatment": "Large Dispatch from a separate session, full source contained. Selected from the index immediately before the scene boundary; original report preserved.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "webQa",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [22, 29],
+    "sourceSeconds": [0, 7],
+    "treatment": "Complete 1x web testing/review recording, contained at full reading size for all 210 frames. Persistent reserved Web QA example footer. Final source frame freezes during index return at 29–30.067 seconds.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "ipad and closing artifact",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [29, 40],
+    "sourceSeconds": null,
+    "treatment": "Terra Table iPad still, full source contained with acceptance report intact. Held through the closing archive selection and selected as the final artifact. No manufactured Simulator motion.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "contact-sheet entries",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [0, 36.067],
+    "sourceSeconds": null,
+    "treatment": "Same genuine still and crop as the environment hero. Visible only in the opening and brief index returns.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "contact-sheet entries",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [0, 36.067],
+    "sourceSeconds": [0, 4],
+    "treatment": "Frozen original recording frames, never an animated thumbnail. Default first clip frame until completion, then last clip frame. Visible only in the opening and brief index returns.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "contact-sheet entries",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [0, 36.067],
+    "sourceSeconds": null,
+    "treatment": "Full original screenshot, scaled proportionally as an orientation thumbnail during the opening and index returns.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "contact-sheet entries",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [0, 36.067],
+    "sourceSeconds": null,
+    "treatment": "Full original screenshot, scaled proportionally as an orientation thumbnail during the opening and index returns.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "contact-sheet entries",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [0, 36.067],
+    "sourceSeconds": [0, 7],
+    "treatment": "Frozen original recording frames with reserved Web QA example footer. Default first clip frame until completion, then last clip frame; visible only during opening and index returns.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "contact-sheet entries",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [0, 36.067],
+    "sourceSeconds": null,
+    "treatment": "Full original iPad screenshot, scaled proportionally as an orientation thumbnail during the opening and index returns.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "all typography",
+    "asset": "NBInternationalPro-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original supplied Devin website font; shared font gate waits for loading. Used for all headings, captions, CTA and archive titles.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "editorial indices",
+    "asset": "GeistMono-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original supplied website companion font; used sparingly for archive numbers, media kinds and CTA URL.",
+    "requiredLabel": null
+  }
+]

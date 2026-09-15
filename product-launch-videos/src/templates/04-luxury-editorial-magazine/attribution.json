@@ -1,0 +1,82 @@
+[
+  {
+    "scene": "opening",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [0, 4],
+    "sourceSeconds": null,
+    "treatment": "Cover detail of the genuine Mac environment menu. Source-pixel crop x=600 y=895 width=880 height=495; contained in a matte window and briefly revealed horizontally.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "environment",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [4, 9],
+    "sourceSeconds": null,
+    "treatment": "Source-pixel crop x=610 y=480 width=1800 height=900 retains the actual composer, hosted menu and macOS selection. Large image opposite editorial explanation.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "agent",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [9, 13],
+    "sourceSeconds": [0, 4],
+    "treatment": "1x contained recording with composer context. Clean cut at the first source frame; reserved caption above. Shows agent selection, not macOS selection.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [13, 17.5],
+    "sourceSeconds": null,
+    "treatment": "Full uncropped static screenshot with Afterhours Maze and original 8 passed, 0 failed, 1 untested counts. No simulated internal motion.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [17.5, 22],
+    "sourceSeconds": null,
+    "treatment": "Aligned clean image replacement; full uncropped static Large Dispatch screenshot and authentic report. Explicit still label; separate session.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "webQa",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [22, 29],
+    "sourceSeconds": [0, 7],
+    "treatment": "1x contained web test review recording. Full frame and persistent reserved Web QA example footer outside source UI. No transition obscures the opening action.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "ipad",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [29, 35],
+    "sourceSeconds": null,
+    "treatment": "Full uncropped Terra Table iPad Simulator still and acceptance report opposite a narrow explanation column. Brief horizontal reveal then static hold.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "closing",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [35, 40],
+    "sourceSeconds": null,
+    "treatment": "Same stable uncropped iPad result as preceding spread; quiet reduced image alongside pricing and CTA. No new outcome implied.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "opening/environment/closing",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [[0, 9], [35, 40]],
+    "sourceSeconds": null,
+    "treatment": "Supplied transparent black logo, proportionally contained on light canvas. User-provided source bundle; see shared asset manifest for exact provenance/hash.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "all",
+    "asset": "NBInternationalPro-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original verified website font; shared font gate waits for loading before rendering. Used in all presentation typography. Other bundled fonts are preloaded by the shared gate but not used here.",
+    "requiredLabel": null
+  }
+]

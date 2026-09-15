@@ -1,0 +1,74 @@
+[
+  {
+    "scene": "opening",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [0, 4],
+    "sourceSeconds": null,
+    "treatment": "Original supplied transparent black lockup, proportionally contained.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "environment",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [4, 9],
+    "sourceSeconds": null,
+    "treatment": "Genuine still. Initial source crop x350 y330 width2300 height1250; after a 0.8s context hold, a 0.6s smoothstep reframe ends at x546.690 y454.138 width1982.759 height1077.586. Composer and actual hosted menu stay visible; no synthetic cursor or internal state change.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "agent",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [9, 13],
+    "sourceSeconds": [0, 4],
+    "treatment": "1x original source including natural cursor movement. Static source crop x300 y65 width1440 height820 preserves full composer, menu and capability context. Reserved caption and playback label.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [13, 17.5],
+    "sourceSeconds": null,
+    "treatment": "Full unmodified still including report: 8 passed, 0 failed, 1 untested. Clearly labeled Afterhours Maze Simulator still; no internal animation.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [17.5, 22],
+    "sourceSeconds": null,
+    "treatment": "Full unmodified Large Dispatch final-review screenshot and report, fixed 4.5s hold. Separate-session still label; same caption position across the source cut.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "webQa",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [22, 29],
+    "sourceSeconds": [0, 7],
+    "treatment": "Full source at 1x, including report and annotations. No waiting compression. The original recording cursor is preserved. Required Web QA example label in a reserved footer, outside the source pixels.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "ipad",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [29, 35],
+    "sourceSeconds": null,
+    "treatment": "Full unmodified Terra Table iPad screenshot and acceptance report, static six-second hold before CTA. Separate-session Simulator still label.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "closing",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [35, 40],
+    "sourceSeconds": null,
+    "treatment": "Original supplied transparent lockup, proportionally contained; approved pricing, CTA and URL.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "all",
+    "asset": "NBInternationalPro-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original Devin website font from supplied archive. Shared font gate waits for loading; regular weight, verified brand tracking. No redistributed font binaries in git.",
+    "requiredLabel": null
+  }
+]

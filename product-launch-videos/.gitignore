@@ -1,6 +1,9 @@
 node_modules/
 public/assets/*
 public/renders/
+public/brand/
+public/gallery-manifest.json
+public/comparison.png
 out/
 dist/
 .cache/

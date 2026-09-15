@@ -1,0 +1,11 @@
+[
+  {"scene":"opening / closing","asset":"BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Supplied transparent horizontal lockup, proportional contain. Large on title scenes; small in reserved product captions.","requiredLabel":null},
+  {"scene":"environment","asset":"devin-web-4.png","outputSeconds":[4,9],"sourceSeconds":null,"treatment":"Static source-pixel crop x=540 y=435 width=1900 height=1010, contained. Full composer context and hosted macOS menu remain visible.","requiredLabel":null},
+  {"scene":"agent","asset":"agent-selector-cloud.mp4","outputSeconds":[9,13],"sourceSeconds":[0,4],"treatment":"1x original clip; source-pixel crop x=380 y=70 width=1320 height=742, contained. Full composer and agent menu retained; no macOS-selection claim.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-14.png","outputSeconds":[13,17.5],"sourceSeconds":null,"treatment":"Complete unchanged still, contained. Retains 8 passed / 0 failed / 1 untested.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-18.png","outputSeconds":[17.5,22],"sourceSeconds":null,"treatment":"Complete unchanged still, contained. Separate Large Dispatch session, introduced by a cut with still caption.","requiredLabel":null},
+  {"scene":"webQa","asset":"devin-testing-2.mp4","outputSeconds":[22,29],"sourceSeconds":[0,7],"treatment":"1x original recording, full frame contained, with persistent reserved Web QA footer. The 3.5-second cue identifies the visible new-ticket form, not test completion.","requiredLabel":"Web QA example"},
+  {"scene":"ipad","asset":"devin-web-19.png","outputSeconds":[29,35],"sourceSeconds":null,"treatment":"Complete unchanged Terra Table iPad still, including acceptance report, contained.","requiredLabel":null},
+  {"scene":"all","asset":"NBInternationalPro-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Brand website original, loaded by the shared FontFace render gate. Primary headings and captions.","requiredLabel":null},
+  {"scene":"all","asset":"GeistMono-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Website companion font for score indices and editorial labels; not represented as the Figma heading font.","requiredLabel":null}
+]

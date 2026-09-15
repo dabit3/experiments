@@ -1,0 +1,66 @@
+[
+  {
+    "scene": "opening and closing",
+    "asset": "BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Original transparent supplied black lockup, proportional contain; large on title/CTA and small over product scenes.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "all",
+    "asset": "NBInternationalPro-Regular.woff2",
+    "outputSeconds": [0, 40],
+    "sourceSeconds": null,
+    "treatment": "Verified original website font, loaded through BrandFonts render gate. Regular typography throughout; no synthetic weight.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "environment",
+    "asset": "devin-web-4.png",
+    "outputSeconds": [4, 9],
+    "sourceSeconds": null,
+    "treatment": "Same-source selection detail x620 y920 w650 h445 on left; complete screenshot on right. Moving divider returns to comparison, then complete original image. No simulated selection action.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "agent",
+    "asset": "agent-selector-cloud.mp4",
+    "outputSeconds": [9, 13],
+    "sourceSeconds": [0, 4],
+    "treatment": "1x complete contained recording; stable editorial action/options rail outside UI. Does not claim macOS selection.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-14.png",
+    "outputSeconds": [13, 17.5],
+    "sourceSeconds": null,
+    "treatment": "Same-source left report detail x1948 y138 w1038 h940; right Simulator crop x0 y0 w1948 h1626. Counts 8 passed, 0 failed, 1 untested remain visible. Complete screenshot replaces crops for last part of hold. Static app pixels.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "iphone",
+    "asset": "devin-web-18.png",
+    "outputSeconds": [17.5, 22],
+    "sourceSeconds": null,
+    "treatment": "Separate Large Dispatch session, explicitly labeled. Left report detail x1940 y138 w1038 h780; right Simulator crop x0 y0 w1940 h1626. Complete screenshot replaces crops for last part of hold. Static app pixels.",
+    "requiredLabel": null
+  },
+  {
+    "scene": "webQa",
+    "asset": "devin-testing-2.mp4",
+    "outputSeconds": [22, 29],
+    "sourceSeconds": [0, 7],
+    "treatment": "1x complete contained original recording and original report together; stable editorial rail. SourceVideo supplies persistent Web QA example footer below source controls.",
+    "requiredLabel": "Web QA example"
+  },
+  {
+    "scene": "ipad and closing result",
+    "asset": "devin-web-19.png",
+    "outputSeconds": [29, 36.934],
+    "sourceSeconds": null,
+    "treatment": "Same-source left report detail x1948 y138 w1034 h900; right Simulator crop x0 y0 w1948 h1626. Complete screenshot returns near scene end; then a full-canvas contained original result holds into closing before CTA shutter. No app-state animation.",
+    "requiredLabel": null
+  }
+]

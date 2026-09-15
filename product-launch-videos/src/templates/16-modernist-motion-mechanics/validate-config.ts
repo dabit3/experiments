@@ -1,0 +1,23 @@
+import {mkdir, writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import assert from 'node:assert/strict';
+import {timelineDuration} from '../../shared/timeline';
+import {config} from './config';
+
+const output = fileURLToPath(new URL('../../..', import.meta.url));
+const directory = path.join(output, 'out/16-modernist-motion-mechanics');
+const variant = structuredClone(config);
+variant.durations = {opening: 2, environment: 1.5, agent: 1, iphone: 3, webQa: 1.5, ipad: 1.5, closing: 1.5};
+variant.copy.opening = 'Devin on Mac.';
+variant.copy.environment = 'Choose your Mac environment.';
+variant.motion.revealAxis = 'y';
+variant.motion.iphoneSplit = 0.4;
+variant.motion.transitionDistance = 96;
+variant.geometry.lineRole = 'rule';
+assert.equal(timelineDuration(variant.durations), 360);
+assert.equal(timelineDuration(config.durations), 1200);
+await mkdir(directory, {recursive: true});
+const filename = path.join(directory, 'variant-props.json');
+await writeFile(filename, JSON.stringify({config: variant}, null, 2) + '\n');
+console.log(`Wrote ${filename}; expected 360 frames / 12 seconds.`);

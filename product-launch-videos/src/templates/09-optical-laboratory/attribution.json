@@ -1,0 +1,13 @@
+[
+  {"scene":"opening","asset":"devin-web-4.png","outputSeconds":[0,4],"sourceSeconds":null,"treatment":"Complete contained interface alongside opening copy.","requiredLabel":null},
+  {"scene":"environment","asset":"devin-web-4.png","outputSeconds":[4,9],"sourceSeconds":null,"treatment":"Complete context plus one source-linked detail at x640 y940 width600 height405. No source pixel upscaling.","requiredLabel":null},
+  {"scene":"agent","asset":"agent-selector-cloud.mp4","outputSeconds":[9,13],"sourceSeconds":[0,4],"treatment":"Synchronized 1x context and detail at x535 y105 width645 height585. Composer context preserved. Agent selection only.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-14.png","outputSeconds":[13,17.5],"sourceSeconds":null,"treatment":"Authentic still. Complete source preserves 8 passed, 0 failed, 1 untested. Detail x730 y495 width490 height520 magnifies only original pixels.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-18.png","outputSeconds":[17.5,22],"sourceSeconds":null,"treatment":"Separate authentic still, complete review visible. Detail x720 y335 width520 height790.","requiredLabel":null},
+  {"scene":"webQa","asset":"devin-testing-2.mp4","outputSeconds":[22,29],"sourceSeconds":[0,7],"treatment":"Synchronized 1x context and test annotation detail x1240 y95 width665 height385. Each video viewport reserves its required footer.","requiredLabel":"Web QA example"},
+  {"scene":"ipad","asset":"devin-web-19.png","outputSeconds":[29,35],"sourceSeconds":null,"treatment":"Authentic still; complete report preserved. Detail x670 y550 width840 height570, then return to full context.","requiredLabel":null},
+  {"scene":"closing","asset":"devin-web-19.png","outputSeconds":[35,40],"sourceSeconds":null,"treatment":"Complete stable captured result; CTA is outside source.","requiredLabel":null},
+  {"scene":"all","asset":"BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Original proportional black transparent lockup on approved light canvas.","requiredLabel":null},
+  {"scene":"all","asset":"NBInternationalPro-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Verified primary brand font. Font loading is gated by the shared template root.","requiredLabel":null},
+  {"scene":"all","asset":"GeistMono-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Verified website companion font used only for editorial indices and labels.","requiredLabel":null}
+]

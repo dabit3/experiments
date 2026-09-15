@@ -1,8 +1,14 @@
-# Devin launch video foundation
+# Devin on Mac — 20 launch video templates
 
 Editable 1920 × 1080 / 30 fps Remotion templates for the supplied Mac launch
-montage. The default seven-scene timeline is 40 seconds. This foundation contains
-no final design direction: `src/smoke/` is infrastructure verification only.
+montage. All **20 independent directions** are collected under `src/templates/`.
+The default seven-scene timeline is 40 seconds; each design owns its composition,
+configuration and motion. `src/smoke/` remains infrastructure verification only.
+
+See [GALLERY.md](GALLERY.md) for the portable comparison gallery, authenticated
+media rehydration, collection checks and packaging. `gallery-manifest.json` records
+all producer commits, artifact URLs, SHA-256 hashes and independently measured
+video metadata. Original fonts, source media and renders stay outside git.
 
 ## Local setup
 
@@ -51,10 +57,10 @@ discovers descriptor exports automatically.
 
 ```sh
 npm run templates:list
-npm run render -- --template 01-swiss-grid
-npm run still -- --template 01-swiss-grid --frame 150
-npm run still -- --template 01-swiss-grid --frames 0,150,330,450,600,750,960,1140
-npm run contact-sheet -- out/01-swiss-grid
+npm run render -- --template 01-swiss-grid-in-motion
+npm run still -- --template 01-swiss-grid-in-motion --frame 150
+npm run still -- --template 01-swiss-grid-in-motion --frames 0,150,330,450,600,750,960,1140
+npm run contact-sheet -- out/01-swiss-grid-in-motion
 ```
 
 Outputs are `out/<slug>/<slug>.mp4`, `poster.png`, `frame-000000.png` etc.,
@@ -66,8 +72,8 @@ contact sheet. The contact sheet arranges the sorted actual rendered frames.
 Render/still also accept any independent entry:
 
 ```sh
-npm run render -- --entry src/templates/01-swiss-grid/entry.tsx --composition SwissGrid
-npm run still -- --entry src/templates/01-swiss-grid/entry.tsx --composition SwissGrid --frame 150
+npm run render -- --entry src/templates/01-swiss-grid-in-motion/entry.tsx --composition SwissGridInMotion
+npm run still -- --entry src/templates/01-swiss-grid-in-motion/entry.tsx --composition SwissGridInMotion --frame 150
 ```
 
 Use `--props /path/to/props.json` for a complete `{"config": ...}` object. Copy
@@ -106,24 +112,27 @@ Expected short-smoke result: **1920 × 1080, 30/1 fps, 240 frames, 8 seconds**.
 The default smoke reports **1200 frames / 40 seconds**. The short edit is only a
 diagnostic and must not replace the comparable 40-second producer samples.
 
-## Local comparison shell
+## Local comparison gallery
 
 ```sh
 npm run gallery
 # Local development server on port 5173
-npx remotion studio src/templates/01-swiss-grid/entry.tsx
+npx remotion studio src/templates/01-swiss-grid-in-motion/entry.tsx
 ```
 
 For a specific Remotion Studio entry, use
-`npx remotion studio src/templates/01-swiss-grid/entry.tsx` directly; `npm run studio`
-alone opens the smoke entry. The Vite shell shows default-config Remotion Players,
-descriptions and configuration/control metadata. With no producers, it shows the
-diagnostic smoke. It does not publish anything.
+`npx remotion studio src/templates/01-swiss-grid-in-motion/entry.tsx` directly;
+`npm run studio` alone opens the smoke entry. The comparison gallery plays the
+final local MP4s on demand. Posters, search, a modal player, downloads, source
+links, configuration/control metadata and the caption transcript support comparison.
+It does not run 20 simultaneous Remotion Players or publish anything.
 
 `npm run build` checks types and compiles the gallery. It intentionally does not
-copy private `public` media into `dist`. A local static build needs the original
-assets made available at `/assets/` by its local server; the Vite dev command serves
-them automatically. Do not publish the private source bundle.
+copy private `public` media into `dist`. `npm run gallery:package` adds only the
+final render artifacts, comparison sheet, original Regular font, manifest and
+template source copies to an ignored portable ZIP. See [GALLERY.md](GALLERY.md).
+Gallery viewing needs no source recordings; editing/rendering requires the original
+bundle. Do not publish the private source bundle.
 
 ## Content rules and attribution
 

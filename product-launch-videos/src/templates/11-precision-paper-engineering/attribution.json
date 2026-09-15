@@ -1,0 +1,13 @@
+[
+  {"scene":"opening","asset":"BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png","outputSeconds":[0,4],"sourceSeconds":null,"treatment":"Supplied transparent black lockup, proportional contain on sliding matte title paper.","requiredLabel":null},
+  {"scene":"closing","asset":"BLACK_NO_BG_DEVIN_LOCKUP_HORIZONTAL_WHITE.png","outputSeconds":[35,40],"sourceSeconds":null,"treatment":"Supplied transparent black lockup, proportional contain on the final matte assembly.","requiredLabel":null},
+  {"scene":"all","asset":"NBInternationalPro-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Original website-supplied brand Regular font, awaited by shared font gate. All principal copy.","requiredLabel":null},
+  {"scene":"all","asset":"GeistMono-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Website companion font used only for editorial scene indices.","requiredLabel":null},
+  {"scene":"environment","asset":"devin-web-4.png","outputSeconds":[3.2,9],"sourceSeconds":null,"treatment":"Flat, contained crop in original pixels: x550 y430 width1900 height1000. Preserves the composer and macOS-selected hosted menu. Starts under departing title sleeve.","requiredLabel":null},
+  {"scene":"agent","asset":"agent-selector-cloud.mp4","outputSeconds":[9,13],"sourceSeconds":[0,4],"treatment":"Contained front-facing clip at 1x. Entire source view stable from first through last frame. Only surrounding margin divider moves.","requiredLabel":null},
+  {"scene":"iphone / first","asset":"devin-web-14.png","outputSeconds":[13,17.5],"sourceSeconds":null,"treatment":"Entire screenshot contained without crop or distortion. Sliding blank paper sleeve uncovers a genuine still. Preserves 8 passed, 0 failed, 1 untested.","requiredLabel":null},
+  {"scene":"iphone / second","asset":"devin-web-18.png","outputSeconds":[17.5,22],"sourceSeconds":null,"treatment":"Entire screenshot contained, separately labeled still; no fabricated application motion. Report preserved.","requiredLabel":null},
+  {"scene":"webQa","asset":"devin-testing-2.mp4","outputSeconds":[22,29],"sourceSeconds":[0,7],"treatment":"Contained full source at 1x from first frame; permanent footer outside product UI. No sleeve crosses the active recording.","requiredLabel":"Web QA example"},
+  {"scene":"ipad","asset":"devin-web-19.png","outputSeconds":[29,35],"sourceSeconds":null,"treatment":"Full screenshot contained and still; a matte divider lifts away. Report is uncropped.","requiredLabel":null},
+  {"scene":"closing","asset":"devin-web-18.png","outputSeconds":[35,40],"sourceSeconds":null,"treatment":"Full genuine result screenshot on a flat paper card beside pricing and CTA. Secondary thumbnail; full-size evidence appears earlier.","requiredLabel":null}
+]
