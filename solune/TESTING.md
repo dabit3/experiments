@@ -37,7 +37,33 @@ Use **Project files → Restore Casa del Mar → Restore original project**. Thi
 
 ## Results
 
-Programmatic and browser run results are recorded here after verification.
+Verified on 2026-09-15, Ubuntu Linux, Node 24.19.0, npm 10.8.3, Chrome with WebGL software rendering. Application revision: `bb539d73` (subsequent documentation commits do not change the tested application).
+
+| Check | Result |
+| --- | --- |
+| Clean `npm ci` | Passed |
+| Incremental `npm install` | Passed |
+| `npm run lint` | Passed, no warnings |
+| `npm run typecheck` | Passed |
+| `npm test` | 25 tests passed in 2 files |
+| `npm run build` | Passed; relative-base production assets |
+| `npm audit` | 0 vulnerabilities |
+| Production preview | Passed on port 4173 |
+| Browser golden path above | Passed |
+| Desktop Build/Photo layouts | Passed at 1280×800, 1440×900, 1920×1080 |
+| Full HD PNG | Valid signature, 1920×1080, nonblank rendered scene |
+| JSON/persistence | Exact export → reset → import and reload equality |
+| Invalid import | Visible modal error; saved scene unchanged |
+| Browser runtime exceptions | None observed |
+| Test recording | VP9 WebM, 1440×900, 138.584 seconds; complete processed capture |
+
+The first browser run identified missing palm fronds from mixed geometry attributes and pool/terrace z-fighting. Both were corrected before the complete final run. Regression tests now verify the batched palm crown and raycast clearance over the pool.
+
+The testing agent used actual mouse and keyboard input, plus read-only state/file inspection to validate outcomes. No screenshot backdrop substitutes for the 3D scene. All five final camera thumbnails loaded at 320px; camera/FOV history and persistence were verified.
+
+Testing infrastructure emitted SwiftShader/readPixels performance warnings and 26 failed requests to a sanitized placeholder `blob:http://localhost:4173/...` during computer-tool DOM capture. Actual UUID blob thumbnails were valid; the placeholder failures stopped when the same view/render actions were performed without that capture tool. These are recorded separately from application findings. Hardware-GPU performance and other browsers were not assessed.
+
+The PR contains the full editor screenshot and rendered scene; its associated session supplies the complete WebM and detailed browser report. Native reference parity remains outside the authorized V1 boundary, with no fabricated pixel-diff result.
 
 ## Reference URLs
 
