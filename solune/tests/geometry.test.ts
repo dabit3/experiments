@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import * as THREE from 'three'
-import { architecture, landscape, makePlant } from '../src/geometry'
+import { architecture, landscape, makePlant, materials } from '../src/geometry'
 import type { ObjectKind } from '../src/state'
 
 function inspect(group: THREE.Group) {
@@ -41,5 +41,21 @@ describe('deterministic procedural architecture', () => {
     expect(result.triangles).toBeGreaterThan(10000)
     expect(result.bounds.min.y).toBeLessThan(-2)
     expect(result.bounds.max.x).toBeGreaterThan(24)
+  })
+  it('retains both indexed frond spines and leaf triangles after material batching', () => {
+    const palm = makePlant('palm')
+    const crown = palm.children.find(child => child instanceof THREE.Mesh && child.material === materials.leaf)
+    expect(crown).toBeInstanceOf(THREE.Mesh)
+    const bounds = new THREE.Box3().setFromObject(crown!)
+    expect(bounds.max.x - bounds.min.x).toBeGreaterThan(6)
+    expect(bounds.min.y).toBeGreaterThan(5)
+  })
+  it('keeps the reflecting pool clear of terrace geometry', () => {
+    const villa = architecture()
+    villa.updateMatrixWorld(true)
+    const ray = new THREE.Raycaster(new THREE.Vector3(2.7, 0.6, 8.1), new THREE.Vector3(0, -1, 0))
+    const hit = ray.intersectObject(villa, true)[0]
+    expect(hit).toBeDefined()
+    expect(hit.point.y).toBeLessThan(0.1)
   })
 })

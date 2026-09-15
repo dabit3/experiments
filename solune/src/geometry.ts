@@ -86,7 +86,10 @@ function sofa(parent: THREE.Group, x: number, y: number, z: number, rotation = 0
 }
 export function architecture() {
   const group = new THREE.Group()
-  box(group, [24, 0.48, 21], [0, 0.05, 1], materials.concrete)
+  box(group, [24, 0.48, 14], [0, 0.05, -2.5], materials.concrete)
+  box(group, [9.1, 0.48, 7.8], [-7.45, 0.05, 8.4], materials.concrete)
+  box(group, [3.7, 0.48, 7.8], [10.15, 0.05, 8.4], materials.concrete)
+  box(group, [11.2, 0.48, 0.6], [2.7, 0.05, 12], materials.concrete)
   box(group, [20, 0.32, 11], [0, 0.47, -3])
   // Floating floor plates and deeply recessed glazing define the pavilion.
   box(group, [20.6, 0.42, 11.5], [0, 4.1, -3])
@@ -165,7 +168,7 @@ export function architecture() {
   for (let i = 0; i < 3; i++) box(group, [2.4, 0.12, 0.5], [6.6, 0.14 - i * 0.11, 4.9 + i * 0.5], pool)
   for (let x = -10; x < 11; x += 1.8) {
     for (let z = -7; z < 12; z += 1.8) {
-      if (x > -3.3 && x < 8.5 && z > 4.2) continue
+      if (x + 0.89 > -2.9 && x - 0.89 < 8.3 && z + 0.89 > 4.5) continue
       box(group, [1.78, 0.02, 1.78], [x, 0.302, z], materials.concrete)
     }
   }
@@ -208,6 +211,8 @@ export function makePlant(kind: ObjectKind, seed = 12) {
           const geometry = new THREE.BufferGeometry().setFromPoints([
             p, tip, a.clone().lerp(p, 0.68),
           ])
+          geometry.setIndex([0, 1, 2])
+          geometry.setAttribute('uv', new THREE.Float32BufferAttribute([0, 0, 1, 1, 0, 1], 2))
           geometry.computeVertexNormals()
           const leaf = new THREE.Mesh(geometry, materials.leaf)
           leaf.castShadow = true

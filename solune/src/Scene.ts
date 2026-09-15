@@ -133,7 +133,7 @@ export class VillaScene {
       textureWidth: 1024, textureHeight: 1024, color: 0x679c9b, clipBias: 0.005,
     })
     this.pool.rotation.x = -Math.PI / 2
-    this.pool.position.set(2.7, 0.29, 8.1)
+    this.pool.position.set(2.7, 0.3, 8.1)
     if (!(this.pool.material instanceof THREE.ShaderMaterial)) throw new Error('Reflection material is unavailable')
     this.poolMaterial = this.pool.material
     this.poolMaterial.uniforms.time = { value: 0 }

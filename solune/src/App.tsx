@@ -114,6 +114,10 @@ export default function App() {
     catch { setStatus('Storage unavailable — export your project to save') }
   }, [project])
   useEffect(() => { engine.current?.select(selected) }, [selected, project.objects])
+  useEffect(() => { engine.current?.setCamera(shot) }, [shot])
+  useEffect(() => {
+    if (!project.shots.some(camera => camera.id === activeShot)) setActiveShot(project.shots[0].id)
+  }, [activeShot, project.shots])
   useEffect(() => {
     if (!engine.current) return
     engine.current.onPlace = placing ? position => {
@@ -234,7 +238,7 @@ export default function App() {
           </div>
           <div className="panel-section"><h3>LENS & COMPOSITION</h3>
             <Range label="Vignette" value={project.vignette} min={0} max={0.8} step={0.01} format={n => `${Math.round(n * 100)}%`} onChange={(vignette, s) => patch({ vignette }, s)} />
-            <Range label="Field of view" value={shot.fov} min={20} max={80} format={n => `${n}°`} onChange={(fov, s) => { engine.current?.setFov(fov); patch({ shots: project.shots.map(c => c.id === shot.id ? { ...c, fov } : c) }, s) }} />
+            <Range label="Field of view" value={shot.fov} min={20} max={80} format={n => `${n}°`} onChange={(fov, s) => { const camera = engine.current?.cameraShot(shot.id, shot.name) ?? shot; patch({ shots: project.shots.map(c => c.id === shot.id ? { ...camera, fov } : c) }, s) }} />
             <button className={`option-row ${grid ? 'selected' : ''}`} onClick={() => setGrid(!grid)}><Grid2X2 size={16} />Rule of thirds<span className={`toggle ${grid ? 'on' : ''}`} /></button>
           </div>
           <div className="panel-section"><h3>ENVIRONMENT</h3><button className="option-row" onClick={() => showPanel('weather')}><Sunset size={17} />{formatTime(project.time)} · {project.weather}<ChevronRight size={14} /></button></div>
@@ -302,11 +306,12 @@ export default function App() {
         <div className="photo-strip">{project.shots.map((camera, index) => <button className={`shot-card ${activeShot === camera.id ? 'active' : ''}`} key={camera.id} onClick={() => chooseShot(camera)}>{thumbnails[camera.id] ? <img src={thumbnails[camera.id]} alt={camera.name} /> : <Camera size={24} />}<span className="shot-number">{String(index + 1).padStart(2, '0')}</span><span className="shot-name">{camera.name}</span></button>)}</div>
         <button className="render-button" onClick={() => setDialog('export')} disabled={!ready}><Image size={28} /><span>Render photo</span><small>PNG · up to 4K</small></button>
       </div>}
-      {error && <div className="error-banner" role="alert">{error}<button aria-label="Dismiss error" onClick={() => setError('')}><X size={16} /></button></div>}
+      {error && !dialog && <div className="error-banner" role="alert">{error}<button aria-label="Dismiss error" onClick={() => setError('')}><X size={16} /></button></div>}
     </main>
     <input hidden type="file" ref={fileInput} accept=".json,application/json" onChange={e => { const file = e.target.files?.[0]; if (file) void importFile(file) }} />
     <dialog ref={modal} className="modal" onCancel={() => setDialog(null)} onClick={e => { if (e.target === modal.current) setDialog(null) }}>
       <div className="modal-header"><h2>{dialog === 'export' ? 'Render photo' : dialog === 'help' ? 'Make yourself at home.' : dialog === 'reset' ? 'Reset the scene?' : 'Your project'}</h2><IconButton icon={X} label="Close dialog" onClick={() => setDialog(null)} /></div>
+      {error && dialog && <p className="dialog-error" role="alert">{error}</p>}
       {dialog === 'export' ? <><p>Export the current camera with your lighting and photo effects. No interface, just your scene.</p><label className="select-label">OUTPUT RESOLUTION<select aria-label="Output resolution" value={size} onChange={e => setSize(e.target.value)}><option value="1280">HD · 1280 × 720</option><option value="1920">Full HD · 1920 × 1080</option><option value="3840">4K · 3840 × 2160</option></select></label><div className="export-detail"><span>Format</span><strong>PNG image</strong><span>Aspect ratio</span><strong>16 : 9</strong></div><button className="wide-primary" onClick={() => void renderImage()} disabled={rendering}><ArrowDownToLine size={17} />{rendering ? 'Exporting image…' : 'Export image'}</button></> :
       dialog === 'help' ? <><p>A local architectural visualization studio, inspired by Lumion 2024.</p><div className="help-grid"><span>Orbit the scene</span><kbd>Left drag</kbd><span>Pan camera</span><kbd>Right drag</kbd><span>Zoom</span><kbd>Scroll</kbd><span>Undo / redo</span><kbd>Ctrl Z / Shift Z</kbd><span>Remove selection</span><kbd>Delete</kbd><span>Cancel placement</span><kbd>Esc</kbd><span>First camera</span><kbd>H</kbd></div><p className="muted-copy">Everything saves in this browser. Export a project for a portable backup. WebGL rasterization; native ray tracing, BIM imports and movies are outside this V1.</p></> :
       dialog === 'reset' ? <><p>Restore Casa del Mar and its four original cameras. You can undo this action.</p><button className="wide-primary" onClick={() => { const next = createProject(); setHistory(h => commit(h, next)); chooseShot(next.shots[0]); setDialog(null); setPanel('weather'); setMode('build'); void (async () => { for (const c of next.shots) await refreshThumbnail(c) })() }}><RotateCcw size={17} />Restore original project</button></> :
