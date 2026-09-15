@@ -1,0 +1,11 @@
+[
+  {"scene":"all","asset":"DEVIN_LOCKUP_HORIZONTAL_WHITE_TRANSPARENT.png","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Original transparent white Devin lockup, contained with original aspect ratio on dark surfaces. Additional full-size lockup in opening and closing.","requiredLabel":null},
+  {"scene":"all","asset":"NBInternationalPro-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Original brand regular font, loaded through the shared font gate; scaled heading/body hierarchy.","requiredLabel":null},
+  {"scene":"all","asset":"GeistMono-Regular.woff2","outputSeconds":[0,40],"sourceSeconds":null,"treatment":"Website companion font used only for source-index and display labels.","requiredLabel":null},
+  {"scene":"environment","asset":"devin-web-4.png","outputSeconds":[4,9],"sourceSeconds":null,"treatment":"Contained fixed source crop x=580,y=435,width=1850,height=980. Actual composer and hosted macOS selection menu remain visible.","requiredLabel":null},
+  {"scene":"agent","asset":"agent-selector-cloud.mp4","outputSeconds":[9,13],"sourceSeconds":[0,4],"treatment":"1x playback. Fixed source crop x=340,y=70,width=1300,height=690 retains composer and agent menu; normal speed, no simulated UI.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-14.png","outputSeconds":[13,17.5],"sourceSeconds":null,"treatment":"Full original screenshot, contained without cropping or internal movement. Report preserves 8 passed, 0 failed, 1 untested.","requiredLabel":null},
+  {"scene":"iphone","asset":"devin-web-18.png","outputSeconds":[17.5,22],"sourceSeconds":null,"treatment":"Full original Large Dispatch screenshot, contained without cropping. Separate session still; no causal connection to the preceding app.","requiredLabel":null},
+  {"scene":"webQa","asset":"devin-testing-2.mp4","outputSeconds":[22,29],"sourceSeconds":[0,7],"treatment":"1x full recording contained in the primary display. Persistent label in a reserved 48px footer outside source pixels.","requiredLabel":"Web QA example"},
+  {"scene":"ipad","asset":"devin-web-19.png","outputSeconds":[29,35],"sourceSeconds":null,"treatment":"Full original Terra Table iPad screenshot and acceptance report, contained without cropping or internal movement.","requiredLabel":null}
+]
