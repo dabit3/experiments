@@ -65,10 +65,13 @@ to the library. **Looks** changes the film, **Adjust** exposes the three sliders
 and **Frame** rotates or crops. Hold the comparison row to see the original.
 Holding the photograph also compares. Each adjustment has a **Reset value** action.
 Undo/redo sits below the photo; a complete slider drag counts as one edit.
+Adjustment scales use a 44-point touch area, 0.05 steps and VoiceOver increment/
+decrement actions. Values update during dragging; release completes the edit.
 History holds the last 100 edits in the current editor session. Applied settings
 persist across relaunch, while undo history does not.
 At accessibility text sizes, the workspace scrolls, the photo grows, and tool
-tabs form a two-column grid. The toolbar remains fixed and the full title wraps.
+tabs and adjustment selectors form two-column grids. The toolbar remains fixed
+and the full title wraps.
 Recipe saving stays above the keyboard; compact forms use a half-height sheet.
 The **Recipes** tab saves a new recipe or opens saved looks.
 Recipe previews include all saved adjustment values; deletion requires confirmation.

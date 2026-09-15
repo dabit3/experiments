@@ -349,9 +349,12 @@ struct EditorView: View {
 
   private var adjustmentPanel: some View {
     VStack(spacing: 12) {
-      ViewThatFits(in: .horizontal) {
+      if typeSize.isAccessibilitySize {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 4) {
+          ForEach(Adjustment.allCases, id: \.self) { adjustmentButton($0) }
+        }
+      } else {
         adjustmentButtons
-        ScrollView(.horizontal, showsIndicators: false) { adjustmentButtons }
       }
       HStack(alignment: .firstTextBaseline) {
         Text(valueText).font(TypeStyle.value).monospacedDigit()
@@ -364,11 +367,10 @@ struct EditorView: View {
           .accessibilityLabel("Reset \(adjustment.rawValue.lowercased()) to neutral")
       }
       VStack(spacing: 3) {
-        Slider(
-          value: adjustmentBinding, in: adjustment.range, step: 0.05,
+        AdjustmentSlider(
+          value: adjustmentBinding, scale: SliderScale(range: adjustment.range),
           onEditingChanged: room.setAdjusting
         )
-        .tint(Palette.silver)
         .accessibilityLabel(adjustment.rawValue).accessibilityValue(valueText)
         HStack {
           ForEach(0..<21) { index in
@@ -393,20 +395,23 @@ struct EditorView: View {
 
   private var adjustmentButtons: some View {
     HStack(spacing: 14) {
-      ForEach(Adjustment.allCases, id: \.self) { item in
-        Button {
-          adjustment = item
-        } label: {
-          VStack(spacing: 5) {
-            Text(item.rawValue).font(TypeStyle.label).fixedSize()
-            Circle().fill(adjustment == item ? Palette.silver : .clear).frame(width: 3, height: 3)
-          }
-          .foregroundStyle(adjustment == item ? Palette.silver : Palette.muted)
-          .frame(maxWidth: .infinity, minHeight: 44)
-        }
-        .accessibilityAddTraits(adjustment == item ? .isSelected : [])
-      }
+      ForEach(Adjustment.allCases, id: \.self) { adjustmentButton($0) }
     }
+  }
+
+  private func adjustmentButton(_ item: Adjustment) -> some View {
+    Button {
+      adjustment = item
+    } label: {
+      VStack(spacing: 5) {
+        Text(item.rawValue).font(TypeStyle.label)
+          .fixedSize(horizontal: false, vertical: true)
+        Circle().fill(adjustment == item ? Palette.silver : .clear).frame(width: 3, height: 3)
+      }
+      .foregroundStyle(adjustment == item ? Palette.silver : Palette.muted)
+      .frame(maxWidth: .infinity, minHeight: 44)
+    }
+    .accessibilityAddTraits(adjustment == item ? .isSelected : [])
   }
 
   private var adjustmentBinding: Binding<Double> {
@@ -510,5 +515,63 @@ struct EditorView: View {
       }
     }
     .padding(.horizontal, 24)
+  }
+}
+
+private struct AdjustmentSlider: View {
+  @Binding var value: Double
+  let scale: SliderScale
+  var onEditingChanged: (Bool) -> Void
+  @GestureState private var pressed = false
+  @State private var editing = false
+
+  var body: some View {
+    GeometryReader { geometry in
+      let length = max(1, geometry.size.width - 28)
+      let position = CGFloat(scale.fraction(for: value)) * length
+      ZStack(alignment: .leading) {
+        Capsule().fill(Palette.line).frame(height: 3).padding(.horizontal, 14)
+        Capsule().fill(Palette.silver)
+          .frame(width: abs(position - length / 2), height: 3)
+          .offset(x: 14 + min(position, length / 2))
+        Circle().fill(Palette.silver)
+          .frame(width: 24, height: 24)
+          .frame(width: 28, height: 44)
+          .offset(x: position)
+      }
+      .frame(height: 44)
+      .contentShape(Rectangle())
+      .gesture(
+        DragGesture(minimumDistance: 0)
+          .updating($pressed) { _, pressed, _ in pressed = true }
+          .onChanged { gesture in
+            if !editing {
+              editing = true
+              onEditingChanged(true)
+            }
+            value = scale.value(at: Double((gesture.location.x - 14) / length))
+          }
+          .onEnded { _ in finishEditing() }
+      )
+    }
+    .frame(height: 44)
+    .accessibilityElement(children: .ignore)
+    .accessibilityAdjustableAction { direction in
+      switch direction {
+      case .increment: value = min(scale.range.upperBound, value + scale.step)
+      case .decrement: value = max(scale.range.lowerBound, value - scale.step)
+      @unknown default: break
+      }
+    }
+    .onChange(of: pressed) { _, pressed in
+      if !pressed { finishEditing() }
+    }
+    .onDisappear { finishEditing() }
+  }
+
+  private func finishEditing() {
+    guard editing else { return }
+    editing = false
+    onEditingChanged(false)
   }
 }

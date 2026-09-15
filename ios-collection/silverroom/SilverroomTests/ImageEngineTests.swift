@@ -232,3 +232,35 @@ final class EditHistoryTests: XCTestCase {
     XCTAssertFalse(room.canRedo)
   }
 }
+
+final class SliderScaleTests: XCTestCase {
+  func testNeutralAndEndpointsAcrossAllAdjustmentRanges() {
+    for (range, neutral) in [(-2.0...2.0, 0.0), (0.5...1.5, 1.0), (-1.0...1.0, 0.0)] {
+      let scale = SliderScale(range: range)
+      XCTAssertEqual(scale.value(at: 0), range.lowerBound, accuracy: 0.0001)
+      XCTAssertEqual(scale.value(at: 0.5), neutral, accuracy: 0.0001)
+      XCTAssertEqual(scale.value(at: 1), range.upperBound, accuracy: 0.0001)
+      XCTAssertEqual(scale.fraction(for: neutral), 0.5, accuracy: 0.0001)
+    }
+  }
+
+  func testDragFractionsSnapToStepsAndClampBeyondTrack() {
+    let scale = SliderScale(range: -2...2)
+    XCTAssertEqual(scale.value(at: 0.625), 0.5, accuracy: 0.0001)
+    XCTAssertEqual(scale.value(at: 0.631), 0.5, accuracy: 0.0001)
+    XCTAssertEqual(scale.value(at: 0.634), 0.55, accuracy: 0.0001)
+    XCTAssertEqual(scale.value(at: -0.3), -2)
+    XCTAssertEqual(scale.value(at: 1.3), 2)
+    XCTAssertEqual(scale.value(at: .nan), -2)
+    XCTAssertEqual(scale.fraction(for: 9), 1)
+    XCTAssertEqual(scale.fraction(for: .infinity), 0)
+  }
+
+  func testEveryContrastStepRoundTripsWithoutDrift() {
+    let scale = SliderScale(range: 0.5...1.5)
+    for step in 0...20 {
+      let value = 0.5 + Double(step) * 0.05
+      XCTAssertEqual(scale.value(at: scale.fraction(for: value)), value, accuracy: 0.0001)
+    }
+  }
+}
