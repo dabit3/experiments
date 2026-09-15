@@ -115,7 +115,7 @@ struct TerrainCanvas: UIViewRepresentable {
         float ambientMotion;
         float studyTime;
         #pragma body
-        float t = u_time * ambientMotion + studyTime;
+        float t = scn_frame.time * ambientMotion + studyTime;
         float2 p = _surface.diffuseTexcoord * 10.0;
         float swell = sin(p.x * 2.1 + p.y * 1.3 + t * 0.45)
                     + sin(p.y * 3.7 - p.x * 0.8 - t * 0.33);
