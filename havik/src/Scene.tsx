@@ -796,9 +796,13 @@ export default function Scene(props: Props) {
             [-17, 28, 30],
             [10, 40, 5.1],
           ];
+    const damping = r.controls.enableDamping;
+    r.controls.enableDamping = false;
+    r.controls.update();
     r.camera.position.set(...positions[props.preset % positions.length]);
     r.controls.target.set(10, props.view === "perspective" ? 1.4 : 0, 5);
     r.controls.update();
+    r.controls.enableDamping = damping;
   }, [props.preset, props.view]);
   return (
     <div
