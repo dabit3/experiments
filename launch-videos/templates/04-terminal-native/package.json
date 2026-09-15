@@ -1,0 +1,23 @@
+{
+  "name": "launch-video-04-terminal-native",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Devin launch video template 04 — Terminal Native (CLI aesthetic). Remotion.",
+  "scripts": {
+    "dev": "remotion studio",
+    "render": "remotion render Main out/video.mp4",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.521",
+    "@remotion/google-fonts": "4.0.521",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "remotion": "4.0.521"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.6",
+    "typescript": "5.9.3"
+  }
+}
