@@ -1,0 +1,421 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01B8AB55B20A2709F0B96B1D /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FC12CE1B93E11F50C48A207 /* Models.swift */; };
+		10900491F6D403E0E0AC2DE5 /* hit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 491935CD38DAC5FF9F7F72A8 /* hit.wav */; };
+		13C604014E736B9D063CF861 /* super.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7509CEF51A3ED52C4129B89A /* super.wav */; };
+		1452E95E6DECBC27D2CF5268 /* lyra-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 093663B6E8ADE01EE06BD003 /* lyra-1.png */; };
+		1AAF9BA093C44E97FF1093D3 /* seraph-6.png in Resources */ = {isa = PBXBuildFile; fileRef = A4F5DA1421FAA8D489101216 /* seraph-6.png */; };
+		1B788098834AEBCCAAD1055D /* seraph-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 397EBDB3466A0DB23B81C912 /* seraph-1.png */; };
+		2372B6C1A3B90E76FCFB9BCC /* BattleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81126A520EAA26D92CB539A7 /* BattleScene.swift */; };
+		315F410AC636FF04A793EC8E /* seraph-3.png in Resources */ = {isa = PBXBuildFile; fileRef = FD00B5B843478823AEE2232A /* seraph-3.png */; };
+		3AA021CEE246678F5B1CD4D6 /* lyra-0.png in Resources */ = {isa = PBXBuildFile; fileRef = B8505F14778F2A91FC55967C /* lyra-0.png */; };
+		3F12A3BA438AB4F719C8C377 /* swing.wav in Resources */ = {isa = PBXBuildFile; fileRef = 85505B427F6444E245A5261A /* swing.wav */; };
+		3FF13EB92C83DC38CE82CFBC /* lyra-6.png in Resources */ = {isa = PBXBuildFile; fileRef = B497223A248A1C6F1A026BFA /* lyra-6.png */; };
+		4992088485C4E7F7B551D78F /* battle.wav in Resources */ = {isa = PBXBuildFile; fileRef = B738001436AA4EF2108F1C99 /* battle.wav */; };
+		538032213767B5CF94108ABE /* AudioEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB49D4F7E42A6430963B41C /* AudioEngine.swift */; };
+		5725A9362036ECB7C8D57920 /* seraph-0.png in Resources */ = {isa = PBXBuildFile; fileRef = BA0400FE033FA345C7230EA1 /* seraph-0.png */; };
+		5DFFB29C2C36374DE2D3D2D9 /* seraph-2.png in Resources */ = {isa = PBXBuildFile; fileRef = DB9982155397B6E8451AE62F /* seraph-2.png */; };
+		790213010E4E85B7C4347440 /* lyra-3.png in Resources */ = {isa = PBXBuildFile; fileRef = F7D219994599BB169BDB7CC6 /* lyra-3.png */; };
+		89AB27915F2BE7C893B6C250 /* lyra-7.png in Resources */ = {isa = PBXBuildFile; fileRef = B9282A309038735C8501989A /* lyra-7.png */; };
+		95CB4AABEA5143DDFC33CED2 /* celestial-stage.png in Resources */ = {isa = PBXBuildFile; fileRef = DF592F5E892C7EFE7EF3DA70 /* celestial-stage.png */; };
+		96636745E0C2BAFACE288C03 /* lyra-5.png in Resources */ = {isa = PBXBuildFile; fileRef = DACD0E500832F2A1BFA88143 /* lyra-5.png */; };
+		9F65694E52AE51E6599BD926 /* DuelClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91231E3948C1D3A630545892 /* DuelClient.swift */; };
+		A10C5792D3C69FBD39728D3C /* block.wav in Resources */ = {isa = PBXBuildFile; fileRef = C2456B26A3F2C11D18A36C06 /* block.wav */; };
+		BDC729B892BA5C9FA19CBD31 /* lyra-2.png in Resources */ = {isa = PBXBuildFile; fileRef = CFB86A45EC018673F57392D8 /* lyra-2.png */; };
+		CE122A70766E0D2053A8CAB8 /* seraph-4.png in Resources */ = {isa = PBXBuildFile; fileRef = D5C1A48C25ACD60E3757ADEA /* seraph-4.png */; };
+		E1B7BCB15C8ADFABF85C4CA5 /* AzureParadoxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707E70563ACBD7A08D46061B /* AzureParadoxApp.swift */; };
+		EB47B475602774A2BBB53488 /* seraph-5.png in Resources */ = {isa = PBXBuildFile; fileRef = 69B29016D93A62B7B43D0785 /* seraph-5.png */; };
+		F0FF20D30348BA9D7F5924F8 /* seraph-7.png in Resources */ = {isa = PBXBuildFile; fileRef = 284DAF4C7207EA2E219CB108 /* seraph-7.png */; };
+		F4DAF32E040BC315A4EC0593 /* lyra-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 497438E526CA28860A143975 /* lyra-4.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		093663B6E8ADE01EE06BD003 /* lyra-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lyra-1.png"; sourceTree = "<group>"; };
+		284DAF4C7207EA2E219CB108 /* seraph-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seraph-7.png"; sourceTree = "<group>"; };
+		397EBDB3466A0DB23B81C912 /* seraph-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seraph-1.png"; sourceTree = "<group>"; };
+		3FC12CE1B93E11F50C48A207 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		491935CD38DAC5FF9F7F72A8 /* hit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = hit.wav; sourceTree = "<group>"; };
+		497438E526CA28860A143975 /* lyra-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lyra-4.png"; sourceTree = "<group>"; };
+		69B29016D93A62B7B43D0785 /* seraph-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seraph-5.png"; sourceTree = "<group>"; };
+		707E70563ACBD7A08D46061B /* AzureParadoxApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AzureParadoxApp.swift; sourceTree = "<group>"; };
+		7509CEF51A3ED52C4129B89A /* super.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = super.wav; sourceTree = "<group>"; };
+		81126A520EAA26D92CB539A7 /* BattleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BattleScene.swift; sourceTree = "<group>"; };
+		8309EE2A9E182598DE9C1F9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		85505B427F6444E245A5261A /* swing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = swing.wav; sourceTree = "<group>"; };
+		91231E3948C1D3A630545892 /* DuelClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuelClient.swift; sourceTree = "<group>"; };
+		9EB49D4F7E42A6430963B41C /* AudioEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioEngine.swift; sourceTree = "<group>"; };
+		A4F5DA1421FAA8D489101216 /* seraph-6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seraph-6.png"; sourceTree = "<group>"; };
+		B44049B45BBAAD0794F84068 /* AzureParadox.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AzureParadox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B497223A248A1C6F1A026BFA /* lyra-6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lyra-6.png"; sourceTree = "<group>"; };
+		B738001436AA4EF2108F1C99 /* battle.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = battle.wav; sourceTree = "<group>"; };
+		B8505F14778F2A91FC55967C /* lyra-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lyra-0.png"; sourceTree = "<group>"; };
+		B9282A309038735C8501989A /* lyra-7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lyra-7.png"; sourceTree = "<group>"; };
+		BA0400FE033FA345C7230EA1 /* seraph-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seraph-0.png"; sourceTree = "<group>"; };
+		C2456B26A3F2C11D18A36C06 /* block.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = block.wav; sourceTree = "<group>"; };
+		CFB86A45EC018673F57392D8 /* lyra-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lyra-2.png"; sourceTree = "<group>"; };
+		D5C1A48C25ACD60E3757ADEA /* seraph-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seraph-4.png"; sourceTree = "<group>"; };
+		DACD0E500832F2A1BFA88143 /* lyra-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lyra-5.png"; sourceTree = "<group>"; };
+		DB9982155397B6E8451AE62F /* seraph-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seraph-2.png"; sourceTree = "<group>"; };
+		DF592F5E892C7EFE7EF3DA70 /* celestial-stage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "celestial-stage.png"; sourceTree = "<group>"; };
+		F7D219994599BB169BDB7CC6 /* lyra-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lyra-3.png"; sourceTree = "<group>"; };
+		FD00B5B843478823AEE2232A /* seraph-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "seraph-3.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		175A406E1B876F4C42320BC1 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				9EB49D4F7E42A6430963B41C /* AudioEngine.swift */,
+				707E70563ACBD7A08D46061B /* AzureParadoxApp.swift */,
+				81126A520EAA26D92CB539A7 /* BattleScene.swift */,
+				91231E3948C1D3A630545892 /* DuelClient.swift */,
+				8309EE2A9E182598DE9C1F9A /* Info.plist */,
+				3FC12CE1B93E11F50C48A207 /* Models.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		1DB307EE262E2705316AEF12 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B44049B45BBAAD0794F84068 /* AzureParadox.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		720EC1B7C2F1EF97D44A1FD3 = {
+			isa = PBXGroup;
+			children = (
+				175A406E1B876F4C42320BC1 /* App */,
+				F0781D187752F0A6ABE9571D /* Resources */,
+				1DB307EE262E2705316AEF12 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		F0781D187752F0A6ABE9571D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B738001436AA4EF2108F1C99 /* battle.wav */,
+				C2456B26A3F2C11D18A36C06 /* block.wav */,
+				DF592F5E892C7EFE7EF3DA70 /* celestial-stage.png */,
+				491935CD38DAC5FF9F7F72A8 /* hit.wav */,
+				B8505F14778F2A91FC55967C /* lyra-0.png */,
+				093663B6E8ADE01EE06BD003 /* lyra-1.png */,
+				CFB86A45EC018673F57392D8 /* lyra-2.png */,
+				F7D219994599BB169BDB7CC6 /* lyra-3.png */,
+				497438E526CA28860A143975 /* lyra-4.png */,
+				DACD0E500832F2A1BFA88143 /* lyra-5.png */,
+				B497223A248A1C6F1A026BFA /* lyra-6.png */,
+				B9282A309038735C8501989A /* lyra-7.png */,
+				BA0400FE033FA345C7230EA1 /* seraph-0.png */,
+				397EBDB3466A0DB23B81C912 /* seraph-1.png */,
+				DB9982155397B6E8451AE62F /* seraph-2.png */,
+				FD00B5B843478823AEE2232A /* seraph-3.png */,
+				D5C1A48C25ACD60E3757ADEA /* seraph-4.png */,
+				69B29016D93A62B7B43D0785 /* seraph-5.png */,
+				A4F5DA1421FAA8D489101216 /* seraph-6.png */,
+				284DAF4C7207EA2E219CB108 /* seraph-7.png */,
+				7509CEF51A3ED52C4129B89A /* super.wav */,
+				85505B427F6444E245A5261A /* swing.wav */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		711426E76E54FD86E16AA97A /* AzureParadox */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5F994312131556FD3F9B385E /* Build configuration list for PBXNativeTarget "AzureParadox" */;
+			buildPhases = (
+				349C8DCD249F9195E09641D6 /* Sources */,
+				F2C845A6C78A04A5A476397D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AzureParadox;
+			packageProductDependencies = (
+			);
+			productName = AzureParadox;
+			productReference = B44049B45BBAAD0794F84068 /* AzureParadox.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E8BAF9676AF7DEA2BB30203F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 91F9D37DCE5EAED82FF6ADD5 /* Build configuration list for PBXProject "AzureParadox" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 720EC1B7C2F1EF97D44A1FD3;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1DB307EE262E2705316AEF12 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				711426E76E54FD86E16AA97A /* AzureParadox */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F2C845A6C78A04A5A476397D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4992088485C4E7F7B551D78F /* battle.wav in Resources */,
+				A10C5792D3C69FBD39728D3C /* block.wav in Resources */,
+				95CB4AABEA5143DDFC33CED2 /* celestial-stage.png in Resources */,
+				10900491F6D403E0E0AC2DE5 /* hit.wav in Resources */,
+				3AA021CEE246678F5B1CD4D6 /* lyra-0.png in Resources */,
+				1452E95E6DECBC27D2CF5268 /* lyra-1.png in Resources */,
+				BDC729B892BA5C9FA19CBD31 /* lyra-2.png in Resources */,
+				790213010E4E85B7C4347440 /* lyra-3.png in Resources */,
+				F4DAF32E040BC315A4EC0593 /* lyra-4.png in Resources */,
+				96636745E0C2BAFACE288C03 /* lyra-5.png in Resources */,
+				3FF13EB92C83DC38CE82CFBC /* lyra-6.png in Resources */,
+				89AB27915F2BE7C893B6C250 /* lyra-7.png in Resources */,
+				5725A9362036ECB7C8D57920 /* seraph-0.png in Resources */,
+				1B788098834AEBCCAAD1055D /* seraph-1.png in Resources */,
+				5DFFB29C2C36374DE2D3D2D9 /* seraph-2.png in Resources */,
+				315F410AC636FF04A793EC8E /* seraph-3.png in Resources */,
+				CE122A70766E0D2053A8CAB8 /* seraph-4.png in Resources */,
+				EB47B475602774A2BBB53488 /* seraph-5.png in Resources */,
+				1AAF9BA093C44E97FF1093D3 /* seraph-6.png in Resources */,
+				F0FF20D30348BA9D7F5924F8 /* seraph-7.png in Resources */,
+				13C604014E736B9D063CF861 /* super.wav in Resources */,
+				3F12A3BA438AB4F719C8C377 /* swing.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		349C8DCD249F9195E09641D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				538032213767B5CF94108ABE /* AudioEngine.swift in Sources */,
+				E1B7BCB15C8ADFABF85C4CA5 /* AzureParadoxApp.swift in Sources */,
+				2372B6C1A3B90E76FCFB9BCC /* BattleScene.swift in Sources */,
+				9F65694E52AE51E6599BD926 /* DuelClient.swift in Sources */,
+				01B8AB55B20A2709F0B96B1D /* Models.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		91023D45F86E2DBF268807A2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Azure Paradox";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A47DEC8F929D439DB7864222 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Azure Paradox";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B6A2C79F714CAFF606A981E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.azureparadox.duel;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E57DFDFF154B17197A4F78E4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = ai.azureparadox.duel;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5F994312131556FD3F9B385E /* Build configuration list for PBXNativeTarget "AzureParadox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E57DFDFF154B17197A4F78E4 /* Debug */,
+				B6A2C79F714CAFF606A981E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		91F9D37DCE5EAED82FF6ADD5 /* Build configuration list for PBXProject "AzureParadox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A47DEC8F929D439DB7864222 /* Debug */,
+				91023D45F86E2DBF268807A2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E8BAF9676AF7DEA2BB30203F /* Project object */;
+}
