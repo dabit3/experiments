@@ -1,0 +1,432 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04C7837230CF3F906B90C662 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52EE43329EFCB8A4BCEEDE82 /* GameView.swift */; };
+		4C7AFC2A0DE771BF19677678 /* BentoCircuitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F714A1A8AFEABD853C2E347D /* BentoCircuitApp.swift */; };
+		7CF2E57F522460F942F0EE55 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D369DB5E646A79B9BBB90706 /* ResultView.swift */; };
+		8F29D67729B1966A8675455F /* BentoCircuitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F997B7921C33DC7AAC955E /* BentoCircuitTests.swift */; };
+		9F6461DDD274CACFA8B32A99 /* Art.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA244C79E060856CAB5BCD36 /* Art.swift */; };
+		A6363486DBDF2830BCBF3C46 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6E27E7131B885D3415FD736 /* LaunchScreen.storyboard */; };
+		C7D8AE73DBEB5E0822DCDFDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AC7F426763D2336C9258C61 /* Assets.xcassets */; };
+		EFD1107061FCB2DE0DFE589F /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6067F66CFC42F21AAC8CB5EE /* GameRules.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DE65B5C21F2E8C373397AE3F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A84354ACE3470AC64EF512CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C1DE1CC7D50EF6DE6FA29166;
+			remoteInfo = BentoCircuit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		04F997B7921C33DC7AAC955E /* BentoCircuitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BentoCircuitTests.swift; sourceTree = "<group>"; };
+		0AC7F426763D2336C9258C61 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		52EE43329EFCB8A4BCEEDE82 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		6067F66CFC42F21AAC8CB5EE /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
+		6ECDDAF40FCD24E2CAFE69A1 /* BentoCircuit.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = BentoCircuit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C2134D8BB07336265FA34B5 /* BentoCircuitTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BentoCircuitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA244C79E060856CAB5BCD36 /* Art.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Art.swift; sourceTree = "<group>"; };
+		D369DB5E646A79B9BBB90706 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		D6E27E7131B885D3415FD736 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F714A1A8AFEABD853C2E347D /* BentoCircuitApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BentoCircuitApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1BBBD1A989806934B128A69F /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				BA244C79E060856CAB5BCD36 /* Art.swift */,
+				F714A1A8AFEABD853C2E347D /* BentoCircuitApp.swift */,
+				6067F66CFC42F21AAC8CB5EE /* GameRules.swift */,
+				52EE43329EFCB8A4BCEEDE82 /* GameView.swift */,
+				D6E27E7131B885D3415FD736 /* LaunchScreen.storyboard */,
+				D369DB5E646A79B9BBB90706 /* ResultView.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		EAE076E171B4951B1CA8EAFE /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				04F997B7921C33DC7AAC955E /* BentoCircuitTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		EDD20E7D0A75C09D5046A447 = {
+			isa = PBXGroup;
+			children = (
+				0AC7F426763D2336C9258C61 /* Assets.xcassets */,
+				1BBBD1A989806934B128A69F /* Sources */,
+				EAE076E171B4951B1CA8EAFE /* Tests */,
+				FDE200BB8DDF95C7155D6E44 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FDE200BB8DDF95C7155D6E44 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6ECDDAF40FCD24E2CAFE69A1 /* BentoCircuit.app */,
+				9C2134D8BB07336265FA34B5 /* BentoCircuitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9CB9000F3F5236F2657C41F5 /* BentoCircuitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5B68B4282016147729DAE777 /* Build configuration list for PBXNativeTarget "BentoCircuitTests" */;
+			buildPhases = (
+				1049DDF8B14030604E00F2B8 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9F1C3AF8B1FB29549AF24C04 /* PBXTargetDependency */,
+			);
+			name = BentoCircuitTests;
+			packageProductDependencies = (
+			);
+			productName = BentoCircuitTests;
+			productReference = 9C2134D8BB07336265FA34B5 /* BentoCircuitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C1DE1CC7D50EF6DE6FA29166 /* BentoCircuit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F54E3F48AB6CEABE2857E3FF /* Build configuration list for PBXNativeTarget "BentoCircuit" */;
+			buildPhases = (
+				8F5DD3239E78938A67230D23 /* Sources */,
+				13B0B3B87434A8AFF498D2EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BentoCircuit;
+			packageProductDependencies = (
+			);
+			productName = BentoCircuit;
+			productReference = 6ECDDAF40FCD24E2CAFE69A1 /* BentoCircuit.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A84354ACE3470AC64EF512CC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = AFCF69C5D56A78C04E480809 /* Build configuration list for PBXProject "BentoCircuit" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = EDD20E7D0A75C09D5046A447;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = FDE200BB8DDF95C7155D6E44 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C1DE1CC7D50EF6DE6FA29166 /* BentoCircuit */,
+				9CB9000F3F5236F2657C41F5 /* BentoCircuitTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		13B0B3B87434A8AFF498D2EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C7D8AE73DBEB5E0822DCDFDD /* Assets.xcassets in Resources */,
+				A6363486DBDF2830BCBF3C46 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1049DDF8B14030604E00F2B8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F29D67729B1966A8675455F /* BentoCircuitTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8F5DD3239E78938A67230D23 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F6461DDD274CACFA8B32A99 /* Art.swift in Sources */,
+				4C7AFC2A0DE771BF19677678 /* BentoCircuitApp.swift in Sources */,
+				EFD1107061FCB2DE0DFE589F /* GameRules.swift in Sources */,
+				04C7837230CF3F906B90C662 /* GameView.swift in Sources */,
+				7CF2E57F522460F942F0EE55 /* ResultView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9F1C3AF8B1FB29549AF24C04 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C1DE1CC7D50EF6DE6FA29166 /* BentoCircuit */;
+			targetProxy = DE65B5C21F2E8C373397AE3F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0B3EEE6D7427C66E725AB114 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.bentocircuit.BentoCircuitTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BentoCircuit.app/BentoCircuit";
+			};
+			name = Release;
+		};
+		5561D7984049E963296A1AA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.bentocircuit.BentoCircuit;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7BAF61B365B4FF8F332F8A4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.bentocircuit.BentoCircuitTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BentoCircuit.app/BentoCircuit";
+			};
+			name = Debug;
+		};
+		A37892F2AF22221DA49CE6DF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.bentocircuit.BentoCircuit;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AA092E4D84D397CFD26BAD89 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bento Circuit";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		FBD692AA7A1D9A94A9E1BAE9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Bento Circuit";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5B68B4282016147729DAE777 /* Build configuration list for PBXNativeTarget "BentoCircuitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7BAF61B365B4FF8F332F8A4B /* Debug */,
+				0B3EEE6D7427C66E725AB114 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AFCF69C5D56A78C04E480809 /* Build configuration list for PBXProject "BentoCircuit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBD692AA7A1D9A94A9E1BAE9 /* Debug */,
+				AA092E4D84D397CFD26BAD89 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F54E3F48AB6CEABE2857E3FF /* Build configuration list for PBXNativeTarget "BentoCircuit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A37892F2AF22221DA49CE6DF /* Debug */,
+				5561D7984049E963296A1AA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A84354ACE3470AC64EF512CC /* Project object */;
+}
