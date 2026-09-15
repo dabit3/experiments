@@ -49,6 +49,7 @@ export default function App() {
   const [tool, setTool] = useState<Tool>('select')
   const [shading, setShading] = useState<Shading>('material')
   const [camera, setCamera] = useState<CameraBookmark>(defaultCameras[0])
+  const [activeCamera, setActiveCamera] = useState<CameraBookmark>(defaultCameras[0])
   const [grid, setGrid] = useState(true)
   const [sidebar, setSidebar] = useState(false)
   const [properties, setProperties] = useState<'object' | 'material' | 'render'>('object')
@@ -68,6 +69,9 @@ export default function App() {
   const view = useRef<ViewportHandle>(null)
   const fileInput = useRef<HTMLInputElement>(null)
   const dialogRef = useRef<HTMLDialogElement>(null)
+  const chooseCamera = (value: CameraBookmark) => { setCamera({ ...value }); setActiveCamera(value) }
+  const resetCamera = () => chooseCamera(defaultCameras[0])
+  const cameraIndex = project.cameras.findIndex(c => c.position.every((v, i) => Math.abs(v - activeCamera.position[i]) < 0.001) && c.target.every((v, i) => Math.abs(v - activeCamera.target[i]) < 0.001))
   const edit = (next: Project) => { dispatch({ type: 'edit', project: next }); setSaved(false) }
   const patch = (id: string, value: Partial<Omit<SceneObject, 'id' | 'kind'>>) => { setAnimate(false); setPlaying(false); edit(updateObject(project, id, value)) }
   const select = (id: string | null) => { setSelected(id); setNumeric(null) }
@@ -169,7 +173,7 @@ export default function App() {
       if (key === 'n') setSidebar(v => !v)
       if (key === 'escape') { setTool('select'); setOpenMenu(null); setNumeric(null) }
       if (key === ' ') { event.preventDefault(); setAnimate(true); setPlaying(v => !v) }
-      if (key === 'home') { event.preventDefault(); view.current?.home() }
+      if (key === 'home') { event.preventDefault(); resetCamera() }
       if (key === 'f12') { event.preventDefault(); void renderImage() }
     }
     window.addEventListener('keydown', keydown)
@@ -217,7 +221,7 @@ export default function App() {
         <Menu label="Window" open={openMenu} setOpen={setOpenMenu}>
           <MenuItem label="Toggle viewport sidebar" hint="N" onClick={() => setSidebar(!sidebar)} />
           <MenuItem label="Toggle grid overlay" onClick={() => setGrid(!grid)} />
-          <MenuItem label="Frame whole project" hint="Home" onClick={() => view.current?.home()} />
+          <MenuItem label="Frame whole project" hint="Home" onClick={resetCamera} />
         </Menu>
         <button className="menu-trigger" onClick={() => setModal('help')}>Help</button>
       </nav>
@@ -240,9 +244,12 @@ export default function App() {
         <div className="viewport-header">
           <span className="editor-icon"><Box size={15} /><ChevronDown size={9} /></span>
           <button className="mode-control" disabled title="V1 supports Object Mode; mesh edit mode is unavailable"><Box size={12} />Object Mode<ChevronDown size={10} /></button>
-          <Menu label="View" open={openMenu} setOpen={setOpenMenu}>{project.cameras.map((c, i) => <MenuItem key={i} label={c.name} onClick={() => setCamera(c)} />)}<div className="menu-divider" /><MenuItem label="Save current view" onClick={() => {
+          <Menu label="View" open={openMenu} setOpen={setOpenMenu}>{project.cameras.map((c, i) => <MenuItem key={i} label={c.name} onClick={() => chooseCamera(c)} />)}<div className="menu-divider" /><MenuItem label="Save current view" onClick={() => {
             const value = view.current?.bookmark()
-            if (value && project.cameras.length < 30) edit({ ...project, cameras: [...project.cameras, { ...value, name: `Saved view ${project.cameras.length - 3}` }] })
+            if (value && project.cameras.length < 30) {
+              edit({ ...project, cameras: [...project.cameras, { ...value, name: `Saved view ${project.cameras.length - 3}` }] })
+              setActiveCamera(value)
+            }
           }} /></Menu>
           <Menu label="Select" open={openMenu} setOpen={setOpenMenu}><MenuItem label="Deselect all" onClick={() => select(null)} /><MenuItem label="Select sofa" onClick={() => select('sofa')} /></Menu>
           <Menu label="Add" open={openMenu} setOpen={setOpenMenu}>{(['cube', 'sphere', 'cylinder', 'plant'] as const).map(k => <MenuItem key={k} label={k === 'plant' ? 'Plant · Strelitzia' : `Mesh · ${k[0].toUpperCase()}${k.slice(1)}`} onClick={() => add(k)} />)}</Menu>
@@ -258,7 +265,7 @@ export default function App() {
           </div>
         </div>
         <div className="viewport-body">
-          <Viewport ref={view} project={project} selected={selected} shading={shading} tool={tool} grid={grid} camera={camera} frame={frame} animate={animate} exposure={exposure} onSelect={select} onTransform={patch} onReady={() => setReady(true)} onError={setError} />
+          <Viewport ref={view} project={project} selected={selected} shading={shading} tool={tool} grid={grid} camera={camera} frame={frame} animate={animate} exposure={exposure} onSelect={select} onTransform={patch} onCameraChange={setActiveCamera} onReady={() => setReady(true)} onError={setError} />
           <div className="viewport-info"><span>User Perspective</span><span>({frame}) {project.name} <span className="orange">| {object?.name ?? 'No selection'}</span></span><span className="viewport-mode">{shading === 'material' ? 'Material Preview' : shading === 'solid' ? 'Solid' : 'Wireframe'}</span></div>
           <div className="tool-shelf">
             <IconButton label="Select (Esc)" active={tool === 'select'} onClick={() => { setTool('select'); setNumeric(null) }}><MousePointer2 /></IconButton>
@@ -268,7 +275,7 @@ export default function App() {
             <IconButton label="Rotate (R)" active={tool === 'rotate'} onClick={() => setTool('rotate')}><Rotate3D /></IconButton>
             <IconButton label="Scale (S)" active={tool === 'scale'} onClick={() => setTool('scale')}><Scaling /></IconButton>
             <span className="tool-separator" />
-            <IconButton label="Frame project (Home)" onClick={() => view.current?.home()}><Maximize /></IconButton>
+            <IconButton label="Frame project (Home)" onClick={resetCamera}><Maximize /></IconButton>
             <IconButton label="Add cube" onClick={() => add('cube')}><Box /></IconButton>
           </div>
           <div className="gizmo">
@@ -279,13 +286,13 @@ export default function App() {
               <circle cx="16" cy="60" r="10" fill="#92ba42" /><text x="16" y="64">Y</text>
               <circle cx="44" cy="45" r="5" fill="#7e827c" />
             </svg>
-            <IconButton label="Reset camera" onClick={() => view.current?.home()}><RotateCcw size={15} /></IconButton>
-            <IconButton label="Front camera" onClick={() => setCamera(defaultCameras[3])}><Camera size={15} /></IconButton>
+            <IconButton label="Reset camera" onClick={resetCamera}><RotateCcw size={15} /></IconButton>
+            <IconButton label="Front camera" onClick={() => chooseCamera(defaultCameras[3])}><Camera size={15} /></IconButton>
             <IconButton label="Toggle overlays" active={grid} onClick={() => setGrid(!grid)}><Grid2X2 size={15} /></IconButton>
           </div>
           {sidebar && <aside className="item-panel"><h3>Item <button onClick={() => setSidebar(false)} aria-label="Close item sidebar"><X size={13} /></button></h3><h4>Transform</h4>{object ? transformFields : <p>Select an object</p>}</aside>}
           <div className="scene-caption"><span className="caption-rule" /><div><strong>ATELIER <span>No. 04</span></strong><span>Residential study · Warm minimalism</span></div></div>
-          <div className="camera-selector"><Camera size={12} /><select aria-label="Saved camera" value={project.cameras.indexOf(camera)} onChange={event => setCamera(project.cameras[Number(event.target.value)])}><option value="-1" hidden>Custom view</option>{project.cameras.map((c, i) => <option key={i} value={i}>{c.name}</option>)}</select></div>
+          <div className="camera-selector"><Camera size={12} /><select aria-label="Saved camera" value={cameraIndex} onChange={event => chooseCamera(project.cameras[Number(event.target.value)])}><option value="-1" hidden>Custom view</option>{project.cameras.map((c, i) => <option key={i} value={i}>{c.name}</option>)}</select></div>
           {!ready && !error && <div className="loading-scene"><Aperture size={28} />Preparing atelier…</div>}
           {numeric && <div className="transform-hud"><Move size={13} /><strong>{numeric.mode}</strong><span>{numeric.axis === null ? 'Choose X / Y / Z' : ['X', 'Y', 'Z'][numeric.axis]}</span><b>{numeric.value || 'Type a value'}</b><kbd>Enter</kbd><span>confirm</span><kbd>Esc</kbd><span>cancel</span></div>}
         </div>
@@ -387,7 +394,7 @@ export default function App() {
     }} />
     <dialog ref={dialogRef} onCancel={() => setModal(null)} className={modal === 'render' ? 'render-dialog' : 'standard-dialog'}>
       <div className="dialog-header"><span>{modal === 'render' ? 'Render Result' : modal === 'reset' ? 'Open built-in loft' : 'Welcome to Polyn'}</span><button aria-label="Close dialog" onClick={() => setModal(null)}><X size={15} /></button></div>
-      {modal === 'render' && renderResult ? <><div className="render-meta"><span>Image Editor <ChevronRight size={11} />{project.name}</span><span>WebGL Studio · PNG</span></div><img src={renderResult.url} alt="Rendered architectural loft" /><div className="render-dialog-footer"><span>Current view · ACES Filmic</span><button className="primary-button" onClick={() => downloadFile(renderResult.blob, 'atelier-no-04-render.png')}><Download size={14} />Save image</button></div></> : modal === 'reset' ? <div className="dialog-content"><p>Open a fresh copy of Atelier No. 04? Your current edits can still be recovered with Undo.</p><div className="dialog-actions"><button onClick={() => setModal(null)}>Cancel</button><button className="primary-button" onClick={() => { edit(createProject()); setSelected('sofa'); setAnimate(false); setPlaying(false); setFrame(1); view.current?.home(); setModal(null) }}>Open loft</button></div></div> : <div className="dialog-content"><div className="help-brand"><Aperture size={32} /><h2>A space to make your own.</h2></div><p>A Blender-inspired architectural workspace. Select a piece, shape the scene, and find your light.</p><div className="shortcut-list">{[['G / R / S', 'Move, rotate or scale. Choose an axis, type a value, Enter.'], ['Shift D / Delete', 'Duplicate or delete the selected object.'], ['Ctrl Z / Ctrl Shift Z', 'Undo / redo your edits.'], ['I / Space', 'Insert a transform keyframe / play the timeline.'], ['N / Home', 'Toggle the item sidebar / frame the whole project.'], ['Ctrl S / F12', 'Save locally / render an actual PNG image.']].map(([key, text]) => <div key={key}><kbd>{key}</kbd><span>{text}</span></div>)}</div><p className="help-note">Projects autosave in this browser. Use File → Export project for a portable copy. This independent V1 uses Blender 4.2 manual references; it is not affiliated with Blender Foundation. Sculpting, UV editing, modifiers, Cycles and .blend files are outside its scope.</p><button className="primary-button" onClick={() => setModal(null)}>Back to atelier</button></div>}
+      {modal === 'render' && renderResult ? <><div className="render-meta"><span>Image Editor <ChevronRight size={11} />{project.name}</span><span>WebGL Studio · PNG</span></div><img src={renderResult.url} alt="Rendered architectural loft" /><div className="render-dialog-footer"><span>Current view · ACES Filmic</span><button className="primary-button" onClick={() => downloadFile(renderResult.blob, 'atelier-no-04-render.png')}><Download size={14} />Save image</button></div></> : modal === 'reset' ? <div className="dialog-content"><p>Open a fresh copy of Atelier No. 04? Your current edits can still be recovered with Undo.</p><div className="dialog-actions"><button onClick={() => setModal(null)}>Cancel</button><button className="primary-button" onClick={() => { edit(createProject()); setSelected('sofa'); setAnimate(false); setPlaying(false); setFrame(1); resetCamera(); setModal(null) }}>Open loft</button></div></div> : <div className="dialog-content"><div className="help-brand"><Aperture size={32} /><h2>A space to make your own.</h2></div><p>A Blender-inspired architectural workspace. Select a piece, shape the scene, and find your light.</p><div className="shortcut-list">{[['G / R / S', 'Move, rotate or scale. Choose an axis, type a value, Enter.'], ['Shift D / Delete', 'Duplicate or delete the selected object.'], ['Ctrl Z / Ctrl Shift Z', 'Undo / redo your edits.'], ['I / Space', 'Insert a transform keyframe / play the timeline.'], ['N / Home', 'Toggle the item sidebar / frame the whole project.'], ['Ctrl S / F12', 'Save locally / render an actual PNG image.']].map(([key, text]) => <div key={key}><kbd>{key}</kbd><span>{text}</span></div>)}</div><p className="help-note">Projects autosave in this browser. Use File → Export project for a portable copy. This independent V1 uses Blender 4.2 manual references; it is not affiliated with Blender Foundation. Sculpting, UV editing, modifiers, Cycles and .blend files are outside its scope.</p><button className="primary-button" onClick={() => setModal(null)}>Back to atelier</button></div>}
     </dialog>
   </div>
 }

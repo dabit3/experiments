@@ -25,6 +25,7 @@ interface Props {
   exposure: number
   onSelect: (id: string | null) => void
   onTransform: (id: string, transform: Pick<SceneObject, 'position' | 'rotation' | 'scale'>) => void
+  onCameraChange: (camera: CameraBookmark) => void
   onReady: () => void
   onError: (message: string) => void
 }
@@ -141,6 +142,9 @@ export default forwardRef<ViewportHandle, Props>(function Viewport(props, ref) {
     controls.maxPolarAngle = Math.PI * 0.49
     controls.mouseButtons = { LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN }
     controls.update()
+    controls.addEventListener('end', () => latest.current.onCameraChange({
+      name: 'Custom view', position: camera.position.toArray(), target: controls.target.toArray(),
+    }))
     const transform = new TransformControls(camera, renderer.domElement)
     transform.setSize(0.78)
     transform.setSpace('world')
