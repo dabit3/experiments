@@ -10,13 +10,36 @@ from the same deterministic terrain engine. No network, accounts or third-party 
 
 The interface uses the native Georgia serif family throughout, including controls, values,
 library, export and guide panels. A warm mineral palette, fine rules and flat selection
-indicators keep the editable landscape prominent. The scene uses matte teal water, limestone
-and moss surface colors, a thin graphite plinth and soft contact shadows.
+indicators keep the editable landscape prominent. The scene uses animated turquoise water,
+shoreline highlights, limestone and moss surface colors, a thin graphite plinth and soft
+contact shadows.
 
 Tool selection is marked by both a checkmark and a leading rule. View scale, elevation range,
 mesh resolution and storage scope are explicit. Buttons have at least 44-point targets;
 the tool inspector and sheets scroll when space is limited. Apple-owned alerts and share
 sheets retain their platform typography.
+
+## Landscape in motion
+
+**Landscape in motion** opens an 84-second, full-canvas native presentation. Six chapters
+grow a snow-capped island from the seabed, progressively cut a winding gorge, flood the valleys
+into fjords, form a caldera, separate an island chain and reveal its elevation contours.
+The camera continuously circles and changes elevation while the actual 6,561 mesh vertices
+and waterline evolve. Water has animated surface shading; the terrain shows shoreline accents.
+The large chapter captions and all metrics describe the current rendered mesh.
+
+- **Pause / Play** (Space) stops or resumes the terrain and camera; **Replay** restarts at the end.
+- Drag the timeline to inspect any frame. Chapter buttons pause at each chapter's midpoint.
+- **Keep & edit** makes the visible terrain your working document, as one undoable change.
+  You can then sculpt, save, reopen and export that exact mesh through the normal tools.
+- **Restore my landscape** restores your previous terrain, water, contours and view scale.
+  The original document stays on disk during the study, including after an interrupted app.
+- Leaving the app pauses the study. With Reduce Motion enabled, it starts paused, disables
+  water movement and holds the camera steady; manual playback and scrubbing remain available.
+
+This is a deterministic, artistic geological sequence using interpolated heightfields and
+an explicit progressing gorge mask. It is not a geophysical, erosion or fluid simulation.
+The sequence does not inject saved documents or play a prerendered video.
 
 ## Prerequisites
 
@@ -95,7 +118,10 @@ replace the active terrain but remain undoable.
 the property lists, and runs the terrain and studio-model Swift Testing suites. They check deterministic
 presets, brush support and clamping, smoothing, invalid inputs, undo/redo branching and
 capacity, serialization, mesh topology, monotonic inundation, and current/snapshot persistence
-under differing slider callback orders. The native app build also
+under differing slider callback orders. Journey tests additionally check continuous geometry
+and camera paths, actual uplift/carving/inundation, invalid timeline input, deterministic
+frames, cancellation, original-document protection, and a kept frame's undo/save/export path.
+The native app build also
 typechecks all SwiftUI, UIKit and SceneKit integration.
 
 To apply formatting intentionally:
@@ -106,6 +132,8 @@ xcrun swift-format format --in-place --recursive App Sources Tests Package.swift
 
 UI acceptance requires native computer input in an iPad Simulator: sculpt, carve, smooth,
 flood, orbit, zoom, toggle contours, undo/redo, save/reopen, both exports, and relaunch.
+The motion demo also requires watching all six chapters, pausing/resuming, seeking,
+replaying, restoring the original document and keeping a frame for further editing.
 Recordings/screenshots and an executed test report are delivered as session attachments,
 not committed source assets.
 

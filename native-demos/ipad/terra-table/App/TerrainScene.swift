@@ -27,6 +27,7 @@ struct TerrainCanvas: UIViewRepresentable {
     view.backgroundColor = UIColor(red: 0.935, green: 0.935, blue: 0.910, alpha: 1)
     view.antialiasingMode = .multisampling4X
     view.preferredFramesPerSecond = 30
+    view.isPlaying = true
     view.autoenablesDefaultLighting = false
     view.accessibilityLabel = "Interactive terrain. Drag to sculpt; select Orbit to rotate."
     view.accessibilityIdentifier = "terrainCanvas"
@@ -49,6 +50,8 @@ struct TerrainCanvas: UIViewRepresentable {
     let skirtNode = SCNNode()
     let cameraNode = SCNNode()
     let cursorNode = SCNNode()
+    let waterMaterial = SCNMaterial()
+    let terrainMaterial = SCNMaterial()
     var lastRevision = -1
     var lastContours = false
     var lastHome = 0
@@ -102,17 +105,51 @@ struct TerrainCanvas: UIViewRepresentable {
       scene.rootNode.addChildNode(shadowNode)
 
       let water = SCNBox(width: 10.02, height: 0.035, length: 10.02, chamferRadius: 0)
-      let waterMaterial = SCNMaterial()
-      waterMaterial.diffuse.contents = UIColor(red: 0.40, green: 0.62, blue: 0.61, alpha: 1)
+      waterMaterial.diffuse.contents = UIColor(red: 0.25, green: 0.61, blue: 0.60, alpha: 1)
       waterMaterial.metalness.contents = 0.12
       waterMaterial.roughness.contents = 0.28
       waterMaterial.lightingModel = .constant
+      waterMaterial.shaderModifiers = [
+        .surface: """
+        #pragma arguments
+        float ambientMotion;
+        float studyTime;
+        #pragma body
+        float t = u_time * ambientMotion + studyTime;
+        float2 p = _surface.diffuseTexcoord * 10.0;
+        float swell = sin(p.x * 2.1 + p.y * 1.3 + t * 0.45)
+                    + sin(p.y * 3.7 - p.x * 0.8 - t * 0.33);
+        float detail = sin(p.x * 21.0 + sin(p.y * 7.0 + t * 0.4) * 2.0 + t)
+                     * sin(p.y * 17.0 - p.x * 3.0 - t * 0.7);
+        float glint = pow(max(0.0, detail), 12.0) * 0.10;
+        _surface.diffuse.rgb += float3(0.022, 0.035, 0.031) * swell + glint;
+        """
+      ]
       let waterSide = SCNMaterial()
       waterSide.diffuse.contents = UIColor(red: 0.29, green: 0.49, blue: 0.48, alpha: 1)
       waterSide.lightingModel = .constant
       water.materials = [waterSide, waterSide, waterSide, waterSide, waterMaterial, waterSide]
       waterNode.geometry = water
       scene.rootNode.addChildNode(waterNode)
+
+      terrainMaterial.diffuse.contents = UIColor.white
+      terrainMaterial.roughness.contents = 0.95
+      terrainMaterial.lightingModel = .lambert
+      terrainMaterial.shaderModifiers = [
+        .surface: """
+        #pragma arguments
+        float waterLevel;
+        float contourAmount;
+        #pragma body
+        float elevation = _surface.diffuseTexcoord.x;
+        float level = elevation / 0.15;
+        float line = 1.0 - smoothstep(0.025, 0.075, abs(fract(level) - 0.5));
+        _surface.diffuse.rgb = mix(_surface.diffuse.rgb,
+          float3(0.12, 0.22, 0.18), line * contourAmount * 0.8);
+        float shore = 1.0 - smoothstep(0.015, 0.055, abs(elevation - waterLevel));
+        _surface.diffuse.rgb = mix(_surface.diffuse.rgb, float3(0.85, 0.92, 0.80), shore * 0.7);
+        """
+      ]
 
       let ambient = SCNNode()
       ambient.light = SCNLight()
@@ -168,6 +205,17 @@ struct TerrainCanvas: UIViewRepresentable {
         pitch = 0.66
         lastHome = model.homeRevision
       }
+      terrainMaterial.setValue(model.terrain.water * 3, forKey: "waterLevel")
+      terrainMaterial.setValue(
+        model.journeyActive ? model.journeyFrame.contours : (model.contours ? Float(1) : Float(0)),
+        forKey: "contourAmount")
+      waterMaterial.setValue(
+        model.reducedMotion || model.journeyActive ? Float(0) : Float(1), forKey: "ambientMotion")
+      waterMaterial.setValue(
+        model.journeyActive && !model.reducedMotion ? Float(model.journeyTime) : Float(0),
+        forKey: "studyTime")
+      view?.rendersContinuously =
+        !model.reducedMotion && (!model.journeyActive || model.journeyPlaying)
       (waterNode.geometry as? SCNBox)?.height = CGFloat(model.terrain.water * 3 + 0.02)
       waterNode.position.y = (model.terrain.water * 3 - 0.02) / 2
       waterNode.isHidden = model.terrain.water < 0.02
@@ -176,14 +224,18 @@ struct TerrainCanvas: UIViewRepresentable {
 
     func updateCamera() {
       let distance: Float = 20
+      let journey = model.journeyFrame
+      let cameraYaw = model.journeyActive && !model.reducedMotion ? journey.yaw : yaw
+      let cameraPitch = model.journeyActive && !model.reducedMotion ? journey.pitch : pitch
       cameraNode.position = SCNVector3(
-        sin(yaw) * cos(pitch) * distance,
-        sin(pitch) * distance + 0.5,
-        cos(yaw) * cos(pitch) * distance)
+        sin(cameraYaw) * cos(cameraPitch) * distance,
+        sin(cameraPitch) * distance + 0.5,
+        cos(cameraYaw) * cos(cameraPitch) * distance)
       cameraNode.look(
         at: SCNVector3(0, 0.5, 0), up: SCNVector3(0, 1, 0),
         localFront: SCNVector3(0, 0, -1))
-      cameraNode.camera?.orthographicScale = Double(7.4 / model.zoom)
+      let scale = model.journeyActive ? journey.scale : model.zoom
+      cameraNode.camera?.orthographicScale = Double(7.4 / scale)
     }
 
     func rebuildMesh() {
@@ -224,24 +276,12 @@ struct TerrainCanvas: UIViewRepresentable {
           SCNGeometrySource(textureCoordinates: coordinates), colorSource,
         ],
         elements: [SCNGeometryElement(indices: indices, primitiveType: .triangles)])
-      let material = SCNMaterial()
-      material.diffuse.contents = UIColor.white
-      material.roughness.contents = 0.95
-      material.lightingModel = .lambert
-      if model.contours {
-        material.shaderModifiers = [
-          .surface: """
-            float level = _surface.diffuseTexcoord.x / 0.15;
-          float line = 1.0 - smoothstep(0.025, 0.075, abs(fract(level) - 0.5));
-          _surface.diffuse.rgb = mix(_surface.diffuse.rgb, float3(0.14, 0.22, 0.17), line * 0.72);
-          """
-        ]
-      }
-      geometry.materials = [material]
+      geometry.materials = [terrainMaterial]
       terrainNode.geometry = geometry
 
       var skirtVertices: [SCNVector3] = []
       var skirtIndices: [Int32] = []
+      var skirtCoordinates: [CGPoint] = []
       var edge: [Int] = []
       for x in 0..<n { edge.append(x) }
       for z in 1..<n { edge.append(z * n + n - 1) }
@@ -251,6 +291,8 @@ struct TerrainCanvas: UIViewRepresentable {
         let vertex = vertices[index]
         skirtVertices.append(vertex)
         skirtVertices.append(SCNVector3(vertex.x, -0.02, vertex.z))
+        skirtCoordinates.append(CGPoint(x: CGFloat(vertex.x + vertex.z), y: CGFloat(vertex.y)))
+        skirtCoordinates.append(CGPoint(x: CGFloat(vertex.x + vertex.z), y: -0.02))
       }
       for i in 0..<edge.count {
         let a = Int32(i * 2)
@@ -258,10 +300,20 @@ struct TerrainCanvas: UIViewRepresentable {
         skirtIndices.append(contentsOf: [a, b, a + 1, a + 1, b, b + 1])
       }
       let skirt = SCNGeometry(
-        sources: [SCNGeometrySource(vertices: skirtVertices)],
+        sources: [
+          SCNGeometrySource(vertices: skirtVertices),
+          SCNGeometrySource(textureCoordinates: skirtCoordinates),
+        ],
         elements: [SCNGeometryElement(indices: skirtIndices, primitiveType: .triangles)])
       skirt.firstMaterial?.diffuse.contents = UIColor(red: 0.45, green: 0.44, blue: 0.35, alpha: 1)
       skirt.firstMaterial?.isDoubleSided = true
+      skirt.firstMaterial?.shaderModifiers = [
+        .surface: """
+        float2 p = _surface.diffuseTexcoord;
+        float strata = sin(p.y * 55.0 + sin(p.x * 1.4) * 0.8);
+        _surface.diffuse.rgb *= 0.88 + strata * 0.12;
+        """
+      ]
       skirtNode.geometry = skirt
     }
 
@@ -310,6 +362,7 @@ struct TerrainCanvas: UIViewRepresentable {
     }
 
     @objc func drag(_ gesture: UIPanGestureRecognizer) {
+      guard !model.journeyActive else { return }
       let position = gesture.location(in: view)
       if gesture.state == .began {
         lastDrag = position
@@ -334,7 +387,9 @@ struct TerrainCanvas: UIViewRepresentable {
     }
 
     @objc func tap(_ gesture: UITapGestureRecognizer) {
-      guard model.brush != .orbit, let point = terrainPoint(gesture.location(in: view)) else {
+      guard !model.journeyActive, model.brush != .orbit,
+        let point = terrainPoint(gesture.location(in: view))
+      else {
         return
       }
       model.begin()
@@ -343,6 +398,7 @@ struct TerrainCanvas: UIViewRepresentable {
     }
 
     @objc func pinch(_ gesture: UIPinchGestureRecognizer) {
+      guard !model.journeyActive else { return }
       if gesture.state == .began { pinchStart = model.zoom }
       model.zoom = max(0.7, min(1.8, pinchStart * Float(gesture.scale)))
       updateCamera()

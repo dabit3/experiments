@@ -42,6 +42,7 @@ private enum Type {
 }
 
 struct StudioView: View {
+  @Environment(\.accessibilityReduceMotion) private var reduceMotion
   @StateObject private var model = StudioModel()
   @StateObject private var capture = SceneCapture()
   @State private var libraryOpen = false
@@ -53,14 +54,20 @@ struct StudioView: View {
   var body: some View {
     GeometryReader { geometry in
       VStack(spacing: 0) {
-        header
+        if model.journeyActive {
+          journeyHeader
+        } else {
+          header
+        }
         rule
         HStack(spacing: 0) {
-          sidebar.frame(width: geometry.size.width > 1100 ? 264 : 238)
-          Rectangle().fill(Palette.line).frame(width: 1)
+          if !model.journeyActive {
+            sidebar.frame(width: geometry.size.width > 1100 ? 264 : 238)
+            Rectangle().fill(Palette.line).frame(width: 1)
+          }
           workspace
         }
-        footer
+        if !model.journeyActive { footer }
       }
       .background(Palette.paper)
       .foregroundStyle(Palette.ink)
@@ -70,6 +77,11 @@ struct StudioView: View {
     .sheet(isPresented: $libraryOpen) { library }
     .sheet(isPresented: $exportOpen) { exportSheet }
     .sheet(isPresented: $helpOpen) { guide }
+    .onAppear { model.reducedMotion = reduceMotion }
+    .onChange(of: reduceMotion) { _, value in
+      model.reducedMotion = value
+      if value { model.pauseJourney() }
+    }
     .alert(
       "Unable to complete the operation",
       isPresented: Binding(
@@ -83,6 +95,7 @@ struct StudioView: View {
     .onReceive(
       NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
     ) { _ in
+      model.pauseJourney()
       model.end()
       model.persist()
     }
@@ -141,6 +154,28 @@ struct StudioView: View {
     VStack(spacing: 0) {
       ScrollView {
         VStack(alignment: .leading, spacing: 22) {
+          Button {
+            model.startJourney()
+          } label: {
+            VStack(alignment: .leading, spacing: 12) {
+              HStack {
+                Text("Landscape in motion").font(Type.emphasis(15))
+                Spacer(minLength: 0)
+                Image(systemName: "play.fill").font(.system(size: 12))
+              }
+              Text("Mountains, fjords & islands.\nAn 84-second live study.")
+                .font(Type.text(12)).lineSpacing(4)
+                .foregroundStyle(Palette.paper.opacity(0.82))
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundStyle(Palette.paper)
+            .background(Palette.green)
+            .contentShape(Rectangle())
+          }
+          .buttonStyle(.plain)
+          .accessibilityLabel("Play landscape journey")
+          .accessibilityIdentifier("playJourney")
           VStack(alignment: .leading, spacing: 14) {
             sectionHeading("Terrain tools")
             VStack(spacing: 2) {
@@ -243,53 +278,189 @@ struct StudioView: View {
 
   private var workspace: some View {
     VStack(spacing: 0) {
-      documentHeader
+      if !model.journeyActive { documentHeader }
       ZStack {
         TerrainCanvas(model: model, capture: capture)
-        VStack {
-          Spacer()
-          HStack(alignment: .bottom, spacing: 16) {
-            VStack(alignment: .leading, spacing: 6) {
-              Text(model.contours ? "Elevation contours" : "Natural surface")
-                .font(Type.text(13))
-              Text(
-                model.contours ? "50 m intervals · illustrative units" : "Moss, limestone & water"
-              )
-              .font(Type.italic(11)).foregroundStyle(Palette.muted)
+        if model.journeyActive {
+          journeyOverlay
+        } else {
+          VStack {
+            Spacer()
+            HStack(alignment: .bottom, spacing: 16) {
+              VStack(alignment: .leading, spacing: 6) {
+                Text(model.contours ? "Elevation contours" : "Natural surface")
+                  .font(Type.text(13))
+                Text(
+                  model.contours ? "50 m intervals · illustrative units" : "Moss, limestone & water"
+                )
+                .font(Type.italic(11)).foregroundStyle(Palette.muted)
+              }
+              .padding(12)
+              .background(Palette.studio.opacity(0.94))
+              .allowsHitTesting(false)
+              Spacer(minLength: 0)
+              HStack(spacing: 0) {
+                iconButton("minus", "Zoom out", disabled: model.zoom <= 0.7) {
+                  model.zoom = max(0.7, model.zoom - 0.15)
+                  model.status = "View scale \(Int(model.zoom * 100))%"
+                }
+                Text("\(Int(model.zoom * 100))%").font(Type.text(12)).monospacedDigit()
+                  .frame(minWidth: 40)
+                  .accessibilityLabel("View scale \(Int(model.zoom * 100)) percent")
+                iconButton("plus", "Zoom in", disabled: model.zoom >= 1.8) {
+                  model.zoom = min(1.8, model.zoom + 0.15)
+                  model.status = "View scale \(Int(model.zoom * 100))%"
+                }
+                Rectangle().fill(Palette.line).frame(width: 1, height: 20)
+                iconButton("viewfinder", "Reset view") {
+                  model.zoom = 1
+                  model.homeRevision += 1
+                  model.status = "Studio view restored · 100%"
+                }
+              }
+              .background(Palette.paper)
+              .overlay(Rectangle().strokeBorder(Palette.line, lineWidth: 0.5))
             }
-            .padding(12)
-            .background(Palette.studio.opacity(0.94))
-            .allowsHitTesting(false)
-            Spacer(minLength: 0)
-            HStack(spacing: 0) {
-              iconButton("minus", "Zoom out", disabled: model.zoom <= 0.7) {
-                model.zoom = max(0.7, model.zoom - 0.15)
-                model.status = "View scale \(Int(model.zoom * 100))%"
-              }
-              Text("\(Int(model.zoom * 100))%").font(Type.text(12)).monospacedDigit()
-                .frame(minWidth: 40)
-                .accessibilityLabel("View scale \(Int(model.zoom * 100)) percent")
-              iconButton("plus", "Zoom in", disabled: model.zoom >= 1.8) {
-                model.zoom = min(1.8, model.zoom + 0.15)
-                model.status = "View scale \(Int(model.zoom * 100))%"
-              }
-              Rectangle().fill(Palette.line).frame(width: 1, height: 20)
-              iconButton("viewfinder", "Reset view") {
-                model.zoom = 1
-                model.homeRevision += 1
-                model.status = "Studio view restored · 100%"
-              }
-            }
-            .background(Palette.paper)
-            .overlay(Rectangle().strokeBorder(Palette.line, lineWidth: 0.5))
+            .padding(.horizontal, 22)
+            .padding(.bottom, 18)
           }
-          .padding(.horizontal, 22)
-          .padding(.bottom, 18)
         }
       }
-      waterPanel
+      if model.journeyActive {
+        journeyTimeline
+      } else {
+        waterPanel
+      }
     }
     .background(Palette.studio)
+  }
+
+  private var journeyHeader: some View {
+    HStack(spacing: 16) {
+      VStack(alignment: .leading, spacing: 3) {
+        Text("Terra Table").font(Type.emphasis(25)).tracking(-1)
+        Text("Landscape in motion").font(Type.italic(12)).foregroundStyle(Palette.muted)
+      }
+      Spacer(minLength: 8)
+      Button {
+        if model.journeyPlaying { model.pauseJourney() } else { model.playJourney() }
+      } label: {
+        HStack(spacing: 9) {
+          Image(systemName: model.journeyPlaying ? "pause.fill" : "play.fill")
+            .font(.system(size: 11))
+          Text(
+            model.journeyPlaying
+              ? "Pause" : model.journeyTime >= LandscapeJourney.duration ? "Replay" : "Play")
+        }
+      }
+      .buttonStyle(QuietButton())
+      .accessibilityIdentifier("journeyPlayback")
+      .keyboardShortcut(.space, modifiers: [])
+      Button("Restore my landscape") { model.finishJourney(keep: false) }
+        .buttonStyle(QuietButton())
+        .accessibilityIdentifier("restoreJourney")
+      Button("Keep & edit") { model.finishJourney(keep: true) }
+        .buttonStyle(FilledButton())
+        .accessibilityIdentifier("keepJourney")
+    }
+    .padding(.horizontal, 30)
+    .frame(minHeight: 78)
+  }
+
+  private var journeyOverlay: some View {
+    VStack(alignment: .leading, spacing: 0) {
+      HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 11) {
+          Text(
+            String(
+              format: "%02d / 06   —   %@",
+              LandscapeJourney.chapterIndex(at: model.journeyTime) + 1,
+              model.journeyChapter.label)
+          )
+          .font(Type.text(13)).foregroundStyle(Palette.muted)
+          Text(model.journeyChapter.title).font(Type.title(43)).tracking(-1.5)
+          Text(model.journeyChapter.detail)
+            .font(Type.italic(16)).foregroundStyle(Palette.muted)
+        }
+        .id(LandscapeJourney.chapterIndex(at: model.journeyTime))
+        .transition(.opacity)
+        .animation(
+          reduceMotion ? nil : .easeInOut(duration: 0.6),
+          value: LandscapeJourney.chapterIndex(at: model.journeyTime))
+        Spacer(minLength: 0)
+        VStack(alignment: .trailing, spacing: 8) {
+          Text(model.journeyPlaying ? "Live terrain" : "Study paused").font(Type.emphasis(13))
+          Text("6,561 vertices · native 3D").font(Type.text(12))
+            .foregroundStyle(Palette.muted)
+        }
+        .padding(.top, 5)
+      }
+      Spacer()
+      HStack(alignment: .bottom, spacing: 30) {
+        metric("\(model.terrain.summit) m", caption: "Summit")
+        metric("\(Int(model.terrain.water * 1000)) m", caption: "Waterline")
+        metric("\(model.terrain.landPercent)%", caption: "Dry land")
+        Spacer()
+        VStack(alignment: .trailing, spacing: 7) {
+          Text(model.journeyTime >= 70 ? "Elevation survey" : "Sculpted in real time")
+            .font(Type.text(14))
+          Text("Keep any frame. Make it your own.")
+            .font(Type.italic(12)).foregroundStyle(Palette.muted)
+        }
+      }
+    }
+    .padding(.horizontal, 38)
+    .padding(.top, 27)
+    .padding(.bottom, 25)
+    .allowsHitTesting(false)
+  }
+
+  private var journeyTimeline: some View {
+    VStack(spacing: 5) {
+      HStack(spacing: 20) {
+        Text("Time study").font(Type.italic(12)).foregroundStyle(Palette.muted)
+        Slider(
+          value: Binding(
+            get: { model.journeyTime },
+            set: { model.seekJourney(to: $0) }),
+          in: 0...LandscapeJourney.duration,
+          onEditingChanged: { editing in if editing { model.pauseJourney() } }
+        )
+        .accessibilityLabel("Journey timeline")
+        .accessibilityIdentifier("journeyTimeline")
+        Text(
+          String(
+            format: "%02d:%02d / 01:24", Int(model.journeyTime) / 60, Int(model.journeyTime) % 60)
+        )
+        .font(Type.text(13)).monospacedDigit().frame(width: 105, alignment: .trailing)
+      }
+      HStack(spacing: 8) {
+        ForEach(LandscapeJourney.chapters.indices, id: \.self) { index in
+          let selected = LandscapeJourney.chapterIndex(at: model.journeyTime) == index
+          Button {
+            model.pauseJourney()
+            model.seekJourney(to: Double(index) * LandscapeJourney.chapterDuration + 7)
+          } label: {
+            HStack(spacing: 9) {
+              Text(String(format: "%02d", index + 1)).font(Type.text(11))
+                .foregroundStyle(selected ? Palette.paper.opacity(0.7) : Palette.muted)
+              Text(LandscapeJourney.chapters[index].label).font(Type.text(14))
+            }
+            .frame(maxWidth: .infinity, minHeight: 44)
+            .foregroundStyle(selected ? Palette.paper : Palette.ink)
+            .background(selected ? Palette.green : Palette.paper)
+            .overlay(Rectangle().strokeBorder(Palette.line, lineWidth: selected ? 0 : 0.5))
+            .contentShape(Rectangle())
+          }
+          .buttonStyle(.plain)
+          .accessibilityLabel("Study \(LandscapeJourney.chapters[index].label)")
+          .accessibilityAddTraits(selected ? .isSelected : [])
+        }
+      }
+    }
+    .padding(.horizontal, 30).padding(.top, 10).padding(.bottom, 16)
+    .background(Palette.paper)
+    .overlay(alignment: .top) { rule }
   }
 
   private var documentHeader: some View {
@@ -517,6 +688,10 @@ struct StudioView: View {
       title: "Studio guide",
       subtitle: "Tools, navigation & file management"
     ) {
+      guideStep(
+        "Landscape in motion",
+        "Play the 84-second live study to watch mountains rise, a gorge open, coastlines flood and islands form. Pause, scrub the timeline or select a chapter to inspect any moment. Keep & edit turns that exact mesh into your working landscape in one undoable step. Restore my landscape returns without changes. Your original document stays on disk until you choose Keep. Reduce Motion starts paused and fixes the camera."
+      )
       guideStep(
         "Shape the terrain",
         "Raise adds height; Carve removes it. Smooth softens a rough ridge. Select a tool and drag on the surface, or tap for a small adjustment. Radius sets the area of influence; Strength controls the amount of change."
