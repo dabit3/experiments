@@ -3,6 +3,27 @@ import Testing
 
 @testable import RoomlightCore
 
+@Test func sampleSeatingFacesTableWithUsableClearance() throws {
+  let room = Room.sample
+  let table = try #require(room.furniture.first { $0.kind == .coffeeTable })
+  let seats = room.furniture.filter { $0.kind == .sofa || $0.kind == .chair }
+  #expect(seats.count == 2)
+  for seat in seats {
+    let angle = Double(seat.rotation) * .pi / 180
+    let forwardX = -sin(angle)
+    let forwardZ = cos(angle)
+    let deltaX = table.x - seat.x
+    let deltaZ = table.z - seat.z
+    let forwardDistance = deltaX * forwardX + deltaZ * forwardZ
+    let lateralDistance = abs(deltaX * forwardZ - deltaZ * forwardX)
+    let tableHalfDepth =
+      (abs(forwardX) * table.footprintWidth + abs(forwardZ) * table.footprintDepth) / 2
+    let clearance = forwardDistance - seat.kind.depth / 2 - tableHalfDepth
+    #expect((0.3...0.65).contains(clearance))
+    #expect(lateralDistance <= seat.kind.width / 2)
+  }
+}
+
 @Test func rotatedFootprintStaysInsideRoom() {
   var room = Room(furniture: [Furniture(kind: .sofa, x: 10, z: -2, rotation: 90)])
   room.constrain(snap: true)
