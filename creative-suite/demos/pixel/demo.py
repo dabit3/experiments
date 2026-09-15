@@ -135,6 +135,7 @@ def ribbon_curve():
 def open_file(path):
     key("o", "cmd")
     pause(0.8)
+    native("panel")
     key("g", "cmdshift")
     pause(0.6)
     sheet = find("AXSheet")
