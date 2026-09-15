@@ -9,6 +9,8 @@ const UP = new THREE.Vector3(0, 1, 0);
 const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
 const leafGeometry = new THREE.PlaneGeometry(1, 1);
 const trunkGeometry = new THREE.CylinderGeometry(0.6, 1, 1, 12);
+const shadowGeometry = new THREE.IcosahedronGeometry(1, 0);
+const shadowMaterial = new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false });
 const standard = (color: string | number, roughness = 0.85) => new THREE.MeshStandardMaterial({ color, roughness });
 const dark = standard('#272d2c');
 const fabric = standard('#c9c8b5');
@@ -103,12 +105,12 @@ function foliage(parent: THREE.Object3D, centers: Vec3[], radius: number, color:
       mesh.setColorAt(index++, shade);
     }
   });
-  mesh.castShadow = true; mesh.receiveShadow = true;
+  mesh.castShadow = false; mesh.receiveShadow = false;
   mesh.userData.foliage = true;
   mesh.userData.baseColor = color;
   parent.add(mesh);
 }
-function tree(parent: THREE.Object3D, kind: 'pine' | 'maple' | 'birch', seed: number) {
+function tree(parent: THREE.Object3D, kind: 'pine' | 'maple' | 'birch', seed: number, density = 55) {
   const random = seededRandom(seed);
   const height = kind === 'maple' ? 4.6 : kind === 'pine' ? 9 : 7;
   const spread = kind === 'maple' ? 2.8 : 2;
@@ -122,7 +124,13 @@ function tree(parent: THREE.Object3D, kind: 'pine' | 'maple' | 'birch', seed: nu
     cylinder(parent, [0, y - 0.7, 0], end, 0.055, kind === 'birch' ? whiteBark : bark);
     centers.push(end);
   }
-  foliage(parent, centers, kind === 'maple' ? 1.2 : 1.25, kind === 'maple' ? '#8caa52' : kind === 'birch' ? '#abc273' : '#668565', seed, 85);
+  foliage(parent, centers, kind === 'maple' ? 1.2 : 1.25, kind === 'maple' ? '#8caa52' : kind === 'birch' ? '#abc273' : '#668565', seed, density);
+  centers.forEach(center => {
+    const shadow = new THREE.Mesh(shadowGeometry, shadowMaterial);
+    shadow.position.set(...center); shadow.scale.set(0.95, 0.75, 0.95);
+    shadow.castShadow = true; shadow.raycast = () => {};
+    parent.add(shadow);
+  });
 }
 function chair(parent: THREE.Object3D, wood: THREE.Material) {
   [-0.43, 0.43].forEach(x => {
@@ -241,9 +249,11 @@ export class SceneEngine {
   private disposed = false;
   private pmrem: THREE.PMREMGenerator;
   private environment: THREE.WebGLRenderTarget;
+  private thumbnailTarget = new THREE.WebGLRenderTarget(260, 144);
 
   constructor(private container: HTMLElement, onSelect: (id: string | null) => void) {
     this.onSelect = onSelect;
+    this.thumbnailTarget.texture.colorSpace = THREE.SRGBColorSpace;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, powerPreference: 'high-performance' });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     this.renderer.shadowMap.enabled = true;
@@ -268,14 +278,14 @@ export class SceneEngine {
     });
     this.scene.add(this.background, this.sky, this.sun);
     this.sun.castShadow = true;
-    this.sun.shadow.mapSize.set(2048, 2048);
+    this.sun.shadow.mapSize.set(1024, 1024);
     Object.assign(this.sun.shadow.camera, { left: -29, right: 29, top: 28, bottom: -28, near: 0.5, far: 100 });
     this.sun.shadow.bias = -0.0005;
     this.sun.shadow.normalBias = 0.035;
     this.scene.add(this.sun.target);
     this.buildLandscape();
     this.batchLandscape();
-    this.water = new Reflector(new THREE.CircleGeometry(1, 96), { color: 0x7d9486, textureWidth: 768, textureHeight: 768, clipBias: 0.003 });
+    this.water = new Reflector(new THREE.CircleGeometry(1, 96), { color: 0x7d9486, textureWidth: 512, textureHeight: 512, clipBias: 0.003 });
     this.water.rotation.x = -Math.PI / 2;
     this.water.position.set(1, 0.075, 8);
     this.water.scale.set(12, 8, 1);
@@ -325,7 +335,7 @@ export class SceneEngine {
       group.position.y = terrainHeight(group.position.x, group.position.z);
       const scale = 0.85 + random() * 1.4;
       group.scale.setScalar(scale);
-      tree(group, i % 4 === 0 ? 'birch' : 'pine', i + 101);
+      tree(group, i % 4 === 0 ? 'birch' : 'pine', i + 101, i < 56 ? 38 : 20);
       this.background.add(group);
     }
     for (let i = 0; i < 42; i++) {
@@ -377,10 +387,12 @@ export class SceneEngine {
   private batchLandscape() {
     this.background.updateMatrixWorld(true);
     const trunks: THREE.Mesh[] = [];
+    const shadows: THREE.Mesh[] = [];
     const leaves: THREE.InstancedMesh[] = [];
     this.background.traverse(object => {
       if (object instanceof THREE.InstancedMesh && object.userData.foliage) leaves.push(object);
       else if (object instanceof THREE.Mesh && object.geometry === trunkGeometry) trunks.push(object);
+      else if (object instanceof THREE.Mesh && object.geometry === shadowGeometry) shadows.push(object);
     });
     const matrix = new THREE.Matrix4();
     const color = new THREE.Color();
@@ -390,6 +402,9 @@ export class SceneEngine {
       sources.forEach((source, i) => { merged.setMatrixAt(i, source.matrixWorld); source.removeFromParent(); });
       merged.castShadow = true; this.background.add(merged);
     });
+    const mergedShadows = new THREE.InstancedMesh(shadowGeometry, shadowMaterial, shadows.length);
+    shadows.forEach((source, i) => { mergedShadows.setMatrixAt(i, source.matrixWorld); source.removeFromParent(); });
+    mergedShadows.castShadow = true; this.background.add(mergedShadows);
     const mergedLeaves = new THREE.InstancedMesh(leafGeometry, leafMaterial(), leaves.reduce((sum, mesh) => sum + mesh.count, 0));
     let index = 0;
     leaves.forEach(source => {
@@ -404,7 +419,7 @@ export class SceneEngine {
       (source.material as THREE.MeshStandardMaterial).dispose();
       source.dispose();
     });
-    mergedLeaves.castShadow = true; mergedLeaves.receiveShadow = true;
+    mergedLeaves.castShadow = false; mergedLeaves.receiveShadow = false;
     mergedLeaves.userData.foliage = true;
     this.background.add(mergedLeaves);
   }
@@ -456,10 +471,10 @@ export class SceneEngine {
     });
   }
   private disposeGroup(group: THREE.Group) {
-    const sharedMaterials = new Set<THREE.Material>([...this.materials.values(), dark, fabric, stone, metal, bark, whiteBark]);
+    const sharedMaterials = new Set<THREE.Material>([...this.materials.values(), dark, fabric, stone, metal, bark, whiteBark, shadowMaterial]);
     group.traverse(object => {
       if (object instanceof THREE.Mesh) {
-        if (![boxGeometry, leafGeometry, trunkGeometry].includes(object.geometry)) object.geometry.dispose();
+        if (![boxGeometry, leafGeometry, trunkGeometry, shadowGeometry].includes(object.geometry)) object.geometry.dispose();
         const materials = Array.isArray(object.material) ? object.material : [object.material];
         materials.forEach(material => { if (!sharedMaterials.has(material)) material.dispose(); });
         if (object instanceof THREE.InstancedMesh) object.dispose();
@@ -498,19 +513,33 @@ export class SceneEngine {
   }
   thumbnail(shot: CameraShot) {
     const camera = this.getCamera();
+    const aspect = this.camera.aspect;
     const previousAmbience = this.currentAmbience;
     this.ambience(shot.ambience);
     this.renderer.shadowMap.needsUpdate = true;
-    this.setCamera(shot);
+    this.camera.position.set(...shot.position);
+    this.camera.lookAt(new THREE.Vector3(...shot.target));
+    this.camera.aspect = 260 / 144;
+    this.camera.updateProjectionMatrix();
     const selected = this.selection.visible;
     this.selection.visible = false;
+    this.water.getRenderTarget().setSize(192, 192);
+    this.renderer.setRenderTarget(this.thumbnailTarget);
     this.renderer.render(this.scene, this.camera);
+    const pixels = new Uint8Array(260 * 144 * 4);
+    this.renderer.readRenderTargetPixels(this.thumbnailTarget, 0, 0, 260, 144, pixels);
     const canvas = document.createElement('canvas');
     canvas.width = 260; canvas.height = 144;
-    canvas.getContext('2d')!.drawImage(this.renderer.domElement, 0, 0, 260, 144);
+    const context = canvas.getContext('2d')!;
+    const image = context.createImageData(260, 144);
+    for (let y = 0; y < 144; y++) image.data.set(pixels.subarray((143 - y) * 1040, (144 - y) * 1040), y * 1040);
+    context.putImageData(image, 0, 0);
+    this.renderer.setRenderTarget(null);
+    this.water.getRenderTarget().setSize(512, 512);
     this.selection.visible = selected;
     if (previousAmbience) this.ambience(JSON.parse(previousAmbience) as Ambience);
     this.renderer.shadowMap.needsUpdate = true;
+    this.camera.aspect = aspect; this.camera.updateProjectionMatrix();
     this.setCamera(camera);
     return canvas;
   }
@@ -544,7 +573,7 @@ export class SceneEngine {
   dispose() {
     this.disposed = true;
     cancelAnimationFrame(this.frame); this.observer.disconnect();
-    this.controls.dispose(); this.water.dispose(); this.pmrem.dispose(); this.environment.dispose();
+    this.controls.dispose(); this.water.dispose(); this.pmrem.dispose(); this.environment.dispose(); this.thumbnailTarget.dispose();
     this.renderer.domElement.removeEventListener('pointerdown', this.pointerDown);
     this.renderer.domElement.removeEventListener('pointerup', this.pointerUp);
     this.scene.traverse(object => {
@@ -582,9 +611,9 @@ export function createLibraryPreview(kind: AssetKind, element: HTMLElement) {
   renderer.dispose(); renderer.forceContextLoss();
   scene.traverse(item => {
     if (item instanceof THREE.Mesh) {
-      if (![boxGeometry, leafGeometry, trunkGeometry].includes(item.geometry)) item.geometry.dispose();
+      if (![boxGeometry, leafGeometry, trunkGeometry, shadowGeometry].includes(item.geometry)) item.geometry.dispose();
       const materials = Array.isArray(item.material) ? item.material : [item.material];
-      materials.forEach(material => { if (![dark, fabric, stone, metal, bark, whiteBark].includes(material as THREE.MeshStandardMaterial)) material.dispose(); });
+      materials.forEach(material => { if (![dark, fabric, stone, metal, bark, whiteBark, shadowMaterial].includes(material)) material.dispose(); });
     }
   });
 }
