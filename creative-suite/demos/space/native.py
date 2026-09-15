@@ -129,17 +129,20 @@ def resize():
 
 def slider(title, value):
     index = ["Scale", "Rotation", "Metalness", "Roughness"].index(title)
-    element = find("AXSlider", index=index)
-    x,y,w,h = rect(element)
     low,high = [(0.05,5),(-180,180),(0,1),(0,1)][index]
-    thumb = get(element,"AXChildren")[0]
-    tx,ty,tw,th = rect(thumb)
-    target=round(x+11.5+(w-23)*(value-low)/(high-low))
-    drag((tx+tw/2,ty+th/2),(target,y+h/2),duration=.5)
-    actual = float(get(find("AXSlider",index=index), "AXValue"))
-    if abs(actual - value) > (high-low)*.012:
-        raise AssertionError(f"{title}: expected {value}, got {actual}")
-    return actual
+    for _ in range(3):
+        element = find("AXSlider", index=index)
+        x,y,w,h = rect(element)
+        current = float(get(element, "AXValue"))
+        thumb = get(element,"AXChildren")[0]
+        tx,ty,tw,th = rect(thumb)
+        target=tx+tw/2+(w-tw)*(value-current)/(high-low)
+        target=round(max(x+tw/2,min(x+w-tw/2,target)))
+        drag((tx+tw/2,ty+th/2),(target,y+h/2),duration=.5)
+        actual = float(get(find("AXSlider",index=index), "AXValue"))
+        if abs(actual - value) <= (high-low)*.012:
+            return actual
+    raise AssertionError(f"{title}: expected {value}, got {actual}")
 
 
 def color(hex_value):

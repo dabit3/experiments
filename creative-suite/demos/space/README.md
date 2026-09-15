@@ -99,6 +99,10 @@ Option-modified scroll performs a dolly: three positive line events move the
 camera away from the scene. Verify reduced object size and camera movement along
 the view direction, with unchanged camera orientation and field of view.
 
+Slider targets use fresh thumb-position and value readback, with at most three
+physical drags. The original 1.2% range-relative tolerance still stops the run
+if the target is not reached.
+
 Some AVFoundation recordings report misleading average-frame-rate metadata.
 If recorder post-processing produces an implausibly short clip, preserve the
 raw segments. Re-encode using their original timestamps and a constant output
