@@ -139,4 +139,14 @@ describe('scene/export integration', () => {
     project.layers.find(layer => layer.id === 'design')!.visible = false
     expect(exportOBJ(project)).not.toContain('\nf ')
   })
+  it('exports distinct named geometry parts for downstream object selection', () => {
+    const project = createMuseum()
+    project.objects = [project.objects[1], project.objects[4]]
+    const names = exportOBJ(project).split('\n').filter(line => line.startsWith('o ')).map(line => line.slice(2))
+    expect(names.length).toBeGreaterThan(1)
+    expect(names.every(name => name.length > 0)).toBe(true)
+    expect(new Set(names).size).toBe(names.length)
+    expect(names.some(name => name.startsWith('Museum___glazed_pavilion_'))).toBe(true)
+    expect(names.some(name => name.startsWith('Profile_A___west_'))).toBe(true)
+  })
 })

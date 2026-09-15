@@ -245,6 +245,10 @@ export function disposeObject(root: THREE.Object3D) {
 
 export function exportOBJ(project: Project): string {
   const root = buildModel(project, 'Shaded')
+  let part = 0
+  root.traverse(child => {
+    if (child instanceof THREE.Mesh || child instanceof THREE.Line) child.name = `${child.parent?.name || 'Geometry'}_${++part}`
+  })
   const output = `# Rhova geometry export\n# Units: meters; Z up; visible layers only\n${new OBJExporter().parse(root)}`
   disposeObject(root)
   return output
