@@ -1,0 +1,836 @@
+{
+  "schema_version": 1,
+  "source": "Mario Kart",
+  "clone_name": "Nitro Tots",
+  "clone_root": "/Users/devin/repos/experiments/nitro-tots",
+  "status": "active",
+  "iteration": 9,
+  "revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+  "stack": "Flutter 3.47 + Flame clients (web, iOS, Android, native macOS); Dart shelf/web_socket_channel authoritative server; shared nitro_core simulation",
+  "reference_access": {
+    "mode": "public documentation only",
+    "note": "The source is a commercial title that cannot be run or purchased here. Requirements come from public docs; visual parity is normalized parity among Nitro Tots clients with web as baseline, never literal parity with the source.",
+    "evidence": "evidence/discovery/source-access-boundary.md"
+  },
+  "platform_execution": {
+    "web": "live (Playwright/Chromium)",
+    "ios": "live (iOS Simulator)",
+    "macos": "live (native app)",
+    "android": "APK built from clean checkout; live emulator run not possible on this VM (kern.hv_support=0, HVF unsupported). Needs a virtualization-capable machine or device farm."
+  },
+  "frontier": ["Arcade redesign: original key art, title, garage, track environments, HUD and podium; rebuild all targets and replace affected evidence."],
+  "blockers": [],
+  "unverified_assumptions": [],
+  "items": [
+    {
+      "id": "route-title",
+      "kind": "route",
+      "label": "Title / splash screen with mode menu",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/multiplayer/20260910-071451/screenshots/web_lobby.png",
+        "evidence/parity/visual_parity.json",
+        "evidence/design-pass/README.md",
+        "evidence/manual-ui-2/README.md",
+        "evidence/manual-ui-2/title_phone_400_fixed.png"
+      ]
+    },
+    {
+      "id": "route-garage",
+      "kind": "route",
+      "label": "Garage: character + kart selection with stats",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/parity/visual_parity.json",
+        "evidence/design-pass/README.md",
+        "evidence/manual-ui-2/README.md"
+      ]
+    },
+    {
+      "id": "route-track",
+      "kind": "route",
+      "label": "Track / cup selection (4 tracks, 2 cups, arena)",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/parity/visual_parity.json",
+        "evidence/design-pass/README.md",
+        "evidence/manual-ui-2/README.md"
+      ]
+    },
+    {
+      "id": "route-settings",
+      "kind": "route",
+      "label": "Settings: controls, audio, theme, camera",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/parity/visual_parity.json"
+      ]
+    },
+    {
+      "id": "route-online",
+      "kind": "route",
+      "label": "Online: create / join room by code, connection states",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/parity/visual_parity.json",
+        "evidence/multiplayer/20260910-071451/screenshots/web_lobby.png"
+      ]
+    },
+    {
+      "id": "route-lobby",
+      "kind": "route",
+      "label": "Lobby: ready-up, profile, room settings, bots",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/multiplayer/20260910-071451/screenshots/web_lobby.png",
+        "evidence/multiplayer/20260910-071451/screenshots/ios_lobby.png",
+        "evidence/multiplayer/20260910-071451/screenshots/macos_lobby.png"
+      ]
+    },
+    {
+      "id": "route-race",
+      "kind": "route",
+      "label": "Race / battle HUD: position badge, lap/clock/ping, item slot + roulette, speedo, minimap, start lights",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/multiplayer/20260910-071451/screenshots/web_racing.png",
+        "evidence/multiplayer/20260910-071451/screenshots/ios_racing.png",
+        "evidence/multiplayer/20260910-071451/screenshots/macos_racing.png",
+        "evidence/design-pass/README.md",
+        "evidence/manual-ui-2/README.md",
+        "evidence/manual-ui-2/quick_race_hud.png"
+      ]
+    },
+    {
+      "id": "route-podium",
+      "kind": "route",
+      "label": "Results table (rank/portrait/name/kart/time/+pts/total) / GP standings / podium / match over",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/multiplayer/20260910-071451/screenshots/web_results.png",
+        "evidence/multiplayer/20260910-071451/screenshots/ios_results.png",
+        "evidence/multiplayer/20260910-071451/screenshots/macos_results.png",
+        "evidence/multiplayer/20260910-071451/screenshots/web_matchOver.png",
+        "evidence/design-pass/README.md",
+        "evidence/manual-ui-2/README.md",
+        "evidence/manual-ui-2/quick_results_1280x800.png"
+      ]
+    },
+    {
+      "id": "feat-race-3-laps",
+      "kind": "feature",
+      "label": "3-lap races with checkpoints, wrong-way detection, lap counter",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-tracks-4",
+      "kind": "feature",
+      "label": "4 hand-designed tracks with shortcuts, jumps, boost pads, hazards (+ Bumper Bowl arena)",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-8-racers-bots",
+      "kind": "feature",
+      "label": "Up to 8 racers; deterministic bots fill empty seats",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-drift-miniturbo",
+      "kind": "feature",
+      "label": "Drift with charged mini-turbo tiers",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-slipstream",
+      "kind": "feature",
+      "label": "Slipstream speed bonus when trailing closely",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-items",
+      "kind": "feature",
+      "label": "Item boxes, 8 original items, position-weighted odds",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-position-minimap",
+      "kind": "feature",
+      "label": "Live position tracking and minimap",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-results-points",
+      "kind": "feature",
+      "label": "Race results with points table",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-grand-prix",
+      "kind": "feature",
+      "label": "Grand Prix cups across 4 tracks with cumulative standings",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-time-trial-ghost",
+      "kind": "feature",
+      "label": "Time trial with best-lap ghost",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-battle-arena",
+      "kind": "feature",
+      "label": "Battle arena mode (Bumper Bowl)",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-multiplayer-rooms",
+      "kind": "feature",
+      "label": "Server-authoritative rooms, join codes, host controls",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-reconnect",
+      "kind": "feature",
+      "label": "Reconnect / resume with player token",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-prediction",
+      "kind": "feature",
+      "label": "Client prediction, interpolation and reconciliation",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-determinism",
+      "kind": "feature",
+      "label": "Fixed-step 30 Hz sim, seeded RNG, deterministic bots, result hash",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-input",
+      "kind": "feature",
+      "label": "Keyboard, touch and mouse/trackpad input per platform",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-themes",
+      "kind": "feature",
+      "label": "Light and dark themes, responsive phone/tablet/desktop layouts, safe areas",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "feat-audio-haptics",
+      "kind": "feature",
+      "label": "Original generated audio cues + music loops, haptics on mobile",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/result.json"
+      ]
+    },
+    {
+      "id": "journey-solo-gp",
+      "kind": "journey",
+      "label": "Solo Grand Prix: title \u2192 garage \u2192 track \u2192 4 races \u2192 podium (widget flow tests + manual verification)",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/manual-ui/README.md"
+      ]
+    },
+    {
+      "id": "journey-online-match",
+      "kind": "journey",
+      "label": "Cross-platform online Grand Prix: web + iOS Simulator + macOS live clients + 5 bots, lobby \u2192 4 races \u2192 results \u2192 match over; identical standings and result hash b7486dfb (previous run 1656e738). Android APK builds but its live seat is not verified on this VM (no virtualization for the emulator).",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/multiplayer/20260910-071451/result.json",
+        "evidence/multiplayer/20260910-071451/result.md",
+        "evidence/multiplayer/20260910-071451/room_final.json",
+        "evidence/multiplayer/20260910-071451/logs/e2e.log",
+        "evidence/multiplayer/20260910-071451/four-way-match.mp4",
+        "evidence/multiplayer/20260910-071451/screenshots/web_matchOver.png",
+        "evidence/multiplayer/20260910-071451/screenshots/ios_matchOver.png",
+        "evidence/multiplayer/20260910-071451/screenshots/macos_matchOver.png",
+        "evidence/tests/clean-checkout-builds.txt",
+        "evidence/multiplayer/20260909-192708/result.json",
+        "evidence/review/review.md",
+        "evidence/review/review.chapters.json"
+      ],
+      "live_platforms": [
+        "web",
+        "ios",
+        "macos"
+      ],
+      "not_live": [
+        "android"
+      ]
+    },
+    {
+      "id": "journey-reconnect",
+      "kind": "journey",
+      "label": "Disconnect / refresh mid-race \u2192 title 'Rejoin your match' banner \u2192 resume into the same room with the same seat (server tests + manual web/macOS verification)",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/manual-ui/README.md",
+        "evidence/manual-ui/title_rejoin_banner.png",
+        "evidence/manual-ui/resumed_live_race.png",
+        "evidence/manual-ui/room_after_resume.json"
+      ]
+    },
+    {
+      "id": "journey-time-trial",
+      "kind": "journey",
+      "label": "Time trial with prior-run ghost from title to results; HUD clock equals result time",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/manual-ui/README.md",
+        "evidence/manual-ui/time_trial_hud_vs_results_fixed.png"
+      ]
+    },
+    {
+      "id": "journey-battle",
+      "kind": "journey",
+      "label": "Battle arena match from title to results",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/manual-ui/README.md"
+      ]
+    },
+    {
+      "id": "journey-offline-gp",
+      "kind": "journey",
+      "label": "Offline Grand Prix: fixed rival roster across 4 races, cumulative standings after every race, final standings consistent with race history (manual web verification, repeated after the design pass)",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/manual-ui/README.md",
+        "evidence/manual-ui/cup_final_standings.png",
+        "evidence/manual-ui-2/README.md",
+        "evidence/manual-ui-2/gp_final_podium_standings.png"
+      ]
+    },
+    {
+      "id": "journey-online-manual",
+      "kind": "journey",
+      "label": "Manual online race, web vs native macOS after the design pass: identical eight-racer order, points and hash d8aadf4a",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/manual-ui-2/README.md",
+        "evidence/manual-ui-2/online_web_final_results.png",
+        "evidence/manual-ui-2/online_native_final_results.png",
+        "evidence/manual-ui-2/online_room_CQXF_final.json"
+      ]
+    },
+    {
+      "id": "visual-title",
+      "kind": "visual",
+      "label": "title screen: web baseline vs native macOS (normalized, 800x532 @1x); iOS capture declared only",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/parity/visual_parity.json",
+        "evidence/parity/reference/web_title.png",
+        "evidence/parity/clone/macos_title.png",
+        "evidence/parity/clone/ios_title.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/parity/reference/web_title.normalized.png",
+        "actual": "evidence/parity/clone/macos_title.normalized.png",
+        "diff": "evidence/parity/diffs/title.diff.png",
+        "different_pixels": 0,
+        "total_pixels": 6600,
+        "normalization_evidence": "evidence/parity/visual_parity.json",
+        "baseline": "web",
+        "compared": "macos"
+      }
+    },
+    {
+      "id": "visual-garage",
+      "kind": "visual",
+      "label": "garage screen: web baseline vs native macOS (normalized, 800x532 @1x); iOS capture declared only",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/parity/visual_parity.json",
+        "evidence/parity/reference/web_garage.png",
+        "evidence/parity/clone/macos_garage.png",
+        "evidence/parity/clone/ios_garage.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/parity/reference/web_garage.normalized.png",
+        "actual": "evidence/parity/clone/macos_garage.normalized.png",
+        "diff": "evidence/parity/diffs/garage.diff.png",
+        "different_pixels": 0,
+        "total_pixels": 6600,
+        "normalization_evidence": "evidence/parity/visual_parity.json",
+        "baseline": "web",
+        "compared": "macos"
+      }
+    },
+    {
+      "id": "visual-track",
+      "kind": "visual",
+      "label": "track screen: web baseline vs native macOS (normalized, 800x532 @1x); iOS capture declared only",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/parity/visual_parity.json",
+        "evidence/parity/reference/web_track.png",
+        "evidence/parity/clone/macos_track.png",
+        "evidence/parity/clone/ios_track.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/parity/reference/web_track.normalized.png",
+        "actual": "evidence/parity/clone/macos_track.normalized.png",
+        "diff": "evidence/parity/diffs/track.diff.png",
+        "different_pixels": 0,
+        "total_pixels": 6600,
+        "normalization_evidence": "evidence/parity/visual_parity.json",
+        "baseline": "web",
+        "compared": "macos"
+      }
+    },
+    {
+      "id": "visual-settings",
+      "kind": "visual",
+      "label": "settings screen: web baseline vs native macOS (normalized, 800x532 @1x); iOS capture declared only",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/parity/visual_parity.json",
+        "evidence/parity/reference/web_settings.png",
+        "evidence/parity/clone/macos_settings.png",
+        "evidence/parity/clone/ios_settings.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/parity/reference/web_settings.normalized.png",
+        "actual": "evidence/parity/clone/macos_settings.normalized.png",
+        "diff": "evidence/parity/diffs/settings.diff.png",
+        "different_pixels": 0,
+        "total_pixels": 6600,
+        "normalization_evidence": "evidence/parity/visual_parity.json",
+        "baseline": "web",
+        "compared": "macos"
+      }
+    },
+    {
+      "id": "visual-online",
+      "kind": "visual",
+      "label": "online screen: web baseline vs native macOS (normalized, 800x532 @1x); iOS capture declared only",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/parity/visual_parity.json",
+        "evidence/parity/reference/web_online.png",
+        "evidence/parity/clone/macos_online.png",
+        "evidence/parity/clone/ios_online.png"
+      ],
+      "comparison": {
+        "mode": "normalized",
+        "reference": "evidence/parity/reference/web_online.normalized.png",
+        "actual": "evidence/parity/clone/macos_online.normalized.png",
+        "diff": "evidence/parity/diffs/online.diff.png",
+        "different_pixels": 0,
+        "total_pixels": 6600,
+        "normalization_evidence": "evidence/parity/visual_parity.json",
+        "baseline": "web",
+        "compared": "macos"
+      }
+    },
+    {
+      "id": "asset-fonts",
+      "kind": "asset",
+      "label": "Fredoka + Nunito (OFL) bundled",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/discovery/audit-rebrand.txt"
+      ]
+    },
+    {
+      "id": "asset-audio",
+      "kind": "asset",
+      "label": "21 original generated WAV cues/loops (tools/gen_audio.py)",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/discovery/audits.md"
+      ]
+    },
+    {
+      "id": "asset-art",
+      "kind": "asset",
+      "label": "Original procedural kart/track/character art (Flame canvas)",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/discovery/audits.md",
+        "evidence/parity/visual_parity.json"
+      ]
+    },
+    {
+      "id": "integration-server",
+      "kind": "integration",
+      "label": "nitro_server: /health, /rooms/<code>, /ws JSON protocol (PROTOCOL.md)",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/multiplayer/20260910-071451/logs/health.json",
+        "evidence/multiplayer/20260910-071451/logs/server.log",
+        "evidence/tests/security-audit.txt"
+      ]
+    }
+  ],
+  "audits": [
+    {
+      "id": "source",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/source-access-boundary.md",
+        "evidence/reference/public-docs-wikipedia-mariowiki.txt",
+        "evidence/discovery/audits.md"
+      ]
+    },
+    {
+      "id": "navigation",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/audits.md",
+        "evidence/discovery/requirements-inventory.md",
+        "evidence/discovery/sweep-2-implementation.md"
+      ]
+    },
+    {
+      "id": "roles",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/audits.md",
+        "evidence/multiplayer/20260910-071451/room_final.json"
+      ]
+    },
+    {
+      "id": "states",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/audits.md",
+        "evidence/tests/dart_packages_checks.txt"
+      ]
+    },
+    {
+      "id": "responsive",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/audits.md",
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/multiplayer/20260910-071451/screenshots/ios_results.png",
+        "evidence/multiplayer/20260910-071451/screenshots/macos_results.png",
+        "evidence/manual-ui/touch_hud_400px.png",
+        "evidence/manual-ui-2/README.md",
+        "evidence/manual-ui-2/title_phone_400_fixed.png",
+        "evidence/manual-ui-2/touch_hud_400x900.png",
+        "evidence/manual-ui-2/quick_results_1024x700_scrolled.png"
+      ]
+    },
+    {
+      "id": "data",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/audits.md",
+        "evidence/multiplayer/20260910-071451/result.json",
+        "evidence/tests/security-audit.txt"
+      ]
+    },
+    {
+      "id": "assets",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/audits.md",
+        "evidence/discovery/audit-rebrand.txt"
+      ]
+    },
+    {
+      "id": "accessibility",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/audits.md",
+        "evidence/tests/dart_packages_checks.txt"
+      ]
+    },
+    {
+      "id": "reliability",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/audits.md",
+        "evidence/multiplayer/20260910-071451/logs/e2e.log",
+        "evidence/tests/dart_packages_checks.txt"
+      ]
+    },
+    {
+      "id": "rebrand",
+      "status": "verified",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/discovery/audit-rebrand.txt",
+        "evidence/discovery/audits.md"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "id": "functional",
+      "status": "passed",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/manual-ui/README.md",
+        "evidence/manual-ui-2/README.md",
+        "evidence/multiplayer/20260910-071451/result.json",
+        "evidence/multiplayer/20260910-071451/result.md",
+        "evidence/multiplayer/20260910-071451/room_final.json",
+        "evidence/multiplayer/20260910-071451/logs/e2e.log",
+        "evidence/review/review.md",
+        "evidence/review/review.chapters.json"
+      ],
+      "summary": "dart test (core, server), flutter test (38 widget/flow tests), multiplayer e2e web+ios+macos PASS hash b7486dfb after the design pass; manual web+macOS passes (offline GP, time trial, rejoin, touch HUD; then title/garage/cup/HUD/pause/results/GP/online hash d8aadf4a); one 400px title truncation found manually, fixed and re-captured. Not captured manually: transient per-race time-column parity between web and macOS, vertical item roulette."
+    },
+    {
+      "id": "visual",
+      "status": "passed",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/parity/visual_parity.json",
+        "evidence/parity/diffs/title.diff.png",
+        "evidence/design-pass/README.md"
+      ],
+      "summary": "5/5 screens 0 differing normalized pixels after the design pass, sensitivity self-check passed; web baseline vs macOS; iOS declared only"
+    },
+    {
+      "id": "build",
+      "status": "passed",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/tests/clean-checkout-builds.txt"
+      ],
+      "summary": "clean git clone at 8f8b533: flutter build web/macos/ios --simulator/apk all exit 0"
+    },
+    {
+      "id": "quality",
+      "status": "passed",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/tests/dart_packages_checks.txt",
+        "evidence/tests/clone-this-skill-checks.txt"
+      ],
+      "summary": "dart format --set-exit-if-changed, dart analyze / flutter analyze: no issues; clone-this skill tests 92 OK; `devin skills list` CLI unavailable (recorded)"
+    },
+    {
+      "id": "security",
+      "status": "passed",
+      "verified_revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "evidence": [
+        "evidence/tests/security-audit.txt"
+      ],
+      "summary": "no secrets/keystores staged; server validates every message; dart pub outdated clean"
+    }
+  ],
+  "sweeps": [
+    {
+      "id": "sweep-final-1",
+      "revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "new_items": 0,
+      "frontier_empty": true,
+      "method": "reference-driven: public docs concepts \u2192 inventory",
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-1-reference.md",
+        "evidence/reference/public-docs-wikipedia-mariowiki.txt"
+      ]
+    },
+    {
+      "id": "sweep-final-2",
+      "revision": "sha256:ab2fe4d26bbdeb39d54f72589d3283284bff2c56bc1ee43a574fb20cb03b4409",
+      "new_items": 0,
+      "frontier_empty": true,
+      "method": "implementation-driven: source enumerations \u2192 inventory",
+      "audit_ids": [
+        "source",
+        "navigation",
+        "roles",
+        "states",
+        "responsive",
+        "data",
+        "assets",
+        "accessibility",
+        "reliability",
+        "rebrand"
+      ],
+      "evidence": [
+        "evidence/discovery/sweep-2-implementation.md"
+      ]
+    }
+  ],
+  "next_action": "Complete. Re-run test/multiplayer-e2e.sh with NT_PLATFORMS including android on a virtualization-capable machine to add the live Android seat."
+}

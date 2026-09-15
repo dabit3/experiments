@@ -1,0 +1,20 @@
+# Dart / Flutter
+.dart_tool/
+build/
+*.iml
+.idea/
+.flutter-plugins-dependencies
+
+# Clone-this evidence: keep manifests, drop large binaries
+.devin/clone-this/**/*.png
+.devin/clone-this/**/*.mp4
+.devin/clone-this/**/*.mov
+.devin/clone-this/**/*.webm
+.devin/clone-this/**/*.gif
+.devin/clone-this/**/*.webp
+
+# Test run scratch
+test/.run/
+
+# Playwright driver deps (npm install in test/)
+test/node_modules

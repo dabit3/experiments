@@ -1,0 +1,330 @@
+## Page 1: Mario Kart
+URL: https://en.wikipedia.org/wiki/Mario_Kart
+
+Mario Kart
+
+| Mario Kart | |
+| --- | --- |
+| Logo used since 2025 | |
+| Genre | Kart racing |
+| Developers | Nintendo EAD (1992–2014) Nintendo EPD (2017–present) Intelligent Systems (Super Circuit) Retro Studios (7) Namco (Arcade GP) Namco Bandai Games (Arcade GP) Bandai Namco Studios (Arcade GP) Velan Studios (Home Circuit) |
+| Publisher | Nintendo |
+| Creators | Shigeru Miyamoto Tadashi Sugiyama Hideki Konno |
+| Platforms | SNES Nintendo 64 iQue Player Game Boy Advance GameCube Nintendo DS Arcade Wii Nintendo 3DS Wii U Nintendo Switch iOS Android Nintendo Switch 2 |
+| First release | Super Mario Kart August 27, 1992 |
+| Latest release | Mario Kart World June 5, 2025 |
+| Spin-offs | Mario Kart Arcade GP Mario Kart Live: Home Circuit |
+
+Mario Kart [a] is a series of kart racing games based on the Mario franchise developed and published by Nintendo. Players compete in go-kart races while using various power-up items. It features characters from the Mario series racing along tracks based on Mario universe-locations. Some releases have also included characters from other popular franchises like Pac-Man, Taiko no Tatsujin, The Legend of Zelda, Animal Crossing, and Splatoon. 
+
+The series was launched in 1992 with Super Mario Kart on the Super Nintendo Entertainment System (SNES), to critical and commercial success. [1] The Mario Kart series totals seventeen games, with eight on home consoles, three on handheld-only consoles, five arcade games co-developed with Namco, and one for mobile phones. Over 189 million copies of the series have been sold worldwide.
+
+Mario Kart 8, released on the Wii U in 2014 and ported to the Nintendo Switch in 2017, is one of the best-selling video games, at 76.66 million sold for both versions. Mario Kart Live: Home Circuit, a mixed reality game, was released on the Switch in October 2020. The newest installment, Mario Kart World, was released as a launch game on the Nintendo Switch 2 on June 5, 2025.
+
+## Gameplay
+
+A single-player race being played on the "Mario Circuit" course in the Grand Prix mode in Mario Kart 8 Deluxe (2017)
+
+In the Mario Kart series, players compete in go-kart races, controlling one of a selection of Mario characters. Up to 24 characters can compete in each race (varying per game). [citation needed] Players can perform driving techniques during the race such as rocket starts, slipstreaming, drifting and mini-turbos.
+
+Gameplay is enhanced by power-up items obtained by driving into item boxes laid out on the course. These power-ups vary across games in the series, but generally include Mushrooms to give players a speed boost, Red/Green Shells to be thrown at opponents, Banana Peels and hazards such as Fake Item Boxes. The game selects an item based on the player's current position in the race, utilising a mechanism known as rubber banding. For example, players lagging far behind may receive more powerful items such as Bullet Bills, which give the player invincibility while auto-piloting them forward at great speed, while the leader of a race may only receive small defensive items, such as Shells or Bananas. This gameplay mechanism allows other racers a realistic chance to catch up to the leading racer. In the original game, Super Mario Kart, the player takes control one of the eight Mario series characters, each with differing capabilities. In single player mode, players can race against computer-controlled characters in 4 multi-race cups consisting of 20 tracks (5 in each cup) over three difficulty levels (50cc, 100cc and 150cc). Alternatively, players can race against the clock in a Time Trial mode. In multiplayer mode, two players can simultaneously take part in the cups or can race against each other one-on-one in Match Race mode. In a third multiplayer mode – Battle Mode – the aim is to defeat the other players by attacking them with power-ups, destroying balloons which surround each kart.
+
+Each new game has introduced new gameplay elements, such as new circuits, items, modes, and playable characters.
+
+- Mario Kart 64 introduced 3D graphics, 4-player racing, mini turbos to more easily execute drift boosts, [2] slipstreaming, [3] and item dangling (the ability to hold bananas and shells to defend against projectiles and hold a reserve item as well), alongside the removal of coins. It introduced several items, including the Fake Item Box, the Golden Mushroom, and the Spiny Shell. In addition to the three Grand Prix engine classes, Extra Mode (known in later games as Mirror Mode) was introduced, in which all tracks are flipped laterally. When playing Battle Mode with three or more players, when a player is defeated they turn into a "Mini Bomb Kart", where they can try and pop another player's balloons. [citation needed] 
+- Mario Kart: Super Circuit returns to the Mode 7 gameplay style found in Super Mario Kart. Multiplayer in Super Circuit is done via GBA Link Cable. The game allows multiplayer with only one Game Pak, although if played this way the game includes various restrictions, such as a limited course count and players only being allowed to play as Yoshis. Super Circuit introduces a new mode called Free Run, which allows the player to play any course with CPU. Battle mode appears as it did in 64, with Mini Bomb Karts being replaced by Bob-ombs that respawn once exploded. [citation needed] 
+- Mario Kart: Double Dash!! returns to the 3D format that originated in Mario Kart 64. New feature to the game include double-occupied karts, a 2-player Co-op mode where one player drives while the other uses items, and also LAN play, which allows up to 16 people to play. It introduced a revamped Spiny Shell that leaves an area of effect explosion, and character exclusive items (known in the game as Special Items). It also introduced new alternate battle modes: "Shine Thief", where players fight over obtaining a Shine Sprite from Super Mario Sunshine (2002) before a timer runs out, and "Bob-omb Blast" where players throw Bob-ombs to collect or steal points from each other. In Balloon battle, players no longer turn into Bob-ombs when defeated. [citation needed] 
+- Mario Kart DS featured dual-screen play to take advantage of the system's capabilities. It introduced custom emblems, as well as Online play via the now defunct Nintendo Wi-Fi Connection, a mission mode, the Bullet Bill and Blooper items, and returning courses as a main feature. It also returned to the single item and racer format. New playable characters included Dry Bones, R.O.B., and Shy Guy (who was exclusive to DS Download Play). It also introduced a new battle mode in "Shine Runners" (not to be confused with the aforementioned "Shine Thief") where players try to collect enough Shine Sprites before a timer runs out to avoid being eliminated. [citation needed] 
+- Mario Kart Wii introduced motion controls as a headlining new feature alongside the Wii Wheel accessory. It also introduced the ability to perform mid-air tricks, and bikes as a second vehicle type. The amount of racers that could be in a race was raised from 8 to 12. [4] It introduced three new items: the Mega Mushroom, the Thundercloud, and the POW Block. It also introduced a new battle mode titled "Coin Runners" (not to be confused with "Shine Runners"), where players try to collect as many coins as they can before time runs up. The rules of Balloon Battle are now changed, with the focus now being on getting points by popping other player's balloons before a time limit expires, with players now respawning once they run out of balloons. [citation needed] 
+- Mario Kart 7 featured stereoscopic 3D graphics and the return of dual screen functionality. It introduced gliders and submersible karts, a first-person perspective, and full kart customization. It also re-introduced Coins in regular races for a small speed boost, though they are also now used to unlock kart parts. [citation needed] 
+- Mario Kart 8 introduced the 200cc engine class, [b] anti-gravity racing, a third vehicle type in ATVs, downloadable content, HD graphics, and Mii costumes unlocked via amiibo. Also introduced is Mario Kart TV (abbreviated as MKTV), a mode that gives players the ability to save up to six video replays of races. These replays can be customized based on length and various aspects of focus. MKTV was able to upload replays on to YouTube via the now defunct social media platform Miiverse. [5] Battle mode only features balloon battle, with it taking place on a handful of race courses. [citation needed] 
+- Mario Kart 8 Deluxe added a revamped battle mode, which included the new "Renegade Roundup". Overall gameplay additions include the reintroduction of having two item slots (absent from the series since Double Dash), a third tier of mini-turbo, and added the returning Boo and Feather items (the latter being exclusive to battle mode). It also added 6 characters that were absent from the original game, including King Boo, Dry Bones, Gold Mario, Bowser Jr., and the male and female Inklings from Splatoon, in addition to giving the female Villager her own character slot. [6] [7] From 2022 to the end of 2023, the "Booster Course Pass" DLC expansion pack doubled the amount of courses in the game. [8] It also added new characters, [9] the ability to customize items in VS mode, and a music player. [citation needed] 
+- Mario Kart Tour was the first Mario Kart title on mobile devices, and introduced a points-based system for certain racing actions. [10] It introduced Frenzy Mode, gacha, and loot box mechanics that were later removed in 2022. [11] It reintroduced character-specific items and new items such as Ice Flower, Coin Box, and Dash Ring. Multiple new tracks were introduced in this game and later added to Mario Kart 8 Deluxe via the DLC Booster Course Pass. [citation needed] 
+- Mario Kart World features 24-player races [12] and off-roading mechanics, as well as an open-world driving format. [13] A new mode is introduced, called "Knockout Tour", where 24 players will race betw
+
+---
+
+## Page 2: Mario Kart 8 Deluxe - Super Mario Wiki, the Mario encyclopedia
+URL: https://www.mariowiki.com/Mario_Kart_8_Deluxe
+
+Mario Kart 8 Deluxe - Super Mario Wiki, the Mario encyclopedia
+
+# Mario Kart 8 Deluxe
+
+: This article is about the enhanced Nintendo Switch port of Mario Kart 8. For the digital soundtrack album on the Nintendo Music app, see Mario Kart 8 Deluxe (Nintendo Music). For the theme for Nintendo Sound Clock: Alarmo, see Mario Kart 8 Deluxe (Nintendo Sound Clock: Alarmo). 
+
+| Mario Kart 8 Deluxe | |
+| --- | --- |
+| For alternate box art, see the related gallery. | |
+| Developers | Nintendo EPD Bandai Namco Studios |
+| Publishers | Nintendo Tencent Games (China) |
+| Platform | Nintendo Switch |
+| Release dates | Mario Kart 8 Deluxe: April 28, 2017 [1] April 28, 2017 [2] April 28, 2017 [3] April 28, 2017 [4] April 28, 2017 [5] April 28, 2017 [6] April 28, 2017 [7] December 15, 2017 [8] December 15, 2017 [9] November 30, 2018 [10] March 29, 2019 [11] January 17, 2020 [12] March 16, 2020 [13] Mario Kart 8 Deluxe + Booster Course Pass: October 6, 2023 [14] October 6, 2023 [15] October 6, 2023 [16] December 1, 2023 [17] |
+| Languages | English (United States) English (United Kingdom) Japanese Chinese (Simplified) [A] [B] Chinese (Traditional) [A] Dutch French (Canada) French (Europe) German Italian Korean [A] Portuguese (Europe) Russian Spanish (Latin America) Spanish (Europe) |
+| Genre | Racing |
+| Ratings | ESRB: - Everyone [7] [18] CERO: - All ages [19] PEGI: - Three years and older [20] USK: - All ages [21] RARS: - All ages [22] ClassInd: - General audience [23] SMECCV: - All ages [6] [24] CADPA: - Eight years and older [25] [26] Gmedia: - Three years and older [27] GRAC: - All ages [28] GSRR: - Six years and older [29] NMC: - Three years and older [30] ACB: - General [1] [31] FPB: - Parental guidance [32] |
+| Modes | Single Player Multiplayer (2-4 players) Local Wireless Play (2-12 players) Online Play (2-12 players) LAN Play (2-12 players) |
+| Format | Nintendo Switch: Game Card Digital download |
+| Input | Nintendo Switch: Joy-Con Joy-Con (horizontal) Nintendo Switch Pro Controller Nintendo GameCube Controller |
+| Serial codes | Mario Kart 8 Deluxe: LA-H-AABPA-JPN LA-H-AABPA-USA LA-H-AABPA-EUR LA-H-AABPB-CHN [33] Mario Kart 8 Deluxe + Booster Course Pass: LA-H-AABPK-JPN LA-H-AABPK-MSE |
+
+Mario Kart 8 Deluxe is a racing game in the Mario Kart series released for the Nintendo Switch on April 28, 2017. It is an enhanced port of Mario Kart 8 for the Wii U and is the first Super Mario game overall to be released for the Nintendo Switch. The base game contains additional content such as several new characters and an overhauled Battle mode with new courses and modes. First teased in the Nintendo Switch's announcement video on October 20, 2016, the game was formally announced as part of the Nintendo Switch presentation on January 13, 2017. 
+
+Throughout 2022 and 2023, new race courses and returning characters were added to the game via the Mario Kart 8 Deluxe – Booster Course Pass paid DLC. An edition of the game that has the Booster Course Pass activated from the start, titled the Mario Kart 8 Deluxe Bundle (Game + Booster Course Pass), is available for purchase digitally. [34] A physical bundle was also released in Japan, Hong Kong, Taiwan, Southeast Asia, and mainland China. 
+
+## Contents
+
+- 1 Controls
+- 2 Differences from the original
+
+- 2.1 General
+- 2.2 Gameplay
+
+- 2.2.1 Items
+- 2.2.2 Online
+- 2.3 Graphics
+
+- 2.3.1 HUD/interface
+- 2.4 Audio
+- 3 Battle
+- 4 Characters
+
+- 4.1 Character variants
+- 4.2 Mii racing suits
+- 4.3 Rival order
+- 5 Vehicle parts
+
+- 5.1 Available parts
+
+- 5.1.1 Karts
+- 5.1.2 Standard bikes
+- 5.1.3 Sport bikes
+- 5.1.4 ATVs
+- 5.1.5 Tires
+- 5.1.6 Gliders
+- 5.2 CPU combinations
+- 6 Drivers' and vehicle parts' statistics
+
+- 6.1 Statistics shown in the vehicle customization screen
+- 6.2 Drivers' statistics
+- 6.3 Parts' statistics
+- 7 Unlocking criteria
+
+- 7.1 Gold Mario
+- 7.2 Vehicle parts
+- 7.3 Special parts
+- 7.4 Alternate title screens
+- 8 New items
+- 9 Courses
+
+- 9.1 Booster Course Pass
+- 9.2 Battle courses
+- 9.3 Staff Ghosts
+
+- 9.3.1 150cc Staff Ghosts
+- 9.3.2 200cc Staff Ghosts
+- 10 New course elements
+
+- 10.1 Enemies and obstacles
+- 10.2 Background elements
+- 11 New amiibo compatibility
+- 12 Update history
+- 13 Official tournaments
+
+- 13.1 Worldwide
+- 13.2 North America
+- 13.3 Australia and New Zealand
+- 13.4 China
+- 13.5 Europe
+- 13.6 Hong Kong
+- 13.7 Japan
+- 13.8 Spain
+- 13.9 United Kingdom and Ireland
+- 14 Staff
+- 15 Pre-release and unused content
+
+- 15.1 Early Booster Course Pass course designs
+- 15.2 Original order of courses in Waves 3 to 6
+- 15.3 Music prefetches
+
+- 15.3.1 Wave 3
+- 15.3.2 Wave 4
+- 15.3.3 Wave 5
+- 15.4 Gallery
+- 16 Reception
+
+- 16.1 Critical reception
+- 16.2 Sales
+- 16.3 Awards and acknowledgements
+- 17 References to other games
+- 18 References in other games
+- 19 Gallery
+- 20 Multimedia
+- 21 Names in other languages
+- 22 Notes
+- 23 Footnotes and references
+
+- 23.1 Footnotes
+- 23.2 References
+- 24 External links
+
+## Controls
+
+| Action | Dual Joy-Con Pro Controller | Motion | Joy-Con (horizontal) | Toy-Con Motorbike | Toy-Con Car | GameCube Controller |
+| --- | --- | --- | --- | --- | --- | --- |
+| Steer | / () | Tilt / | or Tilt | Tilt Toy-Con | | / |
+| Accelerate / Rocket Start | / / ↑ | | | Tilt Forwards | Pedal (Half Press) | / / ↑ |
+| Brake / Reverse | / ↓ | | | | | / ↓ |
+| Item / Horn | / | | | | | |
+| Drift / Hop / Trick | / | | | | Pedal (Full Press) | / |
+| Rear View | | | | | | |
+
+## Differences from the original
+
+The following is a list of changes made to the base Mario Kart 8 Deluxe game from the latest version of Mario Kart 8, excluding changes that were fixed to be consistent with the original game in future updates. 
+
+### General
+
+- Characters, cups, and courses that were originally unlockable or exclusive to downloadable content in Mario Kart 8 are available from the start in this game; in addition, King Boo, Bowser Jr., Dry Bones, Inkling Boy, and Inkling Girl are added as new characters. This makes for the largest starting character roster or track selection of any home console Mario Kart game.
+- Metal Mario gains an alternate costume known as Gold Mario, which is unlocked by clearing all cups in 200cc.
+- A new Inkling Suit has been added to the Mii racing suits roster. It is usable by scanning an Inkling or Splatoon-series amiibo. In addition, the Animal Crossing Suit can be unlocked with any Isabelle or Animal Crossing-series amiibo.
+- The game has reduced loading times.
+
+### Gameplay
+
+Mario driving with Smart Steering activated, indicated by the antenna at the back of the kart
+
+- The Battle mode has been revamped.
+- The overall game difficulty has been adjusted, as CPUs slow down when close to the player and do not charge Mini-Turbos or Super Mini-Turbos as quickly.
+- The default speed of the CPUs in the Normal and Easy difficulties is slightly reduced.
+- The rival system has been expanded: characters that did not have any in the original were given them, and characters who already had them swapped some in place of others.
+- Motion controls are now turned on in the pause menu by pressing , rather than a toggle switching between it and stick controls.
+- Two settings that aim to make playing easier for beginners have been introduced and can be toggled individually by each player in the vehicle part and pause screens: 
+
+- Smart Steering, which automatically steers the driver's vehicle to stay on the road and is represented by a antenna on the back of the vehicle.
+- Auto-Accelerate, which is only available outside of Battle mode and makes the vehicle automatically accelerate.
+- The pathfinding and drifting of CPUs in 200cc was reworked.
+- The unlock criteria for various kart parts have been adjusted; some now have to be unlocked instead of being obtained from the start, while others are now obtained from the start instead of being unlockable. All kart parts that were DLC in the original game are now unlocked in the same manner as non-gold kart parts. New kart parts have been added, such as the Koopa Clown, the Splat Buggy, and the Inkstriker.
+- Turning off the map, which is now turned on by default, is done by pressing in the pause menu, instead of at any time like in the original.
+- There is an additional level of Mini-Turbo, called Ultra Mini-Turbo, denoted by purple sparks (referred to as pink in the British English version) that appear after the orange sparks. This new level of Mini-Turbo can only be used if Smart Steering is off.
+- A 200cc engine class in Time Trials was added; in addition to being separately recorded from the 150cc Time Trials, it features new staff ghosts.
+- Some of the staff ghosts in Time Trials from the Wii U version were adjusted.
+- There are more character weight classes than in the original, with several returning characters having different statistics.
+- The player can now change controllers on the character selection screen by pressing or .
+- The statistics of vehicle parts have been altered, and certain physics elements, such as the speed increase per stat and the acceleration tiers, were adjusted.
+- Wireless and LAN modes were added, the latter returning from Mario Kart: Double Dash!!
+- The minimum number of races and rounds in a VS Race or Battle is now four instead of three.
+- The maximum number of races and rounds in a VS Race or Battle is now 48 and 25 respectively instead of 32 in both modes.
+- CPUs choose from a wider variety of kart parts than in the original version.
+- Being able to see which items the other drivers have, which was only possible when playing with the Wii U GamePad in the original, has now been removed entirely.
+- Miiverse compatibility is absent, including the ability to upload Highlight Reels on YouTube; this feature was also discontinued in the Wii U version when Miiverse was terminated on November 7, 2017.
+- An exploit in the original version that allowed players to gain speed by hopping after speed boosting has been fixed.
+
+#### Items
+
+- Characters can now carry up to two items at once, even if th
+
+---
+
+## Page 3: Drift - Super Mario Wiki, the Mario encyclopedia
+URL: https://www.mariowiki.com/Drift
+
+Drift - Super Mario Wiki, the Mario encyclopedia
+
+# Drift
+
+| Drift | |
+| --- | --- |
+| Mario drifting in his kart on Rainbow Road in Mario Kart 64 | |
+| First appearance | Super Mario Kart (1992) |
+| Latest appearance | Mario Kart World (2025) |
+| Effect | Allows speed to be kept around corners |
+| Performed after | Hop |
+| Performed before | Mini-Turbo |
+
+In the Mario Kart series, a drift, also referred to as a slide [1] or power slide [2] [3] (alternatively spelled power-slide), [4] is a move that allows a kart, bike, or ATV to keep speed around corners. Drifting is done by holding and turning left or right, at the cost of a bit of handling. Beginning with Mario Kart 64, it is possible to move the Control Stick (left and right) while in a drift to cause the kart to get a short but helpful Mini-Turbo when the drift is ended. In most Mario Kart games, the player must hop before being able to drift. The exceptions to this are in Mario Kart: Double Dash!!, where there is no hop button—the player simply needs to hold the button (or button) instead—and in the Mario Kart Arcade GP subseries, where the player needs to tap the brake to enable drifting. 
+
+Due to the emergence of the " snaking" technique in Mario Kart: Double Dash!! and Mario Kart DS, starting in Mario Kart Wii, performing Mini-Turbos by drifting has been simplified by becoming time-based rather than by tilting/pressing the control pad multiple times. Mario Kart Wii also introduced the "inside drifting" mechanic, in which the vehicle commits to the turn by going to the inside instead of drifting to the outside when the player attempts to drift. All sport bikes in Mario Kart Wii and Mario Kart 8 / Mario Kart 8 Deluxe use this mechanic. The "inside drifting" mechanic was removed entirely from Mario Kart World. 
+
+In some games, one can perform a long power-slide by steering in the opposite direction while holding the drift button (when drifting to the left, one can steer right and vice versa), at the cost of speed. However, starting in Mario Kart Wii, performing this technique would delay the Mini-Turbo and cause it to take longer to charge. The strength of the drifting depends on the kind of vehicle used. For example, the Phantom, which has the worst drift stat in the game, drifts in a wide arc, while the Bullet Bike, which has the best drift stat in the game, drifts tightly around corners. 
+
+In The Super Mario Bros. Movie, while driving with Toad, Princess Peach, Donkey Kong, Cranky Kong, and the Kong army on Rainbow Road, Mario performs drifts and Mini-Turbos using his kart. He does a single drift with a hop, after initially landing on Rainbow Road, and uses it to perform a Mini-Turbo just before a conversation between him and Peach. When the team splits up, Mario is pursued by the Koopa General's bulldozer-like kart and uses three consecutive drifts to charge up Ultra Mini-Turbos and stay ahead of the maw on the Koopa General's kart. Mario does not hop for any of those drifts. He then hops one final time to start a drift to charge an Ultra Mini-Turbo and launch himself onto a distant portion of the road. The Koopa General is seemingly unable to pursue Mario directly, and instead he fires Bullet Bills at Mario. 
+
+## Contents
+
+- 1 Profiles
+
+- 1.1 Mario Kart Wii
+- 1.2 Mario Kart 7
+- 1.3 Mario Kart 8
+- 1.4 Mario Kart Tour
+- 1.5 Mario Kart World
+- 2 Gallery
+- 3 Names in other languages
+- 4 References
+
+### Mario Kart Wii [edit]
+
+- In-game description:
+
+- English: ■Automatic Drift■ 1. You'll drift automatically when turning. 2. When you turn, you won't slow down. (You won't be able to hop or use Mini-Turbos.) ■Manual Drift■ 1. After a hop, you'll begin drifting. 2. Keep drifting to get a speed boost (a Mini-Turbo).
+
+### Mario Kart 7 [edit]
+
+- Electronic manual description:
+
+- English: Drifting allows you to take sharp corners without slowing down. To drift, press and hold while entering a turn. While drifting, you can change the angle of your turn by moving .
+
+### Mario Kart 8 [edit]
+
+- Electronic manual description:
+
+- English: Drift around sharp corners without reducing speed! With held down, hold and use to turn.
+
+### Mario Kart Tour [edit]
+
+- Tips & Tricks:"If you turn and hold your swipe in the direction you're turning, you'll be able to take tight corners without losing speed."
+
+### Mario Kart World [edit]
+
+- In-game manual:
+
+- English: If you tilt in the direction you want to turn while holding , you can tighten your turn without losing speed.
+- Other languages:
+
+- French (Europe): En inclinant dans la direction dans laquelle vous voulez tourner tout en en maintenant , vous prendrez un virage plus serré sans ralentir. [5] (By tilting in the direction you want to turn while holding , you can take a tighter turn without slowing down.)
+
+## Gallery [edit]
+
+- Artwork of Mario drifting, Mario Kart 64 
+- Artwork of Princess Peach drifting, Mario Kart Wii 
+- Yoshi drifting on his Mach Bike in Mario Kart Wii 
+- Yoshi drifting on his Standard Bike in Mario Kart Wii 
+- LINE sticker of Mario drifting, Mario Kart 8 
+- LINE sticker of Wario drifting and crashing into a Warp Pipe, Mario Kart 8 
+- Larry performing "inside drifting" with the Sport Bike in Mario Kart 8 
+- Mario drifting in front of the Koopa General in The Super Mario Bros. Movie 
+
+## Names in other languages [edit]
+
+| Language | Name | Meaning | Note(s) | Ref. |
+| --- | --- | --- | --- | --- |
+| Japanese | ドリフト Dorifuto | Drift | | [?] |
+| Chinese | 漂移 Piāoyí | Drift | | [6] |
+| French | Dérapage | Drift | | [5] |
+| German | Driften | Drift | | [?] |
+| Italian | Slittata Derapata (Mario Kart Wii and onwards) | Slide Sideslip | | [?] |
+| Korean | 드리프트 Deuripeuteu | Drift | | [?] |
+| Portuguese (Brazil) | Derrapagem | Slip | | [?] |
+| Portuguese (Europe) | Deslize | Slide | | [?] |
+| Russian | Управляемый занос Upravlyayemyy zanos | Controlled skid | | [?] |
+| Spanish | Derrapar | To skid | | [?] |
+
+## References [edit]
+
+1. ^ Mario Kart 64 Operation Card.
+2. ^ Super Mario Kart instruction booklet. Page 18.
+3. ^ 2003. Mario Kart: Double Dash!! instruction booklet. Nintendo of America. Page 12.
+4. ^ Mario Kart DS Mission Mode: 1-8
+5. ^ a b Mario Kart World in-game manual from French European localization. (Archived 12 Jun. 2025 via Imgur.)
+6. ^ 2012. Mario Kart 7 Taiwanese e-manual (PDF). Nintendo Phuten (Traditional Chinese). Page 10.

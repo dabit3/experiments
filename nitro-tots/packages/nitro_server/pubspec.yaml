@@ -1,0 +1,23 @@
+name: nitro_server
+description: Authoritative multiplayer server for Nitro Tots.
+version: 0.1.0
+
+publish_to: none
+
+environment:
+  sdk: ^3.13.3
+
+# Add regular dependencies here.
+dependencies:
+  args: ^2.7.0
+  nitro_core:
+    path: ../nitro_core
+  path: ^1.9.0
+  shelf: ^1.4.2
+  shelf_router: ^1.1.4
+  shelf_web_socket: ^3.0.0
+  web_socket_channel: ^3.0.3
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6

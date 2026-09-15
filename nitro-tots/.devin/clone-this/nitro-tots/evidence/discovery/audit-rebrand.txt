@@ -1,0 +1,18 @@
+# rebrand audit: grep for source-title vocabulary in shipped product tree
+# command: rg -n -i 'mario|nintendo|luigi|bowser|koopa|yoshi|peach|toad|mushroom|banana|blue shell|red shell|green shell|bullet bill|lightning bolt|rainbow road' app/lib app/assets app/macos/Runner app/ios/Runner app/android/app/src packages README.md PROTOCOL.md tools test
+(no matches)
+
+# bundle ids / display names
+app/ios/Runner/Info.plist:10:	<string>Nitro Tots</string>
+app/ios/Runner/Info.plist:18:	<string>nitro_tots</string>
+app/android/app/build.gradle.kts:8:    namespace = "dev.nitrotots.nitro_tots"
+app/android/app/build.gradle.kts:19:        applicationId = "dev.nitrotots.nitro_tots"
+app/macos/Runner/Configs/AppInfo.xcconfig:8:PRODUCT_NAME = Nitro Tots
+app/macos/Runner/Configs/AppInfo.xcconfig:11:PRODUCT_BUNDLE_IDENTIFIER = dev.nitrotots.nitroTots
+app/macos/Runner/Configs/AppInfo.xcconfig:14:PRODUCT_COPYRIGHT = Copyright © 2026 Nitro Tots. Original content.
+
+# fonts licence files
+Fredoka.ttf
+Nunito.ttf
+OFL-Fredoka.txt
+OFL-Nunito.txt

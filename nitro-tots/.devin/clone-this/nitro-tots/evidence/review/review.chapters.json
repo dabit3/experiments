@@ -1,0 +1,263 @@
+{
+  "duration": 320.133,
+  "chapters": [
+    {
+      "title": "Intro",
+      "start": 0.0,
+      "end": 5.0
+    },
+    {
+      "title": "Automated four-way match",
+      "start": 5.0,
+      "end": 77.233
+    },
+    {
+      "title": "Platform by platform",
+      "start": 77.233,
+      "end": 118.233
+    },
+    {
+      "title": "Same result everywhere",
+      "start": 118.233,
+      "end": 133.233
+    },
+    {
+      "title": "Visual parity",
+      "start": 133.233,
+      "end": 153.733
+    },
+    {
+      "title": "Manual play-through",
+      "start": 153.733,
+      "end": 283.133
+    },
+    {
+      "title": "Design pass",
+      "start": 283.133,
+      "end": 313.133
+    },
+    {
+      "title": "Summary",
+      "start": 313.133,
+      "end": 320.133
+    }
+  ],
+  "segments": [
+    {
+      "chapter": "Intro",
+      "kind": "card",
+      "seconds": 5.0,
+      "source": "title.png"
+    },
+    {
+      "chapter": "Automated four-way match",
+      "kind": "card",
+      "seconds": 3.0,
+      "source": "ch_match.png"
+    },
+    {
+      "chapter": "Automated four-way match",
+      "kind": "clip x1",
+      "seconds": 14.0,
+      "source": "four-way-match.mp4 @7s+14s"
+    },
+    {
+      "chapter": "Automated four-way match",
+      "kind": "clip x1",
+      "seconds": 14.0,
+      "source": "four-way-match.mp4 @19s+14s"
+    },
+    {
+      "chapter": "Automated four-way match",
+      "kind": "clip x6",
+      "seconds": 7.167,
+      "source": "four-way-match.mp4 @33s+43s"
+    },
+    {
+      "chapter": "Automated four-way match",
+      "kind": "clip x1",
+      "seconds": 6.0,
+      "source": "four-way-match.mp4 @76s+6s"
+    },
+    {
+      "chapter": "Automated four-way match",
+      "kind": "clip x12",
+      "seconds": 21.067,
+      "source": "four-way-match.mp4 @86s+253s"
+    },
+    {
+      "chapter": "Automated four-way match",
+      "kind": "clip x1",
+      "seconds": 7.0,
+      "source": "four-way-match.mp4 @340s+7s"
+    },
+    {
+      "chapter": "Platform by platform",
+      "kind": "card",
+      "seconds": 3.0,
+      "source": "ch_platforms.png"
+    },
+    {
+      "chapter": "Platform by platform",
+      "kind": "slides",
+      "seconds": 11.0,
+      "source": "web_lobby.png, web_racing.png, web_racing_mid.png, web_results.png, web_matchOver.png"
+    },
+    {
+      "chapter": "Platform by platform",
+      "kind": "slides",
+      "seconds": 11.0,
+      "source": "ios_lobby.png, ios_racing.png, ios_racing_mid.png, ios_results.png, ios_matchOver.png"
+    },
+    {
+      "chapter": "Platform by platform",
+      "kind": "slides",
+      "seconds": 11.0,
+      "source": "macos_lobby.png, macos_racing.png, macos_racing_mid.png, macos_results.png, macos_matchOver.png"
+    },
+    {
+      "chapter": "Platform by platform",
+      "kind": "card",
+      "seconds": 5.0,
+      "source": "android.png"
+    },
+    {
+      "chapter": "Same result everywhere",
+      "kind": "card",
+      "seconds": 3.0,
+      "source": "ch_compare.png"
+    },
+    {
+      "chapter": "Same result everywhere",
+      "kind": "side-by-side",
+      "seconds": 6.0,
+      "source": "web_matchOver.png | ios_matchOver.png"
+    },
+    {
+      "chapter": "Same result everywhere",
+      "kind": "grid",
+      "seconds": 6.0,
+      "source": "web_matchOver.png, ios_matchOver.png, macos_matchOver.png, desktop_matchOver.png"
+    },
+    {
+      "chapter": "Visual parity",
+      "kind": "card",
+      "seconds": 3.0,
+      "source": "ch_parity.png"
+    },
+    {
+      "chapter": "Visual parity",
+      "kind": "side-by-side",
+      "seconds": 3.5,
+      "source": "web_title.png | macos_title.png"
+    },
+    {
+      "chapter": "Visual parity",
+      "kind": "side-by-side",
+      "seconds": 3.5,
+      "source": "web_garage.png | macos_garage.png"
+    },
+    {
+      "chapter": "Visual parity",
+      "kind": "side-by-side",
+      "seconds": 3.5,
+      "source": "web_track.png | macos_track.png"
+    },
+    {
+      "chapter": "Visual parity",
+      "kind": "side-by-side",
+      "seconds": 3.5,
+      "source": "web_settings.png | macos_settings.png"
+    },
+    {
+      "chapter": "Visual parity",
+      "kind": "side-by-side",
+      "seconds": 3.5,
+      "source": "web_online.png | macos_online.png"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "card",
+      "seconds": 3.0,
+      "source": "ch_manual.png"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "clip x1",
+      "seconds": 8.0,
+      "source": "manual-ui-2-raw.mp4 @85s+8s"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "clip x1",
+      "seconds": 8.0,
+      "source": "manual-ui-2-raw.mp4 @182s+8s"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "clip x1",
+      "seconds": 8.0,
+      "source": "manual-ui-2-raw.mp4 @223s+8s"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "clip x1",
+      "seconds": 8.0,
+      "source": "manual-ui-2-raw.mp4 @357s+8s"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "clip x1",
+      "seconds": 8.0,
+      "source": "manual-ui-2-raw.mp4 @623s+8s"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "clip x1",
+      "seconds": 8.0,
+      "source": "manual-ui-2-raw.mp4 @710s+8s"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "clip x1",
+      "seconds": 8.0,
+      "source": "manual-ui-2-raw.mp4 @841s+8s"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "clip x1",
+      "seconds": 8.0,
+      "source": "manual-ui-2-raw.mp4 @1001s+8s"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "clip x1",
+      "seconds": 8.0,
+      "source": "manual-ui-2-raw.mp4 @1074s+8s"
+    },
+    {
+      "chapter": "Manual play-through",
+      "kind": "slides",
+      "seconds": 54.4,
+      "source": "title_desktop_1280x800.png, title_phone_400_truncated_labels.png, title_phone_400_fixed.png, garage_desktop_selected.png, cup_desktop_one_lap.png, countdown_three_lights.png, countdown_green_go.png, quick_race_hud.png, quick_race_paused.png, quick_results_1280x800.png, quick_results_1024x700_scrolled.png, gp_race1_totals.png, gp_race4_totals.png, gp_final_podium_standings.png, online_web_final_results.png, online_native_final_results.png, touch_hud_400x900.png"
+    },
+    {
+      "chapter": "Design pass",
+      "kind": "card",
+      "seconds": 3.0,
+      "source": "ch_design.png"
+    },
+    {
+      "chapter": "Design pass",
+      "kind": "slides",
+      "seconds": 27.0,
+      "source": "01_title.png, 02_garage.png, 03_cup_select.png, 04_get_ready.png, 05_go.png, 06_hud_racing.png, 07_hud_boost_pad.png, 08_race_results_table.png, 09_podium.png"
+    },
+    {
+      "chapter": "Summary",
+      "kind": "card",
+      "seconds": 7.0,
+      "source": "summary.png"
+    }
+  ]
+}
