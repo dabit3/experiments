@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "slug": "03-architectural-section-drawing",
+  "name": "Architectural Section Drawing",
+  "description": "Orthographic source planes, section datums and measured leaders resolve into quiet, full-size demonstrations.",
+  "compositionId": "ArchitecturalSectionDrawing"
+}
