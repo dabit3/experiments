@@ -99,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const bg = HearthBackdrop();
     return Scaffold(
       backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,
       body: switch (_page) {
         _Page.title => _title(context, bg),
         _Page.play => _play(context),

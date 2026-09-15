@@ -4,8 +4,9 @@
   "clone_name": "Voxelhearth",
   "clone_root": "/Users/devin/repos/experiments/voxelhearth",
   "status": "blocked",
-  "iteration": 11,
-  "revision": "sha256:3b6df07fc2b5f62efab566427037ee8c37e88f116eb167e2e9710e86e1bfdc6d",
+  "iteration": 13,
+  "revision": "sha256:7ec652fe574f161e14dc3f9e1d45202ea07663a05e02ce70b8f8ffdae4532c2c",
+  "verification_scope": "Targeted Web+iPhone+iPad follow-up to merged PR #42, source commit 8400c436, PR #229. Records retaining an earlier verified_revision are historical evidence and do not establish verification at the current fingerprint. The original four-platform completion gate remains incomplete.",
   "frontier": [],
   "blockers": [
     {
@@ -40,6 +41,29 @@
   ],
   "unverified_assumptions": [],
   "items": [
+    {
+      "id": "feature-tablet-keyboard",
+      "kind": "feature",
+      "label": "Native iPad lobby keyboard preserves chat draft, composer, Send and scroll access to lobby controls",
+      "status": "verified",
+      "verified_revision": "sha256:7ec652fe574f161e14dc3f9e1d45202ea07663a05e02ce70b8f8ffdae4532c2c",
+      "evidence": [
+        "evidence/tests/checks/ipad-regression.md",
+        "evidence/tests/checks/ipad-quality.txt",
+        "evidence/tests/three-device-8400c436/REPORT.md"
+      ]
+    },
+    {
+      "id": "journey-web-iphone-ipad-ui",
+      "kind": "journey",
+      "label": "Web, native iPhone and native iPad share a room and complete a match through real UI controls",
+      "status": "verified",
+      "verified_revision": "sha256:7ec652fe574f161e14dc3f9e1d45202ea07663a05e02ce70b8f8ffdae4532c2c",
+      "evidence": [
+        "evidence/tests/checks/ipad-regression.md",
+        "evidence/tests/three-device-8400c436/REPORT.md"
+      ]
+    },
     {
       "id": "route-home",
       "kind": "route",
@@ -842,7 +866,7 @@
       ]
     }
   ],
-  "next_action": "Resume Android four-client verification on a virtualization-capable host and measure all clients on a hardware GPU. Rebuild, rerun affected checks and sweeps, then run verify_state.py. All locally actionable arcade verification is recorded.",
+  "next_action": "Deliver the processed Web+iPhone+iPad review from PR #229. To complete the original clone scope, rerun the broad functional/visual/build matrix and discovery sweeps at the current fingerprint on a host with working Android virtualization and hardware graphics, then run verify_state.py. Do not promote historical evidence without rerunning.",
   "reference_access": {
     "runnable_original": false,
     "reference": "public documentation (minecraft.wiki Gameplay/Controls/HUD/Crafting pages)",
