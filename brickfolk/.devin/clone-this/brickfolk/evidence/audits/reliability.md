@@ -5,14 +5,18 @@ and successful native Release retest. Do not count that Debug manual run as
 passing. The final clean-copy log verifies all four targets from source without
 existing build or dependency directories.
 
-The current visual suite remains blocked on two glyph-edge comparisons;
-see `arcade-visual-blocker.md`. Functional agreement and clean builds do not
-override that failing completion gate.
+The former visual blocker is preserved in `arcade-visual-blocker.md`.
+The user approved scoped font-edge normalization; its bounds, calibration and
+independent controls are in `font-edge-normalization.md`. Current pass/fail
+results are in the manifest's evidence runs. The focused Release UI retest is
+recorded in `font-ui-retest.md`.
 
 - Reconnect: token resume within the grace period keeps the seat and re-sends
   room state (`server-test.log`). Client retries with backoff and shows a banner.
-- Determinism: same seed + same inputs -> same checksum on web, iOS, Android and
-  macOS (`report.json`: identical=true for all four; server checksum equal).
+- Determinism: the fresh web/macOS reports verify client/server agreement.
+  The required four-client rerun remains blocked by Android's software-emulator
+  stall; see `normalization-rerun.md`. Earlier four-client passes are historical
+  evidence and are not promoted to the current revision.
 - Slow devices: the harness scales match timers on software-emulated Android
   (`--match-length-scale`) without changing simulation ticks per second.
 - Rooms close when the last human leaves; parties survive a member going offline.

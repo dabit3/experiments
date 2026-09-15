@@ -3,10 +3,10 @@
 Arcade redesign: `arcade-ui.md` records 1.5x text, phone search, Tab/Enter on
 world cards, native arrow-key movement and joystick movement at arena walls.
 
-- Colour contrast (computed from `theme/tokens.dart`): ink on paper 16.6:1,
-  slate on paper 4.2:1 (secondary text), ink on mint 7.6:1, slateLight on ink
-  7.1:1, white on sky 3.9:1 (button labels, >= 3:1 large-text threshold). Brand
-  coral on white is 2.8:1 and is used for accents and large headings only.
+- Token contrast (recomputed from `theme/tokens.dart`): ink on paper 16.76:1,
+  slate on paper 5.61:1, ink on mint 8.91:1, slateLight on ink 5.81:1,
+  white on sky 4.28:1 and brand coral on white 2.60:1. These are token-pair
+  measurements, not a claim that every text placement meets WCAG contrast.
 - Semantics: touch controls expose `Semantics` labels (joystick, jump, avatar
   preview); icon buttons carry tooltips (leave, chat, send, theme, settings,
   decline, join, turn around).

@@ -29,5 +29,5 @@ Names: `^[A-Za-z][A-Za-z0-9_]{2,15}$`. Chat: max 140 chars, filtered, rate
 limited. Party codes: 4 letters from the code alphabet. Inputs are clamped by
 the simulation.
 
-Evidence: `brickfolk-test.db` (players persisted by the four-platform run),
+Evidence: `brickfolk-test.db` (players persisted by the current paired-client run),
 `server-test.log` (persistence, duplicate names, daily cooldown, plot persists).

@@ -21,5 +21,17 @@ all dependencies are up-to-date.
 Showing outdated packages.
 [*] indicates versions that are not the latest available.
 
-Found no outdated packages
+Package Name         Current   Upgradable  Resolvable  Latest   
+
+direct dependencies:
+sqlite3              *3.5.2    3.6.0       3.6.0       3.6.0    
+
+dev_dependencies: all up-to-date.
+
+transitive dev_dependencies:
+_fe_analyzer_shared  *107.0.0  108.0.0     108.0.0     108.0.0  
+analyzer             *14.3.0   14.4.0      14.4.0      14.4.0   
+
+3 upgradable dependencies are locked (in pubspec.lock) to older versions.
+To update these dependencies, use `dart pub upgrade`.
 exit=0
