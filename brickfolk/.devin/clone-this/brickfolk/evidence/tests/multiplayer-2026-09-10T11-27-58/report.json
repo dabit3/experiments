@@ -1,0 +1,135 @@
+{
+  "passed": true,
+  "failures": [],
+  "platforms": [
+    "web",
+    "macos"
+  ],
+  "experience": "tag",
+  "seed": 1234,
+  "party": "BRIK",
+  "bots": 2,
+  "room": "BX68",
+  "checksum": "323fbb0a",
+  "serverChecksum": "323fbb0a",
+  "leaderboard": [
+    {
+      "rank": 1,
+      "player": "MacMia",
+      "score": 36,
+      "detail": "1 frozen"
+    },
+    {
+      "rank": 2,
+      "player": "Mortar",
+      "score": 22,
+      "detail": "2 frozen"
+    },
+    {
+      "rank": 3,
+      "player": "WebWren",
+      "score": 11,
+      "detail": "2 frozen"
+    },
+    {
+      "rank": 4,
+      "player": "Pipsqueak",
+      "score": 0,
+      "detail": "4 frozen"
+    }
+  ],
+  "perPlatform": {
+    "web": {
+      "room": "BX68",
+      "checksum": "323fbb0a",
+      "experience": "tag",
+      "leaderboard": [
+        {
+          "rank": 1,
+          "player": "MacMia",
+          "score": 36,
+          "detail": "1 frozen"
+        },
+        {
+          "rank": 2,
+          "player": "Mortar",
+          "score": 22,
+          "detail": "2 frozen"
+        },
+        {
+          "rank": 3,
+          "player": "WebWren",
+          "score": 11,
+          "detail": "2 frozen"
+        },
+        {
+          "rank": 4,
+          "player": "Pipsqueak",
+          "score": 0,
+          "detail": "4 frozen"
+        }
+      ],
+      "rendered": true
+    },
+    "macos": {
+      "room": "BX68",
+      "checksum": "323fbb0a",
+      "experience": "tag",
+      "leaderboard": [
+        {
+          "rank": 1,
+          "player": "MacMia",
+          "score": 36,
+          "detail": "1 frozen"
+        },
+        {
+          "rank": 2,
+          "player": "Mortar",
+          "score": 22,
+          "detail": "2 frozen"
+        },
+        {
+          "rank": 3,
+          "player": "WebWren",
+          "score": 11,
+          "detail": "2 frozen"
+        },
+        {
+          "rank": 4,
+          "player": "Pipsqueak",
+          "score": 0,
+          "detail": "4 frozen"
+        }
+      ],
+      "rendered": true
+    }
+  },
+  "identical": {
+    "web": true,
+    "macos": true
+  },
+  "screenshots": {
+    "web": [
+      "web-lobby.png",
+      "web-gameplay.png",
+      "web-results.png"
+    ],
+    "macos": [
+      "macos-lobby.png",
+      "macos-gameplay.png",
+      "macos-results.png"
+    ]
+  },
+  "recordings": {
+    "web": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T11-27-58/recording-web.webm",
+    "macos": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T11-27-58/recording-macos.mov",
+    "fourWay": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T11-27-58/recording-four-way.mp4"
+  },
+  "visual": null,
+  "androidAnrDismissals": 0,
+  "androidCapture": null,
+  "androidMarkerTimes": null,
+  "serverTick": 2059,
+  "durationSec": 85,
+  "evidenceDir": "/Users/devin/repos/experiments/brickfolk/.devin/clone-this/brickfolk/evidence/tests/multiplayer-2026-09-10T11-27-58"
+}

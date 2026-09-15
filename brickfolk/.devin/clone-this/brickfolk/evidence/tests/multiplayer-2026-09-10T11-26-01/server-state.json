@@ -1,0 +1,448 @@
+{
+  "serverTime": 1757000097086,
+  "tick": 2942,
+  "online": 2,
+  "players": [
+    {
+      "id": "p1_VMEC",
+      "name": "WebWren",
+      "platform": "web",
+      "room": "BX68",
+      "party": "BRIK"
+    },
+    {
+      "id": "p2_WL42",
+      "name": "MacMia",
+      "platform": "macos",
+      "room": "BX68",
+      "party": "BRIK"
+    }
+  ],
+  "rooms": [
+    {
+      "code": "BX68",
+      "experience": "tycoon",
+      "phase": "results",
+      "members": [
+        {
+          "player": {
+            "id": "p1_VMEC",
+            "name": "WebWren",
+            "avatar": {
+              "headColor": 4294295626,
+              "torsoColor": 4282285050,
+              "armColor": 4294295626,
+              "legColor": 4281310811,
+              "face": "face_smile",
+              "hat": "hat_none",
+              "accessory": "acc_none"
+            },
+            "platform": "web",
+            "isBot": false,
+            "online": true
+          },
+          "ready": true
+        },
+        {
+          "player": {
+            "id": "p2_WL42",
+            "name": "MacMia",
+            "avatar": {
+              "headColor": 4294295626,
+              "torsoColor": 4282285050,
+              "armColor": 4294295626,
+              "legColor": 4281310811,
+              "face": "face_smile",
+              "hat": "hat_none",
+              "accessory": "acc_none"
+            },
+            "platform": "macos",
+            "isBot": false,
+            "online": true
+          },
+          "ready": true
+        },
+        {
+          "player": {
+            "id": "bot0",
+            "name": "Pipsqueak",
+            "avatar": {
+              "headColor": 4294937164,
+              "torsoColor": 4293216333,
+              "armColor": 4294937164,
+              "legColor": 4287519991,
+              "face": "face_smile",
+              "hat": "hat_cap",
+              "accessory": "acc_none"
+            },
+            "platform": "server",
+            "isBot": true,
+            "online": true
+          },
+          "ready": true
+        },
+        {
+          "player": {
+            "id": "bot1",
+            "name": "Mortar",
+            "avatar": {
+              "headColor": 4287519991,
+              "torsoColor": 4281310811,
+              "armColor": 4287519991,
+              "legColor": 4288324527,
+              "face": "face_grin",
+              "hat": "hat_helmet",
+              "accessory": "acc_none"
+            },
+            "platform": "server",
+            "isBot": true,
+            "online": true
+          },
+          "ready": true
+        }
+      ],
+      "seed": 59614684,
+      "countdownEndsAt": null,
+      "matchEndsAt": null,
+      "round": 1,
+      "botCount": 2,
+      "matchNumber": 1,
+      "gameTick": 2700,
+      "progress": {},
+      "lastResults": {
+        "roomCode": "BX68",
+        "experience": "tycoon",
+        "entries": [
+          {
+            "rank": 1,
+            "player": {
+              "id": "bot0",
+              "name": "Pipsqueak",
+              "avatar": {
+                "headColor": 4294937164,
+                "torsoColor": 4293216333,
+                "armColor": 4294937164,
+                "legColor": 4287519991,
+                "face": "face_smile",
+                "hat": "hat_cap",
+                "accessory": "acc_none"
+              },
+              "platform": "server",
+              "isBot": true,
+              "online": true
+            },
+            "score": 269551,
+            "detail": "36 bricks, 4914/s",
+            "pipsEarned": 0,
+            "badgesEarned": []
+          },
+          {
+            "rank": 2,
+            "player": {
+              "id": "p1_VMEC",
+              "name": "WebWren",
+              "avatar": {
+                "headColor": 4294295626,
+                "torsoColor": 4282285050,
+                "armColor": 4294295626,
+                "legColor": 4281310811,
+                "face": "face_smile",
+                "hat": "hat_none",
+                "accessory": "acc_none"
+              },
+              "platform": "web",
+              "isBot": false,
+              "online": true
+            },
+            "score": 260460,
+            "detail": "36 bricks, 4842/s",
+            "pipsEarned": 60,
+            "badgesEarned": [
+              "founder",
+              "magnate"
+            ]
+          },
+          {
+            "rank": 3,
+            "player": {
+              "id": "bot1",
+              "name": "Mortar",
+              "avatar": {
+                "headColor": 4287519991,
+                "torsoColor": 4281310811,
+                "armColor": 4287519991,
+                "legColor": 4288324527,
+                "face": "face_grin",
+                "hat": "hat_helmet",
+                "accessory": "acc_none"
+              },
+              "platform": "server",
+              "isBot": true,
+              "online": true
+            },
+            "score": 234074,
+            "detail": "36 bricks, 4320/s",
+            "pipsEarned": 0,
+            "badgesEarned": []
+          },
+          {
+            "rank": 4,
+            "player": {
+              "id": "p2_WL42",
+              "name": "MacMia",
+              "avatar": {
+                "headColor": 4294295626,
+                "torsoColor": 4282285050,
+                "armColor": 4294295626,
+                "legColor": 4281310811,
+                "face": "face_smile",
+                "hat": "hat_none",
+                "accessory": "acc_none"
+              },
+              "platform": "macos",
+              "isBot": false,
+              "online": true
+            },
+            "score": 223655,
+            "detail": "36 bricks, 4212/s",
+            "pipsEarned": 30,
+            "badgesEarned": [
+              "founder",
+              "magnate"
+            ]
+          }
+        ],
+        "checksum": "2f1d181c",
+        "durationMs": 89100
+      }
+    }
+  ],
+  "parties": [
+    {
+      "code": "BRIK",
+      "leaderId": "p1_VMEC",
+      "members": [
+        {
+          "id": "p1_VMEC",
+          "name": "WebWren",
+          "avatar": {
+            "headColor": 4294295626,
+            "torsoColor": 4282285050,
+            "armColor": 4294295626,
+            "legColor": 4281310811,
+            "face": "face_smile",
+            "hat": "hat_none",
+            "accessory": "acc_none"
+          },
+          "platform": "web",
+          "isBot": false,
+          "online": true
+        },
+        {
+          "id": "p2_WL42",
+          "name": "MacMia",
+          "avatar": {
+            "headColor": 4294295626,
+            "torsoColor": 4282285050,
+            "armColor": 4294295626,
+            "legColor": 4281310811,
+            "face": "face_smile",
+            "hat": "hat_none",
+            "accessory": "acc_none"
+          },
+          "platform": "macos",
+          "isBot": false,
+          "online": true
+        }
+      ],
+      "roomCode": "BX68",
+      "experience": "tycoon"
+    }
+  ],
+  "testReports": [
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "signedIn",
+      "payload": {
+        "name": "WebWren"
+      },
+      "receivedAt": 1757000002970
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "signedIn",
+      "payload": {
+        "name": "MacMia"
+      },
+      "receivedAt": 1757000003630
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "party",
+      "payload": {
+        "code": "BRIK",
+        "members": 2
+      },
+      "receivedAt": 1757000003630
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "party",
+      "payload": {
+        "code": "BRIK",
+        "members": 1
+      },
+      "receivedAt": 1757000004521
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "launch",
+      "payload": {
+        "members": 2,
+        "experience": "tycoon"
+      },
+      "receivedAt": 1757000004521
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "countdown",
+      "payload": {
+        "room": "BX68"
+      },
+      "receivedAt": 1757000004554
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "countdown",
+      "payload": {
+        "room": "BX68"
+      },
+      "receivedAt": 1757000004587
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "lobby",
+      "payload": {
+        "room": "BX68",
+        "members": 2,
+        "rendered": true
+      },
+      "receivedAt": 1757000004686
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "lobby",
+      "payload": {
+        "room": "BX68",
+        "members": 1,
+        "rendered": true
+      },
+      "receivedAt": 1757000005148
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "playing",
+      "payload": {
+        "room": "BX68",
+        "rendered": true
+      },
+      "receivedAt": 1757000007557
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "playing",
+      "payload": {
+        "room": "BX68",
+        "rendered": true
+      },
+      "receivedAt": 1757000007953
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "results",
+      "payload": {
+        "room": "BX68",
+        "checksum": "2f1d181c",
+        "experience": "tycoon",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "player": "Pipsqueak",
+            "score": 269551,
+            "detail": "36 bricks, 4914/s"
+          },
+          {
+            "rank": 2,
+            "player": "WebWren",
+            "score": 260460,
+            "detail": "36 bricks, 4842/s"
+          },
+          {
+            "rank": 3,
+            "player": "Mortar",
+            "score": 234074,
+            "detail": "36 bricks, 4320/s"
+          },
+          {
+            "rank": 4,
+            "player": "MacMia",
+            "score": 223655,
+            "detail": "36 bricks, 4212/s"
+          }
+        ],
+        "rendered": true
+      },
+      "receivedAt": 1757000096690
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "results",
+      "payload": {
+        "room": "BX68",
+        "checksum": "2f1d181c",
+        "experience": "tycoon",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "player": "Pipsqueak",
+            "score": 269551,
+            "detail": "36 bricks, 4914/s"
+          },
+          {
+            "rank": 2,
+            "player": "WebWren",
+            "score": 260460,
+            "detail": "36 bricks, 4842/s"
+          },
+          {
+            "rank": 3,
+            "player": "Mortar",
+            "score": 234074,
+            "detail": "36 bricks, 4320/s"
+          },
+          {
+            "rank": 4,
+            "player": "MacMia",
+            "score": 223655,
+            "detail": "36 bricks, 4212/s"
+          }
+        ],
+        "rendered": true
+      },
+      "receivedAt": 1757000096789
+    }
+  ]
+}

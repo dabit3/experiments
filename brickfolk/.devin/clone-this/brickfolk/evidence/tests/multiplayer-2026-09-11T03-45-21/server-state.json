@@ -1,0 +1,444 @@
+{
+  "serverTime": 1757000068871,
+  "tick": 2087,
+  "online": 2,
+  "players": [
+    {
+      "id": "p1_VMEC",
+      "name": "WebWren",
+      "platform": "web",
+      "room": "BX68",
+      "party": "BRIK"
+    },
+    {
+      "id": "p2_WL42",
+      "name": "MacMia",
+      "platform": "macos",
+      "room": "BX68",
+      "party": "BRIK"
+    }
+  ],
+  "rooms": [
+    {
+      "code": "BX68",
+      "experience": "tag",
+      "phase": "results",
+      "members": [
+        {
+          "player": {
+            "id": "p1_VMEC",
+            "name": "WebWren",
+            "avatar": {
+              "headColor": 4294295626,
+              "torsoColor": 4282285050,
+              "armColor": 4294295626,
+              "legColor": 4281310811,
+              "face": "face_smile",
+              "hat": "hat_none",
+              "accessory": "acc_none"
+            },
+            "platform": "web",
+            "isBot": false,
+            "online": true
+          },
+          "ready": true
+        },
+        {
+          "player": {
+            "id": "p2_WL42",
+            "name": "MacMia",
+            "avatar": {
+              "headColor": 4294295626,
+              "torsoColor": 4282285050,
+              "armColor": 4294295626,
+              "legColor": 4281310811,
+              "face": "face_smile",
+              "hat": "hat_none",
+              "accessory": "acc_none"
+            },
+            "platform": "macos",
+            "isBot": false,
+            "online": true
+          },
+          "ready": true
+        },
+        {
+          "player": {
+            "id": "bot0",
+            "name": "Pipsqueak",
+            "avatar": {
+              "headColor": 4294937164,
+              "torsoColor": 4293216333,
+              "armColor": 4294937164,
+              "legColor": 4287519991,
+              "face": "face_smile",
+              "hat": "hat_cap",
+              "accessory": "acc_none"
+            },
+            "platform": "server",
+            "isBot": true,
+            "online": true
+          },
+          "ready": true
+        },
+        {
+          "player": {
+            "id": "bot1",
+            "name": "Mortar",
+            "avatar": {
+              "headColor": 4287519991,
+              "torsoColor": 4281310811,
+              "armColor": 4287519991,
+              "legColor": 4288324527,
+              "face": "face_grin",
+              "hat": "hat_helmet",
+              "accessory": "acc_none"
+            },
+            "platform": "server",
+            "isBot": true,
+            "online": true
+          },
+          "ready": true
+        }
+      ],
+      "seed": 59614684,
+      "countdownEndsAt": null,
+      "matchEndsAt": null,
+      "round": 1,
+      "botCount": 2,
+      "matchNumber": 1,
+      "gameTick": 1821,
+      "progress": {},
+      "lastResults": {
+        "roomCode": "BX68",
+        "experience": "tag",
+        "entries": [
+          {
+            "rank": 1,
+            "player": {
+              "id": "p2_WL42",
+              "name": "MacMia",
+              "avatar": {
+                "headColor": 4294295626,
+                "torsoColor": 4282285050,
+                "armColor": 4294295626,
+                "legColor": 4281310811,
+                "face": "face_smile",
+                "hat": "hat_none",
+                "accessory": "acc_none"
+              },
+              "platform": "macos",
+              "isBot": false,
+              "online": true
+            },
+            "score": 36,
+            "detail": "1 frozen",
+            "pipsEarned": 80,
+            "badgesEarned": [
+              "it_factor"
+            ]
+          },
+          {
+            "rank": 2,
+            "player": {
+              "id": "bot1",
+              "name": "Mortar",
+              "avatar": {
+                "headColor": 4287519991,
+                "torsoColor": 4281310811,
+                "armColor": 4287519991,
+                "legColor": 4288324527,
+                "face": "face_grin",
+                "hat": "hat_helmet",
+                "accessory": "acc_none"
+              },
+              "platform": "server",
+              "isBot": true,
+              "online": true
+            },
+            "score": 22,
+            "detail": "2 frozen",
+            "pipsEarned": 0,
+            "badgesEarned": []
+          },
+          {
+            "rank": 3,
+            "player": {
+              "id": "p1_VMEC",
+              "name": "WebWren",
+              "avatar": {
+                "headColor": 4294295626,
+                "torsoColor": 4282285050,
+                "armColor": 4294295626,
+                "legColor": 4281310811,
+                "face": "face_smile",
+                "hat": "hat_none",
+                "accessory": "acc_none"
+              },
+              "platform": "web",
+              "isBot": false,
+              "online": true
+            },
+            "score": 11,
+            "detail": "2 frozen",
+            "pipsEarned": 50,
+            "badgesEarned": []
+          },
+          {
+            "rank": 4,
+            "player": {
+              "id": "bot0",
+              "name": "Pipsqueak",
+              "avatar": {
+                "headColor": 4294937164,
+                "torsoColor": 4293216333,
+                "armColor": 4294937164,
+                "legColor": 4287519991,
+                "face": "face_smile",
+                "hat": "hat_cap",
+                "accessory": "acc_none"
+              },
+              "platform": "server",
+              "isBot": true,
+              "online": true
+            },
+            "score": 0,
+            "detail": "4 frozen",
+            "pipsEarned": 0,
+            "badgesEarned": []
+          }
+        ],
+        "checksum": "323fbb0a",
+        "durationMs": 60093
+      }
+    }
+  ],
+  "parties": [
+    {
+      "code": "BRIK",
+      "leaderId": "p1_VMEC",
+      "members": [
+        {
+          "id": "p1_VMEC",
+          "name": "WebWren",
+          "avatar": {
+            "headColor": 4294295626,
+            "torsoColor": 4282285050,
+            "armColor": 4294295626,
+            "legColor": 4281310811,
+            "face": "face_smile",
+            "hat": "hat_none",
+            "accessory": "acc_none"
+          },
+          "platform": "web",
+          "isBot": false,
+          "online": true
+        },
+        {
+          "id": "p2_WL42",
+          "name": "MacMia",
+          "avatar": {
+            "headColor": 4294295626,
+            "torsoColor": 4282285050,
+            "armColor": 4294295626,
+            "legColor": 4281310811,
+            "face": "face_smile",
+            "hat": "hat_none",
+            "accessory": "acc_none"
+          },
+          "platform": "macos",
+          "isBot": false,
+          "online": true
+        }
+      ],
+      "roomCode": "BX68",
+      "experience": "tag"
+    }
+  ],
+  "testReports": [
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "signedIn",
+      "payload": {
+        "name": "WebWren"
+      },
+      "receivedAt": 1757000003498
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "signedIn",
+      "payload": {
+        "name": "MacMia"
+      },
+      "receivedAt": 1757000003795
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "party",
+      "payload": {
+        "code": "BRIK",
+        "members": 2
+      },
+      "receivedAt": 1757000003795
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "party",
+      "payload": {
+        "code": "BRIK",
+        "members": 1
+      },
+      "receivedAt": 1757000004092
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "launch",
+      "payload": {
+        "members": 2,
+        "experience": "tag"
+      },
+      "receivedAt": 1757000005181
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "countdown",
+      "payload": {
+        "room": "BX68"
+      },
+      "receivedAt": 1757000005214
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "lobby",
+      "payload": {
+        "room": "BX68",
+        "members": 1,
+        "rendered": true
+      },
+      "receivedAt": 1757000005346
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "countdown",
+      "payload": {
+        "room": "BX68"
+      },
+      "receivedAt": 1757000005346
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "lobby",
+      "payload": {
+        "room": "BX68",
+        "members": 2,
+        "rendered": true
+      },
+      "receivedAt": 1757000005511
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "playing",
+      "payload": {
+        "room": "BX68",
+        "rendered": true
+      },
+      "receivedAt": 1757000008217
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "playing",
+      "payload": {
+        "room": "BX68",
+        "rendered": true
+      },
+      "receivedAt": 1757000008613
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "results",
+      "payload": {
+        "room": "BX68",
+        "checksum": "323fbb0a",
+        "experience": "tag",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "player": "MacMia",
+            "score": 36,
+            "detail": "1 frozen"
+          },
+          {
+            "rank": 2,
+            "player": "Mortar",
+            "score": 22,
+            "detail": "2 frozen"
+          },
+          {
+            "rank": 3,
+            "player": "WebWren",
+            "score": 11,
+            "detail": "2 frozen"
+          },
+          {
+            "rank": 4,
+            "player": "Pipsqueak",
+            "score": 0,
+            "detail": "4 frozen"
+          }
+        ],
+        "rendered": true
+      },
+      "receivedAt": 1757000068343
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "macos",
+      "phase": "results",
+      "payload": {
+        "room": "BX68",
+        "checksum": "323fbb0a",
+        "experience": "tag",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "player": "MacMia",
+            "score": 36,
+            "detail": "1 frozen"
+          },
+          {
+            "rank": 2,
+            "player": "Mortar",
+            "score": 22,
+            "detail": "2 frozen"
+          },
+          {
+            "rank": 3,
+            "player": "WebWren",
+            "score": 11,
+            "detail": "2 frozen"
+          },
+          {
+            "rank": 4,
+            "player": "Pipsqueak",
+            "score": 0,
+            "detail": "4 frozen"
+          }
+        ],
+        "rendered": true
+      },
+      "receivedAt": 1757000068607
+    }
+  ]
+}

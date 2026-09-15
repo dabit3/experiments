@@ -1,0 +1,387 @@
+## Page 1: Roblox
+URL: https://en.wikipedia.org/wiki/Roblox
+
+Roblox
+
+| Roblox | |
+| --- | --- |
+| Logo used since 2022 | |
+| Developer | Roblox Corporation |
+| Publisher | Roblox Corporation |
+| Designers | David Baszucki Erik Cassel |
+| Platforms | Windows macOS iOS Android Xbox One Meta Quest 2 Meta Quest Pro PlayStation 4 PlayStation 5 |
+| Release | September 1, 2006 Windows September 1, 2006 iOS December 11, 2012 Android July 16, 2014 Xbox One November 20, 2015 Meta Quest 2, Quest Pro September 2023 PS4 October 10, 2023 PS5 April 14, 2026 |
+| Genres | Game creation system, massively multiplayer online game |
+| Modes | Single-player, multiplayer |
+
+Roblox (/ˈ r oʊ. b lɒ k s/ ⓘ, ROH-bloks) is an online game platform and game creation system developed by Roblox Corporation that allows users to program and play games created by themselves or other users. It was developed by David Baszucki and Erik Cassel in 2004, and released to the public in 2006. As of February 2025, the platform has reported an average of 85.3 million daily active users. According to the company, its monthly player base includes half of all American children under the age of 16.
+
+The platform hosts millions of user-created games, created using Luau, a modified dialect of the programming language Lua and the platform's game engine, Roblox Studio. While Roblox is free-to-play, it features in-game purchases done through its virtual currency known as Robux, and game developers on the platform are able to create items that cost Robux. The platform hosts a large virtual economy centered around those items and Robux. Using the platform's Developer Exchange program, creators are able to exchange their earned Robux for real-world currency. The platform has been used to host virtual concerts and events, as well as advergames.
+
+While Roblox started off small—both in playerbase and as a company—it began to grow rapidly in the second half of the 2010s. This growth was further accelerated by the COVID-19 pandemic. By 2020, over 5,000 games on Roblox had been played over a million times, and over 20 had been played over one billion times. Although critic reviews for Roblox have been positive, it has faced criticism concerning child safety and its content moderation, due to material pornographic or politically extremist in nature. It has been criticized for its alleged exploitative practices toward children and microtransactions. The platform has been restricted or completely blocked in several countries, including China, Egypt, Turkey, and Iraq.
+
+## Overview
+
+The Roblox app icon since 2025
+
+Roblox is an online game platform and game creation system built around user-generated content and games. [1] [2] Games can be created by any user through the platform's game engine, Roblox Studio, [3] and then shared to and played by other players. [1] The games featured on Roblox vary in genre, from role-playing video games to ones centered around escaping prison, among others. [4] The platform is made to appeal to a family-friendly audience, and has been described as a massively multiplayer online game (MMO). [5] 
+
+While Roblox is free-to-play, it features a virtual currency known as "Robux" that can be purchased with real-world money. Robux can be used to purchase virtual items that the player can use on their virtual character (or " avatar") on the platform, or access games that require payment. [1] As with games, avatar items on Roblox are mainly user-generated, [6] though most items on the platform were made by Roblox themselves for most of the platform's history. [7] Through the platform's Developer Exchange program, creators on the platform are able to exchange their earned Robux to real-world money. [8] Roblox features a monthly service called Roblox Plus, with its subscribers gaining access to more features. [9] 
+
+### Virtual economy
+
+Logo of the virtual currency "Robux"
+
+Roblox features a large virtual economy centered around its virtual currency Robux. [10] [11] The currency allows users to buy, sell and create virtual items. [6] Roblox has a service called Roblox Plus, a subscription that gives users discounts on Robux and in-game purchases, and allows members to upload user-created content on the market. [9] [12] 
+
+Many items on Roblox are user-generated. [7] [10] While only Roblox developers were able to create avatar items early on, [7] the capabilities of user-generated content has expanded greatly over time. [13] Since 2019, select users have gained the ability to publish avatar accessories, animations, [7] bundles and more. [10] [14] [13] Some items on Roblox have a "limited" status, with only a few being available and the price of the item based on supply and demand rather than a fixed price. These items function similarly to non-fungible tokens. The prices of limited items range, with the most valuable ones costing millions of Robux. [15] After the original supply of that item runs out, players can resell them for a higher price. [16] Additionally, users with an active Roblox Plus subscription are able to trade limiteds amongst each other. [12] Limited items made by the community cannot be traded and this feature is restricted to official items. [17] 
+
+Developers are able to create purchasable content through one-time purchases. [18] Through the Roblox Developer Exchange program, users are able to exchange their earned Robux for real-world money, [19] as long as they have at least 30,000 Robux. [8] In 2020, Roblox reported that roughly 345,000 game developers on the platform earned money through the program. [6] [20] Avatar item creators have also been able to generate profit with the platform, with some individuals designing items as a full-time job. It has been reported that the highest-earning creators have earned over $100,000 a year from item sales. [21] 
+
+A sizeable amount of scams are on Roblox, largely revolving around messages promoting websites and games that are designed to appear to give out free Robux. [22] There are people in the community known as "beamers" who compromise Roblox accounts to steal and sell their items on the platform's black markets. They employ various techniques, such as creating phishing websites or create ploys in order to acquire a victim's session token. [23] Once they gain access to the victim's account, these "beamers" steal and subsequently sell valuable limited items owned by the victims for real-world currency or cryptocurrency through marketplace sites or Discord chat rooms. The slang term "beaming" is commonly used to describe this entire process on Roblox. Roblox does offer hacking victims a "rollback" for their items, although this is only offered once per account. [24] 
+
+### Roblox Studio and game design
+
+The Roblox Studio interface as of August 2024
+
+Roblox Studio is the platform's game engine [25] and game development software. [26] [27] The engine and all games made on Roblox predominantly uses Luau, [28] a dialect of the Lua 5.1 programming language. [29] Since November 2021, the programming language has been open sourced under the MIT License. [28] [30] Some aspects of the engine were created using C++. [31] To assist in the creation of games, Roblox Studio features multiple pre-made templates that users can modify. [26] 
+
+As of 2020, Roblox reported that more than 2 million developers used Roblox Studio to create more than 20 million games per year. They also reported that a majority of developers were minors. [6] [20] 
+
+### Games
+
+Due to its status as a user-created games platform, Roblox has a variety of games; by July 2020, at least 20 games had been played more than one billion times, and at least 5,000 have been played more than one million times. [32] Games on Roblox greatly range in genre, [4] and the content of these games effects its age rating. [33] These ratings are broken into different age groups: everyone, and players over the age of 9, 13, or 17. [34] Games that are restricted to players over the age of 17 require ID verification to access. [34] 
+
+TechCrunch noted in March 2021 that Roblox games are largely distinct from established traditions in free-to-play video games, finding that successful Roblox games were geared towards immediate satisfaction, and finding that the addition of tutorials significantly decreased player engagement, contrary to established wisdom about free-to-play games. [35] Many companies have used Roblox to host advergames promoting their products. [36] [37] [38] 
+
+### Communication and age estimations
+
+Roblox allows players to communicate with each other in a variety of ways, such as through in-game chat and direct messaging. [39] Voice chat is usable for players over the age of 13 that have their age verified. [40] Players can join communities, where users can send messages in an internet forum-like environment. [41] Players are able to add other users as friends. An additional tier of this system, known as "Trusted Friends", allows users to send unfiltered chat messages and personal information to each other. If one of the users is over the age of 18 while the other user is between 13 and 17, then both parties must prove that they know each other in real life. This is done through either mutual QR code scanning, or importing their phone contacts. [42] [43] 
+
+Users can only communicate with each other after they perform an age check, which is done through either ID verification or having a video of themselves analyzed by age estimation software. [44] [45] Communication is further restricted to only allow users in similar age groups to communicate with each other. For example, a user who is twelve years old can only communicate with users aged 9 to 15. [44] Age verification and estimations are handled via Persona, a third-party provider of age verification software. While the age estimation features can result in inaccurate age group assignment, the user can provide their ID to correct their age manually. [46] 
+
+### 2004–2009: Creation and early history
+
+Roblox co-founder and current CEO David Baszucki in 2025
+
+Rob
+
+---
+
+## Page 2: Obby | Roblox Wiki | Fandom
+URL: https://roblox.fandom.com/wiki/Obby
+
+Obby | Roblox Wiki | Fandom
+
+"Obby" sort on the Discover page in August 2024.
+
+The Super Mega Fun Obstacle Course by SinisterAlex.
+
+1/2
+
+An Obby, or an Obstacle Course, is a genre of game in which users must complete various obstacles to win. Typically, obbies include checkpoints at each stage or level and an area for winners at the end.
+
+Obbies can vary in difficulty, length, or decor depending on the game played. Each stage or level typically requires the player to use controls to complete it. More difficult obbies may require extremely precise movements to complete.
+
+## Varieties
+
+There are many different formats to the obby genre:
+
+### Classic obbies
+
+Classic obbies typically have very little decoration and an indistinct storyline. The levels themselves often feature generic platforms over a large void.
+
+### Story-based obbies
+
+Story-based obbies typically have a unique storyline to them, while giving the player obbies and sometimes minigames.
+
+### Escape obbies
+
+Escape obbies were typically much more detailed in decoration with a defined storyline compared to classic obbies. The main premise was to escape a building or object, like "Escape the Bank Obby", "Escape School Obby", and more.
+
+### Clickbait obbies
+
+Clickbait obbies typically abuse the search bar behavior by spamming the word "Obby" in the title and description to bring their game to the top of the results. Each game is typically just a republished version of an already existing obby. The games will often try to persuade the player into buying passes. Additionally, some of these games will teleport the player to another obby or completely unrelated game upon completion.
+
+### Difficulty chart obbies
+
+Difficulty chart obbies originated from Tower of Difficulty Chart: Classic from Eternal Towers of Hell, and are designed to gradually increase in difficulty. There are checkpoints at every stage and players are, instead of aiming for the end, to go as far as possible and assess their skill. These obbies are usually based on some version of EToH's difficulty chart.
+
+### Tiered Obbies
+
+An obby that primary consists of a theme, usually difficult for the average player. They have a separate difficulty rating system, known as tiers. Apparently created by " IceNsalt", it goes up to 25 tiers as it gets harder and harder to complete. These obbies are mainly purist, meaning that there are not client objects, but rather pure static gameplay.
+
+### Tower obbies
+
+These obbies take the form of a (sometimes randomly generated) multi-floored tower, and the goal is to travel from the bottom to the top (except for a few unique towers where the end is at the bottom, there's also horizontal towers, but they are rarely used). Tower obbies often feature little to no checkpoints or safety nets, and as such are considered notoriously difficult. The origin of this trend, despite popular belief, is Eternal Towers of Hell. Tower obbies have made so many historical feats in the obby community.
+
+### Troll Obbies
+
+These obbies have traps around the stages that seem normal (like the ground killing the player instead of the killbrick for lava jumps). An example of this is I Wanna Test The Game, with the player having to jump around the first killbrick to avoid it going up and killing them.
+
+## Parts
+
+Parts are different things that compose an obby. They are split into two categories: Normal parts and client sided objects. Client sided objects also have a short form, called ‘client objects’.
+
+### Normal parts
+
+Normal parts are objects that have been created by the Roblox developers and easily accessible in Roblox Studio and other building games. Gameplay that only uses normal parts are called ‘purist gameplay/purism’.
+
+#### Parts/Blocks
+
+Parts are rectangular blocks. They are very basic objects, even though they can be rotated to make some fairly interesting or decent gameplay. They can also be used for decoration.
+
+#### Wedges
+
+Wedges are triangular prism shaped objects. Their triangle side resembles a right angle triangle. Wedges are basically just tilted parts except they are a less messy choice for tilted gameplay.
+
+#### Cylinders
+
+As the name suggests, it's a cylinder. The circle sides have a smooth texture for some reason. Gameplay that includes the curved side of cylinders are really weird, as your character loses speed when it approaches the very edge of the curved side.
+
+#### Balls/Spheres
+
+As these names also suggest, these parts take the shape of a sphere. These parts have the weirdest physics of all normal parts. Currently, there is a glitch involving users on mobile devices teleporting in small distances around the sides and lower edges of spheres when coming into contact. No explanation has been given for why this is.
+
+#### Trusses
+
+Trusses are a type of climbable part that is composed of 2 x 2 x 2 blocks with diagonal lines on the sides. You can edit the sides to have different amount of diagonal lines through. You can also extend a truss. A lot of tiered obbies and tower-type obbies include gameplay with this.
+
+### Client objects
+
+Client objects, short for client sided objects, are a type of obstacle generally originating from Eternal Towers of Hell. Client objects were created to make the overall gameplay of towers more fun and interesting, and their usage spread out to even difficulty chart obbies. Client objects, hence the name, use client-sided scripts to change an obby in a way where it only effects a specific player. For example, one player could stand on a brick which then immediately collapses, on another players screen the action wouldn't replicate and the brick would still be standing. This prevents players from messing with obstacles to prevent others from progressing in the obby.
+
+#### Spinners
+
+Spinners are parts using a certain constraint that makes the part rotate. Due to the axis being a part itself, you can change its position allowing the spinner to rotate differently.
+
+#### Conveyors
+
+Conveyors push you in one direction. It's easy to understand.
+
+#### Elevators
+
+Elevators are parts that push you in one direction, most usually upward. They are not collidable meaning you travel inside the elevator rather than on top of it like a conveyor. Once the top of the elevator is reached, your character is constantly propelled upward until the entire character is out of the elevator. Due to gravity, said character usually falls down into the elevator again, creating a sort of constant jumping sequence. Since the elevator is not collidable, as noted before, your character cannot jump while inside one.
+
+#### Buttons
+
+Buttons pulse a signal once pressed, triggering an event. For example, a button that activates a series of obstacles.
+
+## Reoccurring obstacles
+
+There are many types of obstacles that occur frequently across most obby games.
+
+### Common obstacles
+
+#### Lava Jumps
+
+A set of lava jumps
+
+These are probably the most popular and used obstacle in an Obby. The obstacle is a number of lava blocks that are wide from wall to wall. Touching the lava is deadly for your character, so it must be jumped over. Some make you die immediately after you touch it, and some casually take a while to make you die, which is very useful.
+
+Another obstacle made out of lava is checkerboards. These lava blocks arranged in a checkerboard pattern are usually too long to easily jump over in one direction, so they should be diagonally jumped over.
+
+There are also Spinning Lava Jumps, which spin and are much more difficult to avoid.
+
+#### Tightropes
+
+Narrow/curved parts players must walk over without falling. For PC users, it's mostly recommended to navigate through the cursor in first person, keeping cursor in tightrope's middle. Another solution that recommended is to press < and > (A.K.A. Alignment Keys), keeping the cursor still to the tightrope. Sadly, you can't do alignment keys in most of games because of roblox "Emotes on >" update.
+
+#### Platform jumps
+
+Basic jumps from one part to another.
+
+#### Mazes
+
+Trying to find the right path to exit the maze.
+
+#### Choose a path and Pick a Door
+
+A player choosing which path to go down
+
+Choose a path is an obstacle commonly used in Obbies. There are multiple paths, and only one path can be passed over. The most common consequence of picking an incorrect path is falling through the path. Another variation of this is Pick a door, where there are walls blocking your way and you have to find the correct wall to go through. If you pick the wrong wall, then the consequence will be instant death.
+
+Some tips that you can use are:
+
+- 6 Trivia
+- Often try avoiding this by walking on the path and jumping off immediately, however this achieves nothing.
+- Dropping accessories onto the paths and seeing if they fell through. This sometimes won't work as some tools disallow dropping itself
+- Move their cameras below the path to see if it's the correct one. If the camera goes through a path, it is an incorrect path; if the camera does not go through the path, it is the correct path. However, some creators prevent this method by making all paths solid, thus disallowing players to cheat, and either make it un-solid only when players walk over it or just immediately kill players who walk over it.
+- Go around the wall insteading of picking a way to avoid dying. However, some developers add invisible parts to block players to cheat.
+
+#### Climbing
+
+Simple obstacles which require the player to climb up the ladder, usually a truss.
+
+#### Slide
+
+Obstacles that require players to slide through them, to either bring players to another level or teleport them to other games, which is mostly used by developers to get more place visits, obbies with these kinds of slides are referred to as teleport places.
+
+#### Speed obstacles
+
+Course in which player speed is highly increased.
+
+- Tree jumps - Platforms wrapping around a tall, central pillar.
+- Wraparounds - Walls that must be jumped around (wrapped around).
+- Rock climbing - Large and tall wall with small, random
+
+---
+
+## Page 3: Tycoon | Roblox Wiki | Fandom
+URL: https://roblox.fandom.com/wiki/Tycoon
+
+Tycoon | Roblox Wiki | Fandom
+
+ 
+
+Stub
+
+This article is a stub. You can help the Roblox Wiki by expanding it.
+
+An old picture of the iconic experience Lumber Tycoon by Defaultio Defaultio is a notable creator or influencer verified by Roblox Corporation. Learn more. from late 2008.
+
+Tycoons are a genre of experience on Roblox in which users get to own a base, usually a business or a company of some kind, and must use “droppers” to earn cash, which can be spent on upgrades to expand the tycoon. Despite the name, it is usually reminiscent of idle genre, not the business simulation genre, which is also called the tycoon genre. These experiences often have products available for purchase with Robux.
+
+## History
+
+### Early history
+
+In January 2008, a Roblox scripter, uberubert, created an experience called " Bread Factory Tycoon". This was quite popular at the time, receiving over 36,000 visits before being replaced by another experience.[1] As the experience was uncopylocked at the time, many scripters took advantage of this and started creating their own tycoons.
+
+### Modern
+
+McDonald's Tycoon, a historical tycoon that was on the front page in 2017, but has now become irrelevant and was eventually deleted, but later re-opened as McRonalds Tycoon.
+
+In around 2015, tycoon saw a significant resurgence, largely due to users such as berezaa berezaa is a notable creator or influencer verified by Roblox Corporation. Learn more. and Zed_Gaming who popularized the genre. They have also published "tycoon kits", which allowed many users to create their own tycoons with minimal effort.[2][3] By 2016–2017, as Roblox began promoting tycoon experiences more on the front page, YouTubers such as DanTDM, FGTeeV FGTeeV is a notable creator or influencer verified by Roblox Corporation. Learn more., and ItsFunneh played numerous tycoon experiences, with many of their videos receiving over 10 million views. This helped further popularize the genre.
+
+### Subgenres
+
+#### Sandbox Tycoons
+
+The first instance of an sandbox tycoon experience came from developer Dued1 Dued1 is a notable creator or influencer verified by Roblox Corporation. Learn more. when he created Your Store Tycoon in 2009. Starting in 2016, some modern tycoons have begun to diverge from the old model, by becoming more like simulators designed around customizability, which allow users to unlock upgrades and expand their bases and structures in new ways. Examples of these tycoons are Restaurant Tycoon 2, Retail Tycoon and Theme Park Tycoon 2. Since 2021, war tycoons such as Military Tycoon, in which troops are sent to fight at the center of the map have also gained increased traction.
+
+## Basics
+
+Usually, a base is claimed by walking into a door. Then, there is generally a button to get a free dropper. This dropper requires users to manually click to create a brick. Bricks created this way will fall onto a conveyor belt, which leads to a neon material. Once a brick touches this material, it disappears and one dollar of credit is added to the user's tycoon. After clicking the button, stepping on another specified button will allow a user to collect their in-experience cash. More buttons will spawn over time, allowing users to buy more and more things. Some of these are more droppers, some of them are upgraders, which increase the dollar value of each brick passing through them, some are base infrastructure or decoration, and some are weapons which allow for combat between base-owners.
+
+In some tycoons, such as mining tycoons or lumber tycoons, users are required to work manually. Usually, a tool is used to do this. This method usually involves going up to an object and putting the tool into the object. Another fairly common type of tycoon has cash that is automatically delivered to the player, and the cash simply comes faster more after a user buys more things.
+
+Oftentimes, in order to purchase an advantage in Tycoons, it can be purchased with the use of Robux or, in some cases, alternatively via a lengthy process which may involve rebirthing.
+
+### Rebirth
+
+Rebirthing is the act of resetting one's own current state or level in a tycoon, usually as a means to gain advantages or achievements which the tycoon offers. This is similar to New Game Plus mode in other video games.
+
+Rebirths tend to be found around some parts of the allotted land for the base. When available and unlocked, a user's current progress will disappear and the user will have to start from scratch, but they may unlock various advantages.
+
+## Multiuser
+
+There are a few types of tycoon. On top of the original single-user tycoon, there is also the 2-user tycoon, a newer type of tycoon which allows two users to collaborate on completing the same tycoon base.
+
+## Completing a tycoon
+
+The tycoon ends when a user purchases the last upgrade. The last upgrade that can be bought by is usually a very expensive statue or object. At times, a badge may be given for completing the tycoon. After this, users cannot continue building their base, but may explore it or others’ bases. They may also continue to engage in combat.
+
+## Criticism
+
+Users have varying amounts of dislike against tycoons for a multitude of reasons. Many users do not find dropper-style tycoons worth visiting for their style, which may be considered overused, homogeneous, and boring. Many use generalized negative comments towards tycoons, such as, "Tycoons are lazily made", or "All tycoons have Free Models". Some users also dislike that some scam tycoons change their thumbnails every day or every hour. For example, many experiences with different titles (e.g. Trick or Treat and Parkour) might just all teleport visitors to the same tycoon. Some tycoons are so poorly received that they have a like-to-dislike ratio below 25%.
+
+## References
+
+1. 6 References
+2. https://web.archive.org/web/20080219220149/http://www.roblox.com/Place.aspx?id=338253
+3. https://create.roblox.com/store/asset/182162455
+4. https://create.roblox.com/store/asset/316073214/Zeds-Tycoon-Kit-FIXED?
+
+Article quality evaluation
+
+Tycoon was last evaluated as B-Class by User:Another10101 on Sat, 14 Sep 2024 19:22:01. • (What's this about?• Check eval.)⚠️ This article is potentially overdue for a new Article Quality evaluation.
+
+---
+
+## Page 4: Avatar Editor
+URL: https://roblox.fandom.com/wiki/Avatar_Editor
+
+Avatar Editor | Roblox Wiki | Fandom
+[](https://www.fandom.com/)
+[![Roblox Wiki](https://static.wikia.nocookie.net/roblox/images/e/e6/Site-logo.png/revision/latest?cb=20210602061715)](https://roblox.fandom.com)[Roblox Wiki](https://roblox.fandom.com)
+[](https://roblox.fandom.com/f)[](#)
+[Sign In](https://auth.fandom.com/signin?source=mw&redirect=https://roblox.fandom.com/wiki/Avatar_Editor)
+Don't have an account?
+[Register](https://auth.fandom.com/register?source=mw&redirect=https://roblox.fandom.com/wiki/Avatar_Editor)
+[Sign In](https://auth.fandom.com/signin?source=mw&redirect=https://roblox.fandom.com/wiki/Avatar_Editor)
+Advertisement
+[Skip to content](#page-header)
+[![Roblox Wiki](https://static.wikia.nocookie.net/roblox/images/e/e6/Site-logo.png/revision/latest?cb=20210602061715)](https://roblox.fandom.com)
+[Roblox Wiki](https://roblox.fandom.com)
+36,465
+pages
+[](https://roblox.fandom.com/wiki/Special:Search)[](https://roblox.fandom.com/f)[](#)
+[](https://roblox.fandom.com/wiki/Avatar_Editor?action=edit)
+in:[Website](https://roblox.fandom.com/wiki/Category:Website)
+English
+* [Português do Brasil](https://roblox.fandom.com/pt-br/wiki/Editor_de_avatar)
+# Avatar Editor
+[View source](https://roblox.fandom.com/wiki/Avatar_Editor?action=edit)
+* [History](https://roblox.fandom.com/wiki/Avatar_Editor?action=history)
+* [Purge](https://roblox.fandom.com/wiki/Avatar_Editor?action=purge)
+* [Talk (4)](https://roblox.fandom.com/wiki/Talk:Avatar_Editor)
+*For avatar designs, see[Avatar](https://roblox.fandom.com/wiki/Avatar).*
+A**Character**or**Avatar**is a property that points to the[![](https://static.wikia.nocookie.net/roblox/images/e/e8/Model_light_icon.png/revision/latest/scale-to-width-down/18?cb=20231019194420)](https://roblox.fandom.com/wiki/Class:Model)[![](https://static.wikia.nocookie.net/roblox/images/f/fe/Model_dark_icon.png/revision/latest/scale-to-width-down/18?cb=20231019194413)](https://roblox.fandom.com/wiki/Class:Model)[Model](https://roblox.fandom.com/wiki/Class:Model)in the[![](https://static.wikia.nocookie.net/roblox/images/4/44/Workspace_light_icon.png/revision/latest/scale-to-width-down/18?cb=20231019203928)](https://roblox.fandom.com/wiki/Class:Workspace)[](https://roblox.fandom.com/wiki/Class:Workspace)[Workspace](https://roblox.fandom.com/wiki/Class:Workspace)that is the character of a[](https://roblox.fandom.com/wiki/Class:Player)[](https://roblox.fandom.com/wiki/Class:Player)[Player](https://roblox.fandom.com/wiki/Class:Player).
+When on the[Roblox](https://roblox.fandom.com/wiki/Roblox)site, there is a "Avatar" button where a user can customize their avatar with[accessories](https://roblox.fandom.com/wiki/Accessories),[animations](https://roblox.fandom.com/wiki/Animation_Package),[body parts](https://roblox.fandom.com/wiki/Body_Parts),[bundles](https://roblox.fandom.com/wiki/Bundle),[gear](https://roblox.fandom.com/wiki/Gear),[clothing](https://roblox.fandom.com/wiki/Clothing), and skin tones.
+* ![Light Theme]()
+Light Theme
+* ![Dark Theme]()
+Dark Theme
+1/2
+## Contents
+* [1Outfits](#Outfits)
+* [2Character Structure](#Character_Structure)
+* [3Emotes & Animations](#Emotes_&_Animations)
+* [4Avatar Editor Backgrounds](#Avatar_Editor_Backgrounds)
+* [5Anti-Nudity Feature](#Anti-Nudity_Feature)
+## Outfits[[](https://auth.fandom.com/signin?redirect=https://roblox.fandom.com/wiki/Avatar_Editor?veaction=edit&section=1&amp;uselang=en)]
+[](https://static.wikia.nocookie.net/roblox/images/3/34/Outfits.png/revision/latest?cb=20130927224056)[](https://roblox.fandom.com/wiki/File:Outfits.png)
+Several outfits made by Shedletsky.
+Main article:[Outfit](https://roblox.fandom.com/wiki/Outfit)
+On September 27, 2013, ROBLOX added a new feature to the character menu called "outfits". It allows users to be able to save their current looks and name them. Also, there are three different options that the user
+[](https://static.wikia.nocookie.net/roblox/images/9/91/Character_pg.png/revision/latest?cb=20130203224003)[](https://roblox.fandom.com/wiki/File:Character_pg.png)
+An example of the Character page.
+may choose:
+* Rename - Renames the outfit.
+* Update - Changes the character's appearance to the current look.
+* Remove - Removes the outfit.
+Users could only save up to 50 outfits at a time, until ROBLOX announced and updated it on October 1, 2024, to a maximum of 150.
+## Character Structure[[](https://auth.fandom.com/signin?redirect=https://roblox.fandom.com/wiki/Avatar_Editor?veaction=edit&section=2&amp;uselang=en)]
+Main article:[Character/Structure](https://roblox.fandom.com/wiki/Character/Structure)
+## [Emotes](https://roblox.fandom.com/wiki/Emote)&[Animations](https://roblox.fandom.com/wiki/Animation_package)[[](https://auth.fandom.com/signin?redirect=https://roblox.fandom.com/wiki/Avatar_Editor?veaction=edit&section=3&amp;uselang=en)]
+*Main articles:[Emote](https://roblox.fandom.com/wiki/Emote)&[Animation package](https://roblox.fandom.com/wiki/Animation_package)*
+An**Emote**is an action[players](https://roblox.fandom.com/wiki/Player)can perform whilst in-game. There are currently 7 universal emotes and 91 purchasable emotes that are[Rthro](https://roblox.fandom.com/wiki/Rthro)and R15 only. The player must type in /e [emote] into the chat for the character to do a universal emote, or use the emote menu or /e to do a purchasable emote.
+An**animation package**is a purchasable[bundle](https://roblox.fandom.com/wiki/Bundle)on the[marketplace](https://roblox.fandom.com/wiki/Marketplace)that changes a[player](https://roblox.fandom.com/wiki/Player)'s[R15](https://roblox.fandom.com/wiki/R15)movement animation. Animation packs were announced on January 19, 2017, by[tarabyte](https://roblox.fandom.com/wiki/Community:Tarabyte)on the R15 Avatar Animations blog. Each animation pack contains Run, Walk, Fall, Jump, Idle, Swim, and Climb animations. These animations are applied to the character in-game; however, the idle animation is also shown if the user has one equipped while using the R15 rig. All initial animation packs were released in January 2017, with the[Rthro Animation Package](https://roblox.fandom.com/wiki/Catalog:Rthro_Animation_Package)being released in September 2018, and finally the[Oldschool Animation Pack](https://roblox.fandom.com/wiki/Catalog:Oldschool_Animation_Pack)being released in July 2020.
+## Avatar Editor Backgrounds[[](https://auth.fandom.com/signin?redirect=https://roblox.fandom.com/wiki/Avatar_Editor?veaction=edit&section=4&amp;uselang=en)]
+1​. Website
+[](https://static.wikia.nocookie.net/roblox/images/1/1e/Website_Avatar_Editor_Background.svg/revision/latest?cb=20220419185234)[](https://roblox.fandom.com/wiki/File:Website_Avatar_Editor_Background.svg)
+257.005x257.005px
+*This editor shows up on the roblox website.*
+2​. Avatar Editor
+[](https://static.wikia.nocookie.net/roblox/images/9/99/Avatar_Editor_Background_Classic.png/revision/latest?cb=20220419185416)[](https://roblox.fandom.com/wiki/File:Avatar_Editor_Background_Classic.png)
+*Roblox had redesigned the Avatar Editor for use for mobile devices and and later ported it to Xbox.*
+3​. Current
+[](https://static.wikia.nocookie.net/roblox/images/f/f4/Avatar_Editor_Background_Cubes.png/revision/latest?cb=20220419185516)[](https://roblox.fandom.com/wiki/File:Avatar_Editor_Background_Cubes.png)
+387.995x387.995px
+*The avatar editor got fully redesigned to match the current style of Roblox. One single codebase has been used.*
+## Anti-Nudity Feature[[](https://auth.fandom.com/signin?redirect=https://roblox.fandom.com/wiki/Avatar_Editor?veaction=edit&section=5&amp;uselang=en)]
+[](https://static.wikia.nocookie.net/roblox/images/4/42/Default_Clothing.png/revision/latest?cb=20170616191729)[](https://roblox.fandom.com/wiki/File:Default_Clothing.png)
+A female person wearing the default clothing.
+[](https://static.wikia.nocookie.net/roblox/images/2/29/THENECR0MANCER.png/revision/latest?cb=20170618170424)[](https://roblox.fandom.com/wiki/File:THENECR0MANCER.png)
+A male person wearing the default clothing.
+[](https://static.wikia.nocookie.net/roblox/images/7/78/Default_Clothing_Notification.png/revision/latest?cb=20170616191917)[](https://roblox.fandom.com/wiki/File:Default_Clothing_Notification.png)
+A message that says to wear something from your clothing when no pants are worn.
+An update on June 16, 2017, modified the appearance of characters who are not wearing any clothing. It is rumored that this update was created in response to concerns that players could roleplay sexual acts while having a naked character. Characters with a similar body color on their torso and legs who are not wearing any clothing will have a set of default clothes applied to their character and will be prompted to wear something from their clothing. There are different variations and colors of this. However, it has gained controversy due to putting itself on perfectly normal[Avatars](https://roblox.fandom.com/wiki/Avatar).
+If the character is not wearing a shirt but has a pair of pants on, no default clothing will appear on that avatar. If the character is wearing a shirt but no pants, the default shorts will appear on that avatar. A known loophole to this is wearing a transparent shirt or pants, which will not apply the default clothing but will instead show the underlying body color. Having a body part be a different color (excluding the[head](https://roblox.fandom.com/wiki/Head)) will also not trigger the default clothing.
+|
+([V](https://roblox.fandom.com/wiki/Template:Navbox_Roblox)**·**[E](https://roblox.fandom.com/wiki/Template:Navbox_Roblox?action=edit))[Roblox](https://roblox.fandom.com/wiki/Roblox)
+|
+|
+[Corporate](https://roblox.fandom.com/wiki/Roblox_Corporation)|
+[All employees](https://roblox.fandom.com/wiki/List_of_Roblox_employees)**·***[Accelerator program](https://roblox.fandom.com/wiki/Accelerator_program)***·**[Intern](https://roblox.fandom.com/wiki/Intern)**·**[Administrator](https://roblox.fandom.com/wiki/Administrator)**·**[Moderator](https://roblox.fandom.com/wiki/Mode

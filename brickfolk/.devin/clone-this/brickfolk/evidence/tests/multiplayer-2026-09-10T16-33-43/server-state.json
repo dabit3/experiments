@@ -1,0 +1,683 @@
+{
+  "serverTime": 1757000323400,
+  "tick": 9800,
+  "online": 4,
+  "players": [
+    {
+      "id": "p1_VMEC",
+      "name": "WebWren",
+      "platform": "web",
+      "room": "97GE",
+      "party": "BRIK"
+    },
+    {
+      "id": "p2_WL42",
+      "name": "IosIvy",
+      "platform": "ios",
+      "room": "97GE",
+      "party": "BRIK"
+    },
+    {
+      "id": "p3_BX68",
+      "name": "MacMia",
+      "platform": "macos",
+      "room": "97GE",
+      "party": "BRIK"
+    },
+    {
+      "id": "p4_TDNL",
+      "name": "DroidDax",
+      "platform": "android",
+      "room": "97GE",
+      "party": "BRIK"
+    }
+  ],
+  "rooms": [
+    {
+      "code": "97GE",
+      "experience": "obby",
+      "phase": "results",
+      "members": [
+        {
+          "player": {
+            "id": "p1_VMEC",
+            "name": "WebWren",
+            "avatar": {
+              "headColor": 4294295626,
+              "torsoColor": 4282285050,
+              "armColor": 4294295626,
+              "legColor": 4281310811,
+              "face": "face_smile",
+              "hat": "hat_none",
+              "accessory": "acc_none"
+            },
+            "platform": "web",
+            "isBot": false,
+            "online": true
+          },
+          "ready": true
+        },
+        {
+          "player": {
+            "id": "p2_WL42",
+            "name": "IosIvy",
+            "avatar": {
+              "headColor": 4294295626,
+              "torsoColor": 4282285050,
+              "armColor": 4294295626,
+              "legColor": 4281310811,
+              "face": "face_smile",
+              "hat": "hat_none",
+              "accessory": "acc_none"
+            },
+            "platform": "ios",
+            "isBot": false,
+            "online": true
+          },
+          "ready": true
+        },
+        {
+          "player": {
+            "id": "p3_BX68",
+            "name": "MacMia",
+            "avatar": {
+              "headColor": 4294295626,
+              "torsoColor": 4282285050,
+              "armColor": 4294295626,
+              "legColor": 4281310811,
+              "face": "face_smile",
+              "hat": "hat_none",
+              "accessory": "acc_none"
+            },
+            "platform": "macos",
+            "isBot": false,
+            "online": true
+          },
+          "ready": true
+        },
+        {
+          "player": {
+            "id": "p4_TDNL",
+            "name": "DroidDax",
+            "avatar": {
+              "headColor": 4294295626,
+              "torsoColor": 4282285050,
+              "armColor": 4294295626,
+              "legColor": 4281310811,
+              "face": "face_smile",
+              "hat": "hat_none",
+              "accessory": "acc_none"
+            },
+            "platform": "android",
+            "isBot": false,
+            "online": true
+          },
+          "ready": true
+        }
+      ],
+      "seed": 59614684,
+      "countdownEndsAt": null,
+      "matchEndsAt": null,
+      "round": 1,
+      "botCount": 0,
+      "matchNumber": 1,
+      "gameTick": 1872,
+      "progress": {
+        "p1_VMEC": "done x361.6 d0 lag0",
+        "p2_WL42": "done x361.6 d0 lag0",
+        "p3_BX68": "done x361.6 d0 lag0",
+        "p4_TDNL": "done x361.6 d0 lag3"
+      },
+      "lastResults": {
+        "roomCode": "97GE",
+        "experience": "obby",
+        "entries": [
+          {
+            "rank": 1,
+            "player": {
+              "id": "p1_VMEC",
+              "name": "WebWren",
+              "avatar": {
+                "headColor": 4294295626,
+                "torsoColor": 4282285050,
+                "armColor": 4294295626,
+                "legColor": 4281310811,
+                "face": "face_smile",
+                "hat": "hat_none",
+                "accessory": "acc_none"
+              },
+              "platform": "web",
+              "isBot": false,
+              "online": true
+            },
+            "score": 98177,
+            "detail": "Finished 60.8s",
+            "pipsEarned": 85,
+            "badgesEarned": [
+              "first_steps",
+              "summit",
+              "speedrunner"
+            ]
+          },
+          {
+            "rank": 2,
+            "player": {
+              "id": "p3_BX68",
+              "name": "MacMia",
+              "avatar": {
+                "headColor": 4294295626,
+                "torsoColor": 4282285050,
+                "armColor": 4294295626,
+                "legColor": 4281310811,
+                "face": "face_smile",
+                "hat": "hat_none",
+                "accessory": "acc_none"
+              },
+              "platform": "macos",
+              "isBot": false,
+              "online": true
+            },
+            "score": 98177,
+            "detail": "Finished 60.8s",
+            "pipsEarned": 70,
+            "badgesEarned": [
+              "first_steps",
+              "summit",
+              "speedrunner"
+            ]
+          },
+          {
+            "rank": 3,
+            "player": {
+              "id": "p4_TDNL",
+              "name": "DroidDax",
+              "avatar": {
+                "headColor": 4294295626,
+                "torsoColor": 4282285050,
+                "armColor": 4294295626,
+                "legColor": 4281310811,
+                "face": "face_smile",
+                "hat": "hat_none",
+                "accessory": "acc_none"
+              },
+              "platform": "android",
+              "isBot": false,
+              "online": true
+            },
+            "score": 98144,
+            "detail": "Finished 61.9s",
+            "pipsEarned": 55,
+            "badgesEarned": [
+              "first_steps",
+              "summit",
+              "speedrunner"
+            ]
+          },
+          {
+            "rank": 4,
+            "player": {
+              "id": "p2_WL42",
+              "name": "IosIvy",
+              "avatar": {
+                "headColor": 4294295626,
+                "torsoColor": 4282285050,
+                "armColor": 4294295626,
+                "legColor": 4281310811,
+                "face": "face_smile",
+                "hat": "hat_none",
+                "accessory": "acc_none"
+              },
+              "platform": "ios",
+              "isBot": false,
+              "online": true
+            },
+            "score": 98129,
+            "detail": "Finished 62.4s",
+            "pipsEarned": 40,
+            "badgesEarned": [
+              "first_steps",
+              "summit",
+              "speedrunner"
+            ]
+          }
+        ],
+        "checksum": "1ffa7529",
+        "durationMs": 61776
+      }
+    }
+  ],
+  "parties": [
+    {
+      "code": "BRIK",
+      "leaderId": "p1_VMEC",
+      "members": [
+        {
+          "id": "p1_VMEC",
+          "name": "WebWren",
+          "avatar": {
+            "headColor": 4294295626,
+            "torsoColor": 4282285050,
+            "armColor": 4294295626,
+            "legColor": 4281310811,
+            "face": "face_smile",
+            "hat": "hat_none",
+            "accessory": "acc_none"
+          },
+          "platform": "web",
+          "isBot": false,
+          "online": true
+        },
+        {
+          "id": "p2_WL42",
+          "name": "IosIvy",
+          "avatar": {
+            "headColor": 4294295626,
+            "torsoColor": 4282285050,
+            "armColor": 4294295626,
+            "legColor": 4281310811,
+            "face": "face_smile",
+            "hat": "hat_none",
+            "accessory": "acc_none"
+          },
+          "platform": "ios",
+          "isBot": false,
+          "online": true
+        },
+        {
+          "id": "p3_BX68",
+          "name": "MacMia",
+          "avatar": {
+            "headColor": 4294295626,
+            "torsoColor": 4282285050,
+            "armColor": 4294295626,
+            "legColor": 4281310811,
+            "face": "face_smile",
+            "hat": "hat_none",
+            "accessory": "acc_none"
+          },
+          "platform": "macos",
+          "isBot": false,
+          "online": true
+        },
+        {
+          "id": "p4_TDNL",
+          "name": "DroidDax",
+          "avatar": {
+            "headColor": 4294295626,
+            "torsoColor": 4282285050,
+            "armColor": 4294295626,
+            "legColor": 4281310811,
+            "face": "face_smile",
+            "hat": "hat_none",
+            "accessory": "acc_none"
+          },
+          "platform": "android",
+          "isBot": false,
+          "online": true
+        }
+      ],
+      "roomCode": "97GE",
+      "experience": "obby"
+    }
+  ],
+  "testReports": [
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "signedIn",
+      "payload": {
+        "name": "WebWren"
+      },
+      "receivedAt": 1757000003696
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "party",
+      "payload": {
+        "code": "BRIK",
+        "members": 1
+      },
+      "receivedAt": 1757000005214
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "ios",
+      "phase": "signedIn",
+      "payload": {
+        "name": "IosIvy"
+      },
+      "receivedAt": 1757000006699
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "ios",
+      "phase": "party",
+      "payload": {
+        "code": "BRIK",
+        "members": 2
+      },
+      "receivedAt": 1757000006699
+    },
+    {
+      "playerId": "p3_BX68",
+      "platform": "macos",
+      "phase": "signedIn",
+      "payload": {
+        "name": "MacMia"
+      },
+      "receivedAt": 1757000181038
+    },
+    {
+      "playerId": "p3_BX68",
+      "platform": "macos",
+      "phase": "party",
+      "payload": {
+        "code": "BRIK",
+        "members": 3
+      },
+      "receivedAt": 1757000181038
+    },
+    {
+      "playerId": "p4_TDNL",
+      "platform": "android",
+      "phase": "signedIn",
+      "payload": {
+        "name": "DroidDax"
+      },
+      "receivedAt": 1757000204336
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "launch",
+      "payload": {
+        "members": 4,
+        "experience": "obby"
+      },
+      "receivedAt": 1757000204402
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "lobby",
+      "payload": {
+        "room": "97GE",
+        "members": 1,
+        "rendered": true
+      },
+      "receivedAt": 1757000204501
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "ios",
+      "phase": "lobby",
+      "payload": {
+        "room": "97GE",
+        "members": 2,
+        "rendered": true
+      },
+      "receivedAt": 1757000204930
+    },
+    {
+      "playerId": "p3_BX68",
+      "platform": "macos",
+      "phase": "lobby",
+      "payload": {
+        "room": "97GE",
+        "members": 3,
+        "rendered": true
+      },
+      "receivedAt": 1757000204930
+    },
+    {
+      "playerId": "p4_TDNL",
+      "platform": "android",
+      "phase": "party",
+      "payload": {
+        "code": "BRIK",
+        "members": 4
+      },
+      "receivedAt": 1757000209319
+    },
+    {
+      "playerId": "p4_TDNL",
+      "platform": "android",
+      "phase": "lobby",
+      "payload": {
+        "room": "97GE",
+        "members": 4,
+        "rendered": true
+      },
+      "receivedAt": 1757000230010
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "countdown",
+      "payload": {
+        "room": "97GE"
+      },
+      "receivedAt": 1757000254727
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "ios",
+      "phase": "countdown",
+      "payload": {
+        "room": "97GE"
+      },
+      "receivedAt": 1757000254727
+    },
+    {
+      "playerId": "p3_BX68",
+      "platform": "macos",
+      "phase": "countdown",
+      "payload": {
+        "room": "97GE"
+      },
+      "receivedAt": 1757000254727
+    },
+    {
+      "playerId": "p4_TDNL",
+      "platform": "android",
+      "phase": "countdown",
+      "payload": {
+        "room": "97GE"
+      },
+      "receivedAt": 1757000254727
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "playing",
+      "payload": {
+        "room": "97GE",
+        "rendered": true
+      },
+      "receivedAt": 1757000257796
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "ios",
+      "phase": "playing",
+      "payload": {
+        "room": "97GE",
+        "rendered": true
+      },
+      "receivedAt": 1757000257796
+    },
+    {
+      "playerId": "p3_BX68",
+      "platform": "macos",
+      "phase": "playing",
+      "payload": {
+        "room": "97GE",
+        "rendered": true
+      },
+      "receivedAt": 1757000257829
+    },
+    {
+      "playerId": "p4_TDNL",
+      "platform": "android",
+      "phase": "playing",
+      "payload": {
+        "room": "97GE",
+        "rendered": true
+      },
+      "receivedAt": 1757000266937
+    },
+    {
+      "playerId": "p2_WL42",
+      "platform": "ios",
+      "phase": "results",
+      "payload": {
+        "room": "97GE",
+        "checksum": "1ffa7529",
+        "experience": "obby",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "player": "WebWren",
+            "score": 98177,
+            "detail": "Finished 60.8s"
+          },
+          {
+            "rank": 2,
+            "player": "MacMia",
+            "score": 98177,
+            "detail": "Finished 60.8s"
+          },
+          {
+            "rank": 3,
+            "player": "DroidDax",
+            "score": 98144,
+            "detail": "Finished 61.9s"
+          },
+          {
+            "rank": 4,
+            "player": "IosIvy",
+            "score": 98129,
+            "detail": "Finished 62.4s"
+          }
+        ],
+        "rendered": true
+      },
+      "receivedAt": 1757000319704
+    },
+    {
+      "playerId": "p3_BX68",
+      "platform": "macos",
+      "phase": "results",
+      "payload": {
+        "room": "97GE",
+        "checksum": "1ffa7529",
+        "experience": "obby",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "player": "WebWren",
+            "score": 98177,
+            "detail": "Finished 60.8s"
+          },
+          {
+            "rank": 2,
+            "player": "MacMia",
+            "score": 98177,
+            "detail": "Finished 60.8s"
+          },
+          {
+            "rank": 3,
+            "player": "DroidDax",
+            "score": 98144,
+            "detail": "Finished 61.9s"
+          },
+          {
+            "rank": 4,
+            "player": "IosIvy",
+            "score": 98129,
+            "detail": "Finished 62.4s"
+          }
+        ],
+        "rendered": true
+      },
+      "receivedAt": 1757000319737
+    },
+    {
+      "playerId": "p1_VMEC",
+      "platform": "web",
+      "phase": "results",
+      "payload": {
+        "room": "97GE",
+        "checksum": "1ffa7529",
+        "experience": "obby",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "player": "WebWren",
+            "score": 98177,
+            "detail": "Finished 60.8s"
+          },
+          {
+            "rank": 2,
+            "player": "MacMia",
+            "score": 98177,
+            "detail": "Finished 60.8s"
+          },
+          {
+            "rank": 3,
+            "player": "DroidDax",
+            "score": 98144,
+            "detail": "Finished 61.9s"
+          },
+          {
+            "rank": 4,
+            "player": "IosIvy",
+            "score": 98129,
+            "detail": "Finished 62.4s"
+          }
+        ],
+        "rendered": true
+      },
+      "receivedAt": 1757000320199
+    },
+    {
+      "playerId": "p4_TDNL",
+      "platform": "android",
+      "phase": "results",
+      "payload": {
+        "room": "97GE",
+        "checksum": "1ffa7529",
+        "experience": "obby",
+        "leaderboard": [
+          {
+            "rank": 1,
+            "player": "WebWren",
+            "score": 98177,
+            "detail": "Finished 60.8s"
+          },
+          {
+            "rank": 2,
+            "player": "MacMia",
+            "score": 98177,
+            "detail": "Finished 60.8s"
+          },
+          {
+            "rank": 3,
+            "player": "DroidDax",
+            "score": 98144,
+            "detail": "Finished 61.9s"
+          },
+          {
+            "rank": 4,
+            "player": "IosIvy",
+            "score": 98129,
+            "detail": "Finished 62.4s"
+          }
+        ],
+        "rendered": true
+      },
+      "receivedAt": 1757000323334
+    }
+  ]
+}

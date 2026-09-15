@@ -1,0 +1,11 @@
+name: brickfolk_shared
+description: Protocol, models and deterministic game rules shared by the Brickfolk server and clients.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.13.3
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.25.6

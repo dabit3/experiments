@@ -1,0 +1,351 @@
+{
+  "output": "review.mp4",
+  "durationSec": 113.466666,
+  "chapters": [
+    {
+      "title": "Intro",
+      "start": 0,
+      "end": 5
+    },
+    {
+      "title": "Hub & visual parity",
+      "start": 5,
+      "end": 12
+    },
+    {
+      "title": "Lobby",
+      "start": 12,
+      "end": 25.5
+    },
+    {
+      "title": "Gameplay",
+      "start": 25.5,
+      "end": 65.433333
+    },
+    {
+      "title": "Results",
+      "start": 65.433333,
+      "end": 87.466666
+    },
+    {
+      "title": "Brick Tycoon",
+      "start": 87.466666,
+      "end": 97.466666
+    },
+    {
+      "title": "Freeze Tag Arena",
+      "start": 97.466666,
+      "end": 107.466666
+    },
+    {
+      "title": "Verdict",
+      "start": 107.466666,
+      "end": 113.466666
+    }
+  ],
+  "segments": [
+    {
+      "type": "still",
+      "source": "review-parts/title.png",
+      "seconds": 5,
+      "chapter": "Intro",
+      "description": "title card"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/parity.png",
+      "seconds": 7,
+      "chapter": "Hub & visual parity",
+      "description": "web vs macOS hub tour comparison"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/lobby.png",
+      "seconds": 5,
+      "chapter": "Lobby",
+      "description": "lobby screenshots"
+    },
+    {
+      "type": "clip",
+      "chapter": "Lobby",
+      "caption": "Live: all four clients seated in the same room, readying up",
+      "note": "Recordings aligned on wall-clock time",
+      "speed": 1,
+      "wallClock": {
+        "from": "2026-09-11T03:17:01.419Z",
+        "to": "2026-09-11T03:17:09.919Z"
+      },
+      "seconds": 8.5,
+      "tiles": [
+        {
+          "platform": "web",
+          "source": "recording-web.webm",
+          "inSeconds": 2249.104,
+          "box": {
+            "x": 188,
+            "y": 108,
+            "w": 632,
+            "h": 408
+          }
+        },
+        {
+          "platform": "macos",
+          "source": "recording-macos.mp4",
+          "inSeconds": 205.29,
+          "box": {
+            "x": 188,
+            "y": 560,
+            "w": 632,
+            "h": 408
+          }
+        },
+        {
+          "platform": "ios",
+          "source": "recording-ios.mp4",
+          "inSeconds": 205.617,
+          "box": {
+            "x": 837,
+            "y": 108,
+            "w": 396,
+            "h": 860
+          }
+        },
+        {
+          "platform": "android",
+          "source": "recording-android.mp4",
+          "inSeconds": 187.652,
+          "box": {
+            "x": 1249,
+            "y": 108,
+            "w": 482,
+            "h": 860
+          }
+        }
+      ]
+    },
+    {
+      "type": "clip",
+      "chapter": "Gameplay",
+      "caption": "Countdown, then Skyline Obby starts on all clients at the same server tick",
+      "note": "Android runs on a software-accelerated emulator; its display trails the app",
+      "speed": 1,
+      "wallClock": {
+        "from": "2026-09-11T03:17:09.419Z",
+        "to": "2026-09-11T03:17:21.436Z"
+      },
+      "seconds": 12.017,
+      "tiles": [
+        {
+          "platform": "web",
+          "source": "recording-web.webm",
+          "inSeconds": 2257.104,
+          "box": {
+            "x": 188,
+            "y": 108,
+            "w": 632,
+            "h": 408
+          }
+        },
+        {
+          "platform": "macos",
+          "source": "recording-macos.mp4",
+          "inSeconds": 213.29,
+          "box": {
+            "x": 188,
+            "y": 560,
+            "w": 632,
+            "h": 408
+          }
+        },
+        {
+          "platform": "ios",
+          "source": "recording-ios.mp4",
+          "inSeconds": 213.617,
+          "box": {
+            "x": 837,
+            "y": 108,
+            "w": 396,
+            "h": 860
+          }
+        },
+        {
+          "platform": "android",
+          "source": "recording-android.mp4",
+          "inSeconds": 195.652,
+          "box": {
+            "x": 1249,
+            "y": 108,
+            "w": 482,
+            "h": 860
+          }
+        }
+      ]
+    },
+    {
+      "type": "clip",
+      "chapter": "Gameplay",
+      "caption": "Scripted inputs drive every client through the course",
+      "note": "4× speed · server-authoritative simulation at 30 ticks/s",
+      "speed": 4,
+      "wallClock": {
+        "from": "2026-09-11T03:17:21.436Z",
+        "to": "2026-09-11T03:18:53.064Z"
+      },
+      "seconds": 22.907,
+      "tiles": [
+        {
+          "platform": "web",
+          "source": "recording-web.webm",
+          "inSeconds": 2269.121,
+          "box": {
+            "x": 188,
+            "y": 108,
+            "w": 632,
+            "h": 408
+          }
+        },
+        {
+          "platform": "macos",
+          "source": "recording-macos.mp4",
+          "inSeconds": 225.307,
+          "box": {
+            "x": 188,
+            "y": 560,
+            "w": 632,
+            "h": 408
+          }
+        },
+        {
+          "platform": "ios",
+          "source": "recording-ios.mp4",
+          "inSeconds": 225.634,
+          "box": {
+            "x": 837,
+            "y": 108,
+            "w": 396,
+            "h": 860
+          }
+        },
+        {
+          "platform": "android",
+          "source": "recording-android.mp4",
+          "inSeconds": 207.669,
+          "box": {
+            "x": 1249,
+            "y": 108,
+            "w": 482,
+            "h": 860
+          }
+        }
+      ]
+    },
+    {
+      "type": "still",
+      "source": "review-parts/gameplay.png",
+      "seconds": 5,
+      "chapter": "Gameplay",
+      "description": "gameplay screenshots"
+    },
+    {
+      "type": "clip",
+      "chapter": "Results",
+      "caption": "Finish → results screen on every client",
+      "note": "Checksum 05b96827 reported by all 4 clients and the server",
+      "speed": 1,
+      "wallClock": {
+        "from": "2026-09-11T03:18:53.064Z",
+        "to": "2026-09-11T03:19:10.103Z"
+      },
+      "seconds": 17.039,
+      "tiles": [
+        {
+          "platform": "web",
+          "source": "recording-web.webm",
+          "inSeconds": 2360.749,
+          "box": {
+            "x": 188,
+            "y": 108,
+            "w": 632,
+            "h": 408
+          }
+        },
+        {
+          "platform": "macos",
+          "source": "recording-macos.mp4",
+          "inSeconds": 316.935,
+          "box": {
+            "x": 188,
+            "y": 560,
+            "w": 632,
+            "h": 408
+          }
+        },
+        {
+          "platform": "ios",
+          "source": "recording-ios.mp4",
+          "inSeconds": 317.262,
+          "box": {
+            "x": 837,
+            "y": 108,
+            "w": 396,
+            "h": 860
+          }
+        },
+        {
+          "platform": "android",
+          "source": "recording-android.mp4",
+          "inSeconds": 299.297,
+          "box": {
+            "x": 1249,
+            "y": 108,
+            "w": 482,
+            "h": 860
+          }
+        }
+      ]
+    },
+    {
+      "type": "still",
+      "source": "review-parts/results.png",
+      "seconds": 5,
+      "chapter": "Results",
+      "description": "results screenshots"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/extra-5-gameplay.png",
+      "seconds": 5,
+      "chapter": "Brick Tycoon",
+      "description": "gameplay screenshots"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/extra-5-results.png",
+      "seconds": 5,
+      "chapter": "Brick Tycoon",
+      "description": "results screenshots"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/extra-6-gameplay.png",
+      "seconds": 5,
+      "chapter": "Freeze Tag Arena",
+      "description": "gameplay screenshots"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/extra-6-results.png",
+      "seconds": 5,
+      "chapter": "Freeze Tag Arena",
+      "description": "results screenshots"
+    },
+    {
+      "type": "still",
+      "source": "review-parts/verdict.png",
+      "seconds": 6,
+      "chapter": "Verdict",
+      "description": "verdict card with leaderboard"
+    }
+  ],
+  "generatedBy": "test/e2e/review_video.mjs"
+}

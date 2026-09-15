@@ -1,0 +1,28 @@
+# Dart / Flutter
+.dart_tool/
+build/
+.flutter-plugins-dependencies
+*.iml
+.idea/
+
+# e2e harness
+node_modules/
+
+# Local databases
+*.sqlite
+*.sqlite-journal
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# clone-this evidence: keep the manifest (state.json, events.jsonl), the
+# audits, reports and metrics, but not the large binaries or logs.
+.devin/clone-this/brickfolk/evidence/**/*.png
+.devin/clone-this/brickfolk/evidence/**/*.mp4
+.devin/clone-this/brickfolk/evidence/**/*.webm
+.devin/clone-this/brickfolk/evidence/**/*.mov
+.devin/clone-this/brickfolk/evidence/tests/**/*.log
+.devin/clone-this/brickfolk/evidence/**/*.db
+.devin/clone-this/brickfolk/evidence/**/frames/
+.devin/clone-this/brickfolk/evidence/**/review-parts/
