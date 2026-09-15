@@ -1,0 +1,10 @@
+.ruff_cache/
+__pycache__/
+scripts/computer-use/run-*/
+.devin/
+build/
+node_modules/
+*.xcuserstate
+xcuserdata/
+evidence/
+*.jsonl
