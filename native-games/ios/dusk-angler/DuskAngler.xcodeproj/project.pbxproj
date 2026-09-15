@@ -1,0 +1,428 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07C1F58D36C09355CEAEEE52 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C19DC846612C8E33048507 /* Artwork.swift */; };
+		1F2FF411DE53992BA4E7DF7A /* GameRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619F733C7D828EFC6C192AAC /* GameRules.swift */; };
+		74740DC9B2F11728BAC17DD1 /* GameRulesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88586543B522FB9AC9D5CD49 /* GameRulesTests.swift */; };
+		7C19A8E1E3B2385A73CFE6F7 /* FieldGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D0073477B9FD7F6D570092 /* FieldGuide.swift */; };
+		89AAA872F428F28F3567380C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01493A1FD1ABE330FAF66D4B /* Assets.xcassets */; };
+		A49E0BF839D89F6C6D836FC7 /* DuskAnglerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD68E451739C0670B49CFC4 /* DuskAnglerApp.swift */; };
+		A7DE59F7FF2D555029BEFB21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1F26C972D0E037D499BF8E3 /* LaunchScreen.storyboard */; };
+		ED64215E808ABDF8CFF9909E /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7600E59B340B1B2DBC6FF23 /* GameStore.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		64E1381CF39621594187A646 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0859861F3A2963074EE7CD9C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A4A9739C25B6491763564EDC;
+			remoteInfo = DuskAngler;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01493A1FD1ABE330FAF66D4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0B65D1A2A9FBCDEEC7C59C13 /* DuskAnglerTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = DuskAnglerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		25D38C6D34E1FEEEBBCB8B8C /* DuskAngler.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DuskAngler.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2BD68E451739C0670B49CFC4 /* DuskAnglerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuskAnglerApp.swift; sourceTree = "<group>"; };
+		619F733C7D828EFC6C192AAC /* GameRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRules.swift; sourceTree = "<group>"; };
+		88586543B522FB9AC9D5CD49 /* GameRulesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRulesTests.swift; sourceTree = "<group>"; };
+		A1F26C972D0E037D499BF8E3 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A7600E59B340B1B2DBC6FF23 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		E5C19DC846612C8E33048507 /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
+		E8D0073477B9FD7F6D570092 /* FieldGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FieldGuide.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		514F3A2EFE66E5BEA8E7B02C /* DuskAnglerTests */ = {
+			isa = PBXGroup;
+			children = (
+				88586543B522FB9AC9D5CD49 /* GameRulesTests.swift */,
+			);
+			path = DuskAnglerTests;
+			sourceTree = "<group>";
+		};
+		7B51FAAE91CFE2F411E0CF26 = {
+			isa = PBXGroup;
+			children = (
+				C524FBE20EFFBD089A285A2A /* DuskAngler */,
+				514F3A2EFE66E5BEA8E7B02C /* DuskAnglerTests */,
+				D8B9609C99F7C311ED4534CC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C524FBE20EFFBD089A285A2A /* DuskAngler */ = {
+			isa = PBXGroup;
+			children = (
+				E5C19DC846612C8E33048507 /* Artwork.swift */,
+				01493A1FD1ABE330FAF66D4B /* Assets.xcassets */,
+				2BD68E451739C0670B49CFC4 /* DuskAnglerApp.swift */,
+				E8D0073477B9FD7F6D570092 /* FieldGuide.swift */,
+				619F733C7D828EFC6C192AAC /* GameRules.swift */,
+				A7600E59B340B1B2DBC6FF23 /* GameStore.swift */,
+				A1F26C972D0E037D499BF8E3 /* LaunchScreen.storyboard */,
+			);
+			path = DuskAngler;
+			sourceTree = "<group>";
+		};
+		D8B9609C99F7C311ED4534CC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				25D38C6D34E1FEEEBBCB8B8C /* DuskAngler.app */,
+				0B65D1A2A9FBCDEEC7C59C13 /* DuskAnglerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		89484C24532CC5A6BD489C64 /* DuskAnglerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E14FC6F97471166B5F492519 /* Build configuration list for PBXNativeTarget "DuskAnglerTests" */;
+			buildPhases = (
+				82892208994A5AA471BA9807 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DDE038D2D26FF5F87FA48A85 /* PBXTargetDependency */,
+			);
+			name = DuskAnglerTests;
+			packageProductDependencies = (
+			);
+			productName = DuskAnglerTests;
+			productReference = 0B65D1A2A9FBCDEEC7C59C13 /* DuskAnglerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		A4A9739C25B6491763564EDC /* DuskAngler */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3FF97CBB791332FFC5810CCE /* Build configuration list for PBXNativeTarget "DuskAngler" */;
+			buildPhases = (
+				E9BE3E689486521C1226BB10 /* Sources */,
+				CB27BD3ECCD0EE3844B95AD0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DuskAngler;
+			packageProductDependencies = (
+			);
+			productName = DuskAngler;
+			productReference = 25D38C6D34E1FEEEBBCB8B8C /* DuskAngler.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0859861F3A2963074EE7CD9C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 1D6681C20857E3751CF1DDE0 /* Build configuration list for PBXProject "DuskAngler" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 7B51FAAE91CFE2F411E0CF26;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = D8B9609C99F7C311ED4534CC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A4A9739C25B6491763564EDC /* DuskAngler */,
+				89484C24532CC5A6BD489C64 /* DuskAnglerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CB27BD3ECCD0EE3844B95AD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				89AAA872F428F28F3567380C /* Assets.xcassets in Resources */,
+				A7DE59F7FF2D555029BEFB21 /* LaunchScreen.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		82892208994A5AA471BA9807 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74740DC9B2F11728BAC17DD1 /* GameRulesTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9BE3E689486521C1226BB10 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07C1F58D36C09355CEAEEE52 /* Artwork.swift in Sources */,
+				A49E0BF839D89F6C6D836FC7 /* DuskAnglerApp.swift in Sources */,
+				7C19A8E1E3B2385A73CFE6F7 /* FieldGuide.swift in Sources */,
+				1F2FF411DE53992BA4E7DF7A /* GameRules.swift in Sources */,
+				ED64215E808ABDF8CFF9909E /* GameStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DDE038D2D26FF5F87FA48A85 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A4A9739C25B6491763564EDC /* DuskAngler */;
+			targetProxy = 64E1381CF39621594187A646 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2D3D74A16A1A00CD3C28D8D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dusk Angler";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.naderdabit.duskangler;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3ACA4AE727702AEB8C04B04A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		64F3BE96CE49B2FAB4B6A8DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.naderdabit.DuskAnglerTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DuskAngler.app/DuskAngler";
+			};
+			name = Debug;
+		};
+		854D8D1FE1B3F35E9F4B6122 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A33F335DBE3047FDE119A428 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.naderdabit.DuskAnglerTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DuskAngler.app/DuskAngler";
+			};
+			name = Release;
+		};
+		D11567ED14CB16BAB4360DFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Dusk Angler";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.naderdabit.duskangler;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6681C20857E3751CF1DDE0 /* Build configuration list for PBXProject "DuskAngler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				854D8D1FE1B3F35E9F4B6122 /* Debug */,
+				3ACA4AE727702AEB8C04B04A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3FF97CBB791332FFC5810CCE /* Build configuration list for PBXNativeTarget "DuskAngler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2D3D74A16A1A00CD3C28D8D1 /* Debug */,
+				D11567ED14CB16BAB4360DFB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E14FC6F97471166B5F492519 /* Build configuration list for PBXNativeTarget "DuskAnglerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64F3BE96CE49B2FAB4B6A8DC /* Debug */,
+				A33F335DBE3047FDE119A428 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0859861F3A2963074EE7CD9C /* Project object */;
+}
