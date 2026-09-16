@@ -309,6 +309,7 @@ struct OtterGameView: View {
             "I flew through \(store.game.score) gates in Flappy Otter! My personal best is \(store.record.best). Can you beat Wiskers?"
         ) {
           Label("Share", systemImage: "square.and.arrow.up")
+            .fixedSize(horizontal: true, vertical: false)
         }
       }
       .font(.system(size: 14, weight: .bold))
