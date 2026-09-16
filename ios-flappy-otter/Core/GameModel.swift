@@ -116,7 +116,7 @@ struct GameModel {
       }
     }
     gates.removeAll { $0.x + Self.gateWidth < -30 }
-    if let last = gates.last, last.x < Self.width + Self.spacing {
+    if let last = gates.last, last.x < Self.width {
       appendGate(at: last.x + Self.spacing)
     }
   }
