@@ -13,12 +13,16 @@ if (($# == 0)); then
 fi
 for app in "$@"; do
   case "$app" in
-    brickfolk|gambit-court|lastfort|nitro-tots|panic-pantry|swapmate|voxelhearth) ;;
+    brickfolk|gambit-court|lastfort|nitro-tots|panic-pantry|swapmate|voxelhearth|ios-flappy-otter) ;;
     *) echo "Unknown native migration: $app" >&2; exit 2 ;;
   esac
 done
 
-if [[ "$mode" != build ]]; then
+needs_dart=false
+for app in "$@"; do
+  if [[ "$app" != ios-flappy-otter ]]; then needs_dart=true; fi
+done
+if [[ "$mode" != build && "$needs_dart" == true ]]; then
   DART="$(command -v "${DART:-dart}")"
   export DART
   PATH="$(dirname "$DART"):$PATH"
@@ -26,6 +30,11 @@ if [[ "$mode" != build ]]; then
 fi
 
 for app in "$@"; do
+  if [[ "$app" == ios-flappy-otter ]]; then
+    bash "$root/$app/Scripts/validate.sh" "$mode"
+    echo "=== PASS: $app ($mode) ==="
+    continue
+  fi
   (
     cd "$root/$app"
     package=apple
