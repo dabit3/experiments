@@ -1,0 +1,450 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1FCB21A72CB83886A351F4CE /* GameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C26F9B93B46CED4DD985B4 /* GameModel.swift */; };
+		30F89C2EF6E41743202F5AB9 /* GameStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37A10F68B05EBDD1E5846832 /* GameStore.swift */; };
+		439733D8A8A0A11C94102AAE /* FlappyOtterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC91023C9A4FC8F42FEA3AED /* FlappyOtterApp.swift */; };
+		5D00FFBA8C3FE0834A74E4EE /* RiverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13282578FCA8315E867F0431 /* RiverScene.swift */; };
+		691D068D43704EBEF704D424 /* AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26ACABC80714EB60AC87B18E /* AppTests.swift */; };
+		692EA604160A2FC37086EC4A /* OtterGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FDA9BBC1DFF2A544D7C56E /* OtterGameView.swift */; };
+		7E90252236BC323C5F027FB7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04E31598AD631DB408E4E3E4 /* Assets.xcassets */; };
+		AD50C6F7001927E0CAB2DC7C /* FlightRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9E5D86308954AAD20811F88 /* FlightRecord.swift */; };
+		C253114511DB88B07E84E3DC /* RiverAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 400F2DFE83D9FB5871EDF997 /* RiverAudio.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E6B86ABC3FDECB4862565488 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B201CE6D379B17A24BE88AC8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E753A96FD1EB62DF8B3272E;
+			remoteInfo = FlappyOtter;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		04E31598AD631DB408E4E3E4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		13282578FCA8315E867F0431 /* RiverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiverScene.swift; sourceTree = "<group>"; };
+		26ACABC80714EB60AC87B18E /* AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTests.swift; sourceTree = "<group>"; };
+		37A10F68B05EBDD1E5846832 /* GameStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStore.swift; sourceTree = "<group>"; };
+		400F2DFE83D9FB5871EDF997 /* RiverAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiverAudio.swift; sourceTree = "<group>"; };
+		85C26F9B93B46CED4DD985B4 /* GameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameModel.swift; sourceTree = "<group>"; };
+		95FDA9BBC1DFF2A544D7C56E /* OtterGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtterGameView.swift; sourceTree = "<group>"; };
+		BC91023C9A4FC8F42FEA3AED /* FlappyOtterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlappyOtterApp.swift; sourceTree = "<group>"; };
+		D3BA2135A8A8E28239BC6CF6 /* FlappyOtterTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FlappyOtterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9B3F213158830B67BB81810 /* FlappyOtter.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FlappyOtter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9E5D86308954AAD20811F88 /* FlightRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlightRecord.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		01DB691DB32A50E73ACF4821 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				F9E5D86308954AAD20811F88 /* FlightRecord.swift */,
+				85C26F9B93B46CED4DD985B4 /* GameModel.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		164352FA782A4DD5F0EB3CE2 = {
+			isa = PBXGroup;
+			children = (
+				4727ADF9FEADDD0363D3DBDF /* App */,
+				1F64450CFCFA1E7148C6791C /* AppTests */,
+				01DB691DB32A50E73ACF4821 /* Core */,
+				657A9B4788FBA09383AAF6AB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1F64450CFCFA1E7148C6791C /* AppTests */ = {
+			isa = PBXGroup;
+			children = (
+				26ACABC80714EB60AC87B18E /* AppTests.swift */,
+			);
+			path = AppTests;
+			sourceTree = "<group>";
+		};
+		4727ADF9FEADDD0363D3DBDF /* App */ = {
+			isa = PBXGroup;
+			children = (
+				04E31598AD631DB408E4E3E4 /* Assets.xcassets */,
+				BC91023C9A4FC8F42FEA3AED /* FlappyOtterApp.swift */,
+				37A10F68B05EBDD1E5846832 /* GameStore.swift */,
+				95FDA9BBC1DFF2A544D7C56E /* OtterGameView.swift */,
+				400F2DFE83D9FB5871EDF997 /* RiverAudio.swift */,
+				13282578FCA8315E867F0431 /* RiverScene.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		657A9B4788FBA09383AAF6AB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E9B3F213158830B67BB81810 /* FlappyOtter.app */,
+				D3BA2135A8A8E28239BC6CF6 /* FlappyOtterTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0E753A96FD1EB62DF8B3272E /* FlappyOtter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76741F252B148BB58A3975D5 /* Build configuration list for PBXNativeTarget "FlappyOtter" */;
+			buildPhases = (
+				E9A2924DF33D20CEF97F02C9 /* Sources */,
+				1C9908563E120ED58E3DD828 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FlappyOtter;
+			packageProductDependencies = (
+			);
+			productName = FlappyOtter;
+			productReference = E9B3F213158830B67BB81810 /* FlappyOtter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		59E97F6AD3E27978E0421796 /* FlappyOtterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 90A2E0B352ABE3D37D190881 /* Build configuration list for PBXNativeTarget "FlappyOtterTests" */;
+			buildPhases = (
+				DBAAB3FE9890282B0A1513C1 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8F04C806503C23823A3C212A /* PBXTargetDependency */,
+			);
+			name = FlappyOtterTests;
+			packageProductDependencies = (
+			);
+			productName = FlappyOtterTests;
+			productReference = D3BA2135A8A8E28239BC6CF6 /* FlappyOtterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B201CE6D379B17A24BE88AC8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					0E753A96FD1EB62DF8B3272E = {
+						ProvisioningStyle = Automatic;
+					};
+					59E97F6AD3E27978E0421796 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 74C9E982EFEA8F9EF0D42F38 /* Build configuration list for PBXProject "FlappyOtter" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 164352FA782A4DD5F0EB3CE2;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 657A9B4788FBA09383AAF6AB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0E753A96FD1EB62DF8B3272E /* FlappyOtter */,
+				59E97F6AD3E27978E0421796 /* FlappyOtterTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1C9908563E120ED58E3DD828 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E90252236BC323C5F027FB7 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DBAAB3FE9890282B0A1513C1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				691D068D43704EBEF704D424 /* AppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9A2924DF33D20CEF97F02C9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				439733D8A8A0A11C94102AAE /* FlappyOtterApp.swift in Sources */,
+				AD50C6F7001927E0CAB2DC7C /* FlightRecord.swift in Sources */,
+				1FCB21A72CB83886A351F4CE /* GameModel.swift in Sources */,
+				30F89C2EF6E41743202F5AB9 /* GameStore.swift in Sources */,
+				692EA604160A2FC37086EC4A /* OtterGameView.swift in Sources */,
+				C253114511DB88B07E84E3DC /* RiverAudio.swift in Sources */,
+				5D00FFBA8C3FE0834A74E4EE /* RiverScene.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8F04C806503C23823A3C212A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0E753A96FD1EB62DF8B3272E /* FlappyOtter */;
+			targetProxy = E6B86ABC3FDECB4862565488 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		417F906745E086E79B05D312 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Flappy Otter";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		511BF4AF3B0311ACC2607C61 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Flappy Otter";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		6722D34601BF53B1383A3224 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.flappyotter.FlappyOtterTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlappyOtter.app/FlappyOtter";
+			};
+			name = Debug;
+		};
+		9EBD9EE97BC90D981A266877 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = studio.flappyotter.FlappyOtterTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlappyOtter.app/FlappyOtter";
+			};
+			name = Release;
+		};
+		E97AE81179ECEC7C175CD1C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.flappyotter.game;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F5412D7580E890765FF17747 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = studio.flappyotter.game;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		74C9E982EFEA8F9EF0D42F38 /* Build configuration list for PBXProject "FlappyOtter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				417F906745E086E79B05D312 /* Debug */,
+				511BF4AF3B0311ACC2607C61 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		76741F252B148BB58A3975D5 /* Build configuration list for PBXNativeTarget "FlappyOtter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E97AE81179ECEC7C175CD1C1 /* Debug */,
+				F5412D7580E890765FF17747 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		90A2E0B352ABE3D37D190881 /* Build configuration list for PBXNativeTarget "FlappyOtterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6722D34601BF53B1383A3224 /* Debug */,
+				9EBD9EE97BC90D981A266877 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B201CE6D379B17A24BE88AC8 /* Project object */;
+}

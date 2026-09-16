@@ -4,6 +4,16 @@ A collection of apps and games built with Devin.
 
 Open a project folder and follow its README for setup and usage.
 
+## Flappy Otter for iPhone
+
+[Flappy Otter](ios-flappy-otter/README.md) is a native tap-to-fly river arcade game
+starring Wiskers, with saved best scores and automated Swift/iOS tests.
+Open `ios-flappy-otter/FlappyOtter.xcodeproj`, or verify it with:
+
+```sh
+bash validate-native-apps.sh all ios-flappy-otter
+```
+
 ## Native Apple game migrations
 
 These seven games replace all seven Flutter UI clients present at
@@ -69,7 +79,9 @@ bash validate-native-apps.sh test
 bash validate-native-apps.sh all panic-pantry nitro-tots
 ```
 
-The selector accepts only the seven table entries and stops on a failing check.
+The selector accepts the seven table entries and `ios-flappy-otter`, and stops on
+a failing check. With no selector, it runs the seven migrations. Flappy Otter's
+selector needs only Xcode and its iOS Simulator runtime, without Dart.
 Tests run retained Dart suites, native model/protocol tests, isolated real
 WebSocket server integrations, Nitro Tots client regressions and VoxelHearth
 client XCTest. VoxelHearth has no standalone Dart server test directory.
