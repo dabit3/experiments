@@ -189,10 +189,10 @@ struct HomeScreen: View {
     VStack(alignment: .leading, spacing: 14) {
       Text("Your next adventure").font(Hearth.type(26))
       TextField("Player name", text: $preferences.name).textFieldStyle(.roundedBorder)
-        .foregroundStyle(.primary)
+        .foregroundStyle(Color.primary)
         .accessibilityIdentifier("player-name")
       TextField("ws://server:8787/ws", text: $preferences.server).textFieldStyle(.roundedBorder)
-        .foregroundStyle(.primary)
+        .foregroundStyle(Color.primary)
         .autocorrectionDisabled().accessibilityIdentifier("server-url")
       HStack {
         Circle().fill(session.online ? Hearth.teal : Hearth.gold).frame(width: 8, height: 8)
@@ -205,7 +205,7 @@ struct HomeScreen: View {
       Divider()
       HStack {
         TextField("5-letter code", text: $joinCode).textFieldStyle(.roundedBorder)
-          .foregroundStyle(.primary)
+          .foregroundStyle(Color.primary)
           .autocorrectionDisabled().accessibilityIdentifier("join-code")
         Button("Join") { session.join(joinCode) }.disabled(
           !session.online || joinCode.trimmingCharacters(in: .whitespaces).count != 5)
@@ -307,7 +307,7 @@ struct RoomEditor: View {
         }
       }
     }
-    .foregroundStyle(.primary)
+    .foregroundStyle(Color.primary)
     .tint(.accentColor)
     #if os(macOS)
       .frame(width: 560, height: 620)
