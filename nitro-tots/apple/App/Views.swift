@@ -70,6 +70,7 @@ struct RootView: View {
             }
           }.frame(maxWidth: 1100).padding(24).frame(maxWidth: .infinity)
         }
+        .id(model.screen)
         .foregroundStyle(colorScheme == .dark ? .white : ink)
       }
       if let error = model.notice ?? model.connection.error {
